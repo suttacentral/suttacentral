@@ -59,10 +59,11 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         
         <div id="titlebar">
           <div id="titlebarCenter">
-            <span id="titlebarSitetitle" class="transitionTransform">
-              <a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a>
-            </span>
-            <span id="titlebarSubtitle"><a href="/">${this.localize('pageSubtitle')}</a></span>
+          <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+            <h1 id="titlebarSitetitle" class="transitionTransform">
+              SuttaCentral
+            </h1>
+            <span id="titlebarSubtitle">${this.localize('pageSubtitle')}</span>
           </div>
         </div>
 

@@ -125,13 +125,15 @@ export const SCSiteLayoutStyles = css`
     font-size: 3.5rem;
     font-family: "skolar pe";
     font-variant-caps: small-caps;
+    font-weight: 300;
     text-align: center;
     line-height: 0.9;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
+    margin: 0;
   }
 
   #titlebarSubtitle {
