@@ -60,9 +60,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <div id="titlebar">
           <div id="titlebarCenter">
             <span id="titlebarSitetitle" class="transitionTransform">
-              <a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a>
+            <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+              <h1>SuttaCentral</h1>
             </span>
-            <span id="titlebarSubtitle"><a href="/">${this.localize('pageSubtitle')}</a></span>
+            <span id="titlebarSubtitle">${this.localize('pageSubtitle')}</span>
           </div>
         </div>
 
@@ -333,19 +334,21 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     let rootDOM = this.shadowRoot;
     addEventListener('scroll', throttle(300, () => {
       if (this.changedRoute.path === '/' && (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
-        rootDOM.getElementById("universal-toolbar").style.transform = "translateY(-116px)";
-        rootDOM.getElementById("context-toolbar").style.transform = "translateY(116px)";
-        rootDOM.getElementById("breadCrumb").style.transform = "translateY(116px)";;
-        rootDOM.getElementById("titlebarSitetitle").style.transform = "translateY(56px) scale(0.667)";
+        rootDOM.getElementById('universal-toolbar').style.transform = 'translateY(-116px)';
+        rootDOM.getElementById('context-toolbar').style.transform = 'translateY(116px)';
+        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(116px)';
+        rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(64px) scale(0.667)';
+        rootDOM.getElementById('titlebarSubtitle').style.opacity = '0';
         if (window.innerWidth < 480) {
-          rootDOM.getElementById("titlebarSitetitle").style.transform = "translateY(56px) translateX(-100px) scale(0.667)";
+          rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(60px) translateX(-80px) scale(0.667)';
         }
       } else {
-        rootDOM.getElementById("universal-toolbar").style.transform = "none";
-        rootDOM.getElementById("context-toolbar").style.transform = "none";
-        rootDOM.getElementById("breadCrumb").style.transform = "none";
-        rootDOM.getElementById("titlebarSitetitle").style.transform = "none";
-        rootDOM.getElementById("titlebarSitetitle").style.transform = "scale(1)";
+        rootDOM.getElementById('universal-toolbar').style.transform = 'none';
+        rootDOM.getElementById('context-toolbar').style.transform = 'none';
+        rootDOM.getElementById('breadCrumb').style.transform = 'none';
+        rootDOM.getElementById('titlebarSitetitle').style.transform = 'none';
+        rootDOM.getElementById('titlebarSitetitle').style.transform = 'scale(1)';
+        rootDOM.getElementById('titlebarSubtitle').style.opacity = '1';
       }
     }));
 

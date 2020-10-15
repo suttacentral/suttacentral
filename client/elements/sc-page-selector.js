@@ -295,7 +295,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.dispatch('changeDisplayToolButtonState', this.shouldShowSuttaTextPage);
     this.dispatch('changeDisplayInfoButtonState', this.shouldShowSuttaTextPage);
 
-    let displayStyle = this.route.path === '/' ? 'block' : 'none';
+    let displayStyle = this.route.path === '/' ? 'flex' : 'none';
     this.parentNode.querySelector('#titlebar').style.display = displayStyle;
     this.parentNode.querySelector('#static_pages_nav_menu').style.display = this.shouldShowStaticPage ? 'block': 'none';
 

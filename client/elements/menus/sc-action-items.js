@@ -1,16 +1,8 @@
 import { LitElement, html } from 'lit-element';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-menu-button/paper-menu-button.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '@polymer/iron-location/iron-location.js';
-//import '@polymer/neon-animation/animations/slide-from-right-animation.js';
 
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
 
-import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
 
@@ -26,83 +18,10 @@ class SCActionItems extends LitLocalized(LitElement) {
         color: var(--sc-tertiary-text-color);
       }
 
-      .toolbar-paper-button {
-        --paper-menu-button-dropdown: {
-          max-width: 100%;
-        };
-        --paper-menu-button-content: {
-          box-shadow: var(--sc-shadow-elevation-8dp);
-        };
-      }
-
-      .toolbar-input {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        font-weight: 400;
-        line-height: 24px;
-        --paper-input-container: {
-          padding: 0;
-        };
-        --paper-input-container-color: var(--sc-tertiary-text-color);
-        --paper-input-container-focus-color: var(--sc-tertiary-text-color);
-        --paper-input-container-label: {
-          color: var(--sc-tertiary-text-color);
-          opacity: 0.6;
-        };
-        --paper-input-container-input: {
-          color: var(--sc-tertiary-text-color);
-        };
-        display: inline-block;
-        vertical-align: text-bottom;
-      }
-
-      #close_button {
-        display: none;
-      }
-
-      #search_input {
-        width: 0;
-        transition: width .2s linear;
-      }
-
-      #more_menu:focus {
-        outline: none;
-      }
-
-      .toolbar-link {
-        text-decoration: none;
-      }
-
-      .search-open #discourse_button, .search-open > #more_vert_button,
-      .search-open #suttaplex_switch_button {
-        display: none;
-      }
-
-      .more-menu-list {
-        background-color: var(--sc-secondary-background-color);
-      }
-
-      .absolute-position {
-        position: absolute;
-      }
-
-      .discourses-link {
-        position: relative;
-      }
-
-      .toolbar-link, .toolbar-paper-button {
-        /* margin: 0 var(--sc-size-sm); */
-        margin: 0;
-      }
-
       #tools_menu {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-
-      #more_vert_button {
-        margin: 0;
       }
 
       .invisible {
@@ -147,16 +66,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       }
     </style>
 
-    <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
-
     <div id="tools_menu">
-      <!-- Search field. iron-a11y-keys fires when the enter-key is pressed-->
-      <iron-a11y-keys
-        target=${this.search_input}
-        keys="enter"
-        @keys-pressed="${this._startSearch}">
-      </iron-a11y-keys>
-
       <mwc-icon-button 
         icon="wb_sunny" 
         class="white-icon toolButtons" 
@@ -215,40 +125,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
       </mwc-icon-button>
-
-      <mwc-icon-button icon="search"
-        title="${this.localize('searchTooltip')}"
-        class="white-icon toolbar-paper-button"
-        @click="${this.openSearch}">
-      </mwc-icon-button>
-
-      <paper-input
-        class="toolbar-input"
-        label="${this.localize('Search')}"
-        no-label-float=""
-        id="search_input">
-      </paper-input>
-
-      <mwc-icon-button
-        icon="close"
-        class="white-icon toolbar-paper-button"
-        id="close_button"
-        @click="${this._closeSearch}">
-      </mwc-icon-button>
-
-      <!-- Menu for more options like language and other static pages -->
-      <paper-menu-button
-        class="toolbar-paper-button"
-        horizontal-align="right"
-        .openAnimationConfig=${this.paperMenuButtonAnimations}
-        ignore-select=""
-        id="more_vert_button"
-        vertical-align="auto">
-        <paper-icon-button icon="sc-iron-icons:more-vert" class="white-icon" slot="dropdown-trigger" alt="menu"></paper-icon-button>
-        <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
-          <sc-more-menu id="more_menu"></sc-more-menu>
-        </paper-listbox>
-      </paper-menu-button>
     </div>`;
   }
 
@@ -257,12 +133,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       path: { type: String },
       suttaplexDisplay: { type: Boolean },
       suttaplexListEnabled: { type: Boolean },
-      query: { type: String },
       mode: { type: String },
       localizedStringsPath: { type: String },
-      search_input: { type: Object },
-      searchKeyword: { type: String },
-      paperMenuButtonAnimations: { type: Object },
       displaySettingMenu: { type: Boolean },
       displayToolButton: { type: Boolean },
       displayInfoButton: { type: Boolean },
@@ -282,12 +154,8 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.suttaplexDisplay = '';
     this.suttaplexListEnabled = store.getState().suttaplexListDisplay;
     this.colorTheme = store.getState().colorTheme;
-    //this._colorThemeChanged();
-    this.query = '';
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-action-items';
-    this.searchKeyword = store.getState().searchQuery;
-    this.search_input = this.shadowRoot.getElementById('search_input');
     this.displaySettingMenu = store.getState().displaySettingMenu;
     this.displayToolButton = store.getState().displayToolButton;
     this.displayInfoButton = store.getState().displayInfoButton;
@@ -300,12 +168,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SUTTPLEX_LIST_DISPLAY',
           suttaplexdisplay: suttaplexdisplay
-        })
-      },
-      toggleChangeSearchQuery(searchKeyword) {
-        store.dispatch({
-          type: 'CHANGE_SEARCH_QUERY',
-          searchKeyword: searchKeyword
         })
       },
       changeToolbarTitle(title) {
@@ -348,20 +210,6 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    const moreMenuElement = this.shadowRoot.getElementById('more_menu');
-    if (moreMenuElement) {
-      moreMenuElement.addEventListener('item-selected', () => {
-        const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
-        moreVertButtonElement.close();
-      });
-    }
-
-    const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement && this.searchKeyword.length !== 0) {
-      searchInputElement.value = this.searchKeyword;
-      this.openSearch();
-    }
-    
     this._displayToolButtonStateChange();
     this._colorThemeChanged();
     this._viewModeChanged();
@@ -500,56 +348,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
-  // When looking-glass icon is clicked, determines if the searchbox is already open and if so, starts the search.
-  // If not, it opens the search box and moves other elements out of the way depending on the width of the screen.
-  openSearch() {
-    this.actions.saveToolbarTitle(this.parentNode.querySelector('#toolbarTitle').innerText);
-    let universalToolbarTransformStyle = this.parentNode.parentNode.parentNode.querySelector('#universal-toolbar').style.transform
-    if (!['', 'none'].includes(universalToolbarTransformStyle) && window.innerWidth < 840) {
-      this.parentNode.parentNode.querySelector('#titlebarSitetitle').style.display = 'none';
-      this.parentNode.parentNode.querySelector('#titlebarSubtitle').style.display = 'none';
-    }
-    const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement.classList.contains('opened')) {
-      this._startSearch();
-    } else {
-      searchInputElement.classList.add('opened');
-      this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
-      this.calcSearchInputWidth();
-      searchInputElement.focus();
-      searchInputElement.value = '';
-    }
-  }
-
-  calcSearchInputWidth() {
-    const wideWindowInnerWidth = 840;
-    const mediumWindowInnerWidth = 480;
-    const minWindowInnerWidth = 280;
-    const searchInputMaxWidth = 20;
-    let searchInputWidth = 8;
-    if (window.innerWidth > wideWindowInnerWidth) {
-      searchInputWidth = 30;
-    } else if (window.innerWidth > mediumWindowInnerWidth) {
-      this.actions.changeToolbarTitle('');
-      this._setToolButtonsVisible(false);
-      searchInputWidth = 20;
-    } else if (window.innerWidth > minWindowInnerWidth) {
-      this.actions.changeToolbarTitle('');
-      this._setToolButtonsVisible(false);
-      searchInputWidth = 10;
-    } else {
-      this.actions.changeToolbarTitle('');
-      this.shadowRoot.getElementById('tools_menu').classList.add('search-open');
-      this._setToolButtonsVisible(false);
-      searchInputWidth = 8;
-    }
-
-    if (searchInputWidth > searchInputMaxWidth) {
-      searchInputWidth = searchInputMaxWidth;
-    }
-    this.shadowRoot.querySelector('.opened').style.width = `${searchInputWidth}em`;
-  }
-
   _setToolButtonsVisible(visible) {
     this.shadowRoot.querySelectorAll('.toolButtons').forEach((e) => {
       if (e.style.display !== 'none') {
@@ -560,36 +358,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         }
       }
     });
-  }
-
-  // Closes the searchbox and resets original values.
-  _closeSearch() {
-    this.parentNode.parentNode.querySelector('#titlebarSitetitle').style.display = 'inherit';
-    this.parentNode.parentNode.querySelector('#titlebarSubtitle').style.display = 'inherit';
-    const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement && searchInputElement.classList.contains('opened')) {
-      searchInputElement.value = '';
-      this.actions.toggleChangeSearchQuery('');
-
-      searchInputElement.classList.remove('opened');
-      searchInputElement.removeAttribute('style', 'width');
-
-      this.shadowRoot.getElementById('close_button').style.display = 'none';
-      this.shadowRoot.getElementById('tools_menu').classList.remove('search-open');
-      this.actions.changeToolbarTitle(store.getState().toolbarTitle);
-      this._setToolButtonsVisible(true);
-    }
-  }
-
-  // Initiates the search function.
-  _startSearch() {
-    const searchQuery = this.shadowRoot.getElementById('search_input').value;
-    this.actions.toggleChangeSearchQuery(searchQuery);
-    this.path = '/search';
-    this.query = `query=${searchQuery}`;
-    const pageLocationElement = this.shadowRoot.getElementById('pageLocation');
-    pageLocationElement.path = this.path;
-    pageLocationElement.query = this.query;
   }
 }
 

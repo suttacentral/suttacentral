@@ -8,6 +8,8 @@ import { navigationNormaModelStyles } from './sc-navigation-styles.js';
 import '@material/mwc-icon';
 import '@moduware/morph-ripple';
 
+import '../menus/sc-universal-action-items.js';
+
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
@@ -18,9 +20,9 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       nav {
         display: flex;
         overflow-x: auto;
+        overflow-y: hidden;
         flex-direction: row;
         height: 46px;
-
         box-sizing: border-box;
         padding: 0 calc(2% - 8px);
 
@@ -42,7 +44,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       nav li {
         font-size: var(--sc-skolar-font-size-xs);
         font-weight: 500;
-
+        
         display: flex;
 
         list-style-type: none;
@@ -105,6 +107,9 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         --ripple-color: var(--sc-primary-color);
       }
 
+      nav {
+        margin-right: auto;
+      }
     `;
   }
 
@@ -119,7 +124,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    //this.localizedStringsPath = '/localization/elements/sc-linden-leaves';
     this.localizedStringsPath = '/localization/elements/sc-navigation';
     this.navArray = store.getState().navigationArray;
   }
@@ -176,6 +180,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
               ` : ''}
           `) : ''}
         </ul>
+        <sc-universal-action-items></sc-universal-action-items>
       </nav>
     `;
   }

@@ -110,40 +110,39 @@ export const SCSiteLayoutStyles = css`
   }
 
   #titlebar {
-    /* display: flex !important; */
     display: flex;
     box-sizing: border-box;
     height: 8em;
     margin: auto;
-    /* padding-top: 1.8em; */
 
     background-color: var(--sc-primary-color);
 
-    /* align-items: center; */
     justify-content: center;
     transition: all 0.1s;
   }
 
   #titlebarSitetitle {
-    font-size: 3.5rem;
-    font-family: "skolar pe";
-    font-variant-caps: small-caps;
-    text-align: center;
-    line-height: 0.9;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
+    align-items: flex-end;
+    margin: 0;
+  }
+
+    #titlebarSitetitle h1 {
+    font-size: 3.5rem;
+    font-family: var(--sc-serif-font);
+    font-variant-caps: small-caps;
+    font-weight: 300;
+    line-height: 1;
+    margin: 0;
   }
 
   #titlebarSubtitle {
-    text-align: center;
     font-style: italic;
     font-size: 1.5rem;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
     margin-left: 1em;
   }
@@ -151,7 +150,6 @@ export const SCSiteLayoutStyles = css`
   #universal-toolbar {
     color: white;
     position: sticky;
-    /* position: relative; */
     top: 0;
     box-shadow: var(--sc-shadow-elevation-2dp);
     z-index: 9999;
@@ -161,17 +159,8 @@ export const SCSiteLayoutStyles = css`
     min-width: 0;
   }
 
-  /* #titlebarSitetitle {
-  transform: scale(1);
-}
-
-#titlebarSubtitle {
-  opacity: 1;
-  transform: scale(1);
-} */
-
   #context-toolbar {
-    height: 64px;
+    height: 3.5em;
     display: flex;
     background-color: var(--sc-primary-color);
     padding: 0 2%;
@@ -217,7 +206,6 @@ export const SCSiteLayoutStyles = css`
   }
 
   .title-logo-icon {
-    vertical-align: bottom;
     height: var(--sc-size-xxl);
     width: var(--sc-size-xxl);
     margin: 0 var(--sc-size-sm);
