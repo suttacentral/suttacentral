@@ -316,11 +316,6 @@ export const SCPageSelectorStyles = html`
     #titlebarSitetitle {
       transition: transform 300ms ease-in-out;
     }
-    /* Add and remove via js to things that move. It is removed to prevent unwanted animations on zoom or page resize. */
-    .transitionTransform {
-      will-change: transform;
-      transition: transform 200ms ease-in-out;
-    }
 
     /* Most media queries are handled in JS. This ensures that modal sidebar stays above main content at all times.*/
     @media only screen and (max-width: 720px) {

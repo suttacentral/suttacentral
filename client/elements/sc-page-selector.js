@@ -300,6 +300,12 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     this.parentNode.querySelector('#static_pages_nav_menu').style.display = this.shouldShowStaticPage ? 'block': 'none';
 
     this._setViewModeButtonDisplayState();
+    this._setActionItemsDisplayState();
+  }
+
+  _setActionItemsDisplayState() {
+    let displayStyle = this.route.path === '/' ? 'none' : 'initial';
+    this.parentNode.querySelector('#sc_action_items').style.display = displayStyle;
   }
 
   // Lazy loading for site elements

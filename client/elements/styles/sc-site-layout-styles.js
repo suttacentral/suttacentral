@@ -281,8 +281,4 @@ export const SCSiteLayoutStyles = css`
   morph-ripple {
     --ripple-color: gold;
   }
-
-  .transitionTransform {
-    transition: transform 200ms ease-in-out;
-  }
 `;

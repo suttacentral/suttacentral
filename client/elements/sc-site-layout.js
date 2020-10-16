@@ -47,10 +47,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <div id="universal-toolbar" class="transitionTransform">
-        <sc-linden-leaves id="breadCrumb" class="transitionTransform"></sc-linden-leaves>
+      <div id="universal-toolbar">
+        <sc-linden-leaves id="breadCrumb"></sc-linden-leaves>
 
-        <div id="context-toolbar" class="transitionTransform">
+        <div id="context-toolbar">
           <span id="toolbarTitle">${this.toolbarTitle}</span>
           <sc-action-items id="sc_action_items"></sc-action-items>
         </div>
@@ -59,7 +59,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         
         <div id="titlebar">
           <div id="titlebarCenter">
-            <span id="titlebarSitetitle" class="transitionTransform">
+            <span id="titlebarSitetitle">
               <a href="/"><iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>SuttaCentral</a>
             </span>
             <span id="titlebarSubtitle"><a href="/">${this.localize('pageSubtitle')}</a></span>
@@ -332,15 +332,18 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     let rootDOM = this.shadowRoot;
     addEventListener('scroll', throttle(300, () => {
+      let transitionStyle = 'transform 200ms ease-in-out';
+      rootDOM.getElementById('universal-toolbar').style.transition = transitionStyle;
+      rootDOM.getElementById('context-toolbar').style.transition = transitionStyle;
+      rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
+      rootDOM.getElementById('titlebarSitetitle').style.transition = transitionStyle;
+
       if (this.changedRoute.path === '/' && (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
-        rootDOM.getElementById('universal-toolbar').style.transform = 'translateY(-116px)';
-        rootDOM.getElementById('context-toolbar').style.transform = 'translateY(116px)';
-        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(116px)';
+        rootDOM.getElementById('universal-toolbar').style.transform = 'translateY(-120px)';
+        rootDOM.getElementById('context-toolbar').style.transform = 'translateY(120px)';
+        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(120px)';
         rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(60px) scale(0.667)';
         rootDOM.getElementById('titlebarSubtitle').style.opacity = '0';
-        if (window.innerWidth < 480) {
-          rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(60px) translateX(-80px) scale(0.667)';
-        }
       } else {
         rootDOM.getElementById('universal-toolbar').style.transform = 'none';
         rootDOM.getElementById('context-toolbar').style.transform = 'none';
@@ -350,6 +353,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         rootDOM.getElementById('titlebarSubtitle').style.opacity = '1';
       }
     }));
+
+    window.addEventListener('resize', () => {
+      rootDOM.getElementById('universal-toolbar').style.transition = '';
+      rootDOM.getElementById('context-toolbar').style.transition = '';
+      rootDOM.getElementById('breadCrumb').style.transition = '';
+      rootDOM.getElementById('titlebarSitetitle').style.transition = '';
+    });
 
     this._initNavigation();
     this._initStaticPagesToolbarDisplayState();
