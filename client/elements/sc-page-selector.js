@@ -4,14 +4,11 @@ import { html, PolymerElement } from '@polymer/polymer';
 import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
-import './menus/sc-action-items.js';
-import './addons/sc-top-sheet';
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
 import { throttle } from 'throttle-debounce';
 
 import './navigation/sc-navigation.js';
-import './navigation/sc-linden-leaves.js';
 
 /*
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
@@ -220,17 +217,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
       this._showToast(success, e.detail.message);
     });
-
-    this.addEventListener('open-dialog', e => this._openDialog(e));
-    //this.addEventListener('hide-sc-top-sheet', e => { this.$['setting_Menu'].hide(); });
-  }
-
-  
-
-  _openDialog(event) {
-    if (event.detail.id === 'settings_dialog') {
-      //this.$['setting_Menu'].show();
-    }
   }
 
   _redirectFromLegacyLink() {
@@ -286,26 +272,37 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
 
     this._resolveImports();
 
-    if (this.shouldShowSuttaTextPage) {
-      setTimeout(() => {
-        this.parentNode.querySelector('#titlebar').style.display = 'none';
-      }, 0);
-    }
-
     this.dispatch('changeDisplayToolButtonState', this.shouldShowSuttaTextPage);
     this.dispatch('changeDisplayInfoButtonState', this.shouldShowSuttaTextPage);
 
-    let displayStyle = this.route.path === '/' ? 'flex' : 'none';
-    this.parentNode.querySelector('#titlebar').style.display = displayStyle;
     this.parentNode.querySelector('#static_pages_nav_menu').style.display = this.shouldShowStaticPage ? 'block': 'none';
 
     this._setViewModeButtonDisplayState();
     this._setActionItemsDisplayState();
+    this._setTitleState();
+  }
+
+  _setTitleState() {
+    if (this.route.path === '/') {
+      this.dispatch('changeToolbarTitle', 'SuttaCentral');
+      this.parentNode.querySelector('#context_toolbar').style.height = '';
+      this.parentNode.querySelector('.title-logo-icon').style.display = '';
+      this.parentNode.querySelector('#title').classList.add('homeTitle');
+      this.parentNode.querySelector('#title').classList.remove('generalTitle');
+      this.parentNode.querySelector('#subTitle').style.display = 'initial';
+    } else {
+      this.parentNode.querySelector('#context_toolbar').style.height = '3.5em';
+      this.parentNode.querySelector('.title-logo-icon').style.display = 'none';
+      this.parentNode.querySelector('#title').classList.remove('homeTitle');
+      this.parentNode.querySelector('#title').classList.add('generalTitle');
+      this.parentNode.querySelector('#title').style.height = '';
+      this.parentNode.querySelector('#subTitle').style.display = 'none';
+    }
   }
 
   _setActionItemsDisplayState() {
-    let displayStyle = this.route.path === '/' ? 'none' : 'initial';
-    this.parentNode.querySelector('#sc_action_items').style.display = displayStyle;
+    let displayStyle = this.route.path === '/' ? 'none' : 'flex';
+    this.parentNode.querySelector('#action_items').style.display = displayStyle;
   }
 
   // Lazy loading for site elements
@@ -406,7 +403,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   }
 
   _isPitakaPage() {
-    //return this.route.path.split('/').length === 3 && this._getPathParamNumber(1) === 'pitaka';
     return this.route.path.split('/').length >= 2 && this._getPathParamNumber(1) === 'pitaka';
   }
 
@@ -473,7 +469,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     }
   }
 
-  // runs when a new page is chosen. Closes the toolbar-searchbar and resets the header.
+  // runs when a new page is chosen.
   _changeView() {
     // if (!this._isSearchPage())
     //   this.$.sc_action_items._closeSearch();

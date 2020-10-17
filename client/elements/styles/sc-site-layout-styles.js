@@ -5,16 +5,7 @@ export const SCSiteLayoutStyles = css`
     display: block;
   }
 
-  .nav-logo-icon {
-    margin-left: var(--sc-size-md);
-    margin-right: var(--sc-size-md);
-    vertical-align: text-bottom;
-    width: var(--sc-size-lg);
-    height: var(--sc-size-lg);
-  }
-
   /* styles for the text dialogs: */
-
   .dialog {
     left: 0;
     background-color: var(--sc-secondary-background-color);
@@ -33,11 +24,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   @media screen and (max-width: 480px) {
-    #titlebarSitetitle {
-      font-size: 1.8rem !important;
-    }
-
-    #titlebarSubtitle {
+    #subTitle {
       font-size: 1.05rem !important;
     }
   }
@@ -105,45 +92,54 @@ export const SCSiteLayoutStyles = css`
     margin: var(--sc-size-sm);
   }
 
-  .navigation-menu {
-    height: 100%;
-  }
-
-  #titlebar {
-    display: flex;
-    box-sizing: border-box;
-    height: 8em;
-    margin: auto;
-
+  #title {
+    font-family: "skolar pe";
+    margin-right: auto;
     background-color: var(--sc-primary-color);
-
-    justify-content: center;
-    transition: all 0.1s;
   }
 
-  #titlebarSitetitle {
-    font-size: 3.5rem;
+  .homeTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+    height: 3em;
+    margin: auto;
+    margin-right: auto;
+
+    transition: all 0.1s;
+
+    font-size: 3em;
+    line-height: 0.9;
     font-family: "skolar pe";
     font-variant-caps: small-caps;
+
     text-align: center;
-    line-height: 0.9;
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
-    display: flex;
-    justify-content: center;
+
+    overflow: hidden;
   }
 
-  #titlebarSubtitle {
+  #mainTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #subTitle {
     text-align: center;
     font-style: italic;
     font-size: 1.5rem;
     display: flex;
     justify-content: center;
     margin-left: 1em;
+    font-variant-caps: normal;
   }
 
-  #universal-toolbar {
+  #universal_toolbar {
     color: white;
     position: sticky;
     top: 0;
@@ -151,22 +147,13 @@ export const SCSiteLayoutStyles = css`
     z-index: 9999;
   }
 
-  #titlebarCenter {
-    min-width: 0;
-  }
-
-  #context-toolbar {
-    height: 3.5em;
+  #context_toolbar {
     display: flex;
     background-color: var(--sc-primary-color);
     padding: 0 2%;
   }
 
-  #context-toolbar span:first-child {
-    margin-right: auto;
-  }
-
-  #toolbarTitle {
+  .generalTitle {
     font-weight: normal;
     display: flex;
     align-items: center;
@@ -179,24 +166,15 @@ export const SCSiteLayoutStyles = css`
     width: calc(80%);
   }
 
-  #titlebarCenter span a {
-    color: var(--sc-tertiary-text-color);
-    text-decoration: none;
-  }
-
-  titlebar {
-    background-color: var(--sc-primary-color);
-  }
-
   @media screen and (max-width: 600px) {
-    #toolbar_title {
+    #generalTitle {
       font-size: var(--sc-skolar-font-size-md);
     }
   }
 
   @media print {
-    #universal-toolbar,
-    titlebar {
+    #universal_toolbar,
+    #title {
       display: none;
     }
   }
@@ -205,7 +183,8 @@ export const SCSiteLayoutStyles = css`
     vertical-align: bottom;
     height: var(--sc-size-xxl);
     width: var(--sc-size-xxl);
-    margin: 0 var(--sc-size-sm);
+    margin-bottom: 6px;
+    margin-right: -2px;
   }
 
   @media (max-width: 600px) {
@@ -220,9 +199,6 @@ export const SCSiteLayoutStyles = css`
     .subtitle {
       font-size: var(--sc-skolar-font-size-md);
       margin-bottom: 0.5em;
-    }
-    #titlebarSitetitle {
-      padding-top: 0.4em;
     }
   }
 

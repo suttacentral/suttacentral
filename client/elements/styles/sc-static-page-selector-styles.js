@@ -1,68 +1,6 @@
 import { css, html } from "lit-element";
 
-export const SCPageStaticSelectorStyles = css`
-  #titlebar {
-    background-color: var(--sc-primary-color);
-    height: 210px; 
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* This makes it easier to change to the Home page layout. Otherwise use center and no padding.*/
-    padding-top: 16px;
-    box-sizing: border-box;
-
-    align-item: center;
-    justify-content: center;
-    color: white;
-  }
-
-
-  #titlebarSitetitle {
-    font-size: 48px;
-    font-family: "skolar pe";
-    font-variant-caps: small-caps;
-    text-align: center;
-    line-height: 0.9;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;/* This only takes effect when the sidebar is closed. I haven't figured out how to apply it when the icons have been transformed.*/
-
-    display: flex;
-    align-item: center;
-    justify-content: center;
-  }
-
-  #titlebarSubtitle{
-		text-align: center;
-		font-style: italic;
-    font-size: 22.6px;
-    display: flex;
-    align-item: center;
-    justify-content: center;
-  }
-
-  #universal-toolbar {
-    color: white;
-    position: sticky;
-    top: 0;
-    box-shadow: var(--sc-shadow-elevation-1dp);
-    z-index: 10;
-    /* Ensure main content does not show on animation */
-  }
-
-  #titlebarCenter {
-    transform: translateY(60px);
-    min-width: 0;
-  }
-
-  #titlebarSitetitle {
-    transform: scale(1);
-  }
-
-  #titlebarSubtitle {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
+export const SCPageStaticSelectorStyles = css``;
 
 export const SCPageStaticSelectorOriginStyles = html`
   <style>
