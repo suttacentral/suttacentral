@@ -21,7 +21,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       #tools_menu {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: baseline;
       }
 
       .invisible {
@@ -39,7 +39,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnDarkTheme:after,
       #btnViewCompact:after,
       #btnViewComfy:after {
-        font-size: var(--sc-skolar-font-size-xxs);;
+        font-size: var(--sc-skolar-font-size-xxs);
 
         position: absolute;
         bottom: -4px;
