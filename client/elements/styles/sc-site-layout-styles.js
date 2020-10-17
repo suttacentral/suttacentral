@@ -116,7 +116,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   .homeTitle #mainTitle {
-    font-size: 3em;
+    font-size: 3rem;
     line-height: 1;
     font-family: var(--sc-serif-font);
     font-variant-caps: small-caps;

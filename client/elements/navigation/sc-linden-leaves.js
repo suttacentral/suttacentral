@@ -44,6 +44,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       nav li {
         font-size: var(--sc-skolar-font-size-xs);
         font-weight: 500;
+        color: white;
         
         display: flex;
 

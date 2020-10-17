@@ -31,14 +31,16 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnLightTheme,
       #btnDarkTheme,
       #btnViewCompact,
-      #btnViewComfy {
+      #btnViewComfy,
+      #btnTools {
         position: relative;
       }
 
       #btnLightTheme:after,
       #btnDarkTheme:after,
       #btnViewCompact:after,
-      #btnViewComfy:after {
+      #btnViewComfy:after,
+      #btnTools:after {
         font-size: var(--sc-skolar-font-size-xxs);
 
         position: absolute;
@@ -63,6 +65,10 @@ class SCActionItems extends LitLocalized(LitElement) {
 
       #btnViewComfy:after {
         content: 'spacing';
+      }
+      
+      #btnTools:after{
+        content: 'views'
       }
     </style>
 
@@ -117,10 +123,10 @@ class SCActionItems extends LitLocalized(LitElement) {
       </mwc-icon-button>
       
       <mwc-icon-button 
-        icon="settings" 
+        icon="visibility" 
         class="white-icon toolButtons" 
         id="btnTools" 
-        title="Text options" 
+        title="View options" 
         @click="${this._onBtnToolsClick}" 
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
