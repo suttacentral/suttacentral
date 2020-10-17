@@ -463,7 +463,7 @@ class SCHomePage extends SCStaticPage {
                   ${_`Discourses`}
                 </div>
                 <div class="image-card-text">
-                  ${_`These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali, which is spelled sūtra in Sanskrit.`}
+                  ${_`The Discourses record the Buddha’s teachings on meditation, morality, the nature of the world, and the path to freedom. These scriptures are our primary sources for the historical Buddha’s life and practice. They depict the Buddha and his immediate students in lively conversation with a diverse range of people as they question how to follow a spiritual path.`}
                 </div>
               </div>
               <div>

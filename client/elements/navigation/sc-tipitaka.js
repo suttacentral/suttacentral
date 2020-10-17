@@ -68,9 +68,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
       ['Abhidhamma', '/abhidhamma'],
     ]);
     this.tipitakaBlurb = new Map([
-      ['Sutta', 'These are our primary sources for understanding what the Buddha taught. They record the Buddha’s teachings and conversations on specific occasions with a diverse range of people. Discourses are called sutta in Pali, which is spelled sūtra in Sanskrit.'],
+      ['Sutta', 'The Discourses record the Buddha’s teachings on meditation, morality, the nature of the world, and the path to freedom. These scriptures are our primary sources for the historical Buddha’s life and practice. They depict the Buddha and his immediate students in lively conversation with a diverse range of people as they question how to follow a spiritual path.'],
       ['Vinaya', 'The texts on Monastic Law (vinaya) detail the lifestyle, rules, and procedures for Buddhist monks and nuns. They provide the guidelines for Buddhist monastics to this day, and in addition, paint a detailed and vivid picture of everyday life in ancient India.'],
-      ['Abhidhamma', 'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is somewhat later than the Discourses and Vinaya.'],
+      ['Abhidhamma', 'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is intended for advanced students who have mastered the teachings of the discourses.'],
     ]);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
