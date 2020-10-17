@@ -20,10 +20,14 @@ setPassiveTouchGestures(true);
 
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
+
 import './sc-page-selector.js';
-import './menus/navigation-menu/sc-navigation-menu.js';
 import './menus/sc-settings-menu.js';
+import './menus/sc-action-items.js';
+import './addons/sc-top-sheet.js';
 import './addons/sc-toasts.js';
+import './navigation/sc-linden-leaves.js';
+
 import './styles/sc-utility-styles.js';
 import './styles/sc-font-styles.js';
 import './styles/sc-colors.js';
@@ -32,9 +36,6 @@ import { initSentry } from '../sentry.js';
 initSentry();
 import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
-import './navigation/sc-linden-leaves.js';
-import './addons/sc-top-sheet.js';
-import './menus/sc-action-items.js';
 
 import { SCSiteLayoutStyles} from './styles/sc-site-layout-styles.js';
 
@@ -47,25 +48,22 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <div id="universal-toolbar" class="transitionTransform">
-        <sc-linden-leaves id="breadCrumb" class="transitionTransform"></sc-linden-leaves>
+      <div id="universal_toolbar">
+        <sc-linden-leaves id="breadCrumb"></sc-linden-leaves>
 
-        <div id="context-toolbar" class="transitionTransform">
-          <span id="toolbarTitle">${this.toolbarTitle}</span>
-          <sc-action-items id="sc_action_items"></sc-action-items>
-        </div>
-
-        <sc-top-sheet id="setting_Menu"></sc-top-sheet>
-        
-        <div id="titlebar">
-          <div id="titlebarCenter">
-            <span id="titlebarSitetitle" class="transitionTransform">
-            <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
-              <h1>SuttaCentral</h1>
-            </span>
-            <span id="titlebarSubtitle">${this.localize('pageSubtitle')}</span>
+        <div id="context_toolbar">
+          <div id="title">
+            <div id="mainTitle">
+              <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+              <span>${this.toolbarTitle}</span>
+            </div>
+            <div id="subTitle">${this.localize('pageSubtitle')}</div>
           </div>
+
+          <sc-action-items id="action_items"></sc-action-items>
         </div>
+
+        <sc-top-sheet id="setting_menu"></sc-top-sheet>
 
         <div id="static_pages_nav_menu">
           <nav>
@@ -303,7 +301,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this.removeAttribute('unresolved');
-    // triggered when the menu button in the toolbar is pressed when the app-drawer is not visible
 
     // Lock scroll for the text dialogs:
     this._addScrollLockListeners();
@@ -317,11 +314,11 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
 
     this.addEventListener('hide-sc-top-sheet', e => { 
-      this.shadowRoot.querySelector('#setting_Menu').hide();
+      this.shadowRoot.querySelector('#setting_menu').hide();
     });
 
     this.addEventListener('show-sc-top-sheet', e => { 
-      this.shadowRoot.querySelector('#setting_Menu').show();
+      this.shadowRoot.querySelector('#setting_menu').show();
     });
 
     this.addEventListener('show-info-dialog', e => { 
@@ -333,24 +330,36 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     let rootDOM = this.shadowRoot;
     addEventListener('scroll', throttle(300, () => {
+      let transitionStyle = 'transform 200ms ease-in-out';
+      rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
+      rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
+      rootDOM.getElementById('mainTitle').style.transition = transitionStyle;
+      rootDOM.getElementById('subTitle').style.transition = transitionStyle;
+
       if (this.changedRoute.path === '/' && (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
-        rootDOM.getElementById('universal-toolbar').style.transform = 'translateY(-116px)';
-        rootDOM.getElementById('context-toolbar').style.transform = 'translateY(116px)';
-        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(116px)';
-        rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(64px) scale(0.667)';
-        rootDOM.getElementById('titlebarSubtitle').style.opacity = '0';
+        rootDOM.getElementById('universal_toolbar').style.transform = 'translateY(-90px)';
+        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(90px)';
+        rootDOM.getElementById('mainTitle').style.transform = 'translateY(58px) scale(0.667)';
+        rootDOM.getElementById('subTitle').style.opacity = '0';
+        rootDOM.getElementById('subTitle').style.transform = 'scale(0)';
         if (window.innerWidth < 480) {
-          rootDOM.getElementById('titlebarSitetitle').style.transform = 'translateY(60px) translateX(-80px) scale(0.667)';
+          rootDOM.getElementById('mainTitle').style.transform = 'translateY(55px) scale(0.667)';
         }
       } else {
-        rootDOM.getElementById('universal-toolbar').style.transform = 'none';
-        rootDOM.getElementById('context-toolbar').style.transform = 'none';
+        rootDOM.getElementById('universal_toolbar').style.transform = 'none';
         rootDOM.getElementById('breadCrumb').style.transform = 'none';
-        rootDOM.getElementById('titlebarSitetitle').style.transform = 'none';
-        rootDOM.getElementById('titlebarSitetitle').style.transform = 'scale(1)';
-        rootDOM.getElementById('titlebarSubtitle').style.opacity = '1';
+        rootDOM.getElementById('mainTitle').style.transform = 'scale(1)';
+        rootDOM.getElementById('subTitle').style.opacity = '1';
+        rootDOM.getElementById('subTitle').style.transform = 'scale(1)';
       }
     }));
+
+    window.addEventListener('resize', () => {
+      rootDOM.getElementById('universal_toolbar').style.transition = '';
+      rootDOM.getElementById('breadCrumb').style.transition = '';
+      rootDOM.getElementById('mainTitle').style.transition = '';
+      rootDOM.getElementById('subTitle').style.transition = '';
+    });
 
     this._initNavigation();
     this._initStaticPagesToolbarDisplayState();
