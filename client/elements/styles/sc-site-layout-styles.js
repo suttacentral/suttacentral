@@ -23,12 +23,6 @@ export const SCSiteLayoutStyles = css`
     }
   }
 
-  @media screen and (max-width: 480px) {
-    #subTitle {
-      font-size: 1.05rem !important;
-    }
-  }
-
   .dialog-header {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-static-subtitle);
@@ -92,55 +86,47 @@ export const SCSiteLayoutStyles = css`
     margin: var(--sc-size-sm);
   }
 
-  #title {
-    font-family: "skolar pe";
-    margin-right: auto;
-    background-color: var(--sc-primary-color);
-  }
-
   .homeTitle {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 
     box-sizing: border-box;
-    height: 3em;
+    height: 144px;
     margin: auto;
-    margin-right: auto;
 
     transition: all 0.1s;
 
-    font-size: 3em;
-    line-height: 0.9;
-    font-family: "skolar pe";
-    font-variant-caps: small-caps;
-
-    text-align: center;
     white-space: nowrap;
     text-overflow: ellipsis;
 
     overflow: hidden;
+    font-size: clamp(2rem, 8vw, 3rem);
   }
 
   #mainTitle {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+  }
+
+  .homeTitle #mainTitle {
+    
+    line-height: 1;
+    font-family: var(--sc-serif-font);
+    font-variant-caps: small-caps;
+    letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   #subTitle {
-    text-align: center;
     font-style: italic;
-    font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    margin-left: 1em;
-    font-variant-caps: normal;
+    font-size: 0.5em;
+  
   }
 
   #universal_toolbar {
-    color: white;
+    background-color: var(--sc-primary-color);
+    color: var(--sc-tertiary-text-color);
     position: sticky;
     top: 0;
     box-shadow: var(--sc-shadow-elevation-2dp);
@@ -149,27 +135,17 @@ export const SCSiteLayoutStyles = css`
 
   #context_toolbar {
     display: flex;
-    background-color: var(--sc-primary-color);
+    justify-content: space-between;
     padding: 0 2%;
   }
 
   .generalTitle {
-    font-weight: normal;
     display: flex;
     align-items: center;
-    font-family: var(--sc-sans-font);
     font-size: calc(20px * var(--sc-skolar-font-scale));
-    color: var(--sc-tertiary-text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: calc(80%);
-  }
-
-  @media screen and (max-width: 600px) {
-    #generalTitle {
-      font-size: var(--sc-skolar-font-size-md);
-    }
   }
 
   @media print {
@@ -180,26 +156,10 @@ export const SCSiteLayoutStyles = css`
   }
 
   .title-logo-icon {
-    vertical-align: bottom;
-    height: var(--sc-size-xxl);
-    width: var(--sc-size-xxl);
-    margin-bottom: 6px;
-    margin-right: -2px;
-  }
-
-  @media (max-width: 600px) {
-    h1 {
-      font-size: var(--sc-skolar-font-size-xxl);
-      padding-top: 0.2em;
-    }
-    .title-logo-icon {
-      height: 40px;
-      width: 40px;
-    }
-    .subtitle {
-      font-size: var(--sc-skolar-font-size-md);
-      margin-bottom: 0.5em;
-    }
+    height: 1.25em;
+    width: 1.25em;
+/* these hacky margins compensate for the padding in the svg icon. Use em to scale with clamp*/
+    margin: 0.1em 0.1em -0.1em -0.1em;
   }
 
   #static_pages_nav_menu {
