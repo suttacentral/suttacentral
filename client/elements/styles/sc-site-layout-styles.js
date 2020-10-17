@@ -23,12 +23,6 @@ export const SCSiteLayoutStyles = css`
     }
   }
 
-  @media screen and (max-width: 480px) {
-    #subTitle {
-      font-size: 1.05rem !important;
-    }
-  }
-
   .dialog-header {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-static-subtitle);
@@ -107,6 +101,7 @@ export const SCSiteLayoutStyles = css`
     text-overflow: ellipsis;
 
     overflow: hidden;
+    font-size: clamp(2rem, 8vw, 3rem);
   }
 
   #mainTitle {
@@ -116,7 +111,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   .homeTitle #mainTitle {
-    font-size: 3rem;
+    
     line-height: 1;
     font-family: var(--sc-serif-font);
     font-variant-caps: small-caps;
@@ -125,7 +120,7 @@ export const SCSiteLayoutStyles = css`
 
   #subTitle {
     font-style: italic;
-    font-size: 1.5rem;
+    font-size: 0.5em;
   
   }
 
@@ -153,12 +148,6 @@ export const SCSiteLayoutStyles = css`
     text-overflow: ellipsis;
   }
 
-  @media screen and (max-width: 600px) {
-    #generalTitle {
-      font-size: var(--sc-skolar-font-size-md);
-    }
-  }
-
   @media print {
     #universal_toolbar,
     #title {
@@ -167,25 +156,10 @@ export const SCSiteLayoutStyles = css`
   }
 
   .title-logo-icon {
-    height: 60px;
-    width: 60px;
-/* these hacky margins compensate for the padding in the svg icon */
-    margin: 4px 4px -4px -4px;
-  }
-
-  @media (max-width: 600px) {
-    h1 {
-      font-size: var(--sc-skolar-font-size-xxl);
-      padding-top: 0.2em;
-    }
-    .title-logo-icon {
-      height: 40px;
-      width: 40px;
-    }
-    .subtitle {
-      font-size: var(--sc-skolar-font-size-md);
-      margin-bottom: 0.5em;
-    }
+    height: 1.25em;
+    width: 1.25em;
+/* these hacky margins compensate for the padding in the svg icon. Use em to scale with clamp*/
+    margin: 0.1em 0.1em -0.1em -0.1em;
   }
 
   #static_pages_nav_menu {
