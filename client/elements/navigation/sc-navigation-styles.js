@@ -2,9 +2,14 @@ import { html } from "lit-element";
 
 export const navigationNormaModelStyles = html`
   <style>
-    main {
-      max-width: 720px;
-      margin: 0 auto 64px;
+
+
+      main {
+        max-width: 720px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0 auto 64px;
     }
 
     .main-nav {
@@ -15,17 +20,13 @@ export const navigationNormaModelStyles = html`
       flex-wrap: nowrap;
     }
 
-    @media screen and (max-width: 780px) {
-      .main-nav {
-        flex-direction: column;
-      }
-    }
+
 
     .card {
       position: relative;
       overflow: hidden;
 
-      margin: 0.5em;
+      margin-bottom: 1em;
       padding-bottom: 0.5rem;
 
       cursor: pointer;
@@ -39,6 +40,19 @@ export const navigationNormaModelStyles = html`
 
     display: flex;
     flex-direction: column;
+    }
+
+    .home-card + .home-card {
+    margin-left: 1em;
+}
+
+    @media screen and (max-width: 780px) {
+      .main-nav {
+        flex-direction: column;
+      }
+          .home-card + .home-card {
+    margin-left: 0;
+}
     }
 
     .card:hover {

@@ -98,7 +98,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         .padded-container {
           display: flex;
           flex-direction: column;
-          padding: 0 var(--sc-size-md);
+          padding: 0;
         }
 
         .search-result-title {

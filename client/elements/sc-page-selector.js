@@ -33,7 +33,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .container{
-        margin-top: 64px;
+        margin: 64px var(--sc-size-container-margin) 0;
       }
 
       .link-anchor {

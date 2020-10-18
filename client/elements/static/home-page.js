@@ -21,8 +21,9 @@ class SCHomePage extends SCStaticPage {
 
       main {
         max-width: 1600px;
-        margin: 0 auto;
-        padding: 0 2%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
       }
 
       section + section {
