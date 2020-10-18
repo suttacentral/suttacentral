@@ -20,7 +20,9 @@ template.innerHTML = `
       --sc-size-xl: 48px;
       --sc-size-xxl: 64px;
 
-      --sc-size-container-margin: 2%;
+      --sc-size-horizontal-margin-lg: 6%;
+      --sc-size-horizontal-margin-md: 4%;
+      --sc-size-horizontal-margin-sm: 1%;
 
       --sc-size-language-icon: 19px;
 

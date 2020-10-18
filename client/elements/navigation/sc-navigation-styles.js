@@ -6,9 +6,6 @@ export const navigationNormaModelStyles = html`
 
       main {
         max-width: 720px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
         margin: 0 auto 64px;
     }
 
@@ -26,7 +23,7 @@ export const navigationNormaModelStyles = html`
       position: relative;
       overflow: hidden;
 
-      margin-bottom: 1em;
+      margin-bottom:  0.5rem;
       padding-bottom: 0.5rem;
 
       cursor: pointer;
@@ -43,7 +40,7 @@ export const navigationNormaModelStyles = html`
     }
 
     .home-card + .home-card {
-    margin-left: 1em;
+    margin-left: 1vw;
 }
 
     @media screen and (max-width: 780px) {

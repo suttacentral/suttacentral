@@ -21,9 +21,7 @@ class SCHomePage extends SCStaticPage {
 
       main {
         max-width: 1600px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+        margin: 0 auto;
       }
 
       section + section {
@@ -145,10 +143,11 @@ class SCHomePage extends SCStaticPage {
       }
 
       .card-actions {
-        padding: 16px;
+        padding: 4%;
         min-height: 52px;
         display: flex;
         align-items: flex-end;
+        justify-content: flex-end;
       }
 
       .link-button {
