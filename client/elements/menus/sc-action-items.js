@@ -6,6 +6,7 @@ import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
 
+import { icons } from '../addons/icons';
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
@@ -32,7 +33,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnDarkTheme,
       #btnViewCompact,
       #btnViewComfy,
-      #btnTools {
+      #btnTools,
+      #btnInfo {
         position: relative;
       }
 
@@ -40,7 +42,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnDarkTheme:after,
       #btnViewCompact:after,
       #btnViewComfy:after,
-      #btnTools:after {
+      #btnTools:after,
+      #btnInfo:after {
         font-size: var(--sc-skolar-font-size-xxs);
 
         position: absolute;
@@ -67,69 +70,74 @@ class SCActionItems extends LitLocalized(LitElement) {
         content: 'spacing';
       }
       
-      #btnTools:after{
+      #btnTools:after {
         content: 'views'
+      }
+
+      #btnInfo:after {
+        content: 'info'
       }
     </style>
 
     <div id="tools_menu">
       <mwc-icon-button 
-        icon="wb_sunny" 
         class="white-icon toolButtons" 
         id="btnLightTheme" 
         title="Light theme"  
         @click="${this._onBtnLightThemeClick}" 
         slot="actionItems" 
         ?hidden="${this.displayLightThemeButton}">
+        ${icons['wb_sunny']}
       </mwc-icon-button>
 
-      <mwc-icon-button icon="bedtime"
+      <mwc-icon-button
         class="white-icon toolButtons" 
         id="btnDarkTheme" 
         title="Dark theme" 
         @click="${this._onBtnDarkThemeClick}" 
         slot="actionItems" 
         ?hidden="${this.displayDarkThemeButton}">
+        ${icons['bedtime']}
       </mwc-icon-button>
 
       <mwc-icon-button 
-        icon="view_compact" 
         class="white-icon toolButtons" 
         id="btnViewCompact" 
         title="Compact mode" 
         @click="${this._onBtnViewCompactClick}" 
         slot="actionItems" 
         ?hidden="${this.displayCompactButton}">
+        ${icons['view_compact']}
       </mwc-icon-button>
 
       <mwc-icon-button 
-        icon="view_comfy" 
         class="white-icon toolButtons" 
         id="btnViewComfy" 
         title="Comfy mode" 
         @click="${this._onBtnViewCompactClick}" 
         slot="actionItems" 
         ?hidden="${this.displayComfyButton}">
+        ${icons['view_comfy']}
       </mwc-icon-button>
 
       <mwc-icon-button 
-        icon="info" 
         class="white-icon toolButtons" 
         id="btnInfo" 
         title="Text info" 
         @click="${this._onBtnInfoClick}" 
         slot="actionItems" 
         ?hidden="${this.displayInfoButton}">
+        ${icons['info']}
       </mwc-icon-button>
       
       <mwc-icon-button 
-        icon="visibility" 
         class="white-icon toolButtons" 
         id="btnTools" 
         title="View options" 
         @click="${this._onBtnToolsClick}" 
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
+        ${icons['visibility']}
       </mwc-icon-button>
     </div>`;
   }

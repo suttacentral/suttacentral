@@ -38,6 +38,7 @@ import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles} from './styles/sc-site-layout-styles.js';
+import { icons } from './addons/icons';
 
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
@@ -86,20 +87,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         The dialogs for the sutta text view:
       -->
 
-      <paper-dialog id="settings_dialog" name="settings_dialog" class="dialog" with-backdrop="" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
-        <div class="buttons-bar green-bg">
-          <h2 class="dialog-header green-bg">${this.localize('textSettings')}</h2>
-          <paper-icon-button class="close-dialog-icon" icon="sc-iron-icons:close" dialog-confirm=""></paper-icon-button>
-        </div>
-        <paper-dialog-scrollable class="scrollable-dialog">
-          <sc-settings-menu></sc-settings-menu>
-        </paper-dialog-scrollable>
-      </paper-dialog>
-
       <paper-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" .data="${this.infoDialogMetaArea}" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
         <div class="buttons-bar green-bg">
           <h2 class="dialog-header green-bg">${this.localize('publicationDetails')}</h2>
-          <paper-icon-button class="close-dialog-icon" icon="sc-iron-icons:close" dialog-confirm=""></paper-icon-button>
+          <mwc-icon-button class="close-dialog-icon" dialog-confirm="">${icons['close']}</mwc-icon-button>
         </div>
         <paper-dialog-scrollable class="scrollable-dialog">
           <div class="dialog-section">
@@ -304,8 +295,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     // Lock scroll for the text dialogs:
     this._addScrollLockListeners();
-    
-    this.addEventListener('open-dialog', e => this._openDialog(e));
 
     ['load', 'online', 'offline'].forEach(eventName => {
       window.addEventListener(eventName, () => {
@@ -426,7 +415,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _routeChanged() {
-    this.shadowRoot.querySelector('#settings_dialog').close();
     this.shadowRoot.querySelector('#info_dialog').close();
   }
 
@@ -446,9 +434,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         IronDropdownScrollManager.removeScrollLock(dialog);
       }
     };
-    let settingsDialog = this.shadowRoot.querySelector('#settings_dialog');
     let infoDialog = this.shadowRoot.querySelector('#info_dialog');
-    settingsDialog.addEventListener('opened-changed', () => { scrollLockListener(settingsDialog) });
     infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
   }
 

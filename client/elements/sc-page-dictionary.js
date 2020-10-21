@@ -1,10 +1,10 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
+import { icons } from './addons/icons';
 
 import { LitLocalized } from './addons/localization-mixin'
 
@@ -137,7 +137,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
           <span class="terms-button">
-            <paper-icon-button icon="sc-iron-icons:menu" id="menu_icon" @tap=${this._toggleDrawer}></paper-icon-button>
+            <mwc-icon-button id="menu_icon" @click=${this._toggleDrawer}>${icons['menu']}</mwc-icon-button>
           </span>
         </div>
         <div class="dictionary-entries">
