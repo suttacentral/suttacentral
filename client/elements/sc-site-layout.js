@@ -20,6 +20,7 @@ setPassiveTouchGestures(true);
 
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
+import { icons } from '../img/sc-icons';
 
 import './sc-page-selector.js';
 import './menus/sc-settings-menu.js';
@@ -38,7 +39,6 @@ import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles} from './styles/sc-site-layout-styles.js';
-import { icons } from './addons/icons';
 
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {

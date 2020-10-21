@@ -4,7 +4,6 @@ import { store } from '../../redux-store';
 
 import '../addons/sc-nav-contents';
 import { SCLitTextPage } from "./sc-lit-text-page.js";
-import './sc-text-options.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { Transliterator } from './transliterator.js';

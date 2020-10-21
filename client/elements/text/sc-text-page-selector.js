@@ -46,7 +46,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       </style>
 
       <div class="wrapper">
-        ${this.displaySCTextOptions}
         <div class="loading-indicator" ?hidden=${!this.isLoading}>
           <sc-bouncing-loader></sc-bouncing-loader>
         </div>
@@ -70,16 +69,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   get displayError() {
     return this._shouldDisplayError() ? html`
       <sc-error-icon type="data-load-error"></sc-error-icon>
-    ` : '';
-  }
-
-  get displaySCTextOptions() {
-    return !this._shouldDisplayError() && this.displayTextOptions ? html`
-      <!-- <sc-text-options id="sutta_text_options" class="text-options" .suttaplexItem=${this.suttaplex}></sc-text-options> -->
-      <br/>
-      <div class="sutta-list" id="suttaList">
-        <sc-suttaplex .item=${this.suttaplex}></sc-suttaplex>
-      </div>
     ` : '';
   }
 
@@ -118,7 +107,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   static get properties() {
     return {
-      responseData: { type: Object }, //observer: '_onResponse'
+      responseData: { type: Object },
       lastError: { type: Object },
       author: { type: String },
       suttaId: { type: String },
@@ -136,17 +125,16 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       suttaMarkup: { type: String },
       markup: { type: String },
       bilaraSuttaMarkup: { type: String },
-      localizedStringsPath: { type: String }, //value: '/localization/elements/sc-text'
+      localizedStringsPath: { type: String },
       authorUid: { type: String },
       authorShort: { type: String },
       next: { type: Object },
       previous: { type: Object },
-      expansionReturns: { type: Array }, //observer: '_onResponseExpansionData'
-      showedLanguagePrompt: { type: Boolean }, //statePath: 'showedLanguagePrompt'
+      expansionReturns: { type: Array },
+      showedLanguagePrompt: { type: Boolean },
       isLoading: { type: Boolean },
       haveBilaraSegmentedText: { type: Boolean },
       bilaraDataPath: { type: String },
-      displayTextOptions: { type: Boolean }
     }
   }
 
@@ -156,7 +144,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.isLoading = false;
     this.bilaraDataPath = '/files/bilara-data';
-    this.displayTextOptions = store.getState().displayParallels;
   }
 
   get actions() {
@@ -231,9 +218,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    if (this.displayTextOptions !== state.displayParallels) {
-      this.displayTextOptions = state.displayParallels;
-    }
   }
 
   languageLoaded() {

@@ -10,7 +10,7 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-location/iron-location.js';
 
-import { icons } from '../addons/icons';
+import { icons } from '../../img/sc-icons';
 
 class SCUniversalActionItems extends LitLocalized(LitElement) {
   static get styles() {
