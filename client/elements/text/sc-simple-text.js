@@ -2,7 +2,6 @@ import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCLitTextPage } from "./sc-lit-text-page.js";
-import './sc-text-options.js';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js';

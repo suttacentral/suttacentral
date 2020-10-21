@@ -5,7 +5,6 @@ import '@polymer/iron-icon/iron-icon.js';
 
 import '../addons/sc-nav-contents';
 import { SCTextPage } from "./sc-text-page.js";
-import './sc-text-options.js';
 import { textParagraphNumStyles } from '../styles/sc-text-paragraph-num-styles.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import '../lookups/sc-pli.js';

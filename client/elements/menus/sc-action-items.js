@@ -6,7 +6,7 @@ import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
 
-import { icons } from '../addons/icons';
+import { icons } from '../../img/sc-icons';
 /*
 Base toolbar that appears on the top right in the header of every page.
 */

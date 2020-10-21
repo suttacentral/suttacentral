@@ -9,6 +9,7 @@ import '@material/mwc-icon';
 import '@moduware/morph-ripple';
 
 import '../menus/sc-universal-action-items.js';
+import { icons } from '../../img/sc-icons';
 
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
@@ -176,7 +177,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
               ${this.navArray.length !== i + 1 ? html`
                 <li @click=${() => this._navClick(nav)}>
                   <a href='${nav.url}'>${this.localize(nav.title)}<morph-ripple></morph-ripple></a>
-                  <mwc-icon>chevron_right</mwc-icon>
+                  <mwc-icon>${icons['chevron_right']}</mwc-icon>
                 </li>` : html`<li>${this.localize(nav.title)}</li>`}
               ` : ''}
           `) : ''}

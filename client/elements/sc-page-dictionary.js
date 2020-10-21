@@ -4,7 +4,7 @@ import '@polymer/app-layout/app-drawer/app-drawer.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
-import { icons } from './addons/icons';
+import { icons } from '../img/sc-icons';
 
 import { LitLocalized } from './addons/localization-mixin'
 
