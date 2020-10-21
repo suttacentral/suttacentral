@@ -4,12 +4,13 @@ import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
 
-import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-location/iron-location.js';
+
+import { icons } from '../addons/icons';
 
 class SCUniversalActionItems extends LitLocalized(LitElement) {
   static get styles() {
@@ -206,10 +207,11 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
           @keys-pressed="${this._startSearch}">
         </iron-a11y-keys>
 
-        <mwc-icon-button icon="search"
+        <mwc-icon-button
           title="${this.localize('searchTooltip')}"
           class="white-icon toolbar-paper-button"
           @click="${this.openSearch}">
+          ${icons['search']}
         </mwc-icon-button>
 
         <paper-input
@@ -220,10 +222,10 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         </paper-input>
 
         <mwc-icon-button
-          icon="close"
           class="white-icon toolbar-paper-button"
           id="close_button"
           @click="${this._closeSearch}">
+          ${icons['close']}
         </mwc-icon-button>
 
         <paper-menu-button
@@ -232,13 +234,12 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
           ignore-select=""
           id="more_vert_button"
           vertical-align="auto">
-          <paper-icon-button 
-            icon="sc-iron-icons:more-vert" 
-            class="white-icon" 
+          <mwc-icon-button 
+            class="white-icon toolbar-paper-button" 
             slot="dropdown-trigger" 
-            alt="menu"
-          >
-          </paper-icon-button>
+            alt="menu">
+            ${icons['more_vert']}
+          </mwc-icon-button>
           <paper-listbox class="more-menu-list" slot="dropdown-content" tabindex="0">
             <sc-more-menu id="more_menu"></sc-more-menu>
           </paper-listbox>

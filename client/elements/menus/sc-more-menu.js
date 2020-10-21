@@ -64,12 +64,11 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           --ripple-color: var(--sc-primary-color);
         }
       </style>
-      <div id="menu_items">
+
       <paper-item class="more-menu-paper-item language-choice-box">
         <iron-icon class="more-menu-icon" icon="sc-iron-icons:language"></iron-icon>
         <sc-language-base-menu id="language_menu" noRoot="true"></sc-language-base-menu>
       </paper-item>
-
       <a class="more-menu-link" href="/donations">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:pray"></iron-icon>
@@ -150,7 +149,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <morph-ripple></morph-ripple>
         </paper-item>
       </a>
-      </div>
     `;
   }
 
