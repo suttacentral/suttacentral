@@ -23,7 +23,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         overflow-x: auto;
         overflow-y: hidden;
         flex-direction: row;
-        height: 46px;
         box-sizing: border-box;
         padding: 0 calc(2% - 8px);
 
@@ -107,10 +106,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
       morph-ripple {
         --ripple-color: var(--sc-primary-color);
-      }
-
-      nav {
-        margin-right: auto;
       }
     `;
   }

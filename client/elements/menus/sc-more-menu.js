@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js'
@@ -50,14 +49,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           height: 1px;
           margin-top: var(--sc-size-xxs);
           margin-bottom: var(--sc-size-xxs);
-        }
-
-        .toggle-button {
-          --paper-toggle-button-unchecked-bar-color: var(--sc-secondary-text-color);
-          --paper-toggle-button-checked-bar-color: var(--sc-primary-accent-color-light);
-          --paper-toggle-button-checked-button-color: var(--sc-primary-accent-color);
-          --paper-toggle-button-checked-ink-color: var(--sc-primary-accent-color-dark);
-          margin-left: calc(var(--sc-size-xs) * -1);
         }
 
         morph-ripple {
