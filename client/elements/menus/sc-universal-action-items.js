@@ -17,7 +17,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     return css`
       :host {
         display: flex;
-        --mdc-icon-size: 22px;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .white-icon {
@@ -73,21 +74,16 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       }
 
       #more-menu {
-        z-index: 9999;
+        z-index: 999;
       }
 
       .toolbar-paper-button {
         margin: 0;
       }
 
-      #tools_menu {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
       #more_vert_button {
         margin: 0;
+        padding: 0;
       }
     `;
   }
@@ -200,7 +196,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
   render() {
     return html`
       <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
-      <div id="tools_menu">
+      
         <iron-a11y-keys
           target=${this.search_input}
           keys="enter"
@@ -244,7 +240,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
             <sc-more-menu id="more_menu"></sc-more-menu>
           </paper-listbox>
         </paper-menu-button>
-      </div>
+      
     `;
   }
 }
