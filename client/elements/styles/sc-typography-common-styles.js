@@ -63,7 +63,7 @@ h1
 h2
 {
     font-size: 1.5em;
-    font-size: clamp(1.125em, 3.75vw, 1.5em);
+    font-size: clamp(1.333em, 3.75vw, 1.5em);
     font-weight: 400;
 }
 h3
