@@ -149,9 +149,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .dictionary {
-          background-color: var(--sc-secondary-background-color);
-          box-shadow: var(--sc-shadow-elevation-2dp);
-          border-radius: var(--sc-size-xxs);
+
+      border-radius: var(--sc-size-sm);
+      background-color: var(--sc-secondary-background-color);
+      box-shadow: var(--sc-shadow-elevation-1dp);
+
+      padding: 0 1rem;
         }
 
         .dictionary .search-result-division {

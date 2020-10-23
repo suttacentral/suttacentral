@@ -11,7 +11,7 @@ export const dictStyles = html`
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
-    line-height: 24px;
+    line-height: 1.5;
     font-family: var(--sc-serif-font);
   }
 
@@ -101,14 +101,27 @@ export const dictStyles = html`
 
   dd .square {
     color: var(--sc-disabled-text-color);
+    font-size: 2.4em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -8px;
+    line-height: 0
   }
 
   dd ol {
-    list-style-type: none;
-    counter-reset: step-counter;
-    margin: 0 0 0 32px;
-    padding: 0;
+    margin: 0;
+    padding: 0 0 0 1rem;
 
+  }
+
+  li{
+    padding-left: 1rem
+  }
+
+  li::marker{
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-sans-font);
+    font-weight: bold;
   }
 
   dd ol ul {
@@ -133,7 +146,6 @@ export const dictStyles = html`
   }
 
   dd ol li {
-    counter-increment: step-counter;
     margin: var(--sc-size-xs) 0 0 0;
 
   }
@@ -143,47 +155,14 @@ export const dictStyles = html`
     list-style-type: none;
   }
 
-  dd ol + li {
-    counter-increment: step-counter !important;
-  }
-
-  .lower-latin > li::before {
-    content: counter(step-counter, lower-latin);
-  }
-
-  .upper-latin > li::before {
-    content: counter(step-counter, upper-latin);
-  }
-
-  .decimal > li::before {
-    content: counter(step-counter, decimal);
-  }
-
-  .upper-roman > li::before {
-    content: counter(step-counter, upper-roman);
-  }
-
-  .lower-roman > li::before {
-    content: counter(step-counter, lower-roman);
-  }
-
-  .lower-greek > li::before {
-    content: counter(step-counter, lower-greek);
+  .lower-greek {
+    list-style-type:lower-greek;
   }
 
   .compounds > li::before {
     color: var(--sc-disabled-text-color);
     content: "◦";
     margin-left: -12px;
-  }
-
-  dd li::before {
-    font-family: var(--sc-sans-font);
-    color: var(--sc-secondary-text-color);
-    font-weight: bold;
-    position: absolute;
-    text-align: right;
-    margin-left: -32px;
   }
 
   .google-maps {
