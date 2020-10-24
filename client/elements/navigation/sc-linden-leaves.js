@@ -16,10 +16,15 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     return css`
       :host {
         display: block;
+
+        height: 48px;
+
+        background-color: rgb(75, 74, 74);
       }
 
       nav {
         display: flex;
+        height: 48px;
         overflow-x: auto;
         overflow-y: hidden;
         flex-direction: row;
@@ -55,10 +60,13 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
       nav li a {
         position: relative;
+        display: flex;
+        align-items: center;
 
-        display: inline-block;
+        padding: 0 8px;
 
-        padding: 14px 8px 10px 8px;
+        height: 100%;
+        box-sizing: border-box;
 
         text-decoration: none;
 
@@ -78,7 +86,10 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       nav li:last-child {
         font-weight: 800;
 
-        padding: 14px 8px 10px 8px;
+        padding: 0 8px;
+
+        height: 100%;
+        box-sizing: border-box;
 
         border-bottom: 4px solid var(--sc-primary-color-light);
       }
