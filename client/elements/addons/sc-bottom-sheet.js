@@ -38,6 +38,7 @@ export class SCBottomSheet extends LitElement {
       display: none;
       background-color: var(--sc-secondary-background-color);
       bottom: 0px;
+      margin: 0 calc(-1 * var(--sc-container-margin)) -64px;
       animation: bottomSheetShow 200ms 1 ease-in normal forwards;
     }
 
