@@ -14,14 +14,6 @@ class SCToasts extends LitElement {
 
       .toast {
         text-align: center;
-        margin-left: calc(50vw);
-      }
-
-      /* 841px: width at which the persistent sidebar appears*/
-      @media screen and (min-width: 841px) {
-        .toast {
-          margin-left: calc(50vw + var(--app-drawer-width) / 2);
-        }
       }
 
       .success-toast {
