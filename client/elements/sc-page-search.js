@@ -10,6 +10,8 @@ import { store } from '../redux-store';
 import { LitLocalized } from '../elements/addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 
+import { typographyCommonStyles } from './styles/sc-typography-common-styles.js';
+
 /*
 The search page opens when a search string is typed into the search-input-box in the toolbar.
 
@@ -33,7 +35,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           padding: var(--sc-size-xl) 0 var(--sc-size-md);
         }
 
-        .suttaplex-item {
+        .dictionary-snippet-card {
           margin-top: var(--sc-size-xl);
           margin-bottom: calc(-1 * var(--sc-size-md));
         }
@@ -58,7 +60,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-h1-md);
           font-weight: 400;
-          line-height: 40px;
           display: inline-block;
           margin: 0;
         }
@@ -92,7 +93,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
         .search-result-item:focus {
           outline: 0;
-          background: linear-gradient(to right, var(--sc-primary-accent-color) 4px, transparent 4px);
         }
 
         .padded-container {
@@ -105,7 +105,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
           font-weight: 400;
-          line-height: 32px;
           font-family: var(--sc-serif-font);
           color: var(--sc-primary-accent-color);
           margin: 22px 0 0 0;
@@ -115,7 +114,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-s);
           font-weight: 400;
-          line-height: 24px;
           color: var(--sc-secondary-text-color);
           margin: 0 0 var(--sc-size-md);
           white-space: nowrap;
@@ -126,7 +124,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
-          line-height: 24px;
           margin: 0 0 20px 0;
         }
 
@@ -148,6 +145,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
           color: initial;
         }
 
+        .search-result-link:hover{
+          text-decoration: underline;
+          text-decoration-color: var(--sc-primary-accent-color);
+
+        }
+
         .dictionary {
 
       border-radius: var(--sc-size-sm);
@@ -165,14 +168,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
-          line-height: 24px;
+          
         }
 
         .dictionary dfn {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: 400;
-          line-height: 32px;
           font-weight: bold;
         }
 
@@ -277,7 +278,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         </h1>
         <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
       </div>
-      <div class="suttaplex-item">
+      <div class="dictionary-snippet-card">
         <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
           .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"
           .expansion-data=${this.expansionReturns}>
