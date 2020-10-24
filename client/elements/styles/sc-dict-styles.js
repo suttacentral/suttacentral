@@ -16,7 +16,11 @@ export const dictStyles = html`
   }
 
   dd > p {
-    margin-top: 0;
+    margin: 0 0 0.5rem 0;
+  }
+
+  dd + dt{
+    margin-top: 1rem
   }
 
   dfn {
@@ -111,21 +115,16 @@ export const dictStyles = html`
   dd ol {
     margin: 0;
     padding: 0 0 0 1rem;
-
   }
 
-  li{
-    padding-left: 1rem
+  dd li{
+    padding-left: clamp(0rem, 3vw, 1rem);
   }
 
   li::marker{
     color: var(--sc-secondary-text-color);
     font-family: var(--sc-sans-font);
     font-weight: bold;
-  }
-
-  dd ol ul {
-    counter-reset: step-counter;
   }
 
   .little {

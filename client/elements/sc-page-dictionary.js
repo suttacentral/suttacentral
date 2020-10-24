@@ -1,9 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
-import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
 import { icons } from '../img/sc-icons';
 
 import { LitLocalized } from './addons/localization-mixin'
@@ -11,10 +9,9 @@ import { LitLocalized } from './addons/localization-mixin'
 class SCPageDictionary extends LitLocalized(LitElement) {
   render() {
     return html`
-    ${scrollbarStyle}
     ${dictStyles}
     <style>
-      .dictionary-results-container, .related-terms {
+      .dictionary-results-container {
         padding: var(--sc-size-xxl) 0;
       }
 
@@ -52,29 +49,22 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         color: var(--sc-primary-accent-color);
       }
 
-      .terms-button {
-        color: var(--sc-disabled-text-color);
-      }
-
       .related-terms {
-        margin: 0 var(--sc-size-md) var(--sc-size-xl) 0;
-        text-align: left;
+
         }
 
       .related-terms ul {
-        margin: var(--sc-size-sm) 0 0 0;
+        margin: 0;
         display: block;
         list-style: none;
         padding: 0;
       }
 
       .related-terms h3 {
+        margin: 1em 0 0 0;
         font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
         color: var(--sc-secondary-text-color);
-        margin: var(--sc-size-md-larger) 0 0 var(--sc-size-md);
         font-weight: bold;
       }
 
@@ -83,22 +73,29 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       }
 
       .related-terms li {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
+        padding: 0;
+    margin: 0.5rem 1rem 0 0;
+    display: inline-block;
+    
+
       }
 
       .related-terms a {
-        color: var(--sc-primary-accent-color);
-        padding: var(--sc-size-xs) 0 var(--sc-size-xs) var(--sc-size-md);
-        margin: var(--sc-size-xs) 0;
+        color: var(--sc-primary-accent-color);        
         text-decoration: none;
         display: inline-block;
+        border-radius: 4px;
+        border-bottom: 4px solid rgba(0,0,0,0);
       }
 
-      .related-terms em {
-        color: var(--sc-primary-text-color);
+      .related-terms a:hover{
+        
+        text-decoration: underline;
+        color: var(--sc-primary-color);
+      }
+
+      .related-terms i {
+        color: var(--sc-secondary-text-color);
       }
 
       .dictionary-source {
@@ -123,12 +120,13 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         }
       }
 
-      .selected-terms-item {
-        background: linear-gradient(to right, var(--sc-primary-color) var(--sc-size-xs), transparent var(--sc-size-xs));
-      }
-
       .selected-terms-item > a {
           color: var(--sc-primary-color);
+          font-weight: bold
+      }
+      .selected-terms-item > a:hover{
+        text-decoration: none;
+        cursor: default;
       }
     </style>
 
@@ -136,16 +134,13 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       <main class="dictionary-results-main">
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
-          <span class="terms-button">
-            <mwc-icon-button id="menu_icon" @click=${this._toggleDrawer}>${icons['menu']}</mwc-icon-button>
-          </span>
         </div>
         <div class="dictionary-entries">
           ${this.dictionaryEntriesTemplate}
         </div>
 
-        <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open="">
-          <div class="related-terms sc-scrollbar">
+   
+          <div class="related-terms">
             <h3>${this.localize('adjacentTerms')}</h3>
             <ul class="near-terms">
               ${this.dictionaryAdjacentTemplate}
@@ -155,7 +150,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
               ${this.dictionarySimilarTemplate}
             </ul>
           </div>
-        </app-drawer>
+   
 
       </main>
     </div>
@@ -329,9 +324,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       if (glossaryReturns) {
         for (let glossWord in inputArray[0]) {
           let glossLookup = inputArray[0][glossWord];
-          glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+          glossText = `<a href="/define/${glossLookup}">${glossLookup}`;
           if (glossaryReturns[0][glossLookup]) {
-            glossText += `<em> (${glossaryReturns[0][glossLookup]})</em>`
+            glossText += `<i> (${glossaryReturns[0][glossLookup]})</i></a>`
           }
           glossaryObject = { "glossWord": glossLookup, "glossText": glossText };
           glossary.push(glossaryObject);

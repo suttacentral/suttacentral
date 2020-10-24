@@ -10,8 +10,6 @@ import { store } from '../redux-store';
 import { LitLocalized } from '../elements/addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 
-import { typographyCommonStyles } from './styles/sc-typography-common-styles.js';
-
 /*
 The search page opens when a search string is typed into the search-input-box in the toolbar.
 
@@ -29,15 +27,16 @@ class SCPageSearch extends LitLocalized(LitElement) {
           display: block;
           width: 100%;
           height: calc(100vh - var(--sc-size-xxl));
+              font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 1.5;
+
+    color: var(--sc-primary-text-color);
         }
 
         #search_result_list {
           padding: var(--sc-size-xl) 0 var(--sc-size-md);
-        }
-
-        .dictionary-snippet-card {
-          margin-top: var(--sc-size-xl);
-          margin-bottom: calc(-1 * var(--sc-size-md));
         }
 
         .search-results-container {
@@ -54,6 +53,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           padding: 0 var(--sc-size-md);
           display: flex;
           justify-content: space-between;
+          flex-wrap: wrap;
         }
 
         .search-result-header {
@@ -61,7 +61,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-size: var(--sc-skolar-font-size-h1-md);
           font-weight: 400;
           display: inline-block;
-          margin: 0;
+          margin: 0 1rem 1rem 0;
+          line-height: 1.25;
         }
 
         .search-result-term {
@@ -73,14 +74,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
         .search-result-item {
           border-bottom: var(--sc-border);
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
         }
 
         .search-result-item dl a {
           color: inherit;
           text-decoration: underline;
           text-decoration-color: var(--sc-primary-color);
-          text-decoration-skip-ink: auto;
         }
 
         .search-result-item dl a:hover {
@@ -102,12 +102,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-result-title {
-          font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
           font-weight: 400;
           font-family: var(--sc-serif-font);
           color: var(--sc-primary-accent-color);
-          margin: 22px 0 0 0;
+          margin: 1rem 0 0 0;
+          white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
         }
 
         .search-result-division {
@@ -118,13 +120,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
           margin: 0 0 var(--sc-size-md);
           white-space: nowrap;
           overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .search-result-snippet {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
-          margin: 0 0 20px 0;
+          margin: 0 0 1rem 0;
         }
 
         .search-result-snippet dd {
@@ -157,7 +160,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
       box-shadow: var(--sc-shadow-elevation-1dp);
 
-      padding: 0 1rem;
+      padding: 0 clamp(1rem, 3vw, 2rem);
+      margin: 2rem 0;
         }
 
         .dictionary .search-result-division {
@@ -196,6 +200,25 @@ class SCPageSearch extends LitLocalized(LitElement) {
           padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
           white-space: nowrap;
         }
+
+          dd ol, dd ul {
+    margin: 0;
+    padding: 0 0 0 1rem;
+  }
+
+  li{
+    padding-left: clamp(0.25rem, 1vw, 1rem);
+  }
+
+  li::marker{
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-sans-font);
+    font-weight: bold;
+  }
+
+  p +ol, p +ul{
+    margin: 0.5em 0 1em
+  }
 
         .paper-spinner {
           position: absolute;
