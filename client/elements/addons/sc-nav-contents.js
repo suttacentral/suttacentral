@@ -2,43 +2,51 @@ import { LitElement, html } from 'lit-element';
 
 const styles = html`
 <style>
-  .contents {
-    margin: 0 auto !important;
-    padding: 0 var(--sc-size-md);
-    max-width: 720px;
-    display: block;
-    border-radius: 2px;
-    border-left: 4px solid #F6C200;
-  }
+  .contents
+{
+  margin: 0 auto !important;
 
-  li {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
-    margin: 0.5em 0;
-    padding: var(--sc-size-xs) 0;
-  }
+  border-left: 4px solid var(--sc-primary-color-light);
+  border-radius: 2px;
+}
 
-  ol {
-    margin: 1em 0 0 0;
-  }
+li
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
 
-  a {
-        color: inherit;
-        text-decoration: underline;
-        text-decoration-color: var(--sc-primary-color);
-        text-decoration-skip-ink: auto;
-    text-decoration: none;
-  }
+  margin: .5em 0;
+  padding: .25em 0 .25em clamp(0rem, 3vw, 1rem);
+}
 
-  a:hover  {
-    color: var(--sc-primary-color);
-  }
+ol
+{
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
 
-  a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
-  }
+li::marker
+{
+  font-family: var(--sc-sans-font);
+  font-weight: bold;
+
+  color: var(--sc-secondary-text-color);
+}
+
+a
+{
+  text-decoration: none;
+
+  color: inherit;
+}
+
+a:hover
+{
+  color: var(--sc-primary-color);
+}
+
+
 </style>`;
 
 export class SCNavContents extends LitElement {
@@ -54,13 +62,11 @@ export class SCNavContents extends LitElement {
   render() {
     return html`
       ${styles}
-      <div class="wrapper">
         <nav class="contents">
           <ol>
             ${this.items ? this.items.map(item => html`<li><a href="${'#' + item.link}">${item.name}</a></li>`) : ''}
           </ol>
         </nav>
-      </div>
     `
   }
 }

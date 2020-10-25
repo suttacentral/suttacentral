@@ -12,7 +12,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     ${dictStyles}
     <style>
       .dictionary-results-container {
-        padding: var(--sc-size-xxl) 0;
+        
       }
 
       .dictionary-results-main {

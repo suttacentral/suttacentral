@@ -101,6 +101,9 @@ header
 }
 header ul
 {
+    margin: 0;
+    padding: 0;
+
     font-family: var(--sc-sans-font);
 
     list-style-type: none;
@@ -130,19 +133,47 @@ header + blockquote
     margin: 4em 0;
 
     border-left: 4px solid var(--sc-primary-color-light);
+
+  border-radius: 4px;
 }
 
 .contents ul{
      list-style-type: none;
 }
 
+.contents ol
+{
+  margin: 0 0 0 2rem;
+padding: 0 0 0 1rem;
+}
+
 .contents li {
-padding: 0.5em 1em;
-    margin: 0 0 0 1em;
+  font-family: var(--sc-serif-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+
+  margin: .5em 0;
+  padding: .25em 0 .25em clamp(0rem, 3vw, 1rem);
+}
+
+.contents li::marker
+{
+  font-family: var(--sc-sans-font);
+  font-weight: bold;
+
+  color: var(--sc-secondary-text-color);
 }
 
 .contents a{
     text-decoration: none;
+    color: inherit;
+}
+
+a:hover
+{
+  color: var(--sc-primary-color);
+  text-decoration: underline;
+  text-decoration-color: var(--sc-primary-color);
 }
 
 /* tables */
