@@ -23,236 +23,309 @@ class SCPageSearch extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        :host {
-          display: block;
-          width: 100%;
-          height: calc(100vh - var(--sc-size-xxl));
-              font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 1.5;
+    :host
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+  line-height: 1.5;
 
-    color: var(--sc-primary-text-color);
-        }
+  display: block;
 
-        #search_result_list {
-          padding: var(--sc-size-xl) 0 var(--sc-size-md);
-        }
+  width: 100%;
+  height: calc(100vh - var(--sc-size-xxl));
 
-        .search-results-container {
-          padding: var(--sc-size-xxl) 0;
-        }
+  color: var(--sc-primary-text-color);
+}
 
-        .search-results-main {
-          max-width: 720px;
-          margin: 0 auto;
-        }
+#search_result_list
+{
+  padding: var(--sc-size-xl) 0 var(--sc-size-md);
+}
 
-        .search-result-head {
-          color: var(--sc-secondary-text-color);
-          padding: 0 var(--sc-size-md);
-          display: flex;
-          justify-content: space-between;
-          flex-wrap: wrap;
-        }
+.search-results-container
+{
+  padding: var(--sc-size-xxl) 0;
+}
 
-        .search-result-header {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-h1-md);
-          font-weight: 400;
-          display: inline-block;
-          margin: 0 1rem 1rem 0;
-          line-height: 1.25;
-        }
+.search-results-main
+{
+  max-width: 720px;
+  margin: 0 auto;
+}
 
-        .search-result-term {
-          font-family: var(--sc-serif-font);
-          font-weight: bold;
-          color: var(--sc-primary-accent-color);
-        }
+.search-result-head
+{
+  display: flex;
 
-        .search-result-item {
-          border-bottom: var(--sc-border);
-          display: flex;
-          flex-direction: column;
-        }
+  padding: 0 var(--sc-size-md);
 
-        .search-result-item dl a {
-          color: inherit;
-          text-decoration: underline;
-          text-decoration-color: var(--sc-primary-color);
-        }
+  color: var(--sc-secondary-text-color);
 
-        .search-result-item dl a:hover {
-          color: var(--sc-primary-color);
-        }
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
-        .search-result-item dl a:visited {
-          text-decoration-color: var(--sc-primary-color-dark);
-        }
+.search-result-header
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-h1-md);
+  font-weight: 400;
+  line-height: 1.25;
 
-        .search-result-item:focus {
-          outline: 0;
-        }
+  display: inline-block;
 
-        .padded-container {
-          display: flex;
-          flex-direction: column;
-          padding: 0;
-        }
+  margin: 0 1rem 1rem 0;
+}
 
-        .search-result-title {
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: 400;
-          font-family: var(--sc-serif-font);
-          color: var(--sc-primary-accent-color);
-          margin: 1rem 0 0 0;
-          white-space: nowrap;
+.search-result-term
+{
+  font-family: var(--sc-serif-font);
+  font-weight: bold;
+
+  color: var(--sc-primary-accent-color);
+}
+
+.search-result-item
+{
+  display: flex;
+  flex-direction: column;
+
+  border-bottom: var(--sc-border);
+}
+
+.search-result-item dl a
+{
+  text-decoration: underline;
+
+  color: inherit;
+
+  text-decoration-color: var(--sc-primary-color);
+}
+
+.search-result-item dl a:hover
+{
+  color: var(--sc-primary-color);
+}
+
+.search-result-item dl a:visited
+{
+  text-decoration-color: var(--sc-primary-color-dark);
+}
+
+.search-result-item:focus
+{
+  outline: 0;
+}
+
+.padded-container
+{
+  display: flex;
+  flex-direction: column;
+
+  padding: 0;
+}
+
+.search-result-title
+{
+  font-family: var(--sc-serif-font);
+  font-size: var(--sc-skolar-font-size-static-subtitle);
+  font-weight: 400;
+
   overflow: hidden;
+
+  margin: 1rem 0 0 0;
+
+  white-space: nowrap;
   text-overflow: ellipsis;
-        }
 
-        .search-result-division {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-s);
-          font-weight: 400;
-          color: var(--sc-secondary-text-color);
-          margin: 0 0 var(--sc-size-md);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+  color: var(--sc-primary-accent-color);
+}
 
-        .search-result-snippet {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          margin: 0 0 1rem 0;
-        }
+.search-result-division
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: 400;
 
-        .search-result-snippet dd {
-          margin-left: 0;
-        }
+  overflow: hidden;
 
-        .search-result-snippet dfn {
-          font-style: normal;
-          font-weight: bold;
-        }
+  margin: 0 0 var(--sc-size-md);
 
-        .search-result-filter-menu {
-          margin-top: -20px;
-        }
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-        .search-result-link {
-          text-decoration: none;
-          color: initial;
-        }
+  color: var(--sc-secondary-text-color);
+}
 
-        .search-result-link:hover{
-          text-decoration: underline;
-          text-decoration-color: var(--sc-primary-accent-color);
+.search-result-snippet
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
 
-        }
+  margin: 0 0 1rem 0;
+}
 
-        .dictionary {
+.search-result-snippet dd
+{
+  margin-left: 0;
+}
 
-      border-radius: var(--sc-size-sm);
-      background-color: var(--sc-secondary-background-color);
-      box-shadow: var(--sc-shadow-elevation-1dp);
+.search-result-snippet dfn
+{
+  font-weight: bold;
+  font-style: normal;
+}
 
-      padding: 0 clamp(1rem, 3vw, 2rem);
-      margin: 2rem 0;
-        }
+.search-result-filter-menu
+{
+  margin-top: -20px;
+}
 
-        .dictionary .search-result-division {
-          display: none;
-        }
+.search-result-link
+{
+  text-decoration: none;
 
-        .dictionary .search-result-title {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          
-        }
+  color: initial;
+}
 
-        .dictionary dfn {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: bold;
-        }
+.search-result-link:hover
+{
+  text-decoration: underline;
 
-        .dictionary dd p {
-          margin: 0 0 var(--sc-size-s) 0;
-        }
+  text-decoration-color: var(--sc-primary-accent-color);
+}
 
-        .dictionary .case {
-          color: var(--sc-secondary-text-color);
-          font-variant-caps: all-small-caps;
-          letter-spacing: var(--sc-caps-letter-spacing);
-          display: block;
-        }
+.dictionary
+{
+  margin: 2rem 0;
+  padding: 0 clamp(1rem, 3vw, 2rem);
 
-        .dictionary .ref {
-          font-size: var(--sc-skolar-font-size-s);
-          color: var(--sc-secondary-text-color);
-          background-color: var(--sc-textual-info-background-color);
-          border-radius: var(--sc-size-xxs);
-          padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
-          white-space: nowrap;
-        }
+  border-radius: var(--sc-size-sm);
+  background-color: var(--sc-secondary-background-color);
+  box-shadow: var(--sc-shadow-elevation-1dp);
+}
 
-          dd ol, dd ul {
-    margin: 0;
-    padding: 0 0 0 1rem;
-  }
+.dictionary .search-result-division
+{
+  display: none;
+}
 
-  li{
-    padding-left: clamp(0.25rem, 1vw, 1rem);
-  }
+.dictionary .search-result-title
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+}
 
-  li::marker{
-    color: var(--sc-secondary-text-color);
-    font-family: var(--sc-sans-font);
-    font-weight: bold;
-  }
+.dictionary dfn
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-static-subtitle);
+  font-weight: bold;
+}
 
-  p +ol, p +ul{
-    margin: 0.5em 0 1em
-  }
+.dictionary dd p
+{
+  margin: 0 0 var(--sc-size-s) 0;
+}
 
-        .paper-spinner {
-          position: absolute;
-          margin: 0;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
+.dictionary .case
+{
+  display: block;
 
-        .google-maps {
-          height: 480px;
-          margin: var(--sc-size-md-larger) 0;
-        }
+  letter-spacing: var(--sc-caps-letter-spacing);
 
-        .google-maps iframe {
-          height: 480px;
-          width: 100%;
-          border: none;
-        }
+  color: var(--sc-secondary-text-color);
 
-        .d-none {
-          display: none;
-        }
+  font-variant-caps: all-small-caps;
+}
 
-        [hidden] {
-          display: none !important;
-        }
+.dictionary .ref
+{
+  font-size: var(--sc-skolar-font-size-s);
 
-        .loading-indicator {
-          font-size: var(--sc-skolar-font-size-s);
-          text-align: center;
-          height: 60px;
-          margin-top: 25vh;
-        }
+  padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+
+  white-space: nowrap;
+
+  color: var(--sc-secondary-text-color);
+  border-radius: var(--sc-size-xxs);
+  background-color: var(--sc-textual-info-background-color);
+}
+
+dd ol,
+dd ul
+{
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
+li
+{
+  padding-left: clamp(.25rem, 1vw, 1rem);
+}
+
+li::marker
+{
+  font-family: var(--sc-sans-font);
+  font-weight: bold;
+
+  color: var(--sc-secondary-text-color);
+}
+
+p + ol,
+p + ul
+{
+  margin: .5em 0 1em;
+}
+
+.paper-spinner
+{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  margin: 0;
+
+  transform: translate(-50%, -50%);
+}
+
+.google-maps
+{
+  height: 480px;
+  margin: var(--sc-size-md-larger) 0;
+}
+
+.google-maps iframe
+{
+  width: 100%;
+  height: 480px;
+
+  border: none;
+}
+
+.d-none
+{
+  display: none;
+}
+
+[hidden]
+{
+  display: none !important;
+}
+
+.loading-indicator
+{
+  font-size: var(--sc-skolar-font-size-s);
+
+  height: 60px;
+  margin-top: 25vh;
+
+  text-align: center;
+}
+
       </style>
 
       ${this.displayDataLoadError}  

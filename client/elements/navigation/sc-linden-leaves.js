@@ -14,110 +14,123 @@ import { icons } from '../../img/sc-icons';
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
-      :host {
-        display: block;
+    :host
+{
+  display: block;
 
-        height: 48px;
+  height: 48px;
 
-        background-color: rgb(75, 74, 74);
-      }
+  background-color: rgb(75, 74, 74);
+}
 
-      nav {
-        display: flex;
-        height: 48px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        flex-direction: row;
-        box-sizing: border-box;
-        padding: 0 calc(2% - 8px);
+nav
+{
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-direction: row;
 
-        white-space: nowrap;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 calc(2% - 8px);
 
-        background-color: rgb(75, 74, 74);
+  white-space: nowrap;
 
-        justify-content: space-between;
-      }
+  background-color: rgb(75, 74, 74);
 
-      nav ul {
-        display: flex;
+  justify-content: space-between;
+}
 
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
+nav ul
+{
+  display: flex;
 
-      nav li {
-        font-size: var(--sc-skolar-font-size-xs);
-        font-weight: 500;
-        color: white;
-        
-        display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-        list-style-type: none;
+nav li
+{
+  font-size: var(--sc-skolar-font-size-xs);
+  font-weight: 500;
 
-        align-items: center;
-      }
+  display: flex;
 
-      nav li a {
-        position: relative;
-        display: flex;
-        align-items: center;
+  list-style-type: none;
 
-        padding: 0 8px;
+  color: white;
 
-        height: 100%;
-        box-sizing: border-box;
+  align-items: center;
+}
 
-        text-decoration: none;
+nav li a
+{
+  position: relative;
 
-        opacity: .8;
-        color: white;
-        border-bottom: 4px solid rgba(0,0,0,0);
-      }
+  display: flex;
 
-      nav li a:hover {
-        cursor: pointer;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 8px;
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
+  text-decoration: none;
 
-        opacity: 1;
-      }
+  opacity: .8;
+  color: white;
+  border-bottom: 4px solid rgba(0,0,0,0);
 
-      nav li:last-child {
-        font-weight: 800;
+  align-items: center;
+}
 
-        padding: 0 8px;
+nav li a:hover
+{
+  cursor: pointer;
 
-        height: 100%;
-        box-sizing: border-box;
+  opacity: 1;
+  border-bottom: 4px solid var(--sc-primary-color-light);
+}
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
+nav li:last-child
+{
+  font-weight: 800;
 
-      nav li:last-child a:hover {
-        cursor: default;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 8px;
 
-        color: white;
-        border-bottom: none;
-      }
+  border-bottom: 4px solid var(--sc-primary-color-light);
+}
 
-      nav li:last-child a {
-        cursor: default;
+nav li:last-child a:hover
+{
+  cursor: default;
 
-        opacity: 1;
-      }
+  color: white;
+  border-bottom: none;
+}
 
-      nav li:first-of-type {
-        margin-left: 0;
-      }
+nav li:last-child a
+{
+  cursor: default;
 
-      mwc-icon {
-        color: var(--sc-disabled-text-color);
-      }
+  opacity: 1;
+}
 
-      morph-ripple {
-        --ripple-color: var(--sc-primary-color);
-      }
+nav li:first-of-type
+{
+  margin-left: 0;
+}
+
+mwc-icon
+{
+  color: var(--sc-disabled-text-color);
+}
+
+morph-ripple 
+{
+   --ripple-color: var(--sc-primary-color);
+}
     `;
   }
 

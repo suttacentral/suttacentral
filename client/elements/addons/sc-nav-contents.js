@@ -10,20 +10,20 @@ const styles = html`
   border-radius: 2px;
 }
 
+ol
+{
+  margin: 0 0 0 1em;
+  padding: 0 0 0 1rem;
+}
+
 li
 {
-  font-family: var(--sc-sans-font);
+  font-family: var(--sc-serif-font);
   font-size: var(--sc-skolar-font-size-md);
   font-weight: 400;
 
   margin: .5em 0;
   padding: .25em 0 .25em clamp(0rem, 3vw, 1rem);
-}
-
-ol
-{
-  margin: 0;
-  padding: 0 0 0 1rem;
 }
 
 li::marker
@@ -45,7 +45,6 @@ a:hover
 {
   color: var(--sc-primary-color);
 }
-
 
 </style>`;
 

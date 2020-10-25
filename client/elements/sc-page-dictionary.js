@@ -11,123 +11,132 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     return html`
     ${dictStyles}
     <style>
-      .dictionary-results-container {
-        
-      }
+.dictionary-results-main
+{
+  max-width: 720px;
+  margin: 0 auto;
+}
 
-      .dictionary-results-main {
-        max-width: 720px;
-        margin: 0 auto;
-      }
+.dictionary-results-head
+{
+  display: flex;
 
-      @media (max-width: 740px) {
-        .dictionary-results-main {
-          padding: 0 5%;
-        }
-      }
+  padding: 0;
 
-      .dictionary-results-head {
-        display: flex;
-        justify-content: space-between;
-        padding: 0;
-        margin-bottom:
-      }
+  justify-content: space-between;
+}
 
-      h1 {
-        font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-h1-md);
-    font-weight: 400;
-    line-height: 40px;
-        color: var(--sc-secondary-text-color);
-        display: inline-block;
-        margin: 0 0 0 -2px;
-      }
+h1
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-h1-md);
+  font-weight: 400;
+  line-height: 40px;
 
-      .dictionary-results-term {
-        font-family: var(--sc-serif-font);
-        font-weight: bold;
-        color: var(--sc-primary-accent-color);
-      }
+  display: inline-block;
 
-      .related-terms {
+  margin: 0 0 0 -2px;
 
-        }
+  color: var(--sc-secondary-text-color);
+}
 
-      .related-terms ul {
-        margin: 0;
-        display: block;
-        list-style: none;
-        padding: 0;
-      }
+.dictionary-results-term
+{
+  font-family: var(--sc-serif-font);
+  font-weight: bold;
 
-      .related-terms h3 {
-        margin: 1em 0 0 0;
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        color: var(--sc-secondary-text-color);
-        font-weight: bold;
-      }
+  color: var(--sc-primary-accent-color);
+}
 
-      .dictionary-entries {
-        padding: var(--sc-size-xl) 0 var(--sc-size-md);
-      }
+.related-terms ul
+{
+  display: block;
 
-      .related-terms li {
-        padding: 0;
-    margin: 0.5rem 1rem 0 0;
-    display: inline-block;
-    
+  margin: 0;
+  padding: 0;
 
-      }
+  list-style: none;
+}
 
-      .related-terms a {
-        color: var(--sc-primary-accent-color);        
-        text-decoration: none;
-        display: inline-block;
-        border-radius: 4px;
-        border-bottom: 4px solid rgba(0,0,0,0);
-      }
+.related-terms h3
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: bold;
 
-      .related-terms a:hover{
-        
-        text-decoration: underline;
-        color: var(--sc-primary-color);
-      }
+  margin: 1em 0 0 0;
 
-      .related-terms i {
-        color: var(--sc-secondary-text-color);
-      }
+  color: var(--sc-secondary-text-color);
+}
 
-      .dictionary-source {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
-        color: var(--sc-secondary-text-color);
-        margin: var(--sc-size-sm) 0 var(--sc-size-md);
-        font-weight: bold;
-        font-family: var(--sc-serif-font);
-      }
+.dictionary-entries
+{
+  padding: var(--sc-size-xl) 0 var(--sc-size-md);
+}
 
-      .dictionary-book-entry {
-        border-bottom: var(--sc-border);
-      }
+.related-terms li
+{
+  display: inline-block;
 
-      #drawer {
-        --app-drawer-content-container: {
-          overflow-y: scroll;
-          background-color: var(--sc-secondary-background-color);
-        }
-      }
+  margin: .5rem 1rem 0 0;
+  padding: 0;
+}
 
-      .selected-terms-item > a {
-          color: var(--sc-primary-color);
-          font-weight: bold
-      }
-      .selected-terms-item > a:hover{
-        text-decoration: none;
-        cursor: default;
-      }
+.related-terms a
+{
+  display: inline-block;
+
+  text-decoration: none;
+
+  color: var(--sc-primary-accent-color);
+  border-bottom: 4px solid rgba(0,0,0,0);
+  border-radius: 4px;
+}
+
+.related-terms a:hover
+{
+  text-decoration: underline;
+
+  color: var(--sc-primary-color);
+}
+
+.related-terms i
+{
+  color: var(--sc-secondary-text-color);
+}
+
+.dictionary-source
+{
+  font-family: var(--sc-sans-font);
+  font-family: var(--sc-serif-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: 400;
+  font-weight: bold;
+  line-height: 20px;
+
+  margin: var(--sc-size-sm) 0 var(--sc-size-md);
+
+  color: var(--sc-secondary-text-color);
+}
+
+.dictionary-book-entry
+{
+  border-bottom: var(--sc-border);
+}
+
+.selected-terms-item > a
+{
+  font-weight: bold;;
+
+  color: var(--sc-primary-color);
+}
+
+.selected-terms-item > a:hover
+{
+  cursor: default;
+  text-decoration: none;
+}
+
     </style>
 
     <div class="dictionary-results-container">
