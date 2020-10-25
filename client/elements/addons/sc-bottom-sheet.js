@@ -106,6 +106,10 @@ details[open]
     right: 10vw;
 
     width: 80vw;
+
+    box-shadow: var(--sc-shadow-elevation-8dp);
+
+    border-radius: 4px
 }
 
 summary
