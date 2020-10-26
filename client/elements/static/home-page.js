@@ -180,20 +180,9 @@ class SCHomePage extends SCStaticPage {
         align-self: flex-end;
       }
 
-      h1 {
-        margin: 0 0 0.25em 0;
-        font-size: 2em;
-        font-size: clamp(1.5em, 5vw, 2em);
-        line-height: 1.3333;
-        font-weight: 300;
-        font-family: var(--sc-serif-font);
-        padding-left: 4%;
-      }
-
       h2 {
         margin: 0 0 0 0;
-        font-size: 1.5em;
-        font-size: clamp(1.125em, 3.75vw, 1.5em);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
         line-height: 1.3333;
         font-weight: 400;
         font-family: var(--sc-serif-font);

@@ -1,6 +1,9 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
+import '@material/mwc-icon';
+import '@material/mwc-icon-button';
+
 import '@moduware/morph-ripple';
 
 export class SCBottomSheet extends LitElement {
@@ -25,190 +28,246 @@ export class SCBottomSheet extends LitElement {
 
   static get styles() {
     return css`
-      @media print {
-        :host {
-          display: none;
-        }
-      }
 
-    :host {
-      /* display: block; */
-      z-index: 9999;
-      position: sticky;
-      display: none;
-      background-color: var(--sc-secondary-background-color);
-      bottom: 0px;
-      animation: bottomSheetShow 200ms 1 ease-in normal forwards;
-    }
+:host
+{
+    font-family: var(--sc-sans-font);
 
-    #wrapper {
-      box-shadow: 1px 1px .5px .5px rgba(0, 0, 0, 0.14);
-      font-family: "skolar sans pe";
-      height: 200px
-    }
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
 
-    body,
-    main,
-    article,
-    header,
-    footer {
-      display: flex;
-    }
+    width: 100%;
+    margin: 0 calc(-1 * var(--sc-container-margin));
 
-    header {
-      padding: 0px var(--sc-size-md);
-      justify-content: space-between;
-      align-items: center;
-      background-color: var(--sc-secondary-text-color);
-      color: var(--sc-primary-background-color);
-      height: 32px;
-      position: relative
-    }
+    background-color: var(--sc-secondary-background-color);
+    box-shadow: var(--sc-shadow-elevation-2dp);
+}
 
-    header div {
-      display: flex;
-      flex-direction: row;
-    }
+body,
+main,
+article,
+header,
+footer
+{
+    display: flex;
+}
 
-    details {
-      padding: 4px;
-      background-color: var(--sc-secondary-text-color);
-      color: var(--sc-primary-background-color);
-      font-size: 14px;
-      z-index: 1;
-    }
+header
+{
+    position: relative;
 
-    details ul {
-      margin-right: 1em
-    }
+    height: 32px;
+    padding: 0 var(--sc-size-md);
 
-    details a {
-      color: inherit;
-      text-decoration: underline;
-      text-decoration-color: var(--sc-primary-color);
-      text-decoration-skip-ink: auto;
-    }
+    color: var(--sc-primary-background-color);
+    background-color: var(--sc-secondary-text-color);
 
-    details[open] {
-      position: absolute;
-      top: -300px;
-      width: 80vw;
-      right: 10vw
-    }
+    justify-content: space-between;
+    align-items: center;;
+}
 
-    summary {
-      white-space: nowrap;
-    }
+header div
+{
+    display: flex;
+    flex-direction: row;
+}
 
-    header button {
-      width: 100%;
-      background: none;
-      border: none;
-    }
+details
+{
+    font-size: 14px;
 
-    #btnClose {
-      cursor: pointer;
-      color: inherit;
-    }
+    z-index: 1;
 
-    dfn {
-      background-color: var(--sc-primary-color-light);
-      color: var(--sc-paper-tooltip-color);
-      padding: 0 var(--sc-size-sm);
-      margin-left: calc((100vw - 960px) / 2);
-    }
+    padding: 4px;
 
-    main {
-      justify-content: center;
-    }
+    color: var(--sc-primary-background-color);
+    background-color: var(--sc-secondary-text-color);
+}
 
-    article {
-      height: 120px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      padding: 12px 16px 0;
-      box-sizing: border-box;
-      width: 960px
-    }
+details ul
+{
+    margin-right: 1em;
+}
 
-    dl {
-      margin: 0 0 16px 0;
-      display: table;
-      /*hack to get the padding-bottom working*/
-      font-size: 16px;
-    }
+details a
+{
+    text-decoration: underline;
 
-    dt {
-      display: inline-block;
-      background-color: var(--sc-primary-color-light);
-    }
+    color: inherit;
 
-    dd {
-      margin: var(--sc-size-sm) 0 0 0
-    }
+    text-decoration-color: var(--sc-primary-color);
+}
 
-    dd a {
-      color: inherit;
-      text-decoration: underline;
-      text-decoration-color: var(--sc-primary-color);
-      text-decoration-skip-ink: auto;
-      font-weight: bold
-    }
+details[open]
+{
+    position: absolute;
+    top: -300px;
+    right: 10vw;
 
-    footer {
-      border-top: 1px solid rgba(0, 0, 0, 0.12);
-      height: 48px;
-      background-color: var(--sc-secondary-background-color);
-      box-sizing: border-box;
-    }
+    width: 80vw;
 
-    footer div {
-      width: 50%;
-      text-align: center;
-      position: relative
-    }
+    box-shadow: var(--sc-shadow-elevation-8dp);
 
-    #next {
-      border-left: 1px solid var(--sc-border-color);
-    }
+    border-radius: 4px
+}
 
-    footer div button {
-      font-size: 2em;
-      width: 100%;
-      height: 100%;
-      background: none;
-      border: none;
-      cursor: pointer;
-      /* vertical-align: top; */
-      padding-bottom: 10px;
-      color: var(--sc-disabled-text-color)
-    }
+summary
+{
+    white-space: nowrap;
+}
 
-    #btnNext {
-      border-left: 1px solid rgba(0, 0, 0, 0.14);
-    }
+header button
+{
+    width: 100%;
 
-    morph-ripple {
-      --ripple-color: var(--sc-primary-color);
-    }
+    border: none;
+    background: none;
+}
 
-    @keyframes bottomSheetShow {
-      from {
+#btnClose
+{
+    padding: 8px 16px;
+
+    cursor: pointer;
+
+    color: inherit;
+}
+
+dfn
+{
+    margin-left: calc((100vw - 960px) / 2);
+    padding: 0 var(--sc-size-sm);
+
+    color: var(--sc-paper-tooltip-color);
+    background-color: var(--sc-primary-color-light);
+}
+
+main
+{
+    justify-content: center;
+}
+
+article
+{
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    box-sizing: border-box;
+    width: 960px;
+    height: 120px;
+    padding: 12px 16px 0;;
+}
+
+dl
+{
+    /*hack to get the padding-bottom working*/
+    font-size: 16px;
+
+    display: table;
+
+    margin: 0 0 16px 0;
+}
+
+dt
+{
+    display: inline-block;
+
+    background-color: var(--sc-primary-color-light);
+}
+
+dd
+{
+    margin: var(--sc-size-sm) 0 0 0;
+}
+
+dd a
+{
+    font-weight: bold;
+
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color);;
+}
+
+footer
+{
+    box-sizing: border-box;
+    height: 48px;
+
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    background-color: var(--sc-secondary-background-color);
+}
+
+footer div
+{
+    position: relative;
+
+    width: 50%;
+
+    text-align: center;;
+}
+
+#next
+{
+    border-left: 1px solid var(--sc-border-color);
+}
+
+footer div button
+{
+    font-size: 2em;
+
+    width: 100%;
+    height: 100%;
+    /* vertical-align: top; */
+    padding-bottom: 10px;
+
+    cursor: pointer;
+
+    color: var(--sc-disabled-text-color);
+    border: none;
+    background: none;;
+}
+
+#btnNext
+{
+    border-left: 1px solid rgba(0, 0, 0, .14);
+}
+
+  morph-ripple 
+{
+    --ripple-color: var(--sc-primary-color);
+}
+
+@keyframes bottomSheetShow
+{
+    from
+    {
         bottom: -200px;
-      }
-      to {
-        bottom: 0px;
-      }
     }
 
-    @keyframes bottomSheetHide {
-      from {
-        bottom: 0px;
-      }
-      to {
+    to
+    {
+        bottom: 0;
+    }
+}
+
+@keyframes bottomSheetHide
+{
+    from
+    {
+        bottom: 0;
+    }
+
+    to
+    {
         bottom: -200px;
-      }
-    }`;
+    }
+}
+
+`;
   }
 
   render() {
@@ -232,7 +291,8 @@ export class SCBottomSheet extends LitElement {
                     </li>
                 </ul>
               </details>
-              <button id="btnClose" @click=${this.hide}>&#8675;</button>
+              <button id="btnClose" @click=${this.hide}>✕</button>
+
             </div>
         </header>
         <main>

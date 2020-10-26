@@ -1,9 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
-import { scrollbarStyle } from './styles/sc-scrollbar-style.js';
 import { icons } from '../img/sc-icons';
 
 import { LitLocalized } from './addons/localization-mixin'
@@ -11,141 +9,154 @@ import { LitLocalized } from './addons/localization-mixin'
 class SCPageDictionary extends LitLocalized(LitElement) {
   render() {
     return html`
-    ${scrollbarStyle}
     ${dictStyles}
     <style>
-      .dictionary-results-container, .related-terms {
-        padding: var(--sc-size-xxl) 0;
-      }
+.dictionary-results-container
+{
+  margin: 0 0 var(--sc-size-xxl) 0;
+    }
+.dictionary-results-main
+{
+  max-width: 720px;
+  margin: 0 auto;
+}
 
-      .dictionary-results-main {
-        max-width: 720px;
-        margin: 0 auto;
-      }
+.dictionary-results-head
+{
+  display: flex;
 
-      @media (max-width: 740px) {
-        .dictionary-results-main {
-          padding: 0 5%;
-        }
-      }
+  padding: 0;
 
-      .dictionary-results-head {
-        display: flex;
-        justify-content: space-between;
-        padding: 0;
-        margin-bottom:
-      }
+  justify-content: space-between;
+}
 
-      h1 {
-        font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-h1-md);
-    font-weight: 400;
-    line-height: 40px;
-        color: var(--sc-secondary-text-color);
-        display: inline-block;
-        margin: 0 0 0 -2px;
-      }
+h1
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-h1-md);
+  font-weight: 400;
+  line-height: 40px;
 
-      .dictionary-results-term {
-        font-family: var(--sc-serif-font);
-        font-weight: bold;
-        color: var(--sc-primary-accent-color);
-      }
+  display: inline-block;
 
-      .terms-button {
-        color: var(--sc-disabled-text-color);
-      }
+  margin: 0 0 0 -2px;
 
-      .related-terms {
-        margin: 0 var(--sc-size-md) var(--sc-size-xl) 0;
-        text-align: left;
-        }
+  color: var(--sc-secondary-text-color);
+}
 
-      .related-terms ul {
-        margin: var(--sc-size-sm) 0 0 0;
-        display: block;
-        list-style: none;
-        padding: 0;
-      }
+.dictionary-results-term
+{
+  font-family: var(--sc-serif-font);
+  font-weight: bold;
 
-      .related-terms h3 {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
-        color: var(--sc-secondary-text-color);
-        margin: var(--sc-size-md-larger) 0 0 var(--sc-size-md);
-        font-weight: bold;
-      }
+  color: var(--sc-primary-accent-color);
+}
 
-      .dictionary-entries {
-        padding: var(--sc-size-xl) 0 var(--sc-size-md);
-      }
+.related-terms ul
+{
+  display: block;
 
-      .related-terms li {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
-      }
+  margin: 0;
+  padding: 0;
 
-      .related-terms a {
-        color: var(--sc-primary-accent-color);
-        padding: var(--sc-size-xs) 0 var(--sc-size-xs) var(--sc-size-md);
-        margin: var(--sc-size-xs) 0;
-        text-decoration: none;
-        display: inline-block;
-      }
+  list-style: none;
+}
 
-      .related-terms em {
-        color: var(--sc-primary-text-color);
-      }
+.related-terms h3
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: bold;
 
-      .dictionary-source {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
-        color: var(--sc-secondary-text-color);
-        margin: var(--sc-size-sm) 0 var(--sc-size-md);
-        font-weight: bold;
-        font-family: var(--sc-serif-font);
-      }
+  margin: 1em 0 0 0;
 
-      .dictionary-book-entry {
-        border-bottom: var(--sc-border);
-      }
+  color: var(--sc-secondary-text-color);
+}
 
-      #drawer {
-        --app-drawer-content-container: {
-          overflow-y: scroll;
-          background-color: var(--sc-secondary-background-color);
-        }
-      }
+.dictionary-entries
+{
+  margin: var(--sc-size-xl) 0 var(--sc-size-md);
+}
 
-      .selected-terms-item {
-        background: linear-gradient(to right, var(--sc-primary-color) var(--sc-size-xs), transparent var(--sc-size-xs));
-      }
+.related-terms li
+{
+  display: inline-block;
 
-      .selected-terms-item > a {
-          color: var(--sc-primary-color);
-      }
+  margin: .5rem 1rem 0 0;
+  padding: 0;
+}
+
+.related-terms a
+{
+  display: inline-block;
+
+  text-decoration: none;
+
+  color: var(--sc-primary-accent-color);
+  border-bottom: 4px solid rgba(0,0,0,0);
+  border-radius: 4px;
+}
+
+.related-terms a:hover
+{
+  text-decoration: underline;
+
+  color: var(--sc-primary-color);
+}
+
+.related-terms i
+{
+  color: var(--sc-secondary-text-color);
+}
+
+.dictionary-source
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: bold;
+
+  margin: var(--sc-size-md) 0;
+
+  color: var(--sc-secondary-text-color);
+}
+
+.dictionary-book-entry
+{
+  border-bottom: var(--sc-border);
+}
+
+.selected-terms-item > a
+{
+  font-weight: bold;
+}
+
+.selected-terms-item > a:hover
+{
+  cursor: default;
+  text-decoration: none;
+}
+
+.dictionary-results-term,
+.selected-terms-item > a,
+.selected-terms-item > a:hover,
+dfn
+{
+  background-color: var(--sc-primary-color-light-transparent);
+  color: var(--sc-primary-color-darkest);
+}
     </style>
 
     <div class="dictionary-results-container">
       <main class="dictionary-results-main">
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
-          <span class="terms-button">
-            <mwc-icon-button id="menu_icon" @click=${this._toggleDrawer}>${icons['menu']}</mwc-icon-button>
-          </span>
         </div>
         <div class="dictionary-entries">
           ${this.dictionaryEntriesTemplate}
         </div>
 
-        <app-drawer id="drawer" align="right" class="sc-scrollbar" swipe-open="">
-          <div class="related-terms sc-scrollbar">
+   
+          <div class="related-terms">
             <h3>${this.localize('adjacentTerms')}</h3>
             <ul class="near-terms">
               ${this.dictionaryAdjacentTemplate}
@@ -155,7 +166,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
               ${this.dictionarySimilarTemplate}
             </ul>
           </div>
-        </app-drawer>
+   
 
       </main>
     </div>
@@ -329,9 +340,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       if (glossaryReturns) {
         for (let glossWord in inputArray[0]) {
           let glossLookup = inputArray[0][glossWord];
-          glossText = `<a href="/define/${glossLookup}">${glossLookup}</a>`;
+          glossText = `<a href="/define/${glossLookup}">${glossLookup}`;
           if (glossaryReturns[0][glossLookup]) {
-            glossText += `<em> (${glossaryReturns[0][glossLookup]})</em>`
+            glossText += `<i> (${glossaryReturns[0][glossLookup]})</i></a>`
           }
           glossaryObject = { "glossWord": glossLookup, "glossText": glossText };
           glossary.push(glossaryObject);

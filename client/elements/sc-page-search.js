@@ -23,209 +23,325 @@ class SCPageSearch extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        :host {
-          display: block;
-          width: 100%;
-          height: calc(100vh - var(--sc-size-xxl));
-        }
+    :host
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+  line-height: 1.5;
 
-        #search_result_list {
-          padding: var(--sc-size-xl) 0 var(--sc-size-md);
-        }
+  display: block;
 
-        .suttaplex-item {
-          margin-top: var(--sc-size-xl);
-          margin-bottom: calc(-1 * var(--sc-size-md));
-        }
+  width: 100%;
+  height: calc(100vh - var(--sc-size-xxl));
 
-        .search-results-container {
-          padding: var(--sc-size-xxl) 0;
-        }
+  color: var(--sc-primary-text-color);
+}
 
-        .search-results-main {
-          max-width: 720px;
-          margin: 0 auto;
-        }
+#search_result_list
+{
+  padding: var(--sc-size-xl) 0 var(--sc-size-md);
+}
 
-        .search-result-head {
-          color: var(--sc-secondary-text-color);
-          padding: 0 var(--sc-size-md);
-          display: flex;
-          justify-content: space-between;
-        }
+.search-results-container
+{
+  margin: 0 0 var(--sc-size-xxl) 0;
+}
 
-        .search-result-header {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-h1-md);
-          font-weight: 400;
-          line-height: 40px;
-          display: inline-block;
-          margin: 0;
-        }
+.search-results-main
+{
+  max-width: 720px;
+  margin: 0 auto;
+}
 
-        .search-result-term {
-          font-family: var(--sc-serif-font);
-          font-weight: bold;
-          color: var(--sc-primary-accent-color);
-        }
+.search-result-head
+{
+  display: flex;
 
-        .search-result-item {
-          border-bottom: var(--sc-border);
-          display: flex;
-          flex-direction: row;
-        }
+  color: var(--sc-secondary-text-color);
 
-        .search-result-item dl a {
-          color: inherit;
-          text-decoration: underline;
-          text-decoration-color: var(--sc-primary-color);
-          text-decoration-skip-ink: auto;
-        }
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
-        .search-result-item dl a:hover {
-          color: var(--sc-primary-color);
-        }
+.search-result-header
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-h1-md);
+  font-weight: 400;
+  line-height: 1.25;
 
-        .search-result-item dl a:visited {
-          text-decoration-color: var(--sc-primary-color-dark);
-        }
+  display: inline-block;
 
-        .search-result-item:focus {
-          outline: 0;
-          background: linear-gradient(to right, var(--sc-primary-accent-color) 4px, transparent 4px);
-        }
+  margin: 0 1rem 1rem 0;
+}
 
-        .padded-container {
-          display: flex;
-          flex-direction: column;
-          padding: 0;
-        }
+.search-result-term
+{
+  font-family: var(--sc-serif-font);
+  font-weight: bold;
+}
 
-        .search-result-title {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: 400;
-          line-height: 32px;
-          font-family: var(--sc-serif-font);
-          color: var(--sc-primary-accent-color);
-          margin: 22px 0 0 0;
-        }
+.search-result-item
+{
+  display: flex;
+  flex-direction: column;
 
-        .search-result-division {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-s);
-          font-weight: 400;
-          line-height: 24px;
-          color: var(--sc-secondary-text-color);
-          margin: 0 0 var(--sc-size-md);
-          white-space: nowrap;
-          overflow: hidden;
-        }
+  border-bottom: var(--sc-border);
+}
 
-        .search-result-snippet {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          line-height: 24px;
-          margin: 0 0 20px 0;
-        }
+.search-result-item dl a
+{
+  text-decoration: underline;
 
-        .search-result-snippet dd {
-          margin-left: 0;
-        }
+  color: inherit;
 
-        .search-result-snippet dfn {
-          font-style: normal;
-          font-weight: bold;
-        }
+  text-decoration-color: var(--sc-primary-color);
+}
 
-        .search-result-filter-menu {
-          margin-top: -20px;
-        }
+.search-result-item dl a:hover
+{
+  color: var(--sc-primary-color);
+}
 
-        .search-result-link {
-          text-decoration: none;
-          color: initial;
-        }
+.search-result-item dl a:visited
+{
+  text-decoration-color: var(--sc-primary-color-dark);
+}
 
-        .dictionary {
-          background-color: var(--sc-secondary-background-color);
-          box-shadow: var(--sc-shadow-elevation-2dp);
-          border-radius: var(--sc-size-xxs);
-        }
+.search-result-item:focus
+{
+  outline: 0;
+}
 
-        .dictionary .search-result-division {
-          display: none;
-        }
+.padded-container
+{
+  display: flex;
+  flex-direction: column;
 
-        .dictionary .search-result-title {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          line-height: 24px;
-        }
+  padding: 0;
+}
 
-        .dictionary dfn {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: 400;
-          line-height: 32px;
-          font-weight: bold;
-        }
+.search-result-title
+{
+  font-family: var(--sc-serif-font);
+  font-size: var(--sc-skolar-font-size-static-subtitle);
+  font-weight: 400;
 
-        .dictionary dd p {
-          margin: 0 0 var(--sc-size-s) 0;
-        }
+  overflow: hidden;
 
-        .dictionary .case {
-          color: var(--sc-secondary-text-color);
-          font-variant-caps: all-small-caps;
-          letter-spacing: var(--sc-caps-letter-spacing);
-          display: block;
-        }
+  margin: 1rem 0 0 0;
 
-        .dictionary .ref {
-          font-size: var(--sc-skolar-font-size-s);
-          color: var(--sc-secondary-text-color);
-          background-color: var(--sc-textual-info-background-color);
-          border-radius: var(--sc-size-xxs);
-          padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
-          white-space: nowrap;
-        }
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-        .paper-spinner {
-          position: absolute;
-          margin: 0;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
+  color: var(--sc-primary-accent-color);
+}
 
-        .google-maps {
-          height: 480px;
-          margin: var(--sc-size-md-larger) 0;
-        }
+.search-result-division
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: 400;
 
-        .google-maps iframe {
-          height: 480px;
-          width: 100%;
-          border: none;
-        }
+  overflow: hidden;
 
-        .d-none {
-          display: none;
-        }
+  margin: 0;
 
-        [hidden] {
-          display: none !important;
-        }
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-        .loading-indicator {
-          font-size: var(--sc-skolar-font-size-s);
-          text-align: center;
-          height: 60px;
-          margin-top: 25vh;
-        }
+  color: var(--sc-secondary-text-color);
+
+  height: 1.5rem;
+}
+
+.search-result-snippet
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+
+  margin: 0 0 1rem 0;
+}
+
+.search-result-snippet dd
+{
+  margin-left: 0;
+}
+
+.search-result-snippet dfn
+{
+  font-weight: bold;
+  font-style: normal;
+
+  color: var(--sc-primary-color-dark);
+}
+
+.search-result-filter-menu
+{
+  margin-top: -20px;
+}
+
+.search-result-link
+{
+  text-decoration: none;
+
+  color: initial;
+}
+
+.search-result-link:hover
+{
+  text-decoration: underline;
+
+  text-decoration-color: var(--sc-primary-accent-color);
+}
+
+.dictionary
+{
+  margin: 2rem 0;
+  padding: 0 clamp(1rem, 3vw, 2rem);
+
+  border-radius: var(--sc-size-sm);
+  background-color: var(--sc-secondary-background-color);
+  box-shadow: var(--sc-shadow-elevation-1dp);
+}
+
+.dictionary .search-result-division
+{
+  display: none;
+}
+
+.dictionary .search-result-title
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+}
+
+.dictionary dfn
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-static-subtitle);
+  font-weight: bold;
+
+  color: var(--sc-primary-color-dark);
+}
+
+.dictionary dfn,
+.highlight,
+.search-result-term,
+.selected-terms-item > a
+{
+  background-color: var(--sc-primary-color-light-transparent);
+  color: var(--sc-primary-color-darkest);
+}
+
+.dictionary dd p
+{
+  margin: 0 0 var(--sc-size-s) 0;
+}
+
+.dictionary .case
+{
+  display: block;
+
+  letter-spacing: var(--sc-caps-letter-spacing);
+
+  color: var(--sc-secondary-text-color);
+
+  font-variant-caps: all-small-caps;
+}
+
+.dictionary .ref
+{
+  font-family: var(--sc-sans-font);
+  font-weight: 600;
+  font-style: normal;
+
+  padding: 0 4px;
+
+  white-space: nowrap;
+  letter-spacing: normal;
+
+  color: var(--sc-secondary-text-color);
+  border-radius: 8px;
+  background-color: rgba(159, 158, 157, 0.15);
+
+  font-variant-caps: normal;
+}
+
+dd ol,
+dd ul
+{
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
+li
+{
+  padding-left: clamp(.25rem, 1vw, 1rem);
+}
+
+li::marker
+{
+  font-family: var(--sc-sans-font);
+  font-weight: bold;
+
+  color: var(--sc-secondary-text-color);
+}
+
+p + ol,
+p + ul
+{
+  margin: .5em 0 1em;
+}
+
+.paper-spinner
+{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  margin: 0;
+
+  transform: translate(-50%, -50%);
+}
+
+.google-maps
+{
+  height: 480px;
+  margin: var(--sc-size-md-larger) 0;
+}
+
+.google-maps iframe
+{
+  width: 100%;
+  height: 480px;
+
+  border: none;
+}
+
+.d-none
+{
+  display: none;
+}
+
+[hidden]
+{
+  display: none !important;
+}
+
+.loading-indicator
+{
+  font-size: var(--sc-skolar-font-size-s);
+
+  height: 60px;
+  margin-top: 25vh;
+
+  text-align: center;
+}
+
       </style>
 
       ${this.displayDataLoadError}  
@@ -274,7 +390,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         </h1>
         <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
       </div>
-      <div class="suttaplex-item">
+      <div class="dictionary-snippet-card">
         <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
           .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"
           .expansion-data=${this.expansionReturns}>
