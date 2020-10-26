@@ -2,222 +2,260 @@ import { html } from 'lit-element';
 
 export const dictStyles = html`
 <style>
-  dl {
-    margin-top: var(--sc-size-sm);
-  }
+ dl
+{
+  margin-top: var(--sc-size-sm);
+}
 
-  dd {
-    margin: 0;
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 400;
-    line-height: 24px;
-    font-family: var(--sc-serif-font);
-  }
+dd
+{
+  font-family: var(--sc-sans-font);
+  font-family: var(--sc-serif-font);
+  font-size: var(--sc-skolar-font-size-md);
+  font-weight: 400;
+  line-height: 1.5;
 
-  dd > p {
-    margin-top: 0;
-  }
+  margin: 0;
+}
 
-  dfn {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-static-subtitle);
-    font-weight: 400;
-    line-height: 32px;
-    font-style: normal;
-    text-transform: lowercase;
-    color: var(--sc-primary-accent-color);
-    font-family: var(--sc-serif-font);
-  }
+dd > p
+{
+  margin: 0 0 .5rem 0;
+}
 
-  .dppn-entry dfn {
-    text-transform: capitalize;
-  }
+dd + dt
+{
+  margin-top: 1rem;
+}
 
-  .case {
-    font-variant-caps: all-small-caps;
-    letter-spacing: var(--sc-caps-letter-spacing);
-    color: var(--sc-secondary-text-color);
-    font-family: var(--sc-sans-font);
-    display: block;
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
-    line-height: 24px;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+dfn
+{
+  font-family: var(--sc-sans-font);
+  font-family: var(--sc-serif-font);
+  font-size: var(--sc-skolar-font-size-static-subtitle);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 32px;
 
-  dd .ref {
-    font-family: var(--sc-sans-font);
-    font-weight: 600;
-    font-style: normal;
+  text-transform: lowercase;
 
-    white-space: nowrap;
-    letter-spacing: normal;
+  color: var(--sc-primary-accent-color);
+}
 
-    padding: 0 4px;
+.dppn-entry dfn
+{
+  text-transform: capitalize;
+}
 
-    color: var(--sc-secondary-text-color);
+.case
+{
+  font-family: var(--sc-sans-font);
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: 400;
+  line-height: 24px;
 
-    font-variant-caps: normal;
+  display: block;
+  overflow: hidden;
 
-    border: 1px solid var(--sc-border-color);
-    border-radius: 8px;
-    background-color: var(--sc-secondary-background-color);
-  }
+  white-space: nowrap;
+  letter-spacing: var(--sc-caps-letter-spacing);
 
-  dd .author {
-    font-variant-caps: all-small-caps;
-    letter-spacing: var(--sc-caps-letter-spacing);
-  }
+  color: var(--sc-secondary-text-color);
 
-  dd .eti {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    color: var(--sc-secondary-text-color);
-  }
+  font-variant-caps: all-small-caps;
+}
 
-  dd .term {
-    font-weight: normal;
-  }
+dd .ref
+{
+  font-family: var(--sc-sans-font);
+  font-weight: 600;
+  font-style: normal;
 
-  dd .abbr {
-    font-size: var(--sc-skolar-font-size-s);
-    font-family: var(--sc-sans-font);
-    background-color: var(--sc-paper-tooltip-color);
-    color: var(--sc-tertiary-text-color);
-    font-weight: bold;
-    border-radius: var(--sc-size-xxs);
-    padding: var(--sc-size-xs) var(--sc-size-sm);
-  }
+  padding: 0 4px;
 
-  dd .inline-li {
-    font-family: var(--sc-sans-font);
-    color: var(--sc-secondary-text-color);
-    font-weight: bold;
-    padding: 0 8px;
-  }
+  white-space: nowrap;
+  letter-spacing: normal;
 
-  dd .square {
-    color: var(--sc-disabled-text-color);
-  }
+  color: var(--sc-secondary-text-color);
+  border-radius: 8px;
+  background-color: rgba(159, 158, 157, 0.15);
 
-  dd ol {
-    list-style-type: none;
-    counter-reset: step-counter;
-    margin: 0 0 0 32px;
-    padding: 0;
+  font-variant-caps: normal;
+}
 
-  }
+dd .author
+{
+  letter-spacing: var(--sc-caps-letter-spacing);
 
-  dd ol ul {
-    counter-reset: step-counter;
-  }
+  font-variant-caps: all-small-caps;
+}
 
-  .little {
-    list-style-type: decimal;
-  }
+dd .eti
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
 
-  .little li {
-    margin: 0 0 0 0
-  }
+  color: var(--sc-secondary-text-color);
+}
 
-  dd ul {
-    list-style-type: disc;
-    margin: 0 0 var(--sc-size-sm) var(--sc-size-md-larger) !important
-  }
+dd .term
+{
+  font-weight: normal;
+}
 
-  dd ol + ul.compounds {
-    margin-top: var(--sc-size-md-larger) !important;
-  }
+dd .abbr
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-s);
+  font-weight: bold;
 
-  dd ol li {
-    counter-increment: step-counter;
-    margin: var(--sc-size-xs) 0 0 0;
+  padding: var(--sc-size-xs) var(--sc-size-sm);
 
-  }
+  color: var(--sc-tertiary-text-color);
+  border-radius: var(--sc-size-xxs);
+  background-color: var(--sc-paper-tooltip-color);
+}
 
-  .compounds {
-    margin-left: var(--sc-size-md-larger) !important;
-    list-style-type: none;
-  }
+dd .inline-li
+{
+  font-family: var(--sc-sans-font);
+  font-weight: bold;
 
-  dd ol + li {
-    counter-increment: step-counter !important;
-  }
+  padding: 0 8px;
 
-  .lower-latin > li::before {
-    content: counter(step-counter, lower-latin);
-  }
+  color: var(--sc-secondary-text-color);
+}
 
-  .upper-latin > li::before {
-    content: counter(step-counter, upper-latin);
-  }
+dd .square
+{
+  font-size: 2.4em;
+  line-height: 0;;
 
-  .decimal > li::before {
-    content: counter(step-counter, decimal);
-  }
+  display: inline-block;
 
-  .upper-roman > li::before {
-    content: counter(step-counter, upper-roman);
-  }
+  margin-left: -8px;
 
-  .lower-roman > li::before {
-    content: counter(step-counter, lower-roman);
-  }
+  vertical-align: middle;
 
-  .lower-greek > li::before {
-    content: counter(step-counter, lower-greek);
-  }
+  color: var(--sc-disabled-text-color);
+}
 
-  .compounds > li::before {
-    color: var(--sc-disabled-text-color);
-    content: "◦";
-    margin-left: -12px;
-  }
+dd ol
+{
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
 
-  dd li::before {
-    font-family: var(--sc-sans-font);
-    color: var(--sc-secondary-text-color);
-    font-weight: bold;
-    position: absolute;
-    text-align: right;
-    margin-left: -32px;
-  }
+dd li
+{
+  padding-left: clamp(0rem, 3vw, 1rem);
+}
 
-  .google-maps {
-    margin var(--sc-size-md) 0;
-    height: 480px;
-  }
+li::marker
+{
+  font-family: var(--sc-sans-font);
+  font-weight: bold;
 
-  .google-maps iframe {
-    height: 480px;
-    width: 100%;
-    border: none;
-  }
+  color: var(--sc-secondary-text-color);
+}
 
-  .info {
-    display: none;
-  }
+.little
+{
+  list-style-type: decimal;
+}
 
-  h1, h2, h3, h4, h5, h6 {
-    text-align: left;
-    font-weight: normal;
-  }
+.little li
+{
+  margin: 0 0 0 0;
+}
 
-  dd a {
-    color: inherit;
-    text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color);
-    text-decoration-skip-ink: auto;
-  }
+dd ul
+{
+  margin: 0 0 var(--sc-size-sm) var(--sc-size-md-larger) !important;;
 
-  dd a:hover {
-    color: var(--sc-primary-color);
-  }
+  list-style-type: disc;
+}
 
-  dd a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
-  }
+dd ol + ul.compounds
+{
+  margin-top: var(--sc-size-md-larger) !important;
+}
+
+dd ol li
+{
+  margin: var(--sc-size-xs) 0 0 0;
+}
+
+.compounds
+{
+  margin-left: var(--sc-size-md-larger) !important;
+
+  list-style-type: none;
+}
+
+.lower-greek
+{
+  list-style-type: lower-greek;
+}
+
+.compounds > li::before
+{
+  margin-left: -12px;
+
+  content: '◦';
+
+  color: var(--sc-disabled-text-color);
+}
+
+.google-maps
+{
+  height: 480px;
+  margin: var(--sc-size-md) 0;
+}
+
+.google-maps iframe
+{
+  width: 100%;
+  height: 480px;
+
+  border: none;
+}
+
+.info
+{
+  display: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  font-weight: normal;
+
+  text-align: left;
+}
+
+dd a
+{
+  text-decoration: underline;
+
+  color: inherit;
+
+  text-decoration-color: var(--sc-primary-color);
+}
+
+dd a:hover
+{
+  color: var(--sc-primary-color);
+}
+
+dd a:visited
+{
+  text-decoration-color: var(--sc-primary-color-dark);
+}
+
 </style>`;

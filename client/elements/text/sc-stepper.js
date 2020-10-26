@@ -8,117 +8,152 @@ class SCStepper extends LitElement {
     return html`
     <style>
 
-      @media print {
-        :host {
-          display: none;
-        }
-      }
+@media print
+{
+  :host
+  {
+    display: none;
+  }
+}
 
-      .bar {
-        display: flex;
-        width: 100%;
-        height: 96px;
-        background-color: var(--sc-secondary-text-color);
-        overflow: hidden
-      }
+.bar
+{
+  display: flex;
+  overflow: hidden;
 
-      .button {
-        width: 100%;
-      }
+  height: 96px;
+  margin: 0 calc(-1 * var(--sc-container-margin));
 
-      .button-container {
-        position: relative;
-        margin: 0;
-        height: 100%;
-        width: 50%;
-      }
+  background-color: var(--sc-secondary-text-color);
+}
 
-      .button {
-        width: 100%;
-        height: 100%;
-      }
+.button
+{
+  width: 100%;
+}
 
-      .action {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        color: var(--sc-paper-tooltip-text-color);
-        opacity: .55;
-      }
+.button-container
+{
+  position: relative;
 
-      .text-title {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-l);
-        color: var(--sc-paper-tooltip-text-color);
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
+  width: 50%;
+  height: 100%;
+  margin: 0;
+}
 
-      .link {
-        text-decoration: none;
-        color: inherit;
-      }
+.button
+{
+  width: 100%;
+  height: 100%;
+}
 
-      .button {
-        display: flex;
-        height: 100%;
-      }
+.action
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-md);
 
-      .button-right {
-        justify-content: flex-end;
-      }
+  opacity: .55;
+  color: var(--sc-paper-tooltip-text-color);
+}
 
-      .text {
-        margin: auto 0;
-        display: flex;
-      }
+.text-title
+{
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-l);
 
-      .text-element {
-        display: inline-grid;
-        text-overflow: ellipsis;
-      }
+  overflow: hidden;
 
-      .text-element-right {
-        text-align: end;
-      }
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-      .arrow {
-        font-size: var(--sc-skolar-font-size-l);
-        width: var(--sc-size-md-larger);
-        min-width: var(--sc-size-md-larger);
-        color: var(--sc-paper-tooltip-text-color);
-        margin-top: 1em;
-        margin-left: .5em;
-        margin-right: .5em;
-      }
+  color: var(--sc-paper-tooltip-text-color);
+}
 
-      .separator {
-        width: 10%;
-      }
+.link
+{
+  text-decoration: none;
 
-      @media (min-width: 1280px) {
-        .button-right {
-          margin-right: 20%;
-          width: 80%;
-        }
+  color: inherit;
+}
 
-        .button-left {
-          margin-left: 20%;
-          width: 80%;
-        }
+.button
+{
+  display: flex;
 
-        .arrow-right {
-          margin-left: 1em;
-        }
+  height: 100%;
+}
 
-        .arrow-left {
-          margin-right: 1em;
-        }
-      }
+.button-right
+{
+  justify-content: flex-end;
+}
 
-      morph-ripple {
-        --ripple-color: var(--sc-primary-color);
-      }
+.text
+{
+  display: flex;
+
+  margin: auto 0;
+}
+
+.text-element
+{
+  display: inline-grid;
+
+  text-overflow: ellipsis;
+}
+
+.text-element-right
+{
+  text-align: end;
+}
+
+.arrow
+{
+  font-size: var(--sc-skolar-font-size-l);
+
+  width: var(--sc-size-md-larger);
+  min-width: var(--sc-size-md-larger);
+  margin-top: 1em;
+  margin-right: .5em;
+  margin-left: .5em;
+
+  color: var(--sc-paper-tooltip-text-color);
+}
+
+.separator
+{
+  width: 10%;
+}
+
+@media (min-width: 1280px)
+{
+  .button-right
+  {
+    width: 80%;
+    margin-right: 20%;
+  }
+
+  .button-left
+  {
+    width: 80%;
+    margin-left: 20%;
+  }
+
+  .arrow-right
+  {
+    margin-left: 1em;
+  }
+
+  .arrow-left
+  {
+    margin-right: 1em;
+  }
+}
+
+  morph-ripple 
+  {
+    --ripple-color: var(--sc-primary-color);
+  }
     </style>
 
     <div class="bar">

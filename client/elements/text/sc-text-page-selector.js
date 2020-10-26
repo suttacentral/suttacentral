@@ -22,6 +22,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
+
+      :host{
+        display: flex;
+        flex-direction: column
+      }
         .loading-indicator {
           font-size: var(--sc-skolar-font-size-s);
           text-align: center;

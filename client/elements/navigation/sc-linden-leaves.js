@@ -14,99 +14,123 @@ import { icons } from '../../img/sc-icons';
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
-      :host {
-        display: block;
-      }
+    :host
+{
+  display: block;
 
-      nav {
-        display: flex;
-        overflow-x: auto;
-        overflow-y: hidden;
-        flex-direction: row;
-        box-sizing: border-box;
-        padding: 0 calc(2% - 8px);
+  height: 48px;
 
-        white-space: nowrap;
+  background-color: rgb(75, 74, 74);
+}
 
-        background-color: rgb(75, 74, 74);
+nav
+{
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-direction: row;
 
-        justify-content: space-between;
-      }
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 calc(2% - 8px);
 
-      nav ul {
-        display: flex;
+  white-space: nowrap;
 
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
+  background-color: rgb(75, 74, 74);
 
-      nav li {
-        font-size: var(--sc-skolar-font-size-xs);
-        font-weight: 500;
-        color: white;
-        
-        display: flex;
+  justify-content: space-between;
+}
 
-        list-style-type: none;
+nav ul
+{
+  display: flex;
 
-        align-items: center;
-      }
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-      nav li a {
-        position: relative;
+nav li
+{
+  font-size: var(--sc-skolar-font-size-xs);
+  font-weight: 500;
 
-        display: inline-block;
+  display: flex;
 
-        padding: 14px 8px 10px 8px;
+  list-style-type: none;
 
-        text-decoration: none;
+  color: white;
 
-        opacity: .8;
-        color: white;
-        border-bottom: 4px solid rgba(0,0,0,0);
-      }
+  align-items: center;
+}
 
-      nav li a:hover {
-        cursor: pointer;
+nav li a
+{
+  position: relative;
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
+  display: flex;
 
-        opacity: 1;
-      }
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 8px;
 
-      nav li:last-child {
-        font-weight: 800;
+  text-decoration: none;
 
-        padding: 14px 8px 10px 8px;
+  opacity: .8;
+  color: white;
+  border-bottom: 4px solid rgba(0,0,0,0);
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
+  align-items: center;
+}
 
-      nav li:last-child a:hover {
-        cursor: default;
+nav li a:hover
+{
+  cursor: pointer;
 
-        color: white;
-        border-bottom: none;
-      }
+  opacity: 1;
+  border-bottom: 4px solid var(--sc-primary-color-light);
+}
 
-      nav li:last-child a {
-        cursor: default;
+nav li:last-child
+{
+  font-weight: 800;
 
-        opacity: 1;
-      }
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 8px;
 
-      nav li:first-of-type {
-        margin-left: 0;
-      }
+  border-bottom: 4px solid var(--sc-primary-color-light);
+}
 
-      mwc-icon {
-        color: var(--sc-disabled-text-color);
-      }
+nav li:last-child a:hover
+{
+  cursor: default;
 
-      morph-ripple {
-        --ripple-color: var(--sc-primary-color);
-      }
+  color: white;
+  border-bottom: none;
+}
+
+nav li:last-child a
+{
+  cursor: default;
+
+  opacity: 1;
+}
+
+nav li:first-of-type
+{
+  margin-left: 0;
+}
+
+mwc-icon
+{
+  color: var(--sc-disabled-text-color);
+}
+
+morph-ripple 
+{
+   --ripple-color: var(--sc-primary-color);
+}
     `;
   }
 
