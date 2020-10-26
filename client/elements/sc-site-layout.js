@@ -235,12 +235,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           isOnline
         });
       },
-      changeDisplayParallelsState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_PARALLELS_STATE',
-          displayParallels: display
-        })
-      },
       changeDisplaySettingMenuState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',

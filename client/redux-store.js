@@ -64,7 +64,6 @@ const initialState = {
       },
     ],
     currentNavPosition: 1,
-    displayParallels: false,
     displaySettingMenu: false,
     displayToolButton: false,
     displayInfoButton: false,
@@ -155,8 +154,6 @@ const reducer = (state, action) => {
                 { textOptions: Object.assign({}, state.textOptions, { showHighlighting: action.showHighlighting }) });
         case 'SET_NAVIGATION':
             return Object.assign({}, state, { navigationArray: action.navigationArray });
-        case 'CHANGE_DISPLAY_PARALLELS_STATE':
-            return Object.assign({}, state, { displayParallels: action.displayParallels });
         case 'CHANGE_DISPLAY_SETTING_MENU_STATE':
             return Object.assign({}, state, { displaySettingMenu: action.displaySettingMenu });
         case 'CHANGE_DISPLAY_TOOL_BUTTON_STATE':
@@ -165,8 +162,6 @@ const reducer = (state, action) => {
             return Object.assign({}, state, { displayInfoButton: action.displayInfoButton });
         case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
             return Object.assign({}, state, { displayViewModeButton: action.displayViewModeButton });
-        case 'CHANGE_NAV_STATE':
-            return Object.assign({}, state, { navState: action.navState });
         case 'CHANGE_CURRENT_NAV_POSITION_STATE':
             return Object.assign({}, state, { currentNavPosition: action.currentNavPosition });
         case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
@@ -182,7 +177,7 @@ const rememberButtonEnabled = localStorage.getItem('rememberTextSettings') === '
 if (rememberButtonEnabled === 'false') {
     localStorage.removeItem('rememberTextSettings');
 }
-const state = (persistedState && rememberButtonEnabled) ? parsePersistedState(persistedState) : initialState;
+const state = (persistedState && rememberButtonEnabled) ? parsePersistedState(persistedState) : setInitialState(initialState);
 
 export const store = createStore(
     reducer,
@@ -196,6 +191,9 @@ store.subscribe(() => {
     if (localStorage.getItem('rememberTextSettings') === 'true') {
         localStorage.setItem('reduxState', JSON.stringify(store.getState()));
     }
+    // Save navigation related state
+    localStorage.setItem('reduxNavigationArray', JSON.stringify(store.getState().navigationArray));
+    localStorage.setItem('reduxCurrentNavPosition', JSON.stringify(store.getState().currentNavPosition));
 });
 
 // Helper function
@@ -206,6 +204,14 @@ function parsePersistedState(state) {
     parsedState.toolbarOptions = initialState.toolbarOptions;
     parsedState.donationSuccessData = initialState.donationSuccessData;
     return parsedState;
+}
+
+function setInitialState(initialState) {
+  let navArray = localStorage.getItem('reduxNavigationArray');
+  initialState.navigationArray = navArray ? JSON.parse(navArray) : initialState.navigationArray;
+  let currentNavPosition = localStorage.getItem('reduxCurrentNavPosition');
+  initialState.currentNavPosition  = currentNavPosition ? JSON.parse(currentNavPosition) : initialState.currentNavPosition;
+  return initialState;
 }
 
 export const ReduxMixin = PolymerRedux(store);
