@@ -78,9 +78,8 @@ dd .ref
   letter-spacing: normal;
 
   color: var(--sc-secondary-text-color);
-  border: 1px solid var(--sc-border-color);
   border-radius: 8px;
-  background-color: var(--sc-secondary-background-color);
+  background-color: rgba(159, 158, 157, 0.15);
 
   font-variant-caps: normal;
 }

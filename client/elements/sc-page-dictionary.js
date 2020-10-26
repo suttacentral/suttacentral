@@ -11,6 +11,10 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     return html`
     ${dictStyles}
     <style>
+.dictionary-results-container
+{
+  margin: 0 0 var(--sc-size-xxl) 0;
+    }
 .dictionary-results-main
 {
   max-width: 720px;
@@ -71,7 +75,7 @@ h1
 
 .dictionary-entries
 {
-  padding: var(--sc-size-xl) 0 var(--sc-size-md);
+  margin: var(--sc-size-xl) 0 var(--sc-size-md);
 }
 
 .related-terms li
@@ -108,13 +112,10 @@ h1
 .dictionary-source
 {
   font-family: var(--sc-sans-font);
-  font-family: var(--sc-serif-font);
   font-size: var(--sc-skolar-font-size-s);
-  font-weight: 400;
   font-weight: bold;
-  line-height: 20px;
 
-  margin: var(--sc-size-sm) 0 var(--sc-size-md);
+  margin: var(--sc-size-md) 0;
 
   color: var(--sc-secondary-text-color);
 }
@@ -126,9 +127,7 @@ h1
 
 .selected-terms-item > a
 {
-  font-weight: bold;;
-
-  color: var(--sc-primary-color);
+  font-weight: bold;
 }
 
 .selected-terms-item > a:hover
@@ -137,6 +136,14 @@ h1
   text-decoration: none;
 }
 
+.dictionary-results-term,
+.selected-terms-item > a,
+.selected-terms-item > a:hover,
+dfn
+{
+  background-color: var(--sc-primary-color-light-transparent);
+  color: var(--sc-primary-color-darkest);
+}
     </style>
 
     <div class="dictionary-results-container">

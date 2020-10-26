@@ -9,7 +9,7 @@
   "--sc-primary-color-light-transparent": "rgba(255, 203, 97, 0.3)",
   "--sc-primary-color-medium": "#f6b735",
   "--sc-primary-color-dark": "#b37800",
-  "--sc-primary-color-darkest": "#8a5d00",
+  "--sc-primary-color-darkest": "#ffcb61",
   "--sc-primary-accent-color": "#8ace8d",
   "--sc-primary-accent-color-light": "#98e29b",
   "--sc-primary-accent-color-dark": "#74af76",

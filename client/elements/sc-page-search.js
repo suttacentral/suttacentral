@@ -45,7 +45,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
 .search-results-container
 {
-  padding: var(--sc-size-xxl) 0;
+  margin: 0 0 var(--sc-size-xxl) 0;
 }
 
 .search-results-main
@@ -57,8 +57,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 .search-result-head
 {
   display: flex;
-
-  padding: 0 var(--sc-size-md);
 
   color: var(--sc-secondary-text-color);
 
@@ -82,8 +80,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 {
   font-family: var(--sc-serif-font);
   font-weight: bold;
-
-  color: var(--sc-primary-accent-color);
 }
 
 .search-result-item
@@ -150,12 +146,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   overflow: hidden;
 
-  margin: 0 0 var(--sc-size-md);
+  margin: 0;
 
   white-space: nowrap;
   text-overflow: ellipsis;
 
   color: var(--sc-secondary-text-color);
+
+  height: 1.5rem;
 }
 
 .search-result-snippet
@@ -176,6 +174,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
 {
   font-weight: bold;
   font-style: normal;
+
+  color: var(--sc-primary-color-dark);
 }
 
 .search-result-filter-menu
@@ -224,6 +224,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
   font-family: var(--sc-sans-font);
   font-size: var(--sc-skolar-font-size-static-subtitle);
   font-weight: bold;
+
+  color: var(--sc-primary-color-dark);
+}
+
+.dictionary dfn,
+.highlight,
+.search-result-term,
+.selected-terms-item > a
+{
+  background-color: var(--sc-primary-color-light-transparent);
+  color: var(--sc-primary-color-darkest);
 }
 
 .dictionary dd p
@@ -244,15 +255,20 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
 .dictionary .ref
 {
-  font-size: var(--sc-skolar-font-size-s);
+  font-family: var(--sc-sans-font);
+  font-weight: 600;
+  font-style: normal;
 
-  padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+  padding: 0 4px;
 
   white-space: nowrap;
+  letter-spacing: normal;
 
   color: var(--sc-secondary-text-color);
-  border-radius: var(--sc-size-xxs);
-  background-color: var(--sc-textual-info-background-color);
+  border-radius: 8px;
+  background-color: rgba(159, 158, 157, 0.15);
+
+  font-variant-caps: normal;
 }
 
 dd ol,
