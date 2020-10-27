@@ -18,7 +18,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 {
   display: block;
 
-  height: 48px;
+  height: 40px;
 
   background-color: rgb(75, 74, 74);
 }
@@ -31,8 +31,8 @@ nav
   flex-direction: row;
 
   box-sizing: border-box;
-  height: 48px;
-  padding: 0 calc(2% - 8px);
+  height: 40px;
+  padding: 0 calc(2% - 2px);
 
   white-space: nowrap;
 
@@ -41,7 +41,7 @@ nav
   justify-content: space-between;
 }
 
-nav ul
+ul
 {
   display: flex;
 
@@ -50,8 +50,9 @@ nav ul
   padding: 0;
 }
 
-nav li
+li
 {
+  font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
   font-size: var(--sc-skolar-font-size-xs);
   font-weight: 500;
 
@@ -64,7 +65,7 @@ nav li
   align-items: center;
 }
 
-nav li a
+li a
 {
   position: relative;
 
@@ -72,7 +73,7 @@ nav li a
 
   box-sizing: border-box;
   height: 100%;
-  padding: 0 8px;
+  padding: 4px 2px 0;
 
   text-decoration: none;
 
@@ -83,7 +84,7 @@ nav li a
   align-items: center;
 }
 
-nav li a:hover
+li a:hover
 {
   cursor: pointer;
 
@@ -91,18 +92,18 @@ nav li a:hover
   border-bottom: 4px solid var(--sc-primary-color-light);
 }
 
-nav li:last-child
+li:last-child
 {
-  font-weight: 800;
+  font-weight: 700;
 
   box-sizing: border-box;
   height: 100%;
-  padding: 0 8px;
+  padding: 4px 2px 0;
 
   border-bottom: 4px solid var(--sc-primary-color-light);
 }
 
-nav li:last-child a:hover
+li:last-child a:hover
 {
   cursor: default;
 
@@ -117,7 +118,7 @@ nav li:last-child a
   opacity: 1;
 }
 
-nav li:first-of-type
+li:first-of-type
 {
   margin-left: 0;
 }

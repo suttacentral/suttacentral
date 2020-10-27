@@ -284,13 +284,13 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
   _setTitleState() {
     if (this.route.path === '/') {
       this.dispatch('changeToolbarTitle', 'SuttaCentral');
-      this.parentNode.querySelector('#context_toolbar').style.height = '';
+      this.parentNode.querySelector('#context_toolbar').style.height = '180px';
       this.parentNode.querySelector('.title-logo-icon').style.display = '';
       this.parentNode.querySelector('#title').classList.add('homeTitle');
       this.parentNode.querySelector('#title').classList.remove('generalTitle');
       this.parentNode.querySelector('#subTitle').style.display = 'initial';
     } else {
-      this.parentNode.querySelector('#context_toolbar').style.height = '3.5em';
+      this.parentNode.querySelector('#context_toolbar').style.height = '60px';
       this.parentNode.querySelector('.title-logo-icon').style.display = 'none';
       this.parentNode.querySelector('#title').classList.remove('homeTitle');
       this.parentNode.querySelector('#title').classList.add('generalTitle');

@@ -71,6 +71,7 @@ header div
 {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 details
@@ -78,8 +79,6 @@ details
     font-size: 14px;
 
     z-index: 1;
-
-    padding: 4px;
 
     color: var(--sc-primary-background-color);
     background-color: var(--sc-secondary-text-color);
