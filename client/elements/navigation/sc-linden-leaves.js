@@ -18,7 +18,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 {
   display: block;
 
-  height: 40px;
+  height: 48px;
 
   background-color: rgb(75, 74, 74);
 }
@@ -31,7 +31,8 @@ nav
   flex-direction: row;
 
   box-sizing: border-box;
-  height: 40px;
+  height: 48px;
+
   padding: 0 calc(2% - 2px);
 
   white-space: nowrap;
@@ -97,7 +98,6 @@ li:last-child
   font-weight: 700;
 
   box-sizing: border-box;
-  height: 100%;
   padding: 4px 2px 0;
 
   border-bottom: 4px solid var(--sc-primary-color-light);
