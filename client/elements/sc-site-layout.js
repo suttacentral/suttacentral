@@ -317,16 +317,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
       rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
       rootDOM.getElementById('mainTitle').style.transition = transitionStyle;
-      rootDOM.getElementById('subTitle').style.transition = transitionStyle;
+      rootDOM.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
 
       if (this.changedRoute.path === '/' && (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
-        rootDOM.getElementById('universal_toolbar').style.transform = 'translateY(-90px)';
-        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(90px)';
-        rootDOM.getElementById('mainTitle').style.transform = 'translateY(58px) scale(0.667)';
+        rootDOM.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
+        rootDOM.getElementById('breadCrumb').style.transform = 'translateY(120px)';
+        rootDOM.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
         rootDOM.getElementById('subTitle').style.opacity = '0';
         rootDOM.getElementById('subTitle').style.transform = 'scale(0)';
         if (window.innerWidth < 480) {
-          rootDOM.getElementById('mainTitle').style.transform = 'translateY(55px) scale(0.667)';
+          rootDOM.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
         }
       } else {
         rootDOM.getElementById('universal_toolbar').style.transform = 'none';
