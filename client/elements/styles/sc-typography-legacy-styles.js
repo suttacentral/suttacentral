@@ -54,16 +54,30 @@ export const typographyLegacyStyles = css`
 
 /* descriptive classes */
 
+.xu
+{
+    font-size: var(--sc-dense-font-size-s);
+
+    padding: 1rem;
+    margin-bottom: 4rem;
+
+    color: var(--sc-secondary-text-color);
+    border: var(--sc-border);
+    border-radius: var(--sc-size-s);
+    background-color: var(--sc-tertiary-background-color);
+}
+
 .suttainfo
 {
     display: inline-block;
 
-    padding: 1em;
+    padding: 1rem;
+    margin-bottom: 2rem;
 
     color: var(--sc-secondary-text-color);
     border: var(--sc-border);
-    border-radius: var(--sc-size-xxs);
-    background: var(--sc-primary-background-color);
+    border-radius: var(--sc-size-s);
+    background-color: var(--sc-tertiary-background-color);
 }
 .suppliedmetre
 {
