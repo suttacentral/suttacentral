@@ -30,7 +30,7 @@ class SCToasts extends LitElement {
     return html`
       <mwc-snackbar id="error_toast" class="toast error-toast"></mwc-snackbar>
       <mwc-snackbar id="success_toast" class="toast success-toast"></mwc-snackbar>
-      <mwc-snackbar id="info_toast" class="toast"><mwc-snackbar>
+      <mwc-snackbar id="info_toast" class="toast"></mwc-snackbar>
     `;
   }
 
@@ -43,7 +43,7 @@ class SCToasts extends LitElement {
     toast.labelText = e.detail.message;
     toast.timeoutMs = e.detail.duration || 4000;
     requestAnimationFrame(() => {
-      toast.open();
+      toast.show();
     });
   }
 
