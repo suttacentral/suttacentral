@@ -393,4 +393,9 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{
     background-color: var(--sc-tertiary-background-color);
 }
 
+footer
+{
+display: none;
+}
+
 `

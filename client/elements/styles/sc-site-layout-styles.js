@@ -28,11 +28,34 @@ li a:visited
   text-decoration-color: var(--sc-primary-color-dark);
 }
 
+      .dialog {
+        max-width: 720px;
+      }
+.buttons-bar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center
+}
+      .dialog-header {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xl);
+        font-weight: 400;
+        line-height: 28px;
+        margin: 0;
+      }
+
+      #settingsbutton {
+        color: var(--sc-tertiary-text-color);
+      }
+
+      .dialog-section {
+        margin: 0;
+      }
+
 .close-dialog-icon
 {
-  margin: var(--sc-size-sm);
-
-  color: var(--sc-tertiary-text-color);
+  color: var(--sc-disabled-text-color);
 }
 
   /* apply font size here to avoid resizing title when returning to Home */
