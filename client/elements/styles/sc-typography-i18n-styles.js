@@ -7,25 +7,25 @@ export const typographyI18nStyles = css`
 /* Firefox & Safari use the font-synthesis property to remove faux italics  or bold. 
   Note that vi is excluded from this list: it uses Roman font but qualifies as tall script due to the stacked diacriticals */
 
-[lang='ar'] > *,
-[lang='au'] > *,
-[lang='bn'] > *,
-[lang='ev'] > *,
-[lang='fa'] > *,
-[lang='he'] > *,
-[lang='hi'] > *,
-[lang='jpn'] > *,
-[lang='kln'] > *,
-[lang='ko'] > *,
-[lang='lzh'] > *,
-[lang='mr'] > *,
-[lang='my'] > *,
-[lang='si'] > *,
-[lang='ta'] > *,
-[lang='th'] > *,
-[lang='vu'] > *,
-[lang='xct'] > *,
-[lang='zh'] > *
+[lang='ar'] *,
+[lang='au'] *,
+[lang='bn'] *,
+[lang='ev'] *,
+[lang='fa'] *,
+[lang='he'] *,
+[lang='hi'] *,
+[lang='jpn'] *,
+[lang='kln'] *,
+[lang='ko'] *,
+[lang='lzh']  *,
+[lang='mr'] *,
+[lang='my'] *,
+[lang='si'] *,
+[lang='ta'] *,
+[lang='th'] *,
+[lang='vu'] *,
+[lang='xct'] *,
+[lang='zh'] *
 {
     font-style: normal;
 
@@ -36,29 +36,29 @@ export const typographyI18nStyles = css`
     font-variant-caps: normal;
 }
 
-[lang='ar'] > *,
-[lang='au'] > *,
-[lang='bn'] > *,
-[lang='fa'] > *,
-[lang='he'] > *,
-[lang='hi'] > *,
-[lang='jpn'] > *,
-[lang='kln'] > *,
-[lang='ko'] > *,
-[lang='lzh'] > *,
-[lang='mr'] > *,
-[lang='si'] > *,
-[lang='ta'] > *,
-[lang='th'] > *,
-[lang='vi'] > *,
-[lang='vu'] > *,
-[lang='xct'] > *,
+[lang='ar'] *,
+[lang='au'] *,
+[lang='bn'] *,
+[lang='fa'] *,
+[lang='he'] *,
+[lang='hi'] *,
+[lang='jpn'] *,
+[lang='kln'] *,
+[lang='ko'] *,
+[lang='lzh']  *,
+[lang='mr'] *,
+[lang='si'] *,
+[lang='ta'] *,
+[lang='th'] *,
+[lang='vi'] *,
+[lang='vu'] *,
+[lang='xct'] *,
 [lang='zh']
 {
     line-height: 1.6667
 }
-[lang='ev'] > *,
-[lang='my'] > *
+[lang='ev'] *,
+[lang='my'] *
 {
     line-height: 2
 }
