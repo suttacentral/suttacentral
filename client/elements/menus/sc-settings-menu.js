@@ -27,26 +27,6 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
         --accent-color: var(--sc-primary-accent-color);
       }
 
-      .paper-dialogue-container {
-        max-width: 720px;
-      }
-
-      .dialog-header {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-xl);
-        font-weight: 400;
-        line-height: 28px;
-        margin: 0;
-      }
-
-      #settingsbutton {
-        color: var(--sc-tertiary-text-color);
-      }
-
-      .dialog-section {
-        margin: var(--sc-size-md-larger) 0;
-      }
-
       .nerdy-row {
         font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
