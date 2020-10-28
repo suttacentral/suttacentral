@@ -29,7 +29,7 @@ export const typographyLegacyStyles = css`
     display: table-cell;
 
     width: 50%;
-    padding-right: 1em;
+    padding-right: 1rem;
 
     text-align: right;
 
@@ -39,7 +39,7 @@ export const typographyLegacyStyles = css`
 {
     display: table-cell;
 
-    padding-left: 1em;
+    padding-left: 1rem;
 
     text-align: left;
 }
@@ -47,7 +47,7 @@ export const typographyLegacyStyles = css`
 {
     position: absolute;
 
-    margin-top: .2em;
+    margin-top: .2rem;
 
     text-align: right;
 }
