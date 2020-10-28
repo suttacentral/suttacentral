@@ -463,7 +463,7 @@ class SCHomePage extends SCStaticPage {
                   ${_`Discourses`}
                 </div>
                 <div class="image-card-text">
-                  ${_`The Discourses record the Buddha’s teachings on meditation, morality, the nature of the world, and the path to freedom. These scriptures are our primary sources for the historical Buddha’s life and practice. They depict the Buddha and his immediate students in lively conversation with a diverse range of people as they question how to follow a spiritual path.`}
+                  ${_`The Buddha’s teachings on meditation, morality, the nature of the world, and the path to freedom. These scriptures are our primary sources for the historical Buddha’s life and practice. They depict the Buddha and his immediate students in lively conversation with a diverse range of people.`}
                 </div>
               </div>
               <div>
