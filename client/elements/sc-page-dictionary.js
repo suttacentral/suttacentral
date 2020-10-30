@@ -11,139 +11,123 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     return html`
     ${dictStyles}
     <style>
-.dictionary-results-container
-{
-  margin: 0 0 var(--sc-size-xxl) 0;
-    }
-.dictionary-results-main
-{
-  max-width: 720px;
-  margin: 0 auto;
-}
+      .dictionary-results-container {
+        margin: 0 0 var(--sc-size-xxl) 0;
+      }
 
-.dictionary-results-head
-{
-  display: flex;
+      .dictionary-results-main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
-  padding: 0;
+      .dictionary-results-head {
+        display: flex;
 
-  justify-content: space-between;
-}
+        padding: 0;
 
-h1
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-h1-md);
-  font-weight: 400;
-  line-height: 40px;
+        justify-content: space-between;
+      }
 
-  display: inline-block;
+      h1 {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-h1-md);
+        font-weight: 400;
+        line-height: 40px;
 
-  margin: 0 0 0 -2px;
+        display: inline-block;
 
-  color: var(--sc-secondary-text-color);
-}
+        margin: 0 0 0 -2px;
 
-.dictionary-results-term
-{
-  font-family: var(--sc-serif-font);
-  font-weight: bold;
+        color: var(--sc-secondary-text-color);
+      }
 
-  color: var(--sc-primary-accent-color);
-}
+      .dictionary-results-term {
+        font-family: var(--sc-serif-font);
+        font-weight: bold;
 
-.related-terms ul
-{
-  display: block;
+        color: var(--sc-primary-accent-color);
+      }
 
-  margin: 0;
-  padding: 0;
+      .related-terms ul {
+        display: block;
 
-  list-style: none;
-}
+        margin: 0;
+        padding: 0;
 
-.related-terms h3
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-s);
-  font-weight: bold;
+        list-style: none;
+      }
 
-  margin: 1em 0 0 0;
+      .related-terms h3 {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: bold;
 
-  color: var(--sc-secondary-text-color);
-}
+        margin: 1em 0 0 0;
 
-.dictionary-entries
-{
-  margin: var(--sc-size-xl) 0 var(--sc-size-md);
-}
+        color: var(--sc-secondary-text-color);
+      }
 
-.related-terms li
-{
-  display: inline-block;
+      .dictionary-entries {
+        margin: var(--sc-size-xl) 0 var(--sc-size-md);
+      }
 
-  margin: .5rem 1rem 0 0;
-  padding: 0;
-}
+      .related-terms li {
+        display: inline-block;
 
-.related-terms a
-{
-  display: inline-block;
+        margin: .5rem 1rem 0 0;
+        padding: 0;
+      }
 
-  text-decoration: none;
+      .related-terms a {
+        display: inline-block;
 
-  color: var(--sc-primary-accent-color);
-  border-bottom: 4px solid rgba(0,0,0,0);
-  border-radius: 4px;
-}
+        text-decoration: none;
 
-.related-terms a:hover
-{
-  text-decoration: underline;
+        color: var(--sc-primary-accent-color);
+        border-bottom: 4px solid rgba(0, 0, 0, 0);
+        border-radius: 4px;
+      }
 
-  color: var(--sc-primary-color);
-}
+      .related-terms a:hover {
+        text-decoration: underline;
 
-.related-terms i
-{
-  color: var(--sc-secondary-text-color);
-}
+        color: var(--sc-primary-color);
+      }
 
-.dictionary-source
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-s);
-  font-weight: bold;
+      .related-terms i {
+        color: var(--sc-secondary-text-color);
+      }
 
-  margin: var(--sc-size-md) 0;
+      .dictionary-source {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: bold;
 
-  color: var(--sc-secondary-text-color);
-}
+        margin: var(--sc-size-md) 0;
 
-.dictionary-book-entry
-{
-  border-bottom: var(--sc-border);
-}
+        color: var(--sc-secondary-text-color);
+      }
 
-.selected-terms-item > a
-{
-  font-weight: bold;
-}
+      .dictionary-book-entry {
+        border-bottom: var(--sc-border);
+      }
 
-.selected-terms-item > a:hover
-{
-  cursor: default;
-  text-decoration: none;
-}
+      .selected-terms-item>a {
+        font-weight: bold;
+      }
 
-.dictionary-results-term,
-.selected-terms-item > a,
-.selected-terms-item > a:hover,
-dfn
-{
-  background-color: var(--sc-primary-color-light-transparent);
-  color: var(--sc-primary-color-darkest);
-}
+      .selected-terms-item>a:hover {
+        cursor: default;
+        text-decoration: none;
+      }
+
+      .dictionary-results-term,
+      .selected-terms-item > a,
+      .selected-terms-item > a:hover,
+      dfn {
+        background-color: var(--sc-primary-color-light-transparent);
+        color: var(--sc-primary-color-darkest);
+      }
     </style>
 
     <div class="dictionary-results-container">
@@ -151,23 +135,21 @@ dfn
         <div class="dictionary-results-head">
           <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
         </div>
+
         <div class="dictionary-entries">
           ${this.dictionaryEntriesTemplate}
         </div>
 
-   
-          <div class="related-terms">
-            <h3>${this.localize('adjacentTerms')}</h3>
-            <ul class="near-terms">
-              ${this.dictionaryAdjacentTemplate}
-            </ul>
-            <h3>${this.localize('similarSpelling')}</h3>
-            <ul class="fuzzy-terms">
-              ${this.dictionarySimilarTemplate}
-            </ul>
-          </div>
-   
-
+        <div class="related-terms">
+          <h3>${this.localize('adjacentTerms')}</h3>
+          <ul class="near-terms">
+            ${this.dictionaryAdjacentTemplate}
+          </ul>
+          <h3>${this.localize('similarSpelling')}</h3>
+          <ul class="fuzzy-terms">
+            ${this.dictionarySimilarTemplate}
+          </ul>
+        </div>
       </main>
     </div>
     ${this._createMetaData()}
@@ -354,11 +336,6 @@ dfn
         }
       }
     }
-  }
-
-  // toggles the drawer on the right to show the related/similar items.
-  _toggleDrawer() {
-    this.shadowRoot.getElementById('drawer').toggle();
   }
 
   _createMetaData() {

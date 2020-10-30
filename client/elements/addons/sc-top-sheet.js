@@ -8,11 +8,12 @@ import '@material/mwc-switch';
 import '@material/mwc-button';
 
 import '../addons/sc-bouncing-loader';
+import '../addons/sc-toasts';
+
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
 
 class SCTopSheet extends LitLocalized(LitElement) {
-
   static get properties() {
     return {
       selectedTextView: { type: String },
@@ -230,7 +231,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
         position: relative;
       }
 
-      details{
+      details {
         background-color: var(--sc-secondary-background-color);
         position: absolute;
         margin: 0 0 0.5em 0;
@@ -240,7 +241,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
         box-sizing: border-box;
       }
 
-      details[open]{
+      details[open] {
         width: 340px;
         box-shadow: var(--sc-shadow-elevation-8dp);
         border: 1px solid var(--sc-border-color);
@@ -252,17 +253,17 @@ class SCTopSheet extends LitLocalized(LitElement) {
         color: var(--sc-secondary-text-color);
       }
 
-      summary{
+      summary {
         font-weight: 600;
         cursor: pointer;
         color: var(--sc-primary-text-color);
       }
 
-      .form-controls{
+      .form-controls {
         margin-top: 48px;
       }
 
-      .two-column{
+      .two-column {
         column-count: 2;
         margin-right: 48px;
       }
@@ -271,8 +272,8 @@ class SCTopSheet extends LitLocalized(LitElement) {
         column-count: 3;
         margin-right: 48px;
       }
-      mwc-formfield{
-      	height: 36px;
+      mwc-formfield {
+        height: 36px;
       }
 
       section::-webkit-scrollbar {
@@ -332,12 +333,21 @@ class SCTopSheet extends LitLocalized(LitElement) {
               <mwc-radio
                 name="textView"
                 value="${item.textView}"
+                data-type="${item.textViewLabel}"
                 ?checked="${this.selectedTextView === item.textView ? true : false}"
                 @change="${this._onTextViewChanged}">
               </mwc-radio>
             </mwc-formfield>
           `)}
-        </div></div>` : '';
+        </div>
+      </div>
+    ` : '';
+  }
+
+  _onTextViewChanged(e) {
+    this.selectedTextView = e.target.value;
+    this.actions.chooseSegmentedSuttaTextView(this.selectedTextView);
+    this._showToast(this.localizeEx('textViewEnabled', 'textView', this.localize(e.target.dataset.type)));
   }
 
   get paliLookupTemplate() {
@@ -357,7 +367,23 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-        </div></div>` : '';
+        </div>
+      </div>
+    ` : '';
+  }
+
+  _onPaliLookupChanged(e) {
+    this.paliLookupLanguage = e.target.dataset.language;
+    const targetLanguage = e.target.value.split('2')[1];
+    let isActive = this.paliLookupLanguage !== 'None';
+    this.actions.activatePaliLookup(isActive, targetLanguage, this.paliLookupLanguage);
+
+    if (isActive) {
+      const dictChangeMessage = this.localizeEx('lookupDictionaryEnabled', 'lookupDictionary', this.paliLookupLanguage);
+      this._showToast(dictChangeMessage);
+    } else {
+      this._showToast(this.localize('paliLookupDictionaryDisabled'));
+    }
   }
 
   get chineseLookupTemplate() {
@@ -377,7 +403,23 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-        </div></div>` : '';
+        </div>
+      </div>
+    ` : '';
+  }
+
+  _onChineseLookupChanged(e) {
+    this.chineseLookupLanguage = e.target.dataset.language;
+    const targetLanguage = e.target.value.split('2')[1];
+    let isActive = this.chineseLookupLanguage !== 'None';
+    this.actions.activateChineseLookup(isActive, targetLanguage, this.chineseLookupLanguage);
+
+    if (isActive) {
+      const dictChangeMessage = this.localizeEx('lookupDictionaryEnabled', 'lookupDictionary', this.chineseLookupLanguage);
+      this._showToast(dictChangeMessage);
+    } else {
+      this._showToast(this.localize('chineseLookupDictionaryDisabled'));
+    }
   }
 
   get paliScriptsTemplate() {
@@ -397,10 +439,19 @@ class SCTopSheet extends LitLocalized(LitElement) {
               </mwc-radio>
             </mwc-formfield>
           `)}
-        </div></div>` : '';
+        </div>
+      </div>
+    ` : '';
   }
 
-    get referenceDisplayTypeTemplate() {
+  _onPaliScriptChanged(e) {
+    this.paliScript = e.target.value;
+    this.actions.choosePaliTextScript(e.target.value);
+    const scriptChangeMessage = this.localizeEx('scriptChanged', 'paliScript', e.target.value);
+    this._showToast(scriptChangeMessage);
+  }
+
+  get referenceDisplayTypeTemplate() {
     return this.referenceDisplayTypeArray.length ? html`
       <div class="tools">
         <details><summary>${this.localize('reference')}</summary>
@@ -411,12 +462,26 @@ class SCTopSheet extends LitLocalized(LitElement) {
               <mwc-checkbox
                 name="referenceDisplayType"
                 value="${item.displayType}"
+                data-type="${item.displayTypeLabel}"
                 ?checked="${this.selectedReferenceDisplayType === item.displayType ? true : false}"
                 @change="${this._onReferenceDisplayTypeChanged}">
               </mwc-checkbox>
             </mwc-formfield>
           `)}
-        </div></div>` : '';
+        </div>
+      </div>
+    ` : '';
+  }
+
+  _onReferenceDisplayTypeChanged(e) {
+    this.selectedReferenceDisplayType = e.target.value;
+    this.actions.setReferenceDisplayType(this.selectedReferenceDisplayType);
+    if (this.selectedReferenceDisplayType === 'none') {
+      this._showToast(this.localize('textualInformationDisabled'));
+    } else {
+      let refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
+      this._showToast(this.localize(`referenceDisplayType_${refType}`) + ' ' + this.localize('textualInformationEnabled'));
+    }
   }
 
   get rememberSettingsTemplate() {
@@ -430,12 +495,19 @@ class SCTopSheet extends LitLocalized(LitElement) {
             @change="${this._onRememberSettingsChanged}">
           </mwc-switch>
         </div>
+      </div>
     `;
+  }
+
+  _onRememberSettingsChanged(e) {
+    localStorage.setItem('rememberTextSettings', e.target.checked.toString());
+    const msg = e.target.checked ? 'rememberSettingsEnabled' : 'rememberSettingsDisabled';
+    this._showToast(this.localize(msg));
   }
 
   get showHighlightingTemplate() {
     return html`
-        <div class="tools">
+      <div class="tools">
         <details><summary>${this.localize('showHighlighting')}</summary>
         <p>${this.localize('showHighlightingDescription')}</p></details>
         <div class="form-controls">
@@ -444,50 +516,20 @@ class SCTopSheet extends LitLocalized(LitElement) {
             @change="${this._onShowHighlightingChanged}">
           </mwc-switch>
         </div>
+      </div>
     `;
-  }
-
-  _onReferenceDisplayTypeChanged(e) {
-    this.selectedReferenceDisplayType = e.target.value;
-    this.actions.setReferenceDisplayType(this.selectedReferenceDisplayType);
-  }
-
-  _onNoteDisplayTypeChanged(e) {
-    this.selectedNoteDisplayType = e.target.value;
-    this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
-  }
-
-  _onTextViewChanged(e) {
-    this.selectedTextView = e.target.value;
-    this.actions.chooseSegmentedSuttaTextView(this.selectedTextView);
-  }
-
-  _onPaliLookupChanged(e) {
-    this.paliLookupLanguage = e.target.dataset.language;
-    const targetLanguage = e.target.value.split('2')[1];
-    let isActive = this.paliLookupLanguage !== 'None';
-    this.actions.activatePaliLookup(isActive, targetLanguage, this.paliLookupLanguage);
-  }
-
-  _onChineseLookupChanged(e) {
-    this.chineseLookupLanguage = e.target.dataset.language;
-    const targetLanguage = e.target.value.split('2')[1];
-    let isActive = this.chineseLookupLanguage !== 'None';
-    this.actions.activateChineseLookup(isActive, targetLanguage, this.chineseLookupLanguage);
-  }
-
-  _onPaliScriptChanged(e) {
-    this.paliScript = e.target.value;
-    this.actions.choosePaliTextScript(e.target.value);
-  }
-
-  _onRememberSettingsChanged(e) {
-    localStorage.setItem('rememberTextSettings', e.target.checked.toString());
   }
 
   _onShowHighlightingChanged(e) {
     this.showHighlighting = e.target.checked;
     this.actions.setShowHighlighting(e.target.checked);
+    let msg = this.showHighlighting ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
+    this._showToast(this.localize(msg));
+  }
+
+  _onNoteDisplayTypeChanged(e) {
+    this.selectedNoteDisplayType = e.target.value;
+    this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
   }
 
   show() {
@@ -496,6 +538,17 @@ class SCTopSheet extends LitLocalized(LitElement) {
 
   hide() {
     this.style.display = 'none';
+  }
+
+  _showToast(inputMessage) {
+    this.dispatchEvent(new CustomEvent('show-sc-toast', {
+      detail: {
+        toastType: 'info',
+        message: inputMessage
+      },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   get actions() {
