@@ -14,111 +14,124 @@ import { icons } from '../../img/sc-icons';
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
-      :host {
-        display: block;
-      
-        height: 40px;
-      
-        background-color: rgb(75, 74, 74);
-      }
-      
-      nav {
-        display: flex;
-        overflow-x: auto;
-        overflow-y: hidden;
-        flex-direction: row;
-      
-        box-sizing: border-box;
-        height: 40px;
-        padding: 0 calc(2% - 2px);
-      
-        white-space: nowrap;
-      
-        background-color: rgb(75, 74, 74);
-      
-        justify-content: space-between;
-      }
-      
-      ul {
-        display: flex;
+    :host
+{
+  display: block;
 
-        margin: 0;
-        padding: 0;
-      }
-      
-      li {
-        font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-xs);
-        font-weight: 500;
-      
-        display: flex;
-      
-        list-style-type: none;
-      
-        color: white;
-      
-        align-items: center;
-      }
-      
-      li a {
-        position: relative;
-      
-        display: flex;
-      
-        box-sizing: border-box;
-        height: 100%;
-        padding: 4px 2px 0;
-      
-        text-decoration: none;
-      
-        opacity: .8;
-        color: white;
-        border-bottom: 4px solid rgba(0, 0, 0, 0);
-      
-        align-items: center;
-      }
-      
-      li a:hover {
-        cursor: pointer;
-      
-        opacity: 1;
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
-      
-      li:last-child {
-        font-weight: 700;
-      
-        box-sizing: border-box;
-        height: 100%;
-        padding: 4px 2px 0;
-      
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
-      
-      li:last-child a:hover {
-        cursor: default;
-      
-        color: white;
-        border-bottom: none;
-      }
-      
-      nav li:last-child a {
-        cursor: default;
-      
-        opacity: 1;
-      }
-      
-      li:first-of-type {
-        margin-left: 0;
-      }
-      
-      mwc-icon {
-        color: var(--sc-disabled-text-color);
-      }
-      
-      morph-ripple {
-        --ripple-color: var(--sc-primary-color);
-      }
+  height: 48px;
+
+  background-color: rgb(75, 74, 74);
+}
+
+nav
+{
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-direction: row;
+
+  box-sizing: border-box;
+  height: 48px;
+
+  padding: 0 calc(2% - 2px);
+
+  white-space: nowrap;
+
+  background-color: rgb(75, 74, 74);
+
+  justify-content: space-between;
+}
+
+ul
+{
+  display: flex;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+li
+{
+  font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-xs);
+  font-weight: 500;
+
+  display: flex;
+
+  list-style-type: none;
+
+  color: white;
+
+  align-items: center;
+}
+
+li a
+{
+  position: relative;
+
+  display: flex;
+
+  box-sizing: border-box;
+  height: 100%;
+  padding: 4px 2px 0;
+
+  text-decoration: none;
+
+  opacity: .8;
+  color: white;
+  border-bottom: 4px solid rgba(0,0,0,0);
+
+  align-items: center;
+}
+
+li a:hover
+{
+  cursor: pointer;
+
+  opacity: 1;
+  border-bottom: 4px solid var(--sc-primary-color-light);
+}
+
+li:last-child
+{
+  font-weight: 700;
+
+  box-sizing: border-box;
+  padding: 4px 2px 0;
+
+  border-bottom: 4px solid var(--sc-primary-color-light);
+}
+
+li:last-child a:hover
+{
+  cursor: default;
+
+  color: white;
+  border-bottom: none;
+}
+
+nav li:last-child a
+{
+  cursor: default;
+
+  opacity: 1;
+}
+
+li:first-of-type
+{
+  margin-left: 0;
+}
+
+mwc-icon
+{
+  color: var(--sc-disabled-text-color);
+}
+
+morph-ripple 
+{
+   --ripple-color: var(--sc-primary-color);
+}
     `;
   }
 
