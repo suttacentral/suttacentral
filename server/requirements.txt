@@ -27,7 +27,7 @@ GitPython==2.1.11
 idna==2.7
 imagesize==1.1.0
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.10.1
 jsonschema==2.6.0
 langid==1.1.6
 lxml==4.2.5
