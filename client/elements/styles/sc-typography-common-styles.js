@@ -93,7 +93,7 @@ h6
 
 header
 {
-    margin-bottom: 4em;
+    margin-bottom: 4rem;
 
     text-align: center;
 
@@ -119,11 +119,6 @@ header h1
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: small-caps;
-}
-header + p,
-header + blockquote
-{
-    margin-top: 4em;
 }
 
 /* table of contents */
@@ -391,6 +386,11 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{
 .ref:hover
 {
     background-color: var(--sc-tertiary-background-color);
+}
+
+footer
+{
+display: none;
 }
 
 `

@@ -7,25 +7,25 @@ export const typographyI18nStyles = css`
 /* Firefox & Safari use the font-synthesis property to remove faux italics  or bold. 
   Note that vi is excluded from this list: it uses Roman font but qualifies as tall script due to the stacked diacriticals */
 
-[lang='ar'] > *,
-[lang='au'] > *,
-[lang='bn'] > *,
-[lang='ev'] > *,
-[lang='fa'] > *,
-[lang='he'] > *,
-[lang='hi'] > *,
-[lang='jpn'] > *,
-[lang='kln'] > *,
-[lang='ko'] > *,
-[lang='lzh'] > *,
-[lang='mr'] > *,
-[lang='my'] > *,
-[lang='si'] > *,
-[lang='ta'] > *,
-[lang='th'] > *,
-[lang='vu'] > *,
-[lang='xct'] > *,
-[lang='zh'] > *
+[lang='ar'] *,
+[lang='au'] *,
+[lang='bn'] *,
+[lang='ev'] *,
+[lang='fa'] *,
+[lang='he'] *,
+[lang='hi'] *,
+[lang='jpn'] *,
+[lang='kln'] *,
+[lang='ko'] *,
+[lang='lzh']  *,
+[lang='mr'] *,
+[lang='my'] *,
+[lang='si'] *,
+[lang='ta'] *,
+[lang='th'] *,
+[lang='vu'] *,
+[lang='xct'] *,
+[lang='zh'] *
 {
     font-style: normal;
 
@@ -36,29 +36,69 @@ export const typographyI18nStyles = css`
     font-variant-caps: normal;
 }
 
-[lang='ar'] > *,
-[lang='au'] > *,
-[lang='bn'] > *,
-[lang='fa'] > *,
-[lang='he'] > *,
-[lang='hi'] > *,
-[lang='jpn'] > *,
-[lang='kln'] > *,
-[lang='ko'] > *,
-[lang='lzh'] > *,
-[lang='mr'] > *,
-[lang='si'] > *,
-[lang='ta'] > *,
-[lang='th'] > *,
-[lang='vi'] > *,
-[lang='vu'] > *,
-[lang='xct'] > *,
+[lang='ar'] *,
+[lang='au'] *,
+[lang='bn'] *,
+[lang='fa'] *,
+[lang='he'] *,
+[lang='hi'] *,
+[lang='jpn'] *,
+[lang='kln'] *,
+[lang='ko'] *,
+[lang='lzh']  *,
+[lang='mr'] *,
+[lang='si'] *,
+[lang='ta'] *,
+[lang='th'] *,
+[lang='vi'] *,
+[lang='vu'] *,
+[lang='xct'] *,
 [lang='zh']
 {
     line-height: 1.6667
 }
-[lang='ev'] > *,
-[lang='my'] > *
+
+[lang='ar'] h1,
+[lang='au'] h1,
+[lang='bn'] h1,
+[lang='fa'] h1,
+[lang='he'] h1,
+[lang='hi'] h1,
+[lang='jpn'] h1,
+[lang='kln'] h1,
+[lang='ko'] h1,
+[lang='lzh']  h1,
+[lang='mr'] h1,
+[lang='si'] h1,
+[lang='ta'] h1,
+[lang='th'] h1,
+[lang='vi'] h1,
+[lang='vu'] h1,
+[lang='xct'] h1,
+[lang='zh'] h1,
+[lang='ar'] h2,
+[lang='au'] h2,
+[lang='bn'] h2,
+[lang='fa'] h2,
+[lang='he'] h2,
+[lang='hi'] h2,
+[lang='jpn'] h2,
+[lang='kln'] h2,
+[lang='ko'] h2,
+[lang='lzh']  h2,
+[lang='mr'] h2,
+[lang='si'] h2,
+[lang='ta'] h2,
+[lang='th'] h2,
+[lang='vi'] h2,
+[lang='vu'] h2,
+[lang='xct'] h2,
+[lang='zh'] h2
+{
+    font-weight: bold
+}
+[lang='ev'] *,
+[lang='my'] *
 {
     line-height: 2
 }

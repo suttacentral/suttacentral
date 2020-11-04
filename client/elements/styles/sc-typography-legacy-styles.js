@@ -29,7 +29,7 @@ export const typographyLegacyStyles = css`
     display: table-cell;
 
     width: 50%;
-    padding-right: 1em;
+    padding-right: 1rem;
 
     text-align: right;
 
@@ -39,7 +39,7 @@ export const typographyLegacyStyles = css`
 {
     display: table-cell;
 
-    padding-left: 1em;
+    padding-left: 1rem;
 
     text-align: left;
 }
@@ -47,23 +47,37 @@ export const typographyLegacyStyles = css`
 {
     position: absolute;
 
-    margin-top: .2em;
+    margin-top: .2rem;
 
     text-align: right;
 }
 
 /* descriptive classes */
 
+.xu
+{
+    font-size: var(--sc-dense-font-size-s);
+
+    padding: 1rem;
+    margin-bottom: 4rem;
+
+    color: var(--sc-secondary-text-color);
+    border: var(--sc-border);
+    border-radius: var(--sc-size-s);
+    background-color: var(--sc-tertiary-background-color);
+}
+
 .suttainfo
 {
     display: inline-block;
 
-    padding: 1em;
+    padding: 1rem;
+    margin-bottom: 2rem;
 
     color: var(--sc-secondary-text-color);
     border: var(--sc-border);
-    border-radius: var(--sc-size-xxs);
-    background: var(--sc-primary-background-color);
+    border-radius: var(--sc-size-s);
+    background-color: var(--sc-tertiary-background-color);
 }
 .suppliedmetre
 {
