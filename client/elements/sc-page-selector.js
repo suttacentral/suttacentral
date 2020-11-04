@@ -5,8 +5,7 @@ import { Localized } from './addons/localization-mixin.js';
 
 import './text/sc-segmented-text.js';
 import './text/sc-simple-text.js';
-import { throttle } from 'throttle-debounce';
-
+import './suttaplex/sc-suttaplex-list.js';
 import './navigation/sc-navigation.js';
 
 /*
@@ -309,9 +308,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     if (this.shouldShowStaticPage) {
       import('./sc-static-page-selector.js');
     }
-    else if (this.shouldShowSuttaplexListPage) {
-      import('./suttaplex/sc-suttaplex-list.js');
-    }
+    // else if (this.shouldShowSuttaplexListPage) {
+    //   import('./suttaplex/sc-suttaplex-list.js');
+    // }
     else if (this.shouldShowSearchPage) {
       import('./sc-page-search.js');
     }
