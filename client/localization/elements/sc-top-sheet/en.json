@@ -50,7 +50,7 @@
       "noteDisplayType_Asterisk": "Tooltip on asterisk",
       "noteDisplayType_Sidenotes": "Display as sidenotes",
       "textView": "Original text and translation",
-      "textViewDescription": "Some texts on SuttaCentral are “segmented”; the original text and translation are matched line by line. (<a href='' title='link to page listing segmented texts' class='tools'>See list of segmented texts.</a>)For such texts, see both root text and translation.",
+      "textViewDescription": "Some texts on SuttaCentral are “segmented”; the original text and translation are matched line by line. For such texts, see both root text and translation.",
       "showHighlighting": "Show highlighting",
       "showHighlightingDescription": "Where applicable, highlight the text to show extra details about the structure.",
       "showHighlightingEnabled": "Show highlighting is now enabled.",

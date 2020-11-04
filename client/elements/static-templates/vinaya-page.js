@@ -19,7 +19,7 @@ class SCVinaya extends SCStaticPage {
       <main>
         <section>
           <h1>
-            ${_`The Monastic Law`}
+            ${_`Monastic Law`}
           </h1>
           <p class="byline">
             ${_`Bhikkhu Brahmali`}

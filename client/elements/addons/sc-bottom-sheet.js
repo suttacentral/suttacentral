@@ -28,7 +28,6 @@ export class SCBottomSheet extends LitElement {
 
   static get styles() {
     return css`
-
 :host
 {
     font-family: var(--sc-sans-font);
@@ -71,14 +70,17 @@ header div
 {
     display: flex;
     flex-direction: row;
+
     align-items: center;
 }
 
 details
 {
-    font-size: 14px;
+    font-size: var(--sc-skolar-font-size-s);
 
     z-index: 1;
+
+    max-width: 720px;
 
     color: var(--sc-primary-background-color);
     background-color: var(--sc-secondary-text-color);
@@ -98,22 +100,52 @@ details a
     text-decoration-color: var(--sc-primary-color);
 }
 
-details[open]
-{
-    position: absolute;
-    top: -300px;
-    right: 10vw;
-
-    width: 80vw;
-
-    box-shadow: var(--sc-shadow-elevation-8dp);
-
-    border-radius: 4px
-}
-
 summary
 {
     white-space: nowrap;
+}
+
+details > summary
+{
+    position: relative;
+
+    display: flex;
+
+    padding: 2px 8px;
+
+    list-style: none;
+
+    cursor: pointer;
+}
+
+details > summary::-webkit-details-marker
+{
+    display: none;
+}
+
+details .help-display-inner
+{
+    position: absolute;
+    z-index: 1000;
+    right: 3vw;
+    bottom: 48px;
+
+    max-width: 720px;
+    margin-left: 3vw;
+
+    border-radius: 4px;
+    background-color: var(--sc-secondary-text-color);
+    box-shadow: var(--sc-shadow-elevation-8dp);
+}
+
+.bottom-sheet-icon-label
+{
+    font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
+    font-weight: 500;
+
+    margin-left: 4px;
+
+    align-self: center;
 }
 
 header button
@@ -126,7 +158,9 @@ header button
 
 #btnClose
 {
-    padding: 8px 16px;
+    display: flex;
+
+    padding: 2px 8px;
 
     cursor: pointer;
 
@@ -266,6 +300,7 @@ footer div button
     }
 }
 
+
 `;
   }
 
@@ -275,8 +310,12 @@ footer div button
         <header>
           <dfn>${this.currentDefine}</dfn>
             <div>
-              <details>
-                <summary>Help</summary>
+<details class="help-display">
+    <summary>
+    <svg aria-labelledby="help-display-svg-title" role="img" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><title id="help-display-svg-title">Help</title><path d="M0 0h24v24H0z" fill="none"/><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+
+    <span class='bottom-sheet-icon-label'>Help</span></summary>
+    <div class="help-display-inner">           
                   <ul>
                     <li>Source: <cite>New Concise Pali-English Dictionary</cite>, compiled by SuttaCentral from Buddhadatta’s <cite>Concise Pali-English Dictionary</cite>, updated and corrected from Margaret Cone’s <cite>Dictionary of Pali</cite>.</li>
                     <li>Pali words are analyzed by machine and results are not always accurate.</li>
@@ -289,8 +328,9 @@ footer div button
                       If this doesn’t work for you, check the <a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>HTML access key for your browser</a>.
                     </li>
                 </ul>
+                </div>
               </details>
-              <button id="btnClose" @click=${this.hide}>✕</button>
+              <button id="btnClose" @click=${this.hide}><svg   aria-labelledby="close-display-svg-title" role="img" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none" opacity=".87"/><title id="close-display-svg-title">Close</title><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.59-13L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg><span class='bottom-sheet-icon-label'>Close</span></summary></button>
 
             </div>
         </header>
