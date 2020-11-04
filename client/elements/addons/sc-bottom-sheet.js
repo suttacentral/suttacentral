@@ -76,7 +76,7 @@ header div
 
 details
 {
-    font-size: 14px;
+    font-size: var(--sc-skolar-font-size-s);
 
     z-index: 1;
 
@@ -140,7 +140,7 @@ details .help-display-inner
 
 .bottom-sheet-icon-label
 {
-    font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);;
+    font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
     font-weight: 500;
 
     margin-left: 4px;
