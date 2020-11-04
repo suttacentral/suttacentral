@@ -17,7 +17,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       :host {
         display: block;
       
-        height: 40px;
+        height: 48px;
       
         background-color: rgb(75, 74, 74);
       }
@@ -29,7 +29,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         flex-direction: row;
       
         box-sizing: border-box;
-        height: 40px;
+        height: 48px;
         padding: 0 calc(2% - 2px);
       
         white-space: nowrap;
