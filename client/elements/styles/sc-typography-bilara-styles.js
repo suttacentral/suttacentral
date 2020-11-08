@@ -4,6 +4,12 @@ export const typographyBilaraStyles = css`
 
 /* styles unique to bilara texts */
 
+/* root texts */
+
+.root {
+	font-family: var(--sc-sans-font);
+}
+
 /* lookup */
 
 .spanFocused
@@ -67,6 +73,7 @@ article
 }
 
 /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
+
 .comment[data-tooltip]::after,
 .variant[data-tooltip]::after
 {

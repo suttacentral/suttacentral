@@ -2,7 +2,7 @@
   "pl": {
     "viewTextualInfo": "Pokaż dodatkowe informacje",
     "displaysInfo": "Pokazuje informacje, takie jak referencje do wolumenów/stron, odmienne czytania tekstów, itp.",
-    "viewOriginal": "Pokaż oryginalny tekst i tłumaczenie",
+    "viewRoot": "Pokaż oryginalny tekst i tłumaczenie",
     "onlyWorks": "Ta opcja działa tylko z niektórymi tekstami, między innymi z tłumaczeniami autorstwa Sujato oraz Brahmali.",
     "none": "Wyłączone",
     "sideBySide": "Obok",

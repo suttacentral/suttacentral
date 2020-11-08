@@ -215,7 +215,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
         border-bottom: 1px solid #ccc;
         width: 100%;
         display: grid;
-        grid-template-columns: 360px 360px 360px 360px 360px 720px 360px;
+        grid-template-columns: 240px 360px 240px 240px 240px 720px 360px;
         height: 260px;
         overflow-y: scroll;
         overflow-x: scroll;
@@ -325,7 +325,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
   get textViewTemplate() {
     return this.textViewArray.length ? html`
       <div class="tools">
-        <details><summary>${this.localize('viewOriginal')}</summary>
+        <details><summary>${this.localize('viewRoot')}</summary>
         <p>${unsafeHTML(this.localize('textViewDescription'))}</p></details>
         <div class="form-controls">
           ${this.textViewArray.map(item => html`
@@ -427,7 +427,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('changePaliScript')}</summary>
         <p>${this.localize('changePaliScriptDescription')}</p></details>
-        <div class="form-controls two-column">
+        <div class="form-controls">
           ${this.paliScripts.map(script => html`
             <mwc-formfield label="${script.language}">
               <mwc-radio 
