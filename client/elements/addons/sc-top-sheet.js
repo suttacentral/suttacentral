@@ -205,7 +205,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
     return css`
       :host {
         display: none;
-        --mdc-theme-secondary: var(--sc-primary-color);
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
         --mdc-typography-font-family: var(--sc-sans-font);
         --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
         --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
@@ -215,11 +215,11 @@ class SCTopSheet extends LitLocalized(LitElement) {
         border-bottom: 1px solid #ccc;
         width: 100%;
         display: grid;
-        grid-template-columns: 240px 360px 240px 240px 240px 720px 360px;
+        grid-template-columns: 240px 360px 240px 240px 240px 840px 360px;
         height: 260px;
         overflow-y: scroll;
         overflow-x: scroll;
-        padding: 16px 16px 8px 16px;
+        padding: 8px 16px 8px 16px;
         z-index: 1000;
         font-family: var(--sc-sans-font);
         position: absolute;
@@ -231,50 +231,61 @@ class SCTopSheet extends LitLocalized(LitElement) {
         position: relative;
       }
 
-      details {
-        background-color: var(--sc-secondary-background-color);
-        position: absolute;
-        margin: 0 0 0.5em 0;
-        padding: 8px;
-        border-radius: 2px;
-        z-index: 10;
-        box-sizing: border-box;
-      }
+      details {  
+        
+        position: relative;
+        margin: 0px 0px 0px 4px;
+        
 
-      details[open] {
-        width: 340px;
-        box-shadow: var(--sc-shadow-elevation-8dp);
-        border: 1px solid var(--sc-border-color);
+        box-sizing: border-box;
       }
 
       details p {
         padding: 8px;
-        margin: 0.5em 0 0 0;
+        margin: 4px 0 0 0;
+        background-color: var(--sc-secondary-background-color);
+                position: absolute;
         color: var(--sc-secondary-text-color);
+         box-shadow: var(--sc-shadow-elevation-8dp);
+        border: 1px solid var(--sc-border-color);
+        border-radius: 8px;
+                z-index: 10;
       }
 
       summary {
         font-weight: 600;
         cursor: pointer;
         color: var(--sc-primary-text-color);
+                background-color: var(--sc-secondary-background-color);
+                display: flex;
+  align-items: baseline;
+  padding: 8px;
+  outline-color: var(--sc-disabled-text-color);
+
+  
       }
 
-      .form-controls {
-        margin-top: 48px;
-      }
+      summary::-webkit-details-marker, summary::marker {
+  color: var(--sc-disabled-text-color);
+        mwc-switch {
+padding: 12px
+        }
+}
+
+
 
       .two-column {
         column-count: 2;
         margin-right: 48px;
       }
 
-      .three-column{
-        column-count: 3;
+      .four-column{
+        column-count: 4;
         margin-right: 48px;
       }
-      mwc-formfield {
+      /*mwc-formfield {
         height: 36px;
-      }
+      }*/
 
       section::-webkit-scrollbar {
         height: 10px;
@@ -285,7 +296,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       }
       
       section::-webkit-scrollbar-thumb {
-        background: var(--sc-primary-color);
+        background: var(--sc-disabled-text-color);
       }
     `;
   }
@@ -294,7 +305,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
     return html`
       <style>
         :host {
-          --mdc-theme-secondary: var(--sc-primary-color);
+          --mdc-theme-secondary: var(--sc-secondary-color);
         }
 
         section {
@@ -302,9 +313,11 @@ class SCTopSheet extends LitLocalized(LitElement) {
         }
 
         mwc-formfield {
-          line-height: 2;
-          color: var(--sc-tertiary-text-color);
           display: block
+        }
+
+        mwc-switch {
+padding: 12px
         }
       </style>
       <div class="container">
@@ -456,7 +469,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('reference')}</summary>
         <p>${this.localize('referenceDescription')}</p></details>
-        <div class="form-controls three-column">
+        <div class="form-controls four-column">
           ${this.referenceDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
               <mwc-checkbox
