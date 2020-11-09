@@ -264,7 +264,7 @@ details p
     z-index: 10;
     
     max-width: 360px;
-    margin: 0;
+    margin: 4px 0 0 0;
     padding: 8px 12px;
 
     color: var(--sc-primary-text-color);
