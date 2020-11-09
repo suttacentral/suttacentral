@@ -222,11 +222,10 @@ section
 
     display: grid;
     overflow-x: scroll;
-    overflow-y: scroll;
+    overflow-y: none;
 
     width: 100%;
-    height: 260px;
-    padding: 0 16px;
+    padding: 0;
 
     border-bottom: 1px solid #ccc;
     background-color: var(--sc-secondary-background-color);
@@ -237,11 +236,19 @@ section
 
 .tools
 {
-    position: relative;
-
     padding: 8px;
 
     border-right: 1px solid var(--sc-border-color);
+}
+
+.tools:first-of-type 
+{
+    margin-left: 8px;
+}
+
+.tools:last-of-type 
+{
+    border-right: none;
 }
 
 details
@@ -278,7 +285,7 @@ summary
     cursor: pointer;
 
     color: var(--sc-primary-text-color);
-    outline-color: var(--sc-disabled-text-color);
+    outline-color: var(--sc-border-color);
 
     align-items: baseline;
 }
