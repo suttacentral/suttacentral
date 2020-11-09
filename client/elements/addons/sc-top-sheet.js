@@ -210,7 +210,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
     --mdc-theme-secondary: var(--sc-primary-accent-color);
     --mdc-typography-font-family: var(--sc-sans-font);
     --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-    --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
 }
 
 section
@@ -263,14 +262,15 @@ details p
 {
     position: absolute;
     z-index: 10;
+    
+    max-width: 360px;
+    margin: 0;
+    padding: 8px 12px;
 
-    margin: 4px 0 0 0;
-    padding: 8px;
-
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-primary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
-    background-color: var(--sc-secondary-background-color);
+    background-color: var(--sc-tertiary-background-color);
     box-shadow: var(--sc-shadow-elevation-8dp);
 }
 
@@ -317,6 +317,18 @@ mwc-formfield
 mwc-switch
 {
     padding: 12px;
+
+   --mdc-theme-surface: var(--sc-tertiary-background-color);
+}
+
+mwc-checkbox
+{
+   --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+}
+
+mwc-radio
+{
+   --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
 }
 
 section::-webkit-scrollbar
