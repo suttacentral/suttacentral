@@ -248,20 +248,20 @@ footer div
     border-left: 1px solid var(--sc-border-color);
 }
 
-footer div button
+footer button
 {
     font-size: 2em;
 
     width: 100%;
     height: 100%;
-    /* vertical-align: top; */
     padding-bottom: 10px;
 
     cursor: pointer;
 
     color: var(--sc-disabled-text-color);
     border: none;
-    background: none;;
+    outline: none;
+    background: none;
 }
 
 #btnNext
@@ -271,7 +271,7 @@ footer div button
 
   morph-ripple 
 {
-    --ripple-color: var(--sc-primary-color);
+    --ripple-color: var(--sc-disabled-text-color);
 }
 
 @keyframes bottomSheetShow
