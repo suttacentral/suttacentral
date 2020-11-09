@@ -229,7 +229,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       .tools {
         padding: 8px;
         position: relative;
-        border-right: 1px solid var(--sc-disabled-text-color);
+        border-right: 1px solid var(--sc-border-color);
       }
 
       details {  
@@ -321,7 +321,6 @@ padding: 12px
 padding: 12px
         }
       </style>
-      <div class="container">
         <section>
           ${this.noteDisplayTypeTemplate}
           ${this.textViewTemplate}
@@ -332,7 +331,6 @@ padding: 12px
           ${this.referenceDisplayTypeTemplate}
           ${this.rememberSettingsTemplate}
         </section>
-      </div>
     `;
   }
   
