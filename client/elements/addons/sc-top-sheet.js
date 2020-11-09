@@ -215,11 +215,11 @@ class SCTopSheet extends LitLocalized(LitElement) {
         border-bottom: 1px solid #ccc;
         width: 100%;
         display: grid;
-        grid-template-columns: 240px 360px 240px 240px 240px 840px 360px;
+        grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
         height: 260px;
         overflow-y: scroll;
         overflow-x: scroll;
-        padding: 8px 16px 8px 16px;
+        padding: 0 16px;
         z-index: 1000;
         font-family: var(--sc-sans-font);
         position: absolute;
@@ -256,7 +256,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
         font-weight: 600;
         cursor: pointer;
         color: var(--sc-primary-text-color);
-                background-color: var(--sc-secondary-background-color);
                 display: flex;
   align-items: baseline;
   padding: 8px;
@@ -276,16 +275,17 @@ padding: 12px
 
       .two-column {
         column-count: 2;
-        margin-right: 48px;
+        margin-right: 8px;
       }
 
       .four-column{
         column-count: 4;
-        margin-right: 48px;
+        margin-right: 8px;
       }
-      /*mwc-formfield {
-        height: 36px;
-      }*/
+
+.tools:nth-child(even) {
+  background: var(--sc-tertiary-background-color);
+}
 
       section::-webkit-scrollbar {
         height: 10px;
