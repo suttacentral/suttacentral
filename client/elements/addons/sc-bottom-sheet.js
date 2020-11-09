@@ -231,7 +231,7 @@ footer
     height: 48px;
 
     border-top: 1px solid rgba(0, 0, 0, .12);
-    background-color: var(--sc-secondary-background-color);
+    background-color: var(--sc-tertiary-background-color);
 }
 
 footer div

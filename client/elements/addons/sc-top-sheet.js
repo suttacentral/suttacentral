@@ -229,6 +229,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       .tools {
         padding: 8px;
         position: relative;
+        border-right: 1px solid var(--sc-disabled-text-color);
       }
 
       details {  
