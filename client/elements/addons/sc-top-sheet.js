@@ -203,124 +203,135 @@ class SCTopSheet extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-      :host {
-        display: none;
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
-      }
+  :host 
+  {
+    display: none;
 
-      section {
-        border-bottom: 1px solid #ccc;
-        width: 100%;
-        display: grid;
-        grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
-        height: 260px;
-        overflow-y: scroll;
-        overflow-x: scroll;
-        padding: 0 16px;
-        z-index: 1000;
-        font-family: var(--sc-sans-font);
-        position: absolute;
-        box-shadow: var(--sc-shadow-elevation-4dp)
-      }
-
-      .tools {
-        padding: 8px;
-        position: relative;
-        border-right: 1px solid var(--sc-border-color);
-      }
-
-      details {  
-        
-        position: relative;
-        margin: 0px 0px 0px 4px;
-        
-
-        box-sizing: border-box;
-      }
-
-      details p {
-        padding: 8px;
-        margin: 4px 0 0 0;
-        background-color: var(--sc-secondary-background-color);
-                position: absolute;
-        color: var(--sc-secondary-text-color);
-         box-shadow: var(--sc-shadow-elevation-8dp);
-        border: 1px solid var(--sc-border-color);
-        border-radius: 8px;
-                z-index: 10;
-      }
-
-      summary {
-        font-weight: 600;
-        cursor: pointer;
-        color: var(--sc-primary-text-color);
-                display: flex;
-  align-items: baseline;
-  padding: 8px;
-  outline-color: var(--sc-disabled-text-color);
-
-  
-      }
-
-      summary::-webkit-details-marker, summary::marker {
-  color: var(--sc-disabled-text-color);
-        mwc-switch {
-padding: 12px
-        }
+    --mdc-theme-secondary: var(--sc-primary-accent-color);
+    --mdc-typography-font-family: var(--sc-sans-font);
+    --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+    --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
 }
 
+section
+{
+    font-family: var(--sc-sans-font);
 
+    position: absolute;
+    z-index: 1000;
 
-      .two-column {
-        column-count: 2;
-        margin-right: 8px;
-      }
+    display: grid;
+    overflow-x: scroll;
+    overflow-y: scroll;
 
-      .four-column{
-        column-count: 4;
-        margin-right: 8px;
-      }
+    width: 100%;
+    height: 260px;
+    padding: 0 16px;
 
-.tools:nth-child(even) {
-  background: var(--sc-tertiary-background-color);
+    border-bottom: 1px solid #ccc;
+    background-color: var(--sc-secondary-background-color);
+    box-shadow: var(--sc-shadow-elevation-4dp);
+
+    grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
 }
 
-      section::-webkit-scrollbar {
-        height: 10px;
-      }
-      
-      section::-webkit-scrollbar-track {
-        background: #ccc;
-      }
-      
-      section::-webkit-scrollbar-thumb {
-        background: var(--sc-disabled-text-color);
-      }
+.tools
+{
+    position: relative;
+
+    padding: 8px;
+
+    border-right: 1px solid var(--sc-border-color);
+}
+
+details
+{
+    position: relative;
+
+    box-sizing: border-box;
+    margin: 0 0 0 4px;
+}
+
+details p
+{
+    position: absolute;
+    z-index: 10;
+
+    margin: 4px 0 0 0;
+    padding: 8px;
+
+    color: var(--sc-secondary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-secondary-background-color);
+    box-shadow: var(--sc-shadow-elevation-8dp);
+}
+
+summary
+{
+    font-weight: 600;
+
+    display: flex;
+
+    padding: 8px;
+
+    cursor: pointer;
+
+    color: var(--sc-primary-text-color);
+    outline-color: var(--sc-disabled-text-color);
+
+    align-items: baseline;
+}
+
+summary::-webkit-details-marker
+{
+    color: var(--sc-disabled-text-color);
+}
+
+mwc-formfield
+{
+    display: block;
+}
+
+.two-column
+{
+    margin-right: 8px;
+
+    column-count: 2;
+}
+
+.four-column
+{
+    margin-right: 8px;
+
+    column-count: 4;
+}
+
+mwc-switch
+{
+    padding: 12px;
+}
+
+section::-webkit-scrollbar
+{
+    height: 10px;
+}
+
+section::-webkit-scrollbar-track
+{
+    background: #ccc;
+}
+
+section::-webkit-scrollbar-thumb
+{
+    background: var(--sc-disabled-text-color);
+}
+
     `;
   }
 
   render() {
     return html`
-      <style>
-        :host {
-          --mdc-theme-secondary: var(--sc-secondary-color);
-        }
-
-        section {
-          background-color: var(--sc-secondary-background-color);
-        }
-
-        mwc-formfield {
-          display: block
-        }
-
-        mwc-switch {
-padding: 12px
-        }
-      </style>
         <section>
           ${this.noteDisplayTypeTemplate}
           ${this.textViewTemplate}
