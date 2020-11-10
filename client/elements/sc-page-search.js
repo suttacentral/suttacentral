@@ -38,6 +38,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
   color: var(--sc-primary-text-color);
 }
 
+h2{
+  line-height: 1.25
+}
+
 #search_result_list
 {
   padding: var(--sc-size-xl) 0 var(--sc-size-md);
@@ -382,6 +386,8 @@ p + ul
 
   get searchResultTemplate() {
     return !this.loadingResults ? html`
+    <script async src="https://cse.google.com/cse.js?cx=d40c5dc49b8b9d391"></script>
+<div class="gcse-search"></div>
       <div class="search-result-head">
         <h1 class="search-result-header">
           <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>

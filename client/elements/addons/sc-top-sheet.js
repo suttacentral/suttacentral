@@ -203,111 +203,154 @@ class SCTopSheet extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-      :host {
-        display: none;
-        --mdc-theme-secondary: var(--sc-primary-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
-      }
+  :host 
+  {
+    display: none;
 
-      section {
-        border-bottom: 1px solid #ccc;
-        width: 100%;
-        display: grid;
-        grid-template-columns: 360px 360px 360px 360px 360px 720px 360px;
-        height: 260px;
-        overflow-y: scroll;
-        overflow-x: scroll;
-        padding: 16px 16px 8px 16px;
-        z-index: 1000;
-        font-family: var(--sc-sans-font);
-        position: absolute;
-        box-shadow: var(--sc-shadow-elevation-4dp)
-      }
+    --mdc-theme-secondary: var(--sc-primary-accent-color);
+    --mdc-typography-font-family: var(--sc-sans-font);
+    --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+}
 
-      .tools {
-        padding: 8px;
-        position: relative;
-      }
+section
+{
+    font-family: var(--sc-sans-font);
 
-      details {
-        background-color: var(--sc-secondary-background-color);
-        position: absolute;
-        margin: 0 0 0.5em 0;
-        padding: 8px;
-        border-radius: 2px;
-        z-index: 10;
-        box-sizing: border-box;
-      }
+    position: absolute;
+    z-index: 1000;
 
-      details[open] {
-        width: 340px;
-        box-shadow: var(--sc-shadow-elevation-8dp);
-        border: 1px solid var(--sc-border-color);
-      }
+    display: grid;
+    overflow-x: scroll;
+    overflow-y: none;
 
-      details p {
-        padding: 8px;
-        margin: 0.5em 0 0 0;
-        color: var(--sc-secondary-text-color);
-      }
+    width: 100%;
+    padding: 0;
 
-      summary {
-        font-weight: 600;
-        cursor: pointer;
-        color: var(--sc-primary-text-color);
-      }
+    border-bottom: 1px solid #ccc;
+    background-color: var(--sc-secondary-background-color);
+    box-shadow: var(--sc-shadow-elevation-4dp);
 
-      .form-controls {
-        margin-top: 48px;
-      }
+    grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
+}
 
-      .two-column {
-        column-count: 2;
-        margin-right: 48px;
-      }
+.tools
+{
+    padding: 8px;
 
-      .three-column{
-        column-count: 3;
-        margin-right: 48px;
-      }
-      mwc-formfield {
-        height: 36px;
-      }
+    border-right: 1px solid var(--sc-border-color);
+}
 
-      section::-webkit-scrollbar {
-        height: 10px;
-      }
-      
-      section::-webkit-scrollbar-track {
-        background: #ccc;
-      }
-      
-      section::-webkit-scrollbar-thumb {
-        background: var(--sc-primary-color);
-      }
+.tools:first-of-type 
+{
+    margin-left: 8px;
+}
+
+.tools:last-of-type 
+{
+    border-right: none;
+}
+
+details
+{
+    position: relative;
+
+    box-sizing: border-box;
+    margin: 0 0 0 4px;
+}
+
+details p
+{
+    position: absolute;
+    z-index: 10;
+    
+    max-width: 360px;
+    margin: 4px 0 0 0;
+    padding: 8px 12px;
+
+    color: var(--sc-primary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-tertiary-background-color);
+    box-shadow: var(--sc-shadow-elevation-8dp);
+}
+
+summary
+{
+    font-weight: 600;
+
+    display: flex;
+
+    padding: 8px;
+
+    cursor: pointer;
+
+    color: var(--sc-primary-text-color);
+    outline-color: var(--sc-border-color);
+
+    align-items: baseline;
+}
+
+summary::-webkit-details-marker
+{
+    color: var(--sc-disabled-text-color);
+}
+
+mwc-formfield
+{
+    display: block;
+}
+
+.two-column
+{
+    margin-right: 8px;
+
+    column-count: 2;
+}
+
+.four-column
+{
+    margin-right: 8px;
+
+    column-count: 4;
+}
+
+mwc-switch
+{
+    padding: 12px;
+
+   --mdc-theme-surface: var(--sc-tertiary-background-color);
+}
+
+mwc-checkbox
+{
+   --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+}
+
+mwc-radio
+{
+   --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
+}
+
+section::-webkit-scrollbar
+{
+    height: 10px;
+}
+
+section::-webkit-scrollbar-track
+{
+    background: #ccc;
+}
+
+section::-webkit-scrollbar-thumb
+{
+    background: var(--sc-disabled-text-color);
+}
+
     `;
   }
 
   render() {
     return html`
-      <style>
-        :host {
-          --mdc-theme-secondary: var(--sc-primary-color);
-        }
-
-        section {
-          background-color: var(--sc-secondary-background-color);
-        }
-
-        mwc-formfield {
-          line-height: 2;
-          color: var(--sc-tertiary-text-color);
-          display: block
-        }
-      </style>
-      <div class="container">
         <section>
           ${this.noteDisplayTypeTemplate}
           ${this.textViewTemplate}
@@ -318,14 +361,13 @@ class SCTopSheet extends LitLocalized(LitElement) {
           ${this.referenceDisplayTypeTemplate}
           ${this.rememberSettingsTemplate}
         </section>
-      </div>
     `;
   }
   
   get textViewTemplate() {
     return this.textViewArray.length ? html`
       <div class="tools">
-        <details><summary>${this.localize('viewOriginal')}</summary>
+        <details><summary>${this.localize('viewRoot')}</summary>
         <p>${unsafeHTML(this.localize('textViewDescription'))}</p></details>
         <div class="form-controls">
           ${this.textViewArray.map(item => html`
@@ -427,7 +469,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('changePaliScript')}</summary>
         <p>${this.localize('changePaliScriptDescription')}</p></details>
-        <div class="form-controls two-column">
+        <div class="form-controls">
           ${this.paliScripts.map(script => html`
             <mwc-formfield label="${script.language}">
               <mwc-radio 
@@ -456,7 +498,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
       <div class="tools">
         <details><summary>${this.localize('reference')}</summary>
         <p>${this.localize('referenceDescription')}</p></details>
-        <div class="form-controls three-column">
+        <div class="form-controls four-column">
           ${this.referenceDisplayTypeArray.map(item => html`
             <mwc-formfield label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}">
               <mwc-checkbox

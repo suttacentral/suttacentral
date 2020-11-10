@@ -139,6 +139,7 @@ li a:visited
 .generalTitle span
 {
     font-size: calc(20px * var(--sc-skolar-font-scale));
+    font-family: "Skolar Sans PE Condensed", var(--sc-sans-font), var(--sc-traditional-chinese-font);
 }
 @media print
 {

@@ -28,6 +28,7 @@ export const navigationNormaModelStyles = html`
 
       cursor: pointer;
       transition: box-shadow 200ms ease-out;
+      transform: translateY(0px) scale(1);
 
       border-radius: var(--sc-size-sm);
       background-color: var(--sc-secondary-background-color);
@@ -56,6 +57,7 @@ export const navigationNormaModelStyles = html`
       z-index: 10;
 
       transition: all 200ms ease-out;
+      transform: translateY(-1px) scale(1.005);
 
       background-color: var(--sc-primary-color-light-transparent);
       box-shadow: var(--sc-shadow-elevation-8dp);
