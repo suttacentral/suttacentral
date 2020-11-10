@@ -183,6 +183,13 @@ export const navigationNormaModelStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
+    block-link a:hover {
+      cursor: pointer;
+      text-decoration: underline;
+
+      text-decoration-color: var(--sc-primary-color);
+    }
+
     .shortcut {
       display: flex;
 

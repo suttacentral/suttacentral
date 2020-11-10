@@ -47,7 +47,7 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       [[_createMetaData(localize)]]
 
       <template is="dom-if" if="[[shouldShowPitakaPage]]" restamp="">
-        <sc-navigation pitaka-Name=[[_getPathParamNumber(2)]]></sc-navigation>
+        <sc-navigation></sc-navigation>
       </template>
 
       <template is="dom-if" if="[[shouldShowStaticPage]]" restamp="">
