@@ -137,7 +137,7 @@ class SCSettingsMenu extends LitLocalized(LitElement) {
       </div>
 
       <div class="dialog-section">
-        <h3 class="menu-item-title">${this.localize('viewOriginal')}</h3>
+        <h3 class="menu-item-title">${this.localize('viewRoot')}</h3>
         <div class="nerdy-row">${this.localize('onlyWorks')}</div>
         <paper-radio-group id="text_view_menu" selected="${this.selectedTextView}">
           <paper-radio-button name="none" class="menu-option">

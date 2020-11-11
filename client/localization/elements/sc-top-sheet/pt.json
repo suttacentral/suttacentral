@@ -2,7 +2,7 @@
   "pt": {
       "viewTextualInfo": "Ver informações sobre o texto",
       "displaysInfo": "Apresenta informações como referência bibliográfica, versões alternativas, etc.",
-      "viewOriginal": "Ver texto original com tradução lado a lado",
+      "viewRoot": "Ver texto original com tradução lado a lado",
       "onlyWorks": "Funcionalidade disponível apenas para alguns textos, inclusive traduções por Sujato e Brahmali.",
       "none": "Nada",
       "sideBySide": "Lado a lado",
