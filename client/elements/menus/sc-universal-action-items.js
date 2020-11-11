@@ -205,6 +205,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
         <mwc-icon-button
           title="${this.localize('searchTooltip')}"
+          label="search"
           class="white-icon toolbar-paper-button"
           @click="${this.openSearch}">
           ${icons['search']}
@@ -218,6 +219,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         </paper-input>
 
         <mwc-icon-button
+          label="close"
           class="white-icon toolbar-paper-button"
           id="close_button"
           @click="${this._closeSearch}">
@@ -231,6 +233,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
           id="more_vert_button"
           vertical-align="auto">
           <mwc-icon-button 
+            label="menu"
             class="white-icon toolbar-paper-button" 
             slot="dropdown-trigger" 
             alt="menu">
