@@ -2,7 +2,8 @@ import '@polymer/polymer/lib/elements/custom-style.js';
 
 const template=document.createElement('template');
 
-template.innerHTML=` <custom-style > <style > @font-face {
+template.innerHTML=` <custom-style > <style > 
+@font-face {
     font-family: "Skolar Sans PE";
     src: url('/files/fonts/RaloksSansPE-Rg_2.004.woff2') format('woff2');
     font-weight: normal;
@@ -621,7 +622,7 @@ html {
 
     --sc-dense-font-size-h1-md: calc(34px * var(--sc-dense-font-scale));
 
---sc-caps-letter-spacing: 0.02em;
+    --sc-caps-letter-spacing: 0.02em;
 
 /*temporary hack for paper elements*/
 --paper-font-common-base_-_font-family: var(--sc-sans-font)!important;

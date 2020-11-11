@@ -269,6 +269,8 @@ a
     display: flex;
 
     justify-content: center;
+
+    height: 360px;
 }
 
 video

@@ -138,7 +138,7 @@ export const typographyLegacyStyles = css`
 .counter,
 .t-counter
 {
-    font-family: var(--sc-traditional-chinese-font);
+    font-family: 'Noto Sans CJK TC';
     font-size: var(--sc-dense-font-size-s);
     font-weight: 400;
     line-height: 23px;
