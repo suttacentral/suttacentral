@@ -162,7 +162,6 @@ export const suttaplexCss = html`
   }
 
   .section-details h3 {
-    height: 23px;
     margin: var(--sc-size-sm) 0;
     color: var(--sc-secondary-text-color);
     display: inline-block;
@@ -172,7 +171,6 @@ export const suttaplexCss = html`
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
-    line-height: 24px;
   }
   
   .top-row-icons {
@@ -224,6 +222,7 @@ export const suttaplexTxCss = html`
     flex-wrap: nowrap;
     cursor: pointer;
     padding: 0 var(--sc-size-sm);
+    margin: 0 4px;
     border-radius: var(--sc-size-sm);
   }
 
@@ -259,7 +258,7 @@ export const suttaplexTxCss = html`
   }
 
   .tx-details {
-    padding: var(--sc-size-sm) var(--sc-size-md);
+    padding: var(--sc-size-sm);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
