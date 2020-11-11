@@ -210,10 +210,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (!this.pitakaData) {
       await this._fetchPitakaData();
     }
-    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid)) {
-      let langIso = params.langIso || 'lzh'; 
+    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid) && params.langIso !== undefined) {
       this.parallelsData = this.pitakaData.children.find(x => {
-        return x.uid === this.parallelsUid && x.lang_iso === langIso
+        return x.uid === this.parallelsUid && x.lang_iso === params.langIso
       });
     } else {
       this.parallelsData = this.pitakaData.children.find(x => {
@@ -310,7 +309,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   _genPitakaURL(child) {
-    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid)) {
+    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid) && child.lang_iso !== undefined) {
       return `/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.name.toLowerCase()}-${child.lang_iso}`;
     } else {
       return `/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.name.toLowerCase()}`;
@@ -345,19 +344,19 @@ class SCNavigation extends LitLocalized(LitElement) {
       params.childName = this.parallelsData.name;
     }
     this.navArray[navIndexesOfType.index] = {
-        title: params.childName,
-        url: `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${params.childName.toLowerCase()}`,
-        type: navType,
-        displayPitaka: false,
-        displayParallels: true,
-        displayVaggas: false,
-        displayVaggaChildren: false,
-        displayVaggaChildrenChildren: false, 
-        groupId: params.childId,
-        groupName: params.childName,
-        position: navIndexesOfType.position,
-        langIso: params.langIso,
-        navigationArrayLength: navIndexesOfType.navArrayLength,
+      title: params.childName,
+      url: `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${params.childName.toLowerCase()}`,
+      type: navType,
+      displayPitaka: false,
+      displayParallels: true,
+      displayVaggas: false,
+      displayVaggaChildren: false,
+      displayVaggaChildrenChildren: false, 
+      groupId: params.childId,
+      groupName: params.childName,
+      position: navIndexesOfType.position,
+      langIso: params.langIso,
+      navigationArrayLength: navIndexesOfType.navArrayLength,
     };
 
     if (params.dispatchState) {
