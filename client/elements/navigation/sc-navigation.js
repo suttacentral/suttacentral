@@ -33,7 +33,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this._appViewModeChanged();
-    this._fetchMainMenuData();
+    this._fetchMainData();
     this._initPitakaCards({dispatchState: true});
     this._parseURL();
   }
@@ -125,13 +125,14 @@ class SCNavigation extends LitLocalized(LitElement) {
       //this.actions.setNavigation(this.navArray);
     }
     if (changedProps.has('currentNavPosition')) {
-      this._fetchMainMenuData();
+      this._fetchMainData();
       this._attachLanguageCount();
       let currentNavState = this.navArray[this.currentNavPosition];
       if (currentNavState) {
         let params = {
           childId: currentNavState.groupId, 
           childName: currentNavState.groupName, 
+          langIso: currentNavState.langIso,
           dispatchState: true,
         };
         let cardEvent = this._getEventByNavType(currentNavState.type);
@@ -181,20 +182,69 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.compactStyles = this.isCompactMode ? navigationCompactModeStyles : null;
   }
 
-  async _fetchMainMenuData() {
+  async _fetchMainData() {
     this.loading = true;
+    await this._fetchTipitakaData();
+    await this._fetchPitakaData();
+    this.loading = false;
+  }
+
+  async _fetchTipitakaData() {
     try {
       this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.language}`)).json();
-      this.pitakaData = this.tipitakaData.find(x => {
-        return x.uid === this.pitakaUid
+    } catch (e) {
+      this.errors = e;
+    }
+  }
+
+  async _fetchPitakaData(params) {
+    if (!this.tipitakaData) {
+      await this._fetchTipitakaData();
+    }
+    this.pitakaData = this.tipitakaData.find(x => {
+      return x.uid === this.pitakaUid
+    });
+  }
+
+  async _fetchParallelsData(params) {
+    if (!this.pitakaData) {
+      await this._fetchPitakaData();
+    }
+    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid)) {
+      let langIso = params.langIso || 'lzh'; 
+      this.parallelsData = this.pitakaData.children.find(x => {
+        return x.uid === this.parallelsUid && x.lang_iso === langIso
       });
+    } else {
       this.parallelsData = this.pitakaData.children.find(x => {
         return x.uid === this.parallelsUid
       });
-    } catch (err) {
-      this.errors = err;
     }
-    this.loading = false;
+  }
+
+  _getUidByName(name) {
+    const mapSectarian = new Map([
+      ['theravāda',        'sect/tv'],
+      ['mahāsaṅghika',     'sect/mg'],
+      ['lokuttaravāda',    'sect/lo'],
+      ['mahīśāsaka',       'sect/mi'],
+      ['dharmaguptaka',    'sect/dg'],
+      ['sarvāstivāda',     'sect/sarv'],
+      ['mūlasarvāstivāda', 'sect/mu'],
+      ['other',            'sect/other'],
+    ]);
+    return mapSectarian.get(name);
+  }
+
+  async _fetchChildrenData(childId) {
+    const lang = this.language ? this.language : 'en';
+    const url = `${API_ROOT}/menu/${childId}?language=${lang}`;
+    try {
+      const childrenData = await (await fetch(url)).json();
+      return childrenData;
+    } catch (e) {
+      this.errors = e;
+    }
   }
 
   async _attachLanguageCount() {
@@ -231,12 +281,15 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayPitaka && this.pitakaData ? html`
       ${this.pitakaData.children.map(child => html`
         <a href="/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.name.toLowerCase()}" 
-          @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.name, dispatchState: true})}>
+          @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.name, langIso: child.lang_iso, dispatchState: true})}>
           <section class="card pitaka">
             <header>
               <span class="header-left">
-                <span class="title" lang="${this.language}">
+                <span class="title" lang="${child.lang_iso}">
                   ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
+                  ${child.lang_name ? html`
+                    <span>(${child.lang_name})</span>
+                  ` : ''}
                 </span>
                 <span class="subTitle">
                   ${child.name}
@@ -263,11 +316,19 @@ class SCNavigation extends LitLocalized(LitElement) {
   async _onPitakaCardClick(params) {
     const navType = 'parallels';
     const navIndexesOfType = navIndex.get(navType);
-    if (!params.childId.includes('grouping')) {
-      params.childId = `grouping/${params.childId}`;
+    if (this.pitakaUid === 'pitaka/sutta' && !params.childId.includes('grouping')) {
+      if (params.childId.toLowerCase() !== 'other') {
+        params.childId = `grouping/${params.childId}`;
+      } else {
+        params.childId = `grouping/${params.childId}-group`;
+      }
+    }
+    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid) && !params.childId.includes('sect')) {
+      params.childId = this._getUidByName(params.childId);
     }
     this.parallelsUid = params.childId
-    await this._fetchMainMenuData();
+
+    await this._fetchParallelsData(params);
 
     if (!params.childName) {
       params.childName = this.parallelsData.name;
@@ -284,6 +345,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         groupId: params.childId,
         groupName: params.childName,
         position: navIndexesOfType.position,
+        langIso: params.langIso,
         navigationArrayLength: navIndexesOfType.navArrayLength,
     };
 
@@ -353,13 +415,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _onParallelsCardClick(params) {
-    const lang = this.language ? this.language : 'en';
-    const url = `${API_ROOT}/menu/${params.childId}?language=${lang}`;
-    try {
-      this.vaggasData = await (await fetch(url)).json();
-    } catch (err) {
-      this.errors = err;
-    }
+    this.vaggasData = await this._fetchChildrenData(params.childId);
 
     const showVaggas = this.vaggasData[0] && this.vaggasData[0].children &&
       this.vaggasData[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)); 
@@ -406,6 +462,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   _setCurrentURL(lastPath) {
     if (!lastPath) { return; }
+    lastPath = encodeURI(lastPath);
     let currentURL = window.location.href;
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
       let cleanURL = currentURL.split('?')[0] + '/' + lastPath;
@@ -454,13 +511,8 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _onVaggasCardClick(params) {
-    try {
-      const url = `${API_ROOT}/menu/${params.childId}?language=en`;
-      this.vaggasData = await (await fetch(url)).json();
-      this.vaggaChildren = this.vaggasData[0].children;
-    } catch (error) {
-      this.errors = error;
-    }
+    this.vaggasData = await this._fetchChildrenData(params.childId);
+    this.vaggaChildren = this.vaggasData[0].children;
 
     const showVaggaChildren = this.vaggaChildren && 
       this.vaggaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)); 
@@ -534,12 +586,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _onVaggaChildrenCardClick(params) {
-    try {
-      const url = `${API_ROOT}/menu/${params.childId}?language=en`;
-      this.vaggaChildrenChildren = await (await fetch(url)).json();
-    } catch (error) {
-      this.errors = error;
-    }
+    this.vaggaChildrenChildren = await this._fetchChildrenData(params.childId);
 
     const showVaggaChildrenChildren = this.vaggaChildrenChildren && 
       this.vaggaChildrenChildren[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type));
@@ -614,13 +661,8 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _onVaggaChildrenChildrenCardClick(params) {
-    try {
-      const url = `${API_ROOT}/menu/${params.childId}?language=en`;
-      this.sakaData = await (await fetch(url)).json();
-      this.sakaChildren = this.sakaData[0].children;
-    } catch (error) {
-      this.errors = error;
-    }
+    this.sakaData = await this._fetchChildrenData(params.childId);
+    this.sakaChildren = this.sakaData[0].children;
 
     const showSakaChildren = this.sakaChildren && 
       this.sakaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type));
