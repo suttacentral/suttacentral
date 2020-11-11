@@ -201,8 +201,8 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.userLanguageTranslationsTemplate}
 
         ${!this.isCompact ? html`
-          ${this.modernLanguageTranslationsTemplate}
           ${this.rootTextsTemplate}
+          ${this.modernLanguageTranslationsTemplate}
           ${this.parallelsTemplate}
         ` : ''}
       </paper-card>`;
@@ -319,7 +319,26 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     `;
   }
 
-  get modernLanguageTranslationsTemplate() {
+  get rootTextsTemplate() {
+    const translationKey = this.rootTexts.length === 1 ? 'edition' : 'editions';
+    return html`
+      <div class="section-details">
+        ${!this.isCompact ? html`<h3>
+            <b>
+               ${this.rootTexts.length} ${this.localize(translationKey)}
+            </b>${this.localize('ofRootText')}
+          </h3>
+        ` : ''}
+        <div>
+          ${this.rootTexts.map((translation) => html`
+             <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
+          `)}
+        </div>
+      </div>
+    `;
+  }
+
+    get modernLanguageTranslationsTemplate() {
     const translationKey = this.translationsInModernLanguages.length === 1 ? 'translation' : 'translations';
 
     return html`
@@ -335,25 +354,6 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           </h3>
         </summary>
         ${this.translationsOpened ? this.translationsInModernLanguages.map((translation) => html`
-          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
-        `) : ''}
-      </details>
-    `;
-  }
-
-  get rootTextsTemplate() {
-    const translationKey = this.rootTexts.length === 1 ? 'edition' : 'editions';
-
-    return html`
-      <details 
-        class="section-details"
-        ?open="${this.rootTextsOpened}"
-        @toggle="${(e) => this.rootTextsOpened = e.target.open}"
-      >
-        <summary>
-          <h3><b>${this.rootTexts.length} ${this.localize(translationKey)}</b> ${this.localize('ofRootText')}</h3>
-        </summary>
-        ${this.rootTextsOpened ? this.rootTexts.map((translation) => html`
           <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
         `) : ''}
       </details>
