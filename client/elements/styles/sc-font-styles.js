@@ -7,6 +7,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksSansPE-Rg_2.004.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -14,6 +15,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksSansPE-Bd_2.004.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -21,6 +23,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksSansPE-It_2.004.woff2') format('woff2');
     font-weight: normal;
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
@@ -28,6 +31,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksPE-Regular_3.007.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -35,6 +39,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksPE-Bold_3.007.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -42,6 +47,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksPE-Italic_3.007.woff2') format('woff2');
     font-weight: normal;
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
@@ -49,6 +55,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksDevanagari-Regular_3.007.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -56,6 +63,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/RaloksDevanagari-Bold_3.007.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -64,6 +72,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifThai-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -72,6 +81,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifMyanmar-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -80,6 +90,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSans-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -88,6 +99,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSans-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -96,6 +108,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansMyanmar-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -104,6 +117,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansDevanagari-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -112,6 +126,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansHebrew-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -120,6 +135,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansTamil-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -128,6 +144,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansArabic-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -136,6 +153,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifHebrew-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -144,6 +162,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifSinhala-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -152,6 +171,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansTibetan.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -160,6 +180,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansSinhala-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -168,6 +189,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansTibetan-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -176,6 +198,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansTamil-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -184,6 +207,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifTamil-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -192,6 +216,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifTamil-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -200,6 +225,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansBengali-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -208,6 +234,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansBengali-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -216,6 +243,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifBengali-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -224,6 +252,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifBengali-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -232,6 +261,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifThai-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -240,6 +270,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoNaskhArabic-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -248,6 +279,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifSinhala-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -256,6 +288,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifMyanmar-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -264,6 +297,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansHebrew-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -272,6 +306,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansThai-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -280,6 +315,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSans-Italic.woff2') format('woff2');
     font-weight: normal;
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
@@ -288,6 +324,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansMyanmar-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -296,6 +333,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansDevanagari-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -304,6 +342,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansSinhala-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -312,6 +351,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoNaskhArabic.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -320,6 +360,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerifHebrew-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -328,6 +369,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerif-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -336,6 +378,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansThai-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -344,6 +387,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSerif-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -352,6 +396,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     url('/files/fonts/NotoSansArabic-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -359,6 +404,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/tngani.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -366,6 +412,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/Klingon.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -373,6 +420,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/Vulcan.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -380,6 +428,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/Aurebesh.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -387,6 +436,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-jp_regular_jp_462a49732c9d.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -394,6 +444,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-jp_bold_jp_e5ebd509a112.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -401,6 +452,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-kr_regular_ko_92fbb158dfd5.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -408,6 +460,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-kr_bold_ko_94d8d803ed69.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -415,6 +468,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-tc_regular_zh_lzh_785da7cebd0b.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -422,6 +476,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-tc_bold_zh_lzh_bbcfc9a4d4b2.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -429,6 +484,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-sc_regular_zh_lzh_b3bccbd8d25b.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -436,6 +492,7 @@ template.innerHTML=` <custom-style > <style > @font-face {
     src: url('/files/fonts/noto-sans-sc_bold_zh_lzh_f57371fc2dca.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 
