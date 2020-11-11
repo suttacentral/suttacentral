@@ -8,231 +8,310 @@ import '../navigation/sc-tipitaka.js';
 class SCHomePage extends SCStaticPage {
   static get styles() {
     return css`
-      :root {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        font-weight: 400;
-      }
+      :root
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+}
 
-      body {
-        background-color: var(--sc-primary-background-color);
-        padding-top: 4rem;
-      }
+body
+{
+    padding-top: 4rem;
 
-      main {
-        max-width: 1600px;
-        margin: 0 auto;
-      }
+    background-color: var(--sc-primary-background-color);
+}
 
-      section + section {
-          margin-top: 4%;
-      }
+sc-tipitaka
+{
+    min-height: 275px;
+}
 
-      .plain {
-        font-size: 1.125rem;
-        text-align: center;
+main
+{
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+section + section
+{
+    margin-top: 4%;
+}
+
+.plain
+{
+    font-size: 1.125rem;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: auto;
+    padding: 6% 0 0;
+
+    text-align: center;
+
+    align-items: center;
+}
+
+blockquote
+{
+    font-family: var(--sc-serif-font);
+    font-size: 1.5rem;
+    font-size: clamp(1.125em, 3.75vw, 1.5em);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+
+    position: relative;
+
+    width: 80%;
+    margin: 0 0 2% 0;
+    padding: 0;
+
+    text-align: center;
+}
+
+/* ensure a consistent spacing for the quote decoration */
+blockquote span
+{
+    position: relative;
+}
+
+blockquote span:before
+{
+    font-size: 4em;
+    line-height: 1;
+
+    position: absolute;
+    left: -.5em;
+
+    content: '“';
+
+    color: var(--sc-secondary-text-color);
+}
+
+article
+{
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+
+    margin-bottom: 16px;
+
+    border-radius: 8px;
+    box-shadow: var(--sc-shadow-elevation-1dp);
+}
+
+.two-cards
+{
+    display: grid;
+
+    justify-content: center;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    grid-gap: 3% 2%;
+}
+
+.three-card-row
+{
+    display: grid;
+
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    grid-gap: 3% 2%;
+}
+
+.three-card-row-first
+{
+    grid-column: 1/-2;
+    grid-row: 1/3;
+}
+
+.three-card-row-second
+{
+    grid-row: 1 / 2;
+}
+
+.three-card-row-third
+{
+    grid-row: 2 / 3;
+}
+
+figure
+{
+    position: relative;
+
+    overflow: hidden;
+
+    height: 480px;
+    margin: 0;
+}
+
+img
+{
+    height: 100%;
+
+    object-fit: cover;
+}
+
+figcaption
+{
+    font-size: .8em;
+    font-weight: 600;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 16px;
+
+    text-align: right;
+    letter-spacing: .5px;
+
+    color: white;
+    background-color: rgba(0,0,0,.5);
+
+    backdrop-filter: blur(2px);
+}
+
+.card-content
+{
+    display: flex;
+    flex-direction: column;
+
+    background: var(--sc-secondary-background-color);
+
+    justify-content: space-between;
+    flex: 1;
+}
+
+.card-text
+{
+    padding: 6% 4% 0;
+}
+
+.card-actions
+{
+    display: flex;
+
+    min-height: 52px;
+    padding: 4%;
+
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.link-button
+{
+    font-weight: 600;
+
+    display: inline-flex;
+
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 36px;
+    padding: 0 15px 2px;
+
+    text-decoration: none;
+    letter-spacing: var(--sc-caps-letter-spacing);
+
+    color: var(--sc-primary-accent-color);
+    border: 1px solid var(--sc-primary-accent-color);
+    border-radius: 4px;
+
+    align-items: center;
+    justify-content: center;
+    font-variant-caps: all-small-caps;
+}
+
+.link-button:hover
+{
+    background-color: var(--sc-primary-accent-color-light-transparent);
+}
+
+.link-button:active
+{
+    color: white;
+    background-color: var(--sc-primary-accent-color);
+}
+
+.quote-button
+{
+    align-self: flex-end;
+}
+
+h2
+{
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-weight: 400;
+    line-height: 1.3333;
+
+    margin: 0 0 0 0;
+}
+
+p
+{
+    font-size: var(--sc-skolar-font-size-md);
+    line-height: 1.5;
+
+    margin: .75em 0 0 0;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+.video
+{
+    display: flex;
+
+    justify-content: center;
+}
+
+video
+{
+    border-radius: 8px;
+    box-shadow: var(--sc-shadow-elevation-1dp);
+}
+
+@media (max-width: 680px)
+{
+    .two-cards,
+    .three-card-row
+    {
         display: flex;
-        align-items: center;
         flex-direction: column;
-        padding: 6% 0 0;
-        margin: auto;
-      }
 
-      blockquote {
-        width: 80%;
-        font-style: italic;
-        font-size: 1.5rem;
-        font-size: clamp(1.125em, 3.75vw, 1.5em);
-        line-height: 1.5;
-        font-family: var(--sc-serif-font);
-        font-weight: 300;
-        padding: 0;
-        margin: 0 0 2% 0;
-        text-align: center;
-        position: relative;
-      }
+        grid-gap: 0;
+    }
 
-      /* ensure a consistent spacing for the quote decoration */
-      blockquote span {
-        position: relative;
-      }
-
-      blockquote span:before {
-        content: "“";
-        font-size: 4em;
-        line-height: 1;
-        position: absolute;
-        left: -0.5em;
-        color: var(--sc-secondary-text-color);
-      }
-
-      article {
-        border-radius: 8px;
-        box-shadow: var(--sc-shadow-elevation-1dp);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 16px;
-      }
-
-      .two-cards {
-        display: grid;
-        justify-content: center;
-        grid-template-columns: repeat(2, minmax(240px, 1fr));
-        grid-gap: 3% 2%;
-      }
-
-      .three-card-row {
-        display: grid;
-        justify-content: center;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        grid-gap: 3% 2%;
-      }
-
-      .three-card-row-first {
-        grid-column: 1/-2;
-        grid-row: 1/3;
-      }
-
-      .three-card-row-second {
-        grid-row: 1 / 2;
-      }
-
-      .three-card-row-third {
-        grid-row: 2 / 3;
-      }
-
-      figure {
-        margin: 0;
-        height: 480px;
-        overflow: hidden;
-        position: relative;
-      }
-
-      img {
-        height: 100%;
-        object-fit: cover;
-      }
-
-      figcaption {
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-        font-size: 0.8em;
-        color: white;
-        font-weight: 600;
-        padding: 16px;
-        background-color: rgba(0,0,0,0.5);
-        text-align: right;
-        letter-spacing: 0.5px;
+    video
+    {
         width: 100%;
-        box-sizing: border-box;
-        backdrop-filter: blur(2px);
-      }
+        height: 56.25%;
+    }
 
-      .card-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        flex: 1;
-        background: var(--sc-secondary-background-color);
-      }
+    br
+    {
+        content: '';
+    }
 
-      .card-text {
-        padding: 6% 4% 0;
-      }
+    h2
+    {
+        font-weight: 500;
+    }
+}
 
-      .card-actions {
-        padding: 4%;
-        min-height: 52px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-      }
-
-      .link-button {
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--sc-primary-accent-color);
-        border: 1px solid var(--sc-primary-accent-color);
-        border-radius: 4px;
-        height: 36px;
-        padding: 0px 15px 2px;
-        letter-spacing: var(--sc-caps-letter-spacing);
-        font-variant-caps: all-small-caps;
-        box-sizing: border-box;
-        min-width: 64px;
-        text-decoration: none;
-      }
-
-      .link-button:hover {
-        background-color: var(--sc-primary-accent-color-light-transparent);
-      }
-
-      .link-button:active {
-        background-color: var(--sc-primary-accent-color);
-        color: white;
-      }
-
-      .quote-button {
-        align-self: flex-end;
-      }
-
-      h2 {
-        margin: 0 0 0 0;
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        line-height: 1.3333;
-        font-weight: 400;
-        font-family: var(--sc-serif-font);
-      }
-
-      p {
-        font-size: var(--sc-skolar-font-size-md);
-        margin: 0.75em 0 0 0;
-        line-height: 1.5;
-      }
-
-      a {
-        text-decoration: none;
-      }
-
-      .video {
-        display: flex;
-        justify-content: center;
-      }
-
-      video {
-        border-radius: 8px;
-        box-shadow: var(--sc-shadow-elevation-1dp);
-      }
-
-      @media (max-width: 680px) {
-        .two-cards,
-        .three-card-row {
-          display: flex;
-          flex-direction: column;
-          grid-gap: 0;
-        }
-        video {
-          width: 100%;
-          height: 56.25%;
-        }
-        br {
-          content: "";
-        }
-        h2 {
-          font-weight: 500;
-        }
-      }
     `;
   }
   render() {
     return html`
       <main>
         <sc-tipitaka></sc-tipitaka>
-        <section class="plain">
+        <section class="plain" style="min-height: 134px">
           <p>${unsafeHTML(this.localize('2797e2ab111cd1d938bd327b38002092'))}</p>
           <p>${unsafeHTML(this.localize('9db604c6c61c4cb7431619341bc037bf'))}</p>
         </section>
