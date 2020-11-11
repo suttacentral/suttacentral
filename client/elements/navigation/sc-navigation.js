@@ -280,20 +280,16 @@ class SCNavigation extends LitLocalized(LitElement) {
   get pitakaContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayPitaka && this.pitakaData ? html`
       ${this.pitakaData.children.map(child => html`
-        <a href="/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.name.toLowerCase()}" 
+        <a href="${this._genPitakaURL(child)}" 
           @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.name, langIso: child.lang_iso, dispatchState: true})}>
           <section class="card pitaka">
             <header>
               <span class="header-left">
                 <span class="title" lang="${child.lang_iso}">
                   ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
-                  ${child.lang_name ? html`
-                    <span>(${child.lang_name})</span>
-                  ` : ''}
+                  ${child.lang_name ? html`<span>(${child.lang_name})</span>` : ''}
                 </span>
-                <span class="subTitle">
-                  ${child.name}
-                </span>
+                <span class="subTitle">${child.name}</span>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -312,6 +308,14 @@ class SCNavigation extends LitLocalized(LitElement) {
         </a>
       `)}` : '';
   }
+
+  _genPitakaURL(child) {
+    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid)) {
+      return `/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.name.toLowerCase()}-${child.lang_iso}`;
+    } else {
+      return `/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.name.toLowerCase()}`;
+    }
+  }
   
   async _onPitakaCardClick(params) {
     const navType = 'parallels';
@@ -324,6 +328,13 @@ class SCNavigation extends LitLocalized(LitElement) {
       }
     }
     if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid) && !params.childId.includes('sect')) {
+      if (params.childId.includes('-')) {
+        let sect = params.childId.split('-');
+        if (sect.length === 2) {
+          params.childId  = sect[0];
+          params.langIso = sect[1];
+        }
+      }
       params.childId = this._getUidByName(params.childId);
     }
     this.parallelsUid = params.childId
@@ -381,9 +392,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   </a>
                 </block-link>
               </span>
-              <span class="subTitle">
-                ${child.name}
-              </span>
+              <span class="subTitle">${child.name}</span>
             </span>
             ${child.yellow_brick_road ? html`
               <span class="header-right">
@@ -489,12 +498,8 @@ class SCNavigation extends LitLocalized(LitElement) {
             @click=${() => this._onVaggasCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
-                </span>
-                <span class="subTitle">
-                  ${child.name ? child.name : child.id}
-                </span>
+                <span class="title" lang="en">${this.localize(child.name ? child.name : child.id)} ${this.parallelName}</span>
+                <span class="subTitle">${child.name ? child.name : child.id}</span>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -564,12 +569,8 @@ class SCNavigation extends LitLocalized(LitElement) {
           <section class="card vaggaChildren" @click=${() => this._onVaggaChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
-                </span>
-                <span class="subTitle">
-                  ${child.name ? child.name : child.id}
-                </span>
+                <span class="title" lang="en">${this.localize(child.name ? child.name : child.id)} ${this.parallelName}</span>
+                <span class="subTitle">${child.name ? child.name : child.id}</span>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -639,12 +640,8 @@ class SCNavigation extends LitLocalized(LitElement) {
             @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${this.localize(child.name)} ${this.parallelName}
-                </span>
-                <span class="subTitle">
-                  ${child.name}
-                </span>
+                <span class="title" lang="en">${this.localize(child.name)} ${this.parallelName}</span>
+                <span class="subTitle">${child.name}</span>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -715,12 +712,8 @@ class SCNavigation extends LitLocalized(LitElement) {
           <section class="card sakaChildren" @click=${() => this._onSakaChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${this.localize(child.name)} ${this.parallelName}
-                </span>
-                <span class="subTitle">
-                  ${child.name}
-                </span>
+                <span class="title" lang="en">${this.localize(child.name)} ${this.parallelName}</span>
+                <span class="subTitle">${child.name}</span>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
