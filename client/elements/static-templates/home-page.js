@@ -524,7 +524,7 @@ class SCHomePage extends SCStaticPage {
                 ${_`A Reader’s Guide to the Pali Suttas`}
               </div>
               <div class="image-card-text">
-                ${_`The suttas of the Pali Canon (Tipiṭaka), especially the four main <i lang="pli">nikāyas</i>, are essential reading for anyone who wishes to understand the Buddha and his teaching. Bhikkhu Sujato has prepared an extensive set of reading guides for the serious student. These provide essential background and survey most of the core teachings from the perspective of early Buddhism.`}
+                ${_`The suttas of the Pali Canon (Tipiṭaka), especially the four main <i lang="pi">nikāyas</i>, are essential reading for anyone who wishes to understand the Buddha and his teaching. Bhikkhu Sujato has prepared an extensive set of reading guides for the serious student. These provide essential background and survey most of the core teachings from the perspective of early Buddhism.`}
               </div>
             </div>
             <div>

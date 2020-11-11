@@ -61,7 +61,7 @@ class SCIntroduction extends SCStaticPage {
               <img alt="${this.localize('46d831f3bb74892e53c4603434e46e40')}" class="image-home" src="/img/static-pages/birchbark_w400.avif" title="${this.localize('b6e60cfe55a01b89e5fb3e3918783055')}">
             </picture>
             ${this.localize('eefafa4d2d7214360b1103762d9f04eb')}
-            <i lang="pli">
+            <i lang="pi">
               ${this.localize('5679d17143f5ef20067c5dde94d6986b')}
             </i>
             ${this.localize('98ca593be0b0d2598d0ec1e308ed36f6')}

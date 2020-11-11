@@ -62,7 +62,7 @@ class SCIntroduction extends SCStaticPage {
               <img alt="${_`Fragment of Gandhari manuscript on birch bark, acquired by University of Washington. Afghanistan,  circa 1st or 2nd century CE.`}" class="image-home" src="/img/static-pages/birchbark_w400.avif" title="${_`Abhidharma commentary on suffering`}">
             </picture>
             ${_` Buddhist texts are traditionally classified as the “Three Baskets”, spelled `}
-            <i lang="pli">
+            <i lang="pi">
               ${_`tipiṭaka`}
             </i>
             ${_` in Pali or `}
@@ -73,10 +73,10 @@ class SCIntroduction extends SCStaticPage {
           </p>
           <ul>
             <li>
-              ${_`<a href="/discourses" title="SuttaCentral article on Discourses"><strong>Discourses:</strong></a> <i lang="pli">Sutta</i> in Pali, <i lang="san">sūtra</i> in Sanskrit. These are the primary texts, consisting of records of teachings or conversations by the Buddha or his disciples, and arranged by literary style or subject matter.`}
+              ${_`<a href="/discourses" title="SuttaCentral article on Discourses"><strong>Discourses:</strong></a> <i lang="pi">Sutta</i> in Pali, <i lang="san">sūtra</i> in Sanskrit. These are the primary texts, consisting of records of teachings or conversations by the Buddha or his disciples, and arranged by literary style or subject matter.`}
             </li>
             <li>
-              ${_`<a href="/vinaya" title="SuttaCentral article on Vinaya"><strong>Monastic Law:</strong></a> <i lang="pli">Vinaya</i> in both Pali and Sanskrit. These contain the famous list of rules for monks and nuns (<i>pātimokkha</i>). But they are much more than that, including many details of community life, and a multitude of stories about life in ancient India.`}
+              ${_`<a href="/vinaya" title="SuttaCentral article on Vinaya"><strong>Monastic Law:</strong></a> <i lang="pi">Vinaya</i> in both Pali and Sanskrit. These contain the famous list of rules for monks and nuns (<i>pātimokkha</i>). But they are much more than that, including many details of community life, and a multitude of stories about life in ancient India.`}
             </li>
             <li>
               ${_`<a href="/abhidhamma" title="SuttaCentral article on Abhidhamma"><strong>Abhidhamma:</strong></a> Spelled <i lang="san">abhidharma</i> in Sanskrit. Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses.`}

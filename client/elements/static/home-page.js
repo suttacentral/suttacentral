@@ -216,7 +216,7 @@ figcaption
     text-decoration: none;
     letter-spacing: var(--sc-caps-letter-spacing);
 
-    color: var(--sc-primary-accent-color);
+    color: var(--sc-primary-accent-color-dark);
     border: 1px solid var(--sc-primary-accent-color);
     border-radius: 4px;
 

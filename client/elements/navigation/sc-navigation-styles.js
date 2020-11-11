@@ -148,7 +148,7 @@ export const navigationNormaModelStyles = html`
       padding: 0.3333rem 0.5rem;
 
       color: var(--sc-paper-tooltip-text-color);
-      background-color: var(--sc-primary-color-dark);
+      background-color: var(--sc-primary-color-darkest);
 
       justify-content: center;
       align-items: center;
