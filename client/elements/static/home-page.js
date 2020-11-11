@@ -254,7 +254,7 @@ class SCHomePage extends SCStaticPage {
         <section class="two-cards">
           <article>
             <figure>
-              <img srcset="/img/home-page/pali1.webp, /img/home-page/pali1.jpg" src="/img/home-page/pali1.webp" alt="Pali manuscript" style="width:100%">
+              <img srcset="/img/home-page/pali1.avif, /img/home-page/pali1.webp, /img/home-page/pali1.jpg" src="/img/home-page/pali1.avif" alt="Pali manuscript" style="width:100%">
               <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
             </figure>
             <div class="card-content">
@@ -271,8 +271,8 @@ class SCHomePage extends SCStaticPage {
           <article>
             <figure>
               <img 
-                srcset="/img/home-page/koreana.webp, /img/home-page/koreana.jpg"
-                src="/img/home-page/koreana.webp"
+                srcset="/img/home-page/koreana.avif, /img/home-page/koreana.webp, /img/home-page/koreana.jpg"
+                src="/img/home-page/koreana.avif"
                 alt="Chinese Buddhist woodblock"
                 style="width:100%">
               <figcaption>A block from the Tripiṭaka Koreana at Haeinsa Temple</figcaption>
@@ -300,8 +300,8 @@ class SCHomePage extends SCStaticPage {
           <article>
             <figure>
               <img
-                srcset="/img/home-page/pali6.webp, /img/home-page/pali6.jpg"
-                src="/img/home-page/pali6.webp"
+                srcset="/img/home-page/pali6.avif, /img/home-page/pali6.webp, /img/home-page/pali6.jpg"
+                src="/img/home-page/pali6.avif"
                 loading="lazy"
                 alt="Pali manuscript"
                 style="width:100%">
@@ -321,8 +321,8 @@ class SCHomePage extends SCStaticPage {
           <article>
             <figure>
               <img
-                srcset="/img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg"
-                src="/img/home-page/bhikkhuni.webp"
+                srcset="/img/home-page/bhikkhuni.avif, /img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg"
+                src="/img/home-page/bhikkhuni.avif"
                 loading="lazy"
                 alt="Pali manuscript"
                 style="width:100%">
