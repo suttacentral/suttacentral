@@ -108,7 +108,6 @@ export const suttaplexCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-        line-height: 1;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
