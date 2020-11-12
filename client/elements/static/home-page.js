@@ -87,7 +87,7 @@ blockquote span:before
 
     content: '“';
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-disabled-text-color);
 }
 
 article
