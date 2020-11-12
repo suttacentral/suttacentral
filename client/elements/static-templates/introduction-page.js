@@ -35,9 +35,7 @@ class SCIntroduction extends SCStaticPage {
           </p>
           <picture>
             <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif" type="image/avif">
-            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.webp" type="image/webp">
-            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" type="image/jpeg">
-            <img alt="${_`Cover and binding to a Burmese manuscript on the Life of Buddha in red tooled leather with text in    gold letters. Burma, late 19th century.`}" class="image-home-full" src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif" title="${_`Life of Buddha Burmese Manuscript 22, Volume 1`}" width="640px">
+            <img alt="${_`Cover and binding to a Burmese manuscript on the Life of Buddha in red tooled leather with text in    gold letters. Burma, late 19th century.`}" class="image-home-full" src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" title="${_`Life of Buddha Burmese Manuscript 22, Volume 1`}" width="640px">
           </picture>
           <h2>
             ${_`Themes`}
@@ -57,9 +55,7 @@ class SCIntroduction extends SCStaticPage {
           <p>
             <picture>
               <source srcset="/img/static-pages/birchbark_w400.avif" type="image/avif">
-              <source srcset="/img/static-pages/birchbark_w400.webp" type="image/webp">
-              <source srcset="/img/static-pages/birchbark_w400.jpg" type="image/jpeg">
-              <img alt="${_`Fragment of Gandhari manuscript on birch bark, acquired by University of Washington. Afghanistan,  circa 1st or 2nd century CE.`}" class="image-home" src="/img/static-pages/birchbark_w400.avif" title="${_`Abhidharma commentary on suffering`}">
+              <img alt="${_`Fragment of Gandhari manuscript on birch bark, acquired by University of Washington. Afghanistan,  circa 1st or 2nd century CE.`}" class="image-home" src="/img/static-pages/birchbark_w400.jpg" title="${_`Abhidharma commentary on suffering`}">
             </picture>
             ${_` Buddhist texts are traditionally classified as the “Three Baskets”, spelled `}
             <i lang="pi">
@@ -69,7 +65,7 @@ class SCIntroduction extends SCStaticPage {
             <i lang="san">
               ${_`tripiṭaka`}
             </i>
-            ${_` in Sanskrit. These are:\n          `}
+            ${_` in Sanskrit. These are:`}
           </p>
           <ul>
             <li>
@@ -125,9 +121,7 @@ class SCIntroduction extends SCStaticPage {
           <p>
             <picture>
               <source srcset="/img/static-pages/dn20.avif" type="image/avif">
-              <source srcset="/img/static-pages/dn20.webp" type="image/webp">
-              <source srcset="/img/static-pages/dn20.jpg" type="image/jpeg">
-              <img alt="${_`Visual representation of relationships for DN 20`}" class="image-home" src="/img/static-pages/dn20.avif" title="${_`Relationships for DN 20`}" width="640px">
+              <img alt="${_`Visual representation of relationships for DN 20`}" class="image-home" src="/img/static-pages/dn20.jpg" title="${_`Relationships for DN 20`}" width="640px">
             </picture>
             ${_` Suttas aren’t independent entities. They form a vast interconnected web of teachings. Often the key to understanding one passage lies in a different text. In this way, the Buddhist canons are a little like the internet, with individual pages connected by a web of hidden links.`}
           </p>
