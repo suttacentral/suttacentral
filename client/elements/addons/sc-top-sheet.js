@@ -28,7 +28,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
       textualInfoToggleEnabled: { type: Boolean },
       textualInfoResponse: { type: Object },
       textualParagraphs: { type: Object },
-      rememberSettings: { type: Boolean },
       localizedStringsPath: { type: String },
       referenceDisplayTypeArray: { type: Array },
       noteDisplayTypeArray: { type: Array },
@@ -194,7 +193,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
     this.textualInfoToggleEnabled = textOptions.paragraphsEnabled;
     this.textualInfoResponse = {};
     this.textualParagraphs = textOptions.paragraphDescriptions;
-    this.rememberSettings = localStorage.getItem('rememberTextSettings') === 'true';
     this.localizedStringsPath = '/localization/elements/sc-top-sheet';
     this.selectedReferenceDisplayType = textOptions.referenceDisplayType;
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
@@ -203,164 +201,144 @@ class SCTopSheet extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-  :host 
-  {
-    display: none;
-
-    --mdc-theme-secondary: var(--sc-primary-accent-color);
-    --mdc-typography-font-family: var(--sc-sans-font);
-    --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-}
-
-section
-{
-    font-family: var(--sc-sans-font);
-
-    position: absolute;
-    z-index: 1000;
-
-    display: grid;
-    overflow-x: scroll;
-    overflow-y: none;
-
-    width: 100%;
-    padding: 0;
-
-    border-bottom: 1px solid #ccc;
-    background-color: var(--sc-secondary-background-color);
-    box-shadow: var(--sc-shadow-elevation-4dp);
-
-    grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
-}
-
-.tools
-{
-    padding: 8px;
-
-    border-right: 1px solid var(--sc-border-color);
-}
-
-.tools:first-of-type 
-{
-    margin-left: 8px;
-}
-
-.tools:last-of-type 
-{
-    border-right: none;
-}
-
-details
-{
-    position: relative;
-
-    box-sizing: border-box;
-    margin: 0 0 0 4px;
-}
-
-details p
-{
-    position: absolute;
-    z-index: 10;
-    
-    max-width: 360px;
-    margin: 4px 0 0 0;
-    padding: 8px 12px;
-
-    color: var(--sc-primary-text-color);
-    border: 1px solid var(--sc-border-color);
-    border-radius: 8px;
-    background-color: var(--sc-tertiary-background-color);
-    box-shadow: var(--sc-shadow-elevation-8dp);
-}
-
-summary
-{
-    font-weight: 600;
-
-    display: flex;
-
-    padding: 8px;
-
-    cursor: pointer;
-
-    color: var(--sc-primary-text-color);
-    outline-color: var(--sc-border-color);
-
-    align-items: baseline;
-}
-
-summary::-webkit-details-marker
-{
-    color: var(--sc-disabled-text-color);
-}
-
-mwc-formfield
-{
-    display: block;
-}
-
-.two-column
-{
-    margin-right: 8px;
-
-    column-count: 2;
-}
-
-.four-column
-{
-    margin-right: 8px;
-
-    column-count: 4;
-}
-
-mwc-switch
-{
-    padding: 12px;
-
-   --mdc-theme-surface: var(--sc-tertiary-background-color);
-}
-
-mwc-checkbox
-{
-   --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
-}
-
-mwc-radio
-{
-   --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
-}
-
-section::-webkit-scrollbar
-{
-    height: 10px;
-}
-
-section::-webkit-scrollbar-track
-{
-    background: #ccc;
-}
-
-section::-webkit-scrollbar-thumb
-{
-    background: var(--sc-disabled-text-color);
-}
-
+      :host {
+        display: none;
+      
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
+        --mdc-typography-font-family: var(--sc-sans-font);
+        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+      }
+      
+      section {
+        font-family: var(--sc-sans-font);
+      
+        position: absolute;
+        z-index: 1000;
+      
+        display: grid;
+        overflow-x: scroll;
+        overflow-y: none;
+      
+        width: 100%;
+        padding: 0;
+      
+        border-bottom: 1px solid #ccc;
+        background-color: var(--sc-secondary-background-color);
+        box-shadow: var(--sc-shadow-elevation-4dp);
+      
+        grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
+      }
+      
+      .tools {
+        padding: 8px;
+      
+        border-right: 1px solid var(--sc-border-color);
+      }
+      
+      .tools:first-of-type {
+        margin-left: 8px;
+      }
+      
+      .tools:last-of-type {
+        border-right: none;
+      }
+      
+      details {
+        position: relative;
+      
+        box-sizing: border-box;
+        margin: 0 0 0 4px;
+      }
+      
+      details p {
+        position: absolute;
+        z-index: 10;
+      
+        max-width: 360px;
+        margin: 4px 0 0 0;
+        padding: 8px 12px;
+      
+        color: var(--sc-primary-text-color);
+        border: 1px solid var(--sc-border-color);
+        border-radius: 8px;
+        background-color: var(--sc-tertiary-background-color);
+        box-shadow: var(--sc-shadow-elevation-8dp);
+      }
+      
+      summary {
+        font-weight: 600;
+      
+        display: flex;
+      
+        padding: 8px;
+      
+        cursor: pointer;
+      
+        color: var(--sc-primary-text-color);
+        outline-color: var(--sc-border-color);
+      
+        align-items: baseline;
+      }
+      
+      summary::-webkit-details-marker {
+        color: var(--sc-disabled-text-color);
+      }
+      
+      mwc-formfield {
+        display: block;
+      }
+      
+      .two-column {
+        margin-right: 8px;
+      
+        column-count: 2;
+      }
+      
+      .four-column {
+        margin-right: 8px;
+      
+        column-count: 4;
+      }
+      
+      mwc-switch {
+        padding: 12px;
+      
+        --mdc-theme-surface: var(--sc-tertiary-background-color);
+      }
+      
+      mwc-checkbox {
+        --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+      }
+      
+      mwc-radio {
+        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
+      }
+      
+      section::-webkit-scrollbar {
+        height: 10px;
+      }
+      
+      section::-webkit-scrollbar-track {
+        background: #ccc;
+      }
+      
+      section::-webkit-scrollbar-thumb {
+        background: var(--sc-disabled-text-color);
+      }
     `;
   }
 
   render() {
     return html`
-        <section>
-          ${this.noteDisplayTypeTemplate}
-          ${this.textViewTemplate}
-          ${this.paliLookupTemplate}
-          ${this.chineseLookupTemplate}
-          ${this.paliScriptsTemplate}
-          ${this.showHighlightingTemplate}
-          ${this.referenceDisplayTypeTemplate}
-          ${this.rememberSettingsTemplate}
-        </section>
+      <section>
+        ${this.noteDisplayTypeTemplate}
+        ${this.textViewTemplate}
+        ${this.paliLookupTemplate}
+        ${this.chineseLookupTemplate}
+        ${this.paliScriptsTemplate}
+        ${this.showHighlightingTemplate}
+        ${this.referenceDisplayTypeTemplate}
+      </section>
     `;
   }
   
@@ -524,27 +502,6 @@ section::-webkit-scrollbar-thumb
       let refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
       this._showToast(this.localize(`referenceDisplayType_${refType}`) + ' ' + this.localize('textualInformationEnabled'));
     }
-  }
-
-  get rememberSettingsTemplate() {
-    return html`
-      <div class="tools">
-        <details><summary>${this.localize('rememberSettings')}</summary>
-        <p>Check this to remember your settings next session.</p></details>
-        <div class="form-controls">
-          <mwc-switch 
-            ?checked="${this.rememberSettings}"
-            @change="${this._onRememberSettingsChanged}">
-          </mwc-switch>
-        </div>
-      </div>
-    `;
-  }
-
-  _onRememberSettingsChanged(e) {
-    localStorage.setItem('rememberTextSettings', e.target.checked.toString());
-    const msg = e.target.checked ? 'rememberSettingsEnabled' : 'rememberSettingsDisabled';
-    this._showToast(this.localize(msg));
   }
 
   get showHighlightingTemplate() {

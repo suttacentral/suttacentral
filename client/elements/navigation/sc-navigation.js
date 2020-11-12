@@ -286,7 +286,6 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class="header-left">
                 <span class="title" lang="${child.lang_iso}">
                   ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
-                  ${child.lang_name ? html`<span>(${child.lang_name})</span>` : ''}
                 </span>
                 <span class="subTitle">${child.name}</span>
               </span>
@@ -299,7 +298,8 @@ class SCNavigation extends LitLocalized(LitElement) {
             </header>
 
             <div class="blurb">
-              ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} in Pali and Chinese.
+              ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} 
+                in ${child.lang_name ? html`<span>${child.lang_name}</span>` : 'Pali and Chinese.'}.
             </div>
 
             <morph-ripple></morph-ripple>
