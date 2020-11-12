@@ -26,7 +26,7 @@ class SCANewBeginning extends SCStaticPage {
               ${_`Welcome to the next generation of SuttaCentral! Our site has gone through a lot of changes since our humble beginnings in 2005. Here’s what’s new.`}
             </p>
             <p>
-              ${_`The new site features a new translation of the four Pali <i>nikāyas</i>, prepared for SuttaCentral by Bhante Sujato. It’s a warm and lucid text, with an emphasis on accuracy and clarity. We believe it’s the first ever complete, consistent, and unified translation of the four <i>nikāyas</i> in any European language. SuttaCentral is proud to make it freely available without any copyright restrictions.`}
+              ${_`The new site features a new translation of the four Pali <i lang="pi">nikāyas</i>, prepared for SuttaCentral by Bhante Sujato. It’s a warm and lucid text, with an emphasis on accuracy and clarity. We believe it’s the first ever complete, consistent, and unified translation of the four <i lang="pi">nikāyas</i> in any European language. SuttaCentral is proud to make it freely available without any copyright restrictions.`}
             </p>
             <p>
               ${_`The sutta translations are accompanied by an ongoing translation of the Pali Vinaya by Bhante Brahmali. The classic Vinaya translation by I.B. Horner has long been in need of an update. Bhante Brahmali’s new translation is clear and accessible, and stems from his long experience not only with Pali and the texts, but with living in a community that runs according to the Vinaya. This new translation is being progressively introduced to the site.`}

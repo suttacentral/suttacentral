@@ -94,7 +94,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     <a href="/${item.uid}">${this.localize(item.name.toLowerCase())}</a>
                   </block-link>
                 </span>
-                <span class="subTitle" lang="pli">
+                <span class="subTitle" lang="pi">
                   <block-link>
                     <a href="/${item.uid}">${item.name}</a>
                   </block-link>

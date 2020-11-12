@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html id="main_html_root">
+<html id="main_html_root" lang="en">
 <head>
   <title>SuttaCentral</title>
 
@@ -48,8 +48,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <link rel="manifest" href="/manifest.json">
-  <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Noto+Serif" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
   <link rel="canonical" href="https://suttacentral.net/">
 
   <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -57,11 +55,12 @@
   <style>
 
     :root{
-      font-family: var(--sc-sans-font), var(--sc-traditional-chinese-font), 'Noto Sans CJK TC', 'Noto Sans', 'Source Sans Pro', sans-serif;
+      font-family: var(--sc-sans-font), 'Noto Sans', 'Source Sans Pro', sans-serif;
     }
     
     html, body {
       height: 100%;
+      /* set min-height to avoid scrollbar silliness */
       min-height: 101vh;
     }
 
