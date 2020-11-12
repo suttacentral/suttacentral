@@ -6,8 +6,8 @@ export const typographyBilaraStyles = css`
 
 /* root texts */
 
-.root {
-	font-family: var(--sc-sans-font);
+.translation + .root {
+    font-family: var(--sc-sans-font);
 }
 
 /* lookup */
