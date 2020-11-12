@@ -27,7 +27,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
       textualInfoToggleEnabled: { type: Boolean },
       textualInfoResponse: { type: Object },
       textualParagraphs: { type: Object },
-      rememberSettings: { type: Boolean },
       localizedStringsPath: { type: String },
       referenceDisplayTypeArray: { type: Array },
       noteDisplayTypeArray: { type: Array },
@@ -193,7 +192,6 @@ class SCTopSheet extends LitLocalized(LitElement) {
     this.textualInfoToggleEnabled = textOptions.paragraphsEnabled;
     this.textualInfoResponse = {};
     this.textualParagraphs = textOptions.paragraphDescriptions;
-    this.rememberSettings = localStorage.getItem('rememberTextSettings') === 'true';
     this.localizedStringsPath = '/localization/elements/sc-top-sheet';
     this.selectedReferenceDisplayType = textOptions.referenceDisplayType;
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
@@ -350,16 +348,15 @@ section::-webkit-scrollbar-thumb
 
   render() {
     return html`
-        <section>
-          ${this.noteDisplayTypeTemplate}
-          ${this.textViewTemplate}
-          ${this.paliLookupTemplate}
-          ${this.chineseLookupTemplate}
-          ${this.paliScriptsTemplate}
-          ${this.showHighlightingTemplate}
-          ${this.referenceDisplayTypeTemplate}
-          ${this.rememberSettingsTemplate}
-        </section>
+      <section>
+        ${this.noteDisplayTypeTemplate}
+        ${this.textViewTemplate}
+        ${this.paliLookupTemplate}
+        ${this.chineseLookupTemplate}
+        ${this.paliScriptsTemplate}
+        ${this.showHighlightingTemplate}
+        ${this.referenceDisplayTypeTemplate}
+      </section>
     `;
   }
   
@@ -523,27 +520,6 @@ section::-webkit-scrollbar-thumb
       let refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
       this._showToast(this.localize(`referenceDisplayType_${refType}`) + ' ' + this.localize('textualInformationEnabled'));
     }
-  }
-
-  get rememberSettingsTemplate() {
-    return html`
-      <div class="tools">
-        <details><summary>${this.localize('rememberSettings')}</summary>
-        <p>Check this to remember your settings next session.</p></details>
-        <div class="form-controls">
-          <mwc-switch 
-            ?checked="${this.rememberSettings}"
-            @change="${this._onRememberSettingsChanged}">
-          </mwc-switch>
-        </div>
-      </div>
-    `;
-  }
-
-  _onRememberSettingsChanged(e) {
-    localStorage.setItem('rememberTextSettings', e.target.checked.toString());
-    const msg = e.target.checked ? 'rememberSettingsEnabled' : 'rememberSettingsDisabled';
-    this._showToast(this.localize(msg));
   }
 
   get showHighlightingTemplate() {

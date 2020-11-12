@@ -1,11 +1,8 @@
 import { LitElement, html } from 'lit-element';
-
 import '@material/mwc-icon';
 import '@material/mwc-icon-button';
-
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
-
 import { icons } from '../../img/sc-icons';
 /*
 Base toolbar that appears on the top right in the header of every page.
@@ -312,6 +309,9 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.suttaMetaText !== state.suttaMetaText) {
       this.suttaMetaText = state.suttaMetaText;
+    }
+    if (this.suttaplexListEnabled !== state.suttaplexListDisplay) {
+      this.suttaplexListEnabled = state.suttaplexListDisplay
     }
   }
 
