@@ -70,18 +70,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     return cardEvents.get(index);
   }
 
-  _getEventByNavType(navType) {
-    const cardEvents = new Map([
-      ['pitaka', this._initPitakaCards],
-      ['parallels', this._onPitakaCardClick],
-      ['vaggas', this._onParallelsCardClick],
-      ['vagga', this._onVaggasCardClick],
-      ['vaggaChildren', this._onVaggaChildrenCardClick],
-      ['vaggaChildrenChildren', this._onVaggaChildrenChildrenCardClick],
-    ]);
-    return cardEvents.get(navType);
-  }
-
   _initPitakaCards(params) {
     const navType = 'pitaka';
     const navIndexesOfType = navIndex.get(navType);
@@ -107,39 +95,13 @@ class SCNavigation extends LitLocalized(LitElement) {
     super._stateChanged(state);
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
+      this._appViewModeChanged();
     }
     if (this.currentNavPosition !== state.currentNavPosition) {
-      this.currentNavPosition = state.currentNavPosition
+      this.currentNavPosition = state.currentNavPosition;
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
-    }
-  }
-  
-  updated(changedProps) {
-    super.update(changedProps);
-    if (changedProps.has('isCompactMode')) {
-      this._appViewModeChanged();
-    }
-    if (changedProps.has('navArray')) {
-      //this.actions.setNavigation(this.navArray);
-    }
-    if (changedProps.has('currentNavPosition')) {
-      this._fetchMainData();
-      this._attachLanguageCount();
-      let currentNavState = this.navArray[this.currentNavPosition];
-      if (currentNavState) {
-        let params = {
-          childId: currentNavState.groupId, 
-          childName: currentNavState.groupName, 
-          langIso: currentNavState.langIso,
-          dispatchState: true,
-        };
-        let cardEvent = this._getEventByNavType(currentNavState.type);
-        if (cardEvent) {
-          cardEvent.call(this, params);
-        }
-      }
     }
   }
 
@@ -435,10 +397,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showVaggas) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vaggas';
@@ -463,7 +424,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId.toLowerCase());
       this.requestUpdate();
       if (!showVaggas) {
-        window.location.href = currentUrl;
+        window.location.href = `/${params.childId}`;
       }
     }
   }
@@ -528,10 +489,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showVaggaChildren) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vagga';
@@ -598,10 +558,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showVaggaChildrenChildren) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vaggaChildren';
@@ -670,10 +629,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showSakaChildren) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vaggaChildrenChildren';
