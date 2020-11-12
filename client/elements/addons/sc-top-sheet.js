@@ -270,7 +270,7 @@ details p
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-tertiary-background-color);
-    box-shadow: var(--sc-shadow-elevation-8dp);
+    box-shadow: var(--sc-shadow-elevation-4dp);
 }
 
 summary

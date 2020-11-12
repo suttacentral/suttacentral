@@ -19,7 +19,6 @@ export const suttaplexCss = html`
     font-family: var(--sc-serif-font);
         font-size: var(--sc-skolar-font-size-xl);
         font-weight: 400;
-        line-height: 28px;
     margin: 0;
   }
 
@@ -133,17 +132,21 @@ export const suttaplexCss = html`
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
-    font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
     position: absolute;
-    z-index: 200;
+    z-index: 10;
+    
+    max-width: 360px;
+    margin: 4px 0 0 0;
+    padding: 8px 12px;
+
+    font-size: var(--sc-skolar-font-size-s);
+
+    color: var(--sc-primary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
     background-color: var(--sc-tertiary-background-color);
-    padding: 12px;
-    border-top: var(--sc-border);
-    margin: 0 var(--sc-size-xl) 0 0;
-    box-shadow: var(--paper-material-elevation-2_-_box-shadow);
+    box-shadow: var(--sc-shadow-elevation-4dp);
+
     white-space: normal;
   }
 
@@ -202,6 +205,9 @@ export const suttaplexCss = html`
   .small-icon {
     --iron-icon-width: 16px;
     --iron-icon-height: 16px;
+    color: var(--sc-disabled-text-color);
+    /* hacky! */
+    margin-top: -3px;
   }
 </style>`;
 
@@ -269,7 +275,6 @@ export const suttaplexTxCss = html`
     font-family: var(--sc-serif-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
-    line-height: 24px;
   }
 
   .tx-publication {
@@ -277,7 +282,6 @@ export const suttaplexTxCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-        line-height: 24px;
   }
   
   .arrow {
@@ -346,7 +350,6 @@ export const parallelsListCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-        line-height: 20px;
   }
 
   .paper-spinner {
@@ -389,10 +392,9 @@ export const parallelItemCss = html`
   }
 
   .parallel-item-title {
-    font-family: var(--sc-sans-font);
+    font-family: 'Skolar Sans PE Md', var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        line-height: 20px;
+        font-weight: 500;
     word-wrap: normal;
   }
 
@@ -400,7 +402,6 @@ export const parallelItemCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-        line-height: 20px;
     box-shadow: var(--sc-shadow-elevation-3dp);
     border-top: var(--sc-border);
     position: absolute;
@@ -419,7 +420,6 @@ export const parallelItemCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-        line-height: 24px;
     color: var(--sc-secondary-text-color);
     overflow: hidden;
   }
