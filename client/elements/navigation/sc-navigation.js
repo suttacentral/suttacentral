@@ -99,10 +99,41 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
     if (this.currentNavPosition !== state.currentNavPosition) {
       this.currentNavPosition = state.currentNavPosition;
+      this._currentNavPosChanged();
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
     }
+  }
+
+  _currentNavPosChanged() {
+    this._fetchMainData();
+    this._attachLanguageCount();
+    let currentNavState = this.navArray[this.currentNavPosition];
+    if (currentNavState) {
+      let params = {
+        childId: currentNavState.groupId,
+        childName: currentNavState.groupName,
+        langIso: currentNavState.langIso,
+        dispatchState: true,
+      };
+      let cardEvent = this._getEventByNavType(currentNavState.type);
+      if (cardEvent) {
+        cardEvent.call(this, params);
+      }
+    }
+  }
+
+  _getEventByNavType(navType) {
+    const cardEvents = new Map([
+      ['pitaka', this._initPitakaCards],
+      ['parallels', this._onPitakaCardClick],
+      ['vaggas', this._onParallelsCardClick],
+      ['vagga', this._onVaggasCardClick],
+      ['vaggaChildren', this._onVaggaChildrenCardClick],
+      ['vaggaChildrenChildren', this._onVaggaChildrenChildrenCardClick],
+    ]);
+    return cardEvents.get(navType);
   }
 
   get actions() {
