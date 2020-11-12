@@ -34,9 +34,10 @@ class SCIntroduction extends SCStaticPage {
             ${_`SuttaCentral hosts the texts in orginal languages, translations in modern languages, and extensive sets of parallels that show the relationship between them all.`}
           </p>
           <picture>
-            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.webp" type="image/webp"/>
-            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" type="image/jpeg"/>
-            <img alt="${_`Cover and binding to a Burmese manuscript on the Life of Buddha in red tooled leather with text in\n               gold letters. Burma, late 19th century.`}" class="image-home-full" src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" title="${_`Life of Buddha Burmese Manuscript 22, Volume 1`}" width="640px"/>
+            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif" type="image/avif">
+            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.webp" type="image/webp">
+            <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg" type="image/jpeg">
+            <img alt="${_`Cover and binding to a Burmese manuscript on the Life of Buddha in red tooled leather with text in    gold letters. Burma, late 19th century.`}" class="image-home-full" src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif" title="${_`Life of Buddha Burmese Manuscript 22, Volume 1`}" width="640px">
           </picture>
           <h2>
             ${_`Themes`}
@@ -55,12 +56,13 @@ class SCIntroduction extends SCStaticPage {
           </h2>
           <p>
             <picture>
-              <source srcset="/img/static-pages/birchbark_w400.webp" type="image/webp"/>
-              <source srcset="/img/static-pages/birchbark_w400.jpg" type="image/jpeg"/>
-              <img alt="${_`Fragment of Gandhari manuscript on birch bark, acquired by University of Washington. Afghanistan, \n            circa 1st or 2nd century CE.`}" class="image-home" src="/img/static-pages/birchbark_w400.jpg" title="${_`Abhidharma commentary on suffering`}" />
+              <source srcset="/img/static-pages/birchbark_w400.avif" type="image/avif">
+              <source srcset="/img/static-pages/birchbark_w400.webp" type="image/webp">
+              <source srcset="/img/static-pages/birchbark_w400.jpg" type="image/jpeg">
+              <img alt="${_`Fragment of Gandhari manuscript on birch bark, acquired by University of Washington. Afghanistan,  circa 1st or 2nd century CE.`}" class="image-home" src="/img/static-pages/birchbark_w400.avif" title="${_`Abhidharma commentary on suffering`}">
             </picture>
-            ${_`\n            Buddhist texts are traditionally classified as the “Three\n            Baskets”, spelled `}
-            <i lang="pli">
+            ${_` Buddhist texts are traditionally classified as the “Three Baskets”, spelled `}
+            <i lang="pi">
               ${_`tipiṭaka`}
             </i>
             ${_` in Pali or `}
@@ -71,10 +73,10 @@ class SCIntroduction extends SCStaticPage {
           </p>
           <ul>
             <li>
-              ${_`<a href="/discourses" title="SuttaCentral article on Discourses"><strong>Discourses:</strong></a> <i lang="pli">Sutta</i> in Pali, <i lang="san">sūtra</i> in Sanskrit. These are the primary texts, consisting of records of teachings or conversations by the Buddha or his disciples, and arranged by literary style or subject matter.`}
+              ${_`<a href="/discourses" title="SuttaCentral article on Discourses"><strong>Discourses:</strong></a> <i lang="pi">Sutta</i> in Pali, <i lang="san">sūtra</i> in Sanskrit. These are the primary texts, consisting of records of teachings or conversations by the Buddha or his disciples, and arranged by literary style or subject matter.`}
             </li>
             <li>
-              ${_`<a href="/vinaya" title="SuttaCentral article on Vinaya"><strong>Monastic Law:</strong></a> <i lang="pli">Vinaya</i> in both Pali and Sanskrit. These contain the famous list of rules for monks and nuns (<i>pātimokkha</i>). But they are much more than that, including many details of community life, and a multitude of stories about life in ancient India.`}
+              ${_`<a href="/vinaya" title="SuttaCentral article on Vinaya"><strong>Monastic Law:</strong></a> <i lang="pi">Vinaya</i> in both Pali and Sanskrit. These contain the famous list of rules for monks and nuns (<i>pātimokkha</i>). But they are much more than that, including many details of community life, and a multitude of stories about life in ancient India.`}
             </li>
             <li>
               ${_`<a href="/abhidhamma" title="SuttaCentral article on Abhidhamma"><strong>Abhidhamma:</strong></a> Spelled <i lang="san">abhidharma</i> in Sanskrit. Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses.`}
@@ -94,7 +96,7 @@ class SCIntroduction extends SCStaticPage {
               <strong>
                 ${_`Original texts:`}
               </strong>
-              ${_` SuttaCentral presents the original texts in the original languages,\n              including:\n              `}
+              ${_` SuttaCentral presents the original texts in the original languages,   including:   `}
               <ul>
                 <li>
                   ${_`The <a href="http://en.wikipedia.org/wiki/P%C4%81li" rel="noopener" target="_blank" title="Wikipedia article on Pali">Pali</a> canon (or <a href="http://en.wikipedia.org/wiki/Pali_Canon" rel="noopener" target="_blank" title="Wikipedia article on the Pali Canon">Tipiṭaka</a>) of the <a href="http://en.wikipedia.org/wiki/Theravada" rel="noopener" target="_blank" title="Wikipedia article on Theravāda">Theravāda</a> school. Our text is the Mahāsaṅgīti edition of the Sixth Council recension.`}
@@ -122,11 +124,12 @@ class SCIntroduction extends SCStaticPage {
           </h2>
           <p>
             <picture>
-              <source srcset="/img/static-pages/dn20.webp" type="image/webp"/>
-              <source srcset="/img/static-pages/dn20.jpg" type="image/jpeg"/>
-              <img alt="${_`Visual representation of relationships for DN 20`}" class="image-home" src="/img/static-pages/dn20.jpg" title="${_`Relationships for DN 20`}" width="640px"/>
+              <source srcset="/img/static-pages/dn20.avif" type="image/avif">
+              <source srcset="/img/static-pages/dn20.webp" type="image/webp">
+              <source srcset="/img/static-pages/dn20.jpg" type="image/jpeg">
+              <img alt="${_`Visual representation of relationships for DN 20`}" class="image-home" src="/img/static-pages/dn20.avif" title="${_`Relationships for DN 20`}" width="640px">
             </picture>
-            ${_`\n            Suttas aren’t independent entities. They form a vast interconnected web\n            of teachings. Often the key to understanding one passage lies in a different text. In this way, the Buddhist\n            canons are a little like the internet, with individual pages connected by a web of hidden links.`}
+            ${_` Suttas aren’t independent entities. They form a vast interconnected web of teachings. Often the key to understanding one passage lies in a different text. In this way, the Buddhist canons are a little like the internet, with individual pages connected by a web of hidden links.`}
           </p>
           <p>
             ${_`Most suttas appear in very similar form in more than one collection. We use “parallel” for variant texts that appear to be descended from a common ancestor. Often the texts are so close that this identification is simple. Sometimes, however, there is a less close relationship between two given texts. In such cases we indicate a “resembling parallel”. This doesn’t imply any particular kind of relationship between the resembling parallel and the basic text. It simply suggests that if you are studying the basic text, you might want to look at the resembling parallel, too. For a detailed discussion, see <a href="/methodology">our page on Methodology</a>.`}

@@ -97,6 +97,8 @@ li a:visited
   letter-spacing: var(--sc-caps-letter-spacing);
 
   font-variant-caps: small-caps;
+
+  height: 60px;
 }
 
 #subTitle
@@ -139,7 +141,7 @@ li a:visited
 .generalTitle span
 {
     font-size: calc(20px * var(--sc-skolar-font-scale));
-    font-family: "Skolar Sans PE Condensed", var(--sc-sans-font), var(--sc-traditional-chinese-font);
+    font-family: "Skolar Sans PE Condensed", var(--sc-sans-font), 'Noto Sans CJK TC';
 }
 @media print
 {

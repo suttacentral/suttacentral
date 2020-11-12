@@ -5,7 +5,6 @@ import '@material/mwc-formfield';
 import '@material/mwc-radio';
 import '@material/mwc-checkbox';
 import '@material/mwc-switch';
-import '@material/mwc-button';
 
 import '../addons/sc-bouncing-loader';
 import '../addons/sc-toasts';
