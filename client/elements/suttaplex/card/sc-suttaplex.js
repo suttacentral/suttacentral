@@ -266,7 +266,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.item.biblio && html`
             <details class="suttaplex-details">
               <summary>
-                <iron-icon icon="sc-iron-icons:book"></iron-icon>
+                <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                   ${this.volPage}
                 </span>
@@ -307,7 +307,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         ${!this.isCompact ? html`<h3>
             <b>
                ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
-            </b>
+            </b>${this.localize('inYourLanguage')}
           </h3>
         ` : ''}
         <div>

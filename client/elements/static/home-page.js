@@ -335,7 +335,11 @@ video
         <section class="two-cards">
           <article>
             <figure>
-              <img srcset="/img/home-page/pali1.avif, /img/home-page/pali1.webp, /img/home-page/pali1.jpg" src="/img/home-page/pali1.avif" alt="Pali manuscript" style="width:100%">
+            <picture>
+            <source srcset="/img/home-page/pali1.avif" type="image/avif">
+            <source srcset="/img/home-page/pali1.webp" type="image/webp">
+              <img src="/img/home-page/pali1.jpg" alt="Pali manuscript" style="width:100%">
+              </picture>
               <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
             </figure>
             <div class="card-content">
@@ -351,11 +355,11 @@ video
 
           <article>
             <figure>
-              <img 
-                srcset="/img/home-page/koreana.avif, /img/home-page/koreana.webp, /img/home-page/koreana.jpg"
-                src="/img/home-page/koreana.avif"
-                alt="Chinese Buddhist woodblock"
-                style="width:100%">
+            <picture>
+            <source srcset="/img/home-page/koreana.avif" type="image/avif">
+            <source srcset="/img/home-page/koreana.webp" type="image/webp">
+              <img src="/img/home-page/koreana.jpg" alt="Chinese Buddhist woodblock" style="width:100%">
+              </picture>
               <figcaption>A block from the Tripiṭaka Koreana at Haeinsa Temple</figcaption>
             </figure>
             <div class="card-content">
@@ -380,13 +384,12 @@ video
         <section class="two-cards">
           <article>
             <figure>
-              <img
-                srcset="/img/home-page/pali6.avif, /img/home-page/pali6.webp, /img/home-page/pali6.jpg"
-                src="/img/home-page/pali6.avif"
-                loading="lazy"
-                alt="Pali manuscript"
-                style="width:100%">
-              <figcaption>Pali manuscript from Myanmar.</figcaption>
+            <picture>
+            <source srcset="/img/home-page/pali6.avif" type="image/avif">
+            <source srcset="/img/home-page/pali6.webp" type="image/webp">
+              <img src="/img/home-page/pali6.jpg" alt="Pali manuscript from Myanmar" style="width:100%">
+              </picture>
+              <figcaption>Pali manuscript from Myanmar</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
@@ -401,13 +404,12 @@ video
 
           <article>
             <figure>
-              <img
-                srcset="/img/home-page/bhikkhuni.avif, /img/home-page/bhikkhuni.webp, /img/home-page/bhikkhuni.jpg"
-                src="/img/home-page/bhikkhuni.avif"
-                loading="lazy"
-                alt="Pali manuscript"
-                style="width:100%">
-              <figcaption>Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library.</figcaption>
+            <picture>
+            <source srcset="/img/home-page/bhikkhuni.avif" type="image/avif">
+            <source srcset="/img/home-page/bhikkhuni.webp" type="image/webp">
+              <img src="/img/home-page/bhikkhuni.jpg" alt="Pali manuscript" style="width:100%">
+              </picture>
+              <figcaption>Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
