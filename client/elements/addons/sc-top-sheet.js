@@ -493,7 +493,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
   }
 
   _onReferenceDisplayTypeChanged(e) {
-    this.selectedReferenceDisplayType = e.target.value;
+    this.selectedReferenceDisplayType = e.target.checked ? e.target.value : 'none';
     this.actions.setReferenceDisplayType(this.selectedReferenceDisplayType);
     if (this.selectedReferenceDisplayType === 'none') {
       this._showToast(this.localize('textualInformationDisabled'));
