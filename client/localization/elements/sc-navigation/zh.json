@@ -298,6 +298,7 @@
       "Suttantikadukamātikā": "经之论母",
       "CollectionOf": "{sutta} {pitaka}",
       "view": "查看 {pitaka}",
-      "introduction": "{pitaka}导论"
+      "introduction": "{pitaka}导论",
+      "shortcutToFullList": "访问完整列表"
   }
 }

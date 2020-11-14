@@ -144,19 +144,19 @@ export const navigationNormaModelStyles = html`
       display: flex;
       flex-direction: column;
 
-      height: 24px;
+      height: 45px;
       padding: 0.3333rem 0.5rem;
 
-      color: var(--sc-paper-tooltip-text-color);
-      background-color: var(--sc-primary-color-darkest);
+      color: white;
+      background-color: darkgoldenrod;
 
       justify-content: center;
       align-items: center;
     }
 
-    .number:before {
+    /* .number:before {
       content: "✅ ";
-    }
+    } */
 
     .essay {
       padding: 0 1rem 0.5rem 1rem;
