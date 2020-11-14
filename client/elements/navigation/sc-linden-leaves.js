@@ -114,6 +114,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       
       mwc-icon {
         color: var(--sc-disabled-text-color);
+        margin-top: 5px;
       }
       
       morph-ripple {

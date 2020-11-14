@@ -1,200 +1,175 @@
 import { LitElement, html } from 'lit-element';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/iron-icon/iron-icon.js';
 import '@moduware/morph-ripple';
+import '@material/mwc-icon';
+import { icons } from '../../img/sc-icons';
 
 class SCStepper extends LitElement {
   render() {
     return html`
-    <style>
+      <style>
+        @media print {
+          :host {
+            display: none;
+          }
+        }
 
-@media print
-{
-  :host
-  {
-    display: none;
-  }
-}
+        .bar {
+          display: flex;
+          overflow: hidden;
 
-.bar
-{
-  display: flex;
-  overflow: hidden;
+          height: 100px;
+          margin: 0 calc(-1 * var(--sc-container-margin));
 
-  height: 100px;
-  margin: 0 calc(-1 * var(--sc-container-margin));
+          background-color: var(--sc-secondary-text-color);
+        }
 
-  background-color: var(--sc-secondary-text-color);
-}
+        .button {
+          width: 100%;
+        }
 
-.button
-{
-  width: 100%;
-}
+        .button-container {
+          position: relative;
 
-.button-container
-{
-  position: relative;
+          width: 50%;
+          height: 100%;
+          margin: 0;
+        }
 
-  width: 50%;
-  height: 100%;
-  margin: 0;
-}
+        .button {
+          width: 100%;
+          height: 100%;
+        }
 
-.button
-{
-  width: 100%;
-  height: 100%;
-}
+        .action {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-md);
 
-.action
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-md);
+          opacity: .55;
+          color: var(--sc-paper-tooltip-text-color);
+        }
 
-  opacity: .55;
-  color: var(--sc-paper-tooltip-text-color);
-}
+        .text-title {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-l);
 
-.text-title
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-l);
+          overflow: hidden;
 
-  overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
 
-  white-space: nowrap;
-  text-overflow: ellipsis;
+          color: var(--sc-paper-tooltip-text-color);
+        }
 
-  color: var(--sc-paper-tooltip-text-color);
-}
+        .link {
+          text-decoration: none;
 
-.link
-{
-  text-decoration: none;
+          color: inherit;
+        }
 
-  color: inherit;
-}
+        .button {
+          display: flex;
 
-.button
-{
-  display: flex;
+          height: 100%;
+        }
 
-  height: 100%;
-}
+        .button-right {
+          justify-content: flex-end;
+        }
 
-.button-right
-{
-  justify-content: flex-end;
-}
+        .text {
+          display: flex;
 
-.text
-{
-  display: flex;
+          margin: auto 0;
+        }
 
-  margin: auto 0;
-}
+        .text-element {
+          display: inline-grid;
 
-.text-element
-{
-  display: inline-grid;
+          text-overflow: ellipsis;
+        }
 
-  text-overflow: ellipsis;
-}
+        .text-element-right {
+          text-align: end;
+        }
 
-.text-element-right
-{
-  text-align: end;
-}
+        .arrow {
+          font-size: var(--sc-skolar-font-size-l);
 
-.arrow
-{
-  font-size: var(--sc-skolar-font-size-l);
+          width: var(--sc-size-md-larger);
+          min-width: var(--sc-size-md-larger);
+          margin-top: 1em;
+          margin-right: .5em;
+          margin-left: .5em;
 
-  width: var(--sc-size-md-larger);
-  min-width: var(--sc-size-md-larger);
-  margin-top: 1em;
-  margin-right: .5em;
-  margin-left: .5em;
+          color: var(--sc-paper-tooltip-text-color);
+        }
 
-  color: var(--sc-paper-tooltip-text-color);
-}
+        .separator {
+          width: 10%;
+        }
 
-.separator
-{
-  width: 10%;
-}
+        @media (min-width: 1280px) {
+          .button-right {
+            width: 80%;
+            margin-right: 20%;
+          }
 
-@media (min-width: 1280px)
-{
-  .button-right
-  {
-    width: 80%;
-    margin-right: 20%;
-  }
+          .button-left {
+            width: 80%;
+            margin-left: 20%;
+          }
 
-  .button-left
-  {
-    width: 80%;
-    margin-left: 20%;
-  }
+          .arrow-right {
+            margin-left: 1em;
+          }
 
-  .arrow-right
-  {
-    margin-left: 1em;
-  }
+          .arrow-left {
+            margin-right: 1em;
+          }
+        }
 
-  .arrow-left
-  {
-    margin-right: 1em;
-  }
-}
+        morph-ripple {
+          --ripple-color: var(--sc-primary-color);
+        }
+      </style>
 
-  morph-ripple 
-  {
-    --ripple-color: var(--sc-primary-color);
-  }
-    </style>
-
-    <div class="bar">
-      <div class="button-container">
-        ${this.previous && this.previous.uid ? html`
-          
-          <a href="${this._getUrl(this.previous)}" class="link">
-            <div class="button button-left">
-              <div class="text">
-                <iron-icon icon="sc-iron-icons:arrow-back" class="arrow arrow-left"></iron-icon>
-                <div class="text-element">
-                  <span class="action">Previous</span>
-                  <span class="text-title">${this.previous.name}</span>
+      <div class="bar">
+        <div class="button-container">
+          ${this.previous && this.previous.uid ? html`
+            <a href="${this._getUrl(this.previous)}" class="link">
+              <div class="button button-left">
+                <div class="text">
+                  <mwc-icon class="arrow arrow-left">${icons['arrow_left']}</mwc-icon>
+                  <div class="text-element">
+                    <span class="action">Previous</span>
+                    <span class="text-title">${this.previous.name}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <morph-ripple></morph-ripple>
-          </a>
-        ` : ''}
-      </div>
-
-      <div class="separator"></div>
-
-      <div class="button-container">
-        ${this.next && this.next.uid ? html`
-          <a href="${this._getUrl(this.next)}" class="link">
-            <div class="button button-right">
-              <div class="text">
-                <div class="text-element text-element-right">
-                  <span class="action">Next</span>
-                  <span class="text-title">${this.next.name}</span>
-                </div>
-                <iron-icon icon="sc-iron-icons:arrow-forward" class="arrow arrow-right"></iron-icon>
-              </div>
-            </div>
-            <morph-ripple></morph-ripple>
-          </a>
+              <morph-ripple></morph-ripple>
+            </a>
           ` : ''}
-      </div>
+        </div>
 
-    </div>`;
+        <div class="separator"></div>
+
+        <div class="button-container">
+          ${this.next && this.next.uid ? html`
+            <a href="${this._getUrl(this.next)}" class="link">
+              <div class="button button-right">
+                <div class="text">
+                  <div class="text-element text-element-right">
+                    <span class="action">Next</span>
+                    <span class="text-title">${this.next.name}</span>
+                  </div>
+                  <mwc-icon class="arrow arrow-right">${icons['arrow_right']}</mwc-icon>
+                </div>
+              </div>
+              <morph-ripple></morph-ripple>
+            </a>
+            ` : ''}
+        </div>
+      </div>`;
   }
 
   static get properties() {
