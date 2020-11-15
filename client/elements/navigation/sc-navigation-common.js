@@ -73,4 +73,10 @@ export const navIndex = new Map([
     pathParamIndex: -1,
     navArrayLength: 2
   }],
+  ['searchPage', {
+    index: 1,
+    position: 1,
+    pathParamIndex: -1,
+    navArrayLength: 2
+  }],
 ]);
