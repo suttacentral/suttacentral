@@ -287,7 +287,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
                   <span class="number"></span>
-                  <mwc-icon>${icons['translate']}</mwc-icon>
+                  <mwc-icon>${icons['tick']}</mwc-icon>
                   <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}
@@ -390,7 +390,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -502,7 +502,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -585,7 +585,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -668,7 +668,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -747,7 +747,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
                   <span class="number" id="${child.id}_number"></span>
-                  <mwc-icon>${icons['translate']}</mwc-icon>
+                  <mwc-icon>${icons['tick']}</mwc-icon>
                   <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}

@@ -6,6 +6,8 @@ import { navigationNormaModelStyles, navigationCompactModeStyles } from './sc-na
 import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
 import '@polymer/paper-ripple/paper-ripple.js';
+import { icons } from '../../img/sc-icons';
+import '@material/mwc-icon';
 
 class SCTipitaka extends LitLocalized(LitElement) {
 
@@ -102,6 +104,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
               </span>
               <span class="header-right">
                 <span class="number"></span>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             </header>
