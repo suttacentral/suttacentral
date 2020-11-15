@@ -6,6 +6,8 @@ import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex } from './sc-navigation-common';
 import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
+import { icons } from '../../img/sc-icons';
+import '@material/mwc-icon';
 
 class SCNavigation extends LitLocalized(LitElement) {
   static get properties() {
@@ -70,18 +72,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     return cardEvents.get(index);
   }
 
-  _getEventByNavType(navType) {
-    const cardEvents = new Map([
-      ['pitaka', this._initPitakaCards],
-      ['parallels', this._onPitakaCardClick],
-      ['vaggas', this._onParallelsCardClick],
-      ['vagga', this._onVaggasCardClick],
-      ['vaggaChildren', this._onVaggaChildrenCardClick],
-      ['vaggaChildrenChildren', this._onVaggaChildrenChildrenCardClick],
-    ]);
-    return cardEvents.get(navType);
-  }
-
   _initPitakaCards(params) {
     const navType = 'pitaka';
     const navIndexesOfType = navIndex.get(navType);
@@ -107,40 +97,45 @@ class SCNavigation extends LitLocalized(LitElement) {
     super._stateChanged(state);
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
+      this._appViewModeChanged();
     }
     if (this.currentNavPosition !== state.currentNavPosition) {
-      this.currentNavPosition = state.currentNavPosition
+      this.currentNavPosition = state.currentNavPosition;
+      this._currentNavPosChanged();
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
     }
   }
-  
-  updated(changedProps) {
-    super.update(changedProps);
-    if (changedProps.has('isCompactMode')) {
-      this._appViewModeChanged();
-    }
-    if (changedProps.has('navArray')) {
-      //this.actions.setNavigation(this.navArray);
-    }
-    if (changedProps.has('currentNavPosition')) {
-      this._fetchMainData();
-      this._attachLanguageCount();
-      let currentNavState = this.navArray[this.currentNavPosition];
-      if (currentNavState) {
-        let params = {
-          childId: currentNavState.groupId, 
-          childName: currentNavState.groupName, 
-          langIso: currentNavState.langIso,
-          dispatchState: true,
-        };
-        let cardEvent = this._getEventByNavType(currentNavState.type);
-        if (cardEvent) {
-          cardEvent.call(this, params);
-        }
+
+  _currentNavPosChanged() {
+    this._fetchMainData();
+    this._attachLanguageCount();
+    let currentNavState = this.navArray[this.currentNavPosition];
+    if (currentNavState) {
+      let params = {
+        childId: currentNavState.groupId,
+        childName: currentNavState.groupName,
+        langIso: currentNavState.langIso,
+        dispatchState: true,
+      };
+      let cardEvent = this._getEventByNavType(currentNavState.type);
+      if (cardEvent) {
+        cardEvent.call(this, params);
       }
     }
+  }
+
+  _getEventByNavType(navType) {
+    const cardEvents = new Map([
+      ['pitaka', this._initPitakaCards],
+      ['parallels', this._onPitakaCardClick],
+      ['vaggas', this._onParallelsCardClick],
+      ['vagga', this._onVaggasCardClick],
+      ['vaggaChildren', this._onVaggaChildrenCardClick],
+      ['vaggaChildrenChildren', this._onVaggaChildrenChildrenCardClick],
+    ]);
+    return cardEvents.get(navType);
   }
 
   get actions() {
@@ -286,22 +281,21 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class="header-left">
                 <span class="title" lang="${child.lang_iso}">
                   ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
-                  ${child.lang_name ? html`<span>(${child.lang_name})</span>` : ''}
                 </span>
                 <span class="subTitle">${child.name}</span>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
                   <span class="number"></span>
+                  <mwc-icon>${icons['translate']}</mwc-icon>
                   <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}
             </header>
-
             <div class="blurb">
-              ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} in Pali and Chinese.
+              ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} 
+                in ${child.lang_name ? html`<span>${child.lang_name}</span>` : 'Pali and Chinese.'}.
             </div>
-
             <morph-ripple></morph-ripple>
           </section>
         </a>
@@ -396,6 +390,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
+                <mwc-icon>${icons['translate']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -413,7 +408,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
           <div class="shortcut">
             <block-link>
-              <a href="${this._genCurrentURL(child.id.toLowerCase())}" class='shortcut-link'>Shortcut to full list</a>
+              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
             </block-link>
           </div>
 
@@ -435,10 +430,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showVaggas) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vaggas';
@@ -463,7 +457,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId.toLowerCase());
       this.requestUpdate();
       if (!showVaggas) {
-        window.location.href = currentUrl;
+        window.location.href = `/${params.childId}`;
       }
     }
   }
@@ -492,25 +486,38 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggasContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
       ${this.vaggasData[0].children.map(child => html`
-        <a href="${this._genCurrentURL(child.id.toLowerCase())}">
-          <section class="card vaggas" 
-            @click=${() => this._onVaggasCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title" lang="en">${this.localize(child.name ? child.name : child.id)} ${this.parallelName}</span>
-                <span class="subTitle">${child.name ? child.name : child.id}</span>
+        <section class="card vaggas" 
+          @click=${() => this._onVaggasCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+          <header>
+            <span class="header-left">
+              <span class="title" lang="en">
+                <block-link>
+                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                    ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
+                  </a>
+                </block-link>
               </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <span class="number" id="${child.id}_number"></span>
-                  <span class="number-translated">${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-            <div class="blurb" id="${child.id}_blurb"></div>
-            <morph-ripple></morph-ripple>
-          </section>
-        </a>
+              <span class="subTitle">${child.name ? child.name : child.id}</span>
+            </span>
+            ${child.yellow_brick_road ? html`
+              <span class="header-right">
+                <span class="number" id="${child.id}_number"></span>
+                <mwc-icon>${icons['translate']}</mwc-icon>
+                <span class="number-translated">${this.fullSiteLanguageName}</span>
+              </span>
+            ` : ''}
+          </header>
+
+          <div class="blurb" id="${child.id}_blurb"></div>
+
+          <div class="shortcut">
+            <block-link>
+              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+            </block-link>
+          </div>
+
+          <paper-ripple></paper-ripple>
+        </section>
       `)}` : '';
   }
 
@@ -528,10 +535,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showVaggaChildren) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vagga';
@@ -564,24 +570,37 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildren && this.vaggaChildren ? html`
       ${this.vaggaChildren && this.vaggaChildren.map(child => html`
-        <a href="${this._genCurrentURL(child.id.toLowerCase())}">
-          <section class="card vaggaChildren" @click=${() => this._onVaggaChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title" lang="en">${this.localize(child.name ? child.name : child.id)} ${this.parallelName}</span>
-                <span class="subTitle">${child.name ? child.name : child.id}</span>
+        <section class="card vaggaChildren" @click=${() => this._onVaggaChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+          <header>
+            <span class="header-left">
+              <span class="title" lang="en">
+                <block-link>
+                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                    ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
+                  </a>
+                </block-link>
               </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <span class="number" id="${child.id}_number"></span>
-                  <span class="number-translated">${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-            <div class="blurb" id="${child.id}_blurb"></div>
-            <morph-ripple></morph-ripple>
-          </section>
-        </a>
+              <span class="subTitle">${child.name ? child.name : child.id}</span>
+            </span>
+            ${child.yellow_brick_road ? html`
+              <span class="header-right">
+                <span class="number" id="${child.id}_number"></span>
+                <mwc-icon>${icons['translate']}</mwc-icon>
+                <span class="number-translated">${this.fullSiteLanguageName}</span>
+              </span>
+            ` : ''}
+          </header>
+
+          <div class="blurb" id="${child.id}_blurb"></div>
+
+          <div class="shortcut">
+            <block-link>
+              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+            </block-link>
+          </div>
+
+          <paper-ripple></paper-ripple>
+        </section>
       `)}` : '';
   }
 
@@ -598,10 +617,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showVaggaChildrenChildren) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vaggaChildren';
@@ -634,25 +652,38 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren ? html`
       ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren[0].children.map(child => html`
-        <a href="${this._genCurrentURL(child.id.toLowerCase())}">
-          <section class="card vaggaChildrenChildren" 
-            @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title" lang="en">${this.localize(child.name)} ${this.parallelName}</span>
-                <span class="subTitle">${child.name}</span>
+        <section class="card vaggaChildrenChildren" 
+          @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+          <header>
+            <span class="header-left">
+              <span class="title" lang="en">
+                <block-link>
+                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                    ${this.localize(child.name)} ${this.parallelName}
+                  </a>
+                </block-link>
               </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <span class="number" id="${child.id}_number"></span>
-                  <span class="number-translated">${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-            <div class="blurb" id="${child.id}_blurb"></div>
-            <morph-ripple></morph-ripple>
-          </section>
-        </a>
+              <span class="subTitle">${child.name}</span>
+            </span>
+            ${child.yellow_brick_road ? html`
+              <span class="header-right">
+                <span class="number" id="${child.id}_number"></span>
+                <mwc-icon>${icons['translate']}</mwc-icon>
+                <span class="number-translated">${this.fullSiteLanguageName}</span>
+              </span>
+            ` : ''}
+          </header>
+
+          <div class="blurb" id="${child.id}_blurb"></div>
+
+          <div class="shortcut">
+            <block-link>
+              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+            </block-link>
+          </div>
+
+          <paper-ripple></paper-ripple>
+        </section>
       `)}` : '';
   }
 
@@ -670,10 +701,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     let currentUrl = `/${params.childId}`;
     if (showSakaChildren) {
       currentUrl = this._genCurrentURL(params.childId.toLowerCase());
-    }
-
-    if (params.currentURL) {
-      currentUrl = params.currentURL;
+      if (params.currentURL) {
+        currentUrl = params.currentURL;
+      }
     }
 
     const navType = 'vaggaChildrenChildren';
@@ -717,6 +747,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
                   <span class="number" id="${child.id}_number"></span>
+                  <mwc-icon>${icons['translate']}</mwc-icon>
                   <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}
