@@ -337,7 +337,6 @@ video
             <figure>
             <picture>
             <source srcset="/img/home-page/pali1.avif" type="image/avif">
-            <source srcset="/img/home-page/pali1.webp" type="image/webp">
               <img src="/img/home-page/pali1.jpg" alt="Pali manuscript" style="width:100%">
               </picture>
               <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
@@ -357,7 +356,6 @@ video
             <figure>
             <picture>
             <source srcset="/img/home-page/koreana.avif" type="image/avif">
-            <source srcset="/img/home-page/koreana.webp" type="image/webp">
               <img src="/img/home-page/koreana.jpg" alt="Chinese Buddhist woodblock" style="width:100%">
               </picture>
               <figcaption>A block from the Tripiṭaka Koreana at Haeinsa Temple</figcaption>
@@ -386,7 +384,6 @@ video
             <figure>
             <picture>
             <source srcset="/img/home-page/pali6.avif" type="image/avif">
-            <source srcset="/img/home-page/pali6.webp" type="image/webp">
               <img src="/img/home-page/pali6.jpg" alt="Pali manuscript from Myanmar" style="width:100%">
               </picture>
               <figcaption>Pali manuscript from Myanmar</figcaption>
@@ -406,7 +403,6 @@ video
             <figure>
             <picture>
             <source srcset="/img/home-page/bhikkhuni.avif" type="image/avif">
-            <source srcset="/img/home-page/bhikkhuni.webp" type="image/webp">
               <img src="/img/home-page/bhikkhuni.jpg" alt="Pali manuscript" style="width:100%">
               </picture>
               <figcaption>Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library</figcaption>
