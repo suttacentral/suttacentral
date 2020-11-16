@@ -36,6 +36,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this._appViewModeChanged();
     this._fetchMainData();
+    this._fetchExpansion();
     this._initPitakaCards({dispatchState: true});
     this._parseURL();
   }
@@ -188,7 +189,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     try {
       this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.language}`)).json();
     } catch (e) {
-      this.errors = e;
+      this.lastError = e;
     }
   }
 
@@ -237,7 +238,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       const childrenData = await (await fetch(url)).json();
       return childrenData;
     } catch (e) {
-      this.errors = e;
+      this.lastError = e;
     }
   }
 
@@ -251,8 +252,8 @@ class SCNavigation extends LitLocalized(LitElement) {
           langNumSpan.innerText = lang.total.toString();
         }
       });
-    } catch (err) {
-      this.errors = err;
+    } catch (e) {
+      this.lastError = e;
     }
   }
 
@@ -436,8 +437,9 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const navType = 'vaggas';
     const navIndexesOfType = navIndex.get(navType);
+    const uidAcro = await this._getAcronym(params.childId);
     this.navArray[navIndexesOfType.index] = {
-      title: params.childName,
+      title: uidAcro || params.childName,
       url: currentUrl,
       type: navType,
       displayPitaka: false,
@@ -542,8 +544,9 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const navType = 'vagga';
     const navIndexesOfType = navIndex.get(navType);
+    const uidAcro = await this._getAcronym(params.childId);
     this.navArray[navIndexesOfType.index] = {
-      title: params.childName,
+      title: uidAcro || params.childName,
       url: currentUrl,
       type: navType,
       displayPitaka: false,
@@ -779,6 +782,30 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId.toLowerCase());
       this.requestUpdate();
       window.location.href = `/${params.childId}`;
+    }
+  }
+
+  _getExpansionUrl() {
+    return `${API_ROOT}/expansion`;
+  }
+
+  async _fetchExpansion() {
+    try {
+      this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();  
+    } catch (e) {
+      this.lastError = e;
+    }
+  }
+
+  async _getAcronym(uid) {
+    if (!this.expansionReturns ) {
+      await this._fetchExpansion();
+    }
+    let uidExpansion = this.expansionReturns[0][uid]
+    if (uidExpansion) {
+      return uidExpansion[0];
+    } else {
+      return '';
     }
   }
 }
