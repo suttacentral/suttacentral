@@ -144,8 +144,8 @@ export const navigationNormaModelStyles = html`
       display: flex;
       flex-direction: column;
 
-      height: 45px;
-      padding: 0.3333rem 0.5rem;
+      height: 36px;
+      padding: 0px 8px 4px;
 
       color: white;
       background-color: darkgoldenrod;
@@ -154,9 +154,9 @@ export const navigationNormaModelStyles = html`
       align-items: center;
     }
 
-    /* .number:before {
-      content: "✅ ";
-    } */
+    mwc-icon{
+      font-size: 16px;
+    }
 
     .essay {
       padding: 0 1rem 0.5rem 1rem;
@@ -210,7 +210,7 @@ export const navigationNormaModelStyles = html`
       padding: 0.333rem 1rem;
 
       border-radius: 8px;
-      background-color: var(--sc-primary-background-color);
+      background-color: var(--sc-primary-color-light-transparent);
     }
 
     .shortcut:before {
@@ -228,8 +228,6 @@ export const navigationNormaModelStyles = html`
 
     .shortcut-link:hover {
       text-decoration: underline;
-
-      background-color: var(--sc-tertiary-background-color);
 
       text-decoration-color: var(--sc-primary-color);
     }
