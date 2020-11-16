@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
-import { navigationNormaModelStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
+import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
 import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
 import '@polymer/paper-ripple/paper-ripple.js';
@@ -54,7 +54,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
     super();
     this.loading = false;
     this.mainMenuData = [];
-    this.currentStyles = navigationNormaModelStyles;
+    this.currentStyles = navigationNormalModeStyles;
     this.compactStyles = {};
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.navArray = store.getState().navigationArray;
