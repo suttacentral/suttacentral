@@ -798,15 +798,11 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _getAcronym(uid) {
-    if (!this.expansionReturns ) {
+    if (!this.expansionReturns) {
       await this._fetchExpansion();
     }
-    let uidExpansion = this.expansionReturns[0][uid]
-    if (uidExpansion) {
-      return uidExpansion[0];
-    } else {
-      return '';
-    }
+    const uidExpansion = this.expansionReturns[0][uid];
+    return uidExpansion ? uidExpansion[0] : '';
   }
 }
 
