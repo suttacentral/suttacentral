@@ -1,6 +1,6 @@
 import { html } from "lit-element";
 
-export const navigationNormaModelStyles = html`
+export const navigationNormalModeStyles = html`
   <style>
 
 

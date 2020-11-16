@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
 import { API_ROOT } from '../../constants';
-import { navigationNormaModelStyles, navigationCompactModeStyles } from './sc-navigation-styles';
+import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
@@ -258,7 +258,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      ${navigationNormaModelStyles}
+      ${navigationNormalModeStyles}
       ${this.compactStyles}
       <main>
         ${this.pitakaContentTemplate}
