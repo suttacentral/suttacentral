@@ -3,7 +3,7 @@ import { API_ROOT } from '../../constants';
 import { navigationNormaModelStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
-import { pitakaGuide, navIndex } from './sc-navigation-common';
+import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
 import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
 import { icons } from '../../img/sc-icons';
@@ -287,7 +287,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
                   <span class="number"></span>
-                  <mwc-icon>${icons['translate']}</mwc-icon>
+                  <mwc-icon>${icons['tick']}</mwc-icon>
                   <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}
@@ -390,7 +390,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -406,12 +406,13 @@ class SCNavigation extends LitLocalized(LitElement) {
             </div>
           ` : ''}
 
-          <div class="shortcut">
-            <block-link>
-              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </block-link>
-          </div>
-
+          ${shortcuts.includes(child.id) ? html`
+            <div class="shortcut">
+              <block-link>
+                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+              </block-link>
+            </div>
+          ` : ''}
           <paper-ripple></paper-ripple>
         </section>
       `)}`: '';
@@ -502,7 +503,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -510,11 +511,13 @@ class SCNavigation extends LitLocalized(LitElement) {
 
           <div class="blurb" id="${child.id}_blurb"></div>
 
-          <div class="shortcut">
-            <block-link>
-              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </block-link>
-          </div>
+          ${shortcuts.includes(child.id) ? html`
+            <div class="shortcut">
+              <block-link>
+                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+              </block-link>
+            </div>
+          ` : ''}
 
           <paper-ripple></paper-ripple>
         </section>
@@ -585,7 +588,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -593,11 +596,13 @@ class SCNavigation extends LitLocalized(LitElement) {
 
           <div class="blurb" id="${child.id}_blurb"></div>
 
-          <div class="shortcut">
-            <block-link>
-              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </block-link>
-          </div>
+          ${shortcuts.includes(child.id) ? html`
+            <div class="shortcut">
+              <block-link>
+                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+              </block-link>
+            </div>
+          ` : ''}
 
           <paper-ripple></paper-ripple>
         </section>
@@ -668,7 +673,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ${child.yellow_brick_road ? html`
               <span class="header-right">
                 <span class="number" id="${child.id}_number"></span>
-                <mwc-icon>${icons['translate']}</mwc-icon>
+                <mwc-icon>${icons['tick']}</mwc-icon>
                 <span class="number-translated">${this.fullSiteLanguageName}</span>
               </span>
             ` : ''}
@@ -676,11 +681,13 @@ class SCNavigation extends LitLocalized(LitElement) {
 
           <div class="blurb" id="${child.id}_blurb"></div>
 
-          <div class="shortcut">
-            <block-link>
-              <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </block-link>
-          </div>
+          ${shortcuts.includes(child.id) ? html`
+            <div class="shortcut">
+              <block-link>
+                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+              </block-link>
+            </div>
+          ` : ''}
 
           <paper-ripple></paper-ripple>
         </section>
@@ -747,7 +754,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
                   <span class="number" id="${child.id}_number"></span>
-                  <mwc-icon>${icons['translate']}</mwc-icon>
+                  <mwc-icon>${icons['tick']}</mwc-icon>
                   <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}

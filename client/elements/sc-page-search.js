@@ -9,6 +9,7 @@ import './addons/sc-bouncing-loader';
 import { store } from '../redux-store';
 import { LitLocalized } from '../elements/addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
+import { navIndex } from './navigation/sc-navigation-common';
 
 /*
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -23,329 +24,289 @@ class SCPageSearch extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-    :host
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-md);
-  font-weight: 400;
-  line-height: 1.5;
-
-  display: block;
-
-  width: 100%;
-  height: calc(100vh - var(--sc-size-xxl));
-
-  color: var(--sc-primary-text-color);
-}
-
-h2{
-  line-height: 1.25
-}
-
-#search_result_list
-{
-  padding: var(--sc-size-xl) 0 var(--sc-size-md);
-}
-
-.search-results-container
-{
-  margin: 0 0 var(--sc-size-xxl) 0;
-}
+        :host {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+          line-height: 1.5;
 
-.search-results-main
-{
-  max-width: 720px;
-  margin: 0 auto;
-}
+          display: block;
 
-.search-result-head
-{
-  display: flex;
+          width: 100%;
+          height: calc(100vh - var(--sc-size-xxl));
 
-  color: var(--sc-secondary-text-color);
+          color: var(--sc-primary-text-color);
+        }
 
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
+        h2 {
+          line-height: 1.25
+        }
 
-.search-result-header
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-h1-md);
-  font-weight: 400;
-  line-height: 1.25;
+        #search_result_list {
+          padding: var(--sc-size-xl) 0 var(--sc-size-md);
+        }
 
-  display: inline-block;
+        .search-results-container {
+          margin: 0 0 var(--sc-size-xxl) 0;
+        }
 
-  margin: 0 1rem 1rem 0;
-}
+        .search-results-main {
+          max-width: 720px;
+          margin: 0 auto;
+        }
 
-.search-result-term
-{
-  font-family: var(--sc-serif-font);
-  font-weight: bold;
-}
+        .search-result-head {
+          display: flex;
 
-.search-result-item
-{
-  display: flex;
-  flex-direction: column;
+          color: var(--sc-secondary-text-color);
 
-  border-bottom: var(--sc-border);
-}
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
 
-.search-result-item dl a
-{
-  text-decoration: underline;
+        .search-result-header {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-h1-md);
+          font-weight: 400;
+          line-height: 1.25;
 
-  color: inherit;
+          display: inline-block;
 
-  text-decoration-color: var(--sc-primary-color);
-}
+          margin: 0 1rem 1rem 0;
+        }
 
-.search-result-item dl a:hover
-{
-  color: var(--sc-primary-color);
-}
+        .search-result-term {
+          font-family: var(--sc-serif-font);
+          font-weight: bold;
+        }
 
-.search-result-item dl a:visited
-{
-  text-decoration-color: var(--sc-primary-color-dark);
-}
+        .search-result-item {
+          display: flex;
+          flex-direction: column;
 
-.search-result-item:focus
-{
-  outline: 0;
-}
+          border-bottom: var(--sc-border);
+        }
 
-.padded-container
-{
-  display: flex;
-  flex-direction: column;
-
-  padding: 0;
-}
+        .search-result-item dl a {
+          text-decoration: underline;
 
-.search-result-title
-{
-  font-family: var(--sc-serif-font);
-  font-size: var(--sc-skolar-font-size-static-subtitle);
-  font-weight: 400;
+          color: inherit;
 
-  overflow: hidden;
+          text-decoration-color: var(--sc-primary-color);
+        }
 
-  margin: 1rem 0 0 0;
+        .search-result-item dl a:hover {
+          color: var(--sc-primary-color);
+        }
 
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  color: var(--sc-primary-accent-color);
-}
-
-.search-result-division
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-s);
-  font-weight: 400;
-
-  overflow: hidden;
-
-  margin: 0;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
+        .search-result-item dl a:visited {
+          text-decoration-color: var(--sc-primary-color-dark);
+        }
 
-  color: var(--sc-secondary-text-color);
-
-  height: 1.5rem;
-}
+        .search-result-item:focus {
+          outline: 0;
+        }
 
-.search-result-snippet
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-md);
-  font-weight: 400;
+        .padded-container {
+          display: flex;
+          flex-direction: column;
 
-  margin: 0 0 1rem 0;
-}
+          padding: 0;
+        }
 
-.search-result-snippet dd
-{
-  margin-left: 0;
-}
+        .search-result-title {
+          font-family: var(--sc-serif-font);
+          font-size: var(--sc-skolar-font-size-static-subtitle);
+          font-weight: 400;
 
-.search-result-snippet dfn
-{
-  font-weight: bold;
-  font-style: normal;
+          overflow: hidden;
 
-  color: var(--sc-primary-color-dark);
-}
-
-.search-result-filter-menu
-{
-  margin-top: -20px;
-}
-
-.search-result-link
-{
-  text-decoration: none;
-
-  color: initial;
-}
-
-.search-result-link:hover
-{
-  text-decoration: underline;
-
-  text-decoration-color: var(--sc-primary-accent-color);
-}
-
-.dictionary
-{
-  margin: 2rem 0;
-  padding: 0 clamp(1rem, 3vw, 2rem);
-
-  border-radius: var(--sc-size-sm);
-  background-color: var(--sc-secondary-background-color);
-  box-shadow: var(--sc-shadow-elevation-1dp);
-}
-
-.dictionary .search-result-division
-{
-  display: none;
-}
-
-.dictionary .search-result-title
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-md);
-  font-weight: 400;
-}
-
-.dictionary dfn
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-static-subtitle);
-  font-weight: bold;
-
-  color: var(--sc-primary-color-dark);
-}
-
-.dictionary dfn,
-.highlight,
-.search-result-term,
-.selected-terms-item > a
-{
-  background-color: var(--sc-primary-color-light-transparent);
-  color: var(--sc-primary-color-darkest);
-}
-
-.dictionary dd p
-{
-  margin: 0 0 var(--sc-size-s) 0;
-}
-
-.dictionary .case
-{
-  display: block;
-
-  letter-spacing: var(--sc-caps-letter-spacing);
-
-  color: var(--sc-secondary-text-color);
-
-  font-variant-caps: all-small-caps;
-}
-
-.dictionary .ref
-{
-  font-family: var(--sc-sans-font);
-  font-weight: 600;
-  font-style: normal;
-
-  padding: 0 4px;
-
-  white-space: nowrap;
-  letter-spacing: normal;
-
-  color: var(--sc-secondary-text-color);
-  border-radius: 8px;
-  background-color: rgba(159, 158, 157, 0.15);
-
-  font-variant-caps: normal;
-}
-
-dd ol,
-dd ul
-{
-  margin: 0;
-  padding: 0 0 0 1rem;
-}
-
-li
-{
-  padding-left: clamp(.25rem, 1vw, 1rem);
-}
-
-li::marker
-{
-  font-family: var(--sc-sans-font);
-  font-weight: bold;
-
-  color: var(--sc-secondary-text-color);
-}
-
-p + ol,
-p + ul
-{
-  margin: .5em 0 1em;
-}
-
-.paper-spinner
-{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  margin: 0;
-
-  transform: translate(-50%, -50%);
-}
-
-.google-maps
-{
-  height: 480px;
-  margin: var(--sc-size-md-larger) 0;
-}
-
-.google-maps iframe
-{
-  width: 100%;
-  height: 480px;
-
-  border: none;
-}
-
-.d-none
-{
-  display: none;
-}
-
-[hidden]
-{
-  display: none !important;
-}
-
-.loading-indicator
-{
-  font-size: var(--sc-skolar-font-size-s);
-
-  height: 60px;
-  margin-top: 25vh;
-
-  text-align: center;
-}
+          margin: 1rem 0 0 0;
 
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          color: var(--sc-primary-accent-color);
+        }
+
+        .search-result-division {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-s);
+          font-weight: 400;
+
+          overflow: hidden;
+
+          margin: 0;
+
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          color: var(--sc-secondary-text-color);
+
+          height: 1.5rem;
+        }
+
+        .search-result-snippet {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+
+          margin: 0 0 1rem 0;
+        }
+
+        .search-result-snippet dd {
+          margin-left: 0;
+        }
+
+        .search-result-snippet dfn {
+          font-weight: bold;
+          font-style: normal;
+
+          color: var(--sc-primary-color-dark);
+        }
+
+        .search-result-filter-menu {
+          margin-top: -20px;
+        }
+
+        .search-result-link {
+          text-decoration: none;
+
+          color: initial;
+        }
+
+        .search-result-link:hover {
+          text-decoration: underline;
+
+          text-decoration-color: var(--sc-primary-accent-color);
+        }
+
+        .dictionary {
+          margin: 2rem 0;
+          padding: 0 clamp(1rem, 3vw, 2rem);
+
+          border-radius: var(--sc-size-sm);
+          background-color: var(--sc-secondary-background-color);
+          box-shadow: var(--sc-shadow-elevation-1dp);
+        }
+
+        .dictionary .search-result-division {
+          display: none;
+        }
+
+        .dictionary .search-result-title {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+        }
+
+        .dictionary dfn {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-static-subtitle);
+          font-weight: bold;
+
+          color: var(--sc-primary-color-dark);
+        }
+
+        .dictionary dfn,
+        .highlight,
+        .search-result-term,
+        .selected-terms-item>a {
+          background-color: var(--sc-primary-color-light-transparent);
+          color: var(--sc-primary-color-darkest);
+        }
+
+        .dictionary dd p {
+          margin: 0 0 var(--sc-size-s) 0;
+        }
+
+        .dictionary .case {
+          display: block;
+
+          letter-spacing: var(--sc-caps-letter-spacing);
+
+          color: var(--sc-secondary-text-color);
+
+          font-variant-caps: all-small-caps;
+        }
+
+        .dictionary .ref {
+          font-family: var(--sc-sans-font);
+          font-weight: 600;
+          font-style: normal;
+
+          padding: 0 4px;
+
+          white-space: nowrap;
+          letter-spacing: normal;
+
+          color: var(--sc-secondary-text-color);
+          border-radius: 8px;
+          background-color: rgba(159, 158, 157, 0.15);
+
+          font-variant-caps: normal;
+        }
+
+        dd ol,
+        dd ul {
+          margin: 0;
+          padding: 0 0 0 1rem;
+        }
+
+        li {
+          padding-left: clamp(.25rem, 1vw, 1rem);
+        }
+
+        li::marker {
+          font-family: var(--sc-sans-font);
+          font-weight: bold;
+
+          color: var(--sc-secondary-text-color);
+        }
+
+        p+ol,
+        p+ul {
+          margin: .5em 0 1em;
+        }
+
+        .paper-spinner {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+
+          margin: 0;
+
+          transform: translate(-50%, -50%);
+        }
+
+        .google-maps {
+          height: 480px;
+          margin: var(--sc-size-md-larger) 0;
+        }
+
+        .google-maps iframe {
+          width: 100%;
+          height: 480px;
+
+          border: none;
+        }
+
+        .d-none {
+          display: none;
+        }
+
+        [hidden] {
+          display: none !important;
+        }
+
+        .loading-indicator {
+          font-size: var(--sc-skolar-font-size-s);
+
+          height: 60px;
+          margin-top: 25vh;
+
+          text-align: center;
+        }
       </style>
 
       ${this.displayDataLoadError}  
@@ -386,8 +347,8 @@ p + ul
 
   get searchResultTemplate() {
     return !this.loadingResults ? html`
-    <script async src="https://cse.google.com/cse.js?cx=d40c5dc49b8b9d391"></script>
-<div class="gcse-search"></div>
+      <script async src="https://cse.google.com/cse.js?cx=d40c5dc49b8b9d391"></script>
+      <div class="gcse-search"></div>
       <div class="search-result-head">
         <h1 class="search-result-header">
           <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>
@@ -488,6 +449,7 @@ p + ul
     this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
+    this._updateNav();
   }
 
   connectedCallback() {
@@ -522,6 +484,24 @@ p + ul
           type: 'INITIATE_SEARCH',
           params: params
         });
+      },
+      changeToolbarTitle(title) {
+        store.dispatch({
+          type: "CHANGE_TOOLBAR_TITLE",
+          title: title
+        })
+      },
+      setNavigation(navArray) {
+        store.dispatch({
+          type: 'SET_NAVIGATION',
+          navigationArray: navArray
+        })
+      },
+      setCurrentNavPosition(position) {
+        store.dispatch({
+          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
+          currentNavPosition: position
+        })
       },
     }
   }
@@ -594,6 +574,22 @@ p + ul
     this._generateRequest();
   }
 
+  _updateNav() {
+    const navIndexesOfType = navIndex.get('searchPage');
+    let navArray = store.getState().navigationArray;
+    let currentPath = store.getState().currentRoute.path;
+    navArray.length = 1;
+    navArray.push(
+      {
+        'title': this.localize('Search'),
+        'url': `${currentPath}?query=${this.searchQuery}`,
+        'type': 'searchPage',
+      }
+    );
+    this.actions.setNavigation(navArray);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
+  }
+
   // Clears search result arrays, resets variables
   clearSearchPage() {
     this.visibleSearchResults.splice(0, this.visibleSearchResults.length);
@@ -619,6 +615,7 @@ p + ul
     }
     this._fetchExpansion();
     this._fetchSearchResult();
+    this._updateNav();
   }
 
   async _fetchExpansion() {
@@ -796,16 +793,17 @@ p + ul
   _createMetaData() {
     const description = this.localize('metaDescriptionText');
     const searchResultsText = this.localize('searchResultsText');
-
+    const toolbarTitle = `${this.localize('Search')}: ${this.searchQuery}`;
     document.dispatchEvent(new CustomEvent('metadata', {
       detail: {
-        pageTitle: `${this.localize('Search')}: ${this.searchQuery}`,
+        pageTitle: toolbarTitle,
         title: `${searchResultsText} ${this.searchQuery}`,
         description: description,
         bubbles: true,
         composed: true
       }
     }));
+    this.actions.changeToolbarTitle(toolbarTitle);
   }
 
   _computeItemDifficulty(difficulty) {
