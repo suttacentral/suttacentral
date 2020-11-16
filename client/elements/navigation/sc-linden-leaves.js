@@ -3,7 +3,7 @@ import { LitElement, html, css } from 'lit-element';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
-import { navigationNormaModelStyles } from './sc-navigation-styles.js';
+import { navigationNormalModeStyles } from './sc-navigation-styles.js';
 
 import '@material/mwc-icon';
 import '@moduware/morph-ripple';

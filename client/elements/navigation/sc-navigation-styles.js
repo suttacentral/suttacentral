@@ -1,6 +1,6 @@
 import { html } from "lit-element";
 
-export const navigationNormaModelStyles = html`
+export const navigationNormalModeStyles = html`
   <style>
 
 
@@ -17,8 +17,6 @@ export const navigationNormaModelStyles = html`
       flex-wrap: nowrap;
     }
 
-
-
     .card {
       position: relative;
       overflow: hidden;
@@ -27,8 +25,7 @@ export const navigationNormaModelStyles = html`
       padding-bottom: 0.5rem;
 
       cursor: pointer;
-      transition: box-shadow 200ms ease-out;
-      transform: translateY(0px) scale(1);
+      transition: all 200ms ease-out;
 
       border-radius: var(--sc-size-sm);
       background-color: var(--sc-secondary-background-color);
@@ -38,6 +35,7 @@ export const navigationNormaModelStyles = html`
 
     display: flex;
     flex-direction: column;
+     justify-content: center;
     }
 
     .home-card + .home-card {
@@ -57,10 +55,11 @@ export const navigationNormaModelStyles = html`
       z-index: 10;
 
       transition: all 200ms ease-out;
-      transform: translateY(-1px) scale(1.005);
+
 
       background-color: var(--sc-primary-color-light-transparent);
-      box-shadow: var(--sc-shadow-elevation-8dp);
+      box-shadow: var(--sc-shadow-elevation-2dp);
+
     }
 
     .card:active {
@@ -81,6 +80,7 @@ export const navigationNormaModelStyles = html`
       justify-content: space-between;
       flex: 1;
     }
+
     .blurb {
       font-size: var(--sc-skolar-font-size-md);
       font-weight: 400;
@@ -144,19 +144,15 @@ export const navigationNormaModelStyles = html`
       display: flex;
       flex-direction: column;
 
-      height: 45px;
-      padding: 0.3333rem 0.5rem;
+      height: 36px;
+      padding: 0px 8px 4px;
 
       color: white;
-      background-color: darkgoldenrod;
+      background-color: var(--sc-primary-color-dark);
 
       justify-content: center;
       align-items: center;
     }
-
-    /* .number:before {
-      content: "✅ ";
-    } */
 
     .essay {
       padding: 0 1rem 0.5rem 1rem;
@@ -210,7 +206,7 @@ export const navigationNormaModelStyles = html`
       padding: 0.333rem 1rem;
 
       border-radius: 8px;
-      background-color: var(--sc-primary-background-color);
+      background-color: var(--sc-primary-color-light-transparent);
     }
 
     .shortcut:before {
@@ -229,8 +225,6 @@ export const navigationNormaModelStyles = html`
     .shortcut-link:hover {
       text-decoration: underline;
 
-      background-color: var(--sc-tertiary-background-color);
-
       text-decoration-color: var(--sc-primary-color);
     }
 
@@ -240,6 +234,10 @@ export const navigationNormaModelStyles = html`
 
     paper-ripple {
       color: var(--sc-primary-color-medium);
+    }
+
+    sc-tipitaka{
+      min-height: 275px;
     }
   </style>
 `;
