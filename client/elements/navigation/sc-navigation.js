@@ -286,9 +286,8 @@ class SCNavigation extends LitLocalized(LitElement) {
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
-                  <span class="number"></span>
                   <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated">${this.fullSiteLanguageName}</span>
+                  <span class="number-translated"><span class="number"></span> ${this.fullSiteLanguageName}</span>
                 </span>
               ` : ''}
             </header>

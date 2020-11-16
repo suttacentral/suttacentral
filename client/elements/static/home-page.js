@@ -22,11 +22,6 @@ body
     background-color: var(--sc-primary-background-color);
 }
 
-sc-tipitaka
-{
-    min-height: 275px;
-}
-
 main
 {
     max-width: 1600px;

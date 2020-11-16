@@ -17,8 +17,6 @@ export const navigationNormalModeStyles = html`
       flex-wrap: nowrap;
     }
 
-
-
     .card {
       position: relative;
       overflow: hidden;
@@ -27,8 +25,7 @@ export const navigationNormalModeStyles = html`
       padding-bottom: 0.5rem;
 
       cursor: pointer;
-      transition: box-shadow 200ms ease-out;
-      transform: translateY(0px) scale(1);
+      transition: all 200ms ease-out;
 
       border-radius: var(--sc-size-sm);
       background-color: var(--sc-secondary-background-color);
@@ -38,6 +35,7 @@ export const navigationNormalModeStyles = html`
 
     display: flex;
     flex-direction: column;
+     justify-content: center;
     }
 
     .home-card + .home-card {
@@ -57,10 +55,11 @@ export const navigationNormalModeStyles = html`
       z-index: 10;
 
       transition: all 200ms ease-out;
-      transform: translateY(-1px) scale(1.005);
+
 
       background-color: var(--sc-primary-color-light-transparent);
-      box-shadow: var(--sc-shadow-elevation-8dp);
+      box-shadow: var(--sc-shadow-elevation-2dp);
+
     }
 
     .card:active {
@@ -81,6 +80,7 @@ export const navigationNormalModeStyles = html`
       justify-content: space-between;
       flex: 1;
     }
+
     .blurb {
       font-size: var(--sc-skolar-font-size-md);
       font-weight: 400;
@@ -148,14 +148,10 @@ export const navigationNormalModeStyles = html`
       padding: 0px 8px 4px;
 
       color: white;
-      background-color: darkgoldenrod;
+      background-color: var(--sc-primary-color-dark);
 
       justify-content: center;
       align-items: center;
-    }
-
-    mwc-icon{
-      font-size: 16px;
     }
 
     .essay {
@@ -238,6 +234,10 @@ export const navigationNormalModeStyles = html`
 
     paper-ripple {
       color: var(--sc-primary-color-medium);
+    }
+
+    sc-tipitaka{
+      min-height: 275px;
     }
   </style>
 `;
