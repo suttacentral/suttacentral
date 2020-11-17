@@ -198,6 +198,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       suttaTitle = this.responseData.suttaplex.translated_title || this.responseData.suttaplex.original_title;
     }
     suttaTitle = this.responseData.suttaplex.acronym || suttaTitle;
+    if (suttaTitle.includes('//')) {
+      const acronyms = suttaTitle.split('//');
+      if (acronyms.length === 2) {
+        suttaTitle  = acronyms[0];
+      }
+    }
     navArray[navIndexesOfType.index] = {
       title: suttaTitle,
       url: store.getState().currentRoute.path,
