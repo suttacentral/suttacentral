@@ -75,7 +75,8 @@ const initialState = {
     displayAcademicToolbar: false,
     displayOrganizationalToolbar: false,
     displayGuidesToolbar: false
-  }
+  },
+  suttasBlurb: {},
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -166,6 +167,8 @@ const reducer = (state, action) => {
       return Object.assign({}, state, { currentNavPosition: action.currentNavPosition });
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
       return Object.assign({}, state, { staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState });
+    case 'UPDATE_BLURBS':
+      return Object.assign({}, state, { suttasBlurb: action.suttasBlurb });
     default:
       return state;
   }
