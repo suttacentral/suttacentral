@@ -314,7 +314,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     const navType = 'parallels';
     const navIndexesOfType = navIndex.get(navType);
     if (this.pitakaUid === 'pitaka/sutta' && !params.childId.includes('grouping')) {
-      if (params.childId.toLowerCase() !== 'other') {
+      if (params.childId !== 'other') {
         params.childId = `grouping/${params.childId}`;
       } else {
         params.childId = `grouping/${params.childId}-group`;
@@ -375,12 +375,12 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayParallels && this.parallelsData ? html`
       ${this.parallelsData.children.map(child => html`
         <section class="card parallels" 
-          @click=${() => this._onParallelsCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+          @click=${() => this._onParallelsCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
           <header>
             <span class="header-left">
               <span class="title" lang="${child.lang_iso}">
                 <block-link>
-                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                  <a href="${this._genCurrentURL(child.id)}">
                     ${this.localize(this.pitakaName)} ${this.localize(child.name)}
                   </a>
                 </block-link>
@@ -408,7 +408,7 @@ class SCNavigation extends LitLocalized(LitElement) {
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
               <block-link>
-                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
               </block-link>
             </div>
           ` : ''}
@@ -429,7 +429,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     let currentUrl = `/${params.childId}`;
     if (showVaggas) {
-      currentUrl = this._genCurrentURL(params.childId.toLowerCase());
+      currentUrl = this._genCurrentURL(params.childId);
       if (params.currentURL) {
         currentUrl = params.currentURL;
       }
@@ -455,7 +455,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     if (params.dispatchState) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, this.localize(params.childName));
-      this._setCurrentURL(params.childId.toLowerCase());
+      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggas) {
         window.location.href = `/${params.childId}`;
@@ -488,12 +488,12 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
       ${this.vaggasData[0].children.map(child => html`
         <section class="card vaggas" 
-          @click=${() => this._onVaggasCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+          @click=${() => this._onVaggasCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
           <header>
             <span class="header-left">
               <span class="title" lang="en">
                 <block-link>
-                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                  <a href="${this._genCurrentURL(child.id)}">
                     ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
                   </a>
                 </block-link>
@@ -513,7 +513,7 @@ class SCNavigation extends LitLocalized(LitElement) {
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
               <block-link>
-                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
               </block-link>
             </div>
           ` : ''}
@@ -536,7 +536,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     let currentUrl = `/${params.childId}`;
     if (showVaggaChildren) {
-      currentUrl = this._genCurrentURL(params.childId.toLowerCase());
+      currentUrl = this._genCurrentURL(params.childId);
       if (params.currentURL) {
         currentUrl = params.currentURL;
       }
@@ -562,7 +562,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     if (params.dispatchState) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, this.localize(params.childName));
-      this._setCurrentURL(params.childId.toLowerCase());
+      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildren) {
         window.location.href = `/${params.childId}`;
@@ -573,12 +573,12 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildren && this.vaggaChildren ? html`
       ${this.vaggaChildren && this.vaggaChildren.map(child => html`
-        <section class="card vaggaChildren" @click=${() => this._onVaggaChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+        <section class="card vaggaChildren" @click=${() => this._onVaggaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
           <header>
             <span class="header-left">
               <span class="title" lang="en">
                 <block-link>
-                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                  <a href="${this._genCurrentURL(child.id)}">
                     ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
                   </a>
                 </block-link>
@@ -598,7 +598,7 @@ class SCNavigation extends LitLocalized(LitElement) {
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
               <block-link>
-                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
               </block-link>
             </div>
           ` : ''}
@@ -620,7 +620,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     let currentUrl = `/${params.childId}`;
     if (showVaggaChildrenChildren) {
-      currentUrl = this._genCurrentURL(params.childId.toLowerCase());
+      currentUrl = this._genCurrentURL(params.childId);
       if (params.currentURL) {
         currentUrl = params.currentURL;
       }
@@ -645,7 +645,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     if (params.dispatchState) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, this.localize(params.childName));
-      this._setCurrentURL(params.childId.toLowerCase());
+      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildrenChildren) {
         window.location.href = `/${params.childId}`;
@@ -657,12 +657,12 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren ? html`
       ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren[0].children.map(child => html`
         <section class="card vaggaChildrenChildren" 
-          @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+          @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
           <header>
             <span class="header-left">
               <span class="title" lang="en">
                 <block-link>
-                  <a href="${this._genCurrentURL(child.id.toLowerCase())}">
+                  <a href="${this._genCurrentURL(child.id)}">
                     ${this.localize(child.name)} ${this.parallelName}
                   </a>
                 </block-link>
@@ -682,7 +682,7 @@ class SCNavigation extends LitLocalized(LitElement) {
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
               <block-link>
-                <a href="/${child.id.toLowerCase()}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
+                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
               </block-link>
             </div>
           ` : ''}
@@ -705,7 +705,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     let currentUrl = `/${params.childId}`;
     if (showSakaChildren) {
-      currentUrl = this._genCurrentURL(params.childId.toLowerCase());
+      currentUrl = this._genCurrentURL(params.childId);
       if (params.currentURL) {
         currentUrl = params.currentURL;
       }
@@ -731,7 +731,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     if (params.dispatchState) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, this.localize(params.childName));
-      this._setCurrentURL(params.childId.toLowerCase());
+      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showSakaChildren) {
         window.location.href = `/${params.childId}`;
@@ -742,8 +742,8 @@ class SCNavigation extends LitLocalized(LitElement) {
   get sakaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren ? html`
       ${this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren.map(child => html`
-        <a href="/${child.id.toLowerCase()}">
-          <section class="card sakaChildren" @click=${() => this._onSakaChildrenCardClick({childId: child.id.toLowerCase(), childName: child.name, dispatchState: true})}>
+        <a href="/${child.id}">
+          <section class="card sakaChildren" @click=${() => this._onSakaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
                 <span class="title" lang="en">${this.localize(child.name)} ${this.parallelName}</span>
@@ -779,7 +779,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
     if (params.dispatchState) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, this.localize(params.childName));
-      this._setCurrentURL(params.childId.toLowerCase());
+      this._setCurrentURL(params.childId);
       this.requestUpdate();
       window.location.href = `/${params.childId}`;
     }
