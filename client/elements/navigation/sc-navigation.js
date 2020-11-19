@@ -35,7 +35,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaUid = `pitaka/${this._getPathParamNumber(2)}`;
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb));
+    this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb || {}));
 
     this._appViewModeChanged();
     this._fetchMainData();
@@ -436,7 +436,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
     
     if (!this.suttasBlurb) {
-      this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb));
+      this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb || {}));
     }
     this.shouldUpdateBlurb = false;
     if (!this.suttasBlurb.has(categoryId)) {
