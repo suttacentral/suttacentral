@@ -35,8 +35,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaUid = `pitaka/${this._getPathParamNumber(2)}`;
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    this.suttasBlurb = store.getState().suttasBlurb;    
-    this.suttasBlurb = new Map(Object.entries(this.suttasBlurb));
+    this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb));
 
     this._appViewModeChanged();
     this._fetchMainData();
@@ -432,9 +431,12 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _attachBlurbs(categoryId, children) {
+    if (!categoryId || !children) {
+      return;
+    }
+    
     if (!this.suttasBlurb) {
-      this.suttasBlurb = store.getState().suttasBlurb;
-      this.suttasBlurb = new Map(Object.entries(this.suttasBlurb));
+      this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb));
     }
     this.shouldUpdateBlurb = false;
     if (!this.suttasBlurb.has(categoryId)) {
@@ -444,25 +446,34 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.shouldUpdateBlurb = true;
       }
     }
-    children.forEach(child => {
-      if (this.suttasBlurb.has(child.id)) {
-        child.blurb = this.suttasBlurb.get(child.id);
-      } else {
-        if (this.suttaplexData) {
-          let suttaPlex = this.suttaplexData.find(x => {
-            return x.uid === child.id
-          });
-          child.blurb = (suttaPlex && suttaPlex.blurb) ? suttaPlex.blurb : '';
-          if (!this.suttasBlurb.has(child.id) && child.blurb) {
-            this.suttasBlurb.set(child.id, child.blurb);
-            this.shouldUpdateBlurb = true;
-          }
-        }
-      }
-    });
+
+    for(let child of children) {
+      await this._addBlurbToChild(categoryId, child);
+    }
+    
     if (this.shouldUpdateBlurb) {
       this.actions.updateSuttasBlurb(Object.fromEntries(this.suttasBlurb));
     } 
+  }
+
+  async _addBlurbToChild(categoryId, child) {
+    if (this.suttasBlurb.has(child.id)) {
+      child.blurb = this.suttasBlurb.get(child.id);
+    } else {
+      if (categoryId.includes('grouping/') || categoryId.includes('sect/')) {
+        await this._fetchSuttaPlex(child.id);
+      }
+      if (this.suttaplexData) {
+        let suttaPlex = this.suttaplexData.find(x => {
+          return x.uid === child.id;
+        });
+        child.blurb = (suttaPlex && suttaPlex.blurb) ? suttaPlex.blurb : '';
+        if (!this.suttasBlurb.has(child.id) && child.blurb) {
+          this.suttasBlurb.set(child.id, child.blurb);
+          this.shouldUpdateBlurb = true;
+        }
+      }
+    }
   }
 
   async _onParallelsCardClick(params) {
@@ -865,6 +876,9 @@ class SCNavigation extends LitLocalized(LitElement) {
   };
 
   async _fetchSuttaPlex(categoryId) {
+    if (!categoryId) {
+      return;
+    }
     this.loading = true;
     try {
       this.suttaplexData = await fetch(this._getSuttaPlexApiUrl(categoryId)).then(r => r.json());
