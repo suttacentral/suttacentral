@@ -144,6 +144,7 @@ export const navigationNormalModeStyles = html`
       display: flex;
       flex-direction: column;
 
+      width: 90px;
       height: 36px;
       padding: 0px 8px 4px;
 

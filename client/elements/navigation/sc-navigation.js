@@ -447,7 +447,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       }
     }
 
-    for(let child of children) {
+    for (let child of children) {
       await this._addBlurbToChild(categoryId, child);
     }
     
@@ -460,9 +460,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (this.suttasBlurb.has(child.id)) {
       child.blurb = this.suttasBlurb.get(child.id);
     } else {
-      if (categoryId.includes('grouping/') || categoryId.includes('sect/')) {
-        await this._fetchSuttaPlex(child.id);
-      }
+      await this._fetchSuttaPlex(child.id);
       if (this.suttaplexData) {
         let suttaPlex = this.suttaplexData.find(x => {
           return x.uid === child.id;
