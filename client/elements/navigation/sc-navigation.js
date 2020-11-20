@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
@@ -34,6 +35,8 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaUid = `pitaka/${this._getPathParamNumber(2)}`;
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb || {}));
+
     this._appViewModeChanged();
     this._fetchMainData();
     this._fetchExpansion();
@@ -157,6 +160,12 @@ class SCNavigation extends LitLocalized(LitElement) {
         store.dispatch({
           type: "CHANGE_TOOLBAR_TITLE",
           title: title
+        })
+      },
+      updateSuttasBlurb(blurbs) {
+        store.dispatch({
+          type: "UPDATE_BLURBS",
+          suttasBlurb: blurbs
         })
       },
     }
@@ -334,6 +343,10 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     await this._fetchParallelsData(params);
 
+    if (this.parallelsData.children) {
+      await this._attachBlurbs(params.childId, this.parallelsData.children);
+    }
+
     if (!params.childName) {
       params.childName = this.parallelsData.name;
     }
@@ -395,7 +408,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
           </header>
 
-          <div class="blurb" id="${child.id}_blurb"></div>
+          <div class="blurb" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
 
           ${pitakaGuide.get(child.id) ? html`
             <div class="essay" id="${child.id}_essay">
@@ -417,11 +430,59 @@ class SCNavigation extends LitLocalized(LitElement) {
       `)}`: '';
   }
 
+  async _attachBlurbs(categoryId, children) {
+    if (!categoryId || !children) {
+      return;
+    }
+    
+    if (!this.suttasBlurb) {
+      this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb || {}));
+    }
+    this.shouldUpdateBlurb = false;
+    if (!this.suttasBlurb.has(categoryId)) {
+      await this._fetchSuttaPlex(categoryId);
+      if (this.suttaplexData) {
+        this.suttasBlurb.set(categoryId, this.suttaplexData[0]['blurb']);
+        this.shouldUpdateBlurb = true;
+      }
+    }
+
+    for (let child of children) {
+      await this._addBlurbToChild(categoryId, child);
+    }
+    
+    if (this.shouldUpdateBlurb) {
+      this.actions.updateSuttasBlurb(Object.fromEntries(this.suttasBlurb));
+    } 
+  }
+
+  async _addBlurbToChild(categoryId, child) {
+    if (this.suttasBlurb.has(child.id)) {
+      child.blurb = this.suttasBlurb.get(child.id);
+    } else {
+      await this._fetchSuttaPlex(child.id);
+      if (this.suttaplexData) {
+        let suttaPlex = this.suttaplexData.find(x => {
+          return x.uid === child.id;
+        });
+        child.blurb = (suttaPlex && suttaPlex.blurb) ? suttaPlex.blurb : '';
+        if (!this.suttasBlurb.has(child.id) && child.blurb) {
+          this.suttasBlurb.set(child.id, child.blurb);
+          this.shouldUpdateBlurb = true;
+        }
+      }
+    }
+  }
+
   async _onParallelsCardClick(params) {
     this.vaggasData = await this._fetchChildrenData(params.childId);
 
     const showVaggas = this.vaggasData[0] && this.vaggasData[0].children &&
       this.vaggasData[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type)); 
+
+    if (showVaggas) {
+      await this._attachBlurbs(params.childId, this.vaggasData[0].children);
+    }
 
     if (!params.childName) {
       params.childName = this.vaggasData[0].name;
@@ -508,7 +569,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
           </header>
 
-          <div class="blurb" id="${child.id}_blurb"></div>
+          <div class="blurb" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
 
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
@@ -529,6 +590,10 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const showVaggaChildren = this.vaggaChildren && 
       this.vaggaChildren.some(child => ['div', 'division', 'subdivision'].includes(child.type)); 
+
+    if (showVaggaChildren) {
+      await this._attachBlurbs(params.childId, this.vaggaChildren);
+    }
 
     if (!params.childName) {
       params.childName = this.vaggasData[0].name;
@@ -593,7 +658,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             ` : ''}
           </header>
 
-          <div class="blurb" id="${child.id}_blurb"></div>
+          <div class="blurb" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
 
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
@@ -610,7 +675,6 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _onVaggaChildrenCardClick(params) {
     this.vaggaChildrenChildren = await this._fetchChildrenData(params.childId);
-
     const showVaggaChildrenChildren = this.vaggaChildrenChildren && 
       this.vaggaChildrenChildren[0].children.some(child => ['div', 'division', 'subdivision'].includes(child.type));
 
@@ -803,6 +867,23 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
     const uidExpansion = this.expansionReturns[0][uid];
     return uidExpansion ? uidExpansion[0] : '';
+  }
+
+  _getSuttaPlexApiUrl(categoryId) {
+    return `${API_ROOT}/suttaplex/${categoryId}?language=${this.language}`;
+  };
+
+  async _fetchSuttaPlex(categoryId) {
+    if (!categoryId) {
+      return;
+    }
+    this.loading = true;
+    try {
+      this.suttaplexData = await fetch(this._getSuttaPlexApiUrl(categoryId)).then(r => r.json());
+    } catch (e) {
+      this.lastError = e;
+    }
+    this.loading = false;
   }
 }
 
