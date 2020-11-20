@@ -2,11 +2,9 @@ import { html } from "lit-element";
 
 export const navigationNormalModeStyles = html`
   <style>
-
-
-      main {
-        max-width: 720px;
-        margin: 0 auto 64px;
+    main {
+      max-width: 720px;
+      margin: 0 auto 64px;
     }
 
     .main-nav {
@@ -33,22 +31,25 @@ export const navigationNormalModeStyles = html`
 
       flex: 1;
 
-    display: flex;
-    flex-direction: column;
-     justify-content: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .home-card + .home-card {
-    margin-left: 1vw;
-}
+      margin-left: 1vw;
+    }
 
     @media screen and (max-width: 780px) {
       .main-nav {
         flex-direction: column;
       }
-          .home-card + .home-card {
-    margin-left: 0;
-}
+      .home-card + .home-card {
+        margin-left: 0;
+      }
+      .header-right {
+        width: 90px;
+      }
     }
 
     .card:hover {
@@ -144,7 +145,6 @@ export const navigationNormalModeStyles = html`
       display: flex;
       flex-direction: column;
 
-      width: 90px;
       height: 36px;
       padding: 0px 8px 4px;
 
