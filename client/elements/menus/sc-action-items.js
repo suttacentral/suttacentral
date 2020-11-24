@@ -249,8 +249,8 @@ class SCActionItems extends LitLocalized(LitElement) {
   firstUpdated() {
     this._displayToolButtonStateChange();
     this._colorThemeChanged();
-    this._viewModeChanged();
     this._displayViewModeButtonStateChange();
+    this._viewModeChanged();
   }
 
   _onBtnLightThemeClick() {
@@ -280,6 +280,9 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _viewModeChanged() {
+    if (!this.displayViewModeButton) {
+      return;
+    }
     let isCompactView = store.getState().suttaplexListDisplay;
     if (isCompactView) {
       this.displayCompactButton = false;
