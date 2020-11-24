@@ -7,6 +7,12 @@ export const navigationNormalModeStyles = html`
       margin: 0 auto 64px;
     }
 
+    @media (max-width: 680px) {
+      main {
+        margin-top: -50px;
+      }
+    }
+
     .main-nav {
       display: flex;
       flex-direction: row;
@@ -57,10 +63,8 @@ export const navigationNormalModeStyles = html`
 
       transition: all 200ms ease-out;
 
-
       background-color: var(--sc-primary-color-light-transparent);
       box-shadow: var(--sc-shadow-elevation-2dp);
-
     }
 
     .card:active {
@@ -237,7 +241,7 @@ export const navigationNormalModeStyles = html`
       color: var(--sc-primary-color-medium);
     }
 
-    sc-tipitaka{
+    sc-tipitaka {
       min-height: 275px;
     }
   </style>
