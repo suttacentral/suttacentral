@@ -31,7 +31,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnViewCompact,
       #btnViewComfy,
       #btnTools,
-      #btnInfo {
+      #btnInfo,
+      #btnShowParallels {
         position: relative;
       }
 
@@ -40,7 +41,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnViewCompact:after,
       #btnViewComfy:after,
       #btnTools:after,
-      #btnInfo:after {
+      #btnInfo:after,
+      #btnShowParallels:after {
         font-size: var(--sc-skolar-font-size-xxs);
 
         position: absolute;
@@ -73,6 +75,14 @@ class SCActionItems extends LitLocalized(LitElement) {
 
       #btnInfo:after {
         content: 'info'
+      }
+
+      #btnShowParallels {
+        display: flex;
+      }
+
+      #btnShowParallels:after {
+        content: 'parallels';
       }
     </style>
 
@@ -135,6 +145,16 @@ class SCActionItems extends LitLocalized(LitElement) {
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
         ${icons['visibility']}
+      </mwc-icon-button>
+
+      <mwc-icon-button 
+        class="white-icon toolButtons" 
+        id="btnShowParallels" 
+        title="View parallels" 
+        @click="${this._onBtnShowParallelsClick}" 
+        slot="actionItems" 
+        ?hidden="${this.displayToolButton}">
+        ${icons['parallels']}
       </mwc-icon-button>
     </div>`;
   }
@@ -217,6 +237,12 @@ class SCActionItems extends LitLocalized(LitElement) {
           theme: theme
         })
       },
+      changeDisplaySuttaParallelsState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
+          displaySuttaParallels: displayState
+        })
+      },
     }
   }
 
@@ -224,6 +250,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._displayToolButtonStateChange();
     this._colorThemeChanged();
     this._viewModeChanged();
+    this._displayViewModeButtonStateChange();
   }
 
   _onBtnLightThemeClick() {
@@ -293,6 +320,31 @@ class SCActionItems extends LitLocalized(LitElement) {
     }));
   }
 
+  _hideSuttaParallels() {
+    this.dispatchEvent(new CustomEvent('hide-sc-sutta-parallels', {
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  _showSuttaParallels() {
+    this.dispatchEvent(new CustomEvent('show-sc-sutta-parallels', {
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  _onBtnShowParallelsClick() {
+    this.displaySuttaParallels = store.getState().displaySuttaParallels;
+    if (!this.displaySuttaParallels) {
+      this.actions.changeDisplaySuttaParallelsState(true);
+      this._showSuttaParallels();
+    } else {
+      this.actions.changeDisplaySuttaParallelsState(false);
+      this._hideSuttaParallels();
+    }
+  }
+
   _stateChanged(state) {
     super._stateChanged(state);
     if (this.displaySettingMenu !== state.displaySettingMenu) {
@@ -355,10 +407,12 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (this.displayToolButton) {
       this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnShowParallels').style.display = 'inherit';
       this._suttaMetaTextChanged();
     } else {
       this.shadowRoot.querySelector('#btnTools').style.display = 'none';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
+      this.shadowRoot.querySelector('#btnShowParallels').style.display = 'none';
     }
   }
 

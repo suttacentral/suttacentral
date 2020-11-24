@@ -68,6 +68,7 @@ const initialState = {
   displayToolButton: false,
   displayInfoButton: false,
   displayViewModeButton: true,
+  displaySuttaParallels: false,
   staticPagesToolbarDisplayState: {
     displayFirstToolbar: true,
     displaySecondToolbar: false,
@@ -163,6 +164,8 @@ const reducer = (state, action) => {
       return Object.assign({}, state, { displayInfoButton: action.displayInfoButton });
     case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
       return Object.assign({}, state, { displayViewModeButton: action.displayViewModeButton });
+    case 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE':
+      return Object.assign({}, state, { displaySuttaParallels: action.displaySuttaParallels });
     case 'CHANGE_CURRENT_NAV_POSITION_STATE':
       return Object.assign({}, state, { currentNavPosition: action.currentNavPosition });
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':

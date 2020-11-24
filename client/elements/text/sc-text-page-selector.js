@@ -22,11 +22,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
+        :host{
+          display: flex;
+          flex-direction: column
+        }
 
-      :host{
-        display: flex;
-        flex-direction: column
-      }
         .loading-indicator {
           font-size: var(--sc-skolar-font-size-s);
           text-align: center;
@@ -39,8 +39,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         }
 
         .wrapper {
-        min-height: calc(101vh - 336px);
-        margin-bottom: 64px;
+          min-height: calc(101vh - 336px);
+          margin-bottom: 64px;
         }
 
         .sutta-list {
@@ -213,6 +213,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     };
     this.actions.setNavigation(navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);
+    this.actions.changeToolbarTitle(suttaTitle);
   }
 
   updated(changedProps) {
@@ -244,10 +245,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       return;
     }
     this.setProperties();
-    const textOptions = this.shadowRoot.querySelector('#sutta_text_options');
-    if (textOptions) {
-      textOptions._closeSuttaplex();
-    }
     this.actions.downloadSuttaText(this.responseData);
   }
 
@@ -259,6 +256,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (this.responseData) {
       this.isSegmentedText = !!(this.responseData.segmented);
       this.suttaplex = this.responseData.suttaplex;
+      this._bindDataToSCSuttaParallels(this.suttaplex);
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
       this.markup = this.responseData.markup;
@@ -283,6 +281,16 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
     this._getBilaraText();
     this._updateNav();
+  }
+
+  _bindDataToSCSuttaParallels(suttaplex) {
+    this.dispatchEvent(new CustomEvent('bind-data-to-sc-sutta-parallels', {
+      detail: {
+        suttaplexItem: suttaplex,
+      },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   _getSuttaTextUrl() {

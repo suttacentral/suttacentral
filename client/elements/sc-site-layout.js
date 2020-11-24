@@ -26,6 +26,7 @@ import './sc-page-selector.js';
 import './menus/sc-settings-menu.js';
 import './menus/sc-action-items.js';
 import './addons/sc-top-sheet.js';
+import './suttaplex/card/sc-sutta-parallels';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
 
@@ -65,6 +66,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         </div>
 
         <sc-top-sheet id="setting_menu"></sc-top-sheet>
+        
 
         <div id="static_pages_nav_menu">
           <nav>
@@ -80,6 +82,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         </div>
       </div>
 
+      <sc-sutta-parallels id="sutta_parallels"></sc-sutta-parallels>
       <sc-page-selector id="page_selector"></sc-page-selector>
       <sc-toasts></sc-toasts>
 
@@ -303,6 +306,18 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.addEventListener('show-sc-top-sheet', e => { 
       this.shadowRoot.querySelector('#setting_menu').show();
     });
+
+    this.addEventListener('hide-sc-sutta-parallels', e => { 
+      this.shadowRoot.querySelector('#sutta_parallels').hide();
+    });
+
+    this.addEventListener('show-sc-sutta-parallels', e => { 
+      this.shadowRoot.querySelector('#sutta_parallels').show();
+    }); 
+
+    this.addEventListener('bind-data-to-sc-sutta-parallels', e => { 
+      this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
+    }); 
 
     this.addEventListener('show-info-dialog', e => { 
       const dialogElement = this.shadowRoot.querySelector('#info_dialog');
