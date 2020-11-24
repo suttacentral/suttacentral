@@ -443,12 +443,6 @@ class SCHomePage extends SCStaticPage {
                   ${_`Meet<br class="d-none"/> SuttaCentral`}
                 </div>
               </div>
-              <div class="card-content-video">
-                <div class="embed-container">
-                  <iframe allowfullscreen="" frameborder="0" height="360" id="sc-video" mozallowfullscreen="" src="https://player.vimeo.com/video/257038431?color=efe700&byline=0" webkitallowfullscreen="" width="640" title="SuttaCentral.net - Early Buddhist texts, translations, and parallels">
-                  </iframe>
-                </div>
-              </div>
             </div>
           </paper-card>
         </div>
