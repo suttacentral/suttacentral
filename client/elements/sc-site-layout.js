@@ -66,7 +66,8 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         </div>
 
         <sc-top-sheet id="setting_menu"></sc-top-sheet>
-        
+        <sc-sutta-parallels id="sutta_parallels"></sc-sutta-parallels>
+
 
         <div id="static_pages_nav_menu">
           <nav>
@@ -82,7 +83,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         </div>
       </div>
 
-      <sc-sutta-parallels id="sutta_parallels"></sc-sutta-parallels>
+      
       <sc-page-selector id="page_selector"></sc-page-selector>
       <sc-toasts></sc-toasts>
 

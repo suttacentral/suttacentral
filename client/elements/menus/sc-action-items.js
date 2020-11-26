@@ -301,6 +301,11 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnToolsClick(e) {
     this.displaySettingMenu = store.getState().displaySettingMenu;
     if (!this.displaySettingMenu) {
+      let displaySuttaParallels = store.getState().displaySuttaParallels;
+      if (displaySuttaParallels) {
+        this.actions.changeDisplaySuttaParallelsState(false);
+        this._hideSuttaParallels();
+      }
       this.actions.changeDisplaySettingMenuState(true);
       this._showSettingMenu();
     } else {
@@ -340,6 +345,11 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnShowParallelsClick() {
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
+      let displaySettingMenu = store.getState().displaySettingMenu;
+      if (displaySettingMenu) {
+        this.actions.changeDisplaySettingMenuState(false);
+        this._hideSettingMenu();
+      }
       this.actions.changeDisplaySuttaParallelsState(true);
       this._showSuttaParallels();
     } else {
@@ -396,7 +406,6 @@ class SCActionItems extends LitLocalized(LitElement) {
   _colorThemeChanged() {
     this.displayLightThemeButton = this.colorTheme === 'light' ? true : false;
     this.displayDarkThemeButton = !this.displayLightThemeButton;
-
     if (this.displayLightThemeButton) {
       this.shadowRoot.querySelector('#btnLightTheme').style.display = 'none';
       this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'inherit';

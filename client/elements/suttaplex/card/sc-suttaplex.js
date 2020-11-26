@@ -32,12 +32,18 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       translationsOpened: Boolean,
       rootTextsOpened: Boolean,
       compactToggle: Boolean,
+      clearBorderRadius: Boolean,
+      borderRadiusStyle: Object,
     }
   }
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-suttaplex';
+    this.clearBorderRadius = false;
+    this.borderRadiusStyle = html`
+      <style></style>
+    `;
   }
 
   connectedCallback() {
@@ -60,6 +66,22 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         })
       }
     }, 1000);
+
+    if (this.clearBorderRadius) {
+      this.borderRadiusStyle = this._unsetBorderRadius();
+    }
+  }
+
+  _unsetBorderRadius() {
+    return html`
+      <style>
+        .suttaplex:not(.compact) {
+          border-radius: unset;
+          border: 0px;
+          outline: 1px solid rgb(204,204,204);
+        }
+      </style>
+    `;
   }
 
   shouldUpdate(changedProperties) {
@@ -180,7 +202,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
     return html`
       ${suttaplexCss}
-      
+      ${this.borderRadiusStyle}
       <paper-card class="suttaplex ${this.suttaplexListStyle}" id="${this.item.uid}" elevation="1">
         <div>
           <div class="top-row">
