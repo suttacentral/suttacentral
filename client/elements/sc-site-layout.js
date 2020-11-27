@@ -360,7 +360,8 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels) {
         let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScrollTop > lastScrollTop){
-          rootDOM.getElementById('universal_toolbar').style.transform = 'translateY(-156px)';
+          const universalToolbarHeight = 156;
+          rootDOM.getElementById('universal_toolbar').style.transform = `translateY(-${universalToolbarHeight}px)`;
         }
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
       }
