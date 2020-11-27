@@ -18,7 +18,7 @@ class SCStepper extends LitElement {
           overflow: hidden;
 
           height: 100px;
-          margin: 0 calc(-1 * var(--sc-container-margin));
+          margin: 0;
 
           background-color: var(--sc-secondary-text-color);
         }

@@ -53,9 +53,6 @@ export const navigationNormalModeStyles = html`
       .home-card + .home-card {
         margin-left: 0;
       }
-      .header-right {
-        width: 90px;
-      }
     }
 
     .card:hover {
