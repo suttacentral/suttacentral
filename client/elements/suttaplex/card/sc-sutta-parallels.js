@@ -11,11 +11,11 @@ class SCSuttaParallels extends LitLocalized(LitElement) {
     return css`
       :host {
         display: none;
-        margin-top: 10px;
+        z-index: 2;
+        color: var(--sc-primary-text-color);
       }
 
       .sutta-list {
-        max-width: 720px;
         transition: margin-top 0.3s, margin-bottom 0.3s;
         margin: 0 auto var(--sc-size-xxl);
       }
@@ -46,7 +46,7 @@ class SCSuttaParallels extends LitLocalized(LitElement) {
       ${suttaplexStyles}
       <div class="container">
         <div class="sutta-list">
-          <sc-suttaplex .item=${this.suttaplexItem}></sc-suttaplex>
+          <sc-suttaplex .item=${this.suttaplexItem} .clearBorderRadius="${true}"></sc-suttaplex>
         </div>
       </div>
     `;

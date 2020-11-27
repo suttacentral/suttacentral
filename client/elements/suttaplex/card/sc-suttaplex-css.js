@@ -1,6 +1,5 @@
 import { html } from 'lit-element';
 
-
 export const suttaplexCss = html`
 <style>
   :host {
@@ -37,23 +36,23 @@ export const suttaplexCss = html`
     box-shadow: var(--sc-shadow-elevation-1dp);
   }
 
-    .suttaplex:not(.compact) {
+  .suttaplex:not(.compact) {
     margin-bottom: var(--sc-size-md);
     padding: var(--sc-size-md);
     border-radius: var(--sc-size-sm);
   }
 
-      .section-details.main-translations {
-        border-top: 1px solid var(--sc-border-color);
-        margin-top: var(--sc-size-md);
-        padding-top: var(--sc-size-sm);
-      }
+  .section-details.main-translations {
+    border-top: 1px solid var(--sc-border-color);
+    margin-top: var(--sc-size-md);
+    padding-top: var(--sc-size-sm);
+  }
 
-      .compact .section-details.main-translations{
-        border-top: none;
-        padding-top: 0;
-        margin-top: var(--sc-size-sm);
-      }
+  .compact .section-details.main-translations{
+    border-top: none;
+    padding-top: 0;
+    margin-top: var(--sc-size-sm);
+  }
 
   .top-row {
     display: flex;
@@ -105,8 +104,8 @@ export const suttaplexCss = html`
  
   .suttaplex-nerdy-row {
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -119,7 +118,7 @@ export const suttaplexCss = html`
   }
 
   .popuptext.show {
-     display: unset;
+    display: unset;
   }
   
   .nerdy-row-element {
@@ -280,8 +279,8 @@ export const suttaplexTxCss = html`
   .tx-publication {
     color: var(--sc-secondary-text-color);
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
   }
   
   .arrow {
@@ -348,8 +347,8 @@ export const parallelsListCss = html`
   
   .parallels-root-id {
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
   }
 
   .paper-spinner {
@@ -400,8 +399,8 @@ export const parallelItemCss = html`
 
   .parallel-item-biblio-info {
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
     box-shadow: var(--sc-shadow-elevation-3dp);
     border-top: var(--sc-border);
     position: absolute;
@@ -418,8 +417,8 @@ export const parallelItemCss = html`
 
   .parallel-item-details {
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
     color: var(--sc-secondary-text-color);
     overflow: hidden;
   }
@@ -456,7 +455,7 @@ export const parallelItemCss = html`
   }
 
   .nerdy-row-summary {
-      overflow: hidden;
+    overflow: hidden;
   }
   
   morph-ripple {
