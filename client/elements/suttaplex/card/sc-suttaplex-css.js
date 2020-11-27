@@ -1,10 +1,57 @@
 import { html } from 'lit-element';
 
+
 export const suttaplexCss = html`
 <style>
-  :host {
-    --paper-card-background-color: var(--sc-secondary-background-color);
+ 
+ article{
+  background-color: var(--sc-secondary-background-color);
   }
+
+  details
+{
+    position: relative;
+
+    box-sizing: border-box;
+    margin: 0 0 0 4px;
+}
+
+details p
+{
+    position: absolute;
+    z-index: 10;
+    
+    max-width: 360px;
+    margin: 4px 0 0 0;
+    padding: 8px 12px;
+
+    color: var(--sc-primary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-tertiary-background-color);
+    box-shadow: var(--sc-shadow-elevation-4dp);
+}
+
+summary
+{
+    font-weight: 600;
+
+    display: flex;
+
+    padding: 8px;
+
+    cursor: pointer;
+
+    color: var(--sc-primary-text-color);
+    outline-color: var(--sc-border-color);
+
+    align-items: baseline;
+}
+
+summary::-webkit-details-marker
+{
+    color: var(--sc-disabled-text-color);
+}
 
   .menu-listbox {
       --paper-input-container-focus-color: var(--sc-primary-accent-color);
@@ -36,23 +83,23 @@ export const suttaplexCss = html`
     box-shadow: var(--sc-shadow-elevation-1dp);
   }
 
-  .suttaplex:not(.compact) {
+    .suttaplex:not(.compact) {
     margin-bottom: var(--sc-size-md);
     padding: var(--sc-size-md);
     border-radius: var(--sc-size-sm);
   }
 
-  .section-details.main-translations {
-    border-top: 1px solid var(--sc-border-color);
-    margin-top: var(--sc-size-md);
-    padding-top: var(--sc-size-sm);
-  }
+      .section-details.main-translations {
+        border-top: 1px solid var(--sc-border-color);
+        margin-top: var(--sc-size-md);
+        padding-top: var(--sc-size-sm);
+      }
 
-  .compact .section-details.main-translations{
-    border-top: none;
-    padding-top: 0;
-    margin-top: var(--sc-size-sm);
-  }
+      .compact .section-details.main-translations{
+        border-top: none;
+        padding-top: 0;
+        margin-top: var(--sc-size-sm);
+      }
 
   .top-row {
     display: flex;
@@ -104,8 +151,8 @@ export const suttaplexCss = html`
  
   .suttaplex-nerdy-row {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -118,7 +165,7 @@ export const suttaplexCss = html`
   }
 
   .popuptext.show {
-    display: unset;
+     display: unset;
   }
   
   .nerdy-row-element {
@@ -279,8 +326,8 @@ export const suttaplexTxCss = html`
   .tx-publication {
     color: var(--sc-secondary-text-color);
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
   }
   
   .arrow {
@@ -347,8 +394,8 @@ export const parallelsListCss = html`
   
   .parallels-root-id {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
   }
 
   .paper-spinner {
@@ -399,8 +446,8 @@ export const parallelItemCss = html`
 
   .parallel-item-biblio-info {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
     box-shadow: var(--sc-shadow-elevation-3dp);
     border-top: var(--sc-border);
     position: absolute;
@@ -417,8 +464,8 @@ export const parallelItemCss = html`
 
   .parallel-item-details {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-    font-weight: 400;
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
     color: var(--sc-secondary-text-color);
     overflow: hidden;
   }
@@ -455,7 +502,7 @@ export const parallelItemCss = html`
   }
 
   .nerdy-row-summary {
-    overflow: hidden;
+      overflow: hidden;
   }
   
   morph-ripple {
