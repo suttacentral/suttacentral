@@ -289,7 +289,6 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
       this.parentNode.querySelector('#title').classList.remove('generalTitle');
       this.parentNode.querySelector('#subTitle').style.display = 'initial';
     } else {
-      this.parentNode.querySelector('#context_toolbar').style.height = '60px';
       this.parentNode.querySelector('.title-logo-icon').style.display = 'none';
       this.parentNode.querySelector('#title').classList.remove('homeTitle');
       this.parentNode.querySelector('#title').classList.add('generalTitle');
