@@ -353,6 +353,20 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       }
     }));
 
+    let lastScrollTop = 0;
+    addEventListener('scroll', throttle(300, () => {
+      let displaySettingMenu = store.getState().displaySettingMenu;
+      let displaySuttaParallels = store.getState().displaySuttaParallels;
+      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels) {
+        let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScrollTop > lastScrollTop){
+          const universalToolbarHeight = 156;
+          rootDOM.getElementById('universal_toolbar').style.transform = `translateY(-${universalToolbarHeight}px)`;
+        }
+        lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+      }
+    }));
+
     window.addEventListener('resize', () => {
       rootDOM.getElementById('universal_toolbar').style.transition = '';
       rootDOM.getElementById('breadCrumb').style.transition = '';

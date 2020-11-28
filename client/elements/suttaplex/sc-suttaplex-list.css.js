@@ -16,6 +16,12 @@ export const suttaplexListCss = html`<style>
     max-width: 720px;
   }
 
+        @media (max-width: 680px) {
+      .main {
+        margin-top: -40px;
+      }
+    }
+
   .node {
     padding: var(--sc-size-md) var(--sc-size-md) 0;
     color: var(--sc-secondary-text-color);

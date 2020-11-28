@@ -35,7 +35,7 @@ class SCHomePage extends SCStaticPage {
         display: flex;
         flex-direction: column;
       
-        margin: auto;
+        margin: auto 3vw;
         padding: 6% 0 0;
       
         text-align: center;
@@ -268,7 +268,7 @@ class SCHomePage extends SCStaticPage {
         }
 
         sc-tipitaka {
-          margin-top: -50px;
+          margin-top: -40px;
         }
       }
     `;

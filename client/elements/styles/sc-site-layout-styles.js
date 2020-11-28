@@ -112,6 +112,8 @@ export const SCSiteLayoutStyles = css`
   #context_toolbar {
     display: flex;
 
+     height: 60px;
+
     padding: 0 2%;
 
     justify-content: space-between;

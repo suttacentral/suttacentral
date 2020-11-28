@@ -1,10 +1,8 @@
 import '@polymer/iron-icon/iron-icon.js';
 import { html, css, LitElement } from 'lit-element';
-import '@polymer/paper-card/paper-card.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
-import '@polymer/paper-styles/paper-styles.js';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import '../../../img/sc-svg-icons.js';
 import {
@@ -32,18 +30,12 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       translationsOpened: Boolean,
       rootTextsOpened: Boolean,
       compactToggle: Boolean,
-      clearBorderRadius: Boolean,
-      borderRadiusStyle: Object,
     }
   }
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-suttaplex';
-    this.clearBorderRadius = false;
-    this.borderRadiusStyle = html`
-      <style></style>
-    `;
   }
 
   connectedCallback() {
@@ -66,22 +58,6 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         })
       }
     }, 1000);
-
-    if (this.clearBorderRadius) {
-      this.borderRadiusStyle = this._unsetBorderRadius();
-    }
-  }
-
-  _unsetBorderRadius() {
-    return html`
-      <style>
-        .suttaplex:not(.compact) {
-          border-radius: unset;
-          border: 0px;
-          outline: 1px solid rgb(204,204,204);
-        }
-      </style>
-    `;
   }
 
   shouldUpdate(changedProperties) {
@@ -202,8 +178,8 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
     return html`
       ${suttaplexCss}
-      ${this.borderRadiusStyle}
-      <paper-card class="suttaplex ${this.suttaplexListStyle}" id="${this.item.uid}" elevation="1">
+      
+      <article class="suttaplex ${this.suttaplexListStyle}" id="${this.item.uid}">
         <div>
           <div class="top-row">
             <h1 class="${this.suttaplexListStyle}" title="${this.mainHeadingTitle}" @click="${this.toggleCompact}">
@@ -227,7 +203,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.modernLanguageTranslationsTemplate}
           ${this.parallelsTemplate}
         ` : ''}
-      </paper-card>`;
+      </article>`;
   }
 
   get topRowIconsTemplate() {

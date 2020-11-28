@@ -161,6 +161,9 @@ export const LitLocalized = base => class extends connect(store)(base) {
 
   async __loadLanguage(lang) {
     if (SUPPORTED_TRANSLATIONS.includes(lang)) {
+      if (!this.localizedStringsPath) {
+        return;
+      }
       const path = `${this.localizedStringsPath}/${lang}.json`;
 
       if (path in localizationCache) {

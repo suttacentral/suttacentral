@@ -36,7 +36,7 @@ export class SCBottomSheet extends LitElement {
         bottom: 0;
       
         width: 100%;
-        margin: 0 calc(-1 * var(--sc-container-margin));
+        margin: 0;
       
         background-color: var(--sc-secondary-background-color);
         box-shadow: var(--sc-shadow-elevation-2dp);
