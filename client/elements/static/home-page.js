@@ -90,6 +90,9 @@ class SCHomePage extends SCStaticPage {
       
       .two-cards {
         display: grid;
+
+        margin-left: 1vw;
+        margin-right: 1vw;
       
         justify-content: center;
         grid-template-columns: repeat(2, minmax(240px, 1fr));
@@ -250,6 +253,9 @@ class SCHomePage extends SCStaticPage {
         .three-card-row {
           display: flex;
           flex-direction: column;
+
+          margin-left: 0;
+          margin-right: 0;
       
           grid-gap: 0;
         }

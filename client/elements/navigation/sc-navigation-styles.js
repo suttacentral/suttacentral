@@ -17,6 +17,8 @@ export const navigationNormalModeStyles = html`
       display: flex;
       flex-direction: row;
 
+      margin: 0 1vw;
+
       justify-content: center;
       flex-wrap: nowrap;
     }
@@ -49,6 +51,7 @@ export const navigationNormalModeStyles = html`
     @media screen and (max-width: 780px) {
       .main-nav {
         flex-direction: column;
+        margin: 0;
       }
       .home-card + .home-card {
         margin-left: 0;
