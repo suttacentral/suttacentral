@@ -9,22 +9,30 @@ class SCSuttaParallels extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-      :host {
-        display: none;
-        z-index: 1000;
-        color: var(--sc-primary-text-color);
-        position: absolute;
-        width: 100%;
-        border-bottom: 1px solid #ccc;
-        background-color: var(--sc-secondary-background-color);
-        box-shadow: var(--sc-shadow-elevation-4dp);
-      }
+      :host
+{
+    position: absolute;
+    z-index: 1000;
 
-      .sutta-list {
-        transition: margin-top 0.3s, margin-bottom 0.3s;
-        margin: var(--sc-size-xl) auto ;
-        max-width: 720px;
-      }
+    display: none;
+    overflow-y: auto;;
+
+    width: 100%;
+    max-height: 80vw;
+
+    color: var(--sc-primary-text-color);
+    border-bottom: 1px solid #ccc;
+    background-color: var(--sc-secondary-background-color);
+    box-shadow: var(--sc-shadow-elevation-4dp);
+}
+
+.sutta-list
+{
+    max-width: 720px;
+    margin: var(--sc-size-xl) auto ;
+
+    transition: margin-top .3s, margin-bottom .3s;
+}
     `;
   }
 
