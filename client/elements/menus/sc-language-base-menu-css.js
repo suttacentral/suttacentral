@@ -16,10 +16,10 @@ export const languageBaseMenuCss = html`
     --paper-dropdown-menu-icon: {
       color: var(--sc-disabled-text-color);
     };
-    --paper-dropdown-menu-input: {
+    
       --paper-input-container-input-color: var(--sc-primary-text-color);
       --paper-input-container-color: var(--sc-secondary-text-color);
-    };
+
     --paper-menu-button-dropdown: {
       box-shadow: var(--sc-shadow-elevation-9dp);
       width: 180px;
