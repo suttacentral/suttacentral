@@ -43,7 +43,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         --paper-input-container: {
           padding: 0;
         };
-        --paper-input-container-color: white;
+        --paper-input-container-color: rgba(255,255,255,0.5);
         --paper-input-container-focus-color: white;
         --paper-input-container-label: {
           color: white;
