@@ -9,7 +9,7 @@ export const navigationNormalModeStyles = html`
 
     @media (max-width: 680px) {
       main {
-        margin-top: -50px;
+        margin-top: -40px;
       }
     }
 
@@ -25,7 +25,7 @@ export const navigationNormalModeStyles = html`
       position: relative;
       overflow: hidden;
 
-      margin-bottom:  0.5rem;
+      margin-bottom:  var(--sc-size-md);
       padding-bottom: 0.5rem;
 
       cursor: pointer;

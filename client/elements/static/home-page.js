@@ -268,7 +268,7 @@ class SCHomePage extends SCStaticPage {
         }
 
         sc-tipitaka {
-          margin-top: -50px;
+          margin-top: -40px;
         }
       }
     `;
