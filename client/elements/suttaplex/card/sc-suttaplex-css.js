@@ -38,8 +38,6 @@ summary
 
     display: flex;
 
-    padding: 8px;
-
     cursor: pointer;
 
     color: var(--sc-primary-text-color);
