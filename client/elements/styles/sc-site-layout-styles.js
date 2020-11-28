@@ -119,19 +119,6 @@ export const SCSiteLayoutStyles = css`
     justify-content: space-between;
   }
 
-      @media only screen and (max-width: 600px)
-{
-    #context_toolbar
-    {
-        flex-direction: column;
-
-        height: 100px;
-
-        justify-content: center;
-    }
-}
-
-
   .generalTitle {
     display: flex;
 

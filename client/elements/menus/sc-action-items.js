@@ -22,14 +22,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         align-items: baseline;
       }
 
-            @media only screen and (max-width: 600px)
-{
-#tools_menu {
-        justify-content: space-around;
-        width: 100%;
-      }
-}
-
       .invisible {
         display: none;
       }
