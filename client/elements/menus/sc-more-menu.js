@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit-element';
-import '@polymer/paper-item/paper-item.js';
 import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js'
@@ -12,133 +11,157 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        .more-menu-link {
-          text-decoration: none;
-          color: inherit;
-        }
+ .more-menu-link
+{
+    text-decoration: none;
 
-        .more-menu-paper-item .more-menu-icon {
-          margin-right: var(--sc-size-md);
-          color: var(--sc-disabled-text-color);
-        }
+    color: inherit;
+}
 
-        .more-menu-paper-item {
-          color: var(--sc-primary-text-color);
-        }
+.more-menu-item .more-menu-icon
+{
+    margin-right: var(--sc-size-md);
 
-        .more-menu-paper-item:hover {
-          background-color: var(--sc-tertiary-background-color);
-        }
+    color: var(--sc-disabled-text-color);
+}
 
-        .more-menu-paper-item.language-choice-box:hover {
-          background-color: unset;
-        }
+.more-menu-item
+{
+    position: relative;
 
-        #language_menu:after {
-          content: "   ";
-        }
+    display: flex;
 
-        .pwa-icon {
-          fill: var(--sc-primary-color);
-        }
+    min-height: 48px;
+    padding: 0 16px;
 
-        .separator {
-          background-color: var(--sc-border-color);
-          width: 100%;
-          overflow: hidden;
-          height: 1px;
-          margin-top: var(--sc-size-xxs);
-          margin-bottom: var(--sc-size-xxs);
-        }
+    color: var(--sc-primary-text-color);
+    border: none;
+    outline: none;
 
-        morph-ripple {
-          --ripple-color: var(--sc-primary-color);
-        }
+    align-items: center;
+}
+
+.more-menu-item:hover
+{
+    background-color: var(--sc-tertiary-background-color);
+}
+
+.more-menu-item.language-choice-box:hover
+{
+    background-color: unset;
+}
+
+#language_menu:after
+{
+    content: '   ';
+}
+
+.pwa-icon
+{
+    fill: var(--sc-primary-color);
+}
+
+.separator
+{
+    overflow: hidden;
+
+    width: 100%;
+    height: 1px;
+    margin-top: var(--sc-size-xxs);
+    margin-bottom: var(--sc-size-xxs);
+
+    background-color: var(--sc-border-color);
+}
+
+morph-ripple 
+{
+      --ripple-color: var(--sc-primary-color);
+}
       </style>
 
-      <paper-item class="more-menu-paper-item language-choice-box">
+      <div class="more-menu-item language-choice-box" role="option" tabindex="0" aria-disabled="false">
         <iron-icon class="more-menu-icon" icon="sc-iron-icons:language"></iron-icon>
         <sc-language-base-menu id="language_menu" noRoot="true"></sc-language-base-menu>
-      </paper-item>
+      </div>
       <a class="more-menu-link" href="/donations">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:pray"></iron-icon>
           ${this.localize('Donations')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/offline">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon pwa-icon" icon="sc-svg-icons:pwa"></iron-icon>
           ${this.localize('UseOffline')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/downloads">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:file-download"></iron-icon>
           ${this.localize('Downloads')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/languages">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:translate"></iron-icon>
           ${this.localize('Languages')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <div class="separator"></div>
       <a class="more-menu-link" href="/numbering">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:format-list-numbered"></iron-icon>
           ${this.localize('Numbering')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/abbreviations">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:abbreviations"></iron-icon>
           ${this.localize('Abbreviations')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/methodology">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:school"></iron-icon>
           ${this.localize('Methodology')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <div class="separator"></div>
       <a class="more-menu-link" href="/acknowledgments">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:people"></iron-icon>
           ${this.localize('Acknowledgments')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/licensing">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:copyright"></iron-icon>
           ${this.localize('Licensing')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="/about">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:info-outline"></iron-icon>
           ${this.localize('About')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
       <a class="more-menu-link" href="${this.getDiscourseUrl(this.routeName)}"
         title="${this.getDiscourseTitle(this.routeName)}" target="_blank" rel="noopener noreferrer">
-        <paper-item class="more-menu-paper-item">
+        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:forum"></iron-icon>
           ${this.localize('Discuss')}
           <morph-ripple></morph-ripple>
-        </paper-item>
+        </div>
       </a>
     `;
   }
