@@ -2,7 +2,6 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-styles/typography.js';
 
 import { ReduxMixin } from '../../redux-store.js';
 import { Localized } from "./localization-mixin.js";
