@@ -34,6 +34,9 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnInfo,
       #btnShowParallels {
         position: relative;
+        box-sizing: border-box;
+        border-bottom: 4px solid rgba(0,0,0,0);
+        height: 100%;
       }
 
       #btnLightTheme:after,
@@ -46,7 +49,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         font-size: var(--sc-skolar-font-size-xxs);
 
         position: absolute;
-        bottom: -4px;
+        bottom: 4px;
 
         width: 100%;
 

@@ -90,31 +90,13 @@ class SCHomePage extends SCStaticPage {
       
       .two-cards {
         display: grid;
+
+        margin-left: 1vw;
+        margin-right: 1vw;
       
         justify-content: center;
         grid-template-columns: repeat(2, minmax(240px, 1fr));
         grid-gap: 3% 2%;
-      }
-      
-      .three-card-row {
-        display: grid;
-      
-        justify-content: center;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        grid-gap: 3% 2%;
-      }
-      
-      .three-card-row-first {
-        grid-column: 1/-2;
-        grid-row: 1/3;
-      }
-      
-      .three-card-row-second {
-        grid-row: 1 / 2;
-      }
-      
-      .three-card-row-third {
-        grid-row: 2 / 3;
       }
       
       figure {
@@ -246,10 +228,12 @@ class SCHomePage extends SCStaticPage {
       }
       
       @media (max-width: 680px) {
-        .two-cards,
-        .three-card-row {
+        .two-cards {
           display: flex;
           flex-direction: column;
+
+          margin-left: 0;
+          margin-right: 0;
       
           grid-gap: 0;
         }
