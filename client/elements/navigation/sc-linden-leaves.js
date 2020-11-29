@@ -47,7 +47,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
       
       li {
-        font-family: 'Skolar Sans PE Compressed', 'Noto Sans CJK TC';
+        font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-xs);
         font-weight: 500;
       
