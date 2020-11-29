@@ -6,6 +6,7 @@ import '@polymer/iron-media-query/iron-media-query.js';
 import '@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
 import '@polymer/paper-styles/color.js';
 import '@polymer/paper-styles/paper-styles.js';
+import '@polymer/paper-styles/typography.js';
 import '@polymer/paper-styles/shadow.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/neon-animation/animations/fade-in-animation.js';
