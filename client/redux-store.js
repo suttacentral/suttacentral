@@ -69,6 +69,7 @@ const initialState = {
   displayInfoButton: false,
   displayViewModeButton: true,
   displaySuttaParallels: false,
+  alwaysShowUniversalToolbar: false,
   staticPagesToolbarDisplayState: {
     displayFirstToolbar: true,
     displaySecondToolbar: false,
@@ -78,6 +79,7 @@ const initialState = {
     displayGuidesToolbar: false
   },
   suttasBlurb: {},
+  navDataCache: {},
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -172,6 +174,8 @@ const reducer = (state, action) => {
       return Object.assign({}, state, { staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState });
     case 'UPDATE_BLURBS':
       return Object.assign({}, state, { suttasBlurb: action.suttasBlurb });
+    case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
+      return Object.assign({}, state, { alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar });
     default:
       return state;
   }

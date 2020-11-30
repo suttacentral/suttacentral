@@ -14,6 +14,7 @@
         "SuttaplexCompactView": "Use compact view",
         "joinDiscussion": "Join the discussion about this sutta.",
         "discussSuttas": "Discuss the suttas on our forum",
-        "Discuss": "Discuss"
+        "Discuss": "Discuss",
+        "AlwaysShowToolbar": "Always Show Toolbar"
     }
 }

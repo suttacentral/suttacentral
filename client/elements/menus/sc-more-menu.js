@@ -4,6 +4,7 @@ import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js'
 
+import '@material/mwc-switch';
 /*
 Basic more-vert menu on the main toolbar for choice of language and for choosing static pages
 */
@@ -12,6 +13,12 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
+        :host {
+          --mdc-theme-secondary: var(--sc-primary-accent-color);
+          --mdc-typography-font-family: var(--sc-sans-font);
+          --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        }
+
         .more-menu-link {
           text-decoration: none;
           color: inherit;
@@ -54,6 +61,11 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         morph-ripple {
           --ripple-color: var(--sc-primary-color);
         }
+
+        mwc-switch {
+          padding: 4px;
+          --mdc-theme-surface: var(--sc-tertiary-background-color);
+        }
       </style>
 
       <paper-item class="more-menu-paper-item language-choice-box">
@@ -74,6 +86,14 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <morph-ripple></morph-ripple>
         </paper-item>
       </a>
+      <paper-item class="more-menu-paper-item">
+        <mwc-switch id="theme_toggler" ?checked="${this.darkThemeChosen}"></mwc-switch>
+        ${this.localize('DarkTheme')}
+      </paper-item>
+      <paper-item class="more-menu-paper-item">
+        <mwc-switch id="alwaysShowToolbar_toggler" ?checked="${this.alwaysShowUniversalToolbar}"></mwc-switch>
+        ${this.localize('AlwaysShowToolbar')}
+      </paper-item>
       <a class="more-menu-link" href="/downloads">
         <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:file-download"></iron-icon>
@@ -157,16 +177,23 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     this.menuCreated = false;
     this.localizedStringsPath = '/localization/elements/sc-more-menu';
     this.routeName = store.getState().currentRoute.name;
+    this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
   }
 
   get actions() {
     return {
-      toggleSuttaplexDisplay(view) {
+      changeAppTheme(theme) {
         store.dispatch({
-          type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay: view
+          type: 'CHANGE_COLOR_THEME',
+          theme: theme
         })
-      }
+      },
+      changeAlwaysShowToolbarState(state) {
+        store.dispatch({
+          type: 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE',
+          alwaysShowUniversalToolbar: state
+        })
+      },
     }
   }
 
@@ -174,6 +201,13 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     super._stateChanged(state);
     if (this.routeName !== state.currentRoute.name) {
       this.routeName = state.currentRoute.name;
+    }
+    if (this.appTheme !== state.colorTheme) {
+      this.appTheme = state.colorTheme;
+      this.darkThemeChosen = this.appTheme === 'dark';
+    }
+    if (this.alwaysShowUniversalToolbar !== state.alwaysShowUniversalToolbar) {
+      this.alwaysShowUniversalToolbar = state.alwaysShowUniversalToolbar;
     }
   }
 
@@ -196,6 +230,21 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   }
 
   _initializeListeners() {
+    const themeTogglerElement = this.shadowRoot.getElementById('theme_toggler');
+    if (themeTogglerElement) {
+      themeTogglerElement.addEventListener('change', () => {
+        const newTheme = this.darkThemeChosen ? 'light' : 'dark';
+        this.actions.changeAppTheme(newTheme);
+      });
+    }
+
+    const alwaysShowToolbarTogglerElement = this.shadowRoot.getElementById('alwaysShowToolbar_toggler');
+    if (alwaysShowToolbarTogglerElement) {
+      alwaysShowToolbarTogglerElement.addEventListener('change', () => {
+        this.actions.changeAlwaysShowToolbarState(alwaysShowToolbarTogglerElement.checked);
+      });
+    }
+
     this.shadowRoot.querySelectorAll('.more-menu-link').forEach((e) => {
       e.addEventListener('click', (e) => {
         this._dispatchItemSelectedEvent();
