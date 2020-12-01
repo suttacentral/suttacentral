@@ -328,7 +328,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
 
     let rootDOM = this.shadowRoot;
-    addEventListener('scroll', throttle(300, () => {
+    addEventListener('scroll', throttle(500, () => {
       let transitionStyle = 'transform 200ms ease-in-out';
       rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
       rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
@@ -354,7 +354,11 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }));
 
     let lastScrollTop = 0;
-    addEventListener('scroll', throttle(300, () => {
+    addEventListener('scroll', throttle(500, () => {
+      let alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
+      if (alwaysShowUniversalToolbar) {
+        return;
+      }
       let displaySettingMenu = store.getState().displaySettingMenu;
       let displaySuttaParallels = store.getState().displaySuttaParallels;
       if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels) {

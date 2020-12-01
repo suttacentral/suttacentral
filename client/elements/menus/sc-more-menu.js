@@ -1,8 +1,10 @@
 import { LitElement, html, css } from 'lit-element';
+import '@polymer/paper-item/paper-item.js';
 import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js'
 
+import '@material/mwc-switch';
 /*
 Basic more-vert menu on the main toolbar for choice of language and for choosing static pages
 */
@@ -11,157 +13,153 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
- .more-menu-link
-{
-    text-decoration: none;
+        :host {
+          --mdc-theme-secondary: var(--sc-primary-accent-color);
+          --mdc-typography-font-family: var(--sc-sans-font);
+          --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        }
 
-    color: inherit;
-}
+        .more-menu-link {
+          text-decoration: none;
+          color: inherit;
+        }
 
-.more-menu-item .more-menu-icon
-{
-    margin-right: var(--sc-size-md);
+        .more-menu-paper-item .more-menu-icon {
+          margin-right: var(--sc-size-md);
+          color: var(--sc-disabled-text-color);
+        }
 
-    color: var(--sc-disabled-text-color);
-}
+        .more-menu-paper-item {
+          color: var(--sc-primary-text-color);
+        }
 
-.more-menu-item
-{
-    position: relative;
+        .more-menu-paper-item:hover {
+          background-color: var(--sc-tertiary-background-color);
+        }
 
-    display: flex;
+        .more-menu-paper-item.language-choice-box:hover {
+          background-color: unset;
+        }
 
-    min-height: 48px;
-    padding: 0 16px;
+        #language_menu:after {
+          content: "   ";
+        }
 
-    color: var(--sc-primary-text-color);
-    border: none;
-    outline: none;
+        .pwa-icon {
+          fill: var(--sc-primary-color);
+        }
 
-    align-items: center;
-}
+        .separator {
+          background-color: var(--sc-border-color);
+          width: 100%;
+          overflow: hidden;
+          height: 1px;
+          margin-top: var(--sc-size-xxs);
+          margin-bottom: var(--sc-size-xxs);
+        }
 
-.more-menu-item:hover
-{
-    background-color: var(--sc-tertiary-background-color);
-}
+        morph-ripple {
+          --ripple-color: var(--sc-primary-color);
+        }
 
-.more-menu-item.language-choice-box:hover
-{
-    background-color: unset;
-}
-
-#language_menu:after
-{
-    content: '   ';
-}
-
-.pwa-icon
-{
-    fill: var(--sc-primary-color);
-}
-
-.separator
-{
-    overflow: hidden;
-
-    width: 100%;
-    height: 1px;
-    margin-top: var(--sc-size-xxs);
-    margin-bottom: var(--sc-size-xxs);
-
-    background-color: var(--sc-border-color);
-}
-
-morph-ripple 
-{
-      --ripple-color: var(--sc-primary-color);
-}
+        mwc-switch {
+          padding: 4px;
+          margin: 0 4px 0 -4px;
+          --mdc-theme-surface: var(--sc-tertiary-background-color);
+        }
       </style>
 
-      <div class="more-menu-item language-choice-box" role="option" tabindex="0" aria-disabled="false">
+      <paper-item class="more-menu-paper-item language-choice-box">
         <iron-icon class="more-menu-icon" icon="sc-iron-icons:language"></iron-icon>
         <sc-language-base-menu id="language_menu" noRoot="true"></sc-language-base-menu>
-      </div>
+      </paper-item>
       <a class="more-menu-link" href="/donations">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:pray"></iron-icon>
           ${this.localize('Donations')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="/offline">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon pwa-icon" icon="sc-svg-icons:pwa"></iron-icon>
           ${this.localize('UseOffline')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
+      <paper-item class="more-menu-paper-item">
+        <mwc-switch id="theme_toggler" ?checked="${this.darkThemeChosen}"></mwc-switch>
+        ${this.localize('DarkTheme')}
+      </paper-item>
+      <paper-item class="more-menu-paper-item">
+        <mwc-switch id="alwaysShowToolbar_toggler" ?checked="${this.alwaysShowUniversalToolbar}"></mwc-switch>
+        ${this.localize('AlwaysShowToolbar')}
+      </paper-item>
       <a class="more-menu-link" href="/downloads">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:file-download"></iron-icon>
           ${this.localize('Downloads')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="/languages">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:translate"></iron-icon>
           ${this.localize('Languages')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <div class="separator"></div>
       <a class="more-menu-link" href="/numbering">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:format-list-numbered"></iron-icon>
           ${this.localize('Numbering')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="/abbreviations">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:abbreviations"></iron-icon>
           ${this.localize('Abbreviations')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="/methodology">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:school"></iron-icon>
           ${this.localize('Methodology')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <div class="separator"></div>
       <a class="more-menu-link" href="/acknowledgments">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-svg-icons:people"></iron-icon>
           ${this.localize('Acknowledgments')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="/licensing">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:copyright"></iron-icon>
           ${this.localize('Licensing')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="/about">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:info-outline"></iron-icon>
           ${this.localize('About')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
       <a class="more-menu-link" href="${this.getDiscourseUrl(this.routeName)}"
         title="${this.getDiscourseTitle(this.routeName)}" target="_blank" rel="noopener noreferrer">
-        <div class="more-menu-item" role="option" tabindex="0" aria-disabled="false">
+        <paper-item class="more-menu-paper-item">
           <iron-icon class="more-menu-icon" icon="sc-iron-icons:forum"></iron-icon>
           ${this.localize('Discuss')}
           <morph-ripple></morph-ripple>
-        </div>
+        </paper-item>
       </a>
     `;
   }
@@ -180,16 +178,23 @@ morph-ripple
     this.menuCreated = false;
     this.localizedStringsPath = '/localization/elements/sc-more-menu';
     this.routeName = store.getState().currentRoute.name;
+    this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
   }
 
   get actions() {
     return {
-      toggleSuttaplexDisplay(view) {
+      changeAppTheme(theme) {
         store.dispatch({
-          type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay: view
+          type: 'CHANGE_COLOR_THEME',
+          theme: theme
         })
-      }
+      },
+      changeAlwaysShowToolbarState(state) {
+        store.dispatch({
+          type: 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE',
+          alwaysShowUniversalToolbar: state
+        })
+      },
     }
   }
 
@@ -197,6 +202,13 @@ morph-ripple
     super._stateChanged(state);
     if (this.routeName !== state.currentRoute.name) {
       this.routeName = state.currentRoute.name;
+    }
+    if (this.appTheme !== state.colorTheme) {
+      this.appTheme = state.colorTheme;
+      this.darkThemeChosen = this.appTheme === 'dark';
+    }
+    if (this.alwaysShowUniversalToolbar !== state.alwaysShowUniversalToolbar) {
+      this.alwaysShowUniversalToolbar = state.alwaysShowUniversalToolbar;
     }
   }
 
@@ -219,6 +231,21 @@ morph-ripple
   }
 
   _initializeListeners() {
+    const themeTogglerElement = this.shadowRoot.getElementById('theme_toggler');
+    if (themeTogglerElement) {
+      themeTogglerElement.addEventListener('change', () => {
+        const newTheme = this.darkThemeChosen ? 'light' : 'dark';
+        this.actions.changeAppTheme(newTheme);
+      });
+    }
+
+    const alwaysShowToolbarTogglerElement = this.shadowRoot.getElementById('alwaysShowToolbar_toggler');
+    if (alwaysShowToolbarTogglerElement) {
+      alwaysShowToolbarTogglerElement.addEventListener('change', () => {
+        this.actions.changeAlwaysShowToolbarState(alwaysShowToolbarTogglerElement.checked);
+      });
+    }
+
     this.shadowRoot.querySelectorAll('.more-menu-link').forEach((e) => {
       e.addEventListener('click', (e) => {
         this._dispatchItemSelectedEvent();
