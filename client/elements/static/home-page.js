@@ -44,12 +44,12 @@ class SCHomePage extends SCStaticPage {
       }
 
       .plain + sc-tipitaka{
-        margin-top: 16px
+        margin-top: 18px
       }
       .tipitaka-section{
         box-sizing: border-box;
-        border-bottom: 4px solid var(--sc-primary-color-light);
-        padding-bottom: 4px;
+        border-bottom: 2px solid var(--sc-primary-color-light);
+        padding-bottom: 3px;
       }
 
       .tipitaka-section h2{
@@ -57,9 +57,9 @@ class SCHomePage extends SCStaticPage {
     font-variant-caps: all-small-caps;
     line-height: 1;
             box-sizing: border-box;
-        border-bottom: 2px solid var(--sc-primary-color-light);
+        border-bottom: 1px solid var(--sc-primary-color-light);
         width: 100%;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
 
 
       }
@@ -70,7 +70,7 @@ class SCHomePage extends SCStaticPage {
   font-size: 0.6667em;
       display: inline-block;
     vertical-align: middle;
-    height: 16px;
+    height: 17px;
 
 }
 
