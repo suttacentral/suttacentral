@@ -35,6 +35,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnShowParallels {
         position: relative;
         box-sizing: border-box;
+        border-bottom: 4px solid rgba(0,0,0,0);
         height: 100%;
       }
 
@@ -89,12 +90,12 @@ class SCActionItems extends LitLocalized(LitElement) {
 
       .active-light {
         font-weight: 800;
-        border-bottom: 4px solid var(--sc-primary-color-light);
+        border-bottom: 4px solid var(--sc-primary-color-light) !important;
       }
 
       .active-dark {
         font-weight: 800;
-        border-bottom: 4px solid var(--sc-primary-color-dark);
+        border-bottom: 4px solid var(--sc-primary-color-dark) !important;
       }
     </style>
 
