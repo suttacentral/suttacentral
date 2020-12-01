@@ -42,6 +42,38 @@ class SCHomePage extends SCStaticPage {
       
         align-items: center;
       }
+
+      .plain + sc-tipitaka{
+        margin-top: 16px
+      }
+      .tipitaka-section{
+        box-sizing: border-box;
+        border-bottom: 4px solid var(--sc-primary-color-light);
+        padding-bottom: 4px;
+      }
+
+      .tipitaka-section h2{
+        letter-spacing: var(--sc-caps-letter-spacing);
+    font-variant-caps: all-small-caps;
+    line-height: 1;
+            box-sizing: border-box;
+        border-bottom: 2px solid var(--sc-primary-color-light);
+        width: 100%;
+    padding-bottom: 4px;
+
+
+      }
+.tipitaka-section h2 i{
+  letter-spacing: normal;
+  font-variant-caps: normal;
+  font-style: italic;
+  font-size: 0.6667em;
+      display: inline-block;
+    vertical-align: middle;
+    height: 16px;
+
+}
+
       
       blockquote {
         font-family: var(--sc-serif-font);
@@ -251,15 +283,15 @@ class SCHomePage extends SCStaticPage {
           font-weight: 500;
         }
 
-        sc-tipitaka {
-          margin-top: -40px;
-        }
       }
     `;
   }
   render() {
     return html`
       <main>
+          <section class="plain tipitaka-section" style="min-height:48px">
+          <h2>Tipiṭaka—<i>the</i> Three Baskets <i>of the</i> Buddhist canon</h2>
+        </section>
         <sc-tipitaka></sc-tipitaka>
         <section class="plain" style="min-height: 134px">
           <p>${unsafeHTML(this.localize('2797e2ab111cd1d938bd327b38002092'))}</p>
