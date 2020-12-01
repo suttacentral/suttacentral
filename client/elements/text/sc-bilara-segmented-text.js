@@ -143,17 +143,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   firstUpdated() {
     this._updateView();
-    this.addEventListener('click', () => { 
-      this._hideSettingMenu() 
-      this.actions.changeDisplaySettingMenuState(false);
-    });
-  }
-
-  _hideSettingMenu() {
-    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
-      bubbles: true,
-      composed: true
-    }));
   }
 
   _updateView() {
@@ -425,12 +414,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
           view: viewNumber
-        })
-      },
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display
         })
       },
     }
