@@ -352,7 +352,7 @@ export const parallelsListCss = html`
   .parallels-root-cell,
   .parallels-parallel-cell {
     border-radius: var(--sc-size-sm);
-    background: var(--sc-tertiary-background-color);
+    background-color: var(--sc-tertiary-background-color);
   }
   
   .parallels-root-cell:hover,
@@ -515,7 +515,7 @@ export const parallelItemCss = html`
   
   .disabled {
     cursor: default;
-    background-color: #f4f3f1;
+    background-color: var(--sc-tertiary-background-color);
   }
   
   .disabled morph-ripple {
