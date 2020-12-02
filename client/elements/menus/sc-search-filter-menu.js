@@ -24,28 +24,29 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
         --paper-dropdown-menu-icon: {
           color: var(--sc-disabled-text-color);
         };
-        --paper-dropdown-menu-input: {
+
           --paper-input-container-focus-color: var(--sc-primary-accent-color);
           --paper-input-container-input-color: var(--sc-primary-text-color);
           --paper-input-container-color: var(--sc-secondary-text-color);
-        };
+  
+
+        width: 150px;
+      }
         --paper-menu-button-dropdown: {
           box-shadow: var(--sc-shadow-elevation-8dp);
           background-color: var(--sc-secondary-background-color);
-        };
-        width: 150px;
-      }
-
+        }
       .filter-menu-items {
         background-color: var(--sc-secondary-background-color);
       }
 
       .filter-menu-item {
-        --paper-item: {
-          color: var(--sc-primary-text-color);
-        };
+
         cursor: pointer;
+         color: var(--sc-primary-text-color);
       }
+
+
 
       .filter-menu-item:hover {
         background-color: var(--sc-tertiary-background-color);
