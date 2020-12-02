@@ -205,7 +205,7 @@ export const SCSiteLayoutStyles = css`
     text-decoration: none;
 
     opacity: .8;
-    color: var(--sc-tertiary-text-color);
+    color: white;
     border-bottom: 4px solid rgba(0, 0, 0, 0);
 
     align-items: center;
@@ -215,7 +215,7 @@ export const SCSiteLayoutStyles = css`
     cursor: pointer;
 
     opacity: 1;
-    color: var(--sc-tertiary-text-color);
+    color: white;
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
