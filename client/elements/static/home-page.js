@@ -57,7 +57,7 @@ section + section
 
     box-sizing: border-box;
     min-height: 39px;
-    margin: 0 3vw 16px;
+    margin: 0 6vw 24px;
     padding-bottom: 3px;
 
     text-align: center;
@@ -73,7 +73,7 @@ section + section
 
     box-sizing: border-box;
     width: 100%;
-    padding-bottom: 6px;
+    padding-bottom: 12px;
 
     letter-spacing: var(--sc-caps-letter-spacing);
 
