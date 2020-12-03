@@ -37,11 +37,115 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.suttasBlurb = new Map(Object.entries(store.getState().suttasBlurb || {}));
 
+    this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
     this._fetchExpansion();
     this._initPitakaCards({dispatchState: true});
     this._parseURL();
+  }
+
+  // Check whether the URL item is valid, 
+  // check from the last level, crop the URL item if it is not valid, 
+  // and if valid so, check that the parent contains it, and if not, crop the URL item.
+  async _verifyURL() {
+    if (!['pitaka/sutta', 'pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid)) {
+      window.location.href = '/pitaka/sutta';
+    }
+
+    let navArray = this.routePath.split('/');
+    if (navArray.length >= 3) {
+      //0='', 1='pitaka' 2='sutta,vinaya,ahbdidama', Do not need to be process, so delete it.
+      navArray.splice(0, 3);
+    }
+    if (navArray.length === 0) {
+      return;
+    }
+
+    for (let i = navArray.length - 1; i >= 0; i--) {
+      if (navArray.length > 1 && i !== 0) {
+        // index !== 0, Data needs to be obtained from ‘/api/menu/[suttaUid]?language=en’
+        let navData = await this._fetchChildrenData(navArray[i]);
+        if (!navData) {
+          window.location.href = this._cutURL(navArray[i]);
+        } else {
+          if (i-1 === 0) {
+            await this._fetchParallels(navArray[i-1]);
+            if (!this.parallelsData) {
+              window.location.href = `/${this.pitakaUid}`;
+            } else {
+              let childData = this.parallelsData.children.find(x => {
+                return x.id === navArray[i]
+              }); 
+              if (!childData) {
+                window.location.href = this._cutURL(navArray[i]);
+              }
+            }
+          } else {
+            let navData = await this._fetchChildrenData(navArray[i-1]);
+            if (!navData) {
+              let URL = this._cutURL(navArray[i]);
+              URL = this._cutURL(navArray[i-1], URL);
+              window.location.href = URL;
+            } else {
+              let childData = navData[0].children.find(x => {
+                return x.id === navArray[i]
+              });
+              if (!childData) {
+                window.location.href = this._cutURL(navArray[i]);
+              }
+            }
+          }
+        }
+      } else {
+        // index = 0, Data needs to be obtained from ‘/api/menu?language=en’
+        await this._fetchParallels(navArray[i]);
+        if (!this.parallelsData) {
+          window.location.href = `/${this.pitakaUid}`;
+        }
+      }
+    }
+  }
+
+  _cutURL(navItem, currentURL = '') {
+    let newURL = currentURL || this.routePath;
+    let regex = new RegExp(`/${navItem}`, 'g');
+    newURL = newURL.replace(regex, '');
+    return newURL;
+  }
+
+  async _fetchParallels(navItem) {
+    let formattedParallelsUid = this._formatParallelsUid(navItem);
+    this.parallelsUid = this._formatParallelsUid(navItem).uid;
+    await this._fetchParallelsData({
+      childId: this.parallelsUid,
+      langIso: formattedParallelsUid.langIso,
+    });
+  }
+
+  _formatParallelsUid(navItem) {
+    let formattedUid = {
+      uid: navItem,
+      langIso: ''
+    };
+    if (this.pitakaUid === 'pitaka/sutta' && !navItem.includes('grouping')) {
+      if (navItem !== 'other') {
+        formattedUid.uid = `grouping/${navItem}`;
+      } else {
+        formattedUid.uid = `grouping/${navItem}-group`;
+      }
+    }
+    if (['pitaka/vinaya', 'pitaka/abhidhamma'].includes(this.pitakaUid) && !navItem.includes('sect')) {
+      if (navItem.includes('-')) {
+        let sect = navItem.split('-');
+        if (sect.length === 2) {
+          formattedUid.uid  = sect[0];
+          formattedUid.langIso = sect[1];
+        }
+      }
+      formattedUid.uid = this._getUidByName(formattedUid.uid);
+    }
+    return formattedUid;
   }
 
   async _parseURL() {
@@ -350,9 +454,15 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (!params.childName) {
       params.childName = this.parallelsData.name;
     }
+
+    let navURL = `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${params.childName.toLowerCase()}`;
+    if (params.langIso) {
+      navURL = `${navURL}-${params.langIso}`;
+    }
+
     this.navArray[navIndexesOfType.index] = {
       title: params.childName,
-      url: `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${params.childName.toLowerCase()}`,
+      url: navURL,
       type: navType,
       displayPitaka: false,
       displayParallels: true,
