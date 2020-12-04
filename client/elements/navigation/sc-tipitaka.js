@@ -84,9 +84,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
 
   _addBlurbsClickEvent() {
     this.shadowRoot.querySelectorAll('.blurb').forEach((element) => {
-      element.addEventListener('click', (e) => {
+      element.onclick = (e) => {
         element.classList.contains('blurbShrink') ? element.classList.remove('blurbShrink') : element.classList.add('blurbShrink');
-      });
+      };
     });
   }
 
