@@ -188,7 +188,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       displayDarkThemeButton: { type: Boolean },
       displayViewModeButton: { type: Boolean},
       colorTheme: { type: String },
-      suttaMetaText: { type: String }
+      suttaMetaText: { type: String },
     }
   }
 
@@ -204,6 +204,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
+    this.actions.changeDisplaySuttaInfoState(false);
 
     this.displaySettingMenu = store.getState().displaySettingMenu;
     this.displayToolButton = store.getState().displayToolButton;
@@ -261,6 +262,12 @@ class SCActionItems extends LitLocalized(LitElement) {
           displaySuttaParallels: displayState
         })
       },
+      changeDisplaySuttaInfoState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
+          displaySuttaInfo: displayState
+        })
+      },
     }
   }
 
@@ -279,11 +286,32 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.actions.changeAppTheme('dark');
   }
 
-  _onBtnInfoClick(e) {
-    this.dispatchEvent(new CustomEvent('show-info-dialog', {
+  _onBtnInfoClick() {
+    this.displaySuttaInfo = store.getState().displaySuttaInfo;
+    if (!this.displaySuttaInfo) {
+      const {displaySettingMenu, displaySuttaParallels} = store.getState();
+      if (displaySettingMenu) {
+        this.actions.changeDisplaySettingMenuState(false);
+        this._hideSettingMenu();
+      }
+      if (displaySuttaParallels) {
+        this.actions.changeDisplaySuttaParallelsState(false);
+        this._hideSuttaParallels();
+      }
+      this.actions.changeDisplaySuttaInfoState(true);
+      this._showSuttaInfo();
+    } else {
+      this.actions.changeDisplaySuttaInfoState(false);
+      this._hideSuttaInfo();
+    }
+  }
+
+  _showSuttaInfo() {
+    this.dispatchEvent(new CustomEvent('show-sc-sutta-info', {
       bubbles: true,
       composed: true
     }));
+    this.shadowRoot.querySelector('#btnInfo').classList.add(this.activeClass);
   }
 
   _onBtnViewCompactClick(e) {
@@ -319,10 +347,14 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnToolsClick(e) {
     this.displaySettingMenu = store.getState().displaySettingMenu;
     if (!this.displaySettingMenu) {
-      let displaySuttaParallels = store.getState().displaySuttaParallels;
+      const {displaySuttaParallels, displaySuttaInfo} = store.getState();
       if (displaySuttaParallels) {
         this.actions.changeDisplaySuttaParallelsState(false);
         this._hideSuttaParallels();
+      }
+      if (displaySuttaInfo) {
+        this.actions.changeDisplaySuttaInfoState(false);
+        this._hideSuttaInfo();
       }
       this.actions.changeDisplaySettingMenuState(true);
       this._showSettingMenu();
@@ -356,6 +388,14 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnShowParallels').classList.remove(this.activeClass);
   }
 
+  _hideSuttaInfo() {
+    this.dispatchEvent(new CustomEvent('hide-sc-sutta-info', {
+      bubbles: true,
+      composed: true
+    }));
+    this.shadowRoot.querySelector('#btnInfo').classList.remove(this.activeClass);
+  }
+
   _showSuttaParallels() {
     this.dispatchEvent(new CustomEvent('show-sc-sutta-parallels', {
       bubbles: true,
@@ -367,10 +407,14 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnShowParallelsClick() {
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
-      let displaySettingMenu = store.getState().displaySettingMenu;
+      const {displaySettingMenu, displaySuttaInfo} = store.getState();
       if (displaySettingMenu) {
         this.actions.changeDisplaySettingMenuState(false);
         this._hideSettingMenu();
+      }
+      if (displaySuttaInfo) {
+        this.actions.changeDisplaySuttaInfoState(false);
+        this._hideSuttaInfo();
       }
       this.actions.changeDisplaySuttaParallelsState(true);
       this._showSuttaParallels();

@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 
 import '@polymer/iron-media-query/iron-media-query.js';
@@ -27,6 +26,7 @@ import './menus/sc-settings-menu.js';
 import './menus/sc-action-items.js';
 import './addons/sc-top-sheet.js';
 import './suttaplex/card/sc-sutta-parallels';
+import './suttaplex/card/sc-sutta-info';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
 
@@ -67,6 +67,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
         <sc-top-sheet id="setting_menu"></sc-top-sheet>
         <sc-sutta-parallels id="sutta_parallels"></sc-sutta-parallels>
+        <sc-sutta-info id="sutta-info"></sc-sutta-info>
 
 
         <div id="static_pages_nav_menu">
@@ -85,23 +86,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
       
       <sc-page-selector id="page_selector"></sc-page-selector>
-      <sc-toasts></sc-toasts>
-
-      <!--
-        The dialogs for the sutta text view:
-      -->
-
-      <paper-dialog id="info_dialog" name="info_dialog" class="dialog" with-backdrop="true" .data="${this.infoDialogMetaArea}" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
-        <div class="buttons-bar green-bg">
-          <h2 class="dialog-header green-bg">${this.localize('publicationDetails')}</h2>
-          <mwc-icon-button class="close-dialog-icon" dialog-confirm="">${icons['close']}</mwc-icon-button>
-        </div>
-        <paper-dialog-scrollable class="scrollable-dialog">
-          <div class="dialog-section">
-            <div>${unsafeHTML(this.infoDialogMetaArea)}</div>
-          </div>
-        </paper-dialog-scrollable>
-      </paper-dialog>`;
+      <sc-toasts></sc-toasts>`;
   }
 
   get toolbarSelectedTemplate() {
@@ -300,33 +285,33 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       });
     });
 
-    this.addEventListener('hide-sc-top-sheet', e => { 
+    this.addEventListener('hide-sc-top-sheet', e => {
       this.shadowRoot.querySelector('#setting_menu').hide();
     });
 
-    this.addEventListener('show-sc-top-sheet', e => { 
+    this.addEventListener('show-sc-top-sheet', e => {
       this.shadowRoot.querySelector('#setting_menu').show();
     });
 
-    this.addEventListener('hide-sc-sutta-parallels', e => { 
+    this.addEventListener('hide-sc-sutta-parallels', e => {
       this.shadowRoot.querySelector('#sutta_parallels').hide();
     });
 
-    this.addEventListener('show-sc-sutta-parallels', e => { 
+    this.addEventListener('show-sc-sutta-parallels', e => {
       this.shadowRoot.querySelector('#sutta_parallels').show();
-    }); 
-
-    this.addEventListener('bind-data-to-sc-sutta-parallels', e => { 
-      this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
-    }); 
-
-    this.addEventListener('show-info-dialog', e => { 
-      const dialogElement = this.shadowRoot.querySelector('#info_dialog');
-      if (dialogElement) {
-        dialogElement.open();
-      }
     });
 
+    this.addEventListener('bind-data-to-sc-sutta-parallels', e => {
+      this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
+    });
+
+    this.addEventListener('show-sc-sutta-info', e => {
+      this.shadowRoot.querySelector('#sutta-info').show();
+    });
+
+    this.addEventListener('hide-sc-sutta-info', e => {
+      this.shadowRoot.querySelector('#sutta-info').hide();
+    });
     let rootDOM = this.shadowRoot;
     addEventListener('scroll', throttle(500, () => {
       let transitionStyle = 'transform 200ms ease-in-out';
@@ -361,7 +346,8 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       }
       let displaySettingMenu = store.getState().displaySettingMenu;
       let displaySuttaParallels = store.getState().displaySuttaParallels;
-      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels) {
+      const displaySuttaInfo = store.getState().displaySuttaInfo;
+      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels && !displaySuttaInfo) {
         let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScrollTop > lastScrollTop){
           const universalToolbarHeight = 156;
@@ -407,7 +393,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       ];
       this.actions.setNavigation(this.navArray);
     }
-    
+
     if (!this.currentNavPosition) {
       this.actions.setCurrentNavPosition(0);
     }
@@ -443,7 +429,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _routeChanged() {
-    this.shadowRoot.querySelector('#info_dialog').close();
+    this.shadowRoot.querySelector('#sutta-info').hide();
   }
 
   _openDialog(event) {
@@ -462,8 +448,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         IronDropdownScrollManager.removeScrollLock(dialog);
       }
     };
-    let infoDialog = this.shadowRoot.querySelector('#info_dialog');
-    infoDialog.addEventListener('opened-changed', () => { scrollLockListener(infoDialog) });
   }
 
   _getApiUrl() {

@@ -174,7 +174,7 @@ class SCSimpleText extends SCLitTextPage {
     this.addEventListener('click', () => {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1), true, 0);
-        this._hideSettingMenu();
+        this._hideTopSheets();
         this.actions.changeDisplaySettingMenuState(false);
       });
     });
@@ -188,11 +188,11 @@ class SCSimpleText extends SCLitTextPage {
     this.shadowRoot.querySelector('#a11y').target = document.querySelector('body');
   }
 
-  _hideSettingMenu() {
-    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
-      bubbles: true,
-      composed: true
-    }));
+  _hideTopSheets() {
+    const scActionItems = document.querySelector("sc-site-layout").shadowRoot.querySelector("#action_items");
+    scActionItems._hideSuttaInfo();
+    scActionItems._hideSuttaParallels();
+    scActionItems._hideSettingMenu();
   }
 
   updated(changedProps) {
