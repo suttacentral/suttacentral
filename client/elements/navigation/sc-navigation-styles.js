@@ -30,7 +30,6 @@ export const navigationNormalModeStyles = html`
       margin-bottom:  var(--sc-size-md);
       padding-bottom: 0.5rem;
 
-      cursor: pointer;
       transition: all 200ms ease-out;
 
       border-radius: var(--sc-size-sm);
@@ -90,8 +89,15 @@ export const navigationNormalModeStyles = html`
       font-size: var(--sc-skolar-font-size-md);
       font-weight: 400;
       line-height: 24px;
+      padding: 0rem 1rem;
+      cursor: pointer;
+    }
 
-      padding: 0.5rem 1rem;
+    .blurbShrink {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
     }
 
     .blurb:empty {
@@ -163,7 +169,7 @@ export const navigationNormalModeStyles = html`
       padding: 0 1rem 0.5rem 1rem;
     }
 
-    .essay block-link {
+    .essay a {
       display: inline;
     }
 
@@ -184,7 +190,7 @@ export const navigationNormalModeStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
-    block-link a:hover {
+    header .title:hover {
       cursor: pointer;
       text-decoration: underline;
 
@@ -199,7 +205,7 @@ export const navigationNormalModeStyles = html`
       justify-content: flex-end;
     }
 
-    .shortcut block-link {
+    .shortcut a {
       display: inline;
     }
 
@@ -233,14 +239,6 @@ export const navigationNormalModeStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
-    morph-ripple {
-      --ripple-color: var(--sc-primary-color);
-    }
-
-    paper-ripple {
-      color: var(--sc-primary-color-medium);
-    }
-
     sc-tipitaka {
       min-height: 275px;
     }
@@ -259,9 +257,6 @@ export const navigationCompactModeStyles = html`
       margin-top: 0;
       margin-bottom: 1px;
       padding-bottom: 8px;
-
-      cursor: pointer;
-
       border-radius: 0;
     }
 

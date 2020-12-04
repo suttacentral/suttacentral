@@ -5,7 +5,6 @@ import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-na
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
-import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
 import { icons } from '../../img/sc-icons';
 import '@material/mwc-icon';
@@ -405,11 +404,10 @@ class SCNavigation extends LitLocalized(LitElement) {
                 </span>
               ` : ''}
             </header>
-            <div class="blurb">
+            <div class="blurb blurbShrink">
               ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} 
                 in ${child.lang_name ? html`<span>${child.lang_name}</span>` : 'Pali and Chinese.'}.
             </div>
-            <morph-ripple></morph-ripple>
           </section>
         </a>
       `)}` : '';
@@ -494,48 +492,45 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
   }
 
+  updated() {
+    this._addBlurbsClickEvent();
+  }
+
   get parallelsContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayParallels && this.parallelsData ? html`
       ${this.parallelsData.children.map(child => html`
-        <section class="card parallels" 
-          @click=${() => this._onParallelsCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
-          <header>
-            <span class="header-left">
-              <span class="title" lang="${child.lang_iso}">
-                <block-link>
-                  <a href="${this._genCurrentURL(child.id)}">
-                    ${this.localize(this.pitakaName)} ${this.localize(child.name)}
-                  </a>
-                </block-link>
+        <section class="card parallels">
+          <a href="${this._genCurrentURL(child.id)}" 
+            @click=${() => this._onParallelsCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
+            <header>
+              <span class="header-left">
+                <span class="title" lang="${child.lang_iso}">
+                  ${this.localize(this.pitakaName)} ${this.localize(child.name)}
+                </span>
+                <span class="subTitle">${child.name}</span>
               </span>
-              <span class="subTitle">${child.name}</span>
-            </span>
-            ${child.yellow_brick_road ? html`
-              <span class="header-right">
-                <mwc-icon>${icons['tick']}</mwc-icon>
-                <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
-              </span>
-            ` : ''}
-          </header>
+              ${child.yellow_brick_road ? html`
+                <span class="header-right">
+                  <mwc-icon>${icons['tick']}</mwc-icon>
+                  <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
+                </span>
+              ` : ''}
+            </header>
+          </a>
 
-          <div class="blurb" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
+          <div class="blurb blurbShrink" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
 
           ${pitakaGuide.get(child.id) ? html`
             <div class="essay" id="${child.id}_essay">
-              <block-link>
-                <a href="${pitakaGuide.get(child.id)}">${this.localize(`${child.id}_essayTitle`)}</a>
-              </block-link>
+              <a href="${pitakaGuide.get(child.id)}">${this.localize(`${child.id}_essayTitle`)}</a>
             </div>
           ` : ''}
 
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
-              <block-link>
-                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-              </block-link>
+              <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
             </div>
           ` : ''}
-          <paper-ripple></paper-ripple>
         </section>
       `)}`: '';
   }
@@ -582,6 +577,14 @@ class SCNavigation extends LitLocalized(LitElement) {
         }
       }
     }
+  }
+
+  _addBlurbsClickEvent() {
+    this.shadowRoot.querySelectorAll('.blurb').forEach((element) => {
+      element.onclick = (e) => {
+        element.classList.contains('blurbShrink') ? element.classList.remove('blurbShrink') : element.classList.add('blurbShrink');
+      };
+    });
   }
 
   async _onParallelsCardClick(params) {
@@ -658,38 +661,32 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggasContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
       ${this.vaggasData[0].children.map(child => html`
-        <section class="card vaggas" 
-          @click=${() => this._onVaggasCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
-          <header>
-            <span class="header-left">
-              <span class="title" lang="en">
-                <block-link>
-                  <a href="${this._genCurrentURL(child.id)}">
-                    ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
-                  </a>
-                </block-link>
+        <section class="card vaggas">
+          <a href="${this._genCurrentURL(child.id)}" 
+            @click=${() => this._onVaggasCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
+            <header>
+              <span class="header-left">
+                <span class="title" lang="en">
+                  ${child.name ? this.getPrefixedItemName(this.localize(child.name), child.display_num) : child.id} ${this.parallelName}
+                </span>
+                <span class="subTitle">${child.name ? child.name : child.id}</span>
               </span>
-              <span class="subTitle">${child.name ? child.name : child.id}</span>
-            </span>
-            ${child.yellow_brick_road ? html`
-              <span class="header-right">
-                <mwc-icon>${icons['tick']}</mwc-icon>
-                <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
-              </span>
-            ` : ''}
-          </header>
+              ${child.yellow_brick_road ? html`
+                <span class="header-right">
+                  <mwc-icon>${icons['tick']}</mwc-icon>
+                  <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
+                </span>
+              ` : ''}
+            </header>
+          </a>
 
-          <div class="blurb" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
+          <div class="blurb blurbShrink" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
 
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
-              <block-link>
-                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-              </block-link>
+              <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
             </div>
           ` : ''}
-
-          <paper-ripple></paper-ripple>
         </section>
       `)}` : '';
   }
@@ -748,37 +745,32 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildren && this.vaggaChildren ? html`
       ${this.vaggaChildren && this.vaggaChildren.map(child => html`
-        <section class="card vaggaChildren" @click=${() => this._onVaggaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
-          <header>
-            <span class="header-left">
-              <span class="title" lang="en">
-                <block-link>
-                  <a href="${this._genCurrentURL(child.id)}">
-                    ${this.localize(child.name ? child.name : child.id)} ${this.parallelName}
-                  </a>
-                </block-link>
+        <section class="card vaggaChildren">
+          <a href="${this._genCurrentURL(child.id)}" 
+            @click=${() => this._onVaggaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
+            <header>
+              <span class="header-left">
+                <span class="title" lang="en">
+                  ${child.name ? this.getPrefixedItemName(this.localize(child.name), child.display_num) : child.id} ${this.parallelName}
+                </span>
+                <span class="subTitle">${child.name ? child.name : child.id}</span>
               </span>
-              <span class="subTitle">${child.name ? child.name : child.id}</span>
-            </span>
-            ${child.yellow_brick_road ? html`
-              <span class="header-right">
-                <mwc-icon>${icons['tick']}</mwc-icon>
-                <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
-              </span>
-            ` : ''}
-          </header>
+              ${child.yellow_brick_road ? html`
+                <span class="header-right">
+                  <mwc-icon>${icons['tick']}</mwc-icon>
+                  <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
+                </span>
+              ` : ''}
+            </header>
+          </a>
 
-          <div class="blurb" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
+          <div class="blurb blurbShrink" id="${child.id}_blurb">${unsafeHTML(child.blurb || '')}</div>
 
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
-              <block-link>
-                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-              </block-link>
+              <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
             </div>
           ` : ''}
-
-          <paper-ripple></paper-ripple>
         </section>
       `)}` : '';
   }
@@ -830,38 +822,32 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren ? html`
       ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren[0].children.map(child => html`
-        <section class="card vaggaChildrenChildren" 
-          @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
-          <header>
-            <span class="header-left">
-              <span class="title" lang="en">
-                <block-link>
-                  <a href="${this._genCurrentURL(child.id)}">
-                    ${this.localize(child.name)} ${this.parallelName}
-                  </a>
-                </block-link>
+        <section class="card vaggaChildrenChildren">
+          <a href="${this._genCurrentURL(child.id)}"
+            @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
+            <header>
+              <span class="header-left">
+                <span class="title" lang="en">
+                  ${this.getPrefixedItemName(this.localize(child.name), child.display_num)} ${this.parallelName}
+                </span>
+                <span class="subTitle">${child.name}</span>
               </span>
-              <span class="subTitle">${child.name}</span>
-            </span>
-            ${child.yellow_brick_road ? html`
-              <span class="header-right">
-                <mwc-icon>${icons['tick']}</mwc-icon>
-                <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
-              </span>
-            ` : ''}
-          </header>
+              ${child.yellow_brick_road ? html`
+                <span class="header-right">
+                  <mwc-icon>${icons['tick']}</mwc-icon>
+                  <span class="number-translated"><span class="number" id="${child.id}_number"></span> ${this.fullSiteLanguageName}</span>
+                </span>
+              ` : ''}
+            </header>
+          </a>
 
-          <div class="blurb" id="${child.id}_blurb"></div>
+          <div class="blurb blurbShrink" id="${child.id}_blurb"></div>
 
           ${shortcuts.includes(child.id) ? html`
             <div class="shortcut">
-              <block-link>
-                <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-              </block-link>
+              <a href="/${child.id}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
             </div>
           ` : ''}
-
-          <paper-ripple></paper-ripple>
         </section>
       `)}` : '';
   }
@@ -920,7 +906,7 @@ class SCNavigation extends LitLocalized(LitElement) {
           <section class="card sakaChildren" @click=${() => this._onSakaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">${this.localize(child.name)} ${this.parallelName}</span>
+                <span class="title" lang="en">${this.getPrefixedItemName(this.localize(child.name), child.display_num)} ${this.parallelName}</span>
                 <span class="subTitle">${child.name}</span>
               </span>
               ${child.yellow_brick_road ? html`
@@ -931,8 +917,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 </span>
               ` : ''}
             </header>
-            <div class="blurb" id="${child.id}_blurb"></div>
-            <morph-ripple></morph-ripple>
+            <div class="blurb blurbShrink" id="${child.id}_blurb"></div>
           </section>
         </a>
       `)}` : '';
@@ -994,6 +979,10 @@ class SCNavigation extends LitLocalized(LitElement) {
       this.lastError = e;
     }
     this.loading = false;
+  }
+
+  getPrefixedItemName(name, num) {
+    return num ? `${num}. ${name}` : name;
   }
 }
 
