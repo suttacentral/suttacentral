@@ -28,7 +28,7 @@ export const navigationNormalModeStyles = html`
       overflow: hidden;
 
       margin-bottom:  var(--sc-size-md);
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.6667rem;
 
       transition: all 200ms ease-out;
 
