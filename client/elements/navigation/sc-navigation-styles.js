@@ -201,6 +201,7 @@ export const navigationNormalModeStyles = html`
       display: flex;
 
       margin-right: 1rem;
+      margin-top: 0.5em;
 
       justify-content: flex-end;
     }
@@ -271,6 +272,8 @@ export const navigationCompactModeStyles = html`
 
     .shortcut {
       font-size: var(--sc-skolar-font-size-s);
+      
+      margin-top: 0;
     }
   </style>
 `;

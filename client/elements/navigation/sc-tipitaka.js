@@ -117,7 +117,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
               </header>
             </a>
             <div class='nav-card-content'>
-              <div class="blurb blurbShrink" id="${item.name}_blurb">
+              <div class="blurb" id="${item.name}_blurb">
                 ${this.tipitakaBlurb.get(item.name)}
               </div>
               <div class="essay">
