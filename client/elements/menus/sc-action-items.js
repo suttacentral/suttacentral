@@ -26,13 +26,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         display: none;
       }
 
-      #btnLightTheme,
-      #btnDarkTheme,
-      #btnViewCompact,
-      #btnViewComfy,
-      #btnTools,
-      #btnInfo,
-      #btnShowParallels {
+      .toolButtons {
         position: relative;
         box-sizing: border-box;
         border-bottom: 4px solid rgba(0,0,0,0);
@@ -96,6 +90,17 @@ class SCActionItems extends LitLocalized(LitElement) {
       .active-dark {
         font-weight: 800;
         border-bottom: 4px solid var(--sc-primary-color-dark) !important;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .contextToolbarExpand {
+          width: 100%;
+          justify-content: space-around !important;
+        }
+
+        .toolButtons {
+          box-sizing: content-box;
+        }
       }
     </style>
 
@@ -269,6 +274,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._colorThemeChanged();
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
+    this._toggleContextToolbarExpand();
   }
 
   _onBtnLightThemeClick() {
@@ -427,10 +433,6 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _colorThemeChanged() {
-    this.shadowRoot.querySelector('#btnLightTheme').style.display = 'none';
-    this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'none';
-    return;
-
     this.displayLightThemeButton = this.colorTheme === 'light' ? true : false;
     this.displayDarkThemeButton = !this.displayLightThemeButton;
     if (this.displayLightThemeButton) {
@@ -465,6 +467,13 @@ class SCActionItems extends LitLocalized(LitElement) {
         }
       }
     });
+  }
+
+  _toggleContextToolbarExpand() {
+    const toolsMenu = this.shadowRoot.querySelector('#tools_menu');
+    if (toolsMenu) {
+      this.displayToolButton ? toolsMenu.classList.add('contextToolbarExpand') : toolsMenu.classList.remove('contextToolbarExpand');
+    }
   }
 }
 
