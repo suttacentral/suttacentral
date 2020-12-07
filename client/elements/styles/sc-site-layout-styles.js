@@ -112,7 +112,7 @@ export const SCSiteLayoutStyles = css`
   #context_toolbar {
     display: flex;
 
-     height: 60px;
+    height: 60px;
 
     padding: 0 2%;
 
@@ -232,5 +232,13 @@ export const SCSiteLayoutStyles = css`
     max-width: 720px;
     transition: margin-top 0.3s, margin-bottom 0.3s;
     margin: 0 auto var(--sc-size-xxl);
+  }
+
+  sc-top-sheet {
+    position: sticky;
+  }
+
+  sc-sutta-parallels {
+    position: static;
   }
 `;
