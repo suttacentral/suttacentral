@@ -3,7 +3,7 @@ import '@polymer/polymer/lib/elements/custom-style.js';
 const template = document.createElement('template');
 
 template.innerHTML = `
-<custom-style>
+<custom-style
   <style>
     html {
       /* Text */
@@ -12,14 +12,13 @@ template.innerHTML = `
       --sc-tertiary-text-color: rgb(255, 255, 255);
       --sc-disabled-text-color: rgb(159,158,157);
       --sc-disabled-text-color-opaque: rgba(159, 158, 157, .3);
-
       /* Main colors */
       --sc-primary-color: #ce8400;
       --sc-primary-color-light: #ffcb61;
       --sc-primary-color-light-transparent: rgba(255, 203, 97, 0.3);
       --sc-primary-color-medium: #f6b735;
-      --sc-primary-color-dark: #b37800;
-      --sc-primary-color-darkest: rgba(138, 93, 0, 1);
+      --sc-primary-color-dark: rgb(161,108,0);
+      --sc-primary-color-darkest: rgb(138, 93, 0);
       --sc-primary-accent-color: #43a047;
       --sc-primary-accent-color-light: #52c756;
       --sc-primary-accent-color-light-transparent: rgba(67,160,71,0.1);

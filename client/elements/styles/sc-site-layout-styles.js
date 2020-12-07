@@ -112,7 +112,7 @@ export const SCSiteLayoutStyles = css`
   #context_toolbar {
     display: flex;
 
-     height: 60px;
+    height: 60px;
 
     padding: 0 2%;
 
@@ -205,7 +205,7 @@ export const SCSiteLayoutStyles = css`
     text-decoration: none;
 
     opacity: .8;
-    color: var(--sc-tertiary-text-color);
+    color: white;
     border-bottom: 4px solid rgba(0, 0, 0, 0);
 
     align-items: center;
@@ -215,7 +215,7 @@ export const SCSiteLayoutStyles = css`
     cursor: pointer;
 
     opacity: 1;
-    color: var(--sc-tertiary-text-color);
+    color: white;
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
@@ -232,5 +232,13 @@ export const SCSiteLayoutStyles = css`
     max-width: 720px;
     transition: margin-top 0.3s, margin-bottom 0.3s;
     margin: 0 auto var(--sc-size-xxl);
+  }
+
+  sc-top-sheet {
+    position: sticky;
+  }
+
+  sc-sutta-parallels {
+    position: static;
   }
 `;

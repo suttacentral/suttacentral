@@ -80,6 +80,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-weight: bold;
         }
 
+        aside {
+          color: var(--sc-secondary-text-color);
+
+          font-size: var(--sc-skolar-font-size-s)
+        }
+
         .search-result-item {
           display: flex;
           flex-direction: column;
@@ -347,8 +353,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   get searchResultTemplate() {
     return !this.loadingResults ? html`
-      <script async src="https://cse.google.com/cse.js?cx=d40c5dc49b8b9d391"></script>
-      <div class="gcse-search"></div>
       <div class="search-result-head">
         <h1 class="search-result-header">
           <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>
@@ -357,6 +361,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         </h1>
         <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
       </div>
+      <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
       <div class="dictionary-snippet-card">
         <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
           .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"

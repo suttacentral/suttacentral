@@ -3,9 +3,7 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
-import '@alangdm/block-link';
 import '../addons/sc-bouncing-loader';
-import '@polymer/paper-ripple/paper-ripple.js';
 import { icons } from '../../img/sc-icons';
 import '@material/mwc-icon';
 
@@ -84,41 +82,50 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this.loading = false;
   }
 
+  _addBlurbsClickEvent() {
+    this.shadowRoot.querySelectorAll('.blurb').forEach((element) => {
+      element.onclick = (e) => {
+        element.classList.contains('blurbShrink') ? element.classList.remove('blurbShrink') : element.classList.add('blurbShrink');
+      };
+    });
+  }
+
+  updated() {
+    this._addBlurbsClickEvent();
+  }
+
   get tipitakaCardTemplate() {
     return this.mainMenuData.length ? html`
       <div class="main-nav">
         ${this.mainMenuData.map((item) => html`
-          <section class="card home-card" @click=${() => this._onTipitakaCardClick(item.uid)}>
-            <header>
-              <span class="header-left">
-                <span class="title" lang="${this.language}">
-                  <block-link>
-                    <a href="/${item.uid}">${this.localize(item.name.toLowerCase())}</a>
-                  </block-link>
+          <section class="card home-card">
+            <a href="/${item.uid}" @click=${() => this._onTipitakaCardClick(item.uid)}>
+              <header>
+                <span class="header-left">
+                  <span class="title" lang="${this.language}">
+                    ${this.localize(item.name.toLowerCase())}
+                  </span>
+                  <span class="subTitle" lang="pli">
+                    ${item.name}
+                  </span>
                 </span>
-                <span class="subTitle" lang="pi">
-                  <block-link>
-                    <a href="/${item.uid}">${item.name}</a>
-                  </block-link>
+                <span class="header-right">
+                  <span class="number"></span>
+                  <mwc-icon>${icons['tick']}</mwc-icon>
+                  <span class="number-translated">${this.fullSiteLanguageName}</span>
                 </span>
-              </span>
-              <span class="header-right">
-                <span class="number"></span>
-                <mwc-icon>${icons['tick']}</mwc-icon>
-                <span class="number-translated">${this.fullSiteLanguageName}</span>
-              </span>
-            </header>
+              </header>
+            </a>
             <div class='nav-card-content'>
-              <div class="blurb">
+              <div class="blurb" id="${item.name}_blurb">
                 ${this.tipitakaBlurb.get(item.name)}
               </div>
               <div class="essay">
-                <block-link>
-                  <a href="${this.tipitakaGuide.get(item.name)}">${this.localize(`${item.name}_essayTitle`)}</a>
-                </block-link>
+                <a href="${this.tipitakaGuide.get(item.name)}">
+                  ${this.localize(`${item.name}_essayTitle`)}
+                </a>
               </div>
             </div>
-            <paper-ripple></paper-ripple>
           </section>
         `)}
       </div>
