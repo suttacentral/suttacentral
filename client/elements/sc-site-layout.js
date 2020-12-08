@@ -61,14 +61,12 @@ class SCSiteLayout extends LitLocalized(LitElement) {
             </div>
             <div id="subTitle">${this.localize('pageSubtitle')}</div>
           </div>
-
           <sc-action-items id="action_items"></sc-action-items>
         </div>
 
         <sc-top-sheet id="setting_menu"></sc-top-sheet>
         <sc-sutta-parallels id="sutta_parallels"></sc-sutta-parallels>
         <sc-sutta-info id="sutta-info"></sc-sutta-info>
-
 
         <div id="static_pages_nav_menu">
           <nav>
@@ -84,7 +82,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         </div>
       </div>
 
-      
       <sc-page-selector id="page_selector"></sc-page-selector>
       <sc-toasts></sc-toasts>`;
   }
@@ -256,6 +253,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }
+    if (this.displayToolButton !== state.displayToolButton) {
+      this.displayToolButton = state.displayToolButton;
+    }
     if (this.infoDialogMetaArea !== state.suttaMetaText) {
       this.infoDialogMetaArea = state.suttaMetaText;
     }
@@ -368,6 +368,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this._initStaticPagesToolbarDisplayState();
     this._addStaticPageLinkEventListener();
     this._setStaticPageMenuItemSelected();
+    this._toggleContextToolbarExpand();
   }
 
   _setStaticPageMenuItemSelected() {
@@ -477,6 +478,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   _setSiteLanguage() {
     // main_menu_root is defined in index.html
     document.getElementById('main_html_root').lang = this.siteLanguage;
+  }
+
+  _toggleContextToolbarExpand() {
+    const toolbar = this.shadowRoot.querySelector('#context_toolbar');
+    if (toolbar) {
+      this.displayToolButton ? toolbar.classList.add('contextToolbarExpand') : toolbar.classList.remove('contextToolbarExpand');
+    }
   }
 }
 
