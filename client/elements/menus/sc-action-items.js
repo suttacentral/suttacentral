@@ -430,6 +430,12 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
+  hideTopSheets() {
+    this._hideSettingMenu();
+    this._hideSuttaInfo();
+    this._hideSuttaParallels();
+  }
+
   _stateChanged(state) {
     super._stateChanged(state);
     if (this.displaySettingMenu !== state.displaySettingMenu) {

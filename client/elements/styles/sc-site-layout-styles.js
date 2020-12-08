@@ -234,14 +234,6 @@ export const SCSiteLayoutStyles = css`
     margin: 0 auto var(--sc-size-xxl);
   }
 
-  sc-top-sheet {
-    position: sticky;
-  }
-
-  sc-sutta-parallels {
-    position: static;
-  }
-
   @media only screen and (max-width: 600px) {
     .contextToolbarExpand  {
       flex-direction: column;
