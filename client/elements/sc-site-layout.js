@@ -368,7 +368,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this._initStaticPagesToolbarDisplayState();
     this._addStaticPageLinkEventListener();
     this._setStaticPageMenuItemSelected();
-    this._toggleContextToolbarExpand();
   }
 
   _setStaticPageMenuItemSelected() {
@@ -478,13 +477,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   _setSiteLanguage() {
     // main_menu_root is defined in index.html
     document.getElementById('main_html_root').lang = this.siteLanguage;
-  }
-
-  _toggleContextToolbarExpand() {
-    const toolbar = this.shadowRoot.querySelector('#context_toolbar');
-    if (toolbar) {
-      this.displayToolButton ? toolbar.classList.add('contextToolbarExpand') : toolbar.classList.remove('contextToolbarExpand');
-    }
   }
 }
 
