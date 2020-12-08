@@ -18,6 +18,7 @@ class SCSuttaInfo extends SCSuttaTopSheetCommon {
             css`
                 :host {
                     font-family: var(--sc-sans-font);
+                    font-size: var(--sc-skolar-font-size-xs);
                 }
                 
                 section {
