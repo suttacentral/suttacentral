@@ -82,17 +82,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this.loading = false;
   }
 
-  _addBlurbsClickEvent() {
-    this.shadowRoot.querySelectorAll('.blurb').forEach((element) => {
-      element.onclick = (e) => {
-        element.classList.contains('blurbShrink') ? element.classList.remove('blurbShrink') : element.classList.add('blurbShrink');
-      };
-    });
-  }
-
-  updated() {
-    this._addBlurbsClickEvent();
-  }
 
   get tipitakaCardTemplate() {
     return this.mainMenuData.length ? html`

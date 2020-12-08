@@ -27,10 +27,10 @@ export const navigationNormalModeStyles = html`
       position: relative;
       overflow: hidden;
 
-      margin-bottom:  var(--sc-size-md);
-      padding-bottom: 0.5rem;
+      margin-bottom:  0.6667rem;
+      padding-bottom: 0.6667rem;
 
-      transition: all 200ms ease-out;
+      transition: box-shadow 200ms ease-out;
 
       border-radius: var(--sc-size-sm);
       background-color: var(--sc-secondary-background-color);
@@ -58,11 +58,8 @@ export const navigationNormalModeStyles = html`
     }
 
     .card:hover {
-      z-index: 10;
-
       transition: all 200ms ease-out;
 
-      background-color: var(--sc-primary-color-light-transparent);
       box-shadow: var(--sc-shadow-elevation-2dp);
     }
 
@@ -113,6 +110,8 @@ export const navigationNormalModeStyles = html`
       display: flex;
 
       justify-content: space-between;
+
+      padding-bottom: .25rem;
     }
 
     .header-left {
@@ -190,11 +189,19 @@ export const navigationNormalModeStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
-    header .title:hover {
+.card > a{
+      text-decoration-color: transparent;
+    }
+
+.card > a:hover{
+
       cursor: pointer;
       text-decoration: underline;
 
       text-decoration-color: var(--sc-primary-color);
+
+      background-color: var(--sc-primary-color-light-transparent);
+      transition: all 200ms ease-out;
     }
 
     .shortcut {
