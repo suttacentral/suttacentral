@@ -281,7 +281,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._colorThemeChanged();
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
-    this._toggleContextToolbarExpand();
   }
 
   _onBtnLightThemeClick() {
@@ -500,10 +499,12 @@ class SCActionItems extends LitLocalized(LitElement) {
       this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnShowParallels').style.display = 'inherit';
       this._suttaMetaTextChanged();
+      this.shadowRoot.querySelector('#tools_menu').classList.add('contextToolbarExpand');
     } else {
       this.shadowRoot.querySelector('#btnTools').style.display = 'none';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
       this.shadowRoot.querySelector('#btnShowParallels').style.display = 'none';
+      this.shadowRoot.querySelector('#tools_menu').classList.remove('contextToolbarExpand');
     }
   }
 
@@ -517,13 +518,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         }
       }
     });
-  }
-
-  _toggleContextToolbarExpand() {
-    const toolsMenu = this.shadowRoot.querySelector('#tools_menu');
-    if (toolsMenu) {
-      this.displayToolButton ? toolsMenu.classList.add('contextToolbarExpand') : toolsMenu.classList.remove('contextToolbarExpand');
-    }
   }
 }
 
