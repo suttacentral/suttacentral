@@ -29,7 +29,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       .toolButtons {
         position: relative;
         box-sizing: border-box;
-        border-bottom: 4px solid rgba(0,0,0,0);
+        border-bottom: 4px solid transparent;
         height: 100%;
       }
 
