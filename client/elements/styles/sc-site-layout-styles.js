@@ -122,6 +122,8 @@ export const SCSiteLayoutStyles = css`
   .generalTitle {
     display: flex;
 
+    height: 60px;
+
     align-items: center;
 
     white-space: nowrap;
@@ -235,10 +237,10 @@ export const SCSiteLayoutStyles = css`
   }
 
   @media only screen and (max-width: 600px) {
-    .contextToolbarExpand  {
+    #context_toolbar.contextToolbarExpand  {
       flex-direction: column;
-      height: 108px !important;
-      justify-content: center !important;
+      justify-content: center;
+      height: 112px!important;
     }
   }
 `;

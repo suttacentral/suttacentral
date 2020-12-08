@@ -93,9 +93,10 @@ class SCActionItems extends LitLocalized(LitElement) {
       }
 
       @media only screen and (max-width: 600px) {
-        .contextToolbarExpand {
+        #tools_menu.contextToolbarExpand {
           width: 100%;
-          justify-content: space-around !important;
+          justify-content: space-around;
+          align-items: flex-end;
         }
 
         .toolButtons {
