@@ -1,38 +1,34 @@
 import {html, css} from 'lit-element';
 import '../../suttaplex/card/sc-suttaplex.js';
 import { suttaplexStyles } from '../../styles/sc-suttaplex-styles.js';
+import SCSuttaTopSheetCommon from "./sc-top-sheet-common";
 
-import { store } from '../../../redux-store';
-import { LitLocalized } from '../../addons/localization-mixin'
-
-class SCSuttaParallels extends LitLocalized(LitElement) {
+class SCSuttaParallels extends SCSuttaTopSheetCommon {
 
   static get styles() {
     return css`
-      :host
-{
-    position: absolute;
-    z-index: 1000;
+      :host {
+        position: absolute;
+        z-index: 1000;
 
-    display: none;
-    overflow-y: auto;;
+        display: none;
+        overflow-y: auto;;
 
-    width: 100%;
-    max-height: 80vh;
+        width: 100%;
+        max-height: 80vh;
 
-    color: var(--sc-primary-text-color);
-    border-bottom: 1px solid #ccc;
-    background-color: var(--sc-secondary-background-color);
-    box-shadow: var(--sc-shadow-elevation-4dp);
-}
+        color: var(--sc-primary-text-color);
+        border-bottom: 1px solid #ccc;
+        background-color: var(--sc-secondary-background-color);
+        box-shadow: var(--sc-shadow-elevation-4dp);
+      }
 
-.sutta-list
-{
-    max-width: 720px;
-    margin: var(--sc-size-xl) auto ;
+      .sutta-list {
+        max-width: 720px;
+        margin: var(--sc-size-xl) auto ;
 
-    transition: margin-top .3s, margin-bottom .3s;
-}
+        transition: margin-top .3s, margin-bottom .3s;
+      }
     `;
   }
 
