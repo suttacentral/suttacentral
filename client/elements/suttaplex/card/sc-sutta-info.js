@@ -1,7 +1,7 @@
 import {html, css, LitElement} from 'lit-element';
-import '../../suttaplex/card/sc-suttaplex.js';
 import {unsafeHTML} from "lit-html/directives/unsafe-html";
 import SCSuttaTopSheetCommon from './sc-top-sheet-common';
+import { typographyCommonStyles } from '../../styles/sc-typography-common-styles.js';
 
 class SCSuttaInfo extends SCSuttaTopSheetCommon {
 
@@ -14,38 +14,18 @@ class SCSuttaInfo extends SCSuttaTopSheetCommon {
     static get styles() {
         return [
             super.styles,
+            typographyCommonStyles,
             css`
-                * {
-                    color: rgb(33, 33, 33);
+                :host {
                     font-family: var(--sc-sans-font);
-                    -webkit-font-smoothing: antialiased;
-                    font-size: var(--sc-skolar-font-size-s);
-                    line-height: 20px;
                 }
                 
                 section {
                     margin: var(--sc-size-xl) auto;
-                    max-width: 60vw;
+                    padding: 0 3vw;
+                    max-width: 720px;
                 }
                 
-                h2 {
-                    font-family: var(--sc-sans-font);
-                    font-size: var(--sc-skolar-font-size-xl);
-                    font-weight: 400;
-                    line-height: 28px;
-                }
-                
-                p a {
-                    text-decoration-color: var(--sc-primary-color);
-                }
-                
-                p a:visited {
-                    text-decoration-color: var(--sc-primary-color-dark);
-                }
-                
-                p a:hover {
-                    color: var(--sc-primary-color);
-                }
             `];
     }
 

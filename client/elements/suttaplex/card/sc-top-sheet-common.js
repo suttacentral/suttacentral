@@ -12,10 +12,10 @@ export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
                 z-index: 1000;
             
                 display: none;
-                overflow-y: auto;;
+                overflow-y: auto;
             
                 width: 100%;
-                max-height: 80vw;
+                max-height: 80vh;
             
                 color: var(--sc-primary-text-color);
                 border-bottom: 1px solid #ccc;
