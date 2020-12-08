@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import {html, css} from 'lit-element';
 import '../../suttaplex/card/sc-suttaplex.js';
 import { suttaplexStyles } from '../../styles/sc-suttaplex-styles.js';
 
