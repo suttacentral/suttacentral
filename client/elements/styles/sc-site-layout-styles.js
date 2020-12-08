@@ -241,4 +241,12 @@ export const SCSiteLayoutStyles = css`
   sc-sutta-parallels {
     position: static;
   }
+
+  @media only screen and (max-width: 600px) {
+    .contextToolbarExpand  {
+      flex-direction: column;
+      height: 108px !important;
+      justify-content: center !important;
+    }
+  }
 `;
