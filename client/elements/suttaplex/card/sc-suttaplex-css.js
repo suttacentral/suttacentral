@@ -157,6 +157,10 @@ summary::-webkit-details-marker
     overflow: hidden;
   }
 
+  .nerdy-row-element + .nerdy-row-element{
+    margin-left: var(--sc-size-md-larger);
+  }
+
   .popuptext {
     overflow: visible;
     display: none;
@@ -164,10 +168,6 @@ summary::-webkit-details-marker
 
   .popuptext.show {
      display: unset;
-  }
-  
-  .nerdy-row-element {
-    margin-right: var(--sc-size-md-larger);
   }
 
     .nerdy-row-element:first-of-type {
