@@ -130,6 +130,7 @@ export const navigationNormalModeStyles = html`
 
     .subTitle {
       font-size: var(--sc-skolar-font-size-s);
+      font-weight: 800;
 
       overflow: hidden;
 

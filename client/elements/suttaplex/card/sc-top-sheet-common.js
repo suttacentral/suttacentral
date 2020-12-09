@@ -1,5 +1,4 @@
 import {LitElement, css} from 'lit-element';
-import '../../suttaplex/card/sc-suttaplex.js';
 import {LitLocalized} from '../../addons/localization-mixin'
 
 export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
@@ -22,8 +21,15 @@ export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
                 background-color: var(--sc-secondary-background-color);
                 box-shadow: var(--sc-shadow-elevation-4dp);
 
-                font-family: var(--sc-sans-font);
+                 --sc-suttaplex-shadow: var(--sc-shadow-elevation-0dp);
             }
+
+        section
+          {
+                max-width: 720px;
+                margin: var(--sc-size-xl) auto;
+                padding: 0 3vw;
+          }
     `;
     }
 

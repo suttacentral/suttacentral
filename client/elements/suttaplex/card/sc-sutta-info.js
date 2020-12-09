@@ -16,15 +16,10 @@ class SCSuttaInfo extends SCSuttaTopSheetCommon {
             super.styles,
             typographyCommonStyles,
             css`
-                :host {
-                    font-family: var(--sc-sans-font);
-                }
-                
-                section {
-                    margin: var(--sc-size-xl) auto;
-                    padding: 0 3vw;
-                    max-width: 720px;
-                }
+          :host
+            {
+                font-family: var(--sc-sans-font);
+            }
                 
             `];
     }
