@@ -9,10 +9,18 @@ class SCSuttaParallels extends SCSuttaTopSheetCommon {
     return [
             super.styles,
             css`
-      section {
-        max-width: 720px;
-        margin: var(--sc-size-xl) auto ;
-      }
+
+:host
+{
+    --sc-suttaplex-shadow: var(--sc-shadow-elevation-0dp);
+}
+
+section
+{
+    max-width: 720px;
+    margin: var(--sc-size-xl) auto;
+    padding: 0 3vw;
+}
 
     `];
   }

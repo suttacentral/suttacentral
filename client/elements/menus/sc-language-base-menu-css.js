@@ -21,7 +21,7 @@ export const languageBaseMenuCss = html`
       --paper-input-container-color: var(--sc-secondary-text-color);
 
     --paper-menu-button-dropdown: {
-      box-shadow: var(--sc-shadow-elevation-9dp);
+      box-shadow: var(--sc-shadow-elevation-12dp);
       width: 180px;
       background-color: var(--sc-secondary-background-color);
     };

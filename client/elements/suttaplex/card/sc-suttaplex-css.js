@@ -78,7 +78,7 @@ summary::-webkit-details-marker
     display: block;
     padding: var(--sc-size-sm) var(--sc-size-md);
     margin-bottom: 1px;
-    box-shadow: var(--sc-shadow-elevation-1dp);
+    box-shadow: var(--sc-suttaplex-shadow);
   }
 
     .suttaplex:not(.compact) {
@@ -446,7 +446,7 @@ export const parallelItemCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-    box-shadow: var(--sc-shadow-elevation-3dp);
+    box-shadow: var(--sc-shadow-elevation-4dp);
     border-top: var(--sc-border);
     position: absolute;
     z-index: 200;
