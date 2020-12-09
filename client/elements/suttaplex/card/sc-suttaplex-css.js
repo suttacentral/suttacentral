@@ -78,12 +78,12 @@ summary::-webkit-details-marker
     display: block;
     padding: var(--sc-size-sm) var(--sc-size-md);
     margin-bottom: 1px;
-    box-shadow: var(--sc-shadow-elevation-1dp);
+    box-shadow: var(--sc-suttaplex-shadow);
   }
 
     .suttaplex:not(.compact) {
     margin-bottom: var(--sc-size-md);
-    padding: var(--sc-size-md);
+    padding: var(--sc-suttaplex-padding);
     border-radius: var(--sc-size-sm);
   }
 
@@ -170,9 +170,8 @@ summary::-webkit-details-marker
     margin-right: var(--sc-size-md-larger);
   }
 
-  .nerdy-vol-page:before {
-    content: "📕";
-    margin-right: 4px;
+    .nerdy-row-element:first-of-type {
+    font-weight: 800
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
@@ -200,6 +199,7 @@ summary::-webkit-details-marker
 
   .blurb {
     margin: var(--sc-size-sm) 0;
+    line-height: 1.333
   }
 
   .primary-accent-icon {
@@ -446,7 +446,7 @@ export const parallelItemCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-    box-shadow: var(--sc-shadow-elevation-3dp);
+    box-shadow: var(--sc-shadow-elevation-4dp);
     border-top: var(--sc-border);
     position: absolute;
     z-index: 200;
