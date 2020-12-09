@@ -150,7 +150,7 @@ summary::-webkit-details-marker
   .suttaplex-nerdy-row {
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
-        font-weight: 800;
+        font-weight: 400;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -168,6 +168,10 @@ summary::-webkit-details-marker
   
   .nerdy-row-element {
     margin-right: var(--sc-size-md-larger);
+  }
+  
+    .nerdy-row-element:first-of-type {
+    font-weight: 800
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
