@@ -1,7 +1,7 @@
 import {LitElement, css} from 'lit-element';
-import {LitLocalized} from '../../addons/localization-mixin'
+import {LitLocalized} from './localization-mixin'
 
-export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
+export default class SCTopSheetCommon extends LitLocalized(LitElement) {
 
     static get styles() {
         return css`

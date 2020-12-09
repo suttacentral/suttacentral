@@ -144,6 +144,10 @@ export const navigationNormalModeStyles = html`
       letter-spacing: var(--sc-caps-letter-spacing);
     }
 
+    .acronym {
+      color: var(--sc-secondary-text-color);
+    }
+
     a {
       cursor: pointer;
       text-decoration: none;
@@ -194,12 +198,11 @@ export const navigationNormalModeStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
-.card > a{
+    .card > a {
       text-decoration-color: transparent;
     }
 
-.card > a:hover{
-
+    .card > a:hover {
       cursor: pointer;
 
       background-color: var(--sc-primary-color-light-transparent);
