@@ -166,7 +166,7 @@ export const navigationNormalModeStyles = html`
 
 .navigation-nerdy-row span + span
 {
-    margin-left: 3em;
+    margin-left: var(--sc-size-md-larger);
 }
 
 .subTitle
