@@ -138,6 +138,10 @@ export const navigationNormalModeStyles = html`
       text-overflow: ellipsis;
 
       color: var(--sc-secondary-text-color);
+
+      font-variant-caps: all-small-caps;
+
+      letter-spacing: var(--sc-caps-letter-spacing);
     }
 
     a {
@@ -197,12 +201,14 @@ export const navigationNormalModeStyles = html`
 .card > a:hover{
 
       cursor: pointer;
-      text-decoration: underline;
-
-      text-decoration-color: var(--sc-primary-color);
 
       background-color: var(--sc-primary-color-light-transparent);
       transition: all 200ms ease-out;
+    }
+
+    .card > a:hover .title{
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color);
     }
 
     .shortcut {

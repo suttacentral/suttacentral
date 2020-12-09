@@ -171,7 +171,10 @@ summary::-webkit-details-marker
   }
 
     .nerdy-row-element:first-of-type {
-    font-weight: 800
+    font-weight: 800;
+    font-variant-caps: all-small-caps;
+
+      letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
