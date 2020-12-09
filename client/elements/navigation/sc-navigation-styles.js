@@ -85,7 +85,7 @@ export const navigationNormalModeStyles = html`
     .blurb {
       font-size: var(--sc-skolar-font-size-md);
       font-weight: 400;
-      line-height: 24px;
+      line-height: 1.333;
       padding: .125rem 1rem 0rem;
       cursor: pointer;
     }

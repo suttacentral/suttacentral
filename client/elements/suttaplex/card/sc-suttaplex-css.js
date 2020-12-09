@@ -195,6 +195,7 @@ summary::-webkit-details-marker
 
   .blurb {
     margin: var(--sc-size-sm) 0;
+    line-height: 1.333
   }
 
   .primary-accent-icon {
