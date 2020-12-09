@@ -22,6 +22,8 @@ export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
                 box-shadow: var(--sc-shadow-elevation-4dp);
 
                  --sc-suttaplex-shadow: var(--sc-shadow-elevation-0dp);
+
+                 --sc-suttaplex-padding: 0;
             }
 
         section
@@ -30,6 +32,7 @@ export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
                 margin: var(--sc-size-xl) auto;
                 padding: 0 3vw;
           }
+
     `;
     }
 

@@ -83,7 +83,7 @@ summary::-webkit-details-marker
 
     .suttaplex:not(.compact) {
     margin-bottom: var(--sc-size-md);
-    padding: var(--sc-size-md);
+    padding: var(--sc-suttaplex-padding);
     border-radius: var(--sc-size-sm);
   }
 
@@ -169,7 +169,7 @@ summary::-webkit-details-marker
   .nerdy-row-element {
     margin-right: var(--sc-size-md-larger);
   }
-  
+
     .nerdy-row-element:first-of-type {
     font-weight: 800
   }

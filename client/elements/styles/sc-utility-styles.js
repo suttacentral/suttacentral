@@ -48,6 +48,8 @@ template.innerHTML = `
 --sc-shadow-elevation-24dp: 0px 11px 15px -7px var(--sc-umbra-opacity), 0px 24px 38px 3px var(--sc-penumbra-opacity), 0px 9px 46px 8px var(--sc-ambient-opacity);
 
 --sc-suttaplex-shadow: var(--sc-shadow-elevation-1dp);
+
+--sc-suttaplex-padding: var(--sc-size-md);
     }
   </style>
 </custom-style>`;

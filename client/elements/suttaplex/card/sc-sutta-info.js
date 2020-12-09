@@ -19,8 +19,12 @@ class SCSuttaInfo extends SCSuttaTopSheetCommon {
           :host
             {
                 font-family: var(--sc-sans-font);
+                line-height: 1.333
             }
-                
+                h2{
+                    font-family: var(--sc-serif-font);
+                    color: var(--sc-primary-text-color);
+                }
             `];
     }
 
