@@ -1,8 +1,8 @@
 import {html, css} from 'lit-element';
-import '../../suttaplex/card/sc-suttaplex.js';
-import SCSuttaTopSheetCommon from "./sc-top-sheet-common";
+import '../suttaplex/card/sc-suttaplex.js';
+import SCTopSheetCommon from "./sc-top-sheet-common";
 
-class SCSuttaParallels extends SCSuttaTopSheetCommon {
+class SCTopSheetParallels extends SCTopSheetCommon {
 
   static get styles() {
     return [
@@ -42,4 +42,4 @@ class SCSuttaParallels extends SCSuttaTopSheetCommon {
   }
 }
 
-customElements.define('sc-sutta-parallels', SCSuttaParallels);
+customElements.define('sc-top-sheet-parallels', SCTopSheetParallels);

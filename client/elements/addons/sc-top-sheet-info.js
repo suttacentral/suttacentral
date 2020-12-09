@@ -1,9 +1,10 @@
 import {html, css, LitElement} from 'lit-element';
+import '../suttaplex/card/sc-suttaplex.js';
 import {unsafeHTML} from "lit-html/directives/unsafe-html";
-import SCSuttaTopSheetCommon from './sc-top-sheet-common';
-import { typographyCommonStyles } from '../../styles/sc-typography-common-styles.js';
+import SCTopSheetCommon from './sc-top-sheet-common';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 
-class SCSuttaInfo extends SCSuttaTopSheetCommon {
+class SCTopSheetInfo extends SCTopSheetCommon {
 
     constructor() {
         super();
@@ -55,4 +56,4 @@ class SCSuttaInfo extends SCSuttaTopSheetCommon {
     }
 }
 
-customElements.define('sc-sutta-info', SCSuttaInfo);
+customElements.define('sc-top-sheet-info', SCTopSheetInfo);

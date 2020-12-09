@@ -10,9 +10,9 @@ import '../addons/sc-bouncing-loader';
 import '../addons/sc-toasts';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin'
+import { LitLocalized } from './localization-mixin'
 
-class SCTopSheet extends LitLocalized(LitElement) {
+class SCTopSheetViews extends LitLocalized(LitElement) {
   static get properties() {
     return {
       selectedTextView: { type: String },
@@ -225,7 +225,7 @@ class SCTopSheet extends LitLocalized(LitElement) {
         background-color: var(--sc-secondary-background-color);
         box-shadow: var(--sc-shadow-elevation-4dp);
       
-        grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
+        grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
       }
       
       .tools {
@@ -367,6 +367,28 @@ class SCTopSheet extends LitLocalized(LitElement) {
     this.selectedTextView = e.target.value;
     this.actions.chooseSegmentedSuttaTextView(this.selectedTextView);
     this._showToast(this.localizeEx('textViewEnabled', 'textView', this.localize(e.target.dataset.type)));
+  }
+
+  get noteDisplayTypeTemplate() {
+    return this.noteDisplayTypeArray.length ? html`
+      <div class="tools">
+        <details><summary>${this.localize('noteSummary')}</summary>
+        <p>${unsafeHTML(this.localize('noteDescription'))}</p></details>
+        <div class="form-controls">
+          ${this.noteDisplayTypeArray.map(({displayType, displayTypeLabel}) => html`
+            <mwc-formfield label="${this.localize(displayType)}">
+              <mwc-radio
+                name="noteDisplayType"
+                value="${displayType}"
+                data-type="${displayTypeLabel}"
+                ?checked="${this.selectedNoteDisplayType === displayType ? true : false}"
+                @change="${this._onNoteDisplayTypeChanged}">
+              </mwc-radio>
+            </mwc-formfield>
+          `)}
+        </div>
+      </div>
+    ` : '';
   }
 
   get paliLookupTemplate() {
@@ -613,4 +635,4 @@ class SCTopSheet extends LitLocalized(LitElement) {
   }
 }
 
-customElements.define('sc-top-sheet', SCTopSheet);
+customElements.define('sc-top-sheet-views', SCTopSheetViews);

@@ -24,9 +24,9 @@ import { icons } from '../img/sc-icons';
 import './sc-page-selector.js';
 import './menus/sc-settings-menu.js';
 import './menus/sc-action-items.js';
-import './addons/sc-top-sheet.js';
-import './suttaplex/card/sc-sutta-parallels';
-import './suttaplex/card/sc-sutta-info';
+import './addons/sc-top-sheet-views.js';
+import './addons/sc-top-sheet-parallels';
+import './addons/sc-top-sheet-info';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
 
@@ -64,9 +64,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           <sc-action-items id="action_items"></sc-action-items>
         </div>
 
-        <sc-top-sheet id="setting_menu"></sc-top-sheet>
-        <sc-sutta-parallels id="sutta_parallels"></sc-sutta-parallels>
-        <sc-sutta-info id="sutta-info"></sc-sutta-info>
+        <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
+        <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
+        <sc-top-sheet-info id="sutta-info"></sc-top-sheet-info>
 
         <div id="static_pages_nav_menu">
           <nav>
