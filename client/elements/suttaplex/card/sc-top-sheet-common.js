@@ -18,9 +18,11 @@ export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
                 max-height: 80vh;
             
                 color: var(--sc-primary-text-color);
-                border-bottom: 1px solid #ccc;
+                border-bottom: 1px solid var(--sc-border-color);
                 background-color: var(--sc-secondary-background-color);
                 box-shadow: var(--sc-shadow-elevation-4dp);
+
+                font-family: var(--sc-sans-font);
             }
     `;
     }
