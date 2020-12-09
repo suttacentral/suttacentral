@@ -1,8 +1,8 @@
 import {LitElement, css} from 'lit-element';
-import '../../suttaplex/card/sc-suttaplex.js';
-import {LitLocalized} from '../../addons/localization-mixin'
+import '../suttaplex/card/sc-suttaplex.js';
+import {LitLocalized} from './localization-mixin'
 
-export default class SCSuttaTopSheetCommon extends LitLocalized(LitElement) {
+export default class SCTopSheetCommon extends LitLocalized(LitElement) {
 
     static get styles() {
         return css`

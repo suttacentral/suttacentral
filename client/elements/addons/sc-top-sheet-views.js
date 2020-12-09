@@ -10,9 +10,9 @@ import '../addons/sc-bouncing-loader';
 import '../addons/sc-toasts';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin'
+import { LitLocalized } from './localization-mixin'
 
-class SCTopSheet extends LitLocalized(LitElement) {
+class SCTopSheetViews extends LitLocalized(LitElement) {
   static get properties() {
     return {
       selectedTextView: { type: String },
@@ -613,4 +613,4 @@ class SCTopSheet extends LitLocalized(LitElement) {
   }
 }
 
-customElements.define('sc-top-sheet', SCTopSheet);
+customElements.define('sc-top-sheet-views', SCTopSheetViews);
