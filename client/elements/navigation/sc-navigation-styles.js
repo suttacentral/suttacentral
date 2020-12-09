@@ -85,8 +85,8 @@ export const navigationNormalModeStyles = html`
     .blurb {
       font-size: var(--sc-skolar-font-size-md);
       font-weight: 400;
-      line-height: 24px;
-      padding: 0rem 1rem;
+      line-height: 1.333;
+      padding: .125rem 1rem 0rem;
       cursor: pointer;
     }
 
@@ -111,7 +111,7 @@ export const navigationNormalModeStyles = html`
 
       justify-content: space-between;
 
-      padding-bottom: .25rem;
+      padding-bottom: .125rem;
     }
 
     .header-left {
@@ -130,12 +130,17 @@ export const navigationNormalModeStyles = html`
 
     .subTitle {
       font-size: var(--sc-skolar-font-size-s);
+      font-weight: 800;
 
       overflow: hidden;
 
       white-space: nowrap;
       text-overflow: ellipsis;
 
+      color: var(--sc-secondary-text-color);
+    }
+
+    .acronym {
       color: var(--sc-secondary-text-color);
     }
 
@@ -189,12 +194,11 @@ export const navigationNormalModeStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
-.card > a{
+    .card > a {
       text-decoration-color: transparent;
     }
 
-.card > a:hover{
-
+    .card > a:hover {
       cursor: pointer;
       text-decoration: underline;
 

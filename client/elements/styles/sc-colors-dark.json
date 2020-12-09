@@ -19,7 +19,7 @@
   "--sc-tertiary-background-color": "rgb(113, 113, 113)",
   "--sc-paper-tooltip-color": "#000000",
   "--sc-paper-tooltip-text-color": "#212121",
-  "--sc-border-color": "rgba(0, 0, 0, 0.12)",
+  "--sc-border-color": "rgba(255, 255, 255, 0.12)",
   "--sc-textual-info-background-color": "#515151",
   "--sc-toast-error-color": "#f44336",
   "--sc-toast-success-color": "#43a047",

@@ -389,7 +389,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       ${this.pitakaData.children.map(child => html`
         <a href="${this._genPitakaURL(child)}" 
           @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.name, langIso: child.lang_iso, dispatchState: true})}>
-          <section class="card pitaka">
+          <section class="card">
             <header>
               <span class="header-left">
                 <span class="title" lang="${child.lang_iso}">
@@ -499,7 +499,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   get parallelsContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayParallels && this.parallelsData ? html`
       ${this.parallelsData.children.map(child => html`
-        <section class="card parallels">
+        <section class="card">
           <a href="${this._genCurrentURL(child.id)}" 
             @click=${() => this._onParallelsCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
@@ -661,15 +661,18 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggasContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
       ${this.vaggasData[0].children.map(child => html`
-        <section class="card vaggas">
+        <section class="card">
           <a href="${this._genCurrentURL(child.id)}" 
             @click=${() => this._onVaggasCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${child.name ? this.getPrefixedItemName(this.localize(child.name), child.display_num) : child.id} ${this.parallelName}
+                <span class="title">
+                  ${child.name ? this.localize(child.name) : child.id} ${this.parallelName}
                 </span>
-                <span class="subTitle">${child.name ? child.name : child.id}</span>
+                <div class="navigation-nerdy-row">
+                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="acronym">${this.navArray[this.currentNavPosition].title} ${child.display_num}</span>
+                </div>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -745,15 +748,18 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildren && this.vaggaChildren ? html`
       ${this.vaggaChildren && this.vaggaChildren.map(child => html`
-        <section class="card vaggaChildren">
+        <section class="card">
           <a href="${this._genCurrentURL(child.id)}" 
             @click=${() => this._onVaggaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${child.name ? this.getPrefixedItemName(this.localize(child.name), child.display_num) : child.id} ${this.parallelName}
+                <span class="title">
+                  ${child.name ? this.localize(child.name) : child.id} ${this.parallelName}
                 </span>
-                <span class="subTitle">${child.name ? child.name : child.id}</span>
+                <div class="navigation-nerdy-row">
+                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="acronym">${this.navArray[this.currentNavPosition].title} ${child.display_num}</span>
+                </div>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -822,15 +828,18 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren ? html`
       ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren[0].children.map(child => html`
-        <section class="card vaggaChildrenChildren">
+        <section class="card">
           <a href="${this._genCurrentURL(child.id)}"
             @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">
-                  ${this.getPrefixedItemName(this.localize(child.name), child.display_num)} ${this.parallelName}
+                <span class="title">
+                  ${this.localize(child.name)} ${this.parallelName}
                 </span>
-                <span class="subTitle">${child.name}</span>
+                <div class="navigation-nerdy-row">
+                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="acronym">${child.display_num}</span>
+                </div>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -902,12 +911,16 @@ class SCNavigation extends LitLocalized(LitElement) {
   get sakaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren ? html`
       ${this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren.map(child => html`
-        <a href="/${child.id}">
-          <section class="card sakaChildren" @click=${() => this._onSakaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
+        <section class="card">
+          <a href="/${child.id}"
+            @click=${() => this._onSakaChildrenCardClick({childId: child.id, childName: child.name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title" lang="en">${this.getPrefixedItemName(this.localize(child.name), child.display_num)} ${this.parallelName}</span>
-                <span class="subTitle">${child.name}</span>
+                <span class="title">${this.localize(child.name)} ${this.parallelName}</span>
+                <div class="navigation-nerdy-row">
+                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="acronym">${child.display_num}</span>
+                </div>
               </span>
               ${child.yellow_brick_road ? html`
                 <span class="header-right">
@@ -917,9 +930,9 @@ class SCNavigation extends LitLocalized(LitElement) {
                 </span>
               ` : ''}
             </header>
-            <div class="blurb blurbShrink" id="${child.id}_blurb"></div>
-          </section>
-        </a>
+          </a>
+          <div class="blurb blurbShrink" id="${child.id}_blurb"></div>
+        </section>
       `)}` : '';
   }
 
@@ -979,10 +992,6 @@ class SCNavigation extends LitLocalized(LitElement) {
       this.lastError = e;
     }
     this.loading = false;
-  }
-
-  getPrefixedItemName(name, num) {
-    return num ? `${num}. ${name}` : name;
   }
 }
 

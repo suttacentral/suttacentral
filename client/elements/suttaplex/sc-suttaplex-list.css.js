@@ -40,4 +40,5 @@ export const suttaplexListCss = html`<style>
     transform: translate(-50%, -50%);
     z-index: 999;
   }
+
 </style>`;

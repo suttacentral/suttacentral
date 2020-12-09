@@ -2,6 +2,7 @@ import {html, css, LitElement} from 'lit-element';
 import '../suttaplex/card/sc-suttaplex.js';
 import {unsafeHTML} from "lit-html/directives/unsafe-html";
 import SCTopSheetCommon from './sc-top-sheet-common';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 
 class SCTopSheetInfo extends SCTopSheetCommon {
 
@@ -14,37 +15,16 @@ class SCTopSheetInfo extends SCTopSheetCommon {
     static get styles() {
         return [
             super.styles,
+            typographyCommonStyles,
             css`
-                * {
-                    color: rgb(33, 33, 33);
-                    font-family: var(--sc-sans-font);
-                    -webkit-font-smoothing: antialiased;
-                    font-size: var(--sc-skolar-font-size-s);
-                    line-height: 20px;
-                }
-                
-                section {
-                    margin: var(--sc-size-xl) auto;
-                    max-width: 60vw;
-                }
-                
-                h2 {
-                    font-family: var(--sc-sans-font);
-                    font-size: var(--sc-skolar-font-size-xl);
-                    font-weight: 400;
-                    line-height: 28px;
-                }
-                
-                p a {
-                    text-decoration-color: var(--sc-primary-color);
-                }
-                
-                p a:visited {
-                    text-decoration-color: var(--sc-primary-color-dark);
-                }
-                
-                p a:hover {
-                    color: var(--sc-primary-color);
+          :host
+            {
+                font-family: var(--sc-sans-font);
+                line-height: 1.333
+            }
+                h2{
+                    font-family: var(--sc-serif-font);
+                    color: var(--sc-primary-text-color);
                 }
             `];
     }
@@ -70,9 +50,7 @@ class SCTopSheetInfo extends SCTopSheetCommon {
                 <h2>
                     ${this.localize('publicationDetails')}
                 </h2>
-                <p>
                     ${unsafeHTML(this.infoDialogMetaArea)}
-                </p>
             </section>
         `;
     }
