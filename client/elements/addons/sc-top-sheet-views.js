@@ -225,7 +225,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         background-color: var(--sc-secondary-background-color);
         box-shadow: var(--sc-shadow-elevation-4dp);
       
-        grid-template-columns: 240px 360px 240px 240px 240px 780px 360px;
+        grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
       }
       
       .tools {
@@ -367,6 +367,28 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.selectedTextView = e.target.value;
     this.actions.chooseSegmentedSuttaTextView(this.selectedTextView);
     this._showToast(this.localizeEx('textViewEnabled', 'textView', this.localize(e.target.dataset.type)));
+  }
+
+  get noteDisplayTypeTemplate() {
+    return this.noteDisplayTypeArray.length ? html`
+      <div class="tools">
+        <details><summary>${this.localize('noteSummary')}</summary>
+        <p>${unsafeHTML(this.localize('noteDescription'))}</p></details>
+        <div class="form-controls">
+          ${this.noteDisplayTypeArray.map(({displayType, displayTypeLabel}) => html`
+            <mwc-formfield label="${this.localize(displayType)}">
+              <mwc-radio
+                name="noteDisplayType"
+                value="${displayType}"
+                data-type="${displayTypeLabel}"
+                ?checked="${this.selectedNoteDisplayType === displayType ? true : false}"
+                @change="${this._onNoteDisplayTypeChanged}">
+              </mwc-radio>
+            </mwc-formfield>
+          `)}
+        </div>
+      </div>
+    ` : '';
   }
 
   get paliLookupTemplate() {
