@@ -45,9 +45,7 @@ class SCSuttaInfo extends SCSuttaTopSheetCommon {
                 <h2>
                     ${this.localize('publicationDetails')}
                 </h2>
-                <p>
                     ${unsafeHTML(this.infoDialogMetaArea)}
-                </p>
             </section>
         `;
     }
