@@ -6,8 +6,8 @@ class SCSuttaParallels extends SCSuttaTopSheetCommon {
 
   static get styles() {
     return [
-            super.styles
-            ];
+      super.styles
+    ];
   }
 
   static get properties() {
@@ -31,9 +31,13 @@ class SCSuttaParallels extends SCSuttaTopSheetCommon {
 
   render() {
     return html`
-    <section>
-          <sc-suttaplex .item=${this.suttaplexItem} .clearBorderRadius="${true}"></sc-suttaplex>
-    </section>
+      <section>
+        <sc-suttaplex 
+          .item=${this.suttaplexItem} 
+          .clearBorderRadius="${true}"
+          .suttaplexListStyle="${''}">
+        </sc-suttaplex>
+      </section>
     `;
   }
 }

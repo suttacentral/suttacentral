@@ -140,6 +140,10 @@ export const navigationNormalModeStyles = html`
       color: var(--sc-secondary-text-color);
     }
 
+    .acronym {
+      color: var(--sc-secondary-text-color);
+    }
+
     a {
       cursor: pointer;
       text-decoration: none;
@@ -190,12 +194,11 @@ export const navigationNormalModeStyles = html`
       text-decoration-color: var(--sc-primary-color);
     }
 
-.card > a{
+    .card > a {
       text-decoration-color: transparent;
     }
 
-.card > a:hover{
-
+    .card > a:hover {
       cursor: pointer;
       text-decoration: underline;
 
