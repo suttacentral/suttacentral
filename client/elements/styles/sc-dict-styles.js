@@ -9,7 +9,6 @@ export const dictStyles = html`
 
 dd
 {
-  font-family: var(--sc-sans-font);
   font-family: var(--sc-serif-font);
   font-size: var(--sc-skolar-font-size-md);
   font-weight: 400;
@@ -30,7 +29,6 @@ dd + dt
 
 dfn
 {
-  font-family: var(--sc-sans-font);
   font-family: var(--sc-serif-font);
   font-size: var(--sc-skolar-font-size-static-subtitle);
   font-weight: 400;
@@ -49,7 +47,6 @@ dfn
 
 .case
 {
-  font-family: var(--sc-sans-font);
   font-family: var(--sc-sans-font);
   font-size: var(--sc-skolar-font-size-s);
   font-weight: 400;

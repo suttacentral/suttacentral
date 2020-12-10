@@ -129,6 +129,14 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       });
     }
 
+    const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
+    if (moreVertButtonElement) {
+      moreVertButtonElement.addEventListener('click', () => {
+        const scActionItems = document.querySelector('sc-site-layout').shadowRoot.querySelector('#action_items');
+        scActionItems.hideTopSheets();
+      });
+    }
+
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement && this.searchKeyword.length !== 0) {
       searchInputElement.value = this.searchKeyword;
@@ -196,7 +204,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
   render() {
     return html`
       <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
-      
         <iron-a11y-keys
           target=${this.search_input}
           keys="enter"
@@ -243,7 +250,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
             <sc-more-menu id="more_menu"></sc-more-menu>
           </paper-listbox>
         </paper-menu-button>
-      
     `;
   }
 }

@@ -1,5 +1,9 @@
 {
   "en": {
+      "noteSummary": "Show notes and variants",
+      "noteDescription": "Where available, view comments on the translation and variant readings for root texts.",
+      "asterisk": "Tooltip on asterisk",
+      "sidenotes": "Show as sidenotes",
       "viewTextualInfo": "View textual information",
       "displaysInfo": "Displays information such as volume/page references, variant readings, etc.",
       "viewRoot": "View root text with translation",

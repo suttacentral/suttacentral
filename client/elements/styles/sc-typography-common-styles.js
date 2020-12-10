@@ -38,7 +38,9 @@ hr
 {
     width: 33%;
 
-    border: var(--sc-border);
+    border: 0;
+    height: 0;
+    border-bottom: 1px solid var(--sc-secondary-text-color);
 
     margin: 1.5em auto;
 }

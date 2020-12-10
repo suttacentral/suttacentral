@@ -82,32 +82,23 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this.loading = false;
   }
 
-  _addBlurbsClickEvent() {
-    this.shadowRoot.querySelectorAll('.blurb').forEach((element) => {
-      element.onclick = (e) => {
-        element.classList.contains('blurbShrink') ? element.classList.remove('blurbShrink') : element.classList.add('blurbShrink');
-      };
-    });
-  }
-
-  updated() {
-    this._addBlurbsClickEvent();
-  }
 
   get tipitakaCardTemplate() {
     return this.mainMenuData.length ? html`
       <div class="main-nav">
         ${this.mainMenuData.map((item) => html`
           <section class="card home-card">
-            <a href="/${item.uid}" @click=${() => this._onTipitakaCardClick(item.uid)}>
+            <a class="header-link" href="/${item.uid}" @click=${() => this._onTipitakaCardClick(item.uid)}>
               <header>
                 <span class="header-left">
                   <span class="title" lang="${this.language}">
                     ${this.localize(item.name.toLowerCase())}
                   </span>
+                  <div class="navigation-nerdy-row">
                   <span class="subTitle" lang="pli">
                     ${item.name}
                   </span>
+                  </div>
                 </span>
                 <span class="header-right">
                   <span class="number"></span>
@@ -117,14 +108,14 @@ class SCTipitaka extends LitLocalized(LitElement) {
               </header>
             </a>
             <div class='nav-card-content'>
-              <div class="blurb blurbShrink" id="${item.name}_blurb">
+              <div class="blurb" id="${item.name}_blurb">
                 ${this.tipitakaBlurb.get(item.name)}
               </div>
-              <div class="essay">
-                <a href="${this.tipitakaGuide.get(item.name)}">
-                  ${this.localize(`${item.name}_essayTitle`)}
-                </a>
-              </div>
+              <a class="essay-link" href="${this.tipitakaGuide.get(item.name)}">
+                <div class="essay">
+                  ${this.localize(`${item.name}_essayTitle`)}     
+                </div>
+              </a>
             </div>
           </section>
         `)}

@@ -417,7 +417,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _createMetaData(responseData, expansionReturns) {
-    if (!responseData || !responseData.translation || !responseData.root_text) {
+    if (!responseData || !responseData.translation) {
       return;
     }
     let description = this.localize('metaDescriptionText');
@@ -428,7 +428,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (title === '') {
       title = responseData.suttaplex.original_title;
     }
-    const author = responseData.translation ? responseData.translation.author : responseData.root_text.author;
+
+    const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
+    const author = responseData.translation ? responseData.translation.author : rootTextAuthor;
     const acronym = responseData.suttaplex.acronym ? responseData.suttaplex.acronym.split(/\/\//)[0] : this._transformId(responseData.suttaplex.uid, expansionReturns);
 
     document.dispatchEvent(new CustomEvent('metadata', {
