@@ -159,13 +159,4 @@ h6 .reference
 {
     display: none;
 }
-
-.pts:before
-{
-    content: 'pts';
-
-    font-variant-caps: all-small-caps;
-    font-feature-settings: 'ordn';
-}
-
 `
