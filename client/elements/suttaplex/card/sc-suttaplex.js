@@ -255,8 +255,9 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
         ${this.item.volpages && html`
           ${!this.item.biblio ? html`
-            <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
+            
             <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+            <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
               ${this.volPage}
             </span>
           ` : ''}
@@ -264,8 +265,9 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.item.biblio && html`
             <details class="suttaplex-details">
               <summary>
-                <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
+                
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+                <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
                   ${this.volPage}
                 </span>
               </summary>

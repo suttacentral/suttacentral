@@ -157,6 +157,10 @@ summary::-webkit-details-marker
     overflow: hidden;
   }
 
+  .nerdy-row-element + .nerdy-row-element{
+    margin-left: var(--sc-size-md-larger);
+  }
+
   .popuptext {
     overflow: visible;
     display: none;
@@ -165,13 +169,12 @@ summary::-webkit-details-marker
   .popuptext.show {
      display: unset;
   }
-  
-  .nerdy-row-element {
-    margin-right: var(--sc-size-md-larger);
-  }
 
     .nerdy-row-element:first-of-type {
-    font-weight: 800
+    font-weight: 800;
+    font-variant-caps: all-small-caps;
+
+      letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
