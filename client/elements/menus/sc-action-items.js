@@ -468,6 +468,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (changedProps.has('colorTheme')) {
       this._colorThemeChanged();
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
+      this._resetToolButtonsActiveClass();
     }
     if (changedProps.has('suttaplexListEnabled')) {
       this._viewModeChanged();
@@ -512,11 +513,17 @@ class SCActionItems extends LitLocalized(LitElement) {
   _setToolButtonsVisible(visible) {
     this.shadowRoot.querySelectorAll('.toolButtons').forEach((e) => {
       if (e.style.display !== 'none') {
-        if (visible) {
-          e.classList.remove('invisible');
-        } else {
-          e.classList.add('invisible');
-        }
+        visible ? e.classList.remove('invisible') : e.classList.add('invisible');
+      }
+    });
+  }
+
+  _resetToolButtonsActiveClass() {
+    this.shadowRoot.querySelectorAll('.toolButtons').forEach((e) => {
+      if (e.classList.contains('active-light') || e.classList.contains('active-dark')) {
+        e.classList.remove('active-light');
+        e.classList.remove('active-dark');
+        e.classList.add(this.activeClass);
       }
     });
   }
