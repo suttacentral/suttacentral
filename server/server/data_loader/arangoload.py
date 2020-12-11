@@ -101,10 +101,7 @@ def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
         extra_info_file - path to the file
     """
     info = json_load(extra_info_file)
-    data = {}
-    for item in info:
-        uid = item.get('uid')
-        data.update({uid: item})
+    data = {item['uid']: item for item in info}
     return data
 
 
