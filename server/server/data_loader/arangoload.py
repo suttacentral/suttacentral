@@ -87,7 +87,9 @@ def process_root_languages(language_file: Path) -> Dict[str, str]:
     languages: List[dict] = json_load(language_file)
     data = {}
     for language in languages:
-        data.update({uid: language['root_lang_iso'] for uid in language['contains']})
+        lang_iso = language['root_lang_iso']
+        if 'contains' in language:
+            data.update({uid: lang_iso for uid in language['contains']})
     return data
 
 
