@@ -103,10 +103,7 @@ def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
         extra_info_file - path to the file
     """
     info = json_load(extra_info_file)
-    data = {}
-    for item in info:
-        uid = item.get('uid')
-        data.update({uid: item})
+    data = {item['uid']: item for item in info}
     return data
 
 
@@ -229,10 +226,10 @@ def process_names_files(
                 'uid': uid,
                 '_key': uid,
                 'name': name,
-                'root_lang': root_languages.get(uid, ''),
-                'volpage': extra_info.get(uid, {}).get('volpage', ''),
-                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', ''),
-                'acronym': extra_info.get(uid, {}).get('acronym', '')
+                'root_lang': root_languages.get(uid, None),
+                'volpage': extra_info.get(uid, {}).get('volpage', None),
+                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', None),
+                'acronym': extra_info.get(uid, {}).get('acronym', None)
             }
 
             docs.append(entry)
