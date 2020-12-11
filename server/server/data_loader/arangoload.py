@@ -435,13 +435,11 @@ def load_child_range(db: Database, structure_dir: Path) -> None:
         structure_dir - path to the structure dir
     """
     child_range_content: Dict[str, str] = json_load(structure_dir / 'child_range.json')
-    data = []
-    for uid, nav_range in child_range_content.items():
-        data.append({
-            '_key': uid,
-            'uid': uid,
-            'range': nav_range,
-        })
+    data = [{
+        '_key': uid,
+        'uid': uid,
+        'range': nav_range
+    } for uid, nav_range in child_range_content.items()]
     db['child_range'].import_bulk(data, overwrite=True)
 
 
