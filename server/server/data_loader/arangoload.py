@@ -8,6 +8,8 @@ from collections import defaultdict
 from itertools import product
 from pathlib import Path
 from typing import Any, Set, List, Dict
+
+from arango.database import Database
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
@@ -426,6 +428,26 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         perform_update_queries(db)
 
 
+def load_child_range(db: Database, structure_dir: Path) -> None:
+    """
+    Load child range data from structure_dir/child_range.json file
+    Data are loaded into the child_range collection in ArangoDB
+
+    Args:
+        db - ArangoDB instance
+        structure_dir - path to the structure dir
+    """
+    child_range_content: Dict[str, str] = json_load(structure_dir / 'child_range.json')
+    data = []
+    for uid, nav_range in child_range_content.items():
+        data.append({
+            '_key': uid,
+            'uid': uid,
+            'range': nav_range,
+        })
+    db['child_range'].import_bulk(data, overwrite=True)
+
+
 def print_once(msg: Any, antispam: Set):
     """Print msg if it is not in antispam.
 
@@ -722,6 +744,9 @@ def run(no_pull=False):
 
     print_stage("Building and loading root structure from structure_dir")
     add_root_docs_and_edges(change_tracker, db, structure_dir)
+
+    print_stage("Loading child ranges from structure_dir")
+    load_child_range(db, structure_dir)
 
     print_stage("Loading localization")
     localized_languages.update_languages(
