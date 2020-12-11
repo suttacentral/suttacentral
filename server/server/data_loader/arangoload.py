@@ -83,14 +83,11 @@ def collect_data(repo_dir: Path, repo_addr: str):
             update_data(repo, repo_addr)
 
 
-def process_root_languages(structure_dir):
-    language_file = structure_dir / 'language.json'
-    languages = json_load(language_file)
+def process_root_languages(language_file: Path) -> Dict[str, str]:
+    languages: List[dict] = json_load(language_file)
     data = {}
-    for lang in languages:
-        uid = lang['uid']
-        if 'contains' in lang:
-            data.update({sutta_id: uid for sutta_id in lang['contains']})
+    for language in languages:
+        data.update({uid: language['root_lang_iso'] for uid in language['contains']})
     return data
 
 
@@ -104,7 +101,7 @@ def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
     info = json_load(extra_info_file)
     data = {}
     for item in info:
-        uid = item.get('uid').strip()
+        uid = item.get('uid')
         data.update({uid: item})
     return data
 
@@ -370,7 +367,7 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     super_tree_file = tree_dir / 'super-tree.json'
     tree_files.remove(super_tree_file)
 
-    root_languages = process_root_languages(structure_dir)
+    root_languages = process_root_languages(structure_dir / 'super_root_lang.json')
     super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
     text_extra_info = process_extra_info_file(structure_dir / 'text_extra_info.json')
 
