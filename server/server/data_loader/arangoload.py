@@ -224,10 +224,10 @@ def process_names_files(
                 'uid': uid,
                 '_key': uid,
                 'name': name,
-                'root_lang': root_languages.get(uid, ''),
-                'volpage': extra_info.get(uid, {}).get('volpage', ''),
-                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', ''),
-                'acronym': extra_info.get(uid, {}).get('acronym', '')
+                'root_lang': root_languages.get(uid, None),
+                'volpage': extra_info.get(uid, {}).get('volpage', None),
+                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', None),
+                'acronym': extra_info.get(uid, {}).get('acronym', None)
             }
 
             docs.append(entry)
