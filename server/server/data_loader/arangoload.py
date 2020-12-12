@@ -737,7 +737,7 @@ def run(no_pull=False):
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
 
-    print_stage("Building and loading root structure from structure_dir")
+    print_stage("Building and loading navigation from structure_dir")
     add_root_docs_and_edges(change_tracker, db, structure_dir)
 
     print_stage("Loading child ranges from structure_dir")
