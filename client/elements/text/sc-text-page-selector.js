@@ -176,7 +176,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           type: 'SET_NAVIGATION',
           navigationArray: navArray
         })
-      }
+      },
+      setCurrentNavPosition(position) {
+        store.dispatch({
+          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
+          currentNavPosition: position
+        })
+      },
     }
   }
 
@@ -190,9 +196,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     });
   }
   
-  _updateNav() {
-    const  navIndexesOfType = navIndex.get('sutta');
-    let navArray = store.getState().navigationArray;
+  async _updateNav() {
+    const navIndexesOfType = navIndex.get('sutta');
+    this.navArray = store.getState().navigationArray;
     let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
     if (!suttaTitle) {
       suttaTitle = this.responseData.suttaplex.translated_title || this.responseData.suttaplex.original_title;
@@ -204,16 +210,70 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         suttaTitle  = acronyms[0];
       }
     }
-    navArray[navIndexesOfType.index] = {
+    this.navArray[navIndexesOfType.index] = {
       title: suttaTitle,
       url: store.getState().currentRoute.path,
       type: navIndexesOfType.type,
       position: navIndexesOfType.position,
+      groupId: this.responseData.root_text.uid || this.responseData.translation.uid,
+      groupName: this.responseData.root_text.title || this.responseData.translation.title,
       navigationArrayLength: navIndexesOfType.navArrayLength
     };
-    this.actions.setNavigation(navArray);
+
+    await this._verifyNav();
+    this.actions.setNavigation(this.navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);
     this.actions.changeToolbarTitle(suttaTitle);
+  }
+
+  // This method checks whether the last item of the last navigation belongs to the penultimate item, 
+  // and if not, retains the first and last item of navigation data and deletes the rest.
+  async _verifyNav() {
+    const penultimateNavItem = this._getPenultimateNavItem();
+    if (penultimateNavItem.type && penultimateNavItem.type === 'home') { return; }
+    if (penultimateNavItem.groupId) {
+      const navData = await this._fetchNavData(penultimateNavItem.groupId);
+      if (!navData) { 
+        this._correctingNav();
+        return; 
+      }
+      let currentNavItemGroupId = this.navArray[this.navArray.length-1].groupId;
+      if (currentNavItemGroupId) {
+        const childData = navData[0].children.find(x => {
+          return x.id === currentNavItemGroupId
+        });
+        if (!childData) {
+          this._correctingNav();
+        }
+      }
+    }
+  }
+
+  _correctingNav() {
+    for (let i = this.navArray.length - 1; i >= 0; i--) {
+      if (i !== this.navArray.length - 1 && i !== 0) {
+        delete this.navArray[i];
+      }
+    }
+  }
+
+  _getPenultimateNavItem() {
+    for (let i = this.navArray.length - 1; i >= 0; i--) {
+      if (i !== this.navArray.length - 1 && this.navArray[i]) {
+        return this.navArray[i];
+      }
+    }
+  }
+
+  async _fetchNavData(childId) {
+    const lang = this.language ? this.language : 'en';
+    const url = `${API_ROOT}/menu/${childId}?language=${lang}`;
+    try {
+      const childrenData = await (await fetch(url)).json();
+      return childrenData;
+    } catch (e) {
+      return null;
+    }
   }
 
   updated(changedProps) {
