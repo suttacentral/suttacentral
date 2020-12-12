@@ -388,25 +388,25 @@ class SCNavigation extends LitLocalized(LitElement) {
     return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayPitaka && this.pitakaData ? html`
       ${this.pitakaData.children.map(child => html`
           <section class="card">
-              <a class="header-link" href="${this._genPitakaURL(child)}" 
-          @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.name, langIso: child.lang_iso, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title" lang="${child.lang_iso}">
-                  ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
-                </span>
-                <div class="navigation-nerdy-row">
-                <span class="subTitle">${child.name}</span>
-                </div>
-              </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated"><span class="number"></span> ${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-                    </a>
+            <a class="header-link" href="${this._genPitakaURL(child)}" 
+              @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.name, langIso: child.lang_iso, dispatchState: true})}>
+                <header>
+                  <span class="header-left">
+                    <span class="title" lang="${child.lang_iso}">
+                      ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))}
+                    </span>
+                    <div class="navigation-nerdy-row">
+                    <span class="subTitle" lang="${child.lang_iso}" translate="no">${child.name}</span>
+                    </div>
+                  </span>
+                  ${child.yellow_brick_road ? html`
+                    <span class="header-right">
+                      <mwc-icon>${icons['tick']}</mwc-icon>
+                      <span class="number-translated"><span class="number"></span> ${this.fullSiteLanguageName}</span>
+                    </span>
+                  ` : ''}
+                </header>
+              </a>
             <div class="blurb blurbShrink">
               ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.name))} 
                 in ${child.lang_name ? html`<span>${child.lang_name}</span>` : 'Pali and Chinese.'}.
@@ -510,7 +510,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ${this.localize(this.pitakaName)} ${this.localize(child.name)}
                 </span>
                 <div class="navigation-nerdy-row">
-                <span class="subTitle">${child.name}</span>
+                <span class="subTitle" lang="${child.lang_iso}" translate="no">${child.name}</span>
                 </div>
               </span>
               ${child.yellow_brick_road ? html`
@@ -676,7 +676,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ${child.name ? this.localize(child.name) : child.id} ${this.parallelName}
                 </span>
                 <div class="navigation-nerdy-row">
-                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="subTitle" lang="${child.lang_iso}" translate="no">${child.name ? child.name : child.id}</span>
                   <span class="acronym">${this.navArray[this.currentNavPosition].title} ${child.display_num}</span>
                 </div>
               </span>
@@ -763,7 +763,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ${child.name ? this.localize(child.name) : child.id} ${this.parallelName}
                 </span>
                 <div class="navigation-nerdy-row">
-                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="subTitle" lang="${child.lang_iso}" translate="no">${child.name ? child.name : child.id}</span>
                   <span class="acronym">${this.navArray[this.currentNavPosition].title} ${child.display_num}</span>
                 </div>
               </span>
@@ -843,7 +843,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ${this.localize(child.name)} ${this.parallelName}
                 </span>
                 <div class="navigation-nerdy-row">
-                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="subTitle" lang="${child.lang_iso}" translate="no">${child.name ? child.name : child.id}</span>
                   <span class="acronym">${child.display_num}</span>
                 </div>
               </span>
@@ -924,7 +924,7 @@ class SCNavigation extends LitLocalized(LitElement) {
               <span class="header-left">
                 <span class="title">${this.localize(child.name)} ${this.parallelName}</span>
                 <div class="navigation-nerdy-row">
-                  <span class="subTitle">${child.name ? child.name : child.id}</span>
+                  <span class="subTitle" lang="${child.lang_iso}" translate="no">${child.name ? child.name : child.id}</span>
                   <span class="acronym">${child.display_num}</span>
                 </div>
               </span>

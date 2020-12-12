@@ -653,6 +653,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let spanElement = document.createElement('span');
     spanElement.className = 'root';
     spanElement.lang = this.rootSutta.lang;
+    spanElement.setAttribute('translate', 'no');
     let textSpan = document.createElement('span');
     textSpan.className = 'text';
     spanElement.appendChild(textSpan);
