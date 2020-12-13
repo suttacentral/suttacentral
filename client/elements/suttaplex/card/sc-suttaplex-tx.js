@@ -35,8 +35,6 @@ class SCSuttaplexTx extends LitElement {
             ${this.translation.publication_date ? + this.translation.publication_date : ''}
           </span>
         </div>
-
-        <iron-icon class="arrow" icon="sc-iron-icons:chevron-right"></iron-icon>
       </a>`;
   }
 }
