@@ -31,8 +31,6 @@ template.innerHTML = `
       --sc-tertiary-background-color: rgb(244, 243, 242);
 
       /* Other colors */
-      --sc-paper-tooltip-color: rgb(98,97,96);
-      --sc-paper-tooltip-text-color: rgb(255, 255, 255);
       --sc-border-color: rgba(0, 0, 0, 0.12);
       --sc-textual-info-background-color: rgb(227,226,225);
       --sc-toast-error-color: #f44336;
