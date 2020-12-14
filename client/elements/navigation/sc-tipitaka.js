@@ -88,14 +88,14 @@ class SCTipitaka extends LitLocalized(LitElement) {
       <div class="main-nav">
         ${this.mainMenuData.map((item) => html`
           <section class="card home-card">
-            <a class="header-link" href="/${item.uid}" @click=${() => this._onTipitakaCardClick(item.uid)}>
+            <a class="header-link" title="${this.localize(item.name.toLowerCase())}" href="/${item.uid}" @click=${() => this._onTipitakaCardClick(item.uid)}>
               <header>
                 <span class="header-left">
                   <span class="title" lang="${this.language}">
                     ${this.localize(item.name.toLowerCase())}
                   </span>
                   <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="pli">
+                  <span class="subTitle" lang="pi">
                     ${item.name}
                   </span>
                   </div>

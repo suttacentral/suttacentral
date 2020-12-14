@@ -269,7 +269,7 @@ export const suttaplexTxCss = html`
   }
 
   .tx {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     flex-wrap: nowrap;
     cursor: pointer;
@@ -329,13 +329,6 @@ export const suttaplexTxCss = html`
     font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
-  }
-  
-  .arrow {
-    height: 32px;
-    width: 32px;
-    fill: white;
-    margin-left: auto;
   }
 
   morph-ripple {

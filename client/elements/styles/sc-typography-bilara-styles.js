@@ -46,6 +46,12 @@ article
     border-color: transparent;
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
+
+    letter-spacing: normal;
+
+    font-variant-caps: normal;
+
+    text-align: left;
 }
 .comment
 {
