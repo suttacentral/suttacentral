@@ -354,8 +354,9 @@ video
 
         <section class="video">
           <video width="640" height="360" controls preload="none" style="" poster="/img/home-page/video_overlay.jpg">
-            <source src="https://ia801504.us.archive.org/18/items/suttacentral_video/suttacentral_video.webm">
-            <source src="https://ia601504.us.archive.org/18/items/suttacentral_video/suttacentral_video.mp4">
+            <source src="https://ia601508.us.archive.org/20/items/sutta-central-promo-2020-en.av-1/SuttaCentral_Promo-2020_en.av1.mp4">
+            <source src="https://ia601508.us.archive.org/12/items/sutta-central-promo-2020-en-vp-9/SuttaCentral_Promo-2020_en_VP9.webm">
+            <source src="https://ia801504.us.archive.org/23/items/sutta-central-promo-2020-en-x-264/SuttaCentral_Promo-2020_en_x264.mp4">
           </video>
         </section>
 
