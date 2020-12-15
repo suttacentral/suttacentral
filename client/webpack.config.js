@@ -93,7 +93,10 @@ const prodConfig = {
       'node_modules/@webcomponents/**/*.js',
       'node_modules/viewerjs/dist/*.css',
       'node_modules/workbox-sw/build/*.js',
-    ])
+    ]),
+    new OptimizePlugin({
+      minify: true
+    })
   ]
 };
 
