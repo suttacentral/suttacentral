@@ -68,79 +68,161 @@ WITH @@collection /* With statement forces query optimizer to work */
 '''
 
 MENU = '''
-FOR div IN root
-    FILTER div.type == 'division'
-    LET parents = MERGE(
-        FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
+FOR navigation_doc IN super_nav_details
+    // Find any node parent using relations from edges collection
+    LET parent = (
+        FOR parent IN INBOUND navigation_doc super_nav_details_edges
+            LIMIT 1
+            RETURN parent
+    )[0]
+    // Take nodes without parents (root nodes)
+    FILTER parent == null
+    // Node children
+    LET descendants = (
+        FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
+            // Search any child for every descendant of the root entry
+            LET child = (
+                FOR child IN OUTBOUND descendant super_nav_details_edges 
+                    LIMIT 1
+                    RETURN child
+            )[0]
+            
+            // Search info about doc language from language collection
+            LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
+            // Сheck the type of document based on the presence of at least one child
+            LET node_type = child ? 'branch' : 'leaf'
+            LET child_range = DOCUMENT('child_range', descendant.uid)['range']
+            
+            // Trying to get 2 blurbs with english and  user-defined-language  translations
+            LET en_and_language_blurbs = (
+                FOR blurb IN blurbs
+                    FILTER blurb.uid == descendant.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                        LIMIT 2
+                        RETURN blurb
+            )
+            // Trying to get blurb with user-defined-language translation, take english if not exist
+            LET blurb = (
+                 RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+                     (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+                     en_and_language_blurbs[0]
+            )[0].blurb
+            
             RETURN {
-                [p.type]: {
-                    name: p.name,
-                    uid: p._id,
-                    num: p.num
-                }
+                uid: descendant.uid,
+                root_name: descendant.name,
+                translated_name: null,
+                acronym: descendant.acronym,
+                blurb: blurb,
+                node_type: node_type,
+                root_lang_iso: descendant.root_lang,
+                root_lang_name: lang_name,
+                child_range: child_range
             }
         )
-    LET descendant = (
-        FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
-            FILTER d_edge.type != 'text'
-            LIMIT 1
-            RETURN d.uid
-    )[0]
-    LET root_language = div.root_lang ? DOCUMENT(CONCAT('language/', div.root_lang))['name'] : ''
-    LET name = DOCUMENT(CONCAT('root_names/', div.uid, '_', @language))['name']
+        
+    LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
+    LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
+    
+    LET en_and_language_blurbs = (
+        FOR blurb IN blurbs
+            FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                LIMIT 2
+                RETURN blurb
+    )
+    LET blurb = (
+         RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+             en_and_language_blurbs[0]
+    )[0].blurb
+    
     RETURN {
-        uid: div._id, 
-        has_children: descendant != null,
-        name: name ? name : div.name,
-        lang_iso: div.root_lang,
-        lang_name: root_language,
-        num: div.num, 
-        id: div.uid, 
-        type: div.type, 
-        parents: parents,
-        display_num: div.display_num
+        uid: navigation_doc.uid,
+        root_name: navigation_doc.name,
+        translated_name: null,
+        blurb: blurb,
+        acronym: navigation_doc.acronym,
+        node_type: 'root',
+        root_lang_iso: navigation_doc.root_lang,
+        root_lang_name: lang_name,
+        child_range: child_range,
+        children: descendants
     }
 '''
 
 SUBMENU = '''
-LET div = DOCUMENT('root', @submenu_id)
+LET navigation_doc = DOCUMENT('super_nav_details', @submenu_id)
 
-LET descendents = (
-    FOR d, d_edge, d_path IN 1..100 OUTBOUND div `root_edges`
-        FILTER d_edge.type != 'text' OR LENGTH(d_path.vertices) <= 2
-        LET name = DOCUMENT(CONCAT('root_names/', d.uid, '_', @language))['name']
-        LET root_language = d.root_lang ? DOCUMENT(CONCAT('language/', d.root_lang))['name'] : ''
+LET parent = (
+    FOR parent IN INBOUND navigation_doc super_nav_details_edges
+        LIMIT 1
+        RETURN parent
+)[0]
+
+LET descendants = (
+    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
+        LET child = (
+            FOR child IN OUTBOUND descendant super_nav_details_edges 
+                LIMIT 1
+                RETURN child
+        )[0]
+        
+        LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
+        LET child_range = DOCUMENT('child_range', descendant.uid)['range']
+        LET node_type = child ? 'branch' : 'leaf'
+        
+        LET en_and_language_blurbs = (
+            FOR blurb IN blurbs
+                FILTER blurb.uid == descendant.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                    LIMIT 2
+                    RETURN blurb
+        )
+        LET blurb = (
+             RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+                 (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+                 en_and_language_blurbs[0]
+        )[0].blurb
+        
         RETURN {
-            from: d_edge._from,
-            name: name ? name : d.name,
-            uid: d._id,
-            num: d.num,
-            type: d.type,
-            id: d.uid,
-            lang_iso: (NOT div.root_lang AND LENGTH(d_path.edges) == 1) ? d.root_lang : null,
-            lang_name: root_language,
-            display_num: d.display_num
-    }
-)
-LET parents = MERGE(
-    FOR p, p_edge, p_path IN 1..1 INBOUND div `root_edges`
-        RETURN {
-            [p.type]: {
-                name: p.name,
-                uid: p._id,
-                num: p.num,
-                type: p.type
+            uid: descendant.uid,
+            root_name: descendant.name,
+            translated_name: null,
+            acronym: descendant.acronym,
+            blurb: blurb,
+            node_type: node_type,
+            root_lang_iso: descendant.root_lang,
+            root_lang_name: lang_name,
+            child_range: child_range
         }
-    }
+    )
+
+LET branch_or_leaf_type = descendants[0] ? 'branch' : 'leaf'
+LET node_type = parent ? branch_or_leaf_type : 'root'
+LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
+LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
+
+LET en_and_language_blurbs = (
+    FOR blurb IN blurbs
+        FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+            LIMIT 2
+            RETURN blurb
 )
+LET blurb = (
+     RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+         (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+         en_and_language_blurbs[0]
+)[0].blurb
 
 RETURN {
-    name: div.name,
-    num: div.num,
-    id: div.uid,
-    uid: div._id,
-    descendents: descendents,
-    parents: parents
+    uid: navigation_doc.uid,
+    root_name: navigation_doc.name,
+    translated_name: null,
+    node_type: node_type,
+    blurb: blurb,
+    acronym: navigation_doc.acronym,
+    root_lang_iso: navigation_doc.root_lang,
+    root_lang_name: lang_name,
+    child_range: child_range,
+    children: descendants
 }
 '''
 
@@ -761,7 +843,7 @@ AVAILABLE_TRANSLATIONS_LIST = '''
 // prune the number of documents that it does traversals for
 
 FOR doc IN v_text
-    SEARCH doc.lang == @lang
+    SEARCH doc.lang == @language
     COLLECT uid = doc.uid
     LET root_doc = DOCUMENT('root', uid)
     FILTER root_doc
@@ -773,23 +855,23 @@ FOR doc IN v_text
 // First collect all distinct text uids
 LET text_uids = (
     FOR doc IN v_text
-        SEARCH doc.lang == @lang
+        SEARCH doc.lang == @language
         RETURN DISTINCT doc.uid
 )
 
 // Now collect their distinct parent documents
 LET parents = (
     FOR uid IN text_uids
-        LET doc = DOCUMENT('root', uid)
+        LET doc = DOCUMENT('super_nav_details', uid)
         FILTER doc
-        FOR v, e, p IN 1..1 INBOUND doc `root_edges`
+        FOR v, e, p IN 1..1 INBOUND doc super_nav_details_edges
             RETURN DISTINCT v
 )
 
-// Now get the uids for those parents and all anscestors
+// Now get the uids for those parents and all ancestors
 LET parent_uids = (
     FOR doc IN parents
-        FOR v, e, p IN 0..10 INBOUND doc `root_edges`
+        FOR v, e, p IN 0..10 INBOUND doc super_nav_details_edges
             RETURN v.uid
 )
 

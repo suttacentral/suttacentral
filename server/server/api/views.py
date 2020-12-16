@@ -1,11 +1,10 @@
 import json
 import os
-import re
 import datetime
-from collections import defaultdict
+from typing import List, Tuple
 
 import stripe
-from flask import current_app, request, redirect
+from flask import current_app, request
 from flask_restful import Resource
 
 from sortedcontainers import SortedDict
@@ -46,7 +45,6 @@ from common.utils import (
     recursive_sort,
     sort_parallels_key,
     sort_parallels_type_key,
-    groupby_unsorted,
 )
 
 from data_loader.textfunctions import asciify_roman as asciify
@@ -207,25 +205,10 @@ class TranslationCountByLanguage(Resource):
         return response, 200
 
 
-def has_translated_descendent(uid, lang, _cache={}):
-    if lang not in _cache:
-        db = get_db()
-        uids = next(
-            db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'lang': lang})
-        )
-        _cache[lang] = set(uids)
-
-    lang_mapping = _cache[lang]
-    return uid in lang_mapping
-
-
 class Menu(Resource):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.num_regex = re.compile(r'^[^\d]*?([\d]+)$')
 
     @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
-    def get(self, submenu_id=None):
+    def get(self, submenu_id: str = None):
         """
         Send Menu structure
         ---
@@ -241,194 +224,80 @@ class Menu(Resource):
             MenuItem:
                 type: object
                 properties:
-                    name:
-                        type: string
-                    num:
-                        type: number
                     uid:
-                        required: false
                         type: string
-                    lang_iso:
+                    root_name:
                         type: string
-                    lang_name:
+                    translated_name:
                         type: string
-                    id:
-                        required: false
+                    node_type:
                         type: string
+                    blurb:
+                        type: string
+                    acronym:
+                        type: string
+                    root_lang_iso:
+                        type: string
+                    root_lang_name:
+                        type: string
+                    child_range:
+                        type: string
+                    yellow_brick_road:
+                        type: boolean
                     children:
                         type: array
                         items:
                             type: MenuItem
-                    has_children:
-                        required: false
-                        type: boolean
-                    type:
-                        type: string
         """
         language = request.args.get(
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         return self.get_data(submenu_id, language=language), 200
 
-    def get_data(
-        self,
-        submenu_id=None,
-        menu_query=MENU,
-        submenu_query=SUBMENU,
-        language=None,
-        bind_vars=None,
-    ):
+    def get_data(self, submenu_id: str = None, language: str = None) -> List[dict]:
         db = get_db()
 
-        if bind_vars is None:
-            bind_vars = {'language': language}
+        bind_vars = {'language': language}
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
-            divisions = list(db.aql.execute(submenu_query, bind_vars=bind_vars))
+            data = list(db.aql.execute(SUBMENU, bind_vars=bind_vars))
         else:
-            divisions = list(db.aql.execute(menu_query, bind_vars=bind_vars))
+            data = list(db.aql.execute(MENU, bind_vars=bind_vars))
 
-        if submenu_id:
-            data = divisions
-        else:
-            data = self.group_by_parents(divisions, ['pitaka'])
-
-        for pitaka in data:
-            if 'children' in pitaka:
-                children = pitaka.pop('children')
-                if pitaka['uid'] == 'pitaka/sutta':
-                    pitaka['children'] = self.group_by_parents(children, ['grouping'])
-                else:
-                    pitaka['children'] = self.group_by_parents(children, ['sect'])
-                    self.group_by_language(pitaka, exclude={'sect/other'})
-
-        self.recursive_cleanup(data, language=language, mapping={})
-        self.make_yellow_brick_road(data, language)
+        data, _ = self.make_yellow_brick_road(data, language)
         return data
 
-    @staticmethod
-    def num_sort_key(entry):
-        return entry.get('num') or -1
-
-    @staticmethod
-    def group_by_parent_property(entries, prop):
-        return (
-            (json.loads(key), list(group))
-            for key, group in groupby_unsorted(
-                entries, lambda d: json.dumps(d['parents'].get(prop), sort_keys=True)
-            )
-        )
-
-    def group_by_parents(self, entries, props):
-        out = []
-        prop = props[0]
-        remaining_props = props[1:]
-        for parent, children in self.group_by_parent_property(entries, prop):
-            if parent is None:
-                # This intentionally looks as bad as possible in the menu
-                # it's a "hey classify me!"
-                parent = {'uid': f'{prop}/none', 'name': f'None {prop}', 'num': 84000}
-            out.append(parent)
-            if remaining_props:
-                parent['children'] = self.group_by_parents(children, remaining_props)
-            else:
-                parent['children'] = children
-        return sorted(out, key=self.num_sort_key)
-
-    @classmethod
-    def group_by_language(cls, pitaka, exclude=None):
-        i = 0
-        while i < len(pitaka['children']):
-            child = pitaka['children'][i]
-            if exclude and child['uid'] in exclude:
-                i += 1
-                continue
-            new_data = defaultdict(list)
-            for sub_child in child['children']:
-                iso = sub_child.pop('lang_iso', None)
-                new_data[iso].append(sub_child)
-            child.pop('children')
-            new_data = [
-                {
-                    **child,
-                    **cls.get_additional_data_from_child(iso, children),
-                    'children': children,
-                }
-                for iso, children in new_data.items()
-            ]
-            for data_item in new_data:
-                for child in data_item['children']:
-                    try:
-                        del child['lang_name']
-                    except KeyError:
-                        pass
-            pitaka['children'] = (
-                pitaka['children'][:i] + new_data + pitaka['children'][i + 1 :]
-            )
-            i += len(new_data)
-
-    @staticmethod
-    def get_additional_data_from_child(iso, children):
-        data = {}
-        if iso:
-            data['lang_iso'] = iso
-        try:
-            data['lang_name'] = children[0]['lang_name']
-        except KeyError:
-            pass
-        return data
-
-    def update_display_num(self, menu_entry):
-        display_num = menu_entry.get('display_num')
-        if 'id' in menu_entry and display_num is None:
-            m = self.num_regex.match(menu_entry['id'])
-            if m:
-                entry_name = menu_entry.get('name', '')
-                if entry_name and m[1] not in entry_name:
-                    display_num = m[1]
-        if display_num:
-            menu_entry['display_num'] = display_num.replace('-', '–\u2060')
-
-    def recursive_cleanup(self, menu_entries, language, mapping):
-        menu_entries.sort(key=self.num_sort_key)
-        for menu_entry in menu_entries:
-            mapping[menu_entry['uid']] = menu_entry
-            self.update_display_num(menu_entry)
-            if 'descendents' in menu_entry:
-                descendents = menu_entry.pop('descendents')
-                mapping.update({d['uid']: d for d in descendents})
-                del menu_entry['uid']
-                for descendent in descendents:
-                    parent = mapping[descendent.pop('from')]
-                    if 'children' not in parent:
-                        parent['children'] = []
-                    parent['children'].append(descendent)
-            if 'type' in menu_entry:
-                if menu_entry['type'] in ('div', 'division'):
-                    del menu_entry['uid']
-            if 'parents' in menu_entry:
-                del menu_entry['parents']
-            if 'children' in menu_entry:
-                children = menu_entry['children']
-                self.recursive_cleanup(children, language=language, mapping=mapping)
-
-    def make_yellow_brick_road(self, menu_entries, language):
+    def make_yellow_brick_road(self, menu_entries: List[dict], language: str) -> Tuple[List[dict], bool]:
+        """
+        Adds the 'yellow_brick_road' field for menu items and their children.
+        The field becomes 'true' if any of the child documents has a translation in the specified language.
+        This is needed to mark items that have translations in the language specified by the user.
+        """
         is_submenu_yellow_brick_road = False
+        updated_entries = []
         for entry in menu_entries:
-            if 'uid' in entry:
-                uid = entry['uid'].split('/', 1)[1]
-            else:
-                uid = entry['id']
+            uid = entry['uid']
 
-            is_entry_yellow_brick = has_translated_descendent(uid, language)
+            is_entry_yellow_brick = self.has_translated_descendent(uid, language)
             if 'children' in entry:
-                is_entry_yellow_brick += self.make_yellow_brick_road(
+                children, is_child_yellow_brick = self.make_yellow_brick_road(
                     entry['children'], language
                 )
+                is_entry_yellow_brick += is_child_yellow_brick
+                entry['children'] = children
             entry['yellow_brick_road'] = bool(is_entry_yellow_brick)
             is_submenu_yellow_brick_road += is_entry_yellow_brick
-        return is_submenu_yellow_brick_road
+            updated_entries.append(entry)
+        return updated_entries, is_submenu_yellow_brick_road
+
+    @cache.memoize(timeout=long_cache_timeout)
+    def has_translated_descendent(self, uid: str, language: str) -> bool:
+        db = get_db()
+        uids = next(
+            db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'language': language})
+        )
+        return uid in set(uids)
 
 
 class SuttaplexList(Resource):
