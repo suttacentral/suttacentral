@@ -45,7 +45,7 @@ class SCStepper extends LitElement {
           font-size: var(--sc-skolar-font-size-md);
 
           opacity: .55;
-          color: var(--sc-paper-tooltip-text-color);
+          color: var(--sc-tertiary-text-color);
         }
 
         .text-title {
@@ -57,7 +57,7 @@ class SCStepper extends LitElement {
           white-space: nowrap;
           text-overflow: ellipsis;
 
-          color: var(--sc-paper-tooltip-text-color);
+          color: var(--sc-tertiary-text-color);
         }
 
         .link {
@@ -101,7 +101,7 @@ class SCStepper extends LitElement {
           margin-right: .5em;
           margin-left: .5em;
 
-          color: var(--sc-paper-tooltip-text-color);
+          fill: var(--sc-tertiary-text-color);
         }
 
         .separator {

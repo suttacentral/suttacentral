@@ -450,7 +450,7 @@ export const lineByLinePlusStyles = html`
     }
 
     blockquote .text {
-      margin-left: 2em;
+      margin-left: 2vw;
     }
 
     @media only screen and (max-width: 840px) {
