@@ -111,7 +111,7 @@ dd .abbr
 
   color: var(--sc-tertiary-text-color);
   border-radius: var(--sc-size-xxs);
-  background-color: var(--sc-paper-tooltip-color);
+  background-color: var(--sc-tertiary-text-color);
 }
 
 dd .inline-li
