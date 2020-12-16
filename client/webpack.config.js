@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const { BabelMultiTargetPlugin } = require('webpack-babel-multi-target-plugin');
+const OptimizePlugin = require('optimize-plugin');
 
 const OUTPUT_PATH = 'build';
 
@@ -93,7 +94,10 @@ const prodConfig = {
       'node_modules/@webcomponents/**/*.js',
       'node_modules/viewerjs/dist/*.css',
       'node_modules/workbox-sw/build/*.js',
-    ])
+    ]),
+    new OptimizePlugin({
+      minify: true
+    })
   ]
 };
 
