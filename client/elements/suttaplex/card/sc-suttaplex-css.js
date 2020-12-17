@@ -269,7 +269,7 @@ export const suttaplexTxCss = html`
   }
 
   .tx {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     flex-wrap: nowrap;
     cursor: pointer;
