@@ -238,7 +238,7 @@ dd ul
 }
 blockquote
 {
-    margin-left: 2em;
+    margin-left: 2vw;
 }
 
 /* links */

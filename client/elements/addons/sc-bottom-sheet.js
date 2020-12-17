@@ -160,7 +160,7 @@ export class SCBottomSheet extends LitElement {
         margin-left: calc((100vw - 960px) / 2);
         padding: 0 var(--sc-size-sm);
       
-        color: var(--sc-paper-tooltip-color);
+        color: var(--sc-tertiary-text-color);
         background-color: var(--sc-primary-color-light);
       }
       

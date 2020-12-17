@@ -9,8 +9,6 @@
     "extract-static-strings": "babel --plugins babel-plugin-macros elements/static-templates/ --out-dir elements/static"
   },
   "dependencies": {
-    "@alangdm/block-link": "0.1.1",
-    "@lion/tooltip": "0.8.11",
     "@material/mwc-base": "0.19.1",
     "@material/mwc-button": "0.19.1",
     "@material/mwc-checkbox": "0.19.1",

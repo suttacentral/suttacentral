@@ -28,7 +28,7 @@ class SCOfflinePage extends ReduxMixin(Localized(PolymerElement)) {
       }
 
       .button[disabled] {
-        background-color: var(--sc-paper-tooltip-color);
+        background-color: var(--sc-tertiary-text-color);
       }
 
       .icon {
