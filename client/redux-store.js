@@ -70,6 +70,10 @@ const initialState = {
   displayViewModeButton: true,
   displaySuttaParallels: false,
   displaySuttaInfo: false,
+  tableOfContents: {
+    items: [],
+    disableToCListStyle: false,
+  },
   alwaysShowUniversalToolbar: false,
   staticPagesToolbarDisplayState: {
     displayFirstToolbar: true,
@@ -88,97 +92,101 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CHANGE_ROUTE':
-      return Object.assign({}, state, { currentRoute: action.route });
+      return ({ ...state, currentRoute: action.route });
     case 'CHANGE_SITE_LANGUAGE':
-      return Object.assign({}, state, { siteLanguage: action.language, fullSiteLanguageName: action.fullName });
+      return ({ ...state, siteLanguage: action.language, fullSiteLanguageName: action.fullName });
     case 'CHANGE_TOOLBAR_TITLE':
-      return Object.assign({}, state,
-        { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
+      return ({ ...state,  toolbarOptions: ({...state.toolbarOptions, title: action.title }) });
     case 'SAVE_TOOLBAR_TITLE':
-      return Object.assign({}, state, { toolbarTitle: action.toolbarTitle });
+      return ({ ...state, toolbarTitle: action.toolbarTitle });
     case 'INITIATE_SEARCH':
-      return Object.assign({}, state, { searchParams: action.params });
+      return ({ ...state, searchParams: action.params });
     case 'CHANGE_SEARCH_QUERY':
-      return Object.assign({}, state, { searchQuery: action.searchKeyword });
+      return ({ ...state, searchQuery: action.searchKeyword });
     case 'DOWNLOAD_SUTTA_TEXT':
-      return Object.assign({}, state, { suttaText: action.text });
+      return ({ ...state, suttaText: action.text });
     case 'CHANGE_SUTTA_META_TEXT':
-      return Object.assign({}, state, { suttaMetaText: action.metaText });
+      return ({ ...state, suttaMetaText: action.metaText });
     case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { paragraphDescriptions: action.descriptions }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, paragraphDescriptions: action.descriptions }) });
     case 'TOGGLE_TEXTUAL_INFORMATION_ENABLED':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { paragraphsEnabled: action.enabled }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, paragraphsEnabled: action.enabled }) });
     case 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { segmentedSuttaTextView: action.view }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, segmentedSuttaTextView: action.view }) });
     case 'CHOOSE_PALI_TEXT_SCRIPT':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, script: action.script }) });
     case 'ACTIVATE_PALI_LOOKUP':
-      return Object.assign({}, state, {
-        textOptions: Object.assign({}, state.textOptions, {
+      return ({ ...state,
+        textOptions: ({
+          ...state.textOptions,
           paliLookupActivated: action.paliLookupActivated,
           paliLookupTargetLanguage: action.paliLookupTargetLanguage,
           paliLookupTargetDictRepr: action.paliLookupTargetDictRepr
         })
       });
     case 'ACTIVATE_CHINESE_LOOKUP':
-      return Object.assign({}, state, {
-        textOptions: Object.assign({}, state.textOptions, {
+      return ({ ...state,
+        textOptions: ({
+          ...state.textOptions,
           chineseLookupActivated: action.chineseLookupActivated,
           chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
           chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr
         })
       });
     case 'SELECT_NAVIGATION_MENU_ITEM':
-      return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
+      return ({ ...state, selectedNavigationMenuItemId: action.id });
     case 'CHANGE_COLOR_THEME':
-      return Object.assign({}, state, { colorTheme: action.theme });
+      return ({ ...state, colorTheme: action.theme });
     case 'CHANGE_DONATION_SUCCESS':
-      return Object.assign({}, state, { donationSuccessData: action.donationSuccessData });
+      return ({ ...state, donationSuccessData: action.donationSuccessData });
     case 'SAVE_DOWNLOADED_URLS':
-      return Object.assign({}, state, { downloadedUrls: action.downloadedUrls });
+      return ({ ...state, downloadedUrls: action.downloadedUrls });
     case 'SAVE_DOWNLOADED_PWA_SETTINGS':
-      return Object.assign({}, state, { downloadedPWASettings: action.downloadedPWASettings });
+      return ({ ...state, downloadedPWASettings: action.downloadedPWASettings });
     case 'SUTTPLEX_LIST_DISPLAY':
-      return Object.assign({}, state, { suttaplexListDisplay: action.suttaplexdisplay });
+      return ({ ...state, suttaplexListDisplay: action.suttaplexdisplay });
     case 'SET_ONLINE_STATUS':
-      return Object.assign({}, state, { isOnline: action.isOnline });
+      return ({ ...state, isOnline: action.isOnline });
     case 'SET_SHOWED_LANGUAGE_PROMPT':
-      return Object.assign({}, state, { showedLanguagePrompt: action.showedLanguagePrompt });
+      return ({ ...state, showedLanguagePrompt: action.showedLanguagePrompt });
     case 'SET_REFERENCE_DISPLAY_TYPE':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { referenceDisplayType: action.referenceDisplayType }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, referenceDisplayType: action.referenceDisplayType }) });
     case 'SET_NOTE_DISPLAY_TYPE':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { noteDisplayType: action.noteDisplayType }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, noteDisplayType: action.noteDisplayType }) });
     case 'SET_SHOW_HIGHLIGHTING':
-      return Object.assign({}, state,
-        { textOptions: Object.assign({}, state.textOptions, { showHighlighting: action.showHighlighting }) });
+      return ({ ...state,  textOptions: ({ ...state.textOptions, showHighlighting: action.showHighlighting }) });
     case 'SET_NAVIGATION':
-      return Object.assign({}, state, { navigationArray: action.navigationArray });
+      return ({ ...state, navigationArray: action.navigationArray });
     case 'CHANGE_DISPLAY_SETTING_MENU_STATE':
-      return Object.assign({}, state, { displaySettingMenu: action.displaySettingMenu });
+      return ({ ...state, displaySettingMenu: action.displaySettingMenu });
     case 'CHANGE_DISPLAY_TOOL_BUTTON_STATE':
-      return Object.assign({}, state, { displayToolButton: action.displayToolButton });
+      return ({ ...state, displayToolButton: action.displayToolButton });
     case 'CHANGE_DISPLAY_INFO_BUTTON_STATE':
-      return Object.assign({}, state, { displayInfoButton: action.displayInfoButton });
+      return ({ ...state, displayInfoButton: action.displayInfoButton });
+    case 'CHANGE_DISPLAY_TOC_BUTTON_STATE':
+      return {
+        ...state, 
+        tableOfContents: { 
+          items: action.payload.tableOfContents, 
+          disableToCListStyle: action.payload.disableToCListStyle 
+        }
+      };
     case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
-      return Object.assign({}, state, { displayViewModeButton: action.displayViewModeButton });
+      return ({ ...state, displayViewModeButton: action.displayViewModeButton });
     case 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE':
-      return Object.assign({}, state, { displaySuttaParallels: action.displaySuttaParallels });
+      return ({ ...state, displaySuttaParallels: action.displaySuttaParallels });
+    case 'CHANGE_DISPLAY_SUTTA_TOC_STATE':
+      return {...state, displaySuttaToC: action.displaySuttaToC };
     case 'CHANGE_DISPLAY_SUTTA_INFO_STATE':
-      return Object.assign({}, state, { displaySuttaInfo: action.displaySuttaInfo });
+      return ({ ...state, displaySuttaInfo: action.displaySuttaInfo });
     case 'CHANGE_CURRENT_NAV_POSITION_STATE':
-      return Object.assign({}, state, { currentNavPosition: action.currentNavPosition });
+      return ({ ...state, currentNavPosition: action.currentNavPosition });
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
-      return Object.assign({}, state, { staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState });
+      return ({ ...state, staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState });
     case 'UPDATE_BLURBS':
-      return Object.assign({}, state, { suttasBlurb: action.suttasBlurb });
+      return ({ ...state, suttasBlurb: action.suttasBlurb });
     case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
-      return Object.assign({}, state, { alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar });
+      return ({ ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar });
     default:
       return state;
   }
@@ -203,11 +211,17 @@ store.subscribe(() => {
 // Helper function
 function parsePersistedState(state) {
   const parsedState = JSON.parse(state);
-  // Reset some state variables:
-  parsedState.selectedNavigationMenuItemId = initialState.selectedNavigationMenuItemId;
-  parsedState.toolbarOptions = initialState.toolbarOptions;
-  parsedState.donationSuccessData = initialState.donationSuccessData;
-  return parsedState;
+  const {selectedNavigationMenuItemId, toolbarOptions, donationSuccessData, tableOfContents} = initialState;
+  
+  return {
+    ...initialState,
+    ...parsedState,
+   // Reset some state variables:
+   selectedNavigationMenuItemId, 
+   toolbarOptions, 
+   donationSuccessData, 
+   tableOfContents
+  };
 }
 
 export const ReduxMixin = PolymerRedux(store);
