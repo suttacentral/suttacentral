@@ -75,7 +75,7 @@ In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529`
 
 ### 1.4 Makefile
 There is a Makefile with following commands:
-* `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work.
+* `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work. And setup client git-hooks.
 * `run-dev` - Run containers in development mode.
 * `run-dev-no-logs` - Run containers in development mode without output to the console.
 * `run-prod` - Run containers in production mode.
