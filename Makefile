@@ -124,11 +124,5 @@ run-production-env:
 generate-env-variables:
 	@docker run -it --rm --name env_variable_setup -v $(shell pwd):/opt/ -w /opt python:3.7 python env_variables_setup.py
 
-generate-server-po-files:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
-
-load-server-po-files:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files"
-
 toggle-maintenance:
 	@docker exec -it sc-nginx bash -c "cd /opt/sc/static; if rm maintenance_on.html 2>/dev/null; then echo 'Maintenance Off'; else ln -s maintenance_off.html -T ./maintenance_on.html && echo 'Maintenance On'; fi"
