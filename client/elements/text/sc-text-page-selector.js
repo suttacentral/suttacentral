@@ -484,9 +484,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (responseData.suttaplex.blurb) {
       description = responseData.suttaplex.blurb;
     }
-    let title = responseData.translation ? responseData.translation.title : '';
-    if (title === '') {
-      title = responseData.suttaplex.original_title;
+    let title = responseData.suttaplex ? responseData.suttaplex.original_title : '';
+    if (!title) {
+      title = responseData.root_text ? responseData.root_text.title : responseData.translation.title;
     }
 
     const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
