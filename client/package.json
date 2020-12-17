@@ -81,7 +81,8 @@
     "turbolinks": "^5.2.0",
     "viewerjs": "^0.10.0",
     "web-animations-js": "^2.3.1",
-    "workbox-sw": "3.6.3"
+    "workbox-sw": "3.6.3",
+    "core-js": "3.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
