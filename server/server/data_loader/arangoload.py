@@ -705,7 +705,6 @@ def run(no_pull=False):
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
     misc_dir = data_dir / 'misc'
-    po_dir = data_dir / 'po_text'
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
@@ -750,9 +749,6 @@ def run(no_pull=False):
 
     print_stage('Loading Segmented Data')
     segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
-
-    print_stage("Loading po_text")
-    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage("Generating and loading relationships")
     generate_relationship_edges(

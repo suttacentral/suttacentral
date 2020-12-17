@@ -9,7 +9,7 @@
 4. `$ make prepare-host`
 5. `$ make run-production-env` -> Supply needed env variables, 
 if you chose random you will be prompted back with generated values.
-Remember them! You will use some of them to access admin services, eg. Pootle.
+Remember them! You will use some of them to access admin services.
 6. Done
 
 ## Or updating in individual steps
@@ -45,16 +45,6 @@ If no containers need to be rebuilt then this is all that needs to be run:
 6. `git checkout <po-branch>`
 
 Then run the commands for updating, probably including the `make delete-database` step.
-
-# Working with pootle
-  * In order to load data to pootle run `make load-to-pootle`.
-  * To load data from pootle to server/client run `make load-from-pootle`.
-  
-To access pootle in dev mode go to `pootle.localhost`,
-default credentials in dev mode are:
-* login: `admin`
-* password: `password`
-
 
 # Development
 ## 1. Server
@@ -105,11 +95,6 @@ There is a Makefile with following commands:
 * `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ElasticSearch.
 * `run-production-env` - Fully rebuild and run most recent production version. You will be prompted with questions regarding env variables.
 * `generate-env-vairables` - Runs env_variables_setup.py script and generate env variables for production version.
-* `generate-server-po-files` - Generates needed po files from database.
-* `load-server-po-files` - Loads data from po files to database.
-* `load-to-pootle` - Generate needed po files and loads them to the Pootle.
-* `load-from-pootle` - Load data from pootle to ArangoDB and client.
-
 
 ### 1.5 Working with ArangoDB
 Our project is using [ArangoDB](https://www.arangodb.com/) on the back-end. In the development mode it exposes port 8529 on the localhost.
@@ -172,11 +157,6 @@ class InitialMigration(Migration):
 #### Flask manage tasks
 1. `python manage.py migrate` - Run migrations.
 2. `python manage.py list_routes` - Lists all available routes/URLs.
-
-
-### 1.9 Pootle
-1. Load data from client and database to pootle - `make load-to-pootle`.
-2. Load data to client and database from pootle - `make load-from-pootle`.
 
 ### 1.10 Style guidelines
 * Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code.

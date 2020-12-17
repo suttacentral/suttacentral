@@ -74,23 +74,6 @@ def index_elasticsearch():
 
     update()
 
-
-@manager.command
-def generate_po_files():
-    from internationalization import generate_pootle
-
-    generate_pootle.run()
-
-
-@manager.option('-p', '--path', default=None)
-def load_po_files(path):
-    from internationalization import load_pootle
-
-    if path:
-        load_pootle.GENERATED_PO_FILES_DIR = Path(path)
-    load_pootle.run()
-
-
 @manager.command
 def calculate_download_sizes():
     from tools.calculate_download_size import run
