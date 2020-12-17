@@ -33,8 +33,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         height: 100%;
       }
 
-      #btnLightTheme:after,
-      #btnDarkTheme:after,
       #btnViewCompact:after,
       #btnViewComfy:after,
       #btnTools:after,
@@ -49,15 +47,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         width: 100%;
 
         text-align: center;
-      }
-      
-
-      #btnLightTheme:after {
-        content: 'colors';
-      }
-
-      #btnDarkTheme:after {
-        content: 'colors';
       }
 
       #btnViewCompact:after {
@@ -120,25 +109,6 @@ class SCActionItems extends LitLocalized(LitElement) {
         slot="actionItems" 
         ?hidden="${this.tableOfContents}">
         ${icons['toc']}
-      </mwc-icon-button>
-      <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnLightTheme" 
-        title="Light theme"  
-        @click="${this._onBtnLightThemeClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayLightThemeButton}">
-        ${icons['wb_sunny']}
-      </mwc-icon-button>
-
-      <mwc-icon-button
-        class="white-icon toolButtons" 
-        id="btnDarkTheme" 
-        title="Dark theme" 
-        @click="${this._onBtnDarkThemeClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayDarkThemeButton}">
-        ${icons['bedtime']}
       </mwc-icon-button>
 
       <mwc-icon-button 
@@ -206,8 +176,6 @@ class SCActionItems extends LitLocalized(LitElement) {
       tableOfContents: { type: Boolean },
       displayCompactButton: { type: Boolean},
       displayComfyButton: { type: Boolean},
-      displayLightThemeButton: { type: Boolean },
-      displayDarkThemeButton: { type: Boolean },
       displayViewModeButton: { type: Boolean},
       colorTheme: { type: String },
       suttaMetaText: { type: String },
@@ -274,12 +242,6 @@ class SCActionItems extends LitLocalized(LitElement) {
           suttaplexdisplay: view
         })
       },
-      changeAppTheme(theme) {
-        store.dispatch({
-          type: 'CHANGE_COLOR_THEME',
-          theme: theme
-        })
-      },
       changeDisplaySuttaParallelsState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
@@ -304,7 +266,6 @@ class SCActionItems extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._displayToolButtonStateChange();
-    this._colorThemeChanged();
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
     this._displayToCButtonStateChange();
@@ -315,14 +276,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._hideSuttaParallels();
     this._hideSettingMenu();
     this._hideSuttaToC();
-  }
-
-  _onBtnLightThemeClick() {
-    this.actions.changeAppTheme('light');
-  }
-
-  _onBtnDarkThemeClick() {
-    this.actions.changeAppTheme('dark');
   }
 
   _onBtnInfoClick() {
@@ -556,7 +509,6 @@ class SCActionItems extends LitLocalized(LitElement) {
       this._displayViewModeButtonStateChange();
     }
     if (changedProps.has('colorTheme')) {
-      this._colorThemeChanged();
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
       this._resetToolButtonsActiveClass();
     }
@@ -574,18 +526,6 @@ class SCActionItems extends LitLocalized(LitElement) {
   _suttaMetaTextChanged() {
     let displayStyle = this.suttaMetaText ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnInfo').style.display = displayStyle;
-  }
-
-  _colorThemeChanged() {
-    this.displayLightThemeButton = this.colorTheme === 'light' ? true : false;
-    this.displayDarkThemeButton = !this.displayLightThemeButton;
-    if (this.displayLightThemeButton) {
-      this.shadowRoot.querySelector('#btnLightTheme').style.display = 'none';
-      this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'inherit';
-    } else {
-      this.shadowRoot.querySelector('#btnLightTheme').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnDarkTheme').style.display = 'none';
-    }
   }
 
   _displayToCButtonStateChange(){
