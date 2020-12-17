@@ -27,6 +27,7 @@ import './menus/sc-action-items.js';
 import './addons/sc-top-sheet-views.js';
 import './addons/sc-top-sheet-parallels';
 import './addons/sc-top-sheet-info';
+import './addons/sc-top-sheet-toc';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
 
@@ -66,6 +67,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
         <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
         <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
+        <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
         <sc-top-sheet-info id="sutta-info"></sc-top-sheet-info>
 
         <div id="static_pages_nav_menu">
@@ -305,6 +307,14 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
     });
 
+    this.addEventListener('hide-sc-sutta-toc', e => {
+      this.shadowRoot.querySelector('#sutta_toc').hide();
+    });
+
+    this.addEventListener('show-sc-sutta-toc', e => {
+      this.shadowRoot.querySelector('#sutta_toc').show();
+    });
+
     this.addEventListener('show-sc-sutta-info', e => {
       this.shadowRoot.querySelector('#sutta-info').show();
     });
@@ -346,8 +356,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       }
       let displaySettingMenu = store.getState().displaySettingMenu;
       let displaySuttaParallels = store.getState().displaySuttaParallels;
+      let displaySuttaToC = store.getState().displaySuttaToC;
       const displaySuttaInfo = store.getState().displaySuttaInfo;
-      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels && !displaySuttaInfo) {
+      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels && !displaySuttaInfo && !displaySuttaToC) {
         let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScrollTop > lastScrollTop){
           const universalToolbarHeight = 156;

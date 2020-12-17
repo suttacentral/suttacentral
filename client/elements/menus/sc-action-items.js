@@ -39,7 +39,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       #btnViewComfy:after,
       #btnTools:after,
       #btnInfo:after,
-      #btnShowParallels:after {
+      #btnShowParallels:after, 
+      #btnShowToC:after {
         font-size: var(--sc-skolar-font-size-xxs);
 
         position: absolute;
@@ -49,6 +50,7 @@ class SCActionItems extends LitLocalized(LitElement) {
 
         text-align: center;
       }
+      
 
       #btnLightTheme:after {
         content: 'colors';
@@ -82,6 +84,10 @@ class SCActionItems extends LitLocalized(LitElement) {
         content: 'parallels';
       }
 
+      #btnShowToC:after {
+        content: 'toc';
+      }
+
       .active-light {
         font-weight: 800;
         border-bottom: 4px solid var(--sc-primary-color-light) !important;
@@ -106,6 +112,15 @@ class SCActionItems extends LitLocalized(LitElement) {
     </style>
 
     <div id="tools_menu">
+    <mwc-icon-button 
+        class="white-icon toolButtons" 
+        id="btnShowToC" 
+        title="View Table of Contents" 
+        @click="${this._onBtnShowToCClick}" 
+        slot="actionItems" 
+        ?hidden="${this.tableOfContents}">
+        ${icons['toc']}
+      </mwc-icon-button>
       <mwc-icon-button 
         class="white-icon toolButtons" 
         id="btnLightTheme" 
@@ -188,6 +203,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       displaySettingMenu: { type: Boolean },
       displayToolButton: { type: Boolean },
       displayInfoButton: { type: Boolean },
+      tableOfContents: { type: Boolean },
       displayCompactButton: { type: Boolean},
       displayComfyButton: { type: Boolean},
       displayLightThemeButton: { type: Boolean },
@@ -210,8 +226,10 @@ class SCActionItems extends LitLocalized(LitElement) {
     
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
+    this.actions.changeDisplaySuttaToCState(false);
     this.actions.changeDisplaySuttaInfoState(false);
 
+    this.tableOfContents = !!store.getState().tableOfContents.items.length;
     this.displaySettingMenu = store.getState().displaySettingMenu;
     this.displayToolButton = store.getState().displayToolButton;
     this.displayInfoButton = store.getState().displayInfoButton;
@@ -268,6 +286,13 @@ class SCActionItems extends LitLocalized(LitElement) {
           displaySuttaParallels: displayState
         })
       },
+      changeDisplaySuttaToCState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
+          displaySuttaToC: displayState
+        })
+      },
+
       changeDisplaySuttaInfoState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
@@ -282,6 +307,14 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._colorThemeChanged();
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
+    this._displayToCButtonStateChange();
+  }
+
+  hideItems() {
+    this._hideSuttaInfo();
+    this._hideSuttaParallels();
+    this._hideSettingMenu();
+    this._hideSuttaToC();
   }
 
   _onBtnLightThemeClick() {
@@ -295,7 +328,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnInfoClick() {
     this.displaySuttaInfo = store.getState().displaySuttaInfo;
     if (!this.displaySuttaInfo) {
-      const {displaySettingMenu, displaySuttaParallels} = store.getState();
+      const {displaySettingMenu, displaySuttaParallels, displaySuttaToC} = store.getState();
       if (displaySettingMenu) {
         this.actions.changeDisplaySettingMenuState(false);
         this._hideSettingMenu();
@@ -303,6 +336,10 @@ class SCActionItems extends LitLocalized(LitElement) {
       if (displaySuttaParallels) {
         this.actions.changeDisplaySuttaParallelsState(false);
         this._hideSuttaParallels();
+      }
+      if (displaySuttaToC) { 
+        this.actions.changeDisplaySuttaToCState(false);
+        this._hideSuttaToC();
       }
       this.actions.changeDisplaySuttaInfoState(true);
       this._showSuttaInfo();
@@ -353,7 +390,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnToolsClick(e) {
     this.displaySettingMenu = store.getState().displaySettingMenu;
     if (!this.displaySettingMenu) {
-      const {displaySuttaParallels, displaySuttaInfo} = store.getState();
+      const {displaySuttaParallels, displaySuttaInfo, displaySuttaToC} = store.getState();
       if (displaySuttaParallels) {
         this.actions.changeDisplaySuttaParallelsState(false);
         this._hideSuttaParallels();
@@ -361,6 +398,10 @@ class SCActionItems extends LitLocalized(LitElement) {
       if (displaySuttaInfo) {
         this.actions.changeDisplaySuttaInfoState(false);
         this._hideSuttaInfo();
+      }
+      if (displaySuttaToC) {
+        this.actions.changeDisplaySuttaToCState(false);
+        this._hideSuttaToC();
       }
       this.actions.changeDisplaySettingMenuState(true);
       this._showSettingMenu();
@@ -394,6 +435,14 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnShowParallels').classList.remove(this.activeClass);
   }
 
+  _hideSuttaToC() {
+    this.dispatchEvent(new CustomEvent('hide-sc-sutta-toc', {
+      bubbles: true,
+      composed: true
+    }));
+    this.shadowRoot.querySelector('#btnShowToC').classList.remove(this.activeClass);
+  }
+
   _hideSuttaInfo() {
     this.dispatchEvent(new CustomEvent('hide-sc-sutta-info', {
       bubbles: true,
@@ -410,10 +459,19 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnShowParallels').classList.add(this.activeClass);
   }
 
+  _showSuttaToC() {
+    this.dispatchEvent(new CustomEvent('show-sc-sutta-toc', {
+      bubbles: true,
+      composed: true
+    }));
+    this.shadowRoot.querySelector('#btnShowToC').classList.add(this.activeClass);
+  }
+
+
   _onBtnShowParallelsClick() {
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
-      const {displaySettingMenu, displaySuttaInfo} = store.getState();
+      const {displaySettingMenu, displaySuttaInfo, displaySuttaToC} = store.getState();
       if (displaySettingMenu) {
         this.actions.changeDisplaySettingMenuState(false);
         this._hideSettingMenu();
@@ -421,6 +479,10 @@ class SCActionItems extends LitLocalized(LitElement) {
       if (displaySuttaInfo) {
         this.actions.changeDisplaySuttaInfoState(false);
         this._hideSuttaInfo();
+      }
+      if (displaySuttaToC) {
+        this.actions.changeDisplaySuttaToCState(false);
+        this._hideSuttaToC();
       }
       this.actions.changeDisplaySuttaParallelsState(true);
       this._showSuttaParallels();
@@ -430,10 +492,35 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
+  _onBtnShowToCClick() {
+    this.displaySuttaToC = store.getState().displaySuttaToC;
+    if (!this.displaySuttaToC) {
+      const {displaySettingMenu, displaySuttaInfo, displaySuttaParallels} = store.getState();
+      if (displaySettingMenu) {
+        this.actions.changeDisplaySettingMenuState(false);
+        this._hideSettingMenu();
+      }
+      if (displaySuttaInfo) {
+        this.actions.changeDisplaySuttaInfoState(false);
+        this._hideSuttaInfo();
+      }
+      if (displaySuttaParallels) {
+        this.actions.changeDisplaySuttaParallelsState(false);
+        this._hideSuttaParallels();
+      }
+      this.actions.changeDisplaySuttaToCState(true);
+      this._showSuttaToC();
+    } else {
+      this.actions.changeDisplaySuttaToCState(false);
+      this._hideSuttaToC();
+    }
+  }
+
   hideTopSheets() {
     this._hideSettingMenu();
     this._hideSuttaInfo();
     this._hideSuttaParallels();
+    this._hideSuttaToC();
   }
 
   _stateChanged(state) {
@@ -456,6 +543,9 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (this.suttaplexListEnabled !== state.suttaplexListDisplay) {
       this.suttaplexListEnabled = state.suttaplexListDisplay
     }
+    if(this.tableOfContents !== !!state.tableOfContents.items.length) {
+      this.tableOfContents = !!state.tableOfContents.items.length
+    }
   }
 
   updated(changedProps) {
@@ -476,6 +566,9 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (changedProps.has('suttaMetaText')) {
     this._suttaMetaTextChanged();
     }
+    if (changedProps.has('tableOfContents')){
+      this._displayToCButtonStateChange();
+    }
   }
 
   _suttaMetaTextChanged() {
@@ -495,17 +588,25 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
+  _displayToCButtonStateChange(){
+    if (this.tableOfContents)
+      this.shadowRoot.querySelector('#btnShowToC').style.display = "inherit";
+    else this.shadowRoot.querySelector('#btnShowToC').style.display = "none";
+  }
+
   _displayToolButtonStateChange() {
     if (this.displayToolButton) {
       this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnShowParallels').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnShowToC').style.display = 'inherit';
       this._suttaMetaTextChanged();
       this.shadowRoot.querySelector('#tools_menu').classList.add('contextToolbarExpand');
     } else {
       this.shadowRoot.querySelector('#btnTools').style.display = 'none';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
       this.shadowRoot.querySelector('#btnShowParallels').style.display = 'none';
+      this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
       this.shadowRoot.querySelector('#tools_menu').classList.remove('contextToolbarExpand');
     }
   }
