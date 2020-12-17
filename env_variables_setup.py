@@ -6,8 +6,7 @@ from pathlib import Path
 from typing import Dict
 
 BASE_PATH = Path(os.path.dirname(os.path.abspath(__file__)))
-FILES = [('server/env/.prod.base.env', 'server/env/.prod.env'),
-         ('pootle/environment_prod.base.yml', 'pootle/environment_prod.yml')]
+FILES = [('server/env/.prod.base.env', 'server/env/.prod.env')]
 GENERATED_LEN = 30
 RANDOM_WORDS_NUMBER = 3
 
