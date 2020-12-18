@@ -215,8 +215,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       url: store.getState().currentRoute.path,
       type: navIndexesOfType.type,
       position: navIndexesOfType.position,
-      groupId: this.responseData.root_text.uid || this.responseData.translation.uid,
-      groupName: this.responseData.root_text.title || this.responseData.translation.title,
+      groupId: this.responseData.root_text ? this.responseData.root_text.uid : this.responseData.translation.uid,
+      groupName:  this.responseData.root_text ? this.responseData.root_text.title : this.responseData.translation.title,
       navigationArrayLength: navIndexesOfType.navArrayLength
     };
 
@@ -458,11 +458,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldHideSimpleText() {
-    return (this.isSegmentedText || this.isLoading);
+    return this.isSegmentedText === undefined || (this.isSegmentedText || this.isLoading);
   }
 
   _shouldHideSegmentedText() {
-    return (!this.isSegmentedText || this.isLoading);
+    return this.isSegmentedText === undefined || (!this.isSegmentedText || this.isLoading);
   }
 
   _shouldDisplayStepper() {
@@ -484,9 +484,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (responseData.suttaplex.blurb) {
       description = responseData.suttaplex.blurb;
     }
-    let title = responseData.translation ? responseData.translation.title : '';
-    if (title === '') {
-      title = responseData.suttaplex.original_title;
+    let title = responseData.suttaplex ? responseData.suttaplex.original_title : '';
+    if (!title) {
+      title = responseData.root_text ? responseData.root_text.title : responseData.translation.title;
     }
 
     const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';

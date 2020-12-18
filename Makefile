@@ -9,6 +9,9 @@ prepare-host:
 	sudo sysctl -w vm.max_map_count=262144
 	sudo bash -c 'echo "vm.max_map_count=262144" >> /etc/sysctl.conf'
 	@echo "\033[1;32mSuccess!"
+	@echo "Setting up client/ git-hook"
+	@cd client && npm install
+	@echo "\033[1;32mSuccess!"
 
 create-network:
 	-@docker network create nginx-proxy

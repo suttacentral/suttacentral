@@ -3,7 +3,6 @@ import '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import '@polymer/iron-icon/iron-icon.js';
 
-import '../addons/sc-nav-contents';
 import { SCTextPage } from "./sc-text-page.js";
 import { textParagraphNumStyles } from '../styles/sc-text-paragraph-num-styles.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
