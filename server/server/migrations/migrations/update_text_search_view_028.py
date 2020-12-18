@@ -3,23 +3,16 @@ from migrations.base import Migration
 
 
 class SecondMigration(Migration):
-    migration_id = 'add_text_search_view_025'
-    tasks = ['create_view']
+    migration_id = 'update_text_search_view_028'
+    tasks = ['update_view']
 
-    def create_view(self):
+    def update_view(self):
         db = get_db()
-        db.create_view(
+        db.replace_view(
             'v_text',
-            view_type='arangosearch',
             properties={
                 'links': {
                     'html_text': {
-                        'fields': {
-                            'uid': {'analyzers': ['identity']},
-                            'lang': {'analyzers': ['identity']},
-                        }
-                    },
-                    'po_strings': {
                         'fields': {
                             'uid': {'analyzers': ['identity']},
                             'lang': {'analyzers': ['identity']},
