@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const { BabelMultiTargetPlugin } = require('webpack-babel-multi-target-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const OUTPUT_PATH = 'build';
 
@@ -50,6 +51,14 @@ const devConfig = {
     historyApiFallback: {
       disableDotRule: true,
     }
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: "all",
+      }),
+    ],
   }
 };
 
