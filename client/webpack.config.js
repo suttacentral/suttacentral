@@ -51,14 +51,6 @@ const devConfig = {
     historyApiFallback: {
       disableDotRule: true,
     }
-  },
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        extractComments: "all",
-      }),
-    ],
   }
 };
 
@@ -74,6 +66,14 @@ const prodConfig = {
         ]
       }
     ]
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: "all",
+      }),
+    ],
   },
   plugins: [
     new BabelMultiTargetPlugin({
