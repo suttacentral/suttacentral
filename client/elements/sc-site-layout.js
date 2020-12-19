@@ -1,28 +1,19 @@
 import { LitElement, html, css } from 'lit-element';
 import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 
-import '@polymer/iron-media-query/iron-media-query.js';
-import '@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
 import '@polymer/paper-styles/color.js';
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/typography.js';
 import '@polymer/paper-styles/shadow.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/neon-animation/animations/fade-in-animation.js';
-import '@polymer/neon-animation/animations/fade-out-animation.js';
-import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '@material/mwc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
-import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock/lib/bodyScrollLock.es6';
 setPassiveTouchGestures(true);
 
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
-import { icons } from '../img/sc-icons';
 
 import './sc-page-selector.js';
-import './menus/sc-settings-menu.js';
 import './menus/sc-action-items.js';
 import './addons/sc-top-sheet-views.js';
 import './addons/sc-top-sheet-parallels';
