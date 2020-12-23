@@ -1,5 +1,3 @@
-import '@polymer/iron-ajax/iron-ajax.js';
-import '@polymer/iron-icon/iron-icon.js';
 import { html, LitElement } from 'lit-element';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
@@ -61,7 +59,7 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
 
   languageTemplate(language) {
     return html`
-      <mwc-list-item id="${language.uid}" @click="${this._selectedLanguageNumChanged} ">${language.name}</mwc-list-item>`;
+      <mwc-list-item id="${language.uid}" @click="${this._selectedLanguageNumChanged} " class="language-name">${language.name}</mwc-list-item>`;
   }
 
   _selectedLanguageNumChanged(event) {
@@ -114,7 +112,7 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
       ${languageBaseMenuCss}
       <mwc-list-item @click="${this._showMoreMenu}">
         <div style="display: inline-flex; align-items: center">
-          <mwc-icon style="padding: 8px 8px 4px 0">${icons['arrow_left']}</mwc-icon>
+          <mwc-icon style="padding: 8px 8px 4px 0; fill: var(--sc-disabled-text-color)">${icons['arrow_left']}</mwc-icon>
             Choose your language
         </div>
       </mwc-list-item>

@@ -16,9 +16,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     static get styles() {
         return css`
           :host {
-            --mdc-theme-secondary: var(--sc-primary-accent-color);
-            --mdc-typography-font-family: var(--sc-sans-font);
-            --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+            font-family: var(--sc-sans-font);
           }
 
           .more-menu-link {
