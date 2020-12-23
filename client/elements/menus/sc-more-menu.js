@@ -45,10 +45,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
             content: "   ";
           }
 
-          .pwa-icon {
-            fill: var(--sc-primary-color);
-          }
-
           .separator {
             background-color: var(--sc-border-color);
             width: 100%;
@@ -56,10 +52,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
             height: 1px;
             margin-top: var(--sc-size-xxs);
             margin-bottom: var(--sc-size-xxs);
-          }
-
-          morph-ripple {
-            --ripple-color: var(--sc-primary-color);
           }
 
           mwc-switch {
@@ -95,6 +87,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
             display: inline-flex;
             align-items: center;
           }
+
         `;
     }
     static get properties() {

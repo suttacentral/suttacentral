@@ -3,10 +3,8 @@ import { html } from 'lit-element';
 export const languageBaseMenuCss = html`
 <style>
   :host {
-    --primary-color: var(--sc-primary-color);
-    --paper-menu-button-content: {
-      display: block;
-    };
+    overflow-y: scroll;
+    --mdc-menu-min-width: 500px
   }
   
   .separator {
