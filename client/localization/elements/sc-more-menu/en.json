@@ -15,6 +15,7 @@
         "joinDiscussion": "Join the discussion about this sutta.",
         "discussSuttas": "Discuss the suttas on our forum",
         "Discuss": "Discuss",
-        "AlwaysShowToolbar": "Always Show Toolbar"
+        "AlwaysShowToolbar": "Always Show Toolbar",
+        "languageLabel": "Language"
     }
 }

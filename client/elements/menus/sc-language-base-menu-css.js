@@ -8,6 +8,15 @@ export const languageBaseMenuCss = html`
       display: block;
     };
   }
+  
+  .separator {
+            background-color: var(--sc-border-color);
+            width: 100%;
+            overflow: hidden;
+            height: 1px;
+            margin-top: var(--sc-size-xxs);
+            margin-bottom: var(--sc-size-xxs);
+  }
 
   .language-menu-dropdown {
     font-size: var(--sc-skolar-font-size-md);

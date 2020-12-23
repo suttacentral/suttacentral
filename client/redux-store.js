@@ -179,6 +179,8 @@ const reducer = (state, action) => {
       return Object.assign({}, state, { suttasBlurb: action.suttasBlurb });
     case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
       return Object.assign({}, state, { alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar });
+    case 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE':
+      return Object.assign({}, state, { languageMenuVisibility: action.languageMenuVisibility });
     default:
       return state;
   }

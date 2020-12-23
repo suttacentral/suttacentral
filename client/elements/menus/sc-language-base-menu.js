@@ -1,15 +1,14 @@
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icon/iron-icon.js';
 import { html, LitElement } from 'lit-element';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '@polymer/paper-item/paper-icon-item.js';
-import '@polymer/paper-item/paper-item-body.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { languageBaseMenuCss } from './sc-language-base-menu-css';
+import {icons} from "../../img/sc-icons";
+import '@material/mwc-list/mwc-list-item';
+import '@material/mwc-icon';
+
 
 class LanguageBaseMenu extends LitLocalized(LitElement) {
   static get properties() {
@@ -19,10 +18,9 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
       localizedStringsPath: String,
       cloneName: String, // pass a unique name here to use in the language change event identifier.
       noRoot: Boolean, // If true, no root languages will be displayed.
-      disabled: Boolean
+      disabled: Boolean,
     };
   }
-
   get actions() {
     return {
       changeLanguage(language, fullName) {
@@ -30,6 +28,12 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
           type: 'CHANGE_SITE_LANGUAGE',
           language: language,
           fullName: fullName
+        })
+      },
+      changeLanguageMenuVisibility(visibility) {
+        store.dispatch({
+          type: 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE',
+          languageMenuVisibility: visibility
         })
       }
     }
@@ -51,29 +55,13 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     this._fetchLanguageList();
   }
 
-  render() {
-    return html`
-    ${languageBaseMenuCss}
-
-    <paper-dropdown-menu class="language-menu-dropdown" 
-      label="${this.localize('languageLabel')}" 
-      ?disabled="${this.disabled}" 
-      title="${this.localize('browseTooltip')}" 
-      vertical-align="auto"
-    >
-      <paper-listbox class="language-menu-list" slot="dropdown-content" selected="${this.selectedLanguageNum}" @iron-select="${this._selectedLanguageNumChanged}">
-        ${this.languageListResponse.map((language) => this.languageTemplate(language))}
-      </paper-listbox>
-    </paper-dropdown-menu>`;
+  _showMoreMenu() {
+    this.actions.changeLanguageMenuVisibility(false);
   }
 
   languageTemplate(language) {
     return html`
-      <paper-icon-item class="language-menu-paper-item" id="${language.uid}">
-        <paper-item-body>
-          <div class="language-name">${language.name}</div>
-        </paper-item-body>
-      </paper-icon-item>`;
+      <mwc-list-item id="${language.uid}" @click="${this._selectedLanguageNumChanged} ">${language.name}</mwc-list-item>`;
   }
 
   _selectedLanguageNumChanged(event) {
@@ -85,7 +73,7 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     }
 
     try {
-      this.selectedLanguageNum = this._findChosenLanguageIndex(event.detail.item.id);
+      this.selectedLanguageNum = this._findChosenLanguageIndex(event.target.id);
       const chosenLanguage = this.languageListResponse[this.selectedLanguageNum];
       // If it's not a main language change menu (but a clone), dispatch an event
       if (this.cloneName) {
@@ -119,6 +107,19 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
       console.error(e);
       return 0;
     }
+  }
+
+  render() {
+    return html`
+      ${languageBaseMenuCss}
+      <mwc-list-item @click="${this._showMoreMenu}">
+        <div style="display: inline-flex; align-items: center">
+          <mwc-icon style="padding: 8px 8px 4px 0">${icons['arrow_left']}</mwc-icon>
+            Choose your language
+        </div>
+      </mwc-list-item>
+      <div class="separator"></div>
+      ${this.languageListResponse.map((language) => this.languageTemplate(language))}`;
   }
 }
 
