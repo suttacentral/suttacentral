@@ -233,14 +233,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (penultimateNavItem.type && penultimateNavItem.type === 'home') { return; }
     if (penultimateNavItem.groupId) {
       const navData = await this._fetchNavData(penultimateNavItem.groupId);
-      if (!navData) { 
+      if (!navData[0].uid) { 
         this._correctingNav();
         return; 
       }
-      let currentNavItemGroupId = this.navArray[this.navArray.length-1].groupId;
+      const currentNavItemGroupId = this.navArray[this.navArray.length-1].groupId;
       if (currentNavItemGroupId) {
         const childData = navData[0].children.find(x => {
-          return x.id === currentNavItemGroupId
+          return x.uid === currentNavItemGroupId
         });
         if (!childData) {
           this._correctingNav();

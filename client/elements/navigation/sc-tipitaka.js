@@ -3,7 +3,6 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
-import '../addons/sc-bouncing-loader';
 import { icons } from '../../img/sc-icons';
 import '@material/mwc-icon';
 
@@ -70,33 +69,40 @@ class SCTipitaka extends LitLocalized(LitElement) {
     ]);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
   }
 
   async _fetchMainMenu() {
     this.loading = true;
     try {
-      this.mainMenuData = await (await fetch(`${API_ROOT}/menu?language=${this.language}`)).json();
+      if (!this.navDataCache) {
+        this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
+      }
+      if (this.navDataCache.has('tipitakaData')) {
+        this.mainMenuData = this.navDataCache.get('tipitakaData');
+      } else {
+        this.mainMenuData = await (await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)).json();
+      }
     } catch (err) {
       this.mainMenuError = err;
     }
     this.loading = false;
   }
 
-
   get tipitakaCardTemplate() {
     return this.mainMenuData.length ? html`
       <div class="main-nav">
         ${this.mainMenuData.map((item) => html`
           <section class="card home-card">
-            <a class="header-link" title="${this.localize(item.name.toLowerCase())}" href="/${item.uid}" @click=${() => this._onTipitakaCardClick(item.uid)}>
+            <a class="header-link" title="${item.translated_name || item.root_name}" href="/pitaka/${item.uid}">
               <header>
                 <span class="header-left">
                   <span class="title" lang="${this.language}">
-                    ${this.localize(item.name.toLowerCase())}
+                    ${item.translated_name || item.root_name}
                   </span>
                   <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="pi">
-                    ${item.name}
+                  <span class="subTitle" lang="${item.root_lang_iso}">
+                    ${item.root_name}
                   </span>
                   </div>
                 </span>
@@ -108,12 +114,12 @@ class SCTipitaka extends LitLocalized(LitElement) {
               </header>
             </a>
             <div class='nav-card-content'>
-              <div class="blurb" id="${item.name}_blurb">
-                ${this.tipitakaBlurb.get(item.name)}
+              <div class="blurb" id="${item.root_name}_blurb">
+                ${this.tipitakaBlurb.get(item.root_name)}
               </div>
-              <a class="essay-link" href="${this.tipitakaGuide.get(item.name)}">
+              <a class="essay-link" href="${this.tipitakaGuide.get(item.root_name)}">
                 <div class="essay">
-                  ${this.localize(`${item.name}_essayTitle`)}     
+                  ${this.localize(`${item.root_name}_essayTitle`)}
                 </div>
               </a>
             </div>
@@ -123,17 +129,10 @@ class SCTipitaka extends LitLocalized(LitElement) {
     `: ''; 
   }
 
-  _onTipitakaCardClick(childUid) {
-    window.location.href = `/${childUid}`;
-  }
-
   render() {
     return html`
       ${this.currentStyles}
       ${this.compactStyles}
-      <div class="loading-indicator">
-        <sc-bouncing-loader class="loading-spinner" ?active="${this.loading}"></sc-bouncing-loader>
-      </div>
       ${this.tipitakaCardTemplate}
     `;
   }

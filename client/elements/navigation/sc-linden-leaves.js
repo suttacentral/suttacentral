@@ -169,13 +169,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     }
   }
 
-  updated(changedProps) {
-    super.update(changedProps);
-    if (changedProps.has('navArray')) {
-      //
-    }
-  }
-
   render() {
     return html`
       <nav>
@@ -213,7 +206,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     }
 
     let routePath = store.getState().currentRoute.path;
-    
     this.actions.changeToolbarTitle(nav.title);
     this.navArray.length = nav.position + 1 || 1;
     this.actions.setNavigation(this.navArray);
