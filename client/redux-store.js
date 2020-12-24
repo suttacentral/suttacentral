@@ -83,7 +83,6 @@ const initialState = {
     displayOrganizationalToolbar: false,
     displayGuidesToolbar: false
   },
-  suttasBlurb: {},
   navDataCache: {},
 };
 
@@ -183,8 +182,8 @@ const reducer = (state, action) => {
       return ({ ...state, currentNavPosition: action.currentNavPosition });
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
       return ({ ...state, staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState });
-    case 'UPDATE_BLURBS':
-      return ({ ...state, suttasBlurb: action.suttasBlurb });
+    case 'UPDATE_NAV_DATA_CACHE':
+      return ({ ...state, navDataCache: action.navDataCache });
     case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
       return ({ ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar });
     default:
@@ -216,11 +215,11 @@ function parsePersistedState(state) {
   return {
     ...initialState,
     ...parsedState,
-   // Reset some state variables:
-   selectedNavigationMenuItemId, 
-   toolbarOptions, 
-   donationSuccessData, 
-   tableOfContents
+    // Reset some state variables:
+    selectedNavigationMenuItemId, 
+    toolbarOptions, 
+    donationSuccessData, 
+    tableOfContents
   };
 }
 
