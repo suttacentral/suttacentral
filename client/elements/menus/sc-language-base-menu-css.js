@@ -3,10 +3,8 @@ import { html } from 'lit-element';
 export const languageBaseMenuCss = html`
 <style>
   :host {
-    --primary-color: var(--sc-primary-color);
-    --paper-menu-button-content: {
-      display: block;
-    };
+    overflow-y: scroll;
+    --mdc-menu-min-width: 500px
   }
   
   .separator {
@@ -55,24 +53,20 @@ export const languageBaseMenuCss = html`
   .language-name {
     padding-top: var(--sc-size-xxs);        
   }
-   /* This is an illogical solution, but the results are in line with expectations.
-   It should be “language-menu-paper-item::before”, but it produces unexpected results, 
-   using “language-menu-paper-item::after” instead obtains the expected results. */
-  .language-menu-paper-item::after {
+
+  .language-name::before {
     content: attr(id);
     background-color:var(--sc-disabled-text-color);
-    color: var(--sc-tertiary-text-color);
+    color: white;
     font-weight: 800;
-    width: var(--sc-size-md-larger);        
-    height: 20px;
+    width: var(--sc-size-md-larger);    
+    margin-right: var(--sc-size-md);    
     line-height: 20px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
     display: inline-block;
     text-align: center;
     font-size:14px;
-    position:absolute;
-    margin-top:1px;                
     --notchSize: 4px;        
     clip-path: 
       polygon(

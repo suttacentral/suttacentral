@@ -76,9 +76,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
             background-color: var(--sc-secondary-background-color);
           }
 
-          #more-menu {
-          }
-
           .toolbar-paper-button {
             margin: 0;
           }
