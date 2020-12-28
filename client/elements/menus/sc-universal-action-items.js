@@ -68,7 +68,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
             transition: width .2s linear;
           }
 
-          #more_menu:focus {
+          #sc-more-menu:focus {
             outline: none;
           }
 
@@ -84,6 +84,11 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
             margin: 0;
             padding: 0;
           }
+          
+          #more-menu {
+             --mdc-menu-min-width: 275px;
+             --mdc-menu-max-width: 290px;
+          }
         `;
     }
 
@@ -95,7 +100,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
             localizedStringsPath: {type: String},
             search_input: {type: Object},
             searchKeyword: {type: String},
-            moreMenu: {type: Object}
+            moreMenu: {type: Object},
+            scrollY: {type: Number},
         };
     }
 
@@ -107,6 +113,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         this.localizedStringsPath = '/localization/elements/sc-universal-action-items';
         this.searchKeyword = store.getState().searchQuery;
         this.search_input = this.shadowRoot.getElementById('search_input');
+        this.scrollY = 0;
     }
 
     get actions() {
@@ -121,7 +128,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     }
 
     firstUpdated() {
-        const moreMenuElement = this.shadowRoot.getElementById('more_menu');
+        const moreMenuElement = this.shadowRoot.getElementById('sc-more-menu');
         if (moreMenuElement) {
             moreMenuElement.addEventListener('item-selected', () => {
                 const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
@@ -147,6 +154,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     }
 
     openMoreMenu() {
+        this.scrollY = window.scrollY;
         (this.moreMenu || {}).show();
     }
 
@@ -237,17 +245,17 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
                     @click="${this._closeSearch}">
                 ${icons['close']}
             </mwc-icon-button>
-                <mwc-icon-button
-                label="menu"
-                id="more-menu-button"
-                class="white-icon toolbar-paper-button"
-                @click="${this.openMoreMenu}"
-                alt="menu">
-                    ${icons['more_vert']}
-                </mwc-icon-button>  
-                <mwc-menu fixed y="800" id="more-menu">
-                    <sc-more-menu id="more_menu"></sc-more-menu>
-                </mwc-menu>
+            <mwc-icon-button
+            label="menu"
+            id="more-menu-button"
+            class="white-icon toolbar-paper-button"
+            @click="${this.openMoreMenu}"
+            alt="menu">
+                ${icons['more_vert']}
+            </mwc-icon-button>
+            <mwc-menu corner="BOTTOM_END" id="more-menu">
+                <sc-more-menu id="sc-more-menu"></sc-more-menu>
+            </mwc-menu>
         `;
     }
 }

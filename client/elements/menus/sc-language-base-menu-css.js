@@ -84,5 +84,14 @@ export const languageBaseMenuCss = html`
   #jpn::after, #sld::after, #kln::after{
     letter-spacing: 0;
     font-size: 11px
-  }    
+  }
+  #arrow-left {
+      padding: 8px 8px 4px 0;
+      fill: var(--sc-disabled-text-color);
+  }
+    #icon-wrapper {
+        display: inline-flex;
+        align-items: center
+    }
+    
 </style>`;

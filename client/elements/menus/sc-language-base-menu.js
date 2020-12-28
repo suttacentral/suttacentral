@@ -111,8 +111,8 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     return html`
       ${languageBaseMenuCss}
       <mwc-list-item @click="${this._showMoreMenu}">
-        <div style="display: inline-flex; align-items: center">
-          <mwc-icon style="padding: 8px 8px 4px 0; fill: var(--sc-disabled-text-color)">${icons['arrow_left']}</mwc-icon>
+        <div id="icon-wrapper">
+          <mwc-icon id="arrow-left">${icons['arrow_left']}</mwc-icon>
             Choose your language
         </div>
       </mwc-list-item>

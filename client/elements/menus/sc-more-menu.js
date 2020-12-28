@@ -343,7 +343,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
     _renderLanguageBaseMenu() {
         return html`
-            <sc-language-base-menu></sc-language-base-menu>
+            <sc-language-base-menu noRoot="true"></sc-language-base-menu>
         `;
     }
 
