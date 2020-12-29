@@ -58,7 +58,7 @@ export const scrollbarStyle = html`
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: var(--sc-paper-tooltip-color);
+    background-color: var(--sc-tertiary-text-color);
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:active {

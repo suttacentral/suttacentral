@@ -3,11 +3,6 @@ import { html, PolymerElement } from '@polymer/polymer';
 import { ReduxMixin, store } from '../redux-store.js';
 import { Localized } from './addons/localization-mixin.js';
 
-import './text/sc-segmented-text.js';
-import './text/sc-simple-text.js';
-import './suttaplex/sc-suttaplex-list.js';
-import './navigation/sc-navigation.js';
-
 /*
 The page-selector loads the top header-bar and the toolbar within that. Depending on the selected page,
 the header will have a different appearance and different items in the toolbar.
@@ -313,9 +308,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     if (this.shouldShowStaticPage) {
       import('./sc-static-page-selector.js');
     }
-    // else if (this.shouldShowSuttaplexListPage) {
-    //   import('./suttaplex/sc-suttaplex-list.js');
-    // }
+    else if (this.shouldShowSuttaplexListPage) {
+      import('./suttaplex/sc-suttaplex-list.js');
+    }
     else if (this.shouldShowSearchPage) {
       import('./sc-page-search.js');
     }
@@ -324,6 +319,9 @@ class SCPageSelector extends ReduxMixin(Localized(PolymerElement)) {
     }
     else if (this.shouldShowSuttaTextPage) {
       import('./text/sc-text-page-selector.js');
+    }
+    else if (this.shouldShowPitakaPage) {
+      import('./navigation/sc-navigation.js');
     }
   }
 

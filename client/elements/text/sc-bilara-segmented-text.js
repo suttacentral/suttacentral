@@ -2,7 +2,6 @@ import { LitElement, html, css, unsafeCSS } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 
-import '../addons/sc-nav-contents';
 import { SCLitTextPage } from "./sc-lit-text-page.js";
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
@@ -60,7 +59,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       currentStyles: { type: Object },
       referencesDisplayStyles: { type: Object },
       notesDisplayStyles: { type: Object },
-      showHighlighting: { type: Boolean }
+      showHighlighting: { type: Boolean },
     }
   }
 
@@ -93,6 +92,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.translationTextSelector = '.translation .text';
     this.rootTextSelector = '.root .text';
     this.commentSpanRectInfo = new Map();
+    
+    this._hashChangeHandler = () => {
+      setTimeout(() => {
+        this._scrollToSection(window.location.hash.substr(1));
+      }, 0);
+    }
     // Return the corresponding style sheet according to different combinations of text viewing options.
     this.mapStyles = new Map([
       ["sidenotes_plain", plainPlusStyles],
@@ -128,7 +133,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ${this.referencesDisplayStyles}
       ${this.notesDisplayStyles}
 
-      <sc-nav-contents .items="${this.navItems}"></sc-nav-contents>
       <main>
         <div id="segmented_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
           ${unsafeHTML(this.markup)}
@@ -140,9 +144,24 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       <sc-bottom-sheet></sc-bottom-sheet>
     `;
   }
-
+  
   firstUpdated() {
+    // location-changed event is added by iron-location component.
+    // iron-location disables default behavior of hash-links and re-emits a different event.
+    // hashchange can still fire, but only due to browser back & forward buttons.
+    // TODO: In case iron-location is removed, this will break, but it's not possible to bypass it now
+    window.addEventListener('location-changed', this._hashChangeHandler);
+    window.addEventListener('hashchange', this._hashChangeHandler);
+    this.addEventListener('click', () => {
+      this._hideTopSheets();
+      this.actions.changeDisplaySettingMenuState(false);
+    });
     this._updateView();
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('location-changed', this._hashChangeHandler);
+    window.removeEventListener('hashchange', this._hashChangeHandler);
   }
 
   _updateView() {
@@ -158,9 +177,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         this._initPaliLookup();
       }
       this._showHighlightingChanged();
+      this._hashChangeHandler();
     }, 100);
-    //this.navItems = this._prepareNavigation();
-
+    this._prepareNavigation();
+    
     setTimeout(() => {
       //this._recalculateCommentSpanHeight();
       this._changeTextView();
@@ -168,6 +188,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.actions.changeSuttaMetaText(this._computeMeta());
   }
   
+  _hideTopSheets() {
+    const scActionItems = document.querySelector("sc-site-layout").shadowRoot.querySelector("#action_items");
+    scActionItems.hideItems();
+  }
+
   _segmentedTextContentElement() {
     return this.shadowRoot.querySelector('#segmented_text_content');
   }
@@ -178,6 +203,20 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _shouldShowLoadingIndicator() {
     return ((!this.error && this.loading) || this.isTextViewHidden);
+  }
+  
+  // Scrolls to the chosen section
+  _scrollToSection(sectionId, margin = 120) {
+    if (!sectionId) return;
+    try {
+      let targetElement = this.shadowRoot.querySelector(`#${CSS.escape(location.hash.substr(1))}`);
+      if(targetElement) {
+          targetElement.scrollIntoView();
+          window.scrollTo(0, window.scrollY - margin);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   _recalculateCommentSpanHeight() {
@@ -384,18 +423,20 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _prepareNavigation() {
     let sutta = this.bilaraTranslatedSutta ? this.bilaraTranslatedSutta : this.bilaraRootSutta;
     if (!sutta) {
+      this.actions.showToc([]);
       return;
     }
     const dummyElement = document.createElement('template');
     dummyElement.innerHTML = this.markup.trim();
     let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h2')).map(elem => {
       const id = elem.firstElementChild.id;
-      if (sutta.strings[id]) {
-        return { link: id, name: this._stripLeadingOrdering(sutta.strings[id]) };
+      if (sutta[id]) {
+        return { link: id, name: this._stripLeadingOrdering(sutta[id]) };
       }
     });
     arrayTOC = arrayTOC.filter(Boolean);
-    return arrayTOC;
+
+    this.actions.showToc(arrayTOC);
   }
 
   _stripLeadingOrdering(name) {
@@ -414,6 +455,21 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
           view: viewNumber
+        })
+      },
+      showToc(tableOfContents) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_TOC_BUTTON_STATE',
+          payload: {
+            tableOfContents,
+            disableToCListStyle: false,
+          }
+        })
+      },
+      changeDisplaySettingMenuState(display) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
+          displaySettingMenu: display
         })
       },
     }
@@ -653,6 +709,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let spanElement = document.createElement('span');
     spanElement.className = 'root';
     spanElement.lang = this.rootSutta.lang;
+    spanElement.setAttribute('translate', 'no');
     let textSpan = document.createElement('span');
     textSpan.className = 'text';
     spanElement.appendChild(textSpan);

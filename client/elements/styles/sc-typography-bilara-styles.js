@@ -14,7 +14,7 @@ export const typographyBilaraStyles = css`
 
 .spanFocused
 {
-    color: var(--sc-paper-tooltip-color);
+    color: var(--sc-tertiary-text-color);
     background-color: var(--sc-primary-color-light);
 }
 
@@ -46,6 +46,12 @@ article
     border-color: transparent;
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
+
+    letter-spacing: normal;
+
+    font-variant-caps: normal;
+
+    text-align: left;
 }
 .comment
 {
@@ -159,13 +165,4 @@ h6 .reference
 {
     display: none;
 }
-
-.pts:before
-{
-    content: 'pts';
-
-    font-variant-caps: all-small-caps;
-    font-feature-settings: 'ordn';
-}
-
 `

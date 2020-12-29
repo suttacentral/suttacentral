@@ -12,6 +12,7 @@ import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import { Transliterator } from './transliterator.js';
 import { store } from '../../redux-store';
 
+
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
@@ -62,6 +63,7 @@ class SCSimpleText extends SCLitTextPage {
         p, li {
           hanging-punctuation: first last;
         }
+
       </style>
 
       <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
@@ -99,7 +101,8 @@ class SCSimpleText extends SCLitTextPage {
       currentId: { type: String },
       inputElement: { type: Object },
       showHighlighting: { type: Boolean },
-      chosenReferenceDisplayType: { type: String }
+      chosenReferenceDisplayType: { type: String },
+      navItems: { type: Array },
     }
   }
 
@@ -151,6 +154,11 @@ class SCSimpleText extends SCLitTextPage {
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.currentId = '';
     this.inputElement = {};
+    this._hashChangeHandler = () => {
+      setTimeout(() => {
+        this._scrollToSection(window.location.hash.substr(1));
+      }, 0);
+    }
   }
 
   get actions() {
@@ -167,21 +175,28 @@ class SCSimpleText extends SCLitTextPage {
           displaySettingMenu: display
         })
       },
+      showToc(tableOfContents) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_TOC_BUTTON_STATE',
+          payload: {
+            tableOfContents,
+            disableToCListStyle: true,
+          }
+        })
+      },
     }
   }
 
   firstUpdated() {
+    // location-changed event is added by iron-location component.
+    // iron-location disables default behavior of hash-links and re-emits a different event.
+    // hashchange can still fire, but only due to browser back & forward buttons.
+    // TODO: In case iron-location is removed, this will break, but it's not possible to bypass it now
+    window.addEventListener('location-changed', this._hashChangeHandler);
+    window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', () => {
-      setTimeout(() => {
-        this._scrollToSection(window.location.hash.substr(1), true, 0);
-        this._hideTopSheets();
-        this.actions.changeDisplaySettingMenuState(false);
-      });
-    });
-    window.addEventListener('hashchange', () => {
-      setTimeout(() => {
-        this._scrollToSection(window.location.hash.substr(1), true, 0);
-      });
+      this._hideTopSheets();
+      this.actions.changeDisplaySettingMenuState(false);
     });
     this._updateView();
     this.inputElement = this.shadowRoot.querySelector('#simple_text_content');
@@ -190,9 +205,20 @@ class SCSimpleText extends SCLitTextPage {
 
   _hideTopSheets() {
     const scActionItems = document.querySelector("sc-site-layout").shadowRoot.querySelector("#action_items");
-    scActionItems._hideSuttaInfo();
-    scActionItems._hideSuttaParallels();
-    scActionItems._hideSettingMenu();
+    scActionItems.hideItems();
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('location-changed', this._hashChangeHandler);
+    window.removeEventListener('hashchange', this._hashChangeHandler);
+  }
+
+
+  _hideSettingMenu() {
+    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
+      bubbles: true,
+      composed: true
+    }));
   }
 
   updated(changedProps) {
@@ -282,14 +308,30 @@ class SCSimpleText extends SCLitTextPage {
     this._paliLookupStateChanged();
     this._chineseLookupStateChanged();
     this.changeScript();
-    // Scroll to the section after the hash sign in the url:
-    setTimeout(() => {
-      this._scrollToSection(window.location.hash.substr(1), false, 500);
-    }, 0);
     this.actions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
     this._referenceDisplayTypeChanged();
+    this.navItems = this._prepareNavigation();
+    setTimeout(() => {
+      this._hashChangeHandler()
+    }, 100);
+  }
+
+  _prepareNavigation() {
+    let sutta = this.sutta["text"];
+    if (!sutta) {
+      this.actions.showToc([]);
+      return;
+    }
+    const dummyElement = document.createElement('template');
+    dummyElement.innerHTML = sutta;
+    let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h3')).map((elem, index) => {
+      const id = index + 1;
+      return { link: id, name: elem.innerText };
+    });
+    arrayTOC = arrayTOC.filter(Boolean);
+    this.actions.showToc(arrayTOC);
   }
 
   _setAttributes() {
@@ -438,96 +480,14 @@ class SCSimpleText extends SCLitTextPage {
     return !(this.sutta && this.sutta.text) || this.error;
   }
 
-  _processHighlightAndScroll(sectionId) {
-    let [idFrom, idTo] = sectionId.split('--');
-    let firstSection = this.shadowRoot.getElementById(idFrom);
-    if (!firstSection) {
-      return;
-    }
-    firstSection = this._getElementToHighlight(firstSection);
-    let section = firstSection;
-    let toSection = this.shadowRoot.getElementById(idTo);
-    let last = true;
-    if (toSection) {
-      last = false;
-    }
-    this._processSections(section, idTo, last);
-    return firstSection;
-  }
-
-  _processSections(section, idTo, last) {
-    while (section) {
-      section.classList.add('highlight');
-      if (section.tagName !== 'HR') {
-        this._changeMarginToPadding(section);
-      }
-      let nextSection = section.nextElementSibling;
-      if (!nextSection) {
-        break;
-      }
-      let sectionLink = nextSection.querySelector('.textual-info-paragraph');
-      if (sectionLink) {
-        if (last) {
-          break;
-        } else if (sectionLink.id === idTo) {
-          last = true;
-        }
-      }
-      section = nextSection;
-    }
-  }
-
-  _changePaddingToMargin(section) {
-    const margin = window.getComputedStyle(section).padding;
-    requestAnimationFrame(() => {
-      section.style.margin = margin;
-      section.style.padding = '0';
-    })
-  }
-
-  _changeMarginToPadding(section) {
-    for (let pos of ['Top', 'Bottom', 'Left', 'Right']) {
-      const margin = window.getComputedStyle(section)[`margin${pos}`];
-      const padding = window.getComputedStyle(section)[`padding${pos}`];
-      section.style[`margin${pos}`] = '0';
-      section.style[`padding${pos}`] = this._getBigger(margin, padding);
-    }
-  }
-
-  _getBigger(a, b) {
-    return parseFloat(a) > parseFloat(b) ? a : b;
-  }
-
-  _removeHighlights() {
-    this.shadowRoot.querySelectorAll('.highlight').forEach(v => {
-      v.classList.remove('highlight');
-      v.classList.remove('last-highlight');
-    })
-  }
-
-  _getElementToHighlight(element) {
-    if (element.id.includes('inline') && !element.id.includes('.')) {
-      element = element.parentNode;
-    }
-    return element.parentNode;
-  }
-
-  // Scrolls to the chosen section
-  _scrollToSection(sectionId, isSmooth, delay) {
-    if (!sectionId || this.currentId === sectionId) return;
+  _scrollToSection(sectionId, margin = 120) {
+    if (!sectionId) return;
     try {
-      this._removeHighlights();
-      setTimeout(() => {
-        const firstSection = this._processHighlightAndScroll(sectionId);
-        if (firstSection) {
-          firstSection.scrollIntoView({
-            behavior: isSmooth ? 'smooth' : 'instant',
-            block: 'start',
-            inline: 'nearest'
-          });
-        }
-      }, delay);
-      this.currentId = sectionId;
+      let targetElement = this.shadowRoot.querySelector(`h3:nth-of-type(${location.hash.substr(1)})`);
+      if(targetElement) {
+          targetElement.scrollIntoView();
+          window.scrollTo(0, window.scrollY - margin);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -623,11 +583,6 @@ class SCSimpleText extends SCLitTextPage {
     } else if (unit === 'graph') {
       this.spansForGraphsGenerated = true;
     }
-    this.shadowRoot.querySelectorAll('.textual-info-paragraph').forEach(item => {
-      item.addEventListener('click', () => {
-        this._scrollToSection(item.id, true, 0);
-      });
-    });
   }
 
   _putSegmentIntoSpans(segment, unit, that) {

@@ -9,8 +9,6 @@
     "extract-static-strings": "babel --plugins babel-plugin-macros elements/static-templates/ --out-dir elements/static"
   },
   "dependencies": {
-    "@alangdm/block-link": "0.1.1",
-    "@lion/tooltip": "0.8.11",
     "@material/mwc-base": "0.19.1",
     "@material/mwc-button": "0.19.1",
     "@material/mwc-checkbox": "0.19.1",
@@ -34,23 +32,16 @@
     "@material/mwc-textarea": "0.19.1",
     "@material/mwc-textfield": "0.19.1",
     "@moduware/morph-ripple": "2.0.0",
-    "@polymer/app-layout": "^3.0.0",
     "@polymer/app-route": "^3.0.0",
-    "@polymer/app-storage": "^3.0.0",
     "@polymer/iron-a11y-keys": "^3.0.0",
     "@polymer/iron-ajax": "^3.0.0",
-    "@polymer/iron-collapse": "^3.0.0",
     "@polymer/iron-form": "^3.0.0",
     "@polymer/iron-icon": "^3.0.0",
     "@polymer/iron-iconset-svg": "^3.0.0",
     "@polymer/iron-image": "^3.0.0",
     "@polymer/iron-location": "^3.0.0",
-    "@polymer/iron-media-query": "^3.0.0",
-    "@polymer/iron-meta": "^3.0.0",
-    "@polymer/iron-overlay-behavior": "^3.0.0",
     "@polymer/iron-pages": "^3.0.0",
     "@polymer/iron-scroll-threshold": "^3.0.0",
-    "@polymer/neon-animation": "^3.0.0",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-card": "^3.0.0",
     "@polymer/paper-checkbox": "^3.0.0",
@@ -72,7 +63,6 @@
     "@polymer/polymer": "^3.0.0",
     "@sentry/browser": "4.5.2",
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "body-scroll-lock": "2.6.0",
     "d3-queue": "^3.0.7",
     "iron-lazy-pages": "^3.0.2",
     "lit-element": "^2.4.0",
@@ -93,13 +83,34 @@
     "copy-webpack-plugin": "^4.6.0",
     "html-webpack-plugin": "^3.2.0",
     "htmlparser2": "^3.9.2",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
     "node-fetch": "^2.2.0",
     "polymer-cli": "1.9.2",
+    "prettier": "2.2.1",
     "webpack": "^4.27.1",
     "webpack-babel-multi-target-plugin": "^2.1.0-alpha.10",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4",
-    "workbox-webpack-plugin": "3.6.3"
+    "workbox-webpack-plugin": "3.6.3",
+    "terser-webpack-plugin": "1.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "semi": true,
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "arrowParens": "avoid",
+    "htmlWhitespaceSensitivity": "ignore"
   }
 }

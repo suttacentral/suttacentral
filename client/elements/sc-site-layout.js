@@ -1,32 +1,24 @@
 import { LitElement, html, css } from 'lit-element';
 import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 
-import '@polymer/iron-media-query/iron-media-query.js';
-import '@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
 import '@polymer/paper-styles/color.js';
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/typography.js';
 import '@polymer/paper-styles/shadow.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/neon-animation/animations/fade-in-animation.js';
-import '@polymer/neon-animation/animations/fade-out-animation.js';
-import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '@material/mwc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
-import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock/lib/bodyScrollLock.es6';
 setPassiveTouchGestures(true);
 
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
-import { icons } from '../img/sc-icons';
 
 import './sc-page-selector.js';
-import './menus/sc-settings-menu.js';
 import './menus/sc-action-items.js';
 import './addons/sc-top-sheet-views.js';
 import './addons/sc-top-sheet-parallels';
 import './addons/sc-top-sheet-info';
+import './addons/sc-top-sheet-toc';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
 
@@ -66,6 +58,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
         <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
         <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
+        <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
         <sc-top-sheet-info id="sutta-info"></sc-top-sheet-info>
 
         <div id="static_pages_nav_menu">
@@ -305,6 +298,14 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
     });
 
+    this.addEventListener('hide-sc-sutta-toc', e => {
+      this.shadowRoot.querySelector('#sutta_toc').hide();
+    });
+
+    this.addEventListener('show-sc-sutta-toc', e => {
+      this.shadowRoot.querySelector('#sutta_toc').show();
+    });
+
     this.addEventListener('show-sc-sutta-info', e => {
       this.shadowRoot.querySelector('#sutta-info').show();
     });
@@ -346,8 +347,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       }
       let displaySettingMenu = store.getState().displaySettingMenu;
       let displaySuttaParallels = store.getState().displaySuttaParallels;
+      let displaySuttaToC = store.getState().displaySuttaToC;
       const displaySuttaInfo = store.getState().displaySuttaInfo;
-      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels && !displaySuttaInfo) {
+      if (this.changedRoute.path !== '/' && !displaySettingMenu && !displaySuttaParallels && !displaySuttaInfo && !displaySuttaToC) {
         let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScrollTop > lastScrollTop){
           const universalToolbarHeight = 156;

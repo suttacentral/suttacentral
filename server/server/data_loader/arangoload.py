@@ -7,7 +7,9 @@ import os
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
-from typing import Any, Set
+from typing import Any, Set, List, Dict
+
+from arango.database import Database
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
@@ -83,14 +85,25 @@ def collect_data(repo_dir: Path, repo_addr: str):
             update_data(repo, repo_addr)
 
 
-def process_root_languages(structure_dir):
-    language_file = structure_dir / 'language.json'
-    languages = json_load(language_file)
+def process_root_languages(language_file: Path) -> Dict[str, str]:
+    languages: List[dict] = json_load(language_file)
     data = {}
-    for lang in languages:
-        uid = lang['uid']
-        if 'contains' in lang:
-            data.update({sutta_id: uid for sutta_id in lang['contains']})
+    for language in languages:
+        lang_iso = language['root_lang_iso']
+        if 'contains' in language:
+            data.update({uid: lang_iso for uid in language['contains']})
+    return data
+
+
+def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
+    """
+    Method to process super_extra_info.json and text_extra_info.json files
+
+    Args:
+        extra_info_file - path to the file
+    """
+    info = json_load(extra_info_file)
+    data = {item['uid']: item for item in info}
     return data
 
 
@@ -183,6 +196,100 @@ def process_division_files(
     docs.append({'uid': 'orphan', '_key': 'orphan'})
 
 
+def process_names_files(
+        names_files: List[Path],
+        root_languages: Dict[str, str],
+        super_extra_info:  Dict[str, Dict[str, str]],
+        text_extra_info:  Dict[str, Dict[str, str]]
+) -> List[dict]:
+    """
+    Method for processing name files from sc-data/structure/name
+
+    Args:
+        names_files - list of name Path objects to files from name folder
+        root_languages - parsed data from language.json
+        super_extra_info - parsed data from super_extra_info.json
+        text_extra_info - parsed data from text_extra_info.json
+
+    Returns:
+        list of processed data
+    """
+    docs = []
+    names_files.sort(key=lambda path: len(path.parts))
+    for name_file in names_files:
+        entries: Dict[str, str] = json_load(name_file)
+        for uid, name in entries.items():
+            if not name or type(name) != str:
+                continue
+            extra_info = super_extra_info if uid in super_extra_info else text_extra_info
+            entry = {
+                'uid': uid,
+                '_key': uid,
+                'name': name,
+                'root_lang': root_languages.get(uid, None),
+                'volpage': extra_info.get(uid, {}).get('volpage', None),
+                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', None),
+                'acronym': extra_info.get(uid, {}).get('acronym', None)
+            }
+
+            docs.append(entry)
+    return docs
+
+
+def parse_tree_recursive(element: Dict[str, list]) -> List[Dict[str, str]]:
+    """
+    Method to parse a subtree from tree files and super-tree.json file
+
+    Args:
+        element - dict with one key as uid and list of elements with the
+            same structure as value
+    """
+    edges = []
+    for name, content in element.items():
+        for item in content:
+            if type(item) == dict:
+                edges.extend(
+                    [{'_from': name, '_to': subgroup_name} for subgroup_name in item.keys()]
+                )
+                edges.extend(parse_tree_recursive(item))
+            else:
+                edges.append({
+                    '_from': name,
+                    '_to': item,
+                })
+    return edges
+
+
+def process_super_tree_file(super_tree_file: Path) -> List[Dict[str, str]]:
+    """
+    Method for super-tree.json file processing
+
+    Args:
+        super_tree_file - path to the super-tree.json file
+    """
+    content: List[Dict[str, list]] = json_load(super_tree_file)
+    data = []
+    for division in content:
+        data.extend(parse_tree_recursive(division))
+    return data
+
+
+def process_tree_files(tree_files: List[Path]) -> List[Dict[str, str]]:
+    """
+    Method for processing tree files from tree sc-data/structure/tree folder
+
+    Args:
+        tree_files - list of Paths to the tree files
+    """
+    edges = []
+    for tree_file in tree_files:
+        content = json_load(tree_file)
+        edges.extend(
+            parse_tree_recursive(content)
+        )
+    return edges
+
+
 def process_category_files(category_files, db, edges, mapping):
     division_ordering = []
     for category_file in category_files:
@@ -250,16 +357,38 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     name_docs = []
     edges = []
     mapping = {}
+
+    tree_dir = structure_dir / 'tree'
+
     division_files = sorted((structure_dir / 'division').glob('**/*.json'))
+    names_files = sorted((structure_dir / 'name').glob('**/*.json'))
+    tree_files = sorted(tree_dir.glob('**/*.json'))
     category_files = sorted(structure_dir.glob('*.json'))
 
-    root_languages = process_root_languages(structure_dir)
+    super_tree_file = tree_dir / 'super-tree.json'
+    tree_files.remove(super_tree_file)
+
+    root_languages = process_root_languages(structure_dir / 'super_root_lang.json')
+    super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
+    text_extra_info = process_extra_info_file(structure_dir / 'text_extra_info.json')
 
     if change_tracker.is_any_file_new_or_changed(
         division_files + category_files
     ) or change_tracker.is_any_function_changed(
-        [process_division_files, process_category_files, perform_update_queries]
+        [process_division_files, process_category_files, perform_update_queries,
+         process_super_tree_file, process_tree_files, process_names_files, parse_tree_recursive]
     ):
+        nav_details_docs = process_names_files(
+            names_files,
+            root_languages,
+            super_extra_info,
+            text_extra_info
+        )
+
+        super_tree_edges = process_super_tree_file(super_tree_file)
+        nav_details_edges = process_tree_files(tree_files)
+        nav_details_edges.extend(super_tree_edges)
+
         # To handle deletions as easily as possible we completely rebuild
         # the root structure
         process_division_files(
@@ -284,7 +413,34 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         db['root_names'].import_bulk_logged(name_docs, wipe=True)
         db['root_edges'].import_bulk_logged(edges, wipe=True)
 
+        # new data loading
+        db['super_nav_details'].import_bulk(nav_details_docs, overwrite=True)
+        db['super_nav_details_edges'].import_bulk(
+            nav_details_edges,
+            from_prefix='super_nav_details',
+            to_prefix='super_nav_details',
+            overwrite=True
+        )
+
         perform_update_queries(db)
+
+
+def load_child_range(db: Database, structure_dir: Path) -> None:
+    """
+    Load child range data from structure_dir/child_range.json file
+    Data are loaded into the child_range collection in ArangoDB
+
+    Args:
+        db - ArangoDB instance
+        structure_dir - path to the structure dir
+    """
+    child_range_content: Dict[str, str] = json_load(structure_dir / 'child_range.json')
+    data = [{
+        '_key': uid,
+        'uid': uid,
+        'range': nav_range
+    } for uid, nav_range in child_range_content.items()]
+    db['child_range'].import_bulk(data, overwrite=True)
 
 
 def print_once(msg: Any, antispam: Set):
@@ -549,7 +705,6 @@ def run(no_pull=False):
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
     misc_dir = data_dir / 'misc'
-    po_dir = data_dir / 'po_text'
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
@@ -581,8 +736,11 @@ def run(no_pull=False):
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
 
-    print_stage("Building and loading root structure from structure_dir")
+    print_stage("Building and loading navigation from structure_dir")
     add_root_docs_and_edges(change_tracker, db, structure_dir)
+
+    print_stage("Loading child ranges from structure_dir")
+    load_child_range(db, structure_dir)
 
     print_stage("Loading localization")
     localized_languages.update_languages(
@@ -591,9 +749,6 @@ def run(no_pull=False):
 
     print_stage('Loading Segmented Data')
     segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
-
-    print_stage("Loading po_text")
-    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage("Generating and loading relationships")
     generate_relationship_edges(

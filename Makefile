@@ -9,6 +9,9 @@ prepare-host:
 	sudo sysctl -w vm.max_map_count=262144
 	sudo bash -c 'echo "vm.max_map_count=262144" >> /etc/sysctl.conf'
 	@echo "\033[1;32mSuccess!"
+	@echo "Setting up client/ git-hook"
+	@cd client && npm install
+	@echo "\033[1;32mSuccess!"
 
 create-network:
 	-@docker network create nginx-proxy
@@ -123,28 +126,6 @@ run-production-env:
 
 generate-env-variables:
 	@docker run -it --rm --name env_variable_setup -v $(shell pwd):/opt/ -w /opt python:3.7 python env_variables_setup.py
-
-generate-server-po-files:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py generate_po_files"
-
-load-server-po-files:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files"
-
-load-to-pootle:
-	@make generate-server-po-files
-	@docker exec -t sc-pootle-pipeline python to_pootle.py
-	#@docker exec -t sc-pootle bash -c "python3 create_and_update_projects.py"
-
-load-from-pootle:
-	@docker exec -t sc-pootle bash -c "python3 update_po_files.py"
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_po_files -p /srv/pootle/po"
-	@docker exec -t sc-pootle-pipeline python from_pootle.py
-
-backup-mysql:
-	@docker exec -t sc-pootle "/home/pootle/backup_mysql.sh"
-
-restore-mysql:
-	@docker exec -t sc-pootle "/home/pootle/restore_mysql.sh" < /dev/stdin
 
 toggle-maintenance:
 	@docker exec -it sc-nginx bash -c "cd /opt/sc/static; if rm maintenance_on.html 2>/dev/null; then echo 'Maintenance Off'; else ln -s maintenance_off.html -T ./maintenance_on.html && echo 'Maintenance On'; fi"

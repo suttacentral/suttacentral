@@ -330,13 +330,6 @@ export const suttaplexTxCss = html`
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 400;
   }
-  
-  .arrow {
-    height: 32px;
-    width: 32px;
-    fill: white;
-    margin-left: auto;
-  }
 
   morph-ripple {
     --ripple-color: var(--sc-primary-color);
