@@ -128,6 +128,12 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           alwaysShowUniversalToolbar: state,
         });
       },
+      changeLanguageMenuVisibility(visibility) {
+        store.dispatch({
+          type: 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE',
+          languageMenuVisibility: visibility,
+        });
+      },
     };
   }
 
@@ -206,7 +212,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   }
 
   _showLanguageMenu() {
-    this.languageIsVisible = true;
+    this.actions.changeLanguageMenuVisibility(true);
   }
 
   _displayCurrentSiteLanguage() {
