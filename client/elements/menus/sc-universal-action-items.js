@@ -100,7 +100,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       search_input: { type: Object },
       searchKeyword: { type: String },
       moreMenu: { type: Object },
-      scrollY: { type: Number },
     };
   }
 
@@ -112,7 +111,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-universal-action-items';
     this.searchKeyword = store.getState().searchQuery;
     this.search_input = this.shadowRoot.getElementById('search_input');
-    this.scrollY = 0;
   }
 
   get actions() {
@@ -155,7 +153,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
   }
 
   openMoreMenu() {
-    this.scrollY = window.scrollY;
     (this.moreMenu || {}).show();
   }
 
