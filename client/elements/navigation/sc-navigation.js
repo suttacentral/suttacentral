@@ -338,7 +338,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 <header>
                   <span class="header-left">
                     <span class="title" lang="${child.root_lang_iso}">
-                      ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', this.localize(child.root_name))}
+                      ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', child.translated_name || child.root_name || child.uid)}
                     </span>
                     <div class="navigation-nerdy-row">
                     <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name}</span>
@@ -421,7 +421,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             <header>
               <span class="header-left">
                 <span class="title" lang="${child.root_lang_iso}">
-                  ${this.localize(this.pitakaName)} ${child.translated_name || child.root_name}
+                  ${this.localize(this.pitakaName)} ${child.translated_name || child.root_name || child.uid}
                 </span>
                 <div class="navigation-nerdy-row">
                 <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name}</span>
@@ -538,7 +538,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             <header>
               <span class="header-left">
                 <span class="title">
-                  ${child.translated_name || child.root_name} ${this.parallelName}
+                  ${child.translated_name || child.root_name || child.uid} ${this.parallelName}
                 </span>
                 <div class="navigation-nerdy-row">
                   <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.uid}</span>
@@ -620,7 +620,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             <header>
               <span class="header-left">
                 <span class="title">
-                  ${child.translated_name || child.root_name} ${this.parallelName}
+                  ${child.translated_name || child.root_name || child.uid} ${this.parallelName}
                 </span>
                 <div class="navigation-nerdy-row">
                   <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.uid}</span>
@@ -700,7 +700,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             <header>
               <span class="header-left">
                 <span class="title">
-                  ${child.translated_name || child.root_name} ${this.parallelName}
+                  ${child.translated_name || child.root_name || child.uid} ${this.parallelName}
                 </span>
                 <div class="navigation-nerdy-row">
                   <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.acronym}</span>
@@ -782,7 +782,7 @@ class SCNavigation extends LitLocalized(LitElement) {
             @click=${() => this._onSakaChildrenCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, dispatchState: true})}>
             <header>
               <span class="header-left">
-                <span class="title">${child.translated_name || child.root_name} ${this.parallelName}</span>
+                <span class="title">${child.translated_name || child.root_name || child.uid} ${this.parallelName}</span>
                 <div class="navigation-nerdy-row">
                   <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.acronym}</span>
                   <span class="acronym">${child.child_range}</span>
