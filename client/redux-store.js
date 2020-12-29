@@ -12,7 +12,7 @@ const initialState = {
     name: 'HOME',
     path: '/',
     prefix: '',
-    __queryParams: {}
+    __queryParams: {},
   },
   dialog: undefined,
   siteLanguage: 'en',
@@ -37,7 +37,7 @@ const initialState = {
     chineseLookupTargetLanguage: '',
     referenceDisplayType: 'none',
     noteDisplayType: 'asterisk',
-    showHighlighting: false
+    showHighlighting: false,
   },
   colorTheme: 'light',
   selectedNavigationMenuItemId: '',
@@ -47,8 +47,8 @@ const initialState = {
     languages: {},
     lookups: {
       pali: {},
-      chinese: {}
-    }
+      chinese: {},
+    },
   },
   suttaplexListDisplay: false,
   isOnline: true,
@@ -60,7 +60,7 @@ const initialState = {
       url: '/',
       type: 'home',
       position: 0,
-      navigationArrayLength: 1
+      navigationArrayLength: 1,
     },
   ],
   currentNavPosition: 1,
@@ -81,7 +81,7 @@ const initialState = {
     displayTipitakaToolbar: false,
     displayAcademicToolbar: false,
     displayOrganizationalToolbar: false,
-    displayGuidesToolbar: false
+    displayGuidesToolbar: false,
   },
   navDataCache: {},
 };

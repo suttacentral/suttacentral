@@ -3,10 +3,9 @@ import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { languageBaseMenuCss } from './sc-language-base-menu-css';
-import {icons} from "../../img/sc-icons";
+import { icons } from '../../img/sc-icons';
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-icon';
-
 
 class LanguageBaseMenu extends LitLocalized(LitElement) {
   static get properties() {
@@ -19,22 +18,23 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
       disabled: Boolean,
     };
   }
+
   get actions() {
     return {
       changeLanguage(language, fullName) {
         store.dispatch({
           type: 'CHANGE_SITE_LANGUAGE',
           language: language,
-          fullName: fullName
-        })
+          fullName: fullName,
+        });
       },
       changeLanguageMenuVisibility(visibility) {
         store.dispatch({
           type: 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE',
-          languageMenuVisibility: visibility
-        })
-      }
-    }
+          languageMenuVisibility: visibility,
+        });
+      },
+    };
   }
 
   get apiUrl() {
@@ -59,7 +59,14 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
 
   languageTemplate(language) {
     return html`
-      <mwc-list-item id="${language.uid}" @click="${this._selectedLanguageNumChanged} " class="language-name">${language.name}</mwc-list-item>`;
+      <mwc-list-item
+        id="${language.uid}"
+        @click="${this._selectedLanguageNumChanged} "
+        class="language-name"
+      >
+        ${language.name}
+      </mwc-list-item>
+    `;
   }
 
   _selectedLanguageNumChanged(event) {
@@ -75,11 +82,13 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
       const chosenLanguage = this.languageListResponse[this.selectedLanguageNum];
       // If it's not a main language change menu (but a clone), dispatch an event
       if (this.cloneName) {
-        dispatchEvent(new CustomEvent(`${this.cloneName}-language-changed`, {
-          detail: { isoCode: chosenLanguage.iso_code, name: chosenLanguage.name },
-          composed: true,
-          bubbles: true
-        }));
+        dispatchEvent(
+          new CustomEvent(`${this.cloneName}-language-changed`, {
+            detail: { isoCode: chosenLanguage.iso_code, name: chosenLanguage.name },
+            composed: true,
+            bubbles: true,
+          })
+        );
       } else {
         this.actions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
       }
@@ -100,7 +109,7 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
 
   _findChosenLanguageIndex(chosenLang) {
     try {
-      return this.languageListResponse.findIndex((language) => language.iso_code === chosenLang);
+      return this.languageListResponse.findIndex(language => language.iso_code === chosenLang);
     } catch (e) {
       console.error(e);
       return 0;
@@ -113,11 +122,12 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
       <mwc-list-item @click="${this._showMoreMenu}">
         <div id="icon-wrapper">
           <mwc-icon id="arrow-left">${icons['arrow_left']}</mwc-icon>
-            Choose your language
+          Choose your language
         </div>
       </mwc-list-item>
       <div class="separator"></div>
-      ${this.languageListResponse.map((language) => this.languageTemplate(language))}`;
+      ${this.languageListResponse.map(language => this.languageTemplate(language))}
+    `;
   }
 }
 
