@@ -21,6 +21,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        --mdc-theme-surface: var(--sc-secondary-background-color);
       }
 
       .white-icon {

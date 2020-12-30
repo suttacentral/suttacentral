@@ -168,8 +168,10 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return this.localize(title);
   }
 
-  firstUpdated() {
-    this._initializeListeners();
+  updated() {
+    if (!this.languageIsVisible) {
+          this._initializeListeners();
+    }
   }
 
   _initializeListeners() {
