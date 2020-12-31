@@ -1,6 +1,17 @@
 import { LitElement, html, css } from 'lit-element';
 
+import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
+
+
+import '@polymer/paper-styles/color.js';
+import '@polymer/paper-styles/paper-styles.js';
+import '@polymer/paper-styles/typography.js';
+import '@polymer/paper-styles/shadow.js';
 import '@material/mwc-icon';
+import '@material/mwc-icon';
+import { throttle } from 'throttle-debounce';
+import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
+setPassiveTouchGestures(true);
 
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
