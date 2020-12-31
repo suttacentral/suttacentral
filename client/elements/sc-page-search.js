@@ -683,21 +683,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!this.waitTimeAfterNewWordExpired) {
       return;
     }
-    let selectedView;
-    switch (event.detail.searchView) {
-      case 1:
-        selectedView = 'root-text';
-        break;
-      case 2:
-        selectedView = 'translation';
-        break;
-      case 3:
-        selectedView = 'dictionary';
-        break;
-      default:
-        selectedView = 'all';
-    }
-    this.currentFilter = selectedView;
+    this.currentFilter = event.detail.searchView;
     this._startNewSearch();
   }
 
