@@ -12,7 +12,7 @@ const initialState = {
     name: 'HOME',
     path: '/',
     prefix: '',
-    __queryParams: {}
+    __queryParams: {},
   },
   dialog: undefined,
   siteLanguage: 'en',
@@ -37,7 +37,7 @@ const initialState = {
     chineseLookupTargetLanguage: '',
     referenceDisplayType: 'none',
     noteDisplayType: 'asterisk',
-    showHighlighting: false
+    showHighlighting: false,
   },
   colorTheme: 'light',
   selectedNavigationMenuItemId: '',
@@ -47,8 +47,8 @@ const initialState = {
     languages: {},
     lookups: {
       pali: {},
-      chinese: {}
-    }
+      chinese: {},
+    },
   },
   suttaplexListDisplay: false,
   isOnline: true,
@@ -60,7 +60,7 @@ const initialState = {
       url: '/',
       type: 'home',
       position: 0,
-      navigationArrayLength: 1
+      navigationArrayLength: 1,
     },
   ],
   currentNavPosition: 1,
@@ -81,7 +81,7 @@ const initialState = {
     displayTipitakaToolbar: false,
     displayAcademicToolbar: false,
     displayOrganizationalToolbar: false,
-    displayGuidesToolbar: false
+    displayGuidesToolbar: false,
   },
   navDataCache: {},
 };
@@ -164,10 +164,10 @@ const reducer = (state, action) => {
       return ({ ...state, displayInfoButton: action.displayInfoButton });
     case 'CHANGE_DISPLAY_TOC_BUTTON_STATE':
       return {
-        ...state, 
-        tableOfContents: { 
-          items: action.payload.tableOfContents, 
-          disableToCListStyle: action.payload.disableToCListStyle 
+        ...state,
+        tableOfContents: {
+          items: action.payload.tableOfContents,
+          disableToCListStyle: action.payload.disableToCListStyle
         }
       };
     case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
@@ -186,6 +186,8 @@ const reducer = (state, action) => {
       return ({ ...state, navDataCache: action.navDataCache });
     case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
       return ({ ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar });
+      case 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE':
+      return Object.assign({}, state, { languageMenuVisibility: action.languageMenuVisibility });
     default:
       return state;
   }
@@ -211,14 +213,14 @@ store.subscribe(() => {
 function parsePersistedState(state) {
   const parsedState = JSON.parse(state);
   const {selectedNavigationMenuItemId, toolbarOptions, donationSuccessData, tableOfContents} = initialState;
-  
+
   return {
     ...initialState,
     ...parsedState,
     // Reset some state variables:
-    selectedNavigationMenuItemId, 
-    toolbarOptions, 
-    donationSuccessData, 
+    selectedNavigationMenuItemId,
+    toolbarOptions,
+    donationSuccessData,
     tableOfContents
   };
 }
