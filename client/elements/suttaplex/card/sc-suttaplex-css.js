@@ -16,7 +16,8 @@ export const suttaplexCss = html`
     margin: 0 0 0 4px;
 }
 
-details p
+details p, 
+details ul
 {
     position: absolute;
     z-index: 10;
@@ -30,6 +31,11 @@ details p
     border-radius: 8px;
     background-color: var(--sc-tertiary-background-color);
     box-shadow: var(--sc-shadow-elevation-4dp);
+}
+
+details ul{
+  right: 0px;
+  padding: 0px
 }
 
 summary
@@ -49,6 +55,14 @@ summary
 summary::-webkit-details-marker
 {
     color: var(--sc-disabled-text-color);
+}
+
+#copy-menu > summary{
+list-style: none;
+}
+
+#copy-menu > summary::-webkit-details-marker {
+  display: none;
 }
 
   .menu-listbox {
@@ -136,15 +150,12 @@ summary::-webkit-details-marker
   }
 
   paper-icon-button {
-    color: var(--sc-disabled-text-color);
+    
   }
 
-  .btn-speaker {
+  .btn-speaker, .btn-share {
     padding: 5px;
-  }
-
-  .btn-share {
-    padding: 7px;
+    color: var(--sc-disabled-text-color);
   }
  
   .suttaplex-nerdy-row {
