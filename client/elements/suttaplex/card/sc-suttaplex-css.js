@@ -75,13 +75,13 @@ list-style: none;
 
   h1 {
     font-family: var(--sc-serif-font);
-        font-size: var(--sc-skolar-font-size-xl);
+    font-size: var(--sc-skolar-font-size-static-subtitle);
         font-weight: 400;
     margin: 0;
   }
 
-  h1:not(.compact) {
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+  h1.compact {
+    font-size: var(--sc-skolar-font-size-xl);
   }
 
   .hide-element {
@@ -90,15 +90,16 @@ list-style: none;
 
   .suttaplex {
     display: block;
-    padding: var(--sc-size-sm) var(--sc-size-md);
-    margin-bottom: 1px;
+    padding: var(--sc-suttaplex-padding);
+    margin-bottom: var(--sc-size-md);
     box-shadow: var(--sc-suttaplex-shadow);
+    border-radius: var(--sc-size-sm);
   }
 
-    .suttaplex:not(.compact) {
-    margin-bottom: var(--sc-size-md);
-    padding: var(--sc-suttaplex-padding);
-    border-radius: var(--sc-size-sm);
+    .suttaplex.compact {
+    padding: var(--sc-size-sm) var(--sc-size-md);
+    border-radius: 2px;
+    margin-bottom: 1px;
   }
 
       .section-details.main-translations {
@@ -147,10 +148,6 @@ list-style: none;
   summary {
     cursor: pointer;
     outline: none;
-  }
-
-  paper-icon-button {
-    
   }
 
   .btn-speaker, .btn-share {
@@ -285,14 +282,14 @@ export const suttaplexTxCss = html`
     flex-wrap: nowrap;
     cursor: pointer;
     padding: 0 var(--sc-size-sm);
-    margin: 0 4px;
+    margin: 0;
     border-radius: var(--sc-size-sm);
   }
 
   .tx,
   .tx:hover,
   .tx:active {
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease;
   }
 
   .tx:hover {
@@ -301,10 +298,6 @@ export const suttaplexTxCss = html`
 
   .tx morph-ripple {
     color: var(--sc-primary-color-medium);
-  }
-
-  .tx.compact {
-    padding: 0;
   }
 
   .tx-icon {
