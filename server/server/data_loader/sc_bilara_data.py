@@ -43,10 +43,10 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
 def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
     names = []
     pattern = r'^.*?:\d+\.(.*?)$'
+    lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
     for name_file in sc_bilara_data_dir.glob('**/name/**/*.json'):
         is_root = 'root' in name_file.parts
-        lang_folder_idx = name_file.parts.index('root' if is_root else 'translation') + 1
         lang = name_file.parts[lang_folder_idx]
         file_content: Dict[str, str] = json_load(name_file)
         for prefix, name in file_content.items():
@@ -69,6 +69,7 @@ def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
 
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
+    lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
     all_files = {file for file in sc_bilara_data_dir.glob('**/*.json') if not file.name.startswith('_')}
     files: Set[Path] = all_files.difference({
@@ -78,9 +79,11 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
 
     for file in files:
         uid, muids = file.stem.split('_')
+        lang = file.parts[lang_folder_idx]
         docs.append({
             '_key': file.stem,
             'uid': uid,
+            'lang': lang,
             'muids': muids.split('-'),
             'filepath': str(file.relative_to(sc_bilara_data_dir))
         })
