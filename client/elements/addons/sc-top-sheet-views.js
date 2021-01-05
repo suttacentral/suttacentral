@@ -381,7 +381,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
                 name="noteDisplayType"
                 value="${displayType}"
                 data-type="${displayTypeLabel}"
-                ?checked="${this.selectedNoteDisplayType === displayType ? true : false}"
+                ?checked="${this.selectedNoteDisplayType === displayType}"
                 @change="${this._onNoteDisplayTypeChanged}">
               </mwc-radio>
             </mwc-formfield>
