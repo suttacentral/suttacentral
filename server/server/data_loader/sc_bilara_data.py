@@ -14,7 +14,8 @@ def load_publications(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = [{'_key': pub_id, **publication} for pub_id, publication in publications.items()]
 
     print(f'{len(docs)} publications added or updated')
-    db['publications'].import_bulk(docs, overwrite=True)
+    db['publications'].truncate()
+    db['publications'].import_bulk(docs)
 
 
 def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
@@ -35,7 +36,8 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
             })
 
     print(f'{len(blurbs)} blurbs added or updated')
-    db['blurbs'].import_bulk(blurbs, overwrite=True)
+    db['blurbs'].truncate()
+    db['blurbs'].import_bulk(blurbs)
 
 
 def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
@@ -61,7 +63,8 @@ def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
             })
 
     print(f'{len(names)} names added or updated')
-    db['names'].import_bulk(names, overwrite=True)
+    db['names'].truncate()
+    db['names'].import_bulk(names)
 
 
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
@@ -83,4 +86,5 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
         })
 
     print(f'{len(docs)} texts added or updated')
-    db['sc_bilara_texts'].import_bulk(docs, overwrite=True)
+    db['sc_bilara_texts'].truncate()
+    db['sc_bilara_texts'].import_bulk(docs)
