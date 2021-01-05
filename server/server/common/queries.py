@@ -93,6 +93,8 @@ FOR navigation_doc IN super_nav_details
             LET node_type = child ? 'branch' : 'leaf'
             LET child_range = DOCUMENT('child_range', descendant.uid)['range']
             
+            LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
+            
             // Trying to get 2 blurbs with english and  user-defined-language  translations
             LET en_and_language_blurbs = (
                 FOR blurb IN blurbs
@@ -110,7 +112,7 @@ FOR navigation_doc IN super_nav_details
             RETURN {
                 uid: descendant.uid,
                 root_name: descendant.name,
-                translated_name: null,
+                translated_name: translated_name,
                 acronym: descendant.acronym,
                 blurb: blurb,
                 node_type: node_type,
@@ -122,7 +124,8 @@ FOR navigation_doc IN super_nav_details
         
     LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
     LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
-    
+    LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
+
     LET en_and_language_blurbs = (
         FOR blurb IN blurbs
             FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
@@ -138,7 +141,7 @@ FOR navigation_doc IN super_nav_details
     RETURN {
         uid: navigation_doc.uid,
         root_name: navigation_doc.name,
-        translated_name: null,
+        translated_name: translated_name,
         blurb: blurb,
         acronym: navigation_doc.acronym,
         node_type: 'root',
@@ -169,6 +172,7 @@ LET descendants = (
         LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
         LET child_range = DOCUMENT('child_range', descendant.uid)['range']
         LET node_type = child ? 'branch' : 'leaf'
+        LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
         
         LET en_and_language_blurbs = (
             FOR blurb IN blurbs
@@ -185,7 +189,7 @@ LET descendants = (
         RETURN {
             uid: descendant.uid,
             root_name: descendant.name,
-            translated_name: null,
+            translated_name: translated_name,
             acronym: descendant.acronym,
             blurb: blurb,
             node_type: node_type,
@@ -199,6 +203,7 @@ LET branch_or_leaf_type = descendants[0] ? 'branch' : 'leaf'
 LET node_type = parent ? branch_or_leaf_type : 'root'
 LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
 LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
+LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
 
 LET en_and_language_blurbs = (
     FOR blurb IN blurbs
@@ -215,7 +220,7 @@ LET blurb = (
 RETURN {
     uid: navigation_doc.uid,
     root_name: navigation_doc.name,
-    translated_name: null,
+    translated_name: translated_name,
     node_type: node_type,
     blurb: blurb,
     acronym: navigation_doc.acronym,
