@@ -1,8 +1,10 @@
-import { html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-item/paper-item.js';
-import { LitLocalized } from '../addons/localization-mixin'
+import { LitLocalized } from '../addons/localization-mixin';
+import '@material/mwc-select';
+import '@material/mwc-list/mwc-list-item';
 
 /*
 This dropdown for the search pages is normally hidden, and only shows when necessary.
@@ -13,88 +15,71 @@ The two necessary conditions are:
 */
 
 class SCSearchFilterMenu extends LitLocalized(LitElement) {
-  render() {
-    return html`
-    <style>
+  static get styles() {
+    return css`
       :host {
-        --primary-color: var(--sc-primary-accent-color);
+        --mdc-theme-primary: var(--sc-primary-accent-color);
+        --mdc-select-fill-color: transparent;
       }
-
-      .filter-dropdown, .filter-menu-items {
-        --paper-dropdown-menu-icon: {
-          color: var(--sc-disabled-text-color);
-        };
-
-          --paper-input-container-focus-color: var(--sc-primary-accent-color);
-          --paper-input-container-input-color: var(--sc-primary-text-color);
-          --paper-input-container-color: var(--sc-secondary-text-color);
-  
-
-        width: 150px;
-      }
-        --paper-menu-button-dropdown: {
-          box-shadow: var(--sc-shadow-elevation-8dp);
-          background-color: var(--sc-secondary-background-color);
-        }
-      .filter-menu-items {
-        background-color: var(--sc-secondary-background-color);
-      }
-
-      .filter-menu-item {
-
-        cursor: pointer;
-         color: var(--sc-primary-text-color);
-      }
-
-
-
-      .filter-menu-item:hover {
-        background-color: var(--sc-tertiary-background-color);
-      }
-    </style>
-
-    <paper-dropdown-menu id="filter_dropdown" class="filter-dropdown" title="Select search scope" vertical-align="auto" label="${this.localize('filter')}" @selected-item-changed=${(e) => this._onSelectedItemChanged(e)}>
-      <paper-listbox class="filter-menu-items" slot="dropdown-content" selected="${this.searchSelected}">
-        <paper-item class="filter-menu-item" id="all">${this.localize('all')}</paper-item>
-        <paper-item class="filter-menu-item" id="root-texts">${this.localize('rootTexts')}</paper-item>
-        <paper-item class="filter-menu-item" id="translations">${this.localize('translations')}</paper-item>
-        <paper-item class="filter-menu-item" id="dictionaries">${this.localize('dictionaries')}</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu>`;
+    `;
   }
 
   static get properties() {
     return {
       searchSelected: { type: String },
-      localizedStringsPath: { type: String }
-    }
+      localizedStringsPath: { type: String },
+    };
   }
 
   constructor() {
     super();
-    this.searchSelected = '0';
+    this.searchSelected = 'all';
     this.localizedStringsPath = '/localization/elements/sc-search-filter-menu';
   }
 
   _onSelectedItemChanged(e) {
-    let selectedItem = e.currentTarget.selectedItem;
+    const selectedItem = e.currentTarget.value;
     if (selectedItem) {
-      this.searchSelected = selectedItem.parentNode.selected;
+      this.searchSelected = selectedItem;
       this._searchChanged();
     }
   }
 
   // Fires resulting choice to search page, where it is converted to a selection of the relevant items.
   _searchChanged() {
-    this.dispatchEvent(new CustomEvent('search-filter-changed', {
-      detail: { searchView: this.searchSelected },
-      composed: true,
-      bubbles: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('search-filter-changed', {
+        detail: { searchView: this.searchSelected },
+        composed: true,
+        bubbles: true,
+      })
+    );
   }
 
   resetFilter() {
-    this.searchSelected = '0';
+    this.searchSelected = 'all';
+  }
+
+  render() {
+    return html`
+      <style></style>
+      <mwc-select
+        class="filter-dropdown"
+        label="${this.localize('filter')}"
+        @selected="${e => this._onSelectedItemChanged(e)}"
+      >
+        <mwc-list-item id="all" value="all" selected>${this.localize('all')}</mwc-list-item>
+        <mwc-list-item id="root-texts" value="root-texts">
+          ${this.localize('rootTexts')}
+        </mwc-list-item>
+        <mwc-list-item id="translations" value="translations">
+          ${this.localize('translations')}
+        </mwc-list-item>
+        <mwc-list-item id="dictionaries" value="dictionaries">
+          ${this.localize('dictionaries')}
+        </mwc-list-item>
+      </mwc-select>
+    `;
   }
 }
 

@@ -91,7 +91,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
       ${this.loading ? html`<sc-bouncing-loader></sc-bouncing-loader>` : ''}
 
       <button id="previous_button" class="chevron previous" @tap="${this.loadPreviousItem}" type="button" aria-label="${this.localize('previous')}">
-        <morph-ripple></morph-ripple>
+        <mwc-ripple></mwc-ripple>
         <mwc-icon>keyboard_arrow_left</mwc-icon>
       </button>
 
@@ -101,7 +101,7 @@ class SCTextCarousel extends LitLocalized(LitElement) {
       </a>
 
       <button id="next_button" class="chevron next" @tap="${this.loadNextItem}" aria-label="${this.localize('next')}">
-        <morph-ripple></morph-ripple>
+        <mwc-ripple></mwc-ripple>
         <mwc-icon>keyboard_arrow_right</mwc-icon>  
       </button>
     </div>`;
