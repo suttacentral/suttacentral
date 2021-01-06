@@ -33,7 +33,8 @@ from . import (
     localized_languages,
     order,
     sizes,
-    segmented_data
+    segmented_data,
+    sc_bilara_data,
 )
 
 from .generate_sitemap import generate_sitemap
@@ -709,6 +710,7 @@ def run(no_pull=False):
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
+    sc_bilara_data_dir = data_dir / 'sc_bilara_data'
 
     storage_dir = current_app.config.get('STORAGE_DIR')
     if not storage_dir.exists():
@@ -753,6 +755,18 @@ def run(no_pull=False):
                       
     print_stage("Loading po_text")
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
+
+    print_stage('Load names from sc_bilara_data')
+    sc_bilara_data.load_names(db, sc_bilara_data_dir)
+
+    print_stage('Load blurbs from sc_bilara_data')
+    sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
+
+    print_stage('Load publications from sc_bilara_data')
+    sc_bilara_data.load_publications(db, sc_bilara_data_dir)
+
+    print_stage('Load texts from sc_bilara_data')
+    sc_bilara_data.load_texts(db, sc_bilara_data_dir)
 
     print_stage("Generating and loading relationships")
     generate_relationship_edges(
