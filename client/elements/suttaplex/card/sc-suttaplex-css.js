@@ -16,7 +16,8 @@ export const suttaplexCss = html`
     margin: 0 0 0 4px;
 }
 
-details p
+details p, 
+details ul
 {
     position: absolute;
     z-index: 10;
@@ -30,6 +31,11 @@ details p
     border-radius: 8px;
     background-color: var(--sc-tertiary-background-color);
     box-shadow: var(--sc-shadow-elevation-4dp);
+}
+
+details ul{
+  right: 0px;
+  padding: 0px
 }
 
 summary
@@ -51,6 +57,14 @@ summary::-webkit-details-marker
     color: var(--sc-disabled-text-color);
 }
 
+#copy-menu > summary{
+list-style: none;
+}
+
+#copy-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
   .menu-listbox {
       --paper-input-container-focus-color: var(--sc-primary-accent-color);
       --paper-input-container-color: var(--sc-secondary-text-color);
@@ -61,13 +75,13 @@ summary::-webkit-details-marker
 
   h1 {
     font-family: var(--sc-serif-font);
-        font-size: var(--sc-skolar-font-size-xl);
+    font-size: var(--sc-skolar-font-size-static-subtitle);
         font-weight: 400;
     margin: 0;
   }
 
-  h1:not(.compact) {
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+  h1.compact {
+    font-size: var(--sc-skolar-font-size-xl);
   }
 
   .hide-element {
@@ -76,15 +90,16 @@ summary::-webkit-details-marker
 
   .suttaplex {
     display: block;
-    padding: var(--sc-size-sm) var(--sc-size-md);
-    margin-bottom: 1px;
+    padding: var(--sc-suttaplex-padding);
+    margin-bottom: var(--sc-size-md);
     box-shadow: var(--sc-suttaplex-shadow);
+    border-radius: var(--sc-size-sm);
   }
 
-    .suttaplex:not(.compact) {
-    margin-bottom: var(--sc-size-md);
-    padding: var(--sc-suttaplex-padding);
-    border-radius: var(--sc-size-sm);
+    .suttaplex.compact {
+    padding: var(--sc-size-sm) var(--sc-size-md);
+    border-radius: 2px;
+    margin-bottom: 1px;
   }
 
       .section-details.main-translations {
@@ -135,16 +150,9 @@ summary::-webkit-details-marker
     outline: none;
   }
 
-  paper-icon-button {
-    color: var(--sc-disabled-text-color);
-  }
-
-  .btn-speaker {
+  .btn-speaker, .btn-share {
     padding: 5px;
-  }
-
-  .btn-share {
-    padding: 7px;
+    color: var(--sc-disabled-text-color);
   }
  
   .suttaplex-nerdy-row {
@@ -274,14 +282,14 @@ export const suttaplexTxCss = html`
     flex-wrap: nowrap;
     cursor: pointer;
     padding: 0 var(--sc-size-sm);
-    margin: 0 4px;
+    margin: 0;
     border-radius: var(--sc-size-sm);
   }
 
   .tx,
   .tx:hover,
   .tx:active {
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease;
   }
 
   .tx:hover {
@@ -290,10 +298,6 @@ export const suttaplexTxCss = html`
 
   .tx morph-ripple {
     color: var(--sc-primary-color-medium);
-  }
-
-  .tx.compact {
-    padding: 0;
   }
 
   .tx-icon {
