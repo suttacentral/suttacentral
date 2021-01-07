@@ -1,7 +1,4 @@
 import { css, html, LitElement } from 'lit-element';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
 import { LitLocalized } from '../addons/localization-mixin';
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -62,7 +59,6 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <style></style>
       <mwc-select
         class="filter-dropdown"
         label="${this.localize('filter')}"
