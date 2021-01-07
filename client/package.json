@@ -20,6 +20,7 @@
     "@material/mwc-select": "0.20.0",
     "@material/mwc-snackbar": "0.20.0",
     "@material/mwc-switch": "0.20.0",
+    "@material/mwc-textarea": "^0.20.0",
     "@material/mwc-textfield": "0.20.0",
     "@moduware/morph-ripple": "2.0.0",
     "@polymer/app-route": "^3.0.0",
