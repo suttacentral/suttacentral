@@ -3,7 +3,7 @@
         "currency": "Currency",
         "amount": "Amount",
         "invalidValue": "Invalid value",
-        "chooseFrequency": "You can make a one-time donation or a monthly donation:",
+        "chooseFrequency": "You can make a one-time donation or a monthly donation.",
         "oneTime": "One time",
         "monthly": "Monthly",
         "email": "Email (optional)",
