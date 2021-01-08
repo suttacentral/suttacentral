@@ -310,6 +310,20 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         --mdc-theme-primary: var(--sc-primary-color);
         --mdc-theme-on-primary: white;
       }
+
+select {
+  font-family: var(--sc-sans-font);
+  font-size: var(--sc-skolar-font-size-sm);
+  color: var(--sc-primary-text-color);
+  padding: 8px;
+  width: 100%;
+  margin: 4px 0 0 0;
+  border: 1px solid var(--sc-border-color);
+  border-radius: var(--sc-size-sm);
+  background-color: var(--sc-primary-background-color);
+}
+
+
     `;
   }
 
@@ -490,13 +504,13 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
               <p>${this.localize('changePaliScriptDescription')}</p>
             </details>
             <div class="form-controls">
-              <mwc-select label="" @selected="${this._onPaliScriptChanged}">
+              <select @selected="${this._onPaliScriptChanged}">
                 ${scriptIdentifiers.map(
                   script => html`
-                    <mwc-list-item>${script.language}</mwc-list-item>
+                    <option value="${script.language}">${script.language}</option>
                   `
                 )}
-              </mwc-select>
+              </select>
             </div>
           </div>
         `
