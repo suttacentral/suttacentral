@@ -38,6 +38,12 @@ class SCDonateNow extends LitLocalized(LitElement) {
     return css`
         ${layoutSimpleStyles}
         ${typographyCommonStyles}
+/* allow mwc-select to drop below container */
+  article 
+  {
+    content-visibility: visible;
+  }
+
 
 form
 {
