@@ -1,7 +1,4 @@
-import '@polymer/iron-icon/iron-icon.js';
 import { html, css, LitElement } from 'lit-element';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import '../../../img/sc-svg-icons.js';
@@ -227,16 +224,17 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         </a>
       ` : ''}
 
-      <paper-menu-button id="copy-menu" class="top-menu-button" horizontal-align="right" role="group"
+      <details id="copy-menu" class="top-menu-button" horizontal-align="right" role="group"
         aria-haspopup="true" aria-disabled="false" vertical-align="auto">
+        <summary>
         <paper-icon-button class="btn-share" slot="dropdown-trigger" aria-label="${this.localize('share')}"
           icon="sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
         </paper-icon-button>
-  
-        <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
+  </summary>
+        <ul class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
           <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" .item="${this.item}"></sc-suttaplex-share-menu>
-        </paper-listbox>
-      </paper-menu-button>
+        </ul>
+      </details>
       </div>`;
   }
 

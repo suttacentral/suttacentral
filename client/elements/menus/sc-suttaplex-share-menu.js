@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit-element';
-import '@polymer/paper-item/paper-item.js';
 
 import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
@@ -25,6 +24,10 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
 
       .table-element {
         white-space: nowrap;
+        height: 48px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
       }
 
       .table-element[disabled] {
@@ -40,20 +43,22 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
         margin-right: var(--sc-size-md);
         color: var(--sc-disabled-text-color);
       }
+
+
     </style>
 
-    <paper-item class="table-element button-text" @tap=${this._copyLink} title="${this._computeLink(this.item)}">
+    <li class="table-element button-text" @tap=${this._copyLink} title="${this._computeLink(this.item)}">
       <iron-icon class="grey-icon" icon="sc-iron-icons:link"></iron-icon>
       ${this.localize('copyLink')}
-    </paper-item>
-    <paper-item class="table-element button-text" @tap=${this._copyContent} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
+    </li>
+    <li class="table-element button-text" @tap=${this._copyContent} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
       <iron-icon class="grey-icon" icon="sc-iron-icons:content-copy"></iron-icon>
       ${this.localize('copyTable')}
-    </paper-item>
-    <paper-item class="table-element button-text" @tap=${this._copyCite} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
+    </li>
+    <li class="table-element button-text" @tap=${this._copyCite} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
       <iron-icon class="grey-icon" icon="sc-iron-icons:format-quote"></iron-icon>
       ${this.localize('cite')}
-    </paper-item>`;
+    </li>`;
   }
 
   static get properties() {
