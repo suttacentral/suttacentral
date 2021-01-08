@@ -192,7 +192,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         font-family: var(--sc-sans-font);
 
         position: absolute;
-        z-index: 1000;
 
         display: grid;
         overflow-x: scroll;
@@ -317,9 +316,9 @@ select {
   padding: 8px;
   width: 100%;
   margin: 4px 0 0 0;
-  border: 1px solid var(--sc-border-color);
+  border: 2px solid var(--sc-disabled-text-color);
   border-radius: var(--sc-size-sm);
-  background-color: var(--sc-primary-background-color);
+  background-color: var(--sc-secondary-background-color);
 }
 
 
