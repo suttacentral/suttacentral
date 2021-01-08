@@ -17,6 +17,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return css`
       :host {
         font-family: var(--sc-sans-font);
+        --mdc-list-side-padding: 0px
       }
 
       .more-menu-link {
@@ -61,7 +62,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       }
 
       .switch-item {
-        padding-left: calc(var(--mdc-list-side-padding, 16px) - 4px);
+        
       }
 
       .chevron-right {
@@ -86,6 +87,8 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       .menu-item-wrapper {
         display: flex;
         align-items: center;
+        padding: 100% 16px;
+}
       }
     `;
   }
