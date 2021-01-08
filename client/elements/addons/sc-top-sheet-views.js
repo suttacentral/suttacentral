@@ -5,7 +5,6 @@ import '@material/mwc-formfield';
 import '@material/mwc-radio';
 import '@material/mwc-checkbox';
 import '@material/mwc-switch';
-import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
 
 import '../addons/sc-toasts';
