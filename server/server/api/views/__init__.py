@@ -1,3 +1,4 @@
+from .publication import Publication
 from .views import (
     Currencies,
     Donations,
