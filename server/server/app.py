@@ -30,7 +30,8 @@ from api.views import (
     Redirect,
     TranslationCountByDivision,
     TranslationCountByLanguage,
-    SegmentedSutta
+    SegmentedSutta,
+    Transliterate
 )
 from api.ebook.ebook import EBook
 from common.arangodb import ArangoDB
@@ -75,6 +76,9 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(EBook, '/ebook/<string:name>')
     api.add_resource(
         SegmentedSutta, '/bilarasuttas/<string:uid>/<string:author_uid>', '/bilarasuttas/<string:uid>'
+    )
+    api.add_resource(
+        Transliterate, '/transliterate/<string:target>/<string:text>'
     )
 
     app.register_blueprint(api_bp)

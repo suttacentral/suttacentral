@@ -49,6 +49,8 @@ from common.utils import (
 
 from data_loader.textfunctions import asciify_roman as asciify
 
+from aksharamukha import transliterate
+
 default_cache_timeout = 600
 long_cache_timeout = 7200
 
@@ -1224,3 +1226,8 @@ class Redirect(Resource):
                         return "Redirect", 301, {'Location': f'/{uid}'}
 
         return "Not found", 403
+
+class Transliterate(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, target, text):
+        return transliterate.process('IAST', target, text)

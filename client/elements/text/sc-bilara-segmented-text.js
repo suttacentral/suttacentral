@@ -2,10 +2,9 @@ import { LitElement, html, css, unsafeCSS } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 
-import { SCLitTextPage } from "./sc-lit-text-page.js";
+import { SCLitTextPage } from './sc-lit-text-page.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
-import { Transliterator } from './transliterator.js';
 import '../addons/sc-bottom-sheet';
 
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -23,7 +22,7 @@ import {
   hidePTSReferenceStyles,
   showAllReferenceStyles,
   hideAsterisk,
-  showAsterisk
+  showAsterisk,
 } from '../styles/sc-layout-bilara-styles.js';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
@@ -60,7 +59,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       referencesDisplayStyles: { type: Object },
       notesDisplayStyles: { type: Object },
       showHighlighting: { type: Boolean },
-    }
+    };
   }
 
   constructor() {
@@ -81,28 +80,29 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
     this.showHighlighting = textOptions.showHighlighting;
     this.scriptIsoCodes = {
-      'latin': 'Latn',
-      'sinhala': 'Sinh',
-      'devanagari': 'Deva',
-      'thai': 'Thai',
-      'myanmar': 'Mymr'
+      latin: 'Latn',
+      sinhala: 'Sinh',
+      devanagari: 'Deva',
+      thai: 'Thai',
+      myanmar: 'Mymr',
+      burmese: 'Burmese (Myanmar)',
     };
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.translationTextSelector = '.translation .text';
     this.rootTextSelector = '.root .text';
     this.commentSpanRectInfo = new Map();
-    
+
     this._hashChangeHandler = () => {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1));
       }, 0);
-    }
+    };
     // Return the corresponding style sheet according to different combinations of text viewing options.
     this.mapStyles = new Map([
-      ["sidenotes_plain", plainPlusStyles],
-      ["sidenotes_sidebyside", sideBySidePlusStyles],
-      ["sidenotes_linebyline", lineByLinePlusStyles],
+      ['sidenotes_plain', plainPlusStyles],
+      ['sidenotes_sidebyside', sideBySidePlusStyles],
+      ['sidenotes_linebyline', lineByLinePlusStyles],
       ['none_plain', plainStyles],
       ['asterisk_plain', plainStyles],
       ['none_sidebyside', sideBySideStyles],
@@ -117,24 +117,26 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ['all', showAllReferenceStyles],
     ]);
     this.mapNoteDisplayStyles = new Map([
-      ["none", hideAsterisk],
-      ["asterisk", showAsterisk]
+      ['none', hideAsterisk],
+      ['asterisk', showAsterisk],
     ]);
   }
 
   render() {
     return html`
       <style>
-        ${commonStyles} 
-        ${typographyCommonStyles} 
+        ${commonStyles}
+        ${typographyCommonStyles}
         ${typographyBilaraStyles}
       </style>
-      ${this.currentStyles}
-      ${this.referencesDisplayStyles}
-      ${this.notesDisplayStyles}
+      ${this.currentStyles} ${this.referencesDisplayStyles} ${this.notesDisplayStyles}
 
       <main>
-        <div id="segmented_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
+        <div
+          id="segmented_text_content"
+          class="html-text-content"
+          ?hidden="${this.isTextViewHidden}"
+        >
           ${unsafeHTML(this.markup)}
         </div>
       </main>
@@ -144,7 +146,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       <sc-bottom-sheet></sc-bottom-sheet>
     `;
   }
-  
+
   firstUpdated() {
     // location-changed event is added by iron-location component.
     // iron-location disables default behavior of hash-links and re-emits a different event.
@@ -180,16 +182,18 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._hashChangeHandler();
     }, 100);
     this._prepareNavigation();
-    
+
     setTimeout(() => {
       //this._recalculateCommentSpanHeight();
       this._changeTextView();
     }, 0);
     this.actions.changeSuttaMetaText(this._computeMeta());
   }
-  
+
   _hideTopSheets() {
-    const scActionItems = document.querySelector("sc-site-layout").shadowRoot.querySelector("#action_items");
+    const scActionItems = document
+      .querySelector('sc-site-layout')
+      .shadowRoot.querySelector('#action_items');
     scActionItems.hideItems();
   }
 
@@ -202,17 +206,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _shouldShowLoadingIndicator() {
-    return ((!this.error && this.loading) || this.isTextViewHidden);
+    return (!this.error && this.loading) || this.isTextViewHidden;
   }
-  
+
   // Scrolls to the chosen section
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
       let targetElement = this.shadowRoot.querySelector(`#${CSS.escape(location.hash.substr(1))}`);
-      if(targetElement) {
-          targetElement.scrollIntoView();
-          window.scrollTo(0, window.scrollY - margin);
+      if (targetElement) {
+        targetElement.scrollIntoView();
+        window.scrollTo(0, window.scrollY - margin);
       }
     } catch (e) {
       console.error(e);
@@ -263,7 +267,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _addCommentSpanId() {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll('span.comment').forEach((word) => {
+    this.shadowRoot.querySelectorAll('span.comment').forEach(word => {
       word.id = `comment_${wordIdSeed}`;
       wordIdSeed++;
     });
@@ -272,12 +276,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _addCommentSpanMouseEvent() {
     const Comments = this.shadowRoot.querySelectorAll('.comment');
     Comments.forEach(element => {
-      element.onmouseover = (e) => {
+      element.onmouseover = e => {
         e.currentTarget.style.overflow = 'auto';
         e.currentTarget.style.height = 'auto';
         e.currentTarget.style.zIndex = '1100';
       };
-      element.onmouseleave = (e) => {
+      element.onmouseleave = e => {
         e.currentTarget.style.overflow = 'auto';
         e.currentTarget.style.height = this.commentSpanRectInfo.get(e.currentTarget.id);
         e.currentTarget.style.zIndex = '1';
@@ -338,14 +342,16 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _isPlusStyle() {
-    return this.currentStyles === plainPlusStyles
-            || this.currentStyles === sideBySidePlusStyles
-              || this.currentStyles === lineByLinePlusStyles;
+    return (
+      this.currentStyles === plainPlusStyles ||
+      this.currentStyles === sideBySidePlusStyles ||
+      this.currentStyles === lineByLinePlusStyles
+    );
   }
 
   _paliLookupStateChanged() {
-    if (this.hidden) { 
-      return; 
+    if (this.hidden) {
+      return;
     }
     if (this.isPaliLookupEnabled) {
       this._initPaliLookup();
@@ -393,8 +399,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
       viewCompose = 'pali';
     }
-    this.currentStyles = this.mapStyles.get(viewCompose) ? this.mapStyles.get(viewCompose) : plainStyles;
-    this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(this.chosenReferenceDisplayType);
+    this.currentStyles = this.mapStyles.get(viewCompose)
+      ? this.mapStyles.get(viewCompose)
+      : plainStyles;
+    this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(
+      this.chosenReferenceDisplayType
+    );
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
   }
 
@@ -448,14 +458,14 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       changeSuttaMetaText(metaText) {
         store.dispatch({
           type: 'CHANGE_SUTTA_META_TEXT',
-          metaText: metaText
+          metaText: metaText,
         });
       },
       chooseSegmentedSuttaTextView(viewNumber) {
         store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
-          view: viewNumber
-        })
+          view: viewNumber,
+        });
       },
       showToc(tableOfContents) {
         store.dispatch({
@@ -463,16 +473,16 @@ class SCBilaraSegmentedText extends SCLitTextPage {
           payload: {
             tableOfContents,
             disableToCListStyle: false,
-          }
-        })
+          },
+        });
       },
       changeDisplaySettingMenuState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display
-        })
+          displaySettingMenu: display,
+        });
       },
-    }
+    };
   }
 
   _addRootText() {
@@ -488,8 +498,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._deleteRootSuttaMarkup();
     this._addRootSuttaMarkup();
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addRootTextToSpan(suttasSection, escapeKey, value);
       this._addRootTextToSpan(suttaArticle, escapeKey, value);
@@ -509,7 +519,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._articleElement().forEach(article => {
       let rootMarkup = article.querySelectorAll('.root');
       if (rootMarkup) {
-        rootMarkup.forEach((element) => { element.parentNode.removeChild(element) });
+        rootMarkup.forEach(element => {
+          element.parentNode.removeChild(element);
+        });
       }
     });
   }
@@ -518,7 +530,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._articleElement().forEach(article => {
       let translatedSuttaMarkup = article.querySelectorAll('.translation');
       if (translatedSuttaMarkup) {
-        translatedSuttaMarkup.forEach((element) => { element.parentNode.removeChild(element) });
+        translatedSuttaMarkup.forEach(element => {
+          element.parentNode.removeChild(element);
+        });
       }
     });
   }
@@ -533,8 +547,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addRootSuttaMarkupToSpan(suttasSection, escapeKey);
       this._addRootSuttaMarkupToSpan(suttaArticle, escapeKey);
@@ -564,8 +578,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.').replace(/\^/ug, '\\\^');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.').replace(/\^/gu, '\\^');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addTranslationSuttaMarkupToSpan(suttasSection, escapeKey);
       this._addTranslationSuttaMarkupToSpan(suttaArticle, escapeKey);
@@ -593,15 +607,15 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _initReference() {
     if (!this.bilaraRootSutta || this._articleElement().length === 0) {
-      return
+      return;
     }
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
     if (!mapSutta || mapSutta.size === 0) {
       return;
     }
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
@@ -645,8 +659,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapComment.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const translationSpan = suttaArticle.querySelector(`#${escapeKey} .translation`);
@@ -676,8 +690,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapVariant.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const rootSpan = suttaArticle.querySelector(`#${escapeKey} .root`);
@@ -731,8 +745,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     mapRef.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       if (suttaArticle) {
         const refElement = suttaArticle.querySelector(`#${escapeKey} .reference`);
@@ -744,20 +758,24 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addReferenceAnchor(ref, refElement) {
-    let arrayRef = ref.replace(/\s*/g,'').split(',');  //"pts1ed1.1, pts2ed1.1, sc1" or  "pts-cs1.1, pts-vp-pli1.1, sc1"
+    let arrayRef = ref.replace(/\s*/g, '').split(','); //"pts1ed1.1, pts2ed1.1, sc1" or  "pts-cs1.1, pts-vp-pli1.1, sc1"
     if (arrayRef.length === 0) return;
     arrayRef.forEach(item => {
       // 1:pts????, 2:pts-?????
-      if (item.length > 3 && (item.substring(0, 3).toLowerCase() === 'pts' || item.substring(0, 4).toLowerCase() === 'pts-')) {
+      if (
+        item.length > 3 &&
+        (item.substring(0, 3).toLowerCase() === 'pts' ||
+          item.substring(0, 4).toLowerCase() === 'pts-')
+      ) {
         let anchor = document.createElement('a');
         anchor.className = 'pts';
         anchor.title = this.localize('paliTextSocietyPageNo');
 
         let refStr = '';
         if (item.substring(0, 4).toLowerCase() === 'pts-') {
-          refStr = item.slice(4)
-        } else if ((item.substring(0, 3).toLowerCase() === 'pts')) {
-          refStr = item.slice(3)
+          refStr = item.slice(4);
+        } else if (item.substring(0, 3).toLowerCase() === 'pts') {
+          refStr = item.slice(3);
         }
         if (refStr !== '') {
           this._initPtsReferenceAnchor(anchor, refStr);
@@ -767,7 +785,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     });
   }
 
-  //<a class="pts" id="2ed1.1" title="Pali Text Society vol/page number." href="#2ed1.1">2ed1.1</a> 
+  //<a class="pts" id="2ed1.1" title="Pali Text Society vol/page number." href="#2ed1.1">2ed1.1</a>
   _initPtsReferenceAnchor(anchor, refStr) {
     anchor.id = refStr;
     anchor.href = `#${refStr}`;
@@ -787,8 +805,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._addTranslationSuttaMarkup();
     const suttasSection = this.shadowRoot.querySelector('section.range');
     mapSutta.forEach((value, key) => {
-      let escapeKey = key.replace(/:/ug, '\\\:').replace(/\./ug, '\\\.').replace(/\^/ug, '\\\^');
-      let suttaId = key.split(':')[0].replace(/\./ug, '\\\.');
+      let escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.').replace(/\^/gu, '\\^');
+      let suttaId = key.split(':')[0].replace(/\./gu, '\\.');
       let suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
       this._addTranslationTextToSpan(suttasSection, escapeKey, value);
       this._addTranslationTextToSpan(suttaArticle, escapeKey, value);
@@ -839,7 +857,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let div = document.createElement('div');
     div.innerHTML = text;
     this._recurseDomChildren(div, true, unit);
-    segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`).replace(/%spback%/g, '</span>').replace(/—/g, '</span>—<span class="word">');
+    segment.innerHTML = div.innerHTML
+      .replace(/%spfrnt%/g, `<span class="word">`)
+      .replace(/%spback%/g, '</span>')
+      .replace(/—/g, '</span>—<span class="word">');
   }
 
   _recurseDomChildren(start, output, unit) {
@@ -867,22 +888,23 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let tt = node.data;
     let strArr = tt.split(/\s+/g);
     let str = '';
-    for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-      if (unit === 'word') {
-        str += `%spfrnt%${strArr[i]}%spback% `;
-      } else if (unit === 'graph') {
-        for (let graph of strArr[i]) {
-          str += `%spfrnt%${graph}%spback%`;
+    for (let i = 0; i < strArr.length; i++)
+      if (strArr[i]) {
+        if (unit === 'word') {
+          str += `%spfrnt%${strArr[i]}%spback% `;
+        } else if (unit === 'graph') {
+          for (let graph of strArr[i]) {
+            str += `%spfrnt%${graph}%spback%`;
+          }
+          str += ' ';
         }
-        str += ' ';
       }
-    }
     node.data = str;
   }
 
   _addWordSpanId() {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll('span.word').forEach((word) => {
+    this.shadowRoot.querySelectorAll('span.word').forEach(word => {
       word.id = `word_${wordIdSeed}`;
       wordIdSeed++;
     });
@@ -893,7 +915,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let allWordSpans = this.shadowRoot.querySelectorAll(selector);
     let arraySpans = Array.from(allWordSpans);
     arraySpans.forEach(word => {
-      word.onclick = (e) => {
+      word.onclick = e => {
         if (!this.isPaliLookupEnabled) return;
         const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
         if (scBottomSheet) {
@@ -910,7 +932,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _removeDefineFocusedClass() {
-    this.shadowRoot.querySelectorAll('.spanFocused').forEach((dfElement) => {
+    this.shadowRoot.querySelectorAll('.spanFocused').forEach(dfElement => {
       dfElement.classList.remove('spanFocused');
     });
   }
@@ -941,7 +963,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _conditionallyPutWordsIntoSpans() {
-    if (this.translatedSutta && (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')) {
+    if (
+      this.translatedSutta &&
+      (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')
+    ) {
       this._putWordsIntoSpans('.translation .text', 'word');
     } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
       if (this.shadowRoot.querySelector('.root')) {
@@ -964,14 +989,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._segmentedTextContentElement().classList.add('latin-script');
       // set the latin text segment iso codes, if not set already
       if (!this._segmentedTextContentElement().querySelector(`.original-text[lang='pli-Latn']`)) {
-        segments.forEach((item) => this._setScriptISOCode(item, this.rootSutta.lang));
+        segments.forEach(item => this._setScriptISOCode(item, this.rootSutta.lang));
       }
       this.hasScriptBeenChanged = false;
-    } else if (scriptNames.includes(this.paliScript)) { // if the script name is valid:
+      //} else if (scriptNames.includes(this.paliScript)) { // if the script name is valid:
+    } else if (this.paliScript) {
+      // if the script name is valid:
       this._setScript(segments);
       this.hasScriptBeenChanged = true;
     }
-    if (!this.translatedSutta) { // if we're in a segmented root text, set the top text div lang attribute:
+    if (!this.translatedSutta) {
+      // if we're in a segmented root text, set the top text div lang attribute:
       this._setScriptISOCode(this._segmentedTextContentElement(), this.rootSutta.lang);
     } else {
       this._segmentedTextContentElement().removeAttribute('lang');
@@ -986,21 +1014,35 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _resetScript(segments) {
-    Object.keys(this.scriptIsoCodes).forEach((scriptName) => {
+    Object.keys(this.scriptIsoCodes).forEach(scriptName => {
       this._segmentedTextContentElement().classList.remove(`${scriptName}-script`);
     });
     Array.from(segments).forEach(item => {
       let words = item.querySelectorAll('.word');
-      Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
+      Array.from(words).forEach(
+        word => (word.innerHTML = word.dataset.latin_text || word.innerHTML)
+      );
     });
+  }
+
+  async _scriptTransliterate(target, text) {
+    if (!target || !text) {
+      return;
+    }
+    const converterApi = `http://localhost/api/transliterate/${target}/${text}`;
+    try {
+      return await (await fetch(converterApi)).json();
+    } catch (error) {
+      this.lastError = error;
+      return '';
+    }
   }
 
   _setScript(segments) {
     this._segmentedTextContentElement().classList.add(`${this.paliScript}-script`);
-    const transLiterator = new Transliterator();
     const scriptFunctionName = `to${this._scriptFunctionName()}`;
     this._ensureSpansExist();
-    this._setScriptOfSegments(segments, scriptFunctionName, transLiterator);
+    this._setScriptOfSegments(segments, scriptFunctionName);
   }
 
   _ensureSpansExist() {
@@ -1009,15 +1051,18 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
   }
 
-  _setScriptOfSegments(segments, scriptFunctionName, t) {
-    Array.from(segments).forEach(item => {
+  async _setScriptOfSegments(segments, scriptFunctionName) {
+    for (const item of Array.from(segments)) {
       this._setScriptISOCode(item, this.rootSutta.lang);
-      let words = item.querySelectorAll('.word');
-      Array.from(words).forEach(word => {
+      const words = item.querySelectorAll('.word');
+      for (const word of Array.from(words)) {
         word.dataset.latin_text = word.innerHTML;
-        word.innerHTML = t[scriptFunctionName](word.innerHTML);
-      })
-    });
+        word.innerHTML = await this._scriptTransliterate(
+          this._scriptFunctionName(),
+          word.innerHTML
+        );
+      }
+    }
   }
 
   _scriptFunctionName() {
