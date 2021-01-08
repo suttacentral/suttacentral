@@ -32,7 +32,6 @@ from common.queries import (
     DICTIONARY_SIMILAR,
     EXPANSION,
     PWA,
-    AVAILABLE_TRANSLATIONS_LIST,
     TRANSLATION_COUNT_BY_DIVISION,
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
@@ -265,7 +264,6 @@ class Menu(Resource):
         else:
             data = list(db.aql.execute(MENU, bind_vars=bind_vars))
 
-        data, _ = self.make_yellow_brick_road(data, language)
         return data
 
     def make_yellow_brick_road(self, menu_entries: List[dict], language: str) -> Tuple[List[dict], bool]:
