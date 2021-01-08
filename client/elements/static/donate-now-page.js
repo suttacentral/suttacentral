@@ -94,11 +94,6 @@ mwc-select + mwc-textfield
   max-width: 240px
 }
 
- #submit-row
-{
-    justify-content: flex-end;
-}
-
   mwc-button
   {
         --mdc-theme-primary: var(--sc-primary-accent-color);
@@ -178,29 +173,6 @@ mwc-icon
             <mwc-formfield label="${this.localize('monthly')}">
               <mwc-radio name="frequency"></mwc-radio>
             </mwc-formfield>
-          </div>
-          <div class="row first-optional">
-            <mwc-textfield
-              label="${this.localize('Name (optional)')}"
-              maxlength="200"
-            ></mwc-textfield>
-          </div>
-          <div class="row">
-            <mwc-textfield
-              type="email"
-              validationMessage="${this.localize('invalidEmail')}"
-              maxlength="200"
-              autoValidate
-              label="${this.localize('email')}"
-            ></mwc-textfield>
-          </div>
-          <div class="row">
-            <mwc-textarea
-              label="${this.localize('message')}"
-              rows="2"
-              maxlength="200"
-              charCounter
-            ></mwc-textarea>
           </div>
           <div id="submit-row" class="row margin-top">
             <mwc-button raised label="${this.localize('payWithCard')}"></mwc-button>
