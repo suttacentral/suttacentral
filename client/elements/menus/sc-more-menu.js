@@ -59,10 +59,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         padding: 4px;
         margin: 0 4px 0 1px;
         --mdc-theme-surface: var(--sc-tertiary-background-color);
-      }
-
-      .switch-item {
-        
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
 
       .chevron-right {
