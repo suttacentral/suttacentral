@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from typing import Dict, Set
+from typing import Dict, Set, List
 
 from arango.database import Database
 
@@ -40,18 +40,13 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
     db['blurbs'].import_bulk(blurbs)
 
 
-def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
+def parse_name_file_content(file_content: dict, is_root: bool, lang: str) -> List[dict]:
     names = []
     pattern = r'^.*?:\d+\.(.*?)$'
-    lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
-
-    for name_file in sc_bilara_data_dir.glob('**/name/**/*.json'):
-        is_root = 'root' in name_file.parts
-        lang = name_file.parts[lang_folder_idx]
-        file_content: Dict[str, str] = json_load(name_file)
-        for prefix, name in file_content.items():
-            if type(name) != str:
-                continue
+    for prefix, name in file_content.items():
+        if type(name) is dict:
+            names.extend(parse_name_file_content(name, is_root, lang))
+        else:
             match = re.match(pattern, prefix)
             uid = match.group(1) if match else prefix
             names.append({
@@ -61,6 +56,18 @@ def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
                 'is_root': is_root,
                 'name': name,
             })
+    return names
+
+
+def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
+    names = []
+    lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
+
+    for name_file in sc_bilara_data_dir.glob('**/name/**/*.json'):
+        is_root = 'root' in name_file.parts
+        lang = name_file.parts[lang_folder_idx]
+        file_content: Dict[str, str] = json_load(name_file)
+        names.extend(parse_name_file_content(file_content, is_root, lang))
 
     print(f'{len(names)} names added or updated')
     db['names'].truncate()
