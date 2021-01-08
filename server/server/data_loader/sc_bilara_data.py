@@ -45,9 +45,7 @@ def parse_name_file_content(file_content: dict, is_root: bool, lang: str) -> Lis
     pattern = r'^.*?:\d+\.(.*?)$'
     for prefix, name in file_content.items():
         if type(name) is dict:
-            names.extend(
-                parse_name_file_content(name, is_root, lang)
-            )
+            names.extend(parse_name_file_content(name, is_root, lang))
         else:
             match = re.match(pattern, prefix)
             uid = match.group(1) if match else prefix
