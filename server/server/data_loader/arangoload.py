@@ -220,7 +220,7 @@ def process_names_files(
     for name_file in names_files:
         entries: Dict[str, str] = json_load(name_file)
         for uid, name in entries.items():
-            if not name or type(name) != str:
+            if type(name) != str:
                 continue
             extra_info = super_extra_info if uid in super_extra_info else text_extra_info
             entry = {
@@ -415,12 +415,13 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
         db['root_edges'].import_bulk_logged(edges, wipe=True)
 
         # new data loading
-        db['super_nav_details'].import_bulk(nav_details_docs, overwrite=True)
+        db['super_nav_details'].truncate()
+        db['super_nav_details_edges'].truncate()
+        db['super_nav_details'].import_bulk(nav_details_docs)
         db['super_nav_details_edges'].import_bulk(
             nav_details_edges,
             from_prefix='super_nav_details',
             to_prefix='super_nav_details',
-            overwrite=True
         )
 
         perform_update_queries(db)
