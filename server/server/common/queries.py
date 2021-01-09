@@ -109,6 +109,8 @@ FOR navigation_doc IN super_nav_details
                      en_and_language_blurbs[0]
             )[0].blurb
             
+            LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
+            
             RETURN {
                 uid: descendant.uid,
                 root_name: descendant.name,
@@ -118,7 +120,9 @@ FOR navigation_doc IN super_nav_details
                 node_type: node_type,
                 root_lang_iso: descendant.root_lang,
                 root_lang_name: lang_name,
-                child_range: child_range
+                child_range: child_range,
+                yellow_brick_road: !!yellow_brick_road,
+                yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
             }
         )
         
@@ -138,6 +142,8 @@ FOR navigation_doc IN super_nav_details
              en_and_language_blurbs[0]
     )[0].blurb
     
+    LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))
+    
     RETURN {
         uid: navigation_doc.uid,
         root_name: navigation_doc.name,
@@ -148,7 +154,9 @@ FOR navigation_doc IN super_nav_details
         root_lang_iso: navigation_doc.root_lang,
         root_lang_name: lang_name,
         child_range: child_range,
-        children: descendants
+        yellow_brick_road: !!yellow_brick_road,
+        yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
+        children: descendants,
     }
 '''
 
@@ -186,6 +194,8 @@ LET descendants = (
                  en_and_language_blurbs[0]
         )[0].blurb
         
+        LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
+        
         RETURN {
             uid: descendant.uid,
             root_name: descendant.name,
@@ -195,7 +205,9 @@ LET descendants = (
             node_type: node_type,
             root_lang_iso: descendant.root_lang,
             root_lang_name: lang_name,
-            child_range: child_range
+            child_range: child_range,
+            yellow_brick_road: !!yellow_brick_road,
+            yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
         }
     )
 
@@ -217,6 +229,8 @@ LET blurb = (
          en_and_language_blurbs[0]
 )[0].blurb
 
+LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))
+
 RETURN {
     uid: navigation_doc.uid,
     root_name: navigation_doc.name,
@@ -227,8 +241,44 @@ RETURN {
     root_lang_iso: navigation_doc.root_lang,
     root_lang_name: lang_name,
     child_range: child_range,
-    children: descendants
+    yellow_brick_road: !!yellow_brick_road,
+    yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
+    children: descendants,
 }
+'''
+
+BUILD_YELLOW_BRICK_ROAD = '''
+FOR lang IN language
+    LET lang_code = lang.iso_code
+    
+    LET translated_uids = (
+        FOR doc IN v_text
+            SEARCH doc.lang == lang_code
+            RETURN DISTINCT doc.uid
+    )
+    
+    FOR t_uid IN translated_uids
+        LET nav_doc = DOCUMENT('super_nav_details', t_uid)
+        FILTER nav_doc
+        FOR doc IN 0..100 INBOUND nav_doc super_nav_details_edges
+            LET yellow_brick_doc = {
+                _key: CONCAT_SEPARATOR('_', doc.uid, lang_code),
+                uid: doc.uid,
+                lang: lang_code,
+            }
+            INSERT yellow_brick_doc INTO yellow_brick_road OPTIONS { overwriteMode: 'ignore' }
+'''
+
+COUNT_YELLOW_BRICK_ROAD = '''
+FOR yb_doc IN yellow_brick_road
+    LET children_count = COUNT(
+        FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges
+            LET key = CONCAT_SEPARATOR('_', child.uid, yb_doc.lang)
+            LET yb_child = DOCUMENT('yellow_brick_road', key)
+            FILTER yb_child
+            RETURN yb_child
+    )
+    UPDATE yb_doc WITH { count: children_count } IN yellow_brick_road
 '''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
@@ -840,49 +890,6 @@ FOR subcount IN APPEND(legacy_counts, segmented_counts)
         SORT total DESC
         RETURN {name, total}
 '''
-
-AVAILABLE_TRANSLATIONS_LIST = '''
-/*
-// This commented out query does the same thing, but
-// takes about 4x longer to execute because it doesn't
-// prune the number of documents that it does traversals for
-
-FOR doc IN v_text
-    SEARCH doc.lang == @language
-    COLLECT uid = doc.uid
-    LET root_doc = DOCUMENT('root', uid)
-    FILTER root_doc
-    FOR v, e, p IN 0..10 INBOUND root_doc `root_edges`
-        FILTER v.type == 'division' OR v.type == 'div'
-        RETURN DISTINCT v.uid
-*/
-
-// First collect all distinct text uids
-LET text_uids = (
-    FOR doc IN v_text
-        SEARCH doc.lang == @language
-        RETURN DISTINCT doc.uid
-)
-
-// Now collect their distinct parent documents
-LET parents = (
-    FOR uid IN text_uids
-        LET doc = DOCUMENT('super_nav_details', uid)
-        FILTER doc
-        FOR v, e, p IN 1..1 INBOUND doc super_nav_details_edges
-            RETURN DISTINCT v
-)
-
-// Now get the uids for those parents and all ancestors
-LET parent_uids = (
-    FOR doc IN parents
-        FOR v, e, p IN 0..10 INBOUND doc super_nav_details_edges
-            RETURN v.uid
-)
-
-RETURN SORTED_UNIQUE(UNION(parent_uids, text_uids))
-'''
-
 
 GET_ANCESTORS = '''
     /* Return uids that are ancestors to any uid in @uid_list */
