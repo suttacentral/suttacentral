@@ -316,7 +316,7 @@ select {
   padding: 8px;
   width: 100%;
   margin: 4px 0 0 0;
-  border: 2px solid var(--sc-disabled-text-color);
+  border: 2px solid var(--sc-border-color);
   border-radius: var(--sc-size-sm);
   background-color: var(--sc-secondary-background-color);
 }
