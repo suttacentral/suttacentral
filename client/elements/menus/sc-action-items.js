@@ -74,7 +74,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       }
 
       #btnShowToC:after {
-        content: 'toc';
+        content: 'contents';
       }
 
       .active-light {

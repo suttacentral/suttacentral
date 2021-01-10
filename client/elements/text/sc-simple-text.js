@@ -326,7 +326,7 @@ class SCSimpleText extends SCLitTextPage {
     }
     const dummyElement = document.createElement('template');
     dummyElement.innerHTML = sutta;
-    let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h3')).map((elem, index) => {
+    let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h2')).map((elem, index) => {
       const id = index + 1;
       return { link: id, name: elem.innerText };
     });
