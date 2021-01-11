@@ -49,10 +49,6 @@ class SCSimpleText extends SCLitTextPage {
           margin-top: var(--sc-size-xl);
         }
 
-        .highlight {
-          background-color: var(--sc-disabled-text-color-opaque);
-        }
-
         article p,
         .word,
         .translated-text,
