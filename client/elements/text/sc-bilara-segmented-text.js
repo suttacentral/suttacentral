@@ -1,6 +1,7 @@
 import { LitElement, html, css, unsafeCSS } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { store } from '../../redux-store';
+import { API_ROOT } from '../../constants';
 
 import { SCLitTextPage } from './sc-lit-text-page.js';
 import '../lookups/sc-pli.js';
@@ -24,6 +25,8 @@ import {
   hideAsterisk,
   showAsterisk,
 } from '../styles/sc-layout-bilara-styles.js';
+
+import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
   static get properties() {
@@ -52,7 +55,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       spansForWordsGenerated: { type: Boolean },
       spansForGraphsGenerated: { type: Boolean },
       isChineseLookupEnabled: { type: Boolean },
-      scriptIsoCodes: { type: Object },
       hasScriptBeenChanged: { type: Boolean },
       localizedStringsPath: { type: String },
       currentStyles: { type: Object },
@@ -64,7 +66,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   constructor() {
     super();
-    let textOptions = store.getState().textOptions;
+    const { textOptions } = store.getState();
     this.showParagraphs = textOptions.paragraphsEnabled;
     this.paragraphs = textOptions.paragraphDescriptions;
     this.isLoading = false;
@@ -79,14 +81,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
     this.showHighlighting = textOptions.showHighlighting;
-    this.scriptIsoCodes = {
-      latin: 'Latn',
-      sinhala: 'Sinh',
-      devanagari: 'Deva',
-      thai: 'Thai',
-      myanmar: 'Mymr',
-      burmese: 'Burmese (Myanmar)',
-    };
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.translationTextSelector = '.translation .text';
@@ -128,6 +122,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         ${commonStyles}
         ${typographyCommonStyles}
         ${typographyBilaraStyles}
+        ${paliScriptsStyles}
       </style>
       ${this.currentStyles} ${this.referencesDisplayStyles} ${this.notesDisplayStyles}
 
@@ -979,9 +974,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
       return;
     }
-
     const segments = this.shadowRoot.querySelectorAll('.root');
-    const scriptNames = Object.keys(this.scriptIsoCodes);
     if (this.hasScriptBeenChanged) {
       this._resetScript(segments);
     }
@@ -992,8 +985,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         segments.forEach(item => this._setScriptISOCode(item, this.rootSutta.lang));
       }
       this.hasScriptBeenChanged = false;
-      //} else if (scriptNames.includes(this.paliScript)) { // if the script name is valid:
-    } else if (this.paliScript) {
+    } else if (this._checkScriptValid(this.paliScript)) {
       // if the script name is valid:
       this._setScript(segments);
       this.hasScriptBeenChanged = true;
@@ -1006,17 +998,20 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
   }
 
+  _checkScriptValid(script) {
+    return scriptIdentifiers.find(x => {
+      return x.script === script;
+    });
+  }
+
   _setScriptISOCode(targetNode, langAttr) {
     if (langAttr === 'pli' && this.paliScript) {
-      langAttr += `-${this.scriptIsoCodes[this.paliScript]}`;
+      langAttr += `-${this.paliScript}`;
     }
     targetNode.setAttribute('lang', langAttr);
   }
 
   _resetScript(segments) {
-    Object.keys(this.scriptIsoCodes).forEach(scriptName => {
-      this._segmentedTextContentElement().classList.remove(`${scriptName}-script`);
-    });
     Array.from(segments).forEach(item => {
       let words = item.querySelectorAll('.word');
       Array.from(words).forEach(
@@ -1029,7 +1024,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!target || !text) {
       return;
     }
-    const converterApi = `http://localhost/api/transliterate/${target}/${text}`;
+    const converterApi = `${API_ROOT}/transliterate/${target}/${text}`;
     try {
       return await (await fetch(converterApi)).json();
     } catch (error) {
@@ -1039,7 +1034,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _setScript(segments) {
-    this._segmentedTextContentElement().classList.add(`${this.paliScript}-script`);
+    this._addRootTextPaliScriptClass();
     const scriptFunctionName = `to${this._scriptFunctionName()}`;
     this._ensureSpansExist();
     this._setScriptOfSegments(segments, scriptFunctionName);
@@ -1051,16 +1046,22 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
   }
 
+  _addRootTextPaliScriptClass() {
+    this.shadowRoot.querySelectorAll('.root .text').forEach(element => {
+      element.classList.remove(...element.classList);
+      element.classList.add('text');
+      element.classList.add(`${this.paliScript.toLowerCase()}-script`);
+    });
+  }
+
   async _setScriptOfSegments(segments, scriptFunctionName) {
     for (const item of Array.from(segments)) {
       this._setScriptISOCode(item, this.rootSutta.lang);
       const words = item.querySelectorAll('.word');
       for (const word of Array.from(words)) {
         word.dataset.latin_text = word.innerHTML;
-        word.innerHTML = await this._scriptTransliterate(
-          this._scriptFunctionName(),
-          word.innerHTML
-        );
+        word.innerHTML =
+          (await this._scriptTransliterate(this._scriptFunctionName(), word.innerHTML)) || '';
       }
     }
   }

@@ -9,7 +9,7 @@ import '@material/mwc-list/mwc-list-item';
 
 import '../addons/sc-toasts';
 
-import { scriptIdentifiers } from './sc-aksharamukha-converter';
+import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converter';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from './localization-mixin';
@@ -38,7 +38,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    let textOptions = store.getState().textOptions;
+    const { textOptions } = store.getState();
     this.selectedTextView = textOptions.segmentedSuttaTextView;
     this.paliLookupArray = [
       {
@@ -179,150 +179,151 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: none;
+    return [
+      paliScriptsStyles,
+      css`
+        :host {
+          display: none;
 
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-      }
+          --mdc-theme-secondary: var(--sc-primary-accent-color);
+          --mdc-typography-font-family: var(--sc-sans-font);
+          --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        }
 
-      section {
-        font-family: var(--sc-sans-font);
+        section {
+          font-family: var(--sc-sans-font);
 
-        position: absolute;
+          position: absolute;
 
-        display: grid;
-        overflow-x: scroll;
-        overflow-y: none;
+          display: grid;
+          overflow-x: scroll;
+          overflow-y: none;
 
-        width: 100%;
-        padding: 0;
+          width: 100%;
+          padding: 0;
 
-        border-bottom: 1px solid #ccc;
-        background-color: var(--sc-secondary-background-color);
-        box-shadow: var(--sc-shadow-elevation-4dp);
+          border-bottom: 1px solid #ccc;
+          background-color: var(--sc-secondary-background-color);
+          box-shadow: var(--sc-shadow-elevation-4dp);
 
-        grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
-      }
+          grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
+        }
 
-      .tools {
-        padding: 8px;
+        .tools {
+          padding: 8px;
 
-        border-right: 1px solid var(--sc-border-color);
-      }
+          border-right: 1px solid var(--sc-border-color);
+        }
 
-      .tools:first-of-type {
-        margin-left: 8px;
-      }
+        .tools:first-of-type {
+          margin-left: 8px;
+        }
 
-      .tools:last-of-type {
-        border-right: none;
-      }
+        .tools:last-of-type {
+          border-right: none;
+        }
 
-      details {
-        position: relative;
+        details {
+          position: relative;
 
-        box-sizing: border-box;
-        margin: 0 0 0 4px;
-      }
+          box-sizing: border-box;
+          margin: 0 0 0 4px;
+        }
 
-      details p {
-        position: absolute;
-        z-index: 10;
+        details p {
+          position: absolute;
+          z-index: 10;
 
-        max-width: 360px;
-        margin: 4px 0 0 0;
-        padding: 8px 12px;
+          max-width: 360px;
+          margin: 4px 0 0 0;
+          padding: 8px 12px;
 
-        color: var(--sc-primary-text-color);
-        border: 1px solid var(--sc-border-color);
-        border-radius: 8px;
-        background-color: var(--sc-tertiary-background-color);
-        box-shadow: var(--sc-shadow-elevation-4dp);
-      }
+          color: var(--sc-primary-text-color);
+          border: 1px solid var(--sc-border-color);
+          border-radius: 8px;
+          background-color: var(--sc-tertiary-background-color);
+          box-shadow: var(--sc-shadow-elevation-4dp);
+        }
 
-      summary {
-        font-weight: 600;
+        summary {
+          font-weight: 600;
 
-        display: flex;
+          display: flex;
 
-        padding: 8px;
+          padding: 8px;
 
-        cursor: pointer;
+          cursor: pointer;
 
-        color: var(--sc-primary-text-color);
-        outline-color: var(--sc-border-color);
+          color: var(--sc-primary-text-color);
+          outline-color: var(--sc-border-color);
 
-        align-items: baseline;
-      }
+          align-items: baseline;
+        }
 
-      summary::-webkit-details-marker {
-        color: var(--sc-disabled-text-color);
-      }
+        summary::-webkit-details-marker {
+          color: var(--sc-disabled-text-color);
+        }
 
-      mwc-formfield {
-        display: block;
-      }
+        mwc-formfield {
+          display: block;
+        }
 
-      .two-column {
-        margin-right: 8px;
+        .two-column {
+          margin-right: 8px;
 
-        column-count: 2;
-      }
+          column-count: 2;
+        }
 
-      .four-column {
-        margin-right: 8px;
+        .four-column {
+          margin-right: 8px;
 
-        column-count: 4;
-      }
+          column-count: 4;
+        }
 
-      mwc-switch {
-        padding: 12px;
+        mwc-switch {
+          padding: 12px;
 
-        --mdc-theme-surface: var(--sc-tertiary-background-color);
-      }
+          --mdc-theme-surface: var(--sc-tertiary-background-color);
+        }
 
-      mwc-checkbox {
-        --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
-      }
+        mwc-checkbox {
+          --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+        }
 
-      mwc-radio {
-        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
-      }
+        mwc-radio {
+          --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
+        }
 
-      section::-webkit-scrollbar {
-        height: 10px;
-      }
+        section::-webkit-scrollbar {
+          height: 10px;
+        }
 
-      section::-webkit-scrollbar-track {
-        background: #ccc;
-      }
+        section::-webkit-scrollbar-track {
+          background: #ccc;
+        }
 
-      section::-webkit-scrollbar-thumb {
-        background: var(--sc-disabled-text-color);
-      }
+        section::-webkit-scrollbar-thumb {
+          background: var(--sc-disabled-text-color);
+        }
 
-      mwc-button {
-        --mdc-theme-primary: var(--sc-primary-color);
-        --mdc-theme-on-primary: white;
-      }
+        mwc-button {
+          --mdc-theme-primary: var(--sc-primary-color);
+          --mdc-theme-on-primary: white;
+        }
 
-select {
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-sm);
-  color: var(--sc-primary-text-color);
-  padding: 8px;
-  width: 100%;
-  margin: 4px 0 0 0;
-  border: 2px solid var(--sc-border-color);
-  border-radius: var(--sc-size-sm);
-  background-color: var(--sc-secondary-background-color);
-}
-
-
-    `;
+        select {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-skolar-font-size-sm);
+          color: var(--sc-primary-text-color);
+          padding: 8px;
+          width: 100%;
+          margin: 4px 0 0 0;
+          border: 2px solid var(--sc-border-color);
+          border-radius: var(--sc-size-sm);
+          background-color: var(--sc-secondary-background-color);
+        }
+      `,
+    ];
   }
 
   render() {
@@ -351,7 +352,7 @@ select {
                       name="textView"
                       value="${item.textView}"
                       data-type="${item.textViewLabel}"
-                      ?checked="${this.selectedTextView === item.textView ? true : false}"
+                      ?checked="${this.selectedTextView === item.textView}"
                       @change="${this._onTextViewChanged}"
                     ></mwc-radio>
                   </mwc-formfield>
@@ -415,7 +416,7 @@ select {
                       name="paliLookup"
                       value="${dictLanguage.dict}"
                       data-language="${dictLanguage.language}"
-                      ?checked="${this.paliLookupLanguage === dictLanguage.language ? true : false}"
+                      ?checked="${this.paliLookupLanguage === dictLanguage.language}"
                       @change="${this._onPaliLookupChanged}"
                     ></mwc-radio>
                   </mwc-formfield>
@@ -430,7 +431,7 @@ select {
   _onPaliLookupChanged(e) {
     this.paliLookupLanguage = e.target.dataset.language;
     const targetLanguage = e.target.value.split('2')[1];
-    let isActive = this.paliLookupLanguage !== 'None';
+    const isActive = this.paliLookupLanguage !== 'None';
     this.actions.activatePaliLookup(isActive, targetLanguage, this.paliLookupLanguage);
 
     if (isActive) {
@@ -461,9 +462,7 @@ select {
                       name="chineseLookup"
                       value="${dictLanguage.dict}"
                       data-language="${dictLanguage.language}"
-                      ?checked="${this.chineseLookupLanguage === dictLanguage.language
-                        ? true
-                        : false}"
+                      ?checked="${this.chineseLookupLanguage === dictLanguage.language}"
                       @change="${this._onChineseLookupChanged}"
                     ></mwc-radio>
                   </mwc-formfield>
@@ -478,7 +477,7 @@ select {
   _onChineseLookupChanged(e) {
     this.chineseLookupLanguage = e.target.dataset.language;
     const targetLanguage = e.target.value.split('2')[1];
-    let isActive = this.chineseLookupLanguage !== 'None';
+    const isActive = this.chineseLookupLanguage !== 'None';
     this.actions.activateChineseLookup(isActive, targetLanguage, this.chineseLookupLanguage);
 
     if (isActive) {
@@ -502,10 +501,15 @@ select {
               <p>${this.localize('changePaliScriptDescription')}</p>
             </details>
             <div class="form-controls">
-              <select @selected="${this._onPaliScriptChanged}">
+              <select id="selPaliScripts">
                 ${scriptIdentifiers.map(
                   script => html`
-                    <option value="${script.language}">${script.language}</option>
+                    <option
+                      value="${script.language}"
+                      class="${script.script.toLowerCase()}-script"
+                    >
+                      ${script.language}
+                    </option>
                   `
                 )}
               </select>
@@ -516,14 +520,20 @@ select {
   }
 
   _onPaliScriptChanged(e) {
-    console.log(scriptIdentifiers[e.detail.index].script);
-    this.actions.choosePaliTextScript(scriptIdentifiers[e.detail.index].script);
-    const scriptChangeMessage = this.localizeEx(
+    const scTopsheetViews = document
+      .querySelector('sc-site-layout')
+      .shadowRoot.querySelector('#setting_menu');
+    const selectedScript = scriptIdentifiers[e.currentTarget.selectedIndex].script;
+    const selPaliScriptsElement = scTopsheetViews.shadowRoot.querySelector('#selPaliScripts');
+    selPaliScriptsElement.classList.remove(...this.classList);
+    selPaliScriptsElement.classList.add(`${selectedScript.toLowerCase()}-script`);
+    scTopsheetViews.actions.choosePaliTextScript(selectedScript);
+    const scriptChangeMessage = scTopsheetViews.localizeEx(
       'scriptChanged',
       'paliScript',
-      scriptIdentifiers[e.detail.index].script
+      selectedScript
     );
-    this._showToast(scriptChangeMessage);
+    scTopsheetViews._showToast(scriptChangeMessage);
   }
 
   get referenceDisplayTypeTemplate() {
@@ -544,9 +554,7 @@ select {
                       name="referenceDisplayType"
                       value="${item.displayType}"
                       data-type="${item.displayTypeLabel}"
-                      ?checked="${this.selectedReferenceDisplayType === item.displayType
-                        ? true
-                        : false}"
+                      ?checked="${this.selectedReferenceDisplayType === item.displayType}"
                       @change="${this._onReferenceDisplayTypeChanged}"
                     ></mwc-checkbox>
                   </mwc-formfield>
@@ -564,7 +572,7 @@ select {
     if (this.selectedReferenceDisplayType === 'none') {
       this._showToast(this.localize('textualInformationDisabled'));
     } else {
-      let refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
+      const refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
       this._showToast(
         this.localize(`referenceDisplayType_${refType}`) +
           ' ' +
@@ -593,7 +601,7 @@ select {
   _onShowHighlightingChanged(e) {
     this.showHighlighting = e.target.checked;
     this.actions.setShowHighlighting(e.target.checked);
-    let msg = this.showHighlighting ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
+    const msg = this.showHighlighting ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
     this._showToast(this.localize(msg));
   }
 
@@ -684,6 +692,12 @@ select {
         });
       },
     };
+  }
+
+  firstUpdated() {
+    this.shadowRoot
+      .querySelector('#selPaliScripts')
+      .addEventListener('change', this._onPaliScriptChanged);
   }
 }
 
