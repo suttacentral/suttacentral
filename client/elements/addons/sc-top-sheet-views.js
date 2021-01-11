@@ -507,6 +507,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
                     <option
                       value="${script.language}"
                       class="${script.script.toLowerCase()}-script"
+                      title="${script.script}"
                     >
                       ${script.language}
                     </option>
