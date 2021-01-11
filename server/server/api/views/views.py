@@ -32,7 +32,6 @@ from common.queries import (
     DICTIONARY_SIMILAR,
     EXPANSION,
     PWA,
-    AVAILABLE_TRANSLATIONS_LIST,
     TRANSLATION_COUNT_BY_DIVISION,
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
@@ -265,39 +264,7 @@ class Menu(Resource):
         else:
             data = list(db.aql.execute(MENU, bind_vars=bind_vars))
 
-        data, _ = self.make_yellow_brick_road(data, language)
         return data
-
-    def make_yellow_brick_road(self, menu_entries: List[dict], language: str) -> Tuple[List[dict], bool]:
-        """
-        Adds the 'yellow_brick_road' field for menu items and their children.
-        The field becomes 'true' if any of the child documents has a translation in the specified language.
-        This is needed to mark items that have translations in the language specified by the user.
-        """
-        is_submenu_yellow_brick_road = False
-        updated_entries = []
-        for entry in menu_entries:
-            uid = entry['uid']
-
-            is_entry_yellow_brick = self.has_translated_descendent(uid, language)
-            if 'children' in entry:
-                children, is_child_yellow_brick = self.make_yellow_brick_road(
-                    entry['children'], language
-                )
-                is_entry_yellow_brick += is_child_yellow_brick
-                entry['children'] = children
-            entry['yellow_brick_road'] = bool(is_entry_yellow_brick)
-            is_submenu_yellow_brick_road += is_entry_yellow_brick
-            updated_entries.append(entry)
-        return updated_entries, is_submenu_yellow_brick_road
-
-    @cache.memoize(timeout=long_cache_timeout)
-    def has_translated_descendent(self, uid: str, language: str) -> bool:
-        db = get_db()
-        uids = next(
-            db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'language': language})
-        )
-        return uid in set(uids)
 
 
 class SuttaplexList(Resource):
