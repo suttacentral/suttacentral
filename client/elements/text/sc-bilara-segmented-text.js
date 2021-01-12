@@ -985,7 +985,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         segments.forEach(item => this._setScriptISOCode(item, this.rootSutta.lang));
       }
       this.hasScriptBeenChanged = false;
-    } else if (this._checkScriptValid(this.paliScript)) {
+    } else if (this._checkSelectedScriptValid()) {
       // if the script name is valid:
       this._setScript(segments);
       this.hasScriptBeenChanged = true;
@@ -998,10 +998,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
   }
 
-  _checkScriptValid(script) {
-    return scriptIdentifiers.find(x => {
-      return x.script === script;
-    });
+  _checkSelectedScriptValid() {
+    return scriptIdentifiers.find(x => x.script === this.paliScript);
   }
 
   _setScriptISOCode(targetNode, langAttr) {
