@@ -24,4 +24,5 @@ from .views import (
     TranslationCountByDivision,
     TranslationCountByLanguage,
     SegmentedSutta,
+    Transliterate,
 )

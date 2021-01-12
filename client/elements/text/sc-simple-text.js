@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-import { SCLitTextPage } from "./sc-lit-text-page.js";
+import { SCLitTextPage } from './sc-lit-text-page.js';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js';
@@ -9,20 +9,18 @@ import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
-import { Transliterator } from './transliterator.js';
 import { store } from '../../redux-store';
-
 
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
-      <style> 
+      <style>
         ${layoutSimpleStyles}
-        ${typographyCommonStyles}
-        ${typographyLegacyStyles}
-        ${typographyI18nStyles}
-        ${lookupStyles}
-        :host {
+          ${typographyCommonStyles}
+          ${typographyLegacyStyles}
+          ${typographyI18nStyles}
+          ${lookupStyles}
+          :host {
           --iron-icon-fill-color: var(--sc-disabled-text-color);
           --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
           --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
@@ -33,8 +31,8 @@ class SCSimpleText extends SCLitTextPage {
         }
 
         .image-book-link {
-          margin-bottom: .5em;
-          margin-left: .2em;
+          margin-bottom: 0.5em;
+          margin-left: 0.2em;
         }
 
         .image-book-link:before {
@@ -56,10 +54,10 @@ class SCSimpleText extends SCLitTextPage {
           transition: background-color 300ms ease-in;
         }
 
-        p, li {
+        p,
+        li {
           hanging-punctuation: first last;
         }
-
       </style>
 
       <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
@@ -77,7 +75,6 @@ class SCSimpleText extends SCLitTextPage {
       sutta: { type: Object },
       // If true, shows the paragraph numbers on the right of the text.
       showParagraphs: { type: Boolean },
-      paliScript: { type: String },
       paragraphs: { type: Array },
       suttaTitle: { type: String },
       author: { type: String },
@@ -99,7 +96,7 @@ class SCSimpleText extends SCLitTextPage {
       showHighlighting: { type: Boolean },
       chosenReferenceDisplayType: { type: String },
       navItems: { type: Array },
-    }
+    };
   }
 
   constructor() {
@@ -107,7 +104,6 @@ class SCSimpleText extends SCLitTextPage {
     let textOptionsState = store.getState().textOptions;
     this.sutta = {};
     this.showParagraphs = false;
-    this.paliScript = textOptionsState.script;
     this.paragraphs = textOptionsState.paragraphDescriptions;
     this.suttaTitle = '';
     this.author = '';
@@ -122,30 +118,31 @@ class SCSimpleText extends SCLitTextPage {
     this.showHighlighting = textOptionsState.showHighlighting;
     this.chosenReferenceDisplayType = textOptionsState.referenceDisplayType;
     this.textualInfoClassTitles = {
-      'gloss': 'Definition of term.',
-      'add': 'Text added by the editor or translator for clarification',
-      'supplied': 'Text hypothetically reconstructed by the editor or translator.',
-      'supplied2': 'Text hypothetically reconstructed by the editor or translator.',
-      'expanded': 'Text expanded by editor or translator although elided in original.',
-      'surplus': 'Text present in the source which the editor believes to be superfluous or redundant.',
-      'del': 'Text deleted by the editor as superfluous',
+      gloss: 'Definition of term.',
+      add: 'Text added by the editor or translator for clarification',
+      supplied: 'Text hypothetically reconstructed by the editor or translator.',
+      supplied2: 'Text hypothetically reconstructed by the editor or translator.',
+      expanded: 'Text expanded by editor or translator although elided in original.',
+      surplus:
+        'Text present in the source which the editor believes to be superfluous or redundant.',
+      del: 'Text deleted by the editor as superfluous',
       'del-scribe': 'Text deleted by the scribe as superfluous',
-      'corrected': 'Corrected reading.'
+      corrected: 'Corrected reading.',
     };
     this.classTitles = {
-      'gap': 'Gap in the manuscript.',
+      gap: 'Gap in the manuscript.',
       't-gaiji': 'Chinese characters not in Unicode.',
-      'term': 'Defined term.',
-      'pe': 'Instructions for expanding text supplied by the editor or translator.',
-      'unclear': 'Unclear reading.',
-      'scribe': 'Note of attribution by the scribe of the manuscript.',
-      'suppliedmetre': 'Metre reconstructed by the editor.'
+      term: 'Defined term.',
+      pe: 'Instructions for expanding text supplied by the editor or translator.',
+      unclear: 'Unclear reading.',
+      scribe: 'Note of attribution by the scribe of the manuscript.',
+      suppliedmetre: 'Metre reconstructed by the editor.',
     };
     this.editionsExpansionData = {
-      'ms': 'Mūlasarvāstivādavinayavastu, part 1-4',
-      'dutt': 'Mūlasarvāstivādavinayavastu, part 1-4, Dutt (1939-1959)',
-      'divy': 'Divyāvadāna (1886)',
-      'ms84': 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)'
+      ms: 'Mūlasarvāstivādavinayavastu, part 1-4',
+      dutt: 'Mūlasarvāstivādavinayavastu, part 1-4, Dutt (1939-1959)',
+      divy: 'Divyāvadāna (1886)',
+      ms84: 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
     };
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.currentId = '';
@@ -154,7 +151,7 @@ class SCSimpleText extends SCLitTextPage {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substr(1));
       }, 0);
-    }
+    };
   }
 
   get actions() {
@@ -162,14 +159,14 @@ class SCSimpleText extends SCLitTextPage {
       changeSuttaMetaText(metaText) {
         store.dispatch({
           type: 'CHANGE_SUTTA_META_TEXT',
-          metaText: metaText
-        })
+          metaText: metaText,
+        });
       },
       changeDisplaySettingMenuState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display
-        })
+          displaySettingMenu: display,
+        });
       },
       showToc(tableOfContents) {
         store.dispatch({
@@ -177,10 +174,10 @@ class SCSimpleText extends SCLitTextPage {
           payload: {
             tableOfContents,
             disableToCListStyle: true,
-          }
-        })
+          },
+        });
       },
-    }
+    };
   }
 
   firstUpdated() {
@@ -200,7 +197,9 @@ class SCSimpleText extends SCLitTextPage {
   }
 
   _hideTopSheets() {
-    const scActionItems = document.querySelector("sc-site-layout").shadowRoot.querySelector("#action_items");
+    const scActionItems = document
+      .querySelector('sc-site-layout')
+      .shadowRoot.querySelector('#action_items');
     scActionItems.hideItems();
   }
 
@@ -209,12 +208,13 @@ class SCSimpleText extends SCLitTextPage {
     window.removeEventListener('hashchange', this._hashChangeHandler);
   }
 
-
   _hideSettingMenu() {
-    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('hide-sc-top-sheet', {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   updated(changedProps) {
@@ -223,9 +223,6 @@ class SCSimpleText extends SCLitTextPage {
     }
     if (changedProps.has('showParagraphs')) {
       this._computeParagraphs();
-    }
-    if (changedProps.has('paliScript')) {
-      this.changeScript();
     }
     if (changedProps.has('isLoading')) {
       this._loadingChanged();
@@ -274,10 +271,7 @@ class SCSimpleText extends SCLitTextPage {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    let textOptionsState = state.textOptions;
-    if (this.paliScript !== textOptionsState.script) {
-      this.paliScript = textOptionsState.script;
-    }
+    const textOptionsState = state.textOptions;
     if (this.showParagraphs !== textOptionsState.paragraphsEnabled) {
       this.showParagraphs = textOptionsState.paragraphsEnabled;
     }
@@ -303,19 +297,18 @@ class SCSimpleText extends SCLitTextPage {
     this.spansForGraphsGenerated = false;
     this._paliLookupStateChanged();
     this._chineseLookupStateChanged();
-    this.changeScript();
     this.actions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
     this._referenceDisplayTypeChanged();
     this.navItems = this._prepareNavigation();
     setTimeout(() => {
-      this._hashChangeHandler()
+      this._hashChangeHandler();
     }, 100);
   }
 
   _prepareNavigation() {
-    let sutta = this.sutta["text"];
+    const sutta = this.sutta['text'];
     if (!sutta) {
       this.actions.showToc([]);
       return;
@@ -372,9 +365,11 @@ class SCSimpleText extends SCLitTextPage {
     if (divisionId === 'pli') divisionId = 'vi';
     if (divisionId === 'iti') divisionId = 'it';
     if (this.paragraphs && this.showParagraphs) {
-      this.paragraphs.forEach((paragraph) => {
-        const refs = this.shadowRoot.querySelector('#simple_text_content').querySelectorAll(`.${paragraph.uid}`);
-        Array.from(refs).forEach((item) => {
+      this.paragraphs.forEach(paragraph => {
+        const refs = this.shadowRoot
+          .querySelector('#simple_text_content')
+          .querySelectorAll(`.${paragraph.uid}`);
+        Array.from(refs).forEach(item => {
           if (this._shouldDisplayBookIcon(divisionId, item.id)) {
             this._processVolPageInfo(item, divisionId, paragraph);
           } else {
@@ -386,10 +381,10 @@ class SCSimpleText extends SCLitTextPage {
   }
 
   _shouldDisplayBookIcon(divisionId, itemId) {
-    let divisionIdMatch = (divisionId === 'tha' || divisionId === 'thi');
+    let divisionIdMatch = divisionId === 'tha' || divisionId === 'thi';
     let secondEdition = itemId.includes('2ed');
-    let correctId = (itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/));
-    return (!divisionIdMatch && !secondEdition && correctId);
+    let correctId = itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/);
+    return !divisionIdMatch && !secondEdition && correctId;
   }
 
   _processVolPageInfo(item, divisionId, paragraph) {
@@ -417,18 +412,22 @@ class SCSimpleText extends SCLitTextPage {
       item.innerHTML = `
         <span class="image-link">
             <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
-            <iron-icon title="${this.localize('viewImage')}" class="image-book-link" icon="sc-iron-icons:book">
+            <iron-icon title="${this.localize(
+              'viewImage'
+            )}" class="image-book-link" icon="sc-iron-icons:book">
             </iron-icon>
         </span>
       `;
       item.classList.add('image-book-link');
       item.classList.add('textual-info-paragraph');
       item.addEventListener('click', () => {
-        this.dispatchEvent(new CustomEvent('show-image', {
-          detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
-          bubbles: true,
-          composed: true
-        }));
+        this.dispatchEvent(
+          new CustomEvent('show-image', {
+            detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+            bubbles: true,
+            composed: true,
+          })
+        );
       });
     }, 500);
   }
@@ -447,14 +446,16 @@ class SCSimpleText extends SCLitTextPage {
       visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
       for (let key in this.classTitles) {
         const classRefs = textElement.querySelectorAll(`.${key}`);
-        Array.from(classRefs).forEach(item => item.title = this.classTitles[key]);
+        Array.from(classRefs).forEach(item => (item.title = this.classTitles[key]));
       }
       for (let key in this.textualInfoClassTitles) {
         const textualInfoClassRefs = textElement.querySelectorAll(`.${key}`);
         if (visible) {
-          Array.from(textualInfoClassRefs).forEach(item => item.title = this.textualInfoClassTitles[key]);
+          Array.from(textualInfoClassRefs).forEach(
+            item => (item.title = this.textualInfoClassTitles[key])
+          );
         } else {
-          Array.from(textualInfoClassRefs).forEach(item => item.title = '');
+          Array.from(textualInfoClassRefs).forEach(item => (item.title = ''));
         }
       }
       const corrElements = textElement.querySelectorAll('.corr');
@@ -479,74 +480,16 @@ class SCSimpleText extends SCLitTextPage {
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      let targetElement = this.shadowRoot.querySelector(`h3:nth-of-type(${location.hash.substr(1)})`);
-      if(targetElement) {
-          targetElement.scrollIntoView();
-          window.scrollTo(0, window.scrollY - margin);
+      const targetElement = this.shadowRoot.querySelector(
+        `h3:nth-of-type(${location.hash.substr(1)})`
+      );
+      if (targetElement) {
+        targetElement.scrollIntoView();
+        window.scrollTo(0, window.scrollY - margin);
       }
     } catch (e) {
       console.error(e);
     }
-  }
-
-  changeScript() {
-    if (!this.sutta || this.sutta.lang !== 'pli') {
-      return;
-    }
-    const tooltips = this.shadowRoot.querySelectorAll('paper-tooltip');
-    this._resetScript();
-    switch (this.paliScript) {
-      case 'latin':
-        this.shadowRoot.querySelector('#simple_text_content').classList.add('latin-script');
-        break;
-      case 'sinhala':
-        this._setScript('sinhala', tooltips);
-        break;
-      case 'devanagari':
-        this._setScript('devanagari', tooltips);
-        break;
-      case 'thai':
-        this._setScript('thai', tooltips);
-        break;
-      case 'myanmar':
-        this._setScript('myanmar', tooltips);
-        break;
-    }
-    this._computeParagraphs();
-  }
-
-  _resetScript() {
-    this.shadowRoot.querySelector('#simple_text_content').classList
-      .remove('latin-script', 'sinhala-script', 'devanagari-script', 'thai-script', 'myanmar-script');
-    let words = this.shadowRoot.querySelector('#simple_text_content').querySelectorAll('.word');
-    Array.from(words).forEach(word => word.innerHTML = word.dataset.latin_text || word.innerHTML);
-  }
-
-  _setScript(scriptName, tooltips) {
-    this.shadowRoot.querySelector('#simple_text_content').classList.add(`${scriptName}-script`);
-    const t = new Transliterator();
-    const scriptFunctionName = `to${this._capitalize(scriptName)}`;
-    this._ensureSpansExist();
-    const textElement = this.shadowRoot.querySelector('article');
-    this.setSimpleTextContentScript(textElement, t, scriptFunctionName);
-    Array.from(tooltips).forEach(item => item.innerHTML = t[scriptFunctionName](item.innerHTML));
-  }
-
-  _ensureSpansExist() {
-    if (!this.spansForWordsGenerated) {
-      this._conditionallyPutIntoSpans('pli');
-    }
-  }
-
-  setSimpleTextContentScript(elem, transliterator, scriptFunctionName) {
-    Array.from(elem.querySelectorAll('.word')).forEach(word => {
-      word.dataset.latin_text = word.innerHTML;
-      word.innerHTML = transliterator[scriptFunctionName](word.innerHTML);
-    })
-  }
-
-  _capitalize(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   // Lookup word start
@@ -586,7 +529,8 @@ class SCSimpleText extends SCLitTextPage {
     let div = document.createElement('div');
     div.innerHTML = text;
     that._recurseDomChildren(div, true, unit);
-    segment.innerHTML = div.innerHTML.replace(/%spfrnt%/g, `<span class="word">`)
+    segment.innerHTML = div.innerHTML
+      .replace(/%spfrnt%/g, `<span class="word">`)
       .replace(/%spback%/g, '</span>')
       .replace(/%spfrnt_l%/g, `<span class="word lookup_element">`)
       .replace(/%spback_l%/g, '</span>')
@@ -624,13 +568,14 @@ class SCSimpleText extends SCLitTextPage {
     let tt = node.data;
     let strArr = tt.split(/\s+/g);
     let str = '';
-    for (let i = 0; i < strArr.length; i++) if (strArr[i]) {
-      if (unit === 'word') {
-        str += `%spfrnt_l%${strArr[i]}%spback_l% `;
-      } else if (unit === 'graph') {
-        str = this._insertGraphsIntoMarkups(str, strArr[i]);
+    for (let i = 0; i < strArr.length; i++)
+      if (strArr[i]) {
+        if (unit === 'word') {
+          str += `%spfrnt_l%${strArr[i]}%spback_l% `;
+        } else if (unit === 'graph') {
+          str = this._insertGraphsIntoMarkups(str, strArr[i]);
+        }
       }
-    }
     node.data = str;
   }
 
@@ -641,7 +586,7 @@ class SCSimpleText extends SCLitTextPage {
         str += `%spfrnt_w%graph%spback%`;
         continue;
       }
-      if (!('，,!！?？;；:：（()）[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph))) {
+      if (!'，,!！?？;；:：（()）[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』'.includes(graph)) {
         str += `%spfrnt_l%${graph}%spback_l%`;
       } else {
         str += `%spback%%spfrnt%${graph}%spback%%spfrnt%`;
@@ -751,9 +696,9 @@ class SCSimpleText extends SCLitTextPage {
       lookupId = 'pali_lookup';
     }
     let lookup = that.shadowRoot.querySelector(`#${lookupId}`);
-    textContainer.querySelectorAll('.lookup_element').forEach((element) => {
+    textContainer.querySelectorAll('.lookup_element').forEach(element => {
       this._addTooltipToElement(that, element, lang, lookup);
-    })
+    });
   }
 
   _addTooltipToElement(that, word, lang, lookup) {
@@ -762,16 +707,19 @@ class SCSimpleText extends SCLitTextPage {
     let states = {
       isWordHovered: false,
       isTooltipHovered: false,
-      isTooltipShown: false
+      isTooltipShown: false,
     };
-    word.addEventListener('mouseover', (e) => {
-      if ((this.isPaliLookupEnabled && lang === 'pli') || (this.isChineseLookupEnabled && lang === 'lzh')) {
+    word.addEventListener('mouseover', e => {
+      if (
+        (this.isPaliLookupEnabled && lang === 'pli') ||
+        (this.isChineseLookupEnabled && lang === 'lzh')
+      ) {
         word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
         states.isWordHovered = true;
         that._addTooltip(word, tooltip, lookup, states, e, lang);
       }
     });
-    word.addEventListener('mouseout', (e) => {
+    word.addEventListener('mouseout', e => {
       states.isWordHovered = false;
       setTimeout(() => {
         if (!states.isTooltipHovered) {
@@ -780,10 +728,10 @@ class SCSimpleText extends SCLitTextPage {
       }, 0);
       that._removeTooltip(word, tooltip, states, e);
     });
-    tooltip.addEventListener('mouseover', (e) => {
+    tooltip.addEventListener('mouseover', e => {
       states.isTooltipHovered = true;
     });
-    tooltip.addEventListener('mouseout', (e) => {
+    tooltip.addEventListener('mouseout', e => {
       states.isTooltipHovered = false;
       that._removeTooltip(word, tooltip, states, e);
     });
