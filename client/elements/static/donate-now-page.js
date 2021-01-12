@@ -11,6 +11,9 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants.js';
 import { icons } from '../../img/sc-icons';
 
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+
 class SCDonateNow extends LitLocalized(LitElement) {
   static get properties() {
     return {
@@ -33,46 +36,92 @@ class SCDonateNow extends LitLocalized(LitElement) {
 
   static get styles() {
     return css`
-      #form-wrapper {
-        display: flex;
-        justify-content: center;
-      }
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+/* allow mwc-select to drop below container */
+  article 
+  {
+    content-visibility: visible;
+  }
 
-      #submit-row {
-        justify-content: flex-end;
-      }
 
-      .flex-wrap {
-        flex-wrap: wrap;
-      }
+form
+{
+    display: flex;
+    flex-direction: column;
 
-      .row {
-        width: 60vw;
-        display: flex;
-      }
+    margin-top: 16px;
+}
 
-      .margin-top {
-        margin-top: 15px;
-      }
+.row
+{
+    display: flex;
 
-      form {
-        display: flex;
-        flex-direction: column;
-      }
+    margin-top: 16px;
+}
 
-      mwc-select,
-      mwc-textfield,
-      mwc-textarea {
-        flex-grow: 1;
-      }
+.first-optional
+{
+    margin: 64px 0 18px
+}
 
-      mwc-select {
-        margin-right: 20px;
-      }
+mwc-textfield,
+mwc-textarea,
+mwc-select
+{
+    --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
+    --mdc-theme-primary: var(--sc-primary-color);
+}
 
-      mwc-icon {
-        color: var(--sc-disabled-text-color);
-      }
+mwc-formfield
+{
+    --mdc-typography-body2-font-family: var(--sc-sans-font);
+}
+
+mwc-radio
+{
+      --mdc-theme-secondary: var(--sc-primary-color);
+}
+
+mwc-textfield,
+mwc-textarea
+{
+    flex-grow: 1;
+}
+
+mwc-select
+{
+    margin-right: 20px;
+    width: 120px;
+}
+
+mwc-select + mwc-textfield
+{
+  max-width: 240px
+}
+
+  mwc-button
+  {
+        --mdc-theme-primary: var(--sc-primary-accent-color);
+
+        --mdc-typography-button-font-family: var(--sc-sans-font);
+        --mdc-typography-button-font-weight: 600;
+  }
+
+aside
+{
+    font-family: var(--sc-sans-font);
+
+    margin-top: 64px;
+}
+
+mwc-icon
+{
+    vertical-align: middle;
+
+    fill: var(--sc-disabled-text-color);
+}
+
     `;
   }
 
@@ -90,11 +139,12 @@ class SCDonateNow extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <div id="form-wrapper" class="flex-wrap">
-        <form>
-          <div class="row">
+      <main>
+      <article>
+        
+
             <h1>${this.localize('donateNow')}</h1>
-          </div>
+<form>
           <div class="row">
             <mwc-select label="${this.localize('currency')}">
               ${this.currencies &&
@@ -111,14 +161,16 @@ class SCDonateNow extends LitLocalized(LitElement) {
             </mwc-select>
             <mwc-textfield
               pattern="^[+]?(\\d+[.,]?\\d{0,2})$"
+              type="number"
               label="${this.localize('amount')}"
               autoValidate
               required
+              validationMessage="${this.localize('invalidValue')}"
               maxlength="20"
             ></mwc-textfield>
           </div>
           <div class="row">
-            <p class="explanation">${this.localize('chooseFrequency')}</p>
+            <p>${this.localize('chooseFrequency')}</p>
           </div>
           <div class="row">
             <mwc-formfield label="${this.localize('oneTime')}">
@@ -128,41 +180,22 @@ class SCDonateNow extends LitLocalized(LitElement) {
               <mwc-radio name="frequency"></mwc-radio>
             </mwc-formfield>
           </div>
-          <div class="row margin-top">
-            <mwc-textfield
-              label="${this.localize('Name (optional)')}"
-              maxlength="200"
-            ></mwc-textfield>
-          </div>
-          <div class="row margin-top">
-            <mwc-textfield
-              type="email"
-              validationMessage="${this.localize('invalidEmail')}"
-              maxlength="200"
-              autoValidate
-              label="${this.localize('email')}"
-            ></mwc-textfield>
-          </div>
-          <div class="row">
-            <mwc-textarea
-              label="${this.localize('message')}"
-              rows="2"
-              maxlength="200"
-              charCounter
-            ></mwc-textarea>
-          </div>
           <div id="submit-row" class="row margin-top">
             <mwc-button raised label="${this.localize('payWithCard')}"></mwc-button>
           </div>
         </form>
-        <div class="row flex-wrap">
+        <aside>
           <p>
             <mwc-icon>${icons['info']}</mwc-icon>
             ${unsafeHTML(this.localize('storageDisclaimer'))}
           </p>
-          <p>${icons['info']} ${this.localize('feeDisclaimer')}</p>
-        </div>
-      </div>
+          <p>
+          <mwc-icon>${icons['info']}</mwc-icon> 
+          ${this.localize('feeDisclaimer')}
+          </p>
+        </aside>
+        </article>
+      </main>
     `;
   }
 }
