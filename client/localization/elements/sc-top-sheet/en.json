@@ -1,6 +1,6 @@
 {
   "en": {
-      "noteSummary": "Show notes and variants",
+      "noteSummary": "Show notes and variants in segmented texts",
       "noteDescription": "Where available, view comments on the translation and variant readings for root texts.",
       "asterisk": "Tooltip on asterisk",
       "sidenotes": "Show as sidenotes",
@@ -55,8 +55,8 @@
       "noteDisplayType_Sidenotes": "Display as sidenotes",
       "textView": "Original text and translation",
       "textViewDescription": "Some texts on SuttaCentral are “segmented”; the original text and translation are approximately matched line by line. For such texts, see both root text and translation.",
-      "showHighlighting": "Show highlighting",
-      "showHighlightingDescription": "Where applicable, highlight the text to show extra details about the structure.",
+      "showHighlighting": "Highlight text-critical details",
+      "showHighlightingDescription": "Where applicable, highlight the text to show extra details such as variant readings, corrections, structure, etc.",
       "showHighlightingEnabled": "Show highlighting is now enabled.",
       "showHighlightingDisabled": "Show highlighting is now disabled."
   }

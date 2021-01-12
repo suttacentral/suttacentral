@@ -74,7 +74,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       }
 
       #btnShowToC:after {
-        content: 'toc';
+        content: 'contents';
       }
 
       .active-light {
@@ -539,8 +539,8 @@ class SCActionItems extends LitLocalized(LitElement) {
       this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
       this.shadowRoot.querySelector('#btnShowParallels').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnShowToC').style.display = 'inherit';
       this._suttaMetaTextChanged();
+      this._displayToCButtonStateChange();
       this.shadowRoot.querySelector('#tools_menu').classList.add('contextToolbarExpand');
     } else {
       this.shadowRoot.querySelector('#btnTools').style.display = 'none';

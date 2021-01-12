@@ -101,7 +101,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     ${item.translated_name || item.root_name}
                   </span>
                   <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="${item.root_lang_iso}">
+                  <span class="subTitle" lang="pi">
                     ${item.root_name}
                   </span>
                   </div>
