@@ -49,10 +49,6 @@ class SCSimpleText extends SCLitTextPage {
           margin-top: var(--sc-size-xl);
         }
 
-        .highlight {
-          background-color: var(--sc-disabled-text-color-opaque);
-        }
-
         article p,
         .word,
         .translated-text,
@@ -326,7 +322,7 @@ class SCSimpleText extends SCLitTextPage {
     }
     const dummyElement = document.createElement('template');
     dummyElement.innerHTML = sutta;
-    let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h3')).map((elem, index) => {
+    let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h2')).map((elem, index) => {
       const id = index + 1;
       return { link: id, name: elem.innerText };
     });
