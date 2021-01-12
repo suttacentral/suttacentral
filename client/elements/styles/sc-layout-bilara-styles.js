@@ -1,11 +1,11 @@
-import { html,css } from 'lit-element';
+import { html, css } from 'lit-element';
 
 export const commonStyles = css`
   main {
     display: flex;
     justify-content: center;
   }
-  
+
   p {
     -webkit-hyphens: auto;
     -webkit-hyphenate-limit-before: 3;
@@ -57,7 +57,7 @@ export const plainStyles = html`
       background-color: inherit;
     }
 
-  /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
+    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
     .comment[data-tooltip]:hover::after,
     .variant[data-tooltip]:hover::after {
       display: block;
@@ -67,7 +67,8 @@ export const plainStyles = html`
 
 export const plainPaliStyles = html`
   <style>
-    section, article {
+    section,
+    article {
       max-width: 720px;
     }
 
@@ -165,7 +166,7 @@ export const plainPlusStyles = html`
 `;
 
 export const sideBySideStyles = html`
-  <style> 
+  <style>
     .segment {
       display: grid;
 
@@ -235,7 +236,7 @@ export const sideBySidePlusStyles = html`
 
       display: grid;
 
-      grid-template-columns: 100px  minmax(0, auto) minmax(0, auto);
+      grid-template-columns: 100px minmax(0, auto) minmax(0, auto);
       grid-column-gap: var(--sc-size-lg);
     }
 
@@ -458,7 +459,7 @@ export const lineByLinePlusStyles = html`
       .reference,
       .translation,
       .root {
-          display: block;
+        display: block;
       }
 
       .variant,
@@ -511,7 +512,7 @@ export const hideAsterisk = html`
     .variant {
       display: none;
     }
-    
+
     .comment:before,
     .variant:before {
       content: none;
