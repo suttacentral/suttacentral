@@ -4,7 +4,7 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js
 
 const styles = css`
 .contents {
-  margin: 0 auto !important;
+    margin-top: 2em;
     padding: 0 var(--sc-size-md);
     max-width: 720px;
     display: block;
@@ -87,6 +87,7 @@ class SCTopSheetToC extends SCTopSheetCommon {
   render() {
     return html`
     <section>
+    <h2>Table of Contents</h2>
       <nav class="contents">
         <ol class=${this.disableToCListStyle ? "unordered-ol" : ""}>
           ${this.items ? this.items.map(item => html`<li><a @click=${this._hideMenu} href="${'#' + item.link}">${item.name}</a></li>`) : ''}

@@ -15,6 +15,7 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
+from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD
 from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
@@ -692,6 +693,12 @@ def process_difficulty(db, additional_info_dir):
     db.collection('difficulties').import_bulk_logged(docs, wipe=True)
 
 
+def make_yellow_brick_road(db: Database):
+    db.collection('yellow_brick_road').truncate()
+    db.aql.execute(BUILD_YELLOW_BRICK_ROAD)
+    db.aql.execute(COUNT_YELLOW_BRICK_ROAD)
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -777,6 +784,9 @@ def run(no_pull=False):
     print_stage("Loading html_text")
     load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
 
+    print_stage('Make yellow brick road')
+    make_yellow_brick_road(db)
+
     print_stage("Processing and loading blurbs from additional_info")
     process_blurbs(db, additional_info_dir)
 
@@ -823,7 +833,6 @@ def run(no_pull=False):
     change_tracker.update_mtimes()
 
     print_stage('All done')
-
 
 
 def bilara_run():
