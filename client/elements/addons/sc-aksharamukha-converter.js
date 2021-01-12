@@ -457,7 +457,7 @@ export const scriptIdentifiers = [
     language: 'ꨍꩌ',
   },
   {
-    script: 'Cyrillic',
+    script: 'RussianCyrillic',
     language: 'чйриллич',
   },
   {
