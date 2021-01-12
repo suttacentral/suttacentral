@@ -2,6 +2,12 @@ import {html, css} from 'lit-element';
 import SCTopSheetCommon from "./sc-top-sheet-common";
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 
+const styles = css`
+.contents {
+    margin: 1em 0 2em
+}
+`;
+
 class SCTopSheetToC extends SCTopSheetCommon {
     static get styles() {
         return [
@@ -50,7 +56,7 @@ class SCTopSheetToC extends SCTopSheetCommon {
     <section>
     <h2>Table of Contents</h2>
       <nav class="contents">
-        <ol>
+        <ol class=${this.disableToCListStyle ? "unordered-ol" : ""}>
           ${this.items ? this.items.map(item => html`<li><a @click=${this._hideMenu} href="${'#' + item.link}">${item.name}</a></li>`) : ''}
         </ol>
       </nav>
