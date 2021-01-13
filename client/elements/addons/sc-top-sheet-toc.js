@@ -6,6 +6,10 @@ const styles = css`
 .contents {
     margin: 1em 0 2em
 }
+
+.unordered-ol{
+  list-style-type: none
+}
 `;
 
 class SCTopSheetToC extends SCTopSheetCommon {
