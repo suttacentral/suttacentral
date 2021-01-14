@@ -664,23 +664,6 @@ def load_json_file(db, change_tracker, json_file):
         db[collection_name].import_bulk_logged(data, wipe=True)
 
 
-def process_blurbs(db, additional_info_dir):
-    print('Loading blurbs')
-    blurb_file = additional_info_dir / 'blurbs.json'
-    collection_name = 'blurbs'
-
-    blurb_info = json_load(blurb_file)
-
-    docs = [
-        {'uid': uid, 'lang': lang, 'blurb': blurb}
-        for lang, groups in blurb_info.items()
-        for suttas in groups.values()
-        for uid, blurb in tqdm(suttas.items())
-    ]
-
-    db.collection('blurbs').import_bulk_logged(docs, wipe=True)
-
-
 def process_difficulty(db, additional_info_dir):
     print('Loading difficulties')
     difficulty_file = additional_info_dir / 'difficulties.json'
@@ -789,9 +772,6 @@ def run(no_pull=False):
 
     print_stage('Make yellow brick road')
     make_yellow_brick_road(db)
-
-    print_stage("Processing and loading blurbs from additional_info")
-    process_blurbs(db, additional_info_dir)
 
     print_stage("Loading difficulty from additional_info")
     process_difficulty(db, additional_info_dir)
