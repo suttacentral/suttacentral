@@ -1,9 +1,14 @@
+from .dictionary import (
+    DictionaryFull,
+    LookupDictionaries,
+    DictionarySimilar,
+    DictionaryAdjacent,
+)
 from .publication import Publication
 from .views import (
     Currencies,
     Donations,
     Languages,
-    LookupDictionaries,
     Menu,
     Paragraphs,
     Parallels,
@@ -12,10 +17,7 @@ from .views import (
     Images,
     Epigraphs,
     WhyWeRead,
-    DictionaryFull,
     Glossary,
-    DictionaryAdjacent,
-    DictionarySimilar,
     Expansion,
     CollectionUrlList,
     StripePublicKey,

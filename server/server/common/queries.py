@@ -504,18 +504,6 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
     }
 '''
 
-# Takes 2 bind_vars: `from` and `to`.
-DICTIONARIES = '''
-FOR dict IN dictionaries
-    FILTER dict.from == @from AND dict.to == @to AND dict.lookup == true AND dict.main == @main
-    LIMIT 1
-    RETURN {
-        from: dict.from,
-        to: dict.to,
-        dictionary: dict.dictionary
-    }
-'''
-
 SUTTA_VIEW = (
     '''
 LET root_text = DOCUMENT(CONCAT('root/', @uid))
@@ -636,15 +624,6 @@ FOR paragraph IN paragraphs
     }
 '''
 
-DICTIONARYFULL = '''
-FOR dictionary IN dictionary_full
-    FILTER dictionary.word == @word
-    RETURN {
-        dictname: dictionary.dictname,
-        text: dictionary.text
-    }
-'''
-
 IMAGES = '''
 FOR image IN images
     FILTER image.division == @division AND image.vol == @vol
@@ -681,14 +660,14 @@ RETURN MERGE(glossary_item)
 
 DICTIONARY_ADJACENT = '''
 LET word_number = (
-    FOR dictionary IN dictionary_full
+    FOR dictionary IN dictionaries_complex
         FILTER dictionary.word == @word
         LIMIT 1
         RETURN dictionary.num
     )
 
 LET adjacent_words = (
-    FOR selected IN dictionary_full
+    FOR selected IN dictionaries_complex
         FILTER selected.num < word_number+6
         FILTER selected.num > word_number-6
         SORT selected.num
