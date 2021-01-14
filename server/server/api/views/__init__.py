@@ -4,6 +4,7 @@ from .dictionary import (
     DictionarySimilar,
     DictionaryAdjacent,
 )
+from .glossary import Glossary
 from .publication import Publication
 from .views import (
     Currencies,
@@ -17,7 +18,6 @@ from .views import (
     Images,
     Epigraphs,
     WhyWeRead,
-    Glossary,
     Expansion,
     CollectionUrlList,
     StripePublicKey,

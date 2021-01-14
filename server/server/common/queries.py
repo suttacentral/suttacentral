@@ -648,16 +648,6 @@ FOR text IN why_we_read
     RETURN text.text
 '''
 
-GLOSSARY = '''
-LET glossary_item = (
-    FOR dictionary IN dictionary_full
-        FILTER dictionary.dictname == "gloss"
-        RETURN { [ dictionary.word ]: dictionary.text }
-    )
-    
-RETURN MERGE(glossary_item)
-'''
-
 DICTIONARY_ADJACENT = '''
 LET word_number = (
     FOR dictionary IN dictionaries_complex
