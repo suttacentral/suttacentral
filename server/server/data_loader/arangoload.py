@@ -112,7 +112,7 @@ def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
 def process_division_files(
     docs, name_docs, edges, mapping, division_files, root_languages, structure_dir
 ):
-    sutta_file = json_load(structure_dir / 'sutta.json')
+    sutta_file = json_load(structure_dir / 'text_extra_info.json')
 
     sutta_data = {}
     for sutta in sutta_file:
@@ -121,6 +121,9 @@ def process_division_files(
             'acronym': sutta['acronym'],
             'biblio_uid': sutta['biblio_uid'],
             'volpage': sutta['volpage'],
+            'alt_name': sutta['alt_name'],
+            'alt_acronym': sutta['alt_acronym'],
+            'alt_volpage': sutta['alt_volpage'],
         }
 
     reg = regex.compile(r'^\D+')
@@ -172,7 +175,7 @@ def process_division_files(
                 if 'num' not in entry:
                     entry['num'] = i
 
-                for data_name in ['volpage', 'biblio_uid', 'acronym']:
+                for data_name in ['volpage', 'biblio_uid', 'acronym', 'alt_name', 'alt_acronym', 'alt_volpage']:
                     try:
                         entry[data_name] = sutta_data[uid][data_name]
                     except KeyError:
