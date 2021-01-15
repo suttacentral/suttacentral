@@ -24,7 +24,6 @@ from . import (
     biblio,
     currencies,
     dictionaries,
-    dictionary_full,
     paragraphs,
     po,
     textdata,
@@ -776,11 +775,14 @@ def run(no_pull=False):
     print_stage("Loading difficulty from additional_info")
     process_difficulty(db, additional_info_dir)
 
-    print_stage("Loading dictionaries")
-    dictionaries.load_dictionaries(db, dictionaries_dir)
+    print_stage('Loading simple dictionaries')
+    dictionaries.load_simple_dictionaries(db, dictionaries_dir)
 
-    print_stage("Loading full dictionaries")
-    dictionary_full.load_dictionary_full(db, dictionaries_dir, change_tracker)
+    print_stage('Loading complex dictionaries')
+    dictionaries.load_complex_dictionaries(db, dictionaries_dir)
+
+    print_stage('Loading glossary dictionaries')
+    dictionaries.load_glossaries(db, dictionaries_dir)
 
     print_stage("Loading currencies from additional_info")
     currencies.load_currencies(db, additional_info_dir)
