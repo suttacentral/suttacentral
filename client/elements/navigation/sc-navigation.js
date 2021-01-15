@@ -407,7 +407,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.parallelsData[0].translated_name ||
+        this.parallelsData[0].root_name ||
+        this.parallelsData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
     }
   }
@@ -422,6 +426,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (!this.fullSiteLanguageName) {
       this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     }
+    this._initPitakaCards({ dispatchState: true });
   }
 
   updated() {
@@ -502,7 +507,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   _addBlurbsClickEvent() {
     this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
-      element.onclick = e => {
+      element.onclick = () => {
         element.classList.contains('blurbShrink')
           ? element.classList.remove('blurbShrink')
           : element.classList.add('blurbShrink');
@@ -551,7 +556,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name ||
+        this.vaggasData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggas) {
@@ -689,7 +698,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name ||
+        this.vaggasData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildren) {
@@ -804,7 +817,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggaChildrenChildren[0].translated_name ||
+        this.vaggaChildrenChildren[0].root_name ||
+        this.vaggaChildrenChildren[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildrenChildren) {
@@ -917,7 +934,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.sakaChildren.translated_name || this.sakaChildren.root_name || this.sakaChildren.uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showSakaChildren) {
