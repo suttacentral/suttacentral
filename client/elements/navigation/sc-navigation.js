@@ -35,7 +35,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-
+    this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
@@ -47,7 +47,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   // check from the last level, crop the URL item if it is not valid,
   // and if valid so, check that the parent contains it, and if not, crop the URL item.
   async _verifyURL() {
-    if (!['sutta', 'vinaya', 'abhidhamma'].includes(this.pitakaUid)) {
+    if (!this.tipitakaUids.includes(this.pitakaUid)) {
       window.location.href = '/pitaka/sutta';
     }
     const navArray = this.routePath.split('/');
@@ -339,13 +339,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   <header>
                     <span class="header-left">
                       <span class="title" lang="${child.root_lang_iso}">
-                        ${this.localizeEx(
-                          'CollectionOf',
-                          'sutta',
-                          this.localize(this.pitakaName),
-                          'pitaka',
-                          child.translated_name || child.root_name || child.uid
-                        )}
+                        ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -413,7 +407,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.parallelsData[0].translated_name ||
+        this.parallelsData[0].root_name ||
+        this.parallelsData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
     }
   }
@@ -428,6 +426,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (!this.fullSiteLanguageName) {
       this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     }
+    this._initPitakaCards({ dispatchState: true });
   }
 
   updated() {
@@ -455,7 +454,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                   <header>
                     <span class="header-left">
                       <span class="title" lang="${child.root_lang_iso}">
-                        ${this.localize(this.pitakaName)}
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
@@ -509,7 +507,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   _addBlurbsClickEvent() {
     this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
-      element.onclick = e => {
+      element.onclick = () => {
         element.classList.contains('blurbShrink')
           ? element.classList.remove('blurbShrink')
           : element.classList.add('blurbShrink');
@@ -558,7 +556,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name ||
+        this.vaggasData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggas) {
@@ -614,7 +616,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -697,7 +698,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name ||
+        this.vaggasData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildren) {
@@ -729,7 +734,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -813,7 +817,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggaChildrenChildren[0].translated_name ||
+        this.vaggaChildrenChildren[0].root_name ||
+        this.vaggaChildrenChildren[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildrenChildren) {
@@ -845,7 +853,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -927,7 +934,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.sakaChildren.translated_name || this.sakaChildren.root_name || this.sakaChildren.uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showSakaChildren) {
@@ -959,7 +968,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
