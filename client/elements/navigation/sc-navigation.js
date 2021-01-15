@@ -338,7 +338,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 >
                   <header>
                     <span class="header-left">
-                      <span class="title" lang="${child.root_lang_iso}">
+                      <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
@@ -453,7 +453,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                 >
                   <header>
                     <span class="header-left">
-                      <span class="title" lang="${child.root_lang_iso}">
+                      <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">

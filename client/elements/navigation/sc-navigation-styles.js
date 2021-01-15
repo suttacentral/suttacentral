@@ -205,6 +205,10 @@ a
     align-items: center;
 }
 
+.number-translated{
+    white-space: nowrap;
+    }
+
 .essay-link
 {
     font-family: var(--sc-serif-font);
