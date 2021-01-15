@@ -78,3 +78,14 @@ def load_complex_dictionaries(db: Database, dictionaries_dir: Path):
     collection.truncate()
     for chunk in chunks(docs, 1000):
         collection.import_bulk(chunk, on_duplicate='ignore')
+
+
+def load_glossaries(db: Database, dictionaries_dir: Path):
+    glossaries_dir = dictionaries_dir / 'glossaries'
+    docs = []
+    for glossary_file in tqdm(glossaries_dir.glob('**/*.json')):
+        content = json_load(glossary_file)
+        docs.extend(content)
+
+    db.collection('dictionaries_glossary').truncate()
+    db.collection('dictionaries_glossary').import_bulk(docs)

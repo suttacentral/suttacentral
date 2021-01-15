@@ -25,7 +25,6 @@ from common.queries import (
     IMAGES,
     EPIGRAPHS,
     WHY_WE_READ,
-    GLOSSARY,
     EXPANSION,
     PWA,
     TRANSLATION_COUNT_BY_DIVISION,
@@ -664,28 +663,6 @@ class Paragraphs(Resource):
         db = get_db()
 
         data = db.aql.execute(PARAGRAPHS)
-
-        return list(data), 200
-
-
-class Glossary(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self):
-        """
-        Send list of glossary results for related terms in dictionary view
-        ---
-        responses:
-            glossary:
-                type: array
-                items:
-                    type: object
-                    properties:
-                        <word>:
-                            type: string
-        """
-        db = get_db()
-
-        data = db.aql.execute(GLOSSARY)
 
         return list(data), 200
 

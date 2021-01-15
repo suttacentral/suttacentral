@@ -781,6 +781,9 @@ def run(no_pull=False):
     print_stage('Loading complex dictionaries')
     dictionaries.load_complex_dictionaries(db, dictionaries_dir)
 
+    print_stage('Loading glossary dictionaries')
+    dictionaries.load_glossaries(db, dictionaries_dir)
+
     print_stage("Loading currencies from additional_info")
     currencies.load_currencies(db, additional_info_dir)
 
