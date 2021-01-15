@@ -178,6 +178,32 @@ export const navigationNormalModeStyles = html`
     font-variant-caps: all-small-caps;
 }
 
+    .subTitle::before {
+      content: attr(lang);
+      background-color: var(--sc-disabled-text-color);
+      color: white;
+      font-weight: 800;
+      padding: 0 4px;
+      margin-right: 8px;
+      line-height: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      display: inline-block;
+      text-align: center;
+      font-size: 14px;
+      --notchSize: 4px;
+      clip-path: polygon(
+        0% var(--notchSize),
+        var(--notchSize) 0%,
+        calc(100% - var(--notchSize)) 0%,
+        100% var(--notchSize),
+        100% calc(100% - var(--notchSize)),
+        calc(100% - var(--notchSize)) 100%,
+        var(--notchSize) 100%,
+        0% calc(100% - var(--notchSize))
+      );
+    }
+
 a
 {
     cursor: pointer;
