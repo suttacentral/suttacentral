@@ -9,5 +9,5 @@ class SecondMigration(Migration):
     def create_collections(self):
         db = get_db()
         collection = 'dictionaries_glossary'
-        db.create_collection('dictionaries_glossary')
+        db.create_collection(collection)
         db.collection(collection).add_hash_index(('entry',))
