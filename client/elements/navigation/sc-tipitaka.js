@@ -57,9 +57,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this._appViewModeChanged();
     this._fetchMainMenu();
     this.tipitakaGuide = new Map([
-      ['Sutta', '/discourses'],
-      ['Vinaya', '/vinaya'],
-      ['Abhidhamma', '/abhidhamma'],
+      ['sutta', '/discourses'],
+      ['vinaya', '/vinaya'],
+      ['abhidhamma', '/abhidhamma'],
     ]);
     this.tipitakaBlurb = new Map([
       [
@@ -132,7 +132,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     <div class="blurb" id="${item.root_name}_blurb">
                       ${this.tipitakaBlurb.get(item.uid)}
                     </div>
-                    <a class="essay-link" href="${this.tipitakaGuide.get(item.root_name)}">
+                    <a class="essay-link" href="${this.tipitakaGuide.get(item.uid)}">
                       <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
                     </a>
                   </div>
