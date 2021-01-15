@@ -35,7 +35,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-
+    this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
@@ -47,7 +47,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   // check from the last level, crop the URL item if it is not valid,
   // and if valid so, check that the parent contains it, and if not, crop the URL item.
   async _verifyURL() {
-    if (!['sutta', 'vinaya', 'abhidhamma'].includes(this.pitakaUid)) {
+    if (!this.tipitakaUids.includes(this.pitakaUid)) {
       window.location.href = '/pitaka/sutta';
     }
     const navArray = this.routePath.split('/');
@@ -339,13 +339,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   <header>
                     <span class="header-left">
                       <span class="title" lang="${child.root_lang_iso}">
-                        ${this.localizeEx(
-                          'CollectionOf',
-                          'sutta',
-                          this.localize(this.pitakaName),
-                          'pitaka',
-                          child.translated_name || child.root_name || child.uid
-                        )}
+                        ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -455,7 +449,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                   <header>
                     <span class="header-left">
                       <span class="title" lang="${child.root_lang_iso}">
-                        ${this.localize(this.pitakaName)}
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
@@ -614,7 +607,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -729,7 +721,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -845,7 +836,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
@@ -959,7 +949,6 @@ class SCNavigation extends LitLocalized(LitElement) {
                     <span class="header-left">
                       <span class="title">
                         ${child.translated_name || child.root_name || child.uid}
-                        ${this.parallelName}
                       </span>
                       <div class="navigation-nerdy-row">
                         <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
