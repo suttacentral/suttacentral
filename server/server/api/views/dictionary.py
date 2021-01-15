@@ -29,7 +29,7 @@ class LookupDictionaries(Resource):
         data = list(
             db.collection('dictionaries_simple').find({'to': to_lang, 'from': from_lang})
         )
-        return data
+        return data, 200
 
 
 class DictionaryAdjacent(Resource):
