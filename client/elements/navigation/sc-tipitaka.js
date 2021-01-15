@@ -133,7 +133,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                       ${this.tipitakaBlurb.get(item.uid)}
                     </div>
                     <a class="essay-link" href="${this.tipitakaGuide.get(item.root_name)}">
-                      <div class="essay">${this.localize(`${item.root_name}_essayTitle`)}</div>
+                      <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
                     </a>
                   </div>
                 </section>
