@@ -195,12 +195,12 @@ class TextInfoModel:
         return None
 
     def _get_name(self, root, lang_uid, uid):
-        hgroup = root.select_one('.hgroup')
-        if not hgroup:
-            logger.error(f'No hgroup found in {lang_uid}/{uid}')
+        header = root.select_one('header')
+        if not header:
+            logger.error(f'No header found in {lang_uid}/{uid}')
             return ''
 
-        h1 = hgroup.select_one('h1')
+        h1 = header.select_one('h1')
         if not h1:
             logger.error(f'No h1 found in {lang_uid}/{uid}')
             return ''
