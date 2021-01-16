@@ -59,6 +59,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this.compactStyles = {};
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.navArray = store.getState().navigationArray;
+    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.siteLanguage = store.getState().siteLanguage;
+    this.localizedStringsPath = '/localization/elements/sc-navigation';
     this._appViewModeChanged();
     this._fetchMainMenu();
     this.tipitakaGuide = new Map([
@@ -80,9 +83,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
         'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is intended for advanced students who have mastered the teachings of the discourses.',
       ],
     ]);
-    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    this.siteLanguage = store.getState().siteLanguage;
-    this.localizedStringsPath = '/localization/elements/sc-navigation';
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
   }
 
@@ -98,7 +98,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       //   this.mainMenuData = await (await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)).json();
       // }
       this.mainMenuData = await (
-        await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)
+        await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
       ).json();
     } catch (err) {
       this.mainMenuError = err;
@@ -120,7 +120,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                   >
                     <header>
                       <span class="header-left">
-                        <span class="title" lang="${this.language}">
+                        <span class="title" lang="${this.siteLanguage}">
                           ${item.translated_name || item.root_name}
                         </span>
                         <div class="navigation-nerdy-row">

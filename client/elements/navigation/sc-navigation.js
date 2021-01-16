@@ -258,11 +258,11 @@ class SCNavigation extends LitLocalized(LitElement) {
       // if (this.navDataCache.has('tipitakaData')) {
       //   this.tipitakaData = this.navDataCache.get('tipitakaData');
       // } else {
-      //   this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)).json();
+      //   this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)).json();
       //   this._updateNavDataCache('tipitakaData', this.tipitakaData);
       // }
       this.tipitakaData = await (
-        await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)
+        await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
       ).json();
     } catch (e) {
       this.lastError = e;
@@ -279,7 +279,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   async _fetchChildrenData(childId) {
-    const url = `${API_ROOT}/menu/${childId}?language=${this.language || 'en'}`;
+    const url = `${API_ROOT}/menu/${childId}?language=${this.siteLanguage || 'en'}`;
     try {
       // if (!this.navDataCache) {
       //   this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
