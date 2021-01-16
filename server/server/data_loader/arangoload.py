@@ -539,7 +539,7 @@ def generate_relationship_edges(
                                 continue
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
                             if not true_to_uids:
-                                logging.error(
+                                logging.info(
                                     f'Relationship to uid could not be matched: {to_uid} (appears as orphan)'
                                 )
                                 true_to_uids = ['orphan']

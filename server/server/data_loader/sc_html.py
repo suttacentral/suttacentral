@@ -18,7 +18,7 @@ import regex
 from lxml.html import defs
 
 
-defs.html5_tags = frozenset({'section', 'article', 'hgroup'})
+defs.html5_tags = frozenset({'section', 'article', 'header'})
 
 
 class CssSelectorFailed(Exception):

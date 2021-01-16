@@ -1,7 +1,4 @@
 import { css, html, LitElement } from 'lit-element';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
 import { LitLocalized } from '../addons/localization-mixin';
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -20,6 +17,7 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
       :host {
         --mdc-theme-primary: var(--sc-primary-accent-color);
         --mdc-select-fill-color: transparent;
+        --mdc-typography-font-family: var(--sc-sans-font);
       }
     `;
   }
