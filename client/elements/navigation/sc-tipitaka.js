@@ -22,6 +22,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       compactStyles: { type: Boolean },
       isCompactMode: { type: Boolean },
       loading: { type: Boolean },
+      siteLanguage: { type: String },
     };
   }
 
@@ -29,6 +30,10 @@ class SCTipitaka extends LitLocalized(LitElement) {
     super._stateChanged(state);
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
+    }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._fetchMainMenu();
     }
   }
 
@@ -76,6 +81,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       ],
     ]);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.siteLanguage = store.getState().siteLanguage;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
   }
@@ -121,11 +127,17 @@ class SCTipitaka extends LitLocalized(LitElement) {
                           <span class="subTitle" lang="pi">${item.root_name}</span>
                         </div>
                       </span>
-                      <span class="header-right">
-                        <span class="number"></span>
-                        <mwc-icon>${icons['tick']}</mwc-icon>
-                        <span class="number-translated">${this.fullSiteLanguageName}</span>
-                      </span>
+                      ${item.yellow_brick_road
+                        ? html`
+                            <span class="header-right">
+                              <mwc-icon>${icons.tick}</mwc-icon>
+                              <span class="number-translated">
+                                <span class="number">${item.yellow_brick_road_count}</span>
+                                ${this.fullSiteLanguageName}
+                              </span>
+                            </span>
+                          `
+                        : ''}
                     </header>
                   </a>
                   <div class="nav-card-content">
