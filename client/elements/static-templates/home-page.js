@@ -531,7 +531,7 @@ class SCHomePage extends SCStaticPage {
                 ${_`Indexes and Terminology`}
               </div>
               <div class="image-card-text">
-                ${_`Like any specialized field, Buddhist studies has it's own terminology and content. It's easy to get lost or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name and simile, as well a glossary of important terms. These hand-curated lists offer another way to find the sutta or passage that you're looking for.`}
+                ${_`Like any specialized field, Buddhist studies has its own terminology. It's easy to get lost or to miss references, so here we provide indexes of terms in the early texts sorted by subject, name and simile, as well a glossary of important terms. These hand-curated lists offer another way to find the sutta or passage that you're looking for.`}
               </div>
             </div>
             <div>
