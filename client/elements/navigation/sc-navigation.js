@@ -20,6 +20,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       routePath: { type: String },
       currentNavPosition: { type: Number },
       loading: { type: Boolean },
+      siteLanguage: { type: String },
     };
   }
 
@@ -34,6 +35,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaUid = this._getPathParamNumber(2);
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.siteLanguage = store.getState().siteLanguage;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
     this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
     this._verifyURL();
@@ -160,6 +162,10 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
+    }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._currentNavPosChanged();
     }
   }
 
@@ -350,7 +356,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons['tick']}</mwc-icon>
+                            <mwc-icon>${icons.tick}</mwc-icon>
                             <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
@@ -423,9 +429,6 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    if (!this.fullSiteLanguageName) {
-      this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    }
     this._initPitakaCards({ dispatchState: true });
   }
 
@@ -465,7 +468,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons['tick']}</mwc-icon>
+                            <mwc-icon>${icons.tick}</mwc-icon>
                             <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
@@ -627,7 +630,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons['tick']}</mwc-icon>
+                            <mwc-icon>${icons.tick}</mwc-icon>
                             <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
@@ -747,7 +750,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons['tick']}</mwc-icon>
+                            <mwc-icon>${icons.tick}</mwc-icon>
                             <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
@@ -864,7 +867,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons['tick']}</mwc-icon>
+                            <mwc-icon>${icons.tick}</mwc-icon>
                             <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
