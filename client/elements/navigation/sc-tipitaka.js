@@ -22,6 +22,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       compactStyles: { type: Boolean },
       isCompactMode: { type: Boolean },
       loading: { type: Boolean },
+      siteLanguage: { type: String },
     };
   }
 
@@ -29,6 +30,10 @@ class SCTipitaka extends LitLocalized(LitElement) {
     super._stateChanged(state);
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
+    }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._fetchMainMenu();
     }
   }
 
@@ -54,6 +59,9 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this.compactStyles = {};
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.navArray = store.getState().navigationArray;
+    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.siteLanguage = store.getState().siteLanguage;
+    this.localizedStringsPath = '/localization/elements/sc-navigation';
     this._appViewModeChanged();
     this._fetchMainMenu();
     this.tipitakaGuide = new Map([
@@ -75,8 +83,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
         'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is intended for advanced students who have mastered the teachings of the discourses.',
       ],
     ]);
-    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    this.localizedStringsPath = '/localization/elements/sc-navigation';
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
   }
 
@@ -92,7 +98,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
       //   this.mainMenuData = await (await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)).json();
       // }
       this.mainMenuData = await (
-        await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)
+        await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
       ).json();
     } catch (err) {
       this.mainMenuError = err;
@@ -114,18 +120,24 @@ class SCTipitaka extends LitLocalized(LitElement) {
                   >
                     <header>
                       <span class="header-left">
-                        <span class="title" lang="${this.language}">
+                        <span class="title" lang="${this.siteLanguage}">
                           ${item.translated_name || item.root_name}
                         </span>
                         <div class="navigation-nerdy-row">
                           <span class="subTitle" lang="pi">${item.root_name}</span>
                         </div>
                       </span>
-                      <span class="header-right">
-                        <span class="number"></span>
-                        <mwc-icon>${icons['tick']}</mwc-icon>
-                        <span class="number-translated">${this.fullSiteLanguageName}</span>
-                      </span>
+                      ${item.yellow_brick_road
+                        ? html`
+                            <span class="header-right">
+                              <mwc-icon>${icons.tick}</mwc-icon>
+                              <span class="number-translated">
+                                <span class="number">${item.yellow_brick_road_count}</span>
+                                ${this.fullSiteLanguageName}
+                              </span>
+                            </span>
+                          `
+                        : ''}
                     </header>
                   </a>
                   <div class="nav-card-content">
