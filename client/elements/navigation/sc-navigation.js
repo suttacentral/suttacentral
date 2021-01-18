@@ -38,6 +38,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
     this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
+    this.lastSelectedItemRootLangISO = 'pli';
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
@@ -350,7 +351,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle"
-                          lang="${child.root_lang_iso || this.pitakaData.root_lang_iso}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
                           ${child.root_name}
@@ -390,11 +391,19 @@ class SCNavigation extends LitLocalized(LitElement) {
     }`;
   }
 
+  _updateLastSelectedItemRootLangISO(rootLangISO) {
+    if (rootLangISO && this.lastSelectedItemRootLangISO !== rootLangISO) {
+      this.lastSelectedItemRootLangISO = rootLangISO;
+    }
+  }
+
   async _onPitakaCardClick(params) {
     const navType = 'parallels';
     const navIndexesOfType = navIndex.get(navType);
     this.parallelsUid = params.childId;
     this.parallelsData = await this._fetchChildrenData(params.childId);
+
+    this._updateLastSelectedItemRootLangISO(this.parallelsData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -472,7 +481,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle"
-                          lang="${child.root_lang_iso || this.parallelsData[0].root_lang_iso}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
                           ${child.root_name}
@@ -541,6 +550,8 @@ class SCNavigation extends LitLocalized(LitElement) {
       this.vaggasData[0] &&
       this.vaggasData[0].children &&
       this.vaggasData[0].children.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.vaggasData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -639,7 +650,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle"
-                          lang="${child.root_lang_iso || this.vaggasData[0].root_lang_iso}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
                           ${child.root_name || child.uid}
@@ -689,6 +700,8 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const showVaggaChildren =
       this.vaggaChildren && this.vaggaChildren.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.vaggasData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -763,7 +776,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle"
-                          lang="${child.root_lang_iso || this.vaggasData[0].root_lang_iso}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
                           ${child.root_name || child.uid}
@@ -814,6 +827,8 @@ class SCNavigation extends LitLocalized(LitElement) {
     const showVaggaChildrenChildren =
       this.vaggaChildrenChildren &&
       this.vaggaChildrenChildren[0].children.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.vaggaChildrenChildren[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -888,8 +903,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle"
-                          lang="${child.root_lang_iso ||
-                          this.vaggaChildrenChildren[0].root_lang_iso}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
                           ${child.root_name || child.acronym}
@@ -939,6 +953,8 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const showSakaChildren =
       this.sakaChildren && this.sakaChildren.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.sakaData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -1010,7 +1026,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle"
-                          lang="${child.root_lang_iso || this.sakaData[0].root_lang_iso}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
                           ${child.root_name || child.acronym}
