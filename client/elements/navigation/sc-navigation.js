@@ -38,7 +38,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
     this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
-    this.lastSelectedItemRootLangISO = 'pli';
+    this.lastSelectedItemRootLangISO = '';
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
