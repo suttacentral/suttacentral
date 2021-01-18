@@ -2,6 +2,7 @@ import json
 import os
 import datetime
 from typing import List, Tuple
+from urllib.parse import urlparse
 
 import stripe
 from flask import current_app, request
@@ -861,10 +862,15 @@ class Donations(Resource):
 
             secret_key = os.environ.get('STRIPE_SECRET')
             stripe.api_key = secret_key
+
+            incoming_uri = urlparse(request.url)
+            cancel_url = '{uri.scheme}://{uri.netloc}/donate-now'.format(uri=incoming_uri)
+            success_url = '{uri.scheme}://{uri.netloc}/thank-you'.format(uri=incoming_uri)
+
             if frequency == 'oneTime':
                 session = stripe.checkout.Session.create(
-                    success_url="https://example.com/success",
-                    cancel_url="https://example.com/cancel",
+                    success_url=success_url,
+                    cancel_url=cancel_url,
                     payment_method_types=['card'],
                     line_items=[{
                         'price_data': {
@@ -880,8 +886,8 @@ class Donations(Resource):
                 )
             elif frequency == 'monthly':
                 session = stripe.checkout.Session.create(
-                    success_url="https://example.com/success",
-                    cancel_url="https://example.com/cancel",
+                    success_url=success_url,
+                    cancel_url=cancel_url,
                     payment_method_types=['card'],
                     line_items=[{
                         'price_data': {
