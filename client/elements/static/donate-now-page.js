@@ -142,7 +142,9 @@ class SCDonateNow extends LitLocalized(LitElement) {
 
   async processPayment() {
     const currency = this.shadowRoot.querySelector('mwc-select').value;
-    const amount = this.shadowRoot.querySelector('mwc-textfield').value;
+    // API takes values for instance in cents but we want to to have dollars
+    const selectedAmount = this.shadowRoot.querySelector('mwc-textfield').value * 100;
+    const amount = Number.isNaN(selectedAmount) ? 0 : selectedAmount;
     const frequency = Array.from(this.shadowRoot.querySelectorAll('#frequency-checkbox mwc-radio'))
       .filter(el => el.checked)
       .map(el => el.value)[0];
