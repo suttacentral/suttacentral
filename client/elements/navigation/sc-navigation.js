@@ -348,7 +348,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.pitakaData.root_lang_iso}"
+                          translate="no"
+                        >
                           ${child.root_name}
                         </span>
                       </div>
@@ -366,7 +370,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-                <div class="blurb blurbShrink">${child.blurb}</div>
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
               </section>
             `
           )}
@@ -460,7 +470,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.parallelsData[0].root_lang_iso}"
+                          translate="no"
+                        >
                           ${child.root_name}
                         </span>
                       </div>
@@ -478,11 +492,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${pitakaGuide.get(child.uid)
                   ? html`
                       <a href="${pitakaGuide.get(child.uid)}" class="essay-link">
@@ -621,7 +637,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.vaggasData[0].root_lang_iso}"
+                          translate="no"
+                        >
                           ${child.root_name || child.uid}
                         </span>
                         <span class="acronym">${child.acronym} ${child.child_range}</span>
@@ -640,11 +660,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -717,10 +739,10 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] &&
       this.navArray[this.currentNavPosition].displayVaggaChildren &&
-      this.vaggaChildren
+      this.vaggasData[0].children
       ? html`
-          ${this.vaggaChildren &&
-          this.vaggaChildren.map(
+          ${this.vaggasData[0].children &&
+          this.vaggasData[0].children.map(
             child => html`
               <section class="card">
                 <a
@@ -739,7 +761,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.vaggasData[0].root_lang_iso}"
+                          translate="no"
+                        >
                           ${child.root_name || child.uid}
                         </span>
                         <span class="acronym">
@@ -760,11 +786,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -858,7 +886,12 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso ||
+                          this.vaggaChildrenChildren[0].root_lang_iso}"
+                          translate="no"
+                        >
                           ${child.root_name || child.acronym}
                         </span>
                         <span class="acronym">${child.child_range}</span>
@@ -877,11 +910,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -973,7 +1008,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.sakaData[0].root_lang_iso}"
+                          translate="no"
+                        >
                           ${child.root_name || child.acronym}
                         </span>
                         <span class="acronym">${child.child_range}</span>
@@ -991,9 +1030,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
               </section>
             `
           )}
