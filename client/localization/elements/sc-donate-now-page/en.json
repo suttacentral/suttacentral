@@ -1,5 +1,6 @@
 {
     "en": {
+        "errorMessage": "The service is temporarily unavailable, please try later",
         "currency": "Currency",
         "amount": "Amount",
         "invalidValue": "Invalid value",

@@ -29,12 +29,16 @@ class SCDonateNow extends LitLocalized(LitElement) {
       localizedStringsPath: {
         type: String,
       },
+      isError: {
+        type: Boolean,
+      },
     };
   }
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-donate-now-page';
+    this.isError = false;
   }
 
   static get styles() {
@@ -46,6 +50,10 @@ class SCDonateNow extends LitLocalized(LitElement) {
         content-visibility: visible;
       }
 
+      #error-message {
+        text-align: center;
+      }
+      
       form {
         display: flex;
         flex-direction: column;
@@ -121,21 +129,21 @@ class SCDonateNow extends LitLocalized(LitElement) {
         this.currencies = currencies;
         this.defaultCurrencyIndex = default_currency_index;
       })
-      .catch(e => console.error(e));
+      .catch(() => (this.isError = true));
   }
 
   onSubmit(e) {
     e.preventDefault();
     const isValid = this.shadowRoot.querySelector('mwc-textfield').reportValidity();
     if (isValid) {
-      this.processPayment();
+      this.processPayment().catch(() => (this.isError = true));
     }
   }
 
   async processPayment() {
     const currency = this.shadowRoot.querySelector('mwc-select').value;
     const amount = this.shadowRoot.querySelector('mwc-textfield').value;
-    const frequency = Array.from(this.shadowRoot.querySelectorAll('mwc-radio'))
+    const frequency = Array.from(this.shadowRoot.querySelectorAll('#frequency-checkbox mwc-radio'))
       .filter(el => el.checked)
       .map(el => el.value)[0];
     const stripe = await stripePromise;
@@ -155,14 +163,10 @@ class SCDonateNow extends LitLocalized(LitElement) {
       sessionId: session.id,
     });
 
-    if (result.error) {
-      // If `redirectToCheckout` fails due to a browser or network
-      // error, display the localized error message to your customer
-      // using `result.error.message`.
-    }
+    if (result.error) this.isError = true;
   }
 
-  render() {
+  renderForm() {
     return html`
       <main>
         <article>
@@ -195,7 +199,7 @@ class SCDonateNow extends LitLocalized(LitElement) {
             <div class="row">
               <p>${this.localize('chooseFrequency')}</p>
             </div>
-            <div class="row">
+            <div id="frequency-checkbox" class="row">
               <mwc-formfield label="${this.localize('oneTime')}">
                 <mwc-radio name="frequency" checked value="oneTime"></mwc-radio>
               </mwc-formfield>
@@ -227,6 +231,16 @@ class SCDonateNow extends LitLocalized(LitElement) {
         </article>
       </main>
     `;
+  }
+
+  renderErrorMessage() {
+    return html`
+      <p id="error-message">${this.localize('errorMessage')}</p>
+    `;
+  }
+
+  render() {
+    return this.isError ? this.renderErrorMessage() : this.renderForm();
   }
 }
 
