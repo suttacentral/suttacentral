@@ -98,6 +98,15 @@ def process_root_languages(language_file: Path) -> Dict[str, str]:
     return data
 
 
+def process_languages(language_file: Path) -> Dict[str, str]:
+    languages: List[dict] = json_load(language_file)
+    data = {}
+    for language in languages:
+        lang_iso = language['iso_code']
+        data.update({uid: lang_iso for uid in language.get('contains', [])})
+    return data
+
+
 def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
     """
     Method to process super_extra_info.json and text_extra_info.json files
@@ -243,7 +252,7 @@ def process_names_files(
 
     Args:
         names_files - list of name Path objects to files from name folder
-        root_languages - parsed data from language.json
+        root_languages - parsed data from super_root_lang.json
         super_extra_info - parsed data from super_extra_info.json
         text_extra_info - parsed data from text_extra_info.json
 
@@ -723,6 +732,8 @@ def run(no_pull=False):
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
 
+    languages = process_languages(structure_dir / 'language.json')
+
     storage_dir = current_app.config.get('STORAGE_DIR')
     if not storage_dir.exists():
         storage_dir.mkdir()
@@ -768,7 +779,7 @@ def run(no_pull=False):
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage('Load names from sc_bilara_data')
-    sc_bilara_data.load_names(db, sc_bilara_data_dir)
+    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages)
 
     print_stage('Load blurbs from sc_bilara_data')
     sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
