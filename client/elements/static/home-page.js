@@ -6,6 +6,13 @@ import { API_ROOT } from '../../constants.js';
 import '../navigation/sc-tipitaka.js';
 
 class SCHomePage extends SCStaticPage {
+  static get properties() {
+    return {
+      epigraph: { type: String },
+      whyWeRead: { type: String },
+    };
+  }
+
   static get styles() {
     return css`
       :root
@@ -333,6 +340,19 @@ video
 
     `;
   }
+
+  firstUpdated() {
+    this._getRandomQuote();
+  }
+
+  async _getRandomQuote() {
+    const getRandomEl = (arr) => arr[Math.floor(Math.random() * arr.length)]
+
+    const epigraphResponse = await (await fetch(`${API_ROOT}/epigraphs`)).json();
+    this.epigraph = getRandomEl(epigraphResponse).epigraph;
+    const whyReadResponse = await (await fetch(`${API_ROOT}/whyweread`)).json();
+    this.whyWeRead = getRandomEl(whyReadResponse);
+  }
   render() {
     return html`
       <main>
@@ -347,11 +367,10 @@ video
 
         <section class="plain">
           <blockquote>
-            <span>The Buddha said to the monks who were quarrelling: “If animals can be courteous to each other, so can you.”</span>
+            <span>${this.epigraph}</span>
           </blockquote>
           <a class="link-button quote-button" href="/">Read this sutta</a>
         </section>
-
         <section class="video">
           <video title="SuttaCentral promotional video 2020" width="640" height="360" controls preload="none" style="" poster="/img/home-page/video_overlay.jpg">
             <source src="https://ia601508.us.archive.org/20/items/sutta-central-promo-2020-en.av-1/SuttaCentral_Promo-2020_en.av1.mp4">
@@ -402,7 +421,7 @@ video
 
         <section class="plain">
           <blockquote>
-            <span>I read the suttas because they teach how to “read”; how to read oneself, one’s existence, one’s confusions, one’s tragedy. This “whole mass of suffering” becomes readable sentences. The pen that writes these sentences become apparent. And it becomes clear, right then, that with the disappearance of the pen, no more tears are written.</span>
+            <span>${this.whyWeRead}</span>
           </blockquote>
           <a class="link-button quote-button" href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747">Testimonies</a>
         </section>

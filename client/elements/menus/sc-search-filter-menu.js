@@ -17,6 +17,7 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
       :host {
         --mdc-theme-primary: var(--sc-primary-accent-color);
         --mdc-select-fill-color: transparent;
+        --mdc-typography-font-family: var(--sc-sans-font);
       }
     `;
   }

@@ -6,6 +6,7 @@ export const languageBaseMenuCss = html`
       overflow-y: scroll;
       --mdc-menu-min-width: 500px;
       --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+      --mdc-list-side-padding: 16px
     }
 
     .separator {

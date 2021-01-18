@@ -20,6 +20,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       routePath: { type: String },
       currentNavPosition: { type: Number },
       loading: { type: Boolean },
+      siteLanguage: { type: String },
     };
   }
 
@@ -34,25 +35,26 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaUid = this._getPathParamNumber(2);
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.siteLanguage = store.getState().siteLanguage;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-
+    this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
-    this._initPitakaCards({dispatchState: true});
+    this._initPitakaCards({ dispatchState: true });
     this._parseURL();
   }
 
-  // Check whether the URL item is valid, 
-  // check from the last level, crop the URL item if it is not valid, 
+  // Check whether the URL item is valid,
+  // check from the last level, crop the URL item if it is not valid,
   // and if valid so, check that the parent contains it, and if not, crop the URL item.
   async _verifyURL() {
-    if (!['sutta', 'vinaya', 'abhidhamma'].includes(this.pitakaUid)) {
+    if (!this.tipitakaUids.includes(this.pitakaUid)) {
       window.location.href = '/pitaka/sutta';
     }
-    let navArray = this.routePath.split('/');
+    const navArray = this.routePath.split('/');
     if (navArray.length >= 3) {
-      //0='', 1='pitaka' 2='sutta,vinaya,ahbdidama', Do not need to be process, so delete it.
+      // 0='', 1='pitaka' 2='sutta,vinaya,ahbdidama', Do not need to be process, so delete it.
       navArray.splice(0, 3);
     }
     if (navArray.length === 0) {
@@ -60,19 +62,17 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
     for (let i = navArray.length - 1; i >= 0; i--) {
       if (navArray.length > 1 && i !== 0) {
-        const navData = await this._fetchChildrenData(navArray[i]);
+        let navData = await this._fetchChildrenData(navArray[i]);
         if (!navData[0].uid) {
           window.location.href = this._cutURL(navArray[i]);
         } else {
-          const navData = await this._fetchChildrenData(navArray[i-1]);
+          navData = await this._fetchChildrenData(navArray[i - 1]);
           if (!navData[0].uid) {
             let URL = this._cutURL(navArray[i]);
-            URL = this._cutURL(navArray[i-1], URL);
+            URL = this._cutURL(navArray[i - 1], URL);
             window.location.href = URL;
           } else {
-            const childData = navData[0].children.find(x => {
-              return x.uid === navArray[i]
-            });
+            const childData = navData[0].children.find(x => x.uid === navArray[i]);
             if (!childData) {
               window.location.href = this._cutURL(navArray[i]);
             }
@@ -89,24 +89,24 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   _cutURL(navItem, currentURL = '') {
     let newURL = currentURL || this.routePath;
-    let regex = new RegExp(`/${navItem}`, 'g');
+    const regex = new RegExp(`/${navItem}`, 'g');
     newURL = newURL.replace(regex, '');
     return newURL;
   }
 
   async _parseURL() {
-    let navArray = this.routePath.split('/');
+    const navArray = this.routePath.split('/');
     this.navArray.length = 1;
     this.currentURL = '/pitaka';
-    let self = this;
+    const self = this;
     navArray.forEach((navItem, index) => {
       if (index > 1) {
-        let cardEvent = this._getEventByNavIndex(index);
-        this.currentURL = this.currentURL + '/' + navItem;
+        const cardEvent = this._getEventByNavIndex(index);
+        this.currentURL = `${this.currentURL}/${navItem}`;
         let params = {
-          childId: navItem, 
-          childName: '', 
-          dispatchState: index !== navArray.length - 1 ? false : true,
+          childId: navItem,
+          childName: '',
+          dispatchState: index === navArray.length - 1,
           currentURL: this.currentURL,
         };
         cardEvent.call(self, params);
@@ -142,7 +142,11 @@ class SCNavigation extends LitLocalized(LitElement) {
       navigationArrayLength: navIndexesOfType.navArrayLength,
     };
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, this.localize(this.pitakaName));
+      this._dispatchNavState(
+        this.navArray,
+        navIndexesOfType.position,
+        this.localize(this.pitakaName)
+      );
     }
   }
 
@@ -159,12 +163,15 @@ class SCNavigation extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
     }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._currentNavPosChanged();
+    }
   }
 
   _currentNavPosChanged() {
     this._fetchMainData();
-    this._attachLanguageCount();
-    let currentNavState = this.navArray[this.currentNavPosition];
+    const currentNavState = this.navArray[this.currentNavPosition];
     if (currentNavState) {
       let params = {
         childId: currentNavState.groupId,
@@ -172,7 +179,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         langIso: currentNavState.langIso,
         dispatchState: true,
       };
-      let cardEvent = this._getEventByNavType(currentNavState.type);
+      const cardEvent = this._getEventByNavType(currentNavState.type);
       if (cardEvent) {
         cardEvent.call(this, params);
       }
@@ -196,28 +203,28 @@ class SCNavigation extends LitLocalized(LitElement) {
       setNavigation(navArray) {
         store.dispatch({
           type: 'SET_NAVIGATION',
-          navigationArray: navArray
-        })
+          navigationArray: navArray,
+        });
       },
       setCurrentNavPosition(position) {
         store.dispatch({
           type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position
-        })
+          currentNavPosition: position,
+        });
       },
       changeToolbarTitle(title) {
         store.dispatch({
-          type: "CHANGE_TOOLBAR_TITLE",
-          title: title
-        })
+          type: 'CHANGE_TOOLBAR_TITLE',
+          title: title,
+        });
       },
       updateNavDataCache(navData) {
         store.dispatch({
-          type: "UPDATE_NAV_DATA_CACHE",
-          navDataCache: navData
-        })
+          type: 'UPDATE_NAV_DATA_CACHE',
+          navDataCache: navData,
+        });
       },
-    }
+    };
   }
 
   _getPathParamNumber(number) {
@@ -225,7 +232,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       if (!this.routePath) {
         this.routePath = store.getState().currentRoute.path;
       }
-      return this.routePath.split('\/')[number];
+      return this.routePath.split('/')[number];
     } catch (e) {
       console.error(e);
       return '';
@@ -245,15 +252,18 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _fetchTipitakaData() {
     try {
-      if (!this.navDataCache) {
-        this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-      }
-      if (this.navDataCache.has('tipitakaData')) {
-        this.tipitakaData = this.navDataCache.get('tipitakaData');
-      } else {
-        this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)).json();
-        this._updateNavDataCache('tipitakaData', this.tipitakaData);
-      }
+      // if (!this.navDataCache) {
+      //   this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
+      // }
+      // if (this.navDataCache.has('tipitakaData')) {
+      //   this.tipitakaData = this.navDataCache.get('tipitakaData');
+      // } else {
+      //   this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)).json();
+      //   this._updateNavDataCache('tipitakaData', this.tipitakaData);
+      // }
+      this.tipitakaData = await (
+        await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
+      ).json();
     } catch (e) {
       this.lastError = e;
     }
@@ -264,25 +274,28 @@ class SCNavigation extends LitLocalized(LitElement) {
       await this._fetchTipitakaData();
     }
     this.pitakaData = this.tipitakaData.find(x => {
-      return x.uid === this.pitakaUid
+      return x.uid === this.pitakaUid;
     });
   }
 
   async _fetchChildrenData(childId) {
-    const url = `${API_ROOT}/menu/${childId}?language=${this.language || 'en'}`;
+    const url = `${API_ROOT}/menu/${childId}?language=${this.siteLanguage || 'en'}`;
     try {
-      if (!this.navDataCache) {
-        this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-      }
-      if (this.navDataCache.has(url)) {
-        return this.navDataCache.get(url);
-      } else {
-        const childrenData = await (await fetch(url)).json();
-        this._updateNavDataCache(url, childrenData);
-        return childrenData;
-      }
+      // if (!this.navDataCache) {
+      //   this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
+      // }
+      // if (this.navDataCache.has(url)) {
+      //   return this.navDataCache.get(url);
+      // } else {
+      //   const childrenData = await (await fetch(url)).json();
+      //   this._updateNavDataCache(url, childrenData);
+      //   return childrenData;
+      // }
+      const childrenData = await (await fetch(url)).json();
+      return childrenData;
     } catch (e) {
       this.lastError = e;
+      return {};
     }
   }
 
@@ -299,80 +312,89 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
   }
 
-  async _attachLanguageCount() {
-    try {
-      this.languageCountData = undefined;
-      this.languageCountData = await (await fetch(`${API_ROOT}/translation_count/${this.language}`)).json();
-      this.languageCountData.division.map(lang => {
-        let langNumSpan = this.shadowRoot.querySelector(`#${lang.uid}_number`);
-        if (langNumSpan) {
-          langNumSpan.innerText = lang.total.toString();
-        }
-      });
-    } catch (e) {
-      this.lastError = e;
-    }
-  }
-
   render() {
     return html`
-      ${navigationNormalModeStyles}
-      ${this.compactStyles}
+      ${navigationNormalModeStyles} ${this.compactStyles}
       <main>
-        ${this.pitakaContentTemplate}
-        ${this.parallelsContentTemplate}
-        ${this.vaggasContentTemplate}
-        ${this.vaggaChildrenContentTemplate}
-        ${this.vaggaChildrenChildrenContentTemplate}
+        ${this.pitakaContentTemplate} ${this.parallelsContentTemplate} ${this.vaggasContentTemplate}
+        ${this.vaggaChildrenContentTemplate} ${this.vaggaChildrenChildrenContentTemplate}
         ${this.sakaChildrenContentTemplate}
       </main>
     `;
   }
 
   get pitakaContentTemplate() {
-    return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayPitaka && this.pitakaData ? html`
-      ${this.pitakaData.children.map(child => html`
-          <section class="card">
-            <a class="header-link" href="${this._genPitakaURL(child)}" 
-              @click=${() => this._onPitakaCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, langIso: child.root_lang_iso, dispatchState: true})}>
-                <header>
-                  <span class="header-left">
-                    <span class="title" lang="${child.root_lang_iso}">
-                      ${this.localizeEx('CollectionOf', 'sutta', this.localize(this.pitakaName), 'pitaka', child.translated_name || child.root_name || child.uid)}
+    return this.navArray[this.currentNavPosition] &&
+      this.navArray[this.currentNavPosition].displayPitaka &&
+      this.pitakaData
+      ? html`
+          ${this.pitakaData.children.map(
+            child => html`
+              <section class="card">
+                <a
+                  class="header-link"
+                  href="${this._genPitakaURL(child)}"
+                  @click=${() =>
+                    this._onPitakaCardClick({
+                      childId: child.uid,
+                      childName: child.acronym || child.translated_name || child.root_name,
+                      langIso: child.root_lang_iso,
+                      dispatchState: true,
+                    })}
+                >
+                  <header>
+                    <span class="header-left">
+                      <span class="title">
+                        ${child.translated_name || child.root_name || child.uid}
+                      </span>
+                      <div class="navigation-nerdy-row">
+                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                          ${child.root_name}
+                        </span>
+                      </div>
                     </span>
-                    <div class="navigation-nerdy-row">
-                    <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name}</span>
-                    </div>
-                  </span>
-                  ${child.yellow_brick_road ? html`
-                    <span class="header-right">
-                      <mwc-icon>${icons['tick']}</mwc-icon>
-                      <span class="number-translated"><span class="number"></span>${this.fullSiteLanguageName}</span>
-                    </span>
-                  ` : ''}
-                </header>
-              </a>
-            <div class="blurb blurbShrink">
-              ${child.blurb}
-            </div>
-          </section>
-      `)}` : '';
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <mwc-icon>${icons.tick}</mwc-icon>
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
+                            </span>
+                          </span>
+                        `
+                      : ''}
+                  </header>
+                </a>
+                <div class="blurb blurbShrink">${child.blurb}</div>
+              </section>
+            `
+          )}
+        `
+      : '';
   }
 
   _genPitakaURL(child) {
-    return `/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${child.uid}`;
+    return `/pitaka/${this._getPathParamNumber(navIndex.get('pitaka').pathParamIndex)}/${
+      child.uid
+    }`;
   }
-  
+
   async _onPitakaCardClick(params) {
     const navType = 'parallels';
     const navIndexesOfType = navIndex.get(navType);
-    this.parallelsUid = params.childId
+    this.parallelsUid = params.childId;
     this.parallelsData = await this._fetchChildrenData(params.childId);
 
     if (!params.childName) {
-      params.childName = this.parallelsData[0].acronym || this.parallelsData[0].translated_name || this.parallelsData[0].root_name;
+      params.childName =
+        this.parallelsData[0].acronym ||
+        this.parallelsData[0].translated_name ||
+        this.parallelsData[0].root_name;
     }
-    let navURL = `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${params.childId}`;
+    const navURL = `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${
+      params.childId
+    }`;
 
     this.navArray[navIndexesOfType.index] = {
       title: params.childName,
@@ -382,7 +404,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       displayParallels: true,
       displayVaggas: false,
       displayVaggaChildren: false,
-      displayVaggaChildrenChildren: false, 
+      displayVaggaChildrenChildren: false,
       groupId: params.childId,
       groupName: params.childName,
       position: navIndexesOfType.position,
@@ -391,7 +413,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.parallelsData[0].translated_name ||
+        this.parallelsData[0].root_name ||
+        this.parallelsData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
     }
   }
@@ -403,9 +429,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    if (!this.fullSiteLanguageName) {
-      this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    }
+    this._initPitakaCards({ dispatchState: true });
   }
 
   updated() {
@@ -413,52 +437,83 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   get parallelsContentTemplate() {
-    return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayParallels && this.parallelsData ? html`
-      ${this.parallelsData[0].children.map(child => html`
-        <section class="card">
-          <a class="header-link" href="${this._genCurrentURL(child.uid)}" 
-            @click=${() => this._onParallelsCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title" lang="${child.root_lang_iso}">
-                  ${this.localize(this.pitakaName)} ${child.translated_name || child.root_name || child.uid}
-                </span>
-                <div class="navigation-nerdy-row">
-                <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name}</span>
+    return this.navArray[this.currentNavPosition] &&
+      this.navArray[this.currentNavPosition].displayParallels &&
+      this.parallelsData
+      ? html`
+          ${this.parallelsData[0].children.map(
+            child => html`
+              <section class="card">
+                <a
+                  class="header-link"
+                  href="${this._genCurrentURL(child.uid)}"
+                  @click=${() =>
+                    this._onParallelsCardClick({
+                      childId: child.uid,
+                      childName: child.acronym || child.translated_name || child.root_name,
+                      dispatchState: true,
+                    })}
+                >
+                  <header>
+                    <span class="header-left">
+                      <span class="title">
+                        ${child.translated_name || child.root_name || child.uid}
+                      </span>
+                      <div class="navigation-nerdy-row">
+                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                          ${child.root_name}
+                        </span>
+                      </div>
+                    </span>
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <mwc-icon>${icons.tick}</mwc-icon>
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
+                            </span>
+                          </span>
+                        `
+                      : ''}
+                  </header>
+                </a>
+
+                <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                  ${unsafeHTML(child.blurb || '')}
                 </div>
-              </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated"><span class="number" id="${child.uid}_number"></span> ${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-          </a>
 
-          <div class="blurb blurbShrink" id="${child.uid}_blurb">${unsafeHTML(child.blurb || '')}</div>
-
-          ${pitakaGuide.get(child.uid) ? html`
-            <a href="${pitakaGuide.get(child.uid)}" class="essay-link">
-            <div class="essay" id="${child.uid}_essay">
-              ${this.localize(`${child.uid}_essayTitle`)}
-            </div>
-            </a>
-          ` : ''}
-
-          ${shortcuts.includes(child.uid) ? html`
-            <div class="shortcut">
-              <a href="/${child.uid}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </div>
-          ` : ''}
-        </section>
-      `)}`: '';
+                ${pitakaGuide.get(child.uid)
+                  ? html`
+                      <a href="${pitakaGuide.get(child.uid)}" class="essay-link">
+                        <div class="essay" id="${child.uid}_essay">
+                          ${this.localize(`${child.uid}_essayTitle`)}
+                        </div>
+                      </a>
+                    `
+                  : ''}
+                ${shortcuts.includes(child.uid)
+                  ? html`
+                      <div class="shortcut">
+                        <a href="/${child.uid}" class="shortcut-link">
+                          ${this.localize('shortcutToFullList')}
+                        </a>
+                      </div>
+                    `
+                  : ''}
+              </section>
+            `
+          )}
+        `
+      : '';
   }
 
   _addBlurbsClickEvent() {
-    this.shadowRoot.querySelectorAll('.blurb').forEach((element) => {
-      element.onclick = (e) => {
-        element.classList.contains('blurbShrink') ? element.classList.remove('blurbShrink') : element.classList.add('blurbShrink');
+    this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
+      element.onclick = () => {
+        element.classList.contains('blurbShrink')
+          ? element.classList.remove('blurbShrink')
+          : element.classList.add('blurbShrink');
       };
     });
   }
@@ -466,11 +521,16 @@ class SCNavigation extends LitLocalized(LitElement) {
   async _onParallelsCardClick(params) {
     this.vaggasData = await this._fetchChildrenData(params.childId);
 
-    const showVaggas = this.vaggasData[0] && this.vaggasData[0].children &&
-      this.vaggasData[0].children.some(child => ['branch'].includes(child.node_type)); 
+    const showVaggas =
+      this.vaggasData[0] &&
+      this.vaggasData[0].children &&
+      this.vaggasData[0].children.some(child => ['branch'].includes(child.node_type));
 
     if (!params.childName) {
-      params.childName = this.vaggasData[0].acronym || this.vaggasData[0].translated_name || this.vaggasData[0].root_name;
+      params.childName =
+        this.vaggasData[0].acronym ||
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name;
     }
 
     let currentUrl = `/${params.childId}`;
@@ -491,7 +551,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       displayParallels: false,
       displayVaggas: showVaggas,
       displayVaggaChildren: false,
-      displayVaggaChildrenChildren: false, 
+      displayVaggaChildrenChildren: false,
       groupId: params.childId,
       groupName: params.childName,
       position: navIndexesOfType.position,
@@ -499,7 +559,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name ||
+        this.vaggasData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggas) {
@@ -509,17 +573,21 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   _setCurrentURL(lastPath) {
-    if (!lastPath) { return; }
+    if (!lastPath) {
+      return;
+    }
     lastPath = encodeURI(lastPath);
     let currentURL = window.location.href;
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
       let cleanURL = currentURL.split('?')[0] + '/' + lastPath;
-      window.history.pushState({}, 0 , cleanURL);
+      window.history.pushState({}, 0, cleanURL);
     }
   }
 
   _genCurrentURL(lastPath) {
-    if (!lastPath) { return; }
+    if (!lastPath) {
+      return;
+    }
     let currentURL = window.location.href;
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
       let cleanURL = currentURL.split('?')[0] + '/' + lastPath;
@@ -530,50 +598,81 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   get vaggasContentTemplate() {
-    return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggas && this.vaggasData ? html`
-      ${this.vaggasData[0].children.map(child => html`
-        <section class="card">
-          <a class="header-link" href="${this._genCurrentURL(child.uid)}" 
-            @click=${() => this._onVaggasCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title">
-                  ${child.translated_name || child.root_name || child.uid} ${this.parallelName}
-                </span>
-                <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.uid}</span>
-                  <span class="acronym">${child.acronym} ${child.child_range}</span>
+    return this.navArray[this.currentNavPosition] &&
+      this.navArray[this.currentNavPosition].displayVaggas &&
+      this.vaggasData
+      ? html`
+          ${this.vaggasData[0].children.map(
+            child => html`
+              <section class="card">
+                <a
+                  class="header-link"
+                  href="${this._genCurrentURL(child.uid)}"
+                  @click=${() =>
+                    this._onVaggasCardClick({
+                      childId: child.uid,
+                      childName: child.acronym || child.translated_name || child.root_name,
+                      dispatchState: true,
+                    })}
+                >
+                  <header>
+                    <span class="header-left">
+                      <span class="title">
+                        ${child.translated_name || child.root_name || child.uid}
+                      </span>
+                      <div class="navigation-nerdy-row">
+                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                          ${child.root_name || child.uid}
+                        </span>
+                        <span class="acronym">${child.acronym} ${child.child_range}</span>
+                      </div>
+                    </span>
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <mwc-icon>${icons.tick}</mwc-icon>
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
+                            </span>
+                          </span>
+                        `
+                      : ''}
+                  </header>
+                </a>
+
+                <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                  ${unsafeHTML(child.blurb || '')}
                 </div>
-              </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated"><span class="number" id="${child.uid}_number"></span> ${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-          </a>
 
-          <div class="blurb blurbShrink" id="${child.uid}_blurb">${unsafeHTML(child.blurb || '')}</div>
-
-          ${shortcuts.includes(child.uid) ? html`
-            <div class="shortcut">
-              <a href="/${child.uid}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </div>
-          ` : ''}
-        </section>
-      `)}` : '';
+                ${shortcuts.includes(child.uid)
+                  ? html`
+                      <div class="shortcut">
+                        <a href="/${child.uid}" class="shortcut-link">
+                          ${this.localize('shortcutToFullList')}
+                        </a>
+                      </div>
+                    `
+                  : ''}
+              </section>
+            `
+          )}
+        `
+      : '';
   }
 
   async _onVaggasCardClick(params) {
     this.vaggasData = await this._fetchChildrenData(params.childId);
     this.vaggaChildren = this.vaggasData[0].children;
 
-    const showVaggaChildren = this.vaggaChildren && 
-      this.vaggaChildren.some(child => ['branch'].includes(child.node_type)); 
+    const showVaggaChildren =
+      this.vaggaChildren && this.vaggaChildren.some(child => ['branch'].includes(child.node_type));
 
     if (!params.childName) {
-      params.childName = this.vaggasData[0].acronym || this.vaggasData[0].translated_name || this.vaggasData[0].root_name;
+      params.childName =
+        this.vaggasData[0].acronym ||
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name;
     }
 
     let currentUrl = `/${params.childId}`;
@@ -602,7 +701,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggasData[0].translated_name ||
+        this.vaggasData[0].root_name ||
+        this.vaggasData[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildren) {
@@ -612,48 +715,83 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   get vaggaChildrenContentTemplate() {
-    return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildren && this.vaggaChildren ? html`
-      ${this.vaggaChildren && this.vaggaChildren.map(child => html`
-        <section class="card">
-          <a class="header-link" href="${this._genCurrentURL(child.uid)}" 
-            @click=${() => this._onVaggaChildrenCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title">
-                  ${child.translated_name || child.root_name || child.uid} ${this.parallelName}
-                </span>
-                <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.uid}</span>
-                  <span class="acronym">${this.navArray[this.currentNavPosition].title} ${child.child_range}</span>
+    return this.navArray[this.currentNavPosition] &&
+      this.navArray[this.currentNavPosition].displayVaggaChildren &&
+      this.vaggaChildren
+      ? html`
+          ${this.vaggaChildren &&
+          this.vaggaChildren.map(
+            child => html`
+              <section class="card">
+                <a
+                  class="header-link"
+                  href="${this._genCurrentURL(child.uid)}"
+                  @click=${() =>
+                    this._onVaggaChildrenCardClick({
+                      childId: child.uid,
+                      childName: child.acronym || child.translated_name || child.root_name,
+                      dispatchState: true,
+                    })}
+                >
+                  <header>
+                    <span class="header-left">
+                      <span class="title">
+                        ${child.translated_name || child.root_name || child.uid}
+                      </span>
+                      <div class="navigation-nerdy-row">
+                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                          ${child.root_name || child.uid}
+                        </span>
+                        <span class="acronym">
+                          ${this.navArray[this.currentNavPosition].title} ${child.child_range}
+                        </span>
+                      </div>
+                    </span>
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <mwc-icon>${icons.tick}</mwc-icon>
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
+                            </span>
+                          </span>
+                        `
+                      : ''}
+                  </header>
+                </a>
+
+                <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                  ${unsafeHTML(child.blurb || '')}
                 </div>
-              </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated"><span class="number" id="${child.uid}_number"></span>${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-          </a>
 
-          <div class="blurb blurbShrink" id="${child.uid}_blurb">${unsafeHTML(child.blurb || '')}</div>
-
-          ${shortcuts.includes(child.uid) ? html`
-            <div class="shortcut">
-              <a href="/${child.uid}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </div>
-          ` : ''}
-        </section>
-      `)}` : '';
+                ${shortcuts.includes(child.uid)
+                  ? html`
+                      <div class="shortcut">
+                        <a href="/${child.uid}" class="shortcut-link">
+                          ${this.localize('shortcutToFullList')}
+                        </a>
+                      </div>
+                    `
+                  : ''}
+              </section>
+            `
+          )}
+        `
+      : '';
   }
 
   async _onVaggaChildrenCardClick(params) {
     this.vaggaChildrenChildren = await this._fetchChildrenData(params.childId);
-    const showVaggaChildrenChildren = this.vaggaChildrenChildren && 
+    const showVaggaChildrenChildren =
+      this.vaggaChildrenChildren &&
       this.vaggaChildrenChildren[0].children.some(child => ['branch'].includes(child.node_type));
 
     if (!params.childName) {
-      params.childName = this.vaggaChildrenChildren[0].acronym || this.vaggaChildrenChildren[0].translated_name || this.vaggaChildrenChildren[0].root_name;
+      params.childName =
+        this.vaggaChildrenChildren[0].acronym ||
+        this.vaggaChildrenChildren[0].translated_name ||
+        this.vaggaChildrenChildren[0].root_name;
     }
 
     let currentUrl = `/${params.childId}`;
@@ -674,7 +812,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       displayParallels: false,
       displayVaggas: false,
       displayVaggaChildren: false,
-      displayVaggaChildrenChildren: showVaggaChildrenChildren, 
+      displayVaggaChildrenChildren: showVaggaChildrenChildren,
       groupId: params.childId,
       groupName: params.childName,
       position: navIndexesOfType.position,
@@ -682,7 +820,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.vaggaChildrenChildren[0].translated_name ||
+        this.vaggaChildrenChildren[0].root_name ||
+        this.vaggaChildrenChildren[0].uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildrenChildren) {
@@ -692,50 +834,80 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   get vaggaChildrenChildrenContentTemplate() {
-    return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren ? html`
-      ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren && this.vaggaChildrenChildren[0].children.map(child => html`
-        <section class="card">
-          <a class="header-link" href="${this._genCurrentURL(child.uid)}"
-            @click=${() => this._onVaggaChildrenChildrenCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title">
-                  ${child.translated_name || child.root_name || child.uid} ${this.parallelName}
-                </span>
-                <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.acronym}</span>
-                  <span class="acronym">${child.child_range}</span>
+    return this.navArray[this.currentNavPosition] &&
+      this.navArray[this.currentNavPosition].displayVaggaChildrenChildren &&
+      this.vaggaChildrenChildren
+      ? html`
+          ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren &&
+          this.vaggaChildrenChildren[0].children.map(
+            child => html`
+              <section class="card">
+                <a
+                  class="header-link"
+                  href="${this._genCurrentURL(child.uid)}"
+                  @click=${() =>
+                    this._onVaggaChildrenChildrenCardClick({
+                      childId: child.uid,
+                      childName: child.acronym || child.translated_name || child.root_name,
+                      dispatchState: true,
+                    })}
+                >
+                  <header>
+                    <span class="header-left">
+                      <span class="title">
+                        ${child.translated_name || child.root_name || child.uid}
+                      </span>
+                      <div class="navigation-nerdy-row">
+                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                          ${child.root_name || child.acronym}
+                        </span>
+                        <span class="acronym">${child.child_range}</span>
+                      </div>
+                    </span>
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <mwc-icon>${icons.tick}</mwc-icon>
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
+                            </span>
+                          </span>
+                        `
+                      : ''}
+                  </header>
+                </a>
+
+                <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                  ${unsafeHTML(child.blurb || '')}
                 </div>
-              </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated"><span class="number" id="${child.uid}_number"></span> ${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-          </a>
 
-          <div class="blurb blurbShrink" id="${child.uid}_blurb">${unsafeHTML(child.blurb || '')}</div>
-
-          ${shortcuts.includes(child.uid) ? html`
-            <div class="shortcut">
-              <a href="/${child.uid}" class='shortcut-link'>${this.localize('shortcutToFullList')}</a>
-            </div>
-          ` : ''}
-        </section>
-      `)}` : '';
+                ${shortcuts.includes(child.uid)
+                  ? html`
+                      <div class="shortcut">
+                        <a href="/${child.uid}" class="shortcut-link">
+                          ${this.localize('shortcutToFullList')}
+                        </a>
+                      </div>
+                    `
+                  : ''}
+              </section>
+            `
+          )}
+        `
+      : '';
   }
 
   async _onVaggaChildrenChildrenCardClick(params) {
     this.sakaData = await this._fetchChildrenData(params.childId);
     this.sakaChildren = this.sakaData[0].children;
 
-    const showSakaChildren = this.sakaChildren && 
-      this.sakaChildren.some(child => ['branch'].includes(child.node_type));
+    const showSakaChildren =
+      this.sakaChildren && this.sakaChildren.some(child => ['branch'].includes(child.node_type));
 
     if (!params.childName) {
-      params.childName = this.sakaData[0].acronym || this.sakaData[0].translated_name || this.sakaData[0].root_name;
+      params.childName =
+        this.sakaData[0].acronym || this.sakaData[0].translated_name || this.sakaData[0].root_name;
     }
 
     let currentUrl = `/${params.childId}`;
@@ -756,7 +928,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       displayParallels: false,
       displayVaggas: false,
       displayVaggaChildren: false,
-      displayVaggaChildrenChildren: false, 
+      displayVaggaChildrenChildren: false,
       displaySakaChildren: showSakaChildren,
       groupId: params.childId,
       groupName: params.childName,
@@ -765,7 +937,9 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
 
     if (params.dispatchState) {
-      this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
+      const toolbarTitle =
+        this.sakaChildren.translated_name || this.sakaChildren.root_name || this.sakaChildren.uid;
+      this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showSakaChildren) {
@@ -775,40 +949,64 @@ class SCNavigation extends LitLocalized(LitElement) {
   }
 
   get sakaChildrenContentTemplate() {
-    return this.navArray[this.currentNavPosition] && this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren ? html`
-      ${this.navArray[this.currentNavPosition].displaySakaChildren && this.sakaChildren.map(child => html`
-        <section class="card">
-          <a class="header-link" href="/${child.uid}"
-            @click=${() => this._onSakaChildrenCardClick({childId: child.uid, childName: child.acronym || child.translated_name || child.root_name, dispatchState: true})}>
-            <header>
-              <span class="header-left">
-                <span class="title">${child.translated_name || child.root_name || child.uid} ${this.parallelName}</span>
-                <div class="navigation-nerdy-row">
-                  <span class="subTitle" lang="${child.root_lang_iso}" translate="no">${child.root_name || child.acronym}</span>
-                  <span class="acronym">${child.child_range}</span>
+    return this.navArray[this.currentNavPosition] &&
+      this.navArray[this.currentNavPosition].displaySakaChildren &&
+      this.sakaChildren
+      ? html`
+          ${this.navArray[this.currentNavPosition].displaySakaChildren &&
+          this.sakaChildren.map(
+            child => html`
+              <section class="card">
+                <a
+                  class="header-link"
+                  href="/${child.uid}"
+                  @click=${() =>
+                    this._onSakaChildrenCardClick({
+                      childId: child.uid,
+                      childName: child.acronym || child.translated_name || child.root_name,
+                      dispatchState: true,
+                    })}
+                >
+                  <header>
+                    <span class="header-left">
+                      <span class="title">
+                        ${child.translated_name || child.root_name || child.uid}
+                      </span>
+                      <div class="navigation-nerdy-row">
+                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                          ${child.root_name || child.acronym}
+                        </span>
+                        <span class="acronym">${child.child_range}</span>
+                      </div>
+                    </span>
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
+                            </span>
+                          </span>
+                        `
+                      : ''}
+                  </header>
+                </a>
+                <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                  ${unsafeHTML(child.blurb || '')}
                 </div>
-              </span>
-              ${child.yellow_brick_road ? html`
-                <span class="header-right">
-                  <span class="number" id="${child.uid}_number"></span>
-                  <mwc-icon>${icons['tick']}</mwc-icon>
-                  <span class="number-translated">${this.fullSiteLanguageName}</span>
-                </span>
-              ` : ''}
-            </header>
-          </a>
-          <div class="blurb blurbShrink" id="${child.uid}_blurb">${unsafeHTML(child.blurb || '')}</div>
-        </section>
-      `)}` : '';
+              </section>
+            `
+          )}
+        `
+      : '';
   }
 
   _onSakaChildrenCardClick(params) {
-    let currentUrl = `/${params.childId}`;
     const navType = 'sakaChildren';
     const navIndexesOfType = navIndex.get(navType);
     this.navArray[navIndexesOfType.index] = {
       title: params.childName,
-      url: currentUrl,
+      url: `/${params.childId}`,
       type: navType,
       groupId: params.childId,
       groupName: params.childName,

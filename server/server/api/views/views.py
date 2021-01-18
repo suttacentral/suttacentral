@@ -1,7 +1,7 @@
 import json
 import os
 import datetime
-from typing import List, Tuple
+from typing import List
 from urllib.parse import urlparse
 
 import stripe
@@ -16,7 +16,6 @@ from common.mail import send_email
 
 from common.queries import (
     CURRENCIES,
-    DICTIONARIES,
     LANGUAGES,
     MENU,
     SUBMENU,
@@ -27,13 +26,8 @@ from common.queries import (
     IMAGES,
     EPIGRAPHS,
     WHY_WE_READ,
-    DICTIONARYFULL,
-    GLOSSARY,
-    DICTIONARY_ADJACENT,
-    DICTIONARY_SIMILAR,
     EXPANSION,
     PWA,
-    AVAILABLE_TRANSLATIONS_LIST,
     TRANSLATION_COUNT_BY_DIVISION,
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
@@ -48,7 +42,7 @@ from common.utils import (
     sort_parallels_type_key,
 )
 
-from data_loader.textfunctions import asciify_roman as asciify
+from aksharamukha import transliterate
 
 default_cache_timeout = 600
 long_cache_timeout = 7200
@@ -266,39 +260,7 @@ class Menu(Resource):
         else:
             data = list(db.aql.execute(MENU, bind_vars=bind_vars))
 
-        data, _ = self.make_yellow_brick_road(data, language)
         return data
-
-    def make_yellow_brick_road(self, menu_entries: List[dict], language: str) -> Tuple[List[dict], bool]:
-        """
-        Adds the 'yellow_brick_road' field for menu items and their children.
-        The field becomes 'true' if any of the child documents has a translation in the specified language.
-        This is needed to mark items that have translations in the language specified by the user.
-        """
-        is_submenu_yellow_brick_road = False
-        updated_entries = []
-        for entry in menu_entries:
-            uid = entry['uid']
-
-            is_entry_yellow_brick = self.has_translated_descendent(uid, language)
-            if 'children' in entry:
-                children, is_child_yellow_brick = self.make_yellow_brick_road(
-                    entry['children'], language
-                )
-                is_entry_yellow_brick += is_child_yellow_brick
-                entry['children'] = children
-            entry['yellow_brick_road'] = bool(is_entry_yellow_brick)
-            is_submenu_yellow_brick_road += is_entry_yellow_brick
-            updated_entries.append(entry)
-        return updated_entries, is_submenu_yellow_brick_road
-
-    @cache.memoize(timeout=long_cache_timeout)
-    def has_translated_descendent(self, uid: str, language: str) -> bool:
-        db = get_db()
-        uids = next(
-            db.aql.execute(AVAILABLE_TRANSLATIONS_LIST, bind_vars={'language': language})
-        )
-        return uid in set(uids)
 
 
 class SuttaplexList(Resource):
@@ -484,62 +446,6 @@ class Parallels(Resource):
             data[entry] = sorted(data[entry], key=sort_parallels_type_key)
 
         return data, 200
-
-
-class LookupDictionaries(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self):
-        """
-        Send parallel information for given sutta.
-        ---
-        parameters:
-           - in: query
-             name: from
-             type: string
-             required: true
-           - in: query
-             name: to
-             type: string
-           - in: query
-             name: fallback
-             type: string
-        responses:
-            200:
-                schema:
-                    id: dictionary
-                    type: object
-                    properties:
-                        from:
-                            type: string
-                        to:
-                            type: string
-                        dictionary:
-                            type: object
-                            items:
-                                type: array
-                                items:
-                                    type: string
-        """
-        to_lang = request.args.get('to', current_app.config.get('DEFAULT_LANGUAGE'))
-        from_lang = request.args.get('from', None)
-
-        fallback = request.args.get('fallback', 'false')
-        main_dict = False if fallback == 'true' else True
-
-        if from_lang is None:
-            return 'from not specified', 422
-
-        db = get_db()
-
-        result = db.aql.execute(
-            DICTIONARIES,
-            bind_vars={'from': from_lang, 'to': to_lang, 'main': main_dict},
-        )
-
-        try:
-            return result.next(), 200
-        except StopIteration:
-            return 'Dictionary not found', 404
 
 
 class Sutta(Resource):
@@ -758,96 +664,6 @@ class Paragraphs(Resource):
         db = get_db()
 
         data = db.aql.execute(PARAGRAPHS)
-
-        return list(data), 200
-
-
-class Glossary(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self):
-        """
-        Send list of glossary results for related terms in dictionary view
-        ---
-        responses:
-            glossary:
-                type: array
-                items:
-                    type: object
-                    properties:
-                        <word>:
-                            type: string
-        """
-        db = get_db()
-
-        data = db.aql.execute(GLOSSARY)
-
-        return list(data), 200
-
-
-class DictionaryAdjacent(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self, word=None):
-        """
-        Send list of adjacent terms to dictionary search word
-        ---
-        responses:
-            glossary:
-                type: array
-                items:
-                    type: string
-        """
-        db = get_db()
-
-        data = db.aql.execute(DICTIONARY_ADJACENT, bind_vars={'word': word})
-
-        return list(data), 200
-
-
-class DictionarySimilar(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self, word=None):
-        """
-        Send list of similar terms to dictionary search word
-        ---
-        responses:
-            glossary:
-                type: array
-                items:
-                    type: string
-        """
-        db = get_db()
-
-        data = db.aql.execute(
-            DICTIONARY_SIMILAR, bind_vars={'word': word, 'word_ascii': asciify(word)}
-        )
-
-        return list(data), 200
-
-
-class DictionaryFull(Resource):
-    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self, word=None):
-        """
-        Sends list of dictionary entries to dictionary view
-        ---
-        responses:
-            dictionary_full:
-                type: array
-                items:
-                    type: object
-                    properties:
-                        dictname:
-                            type: string
-                        text:
-                            type: string
-
-        """
-        if word is not None:
-            word = word.lower()
-
-        db = get_db()
-
-        data = db.aql.execute(DICTIONARYFULL, bind_vars={'word': word})
 
         return list(data), 200
 
@@ -1138,3 +954,8 @@ class Redirect(Resource):
                         return "Redirect", 301, {'Location': f'/{uid}'}
 
         return "Not found", 403
+
+class Transliterate(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, target, text):
+        return transliterate.process('IAST', target, text)

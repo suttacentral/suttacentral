@@ -15,6 +15,7 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
+from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD
 from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
@@ -23,7 +24,6 @@ from . import (
     biblio,
     currencies,
     dictionaries,
-    dictionary_full,
     paragraphs,
     po,
     textdata,
@@ -111,7 +111,7 @@ def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
 def process_division_files(
     docs, name_docs, edges, mapping, division_files, root_languages, structure_dir
 ):
-    sutta_file = json_load(structure_dir / 'sutta.json')
+    sutta_file = json_load(structure_dir / 'text_extra_info.json')
 
     sutta_data = {}
     for sutta in sutta_file:
@@ -120,6 +120,9 @@ def process_division_files(
             'acronym': sutta['acronym'],
             'biblio_uid': sutta['biblio_uid'],
             'volpage': sutta['volpage'],
+            'alt_name': sutta['alt_name'],
+            'alt_acronym': sutta['alt_acronym'],
+            'alt_volpage': sutta['alt_volpage'],
         }
 
     reg = regex.compile(r'^\D+')
@@ -171,7 +174,7 @@ def process_division_files(
                 if 'num' not in entry:
                     entry['num'] = i
 
-                for data_name in ['volpage', 'biblio_uid', 'acronym']:
+                for data_name in ['volpage', 'biblio_uid', 'acronym', 'alt_name', 'alt_acronym', 'alt_volpage']:
                     try:
                         entry[data_name] = sutta_data[uid][data_name]
                     except KeyError:
@@ -536,7 +539,7 @@ def generate_relationship_edges(
                                 continue
                             true_to_uids = uid_matcher.get_matching_uids(to_uid)
                             if not true_to_uids:
-                                logging.error(
+                                logging.info(
                                     f'Relationship to uid could not be matched: {to_uid} (appears as orphan)'
                                 )
                                 true_to_uids = ['orphan']
@@ -660,23 +663,6 @@ def load_json_file(db, change_tracker, json_file):
         db[collection_name].import_bulk_logged(data, wipe=True)
 
 
-def process_blurbs(db, additional_info_dir):
-    print('Loading blurbs')
-    blurb_file = additional_info_dir / 'blurbs.json'
-    collection_name = 'blurbs'
-
-    blurb_info = json_load(blurb_file)
-
-    docs = [
-        {'uid': uid, 'lang': lang, 'blurb': blurb}
-        for lang, groups in blurb_info.items()
-        for suttas in groups.values()
-        for uid, blurb in tqdm(suttas.items())
-    ]
-
-    db.collection('blurbs').import_bulk_logged(docs, wipe=True)
-
-
 def process_difficulty(db, additional_info_dir):
     print('Loading difficulties')
     difficulty_file = additional_info_dir / 'difficulties.json'
@@ -690,6 +676,12 @@ def process_difficulty(db, additional_info_dir):
     ]
 
     db.collection('difficulties').import_bulk_logged(docs, wipe=True)
+
+
+def make_yellow_brick_road(db: Database):
+    db.collection('yellow_brick_road').truncate()
+    db.aql.execute(BUILD_YELLOW_BRICK_ROAD)
+    db.aql.execute(COUNT_YELLOW_BRICK_ROAD)
 
 
 def run(no_pull=False):
@@ -777,17 +769,20 @@ def run(no_pull=False):
     print_stage("Loading html_text")
     load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
 
-    print_stage("Processing and loading blurbs from additional_info")
-    process_blurbs(db, additional_info_dir)
+    print_stage('Make yellow brick road')
+    make_yellow_brick_road(db)
 
     print_stage("Loading difficulty from additional_info")
     process_difficulty(db, additional_info_dir)
 
-    print_stage("Loading dictionaries")
-    dictionaries.load_dictionaries(db, dictionaries_dir)
+    print_stage('Loading simple dictionaries')
+    dictionaries.load_simple_dictionaries(db, dictionaries_dir)
 
-    print_stage("Loading full dictionaries")
-    dictionary_full.load_dictionary_full(db, dictionaries_dir, change_tracker)
+    print_stage('Loading complex dictionaries')
+    dictionaries.load_complex_dictionaries(db, dictionaries_dir)
+
+    print_stage('Loading glossary dictionaries')
+    dictionaries.load_glossaries(db, dictionaries_dir)
 
     print_stage("Loading currencies from additional_info")
     currencies.load_currencies(db, additional_info_dir)
@@ -823,7 +818,6 @@ def run(no_pull=False):
     change_tracker.update_mtimes()
 
     print_stage('All done')
-
 
 
 def bilara_run():
