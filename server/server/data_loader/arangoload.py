@@ -644,7 +644,7 @@ def generate_relationship_edges(
     # Because there are many edges (nearly 400k at last count) chunk the import
     db['relationship'].truncate()
     for chunk in chunks(ll_edges, 10000):
-        db['relationship'].import_bulk_logged(chunk, from_prefix='root/', to_prefix='root/')
+        db['relationship'].import_bulk_logged(chunk, from_prefix='super_nav_details', to_prefix='super_nav_details')
 
 
 def load_author_edition(change_tracker, additional_info_dir, db):

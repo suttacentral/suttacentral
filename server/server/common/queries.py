@@ -283,7 +283,7 @@ FOR yb_doc IN yellow_brick_road
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
-FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
+FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == v.uid
@@ -303,26 +303,6 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             // Add title if it is in desired language
             RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
         )
-
-    LET po_translations = (
-        FOR text IN po_strings
-            FILTER text.uid == v.uid
-            SORT text.lang
-            LET lang_doc = DOCUMENT('language', text.lang)
-            RETURN {
-                lang: text.lang,
-                lang_name: lang_doc.name,
-                is_root: lang_doc.is_root,
-                author: text.author,
-                author_short: text.author_short,
-                author_uid: text.author_uid,
-                publication_date: text.publication_date,
-                id: text._key,
-                segmented: true,
-                title: text.title,
-                volpage: text.volpage
-            }
-    )
     
     LET blurbs_by_uid = (
         FOR blurb IN blurbs
@@ -343,7 +323,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
             RETURN difficulty.difficulty
     )[0]
     
-    LET translations = FLATTEN([po_translations, legacy_translations])
+    LET translations = FLATTEN([legacy_translations])
 
     LET volpages = (
         FOR text IN translations
@@ -386,11 +366,19 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
     )[0]
 
     LET original_titles = (
-        FOR original_name IN root_names
+        FOR original_name IN names
             FILTER original_name.uid == v.uid
             LIMIT 1
             RETURN original_name.name
     )[0]
+    
+    LET child = (
+        FOR child IN OUTBOUND v super_nav_details_edges 
+            LIMIT 1
+            RETURN child
+    )[0]
+            
+    LET node_type = child ? 'branch' : 'leaf'
 
     RETURN {
         acronym: v.acronym,
@@ -401,13 +389,12 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('root/', @uid) `root_edges`
         original_title: original_titles,
         root_lang: v.root_lang,
         root_lang_name: DOCUMENT('language', v.root_lang).name,
-        type: e.type ? e.type : (v.type ? v.type : 'text'),
+        type: node_type,
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
         parallel_count: parallel_count,
         biblio: biblio,
-        num: v.num
     }
 '''
 
