@@ -486,6 +486,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                         >
                           ${child.root_name}
                         </span>
+                        <span class="acronym">${child.child_range}</span>
                       </div>
                     </span>
                     ${child.yellow_brick_road

@@ -360,10 +360,31 @@ export const parallelsListCss = html`
       background-color: var(--sc-primary-color-light-transparent);
   }
 
+table{
+  counter-reset: parallel
+}
+
   .parallels-parallel-cell {
     width: 100%;
     padding: 0;
   }
+
+   .parallels-parallel-cell::before{
+    counter-increment: parallel;
+  content: "" counter(parallel) "";
+  visibility:hidden
+   }
+summary{
+  position: relative
+}
+    tbody:last-of-type .parallels-parallel-cell::before{
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 1em;
+  }
+
+
 
   @media screen and (max-width: 600px) {
     .parallels-parallel-cell {
