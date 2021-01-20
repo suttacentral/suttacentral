@@ -732,8 +732,6 @@ def run(no_pull=False):
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
 
-    languages = process_languages(structure_dir / 'language.json')
-
     storage_dir = current_app.config.get('STORAGE_DIR')
     if not storage_dir.exists():
         storage_dir.mkdir()
@@ -749,6 +747,8 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
+    languages = process_languages(structure_dir / 'language.json')
+                      
     print_stage("Loading images")
     images_files.load_images_links(db)
 
