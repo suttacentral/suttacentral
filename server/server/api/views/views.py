@@ -676,12 +676,11 @@ class Donations(Resource):
             amount = body['amount']
             frequency = body['frequency']
 
-            secret_key = os.environ.get('STRIPE_SECRET')
-            stripe.api_key = secret_key
+            stripe.api_key = os.environ.get('STRIPE_SECRET')
 
             incoming_uri = urlparse(request.url)
             cancel_url = '{uri.scheme}://{uri.netloc}/donate-now'.format(uri=incoming_uri)
-            success_url = '{uri.scheme}://{uri.netloc}/thank-you'.format(uri=incoming_uri)
+            success_url = '{uri.scheme}://{uri.netloc}/donation-success'.format(uri=incoming_uri)
 
             if frequency == 'oneTime':
                 session = stripe.checkout.Session.create(
