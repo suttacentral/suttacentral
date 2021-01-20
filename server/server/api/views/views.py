@@ -2,6 +2,7 @@ import json
 import os
 import datetime
 from typing import List
+from urllib.parse import urlparse
 
 import stripe
 from flask import current_app, request
@@ -133,7 +134,7 @@ class TranslationCountByDivision(Resource):
                                 schema:
                                     type: object
                                     properties:
-                                        name: 
+                                        name:
                                             type: string
                                         total:
                                             type: number
@@ -561,7 +562,7 @@ class Sutta(Resource):
                         doc[to_prop] = load_func(f)
 
 class SegmentedSutta(Resource):
-    
+
 
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
@@ -573,7 +574,7 @@ class SegmentedSutta(Resource):
         result = next(results)
         if not result:
             return {'error': 'Not Found'}, 404
-        
+
         return {k: self.load_json(v) for k,v in result.items()}, 200
 
     @staticmethod
@@ -669,147 +670,59 @@ class Paragraphs(Resource):
 
 class Donations(Resource):
     def post(self):
-        """
-        Process the payment
-        ---
-        responses:
-            all:
-                description: Information massage.
-                type: string
-        """
-        data = json.loads(list(request.form.keys())[0])
-        currency = data.get('currency')
-        inputted_amount = data.get('amount')
-        one_time_donation = data.get('oneTimeDonation')
-        monthly_donation = data.get('monthlyDonation')
-        stripe_data = data.get('stripe')
-        name = data.get('name')
-        email_address = data.get('email')
-        message = data.get('message')
+        body = request.get_json()
+        if body is not None and all(item in list(body.keys()) for item in ['currency', 'amount', 'frequency']):
+            currency = body['currency']
+            amount = body['amount']
+            frequency = body['frequency']
 
-        secret_key = os.environ.get('STRIPE_SECRET')
+            stripe.api_key = os.environ.get('STRIPE_SECRET')
 
-        stripe.api_key = secret_key
-        db = get_db()
-        try:
-            currency = list(db['currencies'].find({'symbol': currency}))[0]
-        except IndexError:
-            return 'No such currency', 400
+            incoming_uri = urlparse(request.url)
+            cancel_url = '{uri.scheme}://{uri.netloc}/donate-now'.format(uri=incoming_uri)
+            success_url = '{uri.scheme}://{uri.netloc}/donation-success'.format(uri=incoming_uri)
 
-        if currency['decimal']:
-            amount = inputted_amount * 100
-        else:
-            amount = inputted_amount
-
-        customer_data = {'source': stripe_data['id']}
-
-        if email_address:
-            customer_data['email'] = email_address
-
-        try:
-            customer = stripe.Customer.create(**customer_data)
-        except stripe.CardError:
-            return {'err_code': 3}, 400
-        try:
-            if one_time_donation:
-                charge = stripe.Charge.create(
-                    customer=customer.id,
-                    amount=amount,
-                    currency=currency['symbol'],
-                    metadata={"name": name, "message": message},
-                    description=f'''Donation by {name if name else ""}, 
-                                message {message if message else ""}''',
+            if frequency == 'oneTime':
+                session = stripe.checkout.Session.create(
+                    success_url=success_url,
+                    cancel_url=cancel_url,
+                    payment_method_types=['card'],
+                    line_items=[{
+                        'price_data': {
+                            'currency': currency,
+                            'unit_amount': amount,
+                            'product_data': {
+                                'name': 'Donation'
+                            },
+                        },
+                        'quantity': 1,
+                    }],
+                    mode='payment',
                 )
-
-            elif monthly_donation:
-                plan = self._get_plan(amount, currency['symbol'])
-                subscription = stripe.Subscription.create(
-                    customer=customer.id, items=[{"plan": plan.stripe_id}]
+            elif frequency == 'monthly':
+                session = stripe.checkout.Session.create(
+                    success_url=success_url,
+                    cancel_url=cancel_url,
+                    payment_method_types=['card'],
+                    line_items=[{
+                        'price_data': {
+                            'currency': currency,
+                            'unit_amount': amount,
+                            'product_data': {
+                                'name': 'Monthly Donation'
+                            },
+                            'recurring': {
+                                'interval': 'month'
+                            }
+                        },
+                        'quantity': 1,
+                    }],
+                    mode='subscription',
                 )
-
             else:
                 return {'err_message': 'Select either one time or monthly'}, 400
-
-        except stripe.InvalidRequestError as e:
-            code = 0
-            if 'Amount must convert to at least 50 cents' in str(e):
-                code = 1
-
-            elif any(
-                x in str(e) for x in ['99999999', '999,999.99', 'Invalid integer']
-            ):
-                code = 2
-
-            return {'err_code': code}, 400
-
-        data = {
-            'name': name,
-            'amount': inputted_amount,
-            'currency': currency['symbol'],
-            'dateTime': datetime.datetime.now().strftime('%d-%m-%y %H:%M'),
-            'subscription': monthly_donation,
-        }
-
-        if email_address:
-            self.send_email(data, email_address)
-
-        return data, 200
-
-    @staticmethod
-    def _get_plan(amount, currency):
-        plan_id = f'monthly_{amount}_{currency}'
-        try:
-            plan = stripe.Plan.retrieve(plan_id)
-        except stripe.error.InvalidRequestError:
-            plan = stripe.Plan.create(
-                amount=amount,
-                interval='month',
-                name='Monthly Donation to SuttaCentral',
-                currency=currency,
-                statement_descriptor='SuttaCentralDonation',
-                id=plan_id,
-            )
-        return plan
-
-    @staticmethod
-    def send_email(data, email_address):
-        msg = {
-            'subject': 'Payment confirmation',
-            'from_email': current_app.config.get('MAIL_DONATIONS_SENDER'),
-            'to_email': email_address,
-            'html': f'''
-        <div>We gratefully acknowledge your donation to support SuttaCentral.</div><br>
-        <div>Here are the transaction details for your records. 
-        If you have entered your email address, a copy of these details will be sent there too.</div><br>
-        {f"<div>Donor: <b>{data['name']}</b></div>" if data['name'] else ''}
-        <div>Donation: 
-            <b>{data['amount']} {data['currency']}</b>
-        </div>
-        <div>Paid to: <b>SuttaCentral Development Trust</b></div>
-        <div>Payment service: <b>Stripe</b></div>
-        <div>Time of payment: <b>{data['dateTime']}</b></div>
-        <div>Type of payment: 
-            <b>{'Subscription' if data['subscription'] else 'One time donation'}</b>
-        </div><br>
-        <div>For further inquiries, please contact SuttaCentral Development Trust’s financial officer Deepika Weerakoon 
-            at <a href="mailto:suttacentraldevelopmenttrust@gmail.com" target="_top"> 
-                suttacentraldevelopmenttrust@gmail.com
-            </a>.
-        </div><br>
-        <div>
-            SuttaCentral Development Trust is a charitable trust registered in Australia. 
-            Your donation will be used for the development of SuttaCentral.
-        </div><br>
-        <div class="cursive">Sadhu! Sadhu! Sadhu!</div>
-''',
-        }
-        try:
-            send_email(**msg)
-        except Exception:
-            logger.error('Failed to send email')
-            logger.exception()
-            pass
-
+            return {'id': session.id}, 200
+        return {'err_message': 'Provide mandatory property such as currency, amount and frequency'}, 400
 
 class Images(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)

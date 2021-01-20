@@ -60,7 +60,6 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <style></style>
       <mwc-select
         class="filter-dropdown"
         label="${this.localize('filter')}"

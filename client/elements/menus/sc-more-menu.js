@@ -110,10 +110,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     this.languageIsVisible = store.getState().languageMenuVisibility;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
   get actions() {
     return {
       changeAppTheme(theme) {
