@@ -263,7 +263,7 @@ class Menu(Resource):
 
 
 class SuttaplexList(Resource):
-    # @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid):
         """
         Send suttaplex for given uid. It is represented in flat list structure where order matters.
