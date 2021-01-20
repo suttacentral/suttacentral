@@ -40,13 +40,10 @@ details ul{
 
 summary
 {
-    font-weight: 600;
-
     display: flex;
 
     cursor: pointer;
 
-    color: var(--sc-primary-text-color);
     outline-color: var(--sc-border-color);
 
     align-items: baseline;
@@ -178,13 +175,6 @@ list-style: none;
      display: unset;
   }
 
-    .nerdy-row-element:first-of-type {
-    font-weight: 800;
-    font-variant-caps: all-small-caps;
-
-      letter-spacing: var(--sc-caps-letter-spacing);
-  }
-
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
     position: absolute;
     z-index: 10;
@@ -206,6 +196,7 @@ list-style: none;
 
   .suttaplex-details {
     display: inline-block;
+    position: inherit
   }
 
   .blurb {
