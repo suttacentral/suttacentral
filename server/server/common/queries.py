@@ -27,25 +27,7 @@ FOR text IN html_text
         }
 '''
 
-PO_TEXTS_BY_LANG = '''
-FOR text IN po_strings
-    FILTER text.lang == @lang
-    LET root = (
-        RETURN DOCUMENT(CONCAT('root/', text.uid))
-    )[0]
-    RETURN {
-        uid: text.uid,
-        title: text.title,
-        strings_path: text.strings_path,
-        author: text.author,
-        author_uid: text.author_uid,
-        author_short: text.author_short,
-        root_lang: root.root_lang,
-        acronym: root.acronym,
-        mtime: text.mtime
-    }
-'''
-
+# todo remove root, root_edges usage
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
 FOR division IN root
@@ -69,28 +51,12 @@ WITH @@collection /* With statement forces query optimizer to work */
 
 MENU = '''
 FOR navigation_doc IN super_nav_details
-    // Find any node parent using relations from edges collection
-    LET parent = (
-        FOR parent IN INBOUND navigation_doc super_nav_details_edges
-            LIMIT 1
-            RETURN parent
-    )[0]
-    // Take nodes without parents (root nodes)
-    FILTER parent == null
+    FILTER navigation_doc.type == 'root'
     // Node children
     LET descendants = (
         FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
-            // Search any child for every descendant of the root entry
-            LET child = (
-                FOR child IN OUTBOUND descendant super_nav_details_edges 
-                    LIMIT 1
-                    RETURN child
-            )[0]
-            
             // Search info about doc language from language collection
             LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
-            // Сheck the type of document based on the presence of at least one child
-            LET node_type = child ? 'branch' : 'leaf'
             LET child_range = DOCUMENT('child_range', descendant.uid)['range']
             
             LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
@@ -117,7 +83,7 @@ FOR navigation_doc IN super_nav_details
                 translated_name: translated_name,
                 acronym: descendant.acronym,
                 blurb: blurb,
-                node_type: node_type,
+                node_type: descendant.type,
                 root_lang_iso: descendant.root_lang,
                 root_lang_name: lang_name,
                 child_range: child_range,
@@ -150,7 +116,7 @@ FOR navigation_doc IN super_nav_details
         translated_name: translated_name,
         blurb: blurb,
         acronym: navigation_doc.acronym,
-        node_type: 'root',
+        node_type: navigation_doc.type,
         root_lang_iso: navigation_doc.root_lang,
         root_lang_name: lang_name,
         child_range: child_range,
@@ -163,23 +129,10 @@ FOR navigation_doc IN super_nav_details
 SUBMENU = '''
 LET navigation_doc = DOCUMENT('super_nav_details', @submenu_id)
 
-LET parent = (
-    FOR parent IN INBOUND navigation_doc super_nav_details_edges
-        LIMIT 1
-        RETURN parent
-)[0]
-
 LET descendants = (
-    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
-        LET child = (
-            FOR child IN OUTBOUND descendant super_nav_details_edges 
-                LIMIT 1
-                RETURN child
-        )[0]
-        
+    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges        
         LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
         LET child_range = DOCUMENT('child_range', descendant.uid)['range']
-        LET node_type = child ? 'branch' : 'leaf'
         LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
         
         LET en_and_language_blurbs = (
@@ -202,7 +155,7 @@ LET descendants = (
             translated_name: translated_name,
             acronym: descendant.acronym,
             blurb: blurb,
-            node_type: node_type,
+            node_type: descendant.type,
             root_lang_iso: descendant.root_lang,
             root_lang_name: lang_name,
             child_range: child_range,
@@ -211,8 +164,6 @@ LET descendants = (
         }
     )
 
-LET branch_or_leaf_type = descendants[0] ? 'branch' : 'leaf'
-LET node_type = parent ? branch_or_leaf_type : 'root'
 LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
 LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
 LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
@@ -235,7 +186,7 @@ RETURN {
     uid: navigation_doc.uid,
     root_name: navigation_doc.name,
     translated_name: translated_name,
-    node_type: node_type,
+    node_type: navigation_doc.type,
     blurb: blurb,
     acronym: navigation_doc.acronym,
     root_lang_iso: navigation_doc.root_lang,
@@ -245,6 +196,23 @@ RETURN {
     yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
     children: descendants,
 }
+'''
+
+SET_SUPER_NAV_DETAILS_NODES_TYPES = '''
+FOR doc IN super_nav_details
+    LET child = (
+        FOR child IN OUTBOUND doc super_nav_details_edges 
+            LIMIT 1
+            RETURN child
+    )[0]
+    LET parent = (
+        FOR parent IN INBOUND doc super_nav_details_edges
+            LIMIT 1
+            RETURN parent
+    )[0]
+    LET node_type_using_child = child ? 'branch' : 'leaf'
+    LET node_type = parent ? node_type_using_child : 'root'
+    UPDATE doc WITH { type: node_type } IN super_nav_details
 '''
 
 BUILD_YELLOW_BRICK_ROAD = '''
@@ -371,14 +339,6 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             LIMIT 1
             RETURN original_name.name
     )[0]
-    
-    LET child = (
-        FOR child IN OUTBOUND v super_nav_details_edges 
-            LIMIT 1
-            RETURN child
-    )[0]
-            
-    LET node_type = child ? 'branch' : 'leaf'
 
     RETURN {
         acronym: v.acronym,
@@ -389,7 +349,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         original_title: original_titles,
         root_lang: v.root_lang,
         root_lang_name: DOCUMENT('language', v.root_lang).name,
-        type: node_type,
+        type: v.type,
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
@@ -399,7 +359,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 '''
 
 PARALLELS = '''
-FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
+FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationship
     LET target = DOCUMENT(e._to)
     
     LET legacy_translations = (
@@ -418,23 +378,6 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             // Add title if it is in desired language
             RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
         )
-
-    LET po_translations = (
-        FOR text IN po_strings
-            FILTER text.uid == target.uid
-            LET res = {
-                lang: text.lang,
-                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
-                author: text.author,
-                author_short: text.author_short,
-                author_uid: text.author_uid,
-                id: text._key,
-                segmented: true,
-                volpage: text.volpage
-            }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
-            RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
-    )
     
     SORT e.resembling
     
@@ -445,7 +388,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN biblio.text
     )[0]
 
-    LET translations = FLATTEN([po_translations, legacy_translations])
+    LET translations = FLATTEN([legacy_translations])
 
     LET volpages = (
         FOR text IN translations
@@ -462,7 +405,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
     )[0]
 
     LET original_titles = (
-        FOR original_name IN root_names
+        FOR original_name IN names
             FILTER original_name.uid == v.uid
             LIMIT 1
             RETURN original_name.name
@@ -493,7 +436,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
 
 SUTTA_VIEW = (
     '''
-LET root_text = DOCUMENT(CONCAT('root/', @uid))
+LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
 
 LET legacy_html = (
     FOR html IN html_text
@@ -513,59 +456,12 @@ LET legacy_html = (
         }
 )
 
-LET markup_path = (
-    FOR markup IN po_markup
-        FILTER markup.uid == @uid
-        LIMIT 1
-        RETURN markup.markup_path
-)[0]
-
-LET root_po_obj = (
-    FOR object IN po_strings
-        FILTER object.uid == @uid AND object.lang == root_text.root_lang
-        LIMIT 1 
-        RETURN {
-            uid: object.uid,
-            author: object.author,
-            author_short: object.author_short,
-            author_uid: object.author_uid,
-            author_blurb: object.author_blurb,
-            lang: object.lang,
-            strings_path: object.strings_path,
-            title: object.title,
-            next: object.next,
-            previous: object.prev
-        }
-)[0]
-
-LET translated_po_obj = (
-    FOR object IN po_strings 
-        FILTER object.uid == @uid AND object.lang == @language AND object.author_uid == @author_uid
-        LIMIT 1 
-        RETURN {
-            uid: object.uid,
-            author: object.author,
-            author_short: object.author_short,
-            author_uid: object.author_uid,
-            author_blurb: object.author_blurb,
-            lang: object.lang,
-            strings_path: object.strings_path,
-            title: object.title,
-            next: object.next,
-            previous: object.prev
-        }
-)[0]
-
 LET suttaplex = ('''
     + SUTTAPLEX_LIST
     + ''')[0]
     
 RETURN {
-    root_text: translated_po_obj ? root_po_obj : null,
-    translation: translated_po_obj ? (root_po_obj == translated_po_obj ? null : translated_po_obj) 
-        : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
-    segmented: translated_po_obj ? true : false,
-    markup_path: translated_po_obj ? markup_path : null,
+    translation: (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
     suttaplex: suttaplex
 }
 '''

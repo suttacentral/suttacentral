@@ -417,7 +417,7 @@ class Parallels(Resource):
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         uid = uid.replace('/', '-').strip('-')
-        uid = f'root/{uid}'
+        uid = f'super_nav_details/{uid}'
 
         db = get_db()
         results = db.aql.execute(
