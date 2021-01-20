@@ -62,11 +62,7 @@ list-style: none;
   display: none;
 }
 
-  .menu-listbox {
-      --paper-input-container-focus-color: var(--sc-primary-accent-color);
-      --paper-input-container-color: var(--sc-secondary-text-color);
-      --paper-input-container-input-color: var(--sc-secondary-text-color);
-      --paper-dropdown-menu-icon_-_color: var(--sc-disabled-text-color);
+  .suttaplex-share-menu-list {
       background-color: var(--sc-secondary-background-color);
   }
 
