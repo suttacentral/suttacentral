@@ -195,10 +195,11 @@ export const navigationNormalModeStyles = html`
       line-height: 1;
 
       display: flex;
-      flex-direction: column;
 
-      height: 36px;
-      padding: 0 8px 4px;
+    height: 24px;
+    min-width: 72px;
+    padding: 0 4px;
+    box-sizing: border-box;
 
       color: white;
       background-color: var(--sc-primary-color-dark);
