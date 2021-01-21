@@ -1,4 +1,6 @@
 import json
+import re
+
 import regex
 import logging
 import pathlib
@@ -92,6 +94,15 @@ def process_root_languages(language_file: Path) -> Dict[str, str]:
         lang_iso = language['root_lang_iso']
         if 'contains' in language:
             data.update({uid: lang_iso for uid in language['contains']})
+    return data
+
+
+def process_languages(language_file: Path) -> Dict[str, str]:
+    languages: List[dict] = json_load(language_file)
+    data = {}
+    for language in languages:
+        lang_iso = language['iso_code']
+        data.update({uid: lang_iso for uid in language.get('contains', [])})
     return data
 
 
@@ -199,6 +210,36 @@ def process_division_files(
     docs.append({'uid': 'orphan', '_key': 'orphan'})
 
 
+def parse_name_file_entries(
+        file_content: dict,
+        root_languages: Dict[str, str],
+        super_extra_info:  Dict[str, Dict[str, str]],
+        text_extra_info:  Dict[str, Dict[str, str]]
+) -> List[dict]:
+    """
+    Method for processing entries in a single name-file
+    """
+    names = []
+    pattern = r'^.*?:\d+\.(.*?)$'
+    for prefix, name in file_content.items():
+        if type(name) is dict:
+            names.extend(parse_name_file_entries(name, root_languages, super_extra_info, text_extra_info))
+        else:
+            match = re.match(pattern, prefix)
+            uid = match.group(1) if match else prefix
+            extra_info = super_extra_info if uid in super_extra_info else text_extra_info
+            names.append({
+                'uid': uid,
+                '_key': uid,
+                'name': name,
+                'root_lang': root_languages.get(uid, None),
+                'volpage': extra_info.get(uid, {}).get('volpage', None),
+                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', None),
+                'acronym': extra_info.get(uid, {}).get('acronym', None)
+            })
+    return names
+
+
 def process_names_files(
         names_files: List[Path],
         root_languages: Dict[str, str],
@@ -210,7 +251,7 @@ def process_names_files(
 
     Args:
         names_files - list of name Path objects to files from name folder
-        root_languages - parsed data from language.json
+        root_languages - parsed data from super_root_lang.json
         super_extra_info - parsed data from super_extra_info.json
         text_extra_info - parsed data from text_extra_info.json
 
@@ -221,21 +262,7 @@ def process_names_files(
     names_files.sort(key=lambda path: len(path.parts))
     for name_file in names_files:
         entries: Dict[str, str] = json_load(name_file)
-        for uid, name in entries.items():
-            if type(name) != str:
-                continue
-            extra_info = super_extra_info if uid in super_extra_info else text_extra_info
-            entry = {
-                'uid': uid,
-                '_key': uid,
-                'name': name,
-                'root_lang': root_languages.get(uid, None),
-                'volpage': extra_info.get(uid, {}).get('volpage', None),
-                'biblio_uid': extra_info.get(uid, {}).get('biblio_uid', None),
-                'acronym': extra_info.get(uid, {}).get('acronym', None)
-            }
-
-            docs.append(entry)
+        docs.extend(parse_name_file_entries(entries, root_languages, super_extra_info, text_extra_info))
     return docs
 
 
@@ -355,7 +382,7 @@ def perform_update_queries(db):
     )
 
 
-def add_root_docs_and_edges(change_tracker, db, structure_dir):
+def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir):
     docs = []
     name_docs = []
     edges = []
@@ -364,7 +391,7 @@ def add_root_docs_and_edges(change_tracker, db, structure_dir):
     tree_dir = structure_dir / 'tree'
 
     division_files = sorted((structure_dir / 'division').glob('**/*.json'))
-    names_files = sorted((structure_dir / 'name').glob('**/*.json'))
+    names_files = sorted((sc_bilara_data_dir / 'root' / 'misc' / 'site' / 'name').glob('**/*.json'))
     tree_files = sorted(tree_dir.glob('**/*.json'))
     category_files = sorted(structure_dir.glob('*.json'))
 
@@ -719,6 +746,8 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
+    languages = process_languages(structure_dir / 'language.json')
+                      
     print_stage("Loading images")
     images_files.load_images_links(db)
 
@@ -732,7 +761,7 @@ def run(no_pull=False):
     load_author_edition(change_tracker, additional_info_dir, db)
 
     print_stage("Building and loading navigation from structure_dir")
-    add_root_docs_and_edges(change_tracker, db, structure_dir)
+    add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
 
     print_stage("Loading child ranges from structure_dir")
     load_child_range(db, structure_dir)
@@ -749,7 +778,7 @@ def run(no_pull=False):
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage('Load names from sc_bilara_data')
-    sc_bilara_data.load_names(db, sc_bilara_data_dir)
+    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages)
 
     print_stage('Load blurbs from sc_bilara_data')
     sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)

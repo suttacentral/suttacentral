@@ -40,17 +40,24 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
     db['blurbs'].import_bulk(blurbs)
 
 
-def parse_name_file_content(file_content: dict, is_root: bool, lang: str) -> List[dict]:
+def parse_name_file_content(
+        file_content: dict,
+        is_root: bool,
+        lang: str,
+        languages: Dict[str, str]
+) -> List[dict]:
     names = []
     pattern = r'^.*?:\d+\.(.*?)$'
     for prefix, name in file_content.items():
         if type(name) is dict:
-            names.extend(parse_name_file_content(name, is_root, lang))
+            names.extend(parse_name_file_content(name, is_root, lang, languages))
         else:
             match = re.match(pattern, prefix)
             uid = match.group(1) if match else prefix
+            lang = languages.get(uid, None) if lang == 'misc' else lang
+            key = '_'.join((uid, lang)) if lang else uid
             names.append({
-                '_key': '_'.join((uid, lang)),
+                '_key': key,
                 'uid': uid,
                 'lang': lang,
                 'is_root': is_root,
@@ -59,7 +66,7 @@ def parse_name_file_content(file_content: dict, is_root: bool, lang: str) -> Lis
     return names
 
 
-def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
+def load_names(db: Database, sc_bilara_data_dir: Path, languages: Dict[str, str]) -> None:
     names = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
@@ -67,7 +74,7 @@ def load_names(db: Database, sc_bilara_data_dir: Path) -> None:
         is_root = 'root' in name_file.parts
         lang = name_file.parts[lang_folder_idx]
         file_content: Dict[str, str] = json_load(name_file)
-        names.extend(parse_name_file_content(file_content, is_root, lang))
+        names.extend(parse_name_file_content(file_content, is_root, lang, languages))
 
     print(f'{len(names)} names added or updated')
     db['names'].truncate()
