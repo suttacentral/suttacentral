@@ -901,7 +901,7 @@ class StripePublicKey(Resource):
     def get(self):
         key = os.environ.get('PUBLISHABLE_KEY')
         if key:
-            return key, 200
+            return {"public_key": key}, 200
         else:
             return 'Key not found', 404
 

@@ -15,8 +15,6 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_vFqwBPDW08c5AKXMGLKaeJaB');
-
 class SCDonateNow extends LitLocalized(LitElement) {
   static get properties() {
     return {
@@ -53,7 +51,7 @@ class SCDonateNow extends LitLocalized(LitElement) {
       #error-message {
         text-align: center;
       }
-      
+
       form {
         display: flex;
         flex-direction: column;
@@ -148,6 +146,9 @@ class SCDonateNow extends LitLocalized(LitElement) {
     const frequency = Array.from(this.shadowRoot.querySelectorAll('#frequency-checkbox mwc-radio'))
       .filter(el => el.checked)
       .map(el => el.value)[0];
+    const config = await fetch(`${API_ROOT}/stripe_public_key`);
+    const { public_key } = await config.json();
+    const stripePromise = loadStripe(public_key);
     const stripe = await stripePromise;
     const response = await fetch(`${API_ROOT}/donate`, {
       method: 'POST',
