@@ -680,6 +680,16 @@ LET words = FLATTEN(
 RETURN SLICE(words, 0, 10)
 '''
 
+DICTIONARY_SIMPLE = '''
+FOR dict IN dictionaries_simple FILTER dict.from == @from AND dict.to == @to 
+    RETURN {
+        entry: dict.entry,
+        grammar: dict.grammar,
+        definition: dict.definition,
+        xr: dict.xr
+    }
+'''
+
 EXPANSION = '''
 LET expansion_item = (
     FOR entry IN uid_expansion
