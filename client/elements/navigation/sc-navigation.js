@@ -38,6 +38,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
     this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
+    this.lastSelectedItemRootLangISO = '';
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
@@ -348,7 +349,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          translate="no"
+                        >
                           ${child.root_name}
                         </span>
                       </div>
@@ -356,8 +361,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons.tick}</mwc-icon>
-                            <span class="number-translated">
+                           <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -366,7 +370,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-                <div class="blurb blurbShrink">${child.blurb}</div>
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
               </section>
             `
           )}
@@ -380,11 +390,19 @@ class SCNavigation extends LitLocalized(LitElement) {
     }`;
   }
 
+  _updateLastSelectedItemRootLangISO(rootLangISO) {
+    if (rootLangISO && this.lastSelectedItemRootLangISO !== rootLangISO) {
+      this.lastSelectedItemRootLangISO = rootLangISO;
+    }
+  }
+
   async _onPitakaCardClick(params) {
     const navType = 'parallels';
     const navIndexesOfType = navIndex.get(navType);
     this.parallelsUid = params.childId;
     this.parallelsData = await this._fetchChildrenData(params.childId);
+
+    this._updateLastSelectedItemRootLangISO(this.parallelsData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -460,16 +478,20 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          translate="no"
+                        >
                           ${child.root_name}
                         </span>
+                        <span class="acronym">${child.child_range}</span>
                       </div>
                     </span>
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons.tick}</mwc-icon>
-                            <span class="number-translated">
+                           <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -478,11 +500,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${pitakaGuide.get(child.uid)
                   ? html`
                       <a href="${pitakaGuide.get(child.uid)}" class="essay-link">
@@ -525,6 +549,8 @@ class SCNavigation extends LitLocalized(LitElement) {
       this.vaggasData[0] &&
       this.vaggasData[0].children &&
       this.vaggasData[0].children.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.vaggasData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -621,7 +647,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          translate="no"
+                        >
                           ${child.root_name || child.uid}
                         </span>
                         <span class="acronym">${child.acronym} ${child.child_range}</span>
@@ -630,8 +660,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons.tick}</mwc-icon>
-                            <span class="number-translated">
+                           <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -640,11 +669,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -667,6 +698,8 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const showVaggaChildren =
       this.vaggaChildren && this.vaggaChildren.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.vaggasData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -717,10 +750,10 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] &&
       this.navArray[this.currentNavPosition].displayVaggaChildren &&
-      this.vaggaChildren
+      this.vaggasData[0].children
       ? html`
-          ${this.vaggaChildren &&
-          this.vaggaChildren.map(
+          ${this.vaggasData[0].children &&
+          this.vaggasData[0].children.map(
             child => html`
               <section class="card">
                 <a
@@ -739,7 +772,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          translate="no"
+                        >
                           ${child.root_name || child.uid}
                         </span>
                         <span class="acronym">
@@ -750,8 +787,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons.tick}</mwc-icon>
-                            <span class="number-translated">
+                           <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -760,11 +796,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -786,6 +824,8 @@ class SCNavigation extends LitLocalized(LitElement) {
     const showVaggaChildrenChildren =
       this.vaggaChildrenChildren &&
       this.vaggaChildrenChildren[0].children.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.vaggaChildrenChildren[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -858,7 +898,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          translate="no"
+                        >
                           ${child.root_name || child.acronym}
                         </span>
                         <span class="acronym">${child.child_range}</span>
@@ -867,8 +911,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                            <mwc-icon>${icons.tick}</mwc-icon>
-                            <span class="number-translated">
+                           <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -877,11 +920,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
-
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
                 ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -904,6 +949,8 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     const showSakaChildren =
       this.sakaChildren && this.sakaChildren.some(child => ['branch'].includes(child.node_type));
+
+    this._updateLastSelectedItemRootLangISO(this.sakaData[0].root_lang_iso);
 
     if (!params.childName) {
       params.childName =
@@ -973,7 +1020,11 @@ class SCNavigation extends LitLocalized(LitElement) {
                         ${child.translated_name || child.root_name || child.uid}
                       </span>
                       <div class="navigation-nerdy-row">
-                        <span class="subTitle" lang="${child.root_lang_iso}" translate="no">
+                        <span
+                          class="subTitle"
+                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          translate="no"
+                        >
                           ${child.root_name || child.acronym}
                         </span>
                         <span class="acronym">${child.child_range}</span>
@@ -991,9 +1042,13 @@ class SCNavigation extends LitLocalized(LitElement) {
                       : ''}
                   </header>
                 </a>
-                <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                  ${unsafeHTML(child.blurb || '')}
-                </div>
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
               </section>
             `
           )}
