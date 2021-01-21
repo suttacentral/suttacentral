@@ -57,7 +57,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
       mwc-switch {
         padding: 4px;
-        margin: 0 4px 0 1px;
+        margin: 0 2px 0 -6px;
         --mdc-theme-surface: var(--sc-tertiary-background-color);
         --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
