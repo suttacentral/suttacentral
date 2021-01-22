@@ -36,7 +36,6 @@ from common.queries import (
 from common.utils import (
     flat_tree,
     language_sort,
-    recursive_sort,
     sort_parallels_key,
     sort_parallels_type_key,
 )
@@ -558,8 +557,8 @@ class Sutta(Resource):
                     with open(file_path) as f:
                         doc[to_prop] = load_func(f)
 
+
 class SegmentedSutta(Resource):
-    
 
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
@@ -1028,11 +1027,12 @@ class Redirect(Resource):
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
-                    root = db.collection('root')
-                    if uid in root:
+                    nav_docs = db.collection('super_nav_details')
+                    if uid in nav_docs:
                         return "Redirect", 301, {'Location': f'/{uid}'}
 
         return "Not found", 403
+
 
 class Transliterate(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)

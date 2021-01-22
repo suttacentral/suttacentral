@@ -1,19 +1,21 @@
-LANGUAGES = '''FOR l in language
-                SORT l.name
-                RETURN {
-                    "uid": l.uid,
-                    "name": l.name,
-                    "iso_code": l.iso_code,
-                    "is_root": l.is_root,
-                    "localized": !!l.localized,
-                    "localized_percent": l.localized_percent ? l.localized_percent : 0
-                    }'''
+LANGUAGES = '''
+FOR l in language
+    SORT l.name
+    RETURN {
+        "uid": l.uid,
+        "name": l.name,
+        "iso_code": l.iso_code,
+        "is_root": l.is_root,
+        "localized": !!l.localized,
+        "localized_percent": l.localized_percent ? l.localized_percent : 0
+    }
+'''
 
 TEXTS_BY_LANG = '''
 FOR text IN html_text
         FILTER text.lang == @lang
-        LET root = (
-            RETURN DOCUMENT(CONCAT('root/', text.uid))
+        LET nav_doc = (
+            RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
         )[0]
         RETURN {
             file_path: text.file_path,
@@ -22,20 +24,17 @@ FOR text IN html_text
             author: text.author,
             author_uid: text.author_uid,
             author_short: text.author_short,
-            root_lang: root.root_lang,
-            acronym: root.acronym
+            root_lang: nav_doc.root_lang,
+            acronym: nav_doc.acronym
         }
 '''
 
-# todo remove root, root_edges usage
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
-FOR division IN root
-    FILTER division.type == 'division'
+FOR division IN super_nav_details
+    FILTER division.type == 'branch'
     LET division_uids = (
-        FOR doc, edge, path IN 0..10 OUTBOUND division root_edges OPTIONS {bfs: False}
-            LET path_nums = path.vertices[*].num
-            SORT path_nums
+        FOR doc, edge, path IN 0..10 OUTBOUND division super_nav_details_edges OPTIONS {bfs: False}
             RETURN doc.uid
     )
     RETURN {'division': division.uid, 'uids': division_uids}
@@ -440,7 +439,8 @@ LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
 
 LET legacy_html = (
     FOR html IN html_text
-        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) OR html.lang == root_text.root_lang)
+        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
+            OR html.lang == root_text.root_lang)
         
         RETURN {
             uid: html.uid,
@@ -578,24 +578,21 @@ class PWA:
 LET langs = UNION(@languages OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
 
 LET menu = (
-    FOR div IN 1..1 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
+    FOR div IN 1..1 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
         LET has_subdivisions = LENGTH(
-            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div super_nav_details_edges
+                FILTER d_edge.type != 'leaf'
                 LIMIT 1
                 RETURN 1
             )
         FILTER has_subdivisions
-        SORT div.num
         RETURN div.uid
     )
 
 LET grouped_children = MERGE(
-    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
-        SORT d_path.vertices[*].num
-        COLLECT is_div = d_edge.type != 'text' INTO uids = d.uid
-        RETURN {[is_div ? 'div' : 'text']: uids}
+    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
+        COLLECT is_div = d.type != 'leaf' INTO uids = d.uid
+        RETURN {[is_div ? 'branch' : 'leaf']: uids}
 )
 
 LET suttaplex = grouped_children['div']
@@ -670,6 +667,7 @@ RETURN {
 }
 '''
 
+# dodo remove root and root_edges
 TRANSLATION_COUNT_BY_DIVISION = '''
 /* First we count the number of texts by (sub)division uid based on pattern matching */
 LET counts = MERGE(
@@ -685,23 +683,21 @@ LET counts = MERGE(
 LET keys = ATTRIBUTES(counts)
 
 FOR key IN keys
-    LET doc = DOCUMENT('root', key)
+    LET doc = DOCUMENT('super_nav_details', key)
     FILTER doc
     /* Determine the highest division level */
     LET highest_div = LAST(
-        FOR v, e, p IN 0..10 INBOUND doc `root_edges`
-        FILTER v.type == 'division'
+        FOR v, e, p IN 0..10 INBOUND doc super_nav_details_edges
+        FILTER v.type == 'branch'
         RETURN {
             uid: v.uid,
             name: v.name,
-            root_lang: v.root_lang,
-            num: v.num
+            root_lang: v.root_lang
         }
     )
     COLLECT div = highest_div /* Filter out the subdivisions */
     /* But accumulate their counts */
     AGGREGATE total = SUM(counts[key])
-    SORT div.num
     RETURN {
         uid: div.uid,
         name: div.name,
@@ -730,19 +726,4 @@ FOR subcount IN legacy_counts
         AGGREGATE total = SUM(subcount.total)
         SORT total DESC
         RETURN {name, total}
-'''
-
-GET_ANCESTORS = '''
-    /* Return uids that are ancestors to any uid in @uid_list */
-    RETURN UNIQUE(FLATTEN(
-        FOR uid in ['pli-tv-bi-vb-ss', 'pli-tv-bi-vb-sk', 'pli-tv-bu-vb-pd', 'pli-tv-bi-pm', 'sf', 'vv', 'pli-tv-bu-vb-np', 'pli-tv-bi-vb-pc', 'ds', 'xct-mu-bu-pm', 'thag', 'patthana', 'pdhp', 'iti', 'pli-tv-bu-vb-ay', 'sn', 'pp', 'ud', 'sa-2', 'pli-tv-pvr', 'da', 'pv', 'pli-tv-bu-vb-as', 'dn', 'arv', 'ma', 'kp', 'thi-ap', 'lal', 'pli-tv-bi-vb-pd', 'snp', 'pli-tv-bi-vb-np', 'pli-tv-bu-vb-pj', 'pli-tv-bi-vb-as', 'ja', 'thig', 'vb', 'pli-tv-bi-vb-pj', 'ea', 'pli-tv-bu-vb-ss', 'lzh-dg-kd', 'mn', 'tha-ap', 'an', 'kv', 'up', 'pli-tv-bu-vb-pc', 't', 'sa', 'mil', 'uv-kg', 'lzh-dg-bu-pm', 'dhp', 'pli-tv-kd']
-            LET parents = (
-                LET doc = DOCUMENT('root', uid)
-                FILTER doc
-                FOR v, e, p IN 1..5 INBOUND doc `root_edges`
-                    FILTER v.type != 'language'
-                    RETURN v.uid
-                )
-            return parents
-    ))
 '''

@@ -18,9 +18,9 @@ def test_languages(client):
 
 
 def test_menu(client):
-    roots = utils.generate_roots(amount=10)
+    roots = utils.generate_navigation_docs(amount=10)
     roots.save()
-    edges = utils.generate_root_edges(roots)
+    edges = utils.generate_navigation_edges(roots)
     edges.save()
 
     res = client.get(api.url_for(Menu))
@@ -36,9 +36,9 @@ def test_suttaplex_list(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
     utils.generate_difficulty().save()
-    roots = utils.generate_roots()
+    roots = utils.generate_navigation_docs()
     roots.save()
-    utils.generate_root_edges(roots).save()
+    utils.generate_navigation_edges(roots).save()
 
     res = client.get(api.url_for(SuttaplexList, uid=roots[0].uid))
 
@@ -47,7 +47,7 @@ def test_suttaplex_list(client):
 
 def test_parallels_view(client):
     utils.generate_html_text().save()
-    roots = utils.generate_roots()
+    roots = utils.generate_navigation_docs()
     roots.save()
 
     uid = roots[0].uid
@@ -63,9 +63,9 @@ def test_sutta_view(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
     utils.generate_difficulty().save()
-    roots = utils.generate_roots()
+    roots = utils.generate_navigation_docs()
     roots.save()
-    utils.generate_root_edges(roots).save()
+    utils.generate_navigation_edges(roots).save()
 
     res = client.get(api.url_for(Sutta, uid=roots[0].uid, author='sujato', lang='en'))
 

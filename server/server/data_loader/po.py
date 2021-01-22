@@ -5,16 +5,12 @@ import polib
 import regex
 import lxml
 
-from .util import iter_sub_dirs, humansortkey
+from .util import humansortkey
 
 
 import sys
 
 current_module = sys.modules[__name__]
-
-
-class PoProcessingError(Exception):
-    pass
 
 
 def remove_leading_zeros(string):
@@ -118,8 +114,6 @@ def extract_headings_from_po(po):
     # suttaplex only picks up the original title instead.
     found = {'tr': {}, 'root': {}}
     for string, key in (('<h1', 'title'), ('class="division"', 'division')):
-        tr_strings = []
-        root_strings = []
         for entry in po[:10]:
             if string in entry.comment:
                 found['tr'][key] = sanitize_title(entry.msgstr)
