@@ -35,8 +35,6 @@ def test_menu(client):
 def test_suttaplex_list(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
-    utils.generate_po_markup().save()
-    utils.generate_po_string().save()
     utils.generate_difficulty().save()
     roots = utils.generate_roots()
     roots.save()
@@ -49,8 +47,6 @@ def test_suttaplex_list(client):
 
 def test_parallels_view(client):
     utils.generate_html_text().save()
-    utils.generate_po_markup().save()
-    utils.generate_po_string().save()
     roots = utils.generate_roots()
     roots.save()
 
@@ -66,8 +62,6 @@ def test_parallels_view(client):
 def test_sutta_view(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
-    utils.generate_po_markup().save()
-    utils.generate_po_string().save()
     utils.generate_difficulty().save()
     roots = utils.generate_roots()
     roots.save()

@@ -90,14 +90,6 @@ def generate_blurb(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Blurb)
 
 
-def generate_po_markup(amount=5) -> models.ModelList:
-    return _generate_models(amount, models.PoMarkup)
-
-
-def generate_po_string(amount=5) -> models.ModelList:
-    return _generate_models(amount, models.PoString)
-
-
 def generate_difficulty(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Difficulty)
 

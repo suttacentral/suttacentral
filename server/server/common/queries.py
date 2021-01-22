@@ -722,19 +722,8 @@ LET legacy_counts = (
             total
         }
     )
-    
-LET segmented_counts = (
-    FOR doc IN po_strings
-        FILTER doc.lang == @lang
-        COLLECT author = doc.author WITH COUNT INTO total
-        SORT null
-        RETURN {
-            author,
-            total
-        }
-    )
 
-FOR subcount IN APPEND(legacy_counts, segmented_counts)
+FOR subcount IN legacy_counts
     /* If there are multiple authors split them and count seperately */
     FOR author_name IN SPLIT(subcount.author, ', ')
         COLLECT name = author_name

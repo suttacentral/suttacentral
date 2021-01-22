@@ -775,9 +775,6 @@ def run(no_pull=False):
 
     print_stage('Loading Segmented Data')
     segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
-                      
-    print_stage("Loading po_text")
-    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage('Load names from sc_bilara_data')
     sc_bilara_data.load_names(db, sc_bilara_data_dir, languages)
