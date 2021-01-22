@@ -238,14 +238,15 @@ FOR lang IN language
 
 COUNT_YELLOW_BRICK_ROAD = '''
 FOR yb_doc IN yellow_brick_road
-    LET children_count = COUNT(
+    LET translated_leaf_count = COUNT(
         FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges
+            FILTER child.type == 'leaf'
             LET key = CONCAT_SEPARATOR('_', child.uid, yb_doc.lang)
             LET yb_child = DOCUMENT('yellow_brick_road', key)
             FILTER yb_child
             RETURN yb_child
     )
-    UPDATE yb_doc WITH { count: children_count } IN yellow_brick_road
+    UPDATE yb_doc WITH { count: translated_leaf_count } IN yellow_brick_road
 '''
 
 # Takes 2 bind_vars: `language` and `uid` of root element
@@ -667,7 +668,6 @@ RETURN {
 }
 '''
 
-# dodo remove root and root_edges
 TRANSLATION_COUNT_BY_DIVISION = '''
 /* First we count the number of texts by (sub)division uid based on pattern matching */
 LET counts = MERGE(
