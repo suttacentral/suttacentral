@@ -12,6 +12,7 @@
   "--sc-primary-color-darkest": "rgb(138, 93, 0)",
   "--sc-primary-accent-color": "#43a047",
   "--sc-primary-accent-color-light": "#52c756",
+  "--sc-primary-accent-color-light-transparent": "rgba(67,160,71,0.1)",
   "--sc-primary-accent-color-dark": "#3b763b",
   "--sc-secondary-accent-color": "#9c27b0",
   "--sc-primary-background-color": "rgb(250, 249, 248)",

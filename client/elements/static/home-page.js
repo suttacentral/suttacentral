@@ -47,12 +47,13 @@ section + section
     display: flex;
     flex-direction: column;
 
-    margin: auto 3vw;
-    padding: 6% 0 0;
+    
+    padding:  0 0;
 
     text-align: center;
 
     align-items: center;
+    justify-content: center;
 }
 
 .tipitaka-section
@@ -324,7 +325,6 @@ video
     video
     {
         width: 100%;
-        height: 56.25%;
     }
 
     br
@@ -336,6 +336,19 @@ video
     {
         font-weight: 500;
     }
+}
+
+.top-two{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 4% 0;
+  gap: 1em;
+}
+
+.top-two .plain{
+  margin-top: 0
 }
 
     `;
@@ -360,10 +373,23 @@ video
           <h2>Tipiṭaka—<i>the</i> Three Baskets <i>of the</i> Buddhist canon</h2>
         </section>
         <sc-tipitaka></sc-tipitaka>
+
+        <section class='top-two'>
+
+                        <section class="video">
+          <video title="SuttaCentral promotional video 2020" width="640" height="360" controls preload="none" style="" poster="/img/home-page/video_overlay.jpg">
+            <source src="https://ia601508.us.archive.org/20/items/sutta-central-promo-2020-en.av-1/SuttaCentral_Promo-2020_en.av1.mp4">
+            <source src="https://ia601508.us.archive.org/12/items/sutta-central-promo-2020-en-vp-9/SuttaCentral_Promo-2020_en_VP9.webm">
+            <source src="https://ia801504.us.archive.org/23/items/sutta-central-promo-2020-en-x-264/SuttaCentral_Promo-2020_en_x264.mp4">
+          </video>
+        </section>
         <section class="plain" style="min-height: 134px">
           <p>${unsafeHTML(this.localize('2797e2ab111cd1d938bd327b38002092'))}</p>
           <p>${unsafeHTML(this.localize('9db604c6c61c4cb7431619341bc037bf'))}</p>
         </section>
+
+
+</section>
 
         <section class="plain">
           <blockquote>
@@ -371,13 +397,7 @@ video
           </blockquote>
           <a class="link-button quote-button" href="/">Read this sutta</a>
         </section>
-        <section class="video">
-          <video title="SuttaCentral promotional video 2020" width="640" height="360" controls preload="none" style="" poster="/img/home-page/video_overlay.jpg">
-            <source src="https://ia601508.us.archive.org/20/items/sutta-central-promo-2020-en.av-1/SuttaCentral_Promo-2020_en.av1.mp4">
-            <source src="https://ia601508.us.archive.org/12/items/sutta-central-promo-2020-en-vp-9/SuttaCentral_Promo-2020_en_VP9.webm">
-            <source src="https://ia801504.us.archive.org/23/items/sutta-central-promo-2020-en-x-264/SuttaCentral_Promo-2020_en_x264.mp4">
-          </video>
-        </section>
+
 
         <section class="two-cards">
           <article>
