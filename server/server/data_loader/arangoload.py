@@ -17,7 +17,7 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
-from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD
+from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD, SET_SUPER_NAV_DETAILS_NODES_TYPES
 from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
@@ -371,14 +371,15 @@ def process_category_files(category_files, db, edges, mapping):
 
 
 def perform_update_queries(db):
+    db.aql.execute(SET_SUPER_NAV_DETAILS_NODES_TYPES)
     # add root language uid to everything.
     db.aql.execute(
         '''
     FOR lang IN language
-        FOR sutta IN 1..10 OUTBOUND lang root_edges
+        FOR sutta IN 1..10 OUTBOUND lang super_nav_details_edges
             UPDATE sutta WITH {
                 "root_lang": lang.uid
-            } IN root
+            } IN super_nav_details
     '''
     )
 
