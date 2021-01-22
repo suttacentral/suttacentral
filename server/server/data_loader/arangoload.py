@@ -28,7 +28,6 @@ from . import (
     dictionaries,
     paragraphs,
     textdata,
-    divisions,
     images_files,
     homepage,
     localized_languages,
@@ -637,9 +636,6 @@ def run(no_pull=False):
 
     print_stage("Loading biblio from additional_info")
     biblio.load_biblios(db, additional_info_dir)
-
-    print_stage("Loading division data")
-    divisions.load_divisions(db, structure_dir)
 
     print_stage("Loading epigraphs from additional_info")
     homepage.load_epigraphs(db, additional_info_dir)

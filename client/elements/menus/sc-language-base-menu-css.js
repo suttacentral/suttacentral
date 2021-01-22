@@ -40,18 +40,6 @@ export const languageBaseMenuCss = html`
       background-color: var(--sc-secondary-background-color);
     }
 
-    .language-menu-paper-item {
-      font-size: var(--sc-skolar-font-size-md);
-      color: var(--sc-primary-text-color);
-      /*19px for the icon, 16px for the margin */
-      --paper-item-icon-width: calc(var(--sc-size-language-icon) + var(--sc-size-md));
-    }
-
-    .language-menu-paper-item:hover {
-      background-color: var(--sc-tertiary-background-color);
-      cursor: pointer;
-    }
-
     .language-name {
       padding-top: var(--sc-size-xxs);
     }

@@ -124,13 +124,12 @@ class SCTipitaka extends LitLocalized(LitElement) {
                           ${item.translated_name || item.root_name}
                         </span>
                         <div class="navigation-nerdy-row">
-                          <span class="subTitle" lang="pi">${item.root_name}</span>
+                          <span class="subTitle" lang="pli">${item.root_name}</span>
                         </div>
                       </span>
                       ${item.yellow_brick_road
                         ? html`
                             <span class="header-right">
-                              <mwc-icon>${icons.tick}</mwc-icon>
                               <span class="number-translated">
                                 <span class="number">${item.yellow_brick_road_count}</span>
                                 ${this.fullSiteLanguageName}
