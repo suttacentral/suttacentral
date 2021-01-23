@@ -344,7 +344,7 @@ class SuttaplexList(Resource):
                 parent = edges[_from]
             except KeyError:
                 data.append(result)
-            _id = f'root/{result["uid"]}'
+            _id = f'super_nav_details/{result["uid"]}'
             edges[_id] = result
             result['translations'] = sorted(
                 result['translations'], key=language_sort(result['root_lang'])
@@ -355,8 +355,6 @@ class SuttaplexList(Resource):
                     parent['children'].append(result)
                 except KeyError:
                     parent['children'] = [result]
-
-        recursive_sort(data, 'num')  # Sorts data inplace
 
         data = flat_tree(data)
 
