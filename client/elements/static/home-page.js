@@ -425,7 +425,8 @@ video
 
 .sc-related article header h3
 {
-    font-size: var(--sc-skolar-font-size-l);;
+    font-size: var(--sc-skolar-font-size-l);
+    font-family: var(--sc-sans-font);
     font-weight: 600;
 
     margin: 0;
@@ -433,15 +434,19 @@ video
     text-align: end;
 }
 
+.related-projects-content{
+  margin: 0.5em 0 1.5em 0
+}
+
 .sc-related article p
 {
-    padding: 0 1em 1em 1em;
+    padding: 0 1em 0 1em;
 }
 
 .sc-related article ul
 {
-    margin: 0;
-    padding: 0 0 1em 2em;
+    margin: 0.75em 0 0 0;
+    padding: 0 0 0 2em;
 }
 
 .sc-related article li::marker
@@ -627,11 +632,11 @@ fill: white;
         <span><mwc-icon id="speaker">${icons['speaker']}</mwc-icon></span>
         <h3>SuttaCentral Voice</h3>
         </header></a>
-        <p>Listen to the Suttas with our dedicated app. Voice relies on SuttaCentral’s texts and translations. The Suttas began as an oral transmission, and now they are an oral transmission again.</p>
-        <ul>
-        <li>Find Suttas on Voice.</li>
-        <li>Or on SuttaCentral, click the speaker icon on Sutta cards.</li>
-        </ul>
+       <div class='related-projects-content'> <p>Listen to the Suttas with our dedicated app. Voice relies on SuttaCentral’s texts and translations. The Suttas began as an oral transmission, and now they are an oral transmission again.</p>
+               <ul>
+               <li>Find Suttas on Voice.</li>
+               <li>Or on SuttaCentral, click the speaker icon on Sutta cards.</li>
+               </ul></div>
         </article>
          <article class='card secondary-accent'>
          <a href='https://buddhanexus.net/' target='_blank' rel='nofollow'>
@@ -639,7 +644,7 @@ fill: white;
          <span><img src='/img/home-page/buddhanexus_logo.png'></span>
          <h3>BuddhaNexus</h3>
          </header></a>
-         <p>Cutting-edge application of neural nets to explore hidden relations between Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a step further, this technology opens up possibilities of deeper insights into the texts of all traditions and periods.</p>
+         <div class='related-projects-content'><p>Cutting-edge application of neural nets to explore hidden relations between Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a step further, this technology opens up possibilities of deeper insights into the texts of all traditions and periods.</p></div>
         </article>
         <article class='card primary-color'>
          <a href='https://discourse.suttacentral.net/' target='_blank' rel='nofollow'>
@@ -647,12 +652,12 @@ fill: white;
          <span><mwc-icon id="people">${icons['people']}</mwc-icon></span>
          <h3>Discuss & Discover: SuttaCentral forum</h3>
          </header></a>
-         <p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and seasoned pros all get to learn from each other.</p>
-         <ul>
-         <li>Ask questions</li>
-         <li>Share your experiences</li>
-         <li>Find resources like talks, chanting, books, and articles.</li>
-         </ul>
+         <div class='related-projects-content'><p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and seasoned pros all get to learn from each other.</p>
+                  <ul>
+                   <li>Share your experiences</li>
+                  <li>Ask questions</li>
+                  <li>Find talks, chanting, books, and articles.</li>
+                  </ul></div>
         </article>
          <article class='card primary-accent'>
          <a href='https://bilara.suttacentral.net/' target='_blank' rel='nofollow'>
@@ -660,7 +665,7 @@ fill: white;
          <span><mwc-icon id="bilara">${icons['bilara']}</mwc-icon></span>
          <h3>Bilara Computer Assisted Translation</h3>
          </header></a>
-         <p>Built from the ground up by SuttaCentral, Bilara is a web interface for Sutta translation. Our team is using it to create new translations of Suttas in the world’s languages.</p>
+         <div class='related-projects-content'><p>Built from the ground up by SuttaCentral, Bilara is a web interface for Sutta translation. Our team is using it to create new translations of Suttas in the world’s languages.</p></div>
         </article>
         </div>
         </section>
