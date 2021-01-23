@@ -221,6 +221,18 @@ export const SCSiteLayoutStyles = css`
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
+  li a:hover  #external{
+    visibility: visible
+  }
+
+  #external{
+    width: 15px;
+    height: 15px;
+    fill: rgba(255,255,255,0.8);
+    margin-left: 6px;
+    visibility: hidden;
+  }
+
   .staticPageSelected {
     opacity: 1;
     border-bottom: 4px solid var(--sc-primary-color-light);
