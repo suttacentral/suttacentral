@@ -59,7 +59,7 @@ section + section
 }
 
 .quotation{
-  padding: 2em 0 1.5em 0;
+  padding: 1em 0 1.5em 0;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -68,7 +68,14 @@ section + section
   margin-right: -50vw;
  background-color: var(--sc-tertiary-background-color)
 }
+.quotation h2{
+  font-family: var(--sc-sans-font);
+      letter-spacing: var(--sc-caps-letter-spacing);
 
+    font-variant-caps: all-small-caps;
+    margin-bottom: 1em;
+
+}
 .tipitaka-section
 {
     font-size: 1.125rem;
@@ -553,6 +560,7 @@ fill: white;
 </section>
 
         <section class="plain quotation">
+        <h2>${unsafeHTML(this.localize('6fa47a464d90ac462faad21974edfb66'))}</h2>
           <blockquote>
             <span>${this.epigraph}</span>
           </blockquote>
@@ -650,6 +658,7 @@ fill: white;
         </section>
 
         <section class="plain quotation">
+        <h2>Why we read</h2>
           <blockquote>
             <span>${this.whyWeRead}</span>
           </blockquote>
