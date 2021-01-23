@@ -1,8 +1,6 @@
 
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-button/paper-button.js';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -10,7 +8,6 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles.js
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
 import _ from '../../localization/macro.js';
-import '../addons/text-carousel.js';
 
 class SCHomePage extends SCStaticPage {
   render() {
