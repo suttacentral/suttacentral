@@ -43,7 +43,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   isSuttaplex(item) {
-    return item.type === 'text';
+    return item.type === 'leaf';
   }
 
   shouldExpandAll() {
