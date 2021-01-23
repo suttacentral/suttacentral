@@ -414,7 +414,7 @@ class SCHomePage extends SCStaticPage {
                 ${_`What’s here`}
               </div>
               <div class="image-card-text">
-                ${_`SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. This is a large collection of teachings attributed to the Buddha or his earliest disciples, who were teaching in India around 2500 years ago. They are regarded as sacred canon in all schools of Buddhism. You can find all of our texts through the sidebar menu on the left.`}
+                ${_`SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. This is a large collection of teachings attributed to the Buddha or his earliest disciples, who were teaching in India around 2500 years ago. They are regarded as sacred canon in all schools of Buddhism.`}
               </div>
             </div>
           </paper-card>
