@@ -487,7 +487,7 @@ video
     font-variant-caps: all-small-caps;
 }
 
-@media (max-width: 1080px)
+@media (max-width: 1120px)
 {
     .sc-related article
     {
@@ -495,7 +495,7 @@ video
     }
 }
 
-@media (max-width: 500px)
+@media (max-width: 560px)
 {
     .sc-related article
     {
@@ -629,7 +629,7 @@ fill: white;
          <a href='https://discourse.suttacentral.net/' target='_blank' rel='nofollow'>
          <header>
          <span><mwc-icon id="people">${icons['people']}</mwc-icon></span>
-         <h3>Discuss & Discover: SuttaCentral’s forum</h3>
+         <h3>Discuss & Discover: SuttaCentral forum</h3>
          </header></a>
          <p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and seasoned pros all get to learn from each other.</p>
          <ul>
