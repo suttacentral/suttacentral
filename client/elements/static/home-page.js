@@ -4,6 +4,8 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
 import '../navigation/sc-tipitaka.js';
+import '@material/mwc-icon';
+import { icons } from '../../img/sc-icons';
 
 class SCHomePage extends SCStaticPage {
   static get properties() {
@@ -54,6 +56,15 @@ section + section
 
     align-items: center;
     justify-content: center;
+}
+
+.quotation{
+  padding: 2em 0 1.5em 0;
+  width: 100vw;
+ position: relative;
+ margin-left: -50vw;
+ left: 50%;
+ background-color: var(--sc-tertiary-background-color)
 }
 
 .tipitaka-section
@@ -266,11 +277,6 @@ figcaption
     background-color: var(--sc-primary-accent-color);
 }
 
-.quote-button
-{
-    align-self: flex-end;
-}
-
 h2
 {
     font-family: var(--sc-serif-font);
@@ -338,18 +344,163 @@ video
     }
 }
 
-.top-two{
-  display:flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 4% 0;
-  gap: 1em;
+.top-two
+{
+    display: flex;
+    flex-direction: row;
+
+    margin: 4% 0;
+
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1em;
 }
 
-.top-two .plain{
-  margin-top: 0
+.top-two .plain
+{
+    margin-top: 0;
 }
+
+.sc-related
+{
+    display: flex;
+    flex-direction: column;
+
+    margin: 4% 1vw;
+
+    gap: 1vw;
+}
+
+.sc-related article
+{
+    color: var(--sc-primary-text-color);
+    background-color: var(--sc-secondary-background-color);
+
+    flex: 1;
+}
+
+.sc-related article header
+{
+    display: flex;
+
+    height: 80px;
+    padding: 1rem;
+
+    color: white;
+
+    justify-content: space-between;
+}
+
+.sc-related a:hover
+{
+    transition: text-decoration 200ms ease-out;
+    text-decoration: underline;
+
+    color: white;
+
+    text-decoration-color: white;
+}
+
+.sc-related article header span
+{
+    width: 60px;
+}
+
+.sc-related article header h3
+{
+    font-size: var(--sc-skolar-font-size-l);;
+    font-weight: 600;
+
+    margin: 0;
+
+    text-align: end;
+}
+
+.sc-related article p
+{
+    padding: 0 1em 1em 1em;
+}
+
+.sc-related article ul
+{
+    margin: 0;
+    padding: 0 0 1em 2em;
+}
+
+.sc-related article li::marker
+{
+    color: var(--sc-disabled-text-color);
+}
+
+.sc-related-items-wrapper
+{
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.secondary-accent header
+{
+    background-color: var(--sc-secondary-accent-color);
+}
+
+.dark-accent header
+{
+    background-color: rgb(75, 74, 74);
+}
+
+.primary-accent header
+{
+    background-color: #43a047;
+}
+
+.primary-color header
+{
+    background-color: #ce8400;
+}
+
+#bilara
+{
+    width: 60px;
+    height: 60px;
+}
+
+.related-projects-heading
+{
+    margin: 0 1em;;
+    padding-left: 1em;
+
+    border-bottom: 2px solid var(--sc-border-color);
+}
+
+.related-projects-heading h2
+{
+    font-family: var(--sc-sans-font);
+
+    letter-spacing: var(--sc-caps-letter-spacing);
+
+    font-variant-caps: all-small-caps;
+}
+
+@media (max-width: 1080px)
+{
+    .sc-related article
+    {
+        min-width: 40%;
+    }
+}
+
+@media (max-width: 500px)
+{
+    .sc-related article
+    {
+        min-width: 80%;
+    }
+}
+
 
     `;
   }
@@ -369,6 +520,11 @@ video
   render() {
     return html`
       <main>
+
+
+
+
+
           <section class="tipitaka-section">
           <h2>Tipiṭaka—<i>the</i> Three Baskets <i>of the</i> Buddhist canon</h2>
         </section>
@@ -391,7 +547,7 @@ video
 
 </section>
 
-        <section class="plain">
+        <section class="plain quotation">
           <blockquote>
             <span>${this.epigraph}</span>
           </blockquote>
@@ -439,7 +595,38 @@ video
           </article>
         </section>
 
-        <section class="plain">
+        <section class='sc-related'>
+        <div class='related-projects-heading'><h2>Related projects</h2></div>
+        <div class='sc-related-items-wrapper'>
+        <article class='card dark-accent'>
+        <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='nofollow'><header><span><iron-icon icon="sc-svg-icons:speaker"></iron-icon></span><h3>SuttaCentral Voice</h3></header></a>
+        <p>Listen to the Suttas with our dedicated app. Voice relies on SuttaCentral’s texts and translations. The Suttas began as an oral transmission, and now they are an oral transmission again.</p>
+        <ul>
+        <li>Find Suttas on Voice.</li>
+        <li>Or on SuttaCentral, click the speaker icon on Sutta cards.</li>
+        </ul>
+        </article>
+         <article class='card secondary-accent'>
+         <a href='https://buddhanexus.net/' target='_blank' rel='nofollow'><header><span><img src='/img/home-page/buddhanexus_logo.png'></span><h3>BuddhaNexus</h3></header></a>
+         <p>Cutting-edge application of neural nets to explore hidden relations between Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a step further, this technology opens up possibilities of deeper insights into the texts of all traditions and periods.</p>
+        </article>
+        <article class='card primary-color'>
+         <a href='https://discourse.suttacentral.net/' target='_blank' rel='nofollow'><header><span><iron-icon icon="sc-iron-icons:forum"></iron-icon></span><h3>Discuss & Discover: SuttaCentral’s forum</h3></header></a>
+         <p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and seasoned pros all get to learn from each other.</p>
+         <ul>
+         <li>Ask questions</li>
+         <li>Share your experiences</li>
+         <li>Find resources like talks, chanting, books, and articles.</li>
+         </ul>
+        </article>
+         <article class='card primary-accent'>
+         <a href='https://bilara.suttacentral.net/' target='_blank' rel='nofollow'><header><span><mwc-icon id="bilara">${icons['bilara']}</mwc-icon></span><h3>Bilara Computer Assisted Translation</h3></header></a>
+         <p>Built from the ground up by SuttaCentral, Bilara is a web interface for Sutta translation. Our team is using it to create new translations of Suttas in the world’s languages.</p>
+        </article>
+        </div>
+        </section>
+
+        <section class="plain quotation">
           <blockquote>
             <span>${this.whyWeRead}</span>
           </blockquote>

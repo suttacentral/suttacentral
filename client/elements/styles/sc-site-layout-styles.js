@@ -182,7 +182,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   li {
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-skolar-font-size-s);
     font-weight: 500;
 
     margin-right: 8px;
@@ -190,7 +190,7 @@ export const SCSiteLayoutStyles = css`
     list-style-type: none;
 
     letter-spacing: var(--sc-caps-letter-spacing);
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
 
     align-items: center;
   }
