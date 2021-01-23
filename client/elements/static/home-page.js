@@ -410,6 +410,10 @@ video
     justify-content: space-between;
 }
 
+.sc-related a{
+  text-decoration-color: rgba(255,255,255,0.6);
+}
+
 .sc-related a:hover
 {
     transition: text-decoration 200ms ease-out;
@@ -417,7 +421,7 @@ video
 
     color: white;
 
-    text-decoration-color: white;
+    text-decoration-color: rgba(255,255,255,0.6);
 }
 
 .sc-related article img
@@ -643,7 +647,7 @@ fill: white;
         <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='nofollow' title='Visit SuttaCentral Voice'>
         <header>
         <span><mwc-icon id="speaker">${icons['speaker']}</mwc-icon></span>
-        <h3><span>SuttaCentral Voice</span><span class='sc-related-item-subtitle'>listen to the suttas</span></h3>
+        <h3><span>SuttaCentral Voice</span><span class='sc-related-item-subtitle'>listen to suttas</span></h3>
         </header></a>
        <div class='related-projects-content'> <p>Voice makes SuttaCentral’s texts and translations accesible to the visually impaired and the sighted. The suttas began as an oral transmission, and now they are an oral transmission again.</p>
                <ul>
