@@ -338,6 +338,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           </div>
         </mwc-list-item>
       </a>
+      <div class="separator"></div>
       <a
         class="more-menu-link"
         href="${this.getDiscourseUrl(this.routeName)}"
@@ -349,6 +350,22 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <div class="menu-item-wrapper">
             <iron-icon class="more-menu-icon" icon="sc-iron-icons:forum"></iron-icon>
             ${this.localize('Discuss')}
+            <mwc-ripple></mwc-ripple>
+          </div>
+        </mwc-list-item>
+      </a>
+
+            <a
+        class="more-menu-link"
+        href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
+        title="Listen to suttas"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <mwc-list-item class="more-menu-mwc-list-item">
+          <div class="menu-item-wrapper">
+            <iron-icon class="more-menu-icon" icon="sc-svg-icons:speaker"></iron-icon>
+           ${this.localize('Voice')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
