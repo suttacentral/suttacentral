@@ -358,11 +358,19 @@ video
     display: flex;
     flex-direction: row;
 
-    margin: 4% 0;
+    margin: 4% 1vw;
 
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-around;
     gap: 1em;
+}
+
+@media (max-width: 1120px)
+{
+    .top-two
+    {
+        flex-wrap: wrap;
+    }
 }
 
 .top-two .plain
