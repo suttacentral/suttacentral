@@ -97,26 +97,47 @@ class SCPaliLookup extends LitLocalized(LitElement) {
               </dfn>
             </dt>
             <dd>
-              <span class="grammar">${match.grammar}</span>
-              <ol class="definition">
-                <li>${match.meaning}</li>
-              </ol>
-              <ul class="xr">
-                ${match.xr && match.constructor === Array
-                  ? html`
-                      ${match.xr.map(
-                        item => html`
-                          <li><a href="/define/${item}">${item}</a></li>
-                        `
-                      )}
-                    `
-                  : ''}
-                ${match.xr && match.constructor !== Array
-                  ? html`
-                      <li a><a href="/define/${match.xr}">${match.xr}</a></li>
-                    `
-                  : ''}
-              </ul>
+              ${match.grammar
+                ? html`
+                    <span class="grammar">${match.grammar}</span>
+                  `
+                : ''}
+              ${match.meaning
+                ? html`
+                    <ol class="definition">
+                      ${match.meaning.constructor === Array
+                        ? html`
+                            ${match.meaning.map(
+                              item =>
+                                html`
+                                  <li>${item}</li>
+                                `
+                            )}
+                          `
+                        : html`
+                            <li>${match.meaning}</li>
+                          `}
+                    </ol>
+                  `
+                : ''}
+              ${match.xr
+                ? html`
+                    <ul class="xr">
+                      ${match.constructor === Array
+                        ? html`
+                            ${match.xr.map(
+                              item =>
+                                html`
+                                  <li><a href="/define/${item}">${item}</a></li>
+                                `
+                            )}
+                          `
+                        : html`
+                            <li a><a href="/define/${match.xr}">${match.xr}</a></li>
+                          `}
+                    </ul>
+                  `
+                : ''}
             </dd>
           </dl>
         `
@@ -275,7 +296,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
     return null;
   }
 
-  matchPartial(word, maxlength) {
+  matchPartial(word, maxLength = 4) {
     if (!this.dictData) {
       return;
     }
@@ -292,12 +313,9 @@ class SCPaliLookup extends LitLocalized(LitElement) {
         }
       }
 
-      if (!maxlength) {
-        maxlength = 4;
-      }
       for (let i = 0; i < word.length; i++) {
         const part = word.substring(0, word.length - i);
-        if (part.length < maxlength) {
+        if (part.length < maxLength) {
           break;
         }
         const target = this.dictData.find(x => x.entry === part);
