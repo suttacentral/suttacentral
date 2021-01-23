@@ -669,7 +669,7 @@ fill: white;
          <span><mwc-icon id="people">${icons['people']}</mwc-icon></span>
          <h3><span>Discuss & Discover</span> <span class='sc-related-item-subtitle'>SuttaCentral forum</span></h3>
          </header></a>
-         <div class='related-projects-content'><p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and seasoned pros all get to learn from each other.</p>
+         <div class='related-projects-content'><p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and learned experts all get to learn from each other.</p>
                   <ul>
                    <li>Share your experiences</li>
                   <li>Ask questions</li>
