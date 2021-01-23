@@ -242,7 +242,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <div class="suttaplex-nerdy-row" @tap="${this.revealHiddenNerdyRowContent}">
         ${this.item.translated_title && this.item.original_title && html`
-          <span title="${this.localize('originalTitle')}" class="nerdy-row-element">
+          <span title="${this.localize('originalTitle')}" class="nerdy-row-element subTitle">
             ${this.item.original_title}
           </span>
         `}
