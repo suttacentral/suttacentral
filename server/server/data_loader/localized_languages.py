@@ -1,13 +1,13 @@
+import logging
+from collections import Counter
 from pathlib import Path
+
+from arango.database import Database
 
 from .util import json_load
 
-from collections import Counter
 
-import logging
-
-
-def update_languages(db, localized_elements_dir):
+def update_languages(db: Database, localized_elements_dir: Path):
     num_strings_by_lang = Counter()
     for element_dir in localized_elements_dir.glob('*'):
         if not element_dir.is_dir():
@@ -31,13 +31,14 @@ def update_languages(db, localized_elements_dir):
     num_en = num_strings_by_lang['en']
 
     for iso_code, count in num_strings_by_lang.items():
-
         updates.append(
             {
                 '_key': iso_code,
+                'uid': iso_code,
                 'localized': True,
                 'localized_percent': int(100 * count / num_en),
             }
         )
 
-    db['language'].import_bulk_logged(updates, on_duplicate='update')
+    db['language'].truncate()
+    db['language'].import_bulk(updates, on_duplicate='update')
