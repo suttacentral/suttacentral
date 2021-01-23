@@ -502,8 +502,11 @@ video
         min-width: 80%;
     }
 }
-
-
+#people, #speaker{
+fill: white;
+ transform: scale(2);
+ margin: 1rem
+}
     `;
   }
 
@@ -598,10 +601,16 @@ video
         </section>
 
         <section class='sc-related'>
-        <div class='related-projects-heading'><h2>Related projects</h2></div>
+        <div class='related-projects-heading'>
+          <h2>Related projects</h2>
+        </div>
         <div class='sc-related-items-wrapper'>
         <article class='card dark-accent'>
-        <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='nofollow'><header><span><iron-icon icon="sc-svg-icons:speaker"></iron-icon></span><h3>SuttaCentral Voice</h3></header></a>
+        <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='nofollow'>
+        <header>
+        <span><mwc-icon id="speaker">${icons['speaker']}</mwc-icon></span>
+        <h3>SuttaCentral Voice</h3>
+        </header></a>
         <p>Listen to the Suttas with our dedicated app. Voice relies on SuttaCentral’s texts and translations. The Suttas began as an oral transmission, and now they are an oral transmission again.</p>
         <ul>
         <li>Find Suttas on Voice.</li>
@@ -609,11 +618,19 @@ video
         </ul>
         </article>
          <article class='card secondary-accent'>
-         <a href='https://buddhanexus.net/' target='_blank' rel='nofollow'><header><span><img src='/img/home-page/buddhanexus_logo.png'></span><h3>BuddhaNexus</h3></header></a>
+         <a href='https://buddhanexus.net/' target='_blank' rel='nofollow'>
+         <header>
+         <span><img src='/img/home-page/buddhanexus_logo.png'></span>
+         <h3>BuddhaNexus</h3>
+         </header></a>
          <p>Cutting-edge application of neural nets to explore hidden relations between Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a step further, this technology opens up possibilities of deeper insights into the texts of all traditions and periods.</p>
         </article>
         <article class='card primary-color'>
-         <a href='https://discourse.suttacentral.net/' target='_blank' rel='nofollow'><header><span><iron-icon icon="sc-iron-icons:forum"></iron-icon></span><h3>Discuss & Discover: SuttaCentral’s forum</h3></header></a>
+         <a href='https://discourse.suttacentral.net/' target='_blank' rel='nofollow'>
+         <header>
+         <span><mwc-icon id="people">${icons['people']}</mwc-icon></span>
+         <h3>Discuss & Discover: SuttaCentral’s forum</h3>
+         </header></a>
          <p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and seasoned pros all get to learn from each other.</p>
          <ul>
          <li>Ask questions</li>
@@ -622,7 +639,11 @@ video
          </ul>
         </article>
          <article class='card primary-accent'>
-         <a href='https://bilara.suttacentral.net/' target='_blank' rel='nofollow'><header><span><mwc-icon id="bilara">${icons['bilara']}</mwc-icon></span><h3>Bilara Computer Assisted Translation</h3></header></a>
+         <a href='https://bilara.suttacentral.net/' target='_blank' rel='nofollow'>
+         <header>
+         <span><mwc-icon id="bilara">${icons['bilara']}</mwc-icon></span>
+         <h3>Bilara Computer Assisted Translation</h3>
+         </header></a>
          <p>Built from the ground up by SuttaCentral, Bilara is a web interface for Sutta translation. Our team is using it to create new translations of Suttas in the world’s languages.</p>
         </article>
         </div>
