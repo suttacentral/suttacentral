@@ -182,7 +182,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   li {
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-skolar-font-size-md);
     font-weight: 500;
 
     margin-right: 8px;
