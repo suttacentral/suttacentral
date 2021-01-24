@@ -71,7 +71,6 @@ class Language(Model):
         name: str,
         is_root: bool,
         iso_code: str,
-        num: int,
         *args,
         **kwargs,
     ):
@@ -80,7 +79,6 @@ class Language(Model):
         self.name = name
         self.is_root = is_root
         self.iso_code = iso_code
-        self.num = num
 
     def __str__(self):
         return f'{self.name}: {self.iso_code}'
@@ -98,8 +96,7 @@ class Language(Model):
             fake.color_name()
         )  # Faker has no language name generator, use color instead.
         is_root = bool(randint(0, 1))
-        num = randint(1, 50)
-        return cls(uid, name, is_root, iso_code, num, _key=_key)
+        return cls(uid, name, is_root, iso_code, _key=_key)
 
     @property
     def type(self) -> str:
@@ -116,7 +113,6 @@ class Language(Model):
             'name': self.name,
             'is_root': self.is_root,
             'iso_code': self.iso_code,
-            'num': self.num,
             '_key': self._key,
         }
         self._add_data(data)

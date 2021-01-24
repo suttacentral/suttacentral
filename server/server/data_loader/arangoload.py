@@ -30,7 +30,7 @@ from . import (
     textdata,
     images_files,
     homepage,
-    localized_languages,
+    languages,
     order,
     sizes,
     segmented_data,
@@ -84,25 +84,6 @@ def collect_data(repo_dir: Path, repo_addr: str):
             pass
         else:
             update_data(repo, repo_addr)
-
-
-def process_root_languages(language_file: Path) -> Dict[str, str]:
-    languages: List[dict] = json_load(language_file)
-    data = {}
-    for language in languages:
-        lang_iso = language['root_lang_iso']
-        if 'contains' in language:
-            data.update({uid: lang_iso for uid in language['contains']})
-    return data
-
-
-def process_languages(language_file: Path) -> Dict[str, str]:
-    languages: List[dict] = json_load(language_file)
-    data = {}
-    for language in languages:
-        lang_iso = language['iso_code']
-        data.update({uid: lang_iso for uid in language.get('contains', [])})
-    return data
 
 
 def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
@@ -249,7 +230,7 @@ def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_d
     super_tree_file = tree_dir / 'super-tree.json'
     tree_files.remove(super_tree_file)
 
-    root_languages = process_root_languages(structure_dir / 'super_root_lang.json')
+    root_languages = languages.process_languages(structure_dir / 'super_root_lang.json', True)
     super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
     text_extra_info = process_extra_info_file(structure_dir / 'text_extra_info.json')
 
@@ -544,11 +525,13 @@ def run(no_pull=False):
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
     misc_dir = data_dir / 'misc'
-    po_dir = data_dir / 'po_text'
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
+    localized_elements_dir = current_app.config.get('ASSETS_DIR') / 'localization/elements'
+
+    languages_file = structure_dir / 'language.json'
 
     storage_dir = current_app.config.get('STORAGE_DIR')
     if not storage_dir.exists():
@@ -565,8 +548,6 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
-    languages = process_languages(structure_dir / 'language.json')
-
     print_stage("Loading images")
     images_files.load_images_links(db)
 
@@ -579,22 +560,20 @@ def run(no_pull=False):
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
 
+    print_stage("Loading languages")
+    languages.load_languages(db, languages_file, localized_elements_dir)
+
     print_stage("Building and loading navigation from structure_dir")
     add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
 
     print_stage("Loading child ranges from structure_dir")
     load_child_range(db, structure_dir)
 
-    print_stage("Loading localization")
-    localized_languages.update_languages(
-        db, current_app.config.get('ASSETS_DIR') / 'localization/elements'
-    )
-
     print_stage('Loading Segmented Data')
     segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
 
     print_stage('Load names from sc_bilara_data')
-    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages)
+    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)
 
     print_stage('Load blurbs from sc_bilara_data')
     sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
