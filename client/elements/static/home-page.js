@@ -644,7 +644,7 @@ fill: white;
         </div>
         <div class='sc-related-items-wrapper'>
         <article class='card dark-accent'>
-        <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='nofollow' title='Visit SuttaCentral Voice'>
+        <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='noopener' title='Visit SuttaCentral Voice'>
         <header>
         <span><mwc-icon id="speaker">${icons['speaker']}</mwc-icon></span>
         <h3><span>SuttaCentral Voice</span><span class='sc-related-item-subtitle'>listen to suttas</span></h3>
@@ -656,7 +656,7 @@ fill: white;
                </ul></div>
         </article>
          <article class='card secondary-accent'>
-         <a href='https://buddhanexus.net/' target='_blank' rel='nofollow' title='Visit BuddhaNexus'>
+         <a href='https://buddhanexus.net/' target='_blank' rel='noopener' title='Visit BuddhaNexus'>
          <header>
          <span><img src='/img/home-page/buddhanexus_logo.png' alt='Buddhanexus logo'></span>
          <h3><span>BuddhaNexus</span> <span class='sc-related-item-subtitle'>mapping suttas with AI</span></h3>
@@ -664,7 +664,7 @@ fill: white;
          <div class='related-projects-content'><p>Cutting-edge application of neural nets to explore hidden relations between Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a step further, this technology opens up possibilities of deeper insights into the evolution of texts of all traditions and periods.</p></div>
         </article>
         <article class='card primary-color'>
-         <a href='https://discourse.suttacentral.net/' target='_blank' rel='nofollow' title='Visit SuttaCentral forum'>
+         <a href='https://discourse.suttacentral.net/' target='_blank' rel='noopener' title='Visit SuttaCentral forum'>
          <header>
          <span><mwc-icon id="people">${icons['people']}</mwc-icon></span>
          <h3><span>Discuss & Discover</span> <span class='sc-related-item-subtitle'>SuttaCentral forum</span></h3>
@@ -677,7 +677,7 @@ fill: white;
                   </ul></div>
         </article>
          <article class='card primary-accent'>
-         <a href='https://bilara.suttacentral.net/' target='_blank' rel='nofollow' title='Visit Bilara translation webapp'>
+         <a href='https://bilara.suttacentral.net/' target='_blank' rel='noopener' title='Visit Bilara translation webapp'>
          <header>
          <span><mwc-icon id="bilara">${icons['bilara']}</mwc-icon></span>
          <h3><span>Bilara</span> <span class='sc-related-item-subtitle'>computer assisted translation</span></h3>

@@ -86,7 +86,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <li><a href="/introduction">${this.localize('INTRODUCTION')}<morph-ripple></morph-ripple></a></li>
         <li><a href="/donations">${this.localize('DONATIONS')}<morph-ripple></morph-ripple></a></li>
         <li><a href="/offline">${this.localize('USEOFFLINE')}<morph-ripple></morph-ripple></a></li>
-        <li><a href="https://discourse.suttacentral.net/c/meta/updates" class="external" title='See updates on SuttaCentral forum' target='_blank'>${this.localize('WHATSNEW')}<mwc-icon id="external">${icons['external']}</mwc-icon><morph-ripple></morph-ripple></a></li>
+        <li><a href="https://discourse.suttacentral.net/c/meta/updates" class="external" title='See updates on SuttaCentral forum' target='_blank' rel='noopener'>${this.localize('WHATSNEW')}<mwc-icon id="external">${icons['external']}</mwc-icon><morph-ripple></morph-ripple></a></li>
       ` : ''}
     `;
   }
