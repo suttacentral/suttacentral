@@ -29,6 +29,7 @@ def update_languages(db: Database, localized_elements_dir: Path):
 
     updates = []
     num_en = num_strings_by_lang['en']
+    
     for iso_code, count in num_strings_by_lang.items():
         updates.append(
             {
