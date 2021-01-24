@@ -148,7 +148,7 @@ def process_names_files(
     """
     docs = []
     names_files.sort(key=lambda path: len(path.parts))
-    for name_file in names_files:
+    for name_file in tqdm(names_files):
         entries: Dict[str, str] = json_load(name_file)
         docs.extend(parse_name_file_entries(entries, root_languages, super_extra_info, text_extra_info))
     return docs
@@ -200,7 +200,7 @@ def process_tree_files(tree_files: List[Path]) -> List[Dict[str, str]]:
         tree_files - list of Paths to the tree files
     """
     edges = []
-    for tree_file in tree_files:
+    for tree_file in tqdm(tree_files):
         content = json_load(tree_file)
         edges.extend(
             parse_tree_recursive(content)
@@ -570,7 +570,7 @@ def run(no_pull=False):
     load_child_range(db, structure_dir)
 
     print_stage('Loading Segmented Data')
-    segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
+    segmented_data.load_segmented_data(db, segmented_data_dir)
 
     print_stage('Load names from sc_bilara_data')
     sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)

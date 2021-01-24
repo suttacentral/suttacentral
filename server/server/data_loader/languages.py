@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from arango.database import Database
+from tqdm import tqdm
 
 from .util import json_load
 
@@ -16,7 +17,7 @@ def load_languages(db: Database, language_file: Path, localized_elements_dir: Pa
 def _load_language_file(db: Database, language_file: Path):
     languages_docs = []
     languages_content = json_load(language_file)
-    for language in languages_content:
+    for language in tqdm(languages_content):
         language.pop('contains', None)
         languages_docs.append({
             '_key': language['uid'],
@@ -29,7 +30,7 @@ def _load_language_file(db: Database, language_file: Path):
 
 def _update_languages(db: Database, localized_elements_dir: Path):
     num_strings_by_lang = Counter()
-    for element_dir in localized_elements_dir.glob('*'):
+    for element_dir in tqdm(localized_elements_dir.glob('*')):
         if not element_dir.is_dir():
             continue
 
