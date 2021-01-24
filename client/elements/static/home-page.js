@@ -491,12 +491,12 @@ video
 
 .primary-accent header
 {
-    background-color: #43a047;
+    background-color: rgb(59, 118, 59);
 }
 
 .primary-color header
 {
-    background-color: #ce8400;
+    background-color: rgb(161, 108, 0);
 }
 
 #bilara
@@ -658,7 +658,7 @@ fill: white;
          <article class='card secondary-accent'>
          <a href='https://buddhanexus.net/' target='_blank' rel='nofollow' title='Visit BuddhaNexus'>
          <header>
-         <span><img src='/img/home-page/buddhanexus_logo.png'></span>
+         <span><img src='/img/home-page/buddhanexus_logo.png' alt='Buddhanexus logo'></span>
          <h3><span>BuddhaNexus</span> <span class='sc-related-item-subtitle'>mapping suttas with AI</span></h3>
          </header></a>
          <div class='related-projects-content'><p>Cutting-edge application of neural nets to explore hidden relations between Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a step further, this technology opens up possibilities of deeper insights into the evolution of texts of all traditions and periods.</p></div>
