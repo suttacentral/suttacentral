@@ -649,7 +649,7 @@ fill: white;
         <span><mwc-icon id="speaker">${icons['speaker']}</mwc-icon></span>
         <h3><span>SuttaCentral Voice</span><span class='sc-related-item-subtitle'>listen to suttas</span></h3>
         </header></a>
-       <div class='related-projects-content'> <p>Voice makes SuttaCentral’s texts and translations accesible to the visually impaired and the sighted. The suttas began as an oral transmission, and now they are an oral transmission again.</p>
+       <div class='related-projects-content'> <p>Voice makes SuttaCentral’s texts and translations accessible to the visually impaired and the sighted. The suttas began as an oral transmission, and now they are an oral transmission again.</p>
                <ul>
                <li>Find Suttas on Voice.</li>
                <li>Or on SuttaCentral, click the speaker icon on Sutta cards.</li>
