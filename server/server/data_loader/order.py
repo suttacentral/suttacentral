@@ -56,21 +56,6 @@ def get_best_match(text, other_texts):
 
 
 def add_next_prev_using_menu_data(db):
-    po_texts = list(
-        db.aql.execute(
-            '''
-        FOR doc IN po_strings
-            RETURN {
-                _key: doc._key,
-                uid: doc.uid,
-                lang: doc.lang,
-                author_uid: doc.author_uid,
-                name: doc.title,
-                segmented: true
-            }
-    '''
-        )
-    )
 
     html_texts = list(
         db.aql.execute(
@@ -88,7 +73,7 @@ def add_next_prev_using_menu_data(db):
         )
     )
 
-    texts = po_texts + html_texts
+    texts = html_texts
 
     divisions = [
         (doc['division'], tuple(doc['uids']))
@@ -143,7 +128,6 @@ def add_next_prev_using_menu_data(db):
                         )
 
         for collection, texts in [
-            (db['po_strings'], po_texts),
             (db['html_text'], html_texts),
         ]:
             matching_keys = {text['_key'] for text in texts}

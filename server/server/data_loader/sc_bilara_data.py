@@ -4,6 +4,7 @@ from typing import Dict, Set, List
 
 from arango.database import Database
 
+from data_loader.languages import process_languages
 from data_loader.util import json_load
 
 
@@ -66,9 +67,11 @@ def parse_name_file_content(
     return names
 
 
-def load_names(db: Database, sc_bilara_data_dir: Path, languages: Dict[str, str]) -> None:
+def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> None:
     names = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
+
+    languages: Dict[str, str] = process_languages(languages_file)
 
     for name_file in sc_bilara_data_dir.glob('**/name/**/*.json'):
         is_root = 'root' in name_file.parts
