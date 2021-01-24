@@ -1,14 +1,10 @@
 import { LitElement, html } from 'lit-element';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin'
-import { API_ROOT } from '../../constants.js';
+import { LitLocalized } from '../addons/localization-mixin';
+import { API_ROOT } from '../../constants';
 
 class SCPaliLookup extends LitLocalized(LitElement) {
-  render() {
-    return html``;
-  }
-
   static get properties() {
     return {
       syllSpacer: { type: String },
@@ -16,8 +12,8 @@ class SCPaliLookup extends LitLocalized(LitElement) {
       loadingDict: { type: Boolean },
       isTi: { type: Boolean },
       loadedLanguage: { type: String },
-      toLang: { type: String }
-    }
+      toLang: { type: String },
+    };
   }
 
   constructor() {
@@ -43,7 +39,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    let targetLanguage = state.textOptions.paliLookupTargetLanguage;
+    const targetLanguage = state.textOptions.paliLookupTargetLanguage;
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;
     }
@@ -60,17 +56,18 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   lookupWord(word) {
     word = this._stripSpecialCharacters(word);
     word = word.toLowerCase().trim();
-    word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), '');//optional hyphen, syllable-breaker
-    let meaning = '';
-
+    word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
     word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
-    let allMatches = this._lookupWord(word);
-    meaning = this._toHtml(allMatches, word);
+    const allMatches = this._lookupWord(word);
+    const meaning = this._toHtml(allMatches, word);
     return { html: meaning };
   }
 
   _stripSpecialCharacters(word) {
-    return word.replace(/(~|`|!|@|#|\$|%|\^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|“|‘|—)/g, '');
+    return word.replace(
+      /(~|`|!|@|#|\$|%|\^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|“|‘|—)/g,
+      ''
+    );
   }
 
   _computeUrl() {
@@ -84,146 +81,213 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   _toHtml(allMatches, original) {
-    let out = '';
     if (allMatches.length === 0) {
-      allMatches.push({ 'base': original, 'meaning': '?' });
+      allMatches.push({ base: original, meaning: '?', grammar: '', xr: '' });
     }
-    if (this.isTi) allMatches.push({ 'base': 'iti', 'meaning': 'endquote' });
-    for (let match of allMatches) {
-      let href = '/define/' + match.base;
-      if (out) {
-        out += ' + ';
-      }
-      out += '<a href="' + href + '" target="_blank" rel="noopener" class="lookup-link">' + match.base + '</a>: ' + match.meaning;
-    }
-    return out;
+    if (this.isTi) allMatches.push({ base: 'iti', meaning: 'endquote', grammar: '', xr: '' });
+    return html`
+      ${allMatches.map(
+        match => html`
+          <dl>
+            <dt>
+              <dfn class="entry" lang="pi" translate="no">
+                <a href="/define/${match.base}" target="_blank" rel="noopener" class="lookup-link">
+                  ${match.base}
+                </a>
+              </dfn>
+            </dt>
+            <dd>
+              ${match.grammar
+                ? html`
+                    <span class="grammar">${match.grammar}</span>
+                  `
+                : ''}
+              ${match.meaning
+                ? html`
+                    <ol class="definition">
+                      ${match.meaning.constructor === Array
+                        ? html`
+                            ${match.meaning.map(
+                              item =>
+                                html`
+                                  <li>${item}</li>
+                                `
+                            )}
+                          `
+                        : html`
+                            <li>${match.meaning}</li>
+                          `}
+                    </ol>
+                  `
+                : ''}
+              ${match.xr
+                ? html`
+                    <ul class="xr">
+                      ${match.constructor === Array
+                        ? html`
+                            ${match.xr.map(
+                              item =>
+                                html`
+                                  <li><a href="/define/${item}">${item}</a></li>
+                                `
+                            )}
+                          `
+                        : html`
+                            <li a><a href="/define/${match.xr}">${match.xr}</a></li>
+                          `}
+                    </ul>
+                  `
+                : ''}
+            </dd>
+          </dl>
+        `
+      )}
+    `;
   }
 
   _lookupWord(word) {
     let allMatches = [];
-
     this.isTi = false;
     if (word.match(/[’”]ti$/)) {
       this.isTi = true;
       word = word.replace(/[’”]ti$/, '');
     }
     word = word.replace(/[’”]/g, '');
-    let unword = null; //The un-negated version.
+    let unword = null; // The un-negated version.
 
-    //First we try to match the word as-is
-    let m = this.matchComplete(word, { 'ti': this.isTi });
-    if (!m || m.length === 0) {
+    // First we try to match the word as-is
+    let matchCompleteResult = this.matchComplete(word, { ti: this.isTi });
+    if (!matchCompleteResult || matchCompleteResult.length === 0) {
       if (word.search(/^an|^a(.)\1/) !== -1) {
         unword = word.substring(2, word.length);
-      }
-      else if (word.search(/^a/) !== -1) {
+      } else if (word.search(/^a/) !== -1) {
         unword = word.substring(1, word.length);
       }
 
       if (unword) {
-        m = this.matchComplete(unword, { 'ti': this.isTi });
-        if (m && m.length > 0) {
-          allMatches.push({ 'base': 'an', 'meaning': 'non/not' });
+        matchCompleteResult = this.matchComplete(unword, { ti: this.isTi });
+        if (matchCompleteResult && matchCompleteResult.length > 0) {
+          allMatches.push({ base: 'an', meaning: 'non/not', grammar: '', xr: '' });
         }
       }
     }
-    if (m && m.length > 0) {
-      allMatches = allMatches.concat(m);
+    if (matchCompleteResult && matchCompleteResult.length > 0) {
+      allMatches = allMatches.concat(matchCompleteResult);
     }
 
     if (allMatches.length === 0) {
-      //Now we attempt to break up the compound.
-      //First is special case since 'an' is possibility.
-      m = this.matchPartial(word);
+      // Now we attempt to break up the compound.
+      // First is special case since 'an' is possibility.
+      matchCompleteResult = this.matchPartial(word);
       if (unword) {
-        let unm = this.matchPartial(unword);
-        if ((unm && !m) || (unm && m && unm.base.length > m.base.length)) {
-          m = unm;
-          allMatches.push({ 'base': 'an', 'meaning': 'non/not' });
+        const matchPartialResult = this.matchPartial(unword);
+        if (
+          (matchPartialResult && !matchCompleteResult) ||
+          (matchPartialResult &&
+            matchCompleteResult &&
+            matchPartialResult.base.length > matchCompleteResult.base.length)
+        ) {
+          matchCompleteResult = matchPartialResult;
+          allMatches.push({ base: 'an', meaning: 'non/not', grammar: '', xr: '' });
         }
       }
       let foundComplete = false;
-      while (m && !foundComplete) {
-        if (m instanceof Array && m.length === 1) {
-          m = m[0];
+      while (matchCompleteResult && !foundComplete) {
+        if (matchCompleteResult instanceof Array && matchCompleteResult.length === 1) {
+          matchCompleteResult = matchCompleteResult[0];
         }
-        allMatches = allMatches.concat(m);
-        let leftover = m.leftover;
-        let firstchar = '';
-        let sandhi = m.base[m.base.length - 1];
+        allMatches = allMatches.concat(matchCompleteResult);
+        let { leftover } = matchCompleteResult;
+        let firstChar = '';
+        const sandhi = matchCompleteResult.base[matchCompleteResult.base.length - 1];
         if (leftover) {
-          firstchar = leftover[0];
+          firstChar = leftover[0];
           leftover = leftover.substring(1, leftover.length);
         } else {
           break;
         }
-        let starts = [firstchar, '', sandhi + firstchar];
+        const starts = [firstChar, '', sandhi + firstChar];
         let vowels = ['a', 'ā', 'i', 'ī', 'u', 'ū', 'o', 'e'];
-        //As a rule sandhi doesn't shortern vowels
+        // As a rule sandhi doesn't shortern vowels
         if (sandhi === 'a' || sandhi === 'i' || sandhi === 'u') {
           vowels = ['a', 'i', 'u'];
         }
         for (let i in vowels) {
-          starts.push(vowels[i] + firstchar);
+          starts.push(vowels[i] + firstChar);
         }
-        for (let i in starts) {
-          m = this.matchComplete(starts[i] + leftover, { 'ti': this.isTi });
-          if (m && m.length > 0) {
-            allMatches = allMatches.concat(m);
+        for (const i in starts) {
+          matchCompleteResult = this.matchComplete(starts[i] + leftover, { ti: this.isTi });
+          if (matchCompleteResult && matchCompleteResult.length > 0) {
+            allMatches = allMatches.concat(matchCompleteResult);
             foundComplete = true;
             break;
           }
-          m = this.matchPartial(starts[i] + leftover);
-          if (m) {
-            break
+          matchCompleteResult = this.matchPartial(starts[i] + leftover);
+          if (matchCompleteResult) {
+            break;
           }
         }
-        if (!m) {
-          let base = firstchar + leftover;
-          if (base !== 'ṁ') {
-            allMatches.push({ 'base': base, 'meaning': '?' });
+        if (!matchCompleteResult) {
+          const entry = firstChar + leftover;
+          if (entry !== 'ṁ') {
+            allMatches.push({ base: entry, meaning: '?', grammar: '', xr: '' });
           }
           break;
         }
       }
-      //In the long run it would be nice to implement 'two ended candle' match.
+      // In the long run it would be nice to implement 'two ended candle' match.
     }
 
     return allMatches;
   }
 
   matchComplete(word, args) {
-    let matches = [];
-    for (let pi = 0; pi < 2; pi++) // 'pi (list)
-      for (let vy = 0; vy < 2; vy++) // vy / by (burmese)
-        for (let ti = 0; ti < 2; ti++) { // 'ti (end quote)
-          //On the first pass change nothing.
-          let wordp = word;
-          //On the second pass we change the last vowel if 'ti', otherwise skip.
+    const matches = [];
+    for (
+      let pi = 0;
+      pi < 2;
+      pi++ // 'pi (list)
+    )
+      for (
+        let vy = 0;
+        vy < 2;
+        vy++ // vy / by (burmese)
+      )
+        for (let ti = 0; ti < 2; ti++) {
+          // 'ti (end quote)
+          // On the first pass change nothing.
+          let wordForMatch = word;
+          // On the second pass we change the last vowel if 'ti', otherwise skip.
           if (ti && args.ti === true) {
-            wordp = wordp.replace(/ī$/, 'i').replace(/ā$/, 'i').replace(/ū$/, 'i').replace(/n$/, '').replace(/n$/, 'ṁ');
+            wordForMatch = wordForMatch
+              .replace(/ī$/, 'i')
+              .replace(/ā$/, 'i')
+              .replace(/ū$/, 'i')
+              .replace(/n$/, '')
+              .replace(/n$/, 'ṁ');
           }
           if (pi) {
-            if (wordp.search(/pi$/) === -1) {
+            if (wordForMatch.search(/pi$/) === -1) {
               continue;
             }
-            wordp = wordp.replace(/pi$/, '');
+            wordForMatch = wordForMatch.replace(/pi$/, '');
           }
           if (vy) {
-            if (wordp.match(/vy/)) {
-              wordp = wordp.replace(/vy/g, 'by');
-            } else if (wordp.match(/by/)) {
-              wordp = wordp.replace(/by/g, 'vy');
+            if (wordForMatch.match(/vy/)) {
+              wordForMatch = wordForMatch.replace(/vy/g, 'by');
+            } else if (wordForMatch.match(/by/)) {
+              wordForMatch = wordForMatch.replace(/by/g, 'vy');
             } else {
               continue;
             }
           }
 
-          let m = this.exactMatch(wordp) || this.fuzzyMatch(wordp);
-          if (m) {
-            matches.push(m);
+          const exactOrFuzzyMatchResult =
+            this.exactMatch(wordForMatch) || this.fuzzyMatch(wordForMatch);
+          if (exactOrFuzzyMatchResult) {
+            matches.push(exactOrFuzzyMatchResult);
             if (pi) {
-              matches.push({ 'base': 'pi', 'meaning': 'too' });
+              matches.push({ base: 'pi', meaning: 'too', grammar: '', xr: '' });
             }
             return matches;
           }
@@ -232,8 +296,8 @@ class SCPaliLookup extends LitLocalized(LitElement) {
     return null;
   }
 
-  matchPartial(word, maxlength) {
-    if (!this.dictData || !this.dictData.dictionary) {
+  matchPartial(word, maxLength = 4) {
+    if (!this.dictData) {
       return;
     }
     //Matching partials is somewhat simpler, since all ending cases are clipped off.
@@ -249,70 +313,55 @@ class SCPaliLookup extends LitLocalized(LitElement) {
         }
       }
 
-      if (!maxlength) {
-        maxlength = 4;
-      }
       for (let i = 0; i < word.length; i++) {
-        let part = word.substring(0, word.length - i);
-        if (part.length < maxlength) {
+        const part = word.substring(0, word.length - i);
+        if (part.length < maxLength) {
           break;
         }
-        let target = this.dictData.dictionary[part];
-        if (typeof (target) === 'object') {
-          let meaning = target[1];
-          if (meaning === undefined) {
-            meaning = target[0];
-          }
-
+        const target = this.dictData.find(x => x.entry === part);
+        if (typeof target === 'object') {
           return {
-            'base': part,
-            'meaning': meaning,
-            'leftover': word.substring(word.length - i, word.length)
-          }
+            base: part,
+            meaning: target.definition,
+            grammar: target.grammar,
+            xr: target.xr,
+            leftover: word.substring(word.length - i, word.length),
+          };
         }
       }
     }
   }
 
-  //Every match should return an object containing:
+  // Every match should return an object containing:
   // "base": The base text being matched
   // "meaning": The meaning of the matched text.
   // "leftovers": Anything which wasn't matched by the function, should be empty string
   //  or null if meaningless (such as a grammatical insertion ie. 'ti')
   exactMatch(word) {
-    if (!this.dictData || !this.dictData.dictionary) {
+    if (!this.dictData) {
       return;
     }
-    let target = this.dictData.dictionary[word];
-    if (typeof (target) === 'object') {
-      let meaning = '';
-      if (target[1] === undefined) {
-        meaning = target[0];
-      } else {
-        meaning = `${target[1]} (${target[0]})`;
-      }
-      return { 'base': word, 'meaning': meaning };
+    const target = this.dictData.find(x => x.entry === word);
+    if (typeof target === 'object') {
+      return { base: word, meaning: target.definition, grammar: target.grammar, xr: target.xr };
     }
     return null;
   }
 
   fuzzyMatch(word) {
-    if (!this.dictData || !this.dictData.dictionary) {
+    if (!this.dictData) {
       return;
     }
-    let end = this._getEndings();
+    const end = this._getEndings();
     for (let i = 0; i < end.length; i++) {
-      if (word.length > end[i][2] && word.substring(word.length - end[i][0].length, word.length) === end[i][0]) {
-        let orig = word.substring(0, word.length - end[i][0].length + end[i][1]) + end[i][3];
-        let target = this.dictData.dictionary[orig];
-        if (typeof (target) === 'object') {
-          let meaning = '';
-          if (target[1] === undefined) {
-            meaning = target[0];
-          } else {
-            meaning = `${target[1]} (${target[0]})`;
-          }
-          return { 'base': orig, 'meaning': meaning };
+      if (
+        word.length > end[i][2] &&
+        word.substring(word.length - end[i][0].length, word.length) === end[i][0]
+      ) {
+        const orig = word.substring(0, word.length - end[i][0].length + end[i][1]) + end[i][3];
+        const target = this.dictData.find(x => x.entry === orig);
+        if (typeof target === 'object') {
+          return { base: orig, meaning: target.definition, grammar: target.grammar, xr: target.xr };
         }
       }
     }
@@ -631,7 +680,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
       ['essatha', 1, 2, 'ti'],
       ['essaṁ', 1, 2, 'ti'],
       ['essāma', 1, 2, 'ti'],
-      ['issanti', 0, 3, 'ati']
+      ['issanti', 0, 3, 'ati'],
     ];
   }
 }

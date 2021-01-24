@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from common.arangodb import get_db
 from common.extensions import cache, make_cache_key
-from common.queries import DICTIONARY_SIMILAR, DICTIONARY_ADJACENT
+from common.queries import DICTIONARY_SIMILAR, DICTIONARY_ADJACENT, DICTIONARY_SIMPLE
 from data_loader.textfunctions import asciify_roman as asciify
 from .views import default_cache_timeout
 
@@ -26,10 +26,8 @@ class LookupDictionaries(Resource):
             return {'message': 'from not specified'}, 422
 
         db = get_db()
-        data = list(
-            db.collection('dictionaries_simple').find({'to': to_lang, 'from': from_lang})
-        )
-        return data, 200
+        data = db.aql.execute(DICTIONARY_SIMPLE, bind_vars={'from': from_lang, 'to': to_lang})
+        return list(data), 200
 
 
 class DictionaryAdjacent(Resource):
