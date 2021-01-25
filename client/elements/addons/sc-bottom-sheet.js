@@ -152,12 +152,14 @@ class SCBottomSheet extends LitElement {
         color: inherit;
       }
 
-      dfn {
-        margin-left: calc((100vw - 960px) / 2) + 2px;
+      header > dfn {
+        color: rgb(34, 33, 32);
+        background-color: var(--sc-primary-color-light);
+        font-size: var(--sc-skolar-font-size-s);
+
         padding: 0 var(--sc-size-sm);
 
-        color: var(--sc-tertiary-text-color);
-        background-color: var(--sc-primary-color-light);
+        line-height: 1.333;
       }
 
       main {
@@ -171,44 +173,124 @@ class SCBottomSheet extends LitElement {
         box-sizing: border-box;
         width: 960px;
         height: 120px;
-        padding: 12px 16px 0;
+        padding: 0;
+        gap: 1em
       }
 
       dl {
-        /*hack to get the padding-bottom working*/
-        font-size: 16px;
-
-        display: table;
-
-        margin: 0 0 16px 0;
+        font-size: var(--sc-skolar-font-size-s);
+        margin: 0
       }
 
       dt {
-        display: inline-block;
+        
 
-        background-color: var(--sc-primary-color-light);
+        
       }
 
       dd {
-        margin: var(--sc-size-sm) 0 0 0;
+        margin: 0;
+        display: grid;
+        grid-row-start: 2;
+        grid-auto-rows: min-content;
+
       }
 
       dd a {
-        font-weight: bold;
+        
 
         text-decoration: underline;
+        
 
-        color: inherit;
-
-        text-decoration-color: var(--sc-primary-color);
+        
       }
+
+      .entry a{
+        color: rgb(34, 33, 32);
+        display: inline-block;
+        height: 100%;
+        padding: 0 var(--sc-size-sm);
+        font-weight: bold;
+        background-color: var(--sc-primary-color-light);
+
+         text-decoration-color: white;
+      }
+
+      .entry a:hover{
+        text-decoration-color: white;
+        background-color: var(--sc-primary-accent-color-light);
+      }
+
+      .grammar{
+        color: var(--sc-secondary-text-color);
+        font-variant-caps: all-small-caps;
+        letter-spacing: var(--sc-caps-letter-spacing);
+       font-size: var(--sc-skolar-font-size-xxs);
+      }
+
+      .definition{
+        margin: 0;
+        padding: 0;
+        counter-reset: definition-item-counter;
+        grid-row: 1;
+      }
+
+      .definition li{
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.5em;
+        margin-right: 1em;
+        line-height: 1.125;
+        margin-bottom: 4px;
+
+      }
+
+.definition li::before {
+  font-size: var(--sc-skolar-font-size-xxs);
+  counter-increment: definition-item-counter;
+  content: " "counter(definition-item-counter)"";
+  color: var(--sc-secondary-text-color);
+  font-weight: bold;
+  border-radius: 50%;
+  border: 2px solid var(--sc-disabled-text-color);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.xr{
+  margin: 0;
+  padding: 0;
+  
+ font-size: var(--sc-skolar-font-size-xs);
+}
+.xr li{
+display: inline-flex;
+gap: 1em
+}
+
+.xr a{
+  color: var(--sc-secondary-text-color);
+  text-decoration-color: var(--sc-primary-color)
+}
+
+.xr a:before{
+  content: "See: "
+}
+
+.xr a:hover{
+  color: var(--sc-primary-color);
+}
+
 
       footer {
         box-sizing: border-box;
         height: 48px;
 
         border-top: 1px solid rgba(0, 0, 0, 0.12);
-        background-color: var(--sc-tertiary-background-color);
       }
 
       footer div {
@@ -217,6 +299,10 @@ class SCBottomSheet extends LitElement {
         width: 50%;
 
         text-align: center;
+      }
+
+      footer div:hover{
+        background-color: var(--sc-tertiary-background-color);
       }
 
       #next {
@@ -267,12 +353,13 @@ class SCBottomSheet extends LitElement {
       }
 
       morph-ripple {
-        --ripple-color: var(--sc-primary-color);
+        --ripple-color: var(--sc-disabled-text-color);
       }
 
-      .entry {
-        margin-left: 8px;
+      .lookup-next-previous{
+        fill: var(--sc-disabled-text-color);
       }
+
     `;
   }
 
@@ -364,21 +451,19 @@ class SCBottomSheet extends LitElement {
         </header>
         <main>
           <article>
-            <dl>
-              <dd>${this.currentDefineDetail}</dd>
-            </dl>
+           ${this.currentDefineDetail}
           </article>
         </main>
         <footer>
           <div>
             <button accesskey="b" id="btnPrevious" @click=${this._previous}>
-              <mwc-icon>${icons.arrow_left}</mwc-icon>
+              <mwc-icon class='lookup-next-previous'>${icons.arrow_left}</mwc-icon>
               <morph-ripple></morph-ripple>
             </button>
           </div>
           <div>
             <button accesskey="n" id="btnNext" @click=${this._next}>
-              <mwc-icon>${icons.arrow_right}</mwc-icon>
+              <mwc-icon class='lookup-next-previous'>${icons.arrow_right}</mwc-icon>
               <morph-ripple></morph-ripple>
             </button>
           </div>
