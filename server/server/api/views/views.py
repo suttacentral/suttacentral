@@ -37,7 +37,6 @@ from common.queries import (
 from common.utils import (
     flat_tree,
     language_sort,
-    recursive_sort,
     sort_parallels_key,
     sort_parallels_type_key,
 )
@@ -418,7 +417,7 @@ class Parallels(Resource):
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         uid = uid.replace('/', '-').strip('-')
-        uid = f'root/{uid}'
+        uid = f'super_nav_details/{uid}'
 
         db = get_db()
         results = db.aql.execute(
@@ -535,7 +534,7 @@ class Sutta(Resource):
 
         result = results.next()
         self.convert_paths_to_content(result)
-        for k in ('root_text', 'translation'):
+        for k in ('translation',):
             doc = result[k]
             if doc:
                 self.convert_paths_to_content(doc)
@@ -559,8 +558,8 @@ class Sutta(Resource):
                     with open(file_path) as f:
                         doc[to_prop] = load_func(f)
 
-class SegmentedSutta(Resource):
 
+class SegmentedSutta(Resource):
 
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
@@ -928,17 +927,12 @@ class Redirect(Resource):
             if lang in languages:
                 hits = db.aql.execute(
                     '''
-                    LET modern = (FOR text IN po_strings
-                        FILTER text.lang == @lang
-                        FILTER text.uid == @uid
-                        RETURN {author_uid: text.author_uid, legacy: false})
-
                     LET legacy = (FOR text IN html_text
                         FILTER text.lang == @lang
                         FILTER text.uid == @uid
                         RETURN {author_uid: text.author_uid, legacy: true})
 
-                    RETURN APPEND(modern, legacy)
+                    RETURN legacy
                 ''',
                     bind_vars={"lang": lang, "uid": uid},
                 ).next()
@@ -946,11 +940,12 @@ class Redirect(Resource):
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
-                    root = db.collection('root')
-                    if uid in root:
+                    nav_docs = db.collection('super_nav_details')
+                    if uid in nav_docs:
                         return "Redirect", 301, {'Location': f'/{uid}'}
 
         return "Not found", 403
+
 
 class Transliterate(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
