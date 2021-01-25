@@ -74,12 +74,12 @@ def generate_languages(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Language)
 
 
-def generate_navigation_docs(amount=5) -> models.ModelList:
-    return _generate_models(amount, models.NavigationDetailDoc)
+def generate_roots(amount=5) -> models.ModelList:
+    return _generate_models(amount, models.Root)
 
 
-def generate_navigation_edges(nav_docs: List[models.NavigationDetailDoc]) -> models.ModelList:
-    return models.SuperNavigationEdge.generate(nav_docs)
+def generate_root_edges(roots: List[models.Root]) -> models.ModelList:
+    return models.RootEdges.generate(roots)
 
 
 def generate_html_text(amount=5) -> models.ModelList:
@@ -90,12 +90,20 @@ def generate_blurb(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Blurb)
 
 
+def generate_po_markup(amount=5) -> models.ModelList:
+    return _generate_models(amount, models.PoMarkup)
+
+
+def generate_po_string(amount=5) -> models.ModelList:
+    return _generate_models(amount, models.PoString)
+
+
 def generate_difficulty(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Difficulty)
 
 
-def generate_relationships(nav_docs: List[models.NavigationDetailDoc]) -> models.ModelList:
-    return models.Relationship.generate(nav_docs)
+def generate_relationships(roots: List[models.Root]) -> models.ModelList:
+    return models.Relationship.generate(roots)
 
 
 def generate_lookup_dict(_from, to):

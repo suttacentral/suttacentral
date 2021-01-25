@@ -143,7 +143,7 @@ class Search(Resource):
         ]
         found = list(
             db.aql.execute(
-                'FOR r IN super_nav_details FILTER r.uid IN @uids AND r.type == "leaf" LIMIT 1 RETURN r.uid',
+                'FOR r IN root FILTER r.uid IN @uids AND r.type == "text" LIMIT 1 RETURN r.uid',
                 bind_vars={'uids': possible_uids},
             )
         )

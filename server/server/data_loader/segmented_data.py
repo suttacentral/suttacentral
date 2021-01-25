@@ -1,4 +1,4 @@
-def load_segmented_data(db, segmented_data_dir):
+def load_segmented_data(db, change_tracker, segmented_data_dir):
     docs = []
     files = []
     for file in segmented_data_dir.glob('**/*.json'):        
@@ -8,6 +8,7 @@ def load_segmented_data(db, segmented_data_dir):
             continue
         files.append(file)
         
+    #if change_tracker.is_any_file_new_or_changed(files):
     for file in files:
         uid, muids = file.stem.split('_')
         docs.append({

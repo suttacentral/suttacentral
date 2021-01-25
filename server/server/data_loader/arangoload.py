@@ -27,10 +27,11 @@ from . import (
     currencies,
     dictionaries,
     paragraphs,
+    po,
     textdata,
     images_files,
     homepage,
-    languages,
+    localized_languages,
     order,
     sizes,
     segmented_data,
@@ -86,6 +87,25 @@ def collect_data(repo_dir: Path, repo_addr: str):
             update_data(repo, repo_addr)
 
 
+def process_root_languages(language_file: Path) -> Dict[str, str]:
+    languages: List[dict] = json_load(language_file)
+    data = {}
+    for language in languages:
+        lang_iso = language['root_lang_iso']
+        if 'contains' in language:
+            data.update({uid: lang_iso for uid in language['contains']})
+    return data
+
+
+def process_languages(language_file: Path) -> Dict[str, str]:
+    languages: List[dict] = json_load(language_file)
+    data = {}
+    for language in languages:
+        lang_iso = language['iso_code']
+        data.update({uid: lang_iso for uid in language.get('contains', [])})
+    return data
+
+
 def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
     """
     Method to process super_extra_info.json and text_extra_info.json files
@@ -96,6 +116,98 @@ def process_extra_info_file(extra_info_file: Path) -> Dict[str, Dict[str, str]]:
     info = json_load(extra_info_file)
     data = {item['uid']: item for item in info}
     return data
+
+
+def process_division_files(
+    docs, name_docs, edges, mapping, division_files, root_languages, structure_dir
+):
+    sutta_file = json_load(structure_dir / 'text_extra_info.json')
+
+    sutta_data = {}
+    for sutta in sutta_file:
+        uid = sutta.pop('uid')
+        sutta_data[uid] = {
+            'acronym': sutta['acronym'],
+            'biblio_uid': sutta['biblio_uid'],
+            'volpage': sutta['volpage'],
+            'alt_name': sutta['alt_name'],
+            'alt_acronym': sutta['alt_acronym'],
+            'alt_volpage': sutta['alt_volpage'],
+        }
+
+    reg = regex.compile(r'^\D+')
+    number_reg = regex.compile(r'.*?([0-9]+)$')
+
+    uids_seen = defaultdict(list)
+    # Sort the division folders to process subdirectories later
+    division_files.sort(key=lambda path: len(path.parts))
+
+    for division_file in division_files:
+        entries = json_load(division_file)
+
+        for i, entry in enumerate(entries):
+            path = pathlib.PurePath(entry['_path'])
+            uid = path.name
+            entry['_key'] = uid
+            entry['uid'] = uid
+
+            is_link = entry.get('type') == 'link'
+            if not is_link:
+                mapping[uid] = entry
+                uids_seen[uid].append(entry['_path'])
+                base_uid = reg.match(uid)[0]
+                lang = 'en'
+                while base_uid:
+                    try:
+                        if base_uid == 't':
+                            entry['root_lang'] = 'lzh'
+                            lang = 'lzh'
+                        else:
+                            entry['root_lang'] = root_languages[base_uid]
+                            lang = root_languages[base_uid]
+                        break
+                    except KeyError:
+                        base_uid = '-'.join(base_uid.split('-')[:-1])
+
+                if 'name' in entry:
+                    name_docs.append(
+                        {
+                            'name': entry['name'],
+                            'uid': uid,
+                            'lang': lang,
+                            'root': True,
+                            '_key': f'{uid}_{lang}',
+                        }
+                    )
+
+                del entry['_path']
+                if 'num' not in entry:
+                    entry['num'] = i
+
+                for data_name in ['volpage', 'biblio_uid', 'acronym', 'alt_name', 'alt_acronym', 'alt_volpage']:
+                    try:
+                        entry[data_name] = sutta_data[uid][data_name]
+                    except KeyError:
+                        pass
+                docs.append(entry)
+
+            # find the parent
+            parent = mapping.get(path.parent.name)
+            edge_type = entry.get('type', 'text')
+            if parent:
+                edges.append(
+                    {
+                        '_from': 'root/' + parent['_key'],
+                        '_to': 'root/' + entry['_key'],
+                        'type': edge_type,
+                    }
+                )
+    for uid, paths in uids_seen.items():
+        if len(paths) == 1:
+            continue
+        logging.error(f'{uid} appears {len(paths)} times: {",".join(paths)}')
+
+    docs.append({'uid': 'orphan', '_key': 'orphan'})
 
 
 def parse_name_file_entries(
@@ -148,7 +260,7 @@ def process_names_files(
     """
     docs = []
     names_files.sort(key=lambda path: len(path.parts))
-    for name_file in tqdm(names_files):
+    for name_file in names_files:
         entries: Dict[str, str] = json_load(name_file)
         docs.extend(parse_name_file_entries(entries, root_languages, super_extra_info, text_extra_info))
     return docs
@@ -200,12 +312,61 @@ def process_tree_files(tree_files: List[Path]) -> List[Dict[str, str]]:
         tree_files - list of Paths to the tree files
     """
     edges = []
-    for tree_file in tqdm(tree_files):
+    for tree_file in tree_files:
         content = json_load(tree_file)
         edges.extend(
             parse_tree_recursive(content)
         )
     return edges
+
+
+def process_category_files(category_files, db, edges, mapping):
+    division_ordering = []
+    for category_file in category_files:
+        category_name = category_file.stem
+        if category_name not in ['grouping', 'language', 'pitaka', 'sect']:
+            continue
+        collection = db[category_name]
+        category_docs = []
+
+        entries = json_load(category_file)
+
+        edge_type = category_file.stem
+
+        for i, entry in enumerate(entries):
+            entry['type'] = edge_type
+            entry['_key'] = entry['uid']
+            entry['num'] = i
+
+            if 'contains' in entry:
+                if category_name == 'pitaka':
+                    division_ordering.extend(entry['contains'])
+                for uid in entry['contains']:
+                    child = mapping.get(uid)
+                    if child is None:
+                        logging.error(
+                            f'Division defined in {category_name} not found: {uid}'
+                        )
+                        continue
+                    child[entry['type']] = entry['uid']
+                    edges.append(
+                        {
+                            '_from': f'{category_name}/{entry["_key"]}',
+                            '_to': f'root/{child["_key"]}',
+                            'type': edge_type,
+                        }
+                    )
+                del entry['contains']
+
+            category_docs.append(entry)
+        collection.import_bulk_logged(category_docs, wipe=True)
+
+    for i, uid in enumerate(division_ordering):
+        try:
+            mapping[uid]['num'] = i
+        except KeyError:
+            # We should've already reported an error earlier
+            continue
 
 
 def perform_update_queries(db):
@@ -223,19 +384,30 @@ def perform_update_queries(db):
 
 
 def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir):
+    docs = []
+    name_docs = []
+    edges = []
+    mapping = {}
+
     tree_dir = structure_dir / 'tree'
 
+    division_files = sorted((structure_dir / 'division').glob('**/*.json'))
     names_files = sorted((sc_bilara_data_dir / 'root' / 'misc' / 'site' / 'name').glob('**/*.json'))
     tree_files = sorted(tree_dir.glob('**/*.json'))
+    category_files = sorted(structure_dir.glob('*.json'))
+
     super_tree_file = tree_dir / 'super-tree.json'
     tree_files.remove(super_tree_file)
 
-    root_languages = languages.process_languages(structure_dir / 'super_root_lang.json', True)
+    root_languages = process_root_languages(structure_dir / 'super_root_lang.json')
     super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
     text_extra_info = process_extra_info_file(structure_dir / 'text_extra_info.json')
 
-    if change_tracker.is_any_function_changed(
-        [perform_update_queries, process_super_tree_file, process_tree_files, process_names_files]
+    if change_tracker.is_any_file_new_or_changed(
+        division_files + category_files
+    ) or change_tracker.is_any_function_changed(
+        [process_division_files, process_category_files, perform_update_queries,
+         process_super_tree_file, process_tree_files, process_names_files, parse_tree_recursive]
     ):
         nav_details_docs = process_names_files(
             names_files,
@@ -244,8 +416,35 @@ def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_d
             text_extra_info
         )
 
-        nav_details_edges = process_tree_files(tree_files) + process_super_tree_file(super_tree_file)
+        super_tree_edges = process_super_tree_file(super_tree_file)
+        nav_details_edges = process_tree_files(tree_files)
+        nav_details_edges.extend(super_tree_edges)
 
+        # To handle deletions as easily as possible we completely rebuild
+        # the root structure
+        process_division_files(
+            docs,
+            name_docs,
+            edges,
+            mapping,
+            division_files,
+            root_languages,
+            structure_dir,
+        )
+
+        process_category_files(category_files, db, edges, mapping)
+
+        for entry in docs:
+            if entry.get('pitaka') == 'su':
+                if 'grouping' not in entry:
+                    entry['grouping'] = 'other'
+
+        # make documents
+        db['root'].import_bulk_logged(docs, wipe=True)
+        db['root_names'].import_bulk_logged(name_docs, wipe=True)
+        db['root_edges'].import_bulk_logged(edges, wipe=True)
+
+        # new data loading
         db['super_nav_details'].truncate()
         db['super_nav_details_edges'].truncate()
         db['super_nav_details'].import_bulk(nav_details_docs)
@@ -299,9 +498,10 @@ def get_uid_matcher(db):
     all_uids = set(
         db.aql.execute(
             '''
-            FOR doc IN super_nav_details
-                RETURN doc.uid
-            '''
+    FOR doc IN root
+        SORT doc.num
+        RETURN doc.uid
+    '''
         )
     )
 
@@ -455,14 +655,15 @@ def load_author_edition(change_tracker, additional_info_dir, db):
         db['author_edition'].import_bulk_logged(authors, wipe=True)
 
 
-def load_html_texts(change_tracker, data_dir, db, html_dir):
+def load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir):
     print('Loading HTML texts')
 
     force = change_tracker.is_any_function_changed(
         [textdata.TextInfoModel, textdata.ArangoTextInfoModel]
     )
-
-    db['html_text'].truncate()
+    if force:
+        print('This might take a while')
+        db['html_text'].truncate()
 
     with textdata.ArangoTextInfoModel(db=db) as tim:
         for lang_dir in tqdm(html_dir.glob('*')):
@@ -525,13 +726,11 @@ def run(no_pull=False):
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
     misc_dir = data_dir / 'misc'
+    po_dir = data_dir / 'po_text'
     additional_info_dir = data_dir / 'additional-info'
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
-    localized_elements_dir = current_app.config.get('ASSETS_DIR') / 'localization/elements'
-
-    languages_file = structure_dir / 'language.json'
 
     storage_dir = current_app.config.get('STORAGE_DIR')
     if not storage_dir.exists():
@@ -548,6 +747,8 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
+    languages = process_languages(structure_dir / 'language.json')
+                      
     print_stage("Loading images")
     images_files.load_images_links(db)
 
@@ -560,20 +761,25 @@ def run(no_pull=False):
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
 
-    print_stage("Loading languages")
-    languages.load_languages(db, languages_file, localized_elements_dir)
-
     print_stage("Building and loading navigation from structure_dir")
     add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
 
     print_stage("Loading child ranges from structure_dir")
     load_child_range(db, structure_dir)
 
+    print_stage("Loading localization")
+    localized_languages.update_languages(
+        db, current_app.config.get('ASSETS_DIR') / 'localization/elements'
+    )
+
     print_stage('Loading Segmented Data')
-    segmented_data.load_segmented_data(db, segmented_data_dir)
+    segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
+                      
+    print_stage("Loading po_text")
+    po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage('Load names from sc_bilara_data')
-    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)
+    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages)
 
     print_stage('Load blurbs from sc_bilara_data')
     sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
@@ -590,7 +796,7 @@ def run(no_pull=False):
     )
 
     print_stage("Loading html_text")
-    load_html_texts(change_tracker, data_dir, db, html_dir)
+    load_html_texts(change_tracker, data_dir, db, html_dir, additional_info_dir)
 
     print_stage('Make yellow brick road')
     make_yellow_brick_road(db)
