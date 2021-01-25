@@ -1,14 +1,17 @@
 import logging
 import time
+import json
 
 import lxml.html
 import regex
 from elasticsearch.helpers import scan
 from tqdm import tqdm
 
+from itertools import chain
+
 from common.arangodb import get_db
 from data_loader import change_tracker
-from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
+from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG, PO_TEXTS_BY_LANG
 from search.indexer import ElasticIndexer
 
 logger = logging.getLogger('search.texts')
@@ -105,6 +108,58 @@ class TextIndexer(ElasticIndexer):
                 boost = boost * 0.4
         return boost
 
+    def yield_po_texts(self, lang, size, to_add):
+        po_texts = list(
+            get_db().aql.execute(PO_TEXTS_BY_LANG, bind_vars={'lang': lang})
+        )
+
+        if not po_texts:
+            return
+
+        chunk = []
+        chunk_size = 0
+
+        for text in po_texts:
+            uid = text['uid']
+            author_uid = text['author_uid']
+            _id = self.make_id(uid, author_uid)
+            if _id not in to_add:
+                continue
+
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+
+            action = {
+                'acronym': text['acronym'],
+                '_id': _id,
+                'uid': uid,
+                'lang': lang,
+                'author': text['author'],
+                'author_uid': text['author_uid'],
+                'author_short': text['author_short'],
+                'is_root': lang == text['root_lang'],
+                'mtime': int(text['mtime']),
+                'heading': {
+                    'title': self.fix_text(text['title']),
+                    'division': [
+                        self.fix_text(text['division_title'])
+                        if 'division_title' in text
+                        else ''
+                    ],
+                },
+                'content': '\n\n'.join(strings.values()),
+            }
+
+            chunk_size += len(action['content'].encode('utf-8'))
+            chunk.append(action)
+            if chunk_size > size:
+                yield chunk
+                chunk = []
+                chunk_size = 0
+                time.sleep(0.25)
+        if chunk:
+            yield chunk
+
     def yield_html_texts(self, lang, size, to_add):
         html_texts = list(get_db().aql.execute(TEXTS_BY_LANG, bind_vars={'lang': lang}))
 
@@ -172,11 +227,17 @@ class TextIndexer(ElasticIndexer):
                 bind_vars={'lang': self.lang, '@collection': 'html_text'},
             )
         )
+        current_po_mtimes = list(
+            get_db().aql.execute(
+                CURRENT_MTIMES,
+                bind_vars={'lang': self.lang, '@collection': 'po_strings'},
+            )
+        )
 
         to_add = set()
         to_delete = set(stored_mtimes)
 
-        for doc in current_html_mtimes:
+        for doc in chain(current_html_mtimes, current_po_mtimes):
             _id = self.make_id(doc['uid'], doc['author_uid'])
             if _id in to_delete:
                 to_delete.remove(_id)
@@ -193,6 +254,7 @@ class TextIndexer(ElasticIndexer):
         if to_add:
             print(f'Indexing {len(to_add)} new or modified texts to {lang} index')
 
+            yield from self.yield_po_texts(lang, size, to_add=to_add)
             yield from self.yield_html_texts(lang, size, to_add=to_add)
 
     def index_name_from_uid(self, lang_uid):
