@@ -46,6 +46,7 @@ class SCDonateNow extends LitLocalized(LitElement) {
             /* allow mwc-select to drop below container */
           article {
         content-visibility: visible;
+        height: 100vh
       }
 
       #error-message {

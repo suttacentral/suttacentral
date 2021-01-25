@@ -361,7 +361,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                           <span class="number-translated">
+                            <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -491,7 +491,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                           <span class="number-translated">
+                            <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -660,7 +660,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                           <span class="number-translated">
+                            <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -780,14 +780,14 @@ class SCNavigation extends LitLocalized(LitElement) {
                           ${child.root_name || child.uid}
                         </span>
                         <span class="acronym">
-                          ${this.navArray[this.currentNavPosition].title} ${child.child_range}
+                          ${child.child_range}
                         </span>
                       </div>
                     </span>
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                           <span class="number-translated">
+                            <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>
@@ -911,7 +911,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                     ${child.yellow_brick_road
                       ? html`
                           <span class="header-right">
-                           <span class="number-translated">
+                            <span class="number-translated">
                               <span class="number">${child.yellow_brick_road_count}</span>
                               ${this.fullSiteLanguageName}
                             </span>

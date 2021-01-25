@@ -32,8 +32,6 @@ export const navigationNormalModeStyles = html`
 
       margin-bottom: 0.6667rem;
 
-      transition: box-shadow 200ms ease-out;
-
       border-radius: var(--sc-size-sm);
       background-color: var(--sc-secondary-background-color);
       box-shadow: var(--sc-shadow-elevation-1dp);
@@ -56,16 +54,6 @@ export const navigationNormalModeStyles = html`
       .home-card + .home-card {
         margin-left: 0;
       }
-    }
-
-    .card:hover {
-      transition: all 200ms ease-out;
-
-      box-shadow: var(--sc-shadow-elevation-2dp);
-    }
-
-    .card:active {
-      box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .nav-card:first-of-type {
@@ -249,6 +237,7 @@ export const navigationNormalModeStyles = html`
     .essay::before {
       font-family: var(--sc-sans-font);
       font-weight: 800;
+      color: var(--sc-secondary-text-color);
 
       content: 'Essay: ';
     }

@@ -39,7 +39,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         }
 
         .wrapper {
-          min-height: calc(101vh - 336px);
+          min-height: calc(100vh - 336px);
           margin-bottom: 64px;
         }
 
@@ -507,7 +507,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
     }
-    this.actions.changeToolbarTitle(`${title}— ${author}`);
+    this.actions.changeToolbarTitle(`${title} — ${author}`);
   }
 
   _transformId(rootId, expansionReturns) {

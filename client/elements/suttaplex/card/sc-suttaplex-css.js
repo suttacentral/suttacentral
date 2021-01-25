@@ -158,6 +158,14 @@ list-style: none;
     overflow: hidden;
   }
 
+    .subTitle {
+      font-weight: 800;
+
+      letter-spacing: var(--sc-caps-letter-spacing);
+
+      font-variant-caps: all-small-caps;
+    }
+
   .nerdy-row-element + .nerdy-row-element{
     margin-left: var(--sc-size-md-larger);
   }
