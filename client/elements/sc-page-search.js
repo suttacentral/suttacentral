@@ -171,10 +171,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           color: var(--sc-primary-color-dark);
         }
 
-        .search-result-filter-menu {
-          margin-top: -20px;
-        }
-
         .search-result-link {
           text-decoration: none;
 
