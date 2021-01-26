@@ -294,7 +294,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 
     LET bilara_translations = (
         FOR text IN sc_bilara_texts
-            FILTER text.uid == v.uid AND (text.muids[0] == 'root' OR text.muids[0] == 'translation')
+            FILTER text.uid == v.uid AND ('root' IN text.muids OR 'translation' IN text.muids)
             SORT text.lang
             LET lang_doc = DOCUMENT('language', text.lang)
             LET author_doc = (
@@ -302,6 +302,12 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                     FILTER author.uid == text.muids[2] 
                     LIMIT 1 
                     RETURN author
+            )[0]
+            LET name_doc = (
+                FOR name IN names
+                    FILTER name.uid == v.uid AND name.lang == text.lang
+                    LIMIT 1
+                    RETURN name
             )[0]
             RETURN {
                 lang: text.lang,
@@ -313,7 +319,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 publication_date: null,
                 id: text._key,
                 segmented: true,
-                title: null,
+                title: name_doc.name,
                 volpage: null
             }
     )
