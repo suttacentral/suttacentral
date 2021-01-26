@@ -299,7 +299,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             LET lang_doc = DOCUMENT('language', text.lang)
             LET author_doc = (
                 FOR author IN author_edition 
-                    FILTER author.uid == text.muids[2] 
+                    FILTER author.uid IN text.muids
                     LIMIT 1 
                     RETURN author
             )[0]
@@ -513,12 +513,11 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
 
 SUTTA_VIEW = (
     '''
-LET root_text = DOCUMENT(CONCAT('root/', @uid))
+LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
 
 LET legacy_html = (
     FOR html IN html_text
         FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) OR html.lang == root_text.root_lang)
-        
         RETURN {
             uid: html.uid,
             lang: html.lang,
@@ -533,46 +532,59 @@ LET legacy_html = (
         }
 )
 
-LET markup_path = (
-    FOR markup IN po_markup
-        FILTER markup.uid == @uid
-        LIMIT 1
-        RETURN markup.markup_path
-)[0]
-
-LET root_po_obj = (
-    FOR object IN po_strings
-        FILTER object.uid == @uid AND object.lang == root_text.root_lang
+LET root_bilara_obj = (
+    FOR doc IN sc_bilara_texts 
+        FILTER doc.uid == @uid AND 'root' IN doc.muids
         LIMIT 1 
+        LET author_doc = (
+            FOR author IN author_edition 
+                FILTER author.uid IN doc.muids
+                LIMIT 1 
+                RETURN author
+        )[0]
+        LET name_doc = (
+            FOR name IN names
+                FILTER name.uid == doc.uid AND name.is_root == true
+                LIMIT 1
+                RETURN name
+        )[0]
         RETURN {
-            uid: object.uid,
-            author: object.author,
-            author_short: object.author_short,
-            author_uid: object.author_uid,
-            author_blurb: object.author_blurb,
-            lang: object.lang,
-            strings_path: object.strings_path,
-            title: object.title,
-            next: object.next,
-            previous: object.prev
+            uid: doc.uid,
+            author: author_doc.long_name,
+            author_short: author_doc.short_name,
+            author_uid: author_doc.uid,
+            lang: doc.lang,
+            title: name_doc.name,
+            next: null,
+            previous: null,
         }
 )[0]
 
-LET translated_po_obj = (
-    FOR object IN po_strings 
-        FILTER object.uid == @uid AND object.lang == @language AND object.author_uid == @author_uid
+LET translated_bilara_obj = (
+    FOR doc IN sc_bilara_texts 
+        FILTER doc.uid == @uid AND doc.lang == @language AND @author_uid IN doc.muids
         LIMIT 1 
+        LET author_doc = (
+            FOR author IN author_edition 
+                FILTER author.uid IN doc.muids
+                LIMIT 1 
+                RETURN author
+        )[0]
+        LET name_doc = (
+            FOR name IN names
+                FILTER name.uid == doc.uid AND name.lang == doc.lang
+                LIMIT 1
+                RETURN name
+        )[0]
         RETURN {
-            uid: object.uid,
-            author: object.author,
-            author_short: object.author_short,
-            author_uid: object.author_uid,
-            author_blurb: object.author_blurb,
-            lang: object.lang,
-            strings_path: object.strings_path,
-            title: object.title,
-            next: object.next,
-            previous: object.prev
+            uid: doc.uid,
+            lang: doc.lang,
+            author_uid: author_doc.uid,
+            author: author_doc.long_name,
+            author_short: author_doc.short_name,
+            title: name_doc.name,
+            next: null,
+            previous: null
         }
 )[0]
 
@@ -581,11 +593,10 @@ LET suttaplex = ('''
     + ''')[0]
     
 RETURN {
-    root_text: translated_po_obj ? root_po_obj : null,
-    translation: translated_po_obj ? (root_po_obj == translated_po_obj ? null : translated_po_obj) 
+    root_text: translated_bilara_obj ? root_bilara_obj : null,
+    translation: translated_bilara_obj ? (root_bilara_obj == translated_bilara_obj ? null : translated_bilara_obj) 
         : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
-    segmented: translated_po_obj ? true : false,
-    markup_path: translated_po_obj ? markup_path : null,
+    segmented: translated_bilara_obj ? true : false,
     suttaplex: suttaplex
 }
 '''
