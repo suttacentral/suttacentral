@@ -78,7 +78,6 @@ class SCDonateNow extends LitLocalized(LitElement) {
 
       mwc-formfield {
         --mdc-typography-body2-font-family: var(--sc-sans-font);
-        --mdc-formfield-label-ink-color: var(--sc-primary-text-color);
         --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
       }
 
