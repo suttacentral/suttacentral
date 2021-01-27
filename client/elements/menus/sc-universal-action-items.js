@@ -4,13 +4,13 @@ import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
-import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-location/iron-location.js';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
 import '@material/mwc-button';
+import '@material/mwc-textfield';
 
 import { icons } from '../../img/sc-icons';
 
@@ -24,49 +24,34 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         --mdc-theme-surface: var(--sc-secondary-background-color);
       }
 
-      .white-icon {
-        color: white;
-      }
-
-      .toolbar-paper-button {
-        --paper-menu-button-dropdown: {
-          max-width: 100%;
-        }
-        --paper-menu-button-content: {
-          box-shadow: var(--sc-shadow-elevation-8dp);
-        }
-      }
-
-      .toolbar-input {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        font-weight: 400;
-        line-height: 20px;
-        --primary-text-color: white;
-        --paper-input-container: {
-          padding: 0;
-        }
-        --paper-input-container-color: rgba(255, 255, 255, 0.5);
-        --paper-input-container-focus-color: white;
-        --paper-input-container-label: {
-          color: white;
-          opacity: 0.6;
-        }
-        --paper-input-container-input: {
-          color: white;
-        }
-        display: inline-block;
-        vertical-align: text-bottom;
-      }
-
       #close_button {
-        display: none;
+        opacity: 0;
+        position: absolute;
+        right: 16px;
+        z-index: -1;
+        color: var(--sc-disabled-text-color);
+        transition: opacity 200ms ease 200ms;
       }
 
       #search_input {
-        width: 0;
-        transition: width 0.2s linear;
+       --mdc-theme-primary: var(--sc-secondary-accent-color);
+       --mdc-text-field-fill-color: var(--sc-tertiary-background-color);
+       --mdc-text-field-ink-color: var(--sc-primary-text-color);
+       --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
+       --mdc-typography-font-family: var(--sc-sans-font);
+        visibility: hidden;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        transform: scaleX(0);
+        transition: transform 200ms ease;
+        z-index: 100;
       }
+
+#search_input.opened{
+   visibility: visible;
+  transform: scaleX(1);
+}
 
       #sc-more-menu:focus {
         outline: none;
@@ -76,8 +61,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         background-color: var(--sc-secondary-background-color);
       }
 
-      .toolbar-paper-button {
-        margin: 0;
+      mwc-icon-button {
+        color: white;
       }
 
       #more_vert_button {
@@ -158,40 +143,20 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
   }
 
   openSearch() {
-    let wideWindowInnerWidth = 840;
-    if (window.innerWidth < wideWindowInnerWidth) {
-      this.parentNode.querySelector('ul').style.display = 'none';
-      this.shadowRoot.getElementById('more_vert_button').style.display = 'none';
-    }
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement.classList.contains('opened')) {
       this._startSearch();
     } else {
       searchInputElement.classList.add('opened');
-      this.shadowRoot.getElementById('close_button').style.display = 'inline-block';
-      this.calcSearchInputWidth();
+      this.shadowRoot.getElementById('close_button').style.opacity = '1';
+      this.shadowRoot.getElementById('close_button').style.zIndex = '101';
       searchInputElement.focus();
       searchInputElement.value = '';
     }
   }
 
-  calcSearchInputWidth() {
-    const wideWindowInnerWidth = 840;
-    let iconsWidth = 100;
-    let searchInputWidth = `${window.innerWidth - iconsWidth}px`;
-    if (window.innerWidth > wideWindowInnerWidth) {
-      searchInputWidth = '300px';
-    }
-    this.shadowRoot.querySelector('.opened').style.width = searchInputWidth;
-  }
-
   // Closes the searchbox and resets original values.
   _closeSearch() {
-    let wideWindowInnerWidth = 840;
-    if (window.innerWidth < wideWindowInnerWidth) {
-      this.parentNode.querySelector('ul').style.display = 'inherit';
-      this.shadowRoot.getElementById('more_vert_button').style.display = 'inherit';
-    }
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement && searchInputElement.classList.contains('opened')) {
       searchInputElement.value = '';
@@ -200,7 +165,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       searchInputElement.classList.remove('opened');
       searchInputElement.removeAttribute('style', 'width');
 
-      this.shadowRoot.getElementById('close_button').style.display = 'none';
+      this.shadowRoot.getElementById('close_button').style.opacity = '0';
+      this.shadowRoot.getElementById('close_button').style.zIndex = '-1';
     }
   }
 
@@ -216,7 +182,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
+            <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
       <iron-a11y-keys
         target=${this.search_input}
         keys="enter"
@@ -225,22 +191,20 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
       <mwc-icon-button
         title="${this.localize('searchTooltip')}"
-        label="search"
-        class="white-icon toolbar-paper-button"
+        label="search"        
         @click="${this.openSearch}"
       >
         ${icons['search']}
       </mwc-icon-button>
-
-      <paper-input
-        class="toolbar-input"
-        label="${this.localize('Search')}"
-        no-label-float=""
-        id="search_input"
-      ></paper-input>
-      <mwc-icon-button
+        <mwc-textfield
+              fullwidth
+              id="search_input"
+              type="text"
+              iconTrailing=""
+              placeholder="${this.localize('Search')}"
+              ></mwc-textfield>
+              <mwc-icon-button
         label="close"
-        class="white-icon toolbar-paper-button"
         id="close_button"
         @click="${this._closeSearch}"
       >
@@ -249,7 +213,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       <mwc-icon-button
         label="menu"
         id="more-menu-button"
-        class="white-icon toolbar-paper-button"
         @click="${this.openMoreMenu}"
         alt="menu"
       >
