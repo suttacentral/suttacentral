@@ -36,11 +36,11 @@ def test_suttaplex_list(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
     utils.generate_difficulty().save()
-    roots = utils.generate_navigation_docs()
-    roots.save()
-    utils.generate_navigation_edges(roots).save()
+    nav_docs = utils.generate_navigation_docs()
+    nav_docs.save()
+    utils.generate_navigation_edges(nav_docs).save()
 
-    res = client.get(api.url_for(SuttaplexList, uid=roots[0].uid))
+    res = client.get(api.url_for(SuttaplexList, uid=nav_docs[0].uid))
 
     assert res.status_code == 200
 
