@@ -17,8 +17,12 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
-from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD, SET_SUPER_NAV_DETAILS_NODES_TYPES, \
-    SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES
+from common.queries import (
+    BUILD_YELLOW_BRICK_ROAD,
+    COUNT_YELLOW_BRICK_ROAD,
+    SET_SUPER_NAV_DETAILS_NODES_TYPES,
+    SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES,
+)
 from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
