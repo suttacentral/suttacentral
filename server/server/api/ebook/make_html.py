@@ -33,13 +33,6 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
 '''
 
 
-def sanitize_div_name(string):
-    name = regex.sub(r'\d+\.?\d*\p{punct}*\d*', '', string).strip()
-    if name:
-        return name
-    return string
-
-
 def get_acronym(doc):
     acronym = doc.get('acronym')
     if acronym:

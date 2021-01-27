@@ -1,14 +1,12 @@
 import pathlib
 import subprocess
 import tempfile
-import requests
 import regex
 import base64
 
 
 from jinja2 import Template
-from flask import current_app
-from .common import export_dir, export_cover_dir
+from .common import export_cover_dir
 
 from common.render import render_html_to_png
 

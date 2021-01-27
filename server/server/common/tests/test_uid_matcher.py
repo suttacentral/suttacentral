@@ -1,8 +1,6 @@
 import pytest
 import itertools
 
-from common import arangodb
-from common.utils import app_context
 from common.uid_matcher import UidMatcher, strip_bookmark
 
 

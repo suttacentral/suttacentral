@@ -1,6 +1,5 @@
 import json
 import os
-import datetime
 from typing import List
 from urllib.parse import urlparse
 
@@ -12,7 +11,6 @@ from sortedcontainers import SortedDict
 
 from common.arangodb import get_db
 from common.extensions import make_cache_key, cache
-from common.mail import send_email
 
 from common.queries import (
     CURRENCIES,

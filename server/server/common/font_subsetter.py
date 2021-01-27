@@ -1,11 +1,8 @@
-import argparse
 import pathlib
-import sys
 import hashlib
 
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 from shutil import copy
-import logging
 import fontTools.subset
 
 from flask import current_app

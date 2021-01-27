@@ -8,7 +8,6 @@ from arango.exceptions import DocumentInsertError
 from flask import current_app, g
 
 import logging
-import pprint
 
 from arango.collection import StandardCollection
 
@@ -36,6 +35,7 @@ def explain_error(coll, e, docs, kwargs):
                     explained = True
             seen[key] = (i, doc)
     return explained
+
 
 def import_bulk_logged(self, docs, wipe=False, *args, **kwargs):
     if 'overwrite' in args:
@@ -151,11 +151,3 @@ def get_system_db() -> Database:
 
 def delete_db(db: Database):
     get_system_db().delete_database(db.name)
-
-
-def update_views_hack(db):
-    # This is a hack to help reduce view corruption in 3.4
-    for view in db.views():
-        name = view['name']
-        db.update_view(name, db.view(name))
-

@@ -1,9 +1,7 @@
 import regex
 import hashlib
 import pathlib
-import subprocess
 
-from tempfile import TemporaryDirectory
 from flask import send_file, request, current_app
 from flask_restful import Resource
 
@@ -12,12 +10,11 @@ from .cover import make_cover_png
 from .common import export_dir
 
 from common.font_subsetter import subset_files_by_names
-from common.extensions import make_cache_key, cache
 
 from ebooklib import epub
 
 
-def monkey_patch_EpubWriter():
+def monkey_patch_epub_writer():
     from ebooklib.epub import EpubWriter
 
     # evil function that replaces h2 with h1 in nav
@@ -33,7 +30,7 @@ def monkey_patch_EpubWriter():
     EpubWriter._get_nav = _get_nav
 
 
-monkey_patch_EpubWriter()
+monkey_patch_epub_writer()
 
 HERE = pathlib.Path(__file__).parent
 
