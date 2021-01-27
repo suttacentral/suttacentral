@@ -197,6 +197,13 @@ RETURN {
 }
 '''
 
+SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES = '''
+FOR doc IN super_nav_details
+    FILTER doc.root_lang
+    FOR child IN 1..100 OUTBOUND doc super_nav_details_edges
+        UPDATE child WITH { root_lang: doc.root_lang } IN super_nav_details
+'''
+
 SET_SUPER_NAV_DETAILS_NODES_TYPES = '''
 FOR doc IN super_nav_details
     LET child = (

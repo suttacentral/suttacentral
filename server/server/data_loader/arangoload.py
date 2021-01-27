@@ -17,7 +17,8 @@ from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
-from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD, SET_SUPER_NAV_DETAILS_NODES_TYPES
+from common.queries import BUILD_YELLOW_BRICK_ROAD, COUNT_YELLOW_BRICK_ROAD, SET_SUPER_NAV_DETAILS_NODES_TYPES, \
+    SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES
 from common.utils import chunks
 from common.uid_matcher import UidMatcher
 from .util import json_load
@@ -211,15 +212,7 @@ def process_tree_files(tree_files: List[Path]) -> List[Dict[str, str]]:
 def perform_update_queries(db):
     db.aql.execute(SET_SUPER_NAV_DETAILS_NODES_TYPES)
     # add root language uid to everything.
-    db.aql.execute(
-        '''
-    FOR lang IN language
-        FOR sutta IN 1..10 OUTBOUND lang super_nav_details_edges
-            UPDATE sutta WITH {
-                "root_lang": lang.uid
-            } IN super_nav_details
-    '''
-    )
+    db.aql.execute(SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES)
 
 
 def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir):
