@@ -534,10 +534,10 @@ class Sutta(Resource):
 
         result = results.next()
         self.convert_paths_to_content(result)
-        for k in ('translation',):
-            doc = result[k]
-            if doc:
-                self.convert_paths_to_content(doc)
+
+        doc = result.get('translation', None)
+        if doc:
+            self.convert_paths_to_content(doc)
 
         return result, 200
 

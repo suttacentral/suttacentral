@@ -129,7 +129,7 @@ SUBMENU = '''
 LET navigation_doc = DOCUMENT('super_nav_details', @submenu_id)
 
 LET descendants = (
-    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges        
+    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
         LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
         LET child_range = DOCUMENT('child_range', descendant.uid)['range']
         LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
