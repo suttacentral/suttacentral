@@ -610,7 +610,7 @@ class SegmentedSutta(Resource):
 
     @staticmethod
     def load_json(path):
-        data_dir = current_app.config.get('DATA_REP_DIR') / 'segmented_data'
+        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
         with (data_dir / path).open() as f:
             return json.load(f)
 
