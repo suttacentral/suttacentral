@@ -288,10 +288,10 @@ class ElasticIndexer:
 
 def _make_acro_to_name_and_uid_filter():
     mapping = []
-    for uid in sorted(uid_expansion._uid_to_acro_map):
+    for uid in sorted(uid_expansion.uid_to_acro_map):
         syns = [uid]
-        acro = uid_expansion._uid_to_acro_map[uid]
-        name = uid_expansion._uid_to_name_map[uid]
+        acro = uid_expansion.uid_to_acro_map[uid]
+        name = uid_expansion.uid_to_name_map[uid]
         if acro.lower() != uid:
             syns.append(acro)
         syns.append(name)

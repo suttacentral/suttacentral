@@ -1,16 +1,15 @@
-import requests
-import os
 import json
+import os
 from collections import defaultdict
 from pathlib import Path
 from typing import List, Generator, Dict, Iterable
 
-from tqdm import tqdm
-from requests.models import Response
+import requests
 from arango.database import Database
+from requests.models import Response
+from tqdm import tqdm
 
 from common.arangodb import get_db
-
 
 MEAN_DIFFERENCE = 240
 BASE_URL = 'http://sc-nginx/api'
@@ -55,14 +54,14 @@ def get_non_root_languages(db: Database) -> List[str]:
 
 
 def generate_menu_urls(
-    menu_uids: Iterable[str], lang: str
+        menu_uids: Iterable[str], lang: str
 ) -> Generator[str, None, None]:
     for menu_uid in menu_uids:
         yield get_menu_url(menu_uid, lang)
 
 
 def generate_suttaplex_urls(
-    suttaplex_uids: Iterable[str], lang: str
+        suttaplex_uids: Iterable[str], lang: str
 ) -> Generator[str, None, None]:
     for suttaplex_uid in suttaplex_uids:
         yield get_suttaplex_url(suttaplex_uid, lang)
@@ -120,7 +119,7 @@ def get_root_size() -> Dict[str, int]:
 def save_results(data: dict):
     transformed_data = [{'lang': k, **v} for k, v in data.items()]
     with (Path(os.path.dirname(os.path.abspath(__file__))) / 'pwa_sizes.json').open(
-        'w'
+            'w'
     ) as f:
         json.dump(transformed_data, f, ensure_ascii=False, indent=2)
 

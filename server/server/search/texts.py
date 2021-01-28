@@ -195,9 +195,6 @@ class TextIndexer(ElasticIndexer):
 
             yield from self.yield_html_texts(lang, size, to_add=to_add)
 
-    def index_name_from_uid(self, lang_uid):
-        return lang_uid
-
     @staticmethod
     def load_index_config(config_name):
         try:
