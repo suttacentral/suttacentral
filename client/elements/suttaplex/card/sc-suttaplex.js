@@ -2,6 +2,8 @@ import { html, css, LitElement } from 'lit-element';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import '../../../img/sc-svg-icons.js';
+import '@material/mwc-icon';
+import { icon } from '../../../img/sc-icon';
 import {
   transformId,
   pickVolPage,
@@ -79,7 +81,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get difficultyLevelIconName() {
-    return `sc-svg-icons:${this.difficulty}`;
+    return `icon.${this.difficulty}`;
   }
 
   get areParallelsAvailable() {
@@ -207,12 +209,11 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <div class="top-row-icons">
         ${this.difficulty ? html` 
-          <iron-icon 
+          <mwc-icon 
               id="difficulty-icon" 
               class="tx-level-icon primary-accent-icon"
-              .icon="${this.difficultyLevelIconName}"
               title="${this.localize(this.difficulty)}"
-           ></iron-icon>
+           >${this.difficultyLevelIconName}</mwc-icon>
         ` : ''}
 
       ${this.hasSegmentedTexts ? html`
@@ -255,7 +256,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${!this.item.biblio ? html`
             
             <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-            <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
+            <mwc-icon class="small-icon">${icon.book}</mwc-icon>
               ${this.volPage}
             </span>
           ` : ''}

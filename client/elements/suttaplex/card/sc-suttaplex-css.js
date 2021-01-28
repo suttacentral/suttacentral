@@ -149,9 +149,11 @@ list-style: none;
   }
  
   .suttaplex-nerdy-row {
+  display: inline-flex;
+  gap: var(--sc-size-md-larger);
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -166,9 +168,10 @@ list-style: none;
       font-variant-caps: all-small-caps;
     }
 
-  .nerdy-row-element + .nerdy-row-element{
-    margin-left: var(--sc-size-md-larger);
-  }
+ .nerdy-row-element{
+  display: inline-flex;
+ align-items: center;
+ }
 
   .popuptext {
     overflow: visible;
@@ -252,10 +255,10 @@ list-style: none;
     margin-bottom: 0;
   }
 
-  .small-icon {
-    --iron-icon-width: 16px;
-    --iron-icon-height: 16px;
-    color: var(--sc-disabled-text-color);
+  .small-icon svg{
+    width: 16px;
+    height: 16px;
+    fill: var(--sc-disabled-text-color);
   }
 </style>`;
 

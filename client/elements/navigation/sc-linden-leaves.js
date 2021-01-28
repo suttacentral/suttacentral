@@ -9,7 +9,7 @@ import '@material/mwc-icon';
 import '@moduware/morph-ripple';
 
 import '../menus/sc-universal-action-items.js';
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
@@ -113,7 +113,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       mwc-icon {
-        color: var(--sc-disabled-text-color);
+        fill: var(--sc-disabled-text-color);
         margin-top: 5px;
       }
 
@@ -185,7 +185,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
                                   ${this.localize(nav.title)}
                                   <morph-ripple></morph-ripple>
                                 </a>
-                                <mwc-icon>${icons['chevron_right']}</mwc-icon>
+                                <mwc-icon>${icon.chevron_right}</mwc-icon>
                               </li>
                             `
                           : html`

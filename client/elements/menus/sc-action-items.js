@@ -3,7 +3,7 @@ import '@material/mwc-icon';
 import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin'
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
@@ -108,7 +108,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         @click="${this._onBtnShowToCClick}" 
         slot="actionItems" 
         ?hidden="${this.tableOfContents}">
-        ${icons['toc']}
+        ${icon.toc}
       </mwc-icon-button>
 
       <mwc-icon-button 
@@ -118,7 +118,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         @click="${this._onBtnViewCompactClick}" 
         slot="actionItems" 
         ?hidden="${this.displayCompactButton}">
-        ${icons['view_compact']}
+        ${icon.view_compact}
       </mwc-icon-button>
 
       <mwc-icon-button 
@@ -128,7 +128,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         @click="${this._onBtnViewCompactClick}" 
         slot="actionItems" 
         ?hidden="${this.displayComfyButton}">
-        ${icons['view_comfy']}
+        ${icon.view_comfy}
       </mwc-icon-button>
 
       <mwc-icon-button 
@@ -138,7 +138,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         @click="${this._onBtnInfoClick}" 
         slot="actionItems" 
         ?hidden="${this.displayInfoButton}">
-        ${icons['info']}
+        ${icon.info}
       </mwc-icon-button>
       
       <mwc-icon-button 
@@ -148,7 +148,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         @click="${this._onBtnToolsClick}" 
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
-        ${icons['visibility']}
+        ${icon.visibility}
       </mwc-icon-button>
 
       <mwc-icon-button 
@@ -158,7 +158,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         @click="${this._onBtnShowParallelsClick}" 
         slot="actionItems" 
         ?hidden="${this.displayToolButton}">
-        ${icons['parallels']}
+        ${icon.parallels}
       </mwc-icon-button>
     </div>`;
   }
