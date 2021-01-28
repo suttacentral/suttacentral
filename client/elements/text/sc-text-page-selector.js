@@ -12,7 +12,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
 import { API_ROOT } from '../../constants.js';
 
-import { navIndex } from '../navigation/sc-navigation-common.js'
+import { navIndex } from '../navigation/sc-navigation-common.js';
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
@@ -22,9 +22,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        :host{
+        :host {
           display: flex;
-          flex-direction: column
+          flex-direction: column;
         }
 
         .loading-indicator {
@@ -54,9 +54,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         <div class="loading-indicator" ?hidden=${!this.isLoading}>
           <sc-bouncing-loader></sc-bouncing-loader>
         </div>
-        ${this.displaySimpleTextTemplate}
-        ${this.displaySegmentedTextTemplate}
-        ${this.displayError}
+        ${this.displaySimpleTextTemplate} ${this.displaySegmentedTextTemplate} ${this.displayError}
       </div>
       ${this.displayStepper}
       <sc-text-image id="sc_text_image"></sc-text-image>
@@ -66,48 +64,60 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   get displayStepper() {
-    return this._shouldDisplayStepper() ? html`
-      <sc-stepper .next=${this.next} .previous=${this.previous} .lang="${this.langIsoCode}"></sc-stepper>
-    ` : '';
+    return this._shouldDisplayStepper()
+      ? html`
+          <sc-stepper
+            .next=${this.next}
+            .previous=${this.previous}
+            .lang="${this.langIsoCode}"
+          ></sc-stepper>
+        `
+      : '';
   }
 
   get displayError() {
-    return this._shouldDisplayError() ? html`
-      <sc-error-icon type="data-load-error"></sc-error-icon>
-    ` : '';
+    return this._shouldDisplayError()
+      ? html`
+          <sc-error-icon type="data-load-error"></sc-error-icon>
+        `
+      : '';
   }
 
   get displaySimpleTextTemplate() {
-    return !this._shouldHideSimpleText() ? html`
-      <sc-simple-text
-        id="simple_text"
-        .sutta=${this.translatedSutta}
-        .isLoading=${this.isLoading}
-        .error=${this.lastError}
-        ?hidden=${this._shouldHideSimpleText()}>
-      </sc-simple-text>
-    ` : '';
+    return !this._shouldHideSimpleText()
+      ? html`
+          <sc-simple-text
+            id="simple_text"
+            .sutta=${this.translatedSutta}
+            .isLoading=${this.isLoading}
+            .error=${this.lastError}
+            ?hidden=${this._shouldHideSimpleText()}
+          ></sc-simple-text>
+        `
+      : '';
   }
 
   get displaySegmentedTextTemplate() {
     if (!this.responseData || !this.responseData.root_text) {
       return '';
     }
-    return !this._shouldHideSegmentedText() ? html`
-      <sc-bilara-segmented-text
-        id="segmented_text"
-        .rootSutta=${this.rootSutta}
-        .bilaraRootSutta=${this.bilaraRootSutta}
-        .markup="${this.suttaMarkup}"
-        .translatedSutta=${this.translatedSutta}
-        .bilaraTranslatedSutta=${this.bilaraTranslatedSutta}
-        .suttaComment=${this.suttaComment}
-        .suttaReference=${this.suttaReference}
-        .suttaVariant=${this.suttaVariant}
-        .isLoading=${this.isLoading}
-        .error=${this.lastError}>
-      </sc-bilara-segmented-text>
-    ` : '';
+    return !this._shouldHideSegmentedText()
+      ? html`
+          <sc-bilara-segmented-text
+            id="segmented_text"
+            .rootSutta=${this.rootSutta}
+            .bilaraRootSutta=${this.bilaraRootSutta}
+            .markup="${this.suttaMarkup}"
+            .translatedSutta=${this.translatedSutta}
+            .bilaraTranslatedSutta=${this.bilaraTranslatedSutta}
+            .suttaComment=${this.suttaComment}
+            .suttaReference=${this.suttaReference}
+            .suttaVariant=${this.suttaVariant}
+            .isLoading=${this.isLoading}
+            .error=${this.lastError}
+          ></sc-bilara-segmented-text>
+        `
+      : '';
   }
 
   static get properties() {
@@ -140,7 +150,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       isLoading: { type: Boolean },
       haveBilaraSegmentedText: { type: Boolean },
       bilaraDataPath: { type: String },
-    }
+    };
   }
 
   constructor() {
@@ -156,34 +166,34 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       downloadSuttaText(text) {
         store.dispatch({
           type: 'DOWNLOAD_SUTTA_TEXT',
-          text: text
+          text: text,
         });
       },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title
+          title: title,
         });
       },
       setShowedLanguagePrompt() {
         store.dispatch({
           type: 'SET_SHOWED_LANGUAGE_PROMPT',
-          showedLanguagePrompt: true
+          showedLanguagePrompt: true,
         });
       },
       setNavigation(navArray) {
         store.dispatch({
           type: 'SET_NAVIGATION',
-          navigationArray: navArray
-        })
+          navigationArray: navArray,
+        });
       },
       setCurrentNavPosition(position) {
         store.dispatch({
           type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position
-        })
+          currentNavPosition: position,
+        });
       },
-    }
+    };
   }
 
   firstUpdated() {
@@ -195,19 +205,20 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       }
     });
   }
-  
+
   async _updateNav() {
     const navIndexesOfType = navIndex.get('sutta');
     this.navArray = store.getState().navigationArray;
     let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
     if (!suttaTitle) {
-      suttaTitle = this.responseData.suttaplex.translated_title || this.responseData.suttaplex.original_title;
+      suttaTitle =
+        this.responseData.suttaplex.translated_title || this.responseData.suttaplex.original_title;
     }
     suttaTitle = this.responseData.suttaplex.acronym || suttaTitle;
     if (suttaTitle.includes('//')) {
       const acronyms = suttaTitle.split('//');
       if (acronyms.length === 2) {
-        suttaTitle  = acronyms[0];
+        suttaTitle = acronyms[0];
       }
     }
     this.navArray[navIndexesOfType.index] = {
@@ -215,9 +226,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       url: store.getState().currentRoute.path,
       type: navIndexesOfType.type,
       position: navIndexesOfType.position,
-      groupId: this.responseData.root_text ? this.responseData.root_text.uid : this.responseData.translation.uid,
-      groupName:  this.responseData.root_text ? this.responseData.root_text.title : this.responseData.translation.title,
-      navigationArrayLength: navIndexesOfType.navArrayLength
+      groupId: this.responseData.root_text
+        ? this.responseData.root_text.uid
+        : this.responseData.translation.uid,
+      groupName: this.responseData.root_text
+        ? this.responseData.root_text.title
+        : this.responseData.translation.title,
+      navigationArrayLength: navIndexesOfType.navArrayLength,
     };
 
     await this._verifyNav();
@@ -226,21 +241,23 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.actions.changeToolbarTitle(suttaTitle);
   }
 
-  // This method checks whether the last item of the last navigation belongs to the penultimate item, 
+  // This method checks whether the last item of the last navigation belongs to the penultimate item,
   // and if not, retains the first and last item of navigation data and deletes the rest.
   async _verifyNav() {
     const penultimateNavItem = this._getPenultimateNavItem();
-    if (penultimateNavItem.type && penultimateNavItem.type === 'home') { return; }
+    if (penultimateNavItem.type && penultimateNavItem.type === 'home') {
+      return;
+    }
     if (penultimateNavItem.groupId) {
       const navData = await this._fetchNavData(penultimateNavItem.groupId);
-      if (!navData[0].uid) { 
+      if (!navData[0].uid) {
         this._correctingNav();
-        return; 
+        return;
       }
-      const currentNavItemGroupId = this.navArray[this.navArray.length-1].groupId;
+      const currentNavItemGroupId = this.navArray[this.navArray.length - 1].groupId;
       if (currentNavItemGroupId) {
         const childData = navData[0].children.find(x => {
-          return x.uid === currentNavItemGroupId
+          return x.uid === currentNavItemGroupId;
         });
         if (!childData) {
           this._correctingNav();
@@ -284,7 +301,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (changedProps.has('expansionReturns')) {
       this._onResponseExpansionData();
     }
-    if (changedProps.has('authorUid') || changedProps.has('suttaId') || changedProps.has('langIsoCode')) {
+    if (
+      changedProps.has('authorUid') ||
+      changedProps.has('suttaId') ||
+      changedProps.has('langIsoCode')
+    ) {
       this._paramChanged();
     }
   }
@@ -314,12 +335,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   setProperties() {
     if (this.responseData) {
-      this.isSegmentedText = !!(this.responseData.segmented);
+      this.isSegmentedText = !!this.responseData.segmented;
       this.suttaplex = this.responseData.suttaplex;
       this._bindDataToSCSuttaParallels(this.suttaplex);
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
-      this.markup = this.responseData.markup;
       if (this.responseData.translation) {
         this.authorUid = this.responseData.translation.author_uid;
       }
@@ -344,13 +364,15 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _bindDataToSCSuttaParallels(suttaplex) {
-    this.dispatchEvent(new CustomEvent('bind-data-to-sc-sutta-parallels', {
-      detail: {
-        suttaplexItem: suttaplex,
-      },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('bind-data-to-sc-sutta-parallels', {
+        detail: {
+          suttaplexItem: suttaplex,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   _getSuttaTextUrl() {
@@ -458,11 +480,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _shouldHideSimpleText() {
-    return this.isSegmentedText === undefined || (this.isSegmentedText || this.isLoading);
+    return this.isSegmentedText === undefined || this.isSegmentedText || this.isLoading;
   }
 
   _shouldHideSegmentedText() {
-    return this.isSegmentedText === undefined || (!this.isSegmentedText || this.isLoading);
+    return this.isSegmentedText === undefined || !this.isSegmentedText || this.isLoading;
   }
 
   _shouldDisplayStepper() {
@@ -486,23 +508,29 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     let title = responseData.suttaplex ? responseData.suttaplex.original_title : '';
     if (!title) {
-      title = responseData.root_text ? responseData.root_text.title : responseData.translation.title;
+      title = responseData.root_text
+        ? responseData.root_text.title
+        : responseData.translation.title;
     }
 
     const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
     const author = responseData.translation ? responseData.translation.author : rootTextAuthor;
-    const acronym = responseData.suttaplex.acronym ? responseData.suttaplex.acronym.split(/\/\//)[0] : this._transformId(responseData.suttaplex.uid, expansionReturns);
+    const acronym = responseData.suttaplex.acronym
+      ? responseData.suttaplex.acronym.split(/\/\//)[0]
+      : this._transformId(responseData.suttaplex.uid, expansionReturns);
 
-    document.dispatchEvent(new CustomEvent('metadata', {
-      detail: {
-        pageTitle: `${acronym}: ${title}—${author}`,
-        title: `${title}—${author}`,
-        description: description,
-        openGraphType: 'article',  // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
-        bubbles: true,
-        composed: true
-      }
-    }));
+    document.dispatchEvent(
+      new CustomEvent('metadata', {
+        detail: {
+          pageTitle: `${acronym}: ${title}—${author}`,
+          title: `${title}—${author}`,
+          description: description,
+          openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
+          bubbles: true,
+          composed: true,
+        },
+      })
+    );
 
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
@@ -526,7 +554,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           if (itemMatch) item = itemMatch[0];
         }
         if (item && expansionReturns[0][item]) {
-          scAcronym += `${expansionReturns[0][item][0]} ${tail}`
+          scAcronym += `${expansionReturns[0][item][0]} ${tail}`;
         } else {
           scAcronym += tail;
         }
@@ -539,14 +567,16 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _showLanguagePromptToast() {
-    this.dispatchEvent(new CustomEvent('show-sc-toast', {
-      detail: {
-        toastType: 'info',
-        message: this.localize('languagePromptMessage')
-      },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('show-sc-toast', {
+        detail: {
+          toastType: 'info',
+          message: this.localize('languagePromptMessage'),
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
 
