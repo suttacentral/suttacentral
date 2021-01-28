@@ -177,6 +177,10 @@ export const navigationNormalModeStyles = html`
       color: inherit;
     }
 
+    a[href$='/kn/dhp'] .show-root-language::before {
+      display: none
+    }
+
     .header-right {
       font-size: var(--sc-skolar-font-size-xxs);
       font-weight: 600;

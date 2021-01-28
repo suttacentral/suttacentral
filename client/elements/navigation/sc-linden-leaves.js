@@ -37,6 +37,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         background-color: rgb(75, 74, 74);
 
         justify-content: space-between;
+
       }
 
       ul {

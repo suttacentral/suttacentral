@@ -14,7 +14,7 @@ export const typographyBilaraStyles = css`
 
 .spanFocused
 {
-    color: var(--sc-tertiary-text-color);
+    color: rgb(34, 33, 32);
     background-color: var(--sc-primary-color-light);
 }
 
