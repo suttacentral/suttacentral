@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCLitTextPage } from './sc-lit-text-page.js';
@@ -11,6 +11,8 @@ import '../lookups/sc-lzh2en.js';
 import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import { store } from '../../redux-store';
 
+import { icon } from '../../img/sc-icon';
+
 class SCSimpleText extends SCLitTextPage {
   render() {
     return html`
@@ -20,11 +22,6 @@ class SCSimpleText extends SCLitTextPage {
           ${typographyLegacyStyles}
           ${typographyI18nStyles}
           ${lookupStyles}
-          :host {
-          --iron-icon-fill-color: var(--sc-disabled-text-color);
-          --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
-          --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
-        }
 
         .image-link {
           cursor: pointer;
@@ -411,11 +408,14 @@ class SCSimpleText extends SCLitTextPage {
     setTimeout(() => {
       item.innerHTML = `
         <span class="image-link">
-            <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
-            <iron-icon title="${this.localize(
-              'viewImage'
-            )}" class="image-book-link" icon="sc-iron-icons:book">
-            </iron-icon>
+            <span class="${prefix}" 
+            title="${paragraph.description}">
+            ${displayText}
+            </span>
+            <span 
+            title="${this.localize('viewImage')}" class="image-book-link">
+            ${icon.book}
+            </span>
         </span>
       `;
       item.classList.add('image-book-link');

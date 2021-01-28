@@ -1,11 +1,10 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js';
 
 import '@material/mwc-switch';
 import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-icon';
 import { icon } from '../../img/sc-icon';
 
 /*
@@ -25,7 +24,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         color: inherit;
       }
 
-      mwc-icon {
+      .icon {
         margin-right: var(--sc-size-md);
         fill: var(--sc-disabled-text-color);
       }
@@ -225,7 +224,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         @click="${this._showLanguageMenu}"
       >
         <div class="menu-item-wrapper">
-          <mwc-icon id="language">${icon.language}</mwc-icon>
+          ${icon.language}
           <div id="language-wrapper">
             <span id="language-text-wrapper">${this._displayCurrentSiteLanguage()}</span>
             <mwc-icon class="chevron_right">${icon.chevron_right}</mwc-icon>
@@ -235,7 +234,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/donations">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="pray">${icon.pray}</mwc-icon>
+            ${icon.pray}
             ${this.localize('Donations')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -244,7 +243,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/offline">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="offline_bolt">${icon.offline_bolt}</mwc-icon>
+            ${icon.offline_bolt}
             ${this.localize('UseOffline')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -268,7 +267,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/downloads">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="file_download">${icon.file_download}</mwc-icon>
+            ${icon.file_download}
             ${this.localize('Downloads')}
           </div>
           <mwc-ripple></mwc-ripple>
@@ -277,7 +276,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/languages">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="translate">${icon.translate}</mwc-icon>
+            ${icon.translate}
             ${this.localize('Languages')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -287,7 +286,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/numbering">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="format_list_numbered">${icon.format_list_numbered}</mwc-icon>
+            ${icon.format_list_numbered}
             ${this.localize('Numbering')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -296,7 +295,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/abbreviations">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="abbreviations">${icon.abbreviations}</mwc-icon>
+            ${icon.abbreviations}
             ${this.localize('Abbreviations')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -305,7 +304,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/methodology">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="school">${icon.school}</mwc-icon>
+            ${icon.school}
             ${this.localize('Methodology')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -315,7 +314,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/acknowledgments">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="people">${icon.people}</mwc-icon>
+            ${icon.people}
             ${this.localize('Acknowledgments')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -324,7 +323,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/licensing">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="copyright">${icon.copyright}</mwc-icon>
+            ${icon.copyright}
             ${this.localize('Licensing')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -333,7 +332,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/about">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="info_outline">${icon.info_outline}</mwc-icon>
+            ${icon.info_outline}
             ${this.localize('About')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -349,7 +348,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       >
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="forum">${icon.forum}</mwc-icon>
+            ${icon.forum}
             ${this.localize('Discuss')}
             <mwc-ripple></mwc-ripple>
           </div>
@@ -365,7 +364,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       >
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            <mwc-icon id="speaker">${icon.speaker}</mwc-icon>
+            ${icon.speaker}
            ${this.localize('Voice')}
             <mwc-ripple></mwc-ripple>
           </div>

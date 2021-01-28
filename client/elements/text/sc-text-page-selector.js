@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit-element';
-import '@polymer/iron-icon/iron-icon.js';
 
 import './sc-bilara-segmented-text.js';
 import './sc-simple-text.js';

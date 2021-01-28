@@ -111,25 +111,10 @@ list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    --iron-icon-height: 20px;
-    --iron-icon-width: 20px;    
   }
 
   .top-row .compact {
     cursor: pointer;
-  }
-
-  .tx-level-icon {
-    --iron-icon-height: 24px;
-    --iron-icon-width: 24px;
-    margin: 0 var(--sc-size-sm);
-  }
-
-  .top-menu-button {
-    padding: 0;
-    --paper-menu-button-dropdown: {
-      box-shadow: var(--sc-shadow-elevation-8dp);
-    };
   }
 
   .top-menu-button .btn-share, .top-menu-button .btn-speaker {
@@ -143,9 +128,8 @@ list-style: none;
     outline: none;
   }
 
-  .btn-speaker, .btn-share {
-    padding: 5px;
-    color: var(--sc-disabled-text-color);
+  .share {
+    fill: var(--sc-disabled-text-color);
   }
  
   .suttaplex-nerdy-row {
@@ -255,7 +239,7 @@ list-style: none;
     margin-bottom: 0;
   }
 
-  .small-icon svg{
+  .book{
     width: 16px;
     height: 16px;
     fill: var(--sc-disabled-text-color);
@@ -296,16 +280,15 @@ export const suttaplexTxCss = html`
     color: var(--sc-primary-color-medium);
   }
 
-  .tx-icon {
-    height: 28px;
-    min-width: 28px;
+  .translation {
+    height: 20px;
+    width: 20px;
+    padding: 4px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    --iron-icon-width: 18px;
-    --iron-icon-height: 18px;
-    --iron-icon-fill-color: var(--sc-primary-color);
+    fill: var(--sc-primary-color);
     border: 2px solid var(--sc-primary-color);
   }
 
@@ -502,12 +485,6 @@ export const parallelItemCss = html`
   morph-ripple {
     color: var(--sc-primary-color-medium);
   }
-
-  iron-icon {
-    color: var(--sc-disabled-text-color);
-    --iron-icon-height: var(--sc-size-md);
-    --iron-icon-width: var(--sc-size-md);
-  }
   
   .disabled {
     cursor: default;
@@ -521,12 +498,6 @@ export const parallelItemCss = html`
   summary {
     cursor: pointer;
     outline: none;
-  }
-  
-  .icon-outline {
-    cursor: help;
-    --iron-icon-height: 20px;
-    --iron-icon-width: 20px;
   }
 
   morph-ripple {

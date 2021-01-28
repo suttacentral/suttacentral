@@ -1,10 +1,9 @@
-import { css, html } from 'lit-element';
+import { css, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
 import '../navigation/sc-tipitaka.js';
-import '@material/mwc-icon';
 import { icon } from '../../img/sc-icon';
 
 class SCHomePage extends SCStaticPage {
@@ -450,11 +449,6 @@ class SCHomePage extends SCStaticPage {
         background-color: rgb(161, 108, 0);
       }
       
-      #bilara {
-        width: 60px;
-        height: 60px;
-      }
-      
       .related-projects-heading {
         margin: 0 1em;
         ;
@@ -485,11 +479,16 @@ class SCHomePage extends SCStaticPage {
         }
       }
       
-      #people,
-      #speaker {
+      .people,
+      .speaker {
         fill: white;
         transform: scale(2);
         margin: 1rem
+      }
+
+            .bilara {
+        width: 60px;
+        height: 60px;
       }
     `;
   }
@@ -585,7 +584,7 @@ class SCHomePage extends SCStaticPage {
             <article class='card dark-accent'>
               <a href='https://voice.suttacentral.net/scv/index.html#/sutta' target='_blank' rel='noopener' title='Visit SuttaCentral Voice'>
               <header>
-                <span><mwc-icon id="speaker">${icon.speaker}</mwc-icon></span>
+                <span>${icon.speaker}</span>
                 <h3><span>SuttaCentral Voice</span><span class='sc-related-item-subtitle'>listen to suttas</span></h3>
               </header></a>
               <div class='related-projects-content'> <p>Voice makes SuttaCentral’s texts and translations accessible to the visually impaired and the sighted. The suttas began as an oral transmission, and now they are an oral transmission again.</p>
@@ -606,7 +605,7 @@ class SCHomePage extends SCStaticPage {
             <article class='card primary-color'>
               <a href='https://discourse.suttacentral.net/' target='_blank' rel='noopener' title='Visit SuttaCentral forum'>
               <header>
-                <span><mwc-icon id="people">${icon.people}</mwc-icon></span>
+                <span>${icon.people}</span>
                 <h3><span>Discuss & Discover</span> <span class='sc-related-item-subtitle'>SuttaCentral forum</span></h3>
               </header></a>
               <div class='related-projects-content'><p>Join our vibrant and friendly community of Sutta lovers. Absolute beginners and learned experts all get to learn from each other.</p>
@@ -620,7 +619,7 @@ class SCHomePage extends SCStaticPage {
             <article class='card primary-accent'>
               <a href='https://bilara.suttacentral.net/' target='_blank' rel='noopener' title='Visit Bilara translation webapp'>
               <header>
-                <span><mwc-icon id="bilara">${icon.bilara}</mwc-icon></span>
+                <span>${icon.bilara}</span>
                 <h3><span>Bilara</span> <span class='sc-related-item-subtitle'>computer assisted translation</span></h3>
               </header></a>
               <div class='related-projects-content'><p>Built from the ground up by SuttaCentral, Bilara is a web interface for Sutta translation. Our team is using it to create new translations of Suttas in the world’s languages.</p></div>

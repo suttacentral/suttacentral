@@ -145,9 +145,9 @@ export const SCSiteLayoutStyles = css`
     }
   }
 
-  #sc_logo {
-    width: 2.25em;
-    height: 2.25em;
+  .sc_logo {
+    width: 1.25em;
+    height: 1.25em;
   }
 
   #static_pages_nav_menu {
@@ -219,11 +219,11 @@ export const SCSiteLayoutStyles = css`
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
-  li a:hover  #external{
+  li a:hover  .external{
     visibility: visible
   }
 
-  #external{
+  svg.external{
     width: 15px;
     height: 15px;
     fill: rgba(255,255,255,0.8);

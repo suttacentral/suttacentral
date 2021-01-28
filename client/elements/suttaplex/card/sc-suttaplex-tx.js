@@ -1,6 +1,5 @@
-import '@polymer/iron-icon/iron-icon.js';
-import { html, LitElement } from 'lit-element';
-import '../../../img/sc-svg-icons.js';
+import { html, LitElement, svg } from 'lit-element';
+import { icon } from '../../../img/sc-icon';
 import '../../menus/sc-suttaplex-share-menu.js';
 import { suttaplexTxCss } from './sc-suttaplex-css';
 import '@moduware/morph-ripple';
@@ -23,11 +22,8 @@ class SCSuttaplexTx extends LitElement {
     return html`
       ${suttaplexTxCss}
       
-      <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">
+      <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">${icon.translation}
         <morph-ripple></morph-ripple>
-        <div class="tx-icon">
-          <iron-icon icon="sc-svg-icons:translation"></iron-icon>
-        </div>
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
           <span class="tx-publication">

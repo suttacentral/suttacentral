@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement, svg } from 'lit-element';
 
 import './sc-more-menu.js';
 import { store } from '../../redux-store';
@@ -12,7 +12,7 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
 import '@material/mwc-button';
 
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 
 class SCUniversalActionItems extends LitLocalized(LitElement) {
   static get styles() {
@@ -229,7 +229,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         class="white-icon toolbar-paper-button"
         @click="${this.openSearch}"
       >
-        ${icons['search']}
+        ${icon.search}
       </mwc-icon-button>
 
       <paper-input
@@ -244,7 +244,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         id="close_button"
         @click="${this._closeSearch}"
       >
-        ${icons['close']}
+        ${icon.close}
       </mwc-icon-button>
       <mwc-icon-button
         label="menu"
@@ -253,7 +253,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         @click="${this.openMoreMenu}"
         alt="menu"
       >
-        ${icons['more_vert']}
+        ${icon.more_vert}
       </mwc-icon-button>
       <mwc-menu corner="BOTTOM_END" id="more-menu">
         <sc-more-menu id="sc-more-menu"></sc-more-menu>

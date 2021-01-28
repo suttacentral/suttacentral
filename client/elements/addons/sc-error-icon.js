@@ -1,6 +1,8 @@
-import { LitElement, html } from "lit-element";
+import { LitElement, html, svg } from "lit-element";
 
 import { LitLocalized } from './localization-mixin';
+
+import { icon } from '../../img/sc-icon';
 
 export class SCErrorIcon extends LitLocalized(LitElement) {
   static get properties() {
@@ -15,27 +17,27 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
 
     this.messages = {
       "no-network": {
-        icon: '/img/nonetwork.svg',
+        image: 'nonetwork',
         title: 'networkError',
         message: 'offline'
       },
       "general-error": {
-        icon: '/img/generalerror.svg',
+        image: 'generalerror',
         title: 'generalError',
         message: 'generalError'
       },
       "page-no-found": {
-        icon: '/img/pagenofound.svg',
+        image: 'pagenotfound',
         title: 'pageNoFound',
         message: 'pageNoFound'
       },
       "data-load-error": {
-        icon: '/img/dataloaderror.svg',
+        image: 'dataloaderror',
         title: 'dataLoadError',
         message: 'dataLoadError'
       },
       "connect-to-internet": {
-        icon: '/img/connecttointernet.svg',
+        image: 'connecttointernet',
         title: 'connectToInternet',
         message: 'connectToInternet'
       }
@@ -43,16 +45,16 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
   }
 
   render() {
-    const { icon, title, message } = this.messages[this.type];
+    const { image, title, message } = this.messages[this.type];
 
     return html`
       <style>
         .error {
-                  position: absolute;
-        margin: 0;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          height: 50vw;
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
           color: var(--sc-secondary-text-color);
@@ -66,7 +68,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
       </style>
 
       <div class="error">
-        <iron-icon src="${icon}" class="icon" title="${this.localize(title)}"></iron-icon>
+        ${icon}(image)
         <div>${this.localize(message)}</div>
       </div>
     `;
