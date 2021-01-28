@@ -459,7 +459,9 @@ def load_html_texts(change_tracker, data_dir, db, html_dir):
         [textdata.TextInfoModel, textdata.ArangoTextInfoModel]
     )
 
-    db['html_text'].truncate()
+    if force:
+        print('This might take a while')
+        db['html_text'].truncate()
 
     with textdata.ArangoTextInfoModel(db=db) as tim:
         for lang_dir in tqdm(html_dir.glob('*')):
