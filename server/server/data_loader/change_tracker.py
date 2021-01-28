@@ -129,5 +129,7 @@ def who_is_calling(depth=2):
 
 
 def whoami():
-    "Returns the function that calls it"
+    """
+    Returns the function that calls it
+    """
     return who_is_calling(depth=2)

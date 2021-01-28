@@ -38,7 +38,7 @@ class IndexCreationFailure(Exception):
 class ElasticIndexer:
     """ Indexer for loading data into an ElasticSearch index.
 
-    Instances should be transient, each time it is nessecary to load
+    Instances should be transient, each time it is necessary to load
     data into an index, a new instance should be created.
 
     This base class will automatically create a new index whenever
@@ -46,7 +46,7 @@ class ElasticIndexer:
     update the aliases.
 
     There are two basic approaches a subclass can take to keeping
-    the index syncronized. The first is to completely rebuild the index
+    the index synchronized. The first is to completely rebuild the index
     whenever any data changes. In this case, get_extra_state should
     return the state of the source data (i.e. file mtimes), a change
     to the data will then result in a new index being generated.
@@ -129,7 +129,7 @@ class ElasticIndexer:
 
     def delete_index(self):
         try:
-            self.es.indices.delete(index_name)
+            self.es.indices.delete(self.index_name)
         except:
             pass
 
@@ -169,25 +169,6 @@ class ElasticIndexer:
 
         if alias_actions:
             self.es.indices.update_aliases({"actions": alias_actions})
-
-    def get_alias_to_index_mapping(self, exclude_prefix=''):
-        mapping = {}
-        r = self.es.indices.get_aliases('_all')
-        for k, v in r.items():
-            if k.startswith('.'):
-                continue
-            if exclude_prefix and k.startswith(exclude_prefix):
-                continue
-            # alias names are returned as keys in a dictionary
-            # (i.e. a JSON 'set')
-            try:
-                index_name = next(iter(v['aliases']))
-                mapping[index_name] = k
-            except StopIteration:
-                if k not in self.non_aliased_indexes:
-                    logger.error('Oops {}, {}'.format(k, v))
-
-        return mapping
 
     def delete_obsolete_indices(self):
         for index in self.es.indices.stats()['indices']:
@@ -252,16 +233,6 @@ class ElasticIndexer:
         self.update_aliases()
         self.delete_obsolete_indices()
 
-    def process_actions(self, actions, size=500):
-        def chunk_actions():
-            while True:
-                chunk = list(itertools.islice(actions, size))
-                if not chunk:
-                    raise StopIteration
-                yield chunk
-
-        self.process_chunks(chunk_actions())
-
     def process_chunks(self, chunks):
         for chunk in chunks:
             if not chunk:
@@ -286,6 +257,8 @@ class ElasticIndexer:
 
     @staticmethod
     def load_index_config(name, _seen=None, _first_run=[True]):
+        out = {}
+
         if _first_run:
             _make_extra_filters()
             _first_run.clear()
@@ -298,8 +271,6 @@ class ElasticIndexer:
         _seen.add(name)
 
         file = (search.indexer_dir / name).with_suffix('.json')
-
-        out = {}
 
         with file.open('r', encoding='utf8') as f:
             try:
@@ -1318,6 +1289,6 @@ def _make_extra_filters():
         json.dump(_make_coded_name_filter(), f, ensure_ascii=False, indent=2)
 
     with (search.indexer_dir / 'acro_to_name_and_uid_auto.json').open(
-        'w', encoding='utf8'
+            'w', encoding='utf8'
     ) as f:
         json.dump(_make_acro_to_name_and_uid_filter(), f, ensure_ascii=False, indent=2)

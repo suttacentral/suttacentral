@@ -40,7 +40,6 @@ FOR division IN super_nav_details
     RETURN {'division': division.uid, 'uids': division_uids}
 '''
 
-
 CURRENT_MTIMES = '''
 WITH @@collection /* With statement forces query optimizer to work */
     FOR text IN @@collection
@@ -448,31 +447,31 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationshi
 '''
 
 SUTTA_VIEW = (
-    '''
-LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
-
-LET legacy_html = (
-    FOR html IN html_text
-        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
-            OR html.lang == root_text.root_lang)
-        
-        RETURN {
-            uid: html.uid,
-            lang: html.lang,
-            is_root: html.lang == root_text.root_lang,
-            title: html.name,
-            author: html.author,
-            author_short: html.author_short,
-            author_uid: html.author_uid,
-            file_path: html.file_path,
-            next: html.next,
-            previous: html.prev
-        }
-)
-
-LET suttaplex = ('''
-    + SUTTAPLEX_LIST
-    + ''')[0]
+        '''
+    LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
+    
+    LET legacy_html = (
+        FOR html IN html_text
+            FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
+                OR html.lang == root_text.root_lang)
+            
+            RETURN {
+                uid: html.uid,
+                lang: html.lang,
+                is_root: html.lang == root_text.root_lang,
+                title: html.name,
+                author: html.author,
+                author_short: html.author_short,
+                author_uid: html.author_uid,
+                file_path: html.file_path,
+                next: html.next,
+                previous: html.prev
+            }
+    )
+    
+    LET suttaplex = ('''
+        + SUTTAPLEX_LIST
+        + ''')[0]
     
 RETURN {
     translation: (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
@@ -480,7 +479,6 @@ RETURN {
 }
 '''
 )
-
 
 SEGMENTED_SUTTA_VIEW = '''
 

@@ -32,8 +32,6 @@ def monkey_patch_epub_writer():
 
 monkey_patch_epub_writer()
 
-HERE = pathlib.Path(__file__).parent
-
 
 def create_epub(data, language, filename, debug=False):
     introduction_page = f'''<html><body>

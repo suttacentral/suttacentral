@@ -1,7 +1,7 @@
-import re
-from typing import Callable, Dict, List
-from collections import defaultdict
 import itertools
+import re
+from collections import defaultdict
+from typing import Callable, Dict, List
 
 import decorator
 
@@ -112,43 +112,6 @@ def generate_lookup_dict(_from, to):
     )
 
 
-def uid_sort_key(string, reg=re.compile(r'\d+')):
-    """ Properly sorts UIDs
-    Examples:
-        >>> sorted(['dn1.1', 'dn1', 'dn2', 'dn1.2'], key=uid_sort_key)
-        ['dn1', 'dn1.1', 'dn1.2', 'dn2']
-    """
-    # With split, every second element will be the one in the capturing group.
-    return [int(x) for x in reg.findall(string)]
-
-
-def recursive_sort(
-    data: List[Dict], sort_by: str, children='children', key: Callable = lambda x: x
-) -> List[Dict]:
-    """Sorts data in tree structure recursively and inplace.
-
-    Args:
-        data: Data to be sorted. List of dicts...
-        sort_by: By which key in the dictionary it should be sorted.
-        children: Key with children list.
-        key: Function to use as a sort key.
-
-    Returns:
-        data
-    """
-
-    def r_sort(data: List[Dict]):
-        data.sort(key=lambda x: key(x[sort_by]))
-
-        for entry in data:
-            if children in entry:
-                r_sort(entry[children])
-
-    r_sort(data)
-
-    return data
-
-
 def flat_tree(data: List[Dict], children='children') -> List[Dict]:
     """ Flattens the data. Nesting level is practically unlimited.
 
@@ -219,19 +182,10 @@ def sort_parallels_type_key(x):
     return values[p_type], x['to']['to']
 
 
-def groupby_unsorted(seq, key=lambda x: x):
-    seq = list(seq)
-    indexes = defaultdict(list)
-    for i, elem in enumerate(seq):
-        indexes[key(elem)].append(i)
-    for k, idxs in indexes.items():
-        yield k, (seq[i] for i in idxs)
-
-
 def chunks(iterable, chunk_size):
     if isinstance(iterable, list):
         yield from (
-            iterable[i : i + chunk_size] for i in range(0, len(iterable), chunk_size)
+            iterable[i: i + chunk_size] for i in range(0, len(iterable), chunk_size)
         )
     else:
         iterator = iter(iterable)

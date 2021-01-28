@@ -16,39 +16,11 @@ class TextInfoModel:
     def get_author_by_name(self, name):
         raise NotImplementedError
 
-    def add_metadata(self, filepath, author, metadata):
-        target = self._metadata
-        for part in filepath.parent.parts:
-            if part not in target:
-                target[part] = {}
-            target = target[part]
-        target['author'] = author
-        with (text_dir / filepath).open('r') as f:
-            target['string'] = f.read()
+    def add_document(self, doc):
+        raise NotImplementedError
 
-    def get_metadata(self, filepath):
-        target = self._metadata
-        for part in filepath.parent.parts:
-            if part in target:
-                target = target[part]
-            else:
-                break
-        if target == self._metadata:
-            return None
-        return target
-
-    @staticmethod
-    def uids_are_related(uid1, uid2, _rex=regex.compile(r'\p{alpha}*(?:-\d+)?')):
-        # We will perform a simple uid comparison
-        # We could be more sophisticated! For example we could
-        # inspect whether they belong to the same division
-        if uid1 is None or uid2 is None:
-            return False
-
-        m1 = _rex.match(uid1)[0]
-        m2 = _rex.match(uid2)[0]
-        if m1 and m2 and m1 == m2:
-            return True
+    def update_code_points(self, lang_uid, unicode_points, force):
+        raise NotImplementedError
 
     def is_bold(self, lang, element):
         if element.tag in {'b', 'strong'}:

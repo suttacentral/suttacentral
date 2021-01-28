@@ -1,14 +1,13 @@
+import base64
 import pathlib
 import subprocess
 import tempfile
+
 import regex
-import base64
-
-
 from jinja2 import Template
-from .common import export_cover_dir
 
 from common.render import render_html_to_png
+from .common import export_cover_dir
 
 files_dir = pathlib.Path(__file__).parent / 'files'
 
