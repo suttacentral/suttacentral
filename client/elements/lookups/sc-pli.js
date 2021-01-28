@@ -133,7 +133,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
                             )}
                           `
                         : html`
-                            <li a><a href="/define/${match.xr}">${match.xr}</a></li>
+                            <li><a href="/define/${match.xr}">${match.xr}</a></li>
                           `}
                     </ul>
                   `
