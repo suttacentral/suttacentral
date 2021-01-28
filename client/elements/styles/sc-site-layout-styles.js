@@ -145,7 +145,7 @@ export const SCSiteLayoutStyles = css`
     }
   }
 
-  .title-logo-icon {
+  #sc_logo {
     width: 2.25em;
     height: 2.25em;
   }
