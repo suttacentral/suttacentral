@@ -548,6 +548,7 @@ LET root_bilara_obj = (
                 LIMIT 1
                 RETURN name
         )[0]
+
         RETURN {
             uid: doc.uid,
             author: author_doc.long_name,
@@ -555,8 +556,18 @@ LET root_bilara_obj = (
             author_uid: author_doc.uid,
             lang: doc.lang,
             title: name_doc.name,
-            next: null,
-            previous: null,
+            previous: {
+              author_uid: author_doc.uid,
+              lang: doc.lang,
+              name: null,
+              uid: null,
+            },
+            next: {
+              author_uid: author_doc.uid,
+              lang: doc.lang,
+              name: null,
+              uid: null,
+            },
         }
 )[0]
 
@@ -576,6 +587,7 @@ LET translated_bilara_obj = (
                 LIMIT 1
                 RETURN name
         )[0]
+
         RETURN {
             uid: doc.uid,
             lang: doc.lang,
@@ -583,8 +595,18 @@ LET translated_bilara_obj = (
             author: author_doc.long_name,
             author_short: author_doc.short_name,
             title: name_doc.name,
-            next: null,
-            previous: null
+            previous: {
+                author_uid: author_doc.uid,
+                lang: doc.lang,
+                name: null,
+                uid: null,
+            },
+            next: {
+              author_uid: author_doc.uid,
+              lang: doc.lang,
+              name: null,
+              uid: null,
+            },
         }
 )[0]
 
@@ -602,6 +624,24 @@ RETURN {
 '''
 )
 
+SUTTA_NEIGHBORS = '''
+LET parent = (
+    FOR parent_doc IN @level INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+        RETURN parent_doc
+)[0]
+LET neighbors = (
+    FOR docs IN @level OUTBOUND parent super_nav_details_edges
+        RETURN docs.uid
+)
+RETURN neighbors
+'''
+
+SUTTA_NAME = '''
+FOR name IN names
+    FILTER name.uid == @uid AND name.is_root == @is_root
+    LIMIT 1
+    RETURN name.name
+'''
 
 SEGMENTED_SUTTA_VIEW = '''
 
