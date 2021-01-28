@@ -8,6 +8,7 @@ import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/typography.js';
 import '@polymer/paper-styles/shadow.js';
 import '@material/mwc-icon';
+import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
 setPassiveTouchGestures(true);
@@ -34,6 +35,8 @@ import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles} from './styles/sc-site-layout-styles.js';
 
+
+
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
     return css`
@@ -49,7 +52,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <div id="context_toolbar">
           <div id="title">
             <div id="mainTitle">
-              <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+              <mwc-icon class="title-logo-icon" id="sc_logo">${icon.sc_logo}</mwc-icon>
               <span>${this.toolbarTitle}</span>
             </div>
             <div id="subTitle">${this.localize('pageSubtitle')}</div>

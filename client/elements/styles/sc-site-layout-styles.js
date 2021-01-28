@@ -146,10 +146,8 @@ export const SCSiteLayoutStyles = css`
   }
 
   .title-logo-icon {
-    width: 1.25em;
-    height: 1.25em;
-    /* these hacky margins compensate for the padding in the svg icon. Use em to scale with clamp*/
-    margin: .1em .1em -.1em -.1em;
+    width: 2.25em;
+    height: 2.25em;
   }
 
   #static_pages_nav_menu {
