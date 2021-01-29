@@ -1,6 +1,4 @@
 import { html, LitElement } from 'lit-element';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
 import '../../addons/sc-bouncing-loader';
 import { API_ROOT } from '../../../constants.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';

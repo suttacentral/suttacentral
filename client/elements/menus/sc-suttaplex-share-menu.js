@@ -4,7 +4,6 @@ import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
 import copyToClipboard from '../../utils/copy.js'
 import { volPagesToString } from '../../utils/suttaplex';
-import '@material/mwc-icon';
 import { icon } from '../../img/sc-icon';
 
 /*
@@ -15,6 +14,11 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
   render() {
     return html`
     <style>
+
+    :host{
+      outline: none
+    }
+    
       .button-text {
         color: var(--sc-primary-text-color);
       }
@@ -36,7 +40,7 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
         color: var(--sc-disabled-text-color);
       }
 
-      mwc-icon {
+      .icon {
         margin-right: var(--sc-size-md);
         fill: var(--sc-disabled-text-color);
       }
@@ -45,15 +49,15 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
     </style>
 
     <li class="table-element button-text" @tap=${this._copyLink} title="${this._computeLink(this.item)}">
-      <mwc-icon id="link">${icon.link}</mwc-icon>
+      ${icon.link}
       ${this.localize('copyLink')}
     </li>
     <li class="table-element button-text" @tap=${this._copyContent} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
-      <mwc-icon id="content_copy">${icon.content_copy}</mwc-icon>
+      ${icon.content_copy}
       ${this.localize('copyTable')}
     </li>
     <li class="table-element button-text" @tap=${this._copyCite} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
-      <mwc-icon id="format_quote">${icon.format_quote}</mwc-icon>
+      ${icon.format_quote}
       ${this.localize('cite')}
     </li>`;
   }

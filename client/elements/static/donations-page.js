@@ -1,6 +1,5 @@
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/paper-button/paper-button.js';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -17,26 +16,53 @@ class SCDonationsPage extends SCStaticPage {
         ${typographyStaticStyles}
       </style>
     <style>
-      .donate-button {
-        background: var(--sc-primary-accent-color);
-        color: var(--sc-tertiary-text-color);
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: var(--sc-caps-letter-spacing);
-      }
-
 
       .donate-link {
         background: none;
-        margin: var(--sc-size-xxl) 0;
-        text-decoration:none;
-      }
-
-
-      .donations-button {
+        
         display: flex;
+        margin: 2em 0;
         justify-content: center;
       }
+
+      a.donate-link,
+      a.donate-link:hover{
+        text-decoration: none;
+      }
+
+
+      .link-button {
+        font-weight: 600;
+      
+        display: inline-flex;
+      
+        box-sizing: border-box;
+        min-width: 64px;
+        height: 36px;
+        padding: 0 15px 2px;
+      
+        text-decoration: none;
+        letter-spacing: var(--sc-caps-letter-spacing);
+      
+        color: var(--sc-primary-accent-color-dark);
+        border: 1px solid var(--sc-primary-accent-color);
+        border-radius: 4px;
+      
+        align-items: center;
+        justify-content: center;
+        font-variant-caps: all-small-caps;
+      }
+      
+      .link-button:hover {
+        background-color: var(--sc-primary-accent-color-light-transparent);
+      }
+      
+      .link-button:active {
+        color: white;
+        background-color: var(--sc-primary-accent-color);
+      }
+
+
 
 
       .account-data td {
@@ -50,10 +76,11 @@ class SCDonationsPage extends SCStaticPage {
             </h1>
             <p>
               ${this.localize('96b5b5e9b0ffe0d016284f045cd4ddd0')}
-            </p>
-            <div class="donations-button">
+            </p><a class='donate-link' href='/donate-now'>
+            <div class="link-button">
               ${unsafeHTML(this.localize('97d71c6585da8ff839b8b6f2c7e60cfc'))}
             </div>
+            </a>
             <h2>
               ${this.localize('89e1b8b5d1961ddedb63961b467c5756')}
             </h2>

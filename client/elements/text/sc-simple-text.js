@@ -789,42 +789,6 @@ class SCSimpleText extends SCLitTextPage {
   }
 
   // Lookup word end
-
-  _markupComment(comment) {
-    comment = comment.replace('(', '').replace(')', '');
-    const commentParts = comment.split(/,/);
-    let commentText = '';
-    for (let item in commentParts) {
-      const checkItem = this.editionsExpansionData[commentParts[item].replace(' ', '')];
-      if (checkItem) {
-        commentText += `${checkItem}<br>`;
-      } else {
-        commentText += `${commentParts[item]}<br>`;
-      }
-    }
-    return commentText;
-  }
-
-  _markupCorrComment(comment, referenceText) {
-    comment = comment.replace('[', '').replace(']', '');
-    const commentParts = comment.split(/→/);
-    let tooltipText = '';
-    if (commentParts[1]) {
-      tooltipText = `
-        ${commentParts[0]}
-        has&nbsp;been&nbsp;corrected&nbsp;to
-        ${commentParts[1]}
-      `;
-    } else {
-      tooltipText = commentParts[0];
-    }
-    return `
-      ${referenceText}
-      <paper-tooltip fit-to-visible-bounds class="corrnote">
-        ${tooltipText}
-      </paper-tooltip>
-    `;
-  }
 }
 
 customElements.define('sc-simple-text', SCSimpleText);

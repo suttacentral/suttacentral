@@ -1,11 +1,10 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement, svg } from 'lit-element';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { languageBaseMenuCss } from './sc-language-base-menu-css';
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-icon';
 
 class LanguageBaseMenu extends LitLocalized(LitElement) {
   static get properties() {
@@ -120,8 +119,8 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     return html`
       ${languageBaseMenuCss}
       <mwc-list-item @click="${this._showMoreMenu}">
-        <div id="icon-wrapper">
-          <mwc-icon id="arrow-left">${icons['arrow_left']}</mwc-icon>
+        <div class="menu-item-wrapper">
+          ${icon.arrow_left}
           Choose your language
         </div>
       </mwc-list-item>

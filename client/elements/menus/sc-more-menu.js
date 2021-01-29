@@ -227,7 +227,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           ${icon.language}
           <div id="language-wrapper">
             <span id="language-text-wrapper">${this._displayCurrentSiteLanguage()}</span>
-            <mwc-icon class="chevron_right">${icon.chevron_right}</mwc-icon>
+            ${icon.chevron_right}
           </div>
         </div>
       </mwc-list-item>

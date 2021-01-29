@@ -18,32 +18,6 @@ export const languageBaseMenuCss = html`
       margin-bottom: var(--sc-size-xxs);
     }
 
-    .language-menu-dropdown {
-      font-size: var(--sc-skolar-font-size-md);
-      background-color: transparent;
-      --paper-input-container-focus-color: var(--sc-primary-accent-color);
-      --paper-dropdown-menu-icon: {
-        color: var(--sc-disabled-text-color);
-      }
-
-      --paper-input-container-input-color: var(--sc-primary-text-color);
-      --paper-input-container-color: var(--sc-secondary-text-color);
-
-      --paper-menu-button-dropdown: {
-        box-shadow: var(--sc-shadow-elevation-12dp);
-        width: 180px;
-        background-color: var(--sc-secondary-background-color);
-      }
-    }
-
-    .language-menu-list {
-      background-color: var(--sc-secondary-background-color);
-    }
-
-    .language-name {
-      padding-top: var(--sc-size-xxs);
-    }
-
     .language-name::before {
       content: attr(id);
       background-color: var(--sc-disabled-text-color);
@@ -77,13 +51,13 @@ export const languageBaseMenuCss = html`
       font-size: 11px;
     }
 
-    #arrow-left {
+    .arrow_left {
       padding: 8px 8px 4px 0;
       fill: var(--sc-disabled-text-color);
     }
 
-    #icon-wrapper {
-      display: inline-flex;
+    .menu-item-wrapper {
+      display: flex;
       align-items: center;
     }
   </style>

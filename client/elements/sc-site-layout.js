@@ -2,7 +2,6 @@ import { LitElement, html, css, svg } from 'lit-element';
 
 import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 
-import '@material/mwc-icon';
 import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';

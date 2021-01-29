@@ -1,11 +1,10 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormalModeStyles } from './sc-navigation-styles.js';
 
-import '@material/mwc-icon';
 import '@moduware/morph-ripple';
 
 import '../menus/sc-universal-action-items.js';
@@ -113,9 +112,8 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         margin-left: 0;
       }
 
-      mwc-icon {
+      .icon {
         fill: var(--sc-disabled-text-color);
-        margin-top: 5px;
       }
 
       morph-ripple {
@@ -186,7 +184,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
                                   ${this.localize(nav.title)}
                                   <morph-ripple></morph-ripple>
                                 </a>
-                                <mwc-icon>${icon.chevron_right}</mwc-icon>
+                                ${icon.chevron_right}
                               </li>
                             `
                           : html`
