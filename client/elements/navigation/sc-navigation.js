@@ -648,7 +648,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       </span>
                       <div class="navigation-nerdy-row">
                         <span
-                          class="subTitle"
+                         class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}""
                           lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >

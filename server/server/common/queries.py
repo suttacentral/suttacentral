@@ -284,7 +284,39 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             // Add title if it is in desired language
             RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
         )
-    
+
+    LET bilara_translations = (
+        FOR text IN sc_bilara_texts
+            FILTER text.uid == v.uid AND ('root' IN text.muids OR 'translation' IN text.muids)
+            SORT text.lang
+            LET lang_doc = DOCUMENT('language', text.lang)
+            LET author_doc = (
+                FOR author IN author_edition 
+                    FILTER author.uid IN text.muids
+                    LIMIT 1 
+                    RETURN author
+            )[0]
+            LET name_doc = (
+                FOR name IN names
+                    FILTER name.uid == v.uid AND name.lang == text.lang
+                    LIMIT 1
+                    RETURN name
+            )[0]
+            RETURN {
+                lang: text.lang,
+                lang_name: lang_doc.name,
+                is_root: lang_doc.is_root,
+                author: author_doc.long_name,
+                author_short: author_doc.short_name,
+                author_uid: text.muids[2],
+                publication_date: null,
+                id: text._key,
+                segmented: true,
+                title: name_doc.name,
+                volpage: null
+            }
+    )
+
     LET blurbs_by_uid = (
         FOR blurb IN blurbs
             FILTER blurb.uid == v.uid AND (blurb.lang == @language OR blurb.lang == 'en')
@@ -304,7 +336,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             RETURN difficulty.difficulty
     )[0]
     
-    LET translations = FLATTEN([legacy_translations])
+    LET translations = FLATTEN([bilara_translations, legacy_translations])
 
     LET volpages = (
         FOR text IN translations
@@ -470,22 +502,121 @@ LET legacy_html = (
         }
 )
 
+LET root_bilara_obj = (
+    FOR doc IN sc_bilara_texts 
+        FILTER doc.uid == @uid AND 'root' IN doc.muids
+        LIMIT 1 
+        LET author_doc = (
+            FOR author IN author_edition 
+                FILTER author.uid IN doc.muids
+                LIMIT 1 
+                RETURN author
+        )[0]
+        LET name_doc = (
+            FOR name IN names
+                FILTER name.uid == doc.uid AND name.is_root == true
+                LIMIT 1
+                RETURN name
+        )[0]
+
+        RETURN {
+            uid: doc.uid,
+            author: author_doc.long_name,
+            author_short: author_doc.short_name,
+            author_uid: author_doc.uid,
+            lang: doc.lang,
+            title: name_doc.name,
+            previous: {
+              author_uid: author_doc.uid,
+              lang: doc.lang,
+              name: null,
+              uid: null,
+            },
+            next: {
+              author_uid: author_doc.uid,
+              lang: doc.lang,
+              name: null,
+              uid: null,
+            },
+        }
+)[0]
+
+LET translated_bilara_obj = (
+    FOR doc IN sc_bilara_texts 
+        FILTER doc.uid == @uid AND doc.lang == @language AND @author_uid IN doc.muids
+        LIMIT 1 
+        LET author_doc = (
+            FOR author IN author_edition 
+                FILTER author.uid IN doc.muids
+                LIMIT 1 
+                RETURN author
+        )[0]
+        LET name_doc = (
+            FOR name IN names
+                FILTER name.uid == doc.uid AND name.lang == doc.lang
+                LIMIT 1
+                RETURN name
+        )[0]
+
+        RETURN {
+            uid: doc.uid,
+            lang: doc.lang,
+            author_uid: author_doc.uid,
+            author: author_doc.long_name,
+            author_short: author_doc.short_name,
+            title: name_doc.name,
+            previous: {
+                author_uid: author_doc.uid,
+                lang: doc.lang,
+                name: null,
+                uid: null,
+            },
+            next: {
+              author_uid: author_doc.uid,
+              lang: doc.lang,
+              name: null,
+              uid: null,
+            },
+        }
+)[0]
+
 LET suttaplex = ('''
     + SUTTAPLEX_LIST
     + ''')[0]
     
 RETURN {
-    translation: (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    root_text: translated_bilara_obj ? root_bilara_obj : null,
+    translation: translated_bilara_obj ? (root_bilara_obj == translated_bilara_obj ? null : translated_bilara_obj) 
+        : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+    segmented: translated_bilara_obj ? true : false,
     suttaplex: suttaplex
 }
 '''
 )
 
+SUTTA_NEIGHBORS = '''
+LET parent = (
+    FOR parent_doc IN @level INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+        RETURN parent_doc
+)[0]
+LET neighbors = (
+    FOR docs IN @level OUTBOUND parent super_nav_details_edges
+        RETURN docs.uid
+)
+RETURN neighbors
+'''
+
+SUTTA_NAME = '''
+FOR name IN names
+    FILTER name.uid == @uid AND name.is_root == @is_root
+    LIMIT 1
+    RETURN name.name
+'''
 
 SEGMENTED_SUTTA_VIEW = '''
 
 LET result = MERGE(
-    FOR doc IN segmented_data
+    FOR doc IN sc_bilara_texts
         FILTER doc.uid == @uid
         FILTER 'translation' NOT IN doc.muids OR @author_uid IN doc.muids
         FILTER 'comment' NOT IN doc.muids OR @author_uid IN doc.muids

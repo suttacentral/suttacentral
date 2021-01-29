@@ -42,237 +42,376 @@ class SCBottomSheet extends LitElement {
         display: none;
       }
 
-      body,
-      main,
-      article,
-      header,
-      footer {
-        display: flex;
-      }
+body,
+main,
+article,
+header,
+footer
+{
+    display: flex;
+}
 
-      header {
-        position: relative;
+header
+{
+    position: relative;
 
-        height: 32px;
-        padding: 0 var(--sc-size-md);
+    height: 32px;
+    padding: 0 var(--sc-size-md);
 
-        color: var(--sc-primary-background-color);
-        background-color: var(--sc-secondary-text-color);
+    color: var(--sc-primary-background-color);
+    background-color: var(--sc-secondary-text-color);
 
-        justify-content: space-between;
-        align-items: center;
-      }
+    justify-content: space-between;
+    align-items: center;
+}
 
-      header div {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
+header div
+{
+    display: flex;
+    flex-direction: row;
 
-      details {
-        font-size: var(--sc-skolar-font-size-s);
+    align-items: center;
+}
 
-        z-index: 1;
+details
+{
+    font-size: var(--sc-skolar-font-size-s);
 
-        max-width: 720px;
+    z-index: 1;
 
-        color: var(--sc-primary-background-color);
-        background-color: var(--sc-secondary-text-color);
-      }
+    max-width: 720px;
 
-      details ul {
-        margin-right: 1em;
-      }
+    color: var(--sc-primary-background-color);
+    background-color: var(--sc-secondary-text-color);
+}
 
-      details a {
-        text-decoration: underline;
+details ul
+{
+    margin-right: 1em;
+}
 
-        color: inherit;
+details a
+{
+    text-decoration: underline;
 
-        text-decoration-color: var(--sc-primary-color);
-      }
+    color: inherit;
 
-      summary {
-        white-space: nowrap;
-      }
+    text-decoration-color: var(--sc-primary-color);
+}
 
-      details > summary {
-        position: relative;
+summary
+{
+    white-space: nowrap;
+}
 
-        display: flex;
+details > summary
+{
+    position: relative;
 
-        padding: 2px 8px;
+    display: flex;
 
-        list-style: none;
+    padding: 2px 8px;
 
-        cursor: pointer;
-      }
+    list-style: none;
 
-      details > summary::-webkit-details-marker {
-        display: none;
-      }
+    cursor: pointer;
+}
 
-      details .help-display-inner {
-        position: absolute;
-        z-index: 1000;
-        right: 3vw;
-        bottom: 48px;
+details > summary::-webkit-details-marker
+{
+    display: none;
+}
 
-        max-width: 720px;
-        margin-left: 3vw;
+details .help-display-inner
+{
+    position: absolute;
+    z-index: 1000;
+    right: 3vw;
+    bottom: 48px;
 
-        border-radius: 4px;
-        background-color: var(--sc-secondary-text-color);
-        box-shadow: var(--sc-shadow-elevation-8dp);
-      }
+    max-width: 720px;
+    margin-left: 3vw;
 
-      .bottom-sheet-icon-label {
-        font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
-        font-weight: 500;
+    border-radius: 4px;
+    background-color: var(--sc-secondary-text-color);
+    box-shadow: var(--sc-shadow-elevation-8dp);
+}
 
-        margin-left: 4px;
+.bottom-sheet-icon-label
+{
+    font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
+    font-weight: 500;
 
-        align-self: center;
-      }
+    margin-left: 4px;
 
-      header button {
-        width: 100%;
+    align-self: center;
+}
 
-        border: none;
-        background: none;
-      }
+header button
+{
+    width: 100%;
 
-      #btnClose {
-        display: flex;
+    border: none;
+    background: none;
+}
 
-        padding: 2px 8px;
+#btnClose
+{
+    display: flex;
 
-        cursor: pointer;
+    padding: 2px 8px;
 
-        color: inherit;
-      }
+    cursor: pointer;
 
-      dfn {
-        margin-left: calc((100vw - 960px) / 2) + 2px;
-        padding: 0 var(--sc-size-sm);
+    color: inherit;
+}
 
-        color: var(--sc-tertiary-text-color);
-        background-color: var(--sc-primary-color-light);
-      }
+header > dfn
+{
+    font-size: var(--sc-skolar-font-size-s);
+    line-height: 1.333;
 
-      main {
-        justify-content: center;
-      }
+    padding: 0 var(--sc-size-sm);
 
-      article {
-        overflow-x: hidden;
-        overflow-y: auto;
+    color: rgb(34, 33, 32);
+    background-color: var(--sc-primary-color-light);
+}
 
-        box-sizing: border-box;
-        width: 960px;
-        height: 120px;
-        padding: 12px 16px 0;
-      }
+main
+{
+    justify-content: center;
+}
 
-      dl {
-        /*hack to get the padding-bottom working*/
-        font-size: 16px;
+article
+{
+    overflow-x: hidden;
+    overflow-y: auto;
 
-        display: table;
+    box-sizing: border-box;
+    width: 960px;
+    height: 120px;
+    margin: 0 3vw;
+    padding: 0;
 
-        margin: 0 0 16px 0;
-      }
+    gap: 1em;
+}
 
-      dt {
-        display: inline-block;
+dl
+{
+    font-size: var(--sc-skolar-font-size-s);
 
-        background-color: var(--sc-primary-color-light);
-      }
+    margin: 0;
+}
 
-      dd {
-        margin: var(--sc-size-sm) 0 0 0;
-      }
+dd
+{
+    display: grid;
 
-      dd a {
-        font-weight: bold;
+    margin: 0;
 
-        text-decoration: underline;
+    grid-row-start: 2;
+    grid-auto-rows: min-content;
+}
 
-        color: inherit;
+dd a
+{
+    text-decoration: underline;
+}
 
-        text-decoration-color: var(--sc-primary-color);
-      }
+.entry a
+{
+    font-weight: bold;
 
-      footer {
-        box-sizing: border-box;
-        height: 48px;
+    display: inline-block;
 
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        background-color: var(--sc-tertiary-background-color);
-      }
+    height: 100%;
+    padding: 0 var(--sc-size-sm);
 
-      footer div {
-        position: relative;
+    color: rgb(34, 33, 32);
+    background-color: var(--sc-primary-color-light);
 
-        width: 50%;
+    text-decoration-color: white;
+}
 
-        text-align: center;
-      }
+.entry a:hover
+{
+    background-color: var(--sc-primary-accent-color-light);
 
-      #next {
-        border-left: 1px solid var(--sc-border-color);
-      }
+    text-decoration-color: white;
+}
 
-      footer button {
-        font-size: 2em;
+.grammar
+{
+    font-size: var(--sc-skolar-font-size-xxs);
 
-        width: 100%;
-        height: 100%;
-        padding-bottom: 10px;
+    letter-spacing: var(--sc-caps-letter-spacing);
 
-        cursor: pointer;
+    color: var(--sc-secondary-text-color);
 
-        color: var(--sc-disabled-text-color);
-        border: none;
-        outline: none;
-        background: none;
-      }
+    font-variant-caps: all-small-caps;
+}
 
-      #btnNext {
-        border-left: 1px solid rgba(0, 0, 0, 0.14);
-      }
+.definition
+{
+    margin: 0;
+    padding: 0;
 
-      morph-ripple {
-        --ripple-color: var(--sc-disabled-text-color);
-      }
+    counter-reset: definition-item-counter;
 
-      @keyframes bottomSheetShow {
-        from {
-          bottom: -200px;
-        }
+    grid-row: 1;
+}
 
-        to {
-          bottom: 0;
-        }
-      }
+.definition li
+{
+    line-height: 1.125;
 
-      @keyframes bottomSheetHide {
-        from {
-          bottom: 0;
-        }
+    display: inline-flex;
 
-        to {
-          bottom: -200px;
-        }
-      }
+    margin-right: 1em;
+    margin-bottom: 4px;
 
-      morph-ripple {
-        --ripple-color: var(--sc-primary-color);
-      }
+    align-items: baseline;
+    gap: .5em;
+}
 
-      .entry {
-        margin-left: 8px;
-      }
+.definition li::before
+{
+    font-size: var(--sc-skolar-font-size-xxs);
+    font-weight: bold;
+
+    display: inline-flex;
+
+    width: 1em;
+    height: 1em;
+
+    content: ' 'counter(definition-item-counter)'';
+    counter-increment: definition-item-counter;
+
+    color: var(--sc-secondary-text-color);
+    border: 2px solid var(--sc-disabled-text-color);
+    border-radius: 50%;
+
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.xr
+{
+    font-size: var(--sc-skolar-font-size-xs);
+
+    margin: 0;
+    padding: 0;
+}
+
+.xr li
+{
+    display: inline-flex;
+
+    gap: 1em;
+}
+
+.xr a
+{
+    color: var(--sc-secondary-text-color);
+
+    text-decoration-color: var(--sc-primary-color);
+}
+
+.xr a:before
+{
+    content: 'See: ';
+}
+
+.xr a:hover
+{
+    color: var(--sc-primary-color);
+}
+
+footer
+{
+    box-sizing: border-box;
+    height: 48px;
+
+    border-top: 1px solid rgba(0, 0, 0, .12);
+}
+
+footer div
+{
+    position: relative;
+
+    width: 50%;
+
+    text-align: center;
+}
+
+footer div:hover
+{
+    background-color: var(--sc-tertiary-background-color);
+}
+
+#next
+{
+    border-left: 1px solid var(--sc-border-color);
+}
+
+footer button
+{
+    font-size: 2em;
+
+    width: 100%;
+    height: 100%;
+    padding-bottom: 10px;
+
+    cursor: pointer;
+
+    color: var(--sc-disabled-text-color);
+    border: none;
+    outline: none;
+    background: none;
+}
+
+#btnNext
+{
+    border-left: 1px solid rgba(0, 0, 0, .14);
+}
+
+@keyframes bottomSheetShow
+{
+    from
+    {
+        bottom: -200px;
+    }
+
+    to
+    {
+        bottom: 0;
+    }
+}
+
+@keyframes bottomSheetHide
+{
+    from
+    {
+        bottom: 0;
+    }
+
+    to
+    {
+        bottom: -200px;
+    }
+}
+
+.lookup-next-previous
+{
+    fill: var(--sc-disabled-text-color);
+}
+
+  morph-ripple {
+    --ripple-color: var(--sc-disabled-text-color);
+  }
+
+
     `;
   }
 
@@ -364,21 +503,19 @@ class SCBottomSheet extends LitElement {
         </header>
         <main>
           <article>
-            <dl>
-              <dd>${this.currentDefineDetail}</dd>
-            </dl>
+           ${this.currentDefineDetail}
           </article>
         </main>
         <footer>
           <div>
             <button accesskey="b" id="btnPrevious" @click=${this._previous}>
-              <mwc-icon>${icons.arrow_left}</mwc-icon>
+              <mwc-icon class='lookup-next-previous'>${icons.arrow_left}</mwc-icon>
               <morph-ripple></morph-ripple>
             </button>
           </div>
           <div>
             <button accesskey="n" id="btnNext" @click=${this._next}>
-              <mwc-icon>${icons.arrow_right}</mwc-icon>
+              <mwc-icon class='lookup-next-previous'>${icons.arrow_right}</mwc-icon>
               <morph-ripple></morph-ripple>
             </button>
           </div>
