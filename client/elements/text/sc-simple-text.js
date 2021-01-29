@@ -8,7 +8,6 @@ import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js
 import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
-import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import { store } from '../../redux-store';
 
 import { icon } from '../../img/sc-icon';

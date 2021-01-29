@@ -271,16 +271,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           margin: .5em 0 1em;
         }
 
-        .paper-spinner {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-
-          margin: 0;
-
-          transform: translate(-50%, -50%);
-        }
-
         .google-maps {
           height: 480px;
           margin: var(--sc-size-md-larger) 0;
