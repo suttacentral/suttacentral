@@ -960,10 +960,10 @@ class Redirect(Resource):
             if lang in languages:
                 hits = db.aql.execute(
                     '''
-                    LET modern = (FOR text IN po_strings
+                    LET modern = (FOR text IN sc_bilara_texts
                         FILTER text.lang == @lang
                         FILTER text.uid == @uid
-                        RETURN {author_uid: text.author_uid, legacy: false})
+                        RETURN {author_uid: text.muids[2], legacy: false})
 
                     LET legacy = (FOR text IN html_text
                         FILTER text.lang == @lang
@@ -978,8 +978,8 @@ class Redirect(Resource):
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
-                    root = db.collection('root')
-                    if uid in root:
+                    nav_docs = db.collection('super_nav_details')
+                    if uid in nav_docs:
                         return "Redirect", 301, {'Location': f'/{uid}'}
 
         return "Not found", 403
