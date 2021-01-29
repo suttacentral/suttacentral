@@ -1,5 +1,4 @@
 import { html, css, LitElement, svg } from 'lit-element';
-import '@polymer/paper-menu-button/paper-menu-button.js';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
 import {
@@ -221,7 +220,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       id="copy-menu" 
       class="top-menu-button">
         <summary>
-        <mwc-icon-button>${icon.share}</mwc-icon-button>
+        ${icon.share}
   </summary>
         <ul class="suttaplex-share-menu-list">
           <sc-suttaplex-share-menu id="suttaplex_share_menu" tabindex="0" .item="${this.item}"></sc-suttaplex-share-menu>

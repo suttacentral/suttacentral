@@ -117,18 +117,14 @@ list-style: none;
     cursor: pointer;
   }
 
-  .top-menu-button .btn-share, .top-menu-button .btn-speaker {
-    align-self: flex-end;
-    width: var(--sc-size-lg);
-    height: var(--sc-size-lg);
-  }
+
   
   summary {
     cursor: pointer;
     outline: none;
   }
 
-  .share {
+  .icon {
     fill: var(--sc-disabled-text-color);
   }
  
@@ -215,6 +211,7 @@ list-style: none;
   .top-row-icons {
     align-items: center;
     display: flex;
+    gap: 1em;
   }
 
   #more_par_menu {
