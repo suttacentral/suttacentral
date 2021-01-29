@@ -39,7 +39,6 @@ from common.queries import (
 from common.utils import (
     flat_tree,
     language_sort,
-    recursive_sort,
     sort_parallels_key,
     sort_parallels_type_key,
 )
@@ -420,7 +419,7 @@ class Parallels(Resource):
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         uid = uid.replace('/', '-').strip('-')
-        uid = f'root/{uid}'
+        uid = f'super_nav_details/{uid}'
 
         db = get_db()
         results = db.aql.execute(
