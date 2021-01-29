@@ -18,7 +18,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         height: 48px;
 
-        background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 73);
       }
 
       nav {
@@ -33,7 +33,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         white-space: nowrap;
 
-        background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 73);
 
         justify-content: space-between;
 

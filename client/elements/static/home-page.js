@@ -438,7 +438,7 @@ class SCHomePage extends SCStaticPage {
       }
       
       .dark-accent header {
-        background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 73);
       }
       
       .primary-accent header {

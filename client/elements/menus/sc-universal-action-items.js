@@ -39,7 +39,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
        --mdc-text-field-ink-color: var(--sc-primary-text-color);
        --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
        --mdc-typography-font-family: var(--sc-sans-font);
-       --mdc-text-field-filled-border-radius: 0px;
+       --mdc-shape-small: 0px;
         visibility: hidden;
         width: 100%;
         position: absolute;
@@ -48,9 +48,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         transition: transform 200ms ease;
         z-index: 100;
       }
-mwc-textfield{
-      --mdc-text-field-filled-border-radius: 50%;
-    }
 
 #search_input.opened{
    visibility: visible;
