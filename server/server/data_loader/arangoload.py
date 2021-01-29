@@ -34,7 +34,6 @@ from . import (
     localized_languages,
     order,
     sizes,
-    segmented_data,
     sc_bilara_data,
 )
 
@@ -498,10 +497,9 @@ def get_uid_matcher(db):
     all_uids = set(
         db.aql.execute(
             '''
-    FOR doc IN root
-        SORT doc.num
-        RETURN doc.uid
-    '''
+            FOR doc IN super_nav_details
+                RETURN doc.uid
+            '''
         )
     )
 
@@ -721,7 +719,6 @@ def run(no_pull=False):
     """
 
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
-    segmented_data_dir = data_dir / 'segmented_data'
     html_dir = data_dir / 'html_text'
     structure_dir = data_dir / 'structure'
     relationship_dir = data_dir / 'relationship'
@@ -772,9 +769,6 @@ def run(no_pull=False):
         db, current_app.config.get('ASSETS_DIR') / 'localization/elements'
     )
 
-    print_stage('Loading Segmented Data')
-    segmented_data.load_segmented_data(db, change_tracker, segmented_data_dir)
-                      
     print_stage("Loading po_text")
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 

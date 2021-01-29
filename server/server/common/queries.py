@@ -48,17 +48,14 @@ FOR text IN po_strings
 
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
-FOR division IN root
-    FILTER division.type == 'division'
+FOR division IN super_nav_details
+    FILTER division.type == 'branch'
     LET division_uids = (
-        FOR doc, edge, path IN 0..10 OUTBOUND division root_edges OPTIONS {bfs: False}
-            LET path_nums = path.vertices[*].num
-            SORT path_nums
+        FOR doc, edge, path IN 0..10 OUTBOUND division super_nav_details_edges OPTIONS {bfs: False}
             RETURN doc.uid
     )
     RETURN {'division': division.uid, 'uids': division_uids}
 '''
-
 
 CURRENT_MTIMES = '''
 WITH @@collection /* With statement forces query optimizer to work */
