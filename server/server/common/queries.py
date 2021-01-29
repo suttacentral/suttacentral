@@ -406,7 +406,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 PARALLELS = '''
 FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationship
     LET target = DOCUMENT(e._to)
-    
+
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == target.uid
@@ -423,9 +423,39 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationshi
             // Add title if it is in desired language
             RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
         )
-    
+
+    LET bilara_translations = (
+        FOR text IN sc_bilara_texts
+            FILTER text.uid == target.uid AND 'root' IN text.muids
+
+            LET author_doc = (
+                FOR author IN author_edition
+                    FILTER author.uid IN text.muids
+                    LIMIT 1
+                    RETURN author
+            )[0]
+
+            LET text_title = (
+                FOR name IN names
+                    FILTER name.uid == @uid AND name.is_root == true
+                    RETURN name.name
+            )[0]
+
+            LET res = {
+                lang: text.lang,
+                lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
+                author: author_doc.long_name,
+                author_short: author_doc.short_name,
+                author_uid: author_doc.uid,
+                id: text._key,
+                segmented: true,
+                volpage: (FOR doc IN super_nav_details FILTER doc.uid == target.uid RETURN doc.volpage)[0]
+            }
+            RETURN (text.lang == @language) ? MERGE(res, {title: text_title}) : res
+    )
+
     SORT e.resembling
-    
+
     LET biblio = (
         FOR biblio IN biblios
             FILTER biblio.uid == v.biblio_uid
@@ -433,7 +463,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationshi
             RETURN biblio.text
     )[0]
 
-    LET translations = FLATTEN([legacy_translations])
+    LET translations = FLATTEN([bilara_translations, legacy_translations])
 
     LET volpages = (
         FOR text IN translations
