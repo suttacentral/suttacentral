@@ -1,7 +1,8 @@
 import itertools
-import regex
 import json
 import logging
+
+import regex
 
 
 def numericsortkey(string, _split=regex.compile(r'(\d+)').split):

@@ -7,8 +7,8 @@ from elasticsearch.helpers import scan
 from tqdm import tqdm
 
 from common.arangodb import get_db
-from data_loader import change_tracker
 from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
+from data_loader import change_tracker
 from search.indexer import ElasticIndexer
 
 logger = logging.getLogger('search.texts')

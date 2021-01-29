@@ -23,7 +23,7 @@ def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_d
     text_extra_info = process_extra_info_file(structure_dir / 'text_extra_info.json')
 
     if change_tracker.is_any_function_changed(
-        [_perform_update_queries, _process_super_tree_file, _process_tree_files, _process_names_files]
+            [_perform_update_queries, _process_super_tree_file, _process_tree_files, _process_names_files]
     ):
         nav_details_docs = _process_names_files(names_files, root_languages, super_extra_info, text_extra_info)
 
@@ -50,8 +50,8 @@ def _perform_update_queries(db):
 def _parse_name_file_entries(
         file_content: dict,
         root_languages: Dict[str, str],
-        super_extra_info:  Dict[str, Dict[str, str]],
-        text_extra_info:  Dict[str, Dict[str, str]]
+        super_extra_info: Dict[str, Dict[str, str]],
+        text_extra_info: Dict[str, Dict[str, str]]
 ) -> List[dict]:
     """
     Method for processing entries in a single name-file
@@ -80,8 +80,8 @@ def _parse_name_file_entries(
 def _process_names_files(
         names_files: List[Path],
         root_languages: Dict[str, str],
-        super_extra_info:  Dict[str, Dict[str, str]],
-        text_extra_info:  Dict[str, Dict[str, str]]
+        super_extra_info: Dict[str, Dict[str, str]],
+        text_extra_info: Dict[str, Dict[str, str]]
 ) -> List[dict]:
     """
     Method for processing name files from sc-data/structure/name

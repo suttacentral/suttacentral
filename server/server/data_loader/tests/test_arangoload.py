@@ -1,10 +1,3 @@
-from typing import List
-
-import pytest
-from arango import ArangoClient
-from flask import Flask
-
-from common.utils import app_context, empty_arango
 from data_loader import arangoload
 
 

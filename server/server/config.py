@@ -67,7 +67,6 @@ app_config = {
     'production': ProductionConfig,
 }
 
-
 # https://github.com/rochacbruno/flasgger
 swagger_config = {
     "headers": [],

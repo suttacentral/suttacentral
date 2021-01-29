@@ -24,9 +24,9 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
                 'yellow',
             }:
                 available.append(index)
-        except Exception as e:
+        except Exception:
             logger.debug(
-                'An exception occured while checking cluster health for index: {}'.format(
+                'An exception occurred while checking cluster health for index: {}'.format(
                     index
                 )
             )

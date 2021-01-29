@@ -40,9 +40,9 @@ def load_images_links(db):
 
 def get_data():
     print('   * getting data from the server')
-    URL = 'https://legacy.suttacentral.net/text_images/contents.txt'
+    url = 'https://legacy.suttacentral.net/text_images/contents.txt'
 
-    response = requests.get(URL)
+    response = requests.get(url)
 
     data = response.content
 

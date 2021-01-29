@@ -1,6 +1,4 @@
 import itertools
-import re
-from collections import defaultdict
 from typing import Callable, Dict, List
 
 import decorator

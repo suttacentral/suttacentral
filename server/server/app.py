@@ -2,10 +2,11 @@ import os
 from typing import Tuple
 
 from flasgger import Swagger
-from flask import Blueprint, Flask, redirect
+from flask import Blueprint, Flask
 from flask_cors import CORS
 from flask_restful import Api
 
+from api.ebook.ebook import EBook
 from api.views import (
     Currencies,
     Donations,
@@ -34,11 +35,10 @@ from api.views import (
     Transliterate,
     Publication,
 )
-from api.ebook.ebook import EBook
 from common.arangodb import ArangoDB
+from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
 from search.view import Search
-from common.extensions import cache
 
 
 def app_factory() -> Tuple[Api, Flask]:

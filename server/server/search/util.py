@@ -97,4 +97,4 @@ def recursive_merge(dict1, dict2):
 def get_root_language_uids():
     db = get_db()
     languages = db.aql.execute(LANGUAGES)
-    return [l['uid'] for l in languages if l['is_root']]
+    return [lang['uid'] for lang in languages if lang['is_root']]

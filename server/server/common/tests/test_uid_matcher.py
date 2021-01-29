@@ -1,8 +1,8 @@
-import pytest
 import itertools
 
-from common.uid_matcher import UidMatcher, strip_bookmark
+import pytest
 
+from common.uid_matcher import UidMatcher, strip_bookmark
 
 decompose_test_data = [
     (uid, {'uid': uid, 'prefix': prefix, 'num_start': num_start, 'num_end': num_end})
@@ -34,7 +34,7 @@ all_uids = list(
         (f'dn', 'an', 'sa', 'sa-2'),
         (f'dn{i}' for i in range(1, 35)),
         (f'an{i}' for i in range(1, 12)),
-        (f'an1.{i*10+1}-{i*10+10}' for i in range(0, 10)),
+        (f'an1.{i * 10 + 1}-{i * 10 + 10}' for i in range(0, 10)),
         (f'sa{i}' for i in range(1, 100)),
         (f'sa-2.{i}' for i in range(1, 100)),
         ('dhp', 'dhp1-20', 'dhp21-32', 'dhp33-43'),

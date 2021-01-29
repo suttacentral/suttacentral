@@ -1,10 +1,10 @@
-import lxml.html
 import json
+
+import lxml.html
 import regex
 
-from search.uid_expansion import uid_to_acro
-
 from common.arangodb import get_db
+from search.uid_expansion import uid_to_acro
 
 QUERY = '''
 FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {bfs: False}
@@ -232,7 +232,6 @@ def get_html_data(division_uid, language, author):
 
 
 def convert_to_html(strings_path, markup_path):
-
     markup_string = open(markup_path).read()
     strings = json.load(open(strings_path))
 

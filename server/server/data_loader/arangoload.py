@@ -1,15 +1,13 @@
 import json
-
-import regex
 import logging
-import pathlib
 import os
-
+import pathlib
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
-from typing import Any, Set, Dict
+from typing import Dict
 
+import regex
 from arango.database import Database
 from flask import current_app
 from git import InvalidGitRepositoryError, Repo
@@ -20,10 +18,8 @@ from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
 )
-from common.utils import chunks
 from common.uid_matcher import UidMatcher
-from .util import json_load
-from .change_tracker import ChangeTracker
+from common.utils import chunks
 from . import (
     biblio,
     currencies,
@@ -38,8 +34,9 @@ from . import (
     sc_bilara_data,
     navigation,
 )
-
+from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
+from .util import json_load
 
 
 def update_data(repo: Repo, repo_addr: str):
@@ -106,25 +103,6 @@ def load_child_range(db: Database, structure_dir: Path) -> None:
     db['child_range'].import_bulk(data, overwrite=True)
 
 
-def print_once(msg: Any, antispam: Set):
-    """Print msg if it is not in antispam.
-
-    Args:
-        msg:  Massage we want to print
-        antispam: Set of messages we've already printed.
-
-    Examples:
-        >>> print_once('test', {'something else'})
-        >>> test
-        >>> print_once('test', {'test', 'something else'})
-        >>>
-    """
-    if msg in antispam:
-        return
-    print(msg)
-    antispam.add(msg)
-
-
 def get_uid_matcher(db):
     all_uids = set(
         db.aql.execute(
@@ -139,7 +117,7 @@ def get_uid_matcher(db):
 
 
 def generate_relationship_edges(
-    change_tracker, relationship_dir, additional_info_dir, db
+        change_tracker, relationship_dir, additional_info_dir, db
 ):
     relationship_files = list(relationship_dir.glob('*.json'))
 
@@ -162,7 +140,6 @@ def generate_relationship_edges(
         remark_text = remark['remark']
         remarks[frozenset(uids)] = remark_text
 
-    antispam = set()
     ll_edges = []
     for entry in tqdm(relationship_data):
         entry.pop('remarks', None)
@@ -348,7 +325,7 @@ def run(no_pull=False):
     It will take data from sc-data repository and populate the database with it.
 
     Args:
-        force: Whether or not force clean db setup.
+        no_pull: Whether or not force clean db setup.
     """
 
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
@@ -370,6 +347,7 @@ def run(no_pull=False):
     db = arangodb.get_db()
 
     _stage = 1
+
     def print_stage(msg):
         nonlocal _stage
         print(f'\n   {_stage}: {msg}')
@@ -474,4 +452,3 @@ def bilara_run():
     if not os.path.exists(data_dir):
         print("Bilara data directory does not exist.")
         return
-

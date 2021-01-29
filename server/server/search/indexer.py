@@ -1,5 +1,4 @@
 import hashlib
-import itertools
 import json
 import logging
 import os
@@ -21,18 +20,9 @@ es = elasticsearch.Elasticsearch(
     http_auth=('elastic', 'changeme'),
 )
 
-
-def is_available():
-    return es.ping()
-
-
 # Silence Elasticsearch spammy logging.
 logging.getLogger('elasticsearch').setLevel('ERROR')
 logging.getLogger('elasticsearch.trace').setLevel('ERROR')
-
-
-class IndexCreationFailure(Exception):
-    pass
 
 
 class ElasticIndexer:
@@ -124,9 +114,6 @@ class ElasticIndexer:
     def index_exists(self):
         return self.es.indices.exists(self.index_name)
 
-    def alias_exists(self):
-        return self.es.indices.exists(self.index_alias)
-
     def delete_index(self):
         try:
             self.es.indices.delete(self.index_name)
@@ -188,7 +175,7 @@ class ElasticIndexer:
             r = es.cluster.health(
                 self.index_name, wait_for_status='yellow', timeout=timeout
             )
-            if r['timed_out'] == False:
+            if not r['timed_out']:
                 logger.info(
                     'Index "{}" became ready, with status {}'.format(
                         self.index_name, r['status']
@@ -256,8 +243,11 @@ class ElasticIndexer:
         return boost
 
     @staticmethod
-    def load_index_config(name, _seen=None, _first_run=[True]):
+    def load_index_config(name, _seen=None, _first_run=None):
         out = {}
+
+        if not _first_run:
+            _first_run = [True]
 
         if _first_run:
             _make_extra_filters()
