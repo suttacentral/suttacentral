@@ -960,12 +960,17 @@ class Redirect(Resource):
             if lang in languages:
                 hits = db.aql.execute(
                     '''
+                    LET modern = (FOR text IN sc_bilara_texts
+                        FILTER text.lang == @lang
+                        FILTER text.uid == @uid
+                        RETURN {author_uid: text.muids[2], legacy: false})
+
                     LET legacy = (FOR text IN html_text
                         FILTER text.lang == @lang
                         FILTER text.uid == @uid
                         RETURN {author_uid: text.author_uid, legacy: true})
 
-                    RETURN legacy
+                    RETURN APPEND(modern, legacy)
                 ''',
                     bind_vars={"lang": lang, "uid": uid},
                 ).next()
