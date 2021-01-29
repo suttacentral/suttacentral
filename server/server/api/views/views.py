@@ -30,6 +30,8 @@ from common.queries import (
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
     SEGMENTED_SUTTA_VIEW,
+    SUTTA_NEIGHBORS,
+    SUTTA_NAME,
 )
 
 from common.utils import (
@@ -532,10 +534,11 @@ class Sutta(Resource):
 
         result = results.next()
         self.convert_paths_to_content(result)
-
-        doc = result.get('translation', None)
-        if doc:
-            self.convert_paths_to_content(doc)
+        for k in ('root_text', 'translation'):
+            doc = result[k]
+            if doc:
+                self.convert_paths_to_content(doc)
+                self.calculate_sutta_neighbors(uid, doc, k)
 
         return result, 200
 
@@ -556,9 +559,39 @@ class Sutta(Resource):
                     with open(file_path) as f:
                         doc[to_prop] = load_func(f)
 
+    @staticmethod
+    def calculate_sutta_neighbors(uid, doc, textType):
+        db = get_db()
+        sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
+        for i in range(1, 10):
+            results = db.aql.execute(SUTTA_NEIGHBORS, bind_vars={'uid': uid, 'level': i})
+            result = next(results)
+            if uid in result:
+                uid_index = result.index(uid)
+                if uid_index != 0:
+                    sutta_prev_next['prev_uid'] = result[uid_index-1]
+                if uid_index != len(result)-1:
+                    sutta_prev_next['next_uid'] = result[uid_index+1]
+                if sutta_prev_next['prev_uid'] and sutta_prev_next['next_uid']:
+                    break
+        if doc['previous']:
+            doc['previous']['uid'] = sutta_prev_next.get('prev_uid', '')
+        if doc['next']:
+            doc['next']['uid'] = sutta_prev_next.get('next_uid', '')
+
+        is_root = False
+        if textType == 'root_text':
+            is_root = True
+
+        for k, v in sutta_prev_next.items():
+            name_results = db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'is_root': is_root})
+            name_result = list(name_results)
+            if k == 'next_uid' and doc['next']:
+                doc['next']['name'] = ''.join(name_result)
+            elif k == 'prev_uid' and doc['previous']:
+                doc['previous']['name'] = ''.join(name_result)
 
 class SegmentedSutta(Resource):
-
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
         db = get_db()
@@ -574,7 +607,7 @@ class SegmentedSutta(Resource):
 
     @staticmethod
     def load_json(path):
-        data_dir = current_app.config.get('DATA_REP_DIR') / 'segmented_data'
+        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
         with (data_dir / path).open() as f:
             return json.load(f)
 
