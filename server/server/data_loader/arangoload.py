@@ -728,7 +728,7 @@ def run(no_pull=False):
     dictionaries_dir = data_dir / 'dictionaries'
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
-
+    languages_file = structure_dir / 'language.json'
     storage_dir = current_app.config.get('STORAGE_DIR')
     if not storage_dir.exists():
         storage_dir.mkdir()
@@ -744,8 +744,6 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
-    languages = process_languages(structure_dir / 'language.json')
-                      
     print_stage("Loading images")
     images_files.load_images_links(db)
 
@@ -773,7 +771,7 @@ def run(no_pull=False):
     po.load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir)
 
     print_stage('Load names from sc_bilara_data')
-    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages)
+    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)
 
     print_stage('Load blurbs from sc_bilara_data')
     sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
