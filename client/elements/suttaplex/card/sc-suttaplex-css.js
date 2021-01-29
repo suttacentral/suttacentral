@@ -372,7 +372,7 @@ export const parallelsListCss = html`
         font-weight: 400;
   }
 
-  .paper-spinner {
+  sc-bouncing-loader {
     margin: var(--sc-size-md) 0;
     left: 50%;
   }

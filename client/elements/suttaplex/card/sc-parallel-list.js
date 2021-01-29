@@ -109,7 +109,7 @@ class SCParallels extends LitLocalized(LitElement) {
     ${parallelsListCss}
     <div>
       ${this.loadingResults ? html`
-        <sc-bouncing-loader class="paper-spinner" .active="${this.loadingResults}"></sc-bouncing-loader>
+        <sc-bouncing-loader .active="${this.loadingResults}"></sc-bouncing-loader>
       ` : ''}
 
       ${this.rootKeys ? html`
@@ -117,7 +117,7 @@ class SCParallels extends LitLocalized(LitElement) {
           ${this.rootKeys.map(rootId => html`
             <tbody class="parallels-table-body">
               <tr class="parallels-row">
-                <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan="${this.getRowspan(rootId)}">
+                <td class="parallels-root-cell parallels-table-cell" rowspan="${this.getRowspan(rootId)}">
                   <a class="root-link" href="${this.computeUrl(rootId)}">
                     <div class="parallels-root-id root" title="${this.localize('suttaCentralID')}">
                       ${transformId(rootId, this.expansionData)}
@@ -127,7 +127,7 @@ class SCParallels extends LitLocalized(LitElement) {
                 <td class="parallels-relation-cell">
                   <iron-icon class="grey-icon" .icon="${this.getFirstParallelIcon(rootId)}" title="${this.getFirstParallelIconTitle(rootId)}"></iron-icon>
                 </td>
-                <td class="parallels-parallel-cell paper-lift">
+                <td class="parallels-parallel-cell">
                   <sc-parallel-item 
                     .parallelItem="${this.getFirstParallelItem(rootId)}" 
                     .remark="${this.getFirstParallelRemark(rootId)}" 
@@ -141,7 +141,7 @@ class SCParallels extends LitLocalized(LitElement) {
                   <td class="parallels-relation-cell">
                     <iron-icon class="grey-icon" .icon="${this.getParallelIcon(item)}" title="${this.computeIconTitle(item)}"></iron-icon>
                   </td>
-                  <td class="parallels-parallel-cell paper-lift">
+                  <td class="parallels-parallel-cell">
                     <sc-parallel-item .parallelItem="${item.to}" .remark="${item.remark}" .expansionData="${this.expansionData}"></sc-parallel-item>
                   </td>
                 </tr>
