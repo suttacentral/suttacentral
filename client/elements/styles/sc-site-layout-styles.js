@@ -227,7 +227,7 @@ export const SCSiteLayoutStyles = css`
     width: 15px;
     height: 15px;
     fill: rgba(255,255,255,0.8);
-    margin-left: 6px;
+    margin: 6px 0 0 6px;
     visibility: hidden;
   }
 
@@ -238,12 +238,6 @@ export const SCSiteLayoutStyles = css`
 
   morph-ripple {
     --ripple-color: gold;
-  }
-
-  .sutta-list {
-    max-width: 720px;
-    transition: margin-top 0.3s, margin-bottom 0.3s;
-    margin: 0 auto var(--sc-size-xxl);
   }
 
   @media only screen and (max-width: 600px) {

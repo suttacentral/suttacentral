@@ -47,7 +47,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-results-container {
-          margin: 0 0 var(--sc-size-xxl) 0;
+          margin: 0 3vw var(--sc-size-xxl) 3vw;
         }
 
         .search-results-main {

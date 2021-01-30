@@ -42,7 +42,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       ul {
         display: flex;
 
-        margin: 0;
+        margin: 0 12px 0 0;
         padding: 0;
       }
 

@@ -42,11 +42,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           margin-bottom: 64px;
         }
 
-        .sutta-list {
-          max-width: 720px;
-          transition: margin-top 0.3s, margin-bottom 0.3s;
-          margin: 0 auto var(--sc-size-xxl);
-        }
       </style>
 
       <div class="wrapper">
