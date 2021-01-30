@@ -903,7 +903,18 @@ LET legacy_counts = (
         }
     )
 
-FOR subcount IN legacy_counts
+LET segmented_counts = (
+    FOR doc IN sc_bilara_texts
+        FILTER doc.lang == @lang AND ('root' IN doc.muids OR 'translation' IN doc.muids)
+        COLLECT author = doc.muids[2] WITH COUNT INTO total
+        SORT null
+        RETURN {
+            author,
+            total
+        }
+    )
+
+FOR subcount IN APPEND(legacy_counts, segmented_counts)
     /* If there are multiple authors split them and count seperately */
     FOR author_name IN SPLIT(subcount.author, ', ')
         COLLECT name = author_name
