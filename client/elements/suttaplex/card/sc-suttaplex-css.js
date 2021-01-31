@@ -338,9 +338,6 @@ export const suttaplexTxCss = html`
         font-weight: 400;
   }
 
-  morph-ripple {
-    --ripple-color: var(--sc-primary-color);
-  }
 </style>`;
 
 export const parallelsListCss = html`

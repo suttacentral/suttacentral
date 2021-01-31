@@ -236,10 +236,6 @@ export const SCSiteLayoutStyles = css`
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
-  morph-ripple {
-    --ripple-color: gold;
-  }
-
   @media only screen and (max-width: 600px) {
     #context_toolbar.contextToolbarExpand  {
       flex-direction: column;
