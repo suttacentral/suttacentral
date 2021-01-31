@@ -210,15 +210,20 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         ` : ''}
 
       ${this.hasSegmentedTexts ? html`
-        <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
-          aria-disabled="false" title="Listen to this sutta"  aria-label="${this.localize('listenSutta')}"rel="noopener noreferrer">
+        <a class="top-menu-button"
+        href="${this.listenUrl}" 
+        target="_blank"
+        title="Listen to this sutta"  
+        aria-label="${this.localize('listenSutta')}"
+        rel="noopener noreferrer">
           ${icon.speaker}             
         </a>
       ` : ''}
 
       <details 
       id="copy-menu" 
-      class="top-menu-button">
+      class="top-menu-button"
+      title="Share this sutta">
         <summary>
         ${icon.share}
   </summary>

@@ -229,6 +229,14 @@ export const navigationNormalModeStyles = html`
       background-color: var(--sc-primary-color-light-transparent);
     }
 
+    .header-link:active,
+    .essay-link:active,
+    .shortcut-link:active {
+      transition: all 200ms ease-out;
+
+      background-color: var(--sc-primary-color-light);
+    }
+
     .header-link:hover .title,
     .essay-link:hover,
     .shortcut-link:hover {

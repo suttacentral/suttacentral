@@ -25,6 +25,13 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
 
       .button-text:hover {
         background-color: var(--sc-tertiary-background-color);
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+      }
+
+        .button-text:active {
+         background-color: var(--sc-textual-info-background-color);
+          transition: background-color 0.2s ease;
         cursor: pointer;
       }
 

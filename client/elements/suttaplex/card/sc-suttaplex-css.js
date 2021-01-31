@@ -33,6 +33,32 @@ details ul
     box-shadow: var(--sc-shadow-elevation-4dp);
 }
 
+a.top-menu-button,
+#copy-menu > summary{
+  height: 34px;
+  width: 34px;
+  display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.top-menu-button:hover,
+#copy-menu > summary:hover{
+  background-color: var(--sc-tertiary-background-color);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.top-menu-button:active,
+#copy-menu > summary:active{
+  background-color: var(--sc-textual-info-background-color);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+
 details ul{
   right: 0px;
   padding: 0px
@@ -130,7 +156,7 @@ list-style: none;
  
   .suttaplex-nerdy-row {
   display: inline-flex;
-  gap: var(--sc-size-md-larger);
+  gap: 1em;
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-s);
     font-weight: 400;
@@ -211,7 +237,7 @@ list-style: none;
   .top-row-icons {
     align-items: center;
     display: flex;
-    gap: 1em;
+    gap: 0.5em;
   }
 
   #more_par_menu {
@@ -273,9 +299,10 @@ export const suttaplexTxCss = html`
     background-color: var(--sc-primary-color-light-transparent);
   }
 
-  .tx morph-ripple {
-    color: var(--sc-primary-color-medium);
+    .tx:active {
+    background-color: var(--sc-primary-color-light);
   }
+
 
   .translation {
     height: 20px;
@@ -334,6 +361,7 @@ export const parallelsListCss = html`
   .parallels-root-cell:hover,
   .parallels-parallel-cell:hover {
       background-color: var(--sc-primary-color-light-transparent);
+      transition: background-color 0.2s ease;
   }
 
   .parallels-parallel-cell {
