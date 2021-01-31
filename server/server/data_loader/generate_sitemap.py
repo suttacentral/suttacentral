@@ -54,16 +54,17 @@ def create_url(text):
 
 def generate_sitemap(db):
 
-    po_texts = list(
+    bilara_texts = list(
         db.aql.execute(
             '''
-        FOR doc IN po_strings
+        FOR doc IN sc_bilara_texts
+            FILTER 'root' IN doc.muids OR 'translation' IN doc.muids
             RETURN {
                 _key: doc._key,
                 uid: doc.uid,
                 lang: doc.lang,
-                author_uid: doc.author_uid,
-                name: doc.title,
+                author_uid: doc.muids[2],
+                name: null,
                 segmented: true
             }
     '''
@@ -89,7 +90,7 @@ def generate_sitemap(db):
     texts_by_uid = defaultdict(dict)
     entries = [alt_url_template.render(urls=['https://suttacentral.net/'])]
 
-    for text in sorted(po_texts, key=sort_key) + sorted(html_texts, key=sort_key):
+    for text in sorted(bilara_texts, key=sort_key) + sorted(html_texts, key=sort_key):
         texts_by_uid[text['uid']][text['lang']] = text
 
     for uid, texts_by_lang in sorted(texts_by_uid.items()):
