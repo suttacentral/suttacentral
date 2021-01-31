@@ -254,15 +254,20 @@ class SCHomePage extends SCStaticPage {
         align-items: center;
         justify-content: center;
         font-variant-caps: all-small-caps;
+        background-color: inherit;
+        transition: background-color 0.2s ease;
       }
       
       .link-button:hover {
         background-color: var(--sc-primary-accent-color-light-transparent);
+        transition: background-color 0.2s ease;
+
       }
       
       .link-button:active {
         color: white;
         background-color: var(--sc-primary-accent-color);
+        transition: background-color 0.2s ease;
       }
       
       h2 {
@@ -370,16 +375,18 @@ class SCHomePage extends SCStaticPage {
       
         justify-content: space-between;
       }
-      
-      .sc-related a {
-        text-decoration-color: rgba(255, 255, 255, 0.6);
+
+        .sc-related a {
+        text-decoration: underline;
+
+        text-decoration-color: rgba(255, 255, 255, 0);
+
+        transition: text-decoration-color 0.2s ease;
+
       }
       
       .sc-related a:hover {
-        transition: text-decoration 200ms ease-out;
-        text-decoration: underline;
-      
-        color: white;
+        transition: text-decoration-color 0.2s ease;
       
         text-decoration-color: rgba(255, 255, 255, 0.6);
       }

@@ -18,11 +18,11 @@ class SCDonationsPage extends SCStaticPage {
     <style>
 
       .donate-link {
-        background: none;
-        
-        display: flex;
-        margin: 2em 0;
-        justify-content: center;
+
+
+        display: table;
+        margin: 2em auto;
+
       }
 
       a.donate-link,
@@ -30,36 +30,32 @@ class SCDonationsPage extends SCStaticPage {
         text-decoration: none;
       }
 
-
       .link-button {
-        font-weight: 600;
-      
-        display: inline-flex;
-      
-        box-sizing: border-box;
-        min-width: 64px;
-        height: 36px;
-        padding: 0 15px 2px;
-      
-        text-decoration: none;
-        letter-spacing: var(--sc-caps-letter-spacing);
-      
-        color: var(--sc-primary-accent-color-dark);
-        border: 1px solid var(--sc-primary-accent-color);
+        background-color: var(--sc-primary-accent-color);
         border-radius: 4px;
+        border: none;
+        font-weight: 600;
+        font-family: var(--sc-sans-font);
+
+        text-decoration: none;
       
-        align-items: center;
-        justify-content: center;
-        font-variant-caps: all-small-caps;
+        color: white;
+       box-shadow: var(--sc-shadow-elevation-2dp);
+       transition: all 0.2s ease;
+        
       }
       
       .link-button:hover {
-        background-color: var(--sc-primary-accent-color-light-transparent);
+        background-color: var(--sc-primary-accent-color);
+        opacity: 0.9;
+        box-shadow: var(--sc-shadow-elevation-4dp);
+        transition: all 0.2s ease;
       }
       
       .link-button:active {
-        color: white;
-        background-color: var(--sc-primary-accent-color);
+        opacity: 1;
+        background-color: var(--sc-primary-accent-color-light);
+        transition: all 0.2s ease;
       }
 
 
