@@ -495,6 +495,7 @@ class SCHomePage extends SCStaticPage {
       }
 
             .bilara {
+        fill: white;
         width: 60px;
         height: 60px;
       }
