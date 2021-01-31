@@ -1,19 +1,21 @@
-LANGUAGES = '''FOR l in language
-                SORT l.name
-                RETURN {
-                    "uid": l.uid,
-                    "name": l.name,
-                    "iso_code": l.iso_code,
-                    "is_root": l.is_root,
-                    "localized": !!l.localized,
-                    "localized_percent": l.localized_percent ? l.localized_percent : 0
-                    }'''
+LANGUAGES = '''
+FOR l in language
+    SORT l.name
+    RETURN {
+        "uid": l.uid,
+        "name": l.name,
+        "iso_code": l.iso_code,
+        "is_root": l.is_root,
+        "localized": !!l.localized,
+        "localized_percent": l.localized_percent ? l.localized_percent : 0
+    }
+'''
 
 TEXTS_BY_LANG = '''
 FOR text IN html_text
         FILTER text.lang == @lang
-        LET root = (
-            RETURN DOCUMENT(CONCAT('root/', text.uid))
+        LET nav_doc = (
+            RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
         )[0]
         RETURN {
             file_path: text.file_path,
@@ -22,38 +24,17 @@ FOR text IN html_text
             author: text.author,
             author_uid: text.author_uid,
             author_short: text.author_short,
-            root_lang: root.root_lang,
-            acronym: root.acronym
+            root_lang: nav_doc.root_lang,
+            acronym: nav_doc.acronym
         }
-'''
-
-PO_TEXTS_BY_LANG = '''
-FOR text IN po_strings
-    FILTER text.lang == @lang
-    LET root = (
-        RETURN DOCUMENT(CONCAT('root/', text.uid))
-    )[0]
-    RETURN {
-        uid: text.uid,
-        title: text.title,
-        strings_path: text.strings_path,
-        author: text.author,
-        author_uid: text.author_uid,
-        author_short: text.author_short,
-        root_lang: root.root_lang,
-        acronym: root.acronym,
-        mtime: text.mtime
-    }
 '''
 
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
-FOR division IN root
-    FILTER division.type == 'division'
+FOR division IN super_nav_details
+    FILTER division.type == 'branch'
     LET division_uids = (
-        FOR doc, edge, path IN 0..10 OUTBOUND division root_edges OPTIONS {bfs: False}
-            LET path_nums = path.vertices[*].num
-            SORT path_nums
+        FOR doc, edge, path IN 0..10 OUTBOUND division super_nav_details_edges OPTIONS {bfs: False}
             RETURN doc.uid
     )
     RETURN {'division': division.uid, 'uids': division_uids}
@@ -69,7 +50,6 @@ WITH @@collection /* With statement forces query optimizer to work */
 
 MENU = '''
 FOR navigation_doc IN super_nav_details
-    // Take nodes without parents (root nodes)
     FILTER navigation_doc.type == 'root'
     // Node children
     LET descendants = (
@@ -217,6 +197,13 @@ RETURN {
 }
 '''
 
+SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES = '''
+FOR doc IN super_nav_details
+    FILTER doc.root_lang
+    FOR child IN 1..100 OUTBOUND doc super_nav_details_edges
+        UPDATE child WITH { root_lang: doc.root_lang } IN super_nav_details
+'''
+
 SET_SUPER_NAV_DETAILS_NODES_TYPES = '''
 FOR doc IN super_nav_details
     LET child = (
@@ -247,24 +234,30 @@ FOR lang IN language
     FOR t_uid IN translated_uids
         LET nav_doc = DOCUMENT('super_nav_details', t_uid)
         FILTER nav_doc
+        LET translations_count = COUNT(
+            FOR doc IN v_text
+                SEARCH doc.lang == lang_code AND doc.uid == t_uid
+                RETURN doc
+        )
         FOR doc IN 0..100 INBOUND nav_doc super_nav_details_edges
             LET yellow_brick_doc = {
                 _key: CONCAT_SEPARATOR('_', doc.uid, lang_code),
                 uid: doc.uid,
                 lang: lang_code,
+                count: translations_count,
             }
             INSERT yellow_brick_doc INTO yellow_brick_road OPTIONS { overwriteMode: 'ignore' }
 '''
 
 COUNT_YELLOW_BRICK_ROAD = '''
 FOR yb_doc IN yellow_brick_road
-    LET translated_leaf_count = COUNT(
+    LET translated_leaf_count = SUM(
         FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges
             FILTER child.type == 'leaf'
             LET key = CONCAT_SEPARATOR('_', child.uid, yb_doc.lang)
             LET yb_child = DOCUMENT('yellow_brick_road', key)
             FILTER yb_child
-            RETURN yb_child
+            RETURN yb_child.count
     )
     UPDATE yb_doc WITH { count: translated_leaf_count } IN yellow_brick_road
 '''
@@ -391,14 +384,6 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             LIMIT 1
             RETURN original_name.name
     )[0]
-    
-    LET child = (
-        FOR child IN OUTBOUND v super_nav_details_edges 
-            LIMIT 1
-            RETURN child
-    )[0]
-            
-    LET node_type = child ? 'branch' : 'leaf'
 
     RETURN {
         acronym: v.acronym,
@@ -409,7 +394,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         original_title: original_titles,
         root_lang: v.root_lang,
         root_lang_name: DOCUMENT('language', v.root_lang).name,
-        type: node_type,
+        type: v.type,
         from: e._from,
         translated_title: translated_titles,
         translations: filtered_translations,
@@ -419,9 +404,9 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 '''
 
 PARALLELS = '''
-FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
+FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationship
     LET target = DOCUMENT(e._to)
-    
+
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == target.uid
@@ -439,25 +424,38 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
         )
 
-    LET po_translations = (
-        FOR text IN po_strings
-            FILTER text.uid == target.uid
+    LET bilara_translations = (
+        FOR text IN sc_bilara_texts
+            FILTER text.uid == target.uid AND 'root' IN text.muids
+
+            LET author_doc = (
+                FOR author IN author_edition
+                    FILTER author.uid IN text.muids
+                    LIMIT 1
+                    RETURN author
+            )[0]
+
+            LET text_title = (
+                FOR name IN names
+                    FILTER name.uid == @uid AND name.is_root == true
+                    RETURN name.name
+            )[0]
+
             LET res = {
                 lang: text.lang,
                 lang_name: (FOR lang in language FILTER lang.uid == text.lang LIMIT 1 RETURN lang.name)[0],
-                author: text.author,
-                author_short: text.author_short,
-                author_uid: text.author_uid,
+                author: author_doc.long_name,
+                author_short: author_doc.short_name,
+                author_uid: author_doc.uid,
                 id: text._key,
                 segmented: true,
-                volpage: text.volpage
+                volpage: (FOR doc IN super_nav_details FILTER doc.uid == target.uid RETURN doc.volpage)[0]
             }
-            //Text.strings[1][1] is a temporary hack, we have to wait for Blake to finish data manipulation.
-            RETURN (text.lang == @language) ? MERGE(res, {title: text.strings[1][1]}) : res
+            RETURN (text.lang == @language) ? MERGE(res, {title: text_title}) : res
     )
-    
+
     SORT e.resembling
-    
+
     LET biblio = (
         FOR biblio IN biblios
             FILTER biblio.uid == v.biblio_uid
@@ -465,7 +463,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
             RETURN biblio.text
     )[0]
 
-    LET translations = FLATTEN([po_translations, legacy_translations])
+    LET translations = FLATTEN([bilara_translations, legacy_translations])
 
     LET volpages = (
         FOR text IN translations
@@ -482,7 +480,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('root/', @uid)) `relationship`
     )[0]
 
     LET original_titles = (
-        FOR original_name IN root_names
+        FOR original_name IN names
             FILTER original_name.uid == v.uid
             LIMIT 1
             RETURN original_name.name
@@ -517,7 +515,9 @@ LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
 
 LET legacy_html = (
     FOR html IN html_text
-        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) OR html.lang == root_text.root_lang)
+        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
+            OR html.lang == root_text.root_lang)
+        
         RETURN {
             uid: html.uid,
             lang: html.lang,
@@ -763,24 +763,21 @@ class PWA:
 LET langs = UNION(@languages OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
 
 LET menu = (
-    FOR div IN 1..1 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
+    FOR div IN 1..1 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
         LET has_subdivisions = LENGTH(
-            FOR d, d_edge, d_path IN 1..1 OUTBOUND div `root_edges`
-                FILTER d_edge.type != 'text'
-                
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div super_nav_details_edges
+                FILTER d_edge.type != 'leaf'
                 LIMIT 1
                 RETURN 1
             )
         FILTER has_subdivisions
-        SORT div.num
         RETURN div.uid
     )
 
 LET grouped_children = MERGE(
-    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('pitaka', 'sutta') `root_edges`
-        SORT d_path.vertices[*].num
-        COLLECT is_div = d_edge.type != 'text' INTO uids = d.uid
-        RETURN {[is_div ? 'div' : 'text']: uids}
+    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
+        COLLECT is_div = d.type != 'leaf' INTO uids = d.uid
+        RETURN {[is_div ? 'branch' : 'leaf']: uids}
 )
 
 LET suttaplex = grouped_children['div']
@@ -870,23 +867,21 @@ LET counts = MERGE(
 LET keys = ATTRIBUTES(counts)
 
 FOR key IN keys
-    LET doc = DOCUMENT('root', key)
+    LET doc = DOCUMENT('super_nav_details', key)
     FILTER doc
     /* Determine the highest division level */
     LET highest_div = LAST(
-        FOR v, e, p IN 0..10 INBOUND doc `root_edges`
-        FILTER v.type == 'division'
+        FOR v, e, p IN 0..10 INBOUND doc super_nav_details_edges
+        FILTER v.type == 'branch'
         RETURN {
             uid: v.uid,
             name: v.name,
-            root_lang: v.root_lang,
-            num: v.num
+            root_lang: v.root_lang
         }
     )
     COLLECT div = highest_div /* Filter out the subdivisions */
     /* But accumulate their counts */
     AGGREGATE total = SUM(counts[key])
-    SORT div.num
     RETURN {
         uid: div.uid,
         name: div.name,
@@ -907,11 +902,11 @@ LET legacy_counts = (
             total
         }
     )
-    
+
 LET segmented_counts = (
-    FOR doc IN po_strings
-        FILTER doc.lang == @lang
-        COLLECT author = doc.author WITH COUNT INTO total
+    FOR doc IN sc_bilara_texts
+        FILTER doc.lang == @lang AND ('root' IN doc.muids OR 'translation' IN doc.muids)
+        COLLECT author = doc.muids[2] WITH COUNT INTO total
         SORT null
         RETURN {
             author,
@@ -926,19 +921,4 @@ FOR subcount IN APPEND(legacy_counts, segmented_counts)
         AGGREGATE total = SUM(subcount.total)
         SORT total DESC
         RETURN {name, total}
-'''
-
-GET_ANCESTORS = '''
-    /* Return uids that are ancestors to any uid in @uid_list */
-    RETURN UNIQUE(FLATTEN(
-        FOR uid in ['pli-tv-bi-vb-ss', 'pli-tv-bi-vb-sk', 'pli-tv-bu-vb-pd', 'pli-tv-bi-pm', 'sf', 'vv', 'pli-tv-bu-vb-np', 'pli-tv-bi-vb-pc', 'ds', 'xct-mu-bu-pm', 'thag', 'patthana', 'pdhp', 'iti', 'pli-tv-bu-vb-ay', 'sn', 'pp', 'ud', 'sa-2', 'pli-tv-pvr', 'da', 'pv', 'pli-tv-bu-vb-as', 'dn', 'arv', 'ma', 'kp', 'thi-ap', 'lal', 'pli-tv-bi-vb-pd', 'snp', 'pli-tv-bi-vb-np', 'pli-tv-bu-vb-pj', 'pli-tv-bi-vb-as', 'ja', 'thig', 'vb', 'pli-tv-bi-vb-pj', 'ea', 'pli-tv-bu-vb-ss', 'lzh-dg-kd', 'mn', 'tha-ap', 'an', 'kv', 'up', 'pli-tv-bu-vb-pc', 't', 'sa', 'mil', 'uv-kg', 'lzh-dg-bu-pm', 'dhp', 'pli-tv-kd']
-            LET parents = (
-                LET doc = DOCUMENT('root', uid)
-                FILTER doc
-                FOR v, e, p IN 1..5 INBOUND doc `root_edges`
-                    FILTER v.type != 'language'
-                    RETURN v.uid
-                )
-            return parents
-    ))
 '''

@@ -39,7 +39,6 @@ from common.queries import (
 from common.utils import (
     flat_tree,
     language_sort,
-    recursive_sort,
     sort_parallels_key,
     sort_parallels_type_key,
 )
@@ -420,7 +419,7 @@ class Parallels(Resource):
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         uid = uid.replace('/', '-').strip('-')
-        uid = f'root/{uid}'
+        uid = f'super_nav_details/{uid}'
 
         db = get_db()
         results = db.aql.execute(
@@ -961,10 +960,10 @@ class Redirect(Resource):
             if lang in languages:
                 hits = db.aql.execute(
                     '''
-                    LET modern = (FOR text IN po_strings
+                    LET modern = (FOR text IN sc_bilara_texts
                         FILTER text.lang == @lang
                         FILTER text.uid == @uid
-                        RETURN {author_uid: text.author_uid, legacy: false})
+                        RETURN {author_uid: text.muids[2], legacy: false})
 
                     LET legacy = (FOR text IN html_text
                         FILTER text.lang == @lang
@@ -979,11 +978,12 @@ class Redirect(Resource):
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
-                    root = db.collection('root')
-                    if uid in root:
+                    nav_docs = db.collection('super_nav_details')
+                    if uid in nav_docs:
                         return "Redirect", 301, {'Location': f'/{uid}'}
 
         return "Not found", 403
+
 
 class Transliterate(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
