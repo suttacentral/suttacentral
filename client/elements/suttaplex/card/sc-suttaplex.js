@@ -224,7 +224,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       id="copy-menu" 
       class="top-menu-button"
       title="Share this sutta">
-        <summary>
+        <summary class="ripple">
         ${icon.share}
   </summary>
         <ul class="suttaplex-share-menu-list">

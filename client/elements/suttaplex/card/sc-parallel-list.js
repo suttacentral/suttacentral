@@ -1,8 +1,9 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement, svg } from 'lit-element';
 import '../../addons/sc-bouncing-loader';
 import { API_ROOT } from '../../../constants.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
+import { icon } from '../../../img/sc-icon';
 
 import './sc-parallel-item.js';
 import { parallelsListCss } from './sc-suttaplex-css';
@@ -124,8 +125,8 @@ class SCParallels extends LitLocalized(LitElement) {
                     </div>
                   </a>
                 </td>
-                <td class="parallels-relation-cell">
-                  <iron-icon class="grey-icon" .icon="${this.getFirstParallelIcon(rootId)}" title="${this.getFirstParallelIconTitle(rootId)}"></iron-icon>
+                <td class="parallels-relation-cell" title="${this.getFirstParallelIconTitle(rootId)}">
+                  <iron-icon .icon="${this.getFirstParallelIcon(rootId)}" ></iron-icon>
                 </td>
                 <td class="parallels-parallel-cell">
                   <sc-parallel-item 
@@ -138,8 +139,8 @@ class SCParallels extends LitLocalized(LitElement) {
     
               ${this.getOtherParallels(rootId).map(item => html`
                 <tr>
-                  <td class="parallels-relation-cell">
-                    <iron-icon class="grey-icon" .icon="${this.getParallelIcon(item)}" title="${this.computeIconTitle(item)}"></iron-icon>
+                  <td class="parallels-relation-cell" title="${this.computeIconTitle(item)}">
+                    <iron-icon .icon="${this.getParallelIcon(item)}"></iron-icon>
                   </td>
                   <td class="parallels-parallel-cell">
                     <sc-parallel-item .parallelItem="${item.to}" .remark="${item.remark}" .expansionData="${this.expansionData}"></sc-parallel-item>

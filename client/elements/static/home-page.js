@@ -269,6 +269,7 @@ class SCHomePage extends SCStaticPage {
         background-color: var(--sc-primary-accent-color);
         transition: background-color 0.2s ease;
       }
+
       
       h2 {
         font-family: var(--sc-serif-font);
@@ -540,7 +541,7 @@ class SCHomePage extends SCStaticPage {
           <blockquote>
             <span>${this.epigraph}</span>
           </blockquote>
-          <a class="link-button quote-button" href="/">Read this sutta</a>
+          <a class="link-button quote-button ripple" href="/">Read this sutta</a>
         </section>
 
         <section class="two-cards">

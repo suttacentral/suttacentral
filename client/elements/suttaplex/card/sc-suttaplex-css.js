@@ -356,11 +356,18 @@ export const parallelsListCss = html`
   .parallels-parallel-cell {
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-tertiary-background-color);
+    transition: background-color 0.2s ease;
   }
   
   .parallels-root-cell:hover,
   .parallels-parallel-cell:hover {
       background-color: var(--sc-primary-color-light-transparent);
+      transition: background-color 0.2s ease;
+  }
+
+    .parallels-root-cell:active,
+  .parallels-parallel-cell:active {
+      background-color: var(--sc-primary-color-light);
       transition: background-color 0.2s ease;
   }
 
@@ -389,10 +396,6 @@ export const parallelsListCss = html`
     top: 0;
     left: 0;
   }
-
-  morph-ripple {
-    color: var(--sc-primary-color-medium);
-  }
   
   .parallels-root-id {
     font-family: var(--sc-sans-font);
@@ -408,10 +411,6 @@ export const parallelsListCss = html`
   .parallels-table-body {
     display: block;
     margin-bottom: var(--sc-size-sm);
-  }
-
-  .grey-icon {
-    color: var(--sc-disabled-text-color);
   }
 
   .root-link {
@@ -444,6 +443,7 @@ export const parallelItemCss = html`
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 500;
     word-wrap: normal;
+    margin-bottom: var(--sc-size-xs);
   }
 
   .parallel-item-biblio-info {
@@ -464,51 +464,22 @@ export const parallelItemCss = html`
     color: var(--sc-disabled-text-color);
   }
 
-  .parallel-item-details {
-    font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-    color: var(--sc-secondary-text-color);
-    overflow: hidden;
-  }
-
-  .vertical-margin-xs {
-    margin-top: var(--sc-size-xs);
-    margin-bottom: var(--sc-size-xs);
-  }
-
-  .d-flex {
-    display: flex;
-  }
-
-  .justify-content-space-between {
-    justify-content: space-between;
-  }
-
-  .align-items-center {
-    align-items: center;
-  }
-
-  .parallel-item-volpages-container {
+  .parallel-item-nerdy-row {
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
-  }
-  
-  .parallel-item-volpages-container > div:not(:last-of-type) {
-    margin-right: var(--sc-size-md);
+    gap: 1em;
+    color: var(--sc-secondary-text-color);
   }
 
   .parallel-item {
     flex-wrap: wrap;
   }
 
-  .nerdy-row-summary {
-      overflow: hidden;
-  }
-  
-  morph-ripple {
-    color: var(--sc-primary-color-medium);
+  .nerdy-row-element{
+    display: inline-flex;
+    place-items: center
+
   }
   
   .disabled {
@@ -516,17 +487,23 @@ export const parallelItemCss = html`
     background-color: var(--sc-tertiary-background-color);
   }
   
-  .disabled morph-ripple {
-    display: none;
-  }
-  
   summary {
     cursor: pointer;
     outline: none;
+    display: inline-flex;
+    align-items: center
   }
 
-  morph-ripple {
-    --ripple-color: var(--sc-primary-color);
+  .book{
+    display: inline-flex;
+
   }
+  .icon{
+    fill: var(--sc-disabled-text-color);
+    width: 16px;
+    height: 16px;
+
+  }
+
 </style>
 `;

@@ -50,6 +50,7 @@ template.innerHTML = `
 --sc-suttaplex-shadow: var(--sc-shadow-elevation-1dp);
 
 --sc-suttaplex-padding: var(--sc-size-md);
+
     }
   </style>
 </custom-style>`;

@@ -120,14 +120,13 @@ class SCParallelItem extends LitLocalized(LitElement) {
     ${parallelItemCss}
 
     <a href="${this.parallelUrl}" class="${this.parallelUrl ? '' : 'disabled'}">
-      <div class="parallel-item d-flex justify-content-space-between">
+      <div class="parallel-item">
         <div class="parallel-item-main-info-container">
-          <div class="parallel-item-title vertical-margin-xs" title="${this.headingTitle}">
+          <div class="parallel-item-title" title="${this.headingTitle}">
             ${this.heading}
           </div>
   
-          <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
-            <div class="parallel-item-volpages-container">
+          <div class="parallel-item-nerdy-row">
               ${this.parallelItem.translated_title && this.parallelItem.original_title ? html`
                 <div title="${this.localize('originalTitle')}" class="nerdy-row-element">
                   ${this.titleWithoutSuttaText}
@@ -141,7 +140,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
               ` : ''}
 
               ${this.volpagesAvailable ? html`
-                <div class="nerdy-row-summary" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <div class="nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                   ${this.parallelItem.biblio && html`
                     <details>
                       <summary>
@@ -164,7 +163,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
                 </div>
               ` : ''}
               ${this.remark && html`
-                <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <div "nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                   <details>
                     <summary>
                       ${icon.info}
@@ -175,7 +174,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
               `}
             </div>
             ${this.parallelItem.note && html`
-              <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+              <div "nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                 <details>
                   <summary>
                     ${icon.info}
@@ -185,7 +184,6 @@ class SCParallelItem extends LitLocalized(LitElement) {
               </div>
             `}
           </div>
-        </div>
       </div>
     </a>`;
   }
