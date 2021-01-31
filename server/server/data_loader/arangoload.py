@@ -319,6 +319,16 @@ def make_yellow_brick_road(db: Database):
     db.aql.execute(COUNT_YELLOW_BRICK_ROAD)
 
 
+def load_guides_file(db: Database, guides_file: Path):
+    guides_content = json_load(guides_file)
+    db.collection('guides').import_bulk(guides_content)
+
+
+def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: Path):
+    pali_reference_content = json_load(pali_reference_edition_file)
+    db.collection('pali_reference_edition').import_bulk(pali_reference_content)
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -368,6 +378,12 @@ def run(no_pull=False):
 
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
+
+    print_stage('Loading guides.json')
+    load_guides_file(db, structure_dir / 'guides.json')
+
+    print_stage('Loading pali_reference_edition.json')
+    load_pali_reference_edition_file(db, misc_dir / 'pali_reference_edition.json')
 
     print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)
