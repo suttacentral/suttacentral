@@ -231,6 +231,10 @@ export const SCSiteLayoutStyles = css`
     visibility: hidden;
   }
 
+        morph-ripple {
+        --ripple-color: var(--sc-primary-color);
+      }
+
   .staticPageSelected {
     opacity: 1;
     border-bottom: 4px solid var(--sc-primary-color-light);
