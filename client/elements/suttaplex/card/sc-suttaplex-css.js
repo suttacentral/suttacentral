@@ -40,13 +40,10 @@ details ul{
 
 summary
 {
-    font-weight: 600;
-
     display: flex;
 
     cursor: pointer;
 
-    color: var(--sc-primary-text-color);
     outline-color: var(--sc-border-color);
 
     align-items: baseline;
@@ -65,11 +62,7 @@ list-style: none;
   display: none;
 }
 
-  .menu-listbox {
-      --paper-input-container-focus-color: var(--sc-primary-accent-color);
-      --paper-input-container-color: var(--sc-secondary-text-color);
-      --paper-input-container-input-color: var(--sc-secondary-text-color);
-      --paper-dropdown-menu-icon_-_color: var(--sc-disabled-text-color);
+  .suttaplex-share-menu-list {
       background-color: var(--sc-secondary-background-color);
   }
 
@@ -165,6 +158,14 @@ list-style: none;
     overflow: hidden;
   }
 
+    .subTitle {
+      font-weight: 800;
+
+      letter-spacing: var(--sc-caps-letter-spacing);
+
+      font-variant-caps: all-small-caps;
+    }
+
   .nerdy-row-element + .nerdy-row-element{
     margin-left: var(--sc-size-md-larger);
   }
@@ -176,13 +177,6 @@ list-style: none;
 
   .popuptext.show {
      display: unset;
-  }
-
-    .nerdy-row-element:first-of-type {
-    font-weight: 800;
-    font-variant-caps: all-small-caps;
-
-      letter-spacing: var(--sc-caps-letter-spacing);
   }
 
   .volpage-biblio-info, .suttaplex-nerdy-row .popuptext {
@@ -206,6 +200,7 @@ list-style: none;
 
   .suttaplex-details {
     display: inline-block;
+    position: inherit
   }
 
   .blurb {
@@ -261,8 +256,6 @@ list-style: none;
     --iron-icon-width: 16px;
     --iron-icon-height: 16px;
     color: var(--sc-disabled-text-color);
-    /* hacky! */
-    margin-top: -3px;
   }
 </style>`;
 

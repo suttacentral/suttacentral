@@ -18,9 +18,9 @@ def test_languages(client):
 
 
 def test_menu(client):
-    roots = utils.generate_roots(amount=10)
-    roots.save()
-    edges = utils.generate_root_edges(roots)
+    nav_docs = utils.generate_navigation_docs(amount=10)
+    nav_docs.save()
+    edges = utils.generate_navigation_edges(nav_docs)
     edges.save()
 
     res = client.get(api.url_for(Menu))
@@ -35,28 +35,24 @@ def test_menu(client):
 def test_suttaplex_list(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
-    utils.generate_po_markup().save()
-    utils.generate_po_string().save()
     utils.generate_difficulty().save()
-    roots = utils.generate_roots()
-    roots.save()
-    utils.generate_root_edges(roots).save()
+    nav_docs = utils.generate_navigation_docs()
+    nav_docs.save()
+    utils.generate_navigation_edges(nav_docs).save()
 
-    res = client.get(api.url_for(SuttaplexList, uid=roots[0].uid))
+    res = client.get(api.url_for(SuttaplexList, uid=nav_docs[0].uid))
 
     assert res.status_code == 200
 
 
 def test_parallels_view(client):
     utils.generate_html_text().save()
-    utils.generate_po_markup().save()
-    utils.generate_po_string().save()
-    roots = utils.generate_roots()
-    roots.save()
+    nav_docs = utils.generate_navigation_docs()
+    nav_docs.save()
 
-    uid = roots[0].uid
+    uid = nav_docs[0].uid
 
-    utils.generate_relationships(roots).save()
+    utils.generate_relationships(nav_docs).save()
 
     res = client.get(api.url_for(Parallels, uid=uid))
 
@@ -66,14 +62,12 @@ def test_parallels_view(client):
 def test_sutta_view(client):
     utils.generate_html_text().save()
     utils.generate_blurb().save()
-    utils.generate_po_markup().save()
-    utils.generate_po_string().save()
     utils.generate_difficulty().save()
-    roots = utils.generate_roots()
-    roots.save()
-    utils.generate_root_edges(roots).save()
+    nav_docs = utils.generate_navigation_docs()
+    nav_docs.save()
+    utils.generate_navigation_edges(nav_docs).save()
 
-    res = client.get(api.url_for(Sutta, uid=roots[0].uid, author='sujato', lang='en'))
+    res = client.get(api.url_for(Sutta, uid=nav_docs[0].uid, author='sujato', lang='en'))
 
     assert res.status_code == 200
 

@@ -182,7 +182,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   li {
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-skolar-font-size-md);
     font-weight: 500;
 
     margin-right: 8px;
@@ -190,7 +190,7 @@ export const SCSiteLayoutStyles = css`
     list-style-type: none;
 
     letter-spacing: var(--sc-caps-letter-spacing);
-    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
 
     align-items: center;
   }
@@ -219,6 +219,18 @@ export const SCSiteLayoutStyles = css`
     opacity: 1;
     color: white;
     border-bottom: 4px solid var(--sc-primary-color-light);
+  }
+
+  li a:hover  #external{
+    visibility: visible
+  }
+
+  #external{
+    width: 15px;
+    height: 15px;
+    fill: rgba(255,255,255,0.8);
+    margin-left: 6px;
+    visibility: hidden;
   }
 
   .staticPageSelected {

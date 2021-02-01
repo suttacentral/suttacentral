@@ -8,13 +8,13 @@ import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-styles/typography.js';
 import '@polymer/paper-styles/shadow.js';
 import '@material/mwc-icon';
-import '@material/mwc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
 setPassiveTouchGestures(true);
 
 import '../img/sc-svg-icons.js';
 import '../img/sc-iron-icons.js';
+import { icons } from '../img/sc-icons';
 
 import './sc-page-selector.js';
 import './menus/sc-action-items.js';
@@ -86,7 +86,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <li><a href="/introduction">${this.localize('INTRODUCTION')}<morph-ripple></morph-ripple></a></li>
         <li><a href="/donations">${this.localize('DONATIONS')}<morph-ripple></morph-ripple></a></li>
         <li><a href="/offline">${this.localize('USEOFFLINE')}<morph-ripple></morph-ripple></a></li>
-        <li><a href="https://discourse.suttacentral.net/c/meta/updates">${this.localize('WHATSNEW')}<morph-ripple></morph-ripple></a></li>
+        <li><a href="https://discourse.suttacentral.net/c/meta/updates" class="external" title='See updates on SuttaCentral forum' target='_blank' rel='noopener'>${this.localize('WHATSNEW')}<mwc-icon id="external">${icons['external']}</mwc-icon><morph-ripple></morph-ripple></a></li>
       ` : ''}
     `;
   }

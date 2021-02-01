@@ -32,8 +32,6 @@ export const navigationNormalModeStyles = html`
 
       margin-bottom: 0.6667rem;
 
-      transition: box-shadow 200ms ease-out;
-
       border-radius: var(--sc-size-sm);
       background-color: var(--sc-secondary-background-color);
       box-shadow: var(--sc-shadow-elevation-1dp);
@@ -56,16 +54,6 @@ export const navigationNormalModeStyles = html`
       .home-card + .home-card {
         margin-left: 0;
       }
-    }
-
-    .card:hover {
-      transition: all 200ms ease-out;
-
-      box-shadow: var(--sc-shadow-elevation-2dp);
-    }
-
-    .card:active {
-      box-shadow: var(--sc-shadow-elevation-1dp);
     }
 
     .nav-card:first-of-type {
@@ -189,16 +177,21 @@ export const navigationNormalModeStyles = html`
       color: inherit;
     }
 
+    a[href$='/kn/dhp'] .show-root-language::before {
+      display: none
+    }
+
     .header-right {
       font-size: var(--sc-skolar-font-size-xxs);
       font-weight: 600;
       line-height: 1;
 
       display: flex;
-      flex-direction: column;
 
-      height: 36px;
-      padding: 0 8px 4px;
+    height: 24px;
+    min-width: 72px;
+    padding: 0 4px;
+    box-sizing: border-box;
 
       color: white;
       background-color: var(--sc-primary-color-dark);
@@ -248,6 +241,7 @@ export const navigationNormalModeStyles = html`
     .essay::before {
       font-family: var(--sc-sans-font);
       font-weight: 800;
+      color: var(--sc-secondary-text-color);
 
       content: 'Essay: ';
     }

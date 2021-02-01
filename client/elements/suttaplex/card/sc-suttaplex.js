@@ -50,7 +50,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         copyMenu.addEventListener('opened-changed', (e) => {
           const open = e.detail.value;
           if (open) {
-            this.shadowRoot.querySelector('#more_par_menu')._sendRequest();
+            this.shadowRoot.querySelector('#suttaplex_share_menu')._sendRequest();
           }
         })
       }
@@ -231,8 +231,8 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           icon="sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
         </paper-icon-button>
   </summary>
-        <ul class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-          <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" .item="${this.item}"></sc-suttaplex-share-menu>
+        <ul class="suttaplex-share-menu-list">
+          <sc-suttaplex-share-menu id="suttaplex_share_menu" tabindex="0" .item="${this.item}"></sc-suttaplex-share-menu>
         </ul>
       </details>
       </div>`;
@@ -242,7 +242,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <div class="suttaplex-nerdy-row" @tap="${this.revealHiddenNerdyRowContent}">
         ${this.item.translated_title && this.item.original_title && html`
-          <span title="${this.localize('originalTitle')}" class="nerdy-row-element">
+          <span title="${this.localize('originalTitle')}" class="nerdy-row-element subTitle">
             ${this.item.original_title}
           </span>
         `}

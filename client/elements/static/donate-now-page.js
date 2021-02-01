@@ -5,7 +5,6 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-textfield';
 import '@material/mwc-radio';
 import '@material/mwc-formfield';
-import '@material/mwc-textarea';
 import '@material/mwc-icon';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants.js';
@@ -14,8 +13,6 @@ import { icons } from '../../img/sc-icons';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe('pk_test_vFqwBPDW08c5AKXMGLKaeJaB');
 
 class SCDonateNow extends LitLocalized(LitElement) {
   static get properties() {
@@ -48,12 +45,13 @@ class SCDonateNow extends LitLocalized(LitElement) {
             /* allow mwc-select to drop below container */
           article {
         content-visibility: visible;
+        height: 100vh
       }
 
       #error-message {
         text-align: center;
       }
-      
+
       form {
         display: flex;
         flex-direction: column;
@@ -72,28 +70,43 @@ class SCDonateNow extends LitLocalized(LitElement) {
       }
 
       mwc-textfield,
-      mwc-textarea,
       mwc-select {
         --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
         --mdc-theme-primary: var(--sc-primary-color);
+        --mdc-theme-primary: var(--sc-primary-accent-color);
       }
 
       mwc-formfield {
         --mdc-typography-body2-font-family: var(--sc-sans-font);
+        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
       }
 
       mwc-radio {
         --mdc-theme-secondary: var(--sc-primary-color);
+        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
       }
 
-      mwc-textfield,
-      mwc-textarea {
+      mwc-textfield {
         flex-grow: 1;
+        --mdc-text-field-fill-color:  var(--sc-tertiary-background-color);
+        --mdc-text-field-ink-color: var(--sc-primary-text-color);
+        --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
       }
 
       mwc-select {
         margin-right: 20px;
         width: 120px;
+        --mdc-theme-primary: var(--sc-primary-accent-color);
+        --mdc-select-fill-color:  var(--sc-tertiary-background-color);
+        --mdc-typography-font-family: var(--sc-sans-font);
+        --mdc-theme-surface: var(--sc-secondary-background-color);
+        --mdc-select-ink-color: var(--sc-primary-text-color);
+        --mdc-select-label-ink-color: var(--sc-secondary-text-color);
+        --mdc-select-dropdown-icon-color: var(--sc-disabled-text-color);
+      }
+
+      mwc-list-item{
+        color: var(--sc-primary-text-color)
       }
 
       mwc-select + mwc-textfield {
@@ -148,6 +161,9 @@ class SCDonateNow extends LitLocalized(LitElement) {
     const frequency = Array.from(this.shadowRoot.querySelectorAll('#frequency-checkbox mwc-radio'))
       .filter(el => el.checked)
       .map(el => el.value)[0];
+    const config = await fetch(`${API_ROOT}/stripe_public_key`);
+    const { public_key } = await config.json();
+    const stripePromise = loadStripe(public_key);
     const stripe = await stripePromise;
     const response = await fetch(`${API_ROOT}/donate`, {
       method: 'POST',

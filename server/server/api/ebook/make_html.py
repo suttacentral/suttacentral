@@ -1,33 +1,35 @@
-from translate.storage.po import pofile
 import lxml.html
-import arango
-import subprocess
-import pathlib
 import json
 import regex
 
 from search.uid_expansion import uid_to_acro
 
-from collections import Counter
-
 from common.arangodb import get_db
 
 QUERY = '''
-FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('root/', @uid) root_edges OPTIONS {bfs: False}
-    LET path_nums = path.vertices[*].num
-    SORT path_nums
+FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {bfs: False}
     LET blurb = FIRST(
         FOR blurb IN blurbs
             FILTER blurb.uid == doc.uid
             FILTER blurb.lang == @language
             RETURN blurb.blurb
         )
-    LET text = KEEP(DOCUMENT(CONCAT('po_strings/', @language, '_', doc.uid, '_', @author)), 'uid', 'name', 'strings_path', 'title', 'division_title', 'author', 'author_blurb', 'markup_uid')
-    LET markup_path = text ? DOCUMENT(CONCAT('po_markup/', text.markup_uid, '_markup')).markup_path : null
     
-    LET legacy_text = KEEP(DOCUMENT(CONCAT('html_text/',  @language, '_', doc.uid, '_', @author)), 'uid', 'name', 'file_path', 'title', 'division_title', 'author')
+    LET legacy_text = KEEP(
+        DOCUMENT(CONCAT('html_text/',  @language, '_', doc.uid, '_', @author)), 
+        'uid', 'name', 'file_path', 'title', 'division_title', 'author'
+    )
     
-    RETURN {uid: doc.uid, acronym: doc.acronym, depth: LENGTH(path.edges), name: doc.name, title: doc.title, type: doc.type, blurb: blurb, text: text ? MERGE(text, {markup_path:markup_path}) : legacy_text}
+    RETURN {
+        uid: doc.uid, 
+        acronym: doc.acronym, 
+        depth: LENGTH(path.edges), 
+        name: doc.name, 
+        title: doc.title, 
+        type: doc.type, 
+        blurb: blurb, 
+        text: legacy_text
+    }
 '''
 
 

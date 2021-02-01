@@ -1,8 +1,6 @@
 
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-button/paper-button.js';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -10,7 +8,6 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles.js
 import { SCStaticPage } from '../addons/sc-static-page.js';
 import { API_ROOT } from '../../constants.js';
 import _ from '../../localization/macro.js';
-import '../addons/text-carousel.js';
 
 class SCHomePage extends SCStaticPage {
   render() {
@@ -414,7 +411,7 @@ class SCHomePage extends SCStaticPage {
                 ${_`What’s here`}
               </div>
               <div class="image-card-text">
-                ${_`SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. This is a large collection of teachings attributed to the Buddha or his earliest disciples, who were teaching in India around 2500 years ago. They are regarded as sacred canon in all schools of Buddhism. You can find all of our texts through the sidebar menu on the left.`}
+                ${_`SuttaCentral contains early Buddhist texts, known as the Tipiṭaka or “Three Baskets”. This is a large collection of teachings attributed to the Buddha or his earliest disciples, who were teaching in India around 2500 years ago. They are regarded as sacred canon in all schools of Buddhism.`}
               </div>
             </div>
           </paper-card>

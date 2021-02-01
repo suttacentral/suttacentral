@@ -5,16 +5,12 @@ import polib
 import regex
 import lxml
 
-from .util import iter_sub_dirs, humansortkey
+from .util import humansortkey
 
 
 import sys
 
 current_module = sys.modules[__name__]
-
-
-class PoProcessingError(Exception):
-    pass
 
 
 def remove_leading_zeros(string):
@@ -118,8 +114,6 @@ def extract_headings_from_po(po):
     # suttaplex only picks up the original title instead.
     found = {'tr': {}, 'root': {}}
     for string, key in (('<h1', 'title'), ('class="division"', 'division')):
-        tr_strings = []
-        root_strings = []
         for entry in po[:10]:
             if string in entry.comment:
                 found['tr'][key] = sanitize_title(entry.msgstr)
@@ -255,82 +249,6 @@ def get_author(author_uid, authors):
             return item['long_name'], item['short_name']
 
     return None, None
-
-
-def load_po_texts(change_tracker, po_dir, db, additional_info_dir, storage_dir):
-    """ Load strings and markup from po files into database
-    
-    each strings entry looks like this:
-
-    {
-        "path": "en/dn2/sujato",
-        "lang": "en",
-        "uid": "dn2",
-        "author": "sujato",
-        "author_blurb": {
-            "en": "Awesome translation by Sujato"
-        },
-        "markup" "dn2",
-        "strings": {...}
-    }
-    
-    while a markup entry looks like this:
-    
-    {
-        "uid": "dn2",
-        "markup": "..."
-    }
-    """
-
-    print('Loading PO texts')
-
-    author_file = additional_info_dir / 'author_edition.json'
-
-    with author_file.open('r', encoding='utf-8') as authorf:
-        authors = json.load(authorf)
-
-    # It's a little hard to properly manage deleted po files,
-    # as it happens deletion is really rare: so if a deletion
-    # does occur we just nuke and rebuild.
-
-    deleted_po = [f for f in change_tracker.deleted if f.endswith('.po')]
-    if deleted_po or change_tracker.is_module_changed(current_module):
-        change_tracker = None
-        db['po_markup'].truncate()
-        db['po_strings'].truncate()
-
-    # an example path to a po file might be:
-    # /dn/en/dn01 or /an/en/an01/an01.001.po
-
-    # We expect the project dir name to be the division name
-    for lang_dir in iter_sub_dirs(po_dir):
-        if '-' in lang_dir.stem:
-            root_lang, tr_lang = lang_dir.stem.split('-')
-        else:
-            raise ValueError(f'po subdir {lang_dir} should be of form such as pli-en')
-
-        docs = process_dir(
-            change_tracker,
-            lang_dir,
-            authors,
-            info={'tr_lang': tr_lang, 'root_lang': root_lang},
-            storage_dir=storage_dir
-        )
-
-        markup_docs = []
-        string_docs = []
-
-        for i, doc in enumerate(docs):
-            if 'markup_path' in doc:
-                doc['_key'] = f'{doc["uid"]}_markup'
-                markup_docs.append(doc)
-
-            else:
-                doc['_key'] = f'{doc["lang"]}_{doc["uid"]}_{doc["author_uid"]}'
-                string_docs.append(doc)
-
-        db['po_markup'].import_bulk_logged(markup_docs, on_duplicate='ignore')
-        r = db['po_strings'].import_bulk_logged(string_docs, on_duplicate='ignore')
 
 
 class VolpageGetter:

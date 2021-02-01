@@ -129,7 +129,7 @@ class SCStepper extends LitElement {
         }
 
         morph-ripple {
-          --ripple-color: var(--sc-primary-color);
+          --ripple-color: var(--sc-disabled-text-color);
         }
       </style>
 
