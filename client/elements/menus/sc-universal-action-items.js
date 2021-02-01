@@ -201,7 +201,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         <mwc-textfield
               fullwidth
               id="search_input"
-              type="text"
+              type="search"
               style="height: 48px"
               iconTrailing=""
               placeholder="${this.localize('Search')}"
