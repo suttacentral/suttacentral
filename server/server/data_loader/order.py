@@ -1,10 +1,11 @@
-import regex
-import logging
 import itertools
+import logging
 from collections import defaultdict
 
-from data_loader.util import numericsortkey, sort_and_groupby
+import regex
+
 from common.queries import UIDS_IN_ORDER_BY_DIVISION
+from data_loader.util import numericsortkey, sort_and_groupby
 
 
 def get_uid_stem(uid):
@@ -56,7 +57,6 @@ def get_best_match(text, other_texts):
 
 
 def add_next_prev_using_menu_data(db):
-
     html_texts = list(
         db.aql.execute(
             '''
@@ -94,7 +94,7 @@ def add_next_prev_using_menu_data(db):
         collection_updates = defaultdict(dict)
 
         for matches in get_matching_uids(
-            divisions=divisions, text_uids=set(mapping), lang=lang
+                divisions=divisions, text_uids=set(mapping), lang=lang
         ):
             # matches contains a list of uids in the same division in proper order
             for i, uid in enumerate(matches):

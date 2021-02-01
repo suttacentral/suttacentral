@@ -12,17 +12,17 @@ which now returns the html code of the element.
 
 import itertools
 
-import lxml.etree as _etree
 import lxml.html as _html
 import regex
 from lxml.html import defs
-
 
 defs.html5_tags = frozenset({'section', 'article', 'header'})
 
 
 class CssSelectorFailed(Exception):
-    " The exception returned by select_or_fail "
+    """
+    The exception returned by select_or_fail
+    """
 
     def __init__(self, selector):
         self.selector = selector
@@ -315,60 +315,3 @@ utf8parser = get_parser('utf-8')
 
 def fromstring(string):
     return _html.fromstring(string, parser=utf8parser)
-
-
-def fragment_fromstring(string):
-    return _html.fragment_fromstring(string, parser=utf8parser)
-
-
-def fragments_fromstring(string):
-    return _html.fragments_fromstring(string, parser=utf8parser)
-
-
-def document_fromstring(string):
-    return _html.document_fromstring(string, parser=utf8parser)
-
-
-def parse(filename, encoding='utf8'):
-    # It seems that lxml.html always guesses the charset regardless
-    # of charset declarations. On Linux, if a charset is not specified
-    # it will correctly recognize utf8 and utf16. But on some systems
-    # it wont recognize utf8?
-
-    encoding = encoding.upper()
-    if encoding in ('UTF8', 'UTF-8'):
-        parser = utf8parser
-    elif encoding in ('UTF16', 'UTF-16'):
-        parser = get_parser('UTF-16')
-    elif encoding == "DECLARED":
-        if not hasattr(filename, 'read'):
-            filename = open(filename, 'rb')
-        start = filename.read(250)
-        filename.seek(-250)
-        if b'<\x00' in start:
-            parser = get_parser("UTF-16LE")
-        elif b'\x00<' in start:
-            parser = get_parser("UTF-16BE")
-        else:
-            m = regex.search(r'charset=(["\']?)([\w-]+)\1', start)
-            parser = get_parser(m[2])
-    else:
-        parser = get_parser(None)
-
-    return _html.parse(filename, parser=parser)
-
-
-def parseXML(filename):
-    """ Parse an XML document, thus also suitable for XHTML """
-    # XML doesn't require jumping through the same hoops as HTML since there
-    # are no existing custom element classes.
-    parser_lookup = _etree.ElementDefaultClassLookup(element=HtHtmlElement)
-    parser = _etree.XMLParser()
-    parser.set_element_class_lookup(parser_lookup)
-    return _etree.parse(filename, parser=parser)
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

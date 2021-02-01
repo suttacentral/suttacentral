@@ -1,22 +1,12 @@
 #!/usr/bin/python3
 
-import bottle
-from bottle import request, response, post
-
-
+import subprocess
+import sys
+from argparse import ArgumentParser
 from threading import Thread
 
-import os
-import sys
-import signal
-import atexit
-import time
-
-import subprocess
-from argparse import ArgumentParser
-
-import logging
-import requests
+import bottle
+from bottle import request, response, post
 
 
 class Builder(Thread):
@@ -45,7 +35,7 @@ class Builder(Thread):
                 print('=== {command} ==='.format(command=command))
                 self.process = subprocess.Popen(command.split(), stdout=sys.stdout, stderr=sys.stderr)
                 self.process.wait()
-    
+
     def terminate(self):
         self.terminated = True
         if self.process:
@@ -54,10 +44,12 @@ class Builder(Thread):
 
 builder = None
 
+
 def terminate_builder():
     if builder:
         builder.terminate()
         builder.join()
+
 
 @post('/<path>')
 def handler(path):
@@ -78,6 +70,7 @@ def handler(path):
         builder.start()
     response.status = 200
 
+
 def get_parser():
     parser = ArgumentParser()
 
@@ -86,6 +79,7 @@ def get_parser():
     parser.add_argument('--addr', default='0.0.0.0')
 
     return parser
+
 
 if __name__ == '__main__':
     parser = get_parser()

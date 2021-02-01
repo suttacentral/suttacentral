@@ -13,42 +13,14 @@ class TextInfoModel:
     def __init__(self):
         self._metadata = {}
 
-    def get_author_by_name(self, name):
+    def get_author_by_name(self, name, file):
         raise NotImplementedError
 
-    def add_metadata(self, filepath, author, metadata):
-        target = self._metadata
-        for part in filepath.parent.parts:
-            if part not in target:
-                target[part] = {}
-            target = target[part]
-        target['author'] = author
-        with (text_dir / filepath).open('r') as f:
-            target['string'] = f.read()
+    def add_document(self, doc):
+        raise NotImplementedError
 
-    def get_metadata(self, filepath):
-        target = self._metadata
-        for part in filepath.parent.parts:
-            if part in target:
-                target = target[part]
-            else:
-                break
-        if target == self._metadata:
-            return None
-        return target
-
-    @staticmethod
-    def uids_are_related(uid1, uid2, _rex=regex.compile(r'\p{alpha}*(?:-\d+)?')):
-        # We will perform a simple uid comparison
-        # We could be more sophisticated! For example we could
-        # inspect whether they belong to the same division
-        if uid1 is None or uid2 is None:
-            return False
-
-        m1 = _rex.match(uid1)[0]
-        m2 = _rex.match(uid2)[0]
-        if m1 and m2 and m1 == m2:
-            return True
+    def update_code_points(self, lang_uid, unicode_points, force):
+        raise NotImplementedError
 
     def is_bold(self, lang, element):
         if element.tag in {'b', 'strong'}:
@@ -58,13 +30,13 @@ class TextInfoModel:
                 return True
         return False
 
-    def is_italic(self, lang, element):
+    def is_italic(self, element):
         if element.tag in {'i', 'em'}:
             return True
         return False
 
     def process_lang_dir(
-        self, lang_dir, data_dir=None, files_to_process=None, force=False
+            self, lang_dir, data_dir=None, files_to_process=None, force=False
     ):
         # files_to_process is actually "files that may be processed" its
         # not the list of files to actually process
@@ -96,8 +68,8 @@ class TextInfoModel:
                 # Should we process this file?
 
                 if (
-                    not force
-                    and str(htmlfile.relative_to(data_dir)) not in files_to_process
+                        not force
+                        and str(htmlfile.relative_to(data_dir)) not in files_to_process
                 ):
                     continue
 
@@ -118,7 +90,7 @@ class TextInfoModel:
                     e = _stack.pop()
                     if self.is_bold(lang_uid, e):
                         unicode_points['bold'].update(e.text_content())
-                    elif self.is_italic(lang_uid, e):
+                    elif self.is_italic(e):
                         unicode_points['italic'].update(e.text_content())
                     else:
                         _stack.extend(e)
@@ -269,13 +241,12 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def flush_documents(self):
         if len(self.queue) > 0:
-            print('\033[2K\r' + self.queue[-1]['path'],end='')
+            print('\033[2K\r' + self.queue[-1]['path'], end='')
             self.db['html_text'].import_bulk_logged(self.queue)
             self.queue.clear()
 
     def update_code_points(self, lang_uid, unicode_points, force=False):
         keys = ('normal', 'bold', 'italic')
-        existing = False
         try:
             existing = self.db['unicode_points'].get(lang_uid)
             if existing and not force:
@@ -285,7 +256,7 @@ class ArangoTextInfoModel(TextInfoModel):
             doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
             doc['_key'] = lang_uid
         except Exception as e:
-            print(unicode_points, key)
+            print(unicode_points)
             raise e
 
         if existing or force:
@@ -346,6 +317,7 @@ class PaliPageNumbinator:
     default_attempts = list(range(0, -16, -1)) + list(range(1, 6))
 
     def __init__(self, data_dir):
+        self.mapping = {}
         self.load(data_dir)
 
     def load(self, data_dir):
