@@ -184,8 +184,12 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
-
+            <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
+      <iron-a11y-keys
+        target=${this.search_input}
+        keys="enter"
+        @keys-pressed="${this._startSearch}"
+      ></iron-a11y-keys>
 
       <mwc-icon-button
         title="${this.localize('searchTooltip')}"
