@@ -1,7 +1,5 @@
 import { LitElement, html, css, svg } from 'lit-element';
 
-import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
-
 import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
@@ -426,24 +424,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _routeChanged() {
     this.shadowRoot.querySelector('#sutta-info').hide();
-  }
-
-  _openDialog(event) {
-    const dialogElement = this.shadowRoot.querySelector(`#${event.detail.id}`);
-    if (dialogElement) {
-      dialogElement.open();
-    }
-  }
-
-  // Locks scroll on text dialogs:
-  _addScrollLockListeners() {
-    let scrollLockListener = (dialog) => {
-      if (dialog.opened) {
-        IronDropdownScrollManager.pushScrollLock(dialog);
-      } else {
-        IronDropdownScrollManager.removeScrollLock(dialog);
-      }
-    };
   }
 
   _getApiUrl() {
