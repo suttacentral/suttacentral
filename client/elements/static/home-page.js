@@ -332,8 +332,10 @@ class SCHomePage extends SCStaticPage {
       .top-two {
         display: flex;
         flex-direction: row;
+
+        min-height: 360px;
       
-        margin: 4% 1vw;
+        margin: 48px 1vw;
       
         flex-wrap: nowrap;
         justify-content: space-around;

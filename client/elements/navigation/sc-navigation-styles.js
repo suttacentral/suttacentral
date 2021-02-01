@@ -211,8 +211,6 @@ export const navigationNormalModeStyles = html`
       padding: 0.333rem 0.5rem;
 
       border-radius: 8px;
-
-      align-self: flex-start;
     }
 
     .header-link .title,
