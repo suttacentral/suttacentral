@@ -759,7 +759,9 @@ RETURN MERGE(expansion_item)
 
 class PWA:
     MENU = '''
-LET langs = UNION(@languages OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
+LET langs = UNION(@languages ? @languages : [], @include_root ? (
+        FOR lang IN language FILTER lang.is_root RETURN lang.uid
+    ) : [])
 
 LET menu = (
     FOR div IN 1..1 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
@@ -779,10 +781,10 @@ LET grouped_children = MERGE(
         RETURN {[is_div ? 'branch' : 'leaf']: uids}
 )
 
-LET suttaplex = grouped_children['div']
+LET suttaplex = grouped_children['branch']
 
 LET texts = (
-        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['text']
+        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
             COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: text.author_uid}
             RETURN {uid, translations:(
                 FOR text IN groups
