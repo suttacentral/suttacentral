@@ -450,7 +450,7 @@ export const parallelItemCss = html`
     box-shadow: var(--sc-shadow-elevation-4dp);
     border-top: var(--sc-border);
     position: absolute;
-    z-index: 200;
+    z-index: 50;
     background-color: var(--sc-secondary-background-color);
     padding: 12px;
     margin: 0 var(--sc-size-xl) 0 0;

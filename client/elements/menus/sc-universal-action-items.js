@@ -22,6 +22,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         justify-content: space-between;
         align-items: center;
         --mdc-theme-surface: var(--sc-secondary-background-color);
+
       }
 
       #close_button {
@@ -220,7 +221,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       >
         ${icon.more_vert}
       </mwc-icon-button>
-      <mwc-menu corner="BOTTOM_END" id="more-menu">
+      <mwc-menu corner="BOTTOM_LEFT" id="more-menu">
         <sc-more-menu id="sc-more-menu"></sc-more-menu>
       </mwc-menu>
     `;

@@ -20,7 +20,8 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         background-color: rgb(75, 74, 73);
 
-        position: relative
+        position: relative;
+        z-index: 2
       }
 
       nav {

@@ -101,7 +101,7 @@ export const SCSiteLayoutStyles = css`
 
   #universal_toolbar {
     position: sticky;
-    z-index: 9999;
+    z-index: 100;
     top: 0;
 
     color: var(--sc-tertiary-text-color);
