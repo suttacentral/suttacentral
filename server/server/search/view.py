@@ -4,11 +4,11 @@ from elasticsearch import ConnectionError
 from flask import request, current_app
 from flask_restful import Resource
 
-from search import query as query_search
-from search import dictionaries
-from common.extensions import cache, make_cache_key
 from common.arangodb import get_db
+from common.extensions import cache, make_cache_key
 from common.queries import SUTTAPLEX_LIST
+from search import dictionaries
+from search import query as query_search
 
 
 class Search(Resource):

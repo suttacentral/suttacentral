@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 # coding=utf-8
-from typing import Union
+import logging
 import re
+from typing import Union
+
 from arango import ArangoClient
+from arango.collection import StandardCollection
 from arango.database import Database
 from arango.exceptions import DocumentInsertError
 from flask import current_app, g
-
-import logging
-import pprint
-
-from arango.collection import StandardCollection
 
 
 def explain_error(coll, e, docs, kwargs):
@@ -29,7 +27,7 @@ def explain_error(coll, e, docs, kwargs):
             if e.error_code == 1210:
                 if key in seen:
                     logging.error(f'{coll.name}: unique constraint violated "{key}"\n\t{doc}\n\t{seen[key][1]}')
-                    
+
                     explained = True
                 elif key in existing_keys and not kwargs.get('overwrite'):
                     logging.error(f'{coll.name}: document {i}, "{key}" has a duplicate key, already in the collection')
@@ -37,17 +35,20 @@ def explain_error(coll, e, docs, kwargs):
             seen[key] = (i, doc)
     return explained
 
+
 def import_bulk_logged(self, docs, wipe=False, *args, **kwargs):
     if 'overwrite' in args:
-        raise ValueError('Overwrite not allowed as it is ambigious, use "wipe=True" to clear collection')
+        raise ValueError('Overwrite not allowed as it is ambiguous, use "wipe=True" to clear collection')
     try:
         results = self.import_bulk(docs, overwrite=wipe, *args, **kwargs)
     except DocumentInsertError as e:
         logging.error(kwargs)
-        
+
         explained = explain_error(self, e, docs, kwargs)
         if not explained:
-            logging.error(f'{self.name}: Document Insertion Error, [ERR: {e.error_code}]: {e.error_message}, explaination not available, you may proceed to panic and/or despair')
+            logging.error(
+                f'{self.name}: Document Insertion Error, [ERR: {e.error_code}]: {e.error_message}, '
+                f'explanation not available, you may proceed to panic and/or despair')
         raise
     except Exception as e:
         logging.error(f'{self.name}: error inserting documents: {e}: {docs}')
@@ -151,11 +152,3 @@ def get_system_db() -> Database:
 
 def delete_db(db: Database):
     get_system_db().delete_database(db.name)
-
-
-def update_views_hack(db):
-    # This is a hack to help reduce view corruption in 3.4
-    for view in db.views():
-        name = view['name']
-        db.update_view(name, db.view(name))
-
