@@ -4,13 +4,13 @@ import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
 import { icons } from '../img/sc-icons';
 
-import { LitLocalized } from './addons/localization-mixin'
+import { LitLocalized } from './addons/localization-mixin';
 
 class SCPageDictionary extends LitLocalized(LitElement) {
-  render() {
-    return html`
-    ${dictStyles}
-    <style>
+  static get styles() {
+    return css`
+      ${dictStyles}
+
       .dictionary-results-container {
         margin: 0 0 var(--sc-size-xxl) 0;
       }
@@ -74,7 +74,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       .related-terms li {
         display: inline-block;
 
-        margin: .5rem 1rem 0 0;
+        margin: 0.5rem 1rem 0 0;
         padding: 0;
       }
 
@@ -112,11 +112,11 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         border-bottom: var(--sc-border);
       }
 
-      .selected-terms-item>a {
+      .selected-terms-item > a {
         font-weight: bold;
       }
 
-      .selected-terms-item>a:hover {
+      .selected-terms-item > a:hover {
         cursor: default;
         text-decoration: none;
       }
@@ -128,58 +128,78 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         background-color: var(--sc-primary-color-light-transparent);
         color: var(--sc-primary-color-darkest);
       }
-    </style>
+    `;
+  }
 
-    <div class="dictionary-results-container">
-      <main class="dictionary-results-main">
-        <div class="dictionary-results-head">
-          <h1><span class="dictionary-results-description">${this.localize('definitionsFor')}</span> <span class="dictionary-results-term">${this.dictionaryWord}</span></h1>
-        </div>
+  render() {
+    return html`
+      <div class="dictionary-results-container">
+        <main class="dictionary-results-main">
+          <div class="dictionary-results-head">
+            <h1>
+              <span class="dictionary-results-description">${this.localize('definitionsFor')}</span>
+              <span class="dictionary-results-term">${this.dictionaryWord}</span>
+            </h1>
+          </div>
 
-        <div class="dictionary-entries">
-          ${this.dictionaryEntriesTemplate}
-        </div>
+          <div class="dictionary-entries">${this.dictionaryEntriesTemplate}</div>
 
-        <div class="related-terms">
-          <h3>${this.localize('adjacentTerms')}</h3>
-          <ul class="near-terms">
-            ${this.dictionaryAdjacentTemplate}
-          </ul>
-          <h3>${this.localize('similarSpelling')}</h3>
-          <ul class="fuzzy-terms">
-            ${this.dictionarySimilarTemplate}
-          </ul>
-        </div>
-      </main>
-    </div>
-    ${this._createMetaData()}
+          <div class="related-terms">
+            <h3>${this.localize('adjacentTerms')}</h3>
+            <ul class="near-terms">
+              ${this.dictionaryAdjacentTemplate}
+            </ul>
+            <h3>${this.localize('similarSpelling')}</h3>
+            <ul class="fuzzy-terms">
+              ${this.dictionarySimilarTemplate}
+            </ul>
+          </div>
+        </main>
+      </div>
+      ${this._createMetaData()}
     `;
   }
 
   get dictionarySimilarTemplate() {
     return html`
-      ${this.dictionarySimilar ? this.dictionarySimilar.map(dicSimilarItem => html`
-        <li class="${this._calculateClass(dicSimilarItem.glossWord)}">${unsafeHTML(dicSimilarItem.glossText)}</li>
-      `) : ''}
+      ${this.dictionarySimilar
+        ? this.dictionarySimilar.map(
+            dicSimilarItem => html`
+              <li class="${this._calculateClass(dicSimilarItem.glossWord)}">
+                ${unsafeHTML(dicSimilarItem.glossText)}
+              </li>
+            `
+          )
+        : ''}
     `;
   }
 
   get dictionaryAdjacentTemplate() {
     return html`
-      ${this.dictionaryAdjacent ? this.dictionaryAdjacent.map(dicAdjacentItem => html`
-        <li class="${this._calculateClass(dicAdjacentItem.glossWord)}">${unsafeHTML(dicAdjacentItem.glossText)}</li>
-      `) : ''}
+      ${this.dictionaryAdjacent
+        ? this.dictionaryAdjacent.map(
+            dicAdjacentItem => html`
+              <li class="${this._calculateClass(dicAdjacentItem.glossWord)}">
+                ${unsafeHTML(dicAdjacentItem.glossText)}
+              </li>
+            `
+          )
+        : ''}
     `;
   }
 
   get dictionaryEntriesTemplate() {
     return html`
-      ${this.dictionaryResults ? this.dictionaryResults.map(dicItem => html`
-        <div class="dictionary-book-entry">
-          <div class="dictionary-source">${this._getDictionaryTitle(dicItem.dictname)}</div>
-          <div class="dictionary-text">${unsafeHTML(dicItem.text)}</div>
-        </div>
-      `) : ''}
+      ${this.dictionaryResults
+        ? this.dictionaryResults.map(
+            dicItem => html`
+              <div class="dictionary-book-entry">
+                <div class="dictionary-source">${this._getDictionaryTitle(dicItem.dictname)}</div>
+                <div class="dictionary-text">${unsafeHTML(dicItem.text)}</div>
+              </div>
+            `
+          )
+        : ''}
     `;
   }
 
@@ -196,7 +216,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       adjacent: { type: Boolean },
       dictionaryAdjacent: { type: Array },
       dictionarySimilar: { type: Array },
-    }
+    };
   }
 
   constructor() {
@@ -209,11 +229,11 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     this.dictionaryWord = '';
     this.localizedStringsPath = '/localization/elements/sc-page-dictionary';
     this.dictionaryTitles = {
-      'ncped': 'New Concise Pali English Dictionary',
-      'cped': 'Concise Pali English Dictionary',
-      'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
-      'dppn': 'Dictionary of Pali Proper Names',
-      'pts': 'PTS Pali English Dictionary'
+      ncped: 'New Concise Pali English Dictionary',
+      cped: 'Concise Pali English Dictionary',
+      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      dppn: 'Dictionary of Pali Proper Names',
+      pts: 'PTS Pali English Dictionary',
     };
     this.adjacent = true;
     this.dictionaryAdjacent = [];
@@ -233,7 +253,11 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     if (changedProps.has('glossaryReturns') || changedProps.has('similarReturns')) {
       this._getGlossaryItems(this.glossaryReturns, this.similarReturns);
     }
-    if (changedProps.has('glossaryReturns') || changedProps.has('similarReturns') || changedProps.has('adjacent') ) {
+    if (
+      changedProps.has('glossaryReturns') ||
+      changedProps.has('similarReturns') ||
+      changedProps.has('adjacent')
+    ) {
       this._getGlossaryItems(this.glossaryReturns, this.adjacentReturns, this.adjacent);
     }
   }
@@ -243,10 +267,12 @@ class SCPageDictionary extends LitLocalized(LitElement) {
   }
 
   async _fetchDictionary() {
-    fetch(this._computeUrl()).then(r => r.json()).then((response) => {
-      this.dictionaryReturns = response;
-      this._didRespond();
-    });
+    fetch(this._computeUrl())
+      .then(r => r.json())
+      .then(response => {
+        this.dictionaryReturns = response;
+        this._didRespond();
+      });
   }
 
   async _fetchAdjacent() {
@@ -269,7 +295,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
 
   _didRespond() {
     let dictsUsed = {};
-    let finalResults = [];
+    const finalResults = [];
     for (let key in this.dictionaryTitles) {
       dictsUsed = this._sortDictionaryResults(key);
       if (dictsUsed) {
@@ -280,11 +306,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
   }
 
   _sortDictionaryResults(dictionary) {
-    for (let item in this.dictionaryReturns) {
-      if (this.dictionaryReturns[item].dictname == dictionary) {
-        return this.dictionaryReturns[item];
-      }
-    }
+    return this.dictionaryReturns.find(x => x.dictname === dictionary);
   }
 
   _getDictionaryTitle(dictname) {
@@ -311,12 +333,12 @@ class SCPageDictionary extends LitLocalized(LitElement) {
 
   // Calculating if the current item is selected
   _calculateClass(item) {
-    return (item === this.dictionaryWord) ? 'selected-terms-item' : '';
+    return item === this.dictionaryWord ? 'selected-terms-item' : '';
   }
 
   _getGlossaryItems(glossaryReturns, inputArray, adjacent = false) {
     if (inputArray) {
-      let glossary = [];
+      const glossary = [];
       let glossaryObject = {};
       let glossText = '';
       if (glossaryReturns) {
@@ -324,15 +346,15 @@ class SCPageDictionary extends LitLocalized(LitElement) {
           let glossLookup = inputArray[0][glossWord];
           glossText = `<a href="/define/${glossLookup}">${glossLookup}`;
           if (glossaryReturns[0][glossLookup]) {
-            glossText += `<i> (${glossaryReturns[0][glossLookup]})</i></a>`
+            glossText += `<i> (${glossaryReturns[0][glossLookup]})</i></a>`;
           }
-          glossaryObject = { "glossWord": glossLookup, "glossText": glossText };
+          glossaryObject = { glossWord: glossLookup, glossText: glossText };
           glossary.push(glossaryObject);
         }
         if (adjacent) {
-          return this.dictionaryAdjacent = glossary;
+          return (this.dictionaryAdjacent = glossary);
         } else {
-          return this.dictionarySimilar = glossary;
+          return (this.dictionarySimilar = glossary);
         }
       }
     }
@@ -344,15 +366,17 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     const dictionaryResultsText = this.localize('dictionaryResultsText');
     const defineFor = this.localize('definitionsFor');
 
-    document.dispatchEvent(new CustomEvent('metadata', {
-      detail: {
-        pageTitle: `${defineFor}: ${this.dictionaryWord}`,
-        title: `${dictionaryResultsText} ${this.dictionaryWord}`,
-        description: description,
-        bubbles: true,
-        composed: true
-      }
-    }));
+    document.dispatchEvent(
+      new CustomEvent('metadata', {
+        detail: {
+          pageTitle: `${defineFor}: ${this.dictionaryWord}`,
+          title: `${dictionaryResultsText} ${this.dictionaryWord}`,
+          description: description,
+          bubbles: true,
+          composed: true,
+        },
+      })
+    );
   }
 }
 

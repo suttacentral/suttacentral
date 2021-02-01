@@ -1,258 +1,222 @@
-import { html } from 'lit-element';
+import { css } from 'lit-element';
 
-export const dictStyles = html`
-<style>
- dl
-{
-  margin-top: var(--sc-size-sm);
-}
+export const dictStyles = css`
+  dl {
+    margin-top: var(--sc-size-sm);
+  }
 
-dd
-{
-  font-family: var(--sc-serif-font);
-  font-size: var(--sc-skolar-font-size-md);
-  font-weight: 400;
-  line-height: 1.5;
+  dd {
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 1.5;
 
-  margin: 0;
-}
+    margin: 0;
+  }
 
-dd > p
-{
-  margin: 0 0 .5rem 0;
-}
+  dd > p {
+    margin: 0 0 0.5rem 0;
+  }
 
-dd + dt
-{
-  margin-top: 1rem;
-}
+  dd + dt {
+    margin-top: 1rem;
+  }
 
-dfn
-{
-  font-family: var(--sc-serif-font);
-  font-size: var(--sc-skolar-font-size-static-subtitle);
-  font-weight: 400;
-  font-style: normal;
-  line-height: 32px;
+  dfn {
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-weight: 400;
+    font-style: normal;
+    line-height: 32px;
 
-  text-transform: lowercase;
+    text-transform: lowercase;
 
-  color: var(--sc-primary-accent-color);
-}
+    color: var(--sc-primary-accent-color);
+  }
 
-.dppn-entry dfn
-{
-  text-transform: capitalize;
-}
+  .dppn-entry dfn {
+    text-transform: capitalize;
+  }
 
-.case
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-s);
-  font-weight: 400;
-  line-height: 24px;
+  .case {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
+    line-height: 24px;
 
-  display: block;
-  overflow: hidden;
+    display: block;
+    overflow: hidden;
 
-  white-space: nowrap;
-  letter-spacing: var(--sc-caps-letter-spacing);
+    white-space: nowrap;
+    letter-spacing: var(--sc-caps-letter-spacing);
 
-  color: var(--sc-secondary-text-color);
+    color: var(--sc-secondary-text-color);
 
-  font-variant-caps: all-small-caps;
-}
+    font-variant-caps: all-small-caps;
+  }
 
-dd .ref
-{
-  font-family: var(--sc-sans-font);
-  font-weight: 600;
-  font-style: normal;
+  dd .ref {
+    font-family: var(--sc-sans-font);
+    font-weight: 600;
+    font-style: normal;
 
-  padding: 0 4px;
+    padding: 0 4px;
 
-  white-space: nowrap;
-  letter-spacing: normal;
+    white-space: nowrap;
+    letter-spacing: normal;
 
-  color: var(--sc-secondary-text-color);
-  border-radius: 8px;
-  background-color: rgba(159, 158, 157, 0.15);
+    color: var(--sc-secondary-text-color);
+    border-radius: 8px;
+    background-color: rgba(159, 158, 157, 0.15);
 
-  font-variant-caps: normal;
-}
+    font-variant-caps: normal;
+  }
 
-dd .author
-{
-  letter-spacing: var(--sc-caps-letter-spacing);
+  dd .author {
+    letter-spacing: var(--sc-caps-letter-spacing);
 
-  font-variant-caps: all-small-caps;
-}
+    font-variant-caps: all-small-caps;
+  }
 
-dd .eti
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-s);
+  dd .eti {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-s);
 
-  color: var(--sc-secondary-text-color);
-}
+    color: var(--sc-secondary-text-color);
+  }
 
-dd .term
-{
-  font-weight: normal;
-}
+  dd .term {
+    font-weight: normal;
+  }
 
-dd .abbr
-{
-  font-family: var(--sc-sans-font);
-  font-size: var(--sc-skolar-font-size-s);
-  font-weight: bold;
+  dd .abbr {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: bold;
 
-  padding: var(--sc-size-xs) var(--sc-size-sm);
+    padding: var(--sc-size-xs) var(--sc-size-sm);
 
-  color: var(--sc-tertiary-text-color);
-  border-radius: var(--sc-size-xxs);
-  background-color: var(--sc-tertiary-text-color);
-}
+    color: var(--sc-tertiary-text-color);
+    border-radius: var(--sc-size-xxs);
+    background-color: var(--sc-tertiary-text-color);
+  }
 
-dd .inline-li
-{
-  font-family: var(--sc-sans-font);
-  font-weight: bold;
+  dd .inline-li {
+    font-family: var(--sc-sans-font);
+    font-weight: bold;
 
-  padding: 0 8px;
+    padding: 0 8px;
 
-  color: var(--sc-secondary-text-color);
-}
+    color: var(--sc-secondary-text-color);
+  }
 
-dd .square
-{
-  font-size: 2.4em;
-  line-height: 0;;
+  dd .square {
+    font-size: 2.4em;
+    line-height: 0;
+    display: inline-block;
 
-  display: inline-block;
+    margin-left: -8px;
 
-  margin-left: -8px;
+    vertical-align: middle;
 
-  vertical-align: middle;
+    color: var(--sc-disabled-text-color);
+  }
 
-  color: var(--sc-disabled-text-color);
-}
+  dd ol {
+    margin: 0;
+    padding: 0 0 0 1rem;
+  }
 
-dd ol
-{
-  margin: 0;
-  padding: 0 0 0 1rem;
-}
+  dd li {
+    padding-left: clamp(0rem, 3vw, 1rem);
+  }
 
-dd li
-{
-  padding-left: clamp(0rem, 3vw, 1rem);
-}
+  li::marker {
+    font-family: var(--sc-sans-font);
+    font-weight: bold;
 
-li::marker
-{
-  font-family: var(--sc-sans-font);
-  font-weight: bold;
+    color: var(--sc-secondary-text-color);
+  }
 
-  color: var(--sc-secondary-text-color);
-}
+  .little {
+    list-style-type: decimal;
+  }
 
-.little
-{
-  list-style-type: decimal;
-}
+  .little li {
+    margin: 0 0 0 0;
+  }
 
-.little li
-{
-  margin: 0 0 0 0;
-}
+  dd ul {
+    margin: 0 0 var(--sc-size-sm) var(--sc-size-md-larger) !important;
+    list-style-type: disc;
+  }
 
-dd ul
-{
-  margin: 0 0 var(--sc-size-sm) var(--sc-size-md-larger) !important;;
+  dd ol + ul.compounds {
+    margin-top: var(--sc-size-md-larger) !important;
+  }
 
-  list-style-type: disc;
-}
+  dd ol li {
+    margin: var(--sc-size-xs) 0 0 0;
+  }
 
-dd ol + ul.compounds
-{
-  margin-top: var(--sc-size-md-larger) !important;
-}
+  .compounds {
+    margin-left: var(--sc-size-md-larger) !important;
 
-dd ol li
-{
-  margin: var(--sc-size-xs) 0 0 0;
-}
+    list-style-type: none;
+  }
 
-.compounds
-{
-  margin-left: var(--sc-size-md-larger) !important;
+  .lower-greek {
+    list-style-type: lower-greek;
+  }
 
-  list-style-type: none;
-}
+  .compounds > li::before {
+    margin-left: -12px;
 
-.lower-greek
-{
-  list-style-type: lower-greek;
-}
+    content: '◦';
 
-.compounds > li::before
-{
-  margin-left: -12px;
+    color: var(--sc-disabled-text-color);
+  }
 
-  content: '◦';
+  .google-maps {
+    height: 480px;
+    margin: var(--sc-size-md) 0;
+  }
 
-  color: var(--sc-disabled-text-color);
-}
+  .google-maps iframe {
+    width: 100%;
+    height: 480px;
 
-.google-maps
-{
-  height: 480px;
-  margin: var(--sc-size-md) 0;
-}
+    border: none;
+  }
 
-.google-maps iframe
-{
-  width: 100%;
-  height: 480px;
+  .info {
+    display: none;
+  }
 
-  border: none;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: normal;
 
-.info
-{
-  display: none;
-}
+    text-align: left;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6
-{
-  font-weight: normal;
+  dd a {
+    text-decoration: underline;
 
-  text-align: left;
-}
+    color: inherit;
 
-dd a
-{
-  text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color);
+  }
 
-  color: inherit;
+  dd a:hover {
+    color: var(--sc-primary-color);
+  }
 
-  text-decoration-color: var(--sc-primary-color);
-}
-
-dd a:hover
-{
-  color: var(--sc-primary-color);
-}
-
-dd a:visited
-{
-  text-decoration-color: var(--sc-primary-color-dark);
-}
-
-</style>`;
+  dd a:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+`;
