@@ -1,9 +1,6 @@
-import pytest
-
-from data_loader.textfunctions import pali_sort_key, asciify_roman
-
 from random import Random
 
+from data_loader.textfunctions import pali_sort_key, asciify_roman
 
 # A random selection of pali words, in proper alphabetical order
 pali_words = [

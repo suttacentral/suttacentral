@@ -1,13 +1,9 @@
-import argparse
-import pathlib
-import sys
 import hashlib
-
-from tempfile import NamedTemporaryFile, TemporaryDirectory
+import pathlib
 from shutil import copy
-import logging
-import fontTools.subset
+from tempfile import NamedTemporaryFile, TemporaryDirectory
 
+import fontTools.subset
 from flask import current_app
 
 
@@ -63,15 +59,15 @@ _cache = FontCache()
 
 
 def subset_files(
-    name_file_mapping, text='', flavor=None, out_dir=None, suffix='subset'
+        name_file_mapping, text='', flavor=None, out_dir=None, suffix='subset'
 ):
     extra_options = ['--layout-features+=liga,dlig,smcp,c2sc,onum']
 
     subset_mapping = {}
 
     text = (
-        text
-        + ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+            text
+            + ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
     )
     text = ''.join(sorted(set(text)))
 
@@ -94,11 +90,10 @@ def subset_files(
             else:
                 fontTools.subset.main(
                     args=[
-                        str(file),
-                        f'--output-file={str(outfile)}',
-                        f'--text-file={subset_text_file.name}',
-                    ]
-                    + extra_options
+                             str(file),
+                             f'--output-file={str(outfile)}',
+                             f'--text-file={subset_text_file.name}',
+                         ] + extra_options
                 )
                 _cache.add_to_cache(cache_key, outfile)
 

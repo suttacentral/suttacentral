@@ -1,8 +1,9 @@
-import regex
 import logging
 from collections import defaultdict
-from data_loader.util import humansortkey
 
+import regex
+
+from data_loader.util import humansortkey
 
 # This regex will identify a prefix and numerical ranges. Uses backreferences to be more magical.
 # can dn1, an1.1-10, an1.1-10
@@ -93,10 +94,10 @@ class UidMatcher:
         candidates = self.prefix_index.get(prefix, [])
         for doc in candidates:
             if (
-                num_start <= doc['num_end']
-                and num_end >= doc['num_start']
-                or doc['num_start'] <= num_end
-                and doc['num_end'] >= num_start
+                    num_start <= doc['num_end']
+                    and num_end >= doc['num_start']
+                    or doc['num_start'] <= num_end
+                    and doc['num_end'] >= num_start
             ):
                 yield doc['uid']
 

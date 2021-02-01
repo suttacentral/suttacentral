@@ -66,13 +66,13 @@ class Language(Model):
     collection = 'language'  # this is constant
 
     def __init__(
-        self,
-        uid: str,
-        name: str,
-        is_root: bool,
-        iso_code: str,
-        *args,
-        **kwargs,
+            self,
+            uid: str,
+            name: str,
+            is_root: bool,
+            iso_code: str,
+            *args,
+            **kwargs,
     ):
         super().__init__(*args, **kwargs)
         self.uid = uid
@@ -287,18 +287,18 @@ class HtmlText(Model):
     collection = 'html_text'
 
     def __init__(
-        self,
-        uid,
-        lang,
-        name,
-        author,
-        volpage,
-        prev_uid,
-        next_uid,
-        mtime,
-        text,
-        *args,
-        **kwargs,
+            self,
+            uid,
+            lang,
+            name,
+            author,
+            volpage,
+            prev_uid,
+            next_uid,
+            mtime,
+            text,
+            *args,
+            **kwargs,
     ):
         self.uid = uid
         self.lang = lang
@@ -383,7 +383,7 @@ class Relationship(Model):
         _from = nav_docs.pop(0)._id
         for nav_doc in nav_docs:
             if random() > 0.5:
-                from_ = f'{_from}#{randint(1,15)}'
+                from_ = f'{_from}#{randint(1, 15)}'
                 to = f'{nav_doc._id}#{randint(1, 15)}'
             else:
                 from_ = _from

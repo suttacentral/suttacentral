@@ -22,7 +22,7 @@ class ScCsvDialect(csv.Dialect):
 def table_reader(tablename):
     """ Like csv.DictReader but returns named tuples (2x faster also) """
     with (search.table_dir / (tablename + '.csv')).open(
-        'r', encoding='utf-8', newline=''
+            'r', encoding='utf-8', newline=''
     ) as f:
         reader = csv.reader(f, dialect=ScCsvDialect)
         field_names = next(reader)

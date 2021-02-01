@@ -1,7 +1,7 @@
-import requests
 import asyncio
-from pyppeteer import connect
 
+import requests
+from pyppeteer import connect
 
 _ws_url = None
 

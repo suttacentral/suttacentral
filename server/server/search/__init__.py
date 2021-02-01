@@ -1,38 +1,16 @@
 import logging
-import elasticsearch
-from elasticsearch import ConnectionError
+import os
 from pathlib import Path
 
-import os
+import elasticsearch
 
 es = elasticsearch.Elasticsearch(
     [{'host': os.getenv("ES_HOST"), 'port': int(os.getenv("ES_PORT"))}]
 )
 
-
-def is_available():
-    try:
-        if not es.ping():
-            return False
-        return True
-    except ConnectionError:
-        return False
-
-
 # Make elasticsearch STFU
 logging.getLogger('elasticsearch').setLevel('ERROR')
 logging.getLogger('elasticsearch.trace').setLevel('ERROR')
-
-
-def update_indexes():
-    import search.texts  # Yes, it has to be here
-
-    search.texts.update()
-
-
-def reload_constants():
-    """Reload runtime constants."""
-    set_constants()
 
 
 def set_constants():

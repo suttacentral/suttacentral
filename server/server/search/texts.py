@@ -7,8 +7,8 @@ from elasticsearch.helpers import scan
 from tqdm import tqdm
 
 from common.arangodb import get_db
-from data_loader import change_tracker
 from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
+from data_loader import change_tracker
 from search.indexer import ElasticIndexer
 
 logger = logging.getLogger('search.texts')
@@ -194,9 +194,6 @@ class TextIndexer(ElasticIndexer):
             print(f'Indexing {len(to_add)} new or modified texts to {lang} index')
 
             yield from self.yield_html_texts(lang, size, to_add=to_add)
-
-    def index_name_from_uid(self, lang_uid):
-        return lang_uid
 
     @staticmethod
     def load_index_config(config_name):
