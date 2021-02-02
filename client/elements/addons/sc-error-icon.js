@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from "lit-element";
+import { LitElement, html} from "lit-element";
 
 import { LitLocalized } from './localization-mixin';
 
@@ -68,7 +68,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
       </style>
 
       <div class="error">
-        ${icon}(image)
+        ${icon[image]}
         <div>${this.localize(message)}</div>
       </div>
     `;
