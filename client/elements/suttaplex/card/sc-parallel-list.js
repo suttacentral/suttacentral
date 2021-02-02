@@ -59,13 +59,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return 'sc-iron-icons:compare-arrows';
+          return icon['compare_arrows'];
         }
-        return 'sc-iron-icons:swap-horiz';
+        return icon['swap_horiz'];
       case 'retelling':
-        return 'sc-iron-icons:cached';
+        return icon['cached'];
       case 'mention':
-        return 'sc-iron-icons:format-quote';
+        return icon[`'format_quote`];
       default:
         return '';
     }
@@ -126,7 +126,7 @@ class SCParallels extends LitLocalized(LitElement) {
                   </a>
                 </td>
                 <td class="parallels-relation-cell" title="${this.getFirstParallelIconTitle(rootId)}">
-                  <iron-icon .icon="${this.getFirstParallelIcon(rootId)}" ></iron-icon>
+                  ${this.getFirstParallelIcon(rootId)}
                 </td>
                 <td class="parallels-parallel-cell">
                   <sc-parallel-item 
@@ -140,7 +140,7 @@ class SCParallels extends LitLocalized(LitElement) {
               ${this.getOtherParallels(rootId).map(item => html`
                 <tr>
                   <td class="parallels-relation-cell" title="${this.computeIconTitle(item)}">
-                    <iron-icon .icon="${this.getParallelIcon(item)}"></iron-icon>
+                    ${this.getParallelIcon(item)}
                   </td>
                   <td class="parallels-parallel-cell">
                     <sc-parallel-item .parallelItem="${item.to}" .remark="${item.remark}" .expansionData="${this.expansionData}"></sc-parallel-item>

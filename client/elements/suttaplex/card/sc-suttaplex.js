@@ -78,7 +78,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get difficultyLevelIconName() {
-    return `icon.${this.difficulty}`;
+    return icon[this.difficulty];
   }
 
   get areParallelsAvailable() {
