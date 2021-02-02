@@ -193,13 +193,75 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       ${this.dictionaryResults
         ? this.dictionaryResults.map(
             dicItem => html`
-              <div class="dictionary-book-entry">
-                <div class="dictionary-source">${this._getDictionaryTitle(dicItem.dictname)}</div>
-                <div class="dictionary-text">${unsafeHTML(dicItem.text)}</div>
-              </div>
+              ${dicItem.text
+                ? html`
+                    <div class="dictionary-book-entry">
+                      <div class="dictionary-source">
+                        ${this._getDictionaryTitle(dicItem.dictname)}
+                      </div>
+                      <div class="dictionary-text">${dicItem.text}</div>
+                    </div>
+                  `
+                : ''}
             `
           )
         : ''}
+    `;
+  }
+
+  _dicSimpleItemToHtml(dicItem) {
+    if (!dicItem) {
+      return html``;
+    }
+    return html`
+      <dl>
+        <dt>
+          <dfn class="entry" lang="pi" translate="no">${dicItem.entry}</dfn>
+        </dt>
+        <dd>
+          ${dicItem.grammar
+            ? html`
+                <span class="grammar">${dicItem.grammar}</span>
+              `
+            : ''}
+          ${dicItem.definition
+            ? html`
+                <ol class="definition">
+                  ${dicItem.definition.constructor === Array
+                    ? html`
+                        ${dicItem.definition.map(
+                          item =>
+                            html`
+                              <li>${item}</li>
+                            `
+                        )}
+                      `
+                    : html`
+                        <li>${dicItem.definition}</li>
+                      `}
+                </ol>
+              `
+            : ''}
+          ${dicItem.xr
+            ? html`
+                <ul class="xr">
+                  ${dicItem.constructor === Array
+                    ? html`
+                        ${dicItem.xr.map(
+                          item =>
+                            html`
+                              <li><a href="/define/${item}">${item}</a></li>
+                            `
+                        )}
+                      `
+                    : html`
+                        <li><a href="/define/${dicItem.xr}">${dicItem.xr}</a></li>
+                      `}
+                </ul>
+              `
+            : ''}
+        </dd>
+      </dl>
     `;
   }
 
@@ -294,6 +356,16 @@ class SCPageDictionary extends LitLocalized(LitElement) {
   }
 
   _didRespond() {
+    this.dictionaryReturns.forEach(dicItem => {
+      if (!dicItem.text) {
+        dicItem.text = this._dicSimpleItemToHtml(dicItem);
+      } else {
+        dicItem.text = html`
+          ${unsafeHTML(dicItem.text)}
+        `;
+      }
+    });
+
     let dictsUsed = {};
     const finalResults = [];
     for (let key in this.dictionaryTitles) {

@@ -720,8 +720,42 @@ LET adjacent_words = (
         SORT selected.num
         RETURN selected.word
     )
-    
+
 RETURN UNIQUE(adjacent_words)
+'''
+
+DICTIONARY_FULL = '''
+LET dict_simple = (
+    FOR dict IN dictionaries_simple
+        FILTER dict.entry == @word
+        RETURN {
+            from: dict.from,
+            to: dict.to,
+            entry: dict.entry,
+            grammar: dict.grammar,
+            definition: dict.definition,
+            xr: dict.xr,
+            dictname: dict.dictname,
+            text: null
+        }
+)
+
+LET dict_complex = (
+    FOR dict IN dictionaries_complex
+        FILTER dict.word == @word
+        RETURN {
+            from: dict.from,
+            to: dict.to,
+            entry: dict.word,
+            grammar: null,
+            definition: null,
+            xr: null,
+            dictname: dict.dictname,
+            text: dict.text,
+        }
+)
+
+RETURN APPEND(dict_simple, dict_complex)
 '''
 
 DICTIONARY_SIMILAR = '''
@@ -738,7 +772,8 @@ RETURN SLICE(words, 0, 10)
 '''
 
 DICTIONARY_SIMPLE = '''
-FOR dict IN dictionaries_simple FILTER dict.from == @from AND dict.to == @to 
+FOR dict IN dictionaries_simple
+    FILTER dict.from == @from AND dict.to == @to
     RETURN {
         entry: dict.entry,
         grammar: dict.grammar,
@@ -752,14 +787,16 @@ LET expansion_item = (
     FOR entry IN uid_expansion
         RETURN { [ entry.uid ]: [ entry.acro, entry.name ] }
     )
-    
+
 RETURN MERGE(expansion_item)
 '''
 
 
 class PWA:
     MENU = '''
-LET langs = UNION(@languages OR [], @include_root ? (FOR lang IN language FILTER lang.is_root RETURN lang.uid) : [])
+LET langs = UNION(@languages ? @languages : [], @include_root ? (
+        FOR lang IN language FILTER lang.is_root RETURN lang.uid
+    ) : [])
 
 LET menu = (
     FOR div IN 1..1 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
@@ -779,10 +816,10 @@ LET grouped_children = MERGE(
         RETURN {[is_div ? 'branch' : 'leaf']: uids}
 )
 
-LET suttaplex = grouped_children['div']
+LET suttaplex = grouped_children['branch']
 
 LET texts = (
-        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['text']
+        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
             COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: text.author_uid}
             RETURN {uid, translations:(
                 FOR text IN groups
