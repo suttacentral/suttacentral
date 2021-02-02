@@ -15,6 +15,9 @@ import { store } from '../../redux-store';
 class SCOfflinePage extends LitLocalized(LitElement) {
   static get properties() {
     return {
+      isCanceled: {
+        type: Boolean,
+      },
       isPWASupport: {
         type: Boolean,
       },
@@ -141,6 +144,7 @@ class SCOfflinePage extends LitLocalized(LitElement) {
     this.isDownloadPaused = false;
     this.downloadProgressPercentage = 0;
     this.downloadedUrls = store.getState().downloadedUrls;
+    this.isCanceled = false;
   }
 
   connectedCallback() {
@@ -332,6 +336,11 @@ class SCOfflinePage extends LitLocalized(LitElement) {
         return;
       }
       this.cacheDownloadInProgress = false;
+      if (this.isCanceled) {
+        this.isCanceled = false;
+        this._showToast('info', this.localize('canceled'));
+        return;
+      }
       if (failed === 0) {
         this._saveDownloadedSettings();
         this._showToast(
@@ -351,30 +360,34 @@ class SCOfflinePage extends LitLocalized(LitElement) {
 
   _saveDownloadedSettings() {
     let downloadedPWASettings = Object.assign({}, this.downloadedPWASettings);
-    if (
-      this.shouldDownloadRootTexts &&
-      (!downloadedPWASettings.languages.root || !downloadedPWASettings.languages.root.parallels)
-    ) {
-      downloadedPWASettings.languages.root = { parallels: this.shouldDownloadParallels };
+    if ('languages' in downloadedPWASettings) {
+      if (
+        !downloadedPWASettings.languages.root ||
+        !downloadedPWASettings.languages.root.parallels
+      ) {
+        downloadedPWASettings.languages.root = { parallels: this.shouldDownloadParallels };
+      }
+      if (
+        !downloadedPWASettings.languages[this.chosenLanguageIsoCode] ||
+        !downloadedPWASettings.languages[this.chosenLanguageIsoCode].parallels
+      ) {
+        downloadedPWASettings.languages[this.chosenLanguageIsoCode] = {
+          parallels: this.shouldDownloadParallels,
+        };
+      }
     }
-    if (
-      !downloadedPWASettings.languages[this.chosenLanguageIsoCode] ||
-      !downloadedPWASettings.languages[this.chosenLanguageIsoCode].parallels
-    ) {
-      downloadedPWASettings.languages[this.chosenLanguageIsoCode] = {
-        parallels: this.shouldDownloadParallels,
-      };
+    if ('lookups' in downloadedPWASettings) {
+      this.paliLookupLanguages.forEach(l => {
+        downloadedPWASettings.lookups.pali[l.isoCode] = !!(
+          l.enabled || downloadedPWASettings.lookups.pali[l.isoCode]
+        );
+      });
+      this.chineseLookupLanguages.forEach(l => {
+        downloadedPWASettings.lookups.chinese[l.isoCode] = !!(
+          l.enabled || downloadedPWASettings.lookups.chinese[l.isoCode]
+        );
+      });
     }
-    this.paliLookupLanguages.forEach(l => {
-      downloadedPWASettings.lookups.pali[l.isoCode] = !!(
-        l.enabled || downloadedPWASettings.lookups.pali[l.isoCode]
-      );
-    });
-    this.chineseLookupLanguages.forEach(l => {
-      downloadedPWASettings.lookups.chinese[l.isoCode] = !!(
-        l.enabled || downloadedPWASettings.lookups.chinese[l.isoCode]
-      );
-    });
     this.actions.saveDownloadedPWASettings(downloadedPWASettings);
   }
 
@@ -556,6 +569,10 @@ class SCOfflinePage extends LitLocalized(LitElement) {
         .card-footer {
           margin: 10px;
         }
+
+        .pointer {
+          cursor: pointer;
+        }
       `,
     ];
   }
@@ -576,15 +593,18 @@ class SCOfflinePage extends LitLocalized(LitElement) {
   }
 
   _resumeOrPauseDownload() {
-    this.isDownloadPaused = !this.isDownloadPaused;
-    this.isDownloadPaused ? this._pauseDownload() : this._resumeDownload();
+    if (this.cacheDownloadInProgress) {
+      this.isDownloadPaused = !this.isDownloadPaused;
+      this.isDownloadPaused ? this._pauseDownload() : this._resumeDownload();
+    }
   }
 
   _stopDownload() {
-    this.D3queue.abort();
-    delete this.D3queue;
-    this.cacheDownloadInProgress = false;
-    this._showToast('info', this.localize('canceled'));
+    if ('D3queue' in this) {
+      this.isCanceled = true;
+      this.D3queue.abort();
+      delete this.D3queue;
+    }
   }
 
   _resumeDownload() {
@@ -705,21 +725,29 @@ class SCOfflinePage extends LitLocalized(LitElement) {
             label="${this.localize('addToHomeScreen')}"
           ></mwc-button>
         </div>
-        <div class="row">
-          <div class="card">
-            <div class="card-header">
-              ${this.localize('downloading')}: ${this.currentDownloadingUrl}
-            </div>
-            <div class="card-body">
-              <span @click="${this._resumeOrPauseDownload}">${icons['play_arrow']}</span>
-              <span @click="${this._stopDownload}">${icons['stop']}</span>
-            </div>
-            <div class="card-footer">
-              <mwc-linear-progress></mwc-linear-progress>
-              <div class="download-progress-percentage">${this.downloadProgressPercentage}%</div>
-            </div>
-          </div>
-        </div>
+        ${this.cacheDownloadInProgress
+          ? html`
+              <div class="row">
+                <div class="card">
+                  <div class="card-header">
+                    ${this.localize('downloading')}: ${this.currentDownloadingUrl}
+                  </div>
+                  <div class="card-body">
+                    <span class="pointer" @click="${this._resumeOrPauseDownload}">
+                      ${icons['play_arrow']}
+                    </span>
+                    <span class="pointer" @click="${this._stopDownload}">${icons['stop']}</span>
+                  </div>
+                  <div class="card-footer">
+                    <mwc-linear-progress></mwc-linear-progress>
+                    <div class="download-progress-percentage">
+                      ${this.downloadProgressPercentage}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `
+          : ''}
       </main>
     `;
   }
