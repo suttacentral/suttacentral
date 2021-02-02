@@ -73,7 +73,7 @@ def pali_sort_key(string):
     i = 0
     while i < len(string):
         char = string[i]
-        multi_char = string[i : i + 2]
+        multi_char = string[i: i + 2]
         if multi_char in _char_value:
             value = _char_value[multi_char]
             i += 1  # advance an extra character

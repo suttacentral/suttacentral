@@ -1,5 +1,4 @@
 import logging
-from inspect import currentframe, getargvalues
 
 import regex
 
@@ -25,9 +24,9 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
                 'yellow',
             }:
                 available.append(index)
-        except Exception as e:
+        except Exception:
             logger.debug(
-                'An exception occured while checking cluster health for index: {}'.format(
+                'An exception occurred while checking cluster health for index: {}'.format(
                     index
                 )
             )
@@ -38,7 +37,7 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
 
 
 def search(
-    query: str, highlight=True, offset=0, limit=10, language=None, restrict=None
+        query: str, highlight=True, offset=0, limit=10, language=None, restrict=None
 ):
     query.strip()
 

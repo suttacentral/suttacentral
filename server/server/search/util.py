@@ -1,36 +1,9 @@
-import regex
-import hashlib
-import itertools
 import time
 from collections import deque
 from functools import lru_cache
 
 from common.arangodb import get_db
 from common.queries import LANGUAGES
-
-
-HASH = hashlib._hashlib.HASH
-
-
-def numericsortkey(string, _split=regex.compile(r'(\d+)').split):
-    """ Intelligently sorts most kinds of data.
-
-    Should work on absolutely any configuration of characters in a string
-    this doesn't mean it'll always order sensibly, just that it wont throw
-    any 'TypeError: unorderable types' exceptions.
-    Also works on all unicode decimal characters, not just ASCII 0-9.
-
-    Does not handle dotted ranges unless the string ends with the range.
-    >>> sorted(['1', '1.1', '1.1.1'], key=numericsortkey)
-    ['1', '1.1', '1.1.1']
-
-    >>> sorted(['1.txt', '1.1.txt', '1.1.1.txt'], key=numericsortkey)
-    ['1.1.1.txt', '1.1.txt', '1.txt']
-
-    """
-
-    # if regex.fullmatch('\d+', s) then int(s) is valid, and vice-verca.
-    return [int(s) if i % 2 else s for i, s in enumerate(_split(str(string)))]
 
 
 class TimedCache:
@@ -60,8 +33,8 @@ class TimedCache:
             while True:
                 append_time, doomed_key = self._added.popleft()
                 if (
-                    now - append_time > self._lifetime
-                    or len(self._added) > self._maxsize
+                        now - append_time > self._lifetime
+                        or len(self._added) > self._maxsize
                 ):
                     del self._values[doomed_key]
                 else:
@@ -120,26 +93,8 @@ def recursive_merge(dict1, dict2):
     return dict1
 
 
-def unique(iterable, key=None):
-    "List unique elements, preserving order. Remember all elements ever seen."
-    # unique_everseen('AAAABBBCCDAABBB') --> A B C D
-    # unique_everseen('ABBCcAD', str.lower) --> A B C D
-    seen = set()
-    seen_add = seen.add
-    if key is None:
-        for element in itertools.filterfalse(seen.__contains__, iterable):
-            seen_add(element)
-            yield element
-    else:
-        for element in iterable:
-            k = key(element)
-            if k not in seen:
-                seen_add(k)
-                yield element
-
-
 @lru_cache(maxsize=1)
 def get_root_language_uids():
     db = get_db()
     languages = db.aql.execute(LANGUAGES)
-    return [l['uid'] for l in languages if l['is_root']]
+    return [lang['uid'] for lang in languages if lang['is_root']]

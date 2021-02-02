@@ -1,6 +1,7 @@
 import pathlib
-from langid import langid
+
 from flask import request
+from langid import langid
 
 identifier = None
 
