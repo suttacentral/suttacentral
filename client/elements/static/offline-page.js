@@ -1,11 +1,11 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 import { LitLocalized } from '../addons/localization-mixin.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-checkbox';
 import '@material/mwc-switch';
 import '@material/mwc-button';
 import '@material/mwc-linear-progress';
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { API_ROOT } from '../../constants';
@@ -625,10 +625,10 @@ class SCOfflinePage extends LitLocalized(LitElement) {
           <p id="pwa-support-info">
             ${this.isPWASupport
               ? html`
-                  ${this.localize('supportsPWAs')} ${icons['check_circle_outline']}
+                  ${this.localize('supportsPWAs')} ${icon.check_circle_outline}
                 `
               : html`
-                  ${this.localize('doesntSupportPWAs')} ${icons['highlight_off']}
+                  ${this.localize('doesntSupportPWAs')} ${icon.highlight_off}
                 `}
           </p>
           <p>${unsafeHTML(this.localize('pwaDescription'))}</p>
@@ -734,9 +734,9 @@ class SCOfflinePage extends LitLocalized(LitElement) {
                   </div>
                   <div class="card-body">
                     <span class="pointer" @click="${this._resumeOrPauseDownload}">
-                      ${icons['play_arrow']}
+                      ${icon.play_arrow}
                     </span>
-                    <span class="pointer" @click="${this._stopDownload}">${icons['stop']}</span>
+                    <span class="pointer" @click="${this._stopDownload}">${icon.stop}</span>
                   </div>
                   <div class="card-footer">
                     <mwc-linear-progress></mwc-linear-progress>
