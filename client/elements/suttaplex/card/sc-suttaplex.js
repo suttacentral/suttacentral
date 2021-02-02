@@ -206,7 +206,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <div class="top-row-icons">
         ${this.difficulty ? html` 
-          <span title="${this.localize(this.difficulty)}">${this.difficultyLevelIconName}</span>
+          <span class='difficulty_icon' title="${this.localize(this.difficulty)}">${this.difficultyLevelIconName}</span>
         ` : ''}
 
       ${this.hasSegmentedTexts ? html`

@@ -13,7 +13,7 @@ export const suttaplexCss = html`
     position: relative;
 
     box-sizing: border-box;
-    margin: 0 0 0 4px;
+    margin: 0;
 }
 
 details p, 
@@ -152,6 +152,19 @@ list-style: none;
 
   .icon {
     fill: var(--sc-disabled-text-color);
+  }
+
+    .difficulty_icon {
+    height: 28px;
+    width: 28px;
+    margin-right: 4px
+  }
+
+  .difficulty_icon .icon{
+    fill: var(--sc-primary-accent-color);
+    stroke: var(--sc-primary-accent-color);
+    height: 28px;
+    width: 28px;
   }
  
   .suttaplex-nerdy-row {
