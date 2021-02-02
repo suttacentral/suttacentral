@@ -65,7 +65,7 @@ class SCParallels extends LitLocalized(LitElement) {
       case 'retelling':
         return icon['cached'];
       case 'mention':
-        return icon[`'format_quote`];
+        return icon['format_quote'];
       default:
         return '';
     }

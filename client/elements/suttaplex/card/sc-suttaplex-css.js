@@ -362,6 +362,10 @@ export const parallelsListCss = html`
     width: 95%;
   }
 
+  .parallels-relation-cell .icon{
+    fill: var(--sc-disabled-text-color)
+  }
+
   .parallels-root-cell,
   .parallels-parallel-cell {
     border-radius: var(--sc-size-sm);
