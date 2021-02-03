@@ -76,13 +76,13 @@ class ArangoDB:
     def connect(self) -> ArangoClient:
         """Connect to the ArangoDB"""
         config = current_app.config['ARANGO_CLIENT']
-        return ArangoClient(host=config['host'], port=config['port'])
+        return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}')
 
     @property
     def client(self) -> ArangoClient:
         """
         Puts client object in g object.
-        :return: ArangoClient object connected to the databse.
+        :return: ArangoClient object connected to the database.
         """
         client = self._get_client_from_g_or_none()
         if client is None:
