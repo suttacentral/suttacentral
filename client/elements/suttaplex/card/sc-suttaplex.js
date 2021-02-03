@@ -142,24 +142,6 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       this.localize('volumeAndPage');
   }
 
-  revealHiddenNerdyRowContent() {
-    const detailsElement = this.shadowRoot.querySelector('.volpage-biblio-info');
-    const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
-    const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
-    const widthReduction = 16;
-
-    if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
-      popup.classList.toggle("show");
-      popup.style.width = nerdyRow.clientWidth - widthReduction;
-      popup.style.marginLeft = `-${nerdyRow.scrollWidth}px`;
-      if (detailsElement) {
-        detailsElement.style.display = 'none';
-      }
-    } else if (detailsElement) {
-      detailsElement.style.display = null;
-    }
-  }
-
   get isCompact() {
     return this.suttaplexListStyle === 'compact' && !this.compactToggle;
   }
@@ -240,7 +222,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
   get nerdyRowTemplate() {
     return html`
-      <div class="suttaplex-nerdy-row" @tap="${this.revealHiddenNerdyRowContent}">
+      <div class="suttaplex-nerdy-row">
         ${this.item.translated_title && this.item.original_title && html`
           <span title="${this.localize('originalTitle')}" class="nerdy-row-element subTitle">
             ${this.item.original_title}
@@ -274,27 +256,6 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           `}
         `}
 
-        <span class="popuptext" id="hidden-nerdy-row">
-          ${this.item.translated_title && this.item.original_title && html`
-            <span title="${this.localize('originalTitle')}" class="nerdy-row-element">
-              ${this.item.original_title}<br>
-            </span>
-          `}
-          ${(this.item.translated_title || this.item.original_title) && html`
-            <span title="${this.acronymTitle}" class="nerdy-row-element">
-              ${this.acronymOrUid}<br>
-            </span>
-          `}
-
-          ${this.item.volpages && html`
-            <span class="book no-margin">
-              <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
-            </span>
-            <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-              ${this.volPage}
-            </span>
-          `}
-        </span>
       </div>`;
   }
 
