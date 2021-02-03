@@ -403,7 +403,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 '''
 
 PARALLELS = '''
-FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationship
+FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
     LET target = DOCUMENT(e._to)
 
     LET legacy_translations = (
@@ -510,7 +510,7 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationshi
 
 SUTTA_VIEW = (
         '''
-    LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
+    LET root_text = DOCUMENT('super_nav_details', @uid)
     
     LET legacy_html = (
         FOR html IN html_text
