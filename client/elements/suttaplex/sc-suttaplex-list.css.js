@@ -28,8 +28,12 @@ export const suttaplexListCss = html`<style>
   }
 
   .vagga-node {
-    padding: 0 var(--sc-size-md) var(--sc-size-md) var(--sc-size-md);
+    padding: var(--sc-size-md) var(--sc-size-md) var(--sc-size-sm) var(--sc-size-md);
     color: var(--sc-secondary-text-color);
+  }
+
+  .vagga-node + .vagga-node{
+    padding-top: 0
   }
 
   .loading-spinner {
