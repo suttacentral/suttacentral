@@ -8,7 +8,7 @@ export default class SCTopSheetCommon extends LitLocalized(LitElement) {
           :host
             {
                 position: absolute;
-                z-index: 1000;
+                z-index: 100;
             
                 display: none;
                 overflow-y: auto;

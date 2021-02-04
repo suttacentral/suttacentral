@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import '@moduware/morph-ripple';
-import '@material/mwc-icon';
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 
 class SCStepper extends LitElement {
   render() {
@@ -92,7 +91,7 @@ class SCStepper extends LitElement {
           text-align: end;
         }
 
-        .arrow {
+        .icon {
           font-size: var(--sc-skolar-font-size-l);
 
           width: var(--sc-size-md-larger);
@@ -119,11 +118,11 @@ class SCStepper extends LitElement {
             margin-left: 20%;
           }
 
-          .arrow-right {
+          .arrow_right {
             margin-left: 1em;
           }
 
-          .arrow-left {
+          .arrow_left {
             margin-right: 1em;
           }
         }
@@ -139,7 +138,7 @@ class SCStepper extends LitElement {
             <a href="${this._getUrl(this.previous)}" class="link">
               <div class="button button-left">
                 <div class="text">
-                  <mwc-icon class="arrow arrow-left">${icons['arrow_left']}</mwc-icon>
+                  ${icon.arrow_left}
                   <div class="text-element">
                     <span class="action">Previous</span>
                     <span class="text-title">${this.previous.name}</span>
@@ -162,7 +161,7 @@ class SCStepper extends LitElement {
                     <span class="action">Next</span>
                     <span class="text-title">${this.next.name}</span>
                   </div>
-                  <mwc-icon class="arrow arrow-right">${icons['arrow_right']}</mwc-icon>
+                  ${icon.arrow_right}
                 </div>
               </div>
               <morph-ripple></morph-ripple>

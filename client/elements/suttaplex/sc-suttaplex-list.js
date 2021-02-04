@@ -1,5 +1,4 @@
 import { html, LitElement } from 'lit-element';
-import '@polymer/paper-item/paper-item.js';
 import '../addons/sc-bouncing-loader';
 import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants.js';

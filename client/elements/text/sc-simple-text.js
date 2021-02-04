@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCLitTextPage } from './sc-lit-text-page.js';
@@ -8,8 +8,9 @@ import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js
 import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
 import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
-import { lookupStyles } from '../lookups/sc-lookup-styles.js';
 import { store } from '../../redux-store';
+
+import { icon } from '../../img/sc-icon';
 
 class SCSimpleText extends SCLitTextPage {
   render() {
@@ -20,11 +21,6 @@ class SCSimpleText extends SCLitTextPage {
           ${typographyLegacyStyles}
           ${typographyI18nStyles}
           ${lookupStyles}
-          :host {
-          --iron-icon-fill-color: var(--sc-disabled-text-color);
-          --iron-icon-height: calc(var(--sc-size-sm) * 1.5);
-          --iron-icon-width: calc(var(--sc-size-sm) * 1.5);
-        }
 
         .image-link {
           cursor: pointer;
@@ -411,11 +407,14 @@ class SCSimpleText extends SCLitTextPage {
     setTimeout(() => {
       item.innerHTML = `
         <span class="image-link">
-            <span class="${prefix}" title="${paragraph.description}">${displayText}</span>
-            <iron-icon title="${this.localize(
-              'viewImage'
-            )}" class="image-book-link" icon="sc-iron-icons:book">
-            </iron-icon>
+            <span class="${prefix}" 
+            title="${paragraph.description}">
+            ${displayText}
+            </span>
+            <span 
+            title="${this.localize('viewImage')}" class="image-book-link">
+            ${icon.book}
+            </span>
         </span>
       `;
       item.classList.add('image-book-link');
@@ -598,232 +597,6 @@ class SCSimpleText extends SCLitTextPage {
       str += '%spback% ';
     }
     return str;
-  }
-
-  _addTooltip(v, tooltip, lookup, states, e, lang) {
-    if (lang === 'pli') {
-      let lookupResult = lookup.lookupWord(v.dataset.latin_text || v.textContent);
-      tooltip.innerHTML = lookupResult.html;
-    } else if (lang === 'lzh') {
-      this._addLzhTooltip(v, lookup, tooltip);
-    }
-    v.parentNode.insertBefore(tooltip, v.nextSibling);
-    setTimeout(() => {
-      if (states.isWordHovered && !states.isTooltipShown) {
-        v.id = `lookup_target${this.tooltipCount}`;
-        tooltip.for = `lookup_target${this.tooltipCount}`;
-        this.tooltipCount++;
-        tooltip.show();
-        states.isTooltipShown = true;
-      }
-    }, 10);
-  }
-
-  _addLzhTooltip(v, lookup, tooltip) {
-    let graphs = v.textContent;
-    let lastNode = v;
-    for (let i = 0; i < 10; i++) {
-      let next = lastNode.nextElementSibling;
-      lastNode = next;
-      if (next !== null) {
-        if (!next.classList.contains('lookup_element')) {
-          i--;
-          continue;
-        }
-        graphs += next.textContent;
-      } else {
-        break;
-      }
-    }
-    let lookupResult = lookup.lookupWord(graphs);
-    tooltip.innerHTML = lookupResult.html;
-    if (lookupResult.length) {
-      setTimeout(() => {
-        this._colorSelectedSibling(v, lookupResult);
-      }, 5);
-    }
-    tooltip.elementCount = lookupResult.length;
-  }
-
-  _colorSelectedSibling(v, lookupResult) {
-    let lastElement = v;
-    for (let i = 0; i < lookupResult.length - 1; i++) {
-      let nextElement = lastElement.nextElementSibling;
-      if (!nextElement) {
-        break;
-      }
-      lastElement = nextElement;
-      if (!nextElement.classList.contains('lookup_element')) {
-        i--;
-        continue;
-      }
-      nextElement.classList.add('green-color');
-    }
-  }
-
-  _removeTooltip(v, tooltip, states) {
-    setTimeout(() => {
-      if (!states.isWordHovered && !states.isTooltipHovered) {
-        v.style.color = '';
-        v.removeAttribute('id');
-        tooltip.hide();
-        states.isTooltipShown = false;
-        let lastElement = v;
-        for (let i = 0; i < tooltip.elementCount; i++) {
-          let nextElement = lastElement.nextElementSibling;
-          if (!nextElement) {
-            break;
-          }
-          lastElement = nextElement;
-          if (!nextElement.classList.contains('lookup_element')) {
-            i--;
-            continue;
-          }
-          if (!nextElement.id) {
-            nextElement.classList.remove('green-color');
-          }
-        }
-      }
-    }, 10);
-  }
-
-  _addLookupTooltips(textContainer, lang, that) {
-    that = that || this;
-    let lookupId;
-    if (lang === 'lzh') {
-      lookupId = 'chinese_lookup';
-    } else if (lang === 'pli') {
-      lookupId = 'pali_lookup';
-    }
-    let lookup = that.shadowRoot.querySelector(`#${lookupId}`);
-    textContainer.querySelectorAll('.lookup_element').forEach(element => {
-      this._addTooltipToElement(that, element, lang, lookup);
-    });
-  }
-
-  _addTooltipToElement(that, word, lang, lookup) {
-    let tooltip = document.createElement('paper-tooltip');
-    this._setTooltipOptions(tooltip, lang);
-    let states = {
-      isWordHovered: false,
-      isTooltipHovered: false,
-      isTooltipShown: false,
-    };
-    word.addEventListener('mouseover', e => {
-      if (
-        (this.isPaliLookupEnabled && lang === 'pli') ||
-        (this.isChineseLookupEnabled && lang === 'lzh')
-      ) {
-        word.style.color = this._getAccentColor(); // It can not be in class because of some strange bug in some cases.
-        states.isWordHovered = true;
-        that._addTooltip(word, tooltip, lookup, states, e, lang);
-      }
-    });
-    word.addEventListener('mouseout', e => {
-      states.isWordHovered = false;
-      setTimeout(() => {
-        if (!states.isTooltipHovered) {
-          word.style.color = '';
-        }
-      }, 0);
-      that._removeTooltip(word, tooltip, states, e);
-    });
-    tooltip.addEventListener('mouseover', e => {
-      states.isTooltipHovered = true;
-    });
-    tooltip.addEventListener('mouseout', e => {
-      states.isTooltipHovered = false;
-      that._removeTooltip(word, tooltip, states, e);
-    });
-  }
-
-  _setTooltipOptions(tooltip) {
-    tooltip.classList.add('lookup-tooltip');
-    tooltip.animationDelay = 0;
-    tooltip.position = 'top';
-    tooltip.manualMode = true;
-    tooltip.fitToVisibleBounds = true;
-    tooltip.offset = 0;
-    tooltip.style['padding-bottom'] = '.2em';
-  }
-
-  _getAccentColor() {
-    const bodyStyle = window.getComputedStyle(document.body);
-    return bodyStyle.getPropertyValue('--sc-primary-accent-color');
-  }
-
-  _conditionallyPutIntoSpans(lang) {
-    if (this.sutta && this.sutta.lang === lang) {
-      this._putIntoSpans('.sutta', lang);
-    }
-  }
-
-  _putIntoSpans(selector, lang) {
-    if (lang === 'pli') {
-      this._putWordsIntoSpans(selector, lang);
-    } else if (lang === 'lzh') {
-      this._putGraphsIntoSpans(selector, lang);
-    }
-  }
-
-  _paliLookupStateChanged() {
-    if (this.hidden) {
-      return;
-    }
-    if (this.isPaliLookupEnabled) {
-      if (!this.spansForWordsGenerated) {
-        this._conditionallyPutIntoSpans('pli');
-      }
-    }
-  }
-
-  _chineseLookupStateChanged() {
-    if (this.hidden) {
-      return;
-    }
-    if (this.isChineseLookupEnabled) {
-      if (!this.spansForGraphsGenerated) {
-        this._conditionallyPutIntoSpans('lzh');
-      }
-    }
-  }
-
-  // Lookup word end
-
-  _markupComment(comment) {
-    comment = comment.replace('(', '').replace(')', '');
-    const commentParts = comment.split(/,/);
-    let commentText = '';
-    for (let item in commentParts) {
-      const checkItem = this.editionsExpansionData[commentParts[item].replace(' ', '')];
-      if (checkItem) {
-        commentText += `${checkItem}<br>`;
-      } else {
-        commentText += `${commentParts[item]}<br>`;
-      }
-    }
-    return commentText;
-  }
-
-  _markupCorrComment(comment, referenceText) {
-    comment = comment.replace('[', '').replace(']', '');
-    const commentParts = comment.split(/→/);
-    let tooltipText = '';
-    if (commentParts[1]) {
-      tooltipText = `
-        ${commentParts[0]}
-        has&nbsp;been&nbsp;corrected&nbsp;to
-        ${commentParts[1]}
-      `;
-    } else {
-      tooltipText = commentParts[0];
-    }
-    return `
-      ${referenceText}
-      <paper-tooltip fit-to-visible-bounds class="corrnote">
-        ${tooltipText}
-      </paper-tooltip>
-    `;
   }
 }
 

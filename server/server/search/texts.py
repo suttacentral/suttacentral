@@ -48,9 +48,9 @@ class TextIndexer(ElasticIndexer):
 
     def extract_fields_from_html(self, data):
         root = lxml.html.fromstring(data, parser=self.htmlparser)
-        text = root.find('body/div')
+        text = root.find('body/article')
         if text is None:
-            raise ValueError("Structure of html is not body > div")
+            raise ValueError("Structure of html is not body > article")
         metaarea = root.cssselect('#metaarea')
         author = []
         if metaarea:
@@ -68,13 +68,13 @@ class TextIndexer(ElasticIndexer):
         for e in root.cssselect('.add'):
             e.drop_tree()
 
-        hgroup = text.cssselect('.hgroup')[0]
-        division = hgroup[0]
-        title = hgroup[-1]
+        header = text.cssselect('header')[0]
+        division = header[0]
+        title = header[-1]
         if title == division:
             division = None
-        others = hgroup[1:-1]
-        hgroup.drop_tree()
+        others = header[1:-1]
+        header.drop_tree()
         content = self.fix_text(text.text_content())
 
         if title is not None:

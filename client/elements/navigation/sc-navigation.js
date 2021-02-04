@@ -6,8 +6,6 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
 import '../addons/sc-bouncing-loader';
-import { icons } from '../../img/sc-icons';
-import '@material/mwc-icon';
 
 class SCNavigation extends LitLocalized(LitElement) {
   static get properties() {

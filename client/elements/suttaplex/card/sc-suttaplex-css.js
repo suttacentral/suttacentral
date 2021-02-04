@@ -13,7 +13,7 @@ export const suttaplexCss = html`
     position: relative;
 
     box-sizing: border-box;
-    margin: 0 0 0 4px;
+    margin: 0;
 }
 
 details p, 
@@ -32,6 +32,32 @@ details ul
     background-color: var(--sc-tertiary-background-color);
     box-shadow: var(--sc-shadow-elevation-4dp);
 }
+
+a.top-menu-button,
+#copy-menu > summary{
+  height: 34px;
+  width: 34px;
+  display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.top-menu-button:hover,
+#copy-menu > summary:hover{
+  background-color: var(--sc-tertiary-background-color);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.top-menu-button:active,
+#copy-menu > summary:active{
+  background-color: var(--sc-textual-info-background-color);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
 
 details ul{
   right: 0px;
@@ -111,47 +137,42 @@ list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    --iron-icon-height: 20px;
-    --iron-icon-width: 20px;    
   }
 
   .top-row .compact {
     cursor: pointer;
   }
 
-  .tx-level-icon {
-    --iron-icon-height: 24px;
-    --iron-icon-width: 24px;
-    margin: 0 var(--sc-size-sm);
-  }
 
-  .top-menu-button {
-    padding: 0;
-    --paper-menu-button-dropdown: {
-      box-shadow: var(--sc-shadow-elevation-8dp);
-    };
-  }
-
-  .top-menu-button .btn-share, .top-menu-button .btn-speaker {
-    align-self: flex-end;
-    width: var(--sc-size-lg);
-    height: var(--sc-size-lg);
-  }
   
   summary {
     cursor: pointer;
     outline: none;
   }
 
-  .btn-speaker, .btn-share {
-    padding: 5px;
-    color: var(--sc-disabled-text-color);
+  .icon {
+    fill: var(--sc-disabled-text-color);
+  }
+
+    .difficulty_icon {
+    height: 28px;
+    width: 28px;
+    margin-right: 4px
+  }
+
+  .difficulty_icon .icon{
+    fill: var(--sc-primary-accent-color);
+    stroke: var(--sc-primary-accent-color);
+    height: 28px;
+    width: 28px;
   }
  
   .suttaplex-nerdy-row {
+  display: inline-flex;
+  gap: 1em;
     font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
+    font-size: var(--sc-skolar-font-size-s);
+    font-weight: 400;
     color: var(--sc-secondary-text-color);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -166,9 +187,10 @@ list-style: none;
       font-variant-caps: all-small-caps;
     }
 
-  .nerdy-row-element + .nerdy-row-element{
-    margin-left: var(--sc-size-md-larger);
-  }
+ .nerdy-row-element{
+  display: inline-flex;
+ align-items: center;
+ }
 
   .popuptext {
     overflow: visible;
@@ -228,6 +250,7 @@ list-style: none;
   .top-row-icons {
     align-items: center;
     display: flex;
+    gap: 0.5em;
   }
 
   #more_par_menu {
@@ -252,10 +275,10 @@ list-style: none;
     margin-bottom: 0;
   }
 
-  .small-icon {
-    --iron-icon-width: 16px;
-    --iron-icon-height: 16px;
-    color: var(--sc-disabled-text-color);
+  .book{
+    width: 16px;
+    height: 16px;
+    fill: var(--sc-disabled-text-color);
   }
 </style>`;
 
@@ -289,20 +312,20 @@ export const suttaplexTxCss = html`
     background-color: var(--sc-primary-color-light-transparent);
   }
 
-  .tx morph-ripple {
-    color: var(--sc-primary-color-medium);
+    .tx:active {
+    background-color: var(--sc-primary-color-light);
   }
 
-  .tx-icon {
-    height: 28px;
-    min-width: 28px;
+
+  .translation {
+    height: 20px;
+    width: 20px;
+    padding: 4px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    --iron-icon-width: 18px;
-    --iron-icon-height: 18px;
-    --iron-icon-fill-color: var(--sc-primary-color);
+    fill: var(--sc-primary-color);
     border: 2px solid var(--sc-primary-color);
   }
 
@@ -328,9 +351,6 @@ export const suttaplexTxCss = html`
         font-weight: 400;
   }
 
-  morph-ripple {
-    --ripple-color: var(--sc-primary-color);
-  }
 </style>`;
 
 export const parallelsListCss = html`
@@ -342,15 +362,27 @@ export const parallelsListCss = html`
     width: 95%;
   }
 
+  .parallels-relation-cell .icon{
+    fill: var(--sc-disabled-text-color)
+  }
+
   .parallels-root-cell,
   .parallels-parallel-cell {
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-tertiary-background-color);
+    transition: background-color 0.2s ease;
   }
   
   .parallels-root-cell:hover,
   .parallels-parallel-cell:hover {
       background-color: var(--sc-primary-color-light-transparent);
+      transition: background-color 0.2s ease;
+  }
+
+    .parallels-root-cell:active,
+  .parallels-parallel-cell:active {
+      background-color: var(--sc-primary-color-light);
+      transition: background-color 0.2s ease;
   }
 
   .parallels-parallel-cell {
@@ -378,10 +410,6 @@ export const parallelsListCss = html`
     top: 0;
     left: 0;
   }
-
-  morph-ripple {
-    color: var(--sc-primary-color-medium);
-  }
   
   .parallels-root-id {
     font-family: var(--sc-sans-font);
@@ -389,7 +417,7 @@ export const parallelsListCss = html`
         font-weight: 400;
   }
 
-  .paper-spinner {
+  sc-bouncing-loader {
     margin: var(--sc-size-md) 0;
     left: 50%;
   }
@@ -397,10 +425,6 @@ export const parallelsListCss = html`
   .parallels-table-body {
     display: block;
     margin-bottom: var(--sc-size-sm);
-  }
-
-  .grey-icon {
-    color: var(--sc-disabled-text-color);
   }
 
   .root-link {
@@ -433,6 +457,7 @@ export const parallelItemCss = html`
         font-size: var(--sc-skolar-font-size-s);
         font-weight: 500;
     word-wrap: normal;
+    margin-bottom: var(--sc-size-xs);
   }
 
   .parallel-item-biblio-info {
@@ -442,7 +467,7 @@ export const parallelItemCss = html`
     box-shadow: var(--sc-shadow-elevation-4dp);
     border-top: var(--sc-border);
     position: absolute;
-    z-index: 200;
+    z-index: 50;
     background-color: var(--sc-secondary-background-color);
     padding: 12px;
     margin: 0 var(--sc-size-xl) 0 0;
@@ -453,57 +478,22 @@ export const parallelItemCss = html`
     color: var(--sc-disabled-text-color);
   }
 
-  .parallel-item-details {
-    font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-    color: var(--sc-secondary-text-color);
-    overflow: hidden;
-  }
-
-  .vertical-margin-xs {
-    margin-top: var(--sc-size-xs);
-    margin-bottom: var(--sc-size-xs);
-  }
-
-  .d-flex {
-    display: flex;
-  }
-
-  .justify-content-space-between {
-    justify-content: space-between;
-  }
-
-  .align-items-center {
-    align-items: center;
-  }
-
-  .parallel-item-volpages-container {
+  .parallel-item-nerdy-row {
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
-  }
-  
-  .parallel-item-volpages-container > div:not(:last-of-type) {
-    margin-right: var(--sc-size-md);
+    gap: 1em;
+    color: var(--sc-secondary-text-color);
   }
 
   .parallel-item {
     flex-wrap: wrap;
   }
 
-  .nerdy-row-summary {
-      overflow: hidden;
-  }
-  
-  morph-ripple {
-    color: var(--sc-primary-color-medium);
-  }
+  .nerdy-row-element{
+    display: inline-flex;
+    place-items: center
 
-  iron-icon {
-    color: var(--sc-disabled-text-color);
-    --iron-icon-height: var(--sc-size-md);
-    --iron-icon-width: var(--sc-size-md);
   }
   
   .disabled {
@@ -511,23 +501,23 @@ export const parallelItemCss = html`
     background-color: var(--sc-tertiary-background-color);
   }
   
-  .disabled morph-ripple {
-    display: none;
-  }
-  
   summary {
     cursor: pointer;
     outline: none;
-  }
-  
-  .icon-outline {
-    cursor: help;
-    --iron-icon-height: 20px;
-    --iron-icon-width: 20px;
+    display: inline-flex;
+    align-items: center
   }
 
-  morph-ripple {
-    --ripple-color: var(--sc-primary-color);
+  .book{
+    display: inline-flex;
+
   }
+  .icon{
+    fill: var(--sc-disabled-text-color);
+    width: 16px;
+    height: 16px;
+
+  }
+
 </style>
 `;
