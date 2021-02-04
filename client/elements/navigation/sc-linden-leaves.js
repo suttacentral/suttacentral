@@ -1,15 +1,14 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormalModeStyles } from './sc-navigation-styles.js';
 
-import '@material/mwc-icon';
 import '@moduware/morph-ripple';
 
 import '../menus/sc-universal-action-items.js';
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
@@ -19,7 +18,10 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         height: 48px;
 
-        background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 73);
+
+        position: relative;
+        z-index: 200
       }
 
       nav {
@@ -34,7 +36,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         white-space: nowrap;
 
-        background-color: rgb(75, 74, 74);
+        background-color: rgb(75, 74, 73);
 
         justify-content: space-between;
 
@@ -43,7 +45,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       ul {
         display: flex;
 
-        margin: 0;
+        margin: 0 12px 0 0;
         padding: 0;
       }
 
@@ -113,9 +115,8 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         margin-left: 0;
       }
 
-      mwc-icon {
-        color: var(--sc-disabled-text-color);
-        margin-top: 5px;
+      .icon {
+        fill: var(--sc-disabled-text-color);
       }
 
       morph-ripple {
@@ -186,7 +187,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
                                   ${this.localize(nav.title)}
                                   <morph-ripple></morph-ripple>
                                 </a>
-                                <mwc-icon>${icons['chevron_right']}</mwc-icon>
+                                ${icon.chevron_right}
                               </li>
                             `
                           : html`

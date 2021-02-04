@@ -48,7 +48,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-results-container {
-          margin: 0 0 var(--sc-size-xxl) 0;
+          margin: 0 3vw var(--sc-size-xxl) 3vw;
         }
 
         .search-results-main {
@@ -270,16 +270,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
         p + ol,
         p + ul {
           margin: 0.5em 0 1em;
-        }
-
-        .paper-spinner {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-
-          margin: 0;
-
-          transform: translate(-50%, -50%);
         }
 
         .google-maps {

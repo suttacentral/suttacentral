@@ -1,5 +1,4 @@
 import {LitElement, html} from 'lit-element';
-import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import { LitLocalized } from '../addons/localization-mixin';
 
 export class SCLitTextPage extends LitLocalized(LitElement) {

@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement, svg } from 'lit-element';
 
 import './sc-more-menu.js';
 import { store } from '../../redux-store';
@@ -12,7 +12,7 @@ import '@material/mwc-menu';
 import '@material/mwc-button';
 import '@material/mwc-textfield';
 
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 
 class SCUniversalActionItems extends LitLocalized(LitElement) {
   static get styles() {
@@ -22,6 +22,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         justify-content: space-between;
         align-items: center;
         --mdc-theme-surface: var(--sc-secondary-background-color);
+
       }
 
       #close_button {
@@ -39,7 +40,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
        --mdc-text-field-ink-color: var(--sc-primary-text-color);
        --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
        --mdc-typography-font-family: var(--sc-sans-font);
-       --mdc-text-field-filled-border-radius: 0px;
+       --mdc-shape-small: 0px;
         visibility: hidden;
         width: 100%;
         position: absolute;
@@ -48,9 +49,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         transition: transform 200ms ease;
         z-index: 100;
       }
-mwc-textfield{
-      --mdc-text-field-filled-border-radius: 50%;
-    }
 
 #search_input.opened{
    visibility: visible;
@@ -198,12 +196,12 @@ mwc-textfield{
         label="search"        
         @click="${this.openSearch}"
       >
-        ${icons['search']}
+        ${icon.search}
       </mwc-icon-button>
         <mwc-textfield
               fullwidth
               id="search_input"
-              type="text"
+              type="search"
               style="height: 48px"
               iconTrailing=""
               placeholder="${this.localize('Search')}"
@@ -213,7 +211,7 @@ mwc-textfield{
         id="close_button"
         @click="${this._closeSearch}"
       >
-        ${icons['close']}
+        ${icon.close}
       </mwc-icon-button>
       <mwc-icon-button
         label="menu"
@@ -221,9 +219,9 @@ mwc-textfield{
         @click="${this.openMoreMenu}"
         alt="menu"
       >
-        ${icons['more_vert']}
+        ${icon.more_vert}
       </mwc-icon-button>
-      <mwc-menu corner="BOTTOM_END" id="more-menu">
+      <mwc-menu corner="BOTTOM_LEFT" id="more-menu">
         <sc-more-menu id="sc-more-menu"></sc-more-menu>
       </mwc-menu>
     `;

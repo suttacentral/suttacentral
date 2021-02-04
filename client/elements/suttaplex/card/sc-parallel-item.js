@@ -1,6 +1,6 @@
-import { html, LitElement } from 'lit-element';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+import { html, LitElement, svg } from 'lit-element';
 import '@polymer/polymer/lib/elements/dom-if.js';
+import { icon } from '../../../img/sc-icon';
 import {
   getParagraphRange,
   transformId,
@@ -9,7 +9,6 @@ import {
 } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
 import { parallelItemCss } from './sc-suttaplex-css';
-import '@moduware/morph-ripple';
 
 const stopPropagation = (e) => e.stopPropagation();
 
@@ -121,15 +120,13 @@ class SCParallelItem extends LitLocalized(LitElement) {
     ${parallelItemCss}
 
     <a href="${this.parallelUrl}" class="${this.parallelUrl ? '' : 'disabled'}">
-      <morph-ripple></morph-ripple>
-      <div class="parallel-item d-flex justify-content-space-between">
+      <div class="parallel-item">
         <div class="parallel-item-main-info-container">
-          <div class="parallel-item-title vertical-margin-xs" title="${this.headingTitle}">
+          <div class="parallel-item-title" title="${this.headingTitle}">
             ${this.heading}
           </div>
   
-          <div class="parallel-item-details d-flex align-items-center vertical-margin-xs">
-            <div class="parallel-item-volpages-container">
+          <div class="parallel-item-nerdy-row">
               ${this.parallelItem.translated_title && this.parallelItem.original_title ? html`
                 <div title="${this.localize('originalTitle')}" class="nerdy-row-element">
                   ${this.titleWithoutSuttaText}
@@ -143,11 +140,11 @@ class SCParallelItem extends LitLocalized(LitElement) {
               ` : ''}
 
               ${this.volpagesAvailable ? html`
-                <div class="nerdy-row-summary" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <div class="nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                   ${this.parallelItem.biblio && html`
                     <details>
                       <summary>
-                        <iron-icon icon="sc-iron-icons:book"></iron-icon>
+                        ${icon.book}
                         <span class="vol-page" title="${this.volPageTitle}">
                           ${this.volPage}
                         </span>
@@ -157,7 +154,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
                   `}
                   ${!this.parallelItem.biblio ? html`
                     <span class="book scrollable-dialog" title="${this.localize('volumeAndPage')}">
-                      <iron-icon icon="sc-iron-icons:book"></iron-icon>
+                      ${icon.book}
                     </span>
                     <span class="vol-page" title="${this.volPageTitle}">
                       ${this.volPage}
@@ -166,10 +163,10 @@ class SCParallelItem extends LitLocalized(LitElement) {
                 </div>
               ` : ''}
               ${this.remark && html`
-                <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <div "nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                   <details>
                     <summary>
-                      <iron-icon class="icon-outline" icon="sc-iron-icons:info-outline"></iron-icon>
+                      ${icon.info}
                     </summary>
                     <p class="parallel-item-biblio-info" .innerHTML="${this.remark}"></p>
                   </details>
@@ -177,17 +174,16 @@ class SCParallelItem extends LitLocalized(LitElement) {
               `}
             </div>
             ${this.parallelItem.note && html`
-              <div @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+              <div "nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
                 <details>
                   <summary>
-                    <iron-icon class="icon-outline" icon="sc-iron-icons:info-outline"></iron-icon>
+                    ${icon.info}
                   </summary>
                   <p class="parallel-item-biblio-info" .innerHTML="${this.parallelItem.not}"></p>
                 </details>
               </div>
             `}
           </div>
-        </div>
       </div>
     </a>`;
   }

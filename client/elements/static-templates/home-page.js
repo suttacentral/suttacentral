@@ -363,7 +363,7 @@ class SCHomePage extends SCStaticPage {
         }
 
         #sc-video {
-          z-index: 999;
+          z-index: 99;
         }
       }
 

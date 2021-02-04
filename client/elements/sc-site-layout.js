@@ -1,20 +1,11 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit-element';
 
 import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
 
-
-import '@polymer/paper-styles/color.js';
-import '@polymer/paper-styles/paper-styles.js';
-import '@polymer/paper-styles/typography.js';
-import '@polymer/paper-styles/shadow.js';
-import '@material/mwc-icon';
+import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
 import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
 setPassiveTouchGestures(true);
-
-import '../img/sc-svg-icons.js';
-import '../img/sc-iron-icons.js';
-import { icons } from '../img/sc-icons';
 
 import './sc-page-selector.js';
 import './menus/sc-action-items.js';
@@ -34,6 +25,8 @@ import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles} from './styles/sc-site-layout-styles.js';
 
+
+
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
     return css`
@@ -49,7 +42,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <div id="context_toolbar">
           <div id="title">
             <div id="mainTitle">
-              <iron-icon class="title-logo-icon" icon="sc-svg-icons:sc-logo"></iron-icon>
+              ${icon.sc_logo}
               <span>${this.toolbarTitle}</span>
             </div>
             <div id="subTitle">${this.localize('pageSubtitle')}</div>
@@ -86,7 +79,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <li><a href="/introduction">${this.localize('INTRODUCTION')}<morph-ripple></morph-ripple></a></li>
         <li><a href="/donations">${this.localize('DONATIONS')}<morph-ripple></morph-ripple></a></li>
         <li><a href="/offline">${this.localize('USEOFFLINE')}<morph-ripple></morph-ripple></a></li>
-        <li><a href="https://discourse.suttacentral.net/c/meta/updates" class="external" title='See updates on SuttaCentral forum' target='_blank' rel='noopener'>${this.localize('WHATSNEW')}<mwc-icon id="external">${icons['external']}</mwc-icon><morph-ripple></morph-ripple></a></li>
+        <li><a href="https://discourse.suttacentral.net/c/meta/updates" class="external" title='See updates on SuttaCentral forum' target='_blank' rel='noopener'>${this.localize('WHATSNEW')}${icon.external}<morph-ripple></morph-ripple></a></li>
       ` : ''}
     `;
   }

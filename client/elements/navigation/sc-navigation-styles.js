@@ -211,8 +211,6 @@ export const navigationNormalModeStyles = html`
       padding: 0.333rem 0.5rem;
 
       border-radius: 8px;
-
-      align-self: flex-start;
     }
 
     .header-link .title,
@@ -227,6 +225,14 @@ export const navigationNormalModeStyles = html`
       transition: all 200ms ease-out;
 
       background-color: var(--sc-primary-color-light-transparent);
+    }
+
+    .header-link:active,
+    .essay-link:active,
+    .shortcut-link:active {
+      transition: all 200ms ease-out;
+
+      background-color: var(--sc-primary-color-light);
     }
 
     .header-link:hover .title,
