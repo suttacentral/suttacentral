@@ -720,8 +720,78 @@ LET adjacent_words = (
         SORT selected.num
         RETURN selected.word
     )
-    
+
 RETURN UNIQUE(adjacent_words)
+'''
+
+DICTIONARY_FULL = '''
+LET dict_simple = (
+    FOR dict IN dictionaries_simple
+        FILTER dict.entry == @word
+        RETURN {
+            from: dict.from,
+            to: dict.to,
+            entry: dict.entry,
+            grammar: dict.grammar,
+            definition: dict.definition,
+            xr: dict.xr,
+            dictname: dict.dictname,
+            text: null
+        }
+)
+
+LET dict_complex = (
+    FOR dict IN dictionaries_complex
+        FILTER dict.word == @word
+        RETURN {
+            from: dict.from,
+            to: dict.to,
+            entry: dict.word,
+            grammar: null,
+            definition: null,
+            xr: null,
+            dictname: dict.dictname,
+            text: dict.text,
+        }
+)
+
+RETURN APPEND(dict_simple, dict_complex)
+'''
+
+DICTIONARY_SEARCH_RESULT_FULL = '''
+LET dic_complex = (
+    FOR doc IN dictionaries_complex
+        FILTER doc.to == @language AND (doc.word == LOWER(@word) OR doc.word_ascii == LOWER(@word))
+        RETURN {
+            dictname: doc.dictname,
+            lang_to: doc.to,
+            lang_from: doc.from,
+            word: doc.word,
+            word_ascii: doc.word_ascii,
+            text: doc.text,
+            grammar: null,
+            definition: null,
+            xr: null
+        }
+)
+
+LET dic_simple = (
+    FOR doc IN dictionaries_simple
+        FILTER doc.to == @language AND doc.entry == LOWER(@word)
+        RETURN {
+            dictname: doc.dictname,
+            lang_to: doc.to,
+            lang_from: doc.from,
+            word: doc.entry,
+            word_ascii: null,
+            text: '',
+            grammar: doc.grammar,
+            definition: doc.definition,
+            xr: doc.xr
+        }
+)
+
+RETURN APPEND(dic_complex, dic_simple)
 '''
 
 DICTIONARY_SIMILAR = '''
@@ -738,7 +808,8 @@ RETURN SLICE(words, 0, 10)
 '''
 
 DICTIONARY_SIMPLE = '''
-FOR dict IN dictionaries_simple FILTER dict.from == @from AND dict.to == @to 
+FOR dict IN dictionaries_simple
+    FILTER dict.from == @from AND dict.to == @to
     RETURN {
         entry: dict.entry,
         grammar: dict.grammar,
@@ -752,7 +823,7 @@ LET expansion_item = (
     FOR entry IN uid_expansion
         RETURN { [ entry.uid ]: [ entry.acro, entry.name ] }
     )
-    
+
 RETURN MERGE(expansion_item)
 '''
 
