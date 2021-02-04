@@ -5,6 +5,7 @@ import { dictStyles } from './styles/sc-dict-styles.js';
 import { icons } from '../img/sc-icons';
 
 import { LitLocalized } from './addons/localization-mixin';
+import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 
 class SCPageDictionary extends LitLocalized(LitElement) {
   static get styles() {
@@ -199,69 +200,13 @@ class SCPageDictionary extends LitLocalized(LitElement) {
                       <div class="dictionary-source">
                         ${this._getDictionaryTitle(dicItem.dictname)}
                       </div>
-                      <div class="dictionary-text">${dicItem.text}</div>
+                      <div class="dictionary-text">${unsafeHTML(dicItem.text)}</div>
                     </div>
                   `
                 : ''}
             `
           )
         : ''}
-    `;
-  }
-
-  _dicSimpleItemToHtml(dicItem) {
-    if (!dicItem) {
-      return html``;
-    }
-    return html`
-      <dl>
-        <dt>
-          <dfn class="entry" lang="pi" translate="no">${dicItem.entry}</dfn>
-        </dt>
-        <dd>
-          ${dicItem.grammar
-            ? html`
-                <span class="grammar">${dicItem.grammar}</span>
-              `
-            : ''}
-          ${dicItem.definition
-            ? html`
-                <ol class="definition">
-                  ${dicItem.definition.constructor === Array
-                    ? html`
-                        ${dicItem.definition.map(
-                          item =>
-                            html`
-                              <li>${item}</li>
-                            `
-                        )}
-                      `
-                    : html`
-                        <li>${dicItem.definition}</li>
-                      `}
-                </ol>
-              `
-            : ''}
-          ${dicItem.xr
-            ? html`
-                <ul class="xr">
-                  ${dicItem.constructor === Array
-                    ? html`
-                        ${dicItem.xr.map(
-                          item =>
-                            html`
-                              <li><a href="/define/${item}">${item}</a></li>
-                            `
-                        )}
-                      `
-                    : html`
-                        <li><a href="/define/${dicItem.xr}">${dicItem.xr}</a></li>
-                      `}
-                </ul>
-              `
-            : ''}
-        </dd>
-      </dl>
     `;
   }
 
@@ -358,11 +303,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
   _didRespond() {
     this.dictionaryReturns.forEach(dicItem => {
       if (!dicItem.text) {
-        dicItem.text = this._dicSimpleItemToHtml(dicItem);
-      } else {
-        dicItem.text = html`
-          ${unsafeHTML(dicItem.text)}
-        `;
+        dicItem.text = dictionarySimpleItemToHtml(dicItem);
       }
     });
 
