@@ -417,7 +417,6 @@ class Parallels(Resource):
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         uid = uid.replace('/', '-').strip('-')
-        uid = f'super_nav_details/{uid}'
 
         db = get_db()
         results = db.aql.execute(
@@ -590,6 +589,7 @@ class Sutta(Resource):
                 doc['next']['name'] = ''.join(name_result)
             elif k == 'prev_uid' and doc['previous']:
                 doc['previous']['name'] = ''.join(name_result)
+
 
 class SegmentedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
