@@ -1,6 +1,6 @@
 decorator==4.4.2
 EbookLib==0.17.1
-elasticsearch==7.10.1
+elasticsearch==6.3.1
 Faker==6.0.0
 flasgger==0.9.5
 Flask==1.1.2
@@ -12,6 +12,7 @@ GitPython==3.1.12
 Jinja2==2.11.3
 langid==1.1.6
 lxml==4.6.2
+cssselect==1.1.0
 pytest==6.2.2
 pytest-flask==1.1.0
 pytest-sugar==0.9.4
