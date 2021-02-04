@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from flask_script import Manager
 
 from app import app
@@ -49,6 +47,7 @@ def load_data(no_pull=False):
 
     run(no_pull=no_pull)
 
+
 @manager.command
 def load_bilara_data(no_pull=False):
     """
@@ -57,6 +56,7 @@ def load_bilara_data(no_pull=False):
     from data_loader.arangoload import bilara_run
 
     bilara_run()
+
 
 @manager.command
 def delete_db():
@@ -73,6 +73,7 @@ def index_elasticsearch():
     from search.texts import update
 
     update()
+
 
 @manager.command
 def calculate_download_sizes():

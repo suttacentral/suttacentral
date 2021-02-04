@@ -1,6 +1,6 @@
+import gc
 import hashlib
 import inspect
-import gc
 
 
 class ChangeTracker:
@@ -69,10 +69,6 @@ class ChangeTracker:
         key = f'{function.__module__}.{function.__qualname__}'
         return self.is_thing_changed(key, function)
 
-    def is_module_changed(self, module):
-        key = module.__name__
-        return self.is_thing_changed(key, module)
-
     def is_thing_changed(self, key, thing):
         function_hash = hashlib.md5(function_source(thing).encode()).hexdigest()
 
@@ -129,5 +125,7 @@ def who_is_calling(depth=2):
 
 
 def whoami():
-    "Returns the function that calls it"
+    """
+    Returns the function that calls it
+    """
     return who_is_calling(depth=2)

@@ -6,8 +6,7 @@ from pathlib import Path
 from arango.exceptions import CollectionCreateError
 from flask import current_app
 
-from common.arangodb import get_client, get_db, get_system_db
-
+from common.arangodb import get_db, get_system_db
 from .base import Migration
 
 MIGRATIONS_FOLDER = 'migrations'

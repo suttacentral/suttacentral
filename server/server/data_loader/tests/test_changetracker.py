@@ -1,5 +1,3 @@
-import pytest
-
 from data_loader.change_tracker import whoami, who_is_calling, function_source
 
 

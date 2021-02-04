@@ -403,7 +403,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 '''
 
 PARALLELS = '''
-FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationship
+FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
     LET target = DOCUMENT(e._to)
 
     LET legacy_translations = (
@@ -509,109 +509,109 @@ FOR v, e, p IN OUTBOUND DOCUMENT(CONCAT('super_nav_details/', @uid)) relationshi
 '''
 
 SUTTA_VIEW = (
-    '''
-LET root_text = DOCUMENT(CONCAT('super_nav_details/', @uid))
-
-LET legacy_html = (
-    FOR html IN html_text
-        FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
-            OR html.lang == root_text.root_lang)
-        
-        RETURN {
-            uid: html.uid,
-            lang: html.lang,
-            is_root: html.lang == root_text.root_lang,
-            title: html.name,
-            author: html.author,
-            author_short: html.author_short,
-            author_uid: html.author_uid,
-            file_path: html.file_path,
-            next: html.next,
-            previous: html.prev
-        }
-)
-
-LET root_bilara_obj = (
-    FOR doc IN sc_bilara_texts 
-        FILTER doc.uid == @uid AND 'root' IN doc.muids
-        LIMIT 1 
-        LET author_doc = (
-            FOR author IN author_edition 
-                FILTER author.uid IN doc.muids
-                LIMIT 1 
-                RETURN author
-        )[0]
-        LET name_doc = (
-            FOR name IN names
-                FILTER name.uid == doc.uid AND name.is_root == true
-                LIMIT 1
-                RETURN name
-        )[0]
-
-        RETURN {
-            uid: doc.uid,
-            author: author_doc.long_name,
-            author_short: author_doc.short_name,
-            author_uid: author_doc.uid,
-            lang: doc.lang,
-            title: name_doc.name,
-            previous: {
-              author_uid: author_doc.uid,
-              lang: doc.lang,
-              name: null,
-              uid: null,
-            },
-            next: {
-              author_uid: author_doc.uid,
-              lang: doc.lang,
-              name: null,
-              uid: null,
-            },
-        }
-)[0]
-
-LET translated_bilara_obj = (
-    FOR doc IN sc_bilara_texts 
-        FILTER doc.uid == @uid AND doc.lang == @language AND @author_uid IN doc.muids
-        LIMIT 1 
-        LET author_doc = (
-            FOR author IN author_edition 
-                FILTER author.uid IN doc.muids
-                LIMIT 1 
-                RETURN author
-        )[0]
-        LET name_doc = (
-            FOR name IN names
-                FILTER name.uid == doc.uid AND name.lang == doc.lang
-                LIMIT 1
-                RETURN name
-        )[0]
-
-        RETURN {
-            uid: doc.uid,
-            lang: doc.lang,
-            author_uid: author_doc.uid,
-            author: author_doc.long_name,
-            author_short: author_doc.short_name,
-            title: name_doc.name,
-            previous: {
+        '''
+    LET root_text = DOCUMENT('super_nav_details', @uid)
+    
+    LET legacy_html = (
+        FOR html IN html_text
+            FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
+                OR html.lang == root_text.root_lang)
+            
+            RETURN {
+                uid: html.uid,
+                lang: html.lang,
+                is_root: html.lang == root_text.root_lang,
+                title: html.name,
+                author: html.author,
+                author_short: html.author_short,
+                author_uid: html.author_uid,
+                file_path: html.file_path,
+                next: html.next,
+                previous: html.prev
+            }
+    )
+    
+    LET root_bilara_obj = (
+        FOR doc IN sc_bilara_texts 
+            FILTER doc.uid == @uid AND 'root' IN doc.muids
+            LIMIT 1 
+            LET author_doc = (
+                FOR author IN author_edition 
+                    FILTER author.uid IN doc.muids
+                    LIMIT 1 
+                    RETURN author
+            )[0]
+            LET name_doc = (
+                FOR name IN names
+                    FILTER name.uid == doc.uid AND name.is_root == true
+                    LIMIT 1
+                    RETURN name
+            )[0]
+    
+            RETURN {
+                uid: doc.uid,
+                author: author_doc.long_name,
+                author_short: author_doc.short_name,
                 author_uid: author_doc.uid,
                 lang: doc.lang,
-                name: null,
-                uid: null,
-            },
-            next: {
-              author_uid: author_doc.uid,
-              lang: doc.lang,
-              name: null,
-              uid: null,
-            },
-        }
-)[0]
-
-LET suttaplex = ('''
-    + SUTTAPLEX_LIST
-    + ''')[0]
+                title: name_doc.name,
+                previous: {
+                  author_uid: author_doc.uid,
+                  lang: doc.lang,
+                  name: null,
+                  uid: null,
+                },
+                next: {
+                  author_uid: author_doc.uid,
+                  lang: doc.lang,
+                  name: null,
+                  uid: null,
+                },
+            }
+    )[0]
+    
+    LET translated_bilara_obj = (
+        FOR doc IN sc_bilara_texts 
+            FILTER doc.uid == @uid AND doc.lang == @language AND @author_uid IN doc.muids
+            LIMIT 1 
+            LET author_doc = (
+                FOR author IN author_edition 
+                    FILTER author.uid IN doc.muids
+                    LIMIT 1 
+                    RETURN author
+            )[0]
+            LET name_doc = (
+                FOR name IN names
+                    FILTER name.uid == doc.uid AND name.lang == doc.lang
+                    LIMIT 1
+                    RETURN name
+            )[0]
+    
+            RETURN {
+                uid: doc.uid,
+                lang: doc.lang,
+                author_uid: author_doc.uid,
+                author: author_doc.long_name,
+                author_short: author_doc.short_name,
+                title: name_doc.name,
+                previous: {
+                    author_uid: author_doc.uid,
+                    lang: doc.lang,
+                    name: null,
+                    uid: null,
+                },
+                next: {
+                  author_uid: author_doc.uid,
+                  lang: doc.lang,
+                  name: null,
+                  uid: null,
+                },
+            }
+    )[0]
+    
+    LET suttaplex = ('''
+        + SUTTAPLEX_LIST
+        + ''')[0]
     
 RETURN {
     root_text: translated_bilara_obj ? root_bilara_obj : null,

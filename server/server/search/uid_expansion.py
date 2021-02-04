@@ -3,11 +3,11 @@ import regex
 from search import csv_loader
 
 # Load uid to acro map
-_uid_to_acro_map = {}
-_uid_to_name_map = {}
+uid_to_acro_map = {}
+uid_to_name_map = {}
 for row in csv_loader.table_reader('uid_expansion'):
-    _uid_to_acro_map[row.uid] = row.acro
-    _uid_to_name_map[row.uid] = row.name
+    uid_to_acro_map[row.uid] = row.acro
+    uid_to_name_map[row.uid] = row.name
 
 
 def _expand_uid(uid, mapping):
@@ -18,11 +18,7 @@ def _expand_uid(uid, mapping):
 
 
 def uid_to_acro(uid):
-    return _expand_uid(uid, _uid_to_acro_map)
-
-
-def uid_to_name(uid):
-    return _expand_uid(uid, _uid_to_name_map)
+    return _expand_uid(uid, uid_to_acro_map)
 
 
 languages = csv_loader.load_table('language')
