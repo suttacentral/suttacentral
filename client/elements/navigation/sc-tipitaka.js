@@ -3,8 +3,6 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
-import { icons } from '../../img/sc-icons';
-import '@material/mwc-icon';
 
 class SCTipitaka extends LitLocalized(LitElement) {
   static get styles() {

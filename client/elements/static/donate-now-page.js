@@ -5,10 +5,10 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-textfield';
 import '@material/mwc-radio';
 import '@material/mwc-formfield';
-import '@material/mwc-icon';
+
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants.js';
-import { icons } from '../../img/sc-icons';
+import { icon } from '../../img/sc-icon';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -126,8 +126,8 @@ class SCDonateNow extends LitLocalized(LitElement) {
         margin-top: 64px;
       }
 
-      mwc-icon {
-        vertical-align: middle;
+      .icon {
+        vertical-align: text-bottom;
 
         fill: var(--sc-disabled-text-color);
       }
@@ -238,11 +238,11 @@ class SCDonateNow extends LitLocalized(LitElement) {
           </form>
           <aside>
             <p>
-              <mwc-icon>${icons['info']}</mwc-icon>
+              ${icon.info}
               ${unsafeHTML(this.localize('storageDisclaimer'))}
             </p>
             <p>
-              <mwc-icon>${icons['info']}</mwc-icon>
+              ${icon.info}
               ${this.localize('feeDisclaimer')}
             </p>
           </aside>

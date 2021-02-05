@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit-element';
-import '@polymer/iron-icon/iron-icon.js';
 
 import './sc-bilara-segmented-text.js';
 import './sc-simple-text.js';
@@ -43,11 +42,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           margin-bottom: 64px;
         }
 
-        .sutta-list {
-          max-width: 720px;
-          transition: margin-top 0.3s, margin-bottom 0.3s;
-          margin: 0 auto var(--sc-size-xxl);
-        }
       </style>
 
       <div class="wrapper">

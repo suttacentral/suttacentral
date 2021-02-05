@@ -1,4 +1,5 @@
 from common.arangodb import get_db
+from common.queries import DICTIONARY_SEARCH_RESULT_FULL
 
 
 def cleanly_truncate_html(html_string, length):
@@ -11,20 +12,10 @@ def cleanly_truncate_html(html_string, length):
         return content
 
 
-def search(word, truncate_length=1000):
+def search(word, language, truncate_length=1000):
     db = get_db()
 
-    results = list(
-        db.aql.execute(
-            '''
-        FOR doc IN dictionaries_complex
-            FILTER doc.word == LOWER(@word) OR doc.word_ascii == LOWER(@word)
-            RETURN KEEP(doc, "dictname", "lang_to", "lang_from", "word", "word_ascii", "text")
-        ''',
-            bind_vars={'word': word},
-        )
-    )
-
+    results = (db.aql.execute(DICTIONARY_SEARCH_RESULT_FULL, bind_vars={'word': word, 'language': language})).next()
     if not results:
         return
 
@@ -46,14 +37,14 @@ def search(word, truncate_length=1000):
         if result['dictname'] == 'ncped':
             best_result = result
             break
-        if not best_result or (len(result['text']) > len(best_result['text'])):
+        if not best_result:
             best_result = result
 
     content = cleanly_truncate_html(best_result['text'], truncate_length)
 
     return {
         'heading': {'division': best_result['dictname'], 'subhead': '', 'title': ''},
-        'highlight': {'content': [content]},
+        'highlight': {'content': [content], 'detail': [best_result]},
         'url': f'/define/{word}',
         'category': 'dictionary',
     }

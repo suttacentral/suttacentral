@@ -54,7 +54,7 @@ class SCDonationsPage extends SCStaticPage {
               ${_`Your donation is greatly appreciated. It will support the ongoing development of SuttaCentral so we can continue to bring the Buddha’s word to people all around the world.`}
             </p>
             <div class="donations-button">
-              ${_`<a class="donate-link" href="/donate-now"> <paper-button class="donate-button" raised="">DONATE</paper-button> </a>`}
+              ${_`Donate`}
             </div>
             <h2>
               ${_`What does SuttaCentral spend money on?`}
@@ -85,7 +85,7 @@ class SCDonationsPage extends SCStaticPage {
                   ${_`Account name`}
                 </td>
                 <td>
-                  ${_`<strong>SuttaCentral Development Trust</strong>`}
+                  ${_`SuttaCentral Development Trust`}
                 </td>
               </tr>
               <tr>
@@ -93,7 +93,7 @@ class SCDonationsPage extends SCStaticPage {
                   ${_`Bank name`}
                 </td>
                 <td>
-                  ${_`<strong>Adelaide Bendigo Community Sector Banking</strong>`}
+                  ${_`Adelaide Bendigo Community Sector Banking`}
                 </td>
               </tr>
               <tr>
@@ -101,7 +101,7 @@ class SCDonationsPage extends SCStaticPage {
                   ${_`BSB`}
                 </td>
                 <td>
-                  ${_`<strong>633 000</strong>`}
+                  ${_`633 000`}
                 </td>
               </tr>
               <tr>
@@ -109,7 +109,7 @@ class SCDonationsPage extends SCStaticPage {
                   ${_`Account no.`}
                 </td>
                 <td>
-                  ${_`<strong>154500086</strong>`}
+                  ${_`154500086`}
                 </td>
               </tr>
               <tr>
@@ -117,7 +117,7 @@ class SCDonationsPage extends SCStaticPage {
                   ${_`Address`}
                 </td>
                 <td>
-                  ${_`<strong>1273 Pacific Highway, Turramurra NSW 2074</strong>`}
+                  ${_`1273 Pacific Highway, Turramurra NSW 2074`}
                 </td>
               </tr>
               <tr>
@@ -125,7 +125,7 @@ class SCDonationsPage extends SCStaticPage {
                   ${_`Swift code`}
                 </td>
                 <td>
-                  ${_`<strong>BENDAU3B</strong>`}
+                  ${_`BENDAU3B`}
                 </td>
               </tr>
             </table>

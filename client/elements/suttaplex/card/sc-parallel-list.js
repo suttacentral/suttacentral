@@ -1,14 +1,12 @@
-import { html, LitElement } from 'lit-element';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+import { html, LitElement, svg } from 'lit-element';
 import '../../addons/sc-bouncing-loader';
 import { API_ROOT } from '../../../constants.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
+import { icon } from '../../../img/sc-icon';
 
 import './sc-parallel-item.js';
 import { parallelsListCss } from './sc-suttaplex-css';
-import '@moduware/morph-ripple';
 
 class SCParallels extends LitLocalized(LitElement) {
   static get properties() {
@@ -61,13 +59,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return 'sc-iron-icons:compare-arrows';
+          return icon['compare_arrows'];
         }
-        return 'sc-iron-icons:swap-horiz';
+        return icon['swap_horiz'];
       case 'retelling':
-        return 'sc-iron-icons:cached';
+        return icon['cached'];
       case 'mention':
-        return 'sc-iron-icons:format-quote';
+        return icon['format_quote'];
       default:
         return '';
     }
@@ -112,7 +110,7 @@ class SCParallels extends LitLocalized(LitElement) {
     ${parallelsListCss}
     <div>
       ${this.loadingResults ? html`
-        <sc-bouncing-loader class="paper-spinner" .active="${this.loadingResults}"></sc-bouncing-loader>
+        <sc-bouncing-loader .active="${this.loadingResults}"></sc-bouncing-loader>
       ` : ''}
 
       ${this.rootKeys ? html`
@@ -120,18 +118,17 @@ class SCParallels extends LitLocalized(LitElement) {
           ${this.rootKeys.map(rootId => html`
             <tbody class="parallels-table-body">
               <tr class="parallels-row">
-                <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan="${this.getRowspan(rootId)}">
+                <td class="parallels-root-cell parallels-table-cell" rowspan="${this.getRowspan(rootId)}">
                   <a class="root-link" href="${this.computeUrl(rootId)}">
-                    <morph-ripple></morph-ripple>
                     <div class="parallels-root-id root" title="${this.localize('suttaCentralID')}">
                       ${transformId(rootId, this.expansionData)}
                     </div>
                   </a>
                 </td>
-                <td class="parallels-relation-cell">
-                  <iron-icon class="grey-icon" .icon="${this.getFirstParallelIcon(rootId)}" title="${this.getFirstParallelIconTitle(rootId)}"></iron-icon>
+                <td class="parallels-relation-cell" title="${this.getFirstParallelIconTitle(rootId)}">
+                  ${this.getFirstParallelIcon(rootId)}
                 </td>
-                <td class="parallels-parallel-cell paper-lift">
+                <td class="parallels-parallel-cell">
                   <sc-parallel-item 
                     .parallelItem="${this.getFirstParallelItem(rootId)}" 
                     .remark="${this.getFirstParallelRemark(rootId)}" 
@@ -142,10 +139,10 @@ class SCParallels extends LitLocalized(LitElement) {
     
               ${this.getOtherParallels(rootId).map(item => html`
                 <tr>
-                  <td class="parallels-relation-cell">
-                    <iron-icon class="grey-icon" .icon="${this.getParallelIcon(item)}" title="${this.computeIconTitle(item)}"></iron-icon>
+                  <td class="parallels-relation-cell" title="${this.computeIconTitle(item)}">
+                    ${this.getParallelIcon(item)}
                   </td>
-                  <td class="parallels-parallel-cell paper-lift">
+                  <td class="parallels-parallel-cell">
                     <sc-parallel-item .parallelItem="${item.to}" .remark="${item.remark}" .expansionData="${this.expansionData}"></sc-parallel-item>
                   </td>
                 </tr>
