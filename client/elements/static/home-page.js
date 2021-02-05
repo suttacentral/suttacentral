@@ -9,7 +9,7 @@ import { icon } from '../../img/sc-icon';
 class SCHomePage extends SCStaticPage {
   static get properties() {
     return {
-      epigraph: { type: String },
+      randomEpigrah: { type: String },
       whyWeRead: { type: String },
     };
   }
@@ -512,7 +512,7 @@ class SCHomePage extends SCStaticPage {
     const getRandomEl = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
     const epigraphResponse = await (await fetch(`${API_ROOT}/epigraphs`)).json();
-    this.epigraph = getRandomEl(epigraphResponse).epigraph;
+    this.randomEpigrah = getRandomEl(epigraphResponse);
     const whyReadResponse = await (await fetch(`${API_ROOT}/whyweread`)).json();
     this.whyWeRead = getRandomEl(whyReadResponse);
   }
@@ -542,9 +542,9 @@ class SCHomePage extends SCStaticPage {
         <section class="plain quotation">
         <h2>${unsafeHTML(this.localize('6fa47a464d90ac462faad21974edfb66'))}</h2>
           <blockquote>
-            <span>${this.epigraph}</span>
+            <span>${this.randomEpigrah ? this.randomEpigrah.epigraph : ''}</span>
           </blockquote>
-          <a class="link-button quote-button ripple" href="/">Read this sutta</a>
+          <a class="link-button quote-button ripple" href="${this.randomEpigrah ? '/' + this.randomEpigrah.uid : ''}">Read this sutta</a>
         </section>
 
         <section class="two-cards">
