@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/iron-location/iron-location.js';
 import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
 import './menus/sc-search-filter-menu.js';
 import './suttaplex/card/sc-suttaplex.js';
@@ -446,7 +445,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.searchQuery = store.getState().currentRoute.__queryParams.query;
+    this.searchQuery = store.getState().currentRoute.params.query;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
     this.allSearchResults = [];
@@ -490,8 +489,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    if (this.searchQuery !== state.currentRoute.__queryParams.query) {
-      this.searchQuery = state.currentRoute.__queryParams.query;
+    if (this.searchQuery !== state.currentRoute.params.query) {
+      this.searchQuery = state.currentRoute.params.query;
     }
     if (this.searchParams !== state.searchParams) {
       this.searchParams = state.searchParams;

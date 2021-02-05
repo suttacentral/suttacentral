@@ -143,11 +143,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   firstUpdated() {
-    // location-changed event is added by iron-location component.
-    // iron-location disables default behavior of hash-links and re-emits a different event.
-    // hashchange can still fire, but only due to browser back & forward buttons.
-    // TODO: In case iron-location is removed, this will break, but it's not possible to bypass it now
-    window.addEventListener('location-changed', this._hashChangeHandler);
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', () => {
       this._hideTopSheets();
@@ -157,7 +152,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   disconnectedCallback() {
-    window.removeEventListener('location-changed', this._hashChangeHandler);
     window.removeEventListener('hashchange', this._hashChangeHandler);
   }
 

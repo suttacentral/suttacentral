@@ -21,7 +21,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         background-color: rgb(75, 74, 73);
 
         position: relative;
-        z-index: 200
+        z-index: 200;
       }
 
       nav {
@@ -39,7 +39,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         background-color: rgb(75, 74, 73);
 
         justify-content: space-between;
-
       }
 
       ul {
@@ -137,7 +136,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-navigation';
-    this.navArray = store.getState().navigationArray;
   }
 
   get actions() {

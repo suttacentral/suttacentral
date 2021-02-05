@@ -1,11 +1,10 @@
-import { css, html, LitElement, svg } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
 
 import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '@polymer/iron-location/iron-location.js';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
@@ -13,6 +12,7 @@ import '@material/mwc-button';
 import '@material/mwc-textfield';
 
 import { icon } from '../../img/sc-icon';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCUniversalActionItems extends LitLocalized(LitElement) {
   static get styles() {
@@ -22,7 +22,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         justify-content: space-between;
         align-items: center;
         --mdc-theme-surface: var(--sc-secondary-background-color);
-
       }
 
       #close_button {
@@ -35,12 +34,12 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       }
 
       #search_input {
-       --mdc-theme-primary: var(--sc-secondary-accent-color);
-       --mdc-text-field-fill-color: var(--sc-tertiary-background-color);
-       --mdc-text-field-ink-color: var(--sc-primary-text-color);
-       --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
-       --mdc-typography-font-family: var(--sc-sans-font);
-       --mdc-shape-small: 0px;
+        --mdc-theme-primary: var(--sc-secondary-accent-color);
+        --mdc-text-field-fill-color: var(--sc-tertiary-background-color);
+        --mdc-text-field-ink-color: var(--sc-primary-text-color);
+        --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
+        --mdc-typography-font-family: var(--sc-sans-font);
+        --mdc-shape-small: 0px;
         visibility: hidden;
         width: 100%;
         position: absolute;
@@ -50,10 +49,10 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         z-index: 100;
       }
 
-#search_input.opened{
-   visibility: visible;
-  transform: scaleX(1);
-}
+      #search_input.opened {
+        visibility: visible;
+        transform: scaleX(1);
+      }
 
       #sc-more-menu:focus {
         outline: none;
@@ -81,8 +80,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
   static get properties() {
     return {
-      path: { type: String },
-      query: { type: String },
       mode: { type: String },
       localizedStringsPath: { type: String },
       search_input: { type: Object },
@@ -93,23 +90,10 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.path = '';
-    this.query = '';
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-universal-action-items';
     this.searchKeyword = store.getState().searchQuery;
     this.search_input = this.shadowRoot.getElementById('search_input');
-  }
-
-  get actions() {
-    return {
-      toggleChangeSearchQuery(searchKeyword) {
-        store.dispatch({
-          type: 'CHANGE_SEARCH_QUERY',
-          searchKeyword: searchKeyword,
-        });
-      },
-    };
   }
 
   firstUpdated() {
@@ -162,7 +146,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement && searchInputElement.classList.contains('opened')) {
       searchInputElement.value = '';
-      this.actions.toggleChangeSearchQuery('');
 
       searchInputElement.classList.remove('opened');
       searchInputElement.removeAttribute('style', 'width');
@@ -174,17 +157,11 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
   _startSearch() {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
-    this.actions.toggleChangeSearchQuery(searchQuery);
-    this.path = '/search';
-    this.query = `query=${searchQuery}`;
-    const pageLocationElement = this.shadowRoot.getElementById('pageLocation');
-    pageLocationElement.path = this.path;
-    pageLocationElement.query = this.query;
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
   }
 
   render() {
     return html`
-            <iron-location id="pageLocation" path="${this.path}" query="${this.query}"></iron-location>
       <iron-a11y-keys
         target=${this.search_input}
         keys="enter"
@@ -193,32 +170,23 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
       <mwc-icon-button
         title="${this.localize('searchTooltip')}"
-        label="search"        
+        label="search"
         @click="${this.openSearch}"
       >
         ${icon.search}
       </mwc-icon-button>
-        <mwc-textfield
-              fullwidth
-              id="search_input"
-              type="search"
-              style="height: 48px"
-              iconTrailing=""
-              placeholder="${this.localize('Search')}"
-              ></mwc-textfield>
-              <mwc-icon-button
-        label="close"
-        id="close_button"
-        @click="${this._closeSearch}"
-      >
+      <mwc-textfield
+        fullwidth
+        id="search_input"
+        type="search"
+        style="height: 48px"
+        iconTrailing=""
+        placeholder="${this.localize('Search')}"
+      ></mwc-textfield>
+      <mwc-icon-button label="close" id="close_button" @click="${this._closeSearch}">
         ${icon.close}
       </mwc-icon-button>
-      <mwc-icon-button
-        label="menu"
-        id="more-menu-button"
-        @click="${this.openMoreMenu}"
-        alt="menu"
-      >
+      <mwc-icon-button label="menu" id="more-menu-button" @click="${this.openMoreMenu}" alt="menu">
         ${icon.more_vert}
       </mwc-icon-button>
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu">
