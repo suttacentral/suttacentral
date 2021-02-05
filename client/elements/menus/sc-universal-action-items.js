@@ -4,8 +4,6 @@ import './sc-more-menu.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 
-import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
-
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
 import '@material/mwc-button';
@@ -160,14 +158,14 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
   }
 
+  keypressHandler(e) {
+    if (e.key === 'Enter') {
+      this._startSearch();
+    }
+  }
+
   render() {
     return html`
-      <iron-a11y-keys
-        target=${this.search_input}
-        keys="enter"
-        @keys-pressed="${this._startSearch}"
-      ></iron-a11y-keys>
-
       <mwc-icon-button
         title="${this.localize('searchTooltip')}"
         label="search"
@@ -182,6 +180,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         style="height: 48px"
         iconTrailing=""
         placeholder="${this.localize('Search')}"
+        @keypress="${this.keypressHandler}"
       ></mwc-textfield>
       <mwc-icon-button label="close" id="close_button" @click="${this._closeSearch}">
         ${icon.close}

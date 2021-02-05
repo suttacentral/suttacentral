@@ -446,6 +446,9 @@ class SCPageSelector extends LitLocalized(LitElement) {
       case 'DEFINE':
         this.actions.changeToolbarTitle(this.localize('dictionaryResults'));
         break;
+      case 'HOME':
+        this.actions.changeToolbarTitle('SuttaCentral');
+        break;
       default:
         const key = `${this.currentRoute.name}-TITLE`;
         if (this.__resources[key]) {
@@ -500,7 +503,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _setTitleState() {
     if (this.currentRoute.name === 'HOME') {
-      this.actions.changeToolbarTitle('SuttaCentral');
       this.parentNode.querySelector('#context_toolbar').style.height = '180px';
       this.parentNode.querySelector('.sc_logo').style.display = '';
       this.parentNode.querySelector('#title').classList.add('homeTitle');
