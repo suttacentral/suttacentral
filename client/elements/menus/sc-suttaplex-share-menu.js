@@ -1,8 +1,8 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 
-import { LitLocalized } from '../addons/localization-mixin'
-import { API_ROOT } from '../../constants.js';
-import copyToClipboard from '../../utils/copy.js'
+import { LitLocalized } from '../addons/localization-mixin';
+import { API_ROOT } from '../../constants';
+import copyToClipboard from '../../utils/copy';
 import { volPagesToString } from '../../utils/suttaplex';
 import { icon } from '../../img/sc-icon';
 
@@ -11,14 +11,12 @@ Menu on top of the suttaplex parallel's list for copying information from parall
 */
 
 class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
-  render() {
-    return html`
-    <style>
+  static get styles() {
+    return css`
+      :host {
+        outline: none;
+      }
 
-    :host{
-      outline: none
-    }
-    
       .button-text {
         color: var(--sc-primary-text-color);
       }
@@ -29,9 +27,9 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
         cursor: pointer;
       }
 
-        .button-text:active {
-         background-color: var(--sc-textual-info-background-color);
-          transition: background-color 0.2s ease;
+      .button-text:active {
+        background-color: var(--sc-textual-info-background-color);
+        transition: background-color 0.2s ease;
         cursor: pointer;
       }
 
@@ -52,21 +50,30 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
         fill: var(--sc-disabled-text-color);
       }
 
+      .disabled {
+        pointer-events: none;
+        opacity: 0.6;
+      }
+    `;
+  }
 
-    </style>
-
-    <li class="table-element button-text" @tap=${this._copyLink} title="${this._computeLink(this.item)}">
-      ${icon.link}
-      ${this.localize('copyLink')}
-    </li>
-    <li class="table-element button-text" @tap=${this._copyContent} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
-      ${icon.content_copy}
-      ${this.localize('copyTable')}
-    </li>
-    <li class="table-element button-text" @tap=${this._copyCite} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
-      ${icon.format_quote}
-      ${this.localize('cite')}
-    </li>`;
+  render() {
+    return html`
+      <li
+        id="btnCopyLink"
+        class="table-element button-text"
+        @click=${this._copyLink}
+        title="${this._computeLink(this.item)}"
+      >
+        ${icon.link} ${this.localize('copyLink')}
+      </li>
+      <li id="btnCopyContent" class="table-element button-text" @click=${this._copyContent}>
+        ${icon.content_copy} ${this.localize('copyTable')}
+      </li>
+      <li id="btnCopyCite" class="table-element button-text" @click=${this._copyCite}>
+        ${icon.format_quote} ${this.localize('cite')}
+      </li>
+    `;
   }
 
   static get properties() {
@@ -75,8 +82,8 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
       parallels: { type: Object },
       loadingParallels: { type: Boolean },
       areParallelsAvailable: { type: Boolean },
-      localizedStringsPath: { type: String }
-    }
+      localizedStringsPath: { type: String },
+    };
   }
 
   constructor() {
@@ -96,20 +103,27 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
     this.loadingParallels = true;
     this.parallels = await (await fetch(this._getAPIEndpoint(this.item))).json();
     this.loadingParallels = false;
+    this._didRespond();
+  }
+
+  _didRespond() {
+    if (this.parallels) {
+      this.shadowRoot.querySelector('#btnCopyContent').classList.remove('disabled');
+      this.shadowRoot.querySelector('#btnCopyCite').classList.remove('disabled');
+    } else {
+      this.shadowRoot.querySelector('#btnCopyContent').classList.add('disabled');
+      this.shadowRoot.querySelector('#btnCopyCite').classList.add('disabled');
+    }
   }
 
   _notifyCopy(message, success) {
-    this.dispatchEvent(new CustomEvent('par-menu-copied', {
-      detail: { message: message, success: success },
-      bubbles: true,
-      composed: true
-    }))
-  }
-
-  _sendRequest() {
-    if (this.parallels) {
-      return;
-    }
+    this.dispatchEvent(
+      new CustomEvent('par-menu-copied', {
+        detail: { message, success },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   // copy the parallels-table in html-string
@@ -124,16 +138,9 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
     }
   }
 
-  _setAreParallelsAvailable(loadingParallels) {
-    if (this.parallels === undefined || this.parallels === null) {
-      return false;
-    }
-    return loadingParallels || (Object.keys(this.parallels).length === 0 && typeof this.parallels === 'object');
-  }
-
   _computeLink() {
     const url = window.location;
-    const baseUrl = url.protocol + '//' + url.host;
+    const baseUrl = `${url.protocol}//${url.host}`;
     try {
       return `${baseUrl}/${this.item.uid}`;
     } catch (err) {
@@ -212,7 +219,7 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
   _computeCiteData() {
     let result = '';
     for (let section of Object.keys(this.parallels)) {
-      let acronymUid = this._generateAcronymUid(this.item.acronym, section)
+      let acronymUid = this._generateAcronymUid(this.item.acronym, section);
       result += `Parallels for ${acronymUid} ${this.item.original_title} `;
       let volpages = volPagesToString(this.item.volpages);
       result += volpages ? `(${volpages})` : '';
@@ -233,7 +240,7 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
       result = this._strip(result, ';');
       result += '\n';
     }
-    result += `Retrieved from ${window.location.href} on ${new Date()}.`
+    result += `Retrieved from ${window.location.href} on ${new Date()}.`;
     return result;
   }
 
