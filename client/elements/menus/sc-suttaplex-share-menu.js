@@ -4,6 +4,7 @@ import { LitLocalized } from '../addons/localization-mixin'
 import { API_ROOT } from '../../constants.js';
 import copyToClipboard from '../../utils/copy.js'
 import { volPagesToString } from '../../utils/suttaplex';
+import { icon } from '../../img/sc-icon';
 
 /*
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
@@ -13,12 +14,24 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
   render() {
     return html`
     <style>
+
+    :host{
+      outline: none
+    }
+    
       .button-text {
         color: var(--sc-primary-text-color);
       }
 
       .button-text:hover {
         background-color: var(--sc-tertiary-background-color);
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+      }
+
+        .button-text:active {
+         background-color: var(--sc-textual-info-background-color);
+          transition: background-color 0.2s ease;
         cursor: pointer;
       }
 
@@ -31,32 +44,27 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
       }
 
       .table-element[disabled] {
-        --iron-icon-fill-color: var(--sc-disabled-text-color);
         color: var(--sc-disabled-text-color);
       }
 
-      .table-element .grey-icon {
-        color: var(--sc-disabled-text-color);
-      }
-
-      .grey-icon {
+      .icon {
         margin-right: var(--sc-size-md);
-        color: var(--sc-disabled-text-color);
+        fill: var(--sc-disabled-text-color);
       }
 
 
     </style>
 
     <li class="table-element button-text" @tap=${this._copyLink} title="${this._computeLink(this.item)}">
-      <iron-icon class="grey-icon" icon="sc-iron-icons:link"></iron-icon>
+      ${icon.link}
       ${this.localize('copyLink')}
     </li>
     <li class="table-element button-text" @tap=${this._copyContent} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
-      <iron-icon class="grey-icon" icon="sc-iron-icons:content-copy"></iron-icon>
+      ${icon.content_copy}
       ${this.localize('copyTable')}
     </li>
     <li class="table-element button-text" @tap=${this._copyCite} ?disabled="${this._setAreParallelsAvailable(this.loadingParallels)}">
-      <iron-icon class="grey-icon" icon="sc-iron-icons:format-quote"></iron-icon>
+      ${icon.format_quote}
       ${this.localize('cite')}
     </li>`;
   }

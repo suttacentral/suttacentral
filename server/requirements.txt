@@ -54,7 +54,7 @@ snowballstemmer==1.2.1
 sortedcontainers==2.0.5
 Sphinx==1.8.0
 sphinxcontrib-websupport==1.1.0
-stripe==2.55
+stripe==2.55.1
 termcolor==1.1.0
 text-unidecode==1.2
 tqdm==4.26.0

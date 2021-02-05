@@ -124,7 +124,7 @@ class Search(Resource):
             return json.dumps({'error': 'Elasticsearch unavailable'}), 503
 
         if not restrict or restrict == 'dictionary':
-            dictionary_result = dictionaries.search(query)
+            dictionary_result = dictionaries.search(query, language)
             if dictionary_result:
                 if offset == 0 or restrict == 'dictionary':
                     # Yeah this is a hack in terms of offset and stuff

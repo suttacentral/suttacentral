@@ -24,37 +24,6 @@ export const SCSiteLayoutStyles = css`
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
-  .dialog {
-    max-width: 720px;
-  }
-
-  .buttons-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center
-  }
-
-  .dialog-header {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-xl);
-    font-weight: 400;
-    line-height: 28px;
-    margin: 0;
-  }
-
-  #settingsbutton {
-    color: var(--sc-tertiary-text-color);
-  }
-
-  .dialog-section {
-    margin: 0;
-  }
-
-  .close-dialog-icon {
-    color: var(--sc-disabled-text-color);
-  }
-
   /* apply font size here to avoid resizing title when returning to Home */
   #title {
     font-size: clamp(2rem, 8vw, 3em);
@@ -101,7 +70,7 @@ export const SCSiteLayoutStyles = css`
 
   #universal_toolbar {
     position: sticky;
-    z-index: 9999;
+    z-index: 100;
     top: 0;
 
     color: var(--sc-tertiary-text-color);
@@ -145,11 +114,9 @@ export const SCSiteLayoutStyles = css`
     }
   }
 
-  .title-logo-icon {
+  .sc_logo {
     width: 1.25em;
     height: 1.25em;
-    /* these hacky margins compensate for the padding in the svg icon. Use em to scale with clamp*/
-    margin: .1em .1em -.1em -.1em;
   }
 
   #static_pages_nav_menu {
@@ -221,31 +188,25 @@ export const SCSiteLayoutStyles = css`
     border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
-  li a:hover  #external{
+  li a:hover  .external{
     visibility: visible
   }
 
-  #external{
+  svg.external{
     width: 15px;
     height: 15px;
     fill: rgba(255,255,255,0.8);
-    margin-left: 6px;
+    margin: 6px 0 0 6px;
     visibility: hidden;
   }
+
+        morph-ripple {
+        --ripple-color: var(--sc-primary-color);
+      }
 
   .staticPageSelected {
     opacity: 1;
     border-bottom: 4px solid var(--sc-primary-color-light);
-  }
-
-  morph-ripple {
-    --ripple-color: gold;
-  }
-
-  .sutta-list {
-    max-width: 720px;
-    transition: margin-top 0.3s, margin-bottom 0.3s;
-    margin: 0 auto var(--sc-size-xxl);
   }
 
   @media only screen and (max-width: 600px) {

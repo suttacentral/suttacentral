@@ -10,6 +10,7 @@ import { store } from '../redux-store';
 import { LitLocalized } from '../elements/addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 import { navIndex } from './navigation/sc-navigation-common';
+import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 
 /*
 The search page opens when a search string is typed into the search-input-box in the toolbar.
@@ -39,7 +40,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         h2 {
-          line-height: 1.25
+          line-height: 1.25;
         }
 
         #search_result_list {
@@ -47,7 +48,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .search-results-container {
-          margin: 0 0 var(--sc-size-xxl) 0;
+          margin: 0 3vw var(--sc-size-xxl) 3vw;
         }
 
         .search-results-main {
@@ -83,7 +84,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         aside {
           color: var(--sc-secondary-text-color);
 
-          font-size: var(--sc-skolar-font-size-s)
+          font-size: var(--sc-skolar-font-size-s);
         }
 
         .search-result-item {
@@ -213,7 +214,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         .dictionary dfn,
         .highlight,
         .search-result-term,
-        .selected-terms-item>a {
+        .selected-terms-item > a {
           background-color: var(--sc-primary-color-light-transparent);
           color: var(--sc-primary-color-darkest);
         }
@@ -256,7 +257,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         li {
-          padding-left: clamp(.25rem, 1vw, 1rem);
+          padding-left: clamp(0.25rem, 1vw, 1rem);
         }
 
         li::marker {
@@ -266,19 +267,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
           color: var(--sc-secondary-text-color);
         }
 
-        p+ol,
-        p+ul {
-          margin: .5em 0 1em;
-        }
-
-        .paper-spinner {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-
-          margin: 0;
-
-          transform: translate(-50%, -50%);
+        p + ol,
+        p + ul {
+          margin: 0.5em 0 1em;
         }
 
         .google-maps {
@@ -311,83 +302,112 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
       </style>
 
-      ${this.displayDataLoadError}  
-      ${this.displayLoader}
-      ${this.onlineTemplate}
-      ${this.offLineTemplate}
-      ${this._createMetaData()}
+      ${this.displayDataLoadError} ${this.displayLoader} ${this.onlineTemplate}
+      ${this.offLineTemplate} ${this._createMetaData()}
     `;
   }
 
   get offLineTemplate() {
-    return !this.isOnline ? html`
-      <sc-error-icon type="connect-to-internet"></sc-error-icon>
-    ` : '';
+    return !this.isOnline
+      ? html`
+          <sc-error-icon type="connect-to-internet"></sc-error-icon>
+        `
+      : '';
   }
 
   get displayLoader() {
-    return this.loadingResults ? html`
-      <div class="loading-indicator"><sc-bouncing-loader></sc-bouncing-loader></div>
-    ` : '';
+    return this.loadingResults
+      ? html`
+          <div class="loading-indicator"><sc-bouncing-loader></sc-bouncing-loader></div>
+        `
+      : '';
   }
 
   get displayDataLoadError() {
-    return this.lastError ? html`
-      <sc-error-icon type="data-load-error"></sc-error-icon>
-  ` : '';
+    return this.lastError
+      ? html`
+          <sc-error-icon type="data-load-error"></sc-error-icon>
+        `
+      : '';
   }
 
   get onlineTemplate() {
-    return this.isOnline && !this.lastError ? html`
-      <div class="search-results-container">
-        <main class="search-results-main">
-          ${this.searchResultTemplate}
-        </main>
-      </div>
-    ` : '';
+    return this.isOnline && !this.lastError
+      ? html`
+          <div class="search-results-container">
+            <main class="search-results-main">${this.searchResultTemplate}</main>
+          </div>
+        `
+      : '';
   }
 
   get searchResultTemplate() {
-    return !this.loadingResults ? html`
-      <div class="search-result-head">
-        <h1 class="search-result-header">
-          <span class="search-result-number">${this._calculateResultCount(this.resultCount)}</span>
-          <span class="search-result-description">${this.localize('resultsFor')}</span>
-          <span class="search-result-term">${this.searchQuery}</span>
-        </h1>
-        <sc-search-filter-menu class="search-result-filter-menu" id="filter_menu"></sc-search-filter-menu>
-      </div>
-      <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
-      <div class="dictionary-snippet-card">
-        <sc-suttaplex .item=${this.suttaplex} .parallels-opened=${false}
-          .difficulty="${this._computeItemDifficulty(this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : '')}"
-          .expansion-data=${this.expansionReturns}>
-        </sc-suttaplex>
-      </div>
-      <iron-scroll-threshold id="scroll_threshold" @lower-threshold=${this._loadMoreData} scroll-target="document">
-        ${this.searchResultListTemplate}
-      </iron-scroll-threshold>
-    ` : '';
+    return !this.loadingResults
+      ? html`
+          <div class="search-result-head">
+            <h1 class="search-result-header">
+              <span class="search-result-number">
+                ${this._calculateResultCount(this.resultCount)}
+              </span>
+              <span class="search-result-description">${this.localize('resultsFor')}</span>
+              <span class="search-result-term">${this.searchQuery}</span>
+            </h1>
+            <sc-search-filter-menu
+              class="search-result-filter-menu"
+              id="filter_menu"
+            ></sc-search-filter-menu>
+          </div>
+          <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
+          <div class="dictionary-snippet-card">
+            <sc-suttaplex
+              .item=${this.suttaplex}
+              .parallels-opened=${false}
+              .difficulty="${this._computeItemDifficulty(
+                this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
+              )}"
+              .expansion-data=${this.expansionReturns}
+            ></sc-suttaplex>
+          </div>
+          <iron-scroll-threshold
+            id="scroll_threshold"
+            @lower-threshold=${this._loadMoreData}
+            scroll-target="document"
+          >
+            ${this.searchResultListTemplate}
+          </iron-scroll-threshold>
+        `
+      : '';
   }
 
   get searchResultListTemplate() {
-    return this.visibleSearchResults ? this.visibleSearchResults.map(item => html`
-      <div class="search-result-item ${this._calculateItemCategory(item)}" tabindex="${this.tabIndex}">
-        <div class="padded-container">
-          <a class="search-result-link" href="${this._calculateLink(item)}">
-            <div class="primary">
-              <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
+    return this.visibleSearchResults
+      ? this.visibleSearchResults.map(
+          item => html`
+            <div
+              class="search-result-item ${this._calculateItemCategory(item)}"
+              tabindex="${this.tabIndex}"
+            >
+              <div class="padded-container">
+                <a class="search-result-link" href="${this._calculateLink(item)}">
+                  <div class="primary">
+                    <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
+                  </div>
+                  <div class="secondary">
+                    <p class="search-result-division">
+                      ${unsafeHTML(this._calculateDivision(item))}
+                    </p>
+                  </div>
+                </a>
+                <div class="secondary">
+                  <p class="search-result-snippet">
+                    ${unsafeHTML(this._calculateSnippetContent(item.highlight.content))}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="secondary">
-              <p class="search-result-division">${unsafeHTML(this._calculateDivision(item))}</p>
-            </div>
-          </a>
-          <div class="secondary">
-            <p class="search-result-snippet">${unsafeHTML(this._calculateSnippetContent(item.highlight.content))}</p>
-          </div>
-        </div>
-      </div>
-    `) : '';
+          `
+        )
+      : '';
   }
 
   static get properties() {
@@ -399,7 +419,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           if (newVal) {
             return true;
           }
-        }
+        },
       },
       // The actual query parameters of the search
       searchParams: { type: Object },
@@ -408,7 +428,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       visibleSearchResults: { type: Array },
       resultCount: { type: Number },
       // Number of items to be loaded each time the scroll threshold is reached
-      resultsPerLoad: {type: Number },
+      resultsPerLoad: { type: Number },
       currentPage: { type: Number },
       currentFilter: { type: String },
       searchResultElemHeight: { type: Number },
@@ -420,8 +440,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       expansionReturns: { type: Array },
       waitTimeAfterNewWordExpired: { type: Boolean },
       loadingResults: { type: Boolean },
-      lastError: { type: Object }
-    }
+      lastError: { type: Object },
+    };
   }
 
   constructor() {
@@ -440,11 +460,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.totalLoadedResults = 0;
     this.isOnline = store.getState().isOnline;
     this.dictionaryTitles = {
-      'ncped': 'New Concise Pali English Dictionary',
-      'cped': 'Concise Pali English Dictionary',
-      'dhammika': 'Nature and the Environment in Early Buddhism by S. Dhammika',
-      'dppn': 'Dictionary of Pali Proper Names',
-      'pts': 'PTS Pali English Dictionary'
+      ncped: 'New Concise Pali English Dictionary',
+      cped: 'Concise Pali English Dictionary',
+      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      dppn: 'Dictionary of Pali Proper Names',
+      pts: 'PTS Pali English Dictionary',
     };
     this.suttaplex = [];
     this.expansionReturns = [];
@@ -477,34 +497,34 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.searchParams = state.searchParams;
     }
   }
-  
+
   get actions() {
     return {
       initiateSearch(params) {
         store.dispatch({
           type: 'INITIATE_SEARCH',
-          params: params
+          params: params,
         });
       },
       changeToolbarTitle(title) {
         store.dispatch({
-          type: "CHANGE_TOOLBAR_TITLE",
-          title: title
-        })
+          type: 'CHANGE_TOOLBAR_TITLE',
+          title: title,
+        });
       },
       setNavigation(navArray) {
         store.dispatch({
           type: 'SET_NAVIGATION',
-          navigationArray: navArray
-        })
+          navigationArray: navArray,
+        });
       },
       setCurrentNavPosition(position) {
         store.dispatch({
           type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position
-        })
+          currentNavPosition: position,
+        });
       },
-    }
+    };
   }
 
   // Saves the fetched search results to be displayed in the list.
@@ -537,10 +557,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.currentPage++;
     this.actions.initiateSearch({
       limit: this.resultsPerLoad,
-      offset: (this.currentPage * this.resultsPerLoad),
+      offset: this.currentPage * this.resultsPerLoad,
       query: this.searchQuery,
       language: this.language,
-      restrict: this.currentFilter
+      restrict: this.currentFilter,
     });
     this._generateRequest();
   }
@@ -570,7 +590,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       limit: this.resultsPerLoad,
       query: this.searchQuery,
       language: this.language,
-      restrict: this.currentFilter
+      restrict: this.currentFilter,
     });
     this._generateRequest();
   }
@@ -580,13 +600,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     let navArray = store.getState().navigationArray;
     let currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
-    navArray.push(
-      {
-        'title': this.localize('Search'),
-        'url': `${currentPath}?query=${this.searchQuery}`,
-        'type': 'searchPage',
-      }
-    );
+    navArray.push({
+      title: this.localize('Search'),
+      url: `${currentPath}?query=${this.searchQuery}`,
+      type: 'searchPage',
+    });
     this.actions.setNavigation(navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
@@ -621,7 +639,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   async _fetchExpansion() {
     try {
-      this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();  
+      this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
     } catch (error) {
       this.lastError = error;
       console.error(error);
@@ -630,14 +648,22 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   async _fetchSearchResult() {
     let requestUrl = this._getUrl() || '';
-    let bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
+    const bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
     requestUrl = requestUrl + bindingChar + this._getQueryString();
     try {
-      let searchResult = await (await fetch(requestUrl)).json();
+      const searchResult = await (await fetch(requestUrl)).json();
+      this._didRespond(searchResult);
       this._setProperties(searchResult);
     } catch (error) {
       this.lastError = error;
       console.error(error);
+    }
+  }
+
+  _didRespond(searchResult) {
+    const dicResult = searchResult.hits.find(item => item.category === 'dictionary');
+    if (dicResult && dicResult.highlight.content[0] === '' && dicResult.highlight.detail) {
+      dicResult.highlight.content[0] = dictionarySimpleItemToHtml(dicResult.highlight.detail[0]);
     }
   }
 
@@ -646,13 +672,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.lastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
     this.waitTimeAfterNewWordExpired = true;
-    this.updateComplete.then(() => { 
-      this.loadingResults = false; 
+    this.updateComplete.then(() => {
+      this.loadingResults = false;
     });
   }
 
   _getQueryString() {
-    let queryParts = [];
+    const queryParts = [];
     let param;
     let value;
 
@@ -692,8 +718,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _areAllItemsLoaded() {
-    return (this.resultCount === 0 && this.currentPage > 0) ||
-      (this.totalLoadedResults !== 0 && this.totalLoadedResults >= this.resultCount);
+    return (
+      (this.resultCount === 0 && this.currentPage > 0) ||
+      (this.totalLoadedResults !== 0 && this.totalLoadedResults >= this.resultCount)
+    );
   }
 
   _calculateItemCategory(item) {
@@ -702,8 +730,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
     if (item.is_root) {
       return 'root-text';
-    }
-    else return 'translation';
+    } else return 'translation';
   }
 
   // Determines the number of search results that have been found.
@@ -730,14 +757,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   _convertAcronym(acronym) {
     if (acronym.match(/\/\//)) {
-      return acronym.replace(/\/\//, " (") + ")";
+      return acronym.replace(/\/\//, ' (') + ')';
     } else {
       return acronym;
     }
   }
 
   _transformId(rootId) {
-    if (!rootId || !this.expansionReturns  || !this.expansionReturns[0]) {
+    if (!rootId || !this.expansionReturns || !this.expansionReturns[0]) {
       return '';
     }
     const expansionData = this.expansionReturns;
@@ -753,7 +780,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           if (itemMatch) item = itemMatch[0];
         }
         if (item && expansionData[0][item]) {
-          scAcronym += `${expansionData[0][item][0]} ${tail}`
+          scAcronym += `${expansionData[0][item][0]} ${tail}`;
         } else {
           scAcronym += tail;
         }
@@ -781,15 +808,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const description = this.localize('metaDescriptionText');
     const searchResultsText = this.localize('searchResultsText');
     const toolbarTitle = `${this.localize('Search')}: ${this.searchQuery}`;
-    document.dispatchEvent(new CustomEvent('metadata', {
-      detail: {
-        pageTitle: toolbarTitle,
-        title: `${searchResultsText} ${this.searchQuery}`,
-        description: description,
-        bubbles: true,
-        composed: true
-      }
-    }));
+    document.dispatchEvent(
+      new CustomEvent('metadata', {
+        detail: {
+          pageTitle: toolbarTitle,
+          title: `${searchResultsText} ${this.searchQuery}`,
+          description: description,
+          bubbles: true,
+          composed: true,
+        },
+      })
+    );
     this.actions.changeToolbarTitle(toolbarTitle);
   }
 
@@ -797,8 +826,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!difficulty) return;
     if (difficulty.name) {
       return difficulty.name;
-    }
-    else {
+    } else {
       const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
       return levels[difficulty];
     }

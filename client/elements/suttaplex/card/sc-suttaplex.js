@@ -1,7 +1,6 @@
-import { html, css, LitElement } from 'lit-element';
-import '@polymer/paper-menu-button/paper-menu-button.js';
+import { html, css, LitElement, svg } from 'lit-element';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
-import '../../../img/sc-svg-icons.js';
+import { icon } from '../../../img/sc-icon';
 import {
   transformId,
   pickVolPage,
@@ -44,7 +43,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       const copyMenu = this.shadowRoot.querySelector('#copy-menu');
       if (copyMenu) {
         this.addEventListener('par-menu-copied', () => {
-          copyMenu.opened = false;
+          copyMenuOpened = false;
         });
 
         copyMenu.addEventListener('opened-changed', (e) => {
@@ -79,7 +78,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get difficultyLevelIconName() {
-    return `sc-svg-icons:${this.difficulty}`;
+    return icon[this.difficulty];
   }
 
   get areParallelsAvailable() {
@@ -189,29 +188,26 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <div class="top-row-icons">
         ${this.difficulty ? html` 
-          <iron-icon 
-              id="difficulty-icon" 
-              class="tx-level-icon primary-accent-icon"
-              .icon="${this.difficultyLevelIconName}"
-              title="${this.localize(this.difficulty)}"
-           ></iron-icon>
+          <span class='difficulty_icon' title="${this.localize(this.difficulty)}">${this.difficultyLevelIconName}</span>
         ` : ''}
 
       ${this.hasSegmentedTexts ? html`
-        <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
-          aria-disabled="false" title="Listen to this sutta" rel="noopener noreferrer">
-          <paper-icon-button class="btn-speaker" slot="dropdown-trigger" aria-label="${this.localize('listenSutta')}"
-             icon="sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
-          </paper-icon-button>
+        <a class="top-menu-button"
+        href="${this.listenUrl}" 
+        target="_blank"
+        title="Listen to this sutta"  
+        aria-label="${this.localize('listenSutta')}"
+        rel="noopener noreferrer">
+          ${icon.speaker}             
         </a>
       ` : ''}
 
-      <details id="copy-menu" class="top-menu-button" horizontal-align="right" role="group"
-        aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-        <summary>
-        <paper-icon-button class="btn-share" slot="dropdown-trigger" aria-label="${this.localize('share')}"
-          icon="sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
-        </paper-icon-button>
+      <details 
+      id="copy-menu" 
+      class="top-menu-button"
+      title="Share this sutta">
+        <summary class="ripple">
+        ${icon.share}
   </summary>
         <ul class="suttaplex-share-menu-list">
           <sc-suttaplex-share-menu id="suttaplex_share_menu" tabindex="0" .item="${this.item}"></sc-suttaplex-share-menu>
@@ -237,7 +233,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${!this.item.biblio ? html`
             
             <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-            <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
+            ${icon.book}
               ${this.volPage}
             </span>
           ` : ''}
@@ -247,7 +243,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
               <summary>
                 
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
+                ${icon.book}
                   ${this.volPage}
                 </span>
               </summary>
