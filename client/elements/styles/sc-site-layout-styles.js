@@ -177,6 +177,8 @@ export const SCSiteLayoutStyles = css`
     border-bottom: 4px solid rgba(0, 0, 0, 0);
 
     align-items: center;
+
+    transition: all 200ms ease;
   }
 
   li a:hover {
@@ -185,6 +187,14 @@ export const SCSiteLayoutStyles = css`
     opacity: 1;
     color: white;
     border-bottom: 4px solid var(--sc-primary-color-light);
+
+    transition: all 200ms ease;
+  }
+
+  li a:active {
+    background-color: var(--sc-primary-color-light-transparent);
+
+    transition: background-color 200ms ease;
   }
 
   li a:hover .external {
@@ -197,10 +207,6 @@ export const SCSiteLayoutStyles = css`
     fill: rgba(255, 255, 255, 0.8);
     margin: 6px 0 0 6px;
     visibility: hidden;
-  }
-
-  morph-ripple {
-    --ripple-color: var(--sc-primary-color);
   }
 
   .staticPageSelected {

@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit-element';
-import '@moduware/morph-ripple';
 import { icon } from '../../img/sc-icon';
 
 class SCStepper extends LitElement {
@@ -43,7 +42,7 @@ class SCStepper extends LitElement {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
 
-          opacity: .55;
+          opacity: 0.55;
           color: var(--sc-tertiary-text-color);
         }
 
@@ -63,6 +62,30 @@ class SCStepper extends LitElement {
           text-decoration: none;
 
           color: inherit;
+        }
+
+        .link .text-title {
+          opacity: 0.8;
+
+          box-sizing: border-box;
+
+          border-bottom: 4px solid rgba(0, 0, 0, 0);
+
+          transition: all 200ms ease;
+        }
+
+        .link:hover .text-title {
+          opacity: 1;
+
+          border-bottom: 4px solid var(--sc-primary-color-light);
+
+          transition: all 200ms ease;
+        }
+
+        .link:active .text-title {
+          background-color: var(--sc-primary-color-light-transparent);
+
+          transition: background-color 200ms ease;
         }
 
         .button {
@@ -97,8 +120,8 @@ class SCStepper extends LitElement {
           width: var(--sc-size-md-larger);
           min-width: var(--sc-size-md-larger);
           margin-top: 1em;
-          margin-right: .5em;
-          margin-left: .5em;
+          margin-right: 0.5em;
+          margin-left: 0.5em;
 
           fill: var(--sc-tertiary-text-color);
         }
@@ -126,57 +149,56 @@ class SCStepper extends LitElement {
             margin-right: 1em;
           }
         }
-
-        morph-ripple {
-          --ripple-color: var(--sc-disabled-text-color);
-        }
       </style>
 
       <div class="bar">
         <div class="button-container">
-          ${this.previous && this.previous.uid ? html`
-            <a href="${this._getUrl(this.previous)}" class="link">
-              <div class="button button-left">
-                <div class="text">
-                  ${icon.arrow_left}
-                  <div class="text-element">
-                    <span class="action">Previous</span>
-                    <span class="text-title">${this.previous.name}</span>
+          ${this.previous && this.previous.uid
+            ? html`
+                <a href="${this._getUrl(this.previous)}" class="link">
+                  <div class="button button-left">
+                    <div class="text">
+                      ${icon.arrow_left}
+                      <div class="text-element">
+                        <span class="action">Previous</span>
+                        <span class="text-title">${this.previous.name}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <morph-ripple></morph-ripple>
-            </a>
-          ` : ''}
+                </a>
+              `
+            : ''}
         </div>
 
         <div class="separator"></div>
 
         <div class="button-container">
-          ${this.next && this.next.uid ? html`
-            <a href="${this._getUrl(this.next)}" class="link">
-              <div class="button button-right">
-                <div class="text">
-                  <div class="text-element text-element-right">
-                    <span class="action">Next</span>
-                    <span class="text-title">${this.next.name}</span>
+          ${this.next && this.next.uid
+            ? html`
+                <a href="${this._getUrl(this.next)}" class="link">
+                  <div class="button button-right">
+                    <div class="text">
+                      <div class="text-element text-element-right">
+                        <span class="action">Next</span>
+                        <span class="text-title">${this.next.name}</span>
+                      </div>
+                      ${icon.arrow_right}
+                    </div>
                   </div>
-                  ${icon.arrow_right}
-                </div>
-              </div>
-              <morph-ripple></morph-ripple>
-            </a>
-            ` : ''}
+                </a>
+              `
+            : ''}
         </div>
-      </div>`;
+      </div>
+    `;
   }
 
   static get properties() {
     return {
       next: { type: Object },
       previous: { type: Object },
-      lang: { type: String }
-    }
+      lang: { type: String },
+    };
   }
 
   _getUrl(object) {
