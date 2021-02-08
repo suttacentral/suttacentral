@@ -48,22 +48,9 @@ export default class RoutingService {
     this.history.replace(url);
   }
 
-  compile(to, params) {
-    const url = this.routes[to].compile(params);
-    const searchParams = new URLSearchParams();
-    Object.entries(params || {}).forEach(([key, value]) => {
-      if (!this.routes[to].tokens.includes(key)) {
-        searchParams.set(key, value);
-      }
-    });
-
-    const search = searchParams.toString();
-    return url + (search ? '?' + search : '');
-  }
-
   match(pathname) {
     const [hit] = Object.entries(this.routes)
-      .map(([route, path]) => [route, match(path.path)(pathname)])
+      .map(([route, path]) => [route, match(path.path)(decodeURI(pathname))])
       .filter(([route, path]) => !!path);
 
     if (!hit) {
