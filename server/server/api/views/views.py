@@ -32,6 +32,7 @@ from common.queries import (
     SEGMENTED_SUTTA_VIEW,
     SUTTA_NEIGHBORS,
     SUTTA_NAME,
+    SUTTA_SINGLE_PALI_TEXT,
 )
 
 from common.utils import (
@@ -986,4 +987,26 @@ class Redirect(Resource):
 class Transliterate(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, target, text):
-        return transliterate.process('IAST', target, text)
+        return transliterate.process('ISO', target, text)
+
+class TransliteratedSutta(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid, target):
+        db = get_db()
+
+        results = db.aql.execute(SUTTA_SINGLE_PALI_TEXT, bind_vars={'uid': uid})
+        result = next(results)
+        if not result:
+            return {'error': 'Not Found'}, 404
+
+        sutta_texts = {k: self.load_json(v) for k,v in result.items()}
+        for key, value in sutta_texts[uid].items():
+            sutta_texts[uid][key] = transliterate.process('ISO', target, value)
+
+        return sutta_texts[uid]
+
+    @staticmethod
+    def load_json(path):
+        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
+        with (data_dir / path).open() as f:
+            return json.load(f)

@@ -108,6 +108,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaVariant=${this.suttaVariant}
             .isLoading=${this.isLoading}
             .error=${this.lastError}
+            .suttaId=${this.suttaId}
           ></sc-bilara-segmented-text>
         `
       : '';

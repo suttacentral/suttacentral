@@ -39,6 +39,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       showParagraphs: { type: Boolean },
       paragraphs: { type: Array },
       paragraphTitles: { type: Object },
+      suttaId: { type: String },
       suttaReference: { type: Object },
       suttaComment: { type: Object },
       suttaVariant: { type: Object },
@@ -158,12 +159,16 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _updateView() {
     setTimeout(() => {
       this._addTranslationText();
-      this._addRootText();
+      if (this.paliScript === 'latin') {
+        this._addRootText();
+      } else {
+        this._setScript();
+      }
       this._initReference();
       this._addReferenceText();
-      //this._addCommentText();
+      // this._addCommentText();
       this._addVariantText();
-      //this._addCommentSpanId();
+      // this._addCommentSpanId();
       if (this.isPaliLookupEnabled) {
         this._initPaliLookup();
       }
@@ -173,7 +178,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._prepareNavigation();
 
     setTimeout(() => {
-      //this._recalculateCommentSpanHeight();
+      // this._recalculateCommentSpanHeight();
       this._changeTextView();
     }, 0);
     this.actions.changeSuttaMetaText(this._computeMeta());
@@ -475,7 +480,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addRootText() {
-    if (!this.bilaraRootSutta || this._articleElement().length === 0) {
+    if (
+      !this.bilaraRootSutta ||
+      this._articleElement().length === 0 ||
+      this.paliScript !== 'latin'
+    ) {
       return;
     }
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
@@ -495,9 +504,41 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     });
   }
 
+  _addTransliteratedRootText() {
+    if (!this.transliteratedRootSutta || this._articleElement().length === 0) {
+      return;
+    }
+
+    const mapSutta = new Map(Object.entries(this.transliteratedRootSutta));
+    if (!mapSutta || mapSutta.size === 0) {
+      return;
+    }
+
+    const suttasSection = this.shadowRoot.querySelector('section.range');
+    this._deleteRootSuttaMarkup();
+    this._addRootSuttaMarkup();
+    mapSutta.forEach((value, key) => {
+      const escapeKey = key.replace(/:/gu, '\\:').replace(/\./gu, '\\.');
+      const suttaId = key.split(':')[0].replace(/\./gu, '\\.');
+      const suttaArticle = this.shadowRoot.querySelector(`#${suttaId}`);
+      this._addTransliteratedRootTextToSpan(suttasSection, escapeKey, value);
+      this._addTransliteratedRootTextToSpan(suttaArticle, escapeKey, value);
+    });
+  }
+
+  _addTransliteratedRootTextToSpan(suttaRootElement, key, value) {
+    if (suttaRootElement) {
+      const spanElement = suttaRootElement.querySelector(`#${key} .root .text`);
+      if (spanElement) {
+        spanElement.classList.add(`${this.paliScript.toLowerCase()}-script`);
+        spanElement.innerHTML = this._tweakText(value);
+      }
+    }
+  }
+
   _addRootTextToSpan(suttaRootElement, key, value) {
     if (suttaRootElement) {
-      let spanElement = suttaRootElement.querySelector(`#${key} .root .text`);
+      const spanElement = suttaRootElement.querySelector(`#${key} .root .text`);
       if (spanElement) {
         spanElement.innerHTML = this._tweakText(value);
       }
@@ -506,7 +547,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _deleteRootSuttaMarkup() {
     this._articleElement().forEach(article => {
-      let rootMarkup = article.querySelectorAll('.root');
+      const rootMarkup = article.querySelectorAll('.root');
       if (rootMarkup) {
         rootMarkup.forEach(element => {
           element.parentNode.removeChild(element);
@@ -970,7 +1011,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     const segments = this.shadowRoot.querySelectorAll('.root');
     if (this.hasScriptBeenChanged) {
-      this._resetScript(segments);
+      this._resetScript();
     }
     if (this.paliScript === 'latin') {
       this._segmentedTextContentElement().classList.add('latin-script');
@@ -981,7 +1022,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this.hasScriptBeenChanged = false;
     } else if (this._checkSelectedScriptValid()) {
       // if the script name is valid:
-      this._setScript(segments);
+      this._setScript();
       this.hasScriptBeenChanged = true;
     }
     if (!this.translatedSutta) {
@@ -1003,33 +1044,29 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     targetNode.setAttribute('lang', langAttr);
   }
 
-  _resetScript(segments) {
-    Array.from(segments).forEach(item => {
-      let words = item.querySelectorAll('.word');
-      Array.from(words).forEach(
-        word => (word.innerHTML = word.dataset.latin_text || word.innerHTML)
-      );
-    });
+  _resetScript() {
+    this._addRootText();
+    this.spansForWordsGenerated = false;
+    if (this.isPaliLookupEnabled && !this.spansForWordsGenerated) {
+      this._initPaliLookup();
+    }
   }
 
-  async _scriptTransliterate(target, text) {
-    if (!target || !text) {
+  async _scriptTransliterate(uid, target) {
+    if (!uid || !target) {
       return;
     }
-    const converterApi = `${API_ROOT}/transliterate/${target}/${text}`;
+    const converterApi = `${API_ROOT}/transliterated_sutta/${uid}/${target}`;
     try {
-      return await (await fetch(converterApi)).json();
+      this.transliteratedRootSutta = await (await fetch(converterApi)).json();
     } catch (error) {
       this.lastError = error;
-      return '';
     }
   }
 
-  _setScript(segments) {
-    this._addRootTextPaliScriptClass();
-    const scriptFunctionName = `to${this._scriptFunctionName()}`;
+  _setScript() {
     this._ensureSpansExist();
-    this._setScriptOfSegments(segments, scriptFunctionName);
+    this._setScriptOfSegments();
   }
 
   _ensureSpansExist() {
@@ -1038,24 +1075,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
   }
 
-  _addRootTextPaliScriptClass() {
-    this.shadowRoot.querySelectorAll('.root .text').forEach(element => {
-      element.classList.remove(...element.classList);
-      element.classList.add('text');
-      element.classList.add(`${this.paliScript.toLowerCase()}-script`);
-    });
-  }
-
-  async _setScriptOfSegments(segments, scriptFunctionName) {
-    for (const item of Array.from(segments)) {
-      this._setScriptISOCode(item, this.rootSutta.lang);
-      const words = item.querySelectorAll('.word');
-      for (const word of Array.from(words)) {
-        word.dataset.latin_text = word.innerHTML;
-        word.innerHTML =
-          (await this._scriptTransliterate(this._scriptFunctionName(), word.innerHTML)) || '';
-      }
-    }
+  async _setScriptOfSegments() {
+    await this._scriptTransliterate(this.suttaId, this._scriptFunctionName());
+    this._addTransliteratedRootText();
   }
 
   _scriptFunctionName() {
