@@ -3,7 +3,6 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import '@polymer/iron-location/iron-location.js';
 import './menus/sc-search-filter-menu.js';
-import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
 import { store } from '../redux-store';
@@ -45,6 +44,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         .search-results-main {
           max-width: 720px;
           margin: 0 auto;
+          padding-bottom: 64px;
         }
 
         .search-result-head {
@@ -192,6 +192,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
+          font-variant-caps: all-small-caps;
+          letter-spacing: var(--sc-caps-letter-spacing);
         }
 
         .dictionary dfn {
@@ -214,14 +216,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
           margin: 0 0 var(--sc-size-s) 0;
         }
 
-        .dictionary .case {
+        .dictionary .grammar {
           display: block;
-
-          letter-spacing: var(--sc-caps-letter-spacing);
 
           color: var(--sc-secondary-text-color);
 
-          font-variant-caps: all-small-caps;
+          font-style: italic;
         }
 
         .dictionary .ref {
@@ -298,7 +298,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         #load-more {
-          padding: 10px 0;
+          padding: 24px 0;
           display: flex;
           justify-content: center;
         }
@@ -362,16 +362,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
             ></sc-search-filter-menu>
           </div>
           <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
-          <div class="dictionary-snippet-card">
-            <sc-suttaplex
-              .item=${this.suttaplex}
-              .parallels-opened=${false}
-              .difficulty="${this._computeItemDifficulty(
-                this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
-              )}"
-              .expansion-data=${this.expansionReturns}
-            ></sc-suttaplex>
-          </div>
+
           ${this.searchResultListTemplate}
           ${!this._areAllItemsLoaded()
             ? html`
@@ -444,7 +435,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       totalLoadedResults: { type: Number },
       isOnline: { type: Boolean },
       dictionaryTitles: { type: Object },
-      suttaplex: { type: Array },
       expansionReturns: { type: Array },
       waitTimeAfterNewWordExpired: { type: Boolean },
       loadingResults: { type: Boolean },
@@ -474,8 +464,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       dppn: 'Dictionary of Pali Proper Names',
       pts: 'PTS Pali English Dictionary',
     };
-    this.suttaplex = [];
-    this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
     this._updateNav();
@@ -673,7 +661,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _setProperties(searchResult) {
-    this.suttaplex = searchResult.suttaplex;
     this.lastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
     this.waitTimeAfterNewWordExpired = true;
