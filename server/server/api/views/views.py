@@ -987,7 +987,7 @@ class Redirect(Resource):
 class Transliterate(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, target, text):
-        return transliterate.process('IAST', target, text)
+        return transliterate.process('ISO', target, text)
 
 class TransliteratedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
@@ -1001,7 +1001,7 @@ class TransliteratedSutta(Resource):
 
         suttaTexts = {k: self.load_json(v) for k,v in result.items()}
         for key, value in suttaTexts[uid].items():
-            suttaTexts[uid][key] = transliterate.process('IAST', target, value)
+            suttaTexts[uid][key] = transliterate.process('ISO', target, value)
 
         return suttaTexts[uid]
 
