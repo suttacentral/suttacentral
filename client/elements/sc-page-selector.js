@@ -487,7 +487,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
       : contextToolbar.classList.remove(expandClass);
 
     this.parentNode.querySelector('#static_pages_nav_menu').style.display = [
-      'HOME',
       'SEARCH',
       'NAVIGATION',
       'SUTTA',
