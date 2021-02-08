@@ -34,6 +34,7 @@ from api.views import (
     SegmentedSutta,
     Transliterate,
     Publication,
+    TransliteratedSutta,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -80,6 +81,9 @@ def app_factory() -> Tuple[Api, Flask]:
     )
     api.add_resource(
         Transliterate, '/transliterate/<string:target>/<string:text>'
+    )
+    api.add_resource(
+        TransliteratedSutta, '/transliterated_sutta/<string:uid>/<string:target>'
     )
     api.add_resource(Publication, '/publication')
     app.register_blueprint(api_bp)
