@@ -165,12 +165,16 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _updateView() {
     setTimeout(() => {
       this._addTranslationText();
-      this._addRootText();
+      if (this.paliScript === 'latin') {
+        this._addRootText();
+      } else {
+        this._setScript();
+      }
       this._initReference();
       this._addReferenceText();
-      //this._addCommentText();
+      // this._addCommentText();
       this._addVariantText();
-      //this._addCommentSpanId();
+      // this._addCommentSpanId();
       if (this.isPaliLookupEnabled) {
         this._initPaliLookup();
       }
@@ -180,7 +184,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._prepareNavigation();
 
     setTimeout(() => {
-      //this._recalculateCommentSpanHeight();
+      // this._recalculateCommentSpanHeight();
       this._changeTextView();
     }, 0);
     this.actions.changeSuttaMetaText(this._computeMeta());
@@ -482,7 +486,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addRootText() {
-    if (!this.bilaraRootSutta || this._articleElement().length === 0) {
+    if (
+      !this.bilaraRootSutta ||
+      this._articleElement().length === 0 ||
+      this.paliScript !== 'latin'
+    ) {
       return;
     }
     let mapSutta = new Map(Object.entries(this.bilaraRootSutta));
