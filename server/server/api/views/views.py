@@ -999,11 +999,11 @@ class TransliteratedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        suttaTexts = {k: self.load_json(v) for k,v in result.items()}
-        for key, value in suttaTexts[uid].items():
-            suttaTexts[uid][key] = transliterate.process('ISO', target, value)
+        sutta_texts = {k: self.load_json(v) for k,v in result.items()}
+        for key, value in sutta_texts[uid].items():
+            sutta_texts[uid][key] = transliterate.process('ISO', target, value)
 
-        return suttaTexts[uid]
+        return sutta_texts[uid]
 
     @staticmethod
     def load_json(path):
