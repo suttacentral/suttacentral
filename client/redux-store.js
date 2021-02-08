@@ -11,8 +11,7 @@ const initialState = {
   currentRoute: {
     name: 'HOME',
     path: '/',
-    prefix: '',
-    __queryParams: {},
+    params: {},
   },
   dialog: undefined,
   siteLanguage: 'en',
@@ -21,7 +20,6 @@ const initialState = {
     title: '',
   },
   searchParams: {},
-  searchQuery: '',
   suttaText: {},
   suttaMetaText: '',
   textOptions: {
@@ -91,7 +89,11 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CHANGE_ROUTE':
-      return { ...state, currentRoute: action.route };
+      const { name, params, path } = action.payload;
+      return {
+        ...state,
+        currentRoute: { name, params, path },
+      };
     case 'CHANGE_SITE_LANGUAGE':
       return { ...state, siteLanguage: action.language, fullSiteLanguageName: action.fullName };
     case 'CHANGE_TOOLBAR_TITLE':
@@ -100,8 +102,6 @@ const reducer = (state, action) => {
       return { ...state, toolbarTitle: action.toolbarTitle };
     case 'INITIATE_SEARCH':
       return { ...state, searchParams: action.params };
-    case 'CHANGE_SEARCH_QUERY':
-      return { ...state, searchQuery: action.searchKeyword };
     case 'DOWNLOAD_SUTTA_TEXT':
       return { ...state, suttaText: action.text };
     case 'CHANGE_SUTTA_META_TEXT':
@@ -140,8 +140,6 @@ const reducer = (state, action) => {
           chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr,
         },
       };
-    case 'SELECT_NAVIGATION_MENU_ITEM':
-      return { ...state, selectedNavigationMenuItemId: action.id };
     case 'CHANGE_COLOR_THEME':
       return { ...state, colorTheme: action.theme };
     case 'CHANGE_DONATION_SUCCESS':
@@ -229,18 +227,13 @@ store.subscribe(() => {
 // Helper function
 function parsePersistedState(state) {
   const parsedState = JSON.parse(state);
-  const {
-    selectedNavigationMenuItemId,
-    toolbarOptions,
-    donationSuccessData,
-    tableOfContents,
-  } = initialState;
+  const { toolbarOptions, donationSuccessData, tableOfContents, navigationArray } = initialState;
 
   return {
     ...initialState,
     ...parsedState,
     // Reset some state variables:
-    selectedNavigationMenuItemId,
+    navigationArray,
     toolbarOptions,
     donationSuccessData,
     tableOfContents,

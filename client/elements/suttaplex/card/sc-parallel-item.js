@@ -1,4 +1,4 @@
-import { html, LitElement, svg } from 'lit-element';
+import { html, LitElement } from 'lit-element';
 import { icon } from '../../../img/sc-icon';
 import {
   getParagraphRange,

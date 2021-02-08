@@ -479,7 +479,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.searchQuery = store.getState().currentRoute.__queryParams.query;
+    this.searchQuery = store.getState().currentRoute.params.query;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
     this.allSearchResults = [];
@@ -521,8 +521,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    if (this.searchQuery !== state.currentRoute.__queryParams.query) {
-      this.searchQuery = state.currentRoute.__queryParams.query;
+    if (this.searchQuery !== state.currentRoute.params.query) {
+      this.searchQuery = state.currentRoute.params.query;
     }
     if (this.searchParams !== state.searchParams) {
       this.searchParams = state.searchParams;

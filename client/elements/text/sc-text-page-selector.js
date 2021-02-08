@@ -41,7 +41,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           min-height: calc(100vh - 336px);
           margin-bottom: 64px;
         }
-
       </style>
 
       <div class="wrapper">
@@ -109,6 +108,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaVariant=${this.suttaVariant}
             .isLoading=${this.isLoading}
             .error=${this.lastError}
+            .suttaId=${this.suttaId}
           ></sc-bilara-segmented-text>
         `
       : '';
@@ -306,6 +306,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
+    this.authorUid = state.currentRoute.params.authorUid;
+    this.suttaId = state.currentRoute.params.suttaId;
+    this.langIsoCode = state.currentRoute.params.langIsoCode;
   }
 
   languageLoaded() {

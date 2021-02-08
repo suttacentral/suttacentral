@@ -1,11 +1,7 @@
 import { LitElement, html, css, svg } from 'lit-element';
 
-import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
-
 import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
-import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
-setPassiveTouchGestures(true);
 
 import './sc-page-selector.js';
 import './menus/sc-action-items.js';
@@ -20,6 +16,7 @@ import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles.js';
+
 import { SCUtilityStyles } from './styles/sc-utility-styles.js';
 import { SCFontStyles } from './styles/sc-font-styles.js';
 import { SCColors } from './styles/sc-colors.js';
@@ -332,9 +329,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   firstUpdated() {
     this.removeAttribute('unresolved');
 
-    // Lock scroll for the text dialogs:
-    this._addScrollLockListeners();
-
     ['load', 'online', 'offline'].forEach(eventName => {
       window.addEventListener(eventName, () => {
         this.actions.setOnlineStatus(navigator.onLine);
@@ -512,29 +506,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _routeChanged() {
     this.shadowRoot.querySelector('#sutta-info').hide();
-  }
-
-  _openDialog(event) {
-    const dialogElement = this.shadowRoot.querySelector(`#${event.detail.id}`);
-    if (dialogElement) {
-      dialogElement.open();
-    }
-  }
-
-  // Locks scroll on text dialogs:
-  _addScrollLockListeners() {
-    let scrollLockListener = dialog => {
-      if (dialog.opened) {
-        IronDropdownScrollManager.pushScrollLock(dialog);
-      } else {
-        IronDropdownScrollManager.removeScrollLock(dialog);
-      }
-    };
-  }
-
-  _getApiUrl() {
-    let currentUrl = window.location;
-    return `${currentUrl.protocol}//${currentUrl.host}/api`;
   }
 
   _colorThemeChanged(newVal, oldVal) {

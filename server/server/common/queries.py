@@ -994,3 +994,10 @@ FOR subcount IN APPEND(legacy_counts, segmented_counts)
         SORT total DESC
         RETURN {name, total}
 '''
+
+SUTTA_SINGLE_PALI_TEXT = '''
+FOR doc IN sc_bilara_texts
+    FILTER doc.uid == @uid AND doc.lang == 'pli' AND 'root' IN doc.muids
+    LIMIT 1
+    RETURN {@uid: doc.filepath}
+'''

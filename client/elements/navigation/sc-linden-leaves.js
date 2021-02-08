@@ -140,7 +140,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-navigation';
-    this.navArray = store.getState().navigationArray;
   }
 
   get actions() {
