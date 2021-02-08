@@ -1,10 +1,11 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import '@polymer/iron-location/iron-location.js';
 import './menus/sc-search-filter-menu.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
+import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
 import { LitLocalized } from './addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
@@ -112,6 +113,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
           padding: 0;
         }
 
+        .primary {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          height: 32px;
+        }
+
         .search-result-title {
           font-family: var(--sc-serif-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
@@ -119,12 +129,31 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
           overflow: hidden;
 
-          margin: 1rem 0 0 0;
+          margin: 0;
 
           white-space: nowrap;
           text-overflow: ellipsis;
 
           color: var(--sc-primary-accent-color);
+        }
+
+        .all-dictionaries {
+          display: none;
+        }
+
+        .dictionary .all-dictionaries {
+          display: inline-flex;
+          color: var(--sc-secondary-text-color);
+          font-size: var(--sc-skolar-font-size-s);
+
+          flex-direction: row;
+          align-items: center;
+          gap: 0.5em;
+        }
+        .icon {
+          fill: var(--sc-disabled-text-color);
+          height: 20px;
+          width: 20px;
         }
 
         .search-result-division {
@@ -167,6 +196,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
           text-decoration: none;
 
           color: initial;
+
+          padding: 12px 0 8px;
         }
 
         .search-result-link:hover {
@@ -391,6 +422,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
                 <a class="search-result-link" href="${this._calculateLink(item)}">
                   <div class="primary">
                     <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
+                    <div class="all-dictionaries">
+                      <span>All dictionaries</span>
+                      ${icon.arrow_right}
+                    </div>
                   </div>
                   <div class="secondary">
                     <p class="search-result-division">
