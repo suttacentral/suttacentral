@@ -71,6 +71,15 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         margin: var(--sc-size-xl) 0 var(--sc-size-md);
       }
 
+      .grammar {
+        display: block;
+        font-family: var(--sc-sans-font);
+
+        color: var(--sc-secondary-text-color);
+
+        font-style: italic;
+      }
+
       .related-terms li {
         display: inline-block;
 
@@ -101,7 +110,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       .dictionary-source {
         font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-s);
-        font-weight: bold;
+        font-weight: 400;
+        font-variant-caps: all-small-caps;
+        letter-spacing: var(--sc-caps-letter-spacing);
 
         margin: var(--sc-size-md) 0;
 
