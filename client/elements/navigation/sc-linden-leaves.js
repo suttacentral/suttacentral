@@ -5,8 +5,6 @@ import { LitLocalized } from '../addons/localization-mixin';
 
 import { navigationNormalModeStyles } from './sc-navigation-styles.js';
 
-import '@moduware/morph-ripple';
-
 import '../menus/sc-universal-action-items.js';
 import { icon } from '../../img/sc-icon';
 
@@ -78,6 +76,8 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
         border-bottom: 4px solid rgba(0, 0, 0, 0);
 
         align-items: center;
+
+        transition: all 200ms ease;
       }
 
       li a:hover {
@@ -85,6 +85,14 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         opacity: 1;
         border-bottom: 4px solid var(--sc-primary-color-light);
+
+        transition: all 200ms ease;
+      }
+
+      li a:active {
+        background-color: var(--sc-primary-color-light-transparent);
+
+        transition: background-color 200ms ease;
       }
 
       li:last-child {
@@ -116,10 +124,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
       .icon {
         fill: var(--sc-disabled-text-color);
-      }
-
-      morph-ripple {
-        --ripple-color: var(--sc-primary-color);
       }
     `;
   }
@@ -181,10 +185,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
                         ${this.navArray.length !== i + 1
                           ? html`
                               <li @click=${() => this._navClick(nav)}>
-                                <a href="${nav.url}">
-                                  ${this.localize(nav.title)}
-                                  <morph-ripple></morph-ripple>
-                                </a>
+                                <a href="${nav.url}">${this.localize(nav.title)}</a>
                                 ${icon.chevron_right}
                               </li>
                             `

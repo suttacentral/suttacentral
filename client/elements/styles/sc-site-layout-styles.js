@@ -1,4 +1,4 @@
-import { css, html } from "lit-element";
+import { css } from 'lit-element';
 
 export const SCSiteLayoutStyles = css`
   :host {
@@ -38,7 +38,7 @@ export const SCSiteLayoutStyles = css`
     height: 180px;
     margin: auto;
 
-    transition: all .1s;
+    transition: all 0.1s;
     white-space: nowrap;
     text-overflow: ellipsis;
 
@@ -64,7 +64,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   #subTitle {
-    font-size: .5em;
+    font-size: 0.5em;
     font-style: italic;
   }
 
@@ -103,11 +103,10 @@ export const SCSiteLayoutStyles = css`
   /* apply font size here to avoid resizing title when returning to Home */
   .generalTitle span {
     font-size: calc(20px * var(--sc-skolar-font-scale));
-    font-family: "Skolar Sans PE Condensed", var(--sc-sans-font), 'Noto Sans CJK TC';
+    font-family: 'Skolar Sans PE Condensed', var(--sc-sans-font), 'Noto Sans CJK TC';
   }
 
   @media print {
-
     #universal_toolbar,
     #title {
       display: none;
@@ -173,11 +172,13 @@ export const SCSiteLayoutStyles = css`
 
     text-decoration: none;
 
-    opacity: .8;
+    opacity: 0.8;
     color: white;
     border-bottom: 4px solid rgba(0, 0, 0, 0);
 
     align-items: center;
+
+    transition: all 200ms ease;
   }
 
   li a:hover {
@@ -186,23 +187,27 @@ export const SCSiteLayoutStyles = css`
     opacity: 1;
     color: white;
     border-bottom: 4px solid var(--sc-primary-color-light);
+
+    transition: all 200ms ease;
   }
 
-  li a:hover  .external{
-    visibility: visible
+  li a:active {
+    background-color: var(--sc-primary-color-light-transparent);
+
+    transition: background-color 200ms ease;
   }
 
-  svg.external{
+  li a:hover .external {
+    visibility: visible;
+  }
+
+  svg.external {
     width: 15px;
     height: 15px;
-    fill: rgba(255,255,255,0.8);
+    fill: rgba(255, 255, 255, 0.8);
     margin: 6px 0 0 6px;
     visibility: hidden;
   }
-
-        morph-ripple {
-        --ripple-color: var(--sc-primary-color);
-      }
 
   .staticPageSelected {
     opacity: 1;
@@ -210,10 +215,10 @@ export const SCSiteLayoutStyles = css`
   }
 
   @media only screen and (max-width: 600px) {
-    #context_toolbar.contextToolbarExpand  {
+    #context_toolbar.contextToolbarExpand {
       flex-direction: column;
       justify-content: center;
-      height: 112px!important;
+      height: 112px !important;
     }
   }
 `;

@@ -1,5 +1,4 @@
 import { LitElement, html, css, svg } from 'lit-element';
-import '@moduware/morph-ripple';
 import { icon } from '../../img/sc-icon';
 
 class SCBottomSheet extends LitElement {
@@ -40,380 +39,341 @@ class SCBottomSheet extends LitElement {
         display: none;
       }
 
-body,
-main,
-article,
-header,
-footer
-{
-    display: flex;
-}
+      body,
+      main,
+      article,
+      header,
+      footer {
+        display: flex;
+      }
 
-header
-{
-    position: relative;
+      header {
+        position: relative;
 
-    height: 32px;
-    padding: 0 var(--sc-size-md);
+        height: 32px;
+        padding: 0 var(--sc-size-md);
 
-    color: var(--sc-primary-background-color);
-    background-color: var(--sc-secondary-text-color);
+        color: var(--sc-primary-background-color);
+        background-color: var(--sc-secondary-text-color);
 
-    justify-content: space-between;
-    align-items: center;
-}
+        justify-content: space-between;
+        align-items: center;
+      }
 
-header div
-{
-    display: flex;
-    flex-direction: row;
+      header div {
+        display: flex;
+        flex-direction: row;
 
-    align-items: center;
-}
+        align-items: center;
+      }
 
-details
-{
-    font-size: var(--sc-skolar-font-size-s);
+      details {
+        font-size: var(--sc-skolar-font-size-s);
 
-    z-index: 1;
+        z-index: 1;
 
-    max-width: 720px;
+        max-width: 720px;
 
-    color: var(--sc-primary-background-color);
-    background-color: var(--sc-secondary-text-color);
-}
+        color: var(--sc-primary-background-color);
+        background-color: var(--sc-secondary-text-color);
+      }
 
-details ul
-{
-    margin-right: 1em;
-}
+      details ul {
+        margin-right: 1em;
+      }
 
-details a
-{
-    text-decoration: underline;
+      details a {
+        text-decoration: underline;
 
-    color: inherit;
+        color: inherit;
 
-    text-decoration-color: var(--sc-primary-color);
-}
+        text-decoration-color: var(--sc-primary-color);
+      }
 
-summary
-{
-    white-space: nowrap;
-}
+      summary {
+        white-space: nowrap;
+      }
 
-details > summary
-{
-    position: relative;
+      details > summary {
+        position: relative;
 
-    display: flex;
+        display: flex;
 
-    padding: 2px 8px;
+        padding: 2px 8px;
 
-    list-style: none;
+        list-style: none;
 
-    cursor: pointer;
-}
+        cursor: pointer;
+      }
 
-details > summary::-webkit-details-marker
-{
-    display: none;
-}
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
 
-details .help-display-inner
-{
-    position: absolute;
-    z-index: 1000;
-    right: 3vw;
-    bottom: 48px;
+      details .help-display-inner {
+        position: absolute;
+        z-index: 1000;
+        right: 3vw;
+        bottom: 48px;
 
-    max-width: 720px;
-    margin-left: 3vw;
+        max-width: 720px;
+        margin-left: 3vw;
 
-    border-radius: 4px;
-    background-color: var(--sc-secondary-text-color);
-    box-shadow: var(--sc-shadow-elevation-8dp);
-}
+        border-radius: 4px;
+        background-color: var(--sc-secondary-text-color);
+        box-shadow: var(--sc-shadow-elevation-8dp);
+      }
 
-.bottom-sheet-icon-label
-{
-    font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
-    font-weight: 500;
+      .bottom-sheet-icon-label {
+        font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
+        font-weight: 500;
 
-    margin-left: 4px;
+        margin-left: 4px;
 
-    align-self: center;
-}
+        align-self: center;
+      }
 
-header button
-{
-    width: 100%;
+      header button {
+        width: 100%;
 
-    border: none;
-    background: none;
-}
+        border: none;
+        background: none;
+      }
 
-#btnClose
-{
-    display: flex;
+      #btnClose {
+        display: flex;
 
-    padding: 2px 8px;
+        padding: 2px 8px;
 
-    cursor: pointer;
+        cursor: pointer;
 
-    color: inherit;
-}
+        color: inherit;
+      }
 
-.icon{
-  fill: var(--sc-disabled-text-color)
-}
+      .icon {
+        fill: var(--sc-disabled-text-color);
+      }
 
-header > dfn
-{
-    font-size: var(--sc-skolar-font-size-s);
-    line-height: 1.333;
+      header > dfn {
+        font-size: var(--sc-skolar-font-size-s);
+        line-height: 1.333;
 
-    padding: 0 var(--sc-size-sm);
+        padding: 0 var(--sc-size-sm);
 
-    color: rgb(34, 33, 32);
-    background-color: var(--sc-primary-color-light);
-}
+        color: rgb(34, 33, 32);
+        background-color: var(--sc-primary-color-light);
+      }
 
-main
-{
-    justify-content: center;
-}
+      main {
+        justify-content: center;
+      }
 
-article
-{
-    overflow-x: hidden;
-    overflow-y: auto;
+      article {
+        overflow-x: hidden;
+        overflow-y: auto;
 
-    box-sizing: border-box;
-    width: 960px;
-    height: 120px;
-    margin: 0 3vw;
-    padding: 0;
+        box-sizing: border-box;
+        width: 960px;
+        height: 120px;
+        margin: 0 3vw;
+        padding: 0;
 
-    gap: 1em;
-}
+        gap: 1em;
+      }
 
-dl
-{
-    font-size: var(--sc-skolar-font-size-s);
+      dl {
+        font-size: var(--sc-skolar-font-size-s);
 
-    margin: 0;
-}
+        margin: 0;
+      }
 
-dd
-{
-    display: grid;
+      dd {
+        display: grid;
 
-    margin: 0;
+        margin: 0;
 
-    grid-row-start: 2;
-    grid-auto-rows: min-content;
-}
+        grid-row-start: 2;
+        grid-auto-rows: min-content;
+      }
 
-dd a
-{
-    text-decoration: underline;
-}
+      dd a {
+        text-decoration: underline;
+      }
 
-.entry a
-{
-    font-weight: bold;
+      .entry a {
+        font-weight: bold;
 
-    display: inline-block;
+        display: inline-block;
 
-    height: 100%;
-    padding: 0 var(--sc-size-sm);
+        height: 100%;
+        padding: 0 var(--sc-size-sm);
 
-    color: rgb(34, 33, 32);
-    background-color: var(--sc-primary-color-light);
+        color: rgb(34, 33, 32);
+        background-color: var(--sc-primary-color-light);
 
-    text-decoration-color: white;
-}
+        text-decoration-color: white;
+      }
 
-.entry a:hover
-{
-    background-color: var(--sc-primary-accent-color-light);
+      .entry a:hover {
+        background-color: var(--sc-primary-accent-color-light);
 
-    text-decoration-color: white;
-}
+        text-decoration-color: white;
+      }
 
-.grammar
-{
-    font-size: var(--sc-skolar-font-size-xxs);
+      .grammar {
+        font-size: var(--sc-skolar-font-size-xxs);
 
-    letter-spacing: var(--sc-caps-letter-spacing);
+        letter-spacing: var(--sc-caps-letter-spacing);
 
-    color: var(--sc-secondary-text-color);
+        color: var(--sc-secondary-text-color);
 
-    font-variant-caps: all-small-caps;
-}
+        font-variant-caps: all-small-caps;
+      }
 
-.definition
-{
-    margin: 0;
-    padding: 0;
+      .definition {
+        margin: 0;
+        padding: 0;
 
-    counter-reset: definition-item-counter;
+        counter-reset: definition-item-counter;
 
-    grid-row: 1;
-}
+        grid-row: 1;
+      }
 
-.definition li
-{
-    line-height: 1.125;
+      .definition li {
+        line-height: 1.125;
 
-    display: inline-flex;
+        display: inline-flex;
 
-    margin-right: 1em;
-    margin-bottom: 4px;
+        margin-right: 1em;
+        margin-bottom: 4px;
 
-    align-items: baseline;
-    gap: .5em;
-}
+        align-items: baseline;
+        gap: 0.5em;
+      }
 
-.definition li::before
-{
-    font-size: var(--sc-skolar-font-size-xxs);
-    font-weight: bold;
+      .definition li::before {
+        font-size: var(--sc-skolar-font-size-xxs);
+        font-weight: bold;
 
-    display: inline-flex;
+        display: inline-flex;
 
-    width: 1em;
-    height: 1em;
+        width: 1em;
+        height: 1em;
 
-    content: ' 'counter(definition-item-counter)'';
-    counter-increment: definition-item-counter;
+        content: ' ' counter(definition-item-counter) '';
+        counter-increment: definition-item-counter;
 
-    color: var(--sc-secondary-text-color);
-    border: 2px solid var(--sc-disabled-text-color);
-    border-radius: 50%;
+        color: var(--sc-secondary-text-color);
+        border: 2px solid var(--sc-disabled-text-color);
+        border-radius: 50%;
 
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-}
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+      }
 
-.xr
-{
-    font-size: var(--sc-skolar-font-size-xs);
+      .xr {
+        font-size: var(--sc-skolar-font-size-xs);
 
-    margin: 0;
-    padding: 0;
-}
+        margin: 0;
+        padding: 0;
+      }
 
-.xr li
-{
-    display: inline-flex;
+      .xr li {
+        display: inline-flex;
 
-    gap: 1em;
-}
+        gap: 1em;
+      }
 
-.xr a
-{
-    color: var(--sc-secondary-text-color);
+      .xr a {
+        color: var(--sc-secondary-text-color);
 
-    text-decoration-color: var(--sc-primary-color);
-}
+        text-decoration-color: var(--sc-primary-color);
+      }
 
-.xr a:before
-{
-    content: 'See: ';
-}
+      .xr a:before {
+        content: 'See: ';
+      }
 
-.xr a:hover
-{
-    color: var(--sc-primary-color);
-}
+      .xr a:hover {
+        color: var(--sc-primary-color);
+      }
 
-footer
-{
-    box-sizing: border-box;
-    height: 48px;
+      footer {
+        box-sizing: border-box;
+        height: 48px;
 
-    border-top: 1px solid rgba(0, 0, 0, .12);
-}
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+      }
 
-footer div
-{
-    position: relative;
+      footer div {
+        position: relative;
 
-    width: 50%;
+        width: 50%;
 
-    text-align: center;
-}
+        text-align: center;
 
-footer div:hover
-{
-    background-color: var(--sc-tertiary-background-color);
-}
+        transition: background-color 200ms ease;
+      }
 
-#next
-{
-    border-left: 1px solid var(--sc-border-color);
-}
+      footer div:hover {
+        background-color: var(--sc-tertiary-background-color);
 
-footer button
-{
-    font-size: 2em;
+        transition: background-color 200ms ease;
+      }
 
-    width: 100%;
-    height: 100%;
-    padding-bottom: 10px;
+      footer div:active {
+        background-color: var(--sc-border-color);
 
-    cursor: pointer;
+        transition: background-color 200ms ease;
+      }
 
-    color: var(--sc-disabled-text-color);
-    border: none;
-    outline: none;
-    background: none;
-}
+      #next {
+        border-left: 1px solid var(--sc-border-color);
+      }
 
-#btnNext
-{
-    border-left: 1px solid rgba(0, 0, 0, .14);
-}
+      footer button {
+        font-size: 2em;
 
-@keyframes bottomSheetShow
-{
-    from
-    {
-        bottom: -200px;
-    }
+        width: 100%;
+        height: 100%;
+        padding-bottom: 10px;
 
-    to
-    {
-        bottom: 0;
-    }
-}
+        cursor: pointer;
 
-@keyframes bottomSheetHide
-{
-    from
-    {
-        bottom: 0;
-    }
+        color: var(--sc-disabled-text-color);
+        border: none;
+        outline: none;
+        background: none;
+      }
 
-    to
-    {
-        bottom: -200px;
-    }
-}
+      #btnNext {
+        border-left: 1px solid rgba(0, 0, 0, 0.14);
+      }
 
-.lookup-next-previous
-{
-    fill: var(--sc-disabled-text-color);
-}
+      @keyframes bottomSheetShow {
+        from {
+          bottom: -200px;
+        }
 
-  morph-ripple {
-    --ripple-color: var(--sc-disabled-text-color);
-  }
+        to {
+          bottom: 0;
+        }
+      }
 
+      @keyframes bottomSheetHide {
+        from {
+          bottom: 0;
+        }
 
+        to {
+          bottom: -200px;
+        }
+      }
+
+      .lookup-next-previous {
+        fill: var(--sc-disabled-text-color);
+      }
     `;
   }
 
@@ -476,22 +436,16 @@ footer button
           </div>
         </header>
         <main>
-          <article>
-           ${this.currentDefineDetail}
-          </article>
+          <article>${this.currentDefineDetail}</article>
         </main>
         <footer>
           <div>
             <button accesskey="b" id="btnPrevious" @click=${this._previous}>
               ${icon.arrow_left}
-              <morph-ripple></morph-ripple>
             </button>
           </div>
           <div>
-            <button accesskey="n" id="btnNext" @click=${this._next}>
-              ${icon.arrow_right}
-              <morph-ripple></morph-ripple>
-            </button>
+            <button accesskey="n" id="btnNext" @click=${this._next}>${icon.arrow_right}</button>
           </div>
         </footer>
       </div>

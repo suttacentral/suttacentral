@@ -393,7 +393,7 @@ class SCOfflinePage extends LitLocalized(LitElement) {
 
   _updateUi(progressBar, currentUrl) {
     progressBar.buffer = this._calculateCurrentProgress();
-    this.downloadProgressPercentage = Math.round(progressBar.buffer * 100);
+    this.downloadProgressPercentage = progressBar.buffer;
     this.currentDownloadingUrl = currentUrl.slice(currentUrl.indexOf('api') + 4);
   }
 
@@ -503,15 +503,17 @@ class SCOfflinePage extends LitLocalized(LitElement) {
       typographyCommonStyles,
       css`
         mwc-formfield {
-          --mdc-typography-body2-font-family: var(--sc-serif-font);
+          --mdc-typography-font-family: var(--sc-sans-font);
+
           --mdc-typography-body2-font-size: var(--sc-skolar-font-size-md);
-          --mdc-typography-body2-font-weight: 400;
-          --mdc-typography-body2-line-height: 1.5;
-          --mdc-typography-body2-color: var(--sc-primary-text-color);
+
+          --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+          --mdc-theme-secondary: var(--sc-primary-accent-color);
         }
 
         mwc-button {
           --mdc-theme-primary: var(--sc-primary-accent-color);
+          --mdc-theme-on-primary: white;
         }
 
         .option-multi-select {
@@ -519,28 +521,28 @@ class SCOfflinePage extends LitLocalized(LitElement) {
           flex-direction: column;
         }
 
-        .separator {
-          background-color: var(--sc-border-color);
-          width: 100%;
-          overflow: hidden;
-          height: 1px;
-          margin-top: var(--sc-size-md);
-          margin-bottom: var(--sc-size-xxs);
+        mwc-switch {
+          --mdc-theme-surface: var(--sc-tertiary-background-color);
+          padding-left: 16px;
         }
 
-        main {
+        mwc-checkbox {
+          --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+        }
+
+        mwc-linear-progress {
+          --mdc-theme-primary: var(--sc-primary-accent-color);
+        }
+
+        h3 + mwc-formfield {
+          margin-top: 0.75em;
+        }
+
+        .button-row {
           display: flex;
+          gap: 1em;
           flex-wrap: wrap;
-          justify-content: center;
-        }
-
-        .row {
-          width: 60vw;
-        }
-
-        .switch {
-          display: flex;
-          justify-content: space-between;
+          margin-bottom: 2em;
         }
 
         #pwa-support-info {
@@ -549,12 +551,11 @@ class SCOfflinePage extends LitLocalized(LitElement) {
         }
 
         .card {
-          max-height: 350px;
-          max-width: 350px;
-          margin: 5px;
-          background-color: #fff;
+          font-family: var(--sc-sans-font);
+          margin-bottom: 120px;
+          background-color: var(--sc-tertiary-background-color);
           background-clip: border-box;
-          border: 1px solid rgba(0, 0, 0, 0.125);
+          border: 1px solid var(--sc-border-color);
           border-radius: 0.25rem;
         }
 
@@ -567,11 +568,26 @@ class SCOfflinePage extends LitLocalized(LitElement) {
         .card-header,
         .card-body,
         .card-footer {
-          margin: 10px;
+          margin: 1em;
         }
 
         .pointer {
           cursor: pointer;
+        }
+
+        .check_circle_outline {
+          fill: var(--sc-primary-accent-color);
+          margin-left: 0.5em;
+        }
+
+        .highlight_off {
+          fill: var(--sc-toast-error-color);
+          margin-left: 0.5em;
+        }
+
+        .play_arrow,
+        .stop {
+          fill: var(--sc-disabled-text-color);
         }
       `,
     ];
@@ -620,7 +636,7 @@ class SCOfflinePage extends LitLocalized(LitElement) {
   render() {
     return html`
       <main>
-        <atricle class="row">
+        <article class="row">
           <h1>${this.localize('usingOffline')}</h1>
           <p id="pwa-support-info">
             ${this.isPWASupport
@@ -640,23 +656,21 @@ class SCOfflinePage extends LitLocalized(LitElement) {
             <li>${this.localize('certainFunctions')}</li>
           </ul>
           <p>${this.localize('extraFeatures')}</p>
-        </atricle>
-        <div class="row separator"></div>
-        <div class="row">
-          <h3>${this.localize('language')}</h3>
-          <div>${this.localize('selectDifferentLang')}</div>
-          <h3>${this.localize('downloadParallels')}</h3>
-          <mwc-formfield label="${this.localize('downloadParallelsDescription')}">
-            <mwc-switch
-              ?checked="${this.shouldDownloadParallels}"
-              ?disabled="${this.isDownloadButtonDisabled}"
-              @change="${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}"
-            ></mwc-switch>
-          </mwc-formfield>
-        </div>
-        <div class="row">
-          <h3>${this.localize('downloadRootTexts')}</h3>
-          <div class="switch">
+          <hr />
+          <div class="row">
+            <h3>${this.localize('language')}</h3>
+            <p>${this.localize('selectDifferentLang')}</p>
+            <h3>${this.localize('downloadParallels')}</h3>
+            <mwc-formfield label="${this.localize('downloadParallelsDescription')}">
+              <mwc-switch
+                ?checked="${this.shouldDownloadParallels}"
+                ?disabled="${this.isDownloadButtonDisabled}"
+                @change="${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}"
+              ></mwc-switch>
+            </mwc-formfield>
+          </div>
+          <div class="row">
+            <h3>${this.localize('downloadRootTexts')}</h3>
             <mwc-formfield
               label="${this.localizeEx(
                 'downloadRootTextsDescription',
@@ -671,83 +685,86 @@ class SCOfflinePage extends LitLocalized(LitElement) {
               ></mwc-switch>
             </mwc-formfield>
           </div>
-        </div>
-        <div class="row">
-          <h3>${this.localize('paliLookups')}</h3>
-          <div>${this.localize('paliLookupsDescription')}</div>
-          <div class="option-multi-select">
-            ${this.paliLookupLanguages.map(lang => {
-              return html`
-                <mwc-formfield label="${lang.name}">
-                  <mwc-checkbox
-                    value="${lang.isoCode}"
-                    ?checked="${lang.enabled}"
-                    ?disabled="${this.isDownloadButtonDisabled}"
-                    @change="${this._setPaliLookup}"
-                  ></mwc-checkbox>
-                </mwc-formfield>
-              `;
-            })}
+          <div class="row">
+            <h3>${this.localize('paliLookups')}</h3>
+            <p>${this.localize('paliLookupsDescription')}</p>
+            <div class="option-multi-select">
+              ${this.paliLookupLanguages.map(lang => {
+                return html`
+                  <mwc-formfield label="${lang.name}">
+                    <mwc-checkbox
+                      value="${lang.isoCode}"
+                      ?checked="${lang.enabled}"
+                      ?disabled="${this.isDownloadButtonDisabled}"
+                      @change="${this._setPaliLookup}"
+                    ></mwc-checkbox>
+                  </mwc-formfield>
+                `;
+              })}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <h3>${this.localize('chineseLookups')}</h3>
-          <div>${this.localize('chineseLookupsDescription')}</div>
-          <div class="option-multi-select">
-            ${this.chineseLookupLanguages.map(lang => {
-              return html`
-                <mwc-formfield label="${lang.name}">
-                  <mwc-checkbox
-                    value="${lang.isoCode}"
-                    ?checked="${lang.enabled}"
-                    ?disabled="${this.isDownloadButtonDisabled}"
-                    @change="${this._setChineseLookup}"
-                  ></mwc-checkbox>
-                </mwc-formfield>
-              `;
-            })}
+          <div class="row">
+            <h3>${this.localize('chineseLookups')}</h3>
+            <p>${this.localize('chineseLookupsDescription')}</p>
+            <div class="option-multi-select">
+              ${this.chineseLookupLanguages.map(lang => {
+                return html`
+                  <mwc-formfield label="${lang.name}">
+                    <mwc-checkbox
+                      value="${lang.isoCode}"
+                      ?checked="${lang.enabled}"
+                      ?disabled="${this.isDownloadButtonDisabled}"
+                      @change="${this._setChineseLookup}"
+                    ></mwc-checkbox>
+                  </mwc-formfield>
+                `;
+              })}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <mwc-button
-            unelevated
-            @click="${this.makeOffline}"
-            label="${this._getDownloadButtonText()}"
-          ></mwc-button>
-          <mwc-button
-            @click="${this._resetDownloadHistory}"
-            unelevated
-            label="${this.localize('resetButton')}"
-          ></mwc-button>
-          <mwc-button
-            @click="${this._showAddToHomeScreenPrompt}"
-            unelevated
-            label="${this.localize('addToHomeScreen')}"
-          ></mwc-button>
-        </div>
-        ${this.cacheDownloadInProgress
-          ? html`
-              <div class="row">
-                <div class="card">
-                  <div class="card-header">
-                    ${this.localize('downloading')}: ${this.currentDownloadingUrl}
-                  </div>
-                  <div class="card-body">
-                    <span class="pointer" @click="${this._resumeOrPauseDownload}">
-                      ${icon.play_arrow}
-                    </span>
-                    <span class="pointer" @click="${this._stopDownload}">${icon.stop}</span>
-                  </div>
-                  <div class="card-footer">
-                    <mwc-linear-progress></mwc-linear-progress>
-                    <div class="download-progress-percentage">
-                      ${this.downloadProgressPercentage}%
+          <hr />
+          <div class="row button-row">
+            <mwc-button
+              raised
+              @click="${this.makeOffline}"
+              label="${this._getDownloadButtonText()}"
+            ></mwc-button>
+          </div>
+          <div class="row button-row">
+            <mwc-button
+              @click="${this._showAddToHomeScreenPrompt}"
+              outlined
+              label="${this.localize('addToHomeScreen')}"
+            ></mwc-button>
+            <mwc-button
+              @click="${this._resetDownloadHistory}"
+              outlined
+              label="${this.localize('resetButton')}"
+            ></mwc-button>
+          </div>
+          ${this.cacheDownloadInProgress
+            ? html`
+                <div class="row">
+                  <div class="card">
+                    <div class="card-header">
+                      ${this.localize('downloading')}: ${this.currentDownloadingUrl}
+                    </div>
+                    <div class="card-body">
+                      <span class="pointer" @click="${this._resumeOrPauseDownload}">
+                        ${icon.play_arrow}
+                      </span>
+                      <span class="pointer" @click="${this._stopDownload}">${icon.stop}</span>
+                    </div>
+                    <div class="card-footer">
+                      <mwc-linear-progress indeterminate></mwc-linear-progress>
+                      <div class="download-progress-percentage">
+                        ${this.downloadProgressPercentage}%
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            `
-          : ''}
+              `
+            : ''}
+        </article>
       </main>
     `;
   }
