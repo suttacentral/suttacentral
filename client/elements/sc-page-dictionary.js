@@ -2,7 +2,6 @@ import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';
-import { icons } from '../img/sc-icons';
 
 import { LitLocalized } from './addons/localization-mixin';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
@@ -130,6 +129,11 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         color: var(--sc-primary-color-darkest);
       }
     `;
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    this.dictionaryWord = state.currentRoute.params.word;
   }
 
   render() {

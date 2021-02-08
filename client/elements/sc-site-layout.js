@@ -1,11 +1,7 @@
 import { LitElement, html, css, svg } from 'lit-element';
 
-import { IronDropdownScrollManager } from '@polymer/iron-dropdown/iron-dropdown-scroll-manager.js';
-
 import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
-import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js';
-setPassiveTouchGestures(true);
 
 import './sc-page-selector.js';
 import './menus/sc-action-items.js';
@@ -20,6 +16,7 @@ import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles.js';
+
 import { SCUtilityStyles } from './styles/sc-utility-styles.js';
 import { SCFontStyles } from './styles/sc-font-styles.js';
 import { SCColors } from './styles/sc-colors.js';
@@ -78,22 +75,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayFirstToolbar
         ? html`
             <li>
-              <a href="/introduction">
-                ${this.localize('INTRODUCTION')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/introduction">${this.localize('INTRODUCTION')}</a>
             </li>
             <li>
-              <a href="/donations">
-                ${this.localize('DONATIONS')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/donations">${this.localize('DONATIONS')}</a>
             </li>
             <li>
-              <a href="/offline">
-                ${this.localize('USEOFFLINE')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/offline">${this.localize('USEOFFLINE')}</a>
             </li>
             <li>
               <a
@@ -104,7 +92,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
                 rel="noopener"
               >
                 ${this.localize('WHATSNEW')}${icon.external}
-                <morph-ripple></morph-ripple>
               </a>
             </li>
           `
@@ -118,28 +105,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displaySecondToolbar
         ? html`
             <li>
-              <a href="/subjects">
-                ${this.localize('SUBJECTS')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/subjects">${this.localize('SUBJECTS')}</a>
             </li>
             <li>
-              <a href="/similes">
-                ${this.localize('SIMILES')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/similes">${this.localize('SIMILES')}</a>
             </li>
             <li>
-              <a href="/names">
-                ${this.localize('NAMES')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/names">${this.localize('NAMES')}</a>
             </li>
             <li>
-              <a href="/terminology">
-                ${this.localize('TERMINOLOGY')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/terminology">${this.localize('TERMINOLOGY')}</a>
             </li>
           `
         : ''}
@@ -152,22 +127,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayTipitakaToolbar
         ? html`
             <li>
-              <a href="/discourses">
-                ${this.localize('DISCOURSES')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/discourses">${this.localize('DISCOURSES')}</a>
             </li>
             <li>
-              <a href="/vinaya">
-                ${this.localize('VINAYA')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/vinaya">${this.localize('VINAYA')}</a>
             </li>
             <li>
-              <a href="/abhidhamma">
-                ${this.localize('ABHIDHAMMA')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/abhidhamma">${this.localize('ABHIDHAMMA')}</a>
             </li>
           `
         : ''}
@@ -180,22 +146,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayAcademicToolbar
         ? html`
             <li>
-              <a href="/numbering">
-                ${this.localize('NUMBERING')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/numbering">${this.localize('NUMBERING')}</a>
             </li>
             <li>
-              <a href="/abbreviations">
-                ${this.localize('ABBREVIATIONS')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/abbreviations">${this.localize('ABBREVIATIONS')}</a>
             </li>
             <li>
-              <a href="/methodology">
-                ${this.localize('METHODOLOGY')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/methodology">${this.localize('METHODOLOGY')}</a>
             </li>
           `
         : ''}
@@ -208,22 +165,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayOrganizationalToolbar
         ? html`
             <li>
-              <a href="/acknowledgments">
-                ${this.localize('ACKNOWLEDGMENTS')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/acknowledgments">${this.localize('ACKNOWLEDGMENTS')}</a>
             </li>
             <li>
-              <a href="/licensing">
-                ${this.localize('LICENSING')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/licensing">${this.localize('LICENSING')}</a>
             </li>
             <li>
-              <a href="/about">
-                ${this.localize('ABOUT')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/about">${this.localize('ABOUT')}</a>
             </li>
           `
         : ''}
@@ -236,34 +184,19 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayGuidesToolbar
         ? html`
             <li>
-              <a href="/general-guide-sujato">
-                ${this.localize('GENERAL')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/general-guide-sujato">${this.localize('GENERAL')}</a>
             </li>
             <li>
-              <a href="/dn-guide-sujato">
-                ${this.localize('LONG')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/dn-guide-sujato">${this.localize('LONG')}</a>
             </li>
             <li>
-              <a href="/mn-guide-sujato">
-                ${this.localize('MIDDLE')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/mn-guide-sujato">${this.localize('MIDDLE')}</a>
             </li>
             <li>
-              <a href="/sn-guide-sujato">
-                ${this.localize('LINKED')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/sn-guide-sujato">${this.localize('LINKED')}</a>
             </li>
             <li>
-              <a href="/an-guide-sujato">
-                ${this.localize('NUMBERED')}
-                <morph-ripple></morph-ripple>
-              </a>
+              <a href="/an-guide-sujato">${this.localize('NUMBERED')}</a>
             </li>
           `
         : ''}
@@ -395,9 +328,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this.removeAttribute('unresolved');
-
-    // Lock scroll for the text dialogs:
-    this._addScrollLockListeners();
 
     ['load', 'online', 'offline'].forEach(eventName => {
       window.addEventListener(eventName, () => {
@@ -576,29 +506,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _routeChanged() {
     this.shadowRoot.querySelector('#sutta-info').hide();
-  }
-
-  _openDialog(event) {
-    const dialogElement = this.shadowRoot.querySelector(`#${event.detail.id}`);
-    if (dialogElement) {
-      dialogElement.open();
-    }
-  }
-
-  // Locks scroll on text dialogs:
-  _addScrollLockListeners() {
-    let scrollLockListener = dialog => {
-      if (dialog.opened) {
-        IronDropdownScrollManager.pushScrollLock(dialog);
-      } else {
-        IronDropdownScrollManager.removeScrollLock(dialog);
-      }
-    };
-  }
-
-  _getApiUrl() {
-    let currentUrl = window.location;
-    return `${currentUrl.protocol}//${currentUrl.host}/api`;
   }
 
   _colorThemeChanged(newVal, oldVal) {
