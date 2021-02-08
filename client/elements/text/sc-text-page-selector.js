@@ -306,6 +306,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
+    this.authorUid = state.currentRoute.params.authorUid;
+    this.suttaId = state.currentRoute.params.suttaId;
+    this.langIsoCode = state.currentRoute.params.langIsoCode;
   }
 
   languageLoaded() {

@@ -18,7 +18,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       suttaplexListDisplay: String,
       suttaplexData: Array,
       networkError: Object,
-    }
+    };
   }
 
   get actions() {
@@ -26,15 +26,15 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title
+          title: title,
         });
-      }
+      },
     };
-  };
+  }
 
   get apiUrl() {
     return `${API_ROOT}/suttaplex/${this.categoryId}?language=${this.language}`;
-  };
+  }
 
   constructor() {
     super();
@@ -66,8 +66,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (!difficulty) return;
     if (difficulty.name) {
       return difficulty.name;
-    }
-    else {
+    } else {
       const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
       return levels[difficulty];
     }
@@ -75,8 +74,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    if (this.categoryId !== state.currentRoute.categoryId) {
-      this.categoryId = state.currentRoute.categoryId;
+    if (this.categoryId !== state.currentRoute.params.categoryId) {
+      this.categoryId = state.currentRoute.params.categoryId;
       if (this.categoryId && state.siteLanguage) {
         this._fetchCategory();
       }
@@ -95,8 +94,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       const responseData = await fetch(this.apiUrl).then(r => r.json());
 
       this.suttaplexData = [];
-      partitionAsync(responseData, (part) => this.suttaplexData = [...this.suttaplexData, ...part], 15, 100)
-        .then(() => this._updateMetaData());
+      partitionAsync(
+        responseData,
+        part => (this.suttaplexData = [...this.suttaplexData, ...part]),
+        15,
+        100
+      ).then(() => this._updateMetaData());
     } catch (e) {
       this.networkError = e;
     }
@@ -113,15 +116,17 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
-      document.dispatchEvent(new CustomEvent('metadata', {
-        detail: {
-          pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
-          title: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
-          description: description,
-          bubbles: true,
-          composed: true
-        }
-      }));
+      document.dispatchEvent(
+        new CustomEvent('metadata', {
+          detail: {
+            pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
+            title: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
+            description: description,
+            bubbles: true,
+            composed: true,
+          },
+        })
+      );
     }
   }
 
@@ -131,8 +136,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .item="${item}"
         .parallelsOpened="${this.areParallelsOpen(item)}"
         .difficulty="${this.computeItemDifficulty(item.difficulty)}"
-        .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}">
-      </sc-suttaplex>`;
+        .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}"
+      ></sc-suttaplex>
+    `;
   }
 
   sectionTemplate(item) {
@@ -143,28 +149,37 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           .inputText="${item.blurb}"
           .inputType="${item.type}"
           .label="${this.localize('expandSection')}"
-          .opened="${this.shouldExpandAll()}">
-        </sc-suttaplex-section-title>
-      </section>`;
+          .opened="${this.shouldExpandAll()}"
+        ></sc-suttaplex-section-title>
+      </section>
+    `;
   }
 
   render() {
     return html`
-    ${suttaplexListCss}
+      ${suttaplexListCss}
 
-    <div class="division-content main">
-      <div class="loading-indicator">
-        <sc-bouncing-loader class="loading-spinner" ?active="${this.suttaplexLoading}"></sc-bouncing-loader>
+      <div class="division-content main">
+        <div class="loading-indicator">
+          <sc-bouncing-loader
+            class="loading-spinner"
+            ?active="${this.suttaplexLoading}"
+          ></sc-bouncing-loader>
+        </div>
+
+        ${this.hasError()
+          ? html`
+              <sc-error-icon type="no-network"></sc-error-icon>
+            `
+          : ''}
+        ${this.suttaplexData &&
+        repeat(
+          this.suttaplexData,
+          item => item.key,
+          item =>
+            this.isSuttaplex(item) ? this.suttaplexTemplate(item) : this.sectionTemplate(item)
+        )}
       </div>
-
-      ${this.hasError() ? html`<sc-error-icon type="no-network"></sc-error-icon>` : ''}
-
-      ${(this.suttaplexData && repeat(this.suttaplexData, (item) => item.key, (item) =>
-        this.isSuttaplex(item)
-          ? this.suttaplexTemplate(item)
-          : this.sectionTemplate(item))
-      )}
-    </div>
     `;
   }
 }

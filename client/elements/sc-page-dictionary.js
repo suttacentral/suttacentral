@@ -131,6 +131,11 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     `;
   }
 
+  _stateChanged(state) {
+    super._stateChanged(state);
+    this.dictionaryWord = state.currentRoute.params.word;
+  }
+
   render() {
     return html`
       <div class="dictionary-results-container">
