@@ -88,10 +88,14 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-universal-action-items';
-    this.searchKeyword = store.getState().searchQuery;
     this.search_input = this.shadowRoot.getElementById('search_input');
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    this.searchKeyword = state.searchQuery || '';
+    this.mode = state.toolbarOptions.mode;
   }
 
   firstUpdated() {
@@ -158,8 +162,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
   }
 
-  keypressHandler(e) {
-    if (e.key === 'Enter') {
+  keypressHandler({ key }) {
+    if (key === 'Enter') {
       this._startSearch();
     }
   }
