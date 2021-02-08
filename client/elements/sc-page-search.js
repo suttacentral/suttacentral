@@ -373,13 +373,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
             ></sc-suttaplex>
           </div>
           ${this.searchResultListTemplate}
-          <div id="load-more">
-            <mwc-button
-              @click="${this._loadMoreData}"
-              unelevated
-              label="${this.localize('loadMore')}"
-            ></mwc-button>
-          </div>
+          ${!this._areAllItemsLoaded()
+            ? html`
+                <div id="load-more">
+                  <mwc-button
+                    @click="${this._loadMoreData}"
+                    unelevated
+                    label="${this.localize('loadMore')}"
+                  ></mwc-button>
+                </div>
+              `
+            : ''}
         `
       : '';
   }
