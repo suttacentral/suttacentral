@@ -1,25 +1,16 @@
 import { LitElement, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import '@material/mwc-button';
 import '@polymer/iron-location/iron-location.js';
-import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
 import './menus/sc-search-filter-menu.js';
 import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
 import { store } from '../redux-store';
-import { LitLocalized } from '../elements/addons/localization-mixin';
+import { LitLocalized } from './addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
-
-/*
-The search page opens when a search string is typed into the search-input-box in the toolbar.
-
-The loading is done within an iron-scroll-threshold in case there are very large numbers of results.
-
-If the results are in more than one category of root texts, translations, and dictionaries, and there are more
-than ten results in total, a dropdown selection menu appears at the top.
-*/
 
 class SCPageSearch extends LitLocalized(LitElement) {
   render() {
@@ -300,6 +291,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
           text-align: center;
         }
+
+        mwc-button {
+          --mdc-theme-primary: var(--sc-primary-accent-color);
+          --mdc-theme-on-primary: white;
+        }
+
+        #load-more {
+          padding: 10px 0;
+          display: flex;
+          justify-content: center;
+        }
       </style>
 
       ${this.displayDataLoadError} ${this.displayLoader} ${this.onlineTemplate}
@@ -318,7 +320,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get displayLoader() {
     return this.loadingResults
       ? html`
-          <div class="loading-indicator"><sc-bouncing-loader></sc-bouncing-loader></div>
+          <div class="loading-indicator">
+            <sc-bouncing-loader></sc-bouncing-loader>
+          </div>
         `
       : '';
   }
@@ -368,13 +372,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
               .expansion-data=${this.expansionReturns}
             ></sc-suttaplex>
           </div>
-          <iron-scroll-threshold
-            id="scroll_threshold"
-            @lower-threshold=${this._loadMoreData}
-            scroll-target="document"
-          >
-            ${this.searchResultListTemplate}
-          </iron-scroll-threshold>
+          ${this.searchResultListTemplate}
+          <div id="load-more">
+            <mwc-button
+              @click="${this._loadMoreData}"
+              unelevated
+              label="${this.localize('loadMore')}"
+            ></mwc-button>
+          </div>
         `
       : '';
   }
@@ -427,7 +432,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       allSearchResults: { type: Array },
       visibleSearchResults: { type: Array },
       resultCount: { type: Number },
-      // Number of items to be loaded each time the scroll threshold is reached
       resultsPerLoad: { type: Number },
       currentPage: { type: Number },
       currentFilter: { type: String },
@@ -546,10 +550,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  // Determines how the iron-scroll-threshold pushes the items to the iron-list
-  // depending on the number of items to be loaded and on previously set parameters.
   _loadMoreData() {
-    this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
     this._loadNextPage();
   }
 
