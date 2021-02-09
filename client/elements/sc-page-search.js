@@ -1,24 +1,16 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
+import '@material/mwc-button';
+import '@polymer/iron-location/iron-location.js';
 import './menus/sc-search-filter-menu.js';
-import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
+import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
-import { LitLocalized } from '../elements/addons/localization-mixin';
+import { LitLocalized } from './addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
-
-/*
-The search page opens when a search string is typed into the search-input-box in the toolbar.
-
-The loading is done within an iron-scroll-threshold in case there are very large numbers of results.
-
-If the results are in more than one category of root texts, translations, and dictionaries, and there are more
-than ten results in total, a dropdown selection menu appears at the top.
-*/
 
 class SCPageSearch extends LitLocalized(LitElement) {
   render() {
@@ -53,6 +45,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         .search-results-main {
           max-width: 720px;
           margin: 0 auto;
+          padding-bottom: 64px;
         }
 
         .search-result-head {
@@ -120,6 +113,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
           padding: 0;
         }
 
+        .primary {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          height: 32px;
+        }
+
         .search-result-title {
           font-family: var(--sc-serif-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
@@ -127,12 +129,31 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
           overflow: hidden;
 
-          margin: 1rem 0 0 0;
+          margin: 0;
 
           white-space: nowrap;
           text-overflow: ellipsis;
 
           color: var(--sc-primary-accent-color);
+        }
+
+        .all-dictionaries {
+          display: none;
+        }
+
+        .dictionary .all-dictionaries {
+          display: inline-flex;
+          color: var(--sc-secondary-text-color);
+          font-size: var(--sc-skolar-font-size-s);
+
+          flex-direction: row;
+          align-items: center;
+          gap: 0.5em;
+        }
+        .icon {
+          fill: var(--sc-disabled-text-color);
+          height: 20px;
+          width: 20px;
         }
 
         .search-result-division {
@@ -175,6 +196,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
           text-decoration: none;
 
           color: initial;
+
+          padding: 12px 0 8px;
         }
 
         .search-result-link:hover {
@@ -200,6 +223,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
+          font-variant-caps: all-small-caps;
+          letter-spacing: var(--sc-caps-letter-spacing);
         }
 
         .dictionary dfn {
@@ -222,14 +247,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
           margin: 0 0 var(--sc-size-s) 0;
         }
 
-        .dictionary .case {
+        .dictionary .grammar {
           display: block;
-
-          letter-spacing: var(--sc-caps-letter-spacing);
 
           color: var(--sc-secondary-text-color);
 
-          font-variant-caps: all-small-caps;
+          font-style: italic;
         }
 
         .dictionary .ref {
@@ -299,6 +322,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
           text-align: center;
         }
+
+        mwc-button {
+          --mdc-theme-primary: var(--sc-primary-accent-color);
+          --mdc-theme-on-primary: white;
+        }
+
+        #load-more {
+          padding: 24px 0;
+          display: flex;
+          justify-content: center;
+        }
       </style>
 
       ${this.displayDataLoadError} ${this.displayLoader} ${this.onlineTemplate}
@@ -317,7 +351,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get displayLoader() {
     return this.loadingResults
       ? html`
-          <div class="loading-indicator"><sc-bouncing-loader></sc-bouncing-loader></div>
+          <div class="loading-indicator">
+            <sc-bouncing-loader></sc-bouncing-loader>
+          </div>
         `
       : '';
   }
@@ -357,23 +393,19 @@ class SCPageSearch extends LitLocalized(LitElement) {
             ></sc-search-filter-menu>
           </div>
           <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
-          <div class="dictionary-snippet-card">
-            <sc-suttaplex
-              .item=${this.suttaplex}
-              .parallels-opened=${false}
-              .difficulty="${this._computeItemDifficulty(
-                this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
-              )}"
-              .expansion-data=${this.expansionReturns}
-            ></sc-suttaplex>
-          </div>
-          <iron-scroll-threshold
-            id="scroll_threshold"
-            @lower-threshold=${this._loadMoreData}
-            scroll-target="document"
-          >
-            ${this.searchResultListTemplate}
-          </iron-scroll-threshold>
+
+          ${this.searchResultListTemplate}
+          ${!this._areAllItemsLoaded()
+            ? html`
+                <div id="load-more">
+                  <mwc-button
+                    @click="${this._loadMoreData}"
+                    unelevated
+                    label="${this.localize('loadMore')}"
+                  ></mwc-button>
+                </div>
+              `
+            : ''}
         `
       : '';
   }
@@ -390,6 +422,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
                 <a class="search-result-link" href="${this._calculateLink(item)}">
                   <div class="primary">
                     <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
+                    <div class="all-dictionaries">
+                      <span>All dictionaries</span>
+                      ${icon.arrow_right}
+                    </div>
                   </div>
                   <div class="secondary">
                     <p class="search-result-division">
@@ -426,7 +462,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       allSearchResults: { type: Array },
       visibleSearchResults: { type: Array },
       resultCount: { type: Number },
-      // Number of items to be loaded each time the scroll threshold is reached
       resultsPerLoad: { type: Number },
       currentPage: { type: Number },
       currentFilter: { type: String },
@@ -435,7 +470,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       totalLoadedResults: { type: Number },
       isOnline: { type: Boolean },
       dictionaryTitles: { type: Object },
-      suttaplex: { type: Array },
       expansionReturns: { type: Array },
       waitTimeAfterNewWordExpired: { type: Boolean },
       loadingResults: { type: Boolean },
@@ -465,8 +499,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       dppn: 'Dictionary of Pali Proper Names',
       pts: 'PTS Pali English Dictionary',
     };
-    this.suttaplex = [];
-    this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
     this._updateNav();
@@ -545,10 +577,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  // Determines how the iron-scroll-threshold pushes the items to the iron-list
-  // depending on the number of items to be loaded and on previously set parameters.
   _loadMoreData() {
-    this.shadowRoot.querySelector('#scroll_threshold').clearTriggers();
     this._loadNextPage();
   }
 
@@ -667,7 +696,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _setProperties(searchResult) {
-    this.suttaplex = searchResult.suttaplex;
     this.lastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
     this.waitTimeAfterNewWordExpired = true;
