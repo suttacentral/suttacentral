@@ -2,7 +2,7 @@ import os
 from typing import Tuple
 
 from flasgger import Swagger
-from flask import Blueprint, Flask
+from flask import Blueprint, Flask, make_response, json
 from flask_cors import CORS
 from flask_restful import Api
 
@@ -48,6 +48,12 @@ def app_factory() -> Tuple[Api, Flask]:
     app.config.from_object(app_config[os.getenv('ENVIRONMENT')])
     api_bp = Blueprint('api', __name__)
     api = Api(api_bp)
+
+    @api.representation('application/json')
+    def output_json(data, code, headers=None):
+        resp = make_response(json.dumps(data, ensure_ascii=False), code)
+        resp.headers.extend(headers or {})
+        return resp
 
     api.add_resource(Languages, '/languages')
     api.add_resource(TranslationCountByDivision, '/translation_count/<string:iso_code>')
