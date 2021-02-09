@@ -1,7 +1,6 @@
 import { LitElement, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
-import '@polymer/iron-location/iron-location.js';
 import './menus/sc-search-filter-menu.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
