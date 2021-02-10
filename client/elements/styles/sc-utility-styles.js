@@ -1,7 +1,7 @@
 import { css } from 'lit-element';
 
 export const SCUtilityStyles = css`
-  :host {
+  html {
     --sc-screen-sm: 600px;
     --sc-screen-md: 840px;
     --sc-screen-l: 960px;
