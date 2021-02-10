@@ -64,11 +64,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         color: white;
       }
 
-      #more_vert_button {
-        margin: 0;
-        padding: 0;
-      }
-
       #more-menu {
         --mdc-menu-min-width: 275px;
         --mdc-menu-max-width: 290px;
@@ -99,24 +94,6 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    const moreMenuElement = this.shadowRoot.getElementById('sc-more-menu');
-    if (moreMenuElement) {
-      moreMenuElement.addEventListener('item-selected', () => {
-        const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
-        moreVertButtonElement.close();
-      });
-    }
-
-    const moreVertButtonElement = this.shadowRoot.getElementById('more_vert_button');
-    if (moreVertButtonElement) {
-      moreVertButtonElement.addEventListener('click', () => {
-        const scActionItems = document
-          .querySelector('sc-site-layout')
-          .shadowRoot.querySelector('#action_items');
-        scActionItems.hideTopSheets();
-      });
-    }
-
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement && this.searchKeyword.length !== 0) {
       searchInputElement.value = this.searchKeyword;
@@ -124,6 +101,17 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
     }
     this.moreMenu = this.shadowRoot.querySelector('#more-menu');
     this.moreMenu.anchor = this.shadowRoot.querySelector('#more-menu-button');
+
+    this.moreMenu.addEventListener('item-selected', () => {
+      this.moreMenu.close();
+    });
+
+    this.moreMenu.anchor.addEventListener('click', () => {
+      const scActionItems = document
+        .querySelector('sc-site-layout')
+        .shadowRoot.querySelector('#action_items');
+      scActionItems.hideTopSheets();
+    });
   }
 
   openMoreMenu() {
