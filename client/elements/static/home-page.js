@@ -1,4 +1,4 @@
-import { css, html, svg } from 'lit-element';
+import { css, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page.js';
@@ -20,12 +20,6 @@ class SCHomePage extends SCStaticPage {
         font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-md);
         font-weight: 400;
-      }
-
-      body {
-        padding-top: 4rem;
-
-        background-color: var(--sc-primary-background-color);
       }
 
       main {
@@ -54,6 +48,8 @@ class SCHomePage extends SCStaticPage {
       .quotation {
         padding: 1em 0 1.5em 0;
         background-color: var(--sc-tertiary-background-color);
+        width: calc(100vw - var(--scrollbar-width));
+        transform: translateX(calc((min(1600px, 100%) - 100%) / 2));
       }
 
       .quotation h2 {
