@@ -958,7 +958,7 @@ export const SCFontStyles = css`
     font-display: swap;
   }
 
-  :host {
+  html {
     --sc-skolar-font-scale: 1.13;
 
     --sc-tall-font-scale: 1.13;
