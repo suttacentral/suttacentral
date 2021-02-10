@@ -179,6 +179,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
+          line-height: 1.333;
 
           margin: 0 0 1rem 0;
         }
@@ -498,7 +499,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.allSearchResults = [];
     this.visibleSearchResults = [];
     this.resultCount = 0;
-    this.resultsPerLoad = 20;
+    this.resultsPerLoad = 50;
     this.currentPage = 0;
     this.currentFilter = 'all';
     this.searchResultElemHeight = 170;
