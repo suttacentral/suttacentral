@@ -1,4 +1,4 @@
-import { LitElement, html} from "lit-element";
+import { LitElement, html } from 'lit-element';
 
 import { LitLocalized } from './localization-mixin';
 
@@ -7,7 +7,7 @@ import { icon } from '../../img/sc-icon';
 export class SCErrorIcon extends LitLocalized(LitElement) {
   static get properties() {
     return {
-      type: String
+      type: String,
     };
   }
 
@@ -16,31 +16,31 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-error-icon';
 
     this.messages = {
-      "no-network": {
+      'no-network': {
         image: 'nonetwork',
         title: 'networkError',
-        message: 'offline'
+        message: 'offline',
       },
-      "general-error": {
+      'general-error': {
         image: 'generalerror',
         title: 'generalError',
-        message: 'generalError'
+        message: 'generalError',
       },
-      "page-no-found": {
+      'page-no-found': {
         image: 'pagenotfound',
         title: 'pageNoFound',
-        message: 'pageNoFound'
+        message: 'pageNoFound',
       },
-      "data-load-error": {
+      'data-load-error': {
         image: 'dataloaderror',
         title: 'dataLoadError',
-        message: 'dataLoadError'
+        message: 'dataLoadError',
       },
-      "connect-to-internet": {
+      'connect-to-internet': {
         image: 'connecttointernet',
         title: 'connectToInternet',
-        message: 'connectToInternet'
-      }
+        message: 'connectToInternet',
+      },
     };
   }
 
@@ -54,7 +54,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          height: 50vw;
+          gap: 2em;
           font-family: var(--sc-sans-font);
           font-size: var(--sc-skolar-font-size-static-subtitle);
           color: var(--sc-secondary-text-color);
