@@ -2,6 +2,7 @@ import { LitElement, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-search-filter-menu.js';
+import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
 import { icon } from '../img/sc-icon';
@@ -76,6 +77,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
           color: var(--sc-secondary-text-color);
 
           font-size: var(--sc-skolar-font-size-s);
+
+          margin-bottom: 1em;
         }
 
         .search-result-item {
@@ -206,7 +209,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
 
         .dictionary {
-          margin: 2rem 0;
+          margin: 0 0 1em 0;
           padding: 0 clamp(1rem, 3vw, 2rem);
 
           border-radius: var(--sc-size-sm);
@@ -392,6 +395,16 @@ class SCPageSearch extends LitLocalized(LitElement) {
             ></sc-search-filter-menu>
           </div>
           <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
+          <div class="dictionary-snippet-card">
+            <sc-suttaplex
+              .item=${this.suttaplex}
+              .parallels-opened=${false}
+              .difficulty="${this._computeItemDifficulty(
+                this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
+              )}"
+              .expansion-data=${this.expansionReturns}
+            ></sc-suttaplex>
+          </div>
 
           ${this.searchResultListTemplate}
           ${!this._areAllItemsLoaded()
@@ -469,6 +482,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       totalLoadedResults: { type: Number },
       isOnline: { type: Boolean },
       dictionaryTitles: { type: Object },
+      suttaplex: { type: Array },
       expansionReturns: { type: Array },
       waitTimeAfterNewWordExpired: { type: Boolean },
       loadingResults: { type: Boolean },
@@ -498,6 +512,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       dppn: 'Dictionary of Pali Proper Names',
       pts: 'PTS Pali English Dictionary',
     };
+    this.suttaplex = [];
+    this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
     this._updateNav();
@@ -695,6 +711,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _setProperties(searchResult) {
+    this.suttaplex = searchResult.suttaplex;
     this.lastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
     this.waitTimeAfterNewWordExpired = true;
