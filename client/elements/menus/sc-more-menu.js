@@ -6,6 +6,7 @@ import { LitLocalized } from '../addons/localization-mixin.js';
 import '@material/mwc-switch';
 import '@material/mwc-list/mwc-list-item';
 import { icon } from '../../img/sc-icon';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 /*
 Basic more-vert menu on the main toolbar for choice of language and for choosing static pages
@@ -92,7 +93,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   static get properties() {
     return {
-      menuCreated: { type: Boolean },
       localizedStringsPath: { type: String },
       compactViewChosen: { type: Boolean },
       routeName: { type: String },
@@ -102,7 +102,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.menuCreated = false;
     this.localizedStringsPath = '/localization/elements/sc-more-menu';
     this.languageListResponse = [];
     this.routeName = store.getState().currentRoute.name;
@@ -166,7 +165,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   updated() {
     if (!this.languageIsVisible) {
-          this._initializeListeners();
+      this._initializeListeners();
     }
   }
 
@@ -189,24 +188,10 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     }
 
     this.shadowRoot.querySelectorAll('.more-menu-link').forEach(e => {
-      e.addEventListener('click', e => {
-        this._dispatchItemSelectedEvent();
+      e.addEventListener('click', () => {
+        dispatchCustomEvent(this, 'item-selected');
       });
     });
-
-    const languageMenuElement = this.shadowRoot.getElementById('language_menu');
-    if (languageMenuElement) {
-      languageMenuElement.addEventListener('iron-select', e => {
-        if (this.menuCreated) {
-          this._dispatchItemSelectedEvent();
-        }
-        this.menuCreated = true;
-      });
-    }
-  }
-
-  _dispatchItemSelectedEvent() {
-    this.dispatchEvent(new CustomEvent('item-selected'));
   }
 
   _showLanguageMenu() {
@@ -234,8 +219,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/donations">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.pray}
-            ${this.localize('Donations')}
+            ${icon.pray} ${this.localize('Donations')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -243,8 +227,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/offline">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.offline_bolt}
-            ${this.localize('UseOffline')}
+            ${icon.offline_bolt} ${this.localize('UseOffline')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -266,18 +249,14 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       </mwc-list-item>
       <a class="more-menu-link" href="/downloads">
         <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">
-            ${icon.file_download}
-            ${this.localize('Downloads')}
-          </div>
+          <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
           <mwc-ripple></mwc-ripple>
         </mwc-list-item>
       </a>
       <a class="more-menu-link" href="/languages">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.translate}
-            ${this.localize('Languages')}
+            ${icon.translate} ${this.localize('Languages')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -286,8 +265,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/numbering">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.format_list_numbered}
-            ${this.localize('Numbering')}
+            ${icon.format_list_numbered} ${this.localize('Numbering')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -295,8 +273,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/abbreviations">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.abbreviations}
-            ${this.localize('Abbreviations')}
+            ${icon.abbreviations} ${this.localize('Abbreviations')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -304,8 +281,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/methodology">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.school}
-            ${this.localize('Methodology')}
+            ${icon.school} ${this.localize('Methodology')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -314,8 +290,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/acknowledgments">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.people}
-            ${this.localize('Acknowledgments')}
+            ${icon.people} ${this.localize('Acknowledgments')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -323,8 +298,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/licensing">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.copyright}
-            ${this.localize('Licensing')}
+            ${icon.copyright} ${this.localize('Licensing')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -332,8 +306,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       <a class="more-menu-link" href="/about">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.info_outline}
-            ${this.localize('About')}
+            ${icon.info_outline} ${this.localize('About')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
@@ -348,14 +321,13 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       >
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.forum}
-            ${this.localize('Discuss')}
+            ${icon.forum} ${this.localize('Discuss')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>
       </a>
 
-            <a
+      <a
         class="more-menu-link"
         href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
         title="Listen to suttas"
@@ -364,8 +336,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       >
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">
-            ${icon.speaker}
-           ${this.localize('Voice')}
+            ${icon.speaker} ${this.localize('Voice')}
             <mwc-ripple></mwc-ripple>
           </div>
         </mwc-list-item>

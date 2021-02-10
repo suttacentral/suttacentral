@@ -1,11 +1,4 @@
-/*
- This element creates and describes the redux store.
- ---
- Redux introduction: http://redux.js.org/docs/introduction/
- Polymer-redux docs: https://tur-nr.github.io/polymer-redux/
- */
 import { compose, createStore } from 'redux';
-import PolymerRedux from 'polymer-redux';
 
 const initialState = {
   currentRoute: {
@@ -239,5 +232,3 @@ function parsePersistedState(state) {
     tableOfContents,
   };
 }
-
-export const ReduxMixin = PolymerRedux(store);

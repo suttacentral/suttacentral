@@ -182,7 +182,6 @@ class InitialMigration(Migration):
 ### 2.1 Style guidelines
 
 - Based on the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) for JS code...
-- ...and [Polymer Elements Style Guide](https://polymerelements.github.io/style-guide/) for Polymer components.
 
 #### General considerations:
 
