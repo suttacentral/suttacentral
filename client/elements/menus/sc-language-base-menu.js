@@ -5,6 +5,7 @@ import { LitLocalized } from '../addons/localization-mixin';
 import { languageBaseMenuCss } from './sc-language-base-menu-css';
 import { icon } from '../../img/sc-icon';
 import '@material/mwc-list/mwc-list-item';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class LanguageBaseMenu extends LitLocalized(LitElement) {
   static get properties() {
@@ -94,6 +95,8 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     } catch (e) {
       console.error(e);
     }
+
+    dispatchCustomEvent(this, 'item-selected');
   }
 
   async _fetchLanguageList() {
@@ -119,10 +122,7 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     return html`
       ${languageBaseMenuCss}
       <mwc-list-item @click="${this._showMoreMenu}">
-        <div class="menu-item-wrapper">
-          ${icon.arrow_left}
-          Choose your language
-        </div>
+        <div class="menu-item-wrapper">${icon.arrow_left} Choose your language</div>
       </mwc-list-item>
       <div class="separator"></div>
       ${this.languageListResponse.map(language => this.languageTemplate(language))}
