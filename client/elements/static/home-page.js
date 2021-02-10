@@ -48,7 +48,7 @@ class SCHomePage extends SCStaticPage {
       .quotation {
         padding: 1em 0 1.5em 0;
         background-color: var(--sc-tertiary-background-color);
-        width: calc(99.97vw - var(--scrollbar-width));
+        width: calc(100vw - var(--scrollbar-width));
         transform: translateX(calc((min(1600px, 100%) - 100%) / 2));
       }
 
