@@ -73,10 +73,10 @@ export default class RoutingService {
    * @param e {MouseEvent}
    * @private
    */
-  _anchorHandler({ path }) {
+  _anchorHandler(e) {
     /** @type {HTMLAnchorElement} */
     let anchor = null;
-    for (let elem of path) {
+    for (let elem of e.path) {
       if (elem.tagName === 'A' && elem.href) {
         anchor = elem;
         break;

@@ -1,13 +1,9 @@
-import {html, css} from 'lit-element';
-import '../suttaplex/card/sc-suttaplex.js';
-import SCTopSheetCommon from "./sc-top-sheet-common";
+import { html, css } from 'lit-element';
+import SCTopSheetCommon from './sc-top-sheet-common';
 
 class SCTopSheetParallels extends SCTopSheetCommon {
-
   static get styles() {
-    return [
-      super.styles
-    ];
+    return [super.styles];
   }
 
   static get properties() {
@@ -21,6 +17,11 @@ class SCTopSheetParallels extends SCTopSheetCommon {
     this.suttaplexItem = [];
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    import('../suttaplex/card/sc-suttaplex.js');
+  }
+
   show() {
     this.style.display = 'block';
   }
@@ -32,11 +33,11 @@ class SCTopSheetParallels extends SCTopSheetCommon {
   render() {
     return html`
       <section>
-        <sc-suttaplex 
-          .item=${this.suttaplexItem} 
+        <sc-suttaplex
+          .item=${this.suttaplexItem}
           .clearBorderRadius="${true}"
-          .suttaplexListStyle="${''}">
-        </sc-suttaplex>
+          .suttaplexListStyle="${''}"
+        ></sc-suttaplex>
       </section>
     `;
   }
