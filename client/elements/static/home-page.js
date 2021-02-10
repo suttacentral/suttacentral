@@ -53,12 +53,6 @@ class SCHomePage extends SCStaticPage {
 
       .quotation {
         padding: 1em 0 1.5em 0;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
         background-color: var(--sc-tertiary-background-color);
       }
 

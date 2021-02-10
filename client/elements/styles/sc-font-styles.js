@@ -784,7 +784,7 @@ export const SCFontStyles = css`
     src: url('/files/fonts/Pali_Tilok.ttf');
   }
 
-  :host {
+  html {
     --sc-skolar-font-scale: 1.13;
 
     --sc-tall-font-scale: 1.13;
