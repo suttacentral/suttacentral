@@ -463,7 +463,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
   _updateNav() {
     const navArray = store.getState().navigationArray;
     const currentPath = this.currentRoute.path;
-    navArray.length = 1;
     const pageName = this.localize(`${this.currentRoute.name}`);
     if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
       navArray.push({
