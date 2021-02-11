@@ -328,6 +328,18 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this._createGlobalStylesheet(SCUtilityStyles);
     this._createGlobalStylesheet(SCFontStyles);
     this._createGlobalStylesheet(SCColors);
+    this._calculateScrollbarWidth();
+  }
+
+  _calculateScrollbarWidth() {
+    const setScrollbarWidth = () =>
+      document.body.style.setProperty(
+        '--scrollbar-width',
+        window.innerWidth - document.documentElement.clientWidth + 'px'
+      );
+
+    window.addEventListener('resize', setScrollbarWidth, { passive: true });
+    setScrollbarWidth();
   }
 
   _createGlobalStylesheet(rules) {
