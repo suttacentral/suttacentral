@@ -497,291 +497,465 @@ export const SCFontStyles = css`
   @font-face {
     font-family: 'Noto Serif Ahom';
     src: url('/files/fonts/NotoSerifAhom-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Ariyaka';
     src: url('/files/fonts/ariyaka.TTF');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Avestan';
     src: url('/files/fonts/NotoSansAvestan-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Serif Bali';
     src: url('/files/fonts/NotoSerifBalinese-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Batak';
     src: url('/files/fonts/NotoSansBatak-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Bhaiksuki';
     src: url('/files/fonts/NotoSansBhaiksuki-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Brahmi';
     src: url('/files/fonts/NotoSansBrahmi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Buhid';
     src: url('/files/fonts/NotoSansBuhid-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Chakma';
     src: url('/files/fonts/NotoSansChakma-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans ChakmaPali';
     src: url('/files/fonts/chakmapali.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Cham';
     src: url('/files/fonts/NotoSansCham-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Serif Dogra';
     src: url('/files/fonts/NotoSerifDogra-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans GunjalaGondi';
     src: url('/files/fonts/NotoSansGunjalaGondi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans MasaramGondi';
     src: url('/files/fonts/NotoSansMasaramGondi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Grantha2';
     src: url('/files/fonts/NotoSansGrantha-RegularZach.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Serif Grantha';
     src: url('/files/fonts/NotoSerifGrantha-RegularZach.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Serif Gujarati';
     src: url('/files/fonts/NotoSerifGujarati-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Javanese';
     src: url('/files/fonts/NotoSansJavanese-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Kaithi';
     src: url('/files/fonts/NotoSansKaithi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Kharoshthi';
     src: url('/files/fonts/NotoSansKharoshthi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Khojki';
     src: url('/files/fonts/NotoSansKhojki-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Khudawadi';
     src: url('/files/fonts/NotoSansKhudawadi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Lao Pali';
     src: url('/files/fonts/Lanexang_Mon4.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Lepcha';
     src: url('/files/fonts/NotoSansLepcha-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Limbu';
     src: url('/files/fonts/NotoSansLimbu-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Mahajani';
     src: url('/files/fonts/NotoSansMahajani-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Marchen';
     src: url('/files/fonts/NotoSansMarchen-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans MarchenB';
     src: url('/files/fonts/BabelStoneMarchen.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Meetei Mayek';
     src: url('/files/fonts/NotoSansMeeteiMayek-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Modi';
     src: url('/files/fonts/NotoSansModi-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'MQG8F02';
     src: url('/files/fonts/MQG8F02.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Mro';
     src: url('/files/fonts/NotoSansMro-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Multani';
     src: url('/files/fonts/NotoSansMultani-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Newa';
     src: url('/files/fonts/NotoSansNewa-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans PhagsPa';
     src: url('/files/fonts/NotoSansPhagsPa-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Rejang';
     src: url('/files/fonts/NotoSansRejang-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans HanifiRohingya';
     src: url('/files/fonts/NotoSansHanifiRohingya-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Ol Chiki';
     src: url('/files/fonts/NotoSansOlChiki-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Sharada';
     src: url('/files/fonts/NotoSansSharada-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Siddham';
     src: url('/files/fonts/NotoSansSiddham-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans SoraSompeng';
     src: url('/files/fonts/NotoSansSoraSompeng-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Soyombo';
     src: url('/files/fonts/NotoSansSoyombo-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Sundanese';
     src: url('/files/fonts/NotoSansSundanese-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans SylotiNagri';
     src: url('/files/fonts/NotoSansSylotiNagri-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Tagalog';
     src: url('/files/fonts/NotoSansTagalog-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Tagbanwa';
     src: url('/files/fonts/NotoSansTagbanwa-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Takri';
     src: url('/files/fonts/NotoSansTakri-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Adinatha Tamil Brahmi';
     src: url('/files/fonts/AdinathaTamilBrahmi2.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Tai Tham';
     src: url('/files/fonts/NotoSansTaiTham-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Lamphun';
     src: url('/files/fonts/Pali_Khottabun.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'A Tai Tham KH New';
     src: url('/files/fonts/A-Tai-Tham-KH-New-V2.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Pali TaiLue';
     src: url('/files/fonts/Pali_TaiLue.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Tirhuta';
     src: url('/files/fonts/NotoSansTirhuta-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Wancho';
     src: url('/files/fonts/NotoSansWancho-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans WarangCiti';
     src: url('/files/fonts/NotoSansWarangCiti-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Noto Sans Zanabazar Square';
     src: url('/files/fonts/NotoSansZanabazarSquare-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'MithilaUni';
     src: url('/files/fonts/MithilaUni.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'PaliTilok';
     src: url('/files/fonts/Pali_Tilok.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
 
   html {

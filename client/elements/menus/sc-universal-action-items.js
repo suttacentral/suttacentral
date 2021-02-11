@@ -7,7 +7,6 @@ import { LitLocalized } from '../addons/localization-mixin';
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
 import '@material/mwc-button';
-import '@material/mwc-textfield';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -32,19 +31,20 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       }
 
       #search_input {
-        --mdc-theme-primary: var(--sc-secondary-accent-color);
-        --mdc-text-field-fill-color: var(--sc-tertiary-background-color);
-        --mdc-text-field-ink-color: var(--sc-primary-text-color);
-        --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-shape-small: 0px;
         visibility: hidden;
+        padding: 0 8px 0 3vw;
+        outline: none;
+        border: none;
+        height: 48px;
         width: 100%;
         position: absolute;
         left: 0;
         transform: scaleX(0);
         transition: transform 200ms ease;
         z-index: 100;
+        background-color: var(--sc-tertiary-background-color);
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
       }
 
       #search_input.opened {
@@ -165,15 +165,17 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       >
         ${icon.search}
       </mwc-icon-button>
-      <mwc-textfield
-        fullwidth
+      <input 
         id="search_input"
+        name="q"
         type="search"
         style="height: 48px"
+        spellcheck=true
         iconTrailing=""
         placeholder="${this.localize('Search')}"
         @keypress="${this.keypressHandler}"
-      ></mwc-textfield>
+        aria-label="Search through site content"
+      ></input>
       <mwc-icon-button label="close" id="close_button" @click="${this._closeSearch}">
         ${icon.close}
       </mwc-icon-button>
