@@ -1001,3 +1001,9 @@ FOR doc IN sc_bilara_texts
     LIMIT 1
     RETURN {@uid: doc.filepath}
 '''
+
+GET_TEXTS_BY_LANG = '''
+FOR text IN v_text
+    SEARCH text.lang == @lang
+    RETURN text
+'''

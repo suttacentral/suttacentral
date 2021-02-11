@@ -36,6 +36,7 @@ from . import (
 )
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
+from .swath_transform import add_wbr_to_thai_texts
 from .util import json_load
 
 
@@ -416,6 +417,9 @@ def run(no_pull=False):
 
     print_stage('Make yellow brick road')
     make_yellow_brick_road(db)
+
+    print_stage('Add wbr tag to thai texts')
+    add_wbr_to_thai_texts(db)
 
     print_stage("Loading difficulty from additional_info")
     process_difficulty(db, additional_info_dir)
