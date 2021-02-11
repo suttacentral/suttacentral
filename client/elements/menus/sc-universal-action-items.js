@@ -44,6 +44,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         z-index: 100;
         background-color: var(--sc-tertiary-background-color);
         font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
       }
 
       #search_input.opened {
