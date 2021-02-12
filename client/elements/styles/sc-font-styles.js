@@ -671,8 +671,8 @@ export const SCFontStyles = css`
   }
 
   @font-face {
-    font-family: 'Lao Pali';
-    src: url('/files/fonts/Lanexang_Mon4.otf');
+    font-family: 'Serif Lao Reg';
+    src: url('/files/fonts/SerifLao-Reg.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;

@@ -54,7 +54,7 @@ export const SCSiteLayoutStyles = css`
 
   .homeTitle #mainTitle {
     font-family: var(--sc-serif-font);
-    line-height: 1;
+    line-height: 1.1;
 
     letter-spacing: var(--sc-caps-letter-spacing);
 

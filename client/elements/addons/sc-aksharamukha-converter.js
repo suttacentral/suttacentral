@@ -341,7 +341,7 @@ export const paliScriptsStyles = css`
     font-family: 'AnnaPurna' !important;
   }
   .laopali-script {
-    font-family: 'Lao Pali' !important;
+    font-family: 'Serif Lao Reg' !important;
   }
   .nepaldevafont-script {
     font-family: 'Nepal2' !important;
