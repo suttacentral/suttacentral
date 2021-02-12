@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element';
+import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
@@ -21,7 +21,6 @@ import {
   lineByLinePlusStyles,
   hideReferenceStyles,
   hidePTSReferenceStyles,
-  showAllReferenceStyles,
   hideAsterisk,
   showAsterisk,
 } from '../styles/sc-layout-bilara-styles.js';
@@ -109,7 +108,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.mapReferenceDisplayStyles = new Map([
       ['none', hideReferenceStyles],
       ['main', hidePTSReferenceStyles],
-      ['all', showAllReferenceStyles],
     ]);
     this.mapNoteDisplayStyles = new Map([
       ['none', hideAsterisk],
@@ -396,9 +394,27 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.currentStyles = this.mapStyles.get(viewCompose)
       ? this.mapStyles.get(viewCompose)
       : plainStyles;
-    this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(
-      this.chosenReferenceDisplayType
-    );
+    if (this.mapReferenceDisplayStyles.has(this.chosenReferenceDisplayType)) {
+      this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(
+        this.chosenReferenceDisplayType
+      );
+    } else {
+      this.referencesDisplayStyles = html`
+        <style>
+          .reference {
+            display: inline;
+          }
+          
+          .reference a {
+            display: none;
+          }
+          
+          .reference a.${this.chosenReferenceDisplayType} {
+            display: inline;
+          }
+        </style>
+      `;
+    }
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
   }
 

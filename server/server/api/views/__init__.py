@@ -28,4 +28,5 @@ from .views import (
     SegmentedSutta,
     Transliterate,
     TransliteratedSutta,
+    PaliReferenceEdition,
 )

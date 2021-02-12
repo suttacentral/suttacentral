@@ -122,7 +122,7 @@ article
 
 /* references */
 
-.reference
+.reference a
 {
     font-family: var(--sc-sans-font);
     font-size: .8em;
@@ -148,7 +148,7 @@ article
     font-variant-caps: normal;
 }
 
-.reference:hover{
+.reference a:hover{
     background-color: var(--sc-tertiary-background-color);
 }
 

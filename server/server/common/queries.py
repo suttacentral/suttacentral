@@ -1001,3 +1001,11 @@ FOR doc IN sc_bilara_texts
     LIMIT 1
     RETURN {@uid: doc.filepath}
 '''
+
+SUTTA_PALI_REFERENCE = '''
+FOR pali in pali_reference_edition
+    RETURN {
+        edition_set: pali.edition_set,
+        name: NOT_NULL(pali.name, pali.short_name)
+    } 
+'''

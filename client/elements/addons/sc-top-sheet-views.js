@@ -13,6 +13,18 @@ import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converte
 
 import { store } from '../../redux-store';
 import { LitLocalized } from './localization-mixin';
+import { API_ROOT } from '../../constants';
+
+const DEFAULT_REFERENC_OPTION = [
+  {
+    name: 'None',
+    edition_set: 'none',
+  },
+  {
+    name: 'Main',
+    edition_set: 'main',
+  },
+];
 
 class SCTopSheetViews extends LitLocalized(LitElement) {
   static get properties() {
@@ -82,64 +94,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       },
     ];
     this.chineseLookupLanguage = textOptions.chineseLookupTargetDictRepr;
-    this.referenceDisplayTypeArray = [
-      {
-        displayTypeLabel: 'None',
-        displayType: 'none',
-      },
-      {
-        displayTypeLabel: 'Main',
-        displayType: 'main',
-      },
-      {
-        displayTypeLabel: 'ms',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'pts',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'vri',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'mr',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'si',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'km',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'lv',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'maku',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'ndp',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'cck',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'sya',
-        displayType: 'all',
-      },
-      {
-        displayTypeLabel: 'bj',
-        displayType: 'all',
-      },
-    ];
+    this.referenceDisplayTypeArray = DEFAULT_REFERENC_OPTION;
     this.noteDisplayTypeArray = [
       {
         displayTypeLabel: 'None',
@@ -324,6 +279,18 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         }
       `,
     ];
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._fetchReferenceDisplayType();
+  }
+
+  _fetchReferenceDisplayType() {
+    fetch(`${API_ROOT}/pali_reference_edition`)
+      .then(r => r.json())
+      .then(data => (this.referenceDisplayTypeArray = DEFAULT_REFERENC_OPTION.concat(data)))
+      .catch(e => console.log(e));
   }
 
   render() {
@@ -548,14 +515,12 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls four-column">
               ${this.referenceDisplayTypeArray.map(
                 item => html`
-                  <mwc-formfield
-                    label="${this.localize(`referenceDisplayType_${item.displayTypeLabel}`)}"
-                  >
+                  <mwc-formfield label="${item.name}">
                     <mwc-checkbox
                       name="referenceDisplayType"
-                      value="${item.displayType}"
-                      data-type="${item.displayTypeLabel}"
-                      ?checked="${this.selectedReferenceDisplayType === item.displayType}"
+                      value="${item.edition_set}"
+                      data-type="${item.name}"
+                      ?checked="${this.selectedReferenceDisplayType === item.edition_set}"
                       @change="${this._onReferenceDisplayTypeChanged}"
                     ></mwc-checkbox>
                   </mwc-formfield>
@@ -574,11 +539,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       this._showToast(this.localize('textualInformationDisabled'));
     } else {
       const refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
-      this._showToast(
-        this.localize(`referenceDisplayType_${refType}`) +
-          ' ' +
-          this.localize('textualInformationEnabled')
-      );
+      this._showToast(refType + ' ' + this.localize('textualInformationEnabled'));
     }
   }
 

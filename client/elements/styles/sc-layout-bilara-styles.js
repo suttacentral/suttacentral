@@ -485,7 +485,7 @@ export const hideReferenceStyles = html`
 export const hidePTSReferenceStyles = html`
   <style>
     .reference {
-      display: inherit;
+      display: inline;
     }
 
     a.pts {
@@ -493,7 +493,7 @@ export const hidePTSReferenceStyles = html`
     }
 
     a.sc {
-      display: inherit;
+      display: inline;
     }
   </style>
 `;
