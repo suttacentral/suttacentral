@@ -290,7 +290,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     fetch(`${API_ROOT}/pali_reference_edition`)
       .then(r => r.json())
       .then(data => (this.referenceDisplayTypeArray = DEFAULT_REFERENC_OPTION.concat(data)))
-      .catch(e => console.log(e));
+      .catch(e => console.error(e));
   }
 
   render() {
