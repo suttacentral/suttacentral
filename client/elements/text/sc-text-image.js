@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html } from 'lit-element';
 import Viewer from 'viewerjs';
 
 import { API_ROOT, IMAGES_ROOT } from '../../constants.js';

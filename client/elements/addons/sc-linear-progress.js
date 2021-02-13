@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from 'lit-element';
 
 class SCLinearProgress extends LitElement {
   static get styles() {

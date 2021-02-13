@@ -1,4 +1,4 @@
-import { css } from 'lit';
+import { css } from 'lit-element';
 
 export const typographyI18nStyles = css`
   /* styles for texts with scripts other than latin */

@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from 'lit-element';
 import { LitLocalized } from '../addons/localization-mixin.js';
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';

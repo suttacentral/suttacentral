@@ -1,4 +1,4 @@
-import { html, LitElement, svg } from 'lit';
+import { html, LitElement, svg } from 'lit-element';
 import { icon } from '../../../img/sc-icon';
 import '../../menus/sc-suttaplex-share-menu.js';
 import { suttaplexTxCss } from './sc-suttaplex-css';

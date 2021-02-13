@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement } from 'lit-element';
 
 class SCSuttaplexSectionTitle extends LitElement {
   static get properties() {

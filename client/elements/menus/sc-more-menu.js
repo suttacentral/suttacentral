@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css, svg } from 'lit-element';
 import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js';

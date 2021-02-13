@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css } from 'lit-element';
 
 export const commonStyles = css`
   main {

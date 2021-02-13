@@ -1,4 +1,4 @@
-import { css, html } from 'lit';
+import { css, html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page.js';

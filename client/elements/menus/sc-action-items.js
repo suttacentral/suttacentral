@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from 'lit';
+import { LitElement, html, svg } from 'lit-element';
 import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';

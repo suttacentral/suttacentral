@@ -1,4 +1,4 @@
-import { html, LitElement, svg } from 'lit';
+import { html, LitElement, svg } from 'lit-element';
 import '../../addons/sc-bouncing-loader';
 import { API_ROOT } from '../../../constants.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';

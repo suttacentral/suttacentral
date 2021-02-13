@@ -1,5 +1,5 @@
 import { LitLocalized } from '../addons/localization-mixin.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit-element';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 

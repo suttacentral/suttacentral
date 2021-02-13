@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';

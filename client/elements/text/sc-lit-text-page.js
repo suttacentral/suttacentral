@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html } from 'lit-element';
 import { LitLocalized } from '../addons/localization-mixin';
 
 export class SCLitTextPage extends LitLocalized(LitElement) {

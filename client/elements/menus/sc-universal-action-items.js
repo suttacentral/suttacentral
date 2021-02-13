@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit-element';
 
 import './sc-more-menu.js';
 import { store } from '../../redux-store';

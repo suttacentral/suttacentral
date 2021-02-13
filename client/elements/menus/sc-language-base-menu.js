@@ -1,4 +1,4 @@
-import { html, LitElement, svg } from 'lit';
+import { html, LitElement, svg } from 'lit-element';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';

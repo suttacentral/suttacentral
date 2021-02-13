@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html } from 'lit-element';
 
 import { until } from 'lit-html/directives/until.js';
 import '../addons/sc-bouncing-loader';

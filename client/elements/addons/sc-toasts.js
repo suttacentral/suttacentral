@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from 'lit-element';
 import '@material/mwc-snackbar';
 
 class SCToasts extends LitElement {

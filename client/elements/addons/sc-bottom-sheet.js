@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css, svg } from 'lit-element';
 import { icon } from '../../img/sc-icon';
 
 class SCBottomSheet extends LitElement {

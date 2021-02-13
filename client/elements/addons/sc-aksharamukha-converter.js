@@ -1,4 +1,4 @@
-import { css } from 'lit';
+import { css } from 'lit-element';
 
 export const paliScriptsStyles = css`
   .phagspatib-script {

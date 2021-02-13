@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css } from 'lit-element';
 import SCTopSheetCommon from './sc-top-sheet-common';
 
 class SCTopSheetParallels extends SCTopSheetCommon {

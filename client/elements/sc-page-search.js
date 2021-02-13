@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from 'lit';
+import { LitElement, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-search-filter-menu.js';

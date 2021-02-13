@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html } from 'lit-element';
 
 import './sc-bilara-segmented-text.js';
 import './sc-simple-text.js';

@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css, svg } from 'lit-element';
 import { LitLocalized } from '../addons/localization-mixin.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-checkbox';
