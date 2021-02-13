@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 
 import { until } from 'lit-html/directives/until.js';
 import '../addons/sc-bouncing-loader';
@@ -14,7 +14,7 @@ class SCLanguagesPage extends SCStaticPage {
     return {
       selectedLanguage: { type: String },
       languageData: { type: Object },
-      languages: { type: Object }
+      languages: { type: Object },
     };
   }
 
@@ -35,7 +35,7 @@ class SCLanguagesPage extends SCStaticPage {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    const [,,lang] = state.currentRoute.path.split('/');
+    const [, , lang] = state.currentRoute.path.split('/');
     this.selectedLanguage = lang;
   }
 
@@ -63,11 +63,13 @@ class SCLanguagesPage extends SCStaticPage {
         } else {
           item.rootLanguageFullName = 'Other';
         }
-      })
+      });
 
       let hash = {};
       rootLanguages = this.languageData.division.reduce(function (item, next) {
-        hash[next.rootLanguageFullName] ? '' : hash[next.rootLanguageFullName] = true && item.push(next.rootLanguageFullName);
+        hash[next.rootLanguageFullName]
+          ? ''
+          : (hash[next.rootLanguageFullName] = true && item.push(next.rootLanguageFullName));
         return item;
       }, []);
     }
@@ -75,21 +77,29 @@ class SCLanguagesPage extends SCStaticPage {
     const list = (title, names) => html`
       <h2>${this.localize(title)}</h2>
       <ul>
-        ${names.map(item => html`
-        <li>${item.name} (${item.total})</li>
-        `)}
+        ${names.map(
+          item => html`
+            <li>${item.name} (${item.total})</li>
+          `
+        )}
       </ul>
     `;
 
     const listOfRootLanguage = () => html`
-      ${rootLanguages.map(rootLang => html`
-        <h3>${rootLang}</h3>
-        <ul>
-          ${this.languageData.division.filter(rootItem => rootItem.rootLanguageFullName === rootLang).map(item => html`
-            <li>${item.name} (${item.total})</li>
-          `)}
-        </ul>
-      `)}
+      ${rootLanguages.map(
+        rootLang => html`
+          <h3>${rootLang}</h3>
+          <ul>
+            ${this.languageData.division
+              .filter(rootItem => rootItem.rootLanguageFullName === rootLang)
+              .map(
+                item => html`
+                  <li>${item.name} (${item.total})</li>
+                `
+              )}
+          </ul>
+        `
+      )}
     `;
 
     const chart = (name, percent) => html`
@@ -100,25 +110,21 @@ class SCLanguagesPage extends SCStaticPage {
     `;
 
     return html`
-      ${
-        this.languageData
+      ${this.languageData
         ? html`
-          <h1>${name}</h1>
-          ${
-            percent
-            ? html`
-              ${chart(name, percent)}
-              ${listOfRootLanguage()}
-              ${list('translators', this.languageData.author)}
-            `
-            : html `
-              ${listOfRootLanguage()}
-              ${list('authors', this.languageData.author)}
-            `
-          }
-        `
-        : html`<sc-bouncing-loader></sc-bouncing-loader>`
-      }
+            <h1>${name}</h1>
+            ${percent
+              ? html`
+                  ${chart(name, percent)} ${listOfRootLanguage()}
+                  ${list('translators', this.languageData.author)}
+                `
+              : html`
+                  ${listOfRootLanguage()} ${list('authors', this.languageData.author)}
+                `}
+          `
+        : html`
+            <sc-bouncing-loader></sc-bouncing-loader>
+          `}
     `;
   }
 
@@ -126,9 +132,11 @@ class SCLanguagesPage extends SCStaticPage {
     const list = (title, languages) => html`
       <h2>${this.localize(title)} (${languages.length})</h2>
       <ul>
-        ${languages.map(lang => html`
-          <li><a href="/languages/${lang.iso_code}">${lang.name} (${lang.total})</a></li>
-        `)}
+        ${languages.map(
+          lang => html`
+            <li><a href="/languages/${lang.iso_code}">${lang.name} (${lang.total})</a></li>
+          `
+        )}
       </ul>
     `;
 
@@ -141,38 +149,40 @@ class SCLanguagesPage extends SCStaticPage {
 
   render() {
     return html`
-      <style> 
+      <style>
         ${layoutSimpleStyles}
         ${typographyCommonStyles}
         ${typographyStaticStyles}
       </style>
-    <style>
-      figure {
-        width: 240px;
-        float: right;
-        margin: 0;
-        text-align: center;
-      }
+      <style>
+        figure {
+          width: 240px;
+          float: right;
+          margin: 0;
+          text-align: center;
+        }
 
-      figcaption {
-        margin-top: .5em;
-      }
+        figcaption {
+          margin-top: 0.5em;
+        }
 
-      sc-bouncing-loader {
-        display: block;
-        margin: 3em auto;
-      }
-    </style>
+        sc-bouncing-loader {
+          display: block;
+          margin: 3em auto;
+        }
+      </style>
       <main>
-          <article>
-            ${this.languages
-              ? this.selectedLanguage
-                ? this.languageTemplate
-                : this.languageListTemplate
-              : html`<sc-bouncing-loader></sc-bouncing-loader>`
-            }
-          </article>
-      </main>`;
+        <article>
+          ${this.languages
+            ? this.selectedLanguage
+              ? this.languageTemplate
+              : this.languageListTemplate
+            : html`
+                <sc-bouncing-loader></sc-bouncing-loader>
+              `}
+        </article>
+      </main>
+    `;
   }
 }
 

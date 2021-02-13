@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 
 export const languageBaseMenuCss = html`
   <style>
@@ -6,7 +6,7 @@ export const languageBaseMenuCss = html`
       overflow-y: scroll;
       --mdc-menu-min-width: 500px;
       --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-      --mdc-list-side-padding: 16px
+      --mdc-list-side-padding: 16px;
     }
 
     .separator {
@@ -20,17 +20,16 @@ export const languageBaseMenuCss = html`
 
     .language-name::before {
       content: attr(id);
-      background-color: var(--sc-disabled-text-color);
+      background-color: var(--sc-icon-color);
       color: white;
       font-weight: 800;
-      width: var(--sc-size-md-larger);
+      font-stretch: condensed;
+      padding: 0 4px 1px 4px;
       margin-right: var(--sc-size-md);
-      line-height: 20px;
+      line-height: 16px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      display: inline-block;
-      text-align: center;
-      font-size: 14px;
+      letter-spacing: 0.5px;
+      font-size: var(--sc-skolar-font-size-xs);
       --notchSize: 4px;
       clip-path: polygon(
         0% var(--notchSize),
@@ -53,7 +52,7 @@ export const languageBaseMenuCss = html`
 
     .arrow_left {
       padding: 8px 8px 4px 0;
-      fill: var(--sc-disabled-text-color);
+      fill: var(--sc-icon-color);
     }
 
     .menu-item-wrapper {

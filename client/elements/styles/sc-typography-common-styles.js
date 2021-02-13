@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit';
 
 export const typographyCommonStyles = css`
   /* includes all text styles found in one or more of static, legacy, or bilara */
@@ -59,7 +59,7 @@ export const typographyCommonStyles = css`
   h1 {
     font-size: 2em;
     font-size: clamp(1.5em, 5vw, 2em);
-    font-weight: 300;
+    font-weight: 400;
   }
 
   h2 {
@@ -111,6 +111,7 @@ export const typographyCommonStyles = css`
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: all-small-caps;
+    font-weight: 500;
   }
 
   header h1 {

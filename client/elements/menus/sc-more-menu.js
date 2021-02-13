@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit';
 import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js';
@@ -17,6 +17,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return css`
       :host {
         font-family: var(--sc-sans-font);
+        font-weight: 500;
         --mdc-list-side-padding: 0px
       }
 
@@ -27,7 +28,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
       .icon {
         margin-right: var(--sc-size-md);
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-icon-color);
       }
 
       .more-menu-mwc-list-item {

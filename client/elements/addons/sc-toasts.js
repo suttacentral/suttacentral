@@ -1,16 +1,15 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import '@material/mwc-snackbar';
 
 class SCToasts extends LitElement {
-
   static get styles() {
     return css`
       :host {
         display: block;
         position: absolute;
         z-index: 9999;
-        --mdc-typography-body2-font-size: calc(19px * var(--sc-skolar-font-scale));     
-        --mdc-typography-font-family: var(--sc-sans-font);   
+        --mdc-typography-body2-font-size: calc(19px * var(--sc-skolar-font-scale));
+        --mdc-typography-font-family: var(--sc-sans-font);
       }
 
       .toast {
@@ -37,7 +36,9 @@ class SCToasts extends LitElement {
   }
 
   firstUpdated() {
-    this.parentNode.addEventListener('show-sc-toast', (e) => { this._displayToast(e); });
+    this.parentNode.addEventListener('show-sc-toast', e => {
+      this._displayToast(e);
+    });
   }
 
   _displayToast(e) {
@@ -50,7 +51,9 @@ class SCToasts extends LitElement {
   }
 
   _getToast(toastType) {
-    let toastId = ['info', 'success', 'error'].includes(toastType) ? `${toastType}_toast` : 'info_toast';
+    let toastId = ['info', 'success', 'error'].includes(toastType)
+      ? `${toastType}_toast`
+      : 'info_toast';
     return this.shadowRoot.getElementById(toastId);
   }
 }

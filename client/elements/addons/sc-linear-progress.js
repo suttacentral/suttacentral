@@ -1,61 +1,54 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 class SCLinearProgress extends LitElement {
   static get styles() {
     return css`
-.linear-progress,
-.linear-progress:before
-{
-    width: 100%;
-    margin: -2px 0 0 0;
-}
+      .linear-progress,
+      .linear-progress:before {
+        width: 100%;
+        margin: -2px 0 0 0;
+      }
 
-.linear-progress
-{
-    display: flex;
-}
+      .linear-progress {
+        display: flex;
+      }
 
-.linear-progress:before
-{
-    height: 4px;
+      .linear-progress:before {
+        height: 4px;
 
-    content: '';
-    animation: running-progress 2s cubic-bezier(0.8, 0.6, 0.8, 0.9) infinite;
+        content: '';
+        animation: running-progress 2s cubic-bezier(0.8, 0.6, 0.8, 0.9) infinite;
 
-    background-image: linear-gradient(
-    to right,
-    rgba(0,0,0,0),
-    var(--sc-primary-color-light),
-    rgba(0,0,0,0)
-    );
-}
+        background-image: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0),
+          var(--sc-primary-color-light),
+          rgba(0, 0, 0, 0)
+        );
+      }
 
-@keyframes running-progress
-{
-    0%
-    {
-        margin-right: 100%;
-        margin-left: 0;
-    }
+      @keyframes running-progress {
+        0% {
+          margin-right: 100%;
+          margin-left: 0;
+        }
 
-    50%
-    {
-        margin-right: 0;
-        margin-left: 25%;
-    }
+        50% {
+          margin-right: 0;
+          margin-left: 25%;
+        }
 
-    100%
-    {
-        margin-right: 0;
-        margin-left: 100%;
-    }
-}
+        100% {
+          margin-right: 0;
+          margin-left: 100%;
+        }
+      }
     `;
   }
 
   static get properties() {
     return {
-      active: { type: Boolean }
+      active: { type: Boolean },
     };
   }
 
@@ -65,13 +58,12 @@ class SCLinearProgress extends LitElement {
   }
 
   render() {
-    return this.active ? html`
-  <div class="linear-progress"></div>
-    ` : ''
+    return this.active
+      ? html`
+          <div class="linear-progress"></div>
+        `
+      : '';
   }
 }
 
 customElements.define('sc-linear-progress', SCLinearProgress);
-
-
-

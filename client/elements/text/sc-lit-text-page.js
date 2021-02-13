@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit-element';
+import { LitElement, html } from 'lit';
 import { LitLocalized } from '../addons/localization-mixin';
 
 export class SCLitTextPage extends LitLocalized(LitElement) {
@@ -7,8 +7,8 @@ export class SCLitTextPage extends LitLocalized(LitElement) {
       inputElement: { type: Object },
       showParagraphs: { type: Boolean },
       chosenTextView: { type: String },
-      lang: { type: String }
-    }
+      lang: { type: String },
+    };
   }
 
   constructor() {
@@ -18,5 +18,4 @@ export class SCLitTextPage extends LitLocalized(LitElement) {
     this.chosenTextView = '';
     this.lang = '';
   }
-
 }

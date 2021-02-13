@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from 'lit-element';
+import { LitElement, html, svg } from 'lit';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-search-filter-menu.js';
@@ -153,7 +153,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           gap: 0.5em;
         }
         .icon {
-          fill: var(--sc-disabled-text-color);
+          fill: var(--sc-icon-color);
           height: 20px;
           width: 20px;
         }

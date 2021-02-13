@@ -1,48 +1,49 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 
-export const suttaplexListCss = html`<style>
-  :host {
-    display: block;
-  }
-
-  .division-content {
-    color: var(--sc-primary-text-color);
-    position: relative;
-    padding: 0;
+export const suttaplexListCss = html`
+  <style>
+    :host {
+      display: block;
     }
 
-  .main {
-    margin: 0 auto 64px;
-    max-width: 720px;
-  }
+    .division-content {
+      color: var(--sc-primary-text-color);
+      position: relative;
+      padding: 0;
+    }
 
-        @media (max-width: 680px) {
+    .main {
+      margin: 0 auto 64px;
+      max-width: 720px;
+    }
+
+    @media (max-width: 680px) {
       .main {
         margin-top: -40px;
       }
     }
 
-  .node {
-    padding: var(--sc-size-md) var(--sc-size-md) 0;
-    color: var(--sc-secondary-text-color);
-  }
+    .node {
+      padding: var(--sc-size-md) var(--sc-size-md) 0;
+      color: var(--sc-secondary-text-color);
+    }
 
-  .vagga-node {
-    padding: var(--sc-size-md) var(--sc-size-md) var(--sc-size-sm) var(--sc-size-md);
-    color: var(--sc-secondary-text-color);
-  }
+    .vagga-node {
+      padding: var(--sc-size-md) var(--sc-size-md) var(--sc-size-sm) var(--sc-size-md);
+      color: var(--sc-secondary-text-color);
+    }
 
-  .vagga-node + .vagga-node{
-    padding-top: 0
-  }
+    .vagga-node + .vagga-node {
+      padding-top: 0;
+    }
 
-  .loading-spinner {
-    position: absolute;
-    margin: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-  }
-
-</style>`;
+    .loading-spinner {
+      position: absolute;
+      margin: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+    }
+  </style>
+`;

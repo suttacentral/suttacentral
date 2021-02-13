@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../constants.js';
 import { dictStyles } from './styles/sc-dict-styles.js';

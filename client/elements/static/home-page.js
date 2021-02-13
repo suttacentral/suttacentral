@@ -1,4 +1,4 @@
-import { css, html } from 'lit-element';
+import { css, html } from 'lit';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page.js';
@@ -59,6 +59,8 @@ class SCHomePage extends SCStaticPage {
 
         font-variant-caps: all-small-caps;
         margin-bottom: 1em;
+        font-weight: 300;
+        font-stretch: expanded;
       }
 
       .tipitaka-section {
@@ -96,6 +98,7 @@ class SCHomePage extends SCStaticPage {
       .tipitaka-section h2 i {
         font-size: 0.6667em;
         font-style: italic;
+        font-weight: 500;
 
         display: inline-block;
 
@@ -138,7 +141,7 @@ class SCHomePage extends SCStaticPage {
 
         content: '“';
 
-        color: var(--sc-disabled-text-color);
+        color: var(--sc-icon-color);
       }
 
       article {
@@ -415,7 +418,7 @@ class SCHomePage extends SCStaticPage {
       }
 
       .sc-related article li::marker {
-        color: var(--sc-disabled-text-color);
+        color: var(--sc-icon-color);
       }
 
       .sc-related-items-wrapper {
@@ -452,6 +455,8 @@ class SCHomePage extends SCStaticPage {
 
       .related-projects-heading h2 {
         font-family: var(--sc-sans-font);
+        font-weight: 300;
+        font-stretch: expanded;
 
         letter-spacing: var(--sc-caps-letter-spacing);
 

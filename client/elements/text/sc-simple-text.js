@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import { SCLitTextPage } from './sc-lit-text-page.js';

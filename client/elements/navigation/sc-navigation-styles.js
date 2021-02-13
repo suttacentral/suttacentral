@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 
 export const navigationNormalModeStyles = html`
   <style>
@@ -122,6 +122,8 @@ export const navigationNormalModeStyles = html`
     }
 
     .navigation-nerdy-row {
+      display: flex;
+      gap: 1rem;
       font-size: var(--sc-skolar-font-size-s);
 
       overflow: hidden;
@@ -132,12 +134,11 @@ export const navigationNormalModeStyles = html`
       color: var(--sc-secondary-text-color);
     }
 
-    .navigation-nerdy-row span + span {
-      margin-left: var(--sc-size-md-larger);
-    }
-
     .subTitle {
-      font-weight: 800;
+      font-weight: 600;
+
+      display: inline-flex;
+      align-items: center;
 
       letter-spacing: var(--sc-caps-letter-spacing);
 
@@ -146,17 +147,16 @@ export const navigationNormalModeStyles = html`
 
     .show-root-language::before {
       content: attr(lang);
-      background-color: var(--sc-disabled-text-color);
+      background-color: var(--sc-icon-color);
       color: white;
       font-weight: 800;
-      padding: 0 4px;
-      margin-right: 8px;
-      line-height: 20px;
+      font-stretch: condensed;
+      padding: 0 4px 1px 4px;
+      margin-right: 1rem;
+      line-height: 16px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      display: inline-block;
-      text-align: center;
-      font-size: 14px;
+      letter-spacing: 0.5px;
+      font-size: var(--sc-skolar-font-size-xs);
       --notchSize: 4px;
       clip-path: polygon(
         0% var(--notchSize),
@@ -178,7 +178,7 @@ export const navigationNormalModeStyles = html`
     }
 
     a[href$='/kn/dhp'] .show-root-language::before {
-      display: none
+      display: none;
     }
 
     .header-right {
@@ -188,10 +188,10 @@ export const navigationNormalModeStyles = html`
 
       display: flex;
 
-    height: 24px;
-    min-width: 72px;
-    padding: 0 4px;
-    box-sizing: border-box;
+      height: 24px;
+      min-width: 72px;
+      padding: 0 4px;
+      box-sizing: border-box;
 
       color: white;
       background-color: var(--sc-primary-color-dark);
@@ -206,11 +206,14 @@ export const navigationNormalModeStyles = html`
 
     .essay-link {
       font-family: var(--sc-serif-font);
+      font-weight: 500;
 
       margin: 0 0.5rem 0.667rem;
       padding: 0.333rem 0.5rem;
 
       border-radius: 8px;
+
+      align-self: flex-start;
     }
 
     .header-link .title,
@@ -281,7 +284,7 @@ export const navigationNormalModeStyles = html`
 
       content: '↳';
 
-      color: var(--sc-disabled-text-color);
+      color: var(--sc-icon-color);
     }
 
     .essay-link + .shortcut {

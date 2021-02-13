@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { LitLocalized } from '../addons/localization-mixin';
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -16,16 +16,16 @@ class SCSearchFilterMenu extends LitLocalized(LitElement) {
     return css`
       :host {
         --mdc-theme-primary: var(--sc-primary-accent-color);
-        --mdc-select-fill-color:  var(--sc-tertiary-background-color);
+        --mdc-select-fill-color: var(--sc-tertiary-background-color);
         --mdc-typography-font-family: var(--sc-sans-font);
         --mdc-theme-surface: var(--sc-secondary-background-color);
         --mdc-select-ink-color: var(--sc-primary-text-color);
         --mdc-select-label-ink-color: var(--sc-secondary-text-color);
-        --mdc-select-dropdown-icon-color: var(--sc-disabled-text-color);
+        --mdc-select-dropdown-icon-color: var(--sc-icon-color);
       }
 
-      mwc-list-item{
-        color: var(--sc-primary-text-color)
+      mwc-list-item {
+        color: var(--sc-primary-text-color);
       }
     `;
   }

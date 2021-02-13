@@ -1,7 +1,7 @@
-import { LitElement, html, svg } from 'lit-element';
+import { LitElement, html, svg } from 'lit';
 import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin'
+import { LitLocalized } from '../addons/localization-mixin';
 import { icon } from '../../img/sc-icon';
 /*
 Base toolbar that appears on the top right in the header of every page.
@@ -10,156 +10,165 @@ Base toolbar that appears on the top right in the header of every page.
 class SCActionItems extends LitLocalized(LitElement) {
   render() {
     return html`
-    <style>
-      .white-icon {
-        color: var(--sc-tertiary-text-color);
-      }
+      <style>
+        .white-icon {
+          color: var(--sc-tertiary-text-color);
+        }
 
-      #tools_menu {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-      }
+        #tools_menu {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+        }
 
-      .invisible {
-        display: none;
-      }
-
-      .toolButtons {
-        position: relative;
-        box-sizing: border-box;
-        border-bottom: 4px solid transparent;
-        height: 100%;
-      }
-
-      #btnViewCompact:after,
-      #btnViewComfy:after,
-      #btnTools:after,
-      #btnInfo:after,
-      #btnShowParallels:after, 
-      #btnShowToC:after {
-        font-size: var(--sc-skolar-font-size-xxs);
-
-        position: absolute;
-        bottom: 4px;
-
-        width: 100%;
-
-        text-align: center;
-      }
-
-      #btnViewCompact:after {
-        content: 'spacing';
-      }
-
-      #btnViewComfy:after {
-        content: 'spacing';
-      }
-      
-      #btnTools:after {
-        content: 'views'
-      }
-
-      #btnInfo:after {
-        content: 'info'
-      }
-
-      #btnShowParallels {
-        display: flex;
-      }
-
-      #btnShowParallels:after {
-        content: 'parallels';
-      }
-
-      #btnShowToC:after {
-        content: 'contents';
-      }
-
-      .active-light {
-        font-weight: 800;
-        border-bottom: 4px solid var(--sc-primary-color-light) !important;
-      }
-
-      .active-dark {
-        font-weight: 800;
-        border-bottom: 4px solid var(--sc-primary-color-dark) !important;
-      }
-
-      @media only screen and (max-width: 600px) {
-        #tools_menu.contextToolbarExpand {
-          width: 100%;
-          justify-content: space-around;
-          align-items: flex-end;
+        .invisible {
+          display: none;
         }
 
         .toolButtons {
-          box-sizing: content-box;
+          position: relative;
+          box-sizing: border-box;
+          border-bottom: 4px solid transparent;
+          height: 100%;
         }
-      }
-    </style>
 
-    <div id="tools_menu">
-    <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnShowToC" 
-        title="View Table of Contents" 
-        @click="${this._onBtnShowToCClick}" 
-        slot="actionItems" 
-        ?hidden="${this.tableOfContents}">
-        ${icon.toc}
-      </mwc-icon-button>
+        #btnViewCompact:after,
+        #btnViewComfy:after,
+        #btnTools:after,
+        #btnInfo:after,
+        #btnShowParallels:after,
+        #btnShowToC:after {
+          font-size: var(--sc-skolar-font-size-xxs);
+          font-weight: 500;
+          font-stretch: condensed;
 
-      <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnViewCompact" 
-        title="Compact mode" 
-        @click="${this._onBtnViewCompactClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayCompactButton}">
-        ${icon.view_compact}
-      </mwc-icon-button>
+          position: absolute;
+          bottom: 4px;
 
-      <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnViewComfy" 
-        title="Comfy mode" 
-        @click="${this._onBtnViewCompactClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayComfyButton}">
-        ${icon.view_comfy}
-      </mwc-icon-button>
+          width: 100%;
 
-      <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnInfo" 
-        title="Text info" 
-        @click="${this._onBtnInfoClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayInfoButton}">
-        ${icon.info}
-      </mwc-icon-button>
-      
-      <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnTools" 
-        title="View options" 
-        @click="${this._onBtnToolsClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayToolButton}">
-        ${icon.visibility}
-      </mwc-icon-button>
+          text-align: center;
+        }
 
-      <mwc-icon-button 
-        class="white-icon toolButtons" 
-        id="btnShowParallels" 
-        title="View parallels" 
-        @click="${this._onBtnShowParallelsClick}" 
-        slot="actionItems" 
-        ?hidden="${this.displayToolButton}">
-        ${icon.parallels}
-      </mwc-icon-button>
-    </div>`;
+        #btnViewCompact:after {
+          content: 'spacing';
+        }
+
+        #btnViewComfy:after {
+          content: 'spacing';
+        }
+
+        #btnTools:after {
+          content: 'views';
+        }
+
+        #btnInfo:after {
+          content: 'info';
+        }
+
+        #btnShowParallels {
+          display: flex;
+        }
+
+        #btnShowParallels:after {
+          content: 'parallels';
+        }
+
+        #btnShowToC:after {
+          content: 'contents';
+        }
+
+        .active-light {
+          font-weight: 800;
+          border-bottom: 4px solid var(--sc-primary-color-light) !important;
+        }
+
+        .active-dark {
+          font-weight: 800;
+          border-bottom: 4px solid var(--sc-primary-color-dark) !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+          #tools_menu.contextToolbarExpand {
+            width: 100%;
+            justify-content: space-around;
+            align-items: flex-end;
+          }
+
+          .toolButtons {
+            box-sizing: content-box;
+          }
+        }
+      </style>
+
+      <div id="tools_menu">
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnShowToC"
+          title="View Table of Contents"
+          @click="${this._onBtnShowToCClick}"
+          slot="actionItems"
+          ?hidden="${this.tableOfContents}"
+        >
+          ${icon.toc}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnViewCompact"
+          title="Compact mode"
+          @click="${this._onBtnViewCompactClick}"
+          slot="actionItems"
+          ?hidden="${this.displayCompactButton}"
+        >
+          ${icon.view_compact}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnViewComfy"
+          title="Comfy mode"
+          @click="${this._onBtnViewCompactClick}"
+          slot="actionItems"
+          ?hidden="${this.displayComfyButton}"
+        >
+          ${icon.view_comfy}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnInfo"
+          title="Text info"
+          @click="${this._onBtnInfoClick}"
+          slot="actionItems"
+          ?hidden="${this.displayInfoButton}"
+        >
+          ${icon.info}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnTools"
+          title="View options"
+          @click="${this._onBtnToolsClick}"
+          slot="actionItems"
+          ?hidden="${this.displayToolButton}"
+        >
+          ${icon.visibility}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnShowParallels"
+          title="View parallels"
+          @click="${this._onBtnShowParallelsClick}"
+          slot="actionItems"
+          ?hidden="${this.displayToolButton}"
+        >
+          ${icon.parallels}
+        </mwc-icon-button>
+      </div>
+    `;
   }
 
   static get properties() {
@@ -173,12 +182,12 @@ class SCActionItems extends LitLocalized(LitElement) {
       displayToolButton: { type: Boolean },
       displayInfoButton: { type: Boolean },
       tableOfContents: { type: Boolean },
-      displayCompactButton: { type: Boolean},
-      displayComfyButton: { type: Boolean},
-      displayViewModeButton: { type: Boolean},
+      displayCompactButton: { type: Boolean },
+      displayComfyButton: { type: Boolean },
+      displayViewModeButton: { type: Boolean },
       colorTheme: { type: String },
       suttaMetaText: { type: String },
-    }
+    };
   }
 
   constructor() {
@@ -190,7 +199,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-action-items';
-    
+
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
     this.actions.changeDisplaySuttaToCState(false);
@@ -208,59 +217,59 @@ class SCActionItems extends LitLocalized(LitElement) {
       toggleSuttaplexDisplay(suttaplexdisplay) {
         store.dispatch({
           type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay: suttaplexdisplay
-        })
+          suttaplexdisplay: suttaplexdisplay,
+        });
       },
       changeToolbarTitle(title) {
         store.dispatch({
-          type: "CHANGE_TOOLBAR_TITLE",
-          title: title
-        })
+          type: 'CHANGE_TOOLBAR_TITLE',
+          title: title,
+        });
       },
       saveToolbarTitle(title) {
         store.dispatch({
-          type: "SAVE_TOOLBAR_TITLE",
-          toolbarTitle: title
-        })
+          type: 'SAVE_TOOLBAR_TITLE',
+          toolbarTitle: title,
+        });
       },
       changeDisplaySettingMenuState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display
-        })
+          displaySettingMenu: display,
+        });
       },
       changeDisplayToolButtonState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_TOOL_BUTTON_STATE',
-          displayToolButton: display
-        })
+          displayToolButton: display,
+        });
       },
       toggleSuttaplexDisplay(view) {
         store.dispatch({
           type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay: view
-        })
+          suttaplexdisplay: view,
+        });
       },
       changeDisplaySuttaParallelsState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
-          displaySuttaParallels: displayState
-        })
+          displaySuttaParallels: displayState,
+        });
       },
       changeDisplaySuttaToCState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
-          displaySuttaToC: displayState
-        })
+          displaySuttaToC: displayState,
+        });
       },
 
       changeDisplaySuttaInfoState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
-          displaySuttaInfo: displayState
-        })
+          displaySuttaInfo: displayState,
+        });
       },
-    }
+    };
   }
 
   firstUpdated() {
@@ -280,7 +289,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnInfoClick() {
     this.displaySuttaInfo = store.getState().displaySuttaInfo;
     if (!this.displaySuttaInfo) {
-      const {displaySettingMenu, displaySuttaParallels, displaySuttaToC} = store.getState();
+      const { displaySettingMenu, displaySuttaParallels, displaySuttaToC } = store.getState();
       if (displaySettingMenu) {
         this.actions.changeDisplaySettingMenuState(false);
         this._hideSettingMenu();
@@ -289,7 +298,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         this.actions.changeDisplaySuttaParallelsState(false);
         this._hideSuttaParallels();
       }
-      if (displaySuttaToC) { 
+      if (displaySuttaToC) {
         this.actions.changeDisplaySuttaToCState(false);
         this._hideSuttaToC();
       }
@@ -302,10 +311,12 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _showSuttaInfo() {
-    this.dispatchEvent(new CustomEvent('show-sc-sutta-info', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('show-sc-sutta-info', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnInfo').classList.add(this.activeClass);
   }
 
@@ -342,7 +353,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnToolsClick(e) {
     this.displaySettingMenu = store.getState().displaySettingMenu;
     if (!this.displaySettingMenu) {
-      const {displaySuttaParallels, displaySuttaInfo, displaySuttaToC} = store.getState();
+      const { displaySuttaParallels, displaySuttaInfo, displaySuttaToC } = store.getState();
       if (displaySuttaParallels) {
         this.actions.changeDisplaySuttaParallelsState(false);
         this._hideSuttaParallels();
@@ -364,66 +375,79 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _hideSettingMenu() {
-    this.dispatchEvent(new CustomEvent('hide-sc-top-sheet', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('hide-sc-top-sheet', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnTools').classList.remove(this.activeClass);
   }
 
   _showSettingMenu() {
-    this.dispatchEvent(new CustomEvent('show-sc-top-sheet', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('show-sc-top-sheet', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnTools').classList.add(this.activeClass);
   }
 
   _hideSuttaParallels() {
-    this.dispatchEvent(new CustomEvent('hide-sc-sutta-parallels', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('hide-sc-sutta-parallels', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnShowParallels').classList.remove(this.activeClass);
   }
 
   _hideSuttaToC() {
-    this.dispatchEvent(new CustomEvent('hide-sc-sutta-toc', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('hide-sc-sutta-toc', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnShowToC').classList.remove(this.activeClass);
   }
 
   _hideSuttaInfo() {
-    this.dispatchEvent(new CustomEvent('hide-sc-sutta-info', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('hide-sc-sutta-info', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnInfo').classList.remove(this.activeClass);
   }
 
   _showSuttaParallels() {
-    this.dispatchEvent(new CustomEvent('show-sc-sutta-parallels', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('show-sc-sutta-parallels', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnShowParallels').classList.add(this.activeClass);
   }
 
   _showSuttaToC() {
-    this.dispatchEvent(new CustomEvent('show-sc-sutta-toc', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('show-sc-sutta-toc', {
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.shadowRoot.querySelector('#btnShowToC').classList.add(this.activeClass);
   }
-
 
   _onBtnShowParallelsClick() {
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
-      const {displaySettingMenu, displaySuttaInfo, displaySuttaToC} = store.getState();
+      const { displaySettingMenu, displaySuttaInfo, displaySuttaToC } = store.getState();
       if (displaySettingMenu) {
         this.actions.changeDisplaySettingMenuState(false);
         this._hideSettingMenu();
@@ -447,7 +471,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   _onBtnShowToCClick() {
     this.displaySuttaToC = store.getState().displaySuttaToC;
     if (!this.displaySuttaToC) {
-      const {displaySettingMenu, displaySuttaInfo, displaySuttaParallels} = store.getState();
+      const { displaySettingMenu, displaySuttaInfo, displaySuttaParallels } = store.getState();
       if (displaySettingMenu) {
         this.actions.changeDisplaySettingMenuState(false);
         this._hideSettingMenu();
@@ -493,31 +517,31 @@ class SCActionItems extends LitLocalized(LitElement) {
       this.suttaMetaText = state.suttaMetaText;
     }
     if (this.suttaplexListEnabled !== state.suttaplexListDisplay) {
-      this.suttaplexListEnabled = state.suttaplexListDisplay
+      this.suttaplexListEnabled = state.suttaplexListDisplay;
     }
-    if(this.tableOfContents !== !!state.tableOfContents.items.length) {
-      this.tableOfContents = !!state.tableOfContents.items.length
+    if (this.tableOfContents !== !!state.tableOfContents.items.length) {
+      this.tableOfContents = !!state.tableOfContents.items.length;
     }
   }
 
   updated(changedProps) {
-    if (changedProps.has('displayToolButton')) {
+    if (changedProps.has('displayToolButton')) {
       this._displayToolButtonStateChange();
-    }
-    if (changedProps.has('displayViewModeButton')) {
+    }
+    if (changedProps.has('displayViewModeButton')) {
       this._displayViewModeButtonStateChange();
-    }
-    if (changedProps.has('colorTheme')) {
+    }
+    if (changedProps.has('colorTheme')) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
       this._resetToolButtonsActiveClass();
-    }
-    if (changedProps.has('suttaplexListEnabled')) {
+    }
+    if (changedProps.has('suttaplexListEnabled')) {
       this._viewModeChanged();
-    }
-    if (changedProps.has('suttaMetaText')) {
-    this._suttaMetaTextChanged();
-    }
-    if (changedProps.has('tableOfContents')){
+    }
+    if (changedProps.has('suttaMetaText')) {
+      this._suttaMetaTextChanged();
+    }
+    if (changedProps.has('tableOfContents')) {
       this._displayToCButtonStateChange();
     }
   }
@@ -527,10 +551,10 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnInfo').style.display = displayStyle;
   }
 
-  _displayToCButtonStateChange(){
+  _displayToCButtonStateChange() {
     if (this.tableOfContents)
-      this.shadowRoot.querySelector('#btnShowToC').style.display = "inherit";
-    else this.shadowRoot.querySelector('#btnShowToC').style.display = "none";
+      this.shadowRoot.querySelector('#btnShowToC').style.display = 'inherit';
+    else this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
   }
 
   _displayToolButtonStateChange() {
@@ -551,7 +575,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _setToolButtonsVisible(visible) {
-    this.shadowRoot.querySelectorAll('.toolButtons').forEach((e) => {
+    this.shadowRoot.querySelectorAll('.toolButtons').forEach(e => {
       if (e.style.display !== 'none') {
         visible ? e.classList.remove('invisible') : e.classList.add('invisible');
       }
@@ -559,7 +583,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _resetToolButtonsActiveClass() {
-    this.shadowRoot.querySelectorAll('.toolButtons').forEach((e) => {
+    this.shadowRoot.querySelectorAll('.toolButtons').forEach(e => {
       if (e.classList.contains('active-light') || e.classList.contains('active-dark')) {
         e.classList.remove('active-light');
         e.classList.remove('active-dark');

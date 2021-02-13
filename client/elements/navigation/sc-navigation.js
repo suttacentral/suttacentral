@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
@@ -655,34 +655,40 @@ class SCNavigation extends LitLocalized(LitElement) {
                         <span class="acronym">${child.acronym} ${child.child_range}</span>
                       </div>
                     </span>
-                    ${child.yellow_brick_road
-                      ? html`
-                          <span class="header-right">
-                            <span class="number-translated">
-                              <span class="number">${child.yellow_brick_road_count}</span>
-                              ${this.fullSiteLanguageName}
+                    ${
+                      child.yellow_brick_road
+                        ? html`
+                            <span class="header-right">
+                              <span class="number-translated">
+                                <span class="number">${child.yellow_brick_road_count}</span>
+                                ${this.fullSiteLanguageName}
+                              </span>
                             </span>
-                          </span>
-                        `
-                      : ''}
+                          `
+                        : ''
+                    }
                   </header>
                 </a>
-                ${child.blurb
-                  ? html`
-                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                        ${unsafeHTML(child.blurb)}
-                      </div>
-                    `
-                  : ''}
-                ${shortcuts.includes(child.uid)
-                  ? html`
-                      <div class="shortcut">
-                        <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('shortcutToFullList')}
-                        </a>
-                      </div>
-                    `
-                  : ''}
+                ${
+                  child.blurb
+                    ? html`
+                        <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                          ${unsafeHTML(child.blurb)}
+                        </div>
+                      `
+                    : ''
+                }
+                ${
+                  shortcuts.includes(child.uid)
+                    ? html`
+                        <div class="shortcut">
+                          <a href="/${child.uid}" class="shortcut-link">
+                            ${this.localize('shortcutToFullList')}
+                          </a>
+                        </div>
+                      `
+                    : ''
+                }
               </section>
             `
           )}
@@ -777,9 +783,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                         >
                           ${child.root_name || child.uid}
                         </span>
-                        <span class="acronym">
-                          ${child.child_range}
-                        </span>
+                        <span class="acronym">${child.child_range}</span>
                       </div>
                     </span>
                     ${child.yellow_brick_road

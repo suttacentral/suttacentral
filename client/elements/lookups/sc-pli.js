@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
