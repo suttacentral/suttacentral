@@ -33,9 +33,10 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
 
       #search_input {
         visibility: hidden;
+        box-sizing: border-box;
         padding: 0 116px 0 2vw;
         outline: none;
-        border: none;
+        border: 2px solid rgba(0, 0, 0, 0);
         height: 48px;
         width: 100%;
         position: absolute;
@@ -52,6 +53,10 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       #search_input.opened {
         visibility: visible;
         transform: scaleX(1);
+      }
+
+      #search_input.opened:focus {
+        border: 2px solid rgb(67, 160, 71);
       }
 
       #search_glass {
