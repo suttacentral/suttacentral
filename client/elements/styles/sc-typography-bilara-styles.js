@@ -120,8 +120,8 @@ export const typographyBilaraStyles = css`
     display: inline-block;
 
     box-sizing: border-box;
-    margin: 0 4px;
-    padding: 0.1em 4px;
+    gap: 0.5em;
+    padding: 0.1em 0.5em;
 
     white-space: nowrap;
     text-decoration: none;
