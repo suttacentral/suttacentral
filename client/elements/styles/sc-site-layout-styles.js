@@ -172,8 +172,9 @@ export const SCSiteLayoutStyles = css`
 
     text-decoration: none;
 
-    opacity: 0.8;
     color: white;
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+
     border-bottom: 4px solid rgba(0, 0, 0, 0);
 
     align-items: center;
@@ -184,8 +185,8 @@ export const SCSiteLayoutStyles = css`
   li a:hover {
     cursor: pointer;
 
-    opacity: 1;
     color: white;
+    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1);
     border-bottom: 4px solid var(--sc-primary-color-light);
 
     transition: all 200ms ease;
