@@ -535,12 +535,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   _onReferenceDisplayTypeChanged(e) {
     this.selectedReferenceDisplayType = e.target.checked ? e.target.value : 'none';
     this.actions.setReferenceDisplayType(this.selectedReferenceDisplayType);
-    if (this.selectedReferenceDisplayType === 'none') {
-      this._showToast(this.localize('textualInformationDisabled'));
-    } else {
-      const refType = e.target.dataset.type.toLowerCase() === 'main' ? 'Main' : 'All';
-      this._showToast(refType + ' ' + this.localize('textualInformationEnabled'));
-    }
   }
 
   get showHighlightingTemplate() {
