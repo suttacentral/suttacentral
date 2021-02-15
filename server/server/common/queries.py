@@ -1004,8 +1004,9 @@ FOR doc IN sc_bilara_texts
 
 SUTTA_PALI_REFERENCE = '''
 FOR pali in pali_reference_edition
+    Collect edition_set = pali.edition_set, name = pali.name, short_name = pali.short_name
     RETURN {
-        edition_set: pali.edition_set,
-        name: NOT_NULL(pali.name, pali.short_name)
+        edition_set: edition_set,
+        name: NOT_NULL(name, short_name)
     } 
 '''

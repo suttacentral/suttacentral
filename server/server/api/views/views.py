@@ -1020,10 +1020,7 @@ class PaliReferenceEdition(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
-        results = db.aql.execute(SUTTA_PALI_REFERENCE)
-        pali_references = []
-        for reference in results:
-            pali_references.append(reference)
+        pali_references = list(db.aql.execute(SUTTA_PALI_REFERENCE))
         if not pali_references:
             return {'error': 'Not Found'}, 404
         return pali_references
