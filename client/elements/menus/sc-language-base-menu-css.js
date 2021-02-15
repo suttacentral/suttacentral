@@ -18,14 +18,20 @@ export const languageBaseMenuCss = html`
       margin-bottom: var(--sc-size-xxs);
     }
 
+    .mdc-list-item__text {
+      margin-left: 1.5em;
+    }
+
     .language-name::before {
+      width: 24px;
+      text-align: center;
+      margin-right: 16px;
       content: attr(id);
       background-color: var(--sc-icon-color);
       color: white;
       font-weight: 800;
       font-stretch: condensed;
-      padding: 0 4px 1px 4px;
-      margin-right: var(--sc-size-md);
+      padding-bottom: 1px;
       line-height: 16px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -43,9 +49,10 @@ export const languageBaseMenuCss = html`
       );
     }
 
-    #jpn::after,
-    #sld::after,
-    #kln::after {
+    #jpn::before,
+    #sld::before,
+    #kln::before,
+    #kan::before {
       letter-spacing: 0;
       font-size: 11px;
     }
