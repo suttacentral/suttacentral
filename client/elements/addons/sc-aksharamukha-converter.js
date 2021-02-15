@@ -674,7 +674,7 @@ export const scriptIdentifiers = [
   },
   {
     script: 'Sinhala',
-    language: 'සින්හල',
+    language: 'සිංහල',
   },
   {
     script: 'SoraSompeng',
