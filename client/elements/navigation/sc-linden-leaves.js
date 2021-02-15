@@ -30,7 +30,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         box-sizing: border-box;
         height: 48px;
-        padding: 0 8px;
+        padding: 0 8px 0 16px;
 
         white-space: nowrap;
 

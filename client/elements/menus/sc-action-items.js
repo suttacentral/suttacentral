@@ -19,6 +19,7 @@ class SCActionItems extends LitLocalized(LitElement) {
           display: flex;
           justify-content: space-between;
           align-items: baseline;
+          gap: 4px;
         }
 
         .invisible {

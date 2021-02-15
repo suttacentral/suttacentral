@@ -84,7 +84,7 @@ export const SCSiteLayoutStyles = css`
 
     height: 60px;
 
-    padding: 0 2vw;
+    padding: 0 8px 0 16px;
 
     justify-content: space-between;
   }
