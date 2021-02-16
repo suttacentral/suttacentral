@@ -47,7 +47,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       isTextViewHidden: { type: Boolean },
       hidden: { type: Boolean },
       chosenTextView: { type: String },
-      chosenReferenceDisplayType: { type: String },
+      displayedReferences: { type: Array },
       chosenNoteDisplayType: { type: String },
       paliScript: { type: String },
       markup: { type: String },
@@ -73,7 +73,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.isTextViewHidden = false;
     this.hidden = false;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
-    this.chosenReferenceDisplayType = textOptions.referenceDisplayType;
+    this.displayedReferences = textOptions.displayedReferences;
     this.chosenNoteDisplayType = textOptions.noteDisplayType;
     this.paliScript = textOptions.script;
     this.isPaliLookupEnabled = textOptions.paliLookupActivated;
@@ -310,7 +310,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (changedProps.has('markup')) {
       this._updateView();
     }
-    if (changedProps.has('chosenReferenceDisplayType')) {
+    if (changedProps.has('displayedReferences')) {
       this._changeTextView();
     }
     if (changedProps.has('chosenNoteDisplayType')) {
@@ -394,24 +394,34 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.currentStyles = this.mapStyles.get(viewCompose)
       ? this.mapStyles.get(viewCompose)
       : plainStyles;
-    if (this.mapReferenceDisplayStyles.has(this.chosenReferenceDisplayType)) {
-      this.referencesDisplayStyles = this.mapReferenceDisplayStyles.get(
-        this.chosenReferenceDisplayType
-      );
+    const isNone = this.displayedReferences.includes('none');
+    if (isNone) {
+      this.referencesDisplayStyles = hideReferenceStyles;
     } else {
+      const isMain = this.displayedReferences.includes('main');
       this.referencesDisplayStyles = html`
+        ${isMain
+            ? hidePTSReferenceStyles : ''}
         <style>
           .reference {
-            display: inline;
+              display: inline;
           }
-          
+
           .reference a {
-            display: none;
+              display: none;
           }
-          
-          .reference a.${this.chosenReferenceDisplayType} {
-            display: inline;
-          }
+
+          ${isMain
+            ? `
+           .reference a.sc {
+              display: inline;
+            }`
+            : ''}
+          ${this.displayedReferences.map(
+            edition_set => html`
+              .reference a.${edition_set} { display: inline; }
+            `
+          )}
         </style>
       `;
     }
@@ -429,8 +439,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
       this.isPaliLookupEnabled = state.textOptions.paliLookupActivated;
     }
-    if (this.chosenReferenceDisplayType !== state.textOptions.referenceDisplayType) {
-      this.chosenReferenceDisplayType = state.textOptions.referenceDisplayType;
+    const currentReferences = this.buildReferences(this.displayedReferences);
+    const incomingReferences = this.buildReferences(state.textOptions.displayedReferences);
+    if (currentReferences !== incomingReferences) {
+      this.displayedReferences = Array.from(
+        state.textOptions.displayedReferences
+      );
     }
     if (this.chosenNoteDisplayType !== state.textOptions.noteDisplayType) {
       this.chosenNoteDisplayType = state.textOptions.noteDisplayType;
@@ -438,6 +452,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (this.showHighlighting !== state.textOptions.showHighlighting) {
       this.showHighlighting = state.textOptions.showHighlighting;
     }
+  }
+
+  buildReferences(referenceDisplayTypeArray) {
+    return Array.isArray(referenceDisplayTypeArray)
+      ? referenceDisplayTypeArray.reduce((acc, edition_set) => acc + edition_set, '')
+      : '';
   }
 
   _prepareNavigation() {

@@ -19,10 +19,12 @@ const DEFAULT_REFERENC_OPTION = [
   {
     name: 'None',
     edition_set: 'none',
+    checked: false,
   },
   {
     name: 'Main',
     edition_set: 'main',
+    checked: false,
   },
 ];
 
@@ -30,7 +32,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   static get properties() {
     return {
       selectedTextView: { type: String },
-      selectedReferenceDisplayType: { type: String },
       selectedNoteDisplayType: { type: String },
       paliLookupArray: { type: Array },
       paliLookupLanguage: { type: String },
@@ -42,7 +43,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       textualInfoResponse: { type: Object },
       textualParagraphs: { type: Object },
       localizedStringsPath: { type: String },
-      referenceDisplayTypeArray: { type: Array },
+      references: { type: Array },
       noteDisplayTypeArray: { type: Array },
       textViewArray: { type: Array },
     };
@@ -94,7 +95,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       },
     ];
     this.chineseLookupLanguage = textOptions.chineseLookupTargetDictRepr;
-    this.referenceDisplayTypeArray = DEFAULT_REFERENC_OPTION;
+    this.references = [];
     this.noteDisplayTypeArray = [
       {
         displayTypeLabel: 'None',
@@ -128,7 +129,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.textualInfoResponse = {};
     this.textualParagraphs = textOptions.paragraphDescriptions;
     this.localizedStringsPath = '/localization/elements/sc-top-sheet';
-    this.selectedReferenceDisplayType = textOptions.referenceDisplayType;
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
     this.showHighlighting = textOptions.showHighlighting;
   }
@@ -289,7 +289,31 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   _fetchReferenceDisplayType() {
     fetch(`${API_ROOT}/pali_reference_edition`)
       .then(r => r.json())
-      .then(data => (this.referenceDisplayTypeArray = DEFAULT_REFERENC_OPTION.concat(data)))
+      .then(data => {
+        this.references = DEFAULT_REFERENC_OPTION.concat(data).map(item => {
+          return item.checked ? item : { ...item, checked: false };
+        });
+        const {
+          textOptions: { displayedReferences },
+        } = store.getState();
+        if (displayedReferences.length) {
+          displayedReferences.forEach(edition_set => {
+            const reference = this.references.find(
+              reference => reference.edition_set === edition_set
+            );
+            if (reference) reference.checked = true;
+          });
+        } else {
+          const defaultDisplayedReference = this.references.find(
+            reference => reference.edition_set === 'none'
+          );
+          defaultDisplayedReference.checked = true;
+        }
+
+        this.actions.setDisplayedReferences(
+          this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set)
+        );
+      })
       .catch(e => console.error(e));
   }
 
@@ -505,7 +529,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   get referenceDisplayTypeTemplate() {
-    return this.referenceDisplayTypeArray.length
+    return this.references.length
       ? html`
           <div class="tools">
             <details>
@@ -513,14 +537,14 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
               <p>${this.localize('referenceDescription')}</p>
             </details>
             <div class="form-controls four-column">
-              ${this.referenceDisplayTypeArray.map(
+              ${this.references.map(
                 item => html`
                   <mwc-formfield label="${item.name}">
                     <mwc-checkbox
-                      name="referenceDisplayType"
+                      name="${item.edition_set}"
                       value="${item.edition_set}"
                       data-type="${item.name}"
-                      ?checked="${this.selectedReferenceDisplayType === item.edition_set}"
+                      ?checked="${item.checked}"
                       @change="${this._onReferenceDisplayTypeChanged}"
                     ></mwc-checkbox>
                   </mwc-formfield>
@@ -533,8 +557,14 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _onReferenceDisplayTypeChanged(e) {
-    this.selectedReferenceDisplayType = e.target.checked ? e.target.value : 'none';
-    this.actions.setReferenceDisplayType(this.selectedReferenceDisplayType);
+    const selectedReferenceDisplayType = e.target.value;
+    const selectedReference = this.references.find(
+      reference => reference.edition_set === selectedReferenceDisplayType
+    );
+    selectedReference.checked = e.target.checked;
+    this.actions.setDisplayedReferences(
+      this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set)
+    );
   }
 
   get showHighlightingTemplate() {
@@ -645,6 +675,12 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SET_SHOW_HIGHLIGHTING',
           showHighlighting: showHighlighting,
+        });
+      },
+      setDisplayedReferences(displayedReferences) {
+        store.dispatch({
+          type: 'SET_REFERENCE_DISPLAY_TYPE_ARRAY',
+          displayedReferences: displayedReferences,
         });
       },
     };

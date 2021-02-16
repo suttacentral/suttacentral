@@ -484,14 +484,6 @@ export const hideReferenceStyles = html`
 
 export const hidePTSReferenceStyles = html`
   <style>
-    .reference {
-      display: inline;
-    }
-
-    a.pts {
-      display: none;
-    }
-
     a.sc {
       display: inline;
     }
