@@ -5,10 +5,10 @@ import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
 import { LitLocalized } from '../addons/localization-mixin';
-import './card/sc-suttaplex.js';
 import { suttaplexListCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title.js';
 import '../addons/sc-error-icon.js';
+import('./card/sc-suttaplex.js');
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
