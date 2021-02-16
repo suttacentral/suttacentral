@@ -1019,4 +1019,4 @@ class SuttaFullPath(Resource):
     def get(self, uid):
         db = get_db()
         full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
-        return {'full_path': full_path}
+        return full_path
