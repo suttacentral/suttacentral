@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 from typing import Tuple
 
@@ -35,6 +36,7 @@ from api.views import (
     Transliterate,
     Publication,
     TransliteratedSutta,
+    SuttaFullPath,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -92,6 +94,7 @@ def app_factory() -> Tuple[Api, Flask]:
         TransliteratedSutta, '/transliterated_sutta/<string:uid>/<string:target>'
     )
     api.add_resource(Publication, '/publication')
+    api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')
     app.register_blueprint(api_bp)
     register_extensions(app)
 

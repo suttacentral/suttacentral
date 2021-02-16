@@ -76,7 +76,7 @@ swagger_config = {
 }
 
 swagger_template = {
-    "swagger": "3.0",
+    "swagger": "2.0",
     "info": {
         "title": "SuttaCentral's API",
         "description": "API for SuttaCentral",

@@ -13,6 +13,38 @@ const isoCodes = [
   'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl'
 ]
 
+const staticPages = [
+  'HOME',
+  'ABBREVIATIONS',
+  'ABHIDHAMMA',
+  'ABOUT',
+  'ACKNOWLEDGMENTS',
+  'A-NEW-BEGINNING',
+  'AN-GUIDE-SUJATO',
+  'AN-INTRODUCTION-BODHI',
+  'DISCOURSES',
+  'DN-GUIDE-SUJATO',
+  'DONATE-NOW',
+  'DONATIONS',
+  'DONATION-SUCCESS',
+  'DOWNLOADS',
+  'GENERAL-GUIDE-SUJATO',
+  'INTRODUCTION',
+  'LANGUAGES',
+  'LICENSING',
+  'METHODOLOGY',
+  'MN-GUIDE-SUJATO',
+  'NAMES',
+  'NUMBERING',
+  'OFFLINE',
+  'SIMILES',
+  'SN-GUIDE-SUJATO',
+  'START',
+  'SUBJECTS',
+  'TERMINOLOGY',
+  'VINAYA',
+];
+
 // prettier-ignore
 const routes = {
   'HOME': {
@@ -461,18 +493,20 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _updateNav() {
-    const navArray = store.getState().navigationArray;
-    const currentPath = this.currentRoute.path;
-    navArray.length = 1;
-    const pageName = this.localize(`${this.currentRoute.name}`);
-    if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
-      navArray.push({
-        title: pageName,
-        url: currentPath,
-        type: 'staticPage',
-      });
-      this.actions.setNavigation(navArray);
-      this.actions.setCurrentNavPosition(1);
+    if (staticPages.includes(this.currentRoute.name)) {
+      const navArray = store.getState().navigationArray;
+      const currentPath = this.currentRoute.path;
+      const pageName = this.localize(`${this.currentRoute.name}`);
+      navArray.length = 1;
+      if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
+        navArray.push({
+          title: pageName,
+          url: currentPath,
+          type: 'staticPage',
+        });
+        this.actions.setNavigation(navArray);
+        this.actions.setCurrentNavPosition(1);
+      }
     }
   }
 
