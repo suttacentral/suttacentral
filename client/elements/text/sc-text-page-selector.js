@@ -322,7 +322,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   async _genNavDetail() {
     const suttaFullPath = await this._fetchSuttaFullPath();
     const navArray = store.getState().navigationArray;
-    if (suttaFullPath && !navArray[1].type !== 'pitaka') {
+    if (suttaFullPath && navArray[1].type !== 'pitaka') {
       parseURL(suttaFullPath, navArray);
       this.actions.setNavigation(navArray);
     }
