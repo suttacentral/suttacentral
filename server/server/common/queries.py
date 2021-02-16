@@ -1001,3 +1001,8 @@ FOR doc IN sc_bilara_texts
     LIMIT 1
     RETURN {@uid: doc.filepath}
 '''
+
+SUTTA_PARENT = '''
+FOR parent_doc IN @level INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+    RETURN parent_doc.uid
+'''

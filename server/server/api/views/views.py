@@ -33,6 +33,7 @@ from common.queries import (
     SUTTA_NEIGHBORS,
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
+    SUTTA_PARENT,
 )
 
 from common.utils import (
@@ -989,6 +990,7 @@ class Transliterate(Resource):
     def get(self, target, text):
         return transliterate.process('ISO', target, text)
 
+
 class TransliteratedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, target):
@@ -999,7 +1001,7 @@ class TransliteratedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        sutta_texts = {k: self.load_json(v) for k,v in result.items()}
+        sutta_texts = {k: self.load_json(v) for k, v in result.items()}
         for key, value in sutta_texts[uid].items():
             sutta_texts[uid][key] = transliterate.process('ISO', target, value)
 
@@ -1010,3 +1012,24 @@ class TransliteratedSutta(Resource):
         data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
         with (data_dir / path).open() as f:
             return json.load(f)
+
+
+class SuttaFullPath(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        db = get_db()
+
+        full_path = []
+
+        for level in range(1, 10):
+            try:
+                results = db.aql.execute(SUTTA_PARENT, bind_vars={'uid': uid, 'level': level}).next()
+                if results:
+                    full_path.append(results)
+            except StopIteration:
+                break
+
+        full_path.append('pitaka')
+        return '/' + '/'.join(list(reversed(full_path)))
+
+
