@@ -227,14 +227,12 @@ store.subscribe(() => {
 // Helper function
 function parsePersistedState(state) {
   const parsedState = JSON.parse(state);
-  const { toolbarOptions, donationSuccessData, tableOfContents, navigationArray } = initialState;
+  const { donationSuccessData, tableOfContents } = initialState;
 
   return {
     ...initialState,
     ...parsedState,
     // Reset some state variables:
-    navigationArray,
-    toolbarOptions,
     donationSuccessData,
     tableOfContents,
   };

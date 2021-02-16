@@ -33,6 +33,7 @@ from common.queries import (
     SUTTA_NEIGHBORS,
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
+    SUTTA_PATH,
     SUTTA_PALI_REFERENCE,
 )
 
@@ -1013,6 +1014,14 @@ class TransliteratedSutta(Resource):
         data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
         with (data_dir / path).open() as f:
             return json.load(f)
+
+
+class SuttaFullPath(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        db = get_db()
+        full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
+        return full_path
 
 
 class PaliReferenceEdition(Resource):

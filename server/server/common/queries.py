@@ -1002,6 +1002,15 @@ FOR doc IN sc_bilara_texts
     RETURN {@uid: doc.filepath}
 '''
 
+SUTTA_PATH = '''
+LET path_docs = (
+    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges 
+        RETURN doc.uid
+)
+RETURN {
+    'full_path': CONCAT_SEPARATOR('/', REVERSE(APPEND(path_docs, '/pitaka')))
+}
+'''
 SUTTA_PALI_REFERENCE = '''
 FOR pali IN pali_reference_edition
     COLLECT edition_set = pali.edition_set, name = pali.name, short_name = pali.short_name

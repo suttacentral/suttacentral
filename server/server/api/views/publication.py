@@ -7,12 +7,23 @@ from .views import long_cache_timeout
 
 
 class Publication(Resource):
-    """
-    Publication API endpoint
-    """
 
     @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
     def get(self):
+        """
+        GET Publication API endpoint
+        ---
+        parameters:
+            - in: query
+              name: text_uid
+              type: string
+            - in: query
+              name: author_uid
+              type: string
+        responses:
+            200:
+                description: List of publication
+        """
         query = {}
         text_uid = request.args.get('text_uid')
         author_uid = request.args.get('author_uid')

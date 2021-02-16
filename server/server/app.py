@@ -35,6 +35,7 @@ from api.views import (
     Transliterate,
     Publication,
     TransliteratedSutta,
+    SuttaFullPath,
     PaliReferenceEdition,
 )
 from common.arangodb import ArangoDB
@@ -93,6 +94,7 @@ def app_factory() -> Tuple[Api, Flask]:
         TransliteratedSutta, '/transliterated_sutta/<string:uid>/<string:target>'
     )
     api.add_resource(Publication, '/publication')
+    api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')
     api.add_resource(PaliReferenceEdition, '/pali_reference_edition')
     app.register_blueprint(api_bp)
     register_extensions(app)
