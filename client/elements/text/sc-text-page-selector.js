@@ -200,6 +200,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   async _updateNav() {
+    if (!this.responseData.root_text) {
+      return;
+    }
     const navIndexesOfType = navIndex.get('sutta');
     this.navArray = store.getState().navigationArray;
     let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
@@ -208,7 +211,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         this.responseData.suttaplex.translated_title || this.responseData.suttaplex.original_title;
     }
     suttaTitle = this.responseData.suttaplex.acronym || suttaTitle;
-    if (suttaTitle.includes('//')) {
+    if (suttaTitle && suttaTitle.includes('//')) {
       const acronyms = suttaTitle.split('//');
       if (acronyms.length === 2) {
         suttaTitle = acronyms[0];
@@ -249,9 +252,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       }
       const currentNavItemGroupId = this.navArray[this.navArray.length - 1].groupId;
       if (currentNavItemGroupId) {
-        const childData = navData[0].children.find(x => {
-          return x.uid === currentNavItemGroupId;
-        });
+        const childData = navData[0].children.find(x => x.uid === currentNavItemGroupId);
         if (!childData) {
           this._correctingNav();
         }
@@ -416,9 +417,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   async _fetchBilaraText() {
+    if (!this.suttaId) {
+      return;
+    }
     this.isLoading = true;
     try {
-      let bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
+      const bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
       this.bilaraRootSutta = bilaraData.root_text;
       this.bilaraTranslatedSutta = bilaraData.translation_text;
       this.bilaraSuttaMarkup = bilaraData.html_text;
