@@ -33,7 +33,7 @@ from common.queries import (
     SUTTA_NEIGHBORS,
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
-    SUTTA_PARENT,
+    SUTTA_PATH,
 )
 
 from common.utils import (
@@ -1018,18 +1018,5 @@ class SuttaFullPath(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid):
         db = get_db()
-
-        full_path = []
-
-        for level in range(1, 10):
-            try:
-                results = db.aql.execute(SUTTA_PARENT, bind_vars={'uid': uid, 'level': level}).next()
-                if results:
-                    full_path.append(results)
-            except StopIteration:
-                break
-
-        full_path.append('pitaka')
-        return '/' + '/'.join(list(reversed(full_path)))
-
-
+        full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
+        return {'full_path': full_path}
