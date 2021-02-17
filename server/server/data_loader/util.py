@@ -1,6 +1,7 @@
 import itertools
 import json
 import logging
+from pathlib import Path
 
 import regex
 
@@ -42,13 +43,18 @@ def humansortkey(string, _split=regex.compile(r'(\d+(?:[.-]\d+)*)').split):
     ]
 
 
-def json_load(path):
+def json_load(path: Path) -> dict:
     try:
         with open(path, 'r', encoding='utf8') as f:
             return json.load(f)
     except (json.decoder.JSONDecodeError, FileNotFoundError) as e:
         logging.error(f'{path}: {e}')
         raise e
+
+
+def json_save(data: dict, path: Path) -> None:
+    with open(path, 'w', encoding='utf8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 def sort_and_groupby(iterable, function):

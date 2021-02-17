@@ -33,6 +33,7 @@ from . import (
     sizes,
     sc_bilara_data,
     navigation,
+    hyphenation,
 )
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
@@ -458,6 +459,9 @@ def run(no_pull=False):
 
     print_stage("Updating mtimes")
     change_tracker.update_mtimes()
+
+    print_stage('Hyphenate Pali and Sanskrit texts')
+    hyphenation.hyphenate_texts(db)
 
     print_stage('All done')
 

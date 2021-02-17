@@ -1011,3 +1011,11 @@ RETURN {
     'full_path': CONCAT_SEPARATOR('/', REVERSE(APPEND(path_docs, '/pitaka')))
 }
 '''
+
+ALL_TEXTS_BY_LANGUAGES = '''
+FOR doc IN v_text
+    SEARCH doc.lang IN @languages
+    LET langs = REMOVE_VALUE(@languages, 'pli')
+    FILTER doc.lang IN langs OR (doc.lang == 'pli' AND 'root' IN doc.muids)
+    RETURN doc
+'''
