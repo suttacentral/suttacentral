@@ -45,7 +45,7 @@ class SCDonateNow extends LitLocalized(LitElement) {
             /* allow mwc-select to drop below container */
           article {
         content-visibility: visible;
-        height: 100vh
+        height: 100vh;
       }
 
       #error-message {
@@ -83,12 +83,12 @@ class SCDonateNow extends LitLocalized(LitElement) {
 
       mwc-radio {
         --mdc-theme-secondary: var(--sc-primary-color);
-        --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
+        --mdc-radio-unchecked-color: var(--sc-icon-color);
       }
 
       mwc-textfield {
         flex-grow: 1;
-        --mdc-text-field-fill-color:  var(--sc-tertiary-background-color);
+        --mdc-text-field-fill-color: var(--sc-tertiary-background-color);
         --mdc-text-field-ink-color: var(--sc-primary-text-color);
         --mdc-text-field-label-ink-color: var(--sc-secondary-text-color);
       }
@@ -97,16 +97,16 @@ class SCDonateNow extends LitLocalized(LitElement) {
         margin-right: 20px;
         width: 120px;
         --mdc-theme-primary: var(--sc-primary-accent-color);
-        --mdc-select-fill-color:  var(--sc-tertiary-background-color);
+        --mdc-select-fill-color: var(--sc-tertiary-background-color);
         --mdc-typography-font-family: var(--sc-sans-font);
         --mdc-theme-surface: var(--sc-secondary-background-color);
         --mdc-select-ink-color: var(--sc-primary-text-color);
         --mdc-select-label-ink-color: var(--sc-secondary-text-color);
-        --mdc-select-dropdown-icon-color: var(--sc-disabled-text-color);
+        --mdc-select-dropdown-icon-color: var(--sc-icon-color);
       }
 
-      mwc-list-item{
-        color: var(--sc-primary-text-color)
+      mwc-list-item {
+        color: var(--sc-primary-text-color);
       }
 
       mwc-select + mwc-textfield {
@@ -129,7 +129,7 @@ class SCDonateNow extends LitLocalized(LitElement) {
       .icon {
         vertical-align: text-bottom;
 
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-icon-color);
       }
     `;
   }
@@ -237,14 +237,8 @@ class SCDonateNow extends LitLocalized(LitElement) {
             </div>
           </form>
           <aside>
-            <p>
-              ${icon.info}
-              ${unsafeHTML(this.localize('storageDisclaimer'))}
-            </p>
-            <p>
-              ${icon.info}
-              ${this.localize('feeDisclaimer')}
-            </p>
+            <p>${icon.info} ${unsafeHTML(this.localize('storageDisclaimer'))}</p>
+            <p>${icon.info} ${this.localize('feeDisclaimer')}</p>
           </aside>
         </article>
       </main>

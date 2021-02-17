@@ -9,7 +9,7 @@ class SCSuttaplexTx extends LitElement {
       item: Object,
       translation: Object,
       isCompact: Boolean,
-    }
+    };
   }
 
   get translationUrl() {
@@ -19,16 +19,19 @@ class SCSuttaplexTx extends LitElement {
   render() {
     return html`
       ${suttaplexTxCss}
-      
-      <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">${icon.translation}
+
+      <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">
+        ${icon.translation}
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
           <span class="tx-publication">
-            ${this.translation.lang_name} ${(this.translation.segmented && (this.translation.lang_name !== 'Pāli')) ? '& Pāli' : ''}
-            ${this.translation.publication_date ? + this.translation.publication_date : ''}
+            ${this.translation.lang_name}
+            ${this.translation.segmented && this.translation.lang_name !== 'Pāli' ? '& Pāli' : ''}
+            ${this.translation.publication_date ? +this.translation.publication_date : ''}
           </span>
         </div>
-      </a>`;
+      </a>
+    `;
   }
 }
 

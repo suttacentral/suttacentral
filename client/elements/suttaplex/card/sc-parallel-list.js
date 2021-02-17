@@ -22,8 +22,8 @@ class SCParallels extends LitLocalized(LitElement) {
       error: Boolean,
       rootText: Object,
       localizedStringsPath: String,
-      expansionData: Array
-    }
+      expansionData: Array,
+    };
   }
 
   constructor() {
@@ -107,51 +107,75 @@ class SCParallels extends LitLocalized(LitElement) {
 
   render() {
     return html`
-    ${parallelsListCss}
-    <div>
-      ${this.loadingResults ? html`
-        <sc-bouncing-loader .active="${this.loadingResults}"></sc-bouncing-loader>
-      ` : ''}
+      ${parallelsListCss}
+      <div>
+        ${this.loadingResults
+          ? html`
+              <sc-bouncing-loader .active="${this.loadingResults}"></sc-bouncing-loader>
+            `
+          : ''}
+        ${this.rootKeys
+          ? html`
+              <table class="parallels-table">
+                ${this.rootKeys.map(
+                  rootId => html`
+                    <tbody class="parallels-table-body">
+                      <tr class="parallels-row">
+                        <td
+                          class="parallels-root-cell parallels-table-cell"
+                          rowspan="${this.getRowspan(rootId)}"
+                        >
+                          <a class="root-link" href="${this.computeUrl(rootId)}">
+                            <div
+                              class="parallels-root-id root"
+                              title="${this.localize('suttaCentralID')}"
+                            >
+                              ${transformId(rootId, this.expansionData)}
+                            </div>
+                          </a>
+                        </td>
+                        <td
+                          class="parallels-relation-cell"
+                          title="${this.getFirstParallelIconTitle(rootId)}"
+                        >
+                          ${this.getFirstParallelIcon(rootId)}
+                        </td>
+                        <td class="parallels-parallel-cell">
+                          <sc-parallel-item
+                            .parallelItem="${this.getFirstParallelItem(rootId)}"
+                            .remark="${this.getFirstParallelRemark(rootId)}"
+                            .expansionData="${this.expansionData}"
+                          ></sc-parallel-item>
+                        </td>
+                      </tr>
 
-      ${this.rootKeys ? html`
-        <table class="parallels-table">
-          ${this.rootKeys.map(rootId => html`
-            <tbody class="parallels-table-body">
-              <tr class="parallels-row">
-                <td class="parallels-root-cell parallels-table-cell" rowspan="${this.getRowspan(rootId)}">
-                  <a class="root-link" href="${this.computeUrl(rootId)}">
-                    <div class="parallels-root-id root" title="${this.localize('suttaCentralID')}">
-                      ${transformId(rootId, this.expansionData)}
-                    </div>
-                  </a>
-                </td>
-                <td class="parallels-relation-cell" title="${this.getFirstParallelIconTitle(rootId)}">
-                  ${this.getFirstParallelIcon(rootId)}
-                </td>
-                <td class="parallels-parallel-cell">
-                  <sc-parallel-item 
-                    .parallelItem="${this.getFirstParallelItem(rootId)}" 
-                    .remark="${this.getFirstParallelRemark(rootId)}" 
-                    .expansionData="${this.expansionData}"
-                  ></sc-parallel-item>
-                </td>
-              </tr>
-    
-              ${this.getOtherParallels(rootId).map(item => html`
-                <tr>
-                  <td class="parallels-relation-cell" title="${this.computeIconTitle(item)}">
-                    ${this.getParallelIcon(item)}
-                  </td>
-                  <td class="parallels-parallel-cell">
-                    <sc-parallel-item .parallelItem="${item.to}" .remark="${item.remark}" .expansionData="${this.expansionData}"></sc-parallel-item>
-                  </td>
-                </tr>
-              `)}
-            </tbody>
-          `)}
-        </table>
-      ` : ''}
-    </div>`;
+                      ${this.getOtherParallels(rootId).map(
+                        item => html`
+                          <tr>
+                            <td
+                              class="parallels-relation-cell"
+                              title="${this.computeIconTitle(item)}"
+                            >
+                              ${this.getParallelIcon(item)}
+                            </td>
+                            <td class="parallels-parallel-cell">
+                              <sc-parallel-item
+                                .parallelItem="${item.to}"
+                                .remark="${item.remark}"
+                                .expansionData="${this.expansionData}"
+                              ></sc-parallel-item>
+                            </td>
+                          </tr>
+                        `
+                      )}
+                    </tbody>
+                  `
+                )}
+              </table>
+            `
+          : ''}
+      </div>
+    `;
   }
 
   async _loadData() {
@@ -173,8 +197,9 @@ class SCParallels extends LitLocalized(LitElement) {
     };
 
     let rootKeys = Object.keys(this.responseData);
-    if (rootKeys[0].substring(0, 3) === "sag") {
-      this.rootKeys = rootKeys.map(item => item.match(/\d{1,4}/g).map(Number))
+    if (rootKeys[0].substring(0, 3) === 'sag') {
+      this.rootKeys = rootKeys
+        .map(item => item.match(/\d{1,4}/g).map(Number))
         .sort(compareArray)
         .map(item => {
           if (item.length === 1) {
@@ -186,11 +211,12 @@ class SCParallels extends LitLocalized(LitElement) {
           }
         });
     } else if (rootKeys[0].match(/dhp/)) {
-      this.rootKeys = rootKeys.map(item => {
-        const dhpNumber = this.responseData[item][0].enumber;
+      this.rootKeys = rootKeys
+        .map(item => {
+          const dhpNumber = this.responseData[item][0].enumber;
 
-        return [dhpNumber, item];
-      })
+          return [dhpNumber, item];
+        })
         .sort(compareArray)
         .map(item => item[1]);
     } else {

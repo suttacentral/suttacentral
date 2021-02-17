@@ -1,31 +1,26 @@
 import { css } from 'lit-element';
 
 export const typographyLegacyStyles = css`
+  /* styles unique to legacy texts */
 
-/* styles unique to legacy texts */
+  /* sutta title */
 
-/* sutta title */
-
-.subheading
-{
+  .subheading {
     font-style: italic;
-}
+  }
 
-/*bilingual sutta title*/
+  /*bilingual sutta title*/
 
-.mirror
-{
+  .mirror {
     display: table;
 
     margin-right: auto;
     margin-left: auto;
-}
-.mirror > *
-{
+  }
+  .mirror > * {
     display: table-row;
-}
-.mirror-left
-{
+  }
+  .mirror-left {
     display: table-cell;
 
     width: 50%;
@@ -34,28 +29,25 @@ export const typographyLegacyStyles = css`
     text-align: right;
 
     border-right: var(--sc-border);
-}
-.mirror-right
-{
+  }
+  .mirror-right {
     display: table-cell;
 
     padding-left: 1rem;
 
     text-align: left;
-}
-.mirror-middle
-{
+  }
+  .mirror-middle {
     position: absolute;
 
-    margin-top: .2rem;
+    margin-top: 0.2rem;
 
     text-align: right;
-}
+  }
 
-/* descriptive classes */
+  /* descriptive classes */
 
-.xu
-{
+  .xu {
     font-size: var(--sc-dense-font-size-s);
 
     padding: 1rem;
@@ -65,10 +57,9 @@ export const typographyLegacyStyles = css`
     border: var(--sc-border);
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
-}
+  }
 
-.suttainfo
-{
+  .suttainfo {
     display: inline-block;
 
     padding: 1rem;
@@ -78,66 +69,52 @@ export const typographyLegacyStyles = css`
     border: var(--sc-border);
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
-}
-.suppliedmetre
-{
+  }
+  .suppliedmetre {
     color: var(--sc-secondary-text-color);
-}
-.gap
-{
+  }
+  .gap {
     color: var(--sc-secondary-text-color);
-}
-.delscribe
-{
+  }
+  .delscribe {
     text-decoration: line-through;
 
     text-decoration-color: var(--sc-secondary-text-color);
-}
-.del
-{
+  }
+  .del {
     text-decoration: line-through;
 
     text-decoration-color: var(--sc-secondary-text-color);
-}
-.scribe
-{
+  }
+  .scribe {
     font-style: italic;
-}
-.alt-title
-{
+  }
+  .alt-title {
     display: none;
-}
-.hidden
-{
+  }
+  .hidden {
     display: none;
-}
-.metre
-{
+  }
+  .metre {
     display: none;
-}
-.t-gaiji
-{
+  }
+  .t-gaiji {
     color: var(--sc-primary-accent-color);
-}
-.rule-number
-{
+  }
+  .rule-number {
     color: var(--sc-secondary-text-color);
-}
-.allowance
-{
+  }
+  .allowance {
     font-weight: bold;
-}
-.t-note
-{
+  }
+  .t-note {
     color: var(--sc-secondary-text-color);
-}
-.vagga-number
-{
+  }
+  .vagga-number {
     color: var(--sc-secondary-text-color);
-}
-.counter,
-.t-counter
-{
+  }
+  .counter,
+  .t-counter {
     font-family: 'Noto Sans CJK TC';
     font-size: var(--sc-dense-font-size-s);
     font-weight: 400;
@@ -145,55 +122,43 @@ export const typographyLegacyStyles = css`
     line-height: 20px;
 
     color: var(--sc-secondary-text-color);
-}
-.term
-{
+  }
+  .term {
     font-weight: bold;
-}
-.rightview
-{
+  }
+  .rightview {
     color: var(--sc-secondary-text-color);
-}
-.wrongview
-{
+  }
+  .wrongview {
     color: var(--sc-secondary-text-color);
-}
-.highlight .term
-{
+  }
+  .highlight .term {
     color: var(--sc-primary-accent-color);
-}
-.highlight .gloss
-{
+  }
+  .highlight .gloss {
     color: var(--sc-primary-accent-color);
-}
-.highlight .surplus
-{
+  }
+  .highlight .surplus {
     color: var(--sc-secondary-accent-color);
-}
-.highlight .supplied
-{
+  }
+  .highlight .supplied {
     color: var(--sc-primary-color);
-}
-.highlight .expanded
-{
+  }
+  .highlight .expanded {
     color: var(--sc-secondary-text-color);
-}
-.highlight .var
-{
+  }
+  .highlight .var {
     color: var(--sc-secondary-accent-color);
-}
-.highlight .corr,
-.highlight .corrected
-{
+  }
+  .highlight .corr,
+  .highlight .corrected {
     color: var(--sc-primary-accent-color);
-}
-.highlight .unclear
-{
+  }
+  .highlight .unclear {
     color: var(--sc-secondary-text-color);
-}
+  }
 
-.highlight .metre
-{
+  .highlight .metre {
     font-size: var(--sc-skolar-font-size-xxs);
 
     position: absolute;
@@ -202,15 +167,17 @@ export const typographyLegacyStyles = css`
 
     margin-top: -11px;
 
-    letter-spacing: .2em;
+    letter-spacing: 0.2em;
 
     color: var(--sc-primary-accent-color);
-}
+  }
 
-.ref {display: none}
-.legacy-reference .ref{
+  .ref {
+    display: none;
+  }
+  .legacy-reference .ref {
     font-family: var(--sc-sans-font);
-    font-size: .8em;
+    font-size: 0.8em;
     font-weight: 400;
     font-style: normal;
     text-align: left;
@@ -219,7 +186,7 @@ export const typographyLegacyStyles = css`
 
     box-sizing: border-box;
     margin: 0 4px;
-    padding: .1em 4px;
+    padding: 0.1em 4px;
 
     white-space: nowrap;
     text-decoration: none;
@@ -231,5 +198,5 @@ export const typographyLegacyStyles = css`
     background-color: var(--sc-secondary-background-color);
 
     font-variant-caps: normal;
-}
-`
+  }
+`;

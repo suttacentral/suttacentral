@@ -527,7 +527,7 @@ class SCOfflinePage extends LitLocalized(LitElement) {
         }
 
         mwc-checkbox {
-          --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+          --mdc-checkbox-unchecked-color: var(--sc-icon-color);
         }
 
         mwc-linear-progress {
@@ -587,7 +587,7 @@ class SCOfflinePage extends LitLocalized(LitElement) {
 
         .play_arrow,
         .stop {
-          fill: var(--sc-disabled-text-color);
+          fill: var(--sc-icon-color);
         }
       `,
     ];

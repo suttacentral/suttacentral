@@ -30,7 +30,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
 
         box-sizing: border-box;
         height: 48px;
-        padding: 0 calc(2% - 2px);
+        padding: 0 8px 0 16px;
 
         white-space: nowrap;
 
@@ -47,9 +47,10 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       li {
-        font-family: 'Skolar Sans PE Compressed', var(--sc-sans-font);
+        font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-xs);
         font-weight: 500;
+        font-stretch: condensed;
 
         display: flex;
 
@@ -96,8 +97,6 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       li:last-child {
-        font-weight: 700;
-
         box-sizing: border-box;
         height: 100%;
         padding: 4px 2px 0;
@@ -123,7 +122,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
       }
 
       .icon {
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-icon-color);
       }
     `;
   }
