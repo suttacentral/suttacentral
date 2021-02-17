@@ -6,7 +6,7 @@ export const SCFontStyles = css`
     font-weight: 100 1000;
     font-style: normal;
     font-stretch: normal;
-    src: url('/files/fonts/RaloksSansPEVF-Ups_0.1.woff2') format('woff2');
+    src: url('/files/fonts/RaloksPEVF-Ups.0.2.woff2') format('woff2-variations');
   }
 
   @font-face {
@@ -14,7 +14,7 @@ export const SCFontStyles = css`
     font-weight: 100 1000;
     font-style: italic;
     font-stretch: normal;
-    src: url('/files/fonts/RaloksPEVF-Its_0.1.woff2') format('woff2');
+    src: url('/files/fonts/RaloksPEVF-Its.0.2.woff2') format('woff2-variations');
   }
 
   @font-face {
@@ -22,14 +22,14 @@ export const SCFontStyles = css`
     font-weight: 100 1000;
     font-style: normal;
     font-stretch: 80% 115%;
-    src: url('/files/fonts/RaloksSansPEVF-Ups_0.1.woff2') format('woff2');
+    src: url('/files/fonts/RaloksSansPEVF-Ups.0.2.woff2') format('woff2-variations');
   }
   @font-face {
     font-family: 'Skolar Sans PE Variable';
     font-weight: 100 1000;
     font-style: italic;
     font-stretch: 80% 115%;
-    src: url('/files/fonts/RaloksSansPEVF-Its_0.1.woff2') format('woff2');
+    src: url('/files/fonts/RaloksSansPEVF-Its.0.2.woff2') format('woff2-variations');
   }
 
   @font-face {
