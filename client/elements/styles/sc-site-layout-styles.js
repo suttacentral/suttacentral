@@ -54,7 +54,7 @@ export const SCSiteLayoutStyles = css`
 
   .homeTitle #mainTitle {
     font-family: var(--sc-serif-font);
-    line-height: 1.1;
+    line-height: 1;
 
     letter-spacing: var(--sc-caps-letter-spacing);
 
@@ -66,7 +66,6 @@ export const SCSiteLayoutStyles = css`
   #subTitle {
     font-size: 0.5em;
     font-style: italic;
-    font-weight: 500;
   }
 
   #universal_toolbar {
@@ -84,7 +83,7 @@ export const SCSiteLayoutStyles = css`
 
     height: 60px;
 
-    padding: 0 8px 0 16px;
+    padding: 0 2%;
 
     justify-content: space-between;
   }
@@ -104,9 +103,7 @@ export const SCSiteLayoutStyles = css`
   /* apply font size here to avoid resizing title when returning to Home */
   .generalTitle span {
     font-size: calc(20px * var(--sc-skolar-font-scale));
-    font-family: var(--sc-sans-font), 'Noto Sans CJK TC';
-    font-stretch: condensed;
-    font-weight: 500;
+    font-family: 'Skolar Sans PE Condensed', var(--sc-sans-font), 'Noto Sans CJK TC';
   }
 
   @media print {
@@ -135,7 +132,7 @@ export const SCSiteLayoutStyles = css`
 
     box-sizing: border-box;
     height: 48px;
-    padding: 0 8px;
+    padding: 0 calc(2% - 8px);
 
     white-space: nowrap;
 
@@ -152,6 +149,7 @@ export const SCSiteLayoutStyles = css`
 
   li {
     font-size: var(--sc-skolar-font-size-md);
+    font-weight: 500;
 
     margin-right: 8px;
 
@@ -175,7 +173,7 @@ export const SCSiteLayoutStyles = css`
     text-decoration: none;
 
     color: white;
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
 
     border-bottom: 4px solid rgba(0, 0, 0, 0);
 
@@ -188,7 +186,7 @@ export const SCSiteLayoutStyles = css`
     cursor: pointer;
 
     color: white;
-    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.2);
+    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1);
     border-bottom: 4px solid var(--sc-primary-color-light);
 
     transition: all 200ms ease;
@@ -207,7 +205,7 @@ export const SCSiteLayoutStyles = css`
   svg.external {
     width: 15px;
     height: 15px;
-    fill: rgba(255, 255, 255, 0.8);
+    fill: white;
     margin: 6px 0 0 6px;
     visibility: hidden;
   }
