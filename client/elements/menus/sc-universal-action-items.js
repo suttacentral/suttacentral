@@ -34,7 +34,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       #search_input {
         visibility: hidden;
         box-sizing: border-box;
-        padding: 0 116px 0 2vw;
+        padding: 0 116px 0 16px;
         outline: none;
         border: 2px solid rgba(0, 0, 0, 0);
         height: 48px;

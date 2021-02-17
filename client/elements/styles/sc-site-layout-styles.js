@@ -83,7 +83,7 @@ export const SCSiteLayoutStyles = css`
 
     height: 60px;
 
-    padding: 0 2%;
+    padding: 0 8px 0 16px;
 
     justify-content: space-between;
   }
@@ -103,7 +103,8 @@ export const SCSiteLayoutStyles = css`
   /* apply font size here to avoid resizing title when returning to Home */
   .generalTitle span {
     font-size: calc(20px * var(--sc-skolar-font-scale));
-    font-family: 'Skolar Sans PE Condensed', var(--sc-sans-font), 'Noto Sans CJK TC';
+    font-stretch: condensed;
+    font-weight: 600;
   }
 
   @media print {
@@ -132,7 +133,7 @@ export const SCSiteLayoutStyles = css`
 
     box-sizing: border-box;
     height: 48px;
-    padding: 0 calc(2% - 8px);
+    padding: 0 8px;
 
     white-space: nowrap;
 
