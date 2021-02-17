@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit-element';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin'
+import { LitLocalized } from '../addons/localization-mixin';
 import { API_ROOT } from '../../constants.js';
 
 class SCChineseLookup extends LitLocalized(LitElement) {
@@ -16,15 +16,15 @@ class SCChineseLookup extends LitLocalized(LitElement) {
       dictData: { type: Object },
       loadingDict: { type: Boolean },
       loadingFallbackDictData: { type: Boolean },
-      fallbackDictData: { type: Object }
-    }
+      fallbackDictData: { type: Object },
+    };
   }
 
   constructor() {
     super();
     this.loadedLanguage = '';
     this.toLang = store.getState().textOptions.chineseLookupTargetLanguage;
-    this.dictData = {}
+    this.dictData = {};
     this.loadingDict = true;
     this.loadFallbackLanguage = true;
     this.fallbackDictData = {};
@@ -113,7 +113,7 @@ class SCChineseLookup extends LitLocalized(LitElement) {
                 ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]} [modern chinese]
               </span>
               <hr class="separator">
-            </div>`
+            </div>`;
   }
 
   _computeUrl(fallback) {
@@ -123,7 +123,7 @@ class SCChineseLookup extends LitLocalized(LitElement) {
 
   _targetLanguageChanged() {
     if (!this.toLang) {
-      return
+      return;
     }
     if (typeof this.toLang !== 'undefined' && this.toLang !== this.loadedLanguage) {
       this.getNewDict();

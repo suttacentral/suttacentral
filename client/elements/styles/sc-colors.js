@@ -6,8 +6,8 @@ export const SCColors = css`
     --sc-primary-text-color: rgb(34, 33, 32);
     --sc-secondary-text-color: rgb(116, 115, 114);
     --sc-tertiary-text-color: rgb(255, 255, 255);
-    --sc-disabled-text-color: rgb(159, 158, 157);
-    --sc-disabled-text-color-opaque: rgba(159, 158, 157, 0.3);
+    --sc-icon-color: rgb(159, 158, 157);
+    --sc-icon-color-opaque: rgba(159, 158, 157, 0.3);
     /* Main colors */
     --sc-primary-color: #ce8400;
     --sc-primary-color-light: #ffcb61;

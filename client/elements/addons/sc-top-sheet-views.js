@@ -143,6 +143,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
           --mdc-theme-secondary: var(--sc-primary-accent-color);
           --mdc-typography-font-family: var(--sc-sans-font);
           --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+          --mdc-typography-body2-font-weight: 500;
         }
 
         section {
@@ -216,7 +217,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         }
 
         summary::-webkit-details-marker {
-          color: var(--sc-disabled-text-color);
+          color: var(--sc-icon-color);
         }
 
         mwc-formfield {
@@ -242,11 +243,11 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         }
 
         mwc-checkbox {
-          --mdc-checkbox-unchecked-color: var(--sc-disabled-text-color);
+          --mdc-checkbox-unchecked-color: var(--sc-icon-color);
         }
 
         mwc-radio {
-          --mdc-radio-unchecked-color: var(--sc-disabled-text-color);
+          --mdc-radio-unchecked-color: var(--sc-icon-color);
         }
 
         section::-webkit-scrollbar {
@@ -258,7 +259,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         }
 
         section::-webkit-scrollbar-thumb {
-          background: var(--sc-disabled-text-color);
+          background: var(--sc-icon-color);
         }
 
         mwc-button {

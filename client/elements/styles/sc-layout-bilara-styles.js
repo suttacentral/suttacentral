@@ -110,6 +110,10 @@ export const plainPlusStyles = html`
     .reference {
       grid-column: 1;
       grid-row: 1 / span 3;
+
+      border: none;
+
+      background-color: inherit;
     }
 
     .translation {
@@ -192,6 +196,10 @@ export const sideBySideStyles = html`
       position: relative;
     }
 
+    .reference {
+      justify-self: baseline;
+    }
+
     /* Set styles for tooltip marker. First we hide the actual content of the .comment tag. These settings ensure the beginning of .comment, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
@@ -243,6 +251,8 @@ export const sideBySidePlusStyles = html`
     .reference {
       grid-column: 1;
       grid-row: 1 / span 3;
+
+      justify-self: baseline;
     }
 
     .translation {
@@ -350,6 +360,8 @@ export const lineByLineStyles = html`
 
     .reference {
       display: none;
+
+      justify-self: baseline;
     }
 
     .translation {
@@ -402,6 +414,8 @@ export const lineByLinePlusStyles = html`
     .reference {
       grid-column: 1;
       grid-row: 1 / span 3;
+
+      justify-self: baseline;
     }
 
     .translation {
