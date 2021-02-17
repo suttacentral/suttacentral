@@ -5,7 +5,7 @@ class SCSuttaplexSectionTitle extends LitElement {
     return {
       inputTitle: String,
       inputType: String,
-    }
+    };
   }
 
   get titleClass() {
@@ -13,7 +13,7 @@ class SCSuttaplexSectionTitle extends LitElement {
   }
 
   render() {
-    return html`  
+    return html`
       <div class="node-head-container">
         <div class="${this.titleClass}" style="font-size: 1.333em">${this.inputTitle}</div>
       </div>
