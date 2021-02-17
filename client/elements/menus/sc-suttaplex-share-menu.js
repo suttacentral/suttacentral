@@ -19,6 +19,7 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
 
       .button-text {
         color: var(--sc-primary-text-color);
+        font-weight: 500;
       }
 
       .button-text:hover {
@@ -42,12 +43,12 @@ class SCSuttaplexShareMenu extends LitLocalized(LitElement) {
       }
 
       .table-element[disabled] {
-        color: var(--sc-disabled-text-color);
+        color: var(--sc-icon-color);
       }
 
       .icon {
         margin-right: var(--sc-size-md);
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-icon-color);
       }
 
       .disabled {

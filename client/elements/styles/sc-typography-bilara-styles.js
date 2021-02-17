@@ -1,34 +1,30 @@
 import { css } from 'lit-element';
 
 export const typographyBilaraStyles = css`
+  /* styles unique to bilara texts */
 
-/* styles unique to bilara texts */
+  /* root texts */
 
-/* root texts */
-
-.translation + .root {
+  .translation + .root {
     font-family: var(--sc-sans-font);
-}
+  }
 
-/* lookup */
+  /* lookup */
 
-.spanFocused
-{
+  .spanFocused {
     color: rgb(34, 33, 32);
     background-color: var(--sc-primary-color-light);
-}
+  }
 
-/* notes */
+  /* notes */
 
-/* Anchor tooltips. */
-article
-{
+  /* Anchor tooltips. */
+  article {
     position: relative;
-}
+  }
 
-.comment,
-.variant
-{
+  .comment,
+  .variant {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-s);
     line-height: 1.3333;
@@ -52,37 +48,32 @@ article
     font-variant-caps: normal;
 
     text-align: left;
-}
-.comment
-{
+  }
+  .comment {
     border-color: var(--sc-primary-accent-color);
-}
-.variant
-{
+  }
+  .variant {
     border-color: var(--sc-secondary-accent-color);
-}
+  }
 
-/* click on notes to raise obscured note when they overlap. this should be replaced by JS  */
+  /* click on notes to raise obscured note when they overlap. this should be replaced by JS  */
 
-.comment:active,
-.variant:active
-{
+  .comment:active,
+  .variant:active {
     z-index: 1000;
 
     box-shadow: var(--sc-shadow-elevation-8dp);
-}
+  }
 
-.comment:hover,
-.variant:hover
-{
+  .comment:hover,
+  .variant:hover {
     cursor: help;
-}
+  }
 
-/* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
+  /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
 
-.comment[data-tooltip]::after,
-.variant[data-tooltip]::after
-{
+  .comment[data-tooltip]::after,
+  .variant[data-tooltip]::after {
     position: absolute;
     z-index: 10;
     left: 50%;
@@ -103,38 +94,34 @@ article
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
     box-shadow: var(--sc-shadow-elevation-8dp);
-}
+  }
 
-.comment[data-tooltip]::after
-{
+  .comment[data-tooltip]::after {
     border-color: var(--sc-primary-accent-color);
-}
+  }
 
-.variant[data-tooltip]::after
-{
+  .variant[data-tooltip]::after {
     border-color: var(--sc-secondary-accent-color);
-}
+  }
 
-[data-tooltip]:hover
-{
+  [data-tooltip]:hover {
     cursor: help;
-}
+  }
 
-/* references */
+  /* references */
 
-.reference
-{
+  .reference {
     font-family: var(--sc-sans-font);
-    font-size: .8em;
+    font-size: 0.8em;
     font-weight: 400;
     font-style: normal;
-        text-align: left;
+    text-align: left;
 
     display: inline-block;
 
     box-sizing: border-box;
-    margin: 0 4px;
-    padding: .1em 4px;
+    gap: 0.5em;
+    padding: 0.1em 0.5em;
 
     white-space: nowrap;
     text-decoration: none;
@@ -146,23 +133,22 @@ article
     background-color: var(--sc-secondary-background-color);
 
     font-variant-caps: normal;
-}
+  }
 
-.reference:hover{
+  .reference:hover {
     background-color: var(--sc-tertiary-background-color);
-}
+  }
 
-.reference a{
+  .reference a {
     text-decoration: none;
-}
+  }
 
-header .reference,
-h2 .reference,
-h3 .reference,
-h4 .reference,
-h5 .reference,
-h6 .reference
-{
+  header .reference,
+  h2 .reference,
+  h3 .reference,
+  h4 .reference,
+  h5 .reference,
+  h6 .reference {
     display: none;
-}
-`
+  }
+`;

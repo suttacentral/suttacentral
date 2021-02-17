@@ -70,6 +70,8 @@ class SCBottomSheet extends LitElement {
       details {
         font-size: var(--sc-skolar-font-size-s);
 
+        font-stretch: condensed;
+
         z-index: 1;
 
         max-width: 720px;
@@ -141,6 +143,9 @@ class SCBottomSheet extends LitElement {
       }
 
       #btnClose {
+        font-size: var(--sc-skolar-font-size-s);
+
+        font-stretch: condensed;
         display: flex;
 
         padding: 2px 8px;
@@ -151,7 +156,7 @@ class SCBottomSheet extends LitElement {
       }
 
       .icon {
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-icon-color);
       }
 
       header > dfn {
@@ -221,13 +226,11 @@ class SCBottomSheet extends LitElement {
       }
 
       .grammar {
-        font-size: var(--sc-skolar-font-size-xxs);
+        font-size: var(--sc-skolar-font-size-xs);
 
-        letter-spacing: var(--sc-caps-letter-spacing);
+        font-style: italic;
 
         color: var(--sc-secondary-text-color);
-
-        font-variant-caps: all-small-caps;
       }
 
       .definition {
@@ -264,7 +267,7 @@ class SCBottomSheet extends LitElement {
         counter-increment: definition-item-counter;
 
         color: var(--sc-secondary-text-color);
-        border: 2px solid var(--sc-disabled-text-color);
+        border: 2px solid var(--sc-icon-color);
         border-radius: 50%;
 
         justify-content: center;
@@ -341,7 +344,7 @@ class SCBottomSheet extends LitElement {
 
         cursor: pointer;
 
-        color: var(--sc-disabled-text-color);
+        color: var(--sc-icon-color);
         border: none;
         outline: none;
         background: none;
@@ -372,7 +375,7 @@ class SCBottomSheet extends LitElement {
       }
 
       .lookup-next-previous {
-        fill: var(--sc-disabled-text-color);
+        fill: var(--sc-icon-color);
       }
     `;
   }

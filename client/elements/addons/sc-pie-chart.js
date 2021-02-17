@@ -3,7 +3,7 @@ import { LitElement, html } from 'lit-element';
 export class SCPieChart extends LitElement {
   static get properties() {
     return {
-      percent: { type: Number }
+      percent: { type: Number },
     };
   }
 
@@ -13,8 +13,12 @@ export class SCPieChart extends LitElement {
   }
 
   set percent(val) {
-    if (val < 0) { val = 0; }
-    if (val > 100) { val = 100; }
+    if (val < 0) {
+      val = 0;
+    }
+    if (val > 100) {
+      val = 100;
+    }
     this._percent = val;
   }
 

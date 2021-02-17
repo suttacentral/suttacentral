@@ -18,7 +18,6 @@ export const typographyCommonStyles = css`
 
   article {
     margin: 0 3vw;
-    content-visibility: auto;
   }
 
   /* text block elements */
@@ -29,7 +28,7 @@ export const typographyCommonStyles = css`
   p,
   figure,
   pre {
-    margin: .75em 0 0 0;
+    margin: 0.75em 0 0 0;
   }
 
   hr {
@@ -60,7 +59,7 @@ export const typographyCommonStyles = css`
   h1 {
     font-size: 2em;
     font-size: clamp(1.5em, 5vw, 2em);
-    font-weight: 300;
+    font-weight: 400;
   }
 
   h2 {
@@ -112,10 +111,11 @@ export const typographyCommonStyles = css`
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: all-small-caps;
+    font-weight: 500;
   }
 
   header h1 {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
 
     letter-spacing: var(--sc-caps-letter-spacing);
 
@@ -146,8 +146,8 @@ export const typographyCommonStyles = css`
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
 
-    margin: .5em 0;
-    padding: .25em 0 .25em clamp(0rem, 3vw, 1rem);
+    margin: 0.5em 0;
+    padding: 0.25em 0 0.25em clamp(0rem, 3vw, 1rem);
   }
 
   .contents li::marker {
@@ -183,7 +183,7 @@ export const typographyCommonStyles = css`
   }
 
   td {
-    padding: .6667em;
+    padding: 0.6667em;
 
     vertical-align: text-top;
 
@@ -206,7 +206,7 @@ export const typographyCommonStyles = css`
   ul ol,
   ul ul,
   ol ol {
-    margin: .5em 0 0;
+    margin: 0.5em 0 0;
   }
 
   li {
@@ -380,5 +380,4 @@ export const typographyCommonStyles = css`
   footer {
     display: none;
   }
-
-`
+`;
