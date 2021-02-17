@@ -153,7 +153,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           gap: 0.5em;
         }
         .icon {
-          fill: var(--sc-disabled-text-color);
+          fill: var(--sc-icon-color);
           height: 20px;
           width: 20px;
         }

@@ -119,7 +119,7 @@ export const dictStyles = css`
 
     vertical-align: middle;
 
-    color: var(--sc-disabled-text-color);
+    color: var(--sc-icon-color);
   }
 
   dd ol {
@@ -174,7 +174,7 @@ export const dictStyles = css`
 
     content: '◦';
 
-    color: var(--sc-disabled-text-color);
+    color: var(--sc-icon-color);
   }
 
   .google-maps {

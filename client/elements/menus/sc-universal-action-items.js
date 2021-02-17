@@ -18,23 +18,25 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background-color: rgb(75, 74, 73);
         --mdc-theme-surface: var(--sc-secondary-background-color);
       }
 
       #close_button {
-        opacity: 0;
         position: absolute;
-        right: 16px;
+        right: 0px;
+        padding: 0 4px 0 4px;
         z-index: -1;
-        color: var(--sc-disabled-text-color);
-        transition: opacity 200ms ease 200ms;
+        color: white;
+        background-color: rgb(75, 74, 73);
       }
 
       #search_input {
         visibility: hidden;
-        padding: 0 8px 0 3vw;
+        box-sizing: border-box;
+        padding: 0 116px 0 16px;
         outline: none;
-        border: none;
+        border: 2px solid rgba(0, 0, 0, 0);
         height: 48px;
         width: 100%;
         position: absolute;
@@ -42,14 +44,25 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         transform: scaleX(0);
         transition: transform 200ms ease;
         z-index: 100;
-        background-color: var(--sc-tertiary-background-color);
+        background-color: rgb(244, 243, 242);
         font-family: var(--sc-sans-font);
         font-size: var(--sc-skolar-font-size-md);
+        color: rgb(34, 33, 32);
       }
 
       #search_input.opened {
         visibility: visible;
         transform: scaleX(1);
+      }
+
+      #search_input.opened:focus {
+        border: 2px solid rgb(67, 160, 71);
+      }
+
+      #search_glass {
+        z-index: 101;
+        background-color: rgb(75, 74, 73);
+        padding: 0 4px;
       }
 
       #sc-more-menu:focus {
@@ -124,8 +137,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       this._startSearch();
     } else {
       searchInputElement.classList.add('opened');
-      this.shadowRoot.getElementById('close_button').style.opacity = '1';
       this.shadowRoot.getElementById('close_button').style.zIndex = '101';
+      this.shadowRoot.getElementById('search_glass').style.backgroundColor = 'rgb(67, 160, 71)';
       searchInputElement.focus();
       searchInputElement.value = '';
     }
@@ -140,8 +153,8 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       searchInputElement.classList.remove('opened');
       searchInputElement.removeAttribute('style', 'width');
 
-      this.shadowRoot.getElementById('close_button').style.opacity = '0';
       this.shadowRoot.getElementById('close_button').style.zIndex = '-1';
+      this.shadowRoot.getElementById('search_glass').style.backgroundColor = 'inherit';
     }
   }
 
@@ -159,6 +172,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
   render() {
     return html`
       <mwc-icon-button
+        id="search_glass"
         title="${this.localize('searchTooltip')}"
         label="search"
         @click="${this.openSearch}"
@@ -171,12 +185,15 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         type="search"
         style="height: 48px"
         spellcheck=true
-        iconTrailing=""
         placeholder="${this.localize('Search')}"
         @keypress="${this.keypressHandler}"
         aria-label="Search through site content"
       ></input>
-      <mwc-icon-button label="close" id="close_button" @click="${this._closeSearch}">
+      <mwc-icon-button 
+      label="close" 
+      id="close_button" 
+      title="Close search bar"
+      @click="${this._closeSearch}">
         ${icon.close}
       </mwc-icon-button>
       <mwc-icon-button label="menu" id="more-menu-button" @click="${this.openMoreMenu}" alt="menu">
