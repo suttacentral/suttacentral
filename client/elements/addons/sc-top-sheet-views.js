@@ -556,12 +556,20 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       : '';
   }
 
-  _onReferenceDisplayTypeChanged(e) {
-    const selectedReferenceDisplayType = e.target.value;
+  _onReferenceDisplayTypeChanged({ target: { checked, value: selectedReferenceDisplayType } }) {
     const selectedReference = this.references.find(
       reference => reference.edition_set === selectedReferenceDisplayType
     );
-    selectedReference.checked = e.target.checked;
+    selectedReference.checked = checked;
+    if (selectedReference.edition_set === 'none' && selectedReference.checked) {
+      this.references = this.references.map(item =>
+        item.edition_set === 'none' ? item : { ...item, checked: false }
+      );
+    } else if (this.references.find(reference => reference.edition_set === 'none').checked) {
+      this.references = this.references.map(item =>
+        item.edition_set !== 'none' ? item : { ...item, checked: false }
+      );
+    }
     this.actions.setDisplayedReferences(
       this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set)
     );
