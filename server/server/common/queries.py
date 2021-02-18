@@ -1011,3 +1011,11 @@ RETURN {
     'full_path': CONCAT_SEPARATOR('/', REVERSE(APPEND(path_docs, '/pitaka')))
 }
 '''
+SUTTA_PALI_REFERENCE = '''
+FOR pali IN pali_reference_edition
+    COLLECT edition_set = pali.edition_set, name = pali.name, short_name = pali.short_name
+    RETURN {
+        edition_set: edition_set,
+        name: NOT_NULL(name, short_name)
+    } 
+'''
