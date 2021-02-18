@@ -608,7 +608,12 @@ class SegmentedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        return {k: json_load(v) for k, v in result.items()}, 200
+        data = {k: json_load(v) for k, v in result.items()}
+        data.update({
+            'keys_order': list(data['html_text'].keys())
+        })
+
+        return data, 200
 
 
 class Currencies(Resource):
