@@ -652,7 +652,7 @@ LET result = MERGE(
         
         LET type = doc.muids[0]
         RETURN {
-            [CONCAT(type, '_text')]: doc.filepath
+            [CONCAT(type, '_text')]: doc.file_path
         }
 )
 
@@ -999,7 +999,7 @@ SUTTA_SINGLE_PALI_TEXT = '''
 FOR doc IN sc_bilara_texts
     FILTER doc.uid == @uid AND doc.lang == 'pli' AND 'root' IN doc.muids
     LIMIT 1
-    RETURN {@uid: doc.filepath}
+    RETURN {@uid: doc.file_path}
 '''
 
 SUTTA_PATH = '''
