@@ -315,9 +315,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   _stateChanged(state) {
     super._stateChanged(state);
     this.authorUid = state.currentRoute.params.authorUid;
-    this.suttaId = state.currentRoute.params.suttaId;
     this.langIsoCode = state.currentRoute.params.langIsoCode;
-    this._genNavDetail();
+    if (state.currentRoute.params.suttaId !== this.suttaId) {
+      this.suttaId = state.currentRoute.params.suttaId;
+      this._genNavDetail();
+    }
   }
 
   async _genNavDetail() {
@@ -444,22 +446,29 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!this.bilaraSuttaMarkup) {
       return;
     }
-    let mapSuttaMarkup = new Map(Object.entries(this.bilaraSuttaMarkup));
-    if (!mapSuttaMarkup) {
-      return;
-    }
+
     let suttaMarkup = '';
-    mapSuttaMarkup.forEach((value, key) => {
-      if (key !== '~') {
-        if (value.includes('{}')) {
-          suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
+
+    /* TODO: Remove this comparator fn / sorting, data in JSON objects don't have a particular order to them
+        So in reality they don't follow proper order here. A map was used to offset this, but it still uses object
+        conversion first, which breaks the behavior and cannot be avoided when using json.parse.
+        This quick fix reworks the proper order of keys, but the backend should really return arrays here.
+    */
+    const comparator = ([a], [b]) =>
+      a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    Object.entries(this.bilaraSuttaMarkup)
+      .sort(comparator)
+      .forEach(([key, value]) => {
+        if (key !== '~') {
+          if (value.includes('{}')) {
+            suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
+          } else {
+            suttaMarkup += value + `<span class="segment" id="${key}"></span>`;
+          }
         } else {
-          suttaMarkup += value + `<span class="segment" id="${key}"></span>`;
+          suttaMarkup += value;
         }
-      } else {
-        suttaMarkup += value;
-      }
-    });
+      });
     suttaMarkup = suttaMarkup.replace(/<article>/, '<article><header>');
     suttaMarkup = suttaMarkup.replace(/<\/h1><\/div>/, '</h1></div></header>');
     suttaMarkup = suttaMarkup.replace(/{}/g, '');
