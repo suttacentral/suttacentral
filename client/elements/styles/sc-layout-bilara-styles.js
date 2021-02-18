@@ -498,16 +498,8 @@ export const hideReferenceStyles = html`
 
 export const hidePTSReferenceStyles = html`
   <style>
-    .reference {
-      display: inherit;
-    }
-
-    a.pts {
-      display: none;
-    }
-
     a.sc {
-      display: inherit;
+      display: inline;
     }
   </style>
 `;
