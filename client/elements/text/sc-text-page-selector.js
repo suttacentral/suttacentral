@@ -234,7 +234,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     await this._verifyNav();
     this.actions.setNavigation(this.navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);
-    this.actions.changeToolbarTitle(suttaTitle);
   }
 
   // This method checks whether the last item of the last navigation belongs to the penultimate item,
