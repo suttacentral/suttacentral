@@ -8,7 +8,7 @@ from common.hyphenator import hyphenate
 from common.queries import ALL_TEXTS_BY_LANGUAGES
 from data_loader.util import json_load, json_save
 
-_HYPHENATION_MAX_WORD_LEN = 30
+_HYPHENATION_MAX_WORD_LEN = 20
 
 
 def _hyphenate_modern_text(text_file: Path) -> None:

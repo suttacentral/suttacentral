@@ -79,7 +79,7 @@ segments = {
 
 }
 
-cons = '(?:br|[kgcjtṭdḍbp]h|[kgcjtṭdḍp](?!h)|[mnyrlvshṅṇṃṃñḷ]|b(?![rh]))'
+cons = '(?:br|[kgcjtṭdḍbp]h|[kgcjtṭdḍp](?!h)|[mnyrlvshṅṇṃṁñḷ]|b(?![rh]))'
 vowel_chars = 'aioueāīū'
 vowel_pattern = '[' + vowel_chars.lower() + ']'
 vowel_antipattern = '[^' + vowel_chars.lower() + '-]'
@@ -102,7 +102,7 @@ def fix_hyphens(word: str) -> str:
 
 
 def hyphenate(word: str, max_length: int) -> str:
-    if len(word) <= max_length:
+    if len(word) <= max_length or '\xad' in word:
         return word
 
     word = segment_rex.sub(r'-\1-', word)
