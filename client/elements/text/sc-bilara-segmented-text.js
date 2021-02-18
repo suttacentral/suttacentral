@@ -521,14 +521,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
 
-    const suttasSection = this.shadowRoot.querySelector('section.range');
     this._deleteRootSuttaMarkup();
     this._addRootSuttaMarkup();
     Object.entries(this.bilaraRootSutta).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      this._addRootTextToSpan(suttasSection, escapeKey, value);
-      this._addRootTextToSpan(suttaArticle, escapeKey, value);
+      this._addRootTextToSpan(CSS.escape(key), value);
     });
   }
 
@@ -537,33 +533,25 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
 
-    const suttasSection = this.shadowRoot.querySelector('section.range');
     this._deleteRootSuttaMarkup();
     this._addRootSuttaMarkup();
     Object.entries(this.transliteratedRootSutta).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      this._addTransliteratedRootTextToSpan(suttasSection, escapeKey, value);
-      this._addTransliteratedRootTextToSpan(suttaArticle, escapeKey, value);
+      this._addTransliteratedRootTextToSpan(CSS.escape(key), value);
     });
   }
 
-  _addTransliteratedRootTextToSpan(suttaRootElement, key, value) {
-    if (suttaRootElement) {
-      const spanElement = suttaRootElement.querySelector(`#${key} .root .text`);
-      if (spanElement) {
-        spanElement.classList.add(`${this.paliScript.toLowerCase()}-script`);
-        spanElement.innerHTML = this._tweakText(value);
-      }
+  _addTransliteratedRootTextToSpan(key, value) {
+    const spanElement = this.shadowRoot.querySelector(`#${key} .root .text`);
+    if (spanElement) {
+      spanElement.classList.add(`${this.paliScript.toLowerCase()}-script`);
+      spanElement.innerHTML = this._tweakText(value);
     }
   }
 
-  _addRootTextToSpan(suttaRootElement, key, value) {
-    if (suttaRootElement) {
-      const spanElement = suttaRootElement.querySelector(`#${key} .root .text`);
-      if (spanElement) {
-        spanElement.innerHTML = this._tweakText(value);
-      }
+  _addRootTextToSpan(key, value) {
+    const spanElement = this.shadowRoot.querySelector(`#${key} .root .text`);
+    if (spanElement) {
+      spanElement.innerHTML = this._tweakText(value);
     }
   }
 
@@ -593,26 +581,16 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!this.bilaraRootSutta || this._articleElement().length === 0) {
       return;
     }
-    const suttasSection = this.shadowRoot.querySelector('section.range');
 
-    Object.entries(this.bilaraRootSutta).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      this._addRootSuttaMarkupToSpan(suttasSection, escapeKey);
-      this._addRootSuttaMarkupToSpan(suttaArticle, escapeKey);
+    Object.keys(this.bilaraRootSutta).forEach(key => {
+      this._addRootSuttaMarkupToSpan(CSS.escape(key));
     });
   }
 
-  _addRootSuttaMarkupToSpan(suttaRootElement, key) {
-    if (suttaRootElement) {
-      const segmentElement = suttaRootElement.querySelector(`#${key}`);
-      if (segmentElement) {
-        segmentElement.appendChild(this._addRootSuttaSpan());
-      } else {
-        let newSegmentElement = this._addSegmentSpan();
-        newSegmentElement.appendChild(this._addRootSuttaSpan());
-        suttaRootElement.appendChild(newSegmentElement);
-      }
+  _addRootSuttaMarkupToSpan(key) {
+    const segmentElement = this.shadowRoot.querySelector(`#${key}`);
+    if (segmentElement) {
+      segmentElement.appendChild(this._addRootSuttaSpan());
     }
   }
 
@@ -620,22 +598,16 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     if (!this.bilaraTranslatedSutta || this._articleElement().length === 0) {
       return;
     }
-    const suttasSection = this.shadowRoot.querySelector('section.range');
 
-    Object.entries(this.bilaraTranslatedSutta).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      this._addTranslationSuttaMarkupToSpan(suttasSection, escapeKey);
-      this._addTranslationSuttaMarkupToSpan(suttaArticle, escapeKey);
+    Object.keys(this.bilaraTranslatedSutta).forEach(key => {
+      this._addTranslationSuttaMarkupToSpan(CSS.escape(key));
     });
   }
 
-  _addTranslationSuttaMarkupToSpan(transSuttaRootElement, key) {
-    if (transSuttaRootElement) {
-      const segmentElement = transSuttaRootElement.querySelector(`#${key}`);
-      if (segmentElement) {
-        segmentElement.appendChild(this._addTranslationSuttaSpan());
-      }
+  _addTranslationSuttaMarkupToSpan(key) {
+    const segmentElement = this.shadowRoot.querySelector(`#${key}`);
+    if (segmentElement) {
+      segmentElement.appendChild(this._addTranslationSuttaSpan());
     }
   }
 
@@ -654,17 +626,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
 
-    Object.entries(this.bilaraRootSutta).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      if (suttaArticle) {
-        const segmentElement = suttaArticle.querySelector(`#${escapeKey}`);
-        if (segmentElement) {
-          let refSpan = this._addReferenceSpan();
-          refSpan.appendChild(this._addDefaultReferenceAnchor(key));
-          this._prependChild(segmentElement, refSpan);
-          //segmentElement.appendChild(refSpan);
-        }
+    Object.keys(this.bilaraRootSutta).forEach(key => {
+      const segmentElement = this.shadowRoot.querySelector(`#${CSS.escape(key)}`);
+      if (segmentElement) {
+        let refSpan = this._addReferenceSpan();
+        refSpan.appendChild(this._addDefaultReferenceAnchor(key));
+        this._prependChild(segmentElement, refSpan);
       }
     });
   }
@@ -695,13 +662,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     Object.entries(this.suttaComment).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      if (suttaArticle) {
-        const translationSpan = suttaArticle.querySelector(`#${escapeKey} .translation`);
-        if (translationSpan) {
-          translationSpan.appendChild(this._addCommentSpan(value));
-        }
+      const translationSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .translation`);
+      if (translationSpan) {
+        translationSpan.appendChild(this._addCommentSpan(value));
       }
     });
   }
@@ -721,13 +684,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     Object.entries(this.suttaVariant).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      if (suttaArticle) {
-        const rootSpan = suttaArticle.querySelector(`#${escapeKey} .root`);
-        if (rootSpan) {
-          rootSpan.appendChild(this._addVariantSpan(value));
-        }
+      const rootSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .root`);
+      if (rootSpan) {
+        rootSpan.appendChild(this._addVariantSpan(value));
       }
     });
   }
@@ -739,13 +698,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     span.dataset.tooltip = variantText;
     let text = document.createTextNode(variantText);
     span.appendChild(text);
-    return span;
-  }
-
-  _addSegmentSpan(key) {
-    let span = document.createElement('span');
-    span.className = 'segment';
-    span.id = key;
     return span;
   }
 
@@ -771,13 +723,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       return;
     }
     Object.entries(this.suttaReference).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      if (suttaArticle) {
-        const refElement = suttaArticle.querySelector(`#${escapeKey} .reference`);
-        if (refElement) {
-          this._addReferenceAnchor(value, refElement);
-        }
+      const refElement = this.shadowRoot.querySelector(`#${CSS.escape(key)} .reference`);
+      if (refElement) {
+        this._addReferenceAnchor(value, refElement);
       }
     });
   }
@@ -824,34 +772,15 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     this._deleteTranslatedSuttaMarkup();
     this._addTranslationSuttaMarkup();
-    const suttasSection = this.shadowRoot.querySelector('section.range');
     Object.entries(this.bilaraTranslatedSutta).forEach(([key, value]) => {
-      const escapeKey = CSS.escape(key);
-      const suttaArticle = this._getArticleForSegment(key);
-      this._addTranslationTextToSpan(suttasSection, escapeKey, value);
-      this._addTranslationTextToSpan(suttaArticle, escapeKey, value);
+      this._addTranslationTextToSpan(CSS.escape(key), value);
     });
   }
 
-  _getArticleForSegment(key) {
-    const suttaId = CSS.escape(key.split(':')[0]);
-    let article = this.shadowRoot.querySelector(`#${suttaId}`);
-    if (!article) {
-      const allArticles = this._articleElement();
-      if (allArticles.length === 1) {
-        article = allArticles[0];
-      }
-    }
-
-    return article;
-  }
-
-  _addTranslationTextToSpan(transSuttaRootElement, key, value) {
-    if (transSuttaRootElement) {
-      const spanElement = transSuttaRootElement.querySelector(`#${key} .translation .text`);
-      if (spanElement) {
-        spanElement.innerHTML = this._tweakText(value);
-      }
+  _addTranslationTextToSpan(key, value) {
+    const spanElement = this.shadowRoot.querySelector(`#${key} .translation .text`);
+    if (spanElement) {
+      spanElement.innerHTML = this._tweakText(value);
     }
   }
 
