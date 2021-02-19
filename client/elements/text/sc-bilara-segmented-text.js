@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element';
+import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
@@ -12,21 +12,21 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js
 import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles.js';
 import {
   commonStyles,
-  plainStyles,
+  hideAsterisk,
+  hidePTSReferenceStyles,
+  hideReferenceStyles,
+  lineByLinePlusStyles,
+  lineByLineStyles,
   plainPaliStyles,
   plainPlusStyles,
-  sideBySideStyles,
-  sideBySidePlusStyles,
-  lineByLineStyles,
-  lineByLinePlusStyles,
-  hideReferenceStyles,
-  hidePTSReferenceStyles,
+  plainStyles,
   showAllReferenceStyles,
-  hideAsterisk,
   showAsterisk,
+  sideBySidePlusStyles,
+  sideBySideStyles,
 } from '../styles/sc-layout-bilara-styles.js';
 
-import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
+import { paliScriptsStyles, scriptIdentifiers } from '../addons/sc-aksharamukha-converter';
 
 class SCBilaraSegmentedText extends SCLitTextPage {
   static get properties() {
@@ -139,6 +139,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <slot></slot>
       <sc-bottom-sheet></sc-bottom-sheet>
     `;
   }

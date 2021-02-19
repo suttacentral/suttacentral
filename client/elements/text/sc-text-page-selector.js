@@ -6,6 +6,7 @@ import './sc-stepper.js';
 import './sc-text-image.js';
 import '../addons/sc-error-icon.js';
 import '../addons/sc-bouncing-loader';
+import '../addons/sc-footer';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
@@ -108,7 +109,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .isLoading=${this.isLoading}
             .error=${this.lastError}
             .suttaId=${this.suttaId}
-          ></sc-bilara-segmented-text>
+          >
+            <sc-footer .authorUID="${this.authorUid}" .textUID="${this.textUid}"></sc-footer>
+          </sc-bilara-segmented-text>
         `
       : '';
   }
@@ -135,6 +138,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       bilaraSuttaMarkup: { type: String },
       localizedStringsPath: { type: String },
       authorUid: { type: String },
+      textUid: { type: String },
       authorShort: { type: String },
       next: { type: Object },
       previous: { type: Object },
@@ -357,6 +361,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.rootSutta = this.responseData.root_text;
       if (this.responseData.translation) {
         this.authorUid = this.responseData.translation.author_uid;
+        this.textUid = this.responseData.translation.uid;
       }
       if (this.translatedSutta) {
         this.next = this.translatedSutta.next;
