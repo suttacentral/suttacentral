@@ -1012,6 +1012,15 @@ RETURN {
 }
 '''
 
+SUTTA_PALI_REFERENCE = '''
+FOR pali IN pali_reference_edition
+    COLLECT edition_set = pali.edition_set, name = pali.name, short_name = pali.short_name
+    RETURN {
+        edition_set: edition_set,
+        name: NOT_NULL(name, short_name)
+    } 
+'''
+
 ALL_TEXTS_BY_LANGUAGES = '''
 FOR doc IN v_text
     SEARCH doc.lang IN @languages
