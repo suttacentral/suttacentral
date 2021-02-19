@@ -856,7 +856,8 @@ LET suttaplex = grouped_children['branch']
 
 LET texts = (
         FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
-            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: text.author_uid}
+            FILTER HAS(text, "author_uid") or LENGTH(text.muids) >= 3
+            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: HAS(text, 'author_uid') ? text.author_uid : text.muids[2]}
             RETURN {uid, translations:(
                 FOR text IN groups
                     COLLECT lang = text.lang INTO authors = text.author_uid
