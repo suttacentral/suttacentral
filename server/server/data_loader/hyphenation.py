@@ -15,8 +15,12 @@ def _hyphenate_modern_text(text_file: Path) -> None:
     has_changes = False
     file_content: Dict[str, str] = json_load(text_file)
     for key, string in file_content.items():
+        if not string:
+            continue
         hyphenated_words = (hyphenate(word, _HYPHENATION_MAX_WORD_LEN) for word in string.split())
         hyphenated_string = ' '.join(hyphenated_words)
+        if string[-1] == ' ':
+            hyphenated_string = hyphenated_string + ' '
         if string != hyphenated_string:
             has_changes = True
             file_content[key] = hyphenated_string
@@ -30,9 +34,8 @@ def _hyphenate_legacy_text(text_file: Path) -> None:
 
 
 def hyphenate_texts(db: Database) -> None:
-    # languages = ('pli', 'san')
-    languages = ('pli',)
-    texts = db.aql.execute(ALL_TEXTS_BY_LANGUAGES, bind_vars={'languages': languages})
+    languages = ('pli', 'san')
+    texts = db.aql.execute(ALL_TEXTS_BY_LANGUAGES, bind_vars={'languages': languages}, ttl=600)
     for text in tqdm(texts):
         text_file = Path(text['file_path'])
         if text_file.suffix == '.json':
