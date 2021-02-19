@@ -130,6 +130,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       rootSutta: { type: Object },
       bilaraRootSutta: { type: Object },
       bilaraTranslatedSutta: { type: Object },
+      bilaraSuttaKeysOrder: { type: Array },
       suttaReference: { type: Object },
       suttaComment: { type: Object },
       suttaVariant: { type: Object },
@@ -238,7 +239,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     await this._verifyNav();
     this.actions.setNavigation(this.navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);
-    this.actions.changeToolbarTitle(suttaTitle);
   }
 
   // This method checks whether the last item of the last navigation belongs to the penultimate item,
@@ -319,9 +319,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   _stateChanged(state) {
     super._stateChanged(state);
     this.authorUid = state.currentRoute.params.authorUid;
-    this.suttaId = state.currentRoute.params.suttaId;
     this.langIsoCode = state.currentRoute.params.langIsoCode;
-    this._genNavDetail();
+    if (state.currentRoute.params.suttaId !== this.suttaId) {
+      this.suttaId = state.currentRoute.params.suttaId;
+      this._genNavDetail();
+    }
   }
 
   async _genNavDetail() {
@@ -431,6 +433,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.bilaraRootSutta = bilaraData.root_text;
       this.bilaraTranslatedSutta = bilaraData.translation_text;
       this.bilaraSuttaMarkup = bilaraData.html_text;
+      this.bilaraSuttaKeysOrder = bilaraData.keys_order;
       this.suttaReference = bilaraData.reference_text;
       this.suttaComment = bilaraData.comment_text;
       this.suttaVariant = bilaraData.variant_text;
@@ -449,13 +452,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!this.bilaraSuttaMarkup) {
       return;
     }
-    let mapSuttaMarkup = new Map(Object.entries(this.bilaraSuttaMarkup));
-    if (!mapSuttaMarkup) {
-      return;
-    }
+
     let suttaMarkup = '';
-    mapSuttaMarkup.forEach((value, key) => {
+
+    this.bilaraSuttaKeysOrder.forEach(key => {
       if (key !== '~') {
+        const value = this.bilaraSuttaMarkup[key];
         if (value.includes('{}')) {
           suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
         } else {

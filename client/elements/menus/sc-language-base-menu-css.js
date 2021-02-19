@@ -6,7 +6,7 @@ export const languageBaseMenuCss = html`
       overflow-y: scroll;
       --mdc-menu-min-width: 500px;
       --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-      --mdc-list-side-padding: 16px
+      --mdc-list-side-padding: 16px;
     }
 
     .separator {
@@ -18,19 +18,24 @@ export const languageBaseMenuCss = html`
       margin-bottom: var(--sc-size-xxs);
     }
 
+    .mdc-list-item__text {
+      margin-left: 1.5em;
+    }
+
     .language-name::before {
+      width: 24px;
+      text-align: center;
+      margin-right: 16px;
       content: attr(id);
-      background-color: var(--sc-disabled-text-color);
+      background-color: var(--sc-icon-color);
       color: white;
       font-weight: 800;
-      width: var(--sc-size-md-larger);
-      margin-right: var(--sc-size-md);
-      line-height: 20px;
+      font-stretch: condensed;
+      padding-bottom: 1px;
+      line-height: 16px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      display: inline-block;
-      text-align: center;
-      font-size: 14px;
+      letter-spacing: 0.5px;
+      font-size: var(--sc-skolar-font-size-xs);
       --notchSize: 4px;
       clip-path: polygon(
         0% var(--notchSize),
@@ -44,16 +49,17 @@ export const languageBaseMenuCss = html`
       );
     }
 
-    #jpn::after,
-    #sld::after,
-    #kln::after {
+    #jpn::before,
+    #sld::before,
+    #kln::before,
+    #kan::before {
       letter-spacing: 0;
       font-size: 11px;
     }
 
     .arrow_left {
       padding: 8px 8px 4px 0;
-      fill: var(--sc-disabled-text-color);
+      fill: var(--sc-icon-color);
     }
 
     .menu-item-wrapper {

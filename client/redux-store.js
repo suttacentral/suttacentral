@@ -29,6 +29,7 @@ const initialState = {
     referenceDisplayType: 'none',
     noteDisplayType: 'asterisk',
     showHighlighting: false,
+    displayedReferences: [],
   },
   colorTheme: 'light',
   selectedNavigationMenuItemId: '',
@@ -152,6 +153,12 @@ const reducer = (state, action) => {
         ...state,
         textOptions: { ...state.textOptions, referenceDisplayType: action.referenceDisplayType },
       };
+    case 'SET_REFERENCE_DISPLAY_TYPE_ARRAY':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, displayedReferences: action.displayedReferences },
+      };
+
     case 'SET_NOTE_DISPLAY_TYPE':
       return {
         ...state,

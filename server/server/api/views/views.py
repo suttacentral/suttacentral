@@ -34,6 +34,7 @@ from common.queries import (
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
     SUTTA_PATH,
+    SUTTA_PALI_REFERENCE,
 )
 
 from common.utils import (
@@ -44,6 +45,8 @@ from common.utils import (
 )
 
 from aksharamukha import transliterate
+
+from data_loader.util import json_load
 
 default_cache_timeout = 600
 long_cache_timeout = 7200
@@ -570,9 +573,9 @@ class Sutta(Resource):
             if uid in result:
                 uid_index = result.index(uid)
                 if uid_index != 0:
-                    sutta_prev_next['prev_uid'] = result[uid_index-1]
-                if uid_index != len(result)-1:
-                    sutta_prev_next['next_uid'] = result[uid_index+1]
+                    sutta_prev_next['prev_uid'] = result[uid_index - 1]
+                if uid_index != len(result) - 1:
+                    sutta_prev_next['next_uid'] = result[uid_index + 1]
                 if sutta_prev_next['prev_uid'] and sutta_prev_next['next_uid']:
                     break
         if doc['previous']:
@@ -605,13 +608,12 @@ class SegmentedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        return {k: self.load_json(v) for k,v in result.items()}, 200
+        data = {k: json_load(v) for k, v in result.items()}
+        data.update({
+            'keys_order': list(data['html_text'].keys())
+        })
 
-    @staticmethod
-    def load_json(path):
-        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
-        with (data_dir / path).open() as f:
-            return json.load(f)
+        return data, 200
 
 
 class Currencies(Resource):
@@ -753,6 +755,7 @@ class Donations(Resource):
                 return {'err_message': 'Select either one time or monthly'}, 400
             return {'id': session.id}, 200
         return {'err_message': 'Provide mandatory property such as currency, amount and frequency'}, 400
+
 
 class Images(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
@@ -1001,17 +1004,11 @@ class TransliteratedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        sutta_texts = {k: self.load_json(v) for k, v in result.items()}
+        sutta_texts = {k: json_load(v) for k, v in result.items()}
         for key, value in sutta_texts[uid].items():
             sutta_texts[uid][key] = transliterate.process('ISO', target, value)
 
         return sutta_texts[uid]
-
-    @staticmethod
-    def load_json(path):
-        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
-        with (data_dir / path).open() as f:
-            return json.load(f)
 
 
 class SuttaFullPath(Resource):
@@ -1020,3 +1017,14 @@ class SuttaFullPath(Resource):
         db = get_db()
         full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
         return full_path
+
+
+class PaliReferenceEdition(Resource):
+
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        pali_references = list(db.aql.execute(SUTTA_PALI_REFERENCE))
+        if not pali_references:
+            return {'error': 'Not Found'}, 404
+        return pali_references

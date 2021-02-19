@@ -2,51 +2,34 @@ import { css } from 'lit-element';
 
 export const SCFontStyles = css`
   @font-face {
-    font-family: 'Skolar Sans PE';
-    src: url('/files/fonts/RaloksSansPE-Rg_2.004.woff2') format('woff2');
-    font-weight: normal;
+    font-family: 'Skolar PE Variable';
+    font-weight: 100 1000;
     font-style: normal;
-    font-display: swap;
+    font-stretch: normal;
+    src: url('/files/fonts/RaloksPEVF-Ups.0.2.woff2') format('woff2-variations');
   }
 
   @font-face {
-    font-family: 'Skolar Sans PE';
-    src: url('/files/fonts/RaloksSansPE-Bd_2.004.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Skolar Sans PE';
-    src: url('/files/fonts/RaloksSansPE-It_2.004.woff2') format('woff2');
-    font-weight: normal;
+    font-family: 'Skolar PE Variable';
+    font-weight: 100 1000;
     font-style: italic;
-    font-display: swap;
+    font-stretch: normal;
+    src: url('/files/fonts/RaloksPEVF-Its.0.2.woff2') format('woff2-variations');
   }
 
   @font-face {
-    font-family: 'Skolar PE';
-    src: url('/files/fonts/RaloksPE-Regular_3.007.woff2') format('woff2');
-    font-weight: normal;
+    font-family: 'Skolar Sans PE Variable';
+    font-weight: 100 1000;
     font-style: normal;
-    font-display: swap;
+    font-stretch: 80% 115%;
+    src: url('/files/fonts/RaloksSansPEVF-Ups.0.2.woff2') format('woff2-variations');
   }
-
   @font-face {
-    font-family: 'Skolar PE';
-    src: url('/files/fonts/RaloksPE-Bold_3.007.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Skolar PE';
-    src: url('/files/fonts/RaloksPE-Italic_3.007.woff2') format('woff2');
-    font-weight: normal;
+    font-family: 'Skolar Sans PE Variable';
+    font-weight: 100 1000;
     font-style: italic;
-    font-display: swap;
+    font-stretch: 80% 115%;
+    src: url('/files/fonts/RaloksSansPEVF-Its.0.2.woff2') format('woff2-variations');
   }
 
   @font-face {
@@ -671,8 +654,8 @@ export const SCFontStyles = css`
   }
 
   @font-face {
-    font-family: 'Lao Pali';
-    src: url('/files/fonts/Lanexang_Mon4.otf');
+    font-family: 'Serif Lao Reg';
+    src: url('/files/fonts/SerifLao-Reg.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -965,9 +948,9 @@ export const SCFontStyles = css`
 
     --sc-dense-font-scale: 1.13;
 
-    --sc-sans-font: 'Skolar Sans PE', 'Noto Sans', sans-serif;
+    --sc-sans-font: 'Skolar Sans PE Variable', 'Noto Sans', sans-serif;
 
-    --sc-serif-font: 'Skolar PE', 'Noto Serif', 'Skolar Sans PE', 'Noto Sans', serif;
+    --sc-serif-font: 'Skolar PE Variable', 'Noto Serif', 'Skolar Sans PE', 'Noto Sans', serif;
 
     --sc-monospace-font: 'Source Code Pro', monospace;
 

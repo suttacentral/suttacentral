@@ -29,4 +29,5 @@ from .views import (
     Transliterate,
     TransliteratedSutta,
     SuttaFullPath,
+    PaliReferenceEdition,
 )
