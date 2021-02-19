@@ -1,4 +1,5 @@
 import { API_ROOT } from '../../constants';
+import { store } from '../../redux-store';
 
 export const tipitakaGuide = new Map([
   ['Sutta', '/discourses'],
@@ -260,6 +261,13 @@ async function fetchMenuDataByUid(uid) {
   }
 }
 
+function setNavigation(navArray) {
+  store.dispatch({
+    type: 'SET_NAVIGATION',
+    navigationArray: navArray,
+  });
+}
+
 async function genNavDetail(uid, navType, currentURL, navArray) {
   const menuData = await fetchMenuDataByUid(uid);
   if (!menuData) {
@@ -282,17 +290,31 @@ async function genNavDetail(uid, navType, currentURL, navArray) {
   };
 }
 
-export async function parseURL(URL, navArray) {
-  if (!URL) {
+async function fetchSuttaFullPath(uid) {
+  try {
+    return await (await fetch(`${API_ROOT}/suttafullpath/${uid}`)).json();
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function RefreshNav(uid) {
+  if (!uid) {
     return;
   }
-  const URLs = URL.split('/');
+  const suttaFullPath = await fetchSuttaFullPath(uid);
+  if (!suttaFullPath || !suttaFullPath.full_path) {
+    return;
+  }
+  const URLs = suttaFullPath.full_path.split('/');
   let currentURL = '/pitaka';
+  const currentNav = store.getState().navigationArray;
   URLs.forEach((navItem, index) => {
     if (index > 1) {
       const navType = getNavTypeByNavIndex(index);
       currentURL = `${currentURL}/${navItem}`;
-      genNavDetail(navItem, navType, currentURL, navArray);
+      genNavDetail(navItem, navType, currentURL, currentNav);
     }
   });
+  setNavigation(currentNav);
 }

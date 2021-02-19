@@ -9,6 +9,7 @@ import { suttaplexListCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title.js';
 import '../addons/sc-error-icon.js';
 import('./card/sc-suttaplex.js');
+import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
@@ -79,6 +80,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       if (this.categoryId && state.siteLanguage) {
         this._fetchCategory();
       }
+      RefreshNav(this.categoryId);
     }
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
@@ -116,6 +118,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
+      if (this.suttaplexData[0].type === 'leaf') {
+        this._updateNav();
+      }
+
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
@@ -128,6 +134,21 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         })
       );
     }
+  }
+
+  _updateNav() {
+    const navIndexesOfType = navIndex.get('sutta');
+    const navArray = store.getState().navigationArray;
+    navArray[navIndexesOfType.index] = {
+      title:
+        this.suttaplexData[0].acronym ||
+        this.suttaplexData[0].translated_title ||
+        this.suttaplexData[0].original_title,
+      url: store.getState().currentRoute.path,
+      type: navIndexesOfType.type,
+    };
+    this.actions.setNavigation(navArray);
+    this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
 
   suttaplexTemplate(item) {

@@ -11,7 +11,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
 import { API_ROOT } from '../../constants.js';
 
-import { navIndex, parseURL } from '../navigation/sc-navigation-common';
+import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
@@ -302,31 +302,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
   }
 
-  async _fetchSuttaFullPath() {
-    const url = `${API_ROOT}/suttafullpath/${this.suttaId}`;
-    try {
-      return await (await fetch(url)).json();
-    } catch (e) {
-      return null;
-    }
-  }
-
   _stateChanged(state) {
     super._stateChanged(state);
     this.authorUid = state.currentRoute.params.authorUid;
     this.langIsoCode = state.currentRoute.params.langIsoCode;
     if (state.currentRoute.params.suttaId !== this.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
-      this._genNavDetail();
-    }
-  }
-
-  async _genNavDetail() {
-    const suttaFullPath = await this._fetchSuttaFullPath();
-    const navArray = store.getState().navigationArray;
-    if (suttaFullPath && (!navArray[1] || navArray[1].type !== 'pitaka')) {
-      parseURL(suttaFullPath.full_path, navArray);
-      this.actions.setNavigation(navArray);
+      RefreshNav(this.suttaId);
     }
   }
 
