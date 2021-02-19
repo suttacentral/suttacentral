@@ -102,7 +102,7 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
             'uid': uid,
             'lang': lang,
             'muids': muids.split('-'),
-            'filepath': str(file.relative_to(sc_bilara_data_dir))
+            'file_path': str(file.resolve())
         })
 
     print(f'{len(docs)} texts added or updated')
