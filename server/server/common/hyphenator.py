@@ -46,5 +46,5 @@ def hyphenate(word: str, max_length: int) -> str:
 
     for segment in alpha_rex.findall(word):
         if len(segment) > max_length:
-            print('Segment too long: {}'.format(segment))
+            logging.warning(f'Segment too long: {segment}')
     return word.replace('-', '\xad')
