@@ -46,6 +46,8 @@ from common.utils import (
 
 from aksharamukha import transliterate
 
+from data_loader.util import json_load
+
 default_cache_timeout = 600
 long_cache_timeout = 7200
 
@@ -606,13 +608,12 @@ class SegmentedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        return {k: self.load_json(v) for k, v in result.items()}, 200
+        data = {k: json_load(v) for k, v in result.items()}
+        data.update({
+            'keys_order': list(data['html_text'].keys())
+        })
 
-    @staticmethod
-    def load_json(path):
-        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
-        with (data_dir / path).open() as f:
-            return json.load(f)
+        return data, 200
 
 
 class Currencies(Resource):
@@ -1003,17 +1004,11 @@ class TransliteratedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        sutta_texts = {k: self.load_json(v) for k, v in result.items()}
+        sutta_texts = {k: json_load(v) for k, v in result.items()}
         for key, value in sutta_texts[uid].items():
             sutta_texts[uid][key] = transliterate.process('ISO', target, value)
 
         return sutta_texts[uid]
-
-    @staticmethod
-    def load_json(path):
-        data_dir = current_app.config.get('DATA_REP_DIR') / 'sc_bilara_data'
-        with (data_dir / path).open() as f:
-            return json.load(f)
 
 
 class SuttaFullPath(Resource):

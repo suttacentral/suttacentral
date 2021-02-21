@@ -652,7 +652,7 @@ LET result = MERGE(
         
         LET type = doc.muids[0]
         RETURN {
-            [CONCAT(type, '_text')]: doc.filepath
+            [CONCAT(type, '_text')]: doc.file_path
         }
 )
 
@@ -856,7 +856,8 @@ LET suttaplex = grouped_children['branch']
 
 LET texts = (
         FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
-            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: text.author_uid}
+            FILTER HAS(text, "author_uid") or LENGTH(text.muids) >= 3
+            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: HAS(text, 'author_uid') ? text.author_uid : text.muids[2]}
             RETURN {uid, translations:(
                 FOR text IN groups
                     COLLECT lang = text.lang INTO authors = text.author_uid
@@ -999,7 +1000,7 @@ SUTTA_SINGLE_PALI_TEXT = '''
 FOR doc IN sc_bilara_texts
     FILTER doc.uid == @uid AND doc.lang == 'pli' AND 'root' IN doc.muids
     LIMIT 1
-    RETURN {@uid: doc.filepath}
+    RETURN {@uid: doc.file_path}
 '''
 
 SUTTA_PATH = '''
