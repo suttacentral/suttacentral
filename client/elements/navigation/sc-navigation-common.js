@@ -261,10 +261,17 @@ async function fetchMenuDataByUid(uid) {
   }
 }
 
-function setNavigation(navArray) {
+export function setNavigation(navArray) {
   store.dispatch({
     type: 'SET_NAVIGATION',
     navigationArray: navArray,
+  });
+}
+
+export function setCurrentNavPosition(position) {
+  store.dispatch({
+    type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
+    currentNavPosition: position,
   });
 }
 
