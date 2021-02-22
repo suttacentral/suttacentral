@@ -368,97 +368,97 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
-    # print_stage("Loading images")
-    # images_files.load_images_links(db)
-    #
-    # print_stage("Loading ChangeTracker")
-    # change_tracker = ChangeTracker(data_dir, db)
-    #
-    # print_stage("Loading uid_expansion.json")
-    # load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
-    #
-    # print_stage("Loading author_edition.json")
-    # load_author_edition(change_tracker, additional_info_dir, db)
-    #
-    # print_stage('Loading guides.json')
-    # load_guides_file(db, structure_dir / 'guides.json')
-    #
-    # print_stage('Loading pali_reference_edition.json')
-    # load_pali_reference_edition_file(db, misc_dir / 'pali_reference_edition.json')
-    #
-    # print_stage("Loading languages")
-    # languages.load_languages(db, languages_file, localized_elements_dir)
-    #
-    # print_stage("Building and loading navigation from structure_dir")
-    # navigation.add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
-    #
-    # print_stage("Loading child ranges from structure_dir")
-    # load_child_range(db, structure_dir)
-    #
-    # print_stage('Load names from sc_bilara_data')
-    # sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)
-    #
-    # print_stage('Load blurbs from sc_bilara_data')
-    # sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
-    #
-    # print_stage('Load publications from sc_bilara_data')
-    # sc_bilara_data.load_publications(db, sc_bilara_data_dir)
-    #
-    # print_stage('Load texts from sc_bilara_data')
-    # sc_bilara_data.load_texts(db, sc_bilara_data_dir)
-    #
-    # print_stage("Generating and loading relationships")
-    # generate_relationship_edges(
-    #     change_tracker, relationship_dir, additional_info_dir, db
-    # )
-    #
-    # print_stage("Loading html_text")
-    # load_html_texts(change_tracker, data_dir, db, html_dir)
-    #
-    # print_stage('Make yellow brick road')
-    # make_yellow_brick_road(db)
-    #
-    # print_stage("Loading difficulty from additional_info")
-    # process_difficulty(db, additional_info_dir)
-    #
-    # print_stage('Loading simple dictionaries')
-    # dictionaries.load_simple_dictionaries(db, dictionaries_dir)
-    #
-    # print_stage('Loading complex dictionaries')
-    # dictionaries.load_complex_dictionaries(db, dictionaries_dir)
-    #
-    # print_stage('Loading glossary dictionaries')
-    # dictionaries.load_glossaries(db, dictionaries_dir)
-    #
-    # print_stage("Loading currencies from additional_info")
-    # currencies.load_currencies(db, additional_info_dir)
-    #
-    # print_stage("Loading paragraphs from additional_info")
-    # paragraphs.load_paragraphs(db, additional_info_dir)
-    #
-    # print_stage("Loading biblio from additional_info")
-    # biblio.load_biblios(db, additional_info_dir)
-    #
-    # print_stage("Loading epigraphs from additional_info")
-    # homepage.load_epigraphs(db, additional_info_dir)
-    #
-    # print_stage("Loading why_we_read from additional_info")
-    # homepage.load_why_we_read(db, additional_info_dir)
-    #
-    # print_stage("Generating sitemap")
-    # sitemap = generate_sitemap(db)
-    # for folder in pathlib.Path('/opt/sc/frontend/builds').glob('*'):
-    #     if folder.is_dir():
-    #         (folder / 'sitemap.xml').open('w').write(sitemap)
-    #
-    # print_stage("Generating and loading ordering information")
-    # order.add_next_prev_using_menu_data(db)
-    #
-    # print_stage("Calculating and loading size data")
-    # sizes.load_sizes(sizes_dir, db)
-    #
-    # print_stage("Updating mtimes")
-    # change_tracker.update_mtimes()
+    print_stage("Loading images")
+    images_files.load_images_links(db)
+
+    print_stage("Loading ChangeTracker")
+    change_tracker = ChangeTracker(data_dir, db)
+
+    print_stage("Loading uid_expansion.json")
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
+
+    print_stage("Loading author_edition.json")
+    load_author_edition(change_tracker, additional_info_dir, db)
+
+    print_stage('Loading guides.json')
+    load_guides_file(db, structure_dir / 'guides.json')
+
+    print_stage('Loading pali_reference_edition.json')
+    load_pali_reference_edition_file(db, misc_dir / 'pali_reference_edition.json')
+
+    print_stage("Loading languages")
+    languages.load_languages(db, languages_file, localized_elements_dir)
+
+    print_stage("Building and loading navigation from structure_dir")
+    navigation.add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
+
+    print_stage("Loading child ranges from structure_dir")
+    load_child_range(db, structure_dir)
+
+    print_stage('Load names from sc_bilara_data')
+    sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)
+
+    print_stage('Load blurbs from sc_bilara_data')
+    sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
+
+    print_stage('Load publications from sc_bilara_data')
+    sc_bilara_data.load_publications(db, sc_bilara_data_dir)
+
+    print_stage('Load texts from sc_bilara_data')
+    sc_bilara_data.load_texts(db, sc_bilara_data_dir)
+
+    print_stage("Generating and loading relationships")
+    generate_relationship_edges(
+        change_tracker, relationship_dir, additional_info_dir, db
+    )
+
+    print_stage("Loading html_text")
+    load_html_texts(change_tracker, data_dir, db, html_dir)
+
+    print_stage('Make yellow brick road')
+    make_yellow_brick_road(db)
+
+    print_stage("Loading difficulty from additional_info")
+    process_difficulty(db, additional_info_dir)
+
+    print_stage('Loading simple dictionaries')
+    dictionaries.load_simple_dictionaries(db, dictionaries_dir)
+
+    print_stage('Loading complex dictionaries')
+    dictionaries.load_complex_dictionaries(db, dictionaries_dir)
+
+    print_stage('Loading glossary dictionaries')
+    dictionaries.load_glossaries(db, dictionaries_dir)
+
+    print_stage("Loading currencies from additional_info")
+    currencies.load_currencies(db, additional_info_dir)
+
+    print_stage("Loading paragraphs from additional_info")
+    paragraphs.load_paragraphs(db, additional_info_dir)
+
+    print_stage("Loading biblio from additional_info")
+    biblio.load_biblios(db, additional_info_dir)
+
+    print_stage("Loading epigraphs from additional_info")
+    homepage.load_epigraphs(db, additional_info_dir)
+
+    print_stage("Loading why_we_read from additional_info")
+    homepage.load_why_we_read(db, additional_info_dir)
+
+    print_stage("Generating sitemap")
+    sitemap = generate_sitemap(db)
+    for folder in pathlib.Path('/opt/sc/frontend/builds').glob('*'):
+        if folder.is_dir():
+            (folder / 'sitemap.xml').open('w').write(sitemap)
+
+    print_stage("Generating and loading ordering information")
+    order.add_next_prev_using_menu_data(db)
+
+    print_stage("Calculating and loading size data")
+    sizes.load_sizes(sizes_dir, db)
+
+    print_stage("Updating mtimes")
+    change_tracker.update_mtimes()
 
     print_stage('Hyphenate Pali and Sanskrit texts')
     hyphenation.hyphenate_texts(db)
