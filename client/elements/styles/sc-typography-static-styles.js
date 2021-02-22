@@ -82,7 +82,11 @@ export const typographyStaticStyles = css`
     border-radius: 2px;
   }
   .entry-list a:hover {
-    background-color: var(--sc-textual-info-background-color);
+    background-color: var(--sc-primary-color-light-transparent);
+    transition: background-color 200ms ease;
+  }
+  .entry-list a:active {
+    background-color: var(--sc-primary-color-light);
   }
   .subject {
     font-style: italic;

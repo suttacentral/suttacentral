@@ -162,12 +162,6 @@ export const typographyCommonStyles = css`
     color: inherit;
   }
 
-  a:hover {
-    color: var(--sc-primary-color);
-    text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color);
-  }
-
   /* tables */
 
   table {
@@ -233,15 +227,26 @@ export const typographyCommonStyles = css`
   /* links */
 
   a {
-    text-decoration: underline;
-
     color: inherit;
 
-    text-decoration-color: var(--sc-primary-color);
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.05em;
+
+    transition: all 200ms ease;
   }
 
   a:hover {
-    color: var(--sc-primary-color);
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.05em;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  a:active {
+    background-color: var(--sc-primary-color-light);
   }
 
   a:visited {
@@ -371,10 +376,6 @@ export const typographyCommonStyles = css`
     color: var(--sc-secondary-text-color);
 
     font-variant-caps: normal;
-  }
-
-  .ref:hover {
-    background-color: var(--sc-tertiary-background-color);
   }
 
   footer {

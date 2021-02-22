@@ -225,7 +225,7 @@ export const navigationNormalModeStyles = html`
     .header-link:hover,
     .essay-link:hover,
     .shortcut-link:hover {
-      transition: all 200ms ease-out;
+      transition: all 200ms ease;
 
       background-color: var(--sc-primary-color-light-transparent);
     }
@@ -233,7 +233,7 @@ export const navigationNormalModeStyles = html`
     .header-link:active,
     .essay-link:active,
     .shortcut-link:active {
-      transition: all 200ms ease-out;
+      transition: all 200ms ease;
 
       background-color: var(--sc-primary-color-light);
     }
@@ -241,10 +241,12 @@ export const navigationNormalModeStyles = html`
     .header-link:hover .title,
     .essay-link:hover,
     .shortcut-link:hover {
-      transition: all 200ms ease-out;
-      text-decoration: underline;
+      transition: all 200ms ease;
 
-      text-decoration-color: var(--sc-primary-color);
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color-light);
+      text-decoration-thickness: 0.1em;
+      text-underline-offset: 0.05em;
     }
 
     .essay::before {
