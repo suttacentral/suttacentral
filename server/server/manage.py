@@ -82,5 +82,12 @@ def calculate_download_sizes():
     run()
 
 
+@manager.command
+def hyphenate():
+    from data_loader.arangoload import hyphenate_pali_and_san
+
+    hyphenate_pali_and_san()
+
+
 if __name__ == '__main__':
     manager.run()

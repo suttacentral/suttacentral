@@ -460,10 +460,13 @@ def run(no_pull=False):
     print_stage("Updating mtimes")
     change_tracker.update_mtimes()
 
-    print_stage('Hyphenate Pali and Sanskrit texts')
-    hyphenation.hyphenate_texts(db)
-
     print_stage('All done')
+
+
+def hyphenate_pali_and_san():
+    db = arangodb.get_db()
+    print(f'\nHyphenate Pali and Sanskrit texts:')
+    hyphenation.hyphenate_texts(db)
 
 
 def bilara_run():
