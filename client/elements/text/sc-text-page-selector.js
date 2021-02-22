@@ -11,7 +11,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
 import { API_ROOT } from '../../constants.js';
 
-import { navIndex, parseURL } from '../navigation/sc-navigation-common';
+import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
@@ -127,6 +127,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       rootSutta: { type: Object },
       bilaraRootSutta: { type: Object },
       bilaraTranslatedSutta: { type: Object },
+      bilaraSuttaKeysOrder: { type: Array },
       suttaReference: { type: Object },
       suttaComment: { type: Object },
       suttaVariant: { type: Object },
@@ -302,31 +303,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
   }
 
-  async _fetchSuttaFullPath() {
-    const url = `${API_ROOT}/suttafullpath/${this.suttaId}`;
-    try {
-      return await (await fetch(url)).json();
-    } catch (e) {
-      return null;
-    }
-  }
-
   _stateChanged(state) {
     super._stateChanged(state);
     this.authorUid = state.currentRoute.params.authorUid;
     this.langIsoCode = state.currentRoute.params.langIsoCode;
     if (state.currentRoute.params.suttaId !== this.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
-      this._genNavDetail();
-    }
-  }
-
-  async _genNavDetail() {
-    const suttaFullPath = await this._fetchSuttaFullPath();
-    const navArray = store.getState().navigationArray;
-    if (suttaFullPath && (!navArray[1] || navArray[1].type !== 'pitaka')) {
-      parseURL(suttaFullPath.full_path, navArray);
-      this.actions.setNavigation(navArray);
+      RefreshNav(this.suttaId);
     }
   }
 
@@ -427,6 +410,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.bilaraRootSutta = bilaraData.root_text;
       this.bilaraTranslatedSutta = bilaraData.translation_text;
       this.bilaraSuttaMarkup = bilaraData.html_text;
+      this.bilaraSuttaKeysOrder = bilaraData.keys_order;
       this.suttaReference = bilaraData.reference_text;
       this.suttaComment = bilaraData.comment_text;
       this.suttaVariant = bilaraData.variant_text;
@@ -448,26 +432,18 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
     let suttaMarkup = '';
 
-    /* TODO: Remove this comparator fn / sorting, data in JSON objects don't have a particular order to them
-        So in reality they don't follow proper order here. A map was used to offset this, but it still uses object
-        conversion first, which breaks the behavior and cannot be avoided when using json.parse.
-        This quick fix reworks the proper order of keys, but the backend should really return arrays here.
-    */
-    const comparator = ([a], [b]) =>
-      a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-    Object.entries(this.bilaraSuttaMarkup)
-      .sort(comparator)
-      .forEach(([key, value]) => {
-        if (key !== '~') {
-          if (value.includes('{}')) {
-            suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
-          } else {
-            suttaMarkup += value + `<span class="segment" id="${key}"></span>`;
-          }
+    this.bilaraSuttaKeysOrder.forEach(key => {
+      if (key !== '~') {
+        const value = this.bilaraSuttaMarkup[key];
+        if (value.includes('{}')) {
+          suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
         } else {
-          suttaMarkup += value;
+          suttaMarkup += value + `<span class="segment" id="${key}"></span>`;
         }
-      });
+      } else {
+        suttaMarkup += value;
+      }
+    });
     suttaMarkup = suttaMarkup.replace(/<article>/, '<article><header>');
     suttaMarkup = suttaMarkup.replace(/<\/h1><\/div>/, '</h1></div></header>');
     suttaMarkup = suttaMarkup.replace(/{}/g, '');
