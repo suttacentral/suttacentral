@@ -10,8 +10,10 @@ import regex
 
 from data_loader.util import json_load
 
+# todo: create classes for each hyphenator with their segments files
+# todo: one for Pali lang and the second one for Sanskrit
 FOLDER = Path(__file__).parent
-segments = set(json_load(FOLDER / 'hyphenator_segments.json')['segments'])
+segments = set(json_load(FOLDER / 'hyphenator_san.json')['segments'])
 
 cons = '(?:br|[kgcjtṭdḍbp]h|[kgcjtṭdḍp](?!h)|[mnyrlvshṅṇṃṁñḷ]|b(?![rh]))'
 vowel_chars = 'aioueāīū'
