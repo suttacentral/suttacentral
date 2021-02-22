@@ -34,9 +34,8 @@ def _hyphenate_modern_text(text_file: Path) -> None:
 def _hyphenate_legacy_text(text_file: Path) -> None:
     has_changes = False
     with open(text_file) as fp:
-        soup = BeautifulSoup(fp, 'lxml')
-    # TODO: returns None generator. why?
-    # soup.html.descendants returns None generator too
+        soup = BeautifulSoup(fp, 'lxml', from_encoding='utf-8')
+    html = str(soup)
     for child in soup.html.recursiveChildGenerator():  # type: Union[Tag, NavigableString]
         if not suitable_node(child):
             continue
@@ -45,11 +44,11 @@ def _hyphenate_legacy_text(text_file: Path) -> None:
         hyphenated_string = ' '.join(hyphenated_words)
         if original_string != hyphenated_string:
             has_changes = True
-            child.string.replaceWith(NavigableString(hyphenated_string))
+            html = html.replace(original_string, hyphenated_string)
 
     if has_changes:
         with open(text_file, 'w', encoding='utf-8') as fp:
-            fp.write(str(soup))
+            fp.write(html)
 
 
 def suitable_node(element: Union[Tag, NavigableString]) -> bool:
@@ -64,8 +63,6 @@ def hyphenate_texts(db: Database) -> None:
     for text in tqdm(texts):
         text_file = Path(text['file_path'])
         if text_file.suffix == '.json':
-            # TODO: remove after testing html texts parsing
-            continue
             _hyphenate_modern_text(text_file)
         else:
             _hyphenate_legacy_text(text_file)

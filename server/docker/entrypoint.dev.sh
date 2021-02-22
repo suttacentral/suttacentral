@@ -5,4 +5,5 @@ python wait_for_arango.py
 python manage.py migrate
 cd ..
 touch /tmp/.done.info
-uwsgi --ini uwsgi.ini
+#uwsgi --ini uwsgi.ini
+python /opt/sc/sc-flask/server/app.py
