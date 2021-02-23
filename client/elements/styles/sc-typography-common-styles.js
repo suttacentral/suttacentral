@@ -231,7 +231,7 @@ export const typographyCommonStyles = css`
 
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 0.1em;
+    text-decoration-thickness: 0.15em;
     text-underline-offset: 0.05em;
 
     transition: all 200ms ease;
@@ -239,7 +239,7 @@ export const typographyCommonStyles = css`
 
   a:hover {
     text-decoration-color: var(--sc-primary-color);
-    text-decoration-thickness: 0.1em;
+    text-decoration-thickness: 0.15em;
     text-underline-offset: 0.05em;
 
     background-color: var(--sc-primary-color-light-transparent);

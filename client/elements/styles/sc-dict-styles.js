@@ -205,15 +205,26 @@ export const dictStyles = css`
   }
 
   dd a {
-    text-decoration: underline;
-
     color: inherit;
 
-    text-decoration-color: var(--sc-primary-color);
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.05em;
+
+    transition: all 200ms ease;
   }
 
   dd a:hover {
-    color: var(--sc-primary-color);
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.05em;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  dd a:active {
+    background-color: var(--sc-primary-color-light);
   }
 
   dd a:visited {
