@@ -281,8 +281,9 @@ async function genNavDetail(uid, navType, currentURL, navArray) {
     return;
   }
   const navIndexesOfType = navIndex.get(navType);
+  const acronym = navType === 'pitaka' ? menuData[0].acronym.toLowerCase() : menuData[0].acronym;
   navArray[navIndexesOfType.index] = {
-    title: menuData[0].acronym || menuData[0].translated_name || menuData[0].root_name,
+    title: acronym || menuData[0].translated_name || menuData[0].root_name,
     url: currentURL,
     type: navType,
     groupId: menuData[0].uid,
