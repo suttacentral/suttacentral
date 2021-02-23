@@ -42,7 +42,7 @@ def _hyphenate_legacy_text(text_file: Path, hyphenator: Hyphenator) -> None:
         hyphenated_string = ' '.join(hyphenated_words)
         if original_string != hyphenated_string:
             has_changes = True
-            html = html.replace(original_string, hyphenated_string)
+            html = html.replace(original_string, hyphenated_string, 1)
 
     if has_changes:
         with open(text_file, 'w', encoding='utf-8') as fp:
