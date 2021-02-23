@@ -19,11 +19,9 @@ def _hyphenate_modern_text(text_file: Path, hyphenator: Hyphenator) -> None:
             continue
         hyphenated_words = (hyphenator.hyphenate(word) for word in string.split())
         hyphenated_string = ' '.join(hyphenated_words)
-        if string[-1] == ' ':
-            hyphenated_string = hyphenated_string + ' '
-        if string != hyphenated_string:
+        if string.strip() != hyphenated_string:
             has_changes = True
-            file_content[key] = hyphenated_string
+            file_content[key] = string.replace(string.strip(), hyphenated_string)
 
     if has_changes:
         json_save(file_content, text_file)
