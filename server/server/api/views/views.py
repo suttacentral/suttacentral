@@ -606,7 +606,7 @@ class SegmentedSutta(Resource):
         )
         result = next(results)
         if not result:
-            return {'error': 'Not Found'}, se404
+            return {'error': 'Not Found'}, 404
 
         data = {k: json_load(v) for k, v in result.items()}
         data.update({
