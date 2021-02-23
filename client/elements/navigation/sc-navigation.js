@@ -6,6 +6,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
 import '../addons/sc-bouncing-loader';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCNavigation extends LitLocalized(LitElement) {
   static get properties() {
@@ -49,7 +50,7 @@ class SCNavigation extends LitLocalized(LitElement) {
   // and if valid so, check that the parent contains it, and if not, crop the URL item.
   async _verifyURL() {
     if (!this.tipitakaUids.includes(this.pitakaUid)) {
-      window.location.href = '/pitaka/sutta';
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
     }
     const navArray = this.routePath.split('/');
     if (navArray.length >= 3) {
@@ -63,24 +64,24 @@ class SCNavigation extends LitLocalized(LitElement) {
       if (navArray.length > 1 && i !== 0) {
         let navData = await this._fetchChildrenData(navArray[i]);
         if (!navData[0].uid) {
-          window.location.href = this._cutURL(navArray[i]);
+          dispatchCustomEvent(this, 'sc-navigate', { pathname: this._cutURL(navArray[i]) });
         } else {
           navData = await this._fetchChildrenData(navArray[i - 1]);
           if (!navData[0].uid) {
             let URL = this._cutURL(navArray[i]);
             URL = this._cutURL(navArray[i - 1], URL);
-            window.location.href = URL;
+            dispatchCustomEvent(this, 'sc-navigate', { pathname: URL });
           } else {
             const childData = navData[0].children.find(x => x.uid === navArray[i]);
             if (!childData) {
-              window.location.href = this._cutURL(navArray[i]);
+              dispatchCustomEvent(this, 'sc-navigate', { pathname: this._cutURL(navArray[i]) });
             }
           }
         }
       } else {
         const navData = await this._fetchChildrenData(navArray[i]);
         if (!navData[0].uid) {
-          window.location.href = this._cutURL(navArray[i]);
+          dispatchCustomEvent(this, 'sc-navigate', { pathname: this._cutURL(navArray[i]) });
         }
       }
     }
@@ -591,7 +592,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggas) {
-        window.location.href = `/${params.childId}`;
+        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
       }
     }
   }
@@ -746,7 +747,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildren) {
-        window.location.href = `/${params.childId}`;
+        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
       }
     }
   }
@@ -870,7 +871,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildrenChildren) {
-        window.location.href = `/${params.childId}`;
+        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
       }
     }
   }
@@ -992,7 +993,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showSakaChildren) {
-        window.location.href = `/${params.childId}`;
+        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
       }
     }
   }
@@ -1074,7 +1075,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
       this._setCurrentURL(params.childId);
       this.requestUpdate();
-      window.location.href = `/${params.childId}`;
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
     }
   }
 }

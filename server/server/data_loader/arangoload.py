@@ -33,6 +33,7 @@ from . import (
     sizes,
     sc_bilara_data,
     navigation,
+    hyphenation,
 )
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
@@ -460,6 +461,12 @@ def run(no_pull=False):
     change_tracker.update_mtimes()
 
     print_stage('All done')
+
+
+def hyphenate_pali_and_san():
+    db = arangodb.get_db()
+    print(f'\nHyphenate Pali and Sanskrit texts:')
+    hyphenation.hyphenate_texts(db)
 
 
 def bilara_run():
