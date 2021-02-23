@@ -606,7 +606,7 @@ class SegmentedSutta(Resource):
         )
         result = next(results)
         if not result:
-            return {'error': 'Not Found'}, 404
+            return {'error': 'Not Found'}, se404
 
         data = {k: json_load(v) for k, v in result.items()}
         data.update({
@@ -1004,7 +1004,7 @@ class TransliteratedSutta(Resource):
         if not result:
             return {'error': 'Not Found'}, 404
 
-        sutta_texts = {k: self.load_json(v) for k, v in result.items()}
+        sutta_texts = {k: json_load(v) for k, v in result.items()}
         for key, value in sutta_texts[uid].items():
             sutta_texts[uid][key] = transliterate.process('ISO', target, value)
 
