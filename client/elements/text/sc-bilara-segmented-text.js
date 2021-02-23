@@ -83,8 +83,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.showHighlighting = textOptions.showHighlighting;
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
-    this.translationTextSelector = '.translation .text';
-    this.rootTextSelector = '.root .text';
     this.commentSpanRectInfo = new Map();
 
     this._hashChangeHandler = () => {
