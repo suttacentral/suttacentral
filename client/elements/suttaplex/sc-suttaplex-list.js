@@ -9,7 +9,12 @@ import { suttaplexListCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title.js';
 import '../addons/sc-error-icon.js';
 import('./card/sc-suttaplex.js');
-import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
+import {
+  navIndex,
+  RefreshNav,
+  setNavigation,
+  setCurrentNavPosition,
+} from '../navigation/sc-navigation-common';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
@@ -147,8 +152,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       url: store.getState().currentRoute.path,
       type: navIndexesOfType.type,
     };
-    this.actions.setNavigation(navArray);
-    this.actions.setCurrentNavPosition(navIndexesOfType.position);
+    setNavigation(navArray);
+    setCurrentNavPosition(navIndexesOfType.position);
   }
 
   suttaplexTemplate(item) {
