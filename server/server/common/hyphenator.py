@@ -42,7 +42,7 @@ class Hyphenator:
             return word
 
         word = self.segment_rex.sub(r'-\1-', word)
-        word = word.replace('--', '-')
+        word = regex.sub(r'(-){2,}', r'-', word)
         word = word.strip('-')
         word = self._fix_hyphens(word)
 
