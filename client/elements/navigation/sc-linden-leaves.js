@@ -8,6 +8,8 @@ import { navigationNormalModeStyles } from './sc-navigation-styles.js';
 import '../menus/sc-universal-action-items.js';
 import { icon } from '../../img/sc-icon';
 
+import { dispatchCustomEvent } from '../../utils/customEvent';
+
 class SCLindenLeaves extends LitLocalized(LitElement) {
   static get styles() {
     return css`
@@ -216,7 +218,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     if (nav.type === 'home') {
       this.navArray.length = 1;
       this.actions.setNavigation(this.navArray);
-      window.location.href = nav.url;
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: nav.url });
     }
 
     const routePath = store.getState().currentRoute.path;
@@ -226,7 +228,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     this.requestUpdate();
 
     if (this._getPathParamNumber(routePath, 1) !== 'pitaka') {
-      window.location.href = nav.url;
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: nav.url });
     }
   }
 }

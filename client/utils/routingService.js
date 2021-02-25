@@ -76,7 +76,8 @@ export default class RoutingService {
   _anchorHandler(e) {
     /** @type {HTMLAnchorElement} */
     let anchor = null;
-    for (let elem of e.path) {
+    const path = e.path || (e.composedPath && e.composedPath());
+    for (let elem of path) {
       if (elem.tagName === 'A' && elem.href) {
         anchor = elem;
         break;

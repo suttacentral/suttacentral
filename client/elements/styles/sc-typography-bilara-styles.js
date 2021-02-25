@@ -110,18 +110,21 @@ export const typographyBilaraStyles = css`
 
   /* references */
 
-  .reference {
+  .reference a {
+    display: inline-block;
+
     font-family: var(--sc-sans-font);
-    font-size: 0.8em;
+
+    font-size: var(--sc-skolar-font-size-xxs);
+
     font-weight: 400;
     font-style: normal;
     text-align: left;
 
-    display: inline-block;
-
     box-sizing: border-box;
-    gap: 0.5em;
     padding: 0.1em 0.5em;
+
+    margin-right: 0.5em;
 
     white-space: nowrap;
     text-decoration: none;
@@ -135,7 +138,7 @@ export const typographyBilaraStyles = css`
     font-variant-caps: normal;
   }
 
-  .reference:hover {
+  .reference a:hover {
     background-color: var(--sc-tertiary-background-color);
   }
 

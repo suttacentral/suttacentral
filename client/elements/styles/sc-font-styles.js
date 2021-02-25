@@ -3,33 +3,38 @@ import { css } from 'lit-element';
 export const SCFontStyles = css`
   @font-face {
     font-family: 'Skolar PE Variable';
+    src: url('/files/fonts/RaloksPEVFWeb-Ups_0.3.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: normal;
     font-stretch: normal;
-    src: url('/files/fonts/RaloksPEVF-Ups.0.2.woff2') format('woff2-variations');
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Skolar PE Variable';
+    src: url('/files/fonts/RaloksPEVFWeb-Its_0.3.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: italic;
     font-stretch: normal;
-    src: url('/files/fonts/RaloksPEVF-Its.0.2.woff2') format('woff2-variations');
+    font-display: swap;
   }
 
   @font-face {
     font-family: 'Skolar Sans PE Variable';
+    src: url('/files/fonts/RaloksSansPEVFWeb-Ups_0.3.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: normal;
     font-stretch: 80% 115%;
-    src: url('/files/fonts/RaloksSansPEVF-Ups.0.2.woff2') format('woff2-variations');
+    font-display: swap;
   }
+
   @font-face {
     font-family: 'Skolar Sans PE Variable';
+    src: url('/files/fonts/RaloksSansPEVFWeb-Its_0.3.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: italic;
     font-stretch: 80% 115%;
-    src: url('/files/fonts/RaloksSansPEVF-Its.0.2.woff2') format('woff2-variations');
+    font-display: swap;
   }
 
   @font-face {

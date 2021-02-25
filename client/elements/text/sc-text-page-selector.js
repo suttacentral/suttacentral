@@ -309,9 +309,19 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    this.authorUid = state.currentRoute.params.authorUid;
-    this.langIsoCode = state.currentRoute.params.langIsoCode;
-    if (state.currentRoute.params.suttaId !== this.suttaId) {
+    if (
+      state.currentRoute.params.langIsoCode !== this.langIsoCode &&
+      state.currentRoute.params.langIsoCode
+    ) {
+      this.langIsoCode = state.currentRoute.params.langIsoCode;
+    }
+    if (
+      state.currentRoute.params.authorUid !== this.authorUid &&
+      state.currentRoute.params.authorUid
+    ) {
+      this.authorUid = state.currentRoute.params.authorUid;
+    }
+    if (state.currentRoute.params.suttaId !== this.suttaId && state.currentRoute.params.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
       RefreshNav(this.suttaId);
     }

@@ -87,6 +87,9 @@ delete-database:
 index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
+hyphenate:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py hyphenate"
+
 
 
 rebuild-frontend:
@@ -103,6 +106,7 @@ run-preview-env:
 	@bash wait_for_flask.sh
 	@make load-data
 	@make index-elasticsearch
+	@make hyphenate
 	@echo "\033[1;32mDONE!"
 
 run-preview-env-no-search:
@@ -112,6 +116,7 @@ run-preview-env-no-search:
 	@make run-dev-no-logs
 	@bash wait_for_flask.sh
 	@make load-data
+	@make hyphenate
 	@echo "\033[1;32mDONE!"
 
 run-production-env:
@@ -121,6 +126,7 @@ run-production-env:
 	@bash wait_for_flask.sh
 	@make load-data
 	@make index-elasticsearch
+	@make hyphenate
 	@echo "\033[1;32mDONE!"
 	@make run-prod
 

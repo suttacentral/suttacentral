@@ -1012,6 +1012,7 @@ RETURN {
     'full_path': CONCAT_SEPARATOR('/', REVERSE(APPEND(path_docs, '/pitaka')))
 }
 '''
+
 SUTTA_PALI_REFERENCE = '''
 FOR pali IN pali_reference_edition
     COLLECT edition_set = pali.edition_set, name = pali.name, short_name = pali.short_name
@@ -1019,6 +1020,14 @@ FOR pali IN pali_reference_edition
         edition_set: edition_set,
         name: NOT_NULL(name, short_name)
     } 
+'''
+
+ALL_TEXTS_BY_LANGUAGES = '''
+FOR doc IN v_text
+    SEARCH doc.lang IN @languages
+    LET langs = REMOVE_VALUE(@languages, 'pli')
+    FILTER doc.lang IN langs OR (doc.lang == 'pli' AND 'root' IN doc.muids)
+    RETURN doc
 '''
 
 SUTTA_PUBLICATION_INFO = '''
