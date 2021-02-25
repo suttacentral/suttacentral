@@ -30,4 +30,5 @@ from .views import (
     TransliteratedSutta,
     SuttaFullPath,
     PaliReferenceEdition,
+    PublicationInfo,
 )

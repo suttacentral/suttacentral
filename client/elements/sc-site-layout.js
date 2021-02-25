@@ -7,7 +7,7 @@ import './sc-page-selector.js';
 import './menus/sc-action-items.js';
 import './addons/sc-top-sheet-views.js';
 import './addons/sc-top-sheet-parallels';
-import './addons/sc-top-sheet-info';
+import './addons/sc-top-sheet-publication-legacy';
 import './addons/sc-top-sheet-toc';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
@@ -47,7 +47,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
         <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
         <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
-        <sc-top-sheet-info id="sutta-info"></sc-top-sheet-info>
+        <sc-top-sheet-publication-legacy id="sutta-info"></sc-top-sheet-publication-legacy>
 
         <div id="static_pages_nav_menu">
           <nav>

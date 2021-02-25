@@ -6,7 +6,7 @@ import './sc-stepper.js';
 import './sc-text-image.js';
 import '../addons/sc-error-icon.js';
 import '../addons/sc-bouncing-loader';
-import '../addons/sc-footer';
+import '../addons/sc-top-sheet-publication-bilara';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../../elements/addons/localization-mixin';
@@ -110,7 +110,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .error=${this.lastError}
             .suttaId=${this.suttaId}
           >
-            <sc-footer .authorUID="${this.authorUid}" .textUID="${this.textUid}"></sc-footer>
+            <sc-top-sheet-publication-bilara .authorUID="${this.authorUid}" .textUID="${this.textUid}"></sc-top-sheet-publication-bilara>
           </sc-bilara-segmented-text>
         `
       : '';

@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 
-class SCTopSheetInfo extends SCTopSheetCommon {
+class SCTopSheetPublicationLegacy extends SCTopSheetCommon {
   constructor() {
     super();
     this.infoDialogMetaArea = '';
@@ -19,6 +19,7 @@ class SCTopSheetInfo extends SCTopSheetCommon {
           font-family: var(--sc-sans-font);
           line-height: 1.333;
         }
+
         h2 {
           font-family: var(--sc-serif-font);
           color: var(--sc-primary-text-color);
@@ -51,4 +52,4 @@ class SCTopSheetInfo extends SCTopSheetCommon {
   }
 }
 
-customElements.define('sc-top-sheet-info', SCTopSheetInfo);
+customElements.define('sc-top-sheet-publication-legacy', SCTopSheetPublicationLegacy);

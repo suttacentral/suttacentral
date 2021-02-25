@@ -1020,3 +1020,13 @@ FOR pali IN pali_reference_edition
         name: NOT_NULL(name, short_name)
     } 
 '''
+
+SUTTA_PUBLICATION_INFO = '''
+LET path_docs = (
+    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+        RETURN doc.uid
+)
+FOR d IN publications
+    FILTER d.text_uid IN path_docs AND d.translation_lang_iso == @lang
+    RETURN d
+'''
