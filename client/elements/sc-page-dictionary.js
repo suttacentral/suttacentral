@@ -95,12 +95,19 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         color: var(--sc-primary-accent-color);
         border-bottom: 4px solid rgba(0, 0, 0, 0);
         border-radius: 4px;
+
+        transition: all 200ms ease;
       }
 
       .related-terms a:hover {
         text-decoration: underline;
 
+        text-decoration-thickness: 0.15em;
+        text-underline-offset: 0.05em;
+
         color: var(--sc-primary-color);
+
+        transition: all 200ms ease;
       }
 
       .related-terms i {

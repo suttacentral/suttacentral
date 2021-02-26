@@ -204,8 +204,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         summary {
           font-weight: 600;
 
-          display: flex;
-
           padding: 8px;
 
           cursor: pointer;
@@ -216,6 +214,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
           align-items: baseline;
         }
 
+        summary::marker,
         summary::-webkit-details-marker {
           color: var(--sc-icon-color);
         }
