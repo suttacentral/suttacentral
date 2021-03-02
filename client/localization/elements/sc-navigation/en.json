@@ -5,6 +5,7 @@
       "sutta": "Discourses",
       "vinaya": "Monastic Law",
       "abhidhamma": "Systematic Treatises",
+      "ab": "Systematic Treatises",
       "CollectionOf": "Collection of {pitaka} {sutta}",
       "view": "View {pitaka}",
       "introduction": "Introduction to the {pitaka}",
