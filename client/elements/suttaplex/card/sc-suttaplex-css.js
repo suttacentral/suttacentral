@@ -60,8 +60,6 @@ export const suttaplexCss = html`
     }
 
     summary {
-      display: flex;
-
       cursor: pointer;
 
       outline-color: var(--sc-border-color);
@@ -69,6 +67,7 @@ export const suttaplexCss = html`
       align-items: baseline;
     }
 
+    summary::marker,
     summary::-webkit-details-marker {
       color: var(--sc-icon-color);
     }
@@ -134,11 +133,6 @@ export const suttaplexCss = html`
 
     .top-row .compact {
       cursor: pointer;
-    }
-
-    summary {
-      cursor: pointer;
-      outline: none;
     }
 
     .icon {
