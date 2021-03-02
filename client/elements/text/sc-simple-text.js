@@ -324,6 +324,7 @@ class SCSimpleText extends SCLitTextPage {
     if (this.sutta && this.sutta.text) {
       return this.sutta.text.replace(/<head>((.|\n)*)<\/head>/, '');
     }
+    return '';
   }
 
   // returns the meta-data from the loaded sutta text
