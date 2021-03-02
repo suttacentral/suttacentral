@@ -41,7 +41,14 @@ export default class RoutingService {
   }
 
   push(url) {
-    this.history.push(url);
+    if (url.indexOf('/search') === -1) {
+      this.history.push({
+        pathname: url,
+        search: '',
+      });
+    } else {
+      this.history.push(url);
+    }
   }
 
   replace(url) {
