@@ -2,7 +2,6 @@ import { LitElement, html, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-search-filter-menu.js';
-import './suttaplex/card/sc-suttaplex.js';
 import './addons/sc-error-icon.js';
 import './addons/sc-bouncing-loader';
 import { icon } from '../img/sc-icon';
@@ -11,6 +10,7 @@ import { LitLocalized } from './addons/localization-mixin';
 import { API_ROOT } from '../constants.js';
 import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
+import('./suttaplex/card/sc-suttaplex.js');
 
 class SCPageSearch extends LitLocalized(LitElement) {
   render() {
