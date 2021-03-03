@@ -214,8 +214,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
           align-items: baseline;
         }
 
-        summary::marker,
-        summary::-webkit-details-marker {
+        ::marker,
+        ::-webkit-details-marker {
           color: var(--sc-icon-color);
         }
 

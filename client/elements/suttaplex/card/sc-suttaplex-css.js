@@ -63,12 +63,10 @@ export const suttaplexCss = html`
       cursor: pointer;
 
       outline-color: var(--sc-border-color);
-
-      align-items: baseline;
     }
 
-    summary::marker,
-    summary::-webkit-details-marker {
+    ::marker,
+    ::-webkit-details-marker {
       color: var(--sc-icon-color);
     }
 
@@ -76,7 +74,8 @@ export const suttaplexCss = html`
       list-style: none;
     }
 
-    #copy-menu > summary::-webkit-details-marker {
+    #copy-menu > ::marker,
+    #copy-menu > ::-webkit-details-marker {
       display: none;
     }
 
@@ -153,7 +152,8 @@ export const suttaplexCss = html`
     }
 
     .suttaplex-nerdy-row {
-      display: inline-flex;
+      display: flex;
+      align-items: center;
       gap: 1em;
       font-family: var(--sc-sans-font);
       font-size: var(--sc-skolar-font-size-s);
@@ -207,7 +207,6 @@ export const suttaplexCss = html`
     }
 
     .suttaplex-details {
-      display: inline-block;
       position: inherit;
     }
 
@@ -244,6 +243,7 @@ export const suttaplexCss = html`
       outline: none;
     }
 
+    ::marker,
     ::-webkit-details-marker {
       color: var(--sc-icon-color);
     }
@@ -460,6 +460,7 @@ export const parallelItemCss = html`
       white-space: normal;
     }
 
+    ::marker,
     ::-webkit-details-marker {
       color: var(--sc-icon-color);
     }
@@ -489,13 +490,12 @@ export const parallelItemCss = html`
     summary {
       cursor: pointer;
       outline: none;
-      display: inline-flex;
-      align-items: center;
     }
 
     .book {
       display: inline-flex;
     }
+
     .icon {
       fill: var(--sc-icon-color);
       width: 16px;

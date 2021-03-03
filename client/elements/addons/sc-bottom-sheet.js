@@ -127,7 +127,8 @@ class SCBottomSheet extends LitElement {
         cursor: pointer;
       }
 
-      details > summary::-webkit-details-marker {
+      ::marker,
+      ::-webkit-details-marker {
         display: none;
       }
 
