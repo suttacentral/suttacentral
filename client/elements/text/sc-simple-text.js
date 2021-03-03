@@ -6,7 +6,6 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js';
 import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
-import '../lookups/sc-pli.js';
 import '../lookups/sc-lzh2en.js';
 import { store } from '../../redux-store';
 
@@ -58,7 +57,6 @@ class SCSimpleText extends SCLitTextPage {
         ${unsafeHTML(this._extractSuttaText())}
       </main>
 
-      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
     `;
   }
@@ -76,7 +74,6 @@ class SCSimpleText extends SCLitTextPage {
       lang: { type: String },
       isLoading: { type: Boolean },
       isTextViewHidden: { type: Boolean },
-      isPaliLookupEnabled: { type: Boolean },
       tooltipCount: { type: Number },
       spansForWordsGenerated: { type: Boolean },
       spansForGraphsGenerated: { type: Boolean },
@@ -85,7 +82,6 @@ class SCSimpleText extends SCLitTextPage {
       classTitles: { type: Object },
       editionsExpansionData: { type: Object },
       localizedStringsPath: { type: String },
-      currentId: { type: String },
       inputElement: { type: Object },
       showHighlighting: { type: Boolean },
       chosenReferenceDisplayType: { type: String },
@@ -104,7 +100,6 @@ class SCSimpleText extends SCLitTextPage {
     this.lang = '';
     this.isLoading = false;
     this.isTextViewHidden = false;
-    this.isPaliLookupEnabled = textOptionsState.paliLookupActivated;
     this.tooltipCount = 0;
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
@@ -139,7 +134,6 @@ class SCSimpleText extends SCLitTextPage {
       ms84: 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
     };
     this.localizedStringsPath = '/localization/elements/sc-text';
-    this.currentId = '';
     this.inputElement = {};
     this._hashChangeHandler = () => {
       setTimeout(() => {
@@ -174,15 +168,18 @@ class SCSimpleText extends SCLitTextPage {
     };
   }
 
-  firstUpdated() {
+  connectedCallback() {
+    super.connectedCallback();
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', () => {
       this._hideTopSheets();
       this.actions.changeDisplaySettingMenuState(false);
     });
-    this._updateView();
     this.inputElement = this.shadowRoot.querySelector('#simple_text_content');
-    this.shadowRoot.querySelector('#a11y').target = document.querySelector('body');
+  }
+
+  firstUpdated() {
+    this._updateView();
   }
 
   _hideTopSheets() {
@@ -214,9 +211,6 @@ class SCSimpleText extends SCLitTextPage {
     }
     if (changedProps.has('isLoading')) {
       this._loadingChanged();
-    }
-    if (changedProps.has('isPaliLookupEnabled')) {
-      this._paliLookupStateChanged();
     }
     if (changedProps.has('isChineseLookupEnabled')) {
       this._chineseLookupStateChanged();
@@ -263,9 +257,6 @@ class SCSimpleText extends SCLitTextPage {
     if (this.showParagraphs !== textOptionsState.paragraphsEnabled) {
       this.showParagraphs = textOptionsState.paragraphsEnabled;
     }
-    if (this.isPaliLookupEnabled !== textOptionsState.paliLookupActivated) {
-      this.isPaliLookupEnabled = textOptionsState.paliLookupActivated;
-    }
     if (this.isChineseLookupEnabled !== textOptionsState.chineseLookupActivated) {
       this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
     }
@@ -280,11 +271,8 @@ class SCSimpleText extends SCLitTextPage {
   _updateView() {
     this._setAttributes();
     this._computeParagraphs();
-    this.currentId = '';
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
-    this._paliLookupStateChanged();
-    this._chineseLookupStateChanged();
     this.actions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
