@@ -214,6 +214,7 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
   }
 
   _navClick(nav) {
+    this._hideTopSheets();
     this.actions.setCurrentNavPosition(nav.position);
     if (nav.type === 'home') {
       this.navArray.length = 1;
@@ -230,6 +231,13 @@ class SCLindenLeaves extends LitLocalized(LitElement) {
     if (this._getPathParamNumber(routePath, 1) !== 'pitaka') {
       dispatchCustomEvent(this, 'sc-navigate', { pathname: nav.url });
     }
+  }
+
+  _hideTopSheets() {
+    const scActionItems = document
+      .querySelector('sc-site-layout')
+      .shadowRoot.querySelector('#action_items');
+    scActionItems.hideItems();
   }
 }
 
