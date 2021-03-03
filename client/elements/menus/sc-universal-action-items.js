@@ -179,7 +179,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       >
         ${icon.search}
       </mwc-icon-button>
-      <input 
+      <input
         id="search_input"
         name="q"
         type="search"
@@ -189,9 +189,9 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
         @keypress="${this.keypressHandler}"
         aria-label="Search through site content"
       ></input>
-      <mwc-icon-button 
-      label="close" 
-      id="close_button" 
+      <mwc-icon-button
+      label="close"
+      id="close_button"
       title="Close search bar"
       @click="${this._closeSearch}">
         ${icon.close}
