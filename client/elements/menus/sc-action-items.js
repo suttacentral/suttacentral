@@ -548,7 +548,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _suttaMetaTextChanged() {
-    let displayStyle = this.suttaMetaText ? 'inherit' : 'none';
+    const displayStyle = this.suttaMetaText ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnInfo').style.display = displayStyle;
   }
 
