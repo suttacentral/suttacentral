@@ -213,7 +213,7 @@ class SCTopSheetPublicationBilara extends LitElement {
             <p class="creative-commons">
               <a rel="license" href="${this.license_url}">
                 <img
-                  src="http://i.creativecommons.org/p/zero/1.0/88x31.png"
+                  src="https://i.creativecommons.org/p/zero/1.0/88x31.png"
                   style="border-style: none;"
                   alt="CC0"
                 />
