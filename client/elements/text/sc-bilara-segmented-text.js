@@ -135,6 +135,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <slot></slot>
       <sc-bottom-sheet></sc-bottom-sheet>
     `;
   }
