@@ -88,7 +88,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
                 target="_blank"
                 rel="noopener"
               >
-                ${this.localize('WHATSNEW')}${icon.external}
+                ${this.localize('WHATSNEW')}
               </a>
             </li>
           `
