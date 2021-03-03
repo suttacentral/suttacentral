@@ -35,6 +35,7 @@ from common.queries import (
     SUTTA_SINGLE_PALI_TEXT,
     SUTTA_PATH,
     SUTTA_PALI_REFERENCE,
+    SUTTA_PUBLICATION_INFO,
 )
 
 from common.utils import (
@@ -1028,3 +1029,15 @@ class PaliReferenceEdition(Resource):
         if not pali_references:
             return {'error': 'Not Found'}, 404
         return pali_references
+
+
+class PublicationInfo(Resource):
+
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid, lang):
+        db = get_db()
+        publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang}))
+        if not publication_info:
+            return {'error': 'Not Found'}, 404
+        return publication_info
+

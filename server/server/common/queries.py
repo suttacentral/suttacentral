@@ -1029,3 +1029,13 @@ FOR doc IN v_text
     FILTER doc.lang IN langs OR (doc.lang == 'pli' AND 'root' IN doc.muids)
     RETURN doc
 '''
+
+SUTTA_PUBLICATION_INFO = '''
+LET path_docs = (
+    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+        RETURN doc.uid
+)
+FOR d IN publications
+    FILTER d.text_uid IN path_docs AND d.translation_lang_iso == @lang
+    RETURN d
+'''
