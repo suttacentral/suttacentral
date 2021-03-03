@@ -85,7 +85,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       if (this.categoryId && state.siteLanguage) {
         this._fetchCategory();
       }
-      RefreshNav(this.categoryId);
+      const navArray = store.getState().navigationArray;
+      const currentNav = navArray.find(x => x !== null && x.groupId === this.categoryId);
+      if (!currentNav) {
+        RefreshNav(this.categoryId);
+      }
     }
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
@@ -123,7 +127,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
-      if (this.suttaplexData[0].type === 'leaf') {
+      const navArray = store.getState().navigationArray;
+      const currentNav = navArray.find(x => x !== null && x.groupId === this.suttaplexData[0].uid);
+      if (this.suttaplexData[0].type === 'leaf' || !currentNav) {
         this._updateNav();
       }
 

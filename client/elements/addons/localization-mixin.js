@@ -32,7 +32,7 @@ export const LitLocalized = base =>
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
       if (!string && this._languageLoaded) {
-        console.warn('missing translation key', key);
+        // console.warn('missing translation key', key);
       }
 
       if (params) {
@@ -48,7 +48,7 @@ export const LitLocalized = base =>
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
       if (!string && this._languageLoaded) {
-        console.warn('missing translation key', key);
+        // console.warn('missing translation key', key);
       }
 
       if (params.length) {

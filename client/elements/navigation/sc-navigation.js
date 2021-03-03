@@ -558,6 +558,10 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.vaggasData[0].root_name;
     }
 
+    if (params.childId === 'dharmapadas') {
+      params.childName = this.vaggasData[0].root_name;
+    }
+
     let currentUrl = `/${params.childId}`;
     if (showVaggas) {
       currentUrl = this._genCurrentURL(params.childId);

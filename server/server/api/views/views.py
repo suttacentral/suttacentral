@@ -1017,6 +1017,9 @@ class SuttaFullPath(Resource):
     def get(self, uid):
         db = get_db()
         full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
+        if full_path['full_path'].count('/sutta/minor') > 1:
+            rIndex = full_path['full_path'].rfind('/sutta/minor')
+            full_path['full_path'] = full_path['full_path'][:rIndex]
         return full_path
 
 

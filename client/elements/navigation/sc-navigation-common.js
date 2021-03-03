@@ -277,7 +277,7 @@ export function setCurrentNavPosition(position) {
 
 async function genNavDetail(uid, navType, currentURL, navArray) {
   const menuData = await fetchMenuDataByUid(uid);
-  if (!menuData) {
+  if (!menuData || !menuData[0].uid) {
     return;
   }
   const navIndexesOfType = navIndex.get(navType);
@@ -317,12 +317,24 @@ export async function RefreshNav(uid) {
   const URLs = suttaFullPath.full_path.split('/');
   let currentURL = '/pitaka';
   const currentNav = store.getState().navigationArray;
-  URLs.forEach((navItem, index) => {
+
+  const fatherLevelExists = currentNav.some(x => x !== null && x.groupId === URLs[URLs.length - 1]);
+  if (fatherLevelExists) {
+    return;
+  }
+
+  for (const index of currentNav.keys()) {
+    if (index > 0) {
+      currentNav[index] = null;
+    }
+  }
+
+  for (const [index, value] of URLs.entries()) {
     if (index > 1) {
       const navType = getNavTypeByNavIndex(index);
-      currentURL = `${currentURL}/${navItem}`;
-      genNavDetail(navItem, navType, currentURL, currentNav);
+      currentURL = `${currentURL}/${value}`;
+      await genNavDetail(value, navType, currentURL, currentNav);
     }
-  });
+  }
   setNavigation(currentNav);
 }

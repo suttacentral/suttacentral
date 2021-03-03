@@ -237,7 +237,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    let state = store.getState();
+    const state = store.getState();
     this.inputLanguage = '';
     this.infoDialogMetaArea = state.suttaMetaText;
     this.item = {};

@@ -641,8 +641,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   _updateNav() {
     const navIndexesOfType = navIndex.get('searchPage');
-    let navArray = store.getState().navigationArray;
-    let currentPath = store.getState().currentRoute.path;
+    const navArray = store.getState().navigationArray;
+    const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
     navArray.push({
       title: this.localize('Search'),
