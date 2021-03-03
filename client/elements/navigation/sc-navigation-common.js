@@ -318,6 +318,11 @@ export async function RefreshNav(uid) {
   let currentURL = '/pitaka';
   const currentNav = store.getState().navigationArray;
 
+  const fatherLevelExists = currentNav.some(x => x !== null && x.groupId === URLs[URLs.length - 1]);
+  if (fatherLevelExists) {
+    return;
+  }
+
   for (const index of currentNav.keys()) {
     if (index > 0) {
       currentNav[index] = null;
