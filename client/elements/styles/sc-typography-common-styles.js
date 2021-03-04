@@ -104,8 +104,6 @@ export const typographyCommonStyles = css`
     margin: 0;
     padding: 0;
 
-    font-family: var(--sc-sans-font);
-
     list-style-type: none;
 
     letter-spacing: var(--sc-caps-letter-spacing);
