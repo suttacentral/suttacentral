@@ -359,7 +359,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
     
     LET translated_titles = (
         FOR translation IN translations
-            FILTER translation.lang == @language AND HAS(translation, 'title')
+            FILTER translation.lang == @language AND HAS(translation, 'title') AND translation.title != null
             LIMIT 1
             RETURN translation.title
     )[0]
