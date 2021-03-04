@@ -65,18 +65,12 @@ export const suttaplexCss = html`
       outline-color: var(--sc-border-color);
     }
 
-    ::marker,
-    ::-webkit-details-marker {
+    summary::marker {
       color: var(--sc-icon-color);
     }
 
     #copy-menu > summary {
-      list-style: none;
-    }
-
-    #copy-menu > ::marker,
-    #copy-menu > ::-webkit-details-marker {
-      display: none;
+      list-style-type: none;
     }
 
     .suttaplex-share-menu-list {
@@ -243,8 +237,7 @@ export const suttaplexCss = html`
       outline: none;
     }
 
-    ::marker,
-    ::-webkit-details-marker {
+    summary::marker {
       color: var(--sc-icon-color);
     }
 
@@ -460,8 +453,7 @@ export const parallelItemCss = html`
       white-space: normal;
     }
 
-    ::marker,
-    ::-webkit-details-marker {
+    summary::marker {
       color: var(--sc-icon-color);
     }
 
