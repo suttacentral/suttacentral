@@ -402,7 +402,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         root_lang_name: DOCUMENT('language', v.root_lang).name,
         type: v.type,
         from: e._from,
-        translated_title:  translated_titles ? translated_titles : name_title,
+        translated_title: translated_titles ? translated_titles : name_title,
         translations: filtered_translations,
         parallel_count: parallel_count,
         biblio: biblio,
