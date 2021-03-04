@@ -359,11 +359,18 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
     
     LET translated_titles = (
         FOR translation IN translations
-            FILTER translation.lang == @language AND HAS(translation, 'title')
+            FILTER translation.lang == @language AND HAS(translation, 'title') AND translation.title != null
             LIMIT 1
             RETURN translation.title
     )[0]
-    
+
+    LET name_title = (
+        FOR name IN names
+            FILTER name.uid == v.uid AND name.lang == @language
+            LIMIT 1
+            RETURN name.name
+    )[0]
+
     LET parallel_count = LENGTH(
         FOR rel IN relationship
             FILTER rel._from == v._id
@@ -395,7 +402,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         root_lang_name: DOCUMENT('language', v.root_lang).name,
         type: v.type,
         from: e._from,
-        translated_title: translated_titles,
+        translated_title: translated_titles ? translated_titles : name_title,
         translations: filtered_translations,
         parallel_count: parallel_count,
         biblio: biblio,

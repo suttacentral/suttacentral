@@ -177,7 +177,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     return html`
       <section class="${this.calculateClass(item.type)}">
         <sc-suttaplex-section-title
-          .inputTitle="${item.original_title}"
+          .inputTitle="${item.translated_title || item.original_title}"
           .inputText="${item.blurb}"
           .inputType="${item.type}"
           .label="${this.localize('expandSection')}"
