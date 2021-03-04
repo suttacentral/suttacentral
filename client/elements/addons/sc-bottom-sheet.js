@@ -127,9 +127,8 @@ class SCBottomSheet extends LitElement {
         cursor: pointer;
       }
 
-      ::marker,
-      ::-webkit-details-marker {
-        display: none;
+      summary {
+        list-style-type: none;
       }
 
       details .help-display-inner {
