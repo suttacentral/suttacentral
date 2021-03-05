@@ -178,7 +178,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       // this._recalculateCommentSpanHeight();
       this._changeTextView();
     }, 0);
-    this.actions.changeSuttaMetaText(this._computeMeta());
+    this.actions.changeSuttaMetaText('');
+    this.actions.changeSuttaPublicationInfo({
+      uid: this.suttaId,
+      lang: this.translatedSutta.lang || 'en',
+    });
   }
 
   _hideTopSheets() {
@@ -485,6 +489,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         store.dispatch({
           type: 'CHANGE_SUTTA_META_TEXT',
           metaText: metaText,
+        });
+      },
+      changeSuttaPublicationInfo(publicationInfo) {
+        store.dispatch({
+          type: 'CHANGE_SUTTA_PUBLICATION_INFO',
+          suttaPublicationInfo: publicationInfo,
         });
       },
       chooseSegmentedSuttaTextView(viewNumber) {
@@ -1013,22 +1023,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _scriptFunctionName() {
     return this.paliScript.charAt(0).toUpperCase() + this.paliScript.slice(1);
-  }
-
-  _computeMeta() {
-    let metaText = '';
-    let matches = [];
-    if (this.markup) {
-      matches = this.markup.match(/<footer>((.|\n)*)<\/footer>/);
-    }
-    try {
-      if (matches && matches.length > 0) {
-        metaText = matches[1];
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    return metaText;
   }
 }
 

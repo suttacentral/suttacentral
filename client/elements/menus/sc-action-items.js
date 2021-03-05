@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
@@ -188,6 +188,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       displayViewModeButton: { type: Boolean },
       colorTheme: { type: String },
       suttaMetaText: { type: String },
+      suttaPublicationInfo: { type: Object },
     };
   }
 
@@ -314,6 +315,9 @@ class SCActionItems extends LitLocalized(LitElement) {
   _showSuttaInfo() {
     this.dispatchEvent(
       new CustomEvent('show-sc-sutta-info', {
+        detail: {
+          isSegmentedText: !this.suttaMetaText,
+        },
         bubbles: true,
         composed: true,
       })
@@ -327,7 +331,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _displayViewModeButtonStateChange() {
-    let displayStyle = this.displayViewModeButton ? 'inherit' : 'none';
+    const displayStyle = this.displayViewModeButton ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnViewCompact').style.display = displayStyle;
     this.shadowRoot.querySelector('#btnViewComfy').style.display = displayStyle;
   }
@@ -336,7 +340,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (!this.displayViewModeButton) {
       return;
     }
-    let isCompactView = store.getState().suttaplexListDisplay;
+    const isCompactView = store.getState().suttaplexListDisplay;
     if (isCompactView) {
       this.displayCompactButton = false;
       this.displayComfyButton = true;
@@ -517,6 +521,10 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (this.suttaMetaText !== state.suttaMetaText) {
       this.suttaMetaText = state.suttaMetaText;
     }
+    if (this.suttaPublicationInfo !== state.suttaPublicationInfo) {
+      this.suttaPublicationInfo = state.suttaPublicationInfo;
+    }
+
     if (this.suttaplexListEnabled !== state.suttaplexListDisplay) {
       this.suttaplexListEnabled = state.suttaplexListDisplay;
     }
@@ -539,7 +547,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (changedProps.has('suttaplexListEnabled')) {
       this._viewModeChanged();
     }
-    if (changedProps.has('suttaMetaText')) {
+    if (changedProps.has('suttaMetaText') || changedProps.has('suttaPublicationInfo')) {
       this._suttaMetaTextChanged();
     }
     if (changedProps.has('tableOfContents')) {
@@ -548,7 +556,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _suttaMetaTextChanged() {
-    const displayStyle = this.suttaMetaText ? 'inherit' : 'none';
+    const displayStyle = this.suttaMetaText || this.suttaPublicationInfo ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnInfo').style.display = displayStyle;
   }
 

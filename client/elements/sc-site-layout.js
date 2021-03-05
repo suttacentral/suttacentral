@@ -48,6 +48,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
         <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
         <sc-top-sheet-publication-legacy id="sutta-info"></sc-top-sheet-publication-legacy>
+        <sc-top-sheet-publication-bilara id="bilara-sutta-info"></sc-top-sheet-publication-bilara>
 
         <div id="static_pages_nav_menu">
           <nav>
@@ -386,11 +387,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
 
     this.addEventListener('show-sc-sutta-info', e => {
-      this.shadowRoot.querySelector('#sutta-info').show();
+      if (e.detail.isSegmentedText) {
+        this.shadowRoot.querySelector('#bilara-sutta-info').show();
+      } else {
+        this.shadowRoot.querySelector('#sutta-info').show();
+      }
     });
 
     this.addEventListener('hide-sc-sutta-info', e => {
       this.shadowRoot.querySelector('#sutta-info').hide();
+      this.shadowRoot.querySelector('#bilara-sutta-info').hide();
     });
     const rootDOM = this.shadowRoot;
     addEventListener(
