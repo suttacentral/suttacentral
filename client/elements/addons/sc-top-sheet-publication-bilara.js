@@ -185,7 +185,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
   }
 
   setPublicationInfo(data) {
-    if (data && data.is_published === 'true') {
+    if (data && data.is_published === true) {
       this.isPublished = true;
       this.translationTitle = data.translation_title;
       this.translationSubtitle = data.translation_subtitle;
