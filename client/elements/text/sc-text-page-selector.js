@@ -333,6 +333,16 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     this.setProperties();
     this.actions.downloadSuttaText(this.responseData);
+    if (
+      !this.responseData.root_text &&
+      !this.responseData.translation &&
+      !this.bilaraRootSutta &&
+      !this.bilaraTranslatedSutta
+    ) {
+      this.lastError = {
+        message: '404',
+      };
+    }
   }
 
   setProperties() {
