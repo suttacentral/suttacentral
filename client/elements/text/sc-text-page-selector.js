@@ -137,7 +137,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       bilaraSuttaMarkup: { type: String },
       localizedStringsPath: { type: String },
       authorUid: { type: String },
-      textUid: { type: String },
       authorShort: { type: String },
       next: { type: Object },
       previous: { type: Object },
@@ -303,14 +302,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       state.currentRoute.params.langIsoCode
     ) {
       this.langIsoCode = state.currentRoute.params.langIsoCode;
-      this._paramChanged();
     }
     if (
       state.currentRoute.params.authorUid !== this.authorUid &&
       state.currentRoute.params.authorUid
     ) {
       this.authorUid = state.currentRoute.params.authorUid;
-      this._paramChanged();
     }
     if (state.currentRoute.params.suttaId !== this.suttaId && state.currentRoute.params.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
@@ -343,10 +340,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this._bindDataToSCSuttaParallels(this.suttaplex);
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
-      if (this.responseData.translation) {
-        this.authorUid = this.responseData.translation.author_uid;
-        this.textUid = this.responseData.translation.uid;
-      }
       if (this.translatedSutta) {
         this.next = this.translatedSutta.next;
         this.previous = this.translatedSutta.previous;
