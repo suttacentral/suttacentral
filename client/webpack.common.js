@@ -13,6 +13,9 @@ module.exports = {
     path: resolve(OUTPUT_PATH),
     publicPath: '/',
   },
+  resolve: {
+    mainFields: ['es2015', 'module', 'main'],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
