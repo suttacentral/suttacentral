@@ -15,6 +15,7 @@ const initialState = {
   searchParams: {},
   suttaText: {},
   suttaMetaText: '',
+  suttaPublicationInfo: {},
   textOptions: {
     paragraphsEnabled: false,
     paragraphDescriptions: [],
@@ -100,6 +101,8 @@ const reducer = (state, action) => {
       return { ...state, suttaText: action.text };
     case 'CHANGE_SUTTA_META_TEXT':
       return { ...state, suttaMetaText: action.metaText };
+    case 'CHANGE_SUTTA_PUBLICATION_INFO':
+      return { ...state, suttaPublicationInfo: action.suttaPublicationInfo };
     case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
       return {
         ...state,

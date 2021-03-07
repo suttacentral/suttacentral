@@ -110,9 +110,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .isLoading=${this.isLoading}
             .error=${this.lastError}
             .suttaId=${this.suttaId}
-          >
-            <sc-top-sheet-publication-bilara style="display: none" .authorUID="${this.authorUid}" .textUID="${this.textUid}"></sc-top-sheet-publication-bilara>
-          </sc-bilara-segmented-text>
+          ></sc-bilara-segmented-text>
         `
       : '';
   }

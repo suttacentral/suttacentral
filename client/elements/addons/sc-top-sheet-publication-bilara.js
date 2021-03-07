@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit-element';
 import { API_ROOT } from '../../constants';
-import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import SCTopSheetCommon from './sc-top-sheet-common';
 import { store } from '../../redux-store';
 
-class SCTopSheetPublicationBilara extends LitElement {
+class SCTopSheetPublicationBilara extends SCTopSheetCommon {
   static get properties() {
     return {
       translationTitle: {
@@ -75,20 +76,82 @@ class SCTopSheetPublicationBilara extends LitElement {
       isPublished: {
         type: Boolean,
       },
+      publicationInfo: {
+        type: Object,
+      },
     };
   }
 
   static get styles() {
     return [
-      typographyBilaraStyles,
+      super.styles,
+      typographyCommonStyles,
       css`
-        :host {
-          display: flex;
-          justify-content: center;
+        section > section {
+          font-family: var(--sc-sans-font);
+
+          margin: 0;
+          padding: 0;
         }
 
-        footer {
-          max-width: 720px;
+        dl {
+          margin: 1em 0;
+          padding: 0 1rem 1rem 1rem;
+
+          border: var(--sc-border);
+          border-radius: 8px;
+        }
+
+        .main-details,
+        .edition {
+          display: grid;
+
+          grid-template-columns: 1fr 3fr;
+          align-items: baseline;
+          gap: 0 1em;
+        }
+
+        dt {
+          font-weight: 600;
+          font-style: italic;
+
+          color: var(--sc-secondary-text-color);
+        }
+
+        dd {
+          margin-left: 0;
+        }
+
+        .number-of_volumes,
+        .text-uid {
+          display: none;
+        }
+
+        .license {
+          padding: 0 1rem 1rem 1rem;
+
+          color: var(--sc-secondary-text-color);
+          border: var(--sc-border);
+          border-radius: 8px;
+          background: var(--sc-tertiary-background-color);
+        }
+
+        .license-type {
+          font-weight: 700;
+        }
+
+        dd a {
+          overflow-wrap: break-word;
+        }
+
+        a img {
+          display: block;
+
+          margin: 0 0 0.75em 0;
+        }
+
+        [property='vcard:Country'] {
+          font-weight: 700;
         }
       `,
     ];
@@ -102,7 +165,16 @@ class SCTopSheetPublicationBilara extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.fetchPublications();
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    if (this.publicationData !== state.suttaPublicationInfo) {
+      this.publicationData = state.suttaPublicationInfo;
+      this.textUID = this.publicationData.uid;
+      this.lang = this.publicationData.lang;
+      this.fetchPublications();
+    }
   }
 
   fetchPublications() {
@@ -113,7 +185,7 @@ class SCTopSheetPublicationBilara extends LitElement {
   }
 
   setPublicationInfo(data) {
-    if (data && data.is_published === 'true') {
+    if (data && data.is_published === true) {
       this.isPublished = true;
       this.translationTitle = data.translation_title;
       this.translationSubtitle = data.translation_subtitle;
@@ -149,9 +221,17 @@ class SCTopSheetPublicationBilara extends LitElement {
   render() {
     if (this.isPublished)
       return html`
-        <footer>
-          <h2>About this text</h2>
+        <section>
+          <h2>Publication details</h2>
+
           <section class="text-metadata" about="${this.sourceURL}">
+            <p>
+              This text is included in
+              <cite>${this.translationTitle}</cite>
+              by
+              <span>${this.authorName}</span>
+              .
+            </p>
             <dl class="main-details">
               <dt class="translation-title">Translation title</dt>
               <dd class="translation-title" property="dc:title">${this.translationTitle}</dd>
@@ -177,18 +257,8 @@ class SCTopSheetPublicationBilara extends LitElement {
               <dd class="translation-process" property="dc:description">
                 ${this.translationProcess}
               </dd>
-            </dl>
-            <dl class="metadata-details">
-              <dt class="text-uid">Text identifier (UID)</dt>
-              <dd class="text-uid" property="dc:identifier">${this.textUID}</dd>
-              <dt class="source-url">Source</dt>
-              <dd class="source-url">
-                <a href="${this.sourceURL}" target="_blank">${this.sourceURL}</a>
-              </dd>
               <dt class="publication-status">Publication status</dt>
               <dd class="publication-status">${this.publicationStatus}</dd>
-              <dt class="publication-number">SuttaCentral publication number</dt>
-              <dd class="publication-number" property="dc:identifier">${this.publicationNumber}</dd>
             </dl>
             <dl class="edition">
               <dt class="edition-number">Edition</dt>
@@ -197,18 +267,32 @@ class SCTopSheetPublicationBilara extends LitElement {
               <dd class="publication-date" property="dc:date">${this.publicationDate}</dd>
               <dt class="publisher">Publisher</dt>
               <dd class="publisher" property="dc:publisher">${this.publisher}</dd>
-              <dt class="edition-url">URL</dt>
-              <dd class="edition-url">${this.editionURL}</dd>
               <dt class="publication-type">Publication type</dt>
               <dd class="publication-type" property="dc:format">${this.publicationType}</dd>
               <dt class="number-of_volumes">Number of volumes</dt>
               <dd class="number-of_volumes">${this.numberOfVolumes}</dd>
             </dl>
+            <dl class="metadata-details">
+              <dt class="text-uid">Text identifier (UID)</dt>
+              <dd class="text-uid" property="dc:identifier">${this.textUID}</dd>
+              <dt class="edition-url">URL</dt>
+              <dd class="edition-url">
+                <a href="${this.editionURL}" target="_blank" rel="noopener">${this.editionURL}</a>
+              </dd>
+              <dt class="source-url">Source</dt>
+              <dd class="source-url">
+                <a href="${this.sourceURL}" target="_blank" rel="noopener">${this.sourceURL}</a>
+              </dd>
+              <dt class="publication-number">SuttaCentral publication number</dt>
+              <dd class="publication-number" property="dc:identifier">${this.publicationNumber}</dd>
+            </dl>
           </section>
           <section class="license">
+            <h3>License</h3>
             <p class="license-type" property="dc:rights">
-              ${this.licenseType}
+              ${this.licenseType} (
               <span class="license-abbreviation">${this.licenseAbbreviation}</span>
+              )
             </p>
             <p class="creative-commons">
               <a rel="license" href="${this.license_url}">
@@ -218,14 +302,13 @@ class SCTopSheetPublicationBilara extends LitElement {
                   alt="CC0"
                 />
               </a>
-              <br />
               To the extent possible under law,
               <a rel="dct:publisher" href="https://suttacentral.net/">
                 <span property="dct:title">${this.authorName}</span>
               </a>
               has waived all copyright and related or neighboring rights to
-              <span property="dct:title">${this.translationTitle}</span>
-              . This work is published from:
+              <cite property="dct:title">${this.translationTitle}</cite>
+              . This work is published from
               <span
                 property="vcard:Country"
                 datatype="dct:ISO3166"
@@ -236,9 +319,10 @@ class SCTopSheetPublicationBilara extends LitElement {
               </span>
               .
             </p>
+            <h3>About this license</h3>
             <p class="license-statement">${this.licenseStatement}</p>
           </section>
-        </footer>
+        </section>
       `;
   }
 }
