@@ -72,7 +72,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   get displayErrorTemplate() {
     return this._shouldDisplayError() && !this.isLoading
       ? html`
-          <sc-error-icon type="data-load-error"></sc-error-icon>
+          <sc-error-icon type="${this.lastError.type || 'data-load-error'}"></sc-error-icon>
         `
       : '';
   }
@@ -333,14 +333,18 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     this.setProperties();
     this.actions.downloadSuttaText(this.responseData);
+    if (!this.responseData.root_text && !this.responseData.translation) {
+      this.lastError = {
+        type: 'data-load-error',
+      };
+    }
     if (
-      !this.responseData.root_text &&
-      !this.responseData.translation &&
-      !this.bilaraRootSutta &&
+      this.responseData.segmented &&
+      this.responseData.translation.lang !== 'pli' &&
       !this.bilaraTranslatedSutta
     ) {
       this.lastError = {
-        message: '404',
+        type: 'translation-text-load-error',
       };
     }
   }

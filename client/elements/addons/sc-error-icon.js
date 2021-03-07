@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { LitElement, html } from 'lit-element';
 
 import { LitLocalized } from './localization-mixin';
@@ -40,6 +41,11 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
         image: 'connecttointernet',
         title: 'connectToInternet',
         message: 'connectToInternet',
+      },
+      'translation-text-load-error': {
+        image: 'dataloaderror',
+        title: 'dataLoadError',
+        message: 'translationDataLoadError',
       },
     };
   }
