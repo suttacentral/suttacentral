@@ -338,15 +338,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         type: 'data-load-error',
       };
     }
-    if (
-      this.responseData.segmented &&
-      this.responseData.translation.lang !== 'pli' &&
-      !this.bilaraTranslatedSutta
-    ) {
-      this.lastError = {
-        type: 'translation-text-load-error',
-      };
-    }
   }
 
   setProperties() {
@@ -428,6 +419,15 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.suttaReference = bilaraData.reference_text;
       this.suttaComment = bilaraData.comment_text;
       this.suttaVariant = bilaraData.variant_text;
+      if (
+        this.responseData.segmented &&
+        this.responseData.translation.lang !== 'pli' &&
+        !this.bilaraTranslatedSutta
+      ) {
+        this.lastError = {
+          type: 'translation-text-load-error',
+        };
+      }
     } catch (error) {
       this.lastError = error;
     }
