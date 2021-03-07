@@ -12,7 +12,7 @@ export default class SCTopSheetCommon extends LitLocalized(LitElement) {
         overflow-y: auto;
 
         width: 100%;
-        max-height: 80vh;
+        max-height: 65vh;
 
         color: var(--sc-primary-text-color);
         border-bottom: 1px solid var(--sc-border-color);
@@ -26,7 +26,7 @@ export default class SCTopSheetCommon extends LitLocalized(LitElement) {
 
       section {
         max-width: 720px;
-        margin: var(--sc-size-xl) auto;
+        margin: var(--sc-size-lg) auto;
         padding: 0 3vw;
       }
     `;

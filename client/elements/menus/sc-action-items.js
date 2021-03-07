@@ -40,7 +40,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         #btnShowParallels:after,
         #btnShowToC:after {
           font-size: var(--sc-skolar-font-size-xxs);
-          font-weight: 500;
+          font-weight: 600;
           font-stretch: condensed;
 
           position: absolute;
