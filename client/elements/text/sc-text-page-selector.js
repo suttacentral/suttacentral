@@ -72,7 +72,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   get displayErrorTemplate() {
     return this._shouldDisplayError() && !this.isLoading
       ? html`
-          <sc-error-icon type="data-load-error"></sc-error-icon>
+          <sc-error-icon type="${this.lastError.type || 'data-load-error'}"></sc-error-icon>
         `
       : '';
   }
@@ -137,7 +137,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       bilaraSuttaMarkup: { type: String },
       localizedStringsPath: { type: String },
       authorUid: { type: String },
-      textUid: { type: String },
       authorShort: { type: String },
       next: { type: Object },
       previous: { type: Object },
@@ -334,6 +333,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     this.setProperties();
     this.actions.downloadSuttaText(this.responseData);
+    if (!this.responseData.root_text && !this.responseData.translation) {
+      this.lastError = {
+        type: 'data-load-error',
+      };
+    }
   }
 
   setProperties() {
@@ -343,10 +347,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this._bindDataToSCSuttaParallels(this.suttaplex);
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
-      if (this.responseData.translation) {
-        this.authorUid = this.responseData.translation.author_uid;
-        this.textUid = this.responseData.translation.uid;
-      }
       if (this.translatedSutta) {
         this.next = this.translatedSutta.next;
         this.previous = this.translatedSutta.previous;
@@ -419,6 +419,15 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.suttaReference = bilaraData.reference_text;
       this.suttaComment = bilaraData.comment_text;
       this.suttaVariant = bilaraData.variant_text;
+      if (
+        this.responseData.segmented &&
+        this.responseData.translation.lang !== 'pli' &&
+        !this.bilaraTranslatedSutta
+      ) {
+        this.lastError = {
+          type: 'translation-text-load-error',
+        };
+      }
     } catch (error) {
       this.lastError = error;
     }
