@@ -139,6 +139,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
         dd.source-url,
         dd.publication-number {
           font-family: mono;
+          font-size: 16px;
         }
 
         .number-of_volumes,
