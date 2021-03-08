@@ -246,11 +246,10 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
 
           <section class="text-metadata" about="${this.sourceURL}">
             <p>
-              This text is transcluded in
+              This text is included in
               <cite>${this.translationTitle}</cite>
               by
-              <span>${this.authorName}</span>
-              .
+              <span>${this.authorName}</span>.
             </p>
             <dl class="main-details">
               <dt class="translation-title">Translation title</dt>
