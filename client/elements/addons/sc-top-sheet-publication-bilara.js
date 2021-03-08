@@ -103,6 +103,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
         }
 
         .main-details,
+        .translation-details,
         .edition {
           display: grid;
 
@@ -122,8 +123,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
           margin-left: 0;
         }
 
-        dd.translation-title,
-        dd.root-title {
+        dd.translation-title {
           font-weight: 800;
         }
 
@@ -245,12 +245,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
           <h2>Publication details</h2>
 
           <section class="text-metadata" about="${this.sourceURL}">
-            <p>
-              This text is included in
-              <cite>${this.translationTitle}</cite>
-              by
-              <span>${this.authorName}</span>.
-            </p>
+            <p>This text is included in the following publication.</p>
             <dl class="main-details">
               <dt class="translation-title">Translation title</dt>
               <dd class="translation-title" property="dc:title">${this.translationTitle}</dd>
@@ -258,6 +253,8 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
               <dd class="translation-subtitle" property="dc:title">${this.translationSubtitle}</dd>
               <dt class="author-name">Translator</dt>
               <dd class="author-name" property="dc:creator">${this.authorName}</dd>
+            </dl>
+            <dl class="translation-details">
               <dt class="root-title">Root title</dt>
               <dd class="root-title" property="dc:title">${this.rootTitle}</dd>
               <dt class="translation-language">Translation language</dt>
