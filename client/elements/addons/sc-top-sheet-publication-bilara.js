@@ -326,17 +326,16 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
                 <span property="dct:title">${this.authorName}</span>
               </a>
               has waived all copyright and related or neighboring rights to
-              <cite property="dct:title">${this.translationTitle}</cite>
-              . This work is published from
+              <cite property="dct:title">${this.translationTitle}</cite>. This work is published
+              from
               <span
                 property="vcard:Country"
                 datatype="dct:ISO3166"
                 content="AU"
                 about="https://suttacentral.net/licensing"
               >
-                Australia
-              </span>
-              .
+                Australia </span
+              >.
             </p>
             <h3>About this license</h3>
             <p class="license-statement">${this.licenseStatement}</p>
