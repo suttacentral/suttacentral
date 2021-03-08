@@ -122,6 +122,25 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
           margin-left: 0;
         }
 
+        dd.translation-title,
+        dd.root-title {
+          font-weight: 800;
+        }
+
+        dd.translation-subtitle {
+          font-weight: 600;
+        }
+
+        dd.author-name {
+          font-variant-caps: small-caps;
+        }
+
+        dd.edition-url,
+        dd.source-url,
+        dd.publication-number {
+          font-family: mono;
+        }
+
         .number-of_volumes,
         .text-uid {
           display: none;
@@ -237,16 +256,16 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
               <dd class="translation-title" property="dc:title">${this.translationTitle}</dd>
               <dt class="translation-subtitle">Translation subtitle</dt>
               <dd class="translation-subtitle" property="dc:title">${this.translationSubtitle}</dd>
+              <dt class="author-name">Translator</dt>
+              <dd class="author-name" property="dc:creator">${this.authorName}</dd>
+              <dt class="root-title">Root title</dt>
+              <dd class="root-title" property="dc:title">${this.rootTitle}</dd>
               <dt class="translation-language">Translation language</dt>
               <dd class="translation-language" property="dc:language">
                 ${this.translationLanguage}
               </dd>
-              <dt class="root-title">Root title</dt>
-              <dd class="root-title" property="dc:title">${this.rootTitle}</dd>
               <dt class="root-language">Root language</dt>
               <dd class="root-language">${this.rootLanguage}</dd>
-              <dt class="author-name">Translator</dt>
-              <dd class="author-name" property="dc:creator">${this.authorName}</dd>
             </dl>
             <dl class="descriptive-details">
               <dt class="translation-description">Translation description</dt>
