@@ -334,6 +334,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     const displayStyle = this.displayViewModeButton ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnViewCompact').style.display = displayStyle;
     this.shadowRoot.querySelector('#btnViewComfy').style.display = displayStyle;
+    this._viewModeChanged();
   }
 
   _viewModeChanged() {
@@ -524,7 +525,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (this.suttaPublicationInfo !== state.suttaPublicationInfo) {
       this.suttaPublicationInfo = state.suttaPublicationInfo;
     }
-
     if (this.suttaplexListEnabled !== state.suttaplexListDisplay) {
       this.suttaplexListEnabled = state.suttaplexListDisplay;
     }
