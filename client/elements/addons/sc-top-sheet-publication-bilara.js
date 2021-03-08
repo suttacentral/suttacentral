@@ -103,6 +103,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
         }
 
         .main-details,
+        .translation-details,
         .edition {
           display: grid;
 
@@ -120,6 +121,25 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
 
         dd {
           margin-left: 0;
+        }
+
+        dd.translation-title {
+          font-weight: 800;
+        }
+
+        dd.translation-subtitle {
+          font-weight: 600;
+        }
+
+        dd.author-name {
+          font-variant-caps: small-caps;
+        }
+
+        dd.edition-url,
+        dd.source-url,
+        dd.publication-number {
+          font-family: mono;
+          font-size: 16px;
         }
 
         .number-of_volumes,
@@ -225,28 +245,24 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
           <h2>Publication details</h2>
 
           <section class="text-metadata" about="${this.sourceURL}">
-            <p>
-              This text is included in
-              <cite>${this.translationTitle}</cite>
-              by
-              <span>${this.authorName}</span>
-              .
-            </p>
+            <p>This text is included in the following publication.</p>
             <dl class="main-details">
               <dt class="translation-title">Translation title</dt>
               <dd class="translation-title" property="dc:title">${this.translationTitle}</dd>
               <dt class="translation-subtitle">Translation subtitle</dt>
               <dd class="translation-subtitle" property="dc:title">${this.translationSubtitle}</dd>
+              <dt class="author-name">Translator</dt>
+              <dd class="author-name" property="dc:creator">${this.authorName}</dd>
+            </dl>
+            <dl class="translation-details">
+              <dt class="root-title">Root title</dt>
+              <dd class="root-title" property="dc:title">${this.rootTitle}</dd>
               <dt class="translation-language">Translation language</dt>
               <dd class="translation-language" property="dc:language">
                 ${this.translationLanguage}
               </dd>
-              <dt class="root-title">Root title</dt>
-              <dd class="root-title" property="dc:title">${this.rootTitle}</dd>
               <dt class="root-language">Root language</dt>
               <dd class="root-language">${this.rootLanguage}</dd>
-              <dt class="author-name">Translator</dt>
-              <dd class="author-name" property="dc:creator">${this.authorName}</dd>
             </dl>
             <dl class="descriptive-details">
               <dt class="translation-description">Translation description</dt>
@@ -307,17 +323,16 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
                 <span property="dct:title">${this.authorName}</span>
               </a>
               has waived all copyright and related or neighboring rights to
-              <cite property="dct:title">${this.translationTitle}</cite>
-              . This work is published from
+              <cite property="dct:title">${this.translationTitle}</cite>. This work is published
+              from
               <span
                 property="vcard:Country"
                 datatype="dct:ISO3166"
                 content="AU"
                 about="https://suttacentral.net/licensing"
               >
-                Australia
-              </span>
-              .
+                Australia </span
+              >.
             </p>
             <h3>About this license</h3>
             <p class="license-statement">${this.licenseStatement}</p>
