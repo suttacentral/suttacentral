@@ -396,7 +396,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     this.addEventListener('hide-sc-sutta-info', e => {
       this.shadowRoot.querySelector('#sutta-info').hide();
-      this.shadowRoot.querySelector('#bilara-sutta-info').hide();
+      const pubInfo = this.shadowRoot.querySelector('#bilara-sutta-info');
+      if (pubInfo && pubInfo.hide) {
+        pubInfo.hide();
+      }
     });
     const rootDOM = this.shadowRoot;
     addEventListener(
