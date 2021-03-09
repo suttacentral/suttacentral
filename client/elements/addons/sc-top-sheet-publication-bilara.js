@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element';
 import { API_ROOT } from '../../constants';
-import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { store } from '../../redux-store';
 
@@ -181,10 +181,6 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     super();
     this.isPublished = false;
     this.lang = store.getState().siteLanguage;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
   }
 
   _stateChanged(state) {
