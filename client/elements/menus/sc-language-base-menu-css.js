@@ -66,5 +66,21 @@ export const languageBaseMenuCss = html`
       display: flex;
       align-items: center;
     }
+
+    .text-only {
+      height: 48px;
+    }
+
+    .language-base-menu-head-main {
+      font-weight: 700;
+    }
+
+    .language-base-menu-head-secondary {
+      font-size: var(--sc-skolar-font-size-xs);
+      color: var(--sc-secondary-text-color);
+      padding: 0 16px;
+      line-height: 1.3333;
+      font-stretch: condensed;
+    }
   </style>
 `;

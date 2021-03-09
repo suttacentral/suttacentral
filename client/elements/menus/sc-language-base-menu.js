@@ -122,8 +122,18 @@ class LanguageBaseMenu extends LitLocalized(LitElement) {
     return html`
       ${languageBaseMenuCss}
       <mwc-list-item @click="${this._showMoreMenu}">
-        <div class="menu-item-wrapper">${icon.arrow_left} Choose your language</div>
+        <div class="menu-item-wrapper">
+          ${icon.arrow_left}
+          <span class="language-base-menu-head-main">Select language</span>
+        </div>
       </mwc-list-item>
+
+      <div class="menu-item-wrapper text-only">
+        <span class="language-base-menu-head-secondary"
+          >View translations and site UI in selected language where available.</span
+        >
+      </div>
+
       <div class="separator"></div>
       ${this.languageListResponse.map(language => this.languageTemplate(language))}
     `;
