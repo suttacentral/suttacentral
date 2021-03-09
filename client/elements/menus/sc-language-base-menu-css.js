@@ -58,13 +58,41 @@ export const languageBaseMenuCss = html`
     }
 
     .arrow_left {
-      padding: 8px 8px 4px 0;
       fill: var(--sc-icon-color);
     }
 
     .menu-item-wrapper {
       display: flex;
       align-items: center;
+    }
+
+    .text-only {
+      height: 32px;
+    }
+
+    .language-base-menu-head-main {
+      font-weight: 700;
+      padding-left: 8px;
+    }
+
+    .language-base-menu-head-secondary {
+      font-size: var(--sc-skolar-font-size-xs);
+      color: var(--sc-secondary-text-color);
+      padding: 0 16px 0 56px;
+      line-height: 1.5;
+      font-stretch: condensed;
+    }
+
+    [role='separator'] {
+      background-color: var(--sc-border-color);
+      width: 100%;
+      overflow: hidden;
+      height: 1px;
+      margin-top: var(--sc-size-sm);
+      margin-bottom: var(--sc-size-xxs);
+    }
+
+    .more-menu-return-arrow {
     }
   </style>
 `;

@@ -199,7 +199,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       <mwc-icon-button label="menu" id="more-menu-button" @click="${this.openMoreMenu}" alt="menu">
         ${icon.more_vert}
       </mwc-icon-button>
-      <mwc-menu corner="BOTTOM_LEFT" id="more-menu">
+      <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
         <sc-more-menu id="sc-more-menu"></sc-more-menu>
       </mwc-menu>
     `;
