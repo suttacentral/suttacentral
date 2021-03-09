@@ -187,13 +187,30 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     super._stateChanged(state);
     if (this.publicationData !== state.suttaPublicationInfo) {
       this.publicationData = state.suttaPublicationInfo;
-      this.textUID = this.publicationData.uid;
-      this.lang = this.publicationData.lang;
-      this.fetchPublications();
+      if (this.publicationData !== null && this.publicationData.uid !== null) {
+        this.textUID = this.publicationData.uid;
+        this.lang = this.publicationData.lang;
+        this.fetchPublications();
+      }
     }
   }
 
+  get actions() {
+    return {
+      changeSuttaPublicationInfo(publicationInfo) {
+        store.dispatch({
+          type: 'CHANGE_SUTTA_PUBLICATION_INFO',
+          suttaPublicationInfo: publicationInfo,
+        });
+      },
+    };
+  }
+
   fetchPublications() {
+    if (!this.textUID || !this.lang || this.lang === 'pli') {
+      this.actions.changeSuttaPublicationInfo(null);
+      return;
+    }
     fetch(`${API_ROOT}/publication_info/${this.textUID}/${this.lang}`)
       .then(r => r.json())
       .then(data => this.setPublicationInfo(data[0]))
