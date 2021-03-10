@@ -71,9 +71,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   get displayErrorTemplate() {
     return this._shouldDisplayError() && !this.isLoading
-      ? html`
-          <sc-error-icon type="${this.lastError.type || 'data-load-error'}"></sc-error-icon>
-        `
+      ? html` <sc-error-icon type="${this.lastError.type || 'data-load-error'}"></sc-error-icon> `
       : '';
   }
 
@@ -152,6 +150,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     super();
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
+    this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
     this.bilaraDataPath = '/files/bilara-data';
   }
@@ -233,59 +232,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       navigationArrayLength: navIndexesOfType.navArrayLength,
     };
 
-    await this._verifyNav();
     this.actions.setNavigation(this.navArray);
     this.actions.setCurrentNavPosition(navIndexesOfType.position);
-  }
-
-  // This method checks whether the last item of the last navigation belongs to the penultimate item,
-  // and if not, retains the first and last item of navigation data and deletes the rest.
-  async _verifyNav() {
-    const penultimateNavItem = this._getPenultimateNavItem();
-    if (penultimateNavItem.type && penultimateNavItem.type === 'home') {
-      return;
-    }
-    if (penultimateNavItem.groupId) {
-      const navData = await this._fetchNavData(penultimateNavItem.groupId);
-      if (!navData[0].uid) {
-        this._correctingNav();
-        return;
-      }
-      const currentNavItemGroupId = this.navArray[this.navArray.length - 1].groupId;
-      if (currentNavItemGroupId) {
-        const childData = navData[0].children.find(x => x.uid === currentNavItemGroupId);
-        if (!childData) {
-          this._correctingNav();
-        }
-      }
-    }
-  }
-
-  _correctingNav() {
-    for (let i = this.navArray.length - 1; i >= 0; i--) {
-      if (i !== this.navArray.length - 1 && i !== 0) {
-        delete this.navArray[i];
-      }
-    }
-  }
-
-  _getPenultimateNavItem() {
-    for (let i = this.navArray.length - 1; i >= 0; i--) {
-      if (i !== this.navArray.length - 1 && this.navArray[i]) {
-        return this.navArray[i];
-      }
-    }
-  }
-
-  async _fetchNavData(childId) {
-    const lang = this.language ? this.language : 'en';
-    const url = `${API_ROOT}/menu/${childId}?language=${lang}`;
-    try {
-      const childrenData = await (await fetch(url)).json();
-      return childrenData;
-    } catch (e) {
-      return null;
-    }
   }
 
   updated(changedProps) {
@@ -315,7 +263,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.suttaId = state.currentRoute.params.suttaId;
       this._paramChanged();
       this.refreshing = true;
-      RefreshNav(this.suttaId);
+      RefreshNav(this.suttaId, false);
+      this.refreshing = false;
+    }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._paramChanged();
+      this.refreshing = true;
+      RefreshNav(this.suttaId, true);
       this.refreshing = false;
     }
   }
@@ -381,9 +336,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _getSuttaTextUrl() {
     if (this.authorUid) {
-      return `${API_ROOT}/suttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+      return `${API_ROOT}/suttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}&siteLanguage=${this.siteLanguage}`;
     } else {
-      return `${API_ROOT}/suttas/${this.suttaId}?lang=${this.langIsoCode}`;
+      return `${API_ROOT}/suttas/${this.suttaId}?lang=${this.langIsoCode}&siteLanguage=${this.siteLanguage}`;
     }
   }
 

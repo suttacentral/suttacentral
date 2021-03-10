@@ -529,6 +529,7 @@ class Sutta(Resource):
 
         """
         lang = request.args.get('lang', 'en')
+        siteLang = request.args.get('siteLanguage', 'en')
 
         db = get_db()
 
@@ -543,7 +544,7 @@ class Sutta(Resource):
             doc = result[k]
             if doc:
                 self.convert_paths_to_content(doc)
-                self.calculate_sutta_neighbors(uid, doc, k, lang)
+                self.calculate_sutta_neighbors(uid, doc, k, siteLang)
 
         return result, 200
 
@@ -565,7 +566,7 @@ class Sutta(Resource):
                         doc[to_prop] = load_func(f)
 
     @staticmethod
-    def calculate_sutta_neighbors(uid, doc, textType, lang):
+    def calculate_sutta_neighbors(uid, doc, textType, siteLang):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
         for i in range(1, 10):
@@ -589,12 +590,12 @@ class Sutta(Resource):
             is_root = True
 
         for k, v in sutta_prev_next.items():
-            name_results = db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': lang})
+            name_results = db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': siteLang})
             name_result = list(name_results)
             if k == 'next_uid' and doc['next']:
-                doc['next']['name'] = ''.join(name_result)
+                doc['next']['name'] = name_result
             elif k == 'prev_uid' and doc['previous']:
-                doc['previous']['name'] = ''.join(name_result)
+                doc['previous']['name'] = name_result
 
 
 class SegmentedSutta(Resource):

@@ -252,15 +252,6 @@ function getNavTypeByNavIndex(index) {
   return navTypes.get(index);
 }
 
-async function fetchMenuDataByUid(uid) {
-  const url = `${API_ROOT}/menu/${uid}`;
-  try {
-    return await (await fetch(url)).json();
-  } catch (e) {
-    return null;
-  }
-}
-
 export function setNavigation(navArray) {
   store.dispatch({
     type: 'SET_NAVIGATION',
@@ -275,27 +266,35 @@ export function setCurrentNavPosition(position) {
   });
 }
 
-async function genNavDetail(uid, navType, currentURL, navArray) {
-  const menuData = await fetchMenuDataByUid(uid);
-  if (!menuData || !menuData[0].uid) {
-    return;
-  }
-  const navIndexesOfType = navIndex.get(navType);
-  const acronym = navType === 'pitaka' ? menuData[0].acronym.toLowerCase() : menuData[0].acronym;
-  navArray[navIndexesOfType.index] = {
-    title: acronym || menuData[0].translated_name || menuData[0].root_name,
-    url: currentURL,
-    type: navType,
-    groupId: menuData[0].uid,
-    groupName: menuData[0].root_name,
-    position: navIndexesOfType.position,
-    navigationArrayLength: navIndexesOfType.navArrayLength,
-    displayPitaka: navType === 'pitaka',
-    displayParallels: navType === 'parallels',
-    displayVaggas: navType === 'vaggas',
-    displayVaggaChildren: navType === 'vagga',
-    displayVaggaChildrenChildren: navType === 'vaggaChildren',
-  };
+async function genNavDetail(uid, navType, currentURL) {
+  const navArray = store.getState().navigationArray;
+  const url = `${API_ROOT}/menu/${uid}?language=${store.getState().siteLanguage || 'en'}`;
+  fetch(url)
+    .then(r => r.json())
+    .then(menuData => {
+      if (!menuData || !menuData[0].uid) {
+        return;
+      }
+      const navIndexesOfType = navIndex.get(navType);
+      const acronym =
+        navType === 'pitaka' ? menuData[0].acronym.toLowerCase() : menuData[0].acronym;
+      navArray[navIndexesOfType.index] = {
+        title: acronym || menuData[0].translated_name || menuData[0].root_name,
+        url: currentURL,
+        type: navType,
+        groupId: menuData[0].uid,
+        groupName: menuData[0].root_name,
+        position: navIndexesOfType.position,
+        navigationArrayLength: navIndexesOfType.navArrayLength,
+        displayPitaka: navType === 'pitaka',
+        displayParallels: navType === 'parallels',
+        displayVaggas: navType === 'vaggas',
+        displayVaggaChildren: navType === 'vagga',
+        displayVaggaChildrenChildren: navType === 'vaggaChildren',
+      };
+      setNavigation(navArray);
+    })
+    .catch(e => console.error(e));
 }
 
 async function fetchSuttaFullPath(uid) {
@@ -306,7 +305,7 @@ async function fetchSuttaFullPath(uid) {
   }
 }
 
-export async function RefreshNav(uid) {
+export async function RefreshNav(uid, forceRefresh) {
   if (!uid) {
     return;
   }
@@ -324,7 +323,7 @@ export async function RefreshNav(uid) {
   ).length;
 
   const fatherLevelExists = currentNav.some(x => x !== null && x.groupId === URLs[URLs.length - 1]);
-  if (fatherLevelExists && navSuttaPathLength === truePathLength) {
+  if (fatherLevelExists && navSuttaPathLength === truePathLength && !forceRefresh) {
     return;
   }
 
@@ -338,8 +337,7 @@ export async function RefreshNav(uid) {
     if (index > 1) {
       const navType = getNavTypeByNavIndex(index);
       currentURL = `${currentURL}/${value}`;
-      await genNavDetail(value, navType, currentURL, currentNav);
+      await genNavDetail(value, navType, currentURL);
     }
   }
-  setNavigation(currentNav);
 }

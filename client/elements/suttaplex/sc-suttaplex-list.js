@@ -88,7 +88,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       const navArray = store.getState().navigationArray;
       const currentNav = navArray.find(x => x !== null && x.groupId === this.categoryId);
       if (!currentNav) {
-        RefreshNav(this.categoryId);
+        RefreshNav(this.categoryId, false);
       }
     }
 
@@ -199,11 +199,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           ></sc-bouncing-loader>
         </div>
 
-        ${this.hasError()
-          ? html`
-              <sc-error-icon type="no-network"></sc-error-icon>
-            `
-          : ''}
+        ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}
         ${this.suttaplexData &&
         repeat(
           this.suttaplexData,
