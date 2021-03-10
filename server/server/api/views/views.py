@@ -543,7 +543,7 @@ class Sutta(Resource):
             doc = result[k]
             if doc:
                 self.convert_paths_to_content(doc)
-                self.calculate_sutta_neighbors(uid, doc, k)
+                self.calculate_sutta_neighbors(uid, doc, k, lang)
 
         return result, 200
 
@@ -565,7 +565,7 @@ class Sutta(Resource):
                         doc[to_prop] = load_func(f)
 
     @staticmethod
-    def calculate_sutta_neighbors(uid, doc, textType):
+    def calculate_sutta_neighbors(uid, doc, textType, lang):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
         for i in range(1, 10):
@@ -589,7 +589,7 @@ class Sutta(Resource):
             is_root = True
 
         for k, v in sutta_prev_next.items():
-            name_results = db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'is_root': is_root})
+            name_results = db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': lang})
             name_result = list(name_results)
             if k == 'next_uid' and doc['next']:
                 doc['next']['name'] = ''.join(name_result)

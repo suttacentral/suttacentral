@@ -318,8 +318,13 @@ export async function RefreshNav(uid) {
   let currentURL = '/pitaka';
   const currentNav = store.getState().navigationArray;
 
+  const truePathLength = URLs.filter(x => x !== null && x !== '' && x !== 'pitaka').length;
+  const navSuttaPathLength = currentNav.filter(
+    x => x != null && x.groupId !== uid && x.type !== 'home'
+  ).length;
+
   const fatherLevelExists = currentNav.some(x => x !== null && x.groupId === URLs[URLs.length - 1]);
-  if (fatherLevelExists) {
+  if (fatherLevelExists && navSuttaPathLength === truePathLength) {
     return;
   }
 
