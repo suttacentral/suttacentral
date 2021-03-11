@@ -20,9 +20,9 @@ jobs:
       - name: Build
         run: |
           sudo apt-get update
-          sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
           sudo apt-get -y update
-          sudo apt-get install docker-ce
+          sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu \disco \stable"
+          sudo apt-get install docker-ce docker-ce-cli containerd.io
           sudo rm /usr/local/bin/docker-compose
           curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
           chmod +x docker-compose
