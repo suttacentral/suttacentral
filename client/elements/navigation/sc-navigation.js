@@ -41,7 +41,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
-    this._initPitakaCards({ dispatchState: true });
     this._parseURL();
   }
 
