@@ -643,10 +643,21 @@ RETURN neighbors
 '''
 
 SUTTA_NAME = '''
-FOR name IN names
-    FILTER name.uid == @uid AND name.is_root == @is_root
-    LIMIT 1
-    RETURN name.name
+LET translated_name = (
+    FOR name IN names
+        FILTER name.uid == @uid AND name.is_root == false AND name.lang == @lang
+        LIMIT 1
+        RETURN name.name
+)[0]
+
+LET root_name = (
+    FOR name IN names
+        FILTER name.uid == @uid AND name.is_root == true
+        LIMIT 1
+        RETURN name.name
+)[0]
+
+RETURN translated_name ? translated_name : root_name
 '''
 
 SEGMENTED_SUTTA_VIEW = '''
