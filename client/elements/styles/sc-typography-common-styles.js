@@ -309,7 +309,8 @@ export const typographyCommonStyles = css`
   }
 
   .endbook,
-  .endvagga {
+  .endvagga,
+  .endkanda {
     text-align: center;
     letter-spacing: var(--sc-caps-letter-spacing);
     text-transform: uppercase;

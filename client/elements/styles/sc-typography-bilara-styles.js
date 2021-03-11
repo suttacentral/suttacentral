@@ -200,6 +200,13 @@ export const typographyBilaraStyles = css`
     margin: 0 -0.25em;
   }
 
+  .highlight :not(.patimokkha) .rule {
+    outline: 2px dotted var(--sc-toast-error-color);
+    position: relative;
+    padding: 0 0.25em;
+    margin: 0 -0.25em;
+  }
+
   .highlight .suttanta {
     outline: 2px solid var(--sc-primary-color-light);
     position: relative;
@@ -217,7 +224,8 @@ export const typographyBilaraStyles = css`
   .highlight .patimokkha::before,
   .highlight .kamma::before,
   .highlight .suttanta::before,
-  .highlight .jataka::before {
+  .highlight .jataka::before,
+  .highlight :not(.patimokkha) .rule::before {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-s);
     font-weight: 400;
@@ -265,6 +273,10 @@ export const typographyBilaraStyles = css`
     content: 'This text is included in the patimokkha recitation';
   }
 
+  .highlight :not(.patimokkha) .rule::before {
+    content: 'This rule is not included in the patimokkha recitation';
+  }
+
   .highlight .kamma::before {
     content: 'This text is a formal legal statement of the Sangha';
   }
@@ -277,7 +289,8 @@ export const typographyBilaraStyles = css`
     content: 'This text is a story of the Buddha’s past lives (Jātaka)';
   }
 
-  .highlight :hover::before {
+  .highlight :hover::before,
+  .highlight :not(.patimokkha) .rule:hover::before {
     visibility: visible;
   }
 
