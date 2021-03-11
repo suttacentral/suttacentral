@@ -153,6 +153,20 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
     this.bilaraDataPath = '/files/bilara-data';
+    this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
+    this.authorUid = store.getState().currentRoute.params.authorUid;
+    this.suttaId = store.getState().currentRoute.params.suttaId;
+  }
+
+  firstUpdated() {
+    this._refreshData(true);
+  }
+
+  _refreshData(forceRefresh) {
+    this._paramChanged();
+    this.refreshing = true;
+    RefreshNav(this.suttaId, forceRefresh);
+    this.refreshing = false;
   }
 
   get actions() {
@@ -261,17 +275,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     if (state.currentRoute.params.suttaId !== this.suttaId && state.currentRoute.params.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
-      this._paramChanged();
-      this.refreshing = true;
-      RefreshNav(this.suttaId, false);
-      this.refreshing = false;
+      this._refreshData(false);
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
-      this._paramChanged();
-      this.refreshing = true;
-      RefreshNav(this.suttaId, true);
-      this.refreshing = false;
+      this._refreshData(true);
     }
   }
 
