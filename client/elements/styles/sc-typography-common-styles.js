@@ -16,7 +16,7 @@ export const typographyCommonStyles = css`
     justify-content: center;
   }
 
-  article {
+  div > article {
     margin: 0 3vw;
   }
 
@@ -309,7 +309,8 @@ export const typographyCommonStyles = css`
   }
 
   .endbook,
-  .endvagga {
+  .endvagga,
+  .endkanda {
     text-align: center;
     letter-spacing: var(--sc-caps-letter-spacing);
     text-transform: uppercase;
