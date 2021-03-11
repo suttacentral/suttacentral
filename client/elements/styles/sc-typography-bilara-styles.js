@@ -193,7 +193,7 @@ export const typographyBilaraStyles = css`
     margin: 0 -0.25em;
   }
 
-  .highlight .patimokkha {
+  .highlight .patimokkha p {
     outline: 2px solid var(--sc-toast-error-color);
     position: relative;
     padding: 0 0.25em;
@@ -221,11 +221,11 @@ export const typographyBilaraStyles = css`
     margin: 0 -0.25em;
   }
 
-  .highlight .patimokkha::before,
+  .highlight .patimokkha p::before,
+  .highlight :not(.patimokkha) .rule::before,
   .highlight .kamma::before,
   .highlight .suttanta::before,
-  .highlight .jataka::before,
-  .highlight :not(.patimokkha) .rule::before {
+  .highlight .jataka::before {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-skolar-font-size-s);
     font-weight: 400;
@@ -269,7 +269,7 @@ export const typographyBilaraStyles = css`
     box-shadow: var(--sc-shadow-elevation-8dp);
   }
 
-  .highlight .patimokkha::before {
+  .highlight .patimokkha p::before {
     content: 'This text is included in the patimokkha recitation';
   }
 
@@ -290,6 +290,7 @@ export const typographyBilaraStyles = css`
   }
 
   .highlight :hover::before,
+  .highlight .patimokkha p:hover::before,
   .highlight :not(.patimokkha) .rule:hover::before {
     visibility: visible;
   }
@@ -305,7 +306,7 @@ export const typographyBilaraStyles = css`
   }
 
   .pe {
-    color: var(--sc-secondary-text-color);
+    font-style: italic;
   }
 
   .anunidana {
