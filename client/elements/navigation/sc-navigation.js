@@ -243,60 +243,40 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.compactStyles = this.isCompactMode ? navigationCompactModeStyles : null;
   }
 
-  async _fetchMainData() {
+  _fetchMainData() {
     this.loading = true;
-    await this._fetchTipitakaData();
-    await this._fetchPitakaData();
+    this._fetchTipitakaData();
     this.loading = false;
   }
 
-  async _fetchTipitakaData() {
-    try {
-      // if (!this.navDataCache) {
-      //   this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-      // }
-      // if (this.navDataCache.has('tipitakaData')) {
-      //   this.tipitakaData = this.navDataCache.get('tipitakaData');
-      // } else {
-      //   this.tipitakaData = await (await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)).json();
-      //   this._updateNavDataCache('tipitakaData', this.tipitakaData);
-      // }
-      this.tipitakaData = await (
-        await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
-      ).json();
-    } catch (e) {
-      this.lastError = e;
-    }
-  }
-
-  async _fetchPitakaData(params) {
-    if (!this.tipitakaData) {
-      await this._fetchTipitakaData();
-    }
-    this.pitakaData = this.tipitakaData.find(x => {
-      return x.uid === this.pitakaUid;
-    });
+  _fetchTipitakaData() {
+    const url = `${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`;
+    fetch(url)
+      .then(r => r.json())
+      .then(menuData => {
+        this.tipitakaData = menuData;
+        this.pitakaData = this.tipitakaData.find(x => x.uid === this.pitakaUid);
+      })
+      .catch(e => console.error(e));
   }
 
   async _fetchChildrenData(childId) {
     const url = `${API_ROOT}/menu/${childId}?language=${this.siteLanguage || 'en'}`;
     try {
-      // if (!this.navDataCache) {
-      //   this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-      // }
-      // if (this.navDataCache.has(url)) {
-      //   return this.navDataCache.get(url);
-      // } else {
-      //   const childrenData = await (await fetch(url)).json();
-      //   this._updateNavDataCache(url, childrenData);
-      //   return childrenData;
-      // }
       const childrenData = await (await fetch(url)).json();
       return childrenData;
     } catch (e) {
       this.lastError = e;
       return {};
     }
+
+    // const url = `${API_ROOT}/menu/${childId}?language=${this.siteLanguage || 'en'}`;
+    // fetch(url)
+    //   .then(r => r.json())
+    //   .then(menuData => {
+    //     return menuData;
+    //   })
+    //   .catch(e => console.error(e));
   }
 
   _updateNavDataCache(url, data) {
@@ -436,6 +416,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.parallelsData[0].uid;
       this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
       this._setCurrentURL(params.childId);
+      this.requestUpdate();
     }
   }
 

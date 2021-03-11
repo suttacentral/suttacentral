@@ -67,20 +67,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
       ['vinaya', '/vinaya'],
       ['abhidhamma', '/abhidhamma'],
     ]);
-    this.tipitakaBlurb = new Map([
-      [
-        'sutta',
-        'The Buddha’s teachings on meditation, morality, the nature of the world, and the path to freedom. These scriptures are our primary sources for the historical Buddha’s life and practice. They depict the Buddha and his students in lively conversation with a diverse range of people.',
-      ],
-      [
-        'vinaya',
-        'The texts on Monastic Law (vinaya) detail the lifestyle, rules, and procedures for Buddhist monks and nuns. They provide the guidelines for Buddhist monastics to this day, and in addition, paint a detailed and vivid picture of everyday life in ancient India.',
-      ],
-      [
-        'abhidhamma',
-        'Abhidhamma texts are systematic summaries and analyses of the teachings drawn from the earlier discourses. The Abhidhamma (spelled abhidharma in Sanskrit) is intended for advanced students who have mastered the teachings of the discourses.',
-      ],
-    ]);
     this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
   }
 
@@ -138,9 +124,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
                     </header>
                   </a>
                   <div class="nav-card-content">
-                    <div class="blurb" id="${item.root_name}_blurb">
-                      ${this.tipitakaBlurb.get(item.uid)}
-                    </div>
+                    <div class="blurb" id="${item.root_name}_blurb">${item.blurb}</div>
                     <a class="essay-link" href="${this.tipitakaGuide.get(item.uid)}">
                       <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
                     </a>
@@ -154,9 +138,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
   }
 
   render() {
-    return html`
-      ${this.currentStyles} ${this.compactStyles} ${this.tipitakaCardTemplate}
-    `;
+    return html` ${this.currentStyles} ${this.compactStyles} ${this.tipitakaCardTemplate} `;
   }
 }
 

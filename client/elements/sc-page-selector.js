@@ -360,9 +360,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   render() {
     return this.routeDefinition
-      ? html`
-          <div class="container">${this.routeDefinition.content}</div>
-        `
+      ? html` <div class="container">${this.routeDefinition.content}</div> `
       : html`
           <div class="page-not-found-container">
             <h2>${this.localize('error404')}</h2>
@@ -481,6 +479,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
       case 'HOME':
         this.actions.changeToolbarTitle('SuttaCentral');
         break;
+      case 'NAVIGATION':
+        return;
+      case 'SUTTAPLEX':
+        return;
       default:
         const key = `${this.currentRoute.name}-TITLE`;
         if (this.__resources[key]) {
