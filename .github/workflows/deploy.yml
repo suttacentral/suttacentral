@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: |
           make prepare-tests
-          docker wait sc-frontend
+          # docker wait sc-frontend
           docker-compose logs
           docker ps
 
