@@ -385,10 +385,10 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
     )[0]
 
     LET original_titles = (
-        FOR original_name IN names
-            FILTER original_name.uid == v.uid
+        FOR nav_item IN super_nav_details
+            FILTER nav_item.uid == v.uid
             LIMIT 1
-            RETURN original_name.name
+            RETURN nav_item.name
     )[0]
 
     RETURN {
