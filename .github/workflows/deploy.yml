@@ -17,8 +17,5 @@ jobs:
       - name: Checkout master repo
         uses: actions/checkout@v2
 
-      - name: Build
-        run: source ./ci/before_install.sh
-
-      - name: Test
-        run: source ./ci/test.sh
+      - name: apt update
+        run: sudo apt-get update
