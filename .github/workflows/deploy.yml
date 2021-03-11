@@ -20,6 +20,7 @@ jobs:
       - name: Build
         run: |
           sudo apt-get update
+          sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
           sudo apt-get -y update
           sudo apt-get install docker-ce
           sudo rm /usr/local/bin/docker-compose
