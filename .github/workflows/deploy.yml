@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ master ]
 
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,14 +21,7 @@ jobs:
 
       - name: Build
         run: |
-          sudo apt-get update
-          sudo apt-get -y update
-          sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu \disco \stable"
-          sudo apt-get install docker-ce docker-ce-cli containerd.io
-          sudo rm /usr/local/bin/docker-compose
-          curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-          chmod +x docker-compose
-          sudo mv docker-compose /usr/local/bin
+          using: 'docker'
           make prepare-tests
           docker wait sc-frontend
           docker-compose logs
