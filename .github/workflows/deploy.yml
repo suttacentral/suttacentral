@@ -19,13 +19,16 @@ jobs:
       - name: Checkout master repo
         uses: actions/checkout@v2
 
-      - name: Build
+      - name: Initialize docker
+        uses: docker-practice/actions-setup-docker@master
+        
+      - name: Build  
         run: |
-          using: 'docker'
           make prepare-tests
           docker wait sc-frontend
           docker-compose logs
           docker ps
+
       - name: Test
         run: make test
        
