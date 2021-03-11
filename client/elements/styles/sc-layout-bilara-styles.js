@@ -528,19 +528,19 @@ export const hideAsterisk = html`
 
 export const showAsterisk = html`
   <style>
-    .comment:before,
-    .variant:before {
+    .comment::before,
+    .variant::before {
       line-height: 1;
 
       content: '*';
       vertical-align: super;
     }
 
-    .comment:before {
+    .comment::before {
       color: var(--sc-primary-accent-color);
     }
 
-    .variant:before {
+    .variant::before {
       color: var(--sc-secondary-accent-color);
     }
   </style>
