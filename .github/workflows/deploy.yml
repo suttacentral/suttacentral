@@ -12,9 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      DOCKER_COMPOSE_VERSION: 1.15.0
-
     steps:
       - name: Checkout master repo
         uses: actions/checkout@v2
@@ -22,7 +19,7 @@ jobs:
       - name: Initialize docker
         uses: docker-practice/actions-setup-docker@master
         
-      - name: Build  
+      - name: Build
         run: |
           make prepare-tests
           docker wait sc-frontend
