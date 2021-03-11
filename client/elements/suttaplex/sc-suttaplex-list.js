@@ -45,6 +45,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
+    this.siteLanguage = store.getState().siteLanguage;
   }
 
   isSuttaplex(item) {
@@ -80,16 +81,22 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    if (this.categoryId !== state.currentRoute.params.categoryId) {
+    if (
+      this.categoryId !== state.currentRoute.params.categoryId ||
+      this.siteLanguage !== state.siteLanguage
+    ) {
       this.categoryId = state.currentRoute.params.categoryId;
       if (this.categoryId && state.siteLanguage) {
         this._fetchCategory();
       }
-      const navArray = store.getState().navigationArray;
-      const currentNav = navArray.find(x => x !== null && x.groupId === this.categoryId);
-      if (!currentNav) {
-        RefreshNav(this.categoryId);
+
+      let forceRefresh = false;
+      if (this.siteLanguage !== state.siteLanguage) {
+        this.siteLanguage = state.siteLanguage;
+        forceRefresh = true;
       }
+
+      RefreshNav(this.categoryId, true);
     }
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
@@ -199,11 +206,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           ></sc-bouncing-loader>
         </div>
 
-        ${this.hasError()
-          ? html`
-              <sc-error-icon type="no-network"></sc-error-icon>
-            `
-          : ''}
+        ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}
         ${this.suttaplexData &&
         repeat(
           this.suttaplexData,
