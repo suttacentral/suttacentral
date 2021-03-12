@@ -290,7 +290,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <div class="menu-item-wrapper">${icon.forum} ${this.localize('Discuss')}</div>
         </mwc-list-item>
       </a>
-
       <a
         class="more-menu-link"
         href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
