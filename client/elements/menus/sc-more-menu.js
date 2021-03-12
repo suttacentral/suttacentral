@@ -3,8 +3,8 @@ import { store } from '../../redux-store.js';
 import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js';
 
-import '@material/mwc-switch';
 import '@material/mwc-list/mwc-list-item';
+import '@material/mwc-list/mwc-check-list-item.js';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
@@ -18,7 +18,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       :host {
         font-family: var(--sc-sans-font);
         font-weight: 500;
-        --mdc-list-side-padding: 0px
+        --mdc-list-side-padding: 0px;
       }
 
       .more-menu-link {
@@ -35,26 +35,22 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         color: var(--sc-primary-text-color);
       }
 
-
+      mwc-check-list-item {
+        --mdc-list-side-padding: 8px;
+        --mdc-list-item-graphic-margin: 8px;
+      }
 
       #language_menu:after {
         content: '   ';
       }
 
-      [role="separator"] {
+      [role='separator'] {
         background-color: var(--sc-border-color);
         width: 100%;
         overflow: hidden;
         height: 1px;
         margin-top: var(--sc-size-xxs);
         margin-bottom: var(--sc-size-xxs);
-      }
-
-      mwc-switch {
-        padding: 4px;
-        margin: 0 2px 0 -6px;
-        --mdc-theme-surface: var(--sc-tertiary-background-color);
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
 
       .chevron_right {
@@ -81,7 +77,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         display: flex;
         align-items: end;
         padding: 100% 16px;
-}
       }
     `;
   }
@@ -167,7 +162,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
   _initializeListeners() {
     const themeTogglerElement = this.shadowRoot.getElementById('theme_toggler');
     if (themeTogglerElement) {
-      themeTogglerElement.addEventListener('change', () => {
+      themeTogglerElement.addEventListener('request-selected', () => {
         const newTheme = this.darkThemeChosen ? 'light' : 'dark';
         this.actions.changeAppTheme(newTheme);
       });
@@ -177,7 +172,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       'alwaysShowToolbar_toggler'
     );
     if (alwaysShowToolbarTogglerElement) {
-      alwaysShowToolbarTogglerElement.addEventListener('change', () => {
+      alwaysShowToolbarTogglerElement.addEventListener('request-selected', () => {
         this.actions.changeAlwaysShowToolbarState(alwaysShowToolbarTogglerElement.checked);
       });
     }
@@ -221,21 +216,22 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <div class="menu-item-wrapper">${icon.offline_bolt} ${this.localize('UseOffline')}</div>
         </mwc-list-item>
       </a>
-      <mwc-list-item class="more-menu-mwc-list-item switch-item ">
-        <div class="menu-item-wrapper">
-          <mwc-switch id="theme_toggler" ?checked="${this.darkThemeChosen}"></mwc-switch>
-          ${this.localize('DarkTheme')}
-        </div>
-      </mwc-list-item>
-      <mwc-list-item class="more-menu-mwc-list-item switch-item ">
-        <div class="menu-item-wrapper">
-          <mwc-switch
-            id="alwaysShowToolbar_toggler"
-            ?checked="${this.alwaysShowUniversalToolbar}"
-          ></mwc-switch>
-          ${this.localize('AlwaysShowToolbar')}
-        </div>
-      </mwc-list-item>
+      <mwc-check-list-item
+        class="more-menu-mwc-list-item"
+        id="theme_toggler"
+        left
+        ?selected="${this.darkThemeChosen}"
+      >
+        ${this.localize('DarkTheme')}
+      </mwc-check-list-item>
+      <mwc-check-list-item
+        class="more-menu-mwc-list-item"
+        id="alwaysShowToolbar_toggler"
+        left
+        ?selected="${this.alwaysShowUniversalToolbar}"
+      >
+        ${this.localize('AlwaysShowToolbar')}
+      </mwc-check-list-item>
       <a class="more-menu-link" href="/downloads">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
