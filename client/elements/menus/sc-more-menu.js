@@ -19,6 +19,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         font-family: var(--sc-sans-font);
         font-weight: 500;
         --mdc-list-side-padding: 0px;
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
 
       .more-menu-link {
@@ -38,10 +39,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
       mwc-check-list-item {
         --mdc-list-side-padding: 8px;
         --mdc-list-item-graphic-margin: 8px;
-      }
-
-      #language_menu:after {
-        content: '   ';
+        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
       }
 
       [role='separator'] {
