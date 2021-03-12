@@ -151,8 +151,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return this.localize(title);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
+  updated() {
     if (!this.languageIsVisible) {
       this._initializeListeners();
     }
