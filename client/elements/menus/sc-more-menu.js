@@ -153,35 +153,28 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return this.localize(title);
   }
 
-  updated() {
+  connectedCallback() {
+    super.connectedCallback();
     if (!this.languageIsVisible) {
       this._initializeListeners();
     }
   }
 
   _initializeListeners() {
-    const themeTogglerElement = this.shadowRoot.getElementById('theme_toggler');
-    if (themeTogglerElement) {
-      themeTogglerElement.addEventListener('request-selected', () => {
-        const newTheme = this.darkThemeChosen ? 'light' : 'dark';
-        this.actions.changeAppTheme(newTheme);
-      });
-    }
-
-    const alwaysShowToolbarTogglerElement = this.shadowRoot.getElementById(
-      'alwaysShowToolbar_toggler'
-    );
-    if (alwaysShowToolbarTogglerElement) {
-      alwaysShowToolbarTogglerElement.addEventListener('request-selected', () => {
-        this.actions.changeAlwaysShowToolbarState(alwaysShowToolbarTogglerElement.checked);
-      });
-    }
-
     this.shadowRoot.querySelectorAll('.more-menu-link').forEach(e => {
       e.addEventListener('click', () => {
         dispatchCustomEvent(this, 'item-selected');
       });
     });
+  }
+
+  _onThemeChanged() {
+    const newTheme = this.darkThemeChosen ? 'light' : 'dark';
+    this.actions.changeAppTheme(newTheme);
+  }
+
+  _onToolbarDisplayModeChanged(e) {
+    this.actions.changeAlwaysShowToolbarState(!e.target.selected);
   }
 
   _showLanguageMenu() {
@@ -221,6 +214,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         id="theme_toggler"
         left
         ?selected="${this.darkThemeChosen}"
+        @request-selected="${this._onThemeChanged}"
       >
         ${this.localize('DarkTheme')}
       </mwc-check-list-item>
@@ -229,6 +223,7 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         id="alwaysShowToolbar_toggler"
         left
         ?selected="${this.alwaysShowUniversalToolbar}"
+        @request-selected="${this._onToolbarDisplayModeChanged}"
       >
         ${this.localize('AlwaysShowToolbar')}
       </mwc-check-list-item>
