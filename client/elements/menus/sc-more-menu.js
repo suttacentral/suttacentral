@@ -206,24 +206,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <div class="menu-item-wrapper">${icon.offline_bolt} ${this.localize('UseOffline')}</div>
         </mwc-list-item>
       </a>
-      <mwc-check-list-item
-        class="more-menu-mwc-list-item"
-        id="theme_toggler"
-        left
-        ?selected="${this.darkThemeChosen}"
-        @request-selected="${this._onThemeChanged}"
-      >
-        ${this.localize('DarkTheme')}
-      </mwc-check-list-item>
-      <mwc-check-list-item
-        class="more-menu-mwc-list-item"
-        id="alwaysShowToolbar_toggler"
-        left
-        ?selected="${this.alwaysShowUniversalToolbar}"
-        @request-selected="${this._onToolbarDisplayModeChanged}"
-      >
-        ${this.localize('AlwaysShowToolbar')}
-      </mwc-check-list-item>
       <a class="more-menu-link" href="/downloads">
         <mwc-list-item class="more-menu-mwc-list-item">
           <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
@@ -270,6 +252,25 @@ class SCMoreMenu extends LitLocalized(LitElement) {
           <div class="menu-item-wrapper">${icon.info_outline} ${this.localize('About')}</div>
         </mwc-list-item>
       </a>
+      <li divider role="separator"></li>
+      <mwc-check-list-item
+        class="more-menu-mwc-list-item"
+        id="theme_toggler"
+        left
+        ?selected="${this.darkThemeChosen}"
+        @request-selected="${this._onThemeChanged}"
+      >
+        ${this.localize('DarkTheme')}
+      </mwc-check-list-item>
+      <mwc-check-list-item
+        class="more-menu-mwc-list-item"
+        id="alwaysShowToolbar_toggler"
+        left
+        ?selected="${this.alwaysShowUniversalToolbar}"
+        @request-selected="${this._onToolbarDisplayModeChanged}"
+      >
+        ${this.localize('AlwaysShowToolbar')}
+      </mwc-check-list-item>
       <li divider role="separator"></li>
       <a
         class="more-menu-link"
