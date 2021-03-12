@@ -4,7 +4,7 @@ import './sc-language-base-menu.js';
 import { LitLocalized } from '../addons/localization-mixin.js';
 
 import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-list/mwc-check-list-item.js';
+import '@material/mwc-list/mwc-check-list-item';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
