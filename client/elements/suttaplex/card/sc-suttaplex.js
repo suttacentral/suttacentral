@@ -305,7 +305,11 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         <div>
           ${this.rootTexts.map(
             translation => html`
-              <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
+              <sc-suttaplex-tx
+                .item="${this.item}"
+                .translation="${translation}"
+                .isRoot="${true}"
+              ></sc-suttaplex-tx>
             `
           )}
         </div>
@@ -348,17 +352,17 @@ class SCSuttaplex extends LitLocalized(LitElement) {
 
     return html`
       <details
-        class="section-details" 
+        class="section-details"
         ?open="${this.parallelsOpened}"
         @toggle="${e => (this.parallelsOpened = e.target.open)}"
       >
         <summary>
           <h3>
-            <b>${this.localize(translationKey, { count: this.item.parallel_count })}</b> 
+            <b>${this.localize(translationKey, { count: this.item.parallel_count })}</b>
             ${this.localize('inAncientTexts')}
           </h3>
         </summary>
-        
+
         ${
           this.areParallelsAvailable
             ? html`
@@ -371,7 +375,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
               `
             : ''
         }
-        
+
         ${
           !this.item.parallel_count
             ? html`
