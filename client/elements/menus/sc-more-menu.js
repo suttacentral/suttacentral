@@ -165,13 +165,19 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     });
   }
 
-  _onThemeChanged() {
-    const newTheme = this.darkThemeChosen ? 'light' : 'dark';
-    this.actions.changeAppTheme(newTheme);
+  _onThemeChanged(e) {
+    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+    chk.addEventListener('change', () => {
+      const newTheme = chk.checked ? 'dark' : 'light';
+      this.actions.changeAppTheme(newTheme);
+    });
   }
 
   _onToolbarDisplayModeChanged(e) {
-    this.actions.changeAlwaysShowToolbarState(!e.target.selected);
+    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+    chk.addEventListener('change', () => {
+      this.actions.changeAlwaysShowToolbarState(chk.checked);
+    });
   }
 
   _showLanguageMenu() {
