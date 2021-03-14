@@ -167,17 +167,12 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   _onThemeChanged(e) {
     const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
-    chk.addEventListener('change', () => {
-      const newTheme = chk.checked ? 'dark' : 'light';
-      this.actions.changeAppTheme(newTheme);
-    });
+    this.actions.changeAppTheme(chk.checked ? 'dark' : 'light');
   }
 
   _onToolbarDisplayModeChanged(e) {
     const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
-    chk.addEventListener('change', () => {
-      this.actions.changeAlwaysShowToolbarState(chk.checked);
-    });
+    this.actions.changeAlwaysShowToolbarState(chk.checked);
   }
 
   _showLanguageMenu() {
@@ -190,115 +185,117 @@ class SCMoreMenu extends LitLocalized(LitElement) {
 
   _renderMoreMenu() {
     return html`
-      <mwc-list-item
-        class="more-menu-mwc-list-item language-choice-box"
-        @click="${this._showLanguageMenu}"
-      >
-        <div class="menu-item-wrapper">
-          ${icon.language}
-          <div id="language-wrapper">
-            <span id="language-text-wrapper">${this._displayCurrentSiteLanguage()}</span>
-            ${icon.chevron_right}
-          </div>
-        </div>
-      </mwc-list-item>
-      <a class="more-menu-link" href="/donations">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.pray} ${this.localize('Donations')}</div>
-        </mwc-list-item>
-      </a>
-      <a class="more-menu-link" href="/offline">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.offline_bolt} ${this.localize('UseOffline')}</div>
-        </mwc-list-item>
-      </a>
-      <mwc-check-list-item
-        class="more-menu-mwc-list-item"
-        id="theme_toggler"
-        left
-        ?selected="${this.darkThemeChosen}"
-        @request-selected="${this._onThemeChanged}"
-      >
-        ${this.localize('DarkTheme')}
-      </mwc-check-list-item>
-      <mwc-check-list-item
-        class="more-menu-mwc-list-item"
-        id="alwaysShowToolbar_toggler"
-        left
-        ?selected="${this.alwaysShowUniversalToolbar}"
-        @request-selected="${this._onToolbarDisplayModeChanged}"
-      >
-        ${this.localize('AlwaysShowToolbar')}
-      </mwc-check-list-item>
-      <a class="more-menu-link" href="/downloads">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
-        </mwc-list-item>
-      </a>
-      <a class="more-menu-link" href="/languages">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.translate} ${this.localize('Languages')}</div>
-        </mwc-list-item>
-      </a>
-      <li divider role="separator"></li>
-      <a class="more-menu-link" href="/numbering">
-        <mwc-list-item class="more-menu-mwc-list-item">
+      <mwc-list multi>
+        <mwc-list-item
+          class="more-menu-mwc-list-item language-choice-box"
+          @click="${this._showLanguageMenu}"
+        >
           <div class="menu-item-wrapper">
-            ${icon.format_list_numbered} ${this.localize('Numbering')}
+            ${icon.language}
+            <div id="language-wrapper">
+              <span id="language-text-wrapper">${this._displayCurrentSiteLanguage()}</span>
+              ${icon.chevron_right}
+            </div>
           </div>
         </mwc-list-item>
-      </a>
-      <a class="more-menu-link" href="/abbreviations">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">
-            ${icon.abbreviations} ${this.localize('Abbreviations')}
-          </div>
-        </mwc-list-item>
-      </a>
-      <a class="more-menu-link" href="/methodology">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.school} ${this.localize('Methodology')}</div>
-        </mwc-list-item>
-      </a>
-      <li divider role="separator"></li>
-      <a class="more-menu-link" href="/acknowledgments">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.people} ${this.localize('Acknowledgments')}</div>
-        </mwc-list-item>
-      </a>
-      <a class="more-menu-link" href="/licensing">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.copyright} ${this.localize('Licensing')}</div>
-        </mwc-list-item>
-      </a>
-      <a class="more-menu-link" href="/about">
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.info_outline} ${this.localize('About')}</div>
-        </mwc-list-item>
-      </a>
-      <li divider role="separator"></li>
-      <a
-        class="more-menu-link"
-        href="${this.getDiscourseUrl(this.routeName)}"
-        title="${this.getDiscourseTitle(this.routeName)}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.forum} ${this.localize('Discuss')}</div>
-        </mwc-list-item>
-      </a>
-      <a
-        class="more-menu-link"
-        href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
-        title="Listen to suttas"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <mwc-list-item class="more-menu-mwc-list-item">
-          <div class="menu-item-wrapper">${icon.speaker} ${this.localize('Voice')}</div>
-        </mwc-list-item>
-      </a>
+        <a class="more-menu-link" href="/donations">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.pray} ${this.localize('Donations')}</div>
+          </mwc-list-item>
+        </a>
+        <a class="more-menu-link" href="/offline">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.offline_bolt} ${this.localize('UseOffline')}</div>
+          </mwc-list-item>
+        </a>
+        <mwc-check-list-item
+          class="more-menu-mwc-list-item"
+          id="theme_toggler"
+          left
+          ?selected="${this.darkThemeChosen}"
+          @request-selected="${this._onThemeChanged}"
+        >
+          ${this.localize('DarkTheme')}
+        </mwc-check-list-item>
+        <mwc-check-list-item
+          class="more-menu-mwc-list-item"
+          id="alwaysShowToolbar_toggler"
+          left
+          ?selected="${this.alwaysShowUniversalToolbar}"
+          @request-selected="${this._onToolbarDisplayModeChanged}"
+        >
+          ${this.localize('AlwaysShowToolbar')}
+        </mwc-check-list-item>
+        <a class="more-menu-link" href="/downloads">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
+          </mwc-list-item>
+        </a>
+        <a class="more-menu-link" href="/languages">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.translate} ${this.localize('Languages')}</div>
+          </mwc-list-item>
+        </a>
+        <li divider role="separator"></li>
+        <a class="more-menu-link" href="/numbering">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">
+              ${icon.format_list_numbered} ${this.localize('Numbering')}
+            </div>
+          </mwc-list-item>
+        </a>
+        <a class="more-menu-link" href="/abbreviations">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">
+              ${icon.abbreviations} ${this.localize('Abbreviations')}
+            </div>
+          </mwc-list-item>
+        </a>
+        <a class="more-menu-link" href="/methodology">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.school} ${this.localize('Methodology')}</div>
+          </mwc-list-item>
+        </a>
+        <li divider role="separator"></li>
+        <a class="more-menu-link" href="/acknowledgments">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.people} ${this.localize('Acknowledgments')}</div>
+          </mwc-list-item>
+        </a>
+        <a class="more-menu-link" href="/licensing">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.copyright} ${this.localize('Licensing')}</div>
+          </mwc-list-item>
+        </a>
+        <a class="more-menu-link" href="/about">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.info_outline} ${this.localize('About')}</div>
+          </mwc-list-item>
+        </a>
+        <li divider role="separator"></li>
+        <a
+          class="more-menu-link"
+          href="${this.getDiscourseUrl(this.routeName)}"
+          title="${this.getDiscourseTitle(this.routeName)}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.forum} ${this.localize('Discuss')}</div>
+          </mwc-list-item>
+        </a>
+        <a
+          class="more-menu-link"
+          href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
+          title="Listen to suttas"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.speaker} ${this.localize('Voice')}</div>
+          </mwc-list-item>
+        </a>
+      </mwc-list>
     `;
   }
 
