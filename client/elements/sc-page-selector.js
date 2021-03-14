@@ -10,7 +10,7 @@ const isoCodes = [
   'he', 'id', 'it', 'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt',
   'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct', 'xto', 'vn', 'uig',
   'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh',
-  'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl', 'jpn', 'vi', 'bn'
+  'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl', 'jpn', 'vi', 'bn', 'zz'
 ]
 
 const staticPages = [
@@ -147,6 +147,11 @@ const routes = {
     content: html`<sc-languages-page />`,
     loader: () => import('./static/languages-page.js')
   },
+  'LANGUAGES-DETAIL': {
+    path: '/languages/:langIsoCode',
+    content: html`<sc-languages-page />`,
+    loader: () => import('./static/languages-page.js')
+  },
   'LICENSING': {
     path: '/licensing',
     content: html`<sc-licensing-page />`,
@@ -208,8 +213,7 @@ const routes = {
     loader: () => import('./static/vinaya-page.js')
   },
   'SUTTA': {
-    /* TODO: Maybe we don't need iso codes checked here? */
-    path: `/:suttaId/:langIsoCode(${isoCodes.join('|')})/:authorUid`,
+    path: `/:suttaId/:langIsoCode/:authorUid`,
     loader: () => import('./text/sc-text-page-selector.js'),
     content: html`<sc-text-page-selector />`
   },
