@@ -567,7 +567,7 @@ class SCHomePage extends SCStaticPage {
                 <source srcset="/img/home-page/pali1.avif" type="image/avif" />
                 <img src="/img/home-page/pali1.jpg" alt="Pali manuscript" style="width:100%" />
               </picture>
-              <figcaption>Palm leaf (ola) manuscript from Sri Lanka</figcaption>
+              <figcaption>Palm leaf (ola) manuscript from Myanmar, ca. 19th century</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
