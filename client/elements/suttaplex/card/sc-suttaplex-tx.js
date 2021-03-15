@@ -1,6 +1,6 @@
-import { html, LitElement, svg } from 'lit-element';
+import { html, LitElement } from 'lit-element';
 import { icon } from '../../../img/sc-icon';
-import '../../menus/sc-suttaplex-share-menu.js';
+import '../../menus/sc-suttaplex-share-menu';
 import { suttaplexTxCss } from './sc-suttaplex-css';
 
 class SCSuttaplexTx extends LitElement {
@@ -9,6 +9,7 @@ class SCSuttaplexTx extends LitElement {
       item: Object,
       translation: Object,
       isCompact: Boolean,
+      isRoot: Boolean,
     };
   }
 
@@ -25,8 +26,11 @@ class SCSuttaplexTx extends LitElement {
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
           <span class="tx-publication">
-            ${this.translation.lang_name}
-            ${this.translation.segmented && this.translation.lang_name !== 'Pāli' ? '& Pāli' : ''}
+            ${this.isRoot ? this.item.root_lang_name : ''}
+            ${!this.isRoot && this.translation.segmented
+              ? `${this.translation.lang_name} & ${this.item.root_lang_name}`
+              : ''}
+            ${!this.isRoot && !this.translation.segmented ? this.translation.lang_name : ''}
             ${this.translation.publication_date ? +this.translation.publication_date : ''}
           </span>
         </div>
