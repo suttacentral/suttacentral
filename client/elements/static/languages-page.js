@@ -1,13 +1,14 @@
 import { html } from 'lit-element';
 
-import { until } from 'lit-html/directives/until.js';
 import '../addons/sc-bouncing-loader';
-import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
-import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
-import { typographyStaticStyles } from '../styles/sc-typography-static-styles.js';
-import { SCStaticPage } from '../addons/sc-static-page.js';
-import { API_ROOT } from '../../constants.js';
-import '../addons/sc-pie-chart.js';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
+import { SCStaticPage } from '../addons/sc-static-page';
+import { API_ROOT } from '../../constants';
+import '../addons/sc-pie-chart';
+import { store } from '../../redux-store';
+import { navIndex, setNavigation, setCurrentNavPosition } from '../navigation/sc-navigation-common';
 
 class SCLanguagesPage extends SCStaticPage {
   static get properties() {
@@ -47,12 +48,38 @@ class SCLanguagesPage extends SCStaticPage {
     return true;
   }
 
+  _updateNav(fullLangName) {
+    const navIndexesOfType = navIndex.get('languageDetail');
+    const navArray = store.getState().navigationArray;
+    const currentPath = store.getState().currentRoute.path;
+    navArray[navIndexesOfType.index] = {
+      title: fullLangName,
+      url: `${currentPath}/{this.selectedLanguage}`,
+      type: 'LanguageDetailPage',
+    };
+    setNavigation(navArray);
+    setCurrentNavPosition(navIndex.navArrayLength);
+    this.actions.changeToolbarTitle('Languages on SuttaCentral');
+  }
+
+  get actions() {
+    return {
+      changeToolbarTitle(title) {
+        store.dispatch({
+          type: 'CHANGE_TOOLBAR_TITLE',
+          title: title,
+        });
+      },
+    };
+  }
+
   findLanguage(code) {
     return [...this.languages.ancient, ...this.languages.modern].find(l => l.iso_code === code);
   }
 
   get languageTemplate() {
     const { name, percent } = this.findLanguage(this.selectedLanguage);
+    this._updateNav(name);
     let rootLanguages = [];
 
     if (this.languageData) {
@@ -66,7 +93,7 @@ class SCLanguagesPage extends SCStaticPage {
       });
 
       let hash = {};
-      rootLanguages = this.languageData.division.reduce(function (item, next) {
+      rootLanguages = this.languageData.division.reduce((item, next) => {
         hash[next.rootLanguageFullName]
           ? ''
           : (hash[next.rootLanguageFullName] = true && item.push(next.rootLanguageFullName));
@@ -77,11 +104,7 @@ class SCLanguagesPage extends SCStaticPage {
     const list = (title, names) => html`
       <h2>${this.localize(title)}</h2>
       <ul>
-        ${names.map(
-          item => html`
-            <li>${item.name} (${item.total})</li>
-          `
-        )}
+        ${names.map(item => html` <li>${item.name} (${item.total})</li> `)}
       </ul>
     `;
 
@@ -92,11 +115,7 @@ class SCLanguagesPage extends SCStaticPage {
           <ul>
             ${this.languageData.division
               .filter(rootItem => rootItem.rootLanguageFullName === rootLang)
-              .map(
-                item => html`
-                  <li>${item.name} (${item.total})</li>
-                `
-              )}
+              .map(item => html` <li>${item.name} (${item.total})</li> `)}
           </ul>
         `
       )}
@@ -118,13 +137,9 @@ class SCLanguagesPage extends SCStaticPage {
                   ${chart(name, percent)} ${listOfRootLanguage()}
                   ${list('translators', this.languageData.author)}
                 `
-              : html`
-                  ${listOfRootLanguage()} ${list('authors', this.languageData.author)}
-                `}
+              : html` ${listOfRootLanguage()} ${list('authors', this.languageData.author)} `}
           `
-        : html`
-            <sc-bouncing-loader></sc-bouncing-loader>
-          `}
+        : html` <sc-bouncing-loader></sc-bouncing-loader> `}
     `;
   }
 
@@ -177,9 +192,7 @@ class SCLanguagesPage extends SCStaticPage {
             ? this.selectedLanguage
               ? this.languageTemplate
               : this.languageListTemplate
-            : html`
-                <sc-bouncing-loader></sc-bouncing-loader>
-              `}
+            : html` <sc-bouncing-loader></sc-bouncing-loader> `}
         </article>
       </main>
     `;
