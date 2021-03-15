@@ -16,6 +16,7 @@ export const typographyCommonStyles = css`
     justify-content: center;
   }
 
+main > article,
   div > article {
     margin: 0 3vw;
   }
