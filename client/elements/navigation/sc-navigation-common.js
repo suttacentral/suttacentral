@@ -114,6 +114,15 @@ export const navIndex = new Map([
       navArrayLength: 2,
     },
   ],
+  [
+    'languageDetail',
+    {
+      index: 2,
+      position: 2,
+      pathParamIndex: -1,
+      navArrayLength: 3,
+    },
+  ],
 ]);
 
 export const shortcuts = [
