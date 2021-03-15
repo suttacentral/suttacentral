@@ -208,6 +208,11 @@ class SCMoreMenu extends LitLocalized(LitElement) {
             <div class="menu-item-wrapper">${icon.offline_bolt} ${this.localize('UseOffline')}</div>
           </mwc-list-item>
         </a>
+        <a class="more-menu-link" href="/downloads">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
+          </mwc-list-item>
+        </a>
         <mwc-check-list-item
           class="more-menu-mwc-list-item"
           id="theme_toggler"
@@ -226,17 +231,12 @@ class SCMoreMenu extends LitLocalized(LitElement) {
         >
           ${this.localize('AlwaysShowToolbar')}
         </mwc-check-list-item>
-        <a class="more-menu-link" href="/downloads">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
-          </mwc-list-item>
-        </a>
+        <li divider role="separator"></li>
         <a class="more-menu-link" href="/languages">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">${icon.translate} ${this.localize('Languages')}</div>
           </mwc-list-item>
         </a>
-        <li divider role="separator"></li>
         <a class="more-menu-link" href="/numbering">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">
@@ -256,7 +256,6 @@ class SCMoreMenu extends LitLocalized(LitElement) {
             <div class="menu-item-wrapper">${icon.school} ${this.localize('Methodology')}</div>
           </mwc-list-item>
         </a>
-        <li divider role="separator"></li>
         <a class="more-menu-link" href="/acknowledgments">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">${icon.people} ${this.localize('Acknowledgments')}</div>
