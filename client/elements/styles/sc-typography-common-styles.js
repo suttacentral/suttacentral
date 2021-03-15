@@ -542,25 +542,8 @@ export const typographyCommonStyles = css`
     color: var(--sc-primary-accent-color-dark);
   }
 
-  .anunidana {
-  }
-
-  .anupannatti {
-  }
-
   .help-heading {
-  }
-
-  .range {
-  }
-
-  .uddana-intro {
-  }
-
-  .nidana {
-  }
-
-  .bhikkhuni {
+    font-style: italic
   }
 
 /* descriptive classes */
