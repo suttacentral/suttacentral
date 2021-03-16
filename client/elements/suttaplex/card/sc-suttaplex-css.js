@@ -146,9 +146,10 @@ export const suttaplexCss = html`
     }
 
     .suttaplex-nerdy-row {
-      display: flex;
+      display: inline-grid;
+      grid-auto-flow: column;
+      gap: 1rem;
       align-items: center;
-      gap: 1em;
       font-family: var(--sc-sans-font);
       font-size: var(--sc-skolar-font-size-s);
       font-weight: 400;

@@ -201,8 +201,6 @@ class SCBottomSheet extends LitElement {
         height: 120px;
         margin: 0 3vw;
         padding: 0;
-
-        gap: 1em;
       }
 
       dl {

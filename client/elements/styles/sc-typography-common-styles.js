@@ -726,12 +726,10 @@ main > article,
 
 .highlight  [data-doxy='orthodox']::before{
      content: '👍🏿';
-
 }
 
 .highlight  [data-doxy='heterodox']::before{
      content: '👎🏽';
-
 }
 
 .highlight  [data-direction]::before{
