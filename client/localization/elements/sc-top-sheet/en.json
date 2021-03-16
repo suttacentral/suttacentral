@@ -32,7 +32,7 @@
       "scriptChanged": "Pali is now shown in {paliScript} script.",
       "rememberSettingsEnabled": "The settings you chose will be remembered next time you visit SuttaCentral.",
       "rememberSettingsDisabled": "The settings you chose will not be remembered next time you visit SuttaCentral.",
-      "reference": "Reference",
+      "reference": "References",
       "referenceDescription": "“Main” displays the primary SuttaCentral references for segmented texts, and all references for other texts. Remaining items are extra Pali editions.",
       "notes": "Notes",
       "notesDescription": "See translator's notes, variant readings, etc..",
