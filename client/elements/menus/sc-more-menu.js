@@ -17,7 +17,9 @@ class SCMoreMenu extends LitLocalized(LitElement) {
     return css`
       :host {
         font-family: var(--sc-sans-font);
-        font-weight: 500;
+        font-weight: 550;
+        --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
+        --mdc-typography-subtitle1-font-weight: 550;
         --mdc-list-side-padding: 0px;
         --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
