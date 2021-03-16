@@ -700,6 +700,20 @@ main > article,
     font-variant-caps: normal;
   }
 
+/* helper metadata in HTML data- */
 
+.highlight  [data-counter]::after{
+     content: attr(data-counter);
+      text-align: center;
+      margin: 0 0.5rem;
+      padding: 0 0.25rem;
+      background-color: var(--sc-icon-color);
+      color: white;
+      font-weight: 600;
+      font-family: var(--sc-sans-font);
+      font-stretch: condensed;
+      font-size: var(--sc-skolar-font-size-xs);
+      border-radius: 4px;
+}
 
 `;
