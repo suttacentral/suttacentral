@@ -324,7 +324,12 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
               )
             </p>
             <p class="creative-commons">
-              <a rel="license" href="${this.license_url}">
+              <a
+                rel="license"
+                href="https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+                target="_blank"
+                rel="noopener"
+              >
                 <img
                   src="https://i.creativecommons.org/p/zero/1.0/88x31.png"
                   style="border-style: none;"

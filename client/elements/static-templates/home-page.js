@@ -163,7 +163,7 @@ class SCHomePage extends SCStaticPage {
 
         .three-elements-grid {
           display: grid;
-          grid-gap: var(--sc-size-lg);
+          gap: var(--sc-size-lg);
         }
 
         .full-height {
@@ -207,7 +207,7 @@ class SCHomePage extends SCStaticPage {
           justify-content: space-between;
           grid-template-columns: 1fr;
           grid-auto-flow: row;
-          grid-gap: var(--sc-size-lg);
+          gap: var(--sc-size-lg);
         }
 
         .first-card {
@@ -306,7 +306,7 @@ class SCHomePage extends SCStaticPage {
 
           .cards {
             grid-template-columns: 1fr 1fr;
-            grid-gap: var(--sc-size-lg);
+            gap: var(--sc-size-lg);
           }
 
           .second-card {

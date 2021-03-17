@@ -700,6 +700,52 @@ main > article,
     font-variant-caps: normal;
   }
 
+/* helper metadata in HTML data- */
 
+.highlight  [data-counter]::after{
+      padding: 0 0.25rem;
+      margin: 0 0 0 0.5rem;
+      background-color: var(--sc-icon-color);
+      color: white;
+      font-weight: 600;
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-xs);
+      border-radius: 4px;
+}
 
+.highlight  [data-counter]::after{
+     content: attr(data-counter);
+}
+
+.highlight  [data-doxy]::before{
+      margin: 0 0.5rem 0 0;
+      font-weight: 600;
+      font-family: sans-serif;
+      font-size: var(--sc-skolar-font-size-xs);
+} 
+
+.highlight  [data-doxy='orthodox']::before{
+     content: '👍🏿';
+}
+
+.highlight  [data-doxy='heterodox']::before{
+     content: '👎🏽';
+}
+
+.highlight  [data-direction]::before{
+      margin: 0 0.5rem 0 0;
+      font-weight: 600;
+      font-family: sans-serif;
+      font-size: var(--sc-skolar-font-size-xs);
+} 
+
+.highlight  [data-direction='forward']::before{
+     content: '👉🏾';
+     color: var(--sc-icon-color);  
+}
+
+.highlight  [data-direction='reverse']::before{
+     content: '👈🏼';
+     color: var(--sc-icon-color);  
+}
 `;
