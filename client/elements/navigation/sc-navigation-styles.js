@@ -122,7 +122,8 @@ export const navigationNormalModeStyles = html`
     }
 
     .navigation-nerdy-row {
-      display: flex;
+      display: inline-grid;
+      grid-auto-flow: column;
       gap: 1rem;
       font-size: var(--sc-skolar-font-size-s);
 
