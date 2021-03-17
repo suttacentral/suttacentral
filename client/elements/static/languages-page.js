@@ -1,6 +1,5 @@
 import { html } from 'lit-element';
 
-import '../addons/sc-linear-progress';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
@@ -139,7 +138,7 @@ class SCLanguagesPage extends SCStaticPage {
                 `
               : html` ${listOfRootLanguage()} ${list('authors', this.languageData.author)} `}
           `
-        : html` <sc-linear-progress></sc-linear-progress> `}
+        : ''}
     `;
   }
 
@@ -180,11 +179,6 @@ class SCLanguagesPage extends SCStaticPage {
         figcaption {
           margin-top: 0.5em;
         }
-
-        sc-linear-progress {
-          display: block;
-          margin: 3em auto;
-        }
       </style>
       <main>
         <article>
@@ -192,7 +186,7 @@ class SCLanguagesPage extends SCStaticPage {
             ? this.selectedLanguage
               ? this.languageTemplate
               : this.languageListTemplate
-            : html` <sc-linear-progress></sc-linear-progress> `}
+            : ''}
         </article>
       </main>
     `;

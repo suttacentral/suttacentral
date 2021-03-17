@@ -1,6 +1,7 @@
 import { html, css } from 'lit-element';
 import SCTopSheetCommon from './sc-top-sheet-common';
-import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { store } from '../../redux-store';
 
 const styles = css`
   .contents {

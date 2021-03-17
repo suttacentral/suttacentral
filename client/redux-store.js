@@ -77,6 +77,7 @@ const initialState = {
     displayGuidesToolbar: false,
   },
   navDataCache: {},
+  linearProgressActive: false,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -161,7 +162,6 @@ const reducer = (state, action) => {
         ...state,
         textOptions: { ...state.textOptions, displayedReferences: action.displayedReferences },
       };
-
     case 'SET_NOTE_DISPLAY_TYPE':
       return {
         ...state,
@@ -206,6 +206,8 @@ const reducer = (state, action) => {
       return { ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar };
     case 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE':
       return { ...state, languageMenuVisibility: action.languageMenuVisibility };
+    case 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE':
+      return { ...state, linearProgressActive: action.linearProgressActive };
     default:
       return state;
   }

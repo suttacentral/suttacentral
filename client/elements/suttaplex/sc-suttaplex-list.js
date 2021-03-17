@@ -1,5 +1,4 @@
 import { html, LitElement } from 'lit-element';
-import '../addons/sc-linear-progress';
 import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
@@ -33,6 +32,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
           title: title,
+        });
+      },
+      changeLinearProgressActiveState(active) {
+        store.dispatch({
+          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
+          linearProgressActive: active,
         });
       },
     };
@@ -106,6 +111,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   async _fetchCategory() {
     this.suttaplexLoading = true;
+    this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
     this.networkError = null;
 
     try {
@@ -123,6 +129,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     }
 
     this.suttaplexLoading = false;
+    this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
   }
 
   _updateMetaData() {
@@ -199,13 +206,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       ${suttaplexListCss}
 
       <div class="division-content main">
-        <div class="loading-indicator">
-          <sc-linear-progress
-            class="loading-spinner"
-            ?active="${this.suttaplexLoading}"
-          ></sc-linear-progress>
-        </div>
-
         ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}
         ${this.suttaplexData &&
         repeat(

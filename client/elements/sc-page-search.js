@@ -3,7 +3,6 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-search-filter-menu.js';
 import './addons/sc-error-icon.js';
-import './addons/sc-linear-progress';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
 import { LitLocalized } from './addons/localization-mixin';
@@ -317,15 +316,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           display: none !important;
         }
 
-        .loading-indicator {
-          font-size: var(--sc-skolar-font-size-s);
-
-          height: 60px;
-          margin-top: 25vh;
-
-          text-align: center;
-        }
-
         mwc-button {
           --mdc-theme-primary: var(--sc-primary-accent-color);
           --mdc-theme-on-primary: white;
@@ -338,23 +328,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
         }
       </style>
 
-      ${this.displayDataLoadError} ${this.displayLoader} ${this.onlineTemplate}
-      ${this.offLineTemplate} ${this._createMetaData()}
+      ${this.displayDataLoadError} ${this.onlineTemplate} ${this.offLineTemplate}
+      ${this._createMetaData()}
     `;
   }
 
   get offLineTemplate() {
     return !this.isOnline ? html` <sc-error-icon type="connect-to-internet"></sc-error-icon> ` : '';
-  }
-
-  get displayLoader() {
-    return this.loadingResults
-      ? html`
-          <div class="loading-indicator">
-            <sc-linear-progress></sc-linear-progress>
-          </div>
-        `
-      : '';
   }
 
   get displayDataLoadError() {
@@ -509,6 +489,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
     this._updateNav();
   }
 
@@ -561,6 +542,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
           currentNavPosition: position,
+        });
+      },
+      changeLinearProgressActiveState(active) {
+        store.dispatch({
+          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
+          linearProgressActive: active,
         });
       },
     };
@@ -710,6 +697,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.waitTimeAfterNewWordExpired = true;
     this.updateComplete.then(() => {
       this.loadingResults = false;
+      this.actions.changeLinearProgressActiveState(this.loadingResults);
     });
   }
 
