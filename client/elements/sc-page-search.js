@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-search-filter-menu.js';
 import './addons/sc-error-icon.js';
-import './addons/sc-bouncing-loader';
+import './addons/sc-linear-progress';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
 import { LitLocalized } from './addons/localization-mixin';
@@ -344,29 +344,21 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get offLineTemplate() {
-    return !this.isOnline
-      ? html`
-          <sc-error-icon type="connect-to-internet"></sc-error-icon>
-        `
-      : '';
+    return !this.isOnline ? html` <sc-error-icon type="connect-to-internet"></sc-error-icon> ` : '';
   }
 
   get displayLoader() {
     return this.loadingResults
       ? html`
           <div class="loading-indicator">
-            <sc-bouncing-loader></sc-bouncing-loader>
+            <sc-linear-progress></sc-linear-progress>
           </div>
         `
       : '';
   }
 
   get displayDataLoadError() {
-    return this.lastError
-      ? html`
-          <sc-error-icon type="data-load-error"></sc-error-icon>
-        `
-      : '';
+    return this.lastError ? html` <sc-error-icon type="data-load-error"></sc-error-icon> ` : '';
   }
 
   get onlineTemplate() {

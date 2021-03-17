@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit-element';
-import '../addons/sc-bouncing-loader';
+import '../addons/sc-linear-progress';
 import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants.js';
 import { store } from '../../redux-store';
@@ -200,10 +200,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
       <div class="division-content main">
         <div class="loading-indicator">
-          <sc-bouncing-loader
+          <sc-linear-progress
             class="loading-spinner"
             ?active="${this.suttaplexLoading}"
-          ></sc-bouncing-loader>
+          ></sc-linear-progress>
         </div>
 
         ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}

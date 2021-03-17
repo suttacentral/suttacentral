@@ -395,7 +395,7 @@ export const parallelsListCss = html`
       font-weight: 400;
     }
 
-    sc-bouncing-loader {
+    sc-linear-progress {
       margin: var(--sc-size-md) 0;
       left: 50%;
     }

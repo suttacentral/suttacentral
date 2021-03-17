@@ -1,5 +1,5 @@
 import { html, LitElement, svg } from 'lit-element';
-import '../../addons/sc-bouncing-loader';
+import '../../addons/sc-linear-progress';
 import { API_ROOT } from '../../../constants.js';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
@@ -110,9 +110,7 @@ class SCParallels extends LitLocalized(LitElement) {
       ${parallelsListCss}
       <div>
         ${this.loadingResults
-          ? html`
-              <sc-bouncing-loader .active="${this.loadingResults}"></sc-bouncing-loader>
-            `
+          ? html` <sc-linear-progress .active="${this.loadingResults}"></sc-linear-progress> `
           : ''}
         ${this.rootKeys
           ? html`

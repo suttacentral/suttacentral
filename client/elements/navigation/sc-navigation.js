@@ -5,7 +5,6 @@ import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-na
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
 import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
-import '../addons/sc-bouncing-loader';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCNavigation extends LitLocalized(LitElement) {

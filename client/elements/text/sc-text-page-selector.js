@@ -5,7 +5,7 @@ import './sc-simple-text.js';
 import './sc-stepper.js';
 import './sc-text-image.js';
 import '../addons/sc-error-icon.js';
-import '../addons/sc-bouncing-loader';
+import '../addons/sc-linear-progress';
 import '../addons/sc-top-sheet-publication-bilara';
 
 import { store } from '../../redux-store';
@@ -29,9 +29,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
         .loading-indicator {
           font-size: var(--sc-skolar-font-size-s);
-          text-align: center;
+
           height: 60px;
           margin-top: 25vh;
+
+          text-align: center;
         }
 
         .text-options {
@@ -46,7 +48,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
       <div class="wrapper">
         <div class="loading-indicator" ?hidden=${!this.isLoading}>
-          <sc-bouncing-loader></sc-bouncing-loader>
+          <sc-linear-progress></sc-linear-progress>
         </div>
         ${this.displaySimpleTextTemplate} ${this.displaySegmentedTextTemplate}
         ${this.displayErrorTemplate}
