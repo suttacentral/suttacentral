@@ -11,6 +11,7 @@ import './addons/sc-top-sheet-publication-legacy';
 import './addons/sc-top-sheet-toc';
 import './addons/sc-toasts.js';
 import './navigation/sc-linden-leaves.js';
+import './addons/sc-linear-progress';
 
 import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
@@ -43,7 +44,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           </div>
           <sc-action-items id="action_items"></sc-action-items>
         </div>
-
+        <sc-linear-progress .active="${this.linearProgressActive}"></sc-linear-progress>
         <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
         <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
         <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
@@ -233,6 +234,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       displaySettingMenu: { type: Boolean },
       toolbarTitle: { type: String },
       staticPagesToolbarDisplayState: { type: Object },
+      linearProgressActive: { type: Boolean },
     };
   }
 
@@ -262,6 +264,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         displayGuidesToolbar: false,
       };
     }
+    this.linearProgressActive = false;
   }
 
   get actions() {
@@ -321,6 +324,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
+    }
+    if (this.linearProgressActive !== state.linearProgressActive) {
+      this.linearProgressActive = state.linearProgressActive;
     }
   }
 

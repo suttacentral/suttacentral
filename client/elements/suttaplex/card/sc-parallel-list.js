@@ -1,9 +1,9 @@
-import { html, LitElement, svg } from 'lit-element';
-import '../../addons/sc-bouncing-loader';
-import { API_ROOT } from '../../../constants.js';
+import { html, LitElement } from 'lit-element';
+import { API_ROOT } from '../../../constants';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/localization-mixin';
 import { icon } from '../../../img/sc-icon';
+import { store } from '../../../redux-store';
 
 import './sc-parallel-item.js';
 import { parallelsListCss } from './sc-suttaplex-css';
@@ -104,16 +104,21 @@ class SCParallels extends LitLocalized(LitElement) {
     const authorUid = (this.rootText || {}).author_uid || '';
     return `/${this.itemUid}/${this.rootLang}/${authorUid}${getParagraphRange(rootId, true)}`;
   }
+  get actions() {
+    return {
+      changeLinearProgressActiveState(active) {
+        store.dispatch({
+          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
+          linearProgressActive: active,
+        });
+      },
+    };
+  }
 
   render() {
     return html`
       ${parallelsListCss}
       <div>
-        ${this.loadingResults
-          ? html`
-              <sc-bouncing-loader .active="${this.loadingResults}"></sc-bouncing-loader>
-            `
-          : ''}
         ${this.rootKeys
           ? html`
               <table class="parallels-table">
@@ -180,9 +185,11 @@ class SCParallels extends LitLocalized(LitElement) {
 
   async _loadData() {
     this.loadingResults = true;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
     this.responseData = await (await fetch(this._getAPIEndpoint(this.itemUid))).json();
     await this._didRespond();
     this.loadingResults = false;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
   _didRespond() {

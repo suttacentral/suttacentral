@@ -200,10 +200,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     return this.shadowRoot.querySelectorAll('article');
   }
 
-  _shouldShowLoadingIndicator() {
-    return (!this.error && this.loading) || this.isTextViewHidden;
-  }
-
   // Scrolls to the chosen section
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
@@ -419,11 +415,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
               display: inline;
             }`
             : ''}
-          ${this.displayedReferences.map(
-            edition_set => html`
-              .reference a.${edition_set} { display: inline; }
-            `
-          )}
+          ${this.displayedReferences.map(edition_set => html` .reference a.${edition_set} { display:
+              inline; } `)}
         </style>
       `;
     }

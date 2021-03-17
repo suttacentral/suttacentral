@@ -396,11 +396,6 @@ export const parallelsListCss = html`
       font-weight: 400;
     }
 
-    sc-bouncing-loader {
-      margin: var(--sc-size-md) 0;
-      left: 50%;
-    }
-
     .parallels-table-body {
       display: block;
       margin-bottom: var(--sc-size-sm);
