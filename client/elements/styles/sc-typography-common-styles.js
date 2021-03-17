@@ -672,10 +672,10 @@ main > article,
     color: var(--sc-primary-accent-color);
   }
 
-  .ref {
+  #simple_text_content .ref {
     display: none;
   }
-  .legacy-reference .ref {
+  #simple_text_content .legacy-reference .ref {
     font-family: var(--sc-sans-font);
     font-size: 0.8em;
     font-weight: 400;
