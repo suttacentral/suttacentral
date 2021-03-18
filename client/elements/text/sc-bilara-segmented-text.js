@@ -386,10 +386,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _changeTextView() {
-    let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
-    if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
-      viewCompose = 'pali';
-    }
+    const viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
     this.currentStyles = this.mapStyles.get(viewCompose)
       ? this.mapStyles.get(viewCompose)
       : plainStyles;
