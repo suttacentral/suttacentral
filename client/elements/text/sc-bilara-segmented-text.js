@@ -23,6 +23,7 @@ import {
   hidePTSReferenceStyles,
   hideAsterisk,
   showAsterisk,
+  rootPlainPlusStyles,
 } from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
@@ -102,6 +103,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ['none_linebyline', lineByLineStyles],
       ['asterisk_linebyline', lineByLineStyles],
       ['pali', plainPaliStyles],
+      ['sidenotes_root', rootPlainPlusStyles],
     ]);
     this.mapReferenceDisplayStyles = new Map([
       ['none', hideReferenceStyles],
@@ -389,7 +391,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
     if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
       if (this.chosenNoteDisplayType === 'sidenotes') {
-        viewCompose = 'sidenotes_sidebyside';
+        viewCompose = 'sidenotes_root';
       } else {
         viewCompose = 'pali';
       }
