@@ -5,7 +5,6 @@ import './sc-simple-text.js';
 import './sc-stepper.js';
 import './sc-text-image.js';
 import '../addons/sc-error-icon.js';
-import '../addons/sc-bouncing-loader';
 import '../addons/sc-top-sheet-publication-bilara';
 
 import { store } from '../../redux-store';
@@ -27,13 +26,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           flex-direction: column;
         }
 
-        .loading-indicator {
-          font-size: var(--sc-skolar-font-size-s);
-          text-align: center;
-          height: 60px;
-          margin-top: 25vh;
-        }
-
         .text-options {
           padding: var(--sc-size-lg);
         }
@@ -45,9 +37,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       </style>
 
       <div class="wrapper">
-        <div class="loading-indicator" ?hidden=${!this.isLoading}>
-          <sc-bouncing-loader></sc-bouncing-loader>
-        </div>
         ${this.displaySimpleTextTemplate} ${this.displaySegmentedTextTemplate}
         ${this.displayErrorTemplate}
       </div>
@@ -152,6 +141,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
     this.bilaraDataPath = '/files/bilara-data';
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.authorUid = store.getState().currentRoute.params.authorUid;
@@ -199,6 +189,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
           currentNavPosition: position,
+        });
+      },
+      changeLinearProgressActiveState(active) {
+        store.dispatch({
+          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
+          linearProgressActive: active,
         });
       },
     };
@@ -366,12 +362,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   async _fetchSuttaText() {
     this.isLoading = true;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
     try {
       this.responseData = await (await fetch(this._getSuttaTextUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
     this.isLoading = false;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
   }
 
   async _fetchBilaraText() {
@@ -379,6 +377,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       return;
     }
     this.isLoading = true;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
     try {
       const bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
       this.bilaraRootSutta = bilaraData.root_text;
@@ -392,6 +391,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.lastError = error;
     }
     this.isLoading = false;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
   }
 
   _getBilaraText() {
@@ -430,12 +430,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   async _fetchExpansion() {
     this.isLoading = true;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
     try {
       this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
     this.isLoading = false;
+    this.actions.changeLinearProgressActiveState(this.isLoading);
   }
 
   _paramChanged() {

@@ -58,11 +58,7 @@ class SCLinearProgress extends LitElement {
   }
 
   render() {
-    return this.active
-      ? html`
-          <div class="linear-progress"></div>
-        `
-      : '';
+    return this.active ? html` <div class="linear-progress"></div> ` : '';
   }
 }
 

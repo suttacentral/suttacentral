@@ -1,6 +1,5 @@
 import { html } from 'lit-element';
 
-import '../addons/sc-bouncing-loader';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
@@ -139,7 +138,7 @@ class SCLanguagesPage extends SCStaticPage {
                 `
               : html` ${listOfRootLanguage()} ${list('authors', this.languageData.author)} `}
           `
-        : html` <sc-bouncing-loader></sc-bouncing-loader> `}
+        : ''}
     `;
   }
 
@@ -180,11 +179,6 @@ class SCLanguagesPage extends SCStaticPage {
         figcaption {
           margin-top: 0.5em;
         }
-
-        sc-bouncing-loader {
-          display: block;
-          margin: 3em auto;
-        }
       </style>
       <main>
         <article>
@@ -192,7 +186,7 @@ class SCLanguagesPage extends SCStaticPage {
             ? this.selectedLanguage
               ? this.languageTemplate
               : this.languageListTemplate
-            : html` <sc-bouncing-loader></sc-bouncing-loader> `}
+            : ''}
         </article>
       </main>
     `;
