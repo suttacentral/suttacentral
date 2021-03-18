@@ -461,7 +461,7 @@ class SCSimpleText extends SCLitTextPage {
     if (!sectionId) return;
     try {
       const targetElement = this.shadowRoot.querySelector(
-        `h3:nth-of-type(${location.hash.substr(1)})`
+        `h2:nth-of-type(${location.hash.substr(1)})`
       );
       if (targetElement) {
         targetElement.scrollIntoView();

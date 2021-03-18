@@ -37,6 +37,12 @@ class SCTopSheetToC extends SCTopSheetCommon {
           displaySettingMenu: display,
         });
       },
+      changeDisplaySuttaToCState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
+          displaySuttaToC: displayState,
+        });
+      },
     };
   }
 
@@ -63,7 +69,7 @@ class SCTopSheetToC extends SCTopSheetCommon {
                   item =>
                     html`
                       <li>
-                        <a @click=${this._hideMenu} href="${'#' + item.link}">${item.name}</a>
+                        <a @click=${this._hideMenu} href="${`#${item.link}`}">${item.name}</a>
                       </li>
                     `
                 )
@@ -81,6 +87,7 @@ class SCTopSheetToC extends SCTopSheetCommon {
     scActionItems.hideItems();
 
     this.actions.changeDisplaySettingMenuState(false);
+    this.actions.changeDisplaySuttaToCState(false);
   }
 }
 
