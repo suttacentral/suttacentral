@@ -418,12 +418,9 @@ class SCBottomSheet extends LitElement {
                 <ul>
                   <li>
                     Source:
-                    <cite>New Concise Pali-English Dictionary</cite>
-                    , compiled by SuttaCentral from Buddhadatta’s
-                    <cite>Concise Pali-English Dictionary</cite>
-                    , updated and corrected from Margaret Cone’s
-                    <cite>Dictionary of Pali</cite>
-                    .
+                    <cite>New Concise Pali-English Dictionary</cite>, compiled by SuttaCentral from
+                    Buddhadatta’s <cite>Concise Pali-English Dictionary</cite>, updated and
+                    corrected from Margaret Cone’s <cite>Dictionary of Pali</cite>.
                   </li>
                   <li>Pali words are analyzed by machine and results are not always accurate.</li>
                   <li>Click on a head word to go to full dictionary entry.</li>
