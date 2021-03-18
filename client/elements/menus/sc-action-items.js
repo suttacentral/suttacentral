@@ -264,7 +264,6 @@ class SCActionItems extends LitLocalized(LitElement) {
           displaySuttaToC: displayState,
         });
       },
-
       changeDisplaySuttaInfoState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',

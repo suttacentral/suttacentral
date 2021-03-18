@@ -487,6 +487,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
         return;
       case 'SUTTAPLEX':
         return;
+      case 'SUTTA':
+        return;
       default:
         const key = `${this.currentRoute.name}-TITLE`;
         if (this.__resources[key]) {
