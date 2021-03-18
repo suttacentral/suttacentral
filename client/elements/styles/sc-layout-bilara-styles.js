@@ -199,7 +199,7 @@ export const rootPlainPlusStyles = html`
       grid-column: 1;
     }
 
-    .comment .variant {
+    .variant {
       position: absolute;
       padding: var(--sc-size-sm) var(--sc-size-md);
       box-shadow: var(--sc-shadow-elevation-1dp);
