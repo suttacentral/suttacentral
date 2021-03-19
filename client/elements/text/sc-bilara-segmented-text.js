@@ -1,15 +1,15 @@
 import { html } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 
-import { SCLitTextPage } from './sc-lit-text-page.js';
-import '../lookups/sc-pli.js';
-import '../lookups/sc-lzh2en.js';
+import { SCLitTextPage } from './sc-lit-text-page';
+import '../lookups/sc-pli';
+import '../lookups/sc-lzh2en';
 import '../addons/sc-bottom-sheet';
 
-import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
-import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles.js';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles';
 import {
   commonStyles,
   plainStyles,
@@ -23,7 +23,8 @@ import {
   hidePTSReferenceStyles,
   hideAsterisk,
   showAsterisk,
-} from '../styles/sc-layout-bilara-styles.js';
+  rootPlainPlusStyles,
+} from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
 
@@ -102,6 +103,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       ['none_linebyline', lineByLineStyles],
       ['asterisk_linebyline', lineByLineStyles],
       ['pali', plainPaliStyles],
+      ['sidenotes_root', rootPlainPlusStyles],
     ]);
     this.mapReferenceDisplayStyles = new Map([
       ['none', hideReferenceStyles],
@@ -388,7 +390,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _changeTextView() {
     let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
     if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
-      viewCompose = 'pali';
+      if (this.chosenNoteDisplayType === 'sidenotes') {
+        viewCompose = 'sidenotes_root';
+      } else {
+        viewCompose = 'pali';
+      }
     }
     this.currentStyles = this.mapStyles.get(viewCompose)
       ? this.mapStyles.get(viewCompose)

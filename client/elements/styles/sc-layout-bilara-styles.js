@@ -169,6 +169,65 @@ export const plainPlusStyles = html`
   </style>
 `;
 
+export const rootPlainPlusStyles = html`
+  <style>
+    .segment {
+      display: grid;
+      grid-template-columns: 100px minmax(0, auto);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .reference {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      border: none;
+      background-color: inherit;
+    }
+
+    .root {
+      grid-column: 2;
+    }
+
+    .root {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
+      grid-column-gap: var(--sc-size-lg);
+    }
+
+    .text {
+      grid-column: 1;
+    }
+
+    .variant {
+      position: absolute;
+      padding: var(--sc-size-sm) var(--sc-size-md);
+      box-shadow: var(--sc-shadow-elevation-1dp);
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    br {
+      content: '';
+    }
+
+    @media only screen and (max-width: 600px) {
+      .segment,
+      .reference,
+      .root {
+        display: block;
+      }
+
+      .variant,
+      .comment {
+        position: relative;
+        display: table;
+        margin-top: var(--sc-size-sm);
+      }
+    }
+  </style>
+`;
+
 export const sideBySideStyles = html`
   <style>
     .segment {
