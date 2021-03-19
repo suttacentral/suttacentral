@@ -97,7 +97,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.navArray.length = 1;
     this.currentURL = '/pitaka';
     const self = this;
-    navArray.forEach((navItem, index) => {
+    for (const [index, navItem] of navArray.entries()) {
       if (index > 1) {
         const cardEvent = this._getEventByNavIndex(index);
         this.currentURL = `${this.currentURL}/${navItem}`;
@@ -107,9 +107,9 @@ class SCNavigation extends LitLocalized(LitElement) {
           dispatchState: index === navArray.length - 1,
           currentURL: this.currentURL,
         };
-        cardEvent.call(self, params);
+        await cardEvent.call(self, params);
       }
-    });
+    }
   }
 
   _getEventByNavIndex(index) {
@@ -120,6 +120,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       [5, this._onVaggasCardClick],
       [6, this._onVaggaChildrenCardClick],
       [7, this._onVaggaChildrenChildrenCardClick],
+      [8, this._onSakaChildrenCardClick],
     ]);
     return cardEvents.get(index);
   }
@@ -193,6 +194,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       ['vagga', this._onVaggasCardClick],
       ['vaggaChildren', this._onVaggaChildrenCardClick],
       ['vaggaChildrenChildren', this._onVaggaChildrenChildrenCardClick],
+      ['sakaChildren', this._onSakaChildrenCardClick],
     ]);
     return cardEvents.get(navType);
   }
