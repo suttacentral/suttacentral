@@ -247,7 +247,7 @@ export const navigationNormalModeStyles = html`
       text-decoration: underline;
       text-decoration-color: var(--sc-primary-color-light);
       text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.05em;
+      text-underline-offset: 0.06em;
     }
 
     .essay::before {

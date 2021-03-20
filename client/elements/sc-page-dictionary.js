@@ -103,7 +103,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         text-decoration: underline;
 
         text-decoration-thickness: 0.15em;
-        text-underline-offset: 0.05em;
+        text-underline-offset: 0.06em;
 
         color: var(--sc-primary-color);
 

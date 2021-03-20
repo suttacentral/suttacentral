@@ -90,7 +90,7 @@ class SCBottomSheet extends LitElement {
         text-decoration: underline;
         text-decoration-color: var(--sc-primary-color-light);
         text-decoration-thickness: 0.15em;
-        text-underline-offset: 0.05em;
+        text-underline-offset: 0.06em;
 
         transition: all 200ms ease;
       }
@@ -98,7 +98,7 @@ class SCBottomSheet extends LitElement {
       details a:hover {
         text-decoration-color: var(--sc-primary-color);
         text-decoration-thickness: 0.15em;
-        text-underline-offset: 0.05em;
+        text-underline-offset: 0.06em;
 
         background-color: var(--sc-primary-color-light-transparent);
       }
@@ -235,7 +235,7 @@ class SCBottomSheet extends LitElement {
 
         text-decoration-color: white;
         text-decoration-thickness: 0.15em;
-        text-underline-offset: 0.05em;
+        text-underline-offset: 0.06em;
 
         transition: all 200ms ease;
       }
@@ -245,7 +245,7 @@ class SCBottomSheet extends LitElement {
 
         text-decoration-color: white;
         text-decoration-thickness: 0.15em;
-        text-underline-offset: 0.05em;
+        text-underline-offset: 0.06em;
       }
 
       .grammar {
