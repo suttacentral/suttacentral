@@ -231,7 +231,7 @@ main > article,
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.05em;
+    text-underline-offset: 0.06em;
 
     transition: all 200ms ease;
   }
@@ -239,7 +239,7 @@ main > article,
   a:hover {
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.05em;
+    text-underline-offset: 0.06em;
 
     background-color: var(--sc-primary-color-light-transparent);
   }
