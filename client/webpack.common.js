@@ -9,7 +9,7 @@ module.exports = {
     main: './elements/sc-site-layout.js',
   },
   output: {
-    filename: '[name].js',
+    filename: '[name].[contenthash].js',
     path: resolve(OUTPUT_PATH),
     publicPath: '/',
   },
