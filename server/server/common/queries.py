@@ -745,7 +745,7 @@ RETURN UNIQUE(adjacent_words)
 DICTIONARY_FULL = '''
 LET dict_simple = (
     FOR dict IN dictionaries_simple
-        FILTER dict.entry == @word
+        FILTER dict.entry == @word AND dict.to == @language
         RETURN {
             from: dict.from,
             to: dict.to,
@@ -760,7 +760,7 @@ LET dict_simple = (
 
 LET dict_complex = (
     FOR dict IN dictionaries_complex
-        FILTER dict.word == @word
+        FILTER dict.word == @word AND dict.to == @language
         RETURN {
             from: dict.from,
             to: dict.to,

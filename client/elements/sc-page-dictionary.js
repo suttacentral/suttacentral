@@ -5,6 +5,7 @@ import { dictStyles } from './styles/sc-dict-styles.js';
 
 import { LitLocalized } from './addons/localization-mixin';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
+import { store } from '../redux-store';
 
 class SCPageDictionary extends LitLocalized(LitElement) {
   static get styles() {
@@ -313,7 +314,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
   }
 
   _computeUrl() {
-    return `${API_ROOT}/dictionary_full/${this.dictionaryWord}`;
+    return `${API_ROOT}/dictionary_full/${this.dictionaryWord}?language=${
+      store.getState().siteLanguage || 'en'
+    }`;
   }
 
   _loadNewResult() {
