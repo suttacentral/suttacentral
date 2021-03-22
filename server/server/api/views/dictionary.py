@@ -12,7 +12,10 @@ class DictionaryFull(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, word=None):
         db = get_db()
-        data = db.aql.execute(DICTIONARY_FULL, bind_vars={'word': word}).next()
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
+        data = db.aql.execute(DICTIONARY_FULL, bind_vars={'word': word, 'language': language}).next()
         return list(data), 200
 
 
