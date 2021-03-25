@@ -29,6 +29,51 @@ FOR text IN html_text
         }
 '''
 
+BILARA_TEXT_BY_LANG = '''
+FOR text IN sc_bilara_texts
+    FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids)
+    LET nav_doc = (
+        RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
+    )[0]
+
+    LET name_doc = (
+        FOR name IN names
+            FILTER name.uid == text.uid AND name.lang == text.lang
+            LIMIT 1
+            RETURN name
+    )[0]
+
+    LET root_name_doc = (
+        FOR name IN names
+            FILTER name.uid == text.uid AND name.is_root == true
+            LIMIT 1
+            RETURN name
+    )[0]
+
+    LET author_doc = (
+        FOR author IN author_edition
+            FILTER author.uid IN text.muids
+            LIMIT 1
+            RETURN author
+    )[0]
+
+    LET mtime_doc = (
+        RETURN DOCUMENT(CONCAT('mtimes/', REGEX_REPLACE(SUBSTRING(text.file_path, FIND_FIRST(text.file_path, 'sc_bilara_data')), '/', '_')))
+    )[0]
+
+    RETURN {
+        uid: text.uid,
+        title: name_doc.name ? name_doc.name : root_name_doc.name,
+        strings_path: text.file_path,
+        author: author_doc.long_name,
+        author_uid: author_doc.uid,
+        author_short: author_doc.short_name,
+        root_lang: text.lang,
+        acronym: nav_doc.acronym,
+        mtime: 1615772139.177768
+    }
+'''
+
 # Returns all uids in proper order assuming num is set correctly in data
 UIDS_IN_ORDER_BY_DIVISION = '''
 FOR division IN super_nav_details
@@ -45,6 +90,22 @@ WITH @@collection /* With statement forces query optimizer to work */
     FOR text IN @@collection
         FILTER text.lang == @lang
         RETURN {uid: text.uid, author_uid: text.author_uid, mtime: text.mtime}
+'''
+
+CURRENT_BILARA_MTIMES = '''
+WITH @@collection /* With statement forces query optimizer to work */
+    FOR text IN @@collection
+        FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids)
+
+        LET mtime_doc = (
+            RETURN DOCUMENT(CONCAT('mtimes/', REGEX_REPLACE(SUBSTRING(text.file_path, FIND_FIRST(text.file_path, "sc_bilara_data")), "/", "_")))
+        )[0]
+
+        RETURN {
+            uid: text.uid,
+            author_uid: text.muids[2],
+            mtime: mtime_doc.mtime
+        }
 '''
 
 MENU = '''
