@@ -16,6 +16,9 @@ def search(word, language, truncate_length=1000):
     db = get_db()
 
     results = (db.aql.execute(DICTIONARY_SEARCH_RESULT_FULL, bind_vars={'word': word, 'language': language})).next()
+    if (not results or len(results) == 0) and language != 'en':
+        results = (db.aql.execute(DICTIONARY_SEARCH_RESULT_FULL, bind_vars={'word': word, 'language': 'en'})).next()
+
     if not results:
         return
 
