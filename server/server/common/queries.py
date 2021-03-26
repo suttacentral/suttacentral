@@ -68,7 +68,7 @@ FOR text IN sc_bilara_texts
         author: author_doc.long_name,
         author_uid: author_doc.uid,
         author_short: author_doc.short_name,
-        root_lang: text.lang,
+        root_lang: nav_doc.root_lang,
         acronym: nav_doc.acronym,
         mtime: mtime_doc.mtime  / 1000000000
     }
