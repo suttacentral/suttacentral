@@ -16,6 +16,8 @@ class DictionaryFull(Resource):
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
         data = db.aql.execute(DICTIONARY_FULL, bind_vars={'word': word, 'language': language}).next()
+        if (data is None or len(data) == 0) and language != 'en':
+            data = db.aql.execute(DICTIONARY_FULL, bind_vars={'word': word, 'language': 'en'}).next()
         return list(data), 200
 
 
