@@ -1,5 +1,6 @@
 import logging
 import time
+import json
 
 import lxml.html
 import regex
@@ -7,9 +8,11 @@ from elasticsearch.helpers import scan
 from tqdm import tqdm
 
 from common.arangodb import get_db
-from common.queries import CURRENT_MTIMES, TEXTS_BY_LANG
+from common.queries import CURRENT_MTIMES, CURRENT_BILARA_MTIMES, TEXTS_BY_LANG, BILARA_TEXT_BY_LANG
 from data_loader import change_tracker
 from search.indexer import ElasticIndexer
+
+from itertools import chain
 
 logger = logging.getLogger('search.texts')
 
@@ -154,6 +157,53 @@ class TextIndexer(ElasticIndexer):
         if chunk:
             yield chunk
 
+
+    def yield_bilara_texts(self, lang, size, to_add):
+        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG, bind_vars={'lang': lang}))
+
+        if not bilara_texts:
+            return
+
+        chunk = []
+        chunk_size = 0
+
+        for text in bilara_texts:
+            uid = text['uid']
+            author_uid = text['author_uid']
+            _id = self.make_id(uid, author_uid)
+            if _id not in to_add:
+                continue
+
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+
+            action = {
+                'acronym': text['acronym'],
+                '_id': _id,
+                'uid': uid,
+                'lang': lang,
+                'author': text['author'],
+                'author_uid': text['author_uid'],
+                'author_short': text['author_short'],
+                'is_root': lang == text['root_lang'],
+                'mtime': int(text['mtime']),
+                'heading': {
+                    'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                },
+                'content': '\n\n'.join(strings.values())
+            }
+
+            chunk_size += len(action['content'].encode('utf-8'))
+            chunk.append(action)
+            if chunk_size > size:
+                yield chunk
+                chunk = []
+                chunk_size = 0
+                time.sleep(0.25)
+        if chunk:
+            yield chunk
+
+
     def yield_actions_for_lang(self, lang, size):
         stored_mtimes = {
             hit["_id"]: hit["_source"]["mtime"]
@@ -173,10 +223,17 @@ class TextIndexer(ElasticIndexer):
             )
         )
 
+        current_bilara_mtimes = list(
+            get_db().aql.execute(
+                CURRENT_BILARA_MTIMES,
+                bind_vars={'lang': self.lang, '@collection': 'sc_bilara_texts'}
+            )
+        )
+
         to_add = set()
         to_delete = set(stored_mtimes)
 
-        for doc in current_html_mtimes:
+        for doc in chain(current_html_mtimes, current_bilara_mtimes):
             _id = self.make_id(doc['uid'], doc['author_uid'])
             if _id in to_delete:
                 to_delete.remove(_id)
@@ -194,6 +251,7 @@ class TextIndexer(ElasticIndexer):
             print(f'Indexing {len(to_add)} new or modified texts to {lang} index')
 
             yield from self.yield_html_texts(lang, size, to_add=to_add)
+            yield from self.yield_bilara_texts(lang, size, to_add=to_add)
 
     @staticmethod
     def load_index_config(config_name):
