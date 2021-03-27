@@ -98,7 +98,7 @@ There is a Makefile with following commands:
 
 ### 1.5 Working with ArangoDB
 Our project is using [ArangoDB](https://www.arangodb.com/) on the back-end. In the development mode it exposes port 8529 on the localhost.
-You can access it's web interface on <http://127.0.0.1:8529>.
+You can access its web interface on <http://127.0.0.1:8529>.
 
 In the code that is running in the docker containers you can access the database on the adress `sc-arangodb` on the same port.
 
