@@ -53,7 +53,11 @@ class TextIndexer(ElasticIndexer):
         root = lxml.html.fromstring(data, parser=self.htmlparser)
         text = root.find('body/article')
         if text is None:
-            raise ValueError("Structure of html is not body > article")
+            text = root.find('body/section')
+
+        if text is None:
+            raise ValueError("Structure of html is not body > article or not body > section")
+
         metaarea = root.cssselect('#metaarea')
         author = []
         if metaarea:
