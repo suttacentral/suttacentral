@@ -299,6 +299,24 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           staticPagesToolbarDisplayState: toolbarDisplayState,
         });
       },
+      changeDisplaySuttaParallelsState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
+          displaySuttaParallels: displayState,
+        });
+      },
+      changeDisplaySuttaToCState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
+          displaySuttaToC: displayState,
+        });
+      },
+      changeDisplaySuttaInfoState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
+          displaySuttaInfo: displayState,
+        });
+      },
     };
   }
 
@@ -366,6 +384,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     this.addEventListener('hide-sc-top-sheet', e => {
       this.shadowRoot.querySelector('#setting_menu').hide();
+      this.actions.changeDisplaySettingMenuState(false);
     });
 
     this.addEventListener('show-sc-top-sheet', e => {
@@ -374,6 +393,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     this.addEventListener('hide-sc-sutta-parallels', e => {
       this.shadowRoot.querySelector('#sutta_parallels').hide();
+      this.actions.changeDisplaySuttaParallelsState(false);
     });
 
     this.addEventListener('show-sc-sutta-parallels', e => {
@@ -386,6 +406,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
     this.addEventListener('hide-sc-sutta-toc', e => {
       this.shadowRoot.querySelector('#sutta_toc').hide();
+      this.actions.changeDisplaySuttaToCState(false);
     });
 
     this.addEventListener('show-sc-sutta-toc', e => {
@@ -406,6 +427,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       if (pubInfo && pubInfo.hide) {
         pubInfo.hide();
       }
+      this.actions.changeDisplaySuttaInfoState(false);
     });
     const rootDOM = this.shadowRoot;
     addEventListener(
