@@ -2,13 +2,9 @@ import { LitElement, html } from 'lit-element';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
-import { API_ROOT } from '../../constants.js';
+import { API_ROOT } from '../../constants';
 
 class SCChineseLookup extends LitLocalized(LitElement) {
-  render() {
-    return html``;
-  }
-
   static get properties() {
     return {
       loadedLanguage: { type: String },
@@ -43,7 +39,7 @@ class SCChineseLookup extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    let targetLanguage = state.textOptions.chineseLookupTargetLanguage;
+    const targetLanguage = state.textOptions.chineseLookupTargetLanguage;
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;
     }
@@ -63,57 +59,98 @@ class SCChineseLookup extends LitLocalized(LitElement) {
   }
 
   lookupWord(graphs) {
-    let definition = '';
-    let length = 1;
-    for (let i = graphs.length; i > 0; i--) {
-      let snip = graphs.slice(0, i);
-      definition += this._lookupWord(snip);
-      if (definition && i > length) {
-        length = i;
+    const definition = [];
+    const queriedGraphs = [];
+
+    for(let graph of graphs) {
+      const result = this._lookupWord(graph);
+      queriedGraphs.push(graph);
+      if (result) {
+        definition.push(result);
       }
     }
-    return { html: definition, length: length };
+
+    const terms = [];
+    for (let i = 0; i < graphs.length; i++) {
+      for (let j = 1; j <= graphs.length; j++) {
+        terms.push(graphs.slice(i, j));
+      }
+    }
+
+    for(let term of terms) {
+      const result = this._lookupWord(term);
+      if (queriedGraphs.includes(term)) {
+        continue;
+      }
+      if (result) {
+        definition.push(result);
+      }
+    }
+
+    return { html: definition };
   }
 
   _lookupWord(graph) {
-    if (!this.dictData || !this.dictData.dictionary) {
+    if (!this.dictData) {
       return;
     }
+
     graph = graph.replace(/\u2060/, '');
-    if (this.dictData.dictionary[graph]) {
-      return this._constructDictEntry(graph);
-    } else if (this.fallbackDictData.dictionary[graph]) {
-      return this._constructFallbackEntry(graph);
+    let target = this.dictData.find(x => x.entry === graph);
+    if (typeof target === 'object') {
+      return this._constructDictEntry(graph, target);
     }
+
+    target = this.fallbackDictData.find(x => x.entry === graph);
+    if (typeof target === 'object') {
+      return this._constructFallbackEntry(graph, target);
+    }
+
     return '';
   }
 
-  _constructDictEntry(graph) {
+  // eslint-disable-next-line class-methods-use-this
+  _constructDictEntry(graph, dictItem) {
     const href = `http://www.buddhism-dict.net/cgi-bin/xpr-ddb.pl?q=${encodeURI(graph)}`;
-    return `<div class="definition">
-              <span class="ideograph">
-                <a title="Go to full entry at the DDB. Login with user name ‘guest’" 
-                    href="${href}" target="_blank" rel="noopener" class="lookup-link">${graph}</a>
-              </span>
-              <span class="meaning"> 
-                ${this.dictData.dictionary[graph][0]}: ${this.dictData.dictionary[graph][1]}
-              </span>
-              <hr class="separator">
-            </div>`;
+    return html`
+      <dl>
+        <dt>
+          <dfn class="entry" lang="pi" translate="no">
+            <a href="${href}" target="_blank" rel="noopener" class="lookup-link"> ${graph} </a>
+          </dfn>
+        </dt>
+
+        ${dictItem.definition
+          ? html`
+              <ol class="definition">
+                <li>${dictItem.definition}</li>
+              </ol>
+            `
+          : ''}
+      </dl>
+    `;
   }
 
-  _constructFallbackEntry(graph) {
+  // eslint-disable-next-line class-methods-use-this
+  _constructFallbackEntry(graph, dictItem) {
     const href = `http://www.buddhism-dict.net/cgi-bin/dealt-lookup?q=${encodeURI(graph)}`;
-    return `<div class="fallback definition">
-              <span class="ideograph">
-                <a title="Go to full entry at the CJKV. Login with user name ‘guest’"
-                    href="${href}" target="_blank" rel="noopener" class="lookup-link">${graph}</a>
-              </span>
-              <span class="meaning">
-                ${this.fallbackDictData.dictionary[graph][0]}: ${this.fallbackDictData.dictionary[graph][1]} [modern chinese]
-              </span>
-              <hr class="separator">
-            </div>`;
+    return html`
+      <dl>
+        <dt>
+          <dfn class="entry" lang="pi" translate="no">
+            <a href="${href}" target="_blank" rel="noopener" class="lookup-link"> ${graph} </a>
+          </dfn>
+        </dt>
+
+        ${dictItem.definition
+          ? html`
+              <ol class="definition">
+                <li>${dictItem.definition}</li>
+              </ol>
+            `
+          : ''}
+      </dl>
+    `;
   }
 
   _computeUrl(fallback) {

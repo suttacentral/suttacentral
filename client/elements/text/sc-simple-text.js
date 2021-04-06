@@ -58,6 +58,7 @@ class SCSimpleText extends SCLitTextPage {
       </main>
 
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <sc-bottom-sheet></sc-bottom-sheet>
     `;
   }
 
@@ -281,6 +282,7 @@ class SCSimpleText extends SCLitTextPage {
     setTimeout(() => {
       this._hashChangeHandler();
     }, 100);
+    this._chineseLookupStateChanged();
   }
 
   _prepareNavigation() {
@@ -472,13 +474,32 @@ class SCSimpleText extends SCLitTextPage {
     }
   }
 
-  // Lookup word start
-  _putGraphsIntoSpans(selector, lang) {
-    this._startGeneratingSpans(selector, 'graph', lang);
+  _chineseLookupStateChanged() {
+    if (this.isChineseLookupEnabled) {
+      if (!this.spansForGraphsGenerated) {
+        this._conditionallyPutIntoSpans('lzh');
+      }
+    }
   }
 
-  _putWordsIntoSpans(selector, lang) {
-    this._startGeneratingSpans(selector, 'word', lang);
+  _conditionallyPutIntoSpans(lang) {
+    if (this.sutta.lang === lang) {
+      if (this.shadowRoot.querySelector('article')) {
+        this._putIntoSpans('article', lang);
+        this._addWordSpanId();
+        this._addLookupEvent('article p .word');
+      }
+    }
+  }
+
+  _putIntoSpans(selector, lang) {
+    if (lang === 'lzh') {
+      this._putGraphsIntoSpans(selector, 'graph');
+    }
+  }
+
+  _putGraphsIntoSpans(selector, lang) {
+    this._startGeneratingSpans(selector, 'graph', lang);
   }
 
   _startGeneratingSpans(selector, unit, lang) {
@@ -492,7 +513,6 @@ class SCSimpleText extends SCLitTextPage {
       }
       empty = false;
       this._putSegmentIntoSpans(segment, unit, this);
-      this._addLookupTooltips(segment, lang, this);
     }
     if (empty) {
       return;
@@ -578,6 +598,59 @@ class SCSimpleText extends SCLitTextPage {
       str += '%spback% ';
     }
     return str;
+  }
+
+  _addWordSpanId() {
+    let wordIdSeed = 0;
+    this.shadowRoot.querySelectorAll('span.word:not(.lookup_element):not(a.word)').forEach(word => {
+      word.id = `word_${wordIdSeed}`;
+      wordIdSeed++;
+    });
+  }
+
+  _addLookupEvent(selector) {
+    const chineseLookup = this.shadowRoot.querySelector('#chinese_lookup');
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const arraySpans = Array.from(allWordSpans);
+    arraySpans.forEach(word => {
+      word.onclick = e => {
+        if (!this.isChineseLookupEnabled) return;
+        const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+        if (scBottomSheet) {
+          this._removeDefineFocusedClass();
+          this._addDefineFocusedClass(e.currentTarget);
+          this._setSCBottomSheet(scBottomSheet, word, chineseLookup, e.currentTarget);
+        }
+      };
+    });
+  }
+
+  _addDefineFocusedClass(currentTarget) {
+    currentTarget.classList.add('spanFocused');
+  }
+
+  _removeDefineFocusedClass() {
+    this.shadowRoot.querySelectorAll('.spanFocused').forEach(dfElement => {
+      dfElement.classList.remove('spanFocused');
+    });
+  }
+
+  _removeLookupEvent(selector) {
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const arraySpans = Array.from(allWordSpans);
+    arraySpans.forEach(word => {
+      word.onclick = null;
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
+    scBottomSheet.currentDefine = word.textContent;
+    const lookupResult = chineseLookup.lookupWord(word.dataset.latin_text || word.textContent);
+    scBottomSheet.currentDefineDetail = lookupResult.html;
+    scBottomSheet.currentTarget = currentTarget;
+    scBottomSheet.paliLookup = chineseLookup;
+    scBottomSheet.show();
   }
 }
 

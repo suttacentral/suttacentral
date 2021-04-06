@@ -48,4 +48,9 @@ export const typographyLegacyStyles = css`
   .text-table td:first-child {
     font-weight: inherit;
   }
+
+  .spanFocused {
+    color: rgb(34, 33, 32);
+    background-color: var(--sc-primary-color-light);
+  }
 `;
