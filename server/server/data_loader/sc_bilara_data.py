@@ -110,8 +110,10 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     for i in docs:
         if i["_key"] not in check_val:
             res.append(i)
-            check_val.add(i["_key"])        
+            check_val.add(i["_key"])
+        else:
+            print(f'Duplicate key value：{i["_key"]}')
 
-    print(f'{len(docs)} texts added or updated')
+    print(f'{len(res)} texts added or updated')
     db['sc_bilara_texts'].truncate()
     db['sc_bilara_texts'].import_bulk(res)
