@@ -169,7 +169,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._addVariantText();
       // this._addCommentSpanId();
       if (this.isPaliLookupEnabled) {
-        this._initPaliLookup();
+        this._paliLookupStateChanged();
+      }
+      if (this.isChineseLookupEnabled) {
+        this._chineseLookupStateChanged();
       }
       this._showHighlightingChanged();
       this._hashChangeHandler();
@@ -299,7 +302,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._paliLookupStateChanged();
     }
     if (changedProps.has('isChineseLookupEnabled')) {
-      //this._chineseLookupStateChanged();
+      this._chineseLookupStateChanged();
     }
     if (changedProps.has('currentStyles')) {
       if (this._isPlusStyle()) {
@@ -343,36 +346,32 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _paliLookupStateChanged() {
-    if (this.hidden) {
-      return;
-    }
     if (this.isPaliLookupEnabled) {
-      this._initPaliLookup();
+      this._enablePaliLookup();
     } else {
-      const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
-      if (scBottomSheet) {
-        scBottomSheet.hide();
-      }
-      this._removeDefineFocusedClass();
-      this._removeLookupEvent('.root .text .word');
+      this._disableLookup();
     }
   }
 
   _chineseLookupStateChanged() {
-    if (this.hidden) {
-      return;
-    }
     if (this.isChineseLookupEnabled) {
-      if (!this.spansForGraphsGenerated) {
-        this._conditionallyPutIntoSpans('lzh');
-      }
+      this._enableChineseLookup();
+    } else {
+      this._disableLookup();
     }
   }
 
+  _disableLookup() {
+    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    if (scBottomSheet) {
+      scBottomSheet.hide();
+    }
+    this._removeDefineFocusedClass();
+    this._removeLookupEvent('.root .text .word');
+  }
+
   _conditionallyPutIntoSpans(lang) {
-    if (this.translatedSutta && this.translatedSutta.lang === lang) {
-      this._putIntoSpans('.translation', lang);
-    } else if (this.rootSutta.lang === lang) {
+    if (this.rootSutta.lang === lang) {
       if (this.shadowRoot.querySelector('.root')) {
         this._putIntoSpans('.root', lang);
       }
@@ -385,6 +384,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     } else if (lang === 'lzh') {
       this._putGraphsIntoSpans(selector, 'graph');
     }
+  }
+
+  _putGraphsIntoSpans(selector, lang) {
+    this._startGeneratingSpans(selector, 'graph', lang);
   }
 
   _changeTextView() {
@@ -439,6 +442,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
       this.isPaliLookupEnabled = state.textOptions.paliLookupActivated;
+    }
+    if (this.isChineseLookupEnabled !== state.textOptions.chineseLookupActivated) {
+      this.isChineseLookupEnabled = state.textOptions.chineseLookupActivated;
     }
     const currentReferences = this.buildReferences(this.displayedReferences);
     const incomingReferences = this.buildReferences(state.textOptions.displayedReferences);
@@ -880,23 +886,29 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     });
   }
 
-  _addLookupEvent(selector) {
-    let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
-    let allWordSpans = this.shadowRoot.querySelectorAll(selector);
-    let arraySpans = Array.from(allWordSpans);
-    arraySpans.forEach(word => {
+  _addLookupEvent(selector, lookupId) {
+    const lookup = this.shadowRoot.querySelector(`#${lookupId}`);
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const spans = Array.from(allWordSpans);
+    const isLookupEnabled =
+      lookupId === 'pali_lookup' ? this.isPaliLookupEnabled : this.isChineseLookupEnabled;
+    spans.forEach(word => {
       word.onclick = e => {
-        if (!this.isPaliLookupEnabled) return;
+        if (!isLookupEnabled) return;
         const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
         if (scBottomSheet) {
           this._removeDefineFocusedClass();
           this._addDefineFocusedClass(e.currentTarget);
-          this._setSCBottomSheet(scBottomSheet, word, paliLookup, e.currentTarget);
+          if (this.isChineseLookupEnabled) {
+            scBottomSheet.isSegmentedChineseText = true;
+          }
+          this._setSCBottomSheet(scBottomSheet, word, lookup, e.currentTarget);
         }
       };
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _addDefineFocusedClass(currentTarget) {
     currentTarget.classList.add('spanFocused');
   }
@@ -908,9 +920,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _removeLookupEvent(selector) {
-    let allWordSpans = this.shadowRoot.querySelectorAll(selector);
-    let arraySpans = Array.from(allWordSpans);
-    arraySpans.forEach(word => {
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const spans = Array.from(allWordSpans);
+    spans.forEach(word => {
       word.onclick = null;
     });
   }
@@ -924,12 +936,20 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     scBottomSheet.show();
   }
 
-  _initPaliLookup() {
+  _enablePaliLookup() {
     if (!this.spansForWordsGenerated) {
       this._putWordsIntoSpans('.root .text', 'word');
     }
     this._addWordSpanId();
-    this._addLookupEvent('.root .text .word');
+    this._addLookupEvent('.root .text .word', 'pali_lookup');
+  }
+
+  _enableChineseLookup() {
+    if (!this.spansForGraphsGenerated) {
+      this._conditionallyPutIntoSpans('lzh');
+    }
+    this._addWordSpanId();
+    this._addLookupEvent('.root .text .word', 'chinese_lookup');
   }
 
   _conditionallyPutWordsIntoSpans() {
@@ -940,7 +960,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._putWordsIntoSpans('.translation .text', 'word');
     } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
       if (this.shadowRoot.querySelector('.root')) {
-        this._initPaliLookup();
+        this._enablePaliLookup();
       }
     }
   }
@@ -988,7 +1008,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._addRootText();
     this.spansForWordsGenerated = false;
     if (this.isPaliLookupEnabled && !this.spansForWordsGenerated) {
-      this._initPaliLookup();
+      this._enablePaliLookup();
     }
   }
 

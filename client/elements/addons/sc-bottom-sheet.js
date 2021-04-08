@@ -9,6 +9,7 @@ class SCBottomSheet extends LitElement {
       currentTarget: { type: Object },
       paliLookup: { type: Object },
       defineURL: { type: String },
+      isSegmentedChineseText: { type: Boolean },
     };
   }
 
@@ -19,6 +20,7 @@ class SCBottomSheet extends LitElement {
     this.currentTarget = {};
     this.paliLookup = {};
     this.defineURL = '';
+    this.isSegmentedChineseText = false;
   }
 
   static get styles() {

@@ -479,7 +479,19 @@ class SCSimpleText extends SCLitTextPage {
       if (!this.spansForGraphsGenerated) {
         this._conditionallyPutIntoSpans('lzh');
       }
+      this._addLookupEvent('article p .word');
+    } else {
+      this._disableLookup();
     }
+  }
+
+  _disableLookup() {
+    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    if (scBottomSheet) {
+      scBottomSheet.hide();
+    }
+    this._removeDefineFocusedClass();
+    this._removeLookupEvent('article p .word');
   }
 
   _conditionallyPutIntoSpans(lang) {
@@ -487,7 +499,6 @@ class SCSimpleText extends SCLitTextPage {
       if (this.shadowRoot.querySelector('article')) {
         this._putIntoSpans('article', lang);
         this._addWordSpanId();
-        this._addLookupEvent('article p .word');
       }
     }
   }
