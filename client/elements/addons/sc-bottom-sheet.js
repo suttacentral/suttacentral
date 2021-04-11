@@ -7,9 +7,8 @@ class SCBottomSheet extends LitElement {
       currentDefine: { type: String },
       currentDefineDetail: { type: String },
       currentTarget: { type: Object },
-      paliLookup: { type: Object },
+      lookup: { type: Object },
       defineURL: { type: String },
-      isSegmentedChineseText: { type: Boolean },
     };
   }
 
@@ -18,9 +17,9 @@ class SCBottomSheet extends LitElement {
     this.currentDefine = '';
     this.currentDefineDetail = '';
     this.currentTarget = {};
-    this.paliLookup = {};
+    this.lookup = {};
     this.defineURL = '';
-    this.isSegmentedChineseText = false;
+    this.chinesePunctuation = '，,!！?？;；:：（()）[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』';
   }
 
   static get styles() {
@@ -490,12 +489,12 @@ class SCBottomSheet extends LitElement {
   }
 
   _previous() {
-    // currentTarget(span.word) ID = (word_[num], e.g. word_0, word_1)
     const focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId && parseInt(focusedWordId, 10) !== 0) {
-      const previousWord = this.parentNode.querySelector(
-        `#word_${parseInt(focusedWordId, 10) - 1}`
-      );
+      let previousWord = this.parentNode.querySelector(`#word_${parseInt(focusedWordId, 10) - 1}`);
+      if (this.chinesePunctuation.includes(previousWord.textContent)) {
+        previousWord = this.parentNode.querySelector(`#word_${parseInt(focusedWordId, 10) - 2}`);
+      }
       if (previousWord) {
         this._setProperties(previousWord);
       }
@@ -505,22 +504,73 @@ class SCBottomSheet extends LitElement {
   _next() {
     const focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId) {
-      const nextWord = this.parentNode.querySelector(`#word_${parseInt(focusedWordId, 10) + 1}`);
+      let nextWord = this.parentNode.querySelector(`#word_${parseInt(focusedWordId, 10) + 1}`);
+      if (this.chinesePunctuation.includes(nextWord.textContent)) {
+        nextWord = this.parentNode.querySelector(`#word_${parseInt(focusedWordId, 10) + 2}`);
+      }
       if (nextWord) {
         this._setProperties(nextWord);
       }
     }
   }
 
+  _removeDefineFocusedClass() {
+    this.parentNode.querySelectorAll('.spanFocused').forEach(dfElement => {
+      dfElement.classList.remove('spanFocused');
+    });
+  }
+
   _setProperties(nextDefineElement) {
-    this.currentDefine = nextDefineElement.textContent;
-    const lookupResult = this.paliLookup.lookupWord(
-      nextDefineElement.dataset.latin_text || nextDefineElement.textContent
-    );
+    this._removeDefineFocusedClass();
+    let keyword = '';
+    if (this.lookup.id === 'chinese_lookup') {
+      keyword =
+        this.getSentenceText() ||
+        nextDefineElement.dataset.latin_text ||
+        nextDefineElement.textContent;
+    } else {
+      keyword = nextDefineElement.dataset.latin_text || nextDefineElement.textContent;
+    }
+    this.currentDefine = keyword;
+    const lookupResult = this.lookup.lookupWord(keyword);
     this.currentDefineDetail = lookupResult.html;
-    this.currentTarget.classList.remove('spanFocused');
     nextDefineElement.classList.add('spanFocused');
     this.currentTarget = nextDefineElement;
+  }
+
+  getSentenceText() {
+    const sentenceTexts = [];
+    sentenceTexts.push(this.currentTarget.textContent);
+    this.currentTarget.classList.add('spanFocused');
+    let focusedWordId = this.currentTarget.id.slice(5);
+    if (focusedWordId) {
+      focusedWordId = parseInt(focusedWordId, 10);
+      for (let i = focusedWordId - 1; i > focusedWordId - 3; i--) {
+        const previousWord = this.parentNode.querySelector(`#word_${parseInt(i, 10)}`);
+        if (previousWord) {
+          if (!this.chinesePunctuation.includes(previousWord.textContent)) {
+            sentenceTexts.unshift(previousWord.textContent);
+            previousWord.classList.add('spanFocused');
+          } else {
+            break;
+          }
+        }
+      }
+
+      for (let i = focusedWordId + 1; i < focusedWordId + 3; i++) {
+        const nextWord = this.parentNode.querySelector(`#word_${parseInt(i, 10)}`);
+        if (nextWord) {
+          if (!this.chinesePunctuation.includes(nextWord.textContent)) {
+            sentenceTexts.push(nextWord.textContent);
+            nextWord.classList.add('spanFocused');
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    return sentenceTexts?.join('');
   }
 
   updated(changedProps) {

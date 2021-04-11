@@ -62,28 +62,33 @@ class SCChineseLookup extends LitLocalized(LitElement) {
     const definition = [];
     const queriedGraphs = [];
 
-    for(let graph of graphs) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const graph of graphs) {
       const result = this._lookupWord(graph);
-      queriedGraphs.push(graph);
-      if (result) {
-        definition.push(result);
+      if (!queriedGraphs.includes(graph)) {
+        queriedGraphs.push(graph);
+        if (result) {
+          definition.push(result);
+        }
       }
     }
 
-    const terms = [];
+    let terms = [];
     for (let i = 0; i < graphs.length; i++) {
       for (let j = 1; j <= graphs.length; j++) {
         terms.push(graphs.slice(i, j));
       }
     }
+    terms = terms.filter(x => x !== '');
 
-    for(let term of terms) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const term of terms) {
       const result = this._lookupWord(term);
-      if (queriedGraphs.includes(term)) {
-        continue;
-      }
-      if (result) {
-        definition.push(result);
+      if (!queriedGraphs.includes(term)) {
+        queriedGraphs.push(term);
+        if (result) {
+          definition.push(result);
+        }
       }
     }
 
@@ -96,12 +101,12 @@ class SCChineseLookup extends LitLocalized(LitElement) {
     }
 
     graph = graph.replace(/\u2060/, '');
-    let target = this.dictData.find(x => x.entry === graph);
+    let target = this.dictData?.find?.(x => x.entry === graph);
     if (typeof target === 'object') {
       return this._constructDictEntry(graph, target);
     }
 
-    target = this.fallbackDictData.find(x => x.entry === graph);
+    target = this.fallbackDictData?.find?.(x => x.entry === graph);
     if (typeof target === 'object') {
       return this._constructFallbackEntry(graph, target);
     }

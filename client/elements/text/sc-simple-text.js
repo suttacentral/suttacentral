@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-param-reassign */
 import { LitElement, html, css, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
@@ -271,18 +273,17 @@ class SCSimpleText extends SCLitTextPage {
 
   _updateView() {
     this._setAttributes();
-    this._computeParagraphs();
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.actions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
     this._referenceDisplayTypeChanged();
+    this._chineseLookupStateChanged();
     this.navItems = this._prepareNavigation();
     setTimeout(() => {
       this._hashChangeHandler();
     }, 100);
-    this._chineseLookupStateChanged();
   }
 
   _prepareNavigation() {
@@ -479,7 +480,7 @@ class SCSimpleText extends SCLitTextPage {
       if (!this.spansForGraphsGenerated) {
         this._conditionallyPutIntoSpans('lzh');
       }
-      this._addLookupEvent('article p .word');
+      this._addLookupEvent('article p .lookup_element');
     } else {
       this._disableLookup();
     }
@@ -613,7 +614,7 @@ class SCSimpleText extends SCLitTextPage {
 
   _addWordSpanId() {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll('span.word:not(.lookup_element):not(a.word)').forEach(word => {
+    this.shadowRoot.querySelectorAll('span.lookup_element:not(a span)').forEach(word => {
       word.id = `word_${wordIdSeed}`;
       wordIdSeed++;
     });
@@ -656,11 +657,12 @@ class SCSimpleText extends SCLitTextPage {
 
   // eslint-disable-next-line class-methods-use-this
   _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
-    scBottomSheet.currentDefine = word.textContent;
-    const lookupResult = chineseLookup.lookupWord(word.dataset.latin_text || word.textContent);
-    scBottomSheet.currentDefineDetail = lookupResult.html;
     scBottomSheet.currentTarget = currentTarget;
-    scBottomSheet.paliLookup = chineseLookup;
+    const keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
+    scBottomSheet.currentDefine = keyword;
+    const lookupResult = chineseLookup.lookupWord(keyword);
+    scBottomSheet.currentDefineDetail = lookupResult.html;
+    scBottomSheet.lookup = chineseLookup;
     scBottomSheet.show();
   }
 }
