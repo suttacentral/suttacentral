@@ -337,10 +337,26 @@ class SCPageSelector extends LitLocalized(LitElement) {
     }
   }
 
+  _loadScActionItems() {
+    if (this.currentRoute.name !== 'HOME') {
+      const scSiteLayout = document.querySelector('sc-site-layout');
+      const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
+      if (!scActionItems) {
+        import('./menus/sc-action-items');
+        const contextToolbar = scSiteLayout?.shadowRoot.querySelector('#context_toolbar');
+        const newScActionItems = document.createElement('sc-action-items');
+        newScActionItems.id = 'action_items';
+        contextToolbar.appendChild(newScActionItems);
+        this._setActionItemsDisplayState();
+      }
+    }
+  }
+
   updated() {
     this._createMetaData();
     this._updateNav();
     this._changeToolbarTitle();
+    this._loadScActionItems();
   }
 
   disconnectedCallback() {
@@ -560,8 +576,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _setActionItemsDisplayState() {
-    this.parentNode.querySelector('#action_items').style.display =
-      this.currentRoute.name === 'HOME' ? 'none' : 'flex';
+    const scActionItems = this.parentNode.querySelector('#action_items');
+    if (scActionItems) {
+      scActionItems.style.display = this.currentRoute.name === 'HOME' ? 'none' : 'flex';
+    }
   }
 
   _setViewModeButtonDisplayState() {
