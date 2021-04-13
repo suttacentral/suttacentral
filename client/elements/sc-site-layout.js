@@ -1,26 +1,25 @@
 import { LitElement, html, css, svg } from 'lit-element';
 
-import { icon } from '../img/sc-icon';
 import { throttle } from 'throttle-debounce';
+import { icon } from '../img/sc-icon';
 
-import './sc-page-selector.js';
-import './menus/sc-action-items.js';
-import './addons/sc-top-sheet-views.js';
+import './sc-page-selector';
+import './addons/sc-top-sheet-views';
 import './addons/sc-top-sheet-parallels';
 import './addons/sc-top-sheet-publication-legacy';
 import './addons/sc-top-sheet-toc';
-import './addons/sc-toasts.js';
-import './navigation/sc-linden-leaves.js';
+import './addons/sc-toasts';
+import './navigation/sc-linden-leaves';
 import './addons/sc-linear-progress';
 
 import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 
-import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles.js';
+import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 
-import { SCUtilityStyles } from './styles/sc-utility-styles.js';
-import { SCFontStyles } from './styles/sc-font-styles.js';
-import { SCColors } from './styles/sc-colors.js';
+import { SCUtilityStyles } from './styles/sc-utility-styles';
+import { SCFontStyles } from './styles/sc-font-styles';
+import { SCColors } from './styles/sc-colors';
 
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
@@ -42,7 +41,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
             </div>
             <div id="subTitle">${this.localize('pageSubtitle')}</div>
           </div>
-          <sc-action-items id="action_items"></sc-action-items>
         </div>
         <sc-linear-progress .active="${this.linearProgressActive}"></sc-linear-progress>
         <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>

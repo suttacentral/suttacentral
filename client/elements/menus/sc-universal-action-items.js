@@ -7,6 +7,7 @@ import { LitLocalized } from '../addons/localization-mixin';
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
 import '@material/mwc-button';
+import '@material/mwc-icon-button';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -123,7 +124,7 @@ class SCUniversalActionItems extends LitLocalized(LitElement) {
       const scActionItems = document
         .querySelector('sc-site-layout')
         .shadowRoot.querySelector('#action_items');
-      scActionItems.hideTopSheets();
+      scActionItems?.hideTopSheets();
     });
   }
 
