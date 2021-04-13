@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-param-reassign */
 import { LitElement, html, css, svg } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
@@ -58,6 +60,7 @@ class SCSimpleText extends SCLitTextPage {
       </main>
 
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <sc-bottom-sheet></sc-bottom-sheet>
     `;
   }
 
@@ -270,13 +273,13 @@ class SCSimpleText extends SCLitTextPage {
 
   _updateView() {
     this._setAttributes();
-    this._computeParagraphs();
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.actions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
     this._referenceDisplayTypeChanged();
+    this._chineseLookupStateChanged();
     this.navItems = this._prepareNavigation();
     setTimeout(() => {
       this._hashChangeHandler();
@@ -472,13 +475,43 @@ class SCSimpleText extends SCLitTextPage {
     }
   }
 
-  // Lookup word start
-  _putGraphsIntoSpans(selector, lang) {
-    this._startGeneratingSpans(selector, 'graph', lang);
+  _chineseLookupStateChanged() {
+    if (this.isChineseLookupEnabled) {
+      if (!this.spansForGraphsGenerated) {
+        this._conditionallyPutIntoSpans('lzh');
+      }
+      this._addLookupEvent('article p .lookup_element');
+    } else {
+      this._disableLookup();
+    }
   }
 
-  _putWordsIntoSpans(selector, lang) {
-    this._startGeneratingSpans(selector, 'word', lang);
+  _disableLookup() {
+    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    if (scBottomSheet) {
+      scBottomSheet.hide();
+    }
+    this._removeDefineFocusedClass();
+    this._removeLookupEvent('article p .word');
+  }
+
+  _conditionallyPutIntoSpans(lang) {
+    if (this.sutta.lang === lang) {
+      if (this.shadowRoot.querySelector('article')) {
+        this._putIntoSpans('article', lang);
+        this._addWordSpanId();
+      }
+    }
+  }
+
+  _putIntoSpans(selector, lang) {
+    if (lang === 'lzh') {
+      this._putGraphsIntoSpans(selector, 'graph');
+    }
+  }
+
+  _putGraphsIntoSpans(selector, lang) {
+    this._startGeneratingSpans(selector, 'graph', lang);
   }
 
   _startGeneratingSpans(selector, unit, lang) {
@@ -492,7 +525,6 @@ class SCSimpleText extends SCLitTextPage {
       }
       empty = false;
       this._putSegmentIntoSpans(segment, unit, this);
-      this._addLookupTooltips(segment, lang, this);
     }
     if (empty) {
       return;
@@ -578,6 +610,60 @@ class SCSimpleText extends SCLitTextPage {
       str += '%spback% ';
     }
     return str;
+  }
+
+  _addWordSpanId() {
+    let wordIdSeed = 0;
+    this.shadowRoot.querySelectorAll('span.lookup_element:not(a span)').forEach(word => {
+      word.id = `word_${wordIdSeed}`;
+      wordIdSeed++;
+    });
+  }
+
+  _addLookupEvent(selector) {
+    const chineseLookup = this.shadowRoot.querySelector('#chinese_lookup');
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const arraySpans = Array.from(allWordSpans);
+    arraySpans.forEach(word => {
+      word.onclick = e => {
+        if (!this.isChineseLookupEnabled) return;
+        const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+        if (scBottomSheet) {
+          this._removeDefineFocusedClass();
+          this._addDefineFocusedClass(e.currentTarget);
+          this._setSCBottomSheet(scBottomSheet, word, chineseLookup, e.currentTarget);
+        }
+      };
+    });
+  }
+
+  _addDefineFocusedClass(currentTarget) {
+    currentTarget.classList.add('spanFocused');
+  }
+
+  _removeDefineFocusedClass() {
+    this.shadowRoot.querySelectorAll('.spanFocused').forEach(dfElement => {
+      dfElement.classList.remove('spanFocused');
+    });
+  }
+
+  _removeLookupEvent(selector) {
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const arraySpans = Array.from(allWordSpans);
+    arraySpans.forEach(word => {
+      word.onclick = null;
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
+    scBottomSheet.currentTarget = currentTarget;
+    const keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
+    scBottomSheet.currentDefine = keyword;
+    const lookupResult = chineseLookup.lookupWord(keyword);
+    scBottomSheet.currentDefineDetail = lookupResult.html;
+    scBottomSheet.lookup = chineseLookup;
+    scBottomSheet.show();
   }
 }
 

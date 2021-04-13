@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 import { html } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { store } from '../../redux-store';
@@ -168,8 +170,14 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       // this._addCommentText();
       this._addVariantText();
       // this._addCommentSpanId();
-      if (this.isPaliLookupEnabled) {
-        this._initPaliLookup();
+      if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
+        this._paliLookupStateChanged();
+      }
+      if (
+        this.isChineseLookupEnabled &&
+        (this.rootSutta.lang === 'lzh' || this.translatedSutta.lang === 'lzh')
+      ) {
+        this._chineseLookupStateChanged();
       }
       this._showHighlightingChanged();
       this._hashChangeHandler();
@@ -296,10 +304,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._changeScript();
     }
     if (changedProps.has('isPaliLookupEnabled')) {
-      this._paliLookupStateChanged();
+      if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
+        this._paliLookupStateChanged();
+      }
     }
     if (changedProps.has('isChineseLookupEnabled')) {
-      //this._chineseLookupStateChanged();
+      if (
+        this.isChineseLookupEnabled &&
+        (this.rootSutta.lang === 'lzh' || this.translatedSutta.lang === 'lzh')
+      ) {
+        this._chineseLookupStateChanged();
+      }
     }
     if (changedProps.has('currentStyles')) {
       if (this._isPlusStyle()) {
@@ -343,36 +358,32 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _paliLookupStateChanged() {
-    if (this.hidden) {
-      return;
-    }
     if (this.isPaliLookupEnabled) {
-      this._initPaliLookup();
+      this._enablePaliLookup();
     } else {
-      const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
-      if (scBottomSheet) {
-        scBottomSheet.hide();
-      }
-      this._removeDefineFocusedClass();
-      this._removeLookupEvent('.root .text .word');
+      this._disableLookup();
     }
   }
 
   _chineseLookupStateChanged() {
-    if (this.hidden) {
-      return;
-    }
     if (this.isChineseLookupEnabled) {
-      if (!this.spansForGraphsGenerated) {
-        this._conditionallyPutIntoSpans('lzh');
-      }
+      this._enableChineseLookup();
+    } else {
+      this._disableLookup();
     }
   }
 
+  _disableLookup() {
+    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    if (scBottomSheet) {
+      scBottomSheet.hide();
+    }
+    this._removeDefineFocusedClass();
+    this._removeLookupEvent('.root .text .word');
+  }
+
   _conditionallyPutIntoSpans(lang) {
-    if (this.translatedSutta && this.translatedSutta.lang === lang) {
-      this._putIntoSpans('.translation', lang);
-    } else if (this.rootSutta.lang === lang) {
+    if (this.rootSutta.lang === lang) {
       if (this.shadowRoot.querySelector('.root')) {
         this._putIntoSpans('.root', lang);
       }
@@ -385,6 +396,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     } else if (lang === 'lzh') {
       this._putGraphsIntoSpans(selector, 'graph');
     }
+  }
+
+  _putGraphsIntoSpans(selector, lang) {
+    this._startGeneratingSpans(selector, 'graph', lang);
   }
 
   _changeTextView() {
@@ -439,6 +454,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
       this.isPaliLookupEnabled = state.textOptions.paliLookupActivated;
+    }
+    if (this.isChineseLookupEnabled !== state.textOptions.chineseLookupActivated) {
+      this.isChineseLookupEnabled = state.textOptions.chineseLookupActivated;
     }
     const currentReferences = this.buildReferences(this.displayedReferences);
     const incomingReferences = this.buildReferences(state.textOptions.displayedReferences);
@@ -872,31 +890,49 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     node.data = str;
   }
 
-  _addWordSpanId() {
+  _addWordSpanId(selector) {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll('span.word').forEach(word => {
+    this.shadowRoot.querySelectorAll(selector).forEach(word => {
       word.id = `word_${wordIdSeed}`;
       wordIdSeed++;
     });
   }
 
-  _addLookupEvent(selector) {
-    let paliLookup = this.shadowRoot.querySelector('#pali_lookup');
-    let allWordSpans = this.shadowRoot.querySelectorAll(selector);
-    let arraySpans = Array.from(allWordSpans);
-    arraySpans.forEach(word => {
+  _addPaliLookupEvent(selector) {
+    const lookup = this.shadowRoot.querySelector(`#pali_lookup`);
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const spans = Array.from(allWordSpans);
+    spans.forEach(word => {
       word.onclick = e => {
         if (!this.isPaliLookupEnabled) return;
         const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
         if (scBottomSheet) {
           this._removeDefineFocusedClass();
           this._addDefineFocusedClass(e.currentTarget);
-          this._setSCBottomSheet(scBottomSheet, word, paliLookup, e.currentTarget);
+          this._setSCBottomSheet(scBottomSheet, word, lookup, e.currentTarget);
         }
       };
     });
   }
 
+  _addChineseLookupEvent(selector) {
+    const lookup = this.shadowRoot.querySelector(`#chinese_lookup`);
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const spans = Array.from(allWordSpans);
+    spans.forEach(word => {
+      word.onclick = e => {
+        if (!this.isChineseLookupEnabled) return;
+        const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+        if (scBottomSheet) {
+          this._removeDefineFocusedClass();
+          this._addDefineFocusedClass(e.currentTarget);
+          this._setSCBottomSheet(scBottomSheet, word, lookup, e.currentTarget);
+        }
+      };
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   _addDefineFocusedClass(currentTarget) {
     currentTarget.classList.add('spanFocused');
   }
@@ -908,28 +944,42 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _removeLookupEvent(selector) {
-    let allWordSpans = this.shadowRoot.querySelectorAll(selector);
-    let arraySpans = Array.from(allWordSpans);
-    arraySpans.forEach(word => {
+    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const spans = Array.from(allWordSpans);
+    spans.forEach(word => {
       word.onclick = null;
     });
   }
 
-  _setSCBottomSheet(scBottomSheet, word, paliLookup, currentTarget) {
-    scBottomSheet.currentDefine = word.textContent;
-    let lookupResult = paliLookup.lookupWord(word.dataset.latin_text || word.textContent);
-    scBottomSheet.currentDefineDetail = lookupResult.html;
+  _setSCBottomSheet(scBottomSheet, word, lookup, currentTarget) {
     scBottomSheet.currentTarget = currentTarget;
-    scBottomSheet.paliLookup = paliLookup;
+    let keyword = '';
+    if (lookup.id === 'chinese_lookup') {
+      keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
+    } else {
+      keyword = word.dataset.latin_text || word.textContent;
+    }
+    scBottomSheet.currentDefine = keyword;
+    const lookupResult = lookup.lookupWord(keyword);
+    scBottomSheet.currentDefineDetail = lookupResult.html;
+    scBottomSheet.lookup = lookup;
     scBottomSheet.show();
   }
 
-  _initPaliLookup() {
+  _enablePaliLookup() {
     if (!this.spansForWordsGenerated) {
       this._putWordsIntoSpans('.root .text', 'word');
     }
-    this._addWordSpanId();
-    this._addLookupEvent('.root .text .word');
+    this._addWordSpanId('span.word');
+    this._addPaliLookupEvent('.root .text .word');
+  }
+
+  _enableChineseLookup() {
+    if (!this.spansForGraphsGenerated) {
+      this._conditionallyPutIntoSpans('lzh');
+    }
+    this._addWordSpanId('.root .text .word');
+    this._addChineseLookupEvent('.root .text .word');
   }
 
   _conditionallyPutWordsIntoSpans() {
@@ -940,7 +990,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this._putWordsIntoSpans('.translation .text', 'word');
     } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
       if (this.shadowRoot.querySelector('.root')) {
-        this._initPaliLookup();
+        this._enablePaliLookup();
       }
     }
   }
@@ -987,8 +1037,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _resetScript() {
     this._addRootText();
     this.spansForWordsGenerated = false;
-    if (this.isPaliLookupEnabled && !this.spansForWordsGenerated) {
-      this._initPaliLookup();
+    if (this.isPaliLookupEnabled && !this.spansForWordsGenerated && this.rootSutta.lang === 'pli') {
+      this._enablePaliLookup();
     }
   }
 
