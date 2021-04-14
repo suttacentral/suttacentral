@@ -4,10 +4,6 @@ import { throttle } from 'throttle-debounce';
 import { icon } from '../img/sc-icon';
 
 import './sc-page-selector';
-import './addons/sc-top-sheet-views';
-import './addons/sc-top-sheet-parallels';
-import './addons/sc-top-sheet-publication-legacy';
-import './addons/sc-top-sheet-toc';
 import './addons/sc-toasts';
 import './navigation/sc-linden-leaves';
 import './addons/sc-linear-progress';
@@ -16,7 +12,6 @@ import { LitLocalized } from './addons/localization-mixin';
 import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
-
 import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
 import { SCColors } from './styles/sc-colors';
@@ -43,11 +38,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           </div>
         </div>
         <sc-linear-progress .active="${this.linearProgressActive}"></sc-linear-progress>
-        <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
-        <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
-        <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
-        <sc-top-sheet-publication-legacy id="sutta-info"></sc-top-sheet-publication-legacy>
-        <sc-top-sheet-publication-bilara id="bilara-sutta-info"></sc-top-sheet-publication-bilara>
 
         <div id="static_pages_nav_menu">
           <nav>
@@ -544,7 +534,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    //super.updated(changedProps);
     if (changedProps.has('siteLanguage')) {
       this._setSiteLanguage();
     }
@@ -562,7 +551,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _routeChanged() {
-    this.shadowRoot.querySelector('#sutta-info').hide();
+    this.shadowRoot.querySelector('#sutta-info')?.hide();
   }
 
   _colorThemeChanged(newVal, oldVal) {
