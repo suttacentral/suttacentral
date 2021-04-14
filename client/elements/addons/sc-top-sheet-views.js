@@ -295,7 +295,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         const {
           textOptions: { displayedReferences },
         } = store.getState();
-        if (displayedReferences.length) {
+        if (displayedReferences?.length) {
           displayedReferences.forEach(edition_set => {
             const reference = this.references.find(
               reference => reference.edition_set === edition_set

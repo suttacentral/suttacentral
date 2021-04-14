@@ -352,11 +352,54 @@ class SCPageSelector extends LitLocalized(LitElement) {
     }
   }
 
+  _loadTopSheets() {
+    if (this.currentRoute.name !== 'HOME') {
+      const topSheets = new Map([
+        ['setting_menu', 'sc-top-sheet-views'],
+        ['sutta_parallels', 'sc-top-sheet-parallels'],
+        ['sutta_toc', 'sc-top-sheet-toc'],
+        ['sutta-info', 'sc-top-sheet-publication-legacy'],
+        ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
+      ]);
+      let needToLoadTopSheets = false;
+      const scSiteLayout = document.querySelector('sc-site-layout');
+      // eslint-disable-next-line no-restricted-syntax
+      for (const key of topSheets.keys()) {
+        const topSheet = scSiteLayout?.shadowRoot.querySelector(`#${key}`);
+        if (!topSheet) {
+          needToLoadTopSheets = true;
+          break;
+        }
+      }
+      if (needToLoadTopSheets) {
+        import('./addons/sc-top-sheet-views');
+        import('./addons/sc-top-sheet-toc');
+        import('./addons/sc-top-sheet-parallels');
+        import('./addons/sc-top-sheet-publication-legacy');
+        import('./addons/sc-top-sheet-publication-bilara');
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [key, value] of topSheets) {
+          this._appendTopSheet(key, value, scSiteLayout);
+        }
+      }
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _appendTopSheet(topSheetId, topSheetTagName, scSiteLayout) {
+    const universalToolbar = scSiteLayout?.shadowRoot.querySelector(`#universal_toolbar`);
+    const navMenu = scSiteLayout?.shadowRoot.querySelector('#static_pages_nav_menu');
+    const newTopSheet = document.createElement(topSheetTagName);
+    newTopSheet.id = topSheetId;
+    universalToolbar.insertBefore(newTopSheet, navMenu);
+  }
+
   updated() {
     this._createMetaData();
     this._updateNav();
     this._changeToolbarTitle();
     this._loadScActionItems();
+    this._loadTopSheets();
   }
 
   disconnectedCallback() {

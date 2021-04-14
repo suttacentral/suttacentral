@@ -1,15 +1,14 @@
 import { LitElement, html } from 'lit-element';
 
-import './sc-bilara-segmented-text.js';
-import './sc-simple-text.js';
-import './sc-stepper.js';
-import './sc-text-image.js';
-import '../addons/sc-error-icon.js';
-import '../addons/sc-top-sheet-publication-bilara';
+import './sc-bilara-segmented-text';
+import './sc-simple-text';
+import './sc-stepper';
+import './sc-text-image';
+import '../addons/sc-error-icon';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from '../../elements/addons/localization-mixin';
-import { API_ROOT } from '../../constants.js';
+import { LitLocalized } from '../addons/localization-mixin';
+import { API_ROOT } from '../../constants';
 
 import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
 /*
