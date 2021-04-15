@@ -7,8 +7,6 @@ import '@material/mwc-checkbox';
 import '@material/mwc-switch';
 import '@material/mwc-list/mwc-list-item';
 
-import '../addons/sc-toasts';
-
 import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converter';
 
 import { store } from '../../redux-store';
@@ -280,8 +278,19 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     ];
   }
 
+  _loadScToasts() {
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    const scToasts = scSiteLayout?.shadowRoot.querySelector('sc-toasts');
+    if (!scToasts) {
+      import('../addons/sc-toasts');
+      const newScToasts = document.createElement('sc-toasts');
+      scSiteLayout.shadowRoot.appendChild(newScToasts);
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
+    this._loadScToasts();
     this._fetchReferenceDisplayType();
   }
 
