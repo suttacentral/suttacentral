@@ -31,4 +31,5 @@ from .views import (
     SuttaFullPath,
     PaliReferenceEdition,
     PublicationInfo,
+    Jieba,
 )

@@ -31,3 +31,4 @@ Werkzeug==1.0.1
 Flask-Caching==1.9.0
 aksharamukha==1.8.1
 beautifulsoup4==4.9.3
+jieba==0.42.1

@@ -58,34 +58,43 @@ class SCChineseLookup extends LitLocalized(LitElement) {
     this.loadingDict = false;
   }
 
-  lookupWord(graphs) {
+  // eslint-disable-next-line class-methods-use-this
+  async SegmentationText(text) {
+    try {
+      return await (await fetch(`${API_ROOT}/jieba/${text}`)).json();
+    } catch (error) {
+      return [];
+    }
+  }
+
+  async lookupWord(graphs) {
     const definition = [];
     const queriedGraphs = [];
+    const wholeWordResult = this._lookupWord(graphs);
+    if (wholeWordResult) {
+      queriedGraphs.push(graphs);
+      definition.push(wholeWordResult);
+    }
+    let segmentedText = await this.SegmentationText(graphs);
+    segmentedText = segmentedText.sort((a, b) => b.length - a.length);
+    if (segmentedText.length) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const graph of segmentedText) {
+        const result = this._lookupWord(graph);
+        if (!queriedGraphs.includes(graph)) {
+          queriedGraphs.push(graph);
+          if (result) {
+            definition.push(result);
+          }
+        }
+      }
+    }
 
     // eslint-disable-next-line no-restricted-syntax
     for (const graph of graphs) {
       const result = this._lookupWord(graph);
       if (!queriedGraphs.includes(graph)) {
         queriedGraphs.push(graph);
-        if (result) {
-          definition.push(result);
-        }
-      }
-    }
-
-    let terms = [];
-    for (let i = 0; i < graphs.length; i++) {
-      for (let j = 1; j <= graphs.length; j++) {
-        terms.push(graphs.slice(i, j));
-      }
-    }
-    terms = terms.filter(x => x !== '');
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const term of terms) {
-      const result = this._lookupWord(term);
-      if (!queriedGraphs.includes(term)) {
-        queriedGraphs.push(term);
         if (result) {
           definition.push(result);
         }

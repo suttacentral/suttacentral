@@ -49,6 +49,8 @@ from aksharamukha import transliterate
 
 from data_loader.util import json_load
 
+import jieba
+
 default_cache_timeout = 600
 long_cache_timeout = 7200
 
@@ -1045,3 +1047,7 @@ class PublicationInfo(Resource):
             return {'error': 'Not Found'}, 404
         return publication_info
 
+class Jieba(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, text):
+        return list(jieba.cut(text, cut_all=False))
