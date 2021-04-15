@@ -4,7 +4,6 @@ import { throttle } from 'throttle-debounce';
 import { icon } from '../img/sc-icon';
 
 import './sc-page-selector';
-import './addons/sc-toasts';
 import './navigation/sc-linden-leaves';
 import './addons/sc-linear-progress';
 
@@ -52,7 +51,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       </div>
 
       <sc-page-selector id="page_selector"></sc-page-selector>
-      <sc-toasts></sc-toasts>
     `;
   }
 
