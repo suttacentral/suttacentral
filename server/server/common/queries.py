@@ -893,7 +893,8 @@ FOR dict IN dictionaries_simple
         entry: dict.entry,
         grammar: dict.grammar,
         definition: dict.definition,
-        xr: dict.xr
+        xr: dict.xr,
+        pronunciation: dict.pronunciation
     }
 '''
 

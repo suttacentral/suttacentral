@@ -141,6 +141,13 @@ class SCChineseLookup extends LitLocalized(LitElement) {
               </ol>
             `
           : ''}
+        ${dictItem.pronunciation
+          ? html`
+              <ul class="pronunciation">
+                <li>${dictItem.pronunciation}</li>
+              </ul>
+            `
+          : ''}
       </dl>
     `;
   }
@@ -161,6 +168,13 @@ class SCChineseLookup extends LitLocalized(LitElement) {
               <ol class="definition">
                 <li>${dictItem.definition}</li>
               </ol>
+            `
+          : ''}
+        ${dictItem.pronunciation
+          ? html`
+              <ul class="pronunciation">
+                <li>${dictItem.pronunciation}</li>
+              </ul>
             `
           : ''}
       </dl>

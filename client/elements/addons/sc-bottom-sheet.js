@@ -401,6 +401,12 @@ class SCBottomSheet extends LitElement {
       .lookup-next-previous {
         fill: var(--sc-icon-color);
       }
+
+      ul {
+        margin: 0px;
+        padding: 0px;
+        list-style-type: none;
+      }
     `;
   }
 
@@ -488,6 +494,7 @@ class SCBottomSheet extends LitElement {
     this.style.animation = 'bottomSheetShow 200ms 1 ease-in normal forwards';
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   _previous() {
     const focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId && parseInt(focusedWordId, 10) !== 0) {
@@ -501,6 +508,7 @@ class SCBottomSheet extends LitElement {
     }
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   _next() {
     const focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId) {
@@ -514,12 +522,14 @@ class SCBottomSheet extends LitElement {
     }
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   _removeDefineFocusedClass() {
     this.parentNode.querySelectorAll('.spanFocused').forEach(dfElement => {
       dfElement.classList.remove('spanFocused');
     });
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   async _setProperties(nextDefineElement) {
     this._removeDefineFocusedClass();
     let keyword = '';
