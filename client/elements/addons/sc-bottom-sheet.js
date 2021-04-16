@@ -401,6 +401,12 @@ class SCBottomSheet extends LitElement {
       .lookup-next-previous {
         fill: var(--sc-icon-color);
       }
+
+      ul {
+        margin: 0px;
+        padding: 0px;
+        list-style-type: none;
+      }
     `;
   }
 
@@ -544,9 +550,14 @@ class SCBottomSheet extends LitElement {
     this.currentTarget.classList.add('spanFocused');
     let focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId) {
+      const backwardSteps = 3;
+      const forwardSteps = 3;
       focusedWordId = parseInt(focusedWordId, 10);
-      for (let i = focusedWordId - 1; i > focusedWordId - 3; i--) {
-        const previousWord = this.parentNode.querySelector(`#word_${parseInt(i, 10)}`);
+
+      for (let i = focusedWordId - 1; i > focusedWordId - backwardSteps; i--) {
+        const previousWord = this.currentTarget.parentNode.querySelector(
+          `#word_${parseInt(i, 10)}`
+        );
         if (previousWord) {
           if (!this.chinesePunctuation.includes(previousWord.textContent)) {
             sentenceTexts.unshift(previousWord.textContent);
@@ -557,8 +568,8 @@ class SCBottomSheet extends LitElement {
         }
       }
 
-      for (let i = focusedWordId + 1; i < focusedWordId + 3; i++) {
-        const nextWord = this.parentNode.querySelector(`#word_${parseInt(i, 10)}`);
+      for (let i = focusedWordId + 1; i < focusedWordId + forwardSteps; i++) {
+        const nextWord = this.currentTarget.parentNode.querySelector(`#word_${parseInt(i, 10)}`);
         if (nextWord) {
           if (!this.chinesePunctuation.includes(nextWord.textContent)) {
             sentenceTexts.push(nextWord.textContent);

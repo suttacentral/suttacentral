@@ -655,7 +655,6 @@ class SCSimpleText extends SCLitTextPage {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
     scBottomSheet.currentTarget = currentTarget;
     const keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
