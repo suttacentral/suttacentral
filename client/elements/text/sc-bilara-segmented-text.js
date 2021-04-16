@@ -951,7 +951,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     });
   }
 
-  async _setSCBottomSheet(scBottomSheet, word, lookup, currentTarget) {
+  _setSCBottomSheet(scBottomSheet, word, lookup, currentTarget) {
     scBottomSheet.currentTarget = currentTarget;
     let keyword = '';
     if (lookup.id === 'chinese_lookup') {
@@ -960,7 +960,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       keyword = word.dataset.latin_text || word.textContent;
     }
     scBottomSheet.currentDefine = keyword;
-    const lookupResult = await lookup.lookupWord(keyword);
+    const lookupResult = lookup.lookupWord(keyword);
     scBottomSheet.currentDefineDetail = lookupResult.html;
     scBottomSheet.lookup = lookup;
     scBottomSheet.show();

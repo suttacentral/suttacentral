@@ -24,6 +24,11 @@ class SCChineseLookup extends LitLocalized(LitElement) {
     this.loadingDict = true;
     this.loadFallbackLanguage = true;
     this.fallbackDictData = {};
+    this.hanziVariants = new Map([
+      ['説', '說'],
+      ['縁', '緣'],
+      ['録', '錄'],
+    ]);
   }
 
   firstUpdated() {
@@ -58,39 +63,29 @@ class SCChineseLookup extends LitLocalized(LitElement) {
     this.loadingDict = false;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async SegmentationText(text) {
-    try {
-      return await (await fetch(`${API_ROOT}/jieba/${text}`)).json();
-    } catch (error) {
-      return [];
-    }
-  }
-
-  async lookupWord(graphs) {
+  lookupWord(graphs) {
     const definition = [];
     const queriedGraphs = [];
-    const wholeWordResult = this._lookupWord(graphs);
-    if (wholeWordResult) {
-      queriedGraphs.push(graphs);
-      definition.push(wholeWordResult);
+
+    let terms = [];
+    for (let i = 0; i < graphs.length; i++) {
+      for (let j = 1; j <= graphs.length; j++) {
+        terms.push(graphs.slice(i, j));
+      }
     }
-    let segmentedText = await this.SegmentationText(graphs);
-    segmentedText = segmentedText.sort((a, b) => b.length - a.length);
-    if (segmentedText.length) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const graph of segmentedText) {
-        const result = this._lookupWord(graph);
-        if (!queriedGraphs.includes(graph)) {
-          queriedGraphs.push(graph);
-          if (result) {
-            definition.push(result);
-          }
+    terms = terms.filter(x => x !== '');
+    terms = terms.sort((a, b) => b.length - a.length);
+
+    for (const term of terms) {
+      const result = this._lookupWord(term);
+      if (!queriedGraphs.includes(term)) {
+        queriedGraphs.push(term);
+        if (result) {
+          definition.push(result);
         }
       }
     }
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const graph of graphs) {
       const result = this._lookupWord(graph);
       if (!queriedGraphs.includes(graph)) {
@@ -109,6 +104,7 @@ class SCChineseLookup extends LitLocalized(LitElement) {
       return;
     }
 
+    graph = this._variantsReplace(graph);
     graph = graph.replace(/\u2060/, '');
     let target = this.dictData?.find?.(x => x.entry === graph);
     if (typeof target === 'object') {
@@ -121,6 +117,16 @@ class SCChineseLookup extends LitLocalized(LitElement) {
     }
 
     return '';
+  }
+
+  _variantsReplace(graph) {
+    graph = this.hanziVariants.get(graph) ?? graph;
+    for (const word of graph) {
+      if (this.hanziVariants.has(word)) {
+        graph = graph.replace(new RegExp(word, 'g'), this.hanziVariants.get(word));
+      }
+    }
+    return graph;
   }
 
   // eslint-disable-next-line class-methods-use-this

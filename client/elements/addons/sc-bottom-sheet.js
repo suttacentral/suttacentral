@@ -494,7 +494,6 @@ class SCBottomSheet extends LitElement {
     this.style.animation = 'bottomSheetShow 200ms 1 ease-in normal forwards';
   }
 
-  // eslint-disable-next-line no-underscore-dangle
   _previous() {
     const focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId && parseInt(focusedWordId, 10) !== 0) {
@@ -508,7 +507,6 @@ class SCBottomSheet extends LitElement {
     }
   }
 
-  // eslint-disable-next-line no-underscore-dangle
   _next() {
     const focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId) {
@@ -522,15 +520,13 @@ class SCBottomSheet extends LitElement {
     }
   }
 
-  // eslint-disable-next-line no-underscore-dangle
   _removeDefineFocusedClass() {
     this.parentNode.querySelectorAll('.spanFocused').forEach(dfElement => {
       dfElement.classList.remove('spanFocused');
     });
   }
 
-  // eslint-disable-next-line no-underscore-dangle
-  async _setProperties(nextDefineElement) {
+  _setProperties(nextDefineElement) {
     this._removeDefineFocusedClass();
     let keyword = '';
     if (this.lookup.id === 'chinese_lookup') {
@@ -542,7 +538,7 @@ class SCBottomSheet extends LitElement {
       keyword = nextDefineElement.dataset.latin_text || nextDefineElement.textContent;
     }
     this.currentDefine = keyword;
-    const lookupResult = await this.lookup.lookupWord(keyword);
+    const lookupResult = this.lookup.lookupWord(keyword);
     this.currentDefineDetail = lookupResult.html;
     nextDefineElement.classList.add('spanFocused');
     this.currentTarget = nextDefineElement;
@@ -554,8 +550,11 @@ class SCBottomSheet extends LitElement {
     this.currentTarget.classList.add('spanFocused');
     let focusedWordId = this.currentTarget.id.slice(5);
     if (focusedWordId) {
+      const backwardSteps = 3;
+      const forwardSteps = 3;
       focusedWordId = parseInt(focusedWordId, 10);
-      for (let i = focusedWordId - 1; i > focusedWordId - 8; i--) {
+
+      for (let i = focusedWordId - 1; i > focusedWordId - backwardSteps; i--) {
         const previousWord = this.currentTarget.parentNode.querySelector(
           `#word_${parseInt(i, 10)}`
         );
@@ -569,7 +568,7 @@ class SCBottomSheet extends LitElement {
         }
       }
 
-      for (let i = focusedWordId + 1; i < focusedWordId + 8; i++) {
+      for (let i = focusedWordId + 1; i < focusedWordId + forwardSteps; i++) {
         const nextWord = this.currentTarget.parentNode.querySelector(`#word_${parseInt(i, 10)}`);
         if (nextWord) {
           if (!this.chinesePunctuation.includes(nextWord.textContent)) {

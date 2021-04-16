@@ -655,12 +655,11 @@ class SCSimpleText extends SCLitTextPage {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
+  _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
     scBottomSheet.currentTarget = currentTarget;
     const keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
     scBottomSheet.currentDefine = keyword;
-    const lookupResult = await chineseLookup.lookupWord(keyword);
+    const lookupResult = chineseLookup.lookupWord(keyword);
     scBottomSheet.currentDefineDetail = lookupResult.html;
     scBottomSheet.lookup = chineseLookup;
     scBottomSheet.show();
