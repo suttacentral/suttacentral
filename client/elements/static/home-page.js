@@ -489,6 +489,10 @@ class SCHomePage extends SCStaticPage {
         width: 60px;
         height: 60px;
       }
+
+      sc-tipitaka {
+        min-height: 270px;
+      }
     `;
   }
 
@@ -532,12 +536,15 @@ class SCHomePage extends SCStaticPage {
             >
               <source
                 src="https://ia601508.us.archive.org/20/items/sutta-central-promo-2020-en.av-1/SuttaCentral_Promo-2020_en.av1.mp4"
+                type="video/mp4"
               />
               <source
                 src="https://ia601508.us.archive.org/12/items/sutta-central-promo-2020-en-vp-9/SuttaCentral_Promo-2020_en_VP9.webm"
+                type="video/webm"
               />
               <source
                 src="https://ia801504.us.archive.org/23/items/sutta-central-promo-2020-en-x-264/SuttaCentral_Promo-2020_en_x264.mp4"
+                type="video/mp4"
               />
             </video>
           </section>
