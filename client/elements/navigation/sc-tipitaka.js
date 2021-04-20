@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/localization-mixin';
-import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles.js';
+import { navigationNormalModeStyles } from './sc-navigation-styles';
 
 class SCTipitaka extends LitLocalized(LitElement) {
   static get styles() {
@@ -17,8 +17,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
     return {
       mainMenuData: { type: Array },
       currentStyles: { type: Object },
-      compactStyles: { type: Boolean },
-      isCompactMode: { type: Boolean },
       loading: { type: Boolean },
       siteLanguage: { type: String },
     };
@@ -26,24 +24,14 @@ class SCTipitaka extends LitLocalized(LitElement) {
 
   _stateChanged(state) {
     super._stateChanged(state);
-    if (this.isCompactMode !== state.suttaplexListDisplay) {
-      this.isCompactMode = state.suttaplexListDisplay;
-    }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
       this._fetchMainMenu();
     }
   }
 
-  _appViewModeChanged() {
-    this.compactStyles = this.isCompactMode ? navigationCompactModeStyles : null;
-  }
-
   updated(changedProps) {
     super.update(changedProps);
-    if (changedProps.has('isCompactMode')) {
-      this._appViewModeChanged();
-    }
     if (changedProps.has('navArray')) {
       this.actions.setNavigation(this.navArray);
     }
@@ -54,13 +42,10 @@ class SCTipitaka extends LitLocalized(LitElement) {
     this.loading = false;
     this.mainMenuData = [];
     this.currentStyles = navigationNormalModeStyles;
-    this.compactStyles = {};
-    this.isCompactMode = store.getState().suttaplexListDisplay;
     this.navArray = store.getState().navigationArray;
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.siteLanguage = store.getState().siteLanguage;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
-    this._appViewModeChanged();
     this._fetchMainMenu();
     this.tipitakaGuide = new Map([
       ['sutta', '/discourses'],
@@ -73,14 +58,6 @@ class SCTipitaka extends LitLocalized(LitElement) {
   async _fetchMainMenu() {
     this.loading = true;
     try {
-      // if (!this.navDataCache) {
-      //   this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-      // }
-      // if (this.navDataCache.has('tipitakaData')) {
-      //   this.mainMenuData = this.navDataCache.get('tipitakaData');
-      // } else {
-      //   this.mainMenuData = await (await fetch(`${API_ROOT}/menu?language=${this.language || 'en'}`)).json();
-      // }
       this.mainMenuData = await (
         await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
       ).json();
@@ -138,7 +115,7 @@ class SCTipitaka extends LitLocalized(LitElement) {
   }
 
   render() {
-    return html` ${this.currentStyles} ${this.compactStyles} ${this.tipitakaCardTemplate} `;
+    return html` ${this.currentStyles} ${this.tipitakaCardTemplate} `;
   }
 }
 
