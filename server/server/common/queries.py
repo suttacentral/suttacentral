@@ -1116,6 +1116,6 @@ LET path_docs = (
         RETURN doc.uid
 )
 FOR d IN publications
-    FILTER d.text_uid IN path_docs AND d.translation_lang_iso == @lang
+    FILTER (d.text_uid IN path_docs OR d.text_uid == @uid) AND d.translation_lang_iso == @lang
     RETURN d
 '''
