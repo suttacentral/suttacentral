@@ -15,7 +15,7 @@ def load_simple_dictionaries(db: Database, dictionaries_dir: Path):
     docs = []
     for dictionary in tqdm(simple_dictionaries_dir.glob('**/*.json')):
         from_lang, to_lang_and_name = dictionary.stem.split('2')
-        if len(to_lang_and_name.split('_') != 2):
+        if len(to_lang_and_name.split('_')) != 2:
             break
         to_lang, dict_name = to_lang_and_name.split('_')
         content = json_load(dictionary)
