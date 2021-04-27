@@ -68,7 +68,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       ? html`
           <sc-simple-text
             id="simple_text"
-            .sutta=${this.translatedSutta}
+            .sutta=${this.translatedSutta || this.rootSutta}
             .isLoading=${this.isLoading}
             .error=${this.lastError}
             ?hidden=${this._shouldHideSimpleText()}

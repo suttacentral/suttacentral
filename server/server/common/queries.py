@@ -579,12 +579,12 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
 SUTTA_VIEW = (
         '''
     LET root_text = DOCUMENT('super_nav_details', @uid)
-    
+
     LET legacy_html = (
         FOR html IN html_text
-            FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid) 
+            FILTER html.uid == @uid AND ((html.lang == @language AND LOWER(html.author_uid) == @author_uid)
                 OR html.lang == root_text.root_lang)
-            
+
             RETURN {
                 uid: html.uid,
                 lang: html.lang,
@@ -598,15 +598,15 @@ SUTTA_VIEW = (
                 previous: html.prev
             }
     )
-    
+
     LET root_bilara_obj = (
-        FOR doc IN sc_bilara_texts 
+        FOR doc IN sc_bilara_texts
             FILTER doc.uid == @uid AND 'root' IN doc.muids
-            LIMIT 1 
+            LIMIT 1
             LET author_doc = (
-                FOR author IN author_edition 
+                FOR author IN author_edition
                     FILTER author.uid IN doc.muids
-                    LIMIT 1 
+                    LIMIT 1
                     RETURN author
             )[0]
             LET name_doc = (
@@ -615,7 +615,7 @@ SUTTA_VIEW = (
                     LIMIT 1
                     RETURN name
             )[0]
-    
+
             RETURN {
                 uid: doc.uid,
                 author: author_doc.long_name,
@@ -637,15 +637,15 @@ SUTTA_VIEW = (
                 },
             }
     )[0]
-    
+
     LET translated_bilara_obj = (
-        FOR doc IN sc_bilara_texts 
+        FOR doc IN sc_bilara_texts
             FILTER doc.uid == @uid AND doc.lang == @language AND @author_uid IN doc.muids
-            LIMIT 1 
+            LIMIT 1
             LET author_doc = (
-                FOR author IN author_edition 
+                FOR author IN author_edition
                     FILTER author.uid IN doc.muids
-                    LIMIT 1 
+                    LIMIT 1
                     RETURN author
             )[0]
             LET name_doc = (
@@ -654,7 +654,7 @@ SUTTA_VIEW = (
                     LIMIT 1
                     RETURN name
             )[0]
-    
+
             RETURN {
                 uid: doc.uid,
                 lang: doc.lang,
@@ -676,18 +676,18 @@ SUTTA_VIEW = (
                 },
             }
     )[0]
-    
+
     LET suttaplex = ('''
         + SUTTAPLEX_LIST
         + ''')[0]
-    
-RETURN {
-    root_text: translated_bilara_obj ? root_bilara_obj : null,
-    translation: translated_bilara_obj ? (root_bilara_obj == translated_bilara_obj ? null : translated_bilara_obj) 
-        : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
-    segmented: translated_bilara_obj ? true : false,
-    suttaplex: suttaplex
-}
+
+    RETURN {
+        root_text: translated_bilara_obj ? root_bilara_obj : legacy_html[0],
+        translation: translated_bilara_obj ? (root_bilara_obj == translated_bilara_obj ? null : translated_bilara_obj)
+            : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
+        segmented: translated_bilara_obj ? true : false,
+        suttaplex: suttaplex
+    }
 '''
 )
 
