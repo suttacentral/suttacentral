@@ -1,5 +1,6 @@
+/* eslint-disable indent */
 import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
@@ -34,7 +35,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.pitakaName = this._getPathParamNumber(2);
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.siteLanguage = store.getState().siteLanguage;
-    this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
     this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
     this.lastSelectedItemRootLangISO = '';
     this._verifyURL();
@@ -97,11 +97,12 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.navArray.length = 1;
     this.currentURL = '/pitaka';
     const self = this;
+    // eslint-disable-next-line no-restricted-syntax
     for (const [index, navItem] of navArray.entries()) {
       if (index > 1) {
         const cardEvent = this._getEventByNavIndex(index);
         this.currentURL = `${this.currentURL}/${navItem}`;
-        let params = {
+        const params = {
           childId: navItem,
           childName: '',
           dispatchState: index === navArray.length - 1,
@@ -162,6 +163,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
+      this._parseURL();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
@@ -173,7 +175,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this._fetchMainData();
     const currentNavState = this.navArray[this.currentNavPosition];
     if (currentNavState) {
-      let params = {
+      const params = {
         childId: currentNavState.groupId,
         childName: currentNavState.groupName,
         langIso: currentNavState.langIso,
@@ -216,13 +218,7 @@ class SCNavigation extends LitLocalized(LitElement) {
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
-        });
-      },
-      updateNavDataCache(navData) {
-        store.dispatch({
-          type: 'UPDATE_NAV_DATA_CACHE',
-          navDataCache: navData,
+          title,
         });
       },
     };
@@ -271,19 +267,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     } catch (e) {
       this.lastError = e;
       return {};
-    }
-  }
-
-  _updateNavDataCache(url, data) {
-    if (!url || !data) {
-      return;
-    }
-    if (!this.navDataCache) {
-      this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
-    }
-    if (!this.navDataCache.has(url) && data) {
-      this.navDataCache.set(url, data);
-      this.actions.updateNavDataCache(Object.fromEntries(this.navDataCache));
     }
   }
 
@@ -410,7 +393,6 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.parallelsData[0].root_name ||
         this.parallelsData[0].uid;
       this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
-      this._setCurrentURL(params.childId);
       this.requestUpdate();
     }
   }
@@ -427,6 +409,31 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   updated() {
     this._addBlurbsClickEvent();
+    this._reviseURL();
+  }
+
+  _addBlurbsClickEvent() {
+    this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
+      // eslint-disable-next-line no-param-reassign
+      element.onclick = () => {
+        element.classList.toggle('blurbShrink');
+      };
+    });
+  }
+
+  async _reviseURL() {
+    const headerLinks = this.shadowRoot.querySelectorAll('.header-link');
+    // eslint-disable-next-line no-restricted-syntax
+    for (const a of headerLinks) {
+      const navArray = a.href.split('/');
+      const lastUid = navArray[navArray.length - 1];
+      // eslint-disable-next-line no-await-in-loop
+      const navData = await this._fetchChildrenData(lastUid);
+      const hasChild = navData?.[0]?.children?.some(child => ['branch'].includes(child.node_type));
+      if (!hasChild) {
+        a.href = `/${lastUid}`;
+      }
+    }
   }
 
   get parallelsContentTemplate() {
@@ -507,16 +514,6 @@ class SCNavigation extends LitLocalized(LitElement) {
       : '';
   }
 
-  _addBlurbsClickEvent() {
-    this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
-      element.onclick = () => {
-        element.classList.contains('blurbShrink')
-          ? element.classList.remove('blurbShrink')
-          : element.classList.add('blurbShrink');
-      };
-    });
-  }
-
   async _onParallelsCardClick(params) {
     this.vaggasData = await this._fetchChildrenData(params.childId);
 
@@ -569,7 +566,6 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.vaggasData[0].root_name ||
         this.vaggasData[0].uid;
       this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
-      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggas) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
@@ -577,29 +573,16 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
   }
 
-  _setCurrentURL(lastPath) {
-    if (!lastPath) {
-      return;
-    }
-    lastPath = encodeURI(lastPath);
-    let currentURL = window.location.href;
-    if (currentURL.indexOf(`/${lastPath}`) === -1) {
-      let cleanURL = currentURL.split('?')[0] + '/' + lastPath;
-      window.history.pushState({}, 0, cleanURL);
-    }
-  }
-
   _genCurrentURL(lastPath) {
     if (!lastPath) {
       return;
     }
-    let currentURL = window.location.href;
+    const currentURL = window.location.href;
+    let cleanURL = '';
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
-      let cleanURL = currentURL.split('?')[0] + '/' + lastPath;
-      return cleanURL ? cleanURL : currentURL;
-    } else {
-      return currentURL;
+      cleanURL = `${currentURL.split('?')[0]}/${lastPath}`;
     }
+    return cleanURL || currentURL;
   }
 
   get vaggasContentTemplate() {
@@ -627,7 +610,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       </span>
                       <div class="navigation-nerdy-row">
                         <span
-                         class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}""
+                          class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
                           lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
                           translate="no"
                         >
@@ -636,40 +619,34 @@ class SCNavigation extends LitLocalized(LitElement) {
                         <span class="acronym">${child.acronym} ${child.child_range}</span>
                       </div>
                     </span>
-                    ${
-                      child.yellow_brick_road
-                        ? html`
-                            <span class="header-right">
-                              <span class="number-translated">
-                                <span class="number">${child.yellow_brick_road_count}</span>
-                                ${this.fullSiteLanguageName}
-                              </span>
+                    ${child.yellow_brick_road
+                      ? html`
+                          <span class="header-right">
+                            <span class="number-translated">
+                              <span class="number">${child.yellow_brick_road_count}</span>
+                              ${this.fullSiteLanguageName}
                             </span>
-                          `
-                        : ''
-                    }
+                          </span>
+                        `
+                      : ''}
                   </header>
                 </a>
-                ${
-                  child.blurb
-                    ? html`
-                        <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                          ${unsafeHTML(child.blurb)}
-                        </div>
-                      `
-                    : ''
-                }
-                ${
-                  shortcuts.includes(child.uid)
-                    ? html`
-                        <div class="shortcut">
-                          <a href="/${child.uid}" class="shortcut-link">
-                            ${this.localize('shortcutToFullList')}
-                          </a>
-                        </div>
-                      `
-                    : ''
-                }
+                ${child.blurb
+                  ? html`
+                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
+                        ${unsafeHTML(child.blurb)}
+                      </div>
+                    `
+                  : ''}
+                ${shortcuts.includes(child.uid)
+                  ? html`
+                      <div class="shortcut">
+                        <a href="/${child.uid}" class="shortcut-link">
+                          ${this.localize('shortcutToFullList')}
+                        </a>
+                      </div>
+                    `
+                  : ''}
               </section>
             `
           )}
@@ -724,7 +701,6 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.vaggasData[0].root_name ||
         this.vaggasData[0].uid;
       this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
-      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildren) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
@@ -848,7 +824,6 @@ class SCNavigation extends LitLocalized(LitElement) {
         this.vaggaChildrenChildren[0].root_name ||
         this.vaggaChildrenChildren[0].uid;
       this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
-      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showVaggaChildrenChildren) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
@@ -970,7 +945,6 @@ class SCNavigation extends LitLocalized(LitElement) {
       const toolbarTitle =
         this.sakaChildren.translated_name || this.sakaChildren.root_name || this.sakaChildren.uid;
       this._dispatchNavState(this.navArray, navIndexesOfType.position, toolbarTitle);
-      this._setCurrentURL(params.childId);
       this.requestUpdate();
       if (!showSakaChildren) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
@@ -1053,7 +1027,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     };
     if (params.dispatchState) {
       this._dispatchNavState(this.navArray, navIndexesOfType.position, params.childName);
-      this._setCurrentURL(params.childId);
       this.requestUpdate();
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
     }
