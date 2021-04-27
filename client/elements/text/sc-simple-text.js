@@ -1,16 +1,15 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
-import { LitElement, html, css, svg } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { html } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import { SCLitTextPage } from './sc-lit-text-page.js';
-import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
-import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
-import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles.js';
-import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles.js';
-import '../lookups/sc-lzh2en.js';
+import { SCLitTextPage } from './sc-lit-text-page';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles';
+import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles';
+import '../lookups/sc-lzh2en';
 import { store } from '../../redux-store';
-
 import { icon } from '../../img/sc-icon';
 
 class SCSimpleText extends SCLitTextPage {
@@ -94,7 +93,7 @@ class SCSimpleText extends SCLitTextPage {
 
   constructor() {
     super();
-    let textOptionsState = store.getState().textOptions;
+    const textOptionsState = store.getState().textOptions;
     this.sutta = {};
     this.showParagraphs = false;
     this.paragraphs = textOptionsState.paragraphDescriptions;
@@ -361,9 +360,9 @@ class SCSimpleText extends SCLitTextPage {
   }
 
   _shouldDisplayBookIcon(divisionId, itemId) {
-    let divisionIdMatch = divisionId === 'tha' || divisionId === 'thi';
-    let secondEdition = itemId.includes('2ed');
-    let correctId = itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/);
+    const divisionIdMatch = divisionId === 'tha' || divisionId === 'thi';
+    const secondEdition = itemId.includes('2ed');
+    const correctId = itemId.startsWith('pts-vp-pli') || itemId.match(/pts[1-9]/);
     return !divisionIdMatch && !secondEdition && correctId;
   }
 

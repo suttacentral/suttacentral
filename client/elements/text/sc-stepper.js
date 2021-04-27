@@ -202,9 +202,7 @@ class SCStepper extends LitElement {
   }
 
   _getUrl(object) {
-    const author = object.author_uid;
-    const uid = object.uid;
-    const lang = object.lang;
+    const { author_uid: author, uid, lang } = object;
     return `/${uid}/${lang}/${author}`;
   }
 }
