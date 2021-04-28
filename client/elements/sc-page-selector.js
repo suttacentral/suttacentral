@@ -213,7 +213,7 @@ const routes = {
     loader: () => import('./static/vinaya-page.js')
   },
   'SUTTA': {
-    path: `/:suttaId/:langIsoCode/:authorUid`,
+    path: '/:suttaId/:langIsoCode/:authorUid',
     loader: () => import('./text/sc-text-page-selector.js'),
     content: html`<sc-text-page-selector />`
   },

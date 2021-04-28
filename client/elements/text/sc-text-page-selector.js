@@ -11,6 +11,7 @@ import { LitLocalized } from '../addons/localization-mixin';
 import { API_ROOT } from '../../constants';
 
 import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
   either the simple sutta text view or the segmented view.
@@ -93,8 +94,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaComment=${this.suttaComment}
             .suttaReference=${this.suttaReference}
             .suttaVariant=${this.suttaVariant}
-            .isLoading=${this.isLoading}
-            .error=${this.lastError}
             .suttaId=${this.suttaId}
           ></sc-bilara-segmented-text>
         `
@@ -129,8 +128,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       expansionReturns: { type: Array },
       showedLanguagePrompt: { type: Boolean },
       isLoading: { type: Boolean },
-      haveBilaraSegmentedText: { type: Boolean },
-      bilaraDataPath: { type: String },
     };
   }
 
@@ -141,10 +138,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
     this.actions.changeLinearProgressActiveState(this.isLoading);
-    this.bilaraDataPath = '/files/bilara-data';
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.authorUid = store.getState().currentRoute.params.authorUid;
     this.suttaId = store.getState().currentRoute.params.suttaId;
+    this.SuttaParallelsDisplayed = false;
   }
 
   firstUpdated() {
@@ -163,13 +160,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       downloadSuttaText(text) {
         store.dispatch({
           type: 'DOWNLOAD_SUTTA_TEXT',
-          text: text,
+          text,
         });
       },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
       setShowedLanguagePrompt() {
@@ -233,11 +230,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       type: navIndexesOfType.type,
       position: navIndexesOfType.position,
       groupId: this.responseData.root_text
-        ? this.responseData.root_text.uid
-        : this.responseData.translation.uid,
+        ? this.responseData.root_text?.uid
+        : this.responseData.translation?.uid,
       groupName: this.responseData.root_text
-        ? this.responseData.root_text.title
-        : this.responseData.translation.title,
+        ? this.responseData.root_text?.title
+        : this.responseData.translation?.title,
       navigationArrayLength: navIndexesOfType.navArrayLength,
     };
 
@@ -295,6 +292,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.lastError = {
         type: 'data-load-error',
       };
+    } else {
+      this.lastError = null;
     }
   }
 
@@ -305,6 +304,21 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this._bindDataToSCSuttaParallels(this.suttaId);
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
+      if (!this.responseData.root_text && !this.responseData.translation) {
+        this.showParallelsTopSheet();
+        const bilaraRootText = this.responseData.bilara_root_text;
+        dispatchCustomEvent(this, 'sc-navigate', {
+          pathname: `/${bilaraRootText.uid}/${bilaraRootText.lang}/${bilaraRootText.author_uid}`,
+        });
+        return;
+      }
+      if (
+        !this.responseData.translation &&
+        this.responseData.root_text &&
+        (this.langIsoCode !== 'pli' || this.langIsoCode !== 'lzh')
+      ) {
+        this.showParallelsTopSheet();
+      }
       if (this.translatedSutta) {
         this.next = this.translatedSutta.next;
         this.previous = this.translatedSutta.previous;
@@ -323,6 +337,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
     this._getBilaraText();
     this._updateNav();
+  }
+
+  showParallelsTopSheet() {
+    if (!this.SuttaParallelsDisplayed) {
+      this.SuttaParallelsDisplayed = true;
+      const scSiteLayout = document.querySelector('sc-site-layout');
+      scSiteLayout?.shadowRoot.querySelector('#action_items')?.showParallelsTopSheet();
+    }
   }
 
   _bindDataToSCSuttaParallels(uid) {
@@ -346,17 +368,15 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   _getSuttaTextUrl() {
     if (this.authorUid) {
       return `${API_ROOT}/suttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}&siteLanguage=${this.siteLanguage}`;
-    } else {
-      return `${API_ROOT}/suttas/${this.suttaId}?lang=${this.langIsoCode}&siteLanguage=${this.siteLanguage}`;
     }
+    return `${API_ROOT}/suttas/${this.suttaId}?lang=${this.langIsoCode}&siteLanguage=${this.siteLanguage}`;
   }
 
   _getBilaraTextUrl() {
     if (this.authorUid) {
       return `${API_ROOT}/bilarasuttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
-    } else {
-      return `${API_ROOT}/bilarasuttas/${this.suttaId}?lang=${this.langIsoCode}`;
     }
+    return `${API_ROOT}/bilarasuttas/${this.suttaId}?lang=${this.langIsoCode}`;
   }
 
   async _fetchSuttaText() {
