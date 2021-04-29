@@ -325,7 +325,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnViewCompactClick(e) {
-    this.actions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact' ? true : false);
+    this.actions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
     this._viewModeChanged();
   }
 
@@ -436,7 +436,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         composed: true,
       })
     );
-    this.shadowRoot.querySelector('#btnShowParallels').classList.add(this.activeClass);
+    this.shadowRoot.querySelector('#btnShowParallels')?.classList.add(this.activeClass);
   }
 
   _showSuttaToC() {
@@ -471,6 +471,10 @@ class SCActionItems extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaParallelsState(false);
       this._hideSuttaParallels();
     }
+  }
+
+  showParallelsTopSheet() {
+    this._onBtnShowParallelsClick();
   }
 
   _onBtnShowToCClick() {

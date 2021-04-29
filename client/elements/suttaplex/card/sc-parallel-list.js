@@ -5,7 +5,7 @@ import { LitLocalized } from '../../addons/localization-mixin';
 import { icon } from '../../../img/sc-icon';
 import { store } from '../../../redux-store';
 
-import './sc-parallel-item.js';
+import './sc-parallel-item';
 import { parallelsListCss } from './sc-suttaplex-css';
 
 class SCParallels extends LitLocalized(LitElement) {

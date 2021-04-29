@@ -686,7 +686,9 @@ SUTTA_VIEW = (
         translation: translated_bilara_obj ? (root_bilara_obj == translated_bilara_obj ? null : translated_bilara_obj)
             : (FOR html IN legacy_html FILTER html.lang == @language LIMIT 1 RETURN html)[0],
         segmented: translated_bilara_obj ? true : false,
-        suttaplex: suttaplex
+        suttaplex: suttaplex,
+        bilara_root_text: root_bilara_obj,
+        bilara_translated_text: translated_bilara_obj
     }
 '''
 )

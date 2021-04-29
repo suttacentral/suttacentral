@@ -45,8 +45,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       suttaReference: { type: Object },
       suttaComment: { type: Object },
       suttaVariant: { type: Object },
-      isLoading: { type: Boolean },
-      error: { type: Object },
       isTextViewHidden: { type: Boolean },
       hidden: { type: Boolean },
       chosenTextView: { type: String },
@@ -72,7 +70,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     const { textOptions } = store.getState();
     this.showParagraphs = textOptions.paragraphsEnabled;
     this.paragraphs = textOptions.paragraphDescriptions;
-    this.isLoading = false;
     this.isTextViewHidden = false;
     this.hidden = false;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
@@ -175,7 +172,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       }
       if (
         this.isChineseLookupEnabled &&
-        (this.rootSutta.lang === 'lzh' || this.translatedSutta.lang === 'lzh')
+        (this.rootSutta?.lang === 'lzh' || this.translatedSutta?.lang === 'lzh')
       ) {
         this._chineseLookupStateChanged();
       }
@@ -191,7 +188,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.actions.changeSuttaMetaText('');
     this.actions.changeSuttaPublicationInfo({
       uid: this.suttaId,
-      lang: this.translatedSutta.lang || 'en',
+      lang: this.translatedSutta?.lang || 'en',
     });
   }
 
@@ -293,9 +290,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   updated(changedProps) {
     if (changedProps.has('showParagraphs')) {
       //this._computeParagraphs();
-    }
-    if (changedProps.has('isLoading')) {
-      //this._loadingChanged();
     }
     if (changedProps.has('chosenTextView')) {
       this._changeTextView();
