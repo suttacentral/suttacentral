@@ -548,7 +548,7 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
 
     LET original_titles = (
         FOR original_name IN names
-            FILTER original_name.uid == v.uid
+            FILTER original_name.uid == v.uid AND original_name.is_root == true
             LIMIT 1
             RETURN original_name.name
     )[0]
