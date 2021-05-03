@@ -229,7 +229,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
       this.rootTitle = data.root_title;
       this.rootLanguage = data.root_lang_name;
       this.authorName = data.author_name;
-      this.collaborator = data.collaborator;
+      this.collaborator = data.collaborator?.map(author => author.author_name)?.join();
       this.translationDescription = data.translation_description;
       this.translationProcess = data.translation_process;
       this.sourceURL = data.source_url;
@@ -277,9 +277,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
               ${this.collaborator
                 ? html`
                     <dt class="author-name">Collaborator</dt>
-                    <dd class="author-name" property="dc:creator">
-                      ${this.collaborator.map(author => html` ${author.author_name} , `)}
-                    </dd>
+                    <dd class="author-name" property="dc:creator">${this.collaborator}</dd>
                   `
                 : ''}
             </dl>
