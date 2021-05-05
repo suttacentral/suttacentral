@@ -276,7 +276,7 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
                 : ''}
               ${this.collaborator
                 ? html`
-                    <dt class="author-name">Collaborator</dt>
+                    <dt class="author-name">Translator</dt>
                     <dd class="author-name" property="dc:creator">${this.collaborator}</dd>
                   `
                 : ''}
