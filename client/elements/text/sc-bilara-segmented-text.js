@@ -161,6 +161,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       } else {
         this._setScript();
       }
+      if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
+        this._deleteReference();
+        this._initReference();
+        this._addReferenceText();
+      }
       this._addVariantText();
       if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
         this._paliLookupStateChanged();
