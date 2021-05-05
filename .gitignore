@@ -12,6 +12,7 @@ client/data/
 /server/nextdata/
 .DS_Store
 /client/node_modules/
+package-lock.json
 client/build/
 /client/localization/pootle/prePootleFiles/
 /client/localization/pootle/generatedPoFiles/
@@ -23,4 +24,3 @@ generatedPoFiles/
 client/.eslintrc.json
 client/.eslintrc.js
 client/.prettierrc
-.gitignore
