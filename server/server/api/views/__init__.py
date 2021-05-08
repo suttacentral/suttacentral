@@ -31,4 +31,6 @@ from .views import (
     SuttaFullPath,
     PaliReferenceEdition,
     PublicationInfo,
+    AvailableVoices,
+    RootEdition,
 )

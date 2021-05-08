@@ -1121,3 +1121,12 @@ FOR d IN publications
     FILTER (d.text_uid IN path_docs OR d.text_uid == @uid) AND d.translation_lang_iso == @lang
     RETURN d
 '''
+
+AVAILABLE_VOICES = '''
+FOR v IN available_voices
+    FILTER v.uid == @uid
+    RETURN {
+        uid: v.uid,
+        voices: v.voices
+    }
+'''

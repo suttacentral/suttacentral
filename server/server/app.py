@@ -39,6 +39,8 @@ from api.views import (
     SuttaFullPath,
     PaliReferenceEdition,
     PublicationInfo,
+    AvailableVoices,
+    RootEdition,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -99,6 +101,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')
     api.add_resource(PaliReferenceEdition, '/pali_reference_edition')
     api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>')
+    api.add_resource(AvailableVoices, '/available_voices/<string:uid>')
+    api.add_resource(RootEdition, '/root_edition')
     app.register_blueprint(api_bp)
     register_extensions(app)
 

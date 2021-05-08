@@ -36,6 +36,7 @@ from common.queries import (
     SUTTA_PATH,
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
+    AVAILABLE_VOICES,
 )
 
 from common.utils import (
@@ -1025,7 +1026,6 @@ class SuttaFullPath(Resource):
 
 
 class PaliReferenceEdition(Resource):
-
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
@@ -1036,7 +1036,6 @@ class PaliReferenceEdition(Resource):
 
 
 class PublicationInfo(Resource):
-
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, lang):
         db = get_db()
@@ -1045,3 +1044,18 @@ class PublicationInfo(Resource):
             return {'error': 'Not Found'}, 404
         return publication_info
 
+class AvailableVoices(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        db = get_db()
+        data = list(db.aql.execute(AVAILABLE_VOICES, bind_vars={'uid': uid}))
+        if not data:
+            return {'error': 'Not Found'}, 404
+        return data, 200
+
+class RootEdition(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('root_edition').all()
+        return list(data), 200

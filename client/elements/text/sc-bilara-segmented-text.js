@@ -61,6 +61,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       referencesDisplayStyles: { type: Object },
       notesDisplayStyles: { type: Object },
       showHighlighting: { type: Boolean },
+      rootEdition: { type: Array },
     };
   }
 
@@ -83,6 +84,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.commentSpanRectInfo = new Map();
+    this.rootEdition = [];
 
     this._hashChangeHandler = () => {
       setTimeout(() => {
@@ -147,6 +149,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this.actions.changeDisplaySettingMenuState(false);
     });
     this._updateView();
+    this._fetchRootEdition();
   }
 
   disconnectedCallback() {
@@ -757,39 +760,49 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addReferenceAnchor(ref, refElement) {
-    const arrayRef = ref.replace(/\s*/g, '').split(','); // "pts1ed1.1, pts2ed1.1, sc1" or  "pts-cs1.1, pts-vp-pli1.1, sc1"
-    if (arrayRef.length === 0) return;
-    arrayRef.forEach(item => {
-      // 1:pts????, 2:pts-?????
-      if (
-        item.length > 3 &&
-        (item.substring(0, 3).toLowerCase() === 'pts' ||
-          item.substring(0, 4).toLowerCase() === 'pts-')
-      ) {
-        const anchor = document.createElement('a');
-        anchor.className = 'pts';
-        anchor.title = this.localize('paliTextSocietyPageNo');
-
-        let refStr = '';
-        if (item.substring(0, 4).toLowerCase() === 'pts-') {
-          refStr = item.slice(4);
-        } else if (item.substring(0, 3).toLowerCase() === 'pts') {
-          refStr = item.slice(3);
-        }
-        if (refStr !== '') {
-          this._initPtsReferenceAnchor(anchor, refStr);
-          refElement.appendChild(anchor);
-        }
+    const refs = ref.replace(/\s*/g, '').split(',');
+    if (refs.length === 0) return;
+    refs.forEach(item => {
+      let className = item;
+      const anchor = document.createElement('a');
+      const editionInfo = this._getReferenceInfo(item);
+      if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'pts') {
+        className = 'pts';
+      } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'sya') {
+        className = 'sya';
+      } else if (item.length >= 2 && item.substring(0, 2) === 'sc') {
+        className = 'sc';
+      } else {
+        className = editionInfo?.uid;
       }
+      anchor.className = className || item;
+      anchor.title = editionInfo?.long_name || item;
+      this._initPtsReferenceAnchor(anchor, item);
+      refElement.appendChild(anchor);
     });
   }
 
-  // <a class="pts" id="2ed1.1" title="Pali Text Society vol/page number." href="#2ed1.1">2ed1.1</a>
   _initPtsReferenceAnchor(anchor, refStr) {
     anchor.id = refStr;
     anchor.href = `#${refStr}`;
     const text = document.createTextNode(refStr);
     anchor.appendChild(text);
+  }
+
+  _getReferenceInfo(ref) {
+    for (let i = ref.length; i >= 0; i--) {
+      const refUid = ref.substring(0, i);
+      if (refUid === 'sya') {
+        return this.rootEdition.find(x => x.uid === 'sya-all');
+      }
+      if (refUid) {
+        const edition = this.rootEdition.find(x => x.uid === refUid);
+        if (edition) {
+          return edition;
+        }
+      }
+    }
+    return {};
   }
 
   _addTranslationText() {
@@ -1051,6 +1064,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this.transliteratedRootSutta = await (await fetch(converterApi)).json();
     } catch (error) {
       this.lastError = error;
+    }
+  }
+
+  async _fetchRootEdition() {
+    if (this.rootEdition.length === 0) {
+      try {
+        const rootEditionApi = `${API_ROOT}/root_edition`;
+        this.rootEdition = await (await fetch(rootEditionApi)).json();
+      } catch (error) {
+        this.lastError = error;
+      }
     }
   }
 
