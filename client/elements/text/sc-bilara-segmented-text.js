@@ -770,6 +770,8 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         className = 'pts';
       } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'sya') {
         className = 'sya';
+      } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'csp') {
+        className = 'csp';
       } else if (item.length >= 2 && item.substring(0, 2) === 'sc') {
         className = 'sc';
       } else {
