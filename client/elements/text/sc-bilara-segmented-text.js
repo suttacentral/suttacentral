@@ -40,7 +40,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       bilaraTranslatedSutta: { type: Object },
       showParagraphs: { type: Boolean },
       paragraphs: { type: Array },
-      paragraphTitles: { type: Object },
       suttaId: { type: String },
       suttaReference: { type: Object },
       suttaComment: { type: Object },
@@ -62,6 +61,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       referencesDisplayStyles: { type: Object },
       notesDisplayStyles: { type: Object },
       showHighlighting: { type: Boolean },
+      rootEdition: { type: Array },
     };
   }
 
@@ -84,6 +84,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.commentSpanRectInfo = new Map();
+    this.rootEdition = [];
 
     this._hashChangeHandler = () => {
       setTimeout(() => {
@@ -148,6 +149,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this.actions.changeDisplaySettingMenuState(false);
     });
     this._updateView();
+    this._fetchRootEdition();
   }
 
   disconnectedCallback() {
@@ -162,11 +164,12 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       } else {
         this._setScript();
       }
-      this._initReference();
-      this._addReferenceText();
-      // this._addCommentText();
+      if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
+        this._deleteReference();
+        this._initReference();
+        this._addReferenceText();
+      }
       this._addVariantText();
-      // this._addCommentSpanId();
       if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
         this._paliLookupStateChanged();
       }
@@ -182,7 +185,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     this._prepareNavigation();
 
     setTimeout(() => {
-      // this._recalculateCommentSpanHeight();
       this._changeTextView();
     }, 0);
     this.actions.changeSuttaMetaText('');
@@ -211,7 +213,9 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      let targetElement = this.shadowRoot.querySelector(`#${CSS.escape(location.hash.substr(1))}`);
+      const targetElement = this.shadowRoot.querySelector(
+        `#${CSS.escape(location.hash.substr(1))}`
+      );
       if (targetElement) {
         targetElement.scrollIntoView();
         window.scrollTo(0, window.scrollY - margin);
@@ -222,24 +226,22 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _recalculateCommentSpanHeight() {
-    let gutterWidth = 5;
+    const gutterWidth = 5;
     this.commentSpanRectInfo.clear();
     const Comments = this.shadowRoot.querySelectorAll('.comment');
     Comments.forEach(element => {
-      let rect = element.getBoundingClientRect();
-      let elementNoId = element.id.slice(8); //id:comment_1 => get: 1
-      let nextComment = this.shadowRoot.querySelector(`#comment_${parseInt(elementNoId) + 1}`);
+      const rect = element.getBoundingClientRect();
+      const elementNoId = element.id.slice(8); // id:comment_1 => get: 1
+      const nextComment = this.shadowRoot.querySelector(`#comment_${parseInt(elementNoId) + 1}`);
       if (nextComment) {
-        let nextCommentTop = nextComment.getBoundingClientRect().top;
+        const nextCommentTop = nextComment.getBoundingClientRect().top;
         if (rect.top + rect.height > nextCommentTop) {
-          element.style.height = nextCommentTop - rect.top - gutterWidth + 'px';
+          element.style.height = `${nextCommentTop - rect.top - gutterWidth}px`;
           element.style.overflow = 'scroll';
         }
-      } else {
-        if (rect.top + rect.height > this.parentNode.clientHeight) {
-          element.style.height = this.parentNode.clientHeight - rect.top + 'px';
-          element.style.overflow = 'scroll';
-        }
+      } else if (rect.top + rect.height > this.parentNode.clientHeight) {
+        element.style.height = `${this.parentNode.clientHeight - rect.top}px`;
+        element.style.overflow = 'scroll';
       }
       this.commentSpanRectInfo.set(element.id, element.style.height);
     });
@@ -288,9 +290,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   updated(changedProps) {
-    if (changedProps.has('showParagraphs')) {
-      //this._computeParagraphs();
-    }
     if (changedProps.has('chosenTextView')) {
       this._changeTextView();
     }
@@ -310,13 +309,6 @@ class SCBilaraSegmentedText extends SCLitTextPage {
         this._chineseLookupStateChanged();
       }
     }
-    if (changedProps.has('currentStyles')) {
-      if (this._isPlusStyle()) {
-        //this._recalculateCommentSpanHeight();
-      } else {
-        //this._resetCommentSpan();
-      }
-    }
     if (changedProps.has('markup')) {
       this._updateView();
     }
@@ -328,6 +320,15 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     }
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
+    }
+    if (changedProps.has('displayedReferences')) {
+      if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
+        this._deleteReference();
+        this._initReference();
+        this._addReferenceText();
+      } else {
+        this._deleteReference();
+      }
     }
   }
 
@@ -472,7 +473,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _prepareNavigation() {
-    let sutta = this.bilaraTranslatedSutta ? this.bilaraTranslatedSutta : this.bilaraRootSutta;
+    const sutta = this.bilaraTranslatedSutta ? this.bilaraTranslatedSutta : this.bilaraRootSutta;
     if (!sutta) {
       this.actions.showToc([]);
       return;
@@ -499,7 +500,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       changeSuttaMetaText(metaText) {
         store.dispatch({
           type: 'CHANGE_SUTTA_META_TEXT',
-          metaText: metaText,
+          metaText,
         });
       },
       changeSuttaPublicationInfo(publicationInfo) {
@@ -588,7 +589,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _deleteTranslatedSuttaMarkup() {
     this._articleElement().forEach(article => {
-      let translatedSuttaMarkup = article.querySelectorAll('.translation');
+      const translatedSuttaMarkup = article.querySelectorAll('.translation');
       if (translatedSuttaMarkup) {
         translatedSuttaMarkup.forEach(element => {
           element.parentNode.removeChild(element);
@@ -632,10 +633,10 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addTranslationSuttaSpan() {
-    let spanElement = document.createElement('span');
+    const spanElement = document.createElement('span');
     spanElement.className = 'translation';
     spanElement.lang = this.translatedSutta.lang;
-    let textSpan = document.createElement('span');
+    const textSpan = document.createElement('span');
     textSpan.className = 'text';
     spanElement.appendChild(textSpan);
     return spanElement;
@@ -649,10 +650,18 @@ class SCBilaraSegmentedText extends SCLitTextPage {
     Object.keys(this.bilaraRootSutta).forEach(key => {
       const segmentElement = this.shadowRoot.querySelector(`#${CSS.escape(key)}`);
       if (segmentElement) {
-        let refSpan = this._addReferenceSpan();
+        const refSpan = this._addReferenceSpan();
         refSpan.appendChild(this._addDefaultReferenceAnchor(key));
         this._prependChild(segmentElement, refSpan);
       }
+    });
+  }
+
+  _deleteReference() {
+    this._articleElement().forEach(article => {
+      article.querySelectorAll('.reference').forEach(element => {
+        element.parentNode.removeChild(element);
+      });
     });
   }
 
@@ -666,13 +675,13 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addDefaultReferenceAnchor(key) {
-    let subKey = key.substring(key.indexOf(':') + 1, key.length);
-    let anchor = document.createElement('a');
+    const subKey = key.substring(key.indexOf(':') + 1, key.length);
+    const anchor = document.createElement('a');
     anchor.className = 'sc';
     anchor.id = subKey;
     anchor.href = `#${subKey}`;
     anchor.title = this.localize('segmentNumber');
-    let text = document.createTextNode(subKey);
+    const text = document.createTextNode(subKey);
     anchor.appendChild(text);
     return anchor;
   }
@@ -690,11 +699,11 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addCommentSpan(value) {
-    let span = document.createElement('span');
+    const span = document.createElement('span');
     span.className = 'comment';
     span.title = 'translator’s note';
     span.dataset.tooltip = value;
-    let text = document.createTextNode(value);
+    const text = document.createTextNode(value);
     span.appendChild(text);
     return span;
   }
@@ -712,28 +721,28 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addVariantSpan(value) {
-    let variantText = `Variant: ${value}`;
-    let span = document.createElement('span');
+    const variantText = `Variant: ${value}`;
+    const span = document.createElement('span');
     span.className = 'variant';
     span.dataset.tooltip = variantText;
-    let text = document.createTextNode(variantText);
+    const text = document.createTextNode(variantText);
     span.appendChild(text);
     return span;
   }
 
   _addRootSuttaSpan() {
-    let spanElement = document.createElement('span');
+    const spanElement = document.createElement('span');
     spanElement.className = 'root';
     spanElement.lang = this.rootSutta.lang;
     spanElement.setAttribute('translate', 'no');
-    let textSpan = document.createElement('span');
+    const textSpan = document.createElement('span');
     textSpan.className = 'text';
     spanElement.appendChild(textSpan);
     return spanElement;
   }
 
   _addReferenceSpan() {
-    let spanElement = document.createElement('span');
+    const spanElement = document.createElement('span');
     spanElement.className = 'reference';
     return spanElement;
   }
@@ -751,39 +760,51 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addReferenceAnchor(ref, refElement) {
-    let arrayRef = ref.replace(/\s*/g, '').split(','); //"pts1ed1.1, pts2ed1.1, sc1" or  "pts-cs1.1, pts-vp-pli1.1, sc1"
-    if (arrayRef.length === 0) return;
-    arrayRef.forEach(item => {
-      // 1:pts????, 2:pts-?????
-      if (
-        item.length > 3 &&
-        (item.substring(0, 3).toLowerCase() === 'pts' ||
-          item.substring(0, 4).toLowerCase() === 'pts-')
-      ) {
-        let anchor = document.createElement('a');
-        anchor.className = 'pts';
-        anchor.title = this.localize('paliTextSocietyPageNo');
-
-        let refStr = '';
-        if (item.substring(0, 4).toLowerCase() === 'pts-') {
-          refStr = item.slice(4);
-        } else if (item.substring(0, 3).toLowerCase() === 'pts') {
-          refStr = item.slice(3);
-        }
-        if (refStr !== '') {
-          this._initPtsReferenceAnchor(anchor, refStr);
-          refElement.appendChild(anchor);
-        }
+    const refs = ref.replace(/\s*/g, '').split(',');
+    if (refs.length === 0) return;
+    refs.forEach(item => {
+      let className = item;
+      const anchor = document.createElement('a');
+      const editionInfo = this._getReferenceInfo(item);
+      if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'pts') {
+        className = 'pts';
+      } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'sya') {
+        className = 'sya';
+      } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'csp') {
+        className = 'csp';
+      } else if (item.length >= 2 && item.substring(0, 2) === 'sc') {
+        className = 'sc';
+      } else {
+        className = editionInfo?.uid;
       }
+      anchor.className = className || item;
+      anchor.title = editionInfo?.long_name || item;
+      this._initPtsReferenceAnchor(anchor, item);
+      refElement.appendChild(anchor);
     });
   }
 
-  //<a class="pts" id="2ed1.1" title="Pali Text Society vol/page number." href="#2ed1.1">2ed1.1</a>
   _initPtsReferenceAnchor(anchor, refStr) {
     anchor.id = refStr;
     anchor.href = `#${refStr}`;
-    let text = document.createTextNode(refStr);
+    const text = document.createTextNode(refStr);
     anchor.appendChild(text);
+  }
+
+  _getReferenceInfo(ref) {
+    for (let i = ref.length; i >= 0; i--) {
+      const refUid = ref.substring(0, i);
+      if (refUid === 'sya') {
+        return this.rootEdition.find(x => x.uid === 'sya-all');
+      }
+      if (refUid) {
+        const edition = this.rootEdition.find(x => x.uid === refUid);
+        if (edition) {
+          return edition;
+        }
+      }
+    }
+    return {};
   }
 
   _addTranslationText() {
@@ -836,7 +857,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
 
   _putSegmentIntoSpans(segment, unit) {
     const text = segment.innerHTML;
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.innerHTML = text;
     this._recurseDomChildren(div, true, unit);
     segment.innerHTML = div.innerHTML
@@ -893,7 +914,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addPaliLookupEvent(selector) {
-    const lookup = this.shadowRoot.querySelector(`#pali_lookup`);
+    const lookup = this.shadowRoot.querySelector('#pali_lookup');
     const allWordSpans = this.shadowRoot.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
     spans.forEach(word => {
@@ -910,7 +931,7 @@ class SCBilaraSegmentedText extends SCLitTextPage {
   }
 
   _addChineseLookupEvent(selector) {
-    const lookup = this.shadowRoot.querySelector(`#chinese_lookup`);
+    const lookup = this.shadowRoot.querySelector('#chinese_lookup');
     const allWordSpans = this.shadowRoot.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
     spans.forEach(word => {
@@ -1045,6 +1066,17 @@ class SCBilaraSegmentedText extends SCLitTextPage {
       this.transliteratedRootSutta = await (await fetch(converterApi)).json();
     } catch (error) {
       this.lastError = error;
+    }
+  }
+
+  async _fetchRootEdition() {
+    if (this.rootEdition.length === 0) {
+      try {
+        const rootEditionApi = `${API_ROOT}/root_edition`;
+        this.rootEdition = await (await fetch(rootEditionApi)).json();
+      } catch (error) {
+        this.lastError = error;
+      }
     }
   }
 

@@ -262,6 +262,16 @@ def load_author_edition(change_tracker, additional_info_dir, db):
             authors = json.load(authorf)
         db['author_edition'].import_bulk_logged(authors, wipe=True)
 
+def load_available_voices(change_tracker, additional_info_dir, db):
+    voices_file = additional_info_dir / 'available_voices.json'
+    voices_info = json_load(voices_file)
+
+    docs = []
+    for key, value in voices_info.items():
+        docs.append({'uid': key, 'voices': value})
+
+    db['available_voices'].truncate()
+    db.collection('available_voices').import_bulk_logged(docs, wipe=True)
 
 def load_html_texts(change_tracker, data_dir, db, html_dir):
     print('Loading HTML texts')
@@ -329,6 +339,9 @@ def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: 
     pali_reference_content = json_load(pali_reference_edition_file)
     db.collection('pali_reference_edition').import_bulk(pali_reference_content)
 
+def load_root_edition_file(db: Database, root_edition_file: Path):
+    root_edition_content = json_load(root_edition_file)
+    db.collection('root_edition').import_bulk(root_edition_content)
 
 def run(no_pull=False):
     """Runs data load.
@@ -380,11 +393,17 @@ def run(no_pull=False):
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
 
+    print_stage("Loading available_voices.json")
+    load_available_voices(change_tracker, additional_info_dir, db)
+
     print_stage('Loading guides.json')
     load_guides_file(db, structure_dir / 'guides.json')
 
     print_stage('Loading pali_reference_edition.json')
     load_pali_reference_edition_file(db, misc_dir / 'pali_reference_edition.json')
+
+    print_stage('Loading root_edition.json')
+    load_root_edition_file(db, misc_dir / 'root_edition.json')
 
     print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)
