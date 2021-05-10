@@ -578,6 +578,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
         item.edition_set !== 'none' ? item : { ...item, checked: false }
       );
     }
+    this.requestUpdate();
     this.actions.setDisplayedReferences(
       this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set)
     );
