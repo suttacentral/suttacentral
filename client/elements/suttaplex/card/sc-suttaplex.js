@@ -22,18 +22,21 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       translationsOpened: Boolean,
       rootTextsOpened: Boolean,
       compactToggle: Boolean,
+      hasVoice: Boolean,
     };
   }
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-suttaplex';
+    this.hasVoice = false;
   }
 
   connectedCallback() {
     super.connectedCallback();
 
     this._fetchExpansionData();
+    this._fetchAvailableVoice();
 
     setTimeout(() => {
       const copyMenu = this.shadowRoot.querySelector('#copy-menu');
@@ -191,7 +194,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
               </span>
             `
           : ''}
-        ${this.hasSegmentedTexts
+        ${this.hasSegmentedTexts && this.hasVoice
           ? html`
               <a
                 class="top-menu-button"
@@ -376,13 +379,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
             : ''
         }
 
-        ${
-          !this.item.parallel_count
-            ? html`
-                <h3>${this.localize('hasNoParallels')}</h3>
-              `
-            : ''
-        }
+        ${!this.item.parallel_count ? html` <h3>${this.localize('hasNoParallels')}</h3> ` : ''}
         </template>
       </details>
     `;
@@ -394,6 +391,24 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     }
 
     this.expansionData = await expansionDataCache;
+  }
+
+  async _fetchAvailableVoice() {
+    if (!this.item?.uid) {
+      return;
+    }
+    const voiceApi = `${API_ROOT}/available_voices/${this.item?.uid}`;
+    const availableVoice = fetch(voiceApi).then(r => r.json());
+    const voices = await availableVoice;
+    if (voices?.length > 0) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const voice of Object.keys(voices[0].voices)) {
+        const voiceInfo = voice.split('/');
+        if (!voiceInfo.includes('root') && !voiceInfo.includes('vinaya')) {
+          this.hasVoice = voice.split('/').includes(this.language);
+        }
+      }
+    }
   }
 }
 
