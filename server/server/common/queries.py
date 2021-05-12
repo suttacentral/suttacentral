@@ -437,7 +437,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             FILTER rel._from == v._id
             RETURN rel
     )
-    
+
     LET biblio = (
         FOR biblio IN biblios
             FILTER biblio.uid == v.biblio_uid
@@ -452,9 +452,17 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             RETURN nav_item.name
     )[0]
 
+    LET alt_volpages = (
+        FOR altVolpages IN text_extra_info
+            FILTER altVolpages.uid == v.uid
+            LIMIT 1
+            RETURN altVolpages.alt_volpage
+    )[0]
+
     RETURN {
         acronym: v.acronym,
         volpages: v.volpage ? v.volpage : volpages[0],
+        alt_volpages: alt_volpages,
         uid: v.uid,
         blurb: blurb,
         difficulty: difficulty,

@@ -119,7 +119,18 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get volPage() {
-    return pickVolPage(this.item.volpages);
+    return this.item?.root_lang === 'pli'
+      ? `PTS (1st ed) ${pickVolPage(this.item.volpages)}`
+      : pickVolPage(this.item.volpages);
+  }
+
+  get altVolPage() {
+    if (this.item.alt_volpages === this.item.volpages) {
+      return '';
+    }
+    return this.item?.root_lang === 'pli'
+      ? `PTS (2nd ed) ${pickVolPage(this.item.alt_volpages)}`
+      : pickVolPage(this.item.alt_volpages);
   }
 
   get volPageTitle() {
@@ -169,7 +180,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
                   class="blurb"
                   title="${this.localize('blurb')}"
                   .innerHTML="${this.item.blurb}"
-                />
+                ></div>
               `}
             `
           : ''}
@@ -242,7 +253,10 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${!this.item.biblio
             ? html`
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book} ${this.volPage}
+                  ${icon.book} ${this.volPage} &nbsp;
+                  ${this.altVolPage && this.altVolPage !== this.volPage
+                    ? html`${icon.book} ${this.altVolPage}`
+                    : ''}
                 </span>
               `
             : ''}
@@ -251,7 +265,10 @@ class SCSuttaplex extends LitLocalized(LitElement) {
             <details class="suttaplex-details">
               <summary>
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book} ${this.volPage}
+                  ${icon.book} ${this.volPage} &nbsp;
+                  ${this.altVolPage && this.altVolPage !== this.volPage
+                    ? html`${icon.book} ${this.altVolPage}`
+                    : ''}
                 </span>
               </summary>
               <p class="volpage-biblio-info" .innerHTML="${this.item.biblio}"></p>
