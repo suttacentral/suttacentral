@@ -339,9 +339,16 @@ def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: 
     pali_reference_content = json_load(pali_reference_edition_file)
     db.collection('pali_reference_edition').import_bulk(pali_reference_content)
 
+
 def load_root_edition_file(db: Database, root_edition_file: Path):
     root_edition_content = json_load(root_edition_file)
     db.collection('root_edition').import_bulk(root_edition_content)
+
+
+def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
+    text_extra_info_content = json_load(text_extra_info_file)
+    db.collection('text_extra_info').import_bulk(text_extra_info_content)
+
 
 def run(no_pull=False):
     """Runs data load.
@@ -404,6 +411,9 @@ def run(no_pull=False):
 
     print_stage('Loading root_edition.json')
     load_root_edition_file(db, misc_dir / 'root_edition.json')
+
+    print_stage('Loading text_extra_info.json')
+    load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
 
     print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)

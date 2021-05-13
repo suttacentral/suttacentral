@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { html, css, LitElement, svg } from 'lit-element';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
@@ -122,6 +123,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return pickVolPage(this.item.volpages);
   }
 
+  get altVolPage() {
+    if (this.item.alt_volpages === this.item.volpages) {
+      return '';
+    }
+    return pickVolPage(this.item.alt_volpages);
+  }
+
   get volPageTitle() {
     return hasTwoPTSEditions(this.item.volpages)
       ? this.localize('volumeAndPagePTS1', this.item.volpages)
@@ -169,7 +177,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
                   class="blurb"
                   title="${this.localize('blurb')}"
                   .innerHTML="${this.item.blurb}"
-                />
+                ></div>
               `}
             `
           : ''}
@@ -244,6 +252,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                   ${icon.book} ${this.volPage}
                 </span>
+                ${this.altVolPage && this.altVolPage !== this.volPage
+                  ? html`
+                      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+                        ${icon.book} ${this.altVolPage}
+                      </span>
+                    `
+                  : ''}
               `
             : ''}
           ${this.item.biblio &&
@@ -253,6 +268,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                   ${icon.book} ${this.volPage}
                 </span>
+                ${this.altVolPage && this.altVolPage !== this.volPage
+                  ? html`
+                      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+                        ${icon.book} ${this.altVolPage}
+                      </span>
+                    `
+                  : ''}
               </summary>
               <p class="volpage-biblio-info" .innerHTML="${this.item.biblio}"></p>
             </details>

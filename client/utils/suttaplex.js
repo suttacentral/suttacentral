@@ -16,12 +16,12 @@ export function transformId(rootId, expansionData, idOrName = 0) {
     uidParts.forEach(item => {
       if (!expansionData[0][item]) {
         const tailMatch = item.match(/\d+.*/g);
-        tailMatch ? tail = tailMatch[0] + '–' : tail;
+        tailMatch ? (tail = tailMatch[0] + '–') : tail;
         const itemMatch = item.match(/[a-z]*/g);
-        itemMatch ? item = itemMatch[0] : item;
+        itemMatch ? (item = itemMatch[0]) : item;
       }
       if (item && expansionData[0][item]) {
-        scAcronym += `${expansionData[0][item][idOrName]} ${tail}`
+        scAcronym += `${expansionData[0][item][idOrName]} ${tail}`;
       } else {
         scAcronym += tail;
       }
@@ -59,7 +59,8 @@ export function getParagraphRange(toParallel, isUrl) {
   }
 }
 
-const PTS1 = 'pts-vp-pli1ed', PTS2 = 'pts-vp-pli2ed';
+const PTS1 = 'pts-vp-pli1ed',
+  PTS2 = 'pts-vp-pli2ed';
 
 export function pickVolPage(volpages) {
   if (typeof volpages === 'string') {
@@ -74,9 +75,12 @@ export function pickVolPage(volpages) {
 }
 
 export function hasTwoPTSEditions(volpages) {
-  return volpages instanceof Object 
-    && volpages[PTS1] && volpages[PTS2] 
-    && volpages[PTS1] != volpages[PTS2];
+  return (
+    volpages instanceof Object &&
+    volpages[PTS1] &&
+    volpages[PTS2] &&
+    volpages[PTS1] !== volpages[PTS2]
+  );
 }
 
 export function volPagesToString(volpages) {
