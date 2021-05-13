@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { html, css, LitElement, svg } from 'lit-element';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
@@ -249,11 +250,15 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${!this.item.biblio
             ? html`
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book} ${this.volPage} &nbsp;
-                  ${this.altVolPage && this.altVolPage !== this.volPage
-                    ? html`${icon.book} ${this.altVolPage}`
-                    : ''}
+                  ${icon.book} ${this.volPage}
                 </span>
+                ${this.altVolPage && this.altVolPage !== this.volPage
+                  ? html`
+                      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+                        ${icon.book} ${this.altVolPage}
+                      </span>
+                    `
+                  : ''}
               `
             : ''}
           ${this.item.biblio &&
@@ -261,11 +266,15 @@ class SCSuttaplex extends LitLocalized(LitElement) {
             <details class="suttaplex-details">
               <summary>
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book} ${this.volPage} &nbsp;
-                  ${this.altVolPage && this.altVolPage !== this.volPage
-                    ? html`${icon.book} ${this.altVolPage}`
-                    : ''}
+                  ${icon.book} ${this.volPage}
                 </span>
+                ${this.altVolPage && this.altVolPage !== this.volPage
+                  ? html`
+                      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+                        ${icon.book} ${this.altVolPage}
+                      </span>
+                    `
+                  : ''}
               </summary>
               <p class="volpage-biblio-info" .innerHTML="${this.item.biblio}"></p>
             </details>
