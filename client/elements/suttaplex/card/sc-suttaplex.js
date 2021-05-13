@@ -119,18 +119,14 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get volPage() {
-    return this.item?.root_lang === 'pli'
-      ? `PTS (1st ed) ${pickVolPage(this.item.volpages)}`
-      : pickVolPage(this.item.volpages);
+    return pickVolPage(this.item.volpages);
   }
 
   get altVolPage() {
     if (this.item.alt_volpages === this.item.volpages) {
       return '';
     }
-    return this.item?.root_lang === 'pli'
-      ? `PTS (2nd ed) ${pickVolPage(this.item.alt_volpages)}`
-      : pickVolPage(this.item.alt_volpages);
+    return pickVolPage(this.item.alt_volpages);
   }
 
   get volPageTitle() {
