@@ -39,6 +39,10 @@ module.exports = {
           handler: 'NetworkFirst',
         },
         {
+          urlPattern: new RegExp('/search'),
+          handler: 'NetworkFirst',
+        },
+        {
           urlPattern: new RegExp('/(?:img|files)/(.*)'),
           handler: 'CacheFirst',
           options: {
