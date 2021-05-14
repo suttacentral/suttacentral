@@ -51,7 +51,7 @@ FOR text IN sc_bilara_texts
     )[0]
 
     LET author_doc = (
-        FOR author IN author_edition
+        FOR author IN bilara_author_edition
             FILTER author.uid IN text.muids
             LIMIT 1
             RETURN author
@@ -342,7 +342,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 volpage: text.volpage
                 }
             // Add title if it is in desired language
-            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res 
+            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
         )
 
     LET bilara_translations = (
@@ -351,9 +351,9 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             SORT text.lang
             LET lang_doc = DOCUMENT('language', text.lang)
             LET author_doc = (
-                FOR author IN author_edition 
+                FOR author IN bilara_author_edition
                     FILTER author.uid IN text.muids
-                    LIMIT 1 
+                    LIMIT 1
                     RETURN author
             )[0]
             LET name_doc = (
@@ -504,7 +504,7 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
             FILTER text.uid == target.uid AND 'root' IN text.muids
 
             LET author_doc = (
-                FOR author IN author_edition
+                FOR author IN bilara_author_edition
                     FILTER author.uid IN text.muids
                     LIMIT 1
                     RETURN author
@@ -612,7 +612,7 @@ SUTTA_VIEW = (
             FILTER doc.uid == @uid AND 'root' IN doc.muids
             LIMIT 1
             LET author_doc = (
-                FOR author IN author_edition
+                FOR author IN bilara_author_edition
                     FILTER author.uid IN doc.muids
                     LIMIT 1
                     RETURN author
@@ -651,7 +651,7 @@ SUTTA_VIEW = (
             FILTER doc.uid == @uid AND doc.lang == @language AND @author_uid IN doc.muids
             LIMIT 1
             LET author_doc = (
-                FOR author IN author_edition
+                FOR author IN bilara_author_edition
                     FILTER author.uid IN doc.muids
                     LIMIT 1
                     RETURN author

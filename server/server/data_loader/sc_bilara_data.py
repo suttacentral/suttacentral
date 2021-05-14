@@ -117,3 +117,42 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     print(f'{len(res)} texts added or updated')
     db['sc_bilara_texts'].truncate()
     db['sc_bilara_texts'].import_bulk(res)
+
+
+def load_bilara_author_edition(db: Database, sc_bilara_data_dir: Path) -> None:
+    db['bilara_author_edition'].truncate()
+    docs = load_bilara_author(db, sc_bilara_data_dir) + \
+        load_bilara_edition(db, sc_bilara_data_dir)
+    db.collection('bilara_author_edition').import_bulk_logged(docs, wipe=True)
+
+
+def load_bilara_author(db: Database, sc_bilara_data_dir: Path) -> None:
+    author_file = sc_bilara_data_dir / '_author.json'
+    authors: Dict[str, dict] = json_load(author_file)
+
+    docs = []
+    for key, value in authors.items():
+        docs.append({
+            'type': 'author',
+            'uid': key,
+            'short_name': key,
+            'long_name': value['name']
+        })
+
+    return docs
+
+
+def load_bilara_edition(db: Database, sc_bilara_data_dir: Path) -> None:
+    edition_file = sc_bilara_data_dir / '_edition.json'
+    editions: Dict[str, dict] = json_load(edition_file)
+
+    docs = []
+    for key, value in editions.items():
+        docs.append({
+            'type': 'edition',
+            'uid': key,
+            'language': value['language'],
+            'is_root': value['is_root']
+        })
+
+    return docs
