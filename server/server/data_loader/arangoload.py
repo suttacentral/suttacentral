@@ -436,6 +436,9 @@ def run(no_pull=False):
     print_stage('Load texts from sc_bilara_data')
     sc_bilara_data.load_texts(db, sc_bilara_data_dir)
 
+    print_stage('Load bilara_author_edition from sc_bilara_data')
+    sc_bilara_data.load_bilara_author_edition(db, sc_bilara_data_dir)
+
     print_stage("Generating and loading relationships")
     generate_relationship_edges(
         change_tracker, relationship_dir, additional_info_dir, db
