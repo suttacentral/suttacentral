@@ -149,7 +149,7 @@ class SCTextLegacy extends SCTextCommon {
       changeSuttaMetaText(metaText) {
         store.dispatch({
           type: 'CHANGE_SUTTA_META_TEXT',
-          metaText: metaText,
+          metaText,
         });
       },
       changeDisplaySettingMenuState(display) {
@@ -242,7 +242,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _referenceDisplayTypeChanged() {
-    if (this.chosenReferenceDisplayType === 'main') {
+    if (this.chosenReferenceDisplayType.includes('main')) {
       this._articleElement().forEach(article => {
         article.classList.add('legacy-reference');
       });
@@ -265,8 +265,8 @@ class SCTextLegacy extends SCTextCommon {
     if (this.showHighlighting !== textOptionsState.showHighlighting) {
       this.showHighlighting = textOptionsState.showHighlighting;
     }
-    if (this.chosenReferenceDisplayType !== textOptionsState.referenceDisplayType) {
-      this.chosenReferenceDisplayType = textOptionsState.referenceDisplayType;
+    if (this.chosenReferenceDisplayType !== textOptionsState.displayedReferences) {
+      this.chosenReferenceDisplayType = textOptionsState.displayedReferences;
     }
   }
 
@@ -405,7 +405,7 @@ class SCTextLegacy extends SCTextCommon {
       item.addEventListener('click', () => {
         this.dispatchEvent(
           new CustomEvent('show-image', {
-            detail: { vol: vol, division: divisionId, pageNumber: pageNumber },
+            detail: { vol, division: divisionId, pageNumber },
             bubbles: true,
             composed: true,
           })
@@ -537,7 +537,7 @@ class SCTextLegacy extends SCTextCommon {
 
   _putSegmentIntoSpans(segment, unit, that) {
     const text = segment.innerHTML;
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.innerHTML = text;
     that._recurseDomChildren(div, true, unit);
     segment.innerHTML = div.innerHTML
