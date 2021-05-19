@@ -201,7 +201,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
         ${icon.more_vert}
       </mwc-icon-button>
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
-        <sc-menu-more id="sc-more-menu"></sc-menu-more>
+        <sc-menu-more id="sc-menu-more"></sc-menu-more>
       </mwc-menu>
     `;
   }
