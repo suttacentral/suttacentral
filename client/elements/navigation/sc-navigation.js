@@ -4,7 +4,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { pitakaGuide, navIndex, shortcuts } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 

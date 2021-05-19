@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit-element';
 import { icon } from '../../../img/sc-icon';
-import '../../menus/sc-suttaplex-share-menu';
+import '../../menus/sc-menu-suttaplex-share';
 import { suttaplexTxCss } from './sc-suttaplex-css';
 
 class SCSuttaplexTx extends LitElement {

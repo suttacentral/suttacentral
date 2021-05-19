@@ -1,13 +1,13 @@
 import { LitElement, html } from 'lit-element';
 
-import './sc-bilara-segmented-text';
-import './sc-simple-text';
-import './sc-stepper';
+import './sc-text-bilara';
+import './sc-text-legacy';
+import './sc-text-stepper';
 import './sc-text-image';
 import '../addons/sc-error-icon';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from '../addons/localization-mixin';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
 import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
@@ -49,11 +49,11 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   get displayStepper() {
     return this._shouldDisplayStepper()
       ? html`
-          <sc-stepper
+          <sc-text-stepper
             .next=${this.next}
             .previous=${this.previous}
             .lang="${this.langIsoCode}"
-          ></sc-stepper>
+          ></sc-text-stepper>
         `
       : '';
   }
@@ -67,13 +67,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   get displaySimpleTextTemplate() {
     return !this._shouldHideSimpleText()
       ? html`
-          <sc-simple-text
+          <sc-text-legacy
             id="simple_text"
             .sutta=${this.translatedSutta || this.rootSutta}
             .isLoading=${this.isLoading}
             .error=${this.lastError}
             ?hidden=${this._shouldHideSimpleText()}
-          ></sc-simple-text>
+          ></sc-text-legacy>
         `
       : '';
   }
@@ -84,7 +84,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     return !this._shouldHideSegmentedText()
       ? html`
-          <sc-bilara-segmented-text
+          <sc-text-bilara
             id="segmented_text"
             .rootSutta=${this.rootSutta}
             .bilaraRootSutta=${this.bilaraRootSutta}
@@ -95,7 +95,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaReference=${this.suttaReference}
             .suttaVariant=${this.suttaVariant}
             .suttaId=${this.suttaId}
-          ></sc-bilara-segmented-text>
+          ></sc-text-bilara>
         `
       : '';
   }

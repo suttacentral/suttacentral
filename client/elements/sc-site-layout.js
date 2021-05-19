@@ -4,10 +4,10 @@ import { throttle } from 'throttle-debounce';
 import { icon } from '../img/sc-icon';
 
 import './sc-page-selector';
-import './navigation/sc-linden-leaves';
+import './navigation/sc-navigation-linden-leaves';
 import './addons/sc-linear-progress';
 
-import { LitLocalized } from './addons/localization-mixin';
+import { LitLocalized } from './addons/sc-localization-mixin';
 import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
@@ -25,7 +25,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   render() {
     return html`
       <div id="universal_toolbar">
-        <sc-linden-leaves id="breadCrumb"></sc-linden-leaves>
+        <sc-navigation-linden-leaves id="breadCrumb"></sc-navigation-linden-leaves>
 
         <div id="context_toolbar">
           <div id="title">

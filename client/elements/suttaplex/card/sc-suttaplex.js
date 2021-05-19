@@ -3,8 +3,8 @@ import { html, css, LitElement, svg } from 'lit-element';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
 import { transformId, pickVolPage, hasTwoPTSEditions } from '../../../utils/suttaplex';
-import { LitLocalized } from '../../addons/localization-mixin';
-import '../../menus/sc-suttaplex-share-menu';
+import { LitLocalized } from '../../addons/sc-localization-mixin';
+import '../../menus/sc-menu-suttaplex-share';
 import './sc-parallel-list';
 import { suttaplexCss } from './sc-suttaplex-css';
 import './sc-suttaplex-tx';
@@ -220,11 +220,11 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         <details id="copy-menu" class="top-menu-button" title="Share this sutta">
           <summary class="ripple">${icon.share}</summary>
           <ul class="suttaplex-share-menu-list">
-            <sc-suttaplex-share-menu
+            <sc-menu-suttaplex-share
               id="suttaplex_share_menu"
               tabIndex="0"
               .item="${this.item}"
-            ></sc-suttaplex-share-menu>
+            ></sc-menu-suttaplex-share>
           </ul>
         </details>
       </div>
