@@ -41,6 +41,8 @@ from api.views import (
     PublicationInfo,
     AvailableVoices,
     RootEdition,
+    Guides,
+    Shortcuts,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -103,6 +105,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>')
     api.add_resource(AvailableVoices, '/available_voices/<string:uid>')
     api.add_resource(RootEdition, '/root_edition')
+    api.add_resource(Guides, '/guides')
+    api.add_resource(Shortcuts, '/shortcuts')
     app.register_blueprint(api_bp)
     register_extensions(app)
 
