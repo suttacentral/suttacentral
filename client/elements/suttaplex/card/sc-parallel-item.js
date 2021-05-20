@@ -6,7 +6,7 @@ import {
   pickVolPage,
   hasTwoPTSEditions,
 } from '../../../utils/suttaplex';
-import { LitLocalized } from '../../addons/localization-mixin';
+import { LitLocalized } from '../../addons/sc-localization-mixin';
 import { parallelItemCss } from './sc-suttaplex-css';
 
 const stopPropagation = e => e.stopPropagation();

@@ -1,5 +1,5 @@
 import { LitElement, css } from 'lit-element';
-import { LitLocalized } from './localization-mixin';
+import { LitLocalized } from './sc-localization-mixin';
 
 export default class SCTopSheetCommon extends LitLocalized(LitElement) {
   static get styles() {

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import '@material/mwc-formfield';
 import '@material/mwc-radio';
@@ -10,7 +10,7 @@ import '@material/mwc-list/mwc-list-item';
 import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converter';
 
 import { store } from '../../redux-store';
-import { LitLocalized } from './localization-mixin';
+import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
 const DEFAULT_REFERENC_OPTION = [
