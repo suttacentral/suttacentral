@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { LitElement, html } from 'lit-element';
 
-import { LitLocalized } from './localization-mixin';
+import { LitLocalized } from './sc-localization-mixin';
 
 import { icon } from '../../img/sc-icon';
 

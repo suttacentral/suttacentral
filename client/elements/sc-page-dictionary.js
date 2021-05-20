@@ -1,9 +1,9 @@
 import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import { API_ROOT } from '../constants.js';
-import { dictStyles } from './styles/sc-dict-styles.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { API_ROOT } from '../constants';
+import { dictStyles } from './styles/sc-dict-styles';
 
-import { LitLocalized } from './addons/localization-mixin';
+import { LitLocalized } from './addons/sc-localization-mixin';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { store } from '../redux-store';
 

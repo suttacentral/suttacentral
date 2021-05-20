@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
-import { LitLocalized } from './addons/localization-mixin';
+import { LitLocalized } from './addons/sc-localization-mixin';
 import RoutingService from '../utils/routingService';
 import { store } from '../redux-store';
 import { dispatchCustomEvent } from '../utils/customEvent';
@@ -11,7 +11,7 @@ const isoCodes = [
   'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct', 'xto', 'vn', 'uig',
   'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh',
   'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl', 'jpn', 'vi', 'bn', 'zz'
-]
+];
 
 const staticPages = [
   'HOME',
@@ -49,8 +49,8 @@ const staticPages = [
 const routes = {
   'HOME': {
     path: '/',
-    content: html`<home-page />`,
-    loader: () => import('./static/home-page.js'),
+    content: html`<sc-static-home />`,
+    loader: () => import('./static/sc-static-home.js'),
   },
   'SEARCH': {
     path: '/search',
@@ -69,148 +69,148 @@ const routes = {
   },
   'ABBREVIATIONS': {
     path: '/abbreviations',
-    content: html`<sc-abbreviations-page />`,
-    loader: () => import('./static/abbreviations-page.js'),
+    content: html`<sc-static-abbreviations />`,
+    loader: () => import('./static/sc-static-abbreviations.js'),
   },
   'ABHIDHAMMA': {
     path: '/abhidhamma',
-    content: html`<sc-abhidhamma />`,
-    loader: () => import('./static/abhidhamma-page.js')
+    content: html`<sc-static-abhidhamma />`,
+    loader: () => import('./static/sc-static-abhidhamma.js')
   },
   'ABOUT': {
     path: '/about',
-    content: html`<sc-about-page />`,
-    loader: () => import('./static/about-page.js'),
+    content: html`<sc-static-about />`,
+    loader: () => import('./static/sc-static-about.js'),
   },
   'ACKNOWLEDGMENTS': {
     path: '/acknowledgments',
-    content: html`<sc-acknowledgments-page />`,
-    loader: () => import('./static/acknowledgments-page.js'),
+    content: html`<sc-static-acknowledgments />`,
+    loader: () => import('./static/sc-static-acknowledgments.js'),
   },
   'A-NEW-BEGINNING': {
     path: '/a-new-beginning',
-    content: html`<sc-a-new-beginning />`,
-    loader: () => import('./static/a-new-beginning-page.js')
+    content: html`<sc-static-a-new-beginning />`,
+    loader: () => import('./static/sc-static-a-new-beginning.js')
   },
   'AN-GUIDE-SUJATO': {
     path: '/an-guide-sujato',
-    content: html`<sc-an-guide />`,
-    loader: () => import('./static/an-guide-sujato-page.js')
+    content: html`<sc-static-an-guide-sujato />`,
+    loader: () => import('./static/sc-static-an-guide-sujato.js')
   },
   'AN-INTRODUCTION-BODHI': {
     path: '/an-introduction-bodhi',
-    content: html`<sc-an-introduction />`,
-    loader: () => import('./static/an-introduction-bodhi-page.js')
+    content: html`<sc-static-an-introduction-bodhi />`,
+    loader: () => import('./static/sc-static-an-introduction-bodhi.js')
   },
   'DISCOURSES': {
     path: '/discourses',
-    content: html`<sc-discourses />`,
-    loader: () => import('./static/discourses-page.js')
+    content: html`<sc-static-discourses />`,
+    loader: () => import('./static/sc-static-discourses.js')
   },
   'DN-GUIDE-SUJATO': {
     path: '/dn-guide-sujato',
-    content: html`<sc-dn-guide />`,
-    loader: () => import('./static/dn-guide-sujato-page.js')
+    content: html`<sc-static-dn-guide-sujato />`,
+    loader: () => import('./static/sc-static-dn-guide-sujato.js')
   },
   'DONATE-NOW': {
     path: '/donate-now',
-    content: html`<sc-donate-now-page />`,
-    loader: () => import('./static/donate-now-page.js'),
+    content: html`<sc-static-donate-now />`,
+    loader: () => import('./static/sc-static-donate-now.js'),
   },
   'DONATIONS': {
     path: '/donations',
-    content: html`<sc-donations-page />`,
-    loader: () => import('./static/donations-page.js'),
+    content: html`<sc-static-donations />`,
+    loader: () => import('./static/sc-static-donations.js'),
   },
   'DONATION-SUCCESS': {
     path: '/donation-success',
-    content: html`<sc-donation-success-page />`,
-    loader: () => import('./static/donation-success-page.js')
+    content: html`<sc-static-donation-success/>`,
+    loader: () => import('./static/sc-static-donation-success.js')
   },
   'DOWNLOADS': {
     path: '/downloads',
-    content: html`<sc-downloads-page />`,
-    loader: () => import('./static/downloads-page.js'),
+    content: html`<sc-static-downloads />`,
+    loader: () => import('./static/sc-static-downloads.js'),
   },
   'GENERAL-GUIDE-SUJATO': {
     path: '/general-guide-sujato',
-    content: html`<sc-general-guide />`,
-    loader: () => import('./static/general-guide-sujato-page.js')
+    content: html`<sc-static-general-guide-sujato />`,
+    loader: () => import('./static/sc-static-general-guide-sujato.js')
   },
   'INTRODUCTION': {
     path: '/introduction',
-    content: html`<sc-introduction />`,
-    loader: () => import('./static/introduction-page.js'),
+    content: html`<sc-static-introduction />`,
+    loader: () => import('./static/sc-static-introduction.js'),
   },
   'LANGUAGES': {
     path: '/languages',
-    content: html`<sc-languages-page />`,
-    loader: () => import('./static/languages-page.js')
+    content: html`<sc-static-languages />`,
+    loader: () => import('./static/sc-static-languages.js')
   },
   'LANGUAGES-DETAIL': {
     path: '/languages/:langIsoCode',
-    content: html`<sc-languages-page />`,
-    loader: () => import('./static/languages-page.js')
+    content: html`<sc-static-languages />`,
+    loader: () => import('./static/sc-static-languages.js')
   },
   'LICENSING': {
     path: '/licensing',
-    content: html`<sc-licensing-page />`,
-    loader: () => import('./static/licensing-page.js'),
+    content: html`<sc-static-licensing />`,
+    loader: () => import('./static/sc-static-licensing.js'),
   },
   'METHODOLOGY': {
     path: '/methodology',
-    content: html`<sc-methodology-page />`,
-    loader: () => import('./static/methodology-page.js'),
+    content: html`<sc-static-methodology />`,
+    loader: () => import('./static/sc-static-methodology.js'),
   },
   'MN-GUIDE-SUJATO': {
     path: '/mn-guide-sujato',
-    content: html`<sc-mn-guide />`,
-    loader: () => import('./static/mn-guide-sujato-page.js')
+    content: html`<sc-static-mn-guide-sujato />`,
+    loader: () => import('./static/sc-static-mn-guide-sujato.js')
   },
   'NAMES': {
     path: '/names',
-    content: html`<sc-names-page />`,
-    loader: () => import('./static/names-page.js')
+    content: html`<sc-static-names />`,
+    loader: () => import('./static/sc-static-names.js')
   },
   'NUMBERING': {
     path: '/numbering',
-    content: html`<sc-numbering-page />`,
-    loader: () => import('./static/numbering-page.js'),
+    content: html`<sc-static-numbering />`,
+    loader: () => import('./static/sc-static-numbering.js'),
   },
   'OFFLINE': {
     path: '/offline',
-    content: html`<sc-offline-page />`,
-    loader: () => import('./static/offline-page.js'),
+    content: html`<sc-static-offline />`,
+    loader: () => import('./static/sc-static-offline.js'),
   },
   'SIMILES': {
     path: '/similes',
-    content: html`<sc-similes-page />`,
-    loader: () => import('./static/similes-page.js')
+    content: html`<sc-static-similes />`,
+    loader: () => import('./static/sc-static-similes.js')
   },
   'SN-GUIDE-SUJATO': {
     path: '/sn-guide-sujato',
-    content: html`<sc-sn-guide />`,
-    loader: () => import('./static/sn-guide-sujato-page.js')
+    content: html`<sc-static-sn-guide-sujato />`,
+    loader: () => import('./static/sc-static-sn-guide-sujato.js')
   },
   'START': {
     path: '/start',
-    content: html`<sc-start />`,
-    loader: () => import('./static/start-page.js'),
+    content: html`<sc-static-start />`,
+    loader: () => import('./static/sc-static-start.js'),
   },
   'SUBJECTS': {
     path: '/subjects',
-    content: html`<sc-subjects-page />`,
-    loader: () => import('./static/subjects-page.js')
+    content: html`<sc-static-subjects />`,
+    loader: () => import('./static/sc-static-subjects.js')
   },
   'TERMINOLOGY': {
     path: '/terminology',
-    content: html`<sc-terminology-page />`,
-    loader: () => import('./static/terminology-page.js'),
+    content: html`<sc-static-terminology />`,
+    loader: () => import('./static/sc-static-terminology.js'),
   },
   'VINAYA': {
     path: '/vinaya',
-    content: html`<sc-vinaya />`,
-    loader: () => import('./static/vinaya-page.js')
+    content: html`<sc-static-vinaya />`,
+    loader: () => import('./static/sc-static-vinaya.js')
   },
   'SUTTA': {
     path: '/:suttaId/:langIsoCode/:authorUid',
