@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit-element';
 import { API_ROOT } from '../../../constants';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
-import { LitLocalized } from '../../addons/localization-mixin';
+import { LitLocalized } from '../../addons/sc-localization-mixin';
 import { icon } from '../../../img/sc-icon';
 import { store } from '../../../redux-store';
 

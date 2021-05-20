@@ -1,12 +1,12 @@
 import { html, LitElement } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
-import { API_ROOT } from '../../constants.js';
+import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
-import { LitLocalized } from '../addons/localization-mixin';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { suttaplexListCss } from './sc-suttaplex-list.css.js';
-import './sc-suttaplex-section-title.js';
-import '../addons/sc-error-icon.js';
+import './sc-suttaplex-section-title';
+import '../addons/sc-error-icon';
 import('./card/sc-suttaplex.js');
 import {
   navIndex,

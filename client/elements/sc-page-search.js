@@ -1,12 +1,12 @@
 import { LitElement, html, svg } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import '@material/mwc-button';
-import './menus/sc-search-filter-menu.js';
-import './addons/sc-error-icon.js';
+import './menus/sc-menu-search-filter';
+import './addons/sc-error-icon';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
-import { LitLocalized } from './addons/localization-mixin';
-import { API_ROOT } from '../constants.js';
+import { LitLocalized } from './addons/sc-localization-mixin';
+import { API_ROOT } from '../constants';
 import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import('./suttaplex/card/sc-suttaplex.js');
@@ -362,10 +362,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
               <span class="search-result-description">${this.localize('resultsFor')}</span>
               <span class="search-result-term">${this.searchQuery}</span>
             </h1>
-            <sc-search-filter-menu
+            <sc-menu-search-filter
               class="search-result-filter-menu"
               id="filter_menu"
-            ></sc-search-filter-menu>
+            ></sc-menu-search-filter>
           </div>
           <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
           <div class="dictionary-snippet-card">

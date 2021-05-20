@@ -294,7 +294,7 @@ export const navigationNormalModeStyles = html`
       margin-top: -0.667rem;
     }
 
-    sc-tipitaka {
+    sc-navigation-tipitaka {
       min-height: 275px;
     }
   </style>

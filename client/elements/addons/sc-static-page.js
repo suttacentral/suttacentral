@@ -1,15 +1,15 @@
-import { LitElement } from "lit-element";
+import { LitElement } from 'lit-element';
 
-import { LitLocalized } from "./localization-mixin.js";
+import { LitLocalized } from './sc-localization-mixin';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
   static get properties() {
     return {
       currentId: {
         type: String,
-        value: ''
-      }
-    }
+        value: '',
+      },
+    };
   }
 
   firstUpdated(props) {
@@ -43,7 +43,7 @@ export class SCStaticPage extends LitLocalized(LitElement) {
       firstSection.scrollIntoView({
         behavior: 'instant',
         block: 'start',
-        inline: 'nearest'
+        inline: 'nearest',
       });
     }
     return sectionId;
