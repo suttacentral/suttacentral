@@ -73,7 +73,7 @@ const routes = {
     loader: () => import('./static/sc-static-abbreviations.js'),
   },
   'ABHIDHAMMA': {
-    path: '/abhidhamma',
+    path: '/abhidhamma-guide-sujato',
     content: html`<sc-static-abhidhamma />`,
     loader: () => import('./static/sc-static-abhidhamma.js')
   },
@@ -103,7 +103,7 @@ const routes = {
     loader: () => import('./static/sc-static-an-introduction-bodhi.js')
   },
   'DISCOURSES': {
-    path: '/discourses',
+    path: '/discourses-guide-sujato',
     content: html`<sc-static-discourses />`,
     loader: () => import('./static/sc-static-discourses.js')
   },
@@ -208,7 +208,7 @@ const routes = {
     loader: () => import('./static/sc-static-terminology.js'),
   },
   'VINAYA': {
-    path: '/vinaya',
+    path: '/vinaya-guide-brahmali',
     content: html`<sc-static-vinaya />`,
     loader: () => import('./static/sc-static-vinaya.js')
   },
