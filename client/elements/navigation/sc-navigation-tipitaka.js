@@ -46,13 +46,24 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.siteLanguage = store.getState().siteLanguage;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.tipitakaGuide = new Map();
     this._fetchMainMenu();
-    this.tipitakaGuide = new Map([
-      ['sutta', '/discourses'],
-      ['vinaya', '/vinaya'],
-      ['abhidhamma', '/abhidhamma'],
-    ]);
-    this.navDataCache = new Map(Object.entries(store.getState().navDataCache || {}));
+    this._fetchGuides();
+  }
+
+  async _fetchGuides() {
+    if (this.tipitakaGuide?.size === 0) {
+      try {
+        const guides = await (await fetch(`${API_ROOT}/guides`)).json();
+        // eslint-disable-next-line no-restricted-syntax
+        for (const guide of guides) {
+          this.tipitakaGuide.set(guide.text_uid, guide.guide_uid);
+          this.requestUpdate();
+        }
+      } catch (e) {
+        this.lastError = e;
+      }
+    }
   }
 
   async _fetchMainMenu() {

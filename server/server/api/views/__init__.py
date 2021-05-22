@@ -33,4 +33,6 @@ from .views import (
     PublicationInfo,
     AvailableVoices,
     RootEdition,
+    Guides,
+    Shortcuts,
 )

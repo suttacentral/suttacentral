@@ -1059,3 +1059,17 @@ class RootEdition(Resource):
         db = get_db()
         data = db.collection('root_edition').all()
         return list(data), 200
+
+class Guides(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('guides').all()
+        return list(data), 200
+
+class Shortcuts(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = list(db.aql.execute('FOR s IN shortcuts RETURN s.shortcuts'))[0]
+        return data, 200

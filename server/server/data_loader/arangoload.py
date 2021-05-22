@@ -350,6 +350,19 @@ def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
     db.collection('text_extra_info').import_bulk(text_extra_info_content)
 
 
+def load_shortcuts_file(db: Database, shortcuts_file: Path):
+    shortcuts: Dict[str, dict] = json_load(shortcuts_file)
+
+    docs = []
+    for key, value in shortcuts.items():
+        docs.append({
+            'uid': key,
+            'shortcuts': value,
+        })
+
+    db.collection('shortcuts').import_bulk(docs)
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -414,6 +427,9 @@ def run(no_pull=False):
 
     print_stage('Loading text_extra_info.json')
     load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
+
+    print_stage('Loading shortcuts.json')
+    load_shortcuts_file(db, structure_dir / 'shortcuts.json')
 
     print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)
