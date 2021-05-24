@@ -3,6 +3,7 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { navigationNormalModeStyles } from './sc-navigation-styles';
+import { pitakaGuide } from './sc-navigation-common';
 
 class SCNavigationTipitaka extends LitLocalized(LitElement) {
   static get styles() {
@@ -46,24 +47,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.siteLanguage = store.getState().siteLanguage;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
-    this.tipitakaGuide = new Map();
     this._fetchMainMenu();
-    this._fetchGuides();
-  }
-
-  async _fetchGuides() {
-    if (this.tipitakaGuide?.size === 0) {
-      try {
-        const guides = await (await fetch(`${API_ROOT}/guides`)).json();
-        // eslint-disable-next-line no-restricted-syntax
-        for (const guide of guides) {
-          this.tipitakaGuide.set(guide.text_uid, guide.guide_uid);
-          this.requestUpdate();
-        }
-      } catch (e) {
-        this.lastError = e;
-      }
-    }
   }
 
   async _fetchMainMenu() {
@@ -113,7 +97,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
                   </a>
                   <div class="nav-card-content">
                     <div class="blurb" id="${item.root_name}_blurb">${item.blurb}</div>
-                    <a class="essay-link" href="${this.tipitakaGuide.get(item.uid)}">
+                    <a class="essay-link" href="${pitakaGuide.get(item.uid)}">
                       <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
                     </a>
                   </div>

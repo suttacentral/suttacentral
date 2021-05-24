@@ -1,6 +1,25 @@
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 
+let shortcuts = [];
+try {
+  shortcuts = await (await fetch(`${API_ROOT}/shortcuts`)).json();
+} catch (error) {
+  console.log(error);
+}
+
+const pitakaGuide = new Map();
+try {
+  let guides = await (await fetch(`${API_ROOT}/guides`)).json();
+  for (const guide of guides) {
+    pitakaGuide.set(guide.text_uid, guide.guide_uid);
+  }
+} catch (error) {
+  console.log(error);
+}
+
+export { pitakaGuide, shortcuts };
+
 export const navIndex = new Map([
   [
     'home',

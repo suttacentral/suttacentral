@@ -5,7 +5,7 @@ import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
-import { navIndex } from './sc-navigation-common';
+import { navIndex, shortcuts, pitakaGuide } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCNavigation extends LitLocalized(LitElement) {
@@ -37,8 +37,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
     this.lastSelectedItemRootLangISO = '';
-    this.pitakaGuide = new Map();
-    this.shortcuts = [];
     this._verifyURL();
     this._appViewModeChanged();
     this._fetchMainData();
@@ -272,30 +270,6 @@ class SCNavigation extends LitLocalized(LitElement) {
     }
   }
 
-  async _fetchGuides() {
-    if (this.pitakaGuide?.size === 0) {
-      try {
-        const guides = await (await fetch(`${API_ROOT}/guides`)).json();
-        // eslint-disable-next-line no-restricted-syntax
-        for (const guide of guides) {
-          this.pitakaGuide.set(guide.text_uid, guide.guide_uid);
-        }
-      } catch (e) {
-        this.lastError = e;
-      }
-    }
-  }
-
-  async _fetchShortcuts() {
-    if (this.shortcuts?.length === 0) {
-      try {
-        this.shortcuts = await (await fetch(`${API_ROOT}/shortcuts`)).json();
-      } catch (e) {
-        this.lastError = e;
-      }
-    }
-  }
-
   render() {
     return html`
       ${navigationNormalModeStyles} ${this.compactStyles}
@@ -431,8 +405,6 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._initPitakaCards({ dispatchState: true });
-    this._fetchGuides();
-    this._fetchShortcuts();
   }
 
   updated() {
@@ -517,16 +489,16 @@ class SCNavigation extends LitLocalized(LitElement) {
                       </div>
                     `
                   : ''}
-                ${this.pitakaGuide.get(child.uid)
+                ${pitakaGuide.get(child.uid)
                   ? html`
-                      <a href="/${this.pitakaGuide.get(child.uid)}" class="essay-link">
+                      <a href="/${pitakaGuide.get(child.uid)}" class="essay-link">
                         <div class="essay" id="${child.uid}_essay">
                           ${this.localize(`${child.uid}_essayTitle`)}
                         </div>
                       </a>
                     `
                   : ''}
-                ${this.shortcuts?.includes(child.uid)
+                ${shortcuts?.includes(child.uid)
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
@@ -666,7 +638,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       </div>
                     `
                   : ''}
-                ${this.shortcuts.includes(child.uid)
+                ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
@@ -790,7 +762,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       </div>
                     `
                   : ''}
-                ${this.shortcuts.includes(child.uid)
+                ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
@@ -913,7 +885,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                       </div>
                     `
                   : ''}
-                ${this.shortcuts.includes(child.uid)
+                ${shortcuts.includes(child.uid)
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
