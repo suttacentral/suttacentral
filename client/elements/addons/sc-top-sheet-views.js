@@ -703,6 +703,17 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.shadowRoot
       .querySelector('#selPaliScripts')
       .addEventListener('change', this._onPaliScriptChanged);
+    this.#setPaliScriptSelected();
+  }
+
+  #setPaliScriptSelected() {
+    const paliScriptSelect = this.shadowRoot.querySelector('#selPaliScripts');
+    for (const option of paliScriptSelect?.options) {
+      if (option.value === this.paliScript) {
+        option.selected = true;
+        break;
+      }
+    }
   }
 }
 
