@@ -232,7 +232,9 @@ class SCTextBilara extends SCTextCommon {
     Comments.forEach(element => {
       const rect = element.getBoundingClientRect();
       const elementNoId = element.id.slice(8); // id:comment_1 => get: 1
-      const nextComment = this.shadowRoot.querySelector(`#comment_${parseInt(elementNoId) + 1}`);
+      const nextComment = this.shadowRoot.querySelector(
+        `#comment_${parseInt(elementNoId, 10) + 1}`
+      );
       if (nextComment) {
         const nextCommentTop = nextComment.getBoundingClientRect().top;
         if (rect.top + rect.height > nextCommentTop) {
