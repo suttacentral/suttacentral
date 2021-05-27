@@ -503,12 +503,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
               <select id="selPaliScripts">
                 ${scriptIdentifiers.map(
                   script => html`
-                    <option
-                      value="${script.language}"
-                      class="${script.script.toLowerCase()}-script"
-                      title="${script.script}"
-                    >
-                      ${script.script === 'latin' ? '' : `${script.script}—`}${script.language}
+                    <option value="${script.script}" title="${script.language}">
+                      ${script.language}
                     </option>
                   `
                 )}
@@ -707,6 +703,17 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.shadowRoot
       .querySelector('#selPaliScripts')
       .addEventListener('change', this._onPaliScriptChanged);
+    this.#setPaliScriptSelected();
+  }
+
+  #setPaliScriptSelected() {
+    const paliScriptSelect = this.shadowRoot.querySelector('#selPaliScripts');
+    for (const option of paliScriptSelect?.options) {
+      if (option.value === this.paliScript) {
+        option.selected = true;
+        break;
+      }
+    }
   }
 }
 
