@@ -232,7 +232,6 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
                 label="${this.localize('payWithCard')}"
                 @click="${({ target }) => {
                   const form = target.closest('form');
-                  form.requestSubmit();
                   if (form.requestSubmit) {
                     form.requestSubmit();
                   } else {
