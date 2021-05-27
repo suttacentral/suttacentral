@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { LitElement, html, css } from 'lit-element';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-select';
@@ -232,6 +233,11 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
                 @click="${({ target }) => {
                   const form = target.closest('form');
                   form.requestSubmit();
+                  if (form.requestSubmit) {
+                    form.requestSubmit();
+                  } else {
+                    form.submit();
+                  }
                 }}"
               ></mwc-button>
             </div>
