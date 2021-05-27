@@ -477,7 +477,7 @@ export const scriptIdentifiers = [
   },
   {
     script: 'Ahom',
-    language: '𑜒𑜑𑜦𑜡𑜉𑜫',
+    language: 'Ahom',
   },
   {
     script: 'Ariyaka',
@@ -485,223 +485,223 @@ export const scriptIdentifiers = [
   },
   {
     script: 'Assamese',
-    language: 'অস্সমেসে',
+    language: 'Assamese',
   },
   {
     script: 'Avestan',
-    language: '𐬀𐬎𐬎𐬉𐬯𐬙𐬀𐬥',
+    language: 'Avestan',
   },
   {
     script: 'Balinese',
-    language: 'ᬩᬮᬶᬦᬾᬲᬾ',
+    language: 'Balinese',
   },
   {
     script: 'BatakKaro',
-    language: 'ᯆᯗᯂ᯳ ᯂᯒᯭ',
+    language: 'Batak Karo',
   },
   {
     script: 'BatakManda',
-    language: 'ᯅᯖᯄ᯦᯲ ᯔᯊ᯲ᯑᯤᯞᯪᯊ᯲ᯎ᯲',
+    language: 'Batak Mandailing',
   },
   {
     script: 'BatakPakpak',
-    language: 'ᯅᯗᯂ᯲ ᯇᯂ᯲ᯇᯂ᯲',
+    language: 'Batak Pakpak',
   },
   {
     script: 'BatakSima',
-    language: 'ᯅᯖᯃ᯳ ᯙᯫᯕᯟᯮᯉ᯳ᯏᯮᯉ᯳',
+    language: 'Batak Simalungun',
   },
   {
     script: 'BatakToba',
-    language: 'ᯅᯗᯂ᯲ ᯗᯬᯅ',
+    language: 'Batak Toba',
   },
   {
     script: 'Bengali',
-    language: 'বেন্গলি',
+    language: 'Bengali',
   },
   {
     script: 'Bhaiksuki',
-    language: '𑰥𑰹𑰎𑰿𑰭𑰲𑰎𑰰',
+    language: 'Bhaiksuki',
   },
   {
     script: 'Brahmi',
-    language: '𑀩𑁆𑀭𑀳𑁆𑀫𑀺',
+    language: 'Brahmi',
   },
   {
     script: 'Buginese',
-    language: 'ᨅᨘᨁᨗᨊᨙᨔᨙ (ᨒᨚᨊᨈᨑ)',
+    language: 'Buginese (Lontara)',
   },
   {
     script: 'Buhid',
-    language: 'ᝊᝓᝃᝒᝇ',
+    language: 'Buhid',
   },
   {
     script: 'Burmese',
-    language: 'ဗုရ်္မေသေ (မျန္မရ်)',
+    language: 'Burmese (Myanmar)',
   },
   {
     script: 'Chakma',
-    language: '𑄍𑄧𑄇𑄴𑄟𑄧',
+    language: 'Chakma',
   },
   {
     script: 'Cham',
-    language: 'ꨍꩌ',
+    language: 'Cham',
   },
   {
     script: 'RussianCyrillic',
-    language: 'чйриллич',
+    language: 'Cyrillic (Russian)',
   },
   {
     script: 'Devanagari',
-    language: 'देवनगरि',
+    language: 'Devanagari',
   },
   {
     script: 'Dogra',
-    language: '𑠛𑠵𑠌𑠹𑠤',
+    language: 'Dogra',
   },
   {
     script: 'GunjalaGondi',
-    language: '𑵶𑶓𑵺𑶗𑵸𑶋 (𑵶𑶍𑵺𑶗𑶀𑵵)',
+    language: 'Gondi (Gunjala)',
   },
   {
     script: 'MasaramGondi',
-    language: '𑴎𑴽𑴟𑵅𑴝𑴲 (𑴤𑴫𑴦𑴤𑵄)',
+    language: 'Gondi (Masaram)',
   },
   {
     script: 'Grantha',
-    language: '𑌗𑍍𑌰𑌨𑍍𑌥',
+    language: 'Grantha',
   },
   {
     script: 'GranthaPandya',
-    language: 'ഗ്രന്ഥ (പന്ദ്യ)',
+    language: 'Grantha (Pandya)',
   },
   {
     script: 'Gujarati',
-    language: 'ગુજરતિ',
+    language: 'Gujarati',
   },
   {
     script: 'Hanunoo',
-    language: 'ᜣᜨᜳᜨᜳᜢ',
+    language: 'Hanunoo',
   },
   {
     script: 'Javanese',
-    language: 'ꦗꦮꦤꦺꦱꦺ',
+    language: 'Javanese',
   },
   {
     script: 'Kaithi',
-    language: '𑂍𑂶𑂟𑂱',
+    language: 'Kaithi',
   },
   {
     script: 'Kannada',
-    language: 'ಕನ್ನದ',
+    language: 'Kannada',
   },
   {
     script: 'KhamtiShan',
-    language: 'ၵမ်တိ ꩬ်ꩭꩫ်',
+    language: 'Khamti Shan',
   },
   {
     script: 'Kharoshthi',
-    language: '𐨑𐨪𐨆𐨯𐨿𐨱𐨿𐨠𐨁',
+    language: 'Kharoshthi',
   },
   {
     script: 'Khmer',
-    language: 'ខ្មេរ៑ (ចម្ពោទិអន៑)',
+    language: 'Khmer (Cambodian)',
   },
   {
     script: 'Khojki',
-    language: '𑈉𑈲𑈐𑈵𑈈𑈭',
+    language: 'Khojki',
   },
   {
     script: 'KhomThai',
-    language: 'เขามฺ ใถ',
+    language: 'Khom Thai',
   },
   {
     script: 'Khudawadi',
-    language: '𑊻𑋣𑋏w𑊰𑋏𑋡',
+    language: 'Khudawadi',
   },
   {
     script: 'Lao',
-    language: 'ລະໂອ',
+    language: 'Lao',
   },
   {
     script: 'LaoPali',
-    language: 'ລໂອ (ປລິ)',
+    language: 'Lao (Pali)',
   },
   {
     script: 'Lepcha',
-    language: 'ᰜᰬᰱᰇ',
+    language: 'Lepcha',
   },
   {
     script: 'Limbu',
-    language: 'ᤗᤡᤶᤒᤢ',
+    language: 'Limbu',
   },
   {
     script: 'Mahajani',
-    language: '𑅬𑅱𑅛𑅧𑅑',
+    language: 'Mahajani',
   },
   {
     script: 'Malayalam',
-    language: 'മലയലം',
+    language: 'Malayalam',
   },
   {
     script: 'Marchen',
-    language: '𑲁𑲊𑲣𑲳𑱽',
+    language: 'Marchen',
   },
   {
     script: 'MeeteiMayek',
-    language: 'ꯃꯦꯑꯦꯇꯦꯏ ꯃꯌꯦꯛ (ꯃꯅꯤꯄꯨꯔꯤ)',
+    language: 'Meetei Mayek (Manipuri)',
   },
   {
     script: 'Modi',
-    language: '𑘦𑘻𑘟𑘱',
+    language: 'Modi',
   },
   {
     script: 'Mon',
-    language: 'မောန်',
+    language: 'Mon',
   },
   {
     script: 'Mongolian',
-    language: 'ᠮᠣᠸᠠᠨᠺᠣᠸᠠᠯᢈᠠᠨ (ᠠᠯᢈ ᠺᠠᠯᢈ)',
+    language: 'Mongolian (Ali Gali)',
   },
   {
     script: 'Mro',
-    language: '𖩃𖩓𖩑',
+    language: 'Mro',
   },
   {
     script: 'Multani',
-    language: '𑊠𑊂𑊣𑊖𑊚𑊁',
+    language: 'Multani',
   },
   {
     script: 'Newa',
-    language: '𑐣𑐾w𑐀 (𑐣𑐾𑐥𑐮𑑂 𑐨𑐳)',
+    language: 'Newa (Nepal Bhasa)',
   },
   {
     script: 'OldPersian',
-    language: '𐎢𐎾𐎭𐏐𐎱𐎡𐎼𐎿𐎡𐎠𐎴',
+    language: 'Old Persian',
   },
   {
     script: 'Oriya',
-    language: 'ଓରିୟ',
+    language: 'Oriya',
   },
   {
     script: 'PhagsPa',
-    language: 'ꡍꡂ ꡛꡌ',
+    language: 'PhagsPa',
   },
   {
     script: 'Gurmukhi',
-    language: 'ਪੁਨ੍ਜਬਿ (ਗੁਰ੍ਮੁਖਿ)',
+    language: 'Punjabi (Gurmukhi)',
   },
   {
     script: 'Ranjana',
-    language: 'रन्जन (लन्त्स)',
+    language: 'Ranjana (Lantsa)',
   },
   {
     script: 'Rejang',
-    language: 'ꤽꥉꤺꥐꤱ꥓',
+    language: 'Rejang',
   },
   {
     script: 'HanifiRohingya',
-    language: '𐴌𐴡𐴤𐴇𐴞𐴕𐴒𐴘𐴝 (𐴇𐴝𐴕𐴞𐴉𐴞)',
+    language: 'Rohingya (Hanifi)',
   },
   {
     script: 'HK',
@@ -745,126 +745,126 @@ export const scriptIdentifiers = [
   },
   {
     script: 'Santali',
-    language: 'ᱥᱚᱱᱛᱚᱞᱤ (ᱳᱞ ᱪᱷᱤᱠᱤ)',
+    language: 'Santali (Ol Chiki)',
   },
   {
     script: 'Saurashtra',
-    language: 'ꢱꣃꢬꢱ꣄ꢲ꣄ꢡ꣄ꢬ',
+    language: 'Saurashtra',
   },
   {
     script: 'Shan',
-    language: 'သှၼ်',
+    language: 'Shan',
   },
   {
     script: 'Sharada',
-    language: '𑆱𑇀𑆲𑆫𑆢',
+    language: 'Sharada',
   },
   {
     script: 'Siddham',
-    language: '𑖭𑖰𑖟𑖿𑖠𑖦𑖿',
+    language: 'Siddham',
   },
   {
     script: 'Sinhala',
-    language: 'සිංහල',
+    language: 'Sinhala',
   },
   {
     script: 'SoraSompeng',
-    language: '𑃐𑃦𑃝 𑃐𑃦𑃖𑃛𑃣𑃙𑃕',
+    language: 'Sora Sompeng',
   },
   {
     script: 'Soyombo',
-    language: '𑪁𑩖𑩻𑩖𑩴𑪙𑩲𑩖',
+    language: 'Soyombo',
   },
   {
     script: 'Sundanese',
-    language: 'ᮞᮥᮔ᮪ᮓᮔᮨᮞᮨ',
+    language: 'Sundanese',
   },
   {
     script: 'SylotiNagri',
-    language: 'ꠡ꠆ꠎ꠆ꠟꠧꠔꠤ ꠘꠉꠞꠤ',
+    language: 'Syloti Nagari',
   },
   {
     script: 'Tagalog',
-    language: 'ᜆᜄᜎᜓᜄ᜔',
+    language: 'Tagalog',
   },
   {
     script: 'Tagbanwa',
-    language: 'ᝦᝤᝪᝨwᝠ',
+    language: 'Tagbanwa',
   },
   {
     script: 'TaiLaing',
-    language: 'တႆ လႆꩫ်ꧩ်',
+    language: 'Tai Laing',
   },
   {
     script: 'Takri',
-    language: '𑚙𑚊𑚶𑚤𑚮',
+    language: 'Takri',
   },
   {
     script: 'Tamil',
-    language: 'தமில்',
+    language: 'Tamil',
   },
   {
     script: 'TamilExtended',
-    language: 'തമില്‌ (ഏxതേന്‌ദേദ്‌)',
+    language: 'Tamil (Extended)',
   },
   {
     script: 'TamilBrahmi',
-    language: '𑀢𑀫𑀺𑀮𑁆 𑀧𑁆𑀭𑀳𑁆𑀫𑀺',
+    language: 'Tamil Brahmi',
   },
   {
     script: 'Telugu',
-    language: 'తేలుగు',
+    language: 'Telugu',
   },
   {
     script: 'Thaana',
-    language: 'ތައަނަ (ދިވޭހި)',
+    language: 'Thaana (Dhivehi)',
   },
   {
     script: 'Thai',
-    language: 'ไถ',
+    language: 'Thai',
   },
   {
     script: 'TaiTham',
-    language: 'ᨳᨾ᩺ (ᩃᨶ᩠ᨶ)',
+    language: 'Tham (Lanna)',
   },
   {
     script: 'LaoTham',
-    language: 'ᨳᨾ᩺ (ᩃᩒ)',
+    language: 'Tham (Lao)',
   },
   {
     script: 'KhuenTham',
-    language: 'ᨳᨾ᩺ (ᨲᩱ ᨡᩩᩑᨶ᩺)',
+    language: 'Tham (Tai Khuen)',
   },
   {
     script: 'LueTham',
-    language: 'ᨳᨾ᩺ (ᨲᩱ ᩃᩩᩑ)',
+    language: 'Tham (Tai Lue)',
   },
   {
     script: 'Tibetan',
-    language: 'ཏིབེཏན',
+    language: 'Tibetan',
   },
   {
     script: 'Tirhuta',
-    language: '𑒞𑒱𑒩𑓂𑒯𑒳𑒞',
+    language: 'Tirhuta (Maithili)',
   },
   {
     script: 'Urdu',
-    language: 'اُرْدُ',
+    language: 'Urdu',
   },
   {
     script: 'Vatteluttu',
-    language: 'வத்தேலுத்து',
+    language: 'Vatteluttu',
   },
   {
     script: 'Wancho',
-    language: 'w𞋁𞋉𞋃𞋕',
+    language: 'Wancho',
   },
   {
     script: 'WarangCiti',
-    language: 'w𑣁𑣜𑣓‍𑣋 𑣏𑣂𑣕𑣂',
+    language: 'Warang Citi',
   },
   {
     script: 'ZanabazarSquare',
-    language: '𑨨𑨝𑨠𑨨𑨫𑨴 𑨰𑩇𑨋𑨂𑨀𑨫𑨄',
+    language: 'Zanabazar Square',
   },
 ];
