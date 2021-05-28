@@ -235,7 +235,11 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
                   if (form.requestSubmit) {
                     form.requestSubmit();
                   } else {
-                    form.submit();
+                    const button = document.createElement('input');
+                    button.type = 'submit';
+                    form.append(button);
+                    button.click();
+                    button.remove();
                   }
                 }}"
               ></mwc-button>
