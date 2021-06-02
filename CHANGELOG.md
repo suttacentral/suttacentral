@@ -10,4 +10,4 @@
 - Optimize code with new JS features.
 - Fix: Transliteration: Many of the script labels are gibberish. #2115
 - Fix: Incorrect transliteration of /e/ and /o/ in some scripts. #2114
-- Fix the problem of invalid button click on donation page in iOS.
+- Fix: The problem of invalid button click on donation page in iOS.
