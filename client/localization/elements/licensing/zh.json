@@ -1,0 +1,29 @@
+{
+  "zh": {
+    "licensing:1": "许可证",
+    "licensing:2": "无论是原文还是翻译，佛教文献都传统被视为“佛陀的话语”。它们是人类的精神遗产，并不属于任何个体。在SuttaCentral，我们通过免费提供这一切来延续这一传统。要不是大家的乐捐，这一切都不可能，我们希望通过免费提供这一切来回报大家的善行。",
+    "licensing:3": "我们的源文件可在<a href='https://github.com/suttacentral' rel='noopener' target='_blank' title='SuttaCentral on Github'> SuttaCentral的Github存储库</a>上免费获取。SuttaCentral很自豪能够成为开源社区的一员。",
+    "licensing:4": "SuttaCentral上的知料分为三个与版权相关的不同类别，详情如下。如果您想对SuttaCentral上的任何材料主张版权，或希望讨论SuttaCentral的版权，请随时与我们联系<a href='https://discourse.suttacentral.net/' rel='noopener' target='_blank'>on our forum</a>",
+    "licensing:5": "1.SuttaCentral原创的资料",
+    "licensing:6": "SuttaCentral原创的所有资料都献给公共领域<a href='http://creativecommons.org/publicdomain/zero/1.0/' rel='noopener' target='_blank'> Creative Commons Zero (CC0 1.0 Universal)</a>",
+    "licensing:7": "这包括SuttaCentral或SuttaCentral工作人员，域名suttacentral.net或SuttaCentral拥有或管理的任何域或子域名所原创的所有文本，设计，软件和图像，除非另有说明。",
+    "licensing:8": "您可随意复制，更改，再分发，展示，执行，传达或使用任何或所有这些材料。",
+    "licensing:9": "虽没有法律义务，但如果您使用任何材料，，我们尊重要求您：",
+    "licensing:10": "提供材料来源布告。",
+    "licensing:11": "保持佛教传统的精神。",
+    "licensing:12": "如需要任何协助，请与我们联系。",
+    "licensing:13": "2.由他人创建并为SuttaCentral提供的材料",
+    "licensing:14": "对于SuttaCentral上的某些材料，已有第三方的版权声明。这包括大部分翻译文本。在这种情况下，版权条款由版权拥有者指定，通常是翻译或原出版商。此材料将根据许可证或经许可使用。版权所指定的相关版权声明会包含在材料中。",
+    "licensing:15": "此外，SuttaCentral非常感谢我们创作者的工作和慷慨。",
+    "licensing:16": "所使用的几个图标是通过Noun项目所发布",
+    "licensing:17": "创作共同许可证",
+    "licensing:18": ".",
+    "licensing:19": "“难度”图标是由<a href='https://thenounproject.com/iconwar/' rel='noopener' target='_blank' title='Alena Artemova on the Noun Project'>Alena Artemova</a>所创建的。",
+    "licensing:20": "“语言” ISO 的图标是由 Krzysiek Woźniak 根据<a href='https://thenounproject.com/ralts01/' rel='noopener' target='_blank' title='Jonathan Coutiño on the Noun Project'>onathan Coutiño</a>的设计所设计出来的",
+    "licensing:21": "“断开连接的云图标”是由Bernar Novalyi。",
+    "licensing:22": "主页上的画是由澳大利亚艺术家Kim Hoa Tram所画，并经艺术家和维多利亚国家美术馆的许可使用。Kim Hoa Tram的这些和其他作品可以在<a href='https://www.ngv.vic.gov.au/explore/collection/artist/11810/' rel='noopener' target='_blank' title='Kim Hoa Tram at the National Gallery of Victoria'>维多利亚国家美术馆网站</a>",
+    "licensing:23": "3.公共领域资料",
+    "licensing:24": "巴利文，中文，梵文，藏文和其他语文的佛教原文都在<a href='http://creativecommons.org/publicdomain/mark/1.0/' rel='noopener' target='_blank'>公共领域</a>。此类材料不属于版权范围。",
+    "licensing:25": "另外，参考数据，包括关于平行线的信息，不是“原始创作”，因此不属于版权范围。"
+  }
+}

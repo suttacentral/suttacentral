@@ -33,7 +33,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
               ${icon.sc_logo}
               <span>${this.toolbarTitle}</span>
             </div>
-            <div id="subTitle">${this.localize('pageSubtitle')}</div>
+            <div id="subTitle">${this.localize('layout:pageSubtitle')}</div>
           </div>
         </div>
         <sc-linear-progress .active="${this.linearProgressActive}"></sc-linear-progress>
@@ -60,13 +60,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayFirstToolbar
         ? html`
             <li>
-              <a href="/introduction">${this.localize('INTRODUCTION')}</a>
+              <a href="/introduction">${this.localize('layout:introduction')}</a>
             </li>
             <li>
-              <a href="/donations">${this.localize('DONATIONS')}</a>
+              <a href="/donations">${this.localize('layout:donations')}</a>
             </li>
             <li>
-              <a href="/offline">${this.localize('USEOFFLINE')}</a>
+              <a href="/offline">${this.localize('layout:useOffline')}</a>
             </li>
             <li>
               <a
@@ -76,7 +76,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
                 target="_blank"
                 rel="noopener"
               >
-                ${this.localize('WHATSNEW')}
+                ${this.localize('layout:whatsnew')}
               </a>
             </li>
           `
@@ -90,16 +90,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displaySecondToolbar
         ? html`
             <li>
-              <a href="/subjects">${this.localize('SUBJECTS')}</a>
+              <a href="/subjects">${this.localize('layout:subjects')}</a>
             </li>
             <li>
-              <a href="/similes">${this.localize('SIMILES')}</a>
+              <a href="/similes">${this.localize('layout:similes')}</a>
             </li>
             <li>
-              <a href="/names">${this.localize('NAMES')}</a>
+              <a href="/names">${this.localize('layout:names')}</a>
             </li>
             <li>
-              <a href="/terminology">${this.localize('TERMINOLOGY')}</a>
+              <a href="/terminology">${this.localize('layout:terminology')}</a>
             </li>
           `
         : ''}
@@ -112,13 +112,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayTipitakaToolbar
         ? html`
             <li>
-              <a href="/discourses">${this.localize('DISCOURSES')}</a>
+              <a href="/discourses">${this.localize('layout:discourses')}</a>
             </li>
             <li>
-              <a href="/vinaya">${this.localize('VINAYA')}</a>
+              <a href="/vinaya">${this.localize('layout:vinaya')}</a>
             </li>
             <li>
-              <a href="/abhidhamma">${this.localize('ABHIDHAMMA')}</a>
+              <a href="/abhidhamma">${this.localize('layout:abhidhamma')}</a>
             </li>
           `
         : ''}
@@ -131,13 +131,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayAcademicToolbar
         ? html`
             <li>
-              <a href="/numbering">${this.localize('NUMBERING')}</a>
+              <a href="/numbering">${this.localize('layout:numbering')}</a>
             </li>
             <li>
-              <a href="/abbreviations">${this.localize('ABBREVIATIONS')}</a>
+              <a href="/abbreviations">${this.localize('layout:abbreviations')}</a>
             </li>
             <li>
-              <a href="/methodology">${this.localize('METHODOLOGY')}</a>
+              <a href="/methodology">${this.localize('layout:methodology')}</a>
             </li>
           `
         : ''}
@@ -150,13 +150,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayOrganizationalToolbar
         ? html`
             <li>
-              <a href="/acknowledgments">${this.localize('ACKNOWLEDGMENTS')}</a>
+              <a href="/acknowledgments">${this.localize('layout:acknowledgments')}</a>
             </li>
             <li>
-              <a href="/licensing">${this.localize('LICENSING')}</a>
+              <a href="/licensing">${this.localize('layout:licensing')}</a>
             </li>
             <li>
-              <a href="/about">${this.localize('ABOUT')}</a>
+              <a href="/about">${this.localize('layout:about')}</a>
             </li>
           `
         : ''}
@@ -169,19 +169,19 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayGuidesToolbar
         ? html`
             <li>
-              <a href="/general-guide-sujato">${this.localize('GENERAL')}</a>
+              <a href="/general-guide-sujato">${this.localize('layout:general')}</a>
             </li>
             <li>
-              <a href="/dn-guide-sujato">${this.localize('LONG')}</a>
+              <a href="/dn-guide-sujato">${this.localize('layout:long')}</a>
             </li>
             <li>
-              <a href="/mn-guide-sujato">${this.localize('MIDDLE')}</a>
+              <a href="/mn-guide-sujato">${this.localize('layout:middle')}</a>
             </li>
             <li>
-              <a href="/sn-guide-sujato">${this.localize('LINKED')}</a>
+              <a href="/sn-guide-sujato">${this.localize('layout:linked')}</a>
             </li>
             <li>
-              <a href="/an-guide-sujato">${this.localize('NUMBERED')}</a>
+              <a href="/an-guide-sujato">${this.localize('layout:numbered')}</a>
             </li>
           `
         : ''}
@@ -234,7 +234,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.siteLanguage = state.siteLanguage;
     this.appColorTheme = state.colorTheme;
     this._colorThemeChanged();
-    this.localizedStringsPath = '/localization/elements/sc-site-layout';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.changedRoute = state.currentRoute;
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;

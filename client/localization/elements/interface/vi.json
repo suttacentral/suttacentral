@@ -1,0 +1,20 @@
+{
+  "vi": {
+    "dictionary:activateChineseDescription": "Tìm kiếm trong các bản văn tiếng Hán cổ. Định nghĩa được lấy từ từ điển Digital Dictionary of Buddhism.",
+    "dictionary:activateChineseLookup": "Kích hoạt tìm kiếm từ vựng tiếng Trung",
+    "dictionary:activatePaliDescription": "Phân tích đoạn văn tiếng Pali và thử hiển thị nghĩa của từ. Lưu ý rằng đây chỉ là công cụ hỗ trợ không hoàn toàn chính xác. Định nghĩa được lấy từ từ điển New Concise Pali English Dictionary.",
+    "dictionary:activatePaliLookup": "Kích hoạt tìm kiếm từ vựng tiếng Pali",
+    "dictionary:adjacentTerms": "Các thuật ngữ liên quan",
+    "dictionary:changePaliScript": "Chuyển đổi chữ viết tiếng Pali",
+    "dictionary:changePaliScriptDescription": "Tuỳ chọn hệ thống viết chữ cho văn bản tiếng Pali.",
+    "dictionary:chineseLookupDictionaryDisabled": "Tra cứu tiếng Trung đã bị tắt.",
+    "dictionary:definitionsFor": "Định nghĩa",
+    "dictionary:dictionaryResultsText": "Kết quả tra cứu từ điển tiếng Pali",
+    "dictionary:metaDescriptionText": "Các kinh văn Phật giáo sơ khai và bản dịch đương đại. Các kinh văn trong các đại tạng Pali, Hán, Phạn, Tây Tạng về tỉnh thức, chánh kiến, trí huệ và thiền định.",
+    "dictionary:noteDescription": "Nếu có thể, hiển thị chú giải về bản dịch và dị bản của văn bản gốc.",
+    "dictionary:noteSummary": "Hiển thị ghi chú và dị bản của các đoạn văn",
+    "dictionary:paliLookupDictionaryDisabled": "Tra cứu từ điển tiếng Pali đã bị tắt.",
+    "dictionary:referenceDescription": "Giao diện chính của SuttaCentral hiển thị tham khảo cho các phân đoạn và cho các văn bản khác. Các mục còn lại là các phiên bản Pali khác.",
+    "dictionary:showHighlighting": "Đánh dấu các chi tiết quan trọng"
+  }
+}

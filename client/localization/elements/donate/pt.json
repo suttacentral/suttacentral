@@ -1,0 +1,15 @@
+{
+  "pt": {
+    "donate:amount": "Valor",
+    "donate:chooseFrequency": "Você pode fazer uma doação única ou valor mensal:",
+    "donate:currency": "Moeda",
+    "donate:donateNow": "Contribua",
+    "donate:errorMessage": "Este serviço está temporariamente indisponível, tente mais tarde",
+    "donate:feeDisclaimer": "A taxa por operação deduzida de sua doação equivale a 1.75% + AU$ 0.30 para cartões emitidos na Austrália, e 2.9% + AU$ 0.30 para cartões internacionais, acrescido de 1.8% de taxa de câmbio quando aplicável.",
+    "donate:invalidValue": "Valor inválido",
+    "donate:monthly": "Mensal",
+    "donate:oneTime": "Única",
+    "donate:payWithCard": "Pague com cartão de crédito/débito",
+    "donate:storageDisclaimer": "SuttaCentral não armazena ou distribui os detalhes de seu cartão. Todas as transações são realizadas em ambiente seguro por <a href='https://stripe.com' target='blank'>Stripe</a>."
+  }
+}

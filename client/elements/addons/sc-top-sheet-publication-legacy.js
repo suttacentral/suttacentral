@@ -7,7 +7,7 @@ class SCTopSheetPublicationLegacy extends SCTopSheetCommon {
   constructor() {
     super();
     this.infoDialogMetaArea = '';
-    this.localizedStringsPath = '/localization/elements/sc-site-layout';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   static get styles() {
@@ -45,7 +45,7 @@ class SCTopSheetPublicationLegacy extends SCTopSheetCommon {
   render() {
     return html`
       <section>
-        <h2>${this.localize('publicationDetails')}</h2>
+        <h2>${this.localize('layout:publicationDetails')}</h2>
         ${unsafeHTML(this.infoDialogMetaArea)}
       </section>
     `;

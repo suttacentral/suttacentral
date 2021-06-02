@@ -1,0 +1,14 @@
+{
+  "pl": {
+    "donate:amount": "Kwota",
+    "donate:chooseFrequency": "Możesz wysłać jednorazową lub comiesięczną dotację:",
+    "donate:currency": "Waluta",
+    "donate:donateNow": "Wyślij dotację",
+    "donate:feeDisclaimer": "W zamian za obsługę transakcji Stripe pobiera opłatę w wysokości 1.75% + 30¢ dla Australijskich kart, oraz 2.9% + 30¢ dla międzynarodowych kart. W określonych przypadkach pobierana jest także opłata za konwersję walutową w wysokości 1.8% kwoty transakcji.",
+    "donate:invalidValue": "Nieprawidłowa kwota",
+    "donate:monthly": "Comiesięczna",
+    "donate:oneTime": "Jednorazowa",
+    "donate:payWithCard": "ZAPŁAĆ KARTĄ",
+    "donate:storageDisclaimer": "SuttaCentral nie obsługuje płatności ani nie przechowuje danych Twojej karty kredytowej. Wszystkie transakcje są obsługiwane bezpiecznie za pomocą <a href='https://stripe.com' target='blank'>Stripe</a>."
+  }
+}

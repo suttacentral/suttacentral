@@ -35,7 +35,7 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-donate-now-page';
+    this.localizedStringsPath = '/localization/elements/donate';
     this.isError = false;
   }
 
@@ -189,10 +189,10 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
     return html`
       <main>
         <article>
-          <h1>${this.localize('donateNow')}</h1>
+          <h1>${this.localize('donate:donateNow')}</h1>
           <form @submit="${this.onSubmit}">
             <div class="row">
-              <mwc-select label="${this.localize('currency')}">
+              <mwc-select label="${this.localize('donate:currency')}">
                 ${this.currencies &&
                 this.currencies.map(
                   ({ symbol }, index) => html`
@@ -208,28 +208,28 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
               <mwc-textfield
                 pattern="^[+]?(\\d+[.,]?\\d{0,2})$"
                 type="number"
-                label="${this.localize('amount')}"
+                label="${this.localize('donate:amount')}"
                 autoValidate
                 required
-                validationMessage="${this.localize('invalidValue')}"
+                validationMessage="${this.localize('donate:invalidValue')}"
                 maxlength="20"
               ></mwc-textfield>
             </div>
             <div class="row">
-              <p>${this.localize('chooseFrequency')}</p>
+              <p>${this.localize('donate:chooseFrequency')}</p>
             </div>
             <div id="frequency-checkbox" class="row">
-              <mwc-formfield label="${this.localize('oneTime')}">
+              <mwc-formfield label="${this.localize('donate:oneTime')}">
                 <mwc-radio name="frequency" checked value="oneTime"></mwc-radio>
               </mwc-formfield>
-              <mwc-formfield label="${this.localize('monthly')}">
+              <mwc-formfield label="${this.localize('donate:monthly')}">
                 <mwc-radio name="frequency" value="monthly"></mwc-radio>
               </mwc-formfield>
             </div>
             <div id="submit-row" class="row margin-top">
               <mwc-button
                 raised
-                label="${this.localize('payWithCard')}"
+                label="${this.localize('donate:payWithCard')}"
                 @click="${({ target }) => {
                   const form = target.closest('form');
                   if (form.requestSubmit) {
@@ -246,8 +246,8 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
             </div>
           </form>
           <aside>
-            <p>${icon.info} ${unsafeHTML(this.localize('storageDisclaimer'))}</p>
-            <p>${icon.info} ${this.localize('feeDisclaimer')}</p>
+            <p>${icon.info} ${unsafeHTML(this.localize('donate:storageDisclaimer'))}</p>
+            <p>${icon.info} ${this.localize('donate:feeDisclaimer')}</p>
           </aside>
         </article>
       </main>
@@ -255,7 +255,7 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
   }
 
   renderErrorMessage() {
-    return html` <p id="error-message">${this.localize('errorMessage')}</p> `;
+    return html` <p id="error-message">${this.localize('donate:errorMessage')}</p> `;
   }
 
   render() {

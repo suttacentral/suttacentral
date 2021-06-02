@@ -97,7 +97,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-universal-action-items';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.search_input = this.shadowRoot.getElementById('search_input');
   }
 
@@ -174,7 +174,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
     return html`
       <mwc-icon-button
         id="search_glass"
-        title="${this.localize('searchTooltip')}"
+        title="${this.localize('search:searchTooltip')}"
         label="search"
         @click="${this.openSearch}"
       >
@@ -186,7 +186,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
         type="search"
         style="height: 48px"
         spellcheck=true
-        placeholder="${this.localize('Search')}"
+        placeholder="${this.localize('search:search')}"
         @keypress="${this.keypressHandler}"
         aria-label="Search through site content"
       ></input>

@@ -161,7 +161,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         <main class="dictionary-results-main">
           <div class="dictionary-results-head">
             <h1>
-              <span class="dictionary-results-description">${this.localize('definitionsFor')}</span>
+              <span class="dictionary-results-description"
+                >${this.localize('dictionary:definitionsFor')}</span
+              >
               <span class="dictionary-results-term">${this.dictionaryWord}</span>
             </h1>
           </div>
@@ -169,11 +171,11 @@ class SCPageDictionary extends LitLocalized(LitElement) {
           <div class="dictionary-entries">${this.dictionaryEntriesTemplate}</div>
 
           <div class="related-terms">
-            <h3>${this.localize('adjacentTerms')}</h3>
+            <h3>${this.localize('dictionary:adjacentTerms')}</h3>
             <ul class="near-terms">
               ${this.dictionaryAdjacentTemplate}
             </ul>
-            <h3>${this.localize('similarSpelling')}</h3>
+            <h3>${this.localize('dictionary:similarSpelling')}</h3>
             <ul class="fuzzy-terms">
               ${this.dictionarySimilarTemplate}
             </ul>
@@ -257,7 +259,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     this.adjacentReturns = [];
     this.similarReturns = [];
     this.dictionaryWord = '';
-    this.localizedStringsPath = '/localization/elements/sc-page-dictionary';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.dictionaryTitles = {
       ncped: 'New Concise Pali English Dictionary',
       cped: 'Concise Pali English Dictionary',
@@ -400,9 +402,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
 
   _createMetaData() {
     if (!this.localize) return;
-    const description = this.localize('metaDescriptionText');
-    const dictionaryResultsText = this.localize('dictionaryResultsText');
-    const defineFor = this.localize('definitionsFor');
+    const description = this.localize('dictionary:metaDescriptionText');
+    const dictionaryResultsText = this.localize('dictionary:dictionaryResultsText');
+    const defineFor = this.localize('dictionary:definitionsFor');
 
     document.dispatchEvent(
       new CustomEvent('metadata', {

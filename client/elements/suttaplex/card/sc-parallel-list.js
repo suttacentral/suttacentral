@@ -28,7 +28,7 @@ class SCParallels extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-parallel-list';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   shouldUpdate(changedProperties) {
@@ -78,13 +78,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return this.localize('ResemblingParallel');
+          return this.localize('parallel:resemblingParallel');
         }
-        return this.localize('FullParallel');
+        return this.localize('parallel:fullParallel');
       case 'retelling':
-        return this.localize('RetellingParallel');
+        return this.localize('parallel:retellingParallel');
       case 'mention':
-        return this.localize('Mention');
+        return this.localize('parallel:mention');
     }
   }
 
@@ -133,7 +133,7 @@ class SCParallels extends LitLocalized(LitElement) {
                           <a class="root-link" href="${this.computeUrl(rootId)}">
                             <div
                               class="parallels-root-id root"
-                              title="${this.localize('suttaCentralID')}"
+                              title="${this.localize('parallel:suttaCentralID')}"
                             >
                               ${transformId(rootId, this.expansionData)}
                             </div>

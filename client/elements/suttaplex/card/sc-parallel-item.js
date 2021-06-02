@@ -24,7 +24,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-parallel-item';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.rootLangMappings = {
       pli: 'Pali',
       lzh: 'Chinese',
@@ -85,13 +85,13 @@ class SCParallelItem extends LitLocalized(LitElement) {
   }
 
   get acronymTitle() {
-    let scAcronymTitle = this.localize('suttaCentralID');
+    let scAcronymTitle = this.localize('parallel:suttaCentralID');
     if (this.parallelItem.acronym) {
       const altNumber = this.parallelItem.acronym.split('//')[1];
       if (altNumber) {
         let book = '';
         altNumber[0] === 'T' ? (book = 'Taishō') : (book = 'PTS');
-        scAcronymTitle += `\n${this.localize('alternateText', 'book', book)} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize('parallel:alternateText', 'book', book)} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -119,8 +119,8 @@ class SCParallelItem extends LitLocalized(LitElement) {
 
   get volPageTitle() {
     return hasTwoPTSEditions(this.parallelItem.volpages)
-      ? this.localize('volumeAndPagePTS1', this.parallelItem.volpages)
-      : this.localize('volumeAndPage');
+      ? this.localize('parallel:volumeAndPagePTS1', this.parallelItem.volpages)
+      : this.localize('parallel:volumeAndPage');
   }
 
   render() {
@@ -135,7 +135,10 @@ class SCParallelItem extends LitLocalized(LitElement) {
             <div class="parallel-item-nerdy-row">
               ${this.parallelItem.translated_title && this.parallelItem.original_title
                 ? html`
-                    <div title="${this.localize('originalTitle')}" class="nerdy-row-element">
+                    <div
+                      title="${this.localize('parallel:originalTitle')}"
+                      class="nerdy-row-element"
+                    >
                       ${this.titleWithoutSuttaText}
                     </div>
                   `
@@ -174,7 +177,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
                         ? html`
                             <span
                               class="book scrollable-dialog"
-                              title="${this.localize('volumeAndPage')}"
+                              title="${this.localize('parallel:volumeAndPage')}"
                             >
                               ${icon.book}
                             </span>

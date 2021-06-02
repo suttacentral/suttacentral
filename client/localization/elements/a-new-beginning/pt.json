@@ -1,0 +1,19 @@
+{
+  "pt": {
+    "a-new-beginning:1": "SuttaCentral 2018",
+    "a-new-beginning:2": "Seja bem-vindo ao novo SuttaCentral! Nosso website vem mudando bastante desde 2005. Confira abaixo as últimas novidades:",
+    "a-new-beginning:3": "O novo site contém uma nova tradução (para o inglês) dos quatro <i>nikāyas</i> páli, preparada para o SuttaCentral por Bhante Sujato. Trata-se de uma tradução amigável e lúcida, com ênfase na exatidão e clareza. Acreditamos que se trata da primeira tradução completa, consistente e unificada dos quatro <i>nikāyas</i> em um idioma europeu. É com orgulho que o SuttaCentral disponibiliza este texto sem quaisquer restrições de direitos autorais.",
+    "a-new-beginning:4": "As traduções dos suttas são acompanhadas por uma tradução (ainda em andamento) do Vinaya Páli por Bhante Brahmali. A tradução anterior do Vinaya por I.B. Horner carecia há muito de uma atualização. A nova tradução por Bhante Brahmali é mais clara e acessível, e resulta não somente de seu conhecimento do idioma e textos Páli, mas também de sua experiência de vida, fazendo parte de uma comunidade que vive de acordo com o Vinaya. A publicação desta nova tradução ocorre de forma gradual.",
+    "a-new-beginning:5": "As duas traduções acima citadas foram implementadas de forma segmentada. Isto significa que cada segmento, ou frase, do texto original em páli é correspondido com um segmento de tradução. Isto permite a apresentação do texto original com sua tradução segmento por segmento. Esta abordagem também permite maior confiabilidade e consistência quando se faz referência ao páli em um nível granular, algo antes impossível. Estes textos são segmentados com um software chamado Bilara, desenvolvido para tornar mais fácil o trabalho do tradutor. A intenção é que o resultado desta tradução sirva também como base para uma nova geração de traduções em outros idiomas.",
+    "a-new-beginning:6": "Note-se também que o website foi completamente reformulado. Todas as características anteriores ainda estão presentes, mas há muita coisa nova também.",
+    "a-new-beginning:7": "Design amigável e convidativo, baseado em padrões claros e familiares.",
+    "a-new-beginning:8": "O menu lateral oferece navegação mais detalhada e flexível. Pela primeira vez, a navegação do site reflete adequadamente a estrutura hierárquica tradicional dos textos.",
+    "a-new-beginning:9": "Resumos concisos explicam os textos e categorias.",
+    "a-new-beginning:10": "Paralelos apresentam mais claramente a relação entre os textos.",
+    "a-new-beginning:11": "Milhares de novas relações e paralelos entre os textos.",
+    "a-new-beginning:12": "Múltiplas traduções no mesmo idioma são agora suportadas.",
+    "a-new-beginning:13": "O site é agora internacionalizado, o que torna possível a visualização em uma variedade de idiomas. Mais e mais idiomas serão suportados com o tempo.",
+    "a-new-beginning:14": "A tecnologia inovativa Progressive Web App possibilita a navegação offline em sistemas suportados. Isto é ideal para quem não tem conexão, ou conecta-se com plano de dados limitado.",
+    "a-new-beginning:15": "O software de tradução é integrado ao site, o que o torna não apenas uma plataforma para a apresentação de textos, mas também para a publicação de novas traduções."
+  }
+}

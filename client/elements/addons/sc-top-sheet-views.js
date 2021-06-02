@@ -126,7 +126,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.textualInfoToggleEnabled = textOptions.paragraphsEnabled;
     this.textualInfoResponse = {};
     this.textualParagraphs = textOptions.paragraphDescriptions;
-    this.localizedStringsPath = '/localization/elements/sc-top-sheet';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
     this.showHighlighting = textOptions.showHighlighting;
   }
@@ -340,8 +340,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('viewRoot')}</summary>
-              <p>${unsafeHTML(this.localize('textViewDescription'))}</p>
+              <summary>${this.localize('dictionary:viewRoot')}</summary>
+              <p>${unsafeHTML(this.localize('dictionary:textViewDescription'))}</p>
             </details>
             <div class="form-controls">
               ${this.textViewArray.map(
@@ -376,8 +376,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('noteSummary')}</summary>
-              <p>${unsafeHTML(this.localize('noteDescription'))}</p>
+              <summary>${this.localize('dictionary:noteSummary')}</summary>
+              <p>${unsafeHTML(this.localize('dictionary:noteDescription'))}</p>
             </details>
             <div class="form-controls">
               ${this.noteDisplayTypeArray.map(
@@ -404,8 +404,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('activatePaliLookup')}</summary>
-              <p>${this.localize('activatePaliDescription')}</p>
+              <summary>${this.localize('dictionary:activatePaliLookup')}</summary>
+              <p>${this.localize('dictionary:activatePaliDescription')}</p>
             </details>
             <div class="form-controls two-column">
               ${this.paliLookupArray.map(
@@ -441,7 +441,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       );
       this._showToast(dictChangeMessage);
     } else {
-      this._showToast(this.localize('paliLookupDictionaryDisabled'));
+      this._showToast(this.localize('dictionary:paliLookupDictionaryDisabled'));
     }
   }
 
@@ -450,8 +450,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('activateChineseLookup')}</summary>
-              <p>${this.localize('activateChineseDescription')}</p>
+              <summary>${this.localize('dictionary:activateChineseLookup')}</summary>
+              <p>${this.localize('dictionary:activateChineseDescription')}</p>
             </details>
             <div class="form-controls">
               ${this.chineseLookupArray.map(
@@ -487,7 +487,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       );
       this._showToast(dictChangeMessage);
     } else {
-      this._showToast(this.localize('chineseLookupDictionaryDisabled'));
+      this._showToast(this.localize('dictionary:chineseLookupDictionaryDisabled'));
     }
   }
 
@@ -496,8 +496,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('changePaliScript')}</summary>
-              <p>${this.localize('changePaliScriptDescription')}</p>
+              <summary>${this.localize('dictionary:changePaliScript')}</summary>
+              <p>${this.localize('dictionary:changePaliScriptDescription')}</p>
             </details>
             <div class="form-controls">
               <select id="selPaliScripts">
@@ -537,8 +537,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('reference')}</summary>
-              <p>${this.localize('referenceDescription')}</p>
+              <summary>${this.localize('dictionary:reference')}</summary>
+              <p>${this.localize('dictionary:referenceDescription')}</p>
             </details>
             <div class="form-controls four-column">
               ${this.references.map(
@@ -584,8 +584,8 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     return html`
       <div class="tools">
         <details>
-          <summary>${this.localize('showHighlighting')}</summary>
-          <p>${this.localize('showHighlightingDescription')}</p>
+          <summary>${this.localize('dictionary:showHighlighting')}</summary>
+          <p>${this.localize('dictionary:showHighlightingDescription')}</p>
         </details>
         <div class="form-controls">
           <mwc-switch
@@ -703,10 +703,10 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.shadowRoot
       .querySelector('#selPaliScripts')
       .addEventListener('change', this._onPaliScriptChanged);
-    this.#setPaliScriptSelected();
+    this.setPaliScriptSelected();
   }
 
-  #setPaliScriptSelected() {
+  setPaliScriptSelected() {
     const paliScriptSelect = this.shadowRoot.querySelector('#selPaliScripts');
     for (const option of paliScriptSelect?.options) {
       if (option.value === this.paliScript) {

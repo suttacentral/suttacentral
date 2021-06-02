@@ -20,7 +20,7 @@ class SCStaticLanguages extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_languages-page';
+    this.localizedStringsPath = '/localization/elements/languages';
     this.fetchList();
   }
 
@@ -123,7 +123,9 @@ class SCStaticLanguages extends SCStaticPage {
     const chart = (name, percent) => html`
       <figure>
         <sc-pie-chart percent="${percent}"></sc-pie-chart>
-        <figcaption>${this.localize('percentageOfOriginalTexts', { lang: name })}</figcaption>
+        <figcaption>
+          ${this.localize('languages:percentageOfOriginalTexts', { lang: name })}
+        </figcaption>
       </figure>
     `;
 
@@ -155,7 +157,7 @@ class SCStaticLanguages extends SCStaticPage {
     `;
 
     return html`
-      <h1>${this.localize('languagesOnSuttaCentral')}</h1>
+      <h1>${this.localize('languages:languagesOnSuttaCentral')}</h1>
       ${list('ancientLanguages', this.languages.ancient)}
       ${list('modernLanguages', this.languages.modern)}
     `;

@@ -312,7 +312,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-page-selector';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.router = new RoutingService();
     this.router.addRoutes(routes);
     this._stopListening = undefined;
@@ -426,8 +426,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
       ? html` <div class="container">${this.routeDefinition.content}</div> `
       : html`
           <div class="page-not-found-container">
-            <h2>${this.localize('error404')}</h2>
-            <h3>${this.localize('pageNotFound')}</h3>
+            <h2>${this.localize('selector:error404')}</h2>
+            <h3>${this.localize('selector:pageNotFound')}</h3>
           </div>
         `;
   }
@@ -480,7 +480,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _createMetaData() {
-    const description = this.localize('metaDescriptionText');
+    const description = this.localize('selector:metaDescriptionText');
     const pageName = this.localize(`${this.currentRoute.name || 'NOT-FOUND'}`);
     dispatchCustomEvent(document, 'metadata', {
       pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
@@ -488,7 +488,9 @@ class SCPageSelector extends LitLocalized(LitElement) {
       description: description,
     });
 
-    dispatchCustomEvent(document, 'keyword-metadata', { keywords: this.localize('metaKeywords') });
+    dispatchCustomEvent(document, 'keyword-metadata', {
+      keywords: this.localize('selector:metaKeywords'),
+    });
   }
 
   _setVisibleToolbar() {
@@ -534,10 +536,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
   _changeToolbarTitle() {
     switch (this.currentRoute.name) {
       case 'SEARCH':
-        this.actions.changeToolbarTitle(this.localize('searchResults'));
+        this.actions.changeToolbarTitle(this.localize('selector:searchResults'));
         break;
       case 'DEFINE':
-        this.actions.changeToolbarTitle(this.localize('dictionaryResults'));
+        this.actions.changeToolbarTitle(this.localize('selector:dictionaryResults'));
         break;
       case 'HOME':
         this.actions.changeToolbarTitle('SuttaCentral');

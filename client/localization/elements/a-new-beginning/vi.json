@@ -1,0 +1,18 @@
+{
+  "vi": {
+    "a-new-beginning:2": "Chào mừng đến với phiên bản mới của SuttaCentral! Kể từ khởi đầu khiêm tốn năm 2005, trang web của chúng tôi đã trải qua rất nhiều thay đổi. Sau đây là các tính năng mới.",
+    "a-new-beginning:3": "Trang web chào đón bản dịch mới của 4 bộ kinh Pali *nikāya*, biên tập bởi Đại Đức Sujato, dễ tiếp cận hơn, chú trọng về mặt chính xác và rõ ràng. Chúng tôi tin rằng đây là lần đầu tiên một bản dịch kinh sang ngôn ngữ phương Tây hoàn chỉnh, đồng bộ và thống nhất. Hơn thế nữa, bản dịch này được xuất bản trên SuttaCentral hoàn toàn miễn phí, không giới hạn về bản quyền.",
+    "a-new-beginning:4": "Đồng thời với bản dịch King tạng còn có bản dịch Luận tạng đang được Đại Đức Brahmali tiến hành. Bởi vì bản Luận tạng tiếng Anh của I.B. Horner đã tương đối cũ và cần cập nhật cho phù hợp. Văn phong của Đại Đức Brahmali cũng minh bạch và dễ hiểu, phần vì đại đức thông hiểu tiếng Pali và kinh văn, cũng như đang sinh sống trong một công đồng tuân thủ Luật tạng. Bản dịch mới này sẽ được đăng lên trang web từng phần một.",
+    "a-new-beginning:5": "Cả hai bản dịch mới này đều dựa trên hệ thống đánh số chương và đoạn văn. Vậy nên mỗi đoạn văn gốc tiếng Pali được xác định với từng đoạn dịch tương ứng, cho phép trang web hiển thị văn bản gốc và bản dịch từng đoạn một. Điều này còn cho phép chúng ta tìm kiếm những câu trích dẫn một cách có hệ thống và đồng bộ, điều từ trước đến nay chưa từng có. Hệ thống đánh số này còn là nền tảng cho phần mềm dịch thuật Bilara mà chúng tôi mới phát triển. Chúng tôi hướng tới mục tiêu không chỉ hiển thị các bản dịch đã có, mà còn giúp ích cho các dịch giả mới sang các ngôn ngữ khác.",
+    "a-new-beginning:6": "Chúng tôi cũng đã xây dựng lại hoàn toàn trang web. Các chức năng cũ vẫn sử dụng được, và có rất nhiều chức năng mới được thêm vào.",
+    "a-new-beginning:7": "Thiết kế giao diện mới cuốn hút hơn, dựa trên các mô-típ quen thuộc và rõ ràng.",
+    "a-new-beginning:8": "Thanh menu điều hướng cạnh bên được thiết kế chi tiết và linh động hơn. Lần đầu tiên, việc điều hướng trên trang web tương ứng với cấu trúc truyền thống của kinh điển.",
+    "a-new-beginning:9": "Mỗi mục và kinh văn có một đoạn tóm tắt đầy đủ.",
+    "a-new-beginning:10": "Các đoạn văn tương ứng giữa các tạng kinh hiển thị mối quan hệ rõ ràng hơn.",
+    "a-new-beginning:11": "Bổ sung hàng nghìn các đoạn văn tương ứng mới giữa các tạng kinh.",
+    "a-new-beginning:12": "Hỗ trợ nhiều bản dịch khác nhau của cùng một ngôn ngữ.",
+    "a-new-beginning:13": "Trang web được quốc tế hoá, nên quý đạo hữu có thể chọn giao diện bằng các ngôn ngữ khác nhau. Chúng tôi sẽ bổ sung nhiều ngôn ngữ nữa trong tương lai.",
+    "a-new-beginning:14": "Công nghệ Progressive Web App mới nhất cho phép sử dụng trang web ngoại tuyến, tạo điều kiện tiếp cận cho quý đạo hữu không có internet hoặc kết nối mạng có giới hạn.",
+    "a-new-beginning:15": "Phần mềm phiên dịch là một thành phần của trang web, không chỉ là nơi trình bày văn bản, mà còn là nơi xuất bản các bản dịch mới."
+  }
+}

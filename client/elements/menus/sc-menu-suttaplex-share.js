@@ -66,13 +66,13 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
         @click=${this._copyLink}
         title="${this._computeLink(this.item)}"
       >
-        ${icon.link} ${this.localize('copyLink')}
+        ${icon.link} ${this.localize('share:copyLink')}
       </li>
       <li id="btnCopyContent" class="table-element button-text" @click=${this._copyContent}>
-        ${icon.content_copy} ${this.localize('copyTable')}
+        ${icon.content_copy} ${this.localize('share:copyTable')}
       </li>
       <li id="btnCopyCite" class="table-element button-text" @click=${this._copyCite}>
-        ${icon.format_quote} ${this.localize('cite')}
+        ${icon.format_quote} ${this.localize('share:cite')}
       </li>
     `;
   }
@@ -93,7 +93,7 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     this.parallels = [];
     this.loadingParallels = false;
     this.areParallelsAvailable = false;
-    this.localizedStringsPath = '/localization/elements/sc-suttaplex-share-menu';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   firstUpdated() {
@@ -132,9 +132,9 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     try {
       const table = this._computeCopyTable();
       copyToClipboard(table);
-      this._notifyCopy(this.localize('tableCopied'), true);
+      this._notifyCopy(this.localize('share:tableCopied'), true);
     } catch (err) {
-      this._notifyCopy(this.localize('error'), false);
+      this._notifyCopy(this.localize('share:error'), false);
       console.error(err);
     }
   }
@@ -145,7 +145,7 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     try {
       return `${baseUrl}/${this.item.uid}`;
     } catch (err) {
-      this._notifyCopy(this.localize('error'), false);
+      this._notifyCopy(this.localize('share:error'), false);
     }
   }
 
@@ -154,9 +154,9 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     try {
       const link = this._computeLink();
       copyToClipboard(link);
-      this._notifyCopy(this.localize('linkCopied'), true);
+      this._notifyCopy(this.localize('share:linkCopied'), true);
     } catch (err) {
-      this._notifyCopy(this.localize('error'), false);
+      this._notifyCopy(this.localize('share:error'), false);
       console.error(err);
     }
   }
@@ -167,9 +167,9 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     try {
       const cite = this._computeCiteData();
       copyToClipboard(cite);
-      this._notifyCopy(this.localize('citeCopied'), true);
+      this._notifyCopy(this.localize('share:citeCopied'), true);
     } catch (err) {
-      this._notifyCopy(this.localize('error'), false);
+      this._notifyCopy(this.localize('share:error'), false);
       console.error(err);
     }
   }

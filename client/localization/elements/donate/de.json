@@ -1,0 +1,15 @@
+{
+  "de": {
+    "donate:amount": "Betrag ",
+    "donate:chooseFrequency": "Sie können eine einmalige oder eine monatliche Spende machen. ",
+    "donate:currency": "Währung ",
+    "donate:donateNow": "Jetzt spenden ",
+    "donate:errorMessage": "Dieser Dienst ist vorübergehend nicht verfügbar, bitte versuchen Sie es später. ",
+    "donate:feeDisclaimer": "Die Stripe-Bearbeitungsgebühr, die von einer Spende abgezogen wird, beträgt 1,75% + 30 ¢ für australische Karten und 2,9% + 30 ¢ für internationale Karten, zuzüglich Umrechnungsgebühr, falls zutreffend. ",
+    "donate:invalidValue": "Ungültiger Wert ",
+    "donate:monthly": "Monatlich ",
+    "donate:oneTime": "Einmalig ",
+    "donate:payWithCard": "Mit Karte spenden ",
+    "donate:storageDisclaimer": "Ihre Kreditkartendaten werden nicht von SuttaCentral verarbeitet oder gespeichert. Alle Kreditkarten-Transaktionen werden von <a href='https://stripe.com' target='blank'>Stripe</a> sicher ausgeführt. "
+  }
+}

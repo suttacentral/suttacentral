@@ -25,7 +25,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.compactStyles = {};
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.navArray = store.getState().navigationArray;
@@ -502,7 +502,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('shortcutToFullList')}
+                          ${this.localize('navigation:shortcutToFullList')}
                         </a>
                       </div>
                     `
@@ -642,7 +642,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('shortcutToFullList')}
+                          ${this.localize('navigation:shortcutToFullList')}
                         </a>
                       </div>
                     `
@@ -766,7 +766,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('shortcutToFullList')}
+                          ${this.localize('navigation:shortcutToFullList')}
                         </a>
                       </div>
                     `
@@ -889,7 +889,7 @@ class SCNavigation extends LitLocalized(LitElement) {
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('shortcutToFullList')}
+                          ${this.localize('navigation:shortcutToFullList')}
                         </a>
                       </div>
                     `

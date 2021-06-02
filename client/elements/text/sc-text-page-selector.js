@@ -133,7 +133,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-text';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
@@ -488,7 +488,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!responseData || !responseData.translation) {
       return;
     }
-    let description = this.localize('metaDescriptionText');
+    let description = this.localize('text:metaDescriptionText');
     if (responseData.suttaplex.blurb) {
       description = responseData.suttaplex.blurb;
     }
@@ -557,7 +557,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       new CustomEvent('show-sc-toast', {
         detail: {
           toastType: 'info',
-          message: this.localize('languagePromptMessage'),
+          message: this.localize('text:languagePromptMessage'),
         },
         bubbles: true,
         composed: true,

@@ -49,7 +49,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.siteLanguage = store.getState().siteLanguage;
   }
 
@@ -136,7 +136,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (this.suttaplexData && this.suttaplexData.length) {
       this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
 
-      let description = this.localize('metaDescriptionText');
+      let description = this.localize('navigation:metaDescriptionText');
       if (this.suttaplexData[0].blurb) {
         description = this.suttaplexData[0].blurb;
       }
@@ -194,7 +194,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           .inputTitle="${item.translated_title || item.original_title}"
           .inputText="${item.blurb}"
           .inputType="${item.type}"
-          .label="${this.localize('expandSection')}"
+          .label="${this.localize('navigation:expandSection')}"
           .opened="${this.shouldExpandAll()}"
         ></sc-suttaplex-section-title>
       </section>

@@ -1,0 +1,19 @@
+{
+  "zh": {
+    "downloads:1": "下载",
+    "downloads:4": "原始数据和文本",
+    "downloads:5": "所有原始SuttaCentra的l数据 (<code>json</code>, <code>html</code>, etc.) is <a href='https://github.com/suttacentral/' rel='noopener' target='_blank'>available on our GitHub repository</a>.",
+    "downloads:6": "律藏",
+    "downloads:7": "SuttaCentral非常自豪能提供 <span class='author'>I.B. Horner</span>’s 巴利文律藏的六卷全文翻译。这是第一次20世纪佛教学术界能提供真正的数字版本。我们能够做到这一点是因为<a href='http://www.palitext.com/' rel='noopener' target='_blank'>Pali Text Society</a>, 的版权拥有者，友好地发行了一个文本 <a href='http://creativecommons.org/licenses/by-nc/3.0/' rel='noopener' target='_blank'>Creative Commons Attribution-NonCommercial 3.0</a>的许可证.",
+    "downloads:8": "SuttaCentral存在是为了呈现佛教文献，而不是人们对文献的看法，因此我们的政策是排除引言，脚注等。因此，在SuttaCentral，我们只有翻译文献本身。然而，在这种情况下，我们认为学术设备有足够价值，可以付出相当大的功夫来创建整个文献的正确数码版本。这是我们在这些下载中提供的内容。这当然属于同一Creative Commons Attribution-NonCommercial 3.0的许可。该文献以多种格式呈现，下面将对其进行说明。",
+    "downloads:9": "有关创建这些文献的过程和相关更改的详细信息，请参见SuttaCentral版的前言。所有版本包括含增强功能如可点击链接之12,000个内部参考，详细的目录和修订的参考系统。",
+    "downloads:10": "<a class='file' href='https://github.com/suttacentral/suttacentral-files/blob/master/Book_of_the_Discipline.pdf?raw=true'>PDF</a> (9.8mb)",
+    "downloads:11": "这整六卷都在一个<span class='smallcaps'>pdf</span>文件中。该文件是用LaTeX创建的，是一种高质量的<span class='smallcaps'>pdf</span>，适用于所有设备以及打印。根据许可条款，可允许免费发行印刷。如有兴趣，请联系我们，我们可以根据您的需求定制<span class='smallcaps'>pdf</span>文件。",
+    "downloads:12": "<a class='file' href='https://github.com/suttacentral/suttacentral-files/blob/master/Book_of_the_Discipline.epub?raw=true'>EPUB</a> (3.0mb)<br/> <a class='file' href='https://github.com/suttacentral/suttacentral-files/blob/master/Book_of_the_Discipline.mobi?raw=true'>MOBI</a> (5.6mb)",
+    "downloads:13": "电子书版本适合与电子阅读器一起使用。 Mobi（Kindle）和ePub是最常见的电子书格式，Caliber软件可以转换为其他格式。",
+    "downloads:14": "<a class='file' href='https://github.com/suttacentral/suttacentral-files/blob/master/Book_of_the_Discipline_source.zip?raw=true'>ZIP</a> (3.6mb)",
+    "downloads:15": "源存档，包含适用于使用LuaLatex进行编译的<span class='smallcaps'>tex</span>源文件，以及作为一个大型<span class='smallcaps'>html</span>文件的整个六个卷。这些是从其他格式的基本文件。",
+    "downloads:16": " Laurence Mills 的 Sutta Nipāta ",
+    "downloads:17": "Sutta Nipāta 是一个众所周知，深受喜爱的早期佛教文本。它是诗歌的汇编，用于激发，教育和劝告。在这能找到动人的奉献，深刻的哲学，务实的道德观合一切对早期佛教文化的见解. 这翻译以诗意的声音表达了这些教义. 主要翻译和评论员是经验丰富的巴利学者Laurence Khantipalo Mills, 其他部分包括BhikkhuÑānamoli和Bhikkhu Sujato. 在这 <a class='file' href='https://github.com/suttacentral/suttacentral-files/blob/master/snp.pdf?raw=true'>PDF</a> (0.8mb)下载或可在Lulu.com上订购平装本。"
+  }
+}
