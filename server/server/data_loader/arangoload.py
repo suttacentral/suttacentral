@@ -406,7 +406,6 @@ def update_translated_title():
         if title is not None and title.find('.') != -1 and len(title.split('.')) == 2:
             title = title.split('.')[1].strip()
         db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
-        continue
 
 
 def run(no_pull=False):
