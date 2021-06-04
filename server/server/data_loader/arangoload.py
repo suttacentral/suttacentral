@@ -394,6 +394,7 @@ def get_pts_ref(ref):
         if ref.find('pts-vp-pli') != -1:
             return ref
 
+
 def update_translated_title():
     db = arangodb.get_db()
     translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' in trans.muids return trans"))
@@ -401,12 +402,11 @@ def update_translated_title():
         trans = json_load(translation['file_path'])
         for sectionId, content in trans.items():
             if sectionId == translation['uid'] + ':0.2':
+                title = content.strip()
                 if content.find('.') != -1 and len(content.split('.')) == 2:
-                    db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': content.split('.')[1].strip()})
-                    continue
-                else:
-                    db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': content.strip()})
-                    continue
+                    title = content.split('.')[1].strip()
+                db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
+                continue
 
 
 def run(no_pull=False):
