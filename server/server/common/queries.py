@@ -1138,3 +1138,31 @@ FOR v IN available_voices
         voices: v.voices
     }
 '''
+
+BILARA_REFERENCES = '''
+FOR references IN sc_bilara_texts
+    FILTER 'reference' IN references.muids
+RETURN {
+    'uid': references.uid,
+    'file_path': references.file_path
+}
+'''
+
+UPDATE_TEXT_EXTRA_INFO_VOLPAGE = '''
+FOR u IN text_extra_info
+    FILTER u.uid == @uid
+    UPDATE u WITH { volpage: CONCAT(u.volpage, @ref) } IN text_extra_info
+'''
+
+UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE = '''
+FOR u IN text_extra_info
+    FILTER u.uid == @uid
+    UPDATE u WITH { alt_volpage: CONCAT(u.alt_volpage, @ref) } IN text_extra_info
+'''
+
+UPSERT_NAMES = '''
+UPSERT { uid: @uid, lang: @lang }
+INSERT { name: @name, is_root: false, lang: @lang, uid: @uid }
+UPDATE {
+} IN names
+'''
