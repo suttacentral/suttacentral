@@ -397,7 +397,7 @@ def get_pts_ref(ref):
 
 def update_translated_title():
     db = arangodb.get_db()
-    translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' in trans.muids return trans"))
+    translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' IN trans.muids RETURN trans"))
     for translation in tqdm(translations):
         trans = json_load(translation['file_path'])
         for sectionId, content in trans.items():
