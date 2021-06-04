@@ -8,4 +8,4 @@ class SecondMigration(Migration):
 
     def create_collections(self):
         db = get_db()
-        db.create_collection('shortcuts', edge=False)
+        db.create_collection('shortcuts')

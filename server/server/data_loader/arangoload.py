@@ -17,6 +17,10 @@ from common import arangodb
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
+    BILARA_REFERENCES,
+    UPDATE_TEXT_EXTRA_INFO_VOLPAGE,
+    UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE,
+    UPSERT_NAMES
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
@@ -363,6 +367,48 @@ def load_shortcuts_file(db: Database, shortcuts_file: Path):
     db.collection('shortcuts').import_bulk(docs)
 
 
+def update_text_extra_info():
+    db = arangodb.get_db()
+    bilara_references = list(db.aql.execute(BILARA_REFERENCES))
+    for reference in tqdm(bilara_references):
+        refs = json_load(reference['file_path'])
+        for uid, ref in refs.items():
+            refs = get_pts_ref(ref)
+            if refs is not None:
+                if refs.find('pts-vp-pli2ed') != -1:
+                    newRef = refs.replace('pts-vp-pli2ed', 'PTS (2nd ed) ')
+                    db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'],'ref': newRef})
+                    continue
+                elif refs.find('pts-vp-pli1ed') != -1:
+                    newRef = refs.replace('pts-vp-pli1ed', 'PTS (1st ed) ')
+                    db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'],'ref': newRef})
+                    continue
+                elif refs.find('pts-vp-pli') != -1:
+                    newRef = refs.replace('pts-vp-pli', 'PTS ')
+                    db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': newRef})
+
+
+def get_pts_ref(ref):
+    arr = ref.split(',')
+    for ref in arr:
+        if ref.find('pts-vp-pli') != -1:
+            return ref
+
+
+def update_translated_title():
+    db = arangodb.get_db()
+    translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' IN trans.muids RETURN trans"))
+    for translation in tqdm(translations):
+        trans = json_load(translation['file_path'])
+        for sectionId, content in trans.items():
+            if sectionId == translation['uid'] + ':0.2':
+                title = content.strip()
+                if content.find('.') != -1 and len(content.split('.')) == 2:
+                    title = content.split('.')[1].strip()
+                db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
+                continue
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -428,6 +474,9 @@ def run(no_pull=False):
     print_stage('Loading text_extra_info.json')
     load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
 
+    # print_stage("Updating text_extra_info")
+    # update_text_extra_info()
+
     print_stage('Loading shortcuts.json')
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
 
@@ -451,6 +500,9 @@ def run(no_pull=False):
 
     print_stage('Load texts from sc_bilara_data')
     sc_bilara_data.load_texts(db, sc_bilara_data_dir)
+
+    print_stage("Updating names")
+    update_translated_title()
 
     print_stage('Load bilara_author_edition from sc_bilara_data')
     sc_bilara_data.load_bilara_author_edition(db, sc_bilara_data_dir)
