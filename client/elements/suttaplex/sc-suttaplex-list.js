@@ -91,6 +91,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       this.siteLanguage !== state.siteLanguage
     ) {
       this.categoryId = state.currentRoute.params.categoryId;
+      this.siteLanguage = state.siteLanguage;
       if (this.categoryId && state.siteLanguage) {
         this._fetchCategory();
       }
