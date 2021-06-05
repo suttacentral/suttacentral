@@ -400,13 +400,12 @@ def update_translated_title():
     translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' IN trans.muids RETURN trans"))
     for translation in tqdm(translations):
         trans = json_load(translation['file_path'])
-        for sectionId, content in trans.items():
-            if sectionId == translation['uid'] + ':0.2':
-                title = content.strip()
-                if content.find('.') != -1 and len(content.split('.')) == 2:
-                    title = content.split('.')[1].strip()
-                db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
-                continue
+        title = trans.get(translation['uid'] + ':0.3')
+        if title is None:
+            title = trans.get(translation['uid'] + ':0.2')
+        if title is not None and title.find('.') != -1 and len(title.split('.')) == 2:
+            title = title.split('.')[1].strip()
+        db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
 
 
 def run(no_pull=False):
