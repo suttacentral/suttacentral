@@ -220,7 +220,7 @@ main > article,
   }
 
   blockquote {
-    margin: 0 0 0 2em;
+    margin: 0 0 0 2;
   }
 
   /* links */

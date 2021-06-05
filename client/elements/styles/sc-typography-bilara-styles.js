@@ -117,6 +117,10 @@ export const typographyBilaraStyles = css`
 
   /* references */
 
+  .reference {
+    overflow-wrap: anywhere;
+  }
+
   .reference a {
     display: inline-block;
 
