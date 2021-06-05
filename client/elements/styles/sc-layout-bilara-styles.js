@@ -245,6 +245,10 @@ export const sideBySideStyles = html`
       grid-column: 2;
     }
 
+    .root .text {
+      font-family: var(--sc-sans-font);
+    }
+
     br {
       content: '';
     }
@@ -320,6 +324,10 @@ export const sideBySidePlusStyles = html`
 
     .root {
       grid-column: 3;
+    }
+
+    .root .text {
+      font-family: var(--sc-sans-font);
     }
 
     .translation,
@@ -433,6 +441,7 @@ export const lineByLineStyles = html`
 
     .root .text {
       color: var(--sc-secondary-text-color);
+      font-family: var(--sc-sans-font);
     }
 
     br {
@@ -487,6 +496,7 @@ export const lineByLinePlusStyles = html`
 
     .root .text {
       color: var(--sc-secondary-text-color);
+      font-family: var(--sc-sans-font);
     }
 
     .translation,

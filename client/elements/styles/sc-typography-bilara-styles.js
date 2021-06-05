@@ -3,10 +3,15 @@ import { css } from 'lit-element';
 export const typographyBilaraStyles = css`
   /* styles unique to bilara texts */
 
-  /* root texts */
+  /* verses */
 
-  .translation + .root {
-    font-family: var(--sc-sans-font);
+  blockquote {
+    margin: 0;
+  }
+
+  .verse-line .text {
+    display: block;
+    margin-left: 2em;
   }
 
   /* lookup */
