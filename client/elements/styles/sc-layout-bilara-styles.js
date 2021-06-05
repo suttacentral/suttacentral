@@ -307,7 +307,7 @@ export const sideBySidePlusStyles = html`
 
       display: grid;
 
-      grid-template-columns: 100px minmax(0, auto) minmax(0, auto);
+      grid-template-columns: 60px minmax(0, auto) minmax(0, auto);
       grid-column-gap: var(--sc-size-lg);
     }
 
@@ -316,6 +316,8 @@ export const sideBySidePlusStyles = html`
       grid-row: 1 / span 3;
 
       justify-self: baseline;
+
+      overflow-wrap: anywhere;
     }
 
     .translation {
