@@ -103,7 +103,7 @@ export const plainPlusStyles = html`
     .segment {
       display: grid;
 
-      grid-template-columns: 100px minmax(0, auto);
+      grid-template-columns: 60px 1fr;
       grid-column-gap: var(--sc-size-lg);
     }
 
@@ -144,11 +144,6 @@ export const plainPlusStyles = html`
       grid-row: 1;
     }
 
-    /* remove <br> tags to avoid unsightly spaces in verses. */
-    br {
-      content: '';
-    }
-
     @media only screen and (max-width: 600px) {
       .segment,
       .reference,
@@ -173,7 +168,7 @@ export const rootPlainPlusStyles = html`
   <style>
     .segment {
       display: grid;
-      grid-template-columns: 100px minmax(0, auto);
+      grid-template-columns: 60px 1fr;
       grid-column-gap: var(--sc-size-lg);
     }
 
@@ -245,6 +240,10 @@ export const sideBySideStyles = html`
       grid-column: 2;
     }
 
+    .root .text {
+      font-family: var(--sc-sans-font);
+    }
+
     br {
       content: '';
     }
@@ -303,7 +302,7 @@ export const sideBySidePlusStyles = html`
 
       display: grid;
 
-      grid-template-columns: 100px minmax(0, auto) minmax(0, auto);
+      grid-template-columns: 60px 1fr 1fr;
       grid-column-gap: var(--sc-size-lg);
     }
 
@@ -320,6 +319,10 @@ export const sideBySidePlusStyles = html`
 
     .root {
       grid-column: 3;
+    }
+
+    .root .text {
+      font-family: var(--sc-sans-font);
     }
 
     .translation,
@@ -433,6 +436,7 @@ export const lineByLineStyles = html`
 
     .root .text {
       color: var(--sc-secondary-text-color);
+      font-family: var(--sc-sans-font);
     }
 
     br {
@@ -466,7 +470,7 @@ export const lineByLinePlusStyles = html`
     .segment {
       display: grid;
 
-      grid-template-columns: 100px minmax(0, auto);
+      grid-template-columns: 60px 1fr;
       grid-column-gap: var(--sc-size-lg);
     }
 
@@ -487,6 +491,7 @@ export const lineByLinePlusStyles = html`
 
     .root .text {
       color: var(--sc-secondary-text-color);
+      font-family: var(--sc-sans-font);
     }
 
     .translation,
