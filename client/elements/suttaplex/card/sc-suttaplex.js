@@ -123,11 +123,27 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     return pickVolPage(this.item.volpages);
   }
 
+  get briefVolPage() {
+    const volpages = this.item.volpages.split(',');
+    if (this.item.volpages && volpages.length > 1) {
+      return `${volpages[0]} -${volpages[volpages.length - 1]}`;
+    }
+    return this.item.volpages;
+  }
+
   get altVolPage() {
     if (this.item.alt_volpages === this.item.volpages) {
       return '';
     }
     return pickVolPage(this.item.alt_volpages);
+  }
+
+  get briefAltVolPage() {
+    const volpages = this.item.alt_volpages.split(',');
+    if (this.item.alt_volpages && volpages.length > 1) {
+      return `${volpages[0]} -${volpages[volpages.length - 1]}`;
+    }
+    return this.item.alt_volpages;
   }
 
   get volPageTitle() {
@@ -250,12 +266,16 @@ class SCSuttaplex extends LitLocalized(LitElement) {
           ${!this.item.biblio
             ? html`
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book} ${this.volPage}
+                  ${icon.book}
+                  <span class="visible">${this.briefVolPage}</span>
+                  <span class="hidden">${this.volPage}</span>
                 </span>
                 ${this.altVolPage && this.altVolPage !== this.volPage
                   ? html`
                       <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                        ${icon.book} ${this.altVolPage}
+                        ${icon.book}
+                        <span class="visible">${this.briefAltVolPage}</span>
+                        <span class="hidden">${this.altVolPage}</span>
                       </span>
                     `
                   : ''}
@@ -266,12 +286,16 @@ class SCSuttaplex extends LitLocalized(LitElement) {
             <details class="suttaplex-details">
               <summary>
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book} ${this.volPage}
+                  ${icon.book}
+                  <span class="visible">${this.briefVolPage}</span>
+                  <span class="hidden">${this.volPage}</span>
                 </span>
                 ${this.altVolPage && this.altVolPage !== this.volPage
                   ? html`
                       <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                        ${icon.book} ${this.altVolPage}
+                        ${icon.book}
+                        <span class="visible">${this.briefAltVolPage}</span>
+                        <span class="hidden">${this.altVolPage}</span>
                       </span>
                     `
                   : ''}

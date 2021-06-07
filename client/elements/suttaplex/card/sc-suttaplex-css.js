@@ -260,6 +260,11 @@ export const suttaplexCss = html`
       height: 16px;
       fill: var(--sc-icon-color);
     }
+
+    .hidden {
+      visibility: hidden;
+      width: 0px;
+    }
   </style>
 `;
 
