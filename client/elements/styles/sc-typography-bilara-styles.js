@@ -9,6 +9,60 @@ export const typographyBilaraStyles = css`
     margin: 0;
   }
 
+  /* we need some special style resets for segmented texts, because reference numbers are included inside the text HTML and hence are affected by its styles. Instead, try to apply styles to inner elements. */
+
+  dd {
+    margin-left: 0;
+  }
+
+  dd .text {
+    margin-left: 1em;
+  }
+
+  ul,
+  ol {
+    padding-left: 0;
+
+    list-style: none;
+  }
+
+  ol {
+    counter-reset: list;
+  }
+
+  ol li {
+    padding: 0 0 0 0.5em;
+
+    counter-increment: list;
+  }
+
+  ol li .segment:first-child .text::before {
+    font-family: var(--sc-sans-font);
+
+    position: absolute;
+    right: 100%;
+
+    margin-right: 0.5em;
+
+    content: '' counter(list) '. ';
+
+    color: var(--sc-secondary-text-color);
+  }
+
+  ul li .segment:first-child .text {
+    display: list-item;
+
+    list-style-type: initial;
+  }
+
+  ul li .segment:first-child .text::marker {
+    color: var(--sc-secondary-text-color);
+  }
+
+  header ul li .segment:first-child .text {
+    list-style-type: none;
+  }
+
   .verse-line .text {
     display: block;
     margin-left: 2em;
