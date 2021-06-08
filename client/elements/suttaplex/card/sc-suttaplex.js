@@ -268,14 +268,14 @@ class SCSuttaplex extends LitLocalized(LitElement) {
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                   ${icon.book}
                   <span class="visible">${this.briefVolPage}</span>
-                  <span class="hidden">${this.volPage}</span>
+                  <span class="hidden" aria-hidden="true">${this.volPage}</span>
                 </span>
                 ${this.altVolPage && this.altVolPage !== this.volPage
                   ? html`
                       <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                         ${icon.book}
                         <span class="visible">${this.briefAltVolPage}</span>
-                        <span class="hidden">${this.altVolPage}</span>
+                        <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
                       </span>
                     `
                   : ''}
@@ -288,14 +288,14 @@ class SCSuttaplex extends LitLocalized(LitElement) {
                 <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                   ${icon.book}
                   <span class="visible">${this.briefVolPage}</span>
-                  <span class="hidden">${this.volPage}</span>
+                  <span class="hidden" aria-hidden="true">${this.volPage}</span>
                 </span>
                 ${this.altVolPage && this.altVolPage !== this.volPage
                   ? html`
                       <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
                         ${icon.book}
                         <span class="visible">${this.briefAltVolPage}</span>
-                        <span class="hidden">${this.altVolPage}</span>
+                        <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
                       </span>
                     `
                   : ''}

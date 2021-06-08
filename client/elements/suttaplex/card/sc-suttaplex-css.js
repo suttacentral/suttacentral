@@ -262,8 +262,8 @@ export const suttaplexCss = html`
     }
 
     .hidden {
-      visibility: hidden;
       width: 0px;
+      opacity: 0;
     }
   </style>
 `;
