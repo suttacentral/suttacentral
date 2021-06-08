@@ -126,7 +126,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   get briefVolPage() {
     const volpages = this.item.volpages.split(',');
     if (this.item.volpages && volpages.length > 1) {
-      return `${volpages[0]} -${volpages[volpages.length - 1]}`;
+      return `${volpages[0]} –${volpages[volpages.length - 1]}`;
     }
     return this.item.volpages;
   }
@@ -141,7 +141,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   get briefAltVolPage() {
     const volpages = this.item.alt_volpages.split(',');
     if (this.item.alt_volpages && volpages.length > 1) {
-      return `${volpages[0]} -${volpages[volpages.length - 1]}`;
+      return `${volpages[0]} –${volpages[volpages.length - 1]}`;
     }
     return this.item.alt_volpages;
   }
