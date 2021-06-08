@@ -384,27 +384,27 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             RETURN blurb
     )
     LET blurb = (
-         RETURN LENGTH(blurbs_by_uid) == 2 ? 
-             (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] : 
-             blurbs_by_uid[0].blurb
+        RETURN LENGTH(blurbs_by_uid) == 2 ?
+            (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] : 
+            blurbs_by_uid[0].blurb
     )[0]
-    
+
     LET difficulty = (
         FOR difficulty IN difficulties
             FILTER difficulty.uid == v.uid
             LIMIT 1
             RETURN difficulty.difficulty
     )[0]
-    
+
     LET translations = FLATTEN([bilara_translations, legacy_translations])
 
     LET volpages = (
-        FOR text IN translations
-            FILTER text.volpage != null
+        FOR volpages IN text_extra_info
+            FILTER volpages.uid == v.uid
             LIMIT 1
-            RETURN text.volpage
-    )
-    
+            RETURN volpages.volpage
+    )[0]
+
     LET is_segmented_original = (
         FOR translation IN translations
             FILTER translation.lang == v.root_lang AND translation.segmented == true
@@ -417,7 +417,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             FILTER translation.lang != v.root_lang OR translation.segmented == true OR is_segmented_original == null
             RETURN translation
     )
-    
+
     LET translated_titles = (
         FOR translation IN translations
             FILTER translation.lang == @language AND HAS(translation, 'title') AND translation.title != null
@@ -461,7 +461,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 
     RETURN {
         acronym: v.acronym,
-        volpages: v.volpage ? v.volpage : volpages[0],
+        volpages: volpages,
         alt_volpages: alt_volpages,
         uid: v.uid,
         blurb: blurb,
@@ -1109,7 +1109,7 @@ FOR pali IN pali_reference_edition
     RETURN {
         edition_set: edition_set,
         name: NOT_NULL(name, short_name)
-    } 
+    }
 '''
 
 ALL_TEXTS_BY_LANGUAGES = '''
@@ -1151,13 +1151,13 @@ RETURN {
 UPDATE_TEXT_EXTRA_INFO_VOLPAGE = '''
 FOR u IN text_extra_info
     FILTER u.uid == @uid
-    UPDATE u WITH { volpage: CONCAT(u.volpage, @ref) } IN text_extra_info
+    UPDATE u WITH { volpage: @ref } IN text_extra_info
 '''
 
 UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE = '''
 FOR u IN text_extra_info
     FILTER u.uid == @uid
-    UPDATE u WITH { alt_volpage: CONCAT(u.alt_volpage, @ref) } IN text_extra_info
+    UPDATE u WITH { alt_volpage: @ref } IN text_extra_info
 '''
 
 UPSERT_NAMES = '''

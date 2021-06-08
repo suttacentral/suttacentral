@@ -372,27 +372,32 @@ def update_text_extra_info():
     bilara_references = list(db.aql.execute(BILARA_REFERENCES))
     for reference in tqdm(bilara_references):
         refs = json_load(reference['file_path'])
+        ptsRefs1st = []
+        ptsRefs2nd = []
         for uid, ref in refs.items():
             refs = get_pts_ref(ref)
-            if refs is not None:
-                if refs.find('pts-vp-pli2ed') != -1:
-                    newRef = refs.replace('pts-vp-pli2ed', 'PTS (2nd ed) ')
-                    db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'],'ref': newRef})
+            for ptsRef in refs:
+                if ptsRef.find('pts-vp-pli2ed') != -1:
+                    ptsRefs2nd.append(ptsRef.replace('pts-vp-pli2ed', 'PTS (2nd ed) '));
                     continue
-                elif refs.find('pts-vp-pli1ed') != -1:
-                    newRef = refs.replace('pts-vp-pli1ed', 'PTS (1st ed) ')
-                    db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'],'ref': newRef})
+                elif ptsRef.find('pts-vp-pli1ed') != -1:
+                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli1ed', 'PTS (1st ed) '));
                     continue
-                elif refs.find('pts-vp-pli') != -1:
-                    newRef = refs.replace('pts-vp-pli', 'PTS ')
-                    db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': newRef})
+                elif ptsRef.find('pts-vp-pli') != -1:
+                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli', 'PTS '));
+        if len(ptsRefs1st) != 0:
+            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs1st)})
+        if len(ptsRefs2nd) != 0:
+            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'],'ref': ','.join(ptsRefs2nd)})
 
 
 def get_pts_ref(ref):
     arr = ref.split(',')
+    ptsRefs = []
     for ref in arr:
         if ref.find('pts-vp-pli') != -1:
-            return ref
+            ptsRefs.append(ref)
+    return ptsRefs
 
 
 def update_translated_title():
@@ -473,9 +478,6 @@ def run(no_pull=False):
     print_stage('Loading text_extra_info.json')
     load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
 
-    # print_stage("Updating text_extra_info")
-    # update_text_extra_info()
-
     print_stage('Loading shortcuts.json')
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
 
@@ -543,6 +545,9 @@ def run(no_pull=False):
 
     print_stage("Loading why_we_read from additional_info")
     homepage.load_why_we_read(db, additional_info_dir)
+
+    print_stage("Updating text_extra_info")
+    update_text_extra_info()
 
     print_stage("Generating sitemap")
     sitemap = generate_sitemap(db)
