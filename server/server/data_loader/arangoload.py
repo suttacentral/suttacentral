@@ -376,18 +376,15 @@ def update_text_extra_info():
         ptsRefs2nd = []
         for uid, ref in refs.items():
             refs = get_pts_ref(ref)
-            if refs is not None:
-                if refs.find('pts-vp-pli2ed') != -1:
-                    newRef = refs.replace('pts-vp-pli2ed', 'PTS (2nd ed) ')
-                    ptsRefs2nd.append(newRef);
+            for ptsRef in refs:
+                if ptsRef.find('pts-vp-pli2ed') != -1:
+                    ptsRefs2nd.append(ptsRef.replace('pts-vp-pli2ed', 'PTS (2nd ed) '));
                     continue
-                elif refs.find('pts-vp-pli1ed') != -1:
-                    newRef = refs.replace('pts-vp-pli1ed', 'PTS (1st ed) ')
-                    ptsRefs1st.append(newRef);
+                elif ptsRef.find('pts-vp-pli1ed') != -1:
+                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli1ed', 'PTS (1st ed) '));
                     continue
-                elif refs.find('pts-vp-pli') != -1:
-                    newRef = refs.replace('pts-vp-pli', 'PTS ')
-                    ptsRefs1st.append(newRef);
+                elif ptsRef.find('pts-vp-pli') != -1:
+                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli', 'PTS '));
         if len(ptsRefs1st) != 0:
             db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs1st)})
         if len(ptsRefs2nd) != 0:
@@ -396,9 +393,11 @@ def update_text_extra_info():
 
 def get_pts_ref(ref):
     arr = ref.split(',')
+    ptsRefs = []
     for ref in arr:
         if ref.find('pts-vp-pli') != -1:
-            return ref
+            ptsRefs.append(ref)
+    return ptsRefs
 
 
 def update_translated_title():
