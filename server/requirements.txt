@@ -25,7 +25,7 @@ Sphinx==3.4.3
 sphinxcontrib-websupport==1.2.4
 stripe==2.55.1
 termcolor==1.1.0
-tqdm==4.56.0
+tqdm==4.61.0
 uWSGI==2.0.19.1
 Werkzeug==1.0.1
 Flask-Caching==1.9.0

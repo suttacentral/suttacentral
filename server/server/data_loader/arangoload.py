@@ -388,7 +388,7 @@ def update_text_extra_info():
         if len(ptsRefs1st) != 0:
             db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs1st)})
         if len(ptsRefs2nd) != 0:
-            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'],'ref': ','.join(ptsRefs2nd)})
+            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs2nd)})
 
 
 def get_pts_ref(ref):

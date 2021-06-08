@@ -22,7 +22,6 @@ import {
   lineByLineStyles,
   lineByLinePlusStyles,
   hideReferenceStyles,
-  hidePTSReferenceStyles,
   hideAsterisk,
   showAsterisk,
   rootPlainPlusStyles,
@@ -105,10 +104,6 @@ class SCTextBilara extends SCTextCommon {
       ['pali', plainPaliStyles],
       ['sidenotes_root', rootPlainPlusStyles],
     ]);
-    this.mapReferenceDisplayStyles = new Map([
-      ['none', hideReferenceStyles],
-      ['main', hidePTSReferenceStyles],
-    ]);
     this.mapNoteDisplayStyles = new Map([
       ['none', hideAsterisk],
       ['asterisk', showAsterisk],
@@ -149,7 +144,6 @@ class SCTextBilara extends SCTextCommon {
       this.actions.changeDisplaySettingMenuState(false);
     });
     this._updateView();
-    this._fetchRootEdition();
   }
 
   disconnectedCallback() {
@@ -316,14 +310,6 @@ class SCTextBilara extends SCTextCommon {
     }
     if (changedProps.has('displayedReferences')) {
       this._changeTextView();
-    }
-    if (changedProps.has('chosenNoteDisplayType')) {
-      this._changeTextView();
-    }
-    if (changedProps.has('showHighlighting')) {
-      this._showHighlightingChanged();
-    }
-    if (changedProps.has('displayedReferences')) {
       if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
         this._deleteReference();
         this._initReference();
@@ -331,6 +317,12 @@ class SCTextBilara extends SCTextCommon {
       } else {
         this._deleteReference();
       }
+    }
+    if (changedProps.has('chosenNoteDisplayType')) {
+      this._changeTextView();
+    }
+    if (changedProps.has('showHighlighting')) {
+      this._showHighlightingChanged();
     }
   }
 
@@ -371,10 +363,11 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _disableLookup() {
-    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
-    if (scBottomSheet) {
-      scBottomSheet.hide();
-    }
+    // const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    // if (scBottomSheet) {
+    //   scBottomSheet.hide();
+    // }
+    this.shadowRoot.querySelector('sc-bottom-sheet')?.hide();
     this._removeDefineFocusedClass();
     this._removeLookupEvent('.root .text .word');
   }
@@ -417,7 +410,6 @@ class SCTextBilara extends SCTextCommon {
     } else {
       const isMain = this.displayedReferences.includes('main');
       this.referencesDisplayStyles = html`
-        ${isMain ? hidePTSReferenceStyles : ''}
         <style>
           .reference {
               display: inline;
@@ -429,12 +421,15 @@ class SCTextBilara extends SCTextCommon {
 
           ${isMain
             ? `
-           .reference a.sc {
+            .reference a.sc {
               display: inline;
-            }`
+            }
+          `
             : ''}
-          ${this.displayedReferences.map(edition_set => html` .reference a.${edition_set} { display:
-              inline; } `)}
+
+          ${this.displayedReferences.map(
+            referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline; } `
+          )}
         </style>
       `;
     }
@@ -749,10 +744,11 @@ class SCTextBilara extends SCTextCommon {
     return spanElement;
   }
 
-  _addReferenceText() {
+  async _addReferenceText() {
     if (!this.suttaReference || this._articleElement().length === 0) {
       return;
     }
+    await this._fetchRootEdition();
     Object.entries(this.suttaReference).forEach(([key, value]) => {
       const refElement = this.shadowRoot.querySelector(`#${CSS.escape(key)} .reference`);
       if (refElement) {
