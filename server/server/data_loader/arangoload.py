@@ -479,9 +479,6 @@ def run(no_pull=False):
     print_stage('Loading text_extra_info.json')
     load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
 
-    print_stage("Updating text_extra_info")
-    update_text_extra_info()
-
     print_stage('Loading shortcuts.json')
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
 
@@ -549,6 +546,9 @@ def run(no_pull=False):
 
     print_stage("Loading why_we_read from additional_info")
     homepage.load_why_we_read(db, additional_info_dir)
+
+    print_stage("Updating text_extra_info")
+    update_text_extra_info()
 
     print_stage("Generating sitemap")
     sitemap = generate_sitemap(db)
