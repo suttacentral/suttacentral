@@ -560,22 +560,6 @@ export const hideReferenceStyles = html`
   </style>
 `;
 
-export const hidePTSReferenceStyles = html`
-  <style>
-    a.sc {
-      display: inline;
-    }
-  </style>
-`;
-
-export const showAllReferenceStyles = html`
-  <style>
-    .reference {
-      display: inherit;
-    }
-  </style>
-`;
-
 export const hideAsterisk = html`
   <style>
     .comment,
