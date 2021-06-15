@@ -22,7 +22,6 @@ import {
   lineByLineStyles,
   lineByLinePlusStyles,
   hideReferenceStyles,
-  hidePTSReferenceStyles,
   hideAsterisk,
   showAsterisk,
   rootPlainPlusStyles,
@@ -33,7 +32,6 @@ import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-
 class SCTextBilara extends SCTextCommon {
   static get properties() {
     return {
-      navItems: { type: Array },
       rootSutta: { type: Object },
       bilaraRootSutta: { type: Object },
       translatedSutta: { type: Object },
@@ -44,8 +42,6 @@ class SCTextBilara extends SCTextCommon {
       suttaReference: { type: Object },
       suttaComment: { type: Object },
       suttaVariant: { type: Object },
-      isTextViewHidden: { type: Boolean },
-      hidden: { type: Boolean },
       chosenTextView: { type: String },
       displayedReferences: { type: Array },
       chosenNoteDisplayType: { type: String },
@@ -70,8 +66,6 @@ class SCTextBilara extends SCTextCommon {
     const { textOptions } = store.getState();
     this.showParagraphs = textOptions.paragraphsEnabled;
     this.paragraphs = textOptions.paragraphDescriptions;
-    this.isTextViewHidden = false;
-    this.hidden = false;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
     this.displayedReferences = textOptions.displayedReferences;
     this.chosenNoteDisplayType = textOptions.noteDisplayType;
@@ -91,6 +85,12 @@ class SCTextBilara extends SCTextCommon {
         this._scrollToSection(window.location.hash.substr(1));
       }, 0);
     };
+
+    this._onClickHandler = () => {
+      this._hideTopSheets();
+      this.actions.changeDisplaySettingMenuState(false);
+    };
+
     // Return the corresponding style sheet according to different combinations of text viewing options.
     this.mapStyles = new Map([
       ['sidenotes_plain', plainPlusStyles],
@@ -104,10 +104,6 @@ class SCTextBilara extends SCTextCommon {
       ['asterisk_linebyline', lineByLineStyles],
       ['pali', plainPaliStyles],
       ['sidenotes_root', rootPlainPlusStyles],
-    ]);
-    this.mapReferenceDisplayStyles = new Map([
-      ['none', hideReferenceStyles],
-      ['main', hidePTSReferenceStyles],
     ]);
     this.mapNoteDisplayStyles = new Map([
       ['none', hideAsterisk],
@@ -126,13 +122,7 @@ class SCTextBilara extends SCTextCommon {
       ${this.currentStyles} ${this.referencesDisplayStyles} ${this.notesDisplayStyles}
 
       <main>
-        <div
-          id="segmented_text_content"
-          class="html-text-content"
-          ?hidden="${this.isTextViewHidden}"
-        >
-          ${unsafeHTML(this.markup)}
-        </div>
+        <div id="segmented_text_content" class="html-text-content">${unsafeHTML(this.markup)}</div>
       </main>
 
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
@@ -144,16 +134,13 @@ class SCTextBilara extends SCTextCommon {
 
   firstUpdated() {
     window.addEventListener('hashchange', this._hashChangeHandler);
-    this.addEventListener('click', () => {
-      this._hideTopSheets();
-      this.actions.changeDisplaySettingMenuState(false);
-    });
+    this.addEventListener('click', this._onClickHandler);
     this._updateView();
-    this._fetchRootEdition();
   }
 
   disconnectedCallback() {
     window.removeEventListener('hashchange', this._hashChangeHandler);
+    window.removeEventListener('click', this._onClickHandler);
   }
 
   _updateView() {
@@ -170,15 +157,8 @@ class SCTextBilara extends SCTextCommon {
         this._addReferenceText();
       }
       this._addVariantText();
-      if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
-        this._paliLookupStateChanged();
-      }
-      if (
-        this.isChineseLookupEnabled &&
-        (this.rootSutta?.lang === 'lzh' || this.translatedSutta?.lang === 'lzh')
-      ) {
-        this._chineseLookupStateChanged();
-      }
+      this._paliLookupStateChanged();
+      this._chineseLookupStateChanged();
       this._showHighlightingChanged();
       this._hashChangeHandler();
     }, 100);
@@ -195,10 +175,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _hideTopSheets() {
-    const scActionItems = document
-      .querySelector('sc-site-layout')
-      .shadowRoot.querySelector('#action_items');
-    scActionItems.hideItems();
+    document.querySelector('sc-site-layout').shadowRoot.querySelector('#action_items')?.hideItems();
   }
 
   _segmentedTextContentElement() {
@@ -299,31 +276,16 @@ class SCTextBilara extends SCTextCommon {
       this._changeScript();
     }
     if (changedProps.has('isPaliLookupEnabled')) {
-      if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
-        this._paliLookupStateChanged();
-      }
+      this._paliLookupStateChanged();
     }
     if (changedProps.has('isChineseLookupEnabled')) {
-      if (
-        this.isChineseLookupEnabled &&
-        (this.rootSutta.lang === 'lzh' || this.translatedSutta.lang === 'lzh')
-      ) {
-        this._chineseLookupStateChanged();
-      }
+      this._chineseLookupStateChanged();
     }
     if (changedProps.has('markup')) {
       this._updateView();
     }
     if (changedProps.has('displayedReferences')) {
       this._changeTextView();
-    }
-    if (changedProps.has('chosenNoteDisplayType')) {
-      this._changeTextView();
-    }
-    if (changedProps.has('showHighlighting')) {
-      this._showHighlightingChanged();
-    }
-    if (changedProps.has('displayedReferences')) {
       if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
         this._deleteReference();
         this._initReference();
@@ -331,6 +293,12 @@ class SCTextBilara extends SCTextCommon {
       } else {
         this._deleteReference();
       }
+    }
+    if (changedProps.has('chosenNoteDisplayType')) {
+      this._changeTextView();
+    }
+    if (changedProps.has('showHighlighting')) {
+      this._showHighlightingChanged();
     }
   }
 
@@ -355,7 +323,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _paliLookupStateChanged() {
-    if (this.isPaliLookupEnabled) {
+    if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
       this._enablePaliLookup();
     } else {
       this._disableLookup();
@@ -363,7 +331,10 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _chineseLookupStateChanged() {
-    if (this.isChineseLookupEnabled) {
+    if (
+      this.isChineseLookupEnabled &&
+      (this.rootSutta.lang === 'lzh' || this.translatedSutta.lang === 'lzh')
+    ) {
       this._enableChineseLookup();
     } else {
       this._disableLookup();
@@ -371,10 +342,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _disableLookup() {
-    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
-    if (scBottomSheet) {
-      scBottomSheet.hide();
-    }
+    this.shadowRoot.querySelector('sc-bottom-sheet')?.hide();
     this._removeDefineFocusedClass();
     this._removeLookupEvent('.root .text .word');
   }
@@ -417,7 +385,6 @@ class SCTextBilara extends SCTextCommon {
     } else {
       const isMain = this.displayedReferences.includes('main');
       this.referencesDisplayStyles = html`
-        ${isMain ? hidePTSReferenceStyles : ''}
         <style>
           .reference {
               display: inline;
@@ -429,12 +396,15 @@ class SCTextBilara extends SCTextCommon {
 
           ${isMain
             ? `
-           .reference a.sc {
+            .reference a.sc {
               display: inline;
-            }`
+            }
+          `
             : ''}
-          ${this.displayedReferences.map(edition_set => html` .reference a.${edition_set} { display:
-              inline; } `)}
+
+          ${this.displayedReferences.map(
+            referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline; } `
+          )}
         </style>
       `;
     }
@@ -448,6 +418,7 @@ class SCTextBilara extends SCTextCommon {
     }
     if (this.paliScript !== state.textOptions.script) {
       this.paliScript = state.textOptions.script;
+      this.hasScriptBeenChanged = true;
     }
     if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
       this.isPaliLookupEnabled = state.textOptions.paliLookupActivated;
@@ -749,10 +720,11 @@ class SCTextBilara extends SCTextCommon {
     return spanElement;
   }
 
-  _addReferenceText() {
+  async _addReferenceText() {
     if (!this.suttaReference || this._articleElement().length === 0) {
       return;
     }
+    await this._fetchRootEdition();
     Object.entries(this.suttaReference).forEach(([key, value]) => {
       const refElement = this.shadowRoot.querySelector(`#${CSS.escape(key)} .reference`);
       if (refElement) {
@@ -898,6 +870,7 @@ class SCTextBilara extends SCTextCommon {
         if (unit === 'word') {
           str += `%spfrnt%${strArr[i]}%spback% `;
         } else if (unit === 'graph') {
+          // eslint-disable-next-line no-restricted-syntax
           for (let graph of strArr[i]) {
             str += `%spfrnt%${graph}%spback%`;
           }
@@ -916,37 +889,37 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addPaliLookupEvent(selector) {
-    const lookup = this.shadowRoot.querySelector('#pali_lookup');
     const allWordSpans = this.shadowRoot.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
-    spans.forEach(word => {
-      word.onclick = e => {
-        if (!this.isPaliLookupEnabled) return;
-        const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
-        if (scBottomSheet) {
-          this._removeDefineFocusedClass();
-          this._addDefineFocusedClass(e.currentTarget);
-          this._setSCBottomSheet(scBottomSheet, word, lookup, e.currentTarget);
-        }
-      };
-    });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const word of spans) {
+      word.addEventListener('click', this.onPaliWordClick);
+    }
+  }
+
+  onPaliWordClick(e) {
+    const scBilaraText = e.currentTarget.getRootNode().host;
+    const lookup = scBilaraText.shadowRoot.querySelector('#pali_lookup');
+    scBilaraText._removeDefineFocusedClass();
+    scBilaraText._addDefineFocusedClass(e.currentTarget);
+    scBilaraText._setSCBottomSheet(e.currentTarget, lookup);
   }
 
   _addChineseLookupEvent(selector) {
-    const lookup = this.shadowRoot.querySelector('#chinese_lookup');
     const allWordSpans = this.shadowRoot.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
-    spans.forEach(word => {
-      word.onclick = e => {
-        if (!this.isChineseLookupEnabled) return;
-        const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
-        if (scBottomSheet) {
-          this._removeDefineFocusedClass();
-          this._addDefineFocusedClass(e.currentTarget);
-          this._setSCBottomSheet(scBottomSheet, word, lookup, e.currentTarget);
-        }
-      };
-    });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const word of spans) {
+      word.addEventListener('click', this.onChineseWordClick);
+    }
+  }
+
+  onChineseWordClick(e) {
+    const scBilaraText = e.currentTarget.getRootNode().host;
+    const lookup = scBilaraText.shadowRoot.querySelector('#chinese_lookup');
+    scBilaraText._removeDefineFocusedClass();
+    scBilaraText._addDefineFocusedClass(e.currentTarget);
+    scBilaraText._setSCBottomSheet(e.currentTarget, lookup);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -964,12 +937,14 @@ class SCTextBilara extends SCTextCommon {
     const allWordSpans = this.shadowRoot.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
     spans.forEach(word => {
-      word.onclick = null;
+      word.removeEventListener('click', this.onPaliWordClick);
+      word.removeEventListener('click', this.onChineseWordClick);
     });
   }
 
-  _setSCBottomSheet(scBottomSheet, word, lookup, currentTarget) {
-    scBottomSheet.currentTarget = currentTarget;
+  _setSCBottomSheet(word, lookup) {
+    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    scBottomSheet.currentTarget = word;
     let keyword = '';
     if (lookup.id === 'chinese_lookup') {
       keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
@@ -988,7 +963,9 @@ class SCTextBilara extends SCTextCommon {
       this._putWordsIntoSpans('.root .text', 'word');
     }
     this._addWordSpanId('span.word');
-    this._addPaliLookupEvent('.root .text .word');
+    setTimeout(() => {
+      this._addPaliLookupEvent('.root .text .word');
+    }, 0);
   }
 
   _enableChineseLookup() {
@@ -996,20 +973,9 @@ class SCTextBilara extends SCTextCommon {
       this._conditionallyPutIntoSpans('lzh');
     }
     this._addWordSpanId('.root .text .word');
-    this._addChineseLookupEvent('.root .text .word');
-  }
-
-  _conditionallyPutWordsIntoSpans() {
-    if (
-      this.translatedSutta &&
-      (this.translatedSutta.lang === 'pli' || this.translatedSutta.lang === 'lzh')
-    ) {
-      this._putWordsIntoSpans('.translation .text', 'word');
-    } else if (this.rootSutta.lang === 'pli' || this.rootSutta.lang === 'lzh') {
-      if (this.shadowRoot.querySelector('.root')) {
-        this._enablePaliLookup();
-      }
-    }
+    setTimeout(() => {
+      this._addChineseLookupEvent('.root .text .word');
+    }, 0);
   }
 
   _changeScript() {
@@ -1054,9 +1020,7 @@ class SCTextBilara extends SCTextCommon {
   _resetScript() {
     this._addRootText();
     this.spansForWordsGenerated = false;
-    if (this.isPaliLookupEnabled && !this.spansForWordsGenerated && this.rootSutta.lang === 'pli') {
-      this._enablePaliLookup();
-    }
+    this._paliLookupStateChanged();
   }
 
   async _scriptTransliterate(uid, target) {
@@ -1083,14 +1047,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _setScript() {
-    this._ensureSpansExist();
     this._setScriptOfSegments();
-  }
-
-  _ensureSpansExist() {
-    if (!this.spansForWordsGenerated) {
-      this._conditionallyPutWordsIntoSpans();
-    }
   }
 
   async _setScriptOfSegments() {
