@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { LitElement, html } from 'lit-element';
 
 import { store } from '../../redux-store';
@@ -110,7 +111,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
               ${match.xr
                 ? html`
                     <ul class="xr">
-                      ${match.constructor === Array
+                      ${match.xr.constructor === Array
                         ? html`
                             ${match.xr.map(
                               item => html` <li><a href="/define/${item}">${item}</a></li> `

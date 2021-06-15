@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 // eslint-disable-next-line import/prefer-default-export
 export function dictionarySimpleItemToHtml(dicItem) {
   if (!dicItem) {
@@ -13,40 +14,33 @@ export function dictionarySimpleItemToHtml(dicItem) {
         ${
           dicItem.definition
             ? `
-              <ol class="definition">
-                ${
-                  dicItem.definition.constructor === Array
-                    ? `
-                    ${dicItem.definition.map(item => `<li>${item}</li>`).join('')}
-                  `
-                    : `<li>${dicItem.definition}</li>`
-                }
-              </ol>
+            <ol class="definition">
+              ${
+                dicItem.definition.constructor === Array
+                  ? `
+                  ${dicItem.definition.map(item => `<li>${item}</li>`).join('')}
+                `
+                  : `<li>${dicItem.definition}</li>`
+              }
+            </ol>
           `
             : ''
         }
         ${
           dicItem.xr
             ? `
-              <ul class="xr">
-                ${
-                  dicItem.constructor === Array
-                    ? `
-                      ${dicItem.xr
-                        .map(
-                          item =>
-                            `
-                            <li><a href="/define/${item}">${item}</a></li>
-                          `
-                        )
-                        .join('')}
-                    `
-                    : `
-                      <li><a href="/define/${dicItem.xr}">${dicItem.xr}</a></li>
-                    `
-                }
-              </ul>
-            `
+            <ul class="xr">
+              ${
+                dicItem.xr.constructor === Array
+                  ? `
+                  ${dicItem.xr
+                    .map(item => `<li><a href="/define/${item}">${item}</a></li>`)
+                    .join('')}
+                `
+                  : `<li><a href="/define/${dicItem.xr}">${dicItem.xr}</a></li>`
+              }
+            </ul>
+          `
             : ''
         }
       </dd>
