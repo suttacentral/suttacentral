@@ -3,7 +3,6 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { navigationNormalModeStyles } from './sc-navigation-styles';
-import { pitakaGuide } from './sc-navigation-common';
 
 class SCNavigationTipitaka extends LitLocalized(LitElement) {
   static get styles() {
@@ -17,8 +16,6 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
   static get properties() {
     return {
       mainMenuData: { type: Array },
-      currentStyles: { type: Object },
-      loading: { type: Boolean },
       siteLanguage: { type: String },
     };
   }
@@ -40,26 +37,30 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.loading = false;
     this.mainMenuData = [];
-    this.currentStyles = navigationNormalModeStyles;
     this.navArray = store.getState().navigationArray;
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.siteLanguage = store.getState().siteLanguage;
     this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.pitakaGuide = new Map([
+      ['sutta', 'discourses-guide-sujato'],
+      ['vinaya', 'vinaya-guide-brahmali'],
+      ['abhidhamma', 'abhidhamma-guide-sujato'],
+    ]);
+  }
+
+  firstUpdated() {
     this._fetchMainMenu();
   }
 
   async _fetchMainMenu() {
-    this.loading = true;
     try {
       this.mainMenuData = await (
-        await fetch(`${API_ROOT}/menu?language=${this.siteLanguage || 'en'}`)
+        await fetch(`${API_ROOT}/tipitaka_menu?language=${this.siteLanguage || 'en'}`)
       ).json();
     } catch (err) {
       this.mainMenuError = err;
     }
-    this.loading = false;
   }
 
   get tipitakaCardTemplate() {
@@ -97,7 +98,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
                   </a>
                   <div class="nav-card-content">
                     <div class="blurb" id="${item.root_name}_blurb">${item.blurb}</div>
-                    <a class="essay-link" href="${pitakaGuide.get(item.uid)}">
+                    <a class="essay-link" href="${this.pitakaGuide.get(item.uid)}">
                       <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
                     </a>
                   </div>
@@ -110,7 +111,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   render() {
-    return html` ${this.currentStyles} ${this.tipitakaCardTemplate} `;
+    return html` ${navigationNormalModeStyles} ${this.tipitakaCardTemplate} `;
   }
 }
 
