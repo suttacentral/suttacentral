@@ -14,6 +14,7 @@ from api.views import (
     Languages,
     LookupDictionaries,
     Menu,
+    TipitakaMenu,
     Paragraphs,
     Parallels,
     Sutta,
@@ -69,6 +70,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Search, '/search')
     api.add_resource(DictionaryFull, '/dictionary_full/<string:word>')
     api.add_resource(Menu, '/menu', '/menu/<path:submenu_id>')
+    api.add_resource(TipitakaMenu, '/tipitaka_menu')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
     api.add_resource(

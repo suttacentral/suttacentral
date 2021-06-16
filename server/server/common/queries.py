@@ -257,6 +257,40 @@ RETURN {
 }
 '''
 
+TIPITAKA_MENU = '''
+FOR navigation_doc IN super_nav_details
+    FILTER navigation_doc.type == 'root'
+
+    LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
+    LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
+    LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
+
+    LET en_and_language_blurbs = (
+        FOR blurb IN blurbs
+            FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                LIMIT 2
+                RETURN blurb
+    )
+    LET blurb = (
+         RETURN LENGTH(en_and_language_blurbs) == 2 ?
+             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
+             en_and_language_blurbs[0]
+    )[0].blurb
+
+    LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))
+
+    RETURN {
+        uid: navigation_doc.uid,
+        root_name: navigation_doc.name,
+        translated_name: translated_name,
+        blurb: blurb,
+        acronym: navigation_doc.acronym,
+        node_type: navigation_doc.type,
+        yellow_brick_road: !!yellow_brick_road,
+        yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
+    }
+'''
+
 SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES = '''
 FOR doc IN super_nav_details
     FILTER doc.root_lang

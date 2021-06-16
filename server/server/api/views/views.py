@@ -17,6 +17,7 @@ from common.queries import (
     LANGUAGES,
     MENU,
     SUBMENU,
+    TIPITAKA_MENU,
     PARAGRAPHS,
     PARALLELS,
     SUTTA_VIEW,
@@ -267,6 +268,19 @@ class Menu(Resource):
             data = list(db.aql.execute(MENU, bind_vars=bind_vars))
 
         return data
+
+
+class TipitakaMenu(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
+        db = get_db()
+        data = db.aql.execute(
+            TIPITAKA_MENU, bind_vars={'language': language}
+        )
+        return list(data), 200
 
 
 class SuttaplexList(Resource):
