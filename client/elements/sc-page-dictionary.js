@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable indent */
 import { LitElement, html, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { API_ROOT } from '../constants';
@@ -409,7 +411,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
         detail: {
           pageTitle: `${defineFor}: ${this.dictionaryWord}`,
           title: `${dictionaryResultsText} ${this.dictionaryWord}`,
-          description: description,
+          description,
           bubbles: true,
           composed: true,
         },
