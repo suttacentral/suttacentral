@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { html, LitElement } from 'lit-element';
 import { icon } from '../../../img/sc-icon';
 import {
@@ -5,6 +6,7 @@ import {
   transformId,
   pickVolPage,
   hasTwoPTSEditions,
+  formatVolPages,
 } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/sc-localization-mixin';
 import { parallelItemCss } from './sc-suttaplex-css';
@@ -117,10 +119,49 @@ class SCParallelItem extends LitLocalized(LitElement) {
     return pickVolPage(this.parallelItem.volpages);
   }
 
+  get briefVolPage() {
+    const volpages = this.parallelItem.volpages.split(',');
+    if (this.parallelItem.volpages && volpages.length > 1) {
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]} –${volPagesEnd}`;
+    }
+    return this.parallelItem.volpages;
+  }
+
+  get altVolPage() {
+    return pickVolPage(this.parallelItem.alt_volpages);
+  }
+
+  get briefAltVolPage() {
+    const volpages = this.parallelItem.alt_volpages.split(',');
+    if (this.parallelItem.alt_volpages && volpages.length > 1) {
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]} –${volPagesEnd}`;
+    }
+    return this.parallelItem.alt_volpages;
+  }
+
   get volPageTitle() {
     return hasTwoPTSEditions(this.parallelItem.volpages)
       ? this.localize('volumeAndPagePTS1', this.parallelItem.volpages)
       : this.localize('volumeAndPage');
+  }
+
+  get volPageTemplate() {
+    return html`
+      <span class="volPage-row" title="${this.localize('volumeAndPage')}">
+        <span class="book">${icon.book}</span>
+        <span class="vol-page"> ${this.briefVolPage} </span>
+      </span>
+      ${this.altVolPage && this.altVolPage !== this.volPage
+        ? html`
+            <span class="volPage-row" title="${this.localize('volumeAndPage')}">
+              <span class="book">${icon.book}</span>
+              <span class="vol-page"> ${this.briefAltVolPage} </span>
+            </span>
+          `
+        : ''}
+    `;
   }
 
   render() {
@@ -158,31 +199,14 @@ class SCParallelItem extends LitLocalized(LitElement) {
                       ${this.parallelItem.biblio &&
                       html`
                         <details>
-                          <summary>
-                            ${icon.book}
-                            <span class="vol-page" title="${this.volPageTitle}">
-                              ${this.volPage}
-                            </span>
-                          </summary>
+                          <summary>${this.volPageTemplate}</summary>
                           <p
                             class="parallel-item-biblio-info"
                             .innerHTML="${this.parallelItem.biblio}"
                           ></p>
                         </details>
                       `}
-                      ${!this.parallelItem.biblio
-                        ? html`
-                            <span
-                              class="book scrollable-dialog"
-                              title="${this.localize('volumeAndPage')}"
-                            >
-                              ${icon.book}
-                            </span>
-                            <span class="vol-page" title="${this.volPageTitle}">
-                              ${this.volPage}
-                            </span>
-                          `
-                        : ''}
+                      ${!this.parallelItem.biblio ? this.volPageTemplate : ''}
                     </div>
                   `
                 : ''}

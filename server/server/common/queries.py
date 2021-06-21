@@ -575,11 +575,18 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
     LET translations = FLATTEN([bilara_translations, legacy_translations])
 
     LET volpages = (
-        FOR text IN translations
-            FILTER text.volpage != null
+        FOR volpages IN text_extra_info
+            FILTER volpages.uid == v.uid
             LIMIT 1
-            RETURN text.volpage
-    )
+            RETURN volpages.volpage
+    )[0]
+
+    LET alt_volpages = (
+        FOR altVolpages IN text_extra_info
+            FILTER altVolpages.uid == v.uid
+            LIMIT 1
+            RETURN altVolpages.alt_volpage
+    )[0]
 
     LET translated_titles = (
         FOR translation IN translations
@@ -601,7 +608,8 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
         enumber: e.number,
         to: {
             to: e.to,
-            volpages: v.volpage ? v.volpage : volpages[0],
+            volpages: volpages,
+            alt_volpages: alt_volpages,
             acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
@@ -1183,15 +1191,19 @@ RETURN {
 '''
 
 UPDATE_TEXT_EXTRA_INFO_VOLPAGE = '''
-FOR u IN text_extra_info
-    FILTER u.uid == @uid
-    UPDATE u WITH { volpage: @ref } IN text_extra_info
+UPSERT { uid: @uid }
+INSERT { uid: @uid, acronym: null, alt_acronym: null, volpage: @ref, alt_volpage: null, alt_name: null, biblio_uid: null }
+UPDATE {
+    volpage: @ref
+} IN text_extra_info
 '''
 
 UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE = '''
-FOR u IN text_extra_info
-    FILTER u.uid == @uid
-    UPDATE u WITH { alt_volpage: @ref } IN text_extra_info
+UPSERT { uid: @uid }
+INSERT { uid: @uid, acronym: null, alt_acronym: null, volpage: null, alt_volpage: @ref, alt_name: null, biblio_uid: null }
+UPDATE {
+    alt_volpage: @ref
+} IN text_extra_info
 '''
 
 UPSERT_NAMES = '''
