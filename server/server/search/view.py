@@ -9,7 +9,17 @@ from common.extensions import cache, make_cache_key
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries
 from search import query as query_search
+from search.instant_search import instant_search_query
 
+
+class InstantSearch(Resource):
+  def get(self):
+    """
+    Search for the given query in arangodb, very fast
+    """
+    query = request.args.get('query')
+    lang = request.args.get('lang')
+    return instant_search_query(query, lang)
 
 class Search(Resource):
     @cache.cached(timeout=600, key_prefix=make_cache_key)
