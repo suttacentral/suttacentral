@@ -255,15 +255,17 @@ export const suttaplexCss = html`
       margin-bottom: 0;
     }
 
-    .book {
-      width: 16px;
-      height: 16px;
-      fill: var(--sc-icon-color);
-    }
-
     .hidden {
       width: 0px;
       opacity: 0;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .visible {
+        white-space: normal;
+        font-size: 12px;
+        line-height: 1;
+      }
     }
   </style>
 `;
@@ -485,14 +487,8 @@ export const parallelItemCss = html`
       outline: none;
     }
 
-    .book {
-      display: inline-flex;
-    }
-
     .icon {
       fill: var(--sc-icon-color);
-      width: 16px;
-      height: 16px;
     }
 
     .volPage-row {
@@ -501,6 +497,14 @@ export const parallelItemCss = html`
 
     .vol-page {
       margin-right: 1rem;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .vol-page {
+        white-space: normal;
+        font-size: 12px;
+        line-height: 1;
+      }
     }
   </style>
 `;

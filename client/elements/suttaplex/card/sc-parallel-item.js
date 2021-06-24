@@ -123,7 +123,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
     const volpages = this.parallelItem.volpages.split(',');
     if (this.parallelItem.volpages && volpages.length > 1) {
       const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
-      return `${volpages[0]} –${volPagesEnd}`;
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
     }
     return this.parallelItem.volpages;
   }
@@ -136,7 +136,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
     const volpages = this.parallelItem.alt_volpages.split(',');
     if (this.parallelItem.alt_volpages && volpages.length > 1) {
       const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
-      return `${volpages[0]} –${volPagesEnd}`;
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
     }
     return this.parallelItem.alt_volpages;
   }
@@ -150,13 +150,13 @@ class SCParallelItem extends LitLocalized(LitElement) {
   get volPageTemplate() {
     return html`
       <span class="volPage-row" title="${this.localize('volumeAndPage')}">
-        <span class="book">${icon.book}</span>
+        ${icon.book}
         <span class="vol-page"> ${this.briefVolPage} </span>
       </span>
       ${this.altVolPage && this.altVolPage !== this.volPage
         ? html`
             <span class="volPage-row" title="${this.localize('volumeAndPage')}">
-              <span class="book">${icon.book}</span>
+              ${icon.book}
               <span class="vol-page"> ${this.briefAltVolPage} </span>
             </span>
           `
