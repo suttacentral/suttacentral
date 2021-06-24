@@ -11,6 +11,7 @@ from .views import (
     Donations,
     Languages,
     Menu,
+    TipitakaMenu,
     Paragraphs,
     Parallels,
     Sutta,

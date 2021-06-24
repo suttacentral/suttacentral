@@ -257,6 +257,40 @@ RETURN {
 }
 '''
 
+TIPITAKA_MENU = '''
+FOR navigation_doc IN super_nav_details
+    FILTER navigation_doc.type == 'root'
+
+    LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
+    LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
+    LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
+
+    LET en_and_language_blurbs = (
+        FOR blurb IN blurbs
+            FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                LIMIT 2
+                RETURN blurb
+    )
+    LET blurb = (
+         RETURN LENGTH(en_and_language_blurbs) == 2 ?
+             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
+             en_and_language_blurbs[0]
+    )[0].blurb
+
+    LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))
+
+    RETURN {
+        uid: navigation_doc.uid,
+        root_name: navigation_doc.name,
+        translated_name: translated_name,
+        blurb: blurb,
+        acronym: navigation_doc.acronym,
+        node_type: navigation_doc.type,
+        yellow_brick_road: !!yellow_brick_road,
+        yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
+    }
+'''
+
 SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES = '''
 FOR doc IN super_nav_details
     FILTER doc.root_lang
@@ -541,11 +575,18 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
     LET translations = FLATTEN([bilara_translations, legacy_translations])
 
     LET volpages = (
-        FOR text IN translations
-            FILTER text.volpage != null
+        FOR volpages IN text_extra_info
+            FILTER volpages.uid == v.uid
             LIMIT 1
-            RETURN text.volpage
-    )
+            RETURN volpages.volpage
+    )[0]
+
+    LET alt_volpages = (
+        FOR altVolpages IN text_extra_info
+            FILTER altVolpages.uid == v.uid
+            LIMIT 1
+            RETURN altVolpages.alt_volpage
+    )[0]
 
     LET translated_titles = (
         FOR translation IN translations
@@ -567,7 +608,8 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
         enumber: e.number,
         to: {
             to: e.to,
-            volpages: v.volpage ? v.volpage : volpages[0],
+            volpages: volpages,
+            alt_volpages: alt_volpages,
             acronym: v.acronym,
             uid: v.uid,
             root_lang: v.root_lang,
@@ -1149,15 +1191,19 @@ RETURN {
 '''
 
 UPDATE_TEXT_EXTRA_INFO_VOLPAGE = '''
-FOR u IN text_extra_info
-    FILTER u.uid == @uid
-    UPDATE u WITH { volpage: @ref } IN text_extra_info
+UPSERT { uid: @uid }
+INSERT { uid: @uid, acronym: null, alt_acronym: null, volpage: @ref, alt_volpage: null, alt_name: null, biblio_uid: null }
+UPDATE {
+    volpage: @ref
+} IN text_extra_info
 '''
 
 UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE = '''
-FOR u IN text_extra_info
-    FILTER u.uid == @uid
-    UPDATE u WITH { alt_volpage: @ref } IN text_extra_info
+UPSERT { uid: @uid }
+INSERT { uid: @uid, acronym: null, alt_acronym: null, volpage: null, alt_volpage: @ref, alt_name: null, biblio_uid: null }
+UPDATE {
+    alt_volpage: @ref
+} IN text_extra_info
 '''
 
 UPSERT_NAMES = '''
