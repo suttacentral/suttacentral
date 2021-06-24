@@ -94,3 +94,7 @@ export function volPagesToString(volpages) {
     return '';
   }
 }
+
+export function formatVolPages(volPages) {
+  return volPages.replace('PTS (1st ed)', '').replace('PTS (2nd ed)', '').replace('PTS', '');
+}

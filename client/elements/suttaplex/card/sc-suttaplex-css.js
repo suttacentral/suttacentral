@@ -494,5 +494,13 @@ export const parallelItemCss = html`
       width: 16px;
       height: 16px;
     }
+
+    .volPage-row {
+      display: contents;
+    }
+
+    .vol-page {
+      margin-right: 1rem;
+    }
   </style>
 `;
