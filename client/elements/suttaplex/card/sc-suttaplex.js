@@ -132,7 +132,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     const volpages = this.item.volpages.split(',');
     if (this.item.volpages && volpages.length > 1) {
       const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
-      return `${volpages[0]} –${volPagesEnd}`;
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
     }
     return this.item.volpages;
   }
@@ -148,7 +148,7 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     const volpages = this.item.alt_volpages.split(',');
     if (this.item.alt_volpages && volpages.length > 1) {
       const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
-      return `${volpages[0]} –${volPagesEnd}`;
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
     }
     return this.item.alt_volpages;
   }
