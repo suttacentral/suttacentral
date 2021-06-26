@@ -1,6 +1,7 @@
 import { LitElement, html, css, svg } from 'lit-element';
-import { LitLocalized } from '../addons/sc-localization-mixin';
+import { queue } from 'd3-queue';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-checkbox';
 import '@material/mwc-switch';
 import '@material/mwc-button';
@@ -9,7 +10,6 @@ import { icon } from '../../img/sc-icon';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { API_ROOT } from '../../constants';
-import { queue } from 'd3-queue';
 import { store } from '../../redux-store';
 
 class SCStaticOffline extends LitLocalized(LitElement) {
@@ -77,13 +77,13 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       saveDownloadedUrls(downloadedUrls) {
         return store.dispatch({
           type: 'SAVE_DOWNLOADED_URLS',
-          downloadedUrls: downloadedUrls,
+          downloadedUrls,
         });
       },
       saveDownloadedPWASettings(downloadedPWASettings) {
         return store.dispatch({
           type: 'SAVE_DOWNLOADED_PWA_SETTINGS',
-          downloadedPWASettings: downloadedPWASettings,
+          downloadedPWASettings,
         });
       },
     };
@@ -186,9 +186,8 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     const siteLookupLang = this.paliLookupLanguages.find(
       language => language.isoCode === siteIsoCode
     );
-    const lookupLang = siteLookupLang
-      ? siteLookupLang
-      : this.paliLookupLanguages.find(language => language.isoCode === 'en');
+    const lookupLang =
+      siteLookupLang || this.paliLookupLanguages.find(language => language.isoCode === 'en');
     lookupLang.enabled = true;
     return lookupLang;
   }
@@ -359,7 +358,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
   }
 
   _saveDownloadedSettings() {
-    let downloadedPWASettings = Object.assign({}, this.downloadedPWASettings);
+    const downloadedPWASettings = { ...this.downloadedPWASettings };
     if ('languages' in downloadedPWASettings) {
       if (
         !downloadedPWASettings.languages.root ||
@@ -427,7 +426,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       .concat(parallelURLs)
       .concat(paragraphURLs)
       .concat(lookupURLs)
-      .map(url => ({ url: url, done: false }));
+      .map(url => ({ url, done: false }));
   }
 
   _buildSuttaTextUrlList(response) {
@@ -602,6 +601,8 @@ class SCStaticOffline extends LitLocalized(LitElement) {
         chinese: {},
       },
     });
+    this.downloadedUrls = store.getState().downloadedUrls;
+    this._showToast('info', this.localize('resetComplete'));
   }
 
   _showAddToHomeScreenPrompt() {

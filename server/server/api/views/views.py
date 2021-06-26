@@ -1064,8 +1064,6 @@ class AvailableVoices(Resource):
     def get(self, uid):
         db = get_db()
         data = list(db.aql.execute(AVAILABLE_VOICES, bind_vars={'uid': uid}))
-        if not data:
-            return {'error': 'Not Found'}, 404
         return data, 200
 
 class RootEdition(Resource):
