@@ -146,6 +146,8 @@ export const suttaplexCss = html`
     }
 
     .suttaplex-nerdy-row {
+      display: flex;
+      flex-wrap: wrap;
       font-family: var(--sc-sans-font);
       font-size: var(--sc-skolar-font-size-s);
       font-weight: 400;
@@ -170,7 +172,9 @@ export const suttaplexCss = html`
       line-height: 1.4;
     }
 
-
+.vol-page{
+      font-stretch: condensed;
+}
 
     .popuptext {
       overflow: visible;
@@ -265,6 +269,12 @@ export const suttaplexCss = html`
     width: 16px;
     height: 16px;
 }
+
+    @media only screen and (max-width: 600px) {
+      .book {
+        display: none;
+      }
+    }
 `;
 
 export const suttaplexTxCss = html`
@@ -459,6 +469,7 @@ export const parallelItemCss = html`
 
     .parallel-item-nerdy-row {
       color: var(--sc-secondary-text-color);
+      display: flex;
     }
 
     .parallel-item {
@@ -492,7 +503,7 @@ export const parallelItemCss = html`
     }
 
     .vol-page {
-      margin-right: 1rem;
+      font-stretch: condensed;
     }
 
     .book {
