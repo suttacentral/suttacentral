@@ -588,6 +588,12 @@ class SCStaticOffline extends LitLocalized(LitElement) {
         .stop {
           fill: var(--sc-icon-color);
         }
+
+        @media (max-width: 680px) {
+          .card {
+            width: 300px;
+          }
+        }
       `,
     ];
   }
@@ -741,7 +747,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
           ${this.cacheDownloadInProgress
             ? html`
                 <div class="row">
-                  <div class="card">
+                  <div class="card" id="downloading">
                     <div class="card-header">
                       ${this.localize('downloading')}: ${this.currentDownloadingUrl}
                     </div>
