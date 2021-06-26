@@ -146,16 +146,11 @@ export const suttaplexCss = html`
     }
 
     .suttaplex-nerdy-row {
-      display: inline-grid;
-      grid-auto-flow: column;
-      gap: 1rem;
-      align-items: center;
       font-family: var(--sc-sans-font);
       font-size: var(--sc-skolar-font-size-s);
       font-weight: 400;
       color: var(--sc-secondary-text-color);
       text-overflow: ellipsis;
-      white-space: nowrap;
       overflow: hidden;
     }
 
@@ -169,8 +164,13 @@ export const suttaplexCss = html`
 
     .nerdy-row-element {
       display: inline-flex;
+      flex-wrap: nowrap;
       align-items: center;
+      margin-right: 1rem;
+      line-height: 1.4;
     }
+
+
 
     .popuptext {
       overflow: visible;
@@ -257,17 +257,14 @@ export const suttaplexCss = html`
 
     .hidden {
       width: 0px;
+      height: 0px;
       opacity: 0;
     }
 
-    @media only screen and (max-width: 600px) {
-      .visible {
-        white-space: normal;
-        font-size: 12px;
-        line-height: 1;
-      }
-    }
-  </style>
+ .book {
+    width: 16px;
+    height: 16px;
+}
 `;
 
 export const suttaplexTxCss = html`
@@ -461,10 +458,6 @@ export const parallelItemCss = html`
     }
 
     .parallel-item-nerdy-row {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 100%;
-      gap: 1em;
       color: var(--sc-secondary-text-color);
     }
 
@@ -474,7 +467,10 @@ export const parallelItemCss = html`
 
     .nerdy-row-element {
       display: inline-flex;
-      place-items: center;
+      flex-wrap: nowrap;
+      align-items: center;
+      margin-right: 1rem;
+      line-height: 1.4;
     }
 
     .disabled {
@@ -499,11 +495,14 @@ export const parallelItemCss = html`
       margin-right: 1rem;
     }
 
+    .book {
+      width: 16px;
+      height: 16px;
+    }
+
     @media only screen and (max-width: 600px) {
-      .vol-page {
-        white-space: normal;
-        font-size: 12px;
-        line-height: 1;
+      .book {
+        display: none;
       }
     }
   </style>
