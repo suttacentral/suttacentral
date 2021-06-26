@@ -2,7 +2,12 @@
 import { html, css, LitElement, svg } from 'lit-element';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
-import { transformId, pickVolPage, hasTwoPTSEditions } from '../../../utils/suttaplex';
+import {
+  transformId,
+  pickVolPage,
+  hasTwoPTSEditions,
+  formatVolPages,
+} from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/sc-localization-mixin';
 import '../../menus/sc-menu-suttaplex-share';
 import './sc-parallel-list';
@@ -126,7 +131,8 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   get briefVolPage() {
     const volpages = this.item.volpages.split(',');
     if (this.item.volpages && volpages.length > 1) {
-      return `${volpages[0]} –${volpages[volpages.length - 1]}`;
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]} –${volPagesEnd}`;
     }
     return this.item.volpages;
   }
@@ -141,7 +147,8 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   get briefAltVolPage() {
     const volpages = this.item.alt_volpages.split(',');
     if (this.item.alt_volpages && volpages.length > 1) {
-      return `${volpages[0]} –${volpages[volpages.length - 1]}`;
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]} –${volPagesEnd}`;
     }
     return this.item.alt_volpages;
   }
@@ -247,6 +254,25 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     `;
   }
 
+  get volPageTemplate() {
+    return html`
+      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+        ${icon.book}
+        <span class="visible">${this.briefVolPage}</span>
+        <span class="hidden" aria-hidden="true">${this.volPage}</span>
+      </span>
+      ${this.altVolPage && this.altVolPage !== this.volPage
+        ? html`
+            <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+              ${icon.book}
+              <span class="visible">${this.briefAltVolPage}</span>
+              <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
+            </span>
+          `
+        : ''}
+    `;
+  }
+
   get nerdyRowTemplate() {
     return html`
       <div class="suttaplex-nerdy-row">
@@ -263,43 +289,11 @@ class SCSuttaplex extends LitLocalized(LitElement) {
         `}
         ${this.item.volpages &&
         html`
-          ${!this.item.biblio
-            ? html`
-                <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book}
-                  <span class="visible">${this.briefVolPage}</span>
-                  <span class="hidden" aria-hidden="true">${this.volPage}</span>
-                </span>
-                ${this.altVolPage && this.altVolPage !== this.volPage
-                  ? html`
-                      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                        ${icon.book}
-                        <span class="visible">${this.briefAltVolPage}</span>
-                        <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
-                      </span>
-                    `
-                  : ''}
-              `
-            : ''}
+          ${!this.item.biblio ? this.volPageTemplate : ''}
           ${this.item.biblio &&
           html`
             <details class="suttaplex-details">
-              <summary>
-                <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${icon.book}
-                  <span class="visible">${this.briefVolPage}</span>
-                  <span class="hidden" aria-hidden="true">${this.volPage}</span>
-                </span>
-                ${this.altVolPage && this.altVolPage !== this.volPage
-                  ? html`
-                      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                        ${icon.book}
-                        <span class="visible">${this.briefAltVolPage}</span>
-                        <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
-                      </span>
-                    `
-                  : ''}
-              </summary>
+              <summary>${this.volPageTemplate}</summary>
               <p class="volpage-biblio-info" .innerHTML="${this.item.biblio}"></p>
             </details>
           `}

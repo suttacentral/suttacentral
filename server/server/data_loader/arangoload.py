@@ -336,21 +336,25 @@ def make_yellow_brick_road(db: Database):
 
 def load_guides_file(db: Database, guides_file: Path):
     guides_content = json_load(guides_file)
+    db['guides'].truncate()
     db.collection('guides').import_bulk(guides_content)
 
 
 def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: Path):
     pali_reference_content = json_load(pali_reference_edition_file)
+    db['pali_reference_edition'].truncate()
     db.collection('pali_reference_edition').import_bulk(pali_reference_content)
 
 
 def load_root_edition_file(db: Database, root_edition_file: Path):
     root_edition_content = json_load(root_edition_file)
+    db['root_edition'].truncate()
     db.collection('root_edition').import_bulk(root_edition_content)
 
 
 def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
     text_extra_info_content = json_load(text_extra_info_file)
+    db['text_extra_info'].truncate()
     db.collection('text_extra_info').import_bulk(text_extra_info_content)
 
 
