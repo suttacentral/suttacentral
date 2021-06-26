@@ -747,7 +747,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
           ${this.cacheDownloadInProgress
             ? html`
                 <div class="row">
-                  <div class="card" id="downloading">
+                  <div class="card">
                     <div class="card-header">
                       ${this.localize('downloading')}: ${this.currentDownloadingUrl}
                     </div>
