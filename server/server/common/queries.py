@@ -984,7 +984,11 @@ LET grouped_children = MERGE(
         RETURN {[is_div ? 'branch' : 'leaf']: uids}
 )
 
-LET suttaplex = grouped_children['branch']
+LET suttaplex =  REMOVE_VALUES(grouped_children['branch'], ['long', 'middle', 'linked', 'numbered', 'minor', 'other-group',
+                                                            'dn', 'da', 'mn', 'ma', 'sn', 'sa', 'an', 'ea', 'kn', 'thig', 'thag',
+                                                            'kn', 'dhp', 'iti', 'snp', 'vv', 'pv', 'tha-ap', 'thi-ap', 'bv', 'cp',
+                                                            'ja', 'mnd', 'cnd', 'ps', 'ne', 'pe', 'mil', 'uv', 'uvs', 'pdhp', 'gdhp',
+                                                            'minor-lzh', 'avs', 'other-xct'])
 
 LET texts = (
         FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
