@@ -588,6 +588,12 @@ class SCStaticOffline extends LitLocalized(LitElement) {
         .stop {
           fill: var(--sc-icon-color);
         }
+
+        @media (max-width: 680px) {
+          .card {
+            width: 300px;
+          }
+        }
       `,
     ];
   }
