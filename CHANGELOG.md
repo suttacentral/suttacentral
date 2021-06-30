@@ -27,7 +27,6 @@
 - Fix: CSP blocks CC0 icon.
 - If dictionary entry has no definition, display the cross-reference (xr) and grammar.
 - Fix High LCP in mobile.
-- The latest update has been pushed to staging, the main changes are:
 - Fix:PWA download fails #2197
 - Improve formatting of volpage nerdy-row references  #2200
 - Replace Upper Case E and O as well during transliteration #2205
