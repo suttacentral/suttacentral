@@ -31,7 +31,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
       changeLinearProgressActiveState(active) {
@@ -51,6 +51,20 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     super();
     this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
     this.siteLanguage = store.getState().siteLanguage;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', () => {
+      this._hideTopSheets();
+    });
+  }
+
+  _hideTopSheets() {
+    const scActionItems = document
+      .querySelector('sc-site-layout')
+      .shadowRoot.querySelector('#action_items');
+    scActionItems.hideItems();
   }
 
   isSuttaplex(item) {
@@ -117,7 +131,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     try {
       const responseData = await fetch(this.apiUrl).then(r => r.json());
-
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -125,12 +138,20 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         15,
         100
       ).then(() => this._updateMetaData());
+      this.#initParallelsTableView(responseData);
     } catch (e) {
       this.networkError = e;
     }
 
     this.suttaplexLoading = false;
     this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
+  }
+
+  #initParallelsTableView(suttaPlexData) {
+    document
+      .querySelector('sc-site-layout')
+      ?.shadowRoot.querySelector('#parallel-table-view')
+      ?.init(this.categoryId);
   }
 
   _updateMetaData() {
@@ -153,7 +174,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           detail: {
             pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
             title: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
-            description: description,
+            description,
             bubbles: true,
             composed: true,
           },

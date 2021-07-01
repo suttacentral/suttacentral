@@ -1216,3 +1216,18 @@ INSERT { name: @name, is_root: false, lang: @lang, uid: @uid }
 UPDATE {
 } IN names
 '''
+
+PARALLELS_LITE = '''
+FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
+    FOR k, e IN OUTBOUND CONCAT('super_nav_details/', v.uid) relationship
+        RETURN {
+            uid: v.uid,
+            name: v.name,
+            acronym: v.acronym,
+            from: e.from,
+            to: {
+                to: e.to,
+                uid: k.uid
+            }
+        }
+'''

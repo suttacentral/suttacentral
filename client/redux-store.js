@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { compose, createStore } from 'redux';
 
 const initialState = {
@@ -63,6 +64,7 @@ const initialState = {
   displayViewModeButton: true,
   displaySuttaParallels: false,
   displaySuttaInfo: false,
+  displayParallelTableView: false,
   tableOfContents: {
     items: [],
     disableToCListStyle: false,
@@ -196,6 +198,8 @@ const reducer = (state, action) => {
       return { ...state, displaySuttaToC: action.displaySuttaToC };
     case 'CHANGE_DISPLAY_SUTTA_INFO_STATE':
       return { ...state, displaySuttaInfo: action.displaySuttaInfo };
+    case 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE':
+      return { ...state, displayParallelTableView: action.displayParallelTableView };
     case 'CHANGE_CURRENT_NAV_POSITION_STATE':
       return { ...state, currentNavPosition: action.currentNavPosition };
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':

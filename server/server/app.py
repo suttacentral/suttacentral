@@ -17,6 +17,7 @@ from api.views import (
     TipitakaMenu,
     Paragraphs,
     Parallels,
+    ParallelsLite,
     Sutta,
     SuttaplexList,
     Images,
@@ -74,6 +75,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(TipitakaMenu, '/tipitaka_menu')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
+    api.add_resource(ParallelsLite, '/parallels_lite/<path:uid>')
     api.add_resource(
         Sutta, '/suttas/<string:uid>/<string:author_uid>', '/suttas/<string:uid>'
     )

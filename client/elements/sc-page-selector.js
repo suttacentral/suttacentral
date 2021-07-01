@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { css, html, LitElement } from 'lit-element';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import RoutingService from '../utils/routingService';
@@ -286,7 +287,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
       changeDisplayToolButtonState(display) {
@@ -360,6 +361,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
         ['sutta_toc', 'sc-top-sheet-toc'],
         ['sutta-info', 'sc-top-sheet-publication-legacy'],
         ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
+        ['parallel-table-view', 'sc-top-sheet-parallel-table-view'],
       ]);
       let needToLoadTopSheets = false;
       const scSiteLayout = document.querySelector('sc-site-layout');
@@ -377,6 +379,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
         import('./addons/sc-top-sheet-parallels');
         import('./addons/sc-top-sheet-publication-legacy');
         import('./addons/sc-top-sheet-publication-bilara');
+        import('./addons/sc-top-sheet-parallel-table-view');
         // eslint-disable-next-line no-restricted-syntax
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);
@@ -387,7 +390,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   // eslint-disable-next-line class-methods-use-this
   _appendTopSheet(topSheetId, topSheetTagName, scSiteLayout) {
-    const universalToolbar = scSiteLayout?.shadowRoot.querySelector(`#universal_toolbar`);
+    const universalToolbar = scSiteLayout?.shadowRoot.querySelector('#universal_toolbar');
     const navMenu = scSiteLayout?.shadowRoot.querySelector('#static_pages_nav_menu');
     const newTopSheet = document.createElement(topSheetTagName);
     newTopSheet.id = topSheetId;
@@ -448,8 +451,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _redirectFromLegacyLink() {
-    let parts = this.router.location.pathname.split('/');
-    let partsNewIsoCode = parts.map(x => x.replace('pi-', 'pli-').replace('skt-', 'san-'));
+    const parts = this.router.location.pathname.split('/');
+    const partsNewIsoCode = parts.map(x => x.replace('pi-', 'pli-').replace('skt-', 'san-'));
     partsNewIsoCode.forEach(item => {
       if (isoCodes.indexOf(item) !== -1) {
         partsNewIsoCode.splice(partsNewIsoCode.indexOf(item), 1);
@@ -474,7 +477,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _showToast(toastType, text) {
     dispatchCustomEvent(document, 'show-sc-toast', {
-      toastType: toastType,
+      toastType,
       message: text,
     });
   }
@@ -485,7 +488,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
     dispatchCustomEvent(document, 'metadata', {
       pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
       title: `SuttaCentral—${pageName.toLowerCase()}`,
-      description: description,
+      description,
     });
 
     dispatchCustomEvent(document, 'keyword-metadata', { keywords: this.localize('metaKeywords') });
