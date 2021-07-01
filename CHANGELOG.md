@@ -33,5 +33,5 @@
 - Apply new volpage/alt_volpage data to parallels.
 - Apply new volpage/alt_volpage data to vinaya.
 - The title attribute always be the simple "Volume and page".
-- Sujato nerdy fix #2216
+- Sujato nerdy-row fix #2216
 - Make "downloading" box on Offline page fixed width. #2196
