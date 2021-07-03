@@ -77,7 +77,7 @@ class SCTopSheetParallelTableView extends SCTopSheetCommon {
   }
 
   render() {
-    return this.parallels.length
+    return this.parallels?.length
       ? html`
           <table>
             <caption>

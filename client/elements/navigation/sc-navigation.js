@@ -221,6 +221,12 @@ class SCNavigation extends LitLocalized(LitElement) {
           title,
         });
       },
+      changeDisplayParallelTableViewState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
+          displayParallelTableView: displayState,
+        });
+      },
     };
   }
 
@@ -405,6 +411,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._initPitakaCards({ dispatchState: true });
+    this.actions.changeDisplayParallelTableViewState(false);
   }
 
   updated() {

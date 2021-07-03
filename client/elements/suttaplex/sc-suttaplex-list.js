@@ -40,6 +40,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           linearProgressActive: active,
         });
       },
+      changeDisplayParallelTableViewState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
+          displayParallelTableView: displayState,
+        });
+      },
     };
   }
 
@@ -51,6 +57,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     super();
     this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
     this.siteLanguage = store.getState().siteLanguage;
+    this.actions.changeDisplayParallelTableViewState(true);
   }
 
   connectedCallback() {

@@ -303,6 +303,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
     this._displayToCButtonStateChange();
+    this.#displayParallelTableViewStateChange();
   }
 
   hideItems() {
@@ -359,8 +360,12 @@ class SCActionItems extends LitLocalized(LitElement) {
     const displayStyle = this.displayViewModeButton ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnViewCompact').style.display = displayStyle;
     this.shadowRoot.querySelector('#btnViewComfy').style.display = displayStyle;
-    this.shadowRoot.querySelector('#btnShowParallelTableView').style.display = displayStyle;
     this._viewModeChanged();
+  }
+
+  #displayParallelTableViewStateChange() {
+    const displayStyle = this.displayParallelTableView ? 'inherit' : 'none';
+    this.shadowRoot.querySelector('#btnShowParallelTableView').style.display = displayStyle;
   }
 
   _viewModeChanged() {
@@ -577,6 +582,10 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (this.tableOfContents !== !!state.tableOfContents.items.length) {
       this.tableOfContents = !!state.tableOfContents.items.length;
     }
+    if (this.displayParallelTableView !== state.displayParallelTableView) {
+      this.displayParallelTableView = state.displayParallelTableView;
+      this.#displayParallelTableViewStateChange();
+    }
   }
 
   updated(changedProps) {
@@ -585,6 +594,9 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (changedProps.has('displayViewModeButton')) {
       this._displayViewModeButtonStateChange();
+    }
+    if (changedProps.has('displayParallelTableView')) {
+      this.#displayParallelTableViewStateChange();
     }
     if (changedProps.has('colorTheme')) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
