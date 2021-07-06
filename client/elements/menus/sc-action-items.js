@@ -224,6 +224,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-action-items';
+    this.currentRoute = store.getState().currentRoute;
 
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
@@ -506,12 +507,10 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnShowParallelTableViewClick() {
-    this.displayParallelTableView = store.getState().displayParallelTableView;
     document
       .querySelector('sc-site-layout')
       ?.shadowRoot.querySelector('#parallel-table-view')
       ?.toggle();
-    this.actions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
   }
 
   _hideParallelTableView() {
@@ -585,6 +584,10 @@ class SCActionItems extends LitLocalized(LitElement) {
     if (this.displayParallelTableView !== state.displayParallelTableView) {
       this.displayParallelTableView = state.displayParallelTableView;
       this.#displayParallelTableViewStateChange();
+    }
+    if (this.currentRoute !== state.currentRoute) {
+      this.currentRoute = state.currentRoute;
+      this.actions.changeDisplayParallelTableViewState(this.currentRoute.name === 'SUTTAPLEX');
     }
   }
 
