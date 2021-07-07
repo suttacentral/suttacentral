@@ -991,14 +991,15 @@ LET suttaplex =  REMOVE_VALUES(grouped_children['branch'], ['long', 'middle', 'l
                                                             'minor-lzh', 'avs', 'other-xct'])
 
 LET texts = (
-        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
-            FILTER HAS(text, "author_uid") or LENGTH(text.muids) >= 3
-            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: HAS(text, 'author_uid') ? text.author_uid : text.muids[2]}
-            RETURN {uid, translations:(
-                FOR text IN groups
-                    COLLECT lang = text.lang INTO authors = text.author_uid
-                    RETURN {lang, authors}
-                )}
+    FOR text IN v_text FILTER text.lang IN langs AND text.uid IN grouped_children['leaf']
+        FILTER HAS(text, "author_uid") or LENGTH(text.muids) >= 3
+        COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: HAS(text, 'author_uid') ? text.author_uid : text.muids[2]}
+        RETURN {uid, translations:(
+            FOR text IN groups
+                COLLECT lang = text.lang INTO authorsOfLang = text.author_uid
+                LET authors = UNIQUE(authorsOfLang)
+                RETURN {lang, authors}
+            )}
 )
 
 RETURN {
@@ -1227,7 +1228,8 @@ FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edge
             from: e.from,
             to: {
                 to: e.to,
-                uid: k.uid
+                uid: k.uid,
+                acronym: k.acronym
             }
         }
 '''

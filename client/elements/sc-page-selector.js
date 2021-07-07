@@ -361,7 +361,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
         ['sutta_toc', 'sc-top-sheet-toc'],
         ['sutta-info', 'sc-top-sheet-publication-legacy'],
         ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
-        ['parallel-table-view', 'sc-top-sheet-parallel-table-view'],
+        ['parallel-table-view', 'sc-parallel-table-view'],
       ]);
       let needToLoadTopSheets = false;
       const scSiteLayout = document.querySelector('sc-site-layout');
@@ -379,7 +379,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
         import('./addons/sc-top-sheet-parallels');
         import('./addons/sc-top-sheet-publication-legacy');
         import('./addons/sc-top-sheet-publication-bilara');
-        import('./addons/sc-top-sheet-parallel-table-view');
+        import('./suttaplex/sc-parallel-table-view');
         // eslint-disable-next-line no-restricted-syntax
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);
