@@ -53,30 +53,45 @@ export const suttaplexListTableViewCss = html`
     table {
       margin: 3vw;
       border-collapse: collapse;
-    }
-    .sutta_uid {
-      white-space: nowrap;
+      border-top: 1px solid var(--sc-border-color);
     }
 
     tr {
-      border-bottom: 1px solid #ccc;
       vertical-align: baseline;
     }
 
     td,
     th {
       padding: 0.5em;
-      border-bottom: 1px solid #d7d7d7;
+      border-bottom: 1px solid var(--sc-border-color);
     }
 
-    .sutta_uid .uid {
+    .uid {
+      white-space: nowrap;
       color: inherit;
       text-decoration: none;
     }
 
-    caption {
-      font-weight: bold;
-      margin-bottom: 1em;
+    .uid:hover {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color);
+      text-decoration-thickness: 0.15em;
+      text-underline-offset: 0.06em;
+
+      background-color: var(--sc-primary-color-light-transparent);
+    }
+
+    .uid:active {
+      background-color: var(--sc-primary-color-light);
+    }
+
+    .uid:visited {
+      text-decoration-color: var(--sc-primary-color-dark);
+    }
+
+    .parallels .uid {
+      margin-left: 0.2em;
     }
   </style>
 `;
