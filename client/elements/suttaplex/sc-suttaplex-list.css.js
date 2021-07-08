@@ -47,3 +47,36 @@ export const suttaplexListCss = html`
     }
   </style>
 `;
+
+export const suttaplexListTableViewCss = html`
+  <style>
+    table {
+      margin: 3vw;
+      border-collapse: collapse;
+    }
+    .sutta_uid {
+      white-space: nowrap;
+    }
+
+    tr {
+      border-bottom: 1px solid #ccc;
+      vertical-align: baseline;
+    }
+
+    td,
+    th {
+      padding: 0.5em;
+      border-bottom: 1px solid #d7d7d7;
+    }
+
+    .sutta_uid .uid {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    caption {
+      font-weight: bold;
+      margin-bottom: 1em;
+    }
+  </style>
+`;

@@ -312,7 +312,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._hideSuttaParallels();
     this._hideSettingMenu();
     this._hideSuttaToC();
-    this._hideParallelTableView();
   }
 
   _onBtnInfoClick() {
@@ -507,17 +506,7 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnShowParallelTableViewClick() {
-    document
-      .querySelector('sc-site-layout')
-      ?.shadowRoot.querySelector('#parallel-table-view')
-      ?.toggle();
-  }
-
-  _hideParallelTableView() {
-    document
-      .querySelector('sc-site-layout')
-      ?.shadowRoot.querySelector('#parallel-table-view')
-      ?.hide();
+    this.actions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
   }
 
   showParallelsTopSheet() {
@@ -583,11 +572,11 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.displayParallelTableView !== state.displayParallelTableView) {
       this.displayParallelTableView = state.displayParallelTableView;
-      this.#displayParallelTableViewStateChange();
     }
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
       this.actions.changeDisplayParallelTableViewState(this.currentRoute.name === 'SUTTAPLEX');
+      this.#displayParallelTableViewStateChange();
     }
   }
 

@@ -426,6 +426,9 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   async _fetchExpansionData() {
+    if (this.expansionData) {
+      return;
+    }
     if (!expansionDataCache) {
       expansionDataCache = fetch(`${API_ROOT}/expansion`).then(r => r.json());
     }

@@ -359,7 +359,7 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.parallelsUid = params.childId;
     this.parallelsData = await this._fetchChildrenData(params.childId);
 
-    this._updateLastSelectedItemRootLangISO(this.parallelsData[0].root_lang_iso);
+    this._updateLastSelectedItemRootLangISO(this.parallelsData[0]?.root_lang_iso);
 
     if (!params.childName) {
       params.childName =
