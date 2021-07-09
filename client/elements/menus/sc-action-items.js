@@ -187,9 +187,8 @@ class SCActionItems extends LitLocalized(LitElement) {
           title="Parallels table view"
           @click="${this._onBtnShowParallelTableViewClick}"
           slot="actionItems"
-          ?hidden="${this.displayComfyButton || this.displayCompactButton}"
         >
-          ${icon.tableView}
+          ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
         </mwc-icon-button>
       </div>
     `;
@@ -230,7 +229,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.actions.changeDisplaySuttaParallelsState(false);
     this.actions.changeDisplaySuttaToCState(false);
     this.actions.changeDisplaySuttaInfoState(false);
-    this.actions.changeDisplayParallelTableViewState(false);
 
     this.tableOfContents = !!store.getState().tableOfContents.items.length;
     this.displaySettingMenu = store.getState().displaySettingMenu;
@@ -304,7 +302,8 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
     this._displayToCButtonStateChange();
-    this.#displayParallelTableViewStateChange();
+    this.#setBtnShowParallelTableViewDisplayState();
+    this.#setBtnShowParallelTableViewIcon();
   }
 
   hideItems() {
@@ -363,8 +362,8 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._viewModeChanged();
   }
 
-  #displayParallelTableViewStateChange() {
-    const displayStyle = this.displayParallelTableView ? 'inherit' : 'none';
+  #setBtnShowParallelTableViewDisplayState() {
+    const displayStyle = this.currentRoute.name === 'SUTTAPLEX' ? 'inherit' : 'none';
     this.shadowRoot.querySelector('#btnShowParallelTableView').style.display = displayStyle;
   }
 
@@ -506,7 +505,16 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnShowParallelTableViewClick() {
+    this.shadowRoot.querySelector('#btnShowParallelTableView').icon = !this.displayParallelTableView
+      ? icon.tableView_twotone
+      : icon.tableView;
     this.actions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
+  }
+
+  #setBtnShowParallelTableViewIcon() {
+    this.shadowRoot.querySelector('#btnShowParallelTableView').icon = this.displayParallelTableView
+      ? icon.tableView_twotone
+      : icon.tableView;
   }
 
   showParallelsTopSheet() {
@@ -575,8 +583,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
-      this.actions.changeDisplayParallelTableViewState(this.currentRoute.name === 'SUTTAPLEX');
-      this.#displayParallelTableViewStateChange();
+      this.#setBtnShowParallelTableViewDisplayState();
     }
   }
 
@@ -586,9 +593,6 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (changedProps.has('displayViewModeButton')) {
       this._displayViewModeButtonStateChange();
-    }
-    if (changedProps.has('displayParallelTableView')) {
-      this.#displayParallelTableViewStateChange();
     }
     if (changedProps.has('colorTheme')) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';

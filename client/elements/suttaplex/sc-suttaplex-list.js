@@ -44,12 +44,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           linearProgressActive: active,
         });
       },
-      changeDisplayParallelTableViewState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
-          displayParallelTableView: displayState,
-        });
-      },
     };
   }
 
@@ -62,6 +56,18 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
     this.siteLanguage = store.getState().siteLanguage;
     this.displayParallelTableView = store.getState().displayParallelTableView;
+    this.#showTableViewButton();
+  }
+
+  #showTableViewButton() {
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
+    const btnShowParallelTableView = scActionItems.shadowRoot.querySelector(
+      '#btnShowParallelTableView'
+    );
+    if (btnShowParallelTableView) {
+      btnShowParallelTableView.style.display = 'inherit';
+    }
   }
 
   connectedCallback() {
@@ -69,7 +75,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.addEventListener('click', () => {
       this._hideTopSheets();
     });
-    this.actions.changeDisplayParallelTableViewState(true);
     this._fetchExpansionData();
   }
 
@@ -223,20 +228,28 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       if (parallels) {
         parallels.to.push({
           to: item.to.to,
-          toTitle: item.to.to.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('~', ''),
+          toTitle: item.to.to
+            .replaceAll('#', ':')
+            .replaceAll('-:', '-')
+            .replaceAll('~', '')
+            .replaceAll('-', '–'),
           uid: item.to.uid,
           acronym: item.to.acronym ? item.to.acronym : transformId(item.to.uid, this.expansionData),
         });
       } else {
         this.parallelsLite.push({
           from: item.from,
-          fromTitle: item.from.replaceAll('#', ':').replaceAll('-:', '-'),
+          fromTitle: item.from.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–'),
           name: item.name,
           acronym: item.acronym,
           to: [
             {
               to: item.to.to,
-              toTitle: item.to.to.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('~', ''),
+              toTitle: item.to.to
+                .replaceAll('#', ':')
+                .replaceAll('-:', '-')
+                .replaceAll('~', '')
+                .replaceAll('-', '–'),
               uid: item.to.uid,
               acronym: item.to.acronym
                 ? item.to.acronym
@@ -337,7 +350,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      ${cache(this.displayParallelTableView ? this.normalViewTemplate() : this.tableViewTemplate())}
+      ${cache(this.displayParallelTableView ? this.tableViewTemplate() : this.normalViewTemplate())}
     `;
   }
 }

@@ -27,6 +27,7 @@ export function transformId(rootId, expansionData, idOrName = 0) {
       }
     });
     scAcronym = scAcronym.replace(/–\s*$/, '');
+    scAcronym = scAcronym.replaceAll('-', '–');
 
     return `${scAcronym}${idPart}`;
   } catch (e) {
