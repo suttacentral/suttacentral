@@ -505,9 +505,6 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnShowParallelTableViewClick() {
-    this.shadowRoot.querySelector('#btnShowParallelTableView').icon = !this.displayParallelTableView
-      ? icon.tableView_twotone
-      : icon.tableView;
     this.actions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
   }
 
@@ -515,6 +512,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnShowParallelTableView').icon = this.displayParallelTableView
       ? icon.tableView_twotone
       : icon.tableView;
+    this.requestUpdate();
   }
 
   showParallelsTopSheet() {
@@ -580,6 +578,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.displayParallelTableView !== state.displayParallelTableView) {
       this.displayParallelTableView = state.displayParallelTableView;
+      this.#setBtnShowParallelTableViewIcon();
     }
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
