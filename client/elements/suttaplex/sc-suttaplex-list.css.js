@@ -52,18 +52,22 @@ export const suttaplexListTableViewCss = html`
   <style>
     table {
       margin: 3vw;
+      display: flex;
+      justify-content: center;
       border-collapse: collapse;
-      border-top: 1px solid var(--sc-border-color);
     }
 
     tr {
       vertical-align: baseline;
+      border-bottom: 1px solid var(--sc-border-color);
+    }
+    tr:first-of-type {
+      border-top: 1px solid var(--sc-border-color);
     }
 
     td,
     th {
       padding: 0.5em;
-      border-bottom: 1px solid var(--sc-border-color);
     }
 
     .uid {
