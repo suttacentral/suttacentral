@@ -967,7 +967,7 @@ LET langs = UNION(@languages ? @languages : [], @include_root ? (
     ) : [])
 
 LET menu = (
-    FOR div IN 1..1 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
+    FOR div IN 1..6 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
         LET has_subdivisions = LENGTH(
             FOR d, d_edge, d_path IN 1..1 OUTBOUND div super_nav_details_edges
                 FILTER d_edge.type != 'leaf'
@@ -1220,16 +1220,23 @@ UPDATE {
 
 PARALLELS_LITE = '''
 FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
-    FOR k, e IN OUTBOUND CONCAT('super_nav_details/', v.uid) relationship
-        RETURN {
-            uid: v.uid,
-            name: v.name,
-            acronym: v.acronym,
-            from: e.from,
-            to: {
-                to: e.to,
-                uid: k.uid,
-                acronym: k.acronym
+    FILTER v.type == 'leaf'
+    LET parallels = (
+        FOR k, e IN OUTBOUND CONCAT('super_nav_details/', v.uid) relationship
+            RETURN {
+                from: e.from,
+                to: {
+                    to: e.to,
+                    uid: k.uid,
+                    acronym: k.acronym
+                }
             }
-        }
+    )
+
+    RETURN {
+        uid: v.uid,
+        name: v.name,
+        acronym: v.acronym,
+        parallels: parallels
+    }
 '''

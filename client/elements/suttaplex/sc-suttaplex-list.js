@@ -224,39 +224,60 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.parallelsLite = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const item of this.suttaplexItem) {
-      const parallels = this.parallelsLite.find(x => x.from === item.from);
-      if (parallels) {
-        parallels.to.push({
-          to: item.to.to,
-          toTitle: item.to.to
-            .replaceAll('#', ':')
-            .replaceAll('-:', '-')
-            .replaceAll('~', '')
-            .replaceAll('-', '–'),
-          uid: item.to.uid,
-          acronym: item.to.acronym ? item.to.acronym : transformId(item.to.uid, this.expansionData),
-        });
-      } else {
+      if (item.parallels?.length === 0) {
         this.parallelsLite.push({
-          from: item.from,
-          fromTitle: item.from.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–'),
+          uid: item.uid,
+          from: item.uid,
+          fromTitle: item.uid,
           name: item.name,
           acronym: item.acronym,
-          to: [
-            {
-              to: item.to.to,
-              toTitle: item.to.to
+          to: [],
+        });
+      } else {
+        for (const parallel of item.parallels) {
+          const parallels = this.parallelsLite.find(
+            x => x.from === parallel.from && x.uid === item.uid
+          );
+          if (parallels) {
+            parallels.to.push({
+              to: parallel.to.to,
+              toTitle: parallel.to.to
                 .replaceAll('#', ':')
                 .replaceAll('-:', '-')
                 .replaceAll('~', '')
                 .replaceAll('-', '–'),
-              uid: item.to.uid,
-              acronym: item.to.acronym
-                ? item.to.acronym
-                : transformId(item.to.uid, this.expansionData),
-            },
-          ],
-        });
+              uid: parallel.to.uid,
+              acronym: parallel.to.acronym
+                ? parallel.to.acronym
+                : transformId(parallel.to.uid, this.expansionData),
+            });
+          } else {
+            this.parallelsLite.push({
+              uid: item.uid,
+              from: parallel.from,
+              fromTitle: parallel.from
+                .replaceAll('#', ':')
+                .replaceAll('-:', '-')
+                .replaceAll('-', '–'),
+              name: item.name,
+              acronym: item.acronym,
+              to: [
+                {
+                  to: parallel.to.to,
+                  toTitle: parallel.to.to
+                    .replaceAll('#', ':')
+                    .replaceAll('-:', '-')
+                    .replaceAll('~', '')
+                    .replaceAll('-', '–'),
+                  uid: parallel.to.uid,
+                  acronym: parallel.to.acronym
+                    ? parallel.to.acronym
+                    : transformId(parallel.to.uid, this.expansionData),
+                },
+              ],
+            });
+          }
+        }
       }
     }
   }
