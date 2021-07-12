@@ -164,10 +164,8 @@ class SCParallelItem extends LitLocalized(LitElement) {
     `;
   }
 
-  render() {
+  normalViewTemplate() {
     return html`
-      ${parallelItemCss}
-
       <a href="${this.parallelUrl}" class="${this.parallelUrl ? '' : 'disabled'}">
         <div class="parallel-item">
           <div class="parallel-item-main-info-container">
@@ -237,6 +235,10 @@ class SCParallelItem extends LitLocalized(LitElement) {
         </div>
       </a>
     `;
+  }
+
+  render() {
+    return html` ${parallelItemCss} ${this.normalViewTemplate()} `;
   }
 }
 

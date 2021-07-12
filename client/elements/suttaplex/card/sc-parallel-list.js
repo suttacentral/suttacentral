@@ -104,6 +104,7 @@ class SCParallels extends LitLocalized(LitElement) {
     const authorUid = (this.rootText || {}).author_uid || '';
     return `/${this.itemUid}/${this.rootLang}/${authorUid}${getParagraphRange(rootId, true)}`;
   }
+
   get actions() {
     return {
       changeLinearProgressActiveState(active) {

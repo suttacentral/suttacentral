@@ -14,6 +14,7 @@ from .views import (
     TipitakaMenu,
     Paragraphs,
     Parallels,
+    ParallelsLite,
     Sutta,
     SuttaplexList,
     Images,

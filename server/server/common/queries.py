@@ -967,7 +967,7 @@ LET langs = UNION(@languages ? @languages : [], @include_root ? (
     ) : [])
 
 LET menu = (
-    FOR div IN 1..1 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
+    FOR div IN 1..6 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
         LET has_subdivisions = LENGTH(
             FOR d, d_edge, d_path IN 1..1 OUTBOUND div super_nav_details_edges
                 FILTER d_edge.type != 'leaf'
@@ -991,14 +991,15 @@ LET suttaplex =  REMOVE_VALUES(grouped_children['branch'], ['long', 'middle', 'l
                                                             'minor-lzh', 'avs', 'other-xct'])
 
 LET texts = (
-        FOR text IN v_text SEARCH text.lang IN langs AND text.uid IN grouped_children['leaf']
-            FILTER HAS(text, "author_uid") or LENGTH(text.muids) >= 3
-            COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: HAS(text, 'author_uid') ? text.author_uid : text.muids[2]}
-            RETURN {uid, translations:(
-                FOR text IN groups
-                    COLLECT lang = text.lang INTO authors = text.author_uid
-                    RETURN {lang, authors}
-                )}
+    FOR text IN v_text FILTER text.lang IN langs AND text.uid IN grouped_children['leaf']
+        FILTER HAS(text, "author_uid") or LENGTH(text.muids) >= 3
+        COLLECT uid = text.uid INTO groups = {lang: text.lang, author_uid: HAS(text, 'author_uid') ? text.author_uid : text.muids[2]}
+        RETURN {uid, translations:(
+            FOR text IN groups
+                COLLECT lang = text.lang INTO authorsOfLang = text.author_uid
+                LET authors = UNIQUE(authorsOfLang)
+                RETURN {lang, authors}
+            )}
 )
 
 RETURN {
@@ -1215,4 +1216,27 @@ UPSERT { uid: @uid, lang: @lang }
 INSERT { name: @name, is_root: false, lang: @lang, uid: @uid }
 UPDATE {
 } IN names
+'''
+
+PARALLELS_LITE = '''
+FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
+    FILTER v.type == 'leaf'
+    LET parallels = (
+        FOR k, e IN OUTBOUND CONCAT('super_nav_details/', v.uid) relationship
+            RETURN {
+                from: e.from,
+                to: {
+                    to: e.to,
+                    uid: k.uid,
+                    acronym: k.acronym
+                }
+            }
+    )
+
+    RETURN {
+        uid: v.uid,
+        name: v.name,
+        acronym: v.acronym,
+        parallels: parallels
+    }
 '''

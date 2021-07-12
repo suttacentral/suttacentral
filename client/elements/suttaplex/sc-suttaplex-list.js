@@ -1,10 +1,11 @@
 import { html, LitElement } from 'lit-element';
+import { cache } from 'lit-html/directives/cache.js';
 import { repeat } from 'lit-html/directives/repeat';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
 import { LitLocalized } from '../addons/sc-localization-mixin';
-import { suttaplexListCss } from './sc-suttaplex-list.css.js';
+import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
 import('./card/sc-suttaplex.js');
@@ -14,6 +15,7 @@ import {
   setNavigation,
   setCurrentNavPosition,
 } from '../navigation/sc-navigation-common';
+import { transformId } from '../../utils/suttaplex';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
@@ -23,6 +25,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       suttaplexListDisplay: String,
       suttaplexData: Array,
       networkError: Object,
+      parallelsLite: Array,
+      expansionData: Array,
     };
   }
 
@@ -31,7 +35,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
       changeLinearProgressActiveState(active) {
@@ -51,6 +55,38 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     super();
     this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
     this.siteLanguage = store.getState().siteLanguage;
+    this.displayParallelTableView = store.getState().displayParallelTableView;
+    this.#showTableViewButton();
+  }
+
+  #showTableViewButton() {
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
+    const btnShowParallelTableView = scActionItems.shadowRoot.querySelector(
+      '#btnShowParallelTableView'
+    );
+    if (btnShowParallelTableView) {
+      btnShowParallelTableView.style.display = 'inherit';
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', () => {
+      this._hideTopSheets();
+    });
+    this._fetchExpansionData();
+  }
+
+  async _fetchExpansionData() {
+    this.expansionData = await fetch(`${API_ROOT}/expansion`).then(r => r.json());
+  }
+
+  _hideTopSheets() {
+    const scActionItems = document
+      .querySelector('sc-site-layout')
+      .shadowRoot.querySelector('#action_items');
+    scActionItems.hideItems();
   }
 
   isSuttaplex(item) {
@@ -108,6 +144,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
       this.suttaplexListDisplay = state.suttaplexListDisplay;
     }
+    if (this.displayParallelTableView !== state.displayParallelTableView) {
+      this.displayParallelTableView = state.displayParallelTableView;
+      this.requestUpdate();
+    }
   }
 
   async _fetchCategory() {
@@ -117,7 +157,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     try {
       const responseData = await fetch(this.apiUrl).then(r => r.json());
-
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -125,6 +164,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         15,
         100
       ).then(() => this._updateMetaData());
+      this.initTableView();
     } catch (e) {
       this.networkError = e;
     }
@@ -143,7 +183,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       }
 
       const navArray = store.getState().navigationArray;
-      const currentNav = navArray.find(x => x !== null && x.groupId === this.suttaplexData[0].uid);
+      const currentNav = navArray.find(x => x !== null && x?.groupId === this.suttaplexData[0].uid);
       if (this.suttaplexData[0].type === 'leaf' || !currentNav) {
         this._updateNav();
       }
@@ -153,7 +193,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           detail: {
             pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
             title: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
-            description: description,
+            description,
             bubbles: true,
             composed: true,
           },
@@ -177,6 +217,71 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     setCurrentNavPosition(navIndexesOfType.position);
   }
 
+  async initTableView() {
+    this.suttaplexItem = await (
+      await fetch(`${API_ROOT}/parallels_lite/${this.categoryId}`)
+    ).json();
+    this.parallelsLite = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of this.suttaplexItem) {
+      if (item.parallels?.length === 0) {
+        this.parallelsLite.push({
+          uid: item.uid,
+          from: item.uid,
+          fromTitle: item.uid,
+          name: item.name,
+          acronym: item.acronym,
+          to: [],
+        });
+      } else {
+        for (const parallel of item.parallels) {
+          const parallels = this.parallelsLite.find(
+            x => x.from === parallel.from && x.uid === item.uid
+          );
+          if (parallels) {
+            parallels.to.push({
+              to: parallel.to.to,
+              toTitle: parallel.to.to
+                .replaceAll('#', ':')
+                .replaceAll('-:', '-')
+                .replaceAll('~', '')
+                .replaceAll('-', '–'),
+              uid: parallel.to.uid,
+              acronym: parallel.to.acronym
+                ? parallel.to.acronym
+                : transformId(parallel.to.uid, this.expansionData),
+            });
+          } else {
+            this.parallelsLite.push({
+              uid: item.uid,
+              from: parallel.from,
+              fromTitle: parallel.from
+                .replaceAll('#', ':')
+                .replaceAll('-:', '-')
+                .replaceAll('-', '–'),
+              name: item.name,
+              acronym: item.acronym,
+              to: [
+                {
+                  to: parallel.to.to,
+                  toTitle: parallel.to.to
+                    .replaceAll('#', ':')
+                    .replaceAll('-:', '-')
+                    .replaceAll('~', '')
+                    .replaceAll('-', '–'),
+                  uid: parallel.to.uid,
+                  acronym: parallel.to.acronym
+                    ? parallel.to.acronym
+                    : transformId(parallel.to.uid, this.expansionData),
+                },
+              ],
+            });
+          }
+        }
+      }
+    }
+  }
+
   suttaplexTemplate(item) {
     return html`
       <sc-suttaplex
@@ -184,6 +289,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .parallelsOpened="${this.areParallelsOpen(item)}"
         .difficulty="${this.computeItemDifficulty(item.difficulty)}"
         .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}"
+        .expansionData="${this.expansionData}"
       ></sc-suttaplex>
     `;
   }
@@ -202,10 +308,54 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     `;
   }
 
-  render() {
+  tableViewTemplate() {
+    return this.parallelsLite?.length
+      ? html`
+          ${suttaplexListTableViewCss}
+          <table>
+            <tbody>
+              ${this.parallelsLite.map(
+                item => html`
+                  <tr>
+                    <td class="sutta_uid">
+                      <a class="uid" href="/${item.from}"
+                        >${item.acronym || item.from}${item.fromTitle.split(':').length > 1
+                          ? ':' + item.fromTitle.split(':')[1]
+                          : ''}</a
+                      >
+                    </td>
+                    <td class="sutta_title">${item.name}</td>
+                    <td class="parallels">
+                      ${item.to.map(
+                        (to, i) => html`
+                          ${item.to.length !== i + 1
+                            ? html`<a class="uid" href="/${to.uid}"
+                                  >${to.acronym || to.uid}${to.toTitle.split(':').length > 1
+                                    ? ':' + to.toTitle.split(':')[1]
+                                    : ''}</a
+                                >,`
+                            : html`
+                                <a class="uid" href="/${to.uid}"
+                                  >${to.acronym || to.uid}${to.toTitle.split(':').length > 1
+                                    ? ':' + to.toTitle.split(':')[1]
+                                    : ''}</a
+                                >
+                              `}
+                        `
+                      )}
+                    </td>
+                  </tr>
+                `
+              )}
+            </tbody>
+          </table>
+        `
+      : '';
+  }
+
+  normalViewTemplate() {
     return html`
       ${suttaplexListCss}
-
       <div class="division-content main">
         ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}
         ${this.suttaplexData &&
@@ -216,6 +366,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             this.isSuttaplex(item) ? this.suttaplexTemplate(item) : this.sectionTemplate(item)
         )}
       </div>
+    `;
+  }
+
+  render() {
+    return html`
+      ${cache(this.displayParallelTableView ? this.tableViewTemplate() : this.normalViewTemplate())}
     `;
   }
 }

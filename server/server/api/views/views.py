@@ -38,6 +38,7 @@ from common.queries import (
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
     AVAILABLE_VOICES,
+    PARALLELS_LITE
 )
 
 from common.utils import (
@@ -464,6 +465,13 @@ class Parallels(Resource):
 
         return data, 200
 
+class ParallelsLite(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        db = get_db()
+        uid = uid.replace('/', '-').strip('-')
+        data = db.aql.execute(PARALLELS_LITE, bind_vars={'uid': uid})
+        return list(data), 200
 
 class Sutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -8,100 +8,112 @@ Base toolbar that appears on the top right in the header of every page.
 */
 
 class SCActionItems extends LitLocalized(LitElement) {
-  render() {
-    return html`
-      <style>
-        .white-icon {
-          color: var(--sc-tertiary-text-color);
-        }
+  static get styles() {
+    return css`
+      .white-icon {
+        color: var(--sc-tertiary-text-color);
+      }
 
-        #tools_menu {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          gap: 4px;
-        }
+      #tools_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 4px;
+      }
 
-        .invisible {
-          display: none;
+      .invisible {
+        display: none;
+      }
+
+      .toolButtons {
+        position: relative;
+        box-sizing: border-box;
+        border-bottom: 4px solid transparent;
+        height: 100%;
+      }
+
+      #btnViewCompact:after,
+      #btnViewComfy:after,
+      #btnTools:after,
+      #btnInfo:after,
+      #btnShowParallels:after,
+      #btnShowToC:after,
+      #btnShowParallelTableView:after {
+        font-size: var(--sc-skolar-font-size-xxs);
+        font-weight: 600;
+        font-stretch: condensed;
+
+        position: absolute;
+        bottom: 4px;
+
+        width: 100%;
+
+        text-align: center;
+      }
+
+      #btnViewCompact:after {
+        content: 'spacing';
+      }
+
+      #btnViewComfy:after {
+        content: 'spacing';
+      }
+
+      #btnTools:after {
+        content: 'views';
+      }
+
+      #btnInfo:after {
+        content: 'info';
+      }
+
+      #btnShowParallels,
+      #btnShowParallelTableView {
+        display: flex;
+      }
+
+      #btnShowParallels:after {
+        content: 'parallels';
+      }
+
+      #btnShowToC:after {
+        content: 'contents';
+      }
+
+      #btnShowParallelTableView:after {
+        content: 'TableView';
+      }
+
+      .active-light {
+        font-weight: 800;
+        border-bottom: 4px solid var(--sc-primary-color-light) !important;
+      }
+
+      .active-dark {
+        font-weight: 800;
+        border-bottom: 4px solid var(--sc-primary-color-dark) !important;
+      }
+
+      @media only screen and (max-width: 600px) {
+        #tools_menu.contextToolbarExpand {
+          width: 100%;
+          justify-content: space-around;
+          align-items: flex-end;
         }
 
         .toolButtons {
-          position: relative;
-          box-sizing: border-box;
-          border-bottom: 4px solid transparent;
-          height: 100%;
+          box-sizing: content-box;
         }
+      }
 
-        #btnViewCompact:after,
-        #btnViewComfy:after,
-        #btnTools:after,
-        #btnInfo:after,
-        #btnShowParallels:after,
-        #btnShowToC:after {
-          font-size: var(--sc-skolar-font-size-xxs);
-          font-weight: 600;
-          font-stretch: condensed;
+      .icon {
+        fill: var(--sc-tertiary-text-color);
+      }
+    `;
+  }
 
-          position: absolute;
-          bottom: 4px;
-
-          width: 100%;
-
-          text-align: center;
-        }
-
-        #btnViewCompact:after {
-          content: 'spacing';
-        }
-
-        #btnViewComfy:after {
-          content: 'spacing';
-        }
-
-        #btnTools:after {
-          content: 'views';
-        }
-
-        #btnInfo:after {
-          content: 'info';
-        }
-
-        #btnShowParallels {
-          display: flex;
-        }
-
-        #btnShowParallels:after {
-          content: 'parallels';
-        }
-
-        #btnShowToC:after {
-          content: 'contents';
-        }
-
-        .active-light {
-          font-weight: 800;
-          border-bottom: 4px solid var(--sc-primary-color-light) !important;
-        }
-
-        .active-dark {
-          font-weight: 800;
-          border-bottom: 4px solid var(--sc-primary-color-dark) !important;
-        }
-
-        @media only screen and (max-width: 600px) {
-          #tools_menu.contextToolbarExpand {
-            width: 100%;
-            justify-content: space-around;
-            align-items: flex-end;
-          }
-
-          .toolButtons {
-            box-sizing: content-box;
-          }
-        }
-      </style>
-
+  render() {
+    return html`
       <div id="tools_menu">
         <mwc-icon-button
           class="white-icon toolButtons"
@@ -168,6 +180,16 @@ class SCActionItems extends LitLocalized(LitElement) {
         >
           ${icon.parallels}
         </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnShowParallelTableView"
+          title="Parallels table view"
+          @click="${this._onBtnShowParallelTableViewClick}"
+          slot="actionItems"
+        >
+          ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
+        </mwc-icon-button>
       </div>
     `;
   }
@@ -201,6 +223,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/sc-action-items';
+    this.currentRoute = store.getState().currentRoute;
 
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
@@ -212,6 +235,7 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.displayToolButton = store.getState().displayToolButton;
     this.displayInfoButton = store.getState().displayInfoButton;
     this.displayViewModeButton = store.getState().displayViewModeButton;
+    this.displayParallelTableView = store.getState().displayParallelTableView;
   }
 
   get actions() {
@@ -219,13 +243,13 @@ class SCActionItems extends LitLocalized(LitElement) {
       toggleSuttaplexDisplay(suttaplexdisplay) {
         store.dispatch({
           type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay: suttaplexdisplay,
+          suttaplexdisplay,
         });
       },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
       saveToolbarTitle(title) {
@@ -246,12 +270,6 @@ class SCActionItems extends LitLocalized(LitElement) {
           displayToolButton: display,
         });
       },
-      toggleSuttaplexDisplay(view) {
-        store.dispatch({
-          type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay: view,
-        });
-      },
       changeDisplaySuttaParallelsState(displayState) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
@@ -270,6 +288,12 @@ class SCActionItems extends LitLocalized(LitElement) {
           displaySuttaInfo: displayState,
         });
       },
+      changeDisplayParallelTableViewState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
+          displayParallelTableView: displayState,
+        });
+      },
     };
   }
 
@@ -278,6 +302,8 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._displayViewModeButtonStateChange();
     this._viewModeChanged();
     this._displayToCButtonStateChange();
+    this.#setBtnShowParallelTableViewDisplayState();
+    this.#setBtnShowParallelTableViewIcon();
   }
 
   hideItems() {
@@ -334,6 +360,11 @@ class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnViewCompact').style.display = displayStyle;
     this.shadowRoot.querySelector('#btnViewComfy').style.display = displayStyle;
     this._viewModeChanged();
+  }
+
+  #setBtnShowParallelTableViewDisplayState() {
+    const displayStyle = this.currentRoute.name === 'SUTTAPLEX' ? 'inherit' : 'none';
+    this.shadowRoot.querySelector('#btnShowParallelTableView').style.display = displayStyle;
   }
 
   _viewModeChanged() {
@@ -473,6 +504,17 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
+  _onBtnShowParallelTableViewClick() {
+    this.actions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
+  }
+
+  #setBtnShowParallelTableViewIcon() {
+    this.shadowRoot.querySelector('#btnShowParallelTableView').icon = this.displayParallelTableView
+      ? icon.tableView_twotone
+      : icon.tableView;
+    this.requestUpdate();
+  }
+
   showParallelsTopSheet() {
     this._onBtnShowParallelsClick();
   }
@@ -533,6 +575,14 @@ class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.tableOfContents !== !!state.tableOfContents.items.length) {
       this.tableOfContents = !!state.tableOfContents.items.length;
+    }
+    if (this.displayParallelTableView !== state.displayParallelTableView) {
+      this.displayParallelTableView = state.displayParallelTableView;
+      this.#setBtnShowParallelTableViewIcon();
+    }
+    if (this.currentRoute !== state.currentRoute) {
+      this.currentRoute = state.currentRoute;
+      this.#setBtnShowParallelTableViewDisplayState();
     }
   }
 
