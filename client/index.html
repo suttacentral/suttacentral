@@ -137,15 +137,20 @@
     <!-- Register pre-caching service worker -->
     <script async>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw-generated.js').catch(function (err) {
-            console.log(
-              'The precaching service worker did not load correctly!' +
-                'Local resources will not be cached for offline use.' +
-                'Ignore this if you are running in development mode.',
-              err
-            );
-          });
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw-generated.js')
+            .then(registration => {
+              console.log('SW registered:', registration);
+            })
+            .catch(registrationError => {
+              console.log(
+                'The precaching service worker did not load correctly!' +
+                  'Local resources will not be cached for offline use.' +
+                  'Ignore this if you are running in development mode.',
+                registrationError
+              );
+            });
         });
       }
     </script>

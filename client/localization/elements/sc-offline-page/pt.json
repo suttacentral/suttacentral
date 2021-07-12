@@ -20,7 +20,7 @@
         "networkLost": "Sem conexão. Download pausado.",
         "networkRecovered": "Conexão retomada. Download retomado.",
         "downloadComplete": "Download completo. É possível agora ler os suttas em {lang} sem conexão à rede.",
-        "downloadErrored": "Erro! Não foi possível fazer download dos textos escolhidos. Ao todo, {failed} de # {total} solicitações não foram bem-sucedidas.",
+        "downloadErrored": "Download completo, Não foi possível fazer download dos textos escolhidos. Ao todo, {failed} de # {total} solicitações não foram bem-sucedidas.",
         "networkError": "Erro de rede.",
         "downloadParallels": "Incluir textos paralelos ou comparáveis",
         "downloadParallelsDescription": "Selecione para realizar também o download de tabelas de textos paralelos ou comparáveis.",

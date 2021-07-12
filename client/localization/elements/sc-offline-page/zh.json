@@ -20,7 +20,7 @@
         "networkLost": "失去网络连接。暂停下载",
         "networkRecovered": "网络连接已恢复。恢复下载",
         "downloadComplete": "下载完成。现在可以离线阅读{lang}经文。",
-        "downloadErrored": "错误！我们无法下载所请求的文本。{total}请求中的{failed}未完成。",
+        "downloadErrored": "下载完成，但有部分文件未能下载，{total}请求中的{failed}未完成。",
         "networkError": "网络错误",
         "downloadParallels": "包括平行文本",
         "downloadParallelsDescription": "选择下载文本的平行表。",

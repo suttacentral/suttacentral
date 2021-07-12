@@ -28,18 +28,24 @@ module.exports = {
       },
     }),
     new WorkboxPlugin.GenerateSW({
+      cacheId: 'SuttaCentral PWA',
       swDest: 'sw-generated.js',
       skipWaiting: true,
       clientsClaim: true,
       importScripts: ['node_modules/workbox-sw/build/workbox-sw.js'],
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       runtimeCaching: [
         {
           urlPattern: new RegExp('/api/((?!ebook).*)'),
-          handler: 'NetworkFirst',
+          handler: 'StaleWhileRevalidate',
+        },
+        {
+          urlPattern: /\.(?:js|css|html|map|json|ico)$/,
+          handler: 'StaleWhileRevalidate',
         },
         {
           urlPattern: new RegExp('/node_modules/(.*)'),
-          handler: 'NetworkFirst',
+          handler: 'StaleWhileRevalidate',
         },
         {
           urlPattern: new RegExp('/search'),
