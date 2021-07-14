@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
 import { LitElement, html, css, svg } from 'lit-element';
 import { queue } from 'd3-queue';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
@@ -145,6 +147,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     this.downloadProgressPercentage = 0;
     this.downloadedUrls = store.getState().downloadedUrls;
     this.isCanceled = false;
+    this.siteLanguage = store.getState().siteLanguage;
   }
 
   connectedCallback() {
@@ -161,6 +164,13 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     this.downloadSizeFromComputed = this._calculateTotalDownloadSize();
     this.downloadSize = this._setDownloadSize();
     this._handleNetworkLoss();
+  }
+
+  _stateChanged(state) {
+    super._stateChanged(state);
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+    }
   }
 
   _handleNetworkLoss() {
@@ -349,7 +359,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       } else if (failed > 0 && passed > 0) {
         this._showToast(
           'error',
-          this.localize('downloadErrored', 'failed', failed, 'total', passed + failed)
+          this.localizeEx('downloadErrored', 'failed', failed, 'total', passed + failed)
         );
       } else {
         this._showToast('error', this.localize('networkError'));
@@ -409,22 +419,28 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   _buildUrlList(response) {
     const menuURLs = response.menu.map(menuId => this._getMenuUrl(menuId));
+    const suttaFullPathURLs = response.menu.map(menuId => this.#getSuttaFullPath(menuId));
     const suttaplexURLs = response.suttaplex.map(suttaplexId => this._getSuttaplexUrl(suttaplexId));
     const suttaTextURLs = this._buildSuttaTextUrlList(response);
     const parallelURLs = this.shouldDownloadParallels
       ? response.texts.map(text => this._getParallelUrl(text.uid))
       : [];
     const paragraphURLs = this._getParagraphUrls();
+    const expansionURL = this.#getExpansionUrl();
+    const rootEditionURL = this.#getRootEdition();
     const lookupURLs = this._buildLookupUrlList(
       this.paliLookupLanguages,
       this.chineseLookupLanguages
     );
 
     return menuURLs
+      .concat(suttaFullPathURLs)
       .concat(suttaplexURLs)
       .concat(suttaTextURLs)
       .concat(parallelURLs)
       .concat(paragraphURLs)
+      .concat(expansionURL)
+      .concat(rootEditionURL)
       .concat(lookupURLs)
       .map(url => ({ url, done: false }));
   }
@@ -435,6 +451,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       text.translations.forEach(translation => {
         translation.authors.forEach(author => {
           suttaTextURLs.push(this._getSuttaTextUrl(text.uid, author, translation.lang));
+          suttaTextURLs.push(this._getBilaraSuttaTextUrl(text.uid, author, translation.lang));
         });
       });
     });
@@ -443,6 +460,10 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   _getMenuUrl(menuItemId) {
     return `${API_ROOT}/menu/${menuItemId}?language=${this.chosenLanguageIsoCode}`;
+  }
+
+  #getSuttaFullPath(menuItemId) {
+    return `${API_ROOT}/suttafullpath/${menuItemId}`;
   }
 
   _getSuttaplexUrl(suttaplexId) {
@@ -455,6 +476,14 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   _getParagraphUrls() {
     return `${API_ROOT}/paragraphs`;
+  }
+
+  #getExpansionUrl() {
+    return `${API_ROOT}/expansion`;
+  }
+
+  #getRootEdition() {
+    return `${API_ROOT}/root_edition`;
   }
 
   _buildLookupUrlList(paliLookups, chineseLookups) {
@@ -480,7 +509,11 @@ class SCStaticOffline extends LitLocalized(LitElement) {
   }
 
   _getSuttaTextUrl(suttaId, authorId, langIsoCode) {
-    return `${API_ROOT}/suttas/${suttaId}/${authorId}?lang=${langIsoCode}`;
+    return `${API_ROOT}/suttas/${suttaId}/${authorId}?lang=${langIsoCode}&siteLanguage=${this.siteLanguage}`;
+  }
+
+  _getBilaraSuttaTextUrl(suttaId, authorId, langIsoCode) {
+    return `${API_ROOT}/bilarasuttas/${suttaId}/${authorId}?lang=${langIsoCode}`;
   }
 
   _showToast(type, inputMessage) {

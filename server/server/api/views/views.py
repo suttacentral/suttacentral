@@ -20,6 +20,7 @@ from common.queries import (
     TIPITAKA_MENU,
     PARAGRAPHS,
     PARALLELS,
+    PARALLELS_LITE,
     SUTTA_VIEW,
     SUTTAPLEX_LIST,
     IMAGES,
@@ -37,8 +38,7 @@ from common.queries import (
     SUTTA_PATH,
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
-    AVAILABLE_VOICES,
-    PARALLELS_LITE
+    AVAILABLE_VOICES
 )
 
 from common.utils import (
@@ -631,7 +631,7 @@ class SegmentedSutta(Resource):
         )
         result = next(results)
         if not result:
-            return {'error': 'Not Found'}, 404
+            return {'msg': 'Not Found'}, 200
 
         data = {k: json_load(v) for k, v in result.items()}
         data.update({

@@ -20,7 +20,7 @@
         "networkLost": "Utracono połączenie z internetem. Wstrzymuję pobieranie.",
         "networkRecovered": "Odzyskano połączenie z internetem. Wznawiam pobieranie.",
         "downloadComplete": "Pobieranie zostało ukończone. Możesz teraz czytać teksty w języku {lang}m bez połączenia z internetem.",
-        "downloadErrored": "Błąd! Nie udało się pobrać wszystkich tekstów. {failed} spośród {total} zapytań nie zostało ukończonych pomyślnie.",
+        "downloadErrored": "Pobieranie zostało ukończone, Nie udało się pobrać wszystkich tekstów. {failed} spośród {total} zapytań nie zostało ukończonych pomyślnie.",
         "networkError": "Błąd sieci.",
         "downloadParallels": "Uwzględnij analogie",
         "downloadParallelsDescription": "Zaznacz, aby pobrać także tabelki zawierające analogie do tekstów.",
