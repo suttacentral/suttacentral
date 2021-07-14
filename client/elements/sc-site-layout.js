@@ -15,6 +15,10 @@ import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
 import { SCColors } from './styles/sc-colors';
 
+import { initSentry } from '../sentry';
+
+initSentry();
+
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
     return css`
