@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -20,8 +20,8 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
     };
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
       this._fetchMainMenu();

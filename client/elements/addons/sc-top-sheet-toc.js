@@ -1,4 +1,4 @@
-import { html, css } from 'lit-element';
+import { html, css } from 'lit';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
@@ -52,8 +52,8 @@ class SCTopSheetToC extends SCTopSheetCommon {
     this.disableToCListStyle = false;
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     this.items = state.tableOfContents.items;
     this.disableToCListStyle = state.tableOfContents.disableToCListStyle;
   }

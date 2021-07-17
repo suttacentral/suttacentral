@@ -1,6 +1,6 @@
-import { html, LitElement } from 'lit-element';
-import { cache } from 'lit-html/directives/cache.js';
-import { repeat } from 'lit-html/directives/repeat';
+import { html, LitElement } from 'lit';
+import { cache } from 'lit/directives/cache.js';
+import { repeat } from 'lit/directives/repeat';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
@@ -120,8 +120,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     }
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (
       this.categoryId !== state.currentRoute.params.categoryId ||
       this.siteLanguage !== state.siteLanguage
@@ -256,7 +256,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               uid: item.uid,
               from: parallel.from,
               fromTitle: parallel.from
-                .replaceAll('#', ':')
+                ?.replaceAll('#', ':')
                 .replaceAll('-:', '-')
                 .replaceAll('-', '–'),
               name: item.name,

@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { html, css, LitElement, svg } from 'lit-element';
+import { html, css, LitElement, svg } from 'lit';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
 import {

@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -166,8 +166,8 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     };
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     this.requestUpdate();
     if (this.navArray !== state.navigationArray) {
       this.navArray = state.navigationArray;

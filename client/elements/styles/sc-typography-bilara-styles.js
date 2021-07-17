@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit';
 
 export const typographyBilaraStyles = css`
   /* styles unique to bilara texts */

@@ -1,5 +1,5 @@
-import { html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
 
@@ -35,8 +35,8 @@ class SCTopSheetPublicationLegacy extends SCTopSheetCommon {
     };
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.infoDialogMetaArea !== state.suttaMetaText) {
       this.infoDialogMetaArea = state.suttaMetaText;
     }

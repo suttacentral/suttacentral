@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit';
 
 export const typographyLegacyStyles = css`
   /* styles unique to legacy texts */

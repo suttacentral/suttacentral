@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -38,8 +38,8 @@ class SCPaliLookup extends LitLocalized(LitElement) {
     }
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     const targetLanguage = state.textOptions.paliLookupTargetLanguage;
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;

@@ -1,5 +1,5 @@
-import { html } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -38,7 +38,9 @@ class SCAbbreviationsPage extends SCStaticPage {
                 ${_`To keep the list a reasonable length we omit language codes, which use the two-letter <span class="smallcaps">ISO</span> 639-1 for modern languages, and the three-letter ISO 639-3 codes for ancient languages.`}
               </p>
               <table>
-                <caption>${_`List of Abbreviations`}</caption>
+                <caption>
+                  ${_`List of Abbreviations`}
+                </caption>
                 <tr>
                   <td>${_`-a`}</td>
                   <td>${_`Aṭṭhakathā`}</td>

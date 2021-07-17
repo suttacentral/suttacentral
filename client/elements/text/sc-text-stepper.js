@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import { icon } from '../../img/sc-icon';
 
 class SCTextStepper extends LitElement {

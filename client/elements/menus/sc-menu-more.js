@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import { store } from '../../redux-store';
 import './sc-menu-language-base';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -104,7 +104,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
       changeAppTheme(theme) {
         store.dispatch({
           type: 'CHANGE_COLOR_THEME',
-          theme: theme,
+          theme,
         });
       },
       changeAlwaysShowToolbarState(state) {
@@ -122,8 +122,8 @@ class SCMenuMore extends LitLocalized(LitElement) {
     };
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.routeName !== state.currentRoute.name) {
       this.routeName = state.currentRoute.name;
     }

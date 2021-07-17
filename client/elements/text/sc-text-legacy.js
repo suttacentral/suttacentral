@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
-import { html } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 
 import { SCTextCommon } from './sc-text-common';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
@@ -253,8 +253,8 @@ class SCTextLegacy extends SCTextCommon {
     }
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     const textOptionsState = state.textOptions;
     if (this.showParagraphs !== textOptionsState.paragraphsEnabled) {
       this.showParagraphs = textOptionsState.paragraphsEnabled;
@@ -286,7 +286,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _prepareNavigation() {
-    const sutta = this.sutta['text'];
+    const sutta = this.sutta.text;
     if (!sutta) {
       this.actions.showToc([]);
       return;

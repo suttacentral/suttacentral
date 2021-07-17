@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 
 import './sc-text-bilara';
 import './sc-text-legacy';
@@ -137,7 +137,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    this.actions.changeLinearProgressActiveState(false);
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.authorUid = store.getState().currentRoute.params.authorUid;
     this.suttaId = store.getState().currentRoute.params.suttaId;
@@ -249,8 +249,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (
       state.currentRoute.params.langIsoCode !== this.langIsoCode &&
       state.currentRoute.params.langIsoCode
@@ -381,14 +381,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   async _fetchSuttaText() {
     this.isLoading = true;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    this.actions.changeLinearProgressActiveState(true);
     try {
       this.responseData = await (await fetch(this._getSuttaTextUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
     this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    this.actions.changeLinearProgressActiveState(false);
   }
 
   async _fetchBilaraText() {
@@ -396,7 +396,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       return;
     }
     this.isLoading = true;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    this.actions.changeLinearProgressActiveState(true);
     try {
       const bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
       this.bilaraRootSutta = bilaraData.root_text;
@@ -410,7 +410,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.lastError = error;
     }
     this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    this.actions.changeLinearProgressActiveState(false);
   }
 
   _getBilaraText() {
@@ -448,15 +448,15 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   async _fetchExpansion() {
-    this.isLoading = true;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    // this.isLoading = true;
+    this.actions.changeLinearProgressActiveState(true);
     try {
       this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
-    this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(this.isLoading);
+    // this.isLoading = false;
+    this.actions.changeLinearProgressActiveState(false);
   }
 
   _paramChanged() {
@@ -508,9 +508,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
-          pageTitle: `${acronym}: ${title}—${author}`,
-          title: `${title}—${author}`,
-          description: description,
+          pageTitle: `${acronym}: ${title}${author ? `—${author}` : ''}`,
+          title: `${title}${author ? `—${author}` : ''}`,
+          description,
           openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
           bubbles: true,
           composed: true,
@@ -521,7 +521,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
     }
-    this.actions.changeToolbarTitle(`${title} — ${author}`);
+    this.actions.changeToolbarTitle(`${title}${author ? `—${author}` : ''}`);
   }
 
   _transformId(rootId, expansionReturns) {

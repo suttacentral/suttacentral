@@ -1,6 +1,6 @@
 /* eslint-disable indent */
-import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { LitElement, html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';
@@ -151,8 +151,8 @@ class SCNavigation extends LitLocalized(LitElement) {
     this.requestUpdate();
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
       this._appViewModeChanged();

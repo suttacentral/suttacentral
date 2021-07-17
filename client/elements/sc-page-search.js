@@ -1,5 +1,5 @@
-import { LitElement, html, svg } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { LitElement, html, svg } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import '@material/mwc-button';
 import './menus/sc-menu-search-filter';
 import './addons/sc-error-icon';
@@ -508,8 +508,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return true;
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.searchQuery !== state.currentRoute.params.query) {
       this.searchQuery = state.currentRoute.params.query;
     }

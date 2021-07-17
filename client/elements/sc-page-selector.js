@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import RoutingService from '../utils/routingService';
 import { store } from '../redux-store';
@@ -409,8 +409,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
     this._stopListening();
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
       if (this.routeDefinition) {

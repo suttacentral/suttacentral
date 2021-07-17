@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
 

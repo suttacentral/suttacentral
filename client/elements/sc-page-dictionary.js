@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable indent */
-import { LitElement, html, css } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { LitElement, html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { API_ROOT } from '../constants';
 import { dictStyles } from './styles/sc-dict-styles';
 
@@ -152,8 +152,8 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     `;
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     this.dictionaryWord = state.currentRoute.params.word;
   }
 

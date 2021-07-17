@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 import { API_ROOT } from '../../constants';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import SCTopSheetCommon from './sc-top-sheet-common';
@@ -186,8 +186,8 @@ class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     this.lang = store.getState().siteLanguage;
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.publicationData !== state.suttaPublicationInfo) {
       this.publicationData = state.suttaPublicationInfo;
       if (this.publicationData !== null && this.publicationData.uid !== null) {

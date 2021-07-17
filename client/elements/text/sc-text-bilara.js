@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
-import { html } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 
@@ -411,8 +411,8 @@ class SCTextBilara extends SCTextCommon {
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.chosenTextView !== state.textOptions.segmentedSuttaTextView) {
       this.chosenTextView = state.textOptions.segmentedSuttaTextView;
     }
@@ -452,7 +452,7 @@ class SCTextBilara extends SCTextCommon {
       return;
     }
     const dummyElement = document.createElement('template');
-    dummyElement.innerHTML = this.markup.trim();
+    dummyElement.innerHTML = this.markup?.trim();
     let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h2')).map(elem => {
       const id = elem.firstElementChild ? elem.firstElementChild.id : null;
       if (sutta[id]) {

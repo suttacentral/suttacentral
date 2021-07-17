@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit';
 
 export const typographyCommonStyles = css`
   /* includes all text styles found in one or more of static, legacy, or bilara */

@@ -1,4 +1,4 @@
-import { html } from "lit-element";
+import { html } from 'lit';
 
 export const SCPageSelectorStyles = html`
   <style>
@@ -103,7 +103,7 @@ export const SCPageSelectorStyles = html`
     body {
       margin: 0;
       height: 100%;
-      font-family: "skolar sans pe";
+      font-family: 'skolar sans pe';
       font-size: 18px;
       overflow-x: hidden;
       /*When the sidebar expands, don't let the page grow sideways.*/
@@ -176,7 +176,7 @@ export const SCPageSelectorStyles = html`
     }
 
     #sidebarTitle {
-      font-family: "skolar pe";
+      font-family: 'skolar pe';
       font-variant-caps: small-caps;
       font-size: 22.6px;
     }
@@ -258,7 +258,7 @@ export const SCPageSelectorStyles = html`
 
     #titlebarSitetitle {
       font-size: 48px;
-      font-family: "skolar pe";
+      font-family: 'skolar pe';
       font-variant-caps: small-caps;
       text-align: center;
       line-height: 0.9;
@@ -286,11 +286,11 @@ export const SCPageSelectorStyles = html`
 
     article {
       max-width: 720px;
-      font-family: "skolar pe";
+      font-family: 'skolar pe';
     }
     h1 {
       color: #757575;
-      font-family: "skolar pe";
+      font-family: 'skolar pe';
       font-variant-caps: small-caps;
       font-weight: normal;
       text-align: center;

@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import { LitElement, html, css, svg } from 'lit-element';
+import { LitElement, html, css, svg } from 'lit';
 import { queue } from 'd3-queue';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-checkbox';
 import '@material/mwc-switch';
@@ -166,8 +166,8 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     this._handleNetworkLoss();
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
     }
