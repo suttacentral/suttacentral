@@ -1,4 +1,4 @@
-FROM nginx:1.12.1
+FROM nginx:1.21.1
 
 RUN mkdir -p /opt/sc/sockets
 
