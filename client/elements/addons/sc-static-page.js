@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
 

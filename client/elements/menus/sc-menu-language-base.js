@@ -1,4 +1,4 @@
-import { html, LitElement, svg } from 'lit-element';
+import { html, LitElement } from 'lit';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -10,12 +10,12 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 class SCMenuLanguageBase extends LitLocalized(LitElement) {
   static get properties() {
     return {
-      languageListResponse: Array,
-      selectedLanguageNum: Number,
-      localizedStringsPath: String,
-      cloneName: String, // pass a unique name here to use in the language change event identifier.
-      noRoot: Boolean, // If true, no root languages will be displayed.
-      disabled: Boolean,
+      languageListResponse: { type: Array },
+      selectedLanguageNum: { type: Number },
+      localizedStringsPath: { type: String },
+      cloneName: { type: String }, // pass a unique name here to use in the language change event identifier.
+      noRoot: { type: Boolean }, // If true, no root languages will be displayed.
+      disabled: { type: Boolean },
     };
   }
 
@@ -24,8 +24,8 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
       changeLanguage(language, fullName) {
         store.dispatch({
           type: 'CHANGE_SITE_LANGUAGE',
-          language: language,
-          fullName: fullName,
+          language,
+          fullName,
         });
       },
       changeLanguageMenuVisibility(visibility) {
@@ -61,7 +61,7 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
     return html`
       <mwc-list-item
         id="${language.uid}"
-        @click="${this._selectedLanguageNumChanged} "
+        @click="${this._selectedLanguageNumChanged}"
         class="language-name"
       >
         ${language.name}
@@ -140,7 +140,9 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
       </div>
 
       <li divider role="separator"></li>
-      ${this.languageListResponse.map(language => this.languageTemplate(language))}
+      <mwc-list>
+        ${this.languageListResponse.map(language => this.languageTemplate(language))}
+      </mwc-list>
     `;
   }
 }

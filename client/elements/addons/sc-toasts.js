@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import '@material/mwc-snackbar';
 
 class SCToasts extends LitElement {
@@ -42,7 +42,7 @@ class SCToasts extends LitElement {
   }
 
   _displayToast(e) {
-    let toast = this._getToast(e.detail.toastType);
+    const toast = this._getToast(e.detail.toastType);
     toast.labelText = e.detail.message;
     toast.timeoutMs = e.detail.duration || 4000;
     requestAnimationFrame(() => {
@@ -51,7 +51,7 @@ class SCToasts extends LitElement {
   }
 
   _getToast(toastType) {
-    let toastId = ['info', 'success', 'error'].includes(toastType)
+    const toastId = ['info', 'success', 'error'].includes(toastType)
       ? `${toastType}_toast`
       : 'info_toast';
     return this.shadowRoot.getElementById(toastId);

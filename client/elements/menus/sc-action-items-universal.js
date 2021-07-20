@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit';
 
 import './sc-menu-more';
 import { store } from '../../redux-store';
@@ -98,11 +98,11 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/sc-universal-action-items';
-    this.search_input = this.shadowRoot.getElementById('search_input');
+    this.search_input = this.shadowRoot?.getElementById('search_input');
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     this.searchKeyword = state.searchQuery || '';
     this.mode = state.toolbarOptions.mode;
   }
@@ -177,6 +177,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
         title="${this.localize('searchTooltip')}"
         label="search"
         @click="${this.openSearch}"
+        aria-label="Search"
       >
         ${icon.search}
       </mwc-icon-button>
@@ -197,7 +198,9 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
       @click="${this._closeSearch}">
         ${icon.close}
       </mwc-icon-button>
-      <mwc-icon-button label="menu" id="more-menu-button" @click="${this.openMoreMenu}" alt="menu">
+      <mwc-icon-button label="menu" id="more-menu-button" @click="${
+        this.openMoreMenu
+      }" alt="menu" aria-label="Menu">
         ${icon.more_vert}
       </mwc-icon-button>
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>

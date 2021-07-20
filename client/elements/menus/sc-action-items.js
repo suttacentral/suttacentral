@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -81,7 +81,7 @@ class SCActionItems extends LitLocalized(LitElement) {
       }
 
       #btnShowParallelTableView:after {
-        content: 'table';
+        content: 'TableView';
       }
 
       .active-light {
@@ -509,9 +509,6 @@ class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #setBtnShowParallelTableViewIcon() {
-    this.shadowRoot.querySelector('#btnShowParallelTableView').icon = this.displayParallelTableView
-      ? icon.tableView_twotone
-      : icon.tableView;
     this.requestUpdate();
   }
 
@@ -550,8 +547,8 @@ class SCActionItems extends LitLocalized(LitElement) {
     this._hideSuttaToC();
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }

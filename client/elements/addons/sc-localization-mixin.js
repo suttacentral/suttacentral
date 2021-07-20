@@ -1,3 +1,6 @@
+import { connect } from 'pwa-helpers';
+import { store } from '../../redux-store';
+
 const FALLBACK_LANGUAGE = 'en';
 
 // I don't want to make call for /api/languages
@@ -6,16 +9,14 @@ const SUPPORTED_TRANSLATIONS = ['en', 'pl', 'pt', 'zh'];
 
 const localizationCache = {};
 
-import { connect } from 'pwa-helpers/connect-mixin.js';
-import { store } from '../../redux-store.js';
-
+// eslint-disable-next-line import/prefer-default-export
 export const LitLocalized = base =>
   class extends connect(store)(base) {
     static get properties() {
       return {
-        language: String,
-        localizedStringsPath: String,
-        _languageLoaded: Boolean,
+        language: { type: String },
+        localizedStringsPath: { type: String },
+        _languageLoaded: { type: Boolean },
       };
     }
 
@@ -41,7 +42,7 @@ export const LitLocalized = base =>
         );
       }
 
-      return string ? string : key;
+      return string || key;
     }
 
     localizeEx(key, ...params) {
@@ -59,10 +60,10 @@ export const LitLocalized = base =>
         );
       }
 
-      return string ? string : key;
+      return string || key;
     }
 
-    _stateChanged(state) {
+    stateChanged(state) {
       if (this.language !== state.siteLanguage) {
         this.language = state.siteLanguage;
         this.fullSiteLanguageName = state.fullSiteLanguageName;
@@ -72,11 +73,10 @@ export const LitLocalized = base =>
 
     async __siteLanguageChanged(lang) {
       this._languageLoaded = false;
-      this.__resources = Object.assign(
-        {},
-        await this.__loadLanguage(FALLBACK_LANGUAGE),
-        await this.__loadLanguage(lang)
-      );
+      this.__resources = {
+        ...(await this.__loadLanguage(FALLBACK_LANGUAGE)),
+        ...(await this.__loadLanguage(lang)),
+      };
       this._languageLoaded = true;
     }
 
@@ -97,9 +97,8 @@ export const LitLocalized = base =>
           .catch(() => ({}));
 
         return localizationCache[path];
-      } else {
-        return Promise.resolve({});
       }
+      return Promise.resolve({});
     }
 
     loadFallbackLanguage() {

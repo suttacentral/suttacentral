@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 import { throttle } from 'throttle-debounce';
 import { icon } from '../img/sc-icon';
@@ -310,8 +310,8 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     };
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }
@@ -423,7 +423,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     addEventListener(
       'scroll',
       throttle(500, () => {
-        let transitionStyle = 'transform 200ms ease-in-out';
+        const transitionStyle = 'transform 200ms ease-in-out';
         rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
         rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
         rootDOM.getElementById('mainTitle').style.transition = transitionStyle;
@@ -455,14 +455,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     addEventListener(
       'scroll',
       throttle(500, () => {
-        let alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
+        const { alwaysShowUniversalToolbar } = store.getState();
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        let displaySettingMenu = store.getState().displaySettingMenu;
-        let displaySuttaParallels = store.getState().displaySuttaParallels;
-        let displaySuttaToC = store.getState().displaySuttaToC;
-        const displaySuttaInfo = store.getState().displaySuttaInfo;
+        const {
+          displaySettingMenu,
+          displaySuttaParallels,
+          displaySuttaToC,
+          displaySuttaInfo,
+        } = store.getState();
         if (
           this.changedRoute.path !== '/' &&
           !displaySettingMenu &&
@@ -470,7 +472,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           !displaySuttaInfo &&
           !displaySuttaToC
         ) {
-          let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
           if (currentScrollTop > lastScrollTop) {
             const universalToolbarHeight = 156;
             rootDOM.getElementById(
@@ -497,7 +499,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _setStaticPageMenuItemSelected() {
     this._removeSelectedClass();
-    let element = this.shadowRoot.querySelector(`nav a[href="${this.changedRoute.path}"]`);
+    const element = this.shadowRoot.querySelector(`nav a[href="${this.changedRoute.path}"]`);
     if (element) {
       element.classList.add('staticPageSelected');
     }
@@ -560,7 +562,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     if (oldVal === undefined && newVal === 'light') {
       return;
     }
-    let colorThemeUrl = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
+    const colorThemeUrl = `/elements/styles/sc-colors-${this.appColorTheme}.json`;
     fetch(colorThemeUrl)
       .then(r => r.json())
       .then(response => {
@@ -571,6 +573,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _colorsResponseReceived() {
     // set the css color variables:
+    // eslint-disable-next-line no-restricted-syntax
     for (const key in this.colorsResponse) {
       if (!this.colorsResponse.hasOwnProperty(key)) continue;
       document.body.style.setProperty(key, this.colorsResponse[key]);

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 
 export class SCTextCommon extends LitLocalized(LitElement) {

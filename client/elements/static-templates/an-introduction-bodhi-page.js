@@ -1,5 +1,5 @@
-import { html } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles.js';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles.js';
@@ -133,7 +133,9 @@ class SCANIntroduction extends SCStaticPage {
                 ${_`Although early Buddhism prescribes a path of self-cultivation leading to the extinction of suffering, the Buddha realized that spiritual development does not occur in a social vacuum but rests upon a healthy and harmonious social order that exemplifies the kind of virtues that nurture the spiritual life. Spiritual influences begin at the top of the social hierarchy and gradually spread downwards, affecting the whole society and even the biological and physical domains (<a class="ref" href="/an4.70">AN 4.70</a>). Thus the Buddha devotes considerable effort to instilling in his followers the lifestyle and sense of social responsibility that conduces to a harmonious society in which people act in accordance with the civic virtues. Among the four Nikāyas, the Aṅguttara—along with the Sīgalaka Sutta (DN 31)—is probably the richest source of such teachings. Kelly notes that this Nikāya has the largest number of suttas concerned with laypeople, either directly, by being addressed to them, or indirectly, by being spoken to the monks about the practices proper for a lay disciple. (See Table 2.)`}
               </p>
               <table>
-                <caption>${_`Table 2: Suttas Concerned with Lay People`}</caption>
+                <caption>
+                  ${_`Table 2: Suttas Concerned with Lay People`}
+                </caption>
                 <tbody>
                   <tr>
                     <th></th>
@@ -211,7 +213,9 @@ class SCANIntroduction extends SCStaticPage {
                 ${_`In an interesting table reproduced here, Kelly has calculated the prevailing aims across Nikāyas in the discourses addressed to laypeople. He distinguishes between aims concerned with mundane welfare—in this life and a heavenly rebirth—and those connected with the attainment of liberation:`}
               </p>
               <table>
-                <caption>${_`Table 1: Goals of Lay Practice in the Nikāyas`}</caption>
+                <caption>
+                  ${_`Table 1: Goals of Lay Practice in the Nikāyas`}
+                </caption>
                 <tbody>
                   <tr>
                     <th>${_`Goal`}</th>

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement } from 'lit';
 import { API_ROOT } from '../../../constants';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/sc-localization-mixin';

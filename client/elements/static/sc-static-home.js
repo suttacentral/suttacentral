@@ -1,5 +1,5 @@
-import { css, html } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { css, html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';

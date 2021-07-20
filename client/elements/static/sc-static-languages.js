@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
@@ -33,8 +33,8 @@ class SCStaticLanguages extends SCStaticPage {
     this.languageData = await (await fetch(`${API_ROOT}/translation_count/${lang}`)).json();
   }
 
-  _stateChanged(state) {
-    super._stateChanged(state);
+  stateChanged(state) {
+    super.stateChanged(state);
     const [, , lang] = state.currentRoute.path.split('/');
     this.selectedLanguage = lang;
   }

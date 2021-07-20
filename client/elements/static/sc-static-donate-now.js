@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -7,7 +7,7 @@ import '@material/mwc-textfield';
 import '@material/mwc-radio';
 import '@material/mwc-formfield';
 
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { API_ROOT } from '../../constants';
 import { icon } from '../../img/sc-icon';
 
