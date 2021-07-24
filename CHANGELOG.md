@@ -1,6 +1,15 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.07.24
+
+- upgrade python packages.
+- upgrade js dependencies.
+- upgrade litElement to lit 2.0.0-rc.2.
+- Upgrade Nginx version from 1.12.1 to 1.21.1.
+- Fix: Transliteration: Fonts missing for some scripts.
+- Remove some google related items from CSP.
+
 ## 2021.06.30
 
 - Fix: CSP blocks CC0 icon.
