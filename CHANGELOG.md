@@ -4,9 +4,9 @@
 ## 2021.07.24
 
 - Table view for parallels #2139
-- upgrade python packages.
-- upgrade js dependencies.
-- upgrade litElement to lit 2.0.0-rc.2.
+- Upgrade python packages.
+- Upgrade js dependencies.
+- Upgrade litElement to lit 2.0.0-rc.2. #2132
 - Upgrade Nginx version from 1.12.1 to 1.21.1.
 - Fix: Transliteration: Fonts missing for some scripts. #2116
 - Remove some google related items from CSP.
