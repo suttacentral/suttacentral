@@ -58,7 +58,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     """Configuration for Production"""
 
-    pass
+    DEBUG = True
 
 
 app_config = {
@@ -81,10 +81,10 @@ swagger_template = {
         "title": "SuttaCentral's API",
         "description": "API for SuttaCentral",
         "contact": {
-            "responsibleDeveloper": "Jakub Semik",
-            "email": "jakub.semik@stxnext.pl",
+            "responsibleDeveloper": "Hong Da",
+            "email": "paccakkha@yahoo.com",
         },
-        "version": "0.0.1",
+        "version": "1.1.0",
     },
     "basePath": "/api",  # base bash for blueprint registration
     "schemes": ["http", "https"],
