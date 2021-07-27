@@ -364,7 +364,10 @@ class SCActionItems extends LitLocalized(LitElement) {
 
   #setBtnShowParallelTableViewDisplayState() {
     const displayStyle = this.currentRoute.name === 'SUTTAPLEX' ? 'inherit' : 'none';
-    this.shadowRoot.querySelector('#btnShowParallelTableView').style.display = displayStyle;
+    const btnShowParallelTableView = this.shadowRoot.querySelector('#btnShowParallelTableView');
+    if (btnShowParallelTableView) {
+      btnShowParallelTableView.style.display = displayStyle;
+    }
   }
 
   _viewModeChanged() {
@@ -607,7 +610,10 @@ class SCActionItems extends LitLocalized(LitElement) {
 
   _suttaMetaTextChanged() {
     const displayStyle = this.suttaMetaText || this.suttaPublicationInfo ? 'inherit' : 'none';
-    this.shadowRoot.querySelector('#btnInfo')?.style.display = displayStyle;
+    const btnInfo = this.shadowRoot.querySelector('#btnInfo');
+    if (btnInfo) {
+      btnInfo.style.display = displayStyle;
+    }
   }
 
   _displayToCButtonStateChange() {
@@ -618,18 +624,18 @@ class SCActionItems extends LitLocalized(LitElement) {
 
   _displayToolButtonStateChange() {
     if (this.displayToolButton) {
-      this.shadowRoot.querySelector('#btnTools')?.style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnInfo')?.style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnShowParallels')?.style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnShowParallels').style.display = 'inherit';
       this._suttaMetaTextChanged();
       this._displayToCButtonStateChange();
-      this.shadowRoot.querySelector('#tools_menu')?.classList.add('contextToolbarExpand');
+      this.shadowRoot.querySelector('#tools_menu').classList.add('contextToolbarExpand');
     } else {
-      this.shadowRoot.querySelector('#btnTools')?.style.display = 'none';
-      this.shadowRoot.querySelector('#btnInfo')?.style.display = 'none';
-      this.shadowRoot.querySelector('#btnShowParallels')?.style.display = 'none';
-      this.shadowRoot.querySelector('#btnShowToC')?.style.display = 'none';
-      this.shadowRoot.querySelector('#tools_menu')?.classList.remove('contextToolbarExpand');
+      this.shadowRoot.querySelector('#btnTools').style.display = 'none';
+      this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
+      this.shadowRoot.querySelector('#btnShowParallels').style.display = 'none';
+      this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
+      this.shadowRoot.querySelector('#tools_menu').classList.remove('contextToolbarExpand');
     }
   }
 
