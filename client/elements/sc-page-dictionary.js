@@ -373,7 +373,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       const glossary = [];
       let glossaryObject = {};
       let glossText = '';
-      if (glossaryReturns && glossaryReturns[0]) {
+      if (glossaryReturns && glossaryReturns[0] && inputArray[0]) {
         // eslint-disable-next-line guard-for-in
         for (const glossWord in inputArray[0]) {
           const glossLookup = inputArray[0][glossWord];
