@@ -62,7 +62,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   #showTableViewButton() {
     const scSiteLayout = document.querySelector('sc-site-layout');
     const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
-    const btnShowParallelTableView = scActionItems.shadowRoot.querySelector(
+    const btnShowParallelTableView = scActionItems?.shadowRoot.querySelector(
       '#btnShowParallelTableView'
     );
     if (btnShowParallelTableView) {

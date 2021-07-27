@@ -109,7 +109,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   firstUpdated() {
     const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement && this.searchKeyword.length !== 0) {
+    if (searchInputElement && this.searchKeyword && this.searchKeyword?.length !== 0) {
       searchInputElement.value = this.searchKeyword;
       this.openSearch();
     }
@@ -198,9 +198,12 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
       @click="${this._closeSearch}">
         ${icon.close}
       </mwc-icon-button>
-      <mwc-icon-button label="menu" id="more-menu-button" @click="${
-        this.openMoreMenu
-      }" alt="menu" aria-label="Menu">
+      <mwc-icon-button
+        label="menu"
+        id="more-menu-button"
+        @click="${this.openMoreMenu}"
+        alt="menu" aria-label="Menu"
+      >
         ${icon.more_vert}
       </mwc-icon-button>
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
