@@ -286,7 +286,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _prepareNavigation() {
-    const sutta = this.sutta.text;
+    const sutta = this.sutta?.text;
     if (!sutta) {
       this.actions.showToc([]);
       return;
