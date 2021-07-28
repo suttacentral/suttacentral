@@ -301,7 +301,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
         if (part.length < maxLength) {
           break;
         }
-        const target = this.dictData.find(x => x.entry === part);
+        const target = this.dictData?.find(x => x.entry === part);
         if (typeof target === 'object') {
           return {
             base: part,
@@ -324,7 +324,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
     if (!this.dictData || this.dictData.length === 0) {
       return;
     }
-    const target = this.dictData.find(x => x.entry === word);
+    const target = this.dictData?.find(x => x.entry === word);
     if (typeof target === 'object') {
       return { base: word, meaning: target.definition, grammar: target.grammar, xr: target.xr };
     }
@@ -342,7 +342,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
         word.substring(word.length - end[i][0].length, word.length) === end[i][0]
       ) {
         const orig = word.substring(0, word.length - end[i][0].length + end[i][1]) + end[i][3];
-        const target = this.dictData.find(x => x.entry === orig);
+        const target = this.dictData?.find(x => x.entry === orig);
         if (typeof target === 'object') {
           return { base: orig, meaning: target.definition, grammar: target.grammar, xr: target.xr };
         }
