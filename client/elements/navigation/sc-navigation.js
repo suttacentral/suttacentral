@@ -361,11 +361,11 @@ class SCNavigation extends LitLocalized(LitElement) {
 
     this._updateLastSelectedItemRootLangISO(this.parallelsData[0]?.root_lang_iso);
 
-    if (!params.childName) {
+    if (!params.childName && this.parallelsData[0]) {
       params.childName =
-        this.parallelsData[0].acronym ||
-        this.parallelsData[0].translated_name ||
-        this.parallelsData[0].root_name;
+        this.parallelsData[0]?.acronym ||
+        this.parallelsData[0]?.translated_name ||
+        this.parallelsData[0]?.root_name;
     }
     const navURL = `/pitaka/${this._getPathParamNumber(navIndexesOfType.pathParamIndex)}/${
       params.childId
