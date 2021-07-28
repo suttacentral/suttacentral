@@ -1,4 +1,5 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 import './sc-text-bilara';
 import './sc-text-legacy';
@@ -17,25 +18,10 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
   either the simple sutta text view or the segmented view.
 */
 
+@customElement('sc-text-page-selector')
 class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
-      <style>
-        :host {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .text-options {
-          padding: var(--sc-size-lg);
-        }
-
-        .wrapper {
-          min-height: calc(100vh - 336px);
-          margin-bottom: 64px;
-        }
-      </style>
-
       <div class="wrapper">
         ${this.displaySimpleTextTemplate} ${this.displaySegmentedTextTemplate}
         ${this.displayErrorTemplate}
@@ -43,6 +29,24 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       ${this.displayStepper}
       <sc-text-image id="sc_text_image"></sc-text-image>
       ${this._createMetaData(this.responseData, this.expansionReturns)}
+    `;
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-options {
+        padding: var(--sc-size-lg);
+      }
+
+      .wrapper {
+        min-height: calc(100vh - 336px);
+        margin-bottom: 64px;
+      }
     `;
   }
 
@@ -102,32 +106,32 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   static get properties() {
     return {
-      responseData: { type: Object },
-      lastError: { type: Object },
-      author: { type: String },
-      suttaId: { type: String },
-      langIsoCode: { type: String },
-      isSegmentedText: { type: Boolean },
-      suttaplex: { type: Object },
-      translatedSutta: { type: Object },
-      rootSutta: { type: Object },
-      bilaraRootSutta: { type: Object },
-      bilaraTranslatedSutta: { type: Object },
-      bilaraSuttaKeysOrder: { type: Array },
-      suttaReference: { type: Object },
-      suttaComment: { type: Object },
-      suttaVariant: { type: Object },
-      suttaMarkup: { type: String },
-      markup: { type: String },
-      bilaraSuttaMarkup: { type: String },
-      localizedStringsPath: { type: String },
-      authorUid: { type: String },
-      authorShort: { type: String },
-      next: { type: Object },
-      previous: { type: Object },
-      expansionReturns: { type: Array },
-      showedLanguagePrompt: { type: Boolean },
-      isLoading: { type: Boolean },
+      responseData: { type: Object, state: true },
+      lastError: { type: Object, state: true },
+      author: { type: String, state: true },
+      suttaId: { type: String, state: true },
+      langIsoCode: { type: String, state: true },
+      isSegmentedText: { type: Boolean, state: true },
+      suttaplex: { type: Object, state: true },
+      translatedSutta: { type: Object, state: true },
+      rootSutta: { type: Object, state: true },
+      bilaraRootSutta: { type: Object, state: true },
+      bilaraTranslatedSutta: { type: Object, state: true },
+      bilaraSuttaKeysOrder: { type: Array, state: true },
+      suttaReference: { type: Object, state: true },
+      suttaComment: { type: Object, state: true },
+      suttaVariant: { type: Object, state: true },
+      suttaMarkup: { type: String, state: true },
+      markup: { type: String, state: true },
+      bilaraSuttaMarkup: { type: String, state: true },
+      localizedStringsPath: { type: String, state: true },
+      authorUid: { type: String, state: true },
+      authorShort: { type: String, state: true },
+      next: { type: Object, state: true },
+      previous: { type: Object, state: true },
+      expansionReturns: { type: Array, state: true },
+      showedLanguagePrompt: { type: Boolean, state: true },
+      isLoading: { type: Boolean, state: true },
     };
   }
 
@@ -283,18 +287,18 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
-    if (!this.responseData) {
+    if (!this.responseData || (!this.responseData.root_text && !this.responseData.translation)) {
+      if (!this.responseData.root_text && !this.responseData.translation) {
+        this.lastError = {
+          type: 'data-load-error',
+        };
+      } else {
+        this.lastError = null;
+      }
       return;
     }
     this.setProperties();
     this.actions.downloadSuttaText(this.responseData);
-    if (!this.responseData.root_text && !this.responseData.translation) {
-      this.lastError = {
-        type: 'data-load-error',
-      };
-    } else {
-      this.lastError = null;
-    }
   }
 
   setProperties() {
@@ -565,5 +569,3 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     );
   }
 }
-
-customElements.define('sc-text-page-selector', SCTextPageSelector);
