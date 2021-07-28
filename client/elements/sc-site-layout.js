@@ -373,21 +373,21 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
 
     this.addEventListener('hide-sc-top-sheet', e => {
-      this.shadowRoot.querySelector('#setting_menu').hide();
+      this.shadowRoot.querySelector('#setting_menu')?.hide();
       this.actions.changeDisplaySettingMenuState(false);
     });
 
     this.addEventListener('show-sc-top-sheet', e => {
-      this.shadowRoot.querySelector('#setting_menu').show();
+      this.shadowRoot.querySelector('#setting_menu')?.show();
     });
 
     this.addEventListener('hide-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels').hide();
+      this.shadowRoot.querySelector('#sutta_parallels')?.hide();
       this.actions.changeDisplaySuttaParallelsState(false);
     });
 
     this.addEventListener('show-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels').show();
+      this.shadowRoot.querySelector('#sutta_parallels')?.show();
     });
 
     this.addEventListener('bind-data-to-sc-sutta-parallels', e => {
@@ -395,19 +395,19 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
 
     this.addEventListener('hide-sc-sutta-toc', e => {
-      this.shadowRoot.querySelector('#sutta_toc').hide();
+      this.shadowRoot.querySelector('#sutta_toc')?.hide();
       this.actions.changeDisplaySuttaToCState(false);
     });
 
     this.addEventListener('show-sc-sutta-toc', e => {
-      this.shadowRoot.querySelector('#sutta_toc').show();
+      this.shadowRoot.querySelector('#sutta_toc')?.show();
     });
 
     this.addEventListener('show-sc-sutta-info', e => {
       if (e.detail.isSegmentedText) {
-        this.shadowRoot.querySelector('#bilara-sutta-info').show();
+        this.shadowRoot.querySelector('#bilara-sutta-info')?.show();
       } else {
-        this.shadowRoot.querySelector('#sutta-info').show();
+        this.shadowRoot.querySelector('#sutta-info')?.show();
       }
     });
 
