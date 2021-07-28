@@ -420,7 +420,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         composed: true,
       })
     );
-    this.shadowRoot.querySelector('#btnTools').classList.remove(this.activeClass);
+    this.shadowRoot.querySelector('#btnTools')?.classList.remove(this.activeClass);
   }
 
   _showSettingMenu() {
@@ -430,7 +430,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         composed: true,
       })
     );
-    this.shadowRoot.querySelector('#btnTools').classList.add(this.activeClass);
+    this.shadowRoot.querySelector('#btnTools')?.classList.add(this.activeClass);
   }
 
   _hideSuttaParallels() {
@@ -440,7 +440,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         composed: true,
       })
     );
-    this.shadowRoot.querySelector('#btnShowParallels').classList.remove(this.activeClass);
+    this.shadowRoot.querySelector('#btnShowParallels')?.classList.remove(this.activeClass);
   }
 
   _hideSuttaToC() {
@@ -450,7 +450,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         composed: true,
       })
     );
-    this.shadowRoot.querySelector('#btnShowToC').classList.remove(this.activeClass);
+    this.shadowRoot.querySelector('#btnShowToC')?.classList.remove(this.activeClass);
   }
 
   _hideSuttaInfo() {
@@ -480,7 +480,7 @@ class SCActionItems extends LitLocalized(LitElement) {
         composed: true,
       })
     );
-    this.shadowRoot.querySelector('#btnShowToC').classList.add(this.activeClass);
+    this.shadowRoot.querySelector('#btnShowToC')?.classList.add(this.activeClass);
   }
 
   _onBtnShowParallelsClick() {
