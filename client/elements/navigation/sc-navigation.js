@@ -61,11 +61,11 @@ class SCNavigation extends LitLocalized(LitElement) {
     for (let i = navArray.length - 1; i >= 0; i--) {
       if (navArray.length > 1 && i !== 0) {
         let navData = await this._fetchChildrenData(navArray[i]);
-        if (!navData[0].uid) {
+        if (!navData[0]?.uid) {
           dispatchCustomEvent(this, 'sc-navigate', { pathname: this._cutURL(navArray[i]) });
         } else {
           navData = await this._fetchChildrenData(navArray[i - 1]);
-          if (!navData[0].uid) {
+          if (!navData[0]?.uid) {
             let URL = this._cutURL(navArray[i]);
             URL = this._cutURL(navArray[i - 1], URL);
             dispatchCustomEvent(this, 'sc-navigate', { pathname: URL });
@@ -78,7 +78,7 @@ class SCNavigation extends LitLocalized(LitElement) {
         }
       } else {
         const navData = await this._fetchChildrenData(navArray[i]);
-        if (!navData[0].uid) {
+        if (!navData[0]?.uid) {
           dispatchCustomEvent(this, 'sc-navigate', { pathname: this._cutURL(navArray[i]) });
         }
       }
