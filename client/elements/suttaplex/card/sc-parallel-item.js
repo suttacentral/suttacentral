@@ -41,7 +41,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
   }
 
   get heading() {
-    const uidLanguage = this.parallelItem.uid?.substring(0, 3);
+    const uidLanguage = this.parallelItem?.uid?.substring(0, 3);
     if (Object.keys(this.rootLangMappings).includes(uidLanguage)) {
       return transformId(this.parallelItem.to, this.expansionData, 1);
     } else if (this.parallelItem.translated_title) {
