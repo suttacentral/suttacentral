@@ -242,10 +242,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             parallels.to.push({
               to: parallel.to.to,
               toTitle: parallel.to.to
-                .replaceAll('#', ':')
-                .replaceAll('-:', '-')
-                .replaceAll('~', '')
-                .replaceAll('-', '–'),
+                ? parallel.to.to
+                    .replaceAll('#', ':')
+                    .replaceAll('-:', '-')
+                    .replaceAll('~', '')
+                    .replaceAll('-', '–')
+                : '',
               uid: parallel.to.uid,
               acronym: parallel.to.acronym
                 ? parallel.to.acronym
@@ -256,19 +258,20 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               uid: item.uid,
               from: parallel.from,
               fromTitle: parallel.from
-                ?.replaceAll('#', ':')
-                .replaceAll('-:', '-')
-                .replaceAll('-', '–'),
+                ? parallel.from?.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–')
+                : '',
               name: item.name,
               acronym: item.acronym,
               to: [
                 {
                   to: parallel.to.to,
                   toTitle: parallel.to.to
-                    .replaceAll('#', ':')
-                    .replaceAll('-:', '-')
-                    .replaceAll('~', '')
-                    .replaceAll('-', '–'),
+                    ? parallel.to.to
+                        .replaceAll('#', ':')
+                        .replaceAll('-:', '-')
+                        .replaceAll('~', '')
+                        .replaceAll('-', '–')
+                    : '',
                   uid: parallel.to.uid,
                   acronym: parallel.to.acronym
                     ? parallel.to.acronym
