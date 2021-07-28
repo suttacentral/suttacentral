@@ -280,10 +280,10 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   matchPartial(word, maxLength = 4) {
-    if (!this.dictData) {
+    if (!this.dictData || this.dictData.length === 0) {
       return;
     }
-    //Matching partials is somewhat simpler, since all ending cases are clipped off.
+    // Matching partials is somewhat simpler, since all ending cases are clipped off.
     for (let vy = 0; vy < 2; vy++) {
       let wordp = word;
       if (vy) {
@@ -321,7 +321,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   // "leftovers": Anything which wasn't matched by the function, should be empty string
   //  or null if meaningless (such as a grammatical insertion ie. 'ti')
   exactMatch(word) {
-    if (!this.dictData) {
+    if (!this.dictData || this.dictData.length === 0) {
       return;
     }
     const target = this.dictData.find(x => x.entry === word);
@@ -332,7 +332,7 @@ class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   fuzzyMatch(word) {
-    if (!this.dictData) {
+    if (!this.dictData || this.dictData.length === 0) {
       return;
     }
     const end = this._getEndings();
