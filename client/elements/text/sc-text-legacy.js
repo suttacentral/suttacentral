@@ -495,7 +495,8 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _conditionallyPutIntoSpans(lang) {
-    if (this.sutta.lang === lang) {
+    const suttaLang = this.sutta?.lang;
+    if (suttaLang === lang) {
       if (this.shadowRoot.querySelector('article')) {
         this._putIntoSpans('article', lang);
         this._addWordSpanId();
