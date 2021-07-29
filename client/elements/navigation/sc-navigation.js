@@ -656,7 +656,7 @@ class SCNavigation extends LitLocalized(LitElement) {
 
   async _onVaggasCardClick(params) {
     this.vaggasData = await this._fetchChildrenData(params.childId);
-    this.vaggaChildren = this.vaggasData[0].children;
+    this.vaggaChildren = this.vaggasData[0]?.children;
 
     const showVaggaChildren =
       this.vaggaChildren && this.vaggaChildren.some(child => ['branch'].includes(child.node_type));
@@ -711,6 +711,8 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] &&
       this.navArray[this.currentNavPosition].displayVaggaChildren &&
+      this.vaggasData &&
+      this.vaggasData.length > 0 &&
       this.vaggasData[0].children
       ? html`
           ${this.vaggasData[0].children &&
