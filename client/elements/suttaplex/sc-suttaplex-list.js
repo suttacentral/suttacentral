@@ -123,7 +123,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   stateChanged(state) {
     super.stateChanged(state);
     if (
-      this.categoryId !== state.currentRoute.params.categoryId ||
+      this.categoryId !== state.currentRoute?.params?.categoryId ||
       this.siteLanguage !== state.siteLanguage
     ) {
       this.categoryId = state.currentRoute.params.categoryId;
