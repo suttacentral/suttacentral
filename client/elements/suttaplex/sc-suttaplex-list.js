@@ -86,7 +86,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     const scActionItems = document
       .querySelector('sc-site-layout')
       .shadowRoot.querySelector('#action_items');
-    scActionItems.hideItems();
+    scActionItems?.hideItems();
   }
 
   isSuttaplex(item) {
