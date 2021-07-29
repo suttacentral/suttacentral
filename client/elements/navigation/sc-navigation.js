@@ -836,7 +836,8 @@ class SCNavigation extends LitLocalized(LitElement) {
   get vaggaChildrenChildrenContentTemplate() {
     return this.navArray[this.currentNavPosition] &&
       this.navArray[this.currentNavPosition].displayVaggaChildrenChildren &&
-      this.vaggaChildrenChildren
+      this.vaggaChildrenChildren &&
+      this.vaggaChildrenChildren[0].children
       ? html`
           ${this.navArray[this.currentNavPosition].displayVaggaChildrenChildren &&
           this.vaggaChildrenChildren[0].children.map(
