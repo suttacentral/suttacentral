@@ -188,7 +188,7 @@ class SCTextLegacy extends SCTextCommon {
     const scActionItems = document
       .querySelector('sc-site-layout')
       .shadowRoot.querySelector('#action_items');
-    scActionItems.hideItems();
+    scActionItems?.hideItems();
   }
 
   disconnectedCallback() {
@@ -286,7 +286,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _prepareNavigation() {
-    const sutta = this.sutta.text;
+    const sutta = this.sutta?.text;
     if (!sutta) {
       this.actions.showToc([]);
       return;
@@ -495,7 +495,8 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _conditionallyPutIntoSpans(lang) {
-    if (this.sutta.lang === lang) {
+    const suttaLang = this.sutta?.lang;
+    if (suttaLang === lang) {
       if (this.shadowRoot.querySelector('article')) {
         this._putIntoSpans('article', lang);
         this._addWordSpanId();

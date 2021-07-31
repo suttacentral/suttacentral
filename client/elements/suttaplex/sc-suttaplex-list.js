@@ -62,7 +62,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   #showTableViewButton() {
     const scSiteLayout = document.querySelector('sc-site-layout');
     const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
-    const btnShowParallelTableView = scActionItems.shadowRoot.querySelector(
+    const btnShowParallelTableView = scActionItems?.shadowRoot.querySelector(
       '#btnShowParallelTableView'
     );
     if (btnShowParallelTableView) {
@@ -86,7 +86,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     const scActionItems = document
       .querySelector('sc-site-layout')
       .shadowRoot.querySelector('#action_items');
-    scActionItems.hideItems();
+    scActionItems?.hideItems();
   }
 
   isSuttaplex(item) {
@@ -123,7 +123,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   stateChanged(state) {
     super.stateChanged(state);
     if (
-      this.categoryId !== state.currentRoute.params.categoryId ||
+      this.categoryId !== state.currentRoute?.params?.categoryId ||
       this.siteLanguage !== state.siteLanguage
     ) {
       this.categoryId = state.currentRoute.params.categoryId;
@@ -242,10 +242,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             parallels.to.push({
               to: parallel.to.to,
               toTitle: parallel.to.to
-                .replaceAll('#', ':')
-                .replaceAll('-:', '-')
-                .replaceAll('~', '')
-                .replaceAll('-', '–'),
+                ? parallel.to.to
+                    .replaceAll('#', ':')
+                    .replaceAll('-:', '-')
+                    .replaceAll('~', '')
+                    .replaceAll('-', '–')
+                : '',
               uid: parallel.to.uid,
               acronym: parallel.to.acronym
                 ? parallel.to.acronym
@@ -256,19 +258,20 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               uid: item.uid,
               from: parallel.from,
               fromTitle: parallel.from
-                ?.replaceAll('#', ':')
-                .replaceAll('-:', '-')
-                .replaceAll('-', '–'),
+                ? parallel.from?.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–')
+                : '',
               name: item.name,
               acronym: item.acronym,
               to: [
                 {
                   to: parallel.to.to,
                   toTitle: parallel.to.to
-                    .replaceAll('#', ':')
-                    .replaceAll('-:', '-')
-                    .replaceAll('~', '')
-                    .replaceAll('-', '–'),
+                    ? parallel.to.to
+                        .replaceAll('#', ':')
+                        .replaceAll('-:', '-')
+                        .replaceAll('~', '')
+                        .replaceAll('-', '–')
+                    : '',
                   uid: parallel.to.uid,
                   acronym: parallel.to.acronym
                     ? parallel.to.acronym

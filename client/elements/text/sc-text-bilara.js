@@ -122,7 +122,9 @@ class SCTextBilara extends SCTextCommon {
       ${this.currentStyles} ${this.referencesDisplayStyles} ${this.notesDisplayStyles}
 
       <main>
-        <div id="segmented_text_content" class="html-text-content">${unsafeHTML(this.markup)}</div>
+        <div id="segmented_text_content" class="html-text-content">
+          ${unsafeHTML(this.markup ? this.markup : ' ')}
+        </div>
       </main>
 
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>

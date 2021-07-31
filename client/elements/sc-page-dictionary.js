@@ -152,11 +152,6 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     `;
   }
 
-  stateChanged(state) {
-    super.stateChanged(state);
-    this.dictionaryWord = state.currentRoute.params.word;
-  }
-
   render() {
     return html`
       <div class="dictionary-results-container">
@@ -237,17 +232,17 @@ class SCPageDictionary extends LitLocalized(LitElement) {
 
   static get properties() {
     return {
-      dictionaryResults: { type: Array },
-      dictionaryReturns: { type: Array },
-      glossaryReturns: { type: Array },
-      adjacentReturns: { type: Array },
-      similarReturns: { type: Array },
-      dictionaryWord: { type: String },
-      localizedStringsPath: { type: String },
-      dictionaryTitles: { type: Object },
-      adjacent: { type: Boolean },
-      dictionaryAdjacent: { type: Array },
-      dictionarySimilar: { type: Array },
+      dictionaryResults: { type: Array, state: true },
+      dictionaryReturns: { type: Array, state: true },
+      glossaryReturns: { type: Array, state: true },
+      adjacentReturns: { type: Array, state: true },
+      similarReturns: { type: Array, state: true },
+      dictionaryWord: { type: String, state: true },
+      localizedStringsPath: { type: String, state: true },
+      dictionaryTitles: { type: Object, state: true },
+      adjacent: { type: Boolean, state: true },
+      dictionaryAdjacent: { type: Array, state: true },
+      dictionarySimilar: { type: Array, state: true },
     };
   }
 
@@ -258,7 +253,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     this.glossaryReturns = [];
     this.adjacentReturns = [];
     this.similarReturns = [];
-    this.dictionaryWord = '';
+    this.dictionaryWord = store.getState().currentRoute.params.word;
     this.localizedStringsPath = '/localization/elements/sc-page-dictionary';
     this.dictionaryTitles = {
       ncped: 'New Concise Pali English Dictionary',
@@ -270,11 +265,17 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     this.adjacent = true;
     this.dictionaryAdjacent = [];
     this.dictionarySimilar = [];
+    this._fetchGlossary();
+    if (this.dictionaryWord) {
+      this._loadNewResult();
+    }
   }
 
-  firstUpdated() {
-    this._fetchGlossary();
-    this._loadNewResult();
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.dictionaryWord !== state.currentRoute.params.word) {
+      this.dictionaryWord = state.currentRoute.params.word;
+    }
   }
 
   updated(changedProps) {
@@ -282,20 +283,18 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     if (changedProps.has('dictionaryWord')) {
       this._loadNewResult();
     }
-    if (changedProps.has('glossaryReturns') || changedProps.has('similarReturns')) {
-      this._getGlossaryItems(this.glossaryReturns, this.similarReturns);
-    }
-    if (
-      changedProps.has('glossaryReturns') ||
-      changedProps.has('similarReturns') ||
-      changedProps.has('adjacent')
-    ) {
-      this._getGlossaryItems(this.glossaryReturns, this.adjacentReturns, this.adjacent);
-    }
+  }
+
+  async _loadNewResult() {
+    await this._fetchAdjacent();
+    await this._fetchSimilar();
+    this._fetchDictionary();
   }
 
   async _fetchGlossary() {
-    this.glossaryReturns = await (await fetch('/api/glossary')).json();
+    if (this.glossaryReturns?.length === 0) {
+      this.glossaryReturns = await (await fetch('/api/glossary')).json();
+    }
   }
 
   async _fetchDictionary() {
@@ -304,6 +303,12 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       .then(response => {
         this.dictionaryReturns = response;
         this._didRespond();
+        if (this.similarReturns.length !== 0) {
+          this._getGlossaryItems(this.glossaryReturns, this.similarReturns);
+        }
+        if (this.adjacentReturns.length !== 0) {
+          this._getGlossaryItems(this.glossaryReturns, this.adjacentReturns, this.adjacent);
+        }
       });
   }
 
@@ -321,12 +326,6 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     }`;
   }
 
-  _loadNewResult() {
-    this._loadAdjacent();
-    this._loadSimilar();
-    this._fetchDictionary();
-  }
-
   _didRespond() {
     this.dictionaryReturns.forEach(dicItem => {
       if (!dicItem.text) {
@@ -336,7 +335,8 @@ class SCPageDictionary extends LitLocalized(LitElement) {
 
     let dictsUsed = {};
     const finalResults = [];
-    for (let key in this.dictionaryTitles) {
+    // eslint-disable-next-line guard-for-in
+    for (const key in this.dictionaryTitles) {
       dictsUsed = this._sortDictionaryResults(key);
       if (dictsUsed) {
         finalResults.push(dictsUsed);
@@ -358,17 +358,9 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     return `${API_ROOT}/dictionary_full/adjacent/${this.dictionaryWord}`;
   }
 
-  _loadAdjacent() {
-    this._fetchAdjacent();
-  }
-
   // Adding Similar Terms
   _computeSimilarUrl() {
     return `${API_ROOT}/dictionary_full/similar/${this.dictionaryWord}`;
-  }
-
-  _loadSimilar() {
-    this._fetchSimilar();
   }
 
   // Calculating if the current item is selected
@@ -381,20 +373,22 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       const glossary = [];
       let glossaryObject = {};
       let glossText = '';
-      if (glossaryReturns) {
-        for (let glossWord in inputArray[0]) {
-          let glossLookup = inputArray[0][glossWord];
+      if (glossaryReturns && glossaryReturns[0] && inputArray[0]) {
+        // eslint-disable-next-line guard-for-in
+        for (const glossWord in inputArray[0]) {
+          const glossLookup = inputArray[0][glossWord];
           glossText = `<a href="/define/${glossLookup}">${glossLookup}`;
-          if (glossaryReturns[0][glossLookup]) {
-            glossText += `<i> (${glossaryReturns[0][glossLookup]})</i></a>`;
+          const glossaryLookupItem = glossaryReturns[0][glossLookup];
+          if (glossaryLookupItem) {
+            glossText += `<i> (${glossaryLookupItem})</i></a>`;
           }
-          glossaryObject = { glossWord: glossLookup, glossText: glossText };
+          glossaryObject = { glossWord: glossLookup, glossText };
           glossary.push(glossaryObject);
         }
         if (adjacent) {
-          return (this.dictionaryAdjacent = glossary);
+          this.dictionaryAdjacent = glossary;
         } else {
-          return (this.dictionarySimilar = glossary);
+          this.dictionarySimilar = glossary;
         }
       }
     }
