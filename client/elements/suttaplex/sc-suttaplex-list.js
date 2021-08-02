@@ -70,7 +70,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   #loadSCSuttaplex() {
-    import('./card/sc-suttaplex.js').catch(err => {
+    import(
+      /* webpackMode: "lazy-once" */
+      /* webpackPrefetch: true */
+      './card/sc-suttaplex.js'
+    ).catch(err => {
       console.log(err);
     });
   }
