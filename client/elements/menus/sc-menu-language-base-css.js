@@ -52,9 +52,10 @@ export const languageBaseMenuCss = html`
     #jpn::before,
     #sld::before,
     #kln::before,
-    #kan::before {
+    #kan::before,
+    #haw::before {
       letter-spacing: 0;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .arrow_left {
