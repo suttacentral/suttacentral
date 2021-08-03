@@ -452,14 +452,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   async _fetchExpansion() {
-    // this.isLoading = true;
     this.actions.changeLinearProgressActiveState(true);
     try {
       this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
-    // this.isLoading = false;
     this.actions.changeLinearProgressActiveState(false);
   }
 

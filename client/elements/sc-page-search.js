@@ -9,7 +9,11 @@ import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
-import('./suttaplex/card/sc-suttaplex.js');
+import(
+  /* webpackMode: "lazy-once" */
+  /* webpackPrefetch: true */
+  './suttaplex/card/sc-suttaplex.js'
+);
 
 class SCPageSearch extends LitLocalized(LitElement) {
   render() {
@@ -523,13 +527,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
       initiateSearch(params) {
         store.dispatch({
           type: 'INITIATE_SEARCH',
-          params: params,
+          params,
         });
       },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
       setNavigation(navArray) {
@@ -754,12 +758,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
     if (item.is_root) {
       return 'root-text';
-    } else return 'translation';
+    }
+    return 'translation';
   }
 
   // Determines the number of search results that have been found.
   _calculateResultCount(data) {
-    return data ? data : 0;
+    return data || 0;
   }
 
   // If there is no title in the database, the division is the title
@@ -782,9 +787,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
   _convertAcronym(acronym) {
     if (acronym.match(/\/\//)) {
       return acronym.replace(/\/\//, ' (') + ')';
-    } else {
-      return acronym;
     }
+    return acronym;
   }
 
   _transformId(rootId) {
@@ -837,7 +841,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         detail: {
           pageTitle: toolbarTitle,
           title: `${searchResultsText} ${this.searchQuery}`,
-          description: description,
+          description,
           bubbles: true,
           composed: true,
         },

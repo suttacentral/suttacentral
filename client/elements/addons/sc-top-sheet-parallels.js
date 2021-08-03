@@ -19,7 +19,11 @@ class SCTopSheetParallels extends SCTopSheetCommon {
 
   connectedCallback() {
     super.connectedCallback();
-    import('../suttaplex/card/sc-suttaplex.js');
+    import(
+      /* webpackMode: "lazy-once" */
+      /* webpackPrefetch: true */
+      '../suttaplex/card/sc-suttaplex.js'
+    );
   }
 
   show() {

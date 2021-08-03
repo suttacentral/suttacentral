@@ -4,7 +4,8 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { store } from '../../redux-store';
 
-class SCTopSheetPublicationBilara extends SCTopSheetCommon {
+// eslint-disable-next-line import/prefer-default-export
+export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
   static get properties() {
     return {
       translationTitle: {
