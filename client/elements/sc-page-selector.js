@@ -343,12 +343,21 @@ class SCPageSelector extends LitLocalized(LitElement) {
       const scSiteLayout = document.querySelector('sc-site-layout');
       const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
       if (!scActionItems) {
-        import('./menus/sc-action-items');
-        const contextToolbar = scSiteLayout?.shadowRoot.querySelector('#context_toolbar');
-        const newScActionItems = document.createElement('sc-action-items');
-        newScActionItems.id = 'action_items';
-        contextToolbar.appendChild(newScActionItems);
-        this._setActionItemsDisplayState();
+        import(
+          /* webpackMode: "lazy-once" */
+          /* webpackPrefetch: true */
+          './menus/sc-action-items'
+        )
+          .then(module => {
+            const contextToolbar = scSiteLayout?.shadowRoot.querySelector('#context_toolbar');
+            const newScActionItems = document.createElement('sc-action-items');
+            newScActionItems.id = 'action_items';
+            contextToolbar.appendChild(newScActionItems);
+            this._setActionItemsDisplayState();
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   }
@@ -373,11 +382,11 @@ class SCPageSelector extends LitLocalized(LitElement) {
         }
       }
       if (needToLoadTopSheets) {
-        import('./addons/sc-top-sheet-views');
-        import('./addons/sc-top-sheet-toc');
-        import('./addons/sc-top-sheet-parallels');
-        import('./addons/sc-top-sheet-publication-legacy');
-        import('./addons/sc-top-sheet-publication-bilara');
+        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-views');
+        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-toc');
+        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-parallels');
+        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-publication-legacy');
+        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-publication-bilara');
         // eslint-disable-next-line no-restricted-syntax
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);

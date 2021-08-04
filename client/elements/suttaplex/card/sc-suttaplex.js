@@ -16,7 +16,8 @@ import './sc-suttaplex-tx';
 
 let expansionDataCache;
 
-class SCSuttaplex extends LitLocalized(LitElement) {
+// eslint-disable-next-line import/prefer-default-export
+export class SCSuttaplex extends LitLocalized(LitElement) {
   static get properties() {
     return {
       suttaplexListStyle: String,

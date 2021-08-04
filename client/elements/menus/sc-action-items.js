@@ -7,7 +7,7 @@ import { icon } from '../../img/sc-icon';
 Base toolbar that appears on the top right in the header of every page.
 */
 
-class SCActionItems extends LitLocalized(LitElement) {
+export class SCActionItems extends LitLocalized(LitElement) {
   static get styles() {
     return css`
       .white-icon {

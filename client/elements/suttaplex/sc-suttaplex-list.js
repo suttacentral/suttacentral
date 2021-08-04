@@ -8,7 +8,6 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
-import('./card/sc-suttaplex.js');
 import {
   navIndex,
   RefreshNav,
@@ -70,8 +69,20 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     }
   }
 
+  #loadSCSuttaplex() {
+    import(
+      /* webpackMode: "lazy-once" */
+      /* webpackPrefetch: true */
+      './card/sc-suttaplex.js'
+    ).catch(err => {
+      console.log(err);
+    });
+  }
+
   connectedCallback() {
     super.connectedCallback();
+
+    this.#loadSCSuttaplex();
     this.addEventListener('click', () => {
       this._hideTopSheets();
     });
