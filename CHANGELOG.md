@@ -1,6 +1,13 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.08.04
+
+- Fix: Pages sometimes do not load #2206 (Need to be constantly observed).
+- Optimize module dynamic loading code.
+- Adjust size of language pill for three-letter languages.
+- Upgrade dependencies.
+
 ## 2021.07.24
 
 - Table view for parallels #2139
