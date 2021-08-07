@@ -148,7 +148,7 @@ class SCTextBilara extends SCTextCommon {
   _updateView() {
     setTimeout(() => {
       this._addTranslationText();
-      if (this.paliScript === 'latin') {
+      if (this.paliScript === 'latin' || this.rootSutta.lang !== 'pli') {
         this._addRootText();
       } else {
         this._setScript();
@@ -509,11 +509,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addRootText() {
-    if (
-      !this.bilaraRootSutta ||
-      this._articleElement().length === 0 ||
-      this.paliScript !== 'latin'
-    ) {
+    if (!this.bilaraRootSutta || this._articleElement().length === 0) {
       return;
     }
 
@@ -1049,7 +1045,9 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _setScript() {
-    this._setScriptOfSegments();
+    if (this.rootSutta.lang === 'pli') {
+      this._setScriptOfSegments();
+    }
   }
 
   async _setScriptOfSegments() {
