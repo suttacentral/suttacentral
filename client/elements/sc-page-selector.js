@@ -344,7 +344,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
       if (!scActionItems) {
         import(
-          /* webpackMode: "lazy-once" */
+          /* webpackMode: "lazy" */
           /* webpackPrefetch: true */
           './menus/sc-action-items'
         )
@@ -382,11 +382,11 @@ class SCPageSelector extends LitLocalized(LitElement) {
         }
       }
       if (needToLoadTopSheets) {
-        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-views');
-        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-toc');
-        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-parallels');
-        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-publication-legacy');
-        import(/* webpackMode: "lazy-once" */ './addons/sc-top-sheet-publication-bilara');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-views');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-toc');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-parallels');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-legacy');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-bilara');
         // eslint-disable-next-line no-restricted-syntax
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);

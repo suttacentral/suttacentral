@@ -10,7 +10,7 @@ import { API_ROOT } from '../constants';
 import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import(
-  /* webpackMode: "lazy-once" */
+  /* webpackMode: "lazy" */
   /* webpackPrefetch: true */
   './suttaplex/card/sc-suttaplex.js'
 );

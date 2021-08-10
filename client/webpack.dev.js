@@ -11,4 +11,7 @@ module.exports = merge(require('./webpack.common'), {
       disableDotRule: true,
     },
   },
+  performance: {
+    hints: 'warning',
+  },
 });
