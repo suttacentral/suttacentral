@@ -158,11 +158,9 @@ export function setCurrentNavPosition(position) {
   });
 }
 
-async function genNavDetail(uid, navType, currentURL) {
-  const navArray = store.getState().navigationArray;
-  const url = `${API_ROOT}/menu/${uid}?language=${store.getState().siteLanguage || 'en'}`;
-  fetch(url)
-    .then(r => r.json())
+function genNavDetail(navType, currentURL, data, navArray) {
+  data
+    ?.json()
     .then(menuData => {
       if (!menuData || !menuData[0].uid) {
         return;
@@ -186,53 +184,65 @@ async function genNavDetail(uid, navType, currentURL) {
       };
       setNavigation(navArray);
     })
-    .catch(e => console.error(e));
+    .catch(error => {
+      console.log(error);
+    });
 }
 
-async function fetchSuttaFullPath(uid) {
-  try {
-    return await (await fetch(`${API_ROOT}/suttafullpath/${uid}`)).json();
-  } catch (e) {
-    return null;
-  }
-}
-
-export async function RefreshNav(uid, forceRefresh) {
+export function RefreshNav(uid, forceRefresh) {
   if (!uid) {
     return;
   }
-  const suttaFullPath = await fetchSuttaFullPath(uid);
-  if (!suttaFullPath || !suttaFullPath.full_path) {
-    return;
-  }
-  const URLs = suttaFullPath.full_path.split('/');
-  let currentURL = '/pitaka';
-  const currentNav = store.getState().navigationArray;
+  fetch(`${API_ROOT}/suttafullpath/${uid}`)
+    .then(r => r.json())
+    .then(suttaFullPath => {
+      if (!suttaFullPath || !suttaFullPath.full_path) {
+        return;
+      }
+      const URLs = suttaFullPath.full_path.split('/');
+      const currentNav = store.getState().navigationArray;
 
-  const truePathLength = URLs.filter(x => x !== null && x !== '' && x !== 'pitaka').length;
-  const navSuttaPathLength = currentNav.filter(
-    x => x != null && x.groupId !== uid && x.type !== 'home'
-  ).length;
+      const truePathLength = URLs.filter(x => x !== null && x !== '' && x !== 'pitaka').length;
+      const navSuttaPathLength = currentNav.filter(
+        x => x != null && x.groupId !== uid && x.type !== 'home'
+      ).length;
 
-  const fatherLevelExists = currentNav.some(x => x !== null && x.groupId === URLs[URLs.length - 1]);
-  if (fatherLevelExists && navSuttaPathLength === truePathLength && !forceRefresh) {
-    return;
-  }
+      const fatherLevelExists = currentNav.some(
+        x => x !== null && x.groupId === URLs[URLs.length - 1]
+      );
+      if (fatherLevelExists && navSuttaPathLength === truePathLength && !forceRefresh) {
+        return;
+      }
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const index of currentNav.keys()) {
-    if (index > 0) {
-      currentNav[index] = null;
-    }
-  }
+      for (const index of currentNav.keys()) {
+        if (index > 0) {
+          currentNav[index] = null;
+        }
+      }
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [index, value] of URLs.entries()) {
-    if (index > 1) {
-      const navType = getNavTypeByNavIndex(index);
-      currentURL = `${currentURL}/${value}`;
-      // eslint-disable-next-line no-await-in-loop
-      await genNavDetail(value, navType, currentURL);
-    }
-  }
+      const fetchPromises = [];
+      for (const [index, value] of URLs.entries()) {
+        if (index > 1) {
+          const url = `${API_ROOT}/menu/${value}?language=${store.getState().siteLanguage || 'en'}`;
+          fetchPromises.push(fetch(url));
+        }
+      }
+      const menuData = [];
+      let currentURL = '/pitaka';
+      let fetchPromiseIndex = 0;
+      Promise.all(fetchPromises)
+        .then(values => {
+          for (const [index, value] of URLs.entries()) {
+            if (index > 1) {
+              const navType = getNavTypeByNavIndex(index);
+              currentURL = `${currentURL}/${value}`;
+              genNavDetail(navType, currentURL, values[fetchPromiseIndex], currentNav);
+              fetchPromiseIndex = fetchPromiseIndex + 1;
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
 }
