@@ -46,7 +46,7 @@ services:
       - nginx-logs:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
       - l10n-ter:/l10n_ter
-      - nginx-caches:/etc/nginx/caches
+      - nginx-cache:/etc/nginx/cache
     ports:
       - '80:80'
       - '443:443'
@@ -125,4 +125,4 @@ volumes:
   socket-volume:
   elasticsearch-data:
   l10n-ter:
-  nginx-caches:
+  nginx-cache:
