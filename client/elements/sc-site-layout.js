@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
+import { BrowserMicroSentryClient } from '@micro-sentry/browser';
+
 import { throttle } from 'throttle-debounce';
 import { icon } from '../img/sc-icon';
 
@@ -15,9 +17,9 @@ import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
 import { SCColors } from './styles/sc-colors';
 
-import { initSentry } from '../sentry';
-
-initSentry();
+const microSentryClient = new BrowserMicroSentryClient({
+  dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
+});
 
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
@@ -495,6 +497,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this._initStaticPagesToolbarDisplayState();
     this._addStaticPageLinkEventListener();
     this._setStaticPageMenuItemSelected();
+
+    window.addEventListener('error', e => {
+      microSentryClient.report(e);
+    });
   }
 
   _setStaticPageMenuItemSelected() {
