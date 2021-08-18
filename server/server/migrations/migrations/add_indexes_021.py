@@ -15,3 +15,4 @@ class SecondMigration(Migration):
         language = db['language']
         language.add_hash_index(fields=['uid'], unique=True)
         language.add_hash_index(fields=['is_root'], unique=False)
+        language.add_hash_index(fields=['iso_code'], unique=False)
