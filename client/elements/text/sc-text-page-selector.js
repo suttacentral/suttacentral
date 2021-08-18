@@ -305,7 +305,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (this.responseData) {
       this.isSegmentedText = !!this.responseData.segmented;
       this.suttaplex = this.responseData.suttaplex;
-      this._bindDataToSCSuttaParallels(this.suttaId);
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
       if (!this.responseData.root_text && !this.responseData.translation) {
@@ -349,24 +348,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       const scSiteLayout = document.querySelector('sc-site-layout');
       scSiteLayout?.shadowRoot.querySelector('#action_items')?.showParallelsTopSheet();
     }
-  }
-
-  _bindDataToSCSuttaParallels(uid) {
-    const url = `${API_ROOT}/suttaplex/${uid}?language=${this.siteLanguage}`;
-    fetch(url)
-      .then(r => r.json())
-      .then(suttaplex => {
-        this.dispatchEvent(
-          new CustomEvent('bind-data-to-sc-sutta-parallels', {
-            detail: {
-              suttaplexItem: suttaplex[0],
-            },
-            bubbles: true,
-            composed: true,
-          })
-        );
-      })
-      .catch(e => console.error(e));
   }
 
   _getSuttaTextUrl() {

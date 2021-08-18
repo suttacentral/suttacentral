@@ -3,6 +3,7 @@ import '@material/mwc-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
+import { API_ROOT } from '../../constants';
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
@@ -484,6 +485,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnShowParallelsClick() {
+    this.#bindDataToSCSuttaParallels(store.getState().currentRoute.params.suttaId);
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
       const { displaySettingMenu, displaySuttaInfo, displaySuttaToC } = store.getState();
@@ -505,6 +507,27 @@ export class SCActionItems extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaParallelsState(false);
       this._hideSuttaParallels();
     }
+  }
+
+  #bindDataToSCSuttaParallels(uid) {
+    if (!uid) {
+      return;
+    }
+    const url = `${API_ROOT}/suttaplex/${uid}?language=${this.siteLanguage}`;
+    fetch(url)
+      .then(r => r.json())
+      .then(suttaplex => {
+        this.dispatchEvent(
+          new CustomEvent('bind-data-to-sc-sutta-parallels', {
+            detail: {
+              suttaplexItem: suttaplex[0],
+            },
+            bubbles: true,
+            composed: true,
+          })
+        );
+      })
+      .catch(e => console.error(e));
   }
 
   _onBtnShowParallelTableViewClick() {
