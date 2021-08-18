@@ -4,7 +4,7 @@ from typing import Tuple
 from hashlib import blake2b
 
 from flasgger import Swagger
-from flask import Blueprint, Flask, make_response, json
+from flask import Blueprint, Flask, make_response, json, request
 from flask_cors import CORS
 from flask_restful import Api
 
@@ -130,7 +130,8 @@ CORS(app)
 
 @app.after_request
 def apply_etag(response):
-    response.set_etag(blake2b(response.data, digest_size=16).hexdigest(), weak=True)
+    if response.status_code == 200 and request.method == 'GET':
+        response.set_etag(blake2b(response.data, digest_size=16).hexdigest(), weak=True)
     return response
 
 if __name__ == '__main__':
