@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 from typing import Tuple
+from hashlib import blake2b
 
 from flasgger import Swagger
 from flask import Blueprint, Flask, make_response, json
@@ -126,6 +127,11 @@ api, app = app_factory()
 arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
+
+@app.after_request
+def apply_etag(response):
+    response.set_etag(blake2b(response.data, digest_size=16).hexdigest(), weak=True)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
