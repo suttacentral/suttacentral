@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import os
 from typing import Tuple
+from hashlib import blake2b
 
 from flasgger import Swagger
-from flask import Blueprint, Flask, make_response, json
+from flask import Blueprint, Flask, make_response, json, request
 from flask_cors import CORS
 from flask_restful import Api
 
@@ -126,6 +127,12 @@ api, app = app_factory()
 arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
+
+@app.after_request
+def apply_etag(response):
+    if response.status_code == 200 and request.method == 'GET':
+        response.set_etag(blake2b(response.data, digest_size=16).hexdigest(), weak=True)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
