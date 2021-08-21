@@ -1,6 +1,15 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.08.21
+
+-  Configure Ngnix uwsgi_cache.
+-  Add indexes to ArangoDB collections.
+-  Lazy loading of parallels data.
+-  Rewrite the breadcrumb related code.
+-  Use micro-sentry instead of sentry(Need to observe whether it is effective ).
+-  Updating the font for the Sharada script in CSS.
+
 ## 2021.08.04
 
 - Fix: Pages sometimes do not load #2206 (Need to be constantly observed).
