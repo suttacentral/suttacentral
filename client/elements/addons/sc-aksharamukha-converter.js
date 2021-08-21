@@ -378,7 +378,9 @@ export const paliScriptsStyles = css`
   }
 
   .sharada-script {
-    font-family: 'Noto Sans Sharada' !important;
+    font-family: 'Satisar Sharada' !important;
+    font-size: 125%;
+    line-height: 2em;
   }
 
   .thainative-script {

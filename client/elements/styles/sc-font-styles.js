@@ -788,8 +788,8 @@ export const SCFontStyles = css`
   }
 
   @font-face {
-    font-family: 'Noto Sans Sharada';
-    src: url('/files/fonts/NotoSansSharada-Regular.otf');
+    font-family: 'Satisar Sharada';
+    src: url('/files/fonts/Sharada.ttf');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
