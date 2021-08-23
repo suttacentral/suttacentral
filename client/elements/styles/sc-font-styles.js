@@ -1084,6 +1084,22 @@ export const SCFontStyles = css`
   }
 
   @font-face {
+    font-family: 'Tantular Kawi';
+    src: url('/files/fonts/Tantular Kawi.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Purnawarman';
+    src: url('/files/fonts/adn_Purnawarman_1584765777.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
     font-family: 'Noto Sans Buginese';
     src: url('/files/fonts/NotoSansBuginese-Regular.otf');
     font-weight: normal;

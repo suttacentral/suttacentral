@@ -237,6 +237,14 @@ export const paliScriptsStyles = css`
     font-family: 'Noto Sans Kaithi' !important;
   }
 
+  .kawi-script {
+    font-family: 'Tantular Kawi' !important;
+  }
+
+  .pallava-script {
+    font-family: 'Purnawarman' !important;
+  }
+
   .gujarati-script {
     font-family: 'Noto Serif Gujarati' !important;
   }
@@ -591,6 +599,18 @@ export const scriptIdentifiers = [
     language: 'Hanunoo',
   },
   {
+    script: 'Hebrew',
+    language: 'Hebrew',
+  },
+  {
+    script: 'Hiragana',
+    language: 'Japanese (Hiragana)',
+  },
+  {
+    script: 'Katakana',
+    language: 'Japanese (Katakana)',
+  },
+  {
     script: 'Javanese',
     language: 'Javanese',
   },
@@ -601,6 +621,10 @@ export const scriptIdentifiers = [
   {
     script: 'Kannada',
     language: 'Kannada',
+  },
+  {
+    script: 'Kawi',
+    language: 'Kawi',
   },
   {
     script: 'KhamtiShan',
@@ -691,6 +715,10 @@ export const scriptIdentifiers = [
     language: 'Oriya',
   },
   {
+    script: 'Pallava',
+    language: 'Pallava',
+  },
+  {
     script: 'PhagsPa',
     language: 'PhagsPa',
   },
@@ -709,6 +737,10 @@ export const scriptIdentifiers = [
   {
     script: 'HanifiRohingya',
     language: 'Rohingya (Hanifi)',
+  },
+  {
+    script: 'RomanColloquial',
+    language: 'Roman (Colloquial)',
   },
   {
     script: 'HK',
