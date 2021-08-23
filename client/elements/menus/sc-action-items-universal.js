@@ -195,6 +195,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
       label="close"
       id="close_button"
       title="Close search bar"
+      aria-label="Close search bar"
       @click="${this._closeSearch}">
         ${icon.close}
       </mwc-icon-button>
@@ -202,7 +203,8 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
         label="menu"
         id="more-menu-button"
         @click="${this.openMoreMenu}"
-        alt="menu" aria-label="Menu"
+        alt="menu" 
+        aria-label="Menu"
       >
         ${icon.more_vert}
       </mwc-icon-button>
