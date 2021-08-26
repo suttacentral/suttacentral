@@ -286,12 +286,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
+    debugger;
     if (
       !this.responseData ||
       (!this.responseData.root_text &&
         !this.responseData.translation &&
         !this.responseData.bilara_root_text &&
-        !this.responseData.bilara_translation)
+        !this.responseData.bilara_translated_text)
     ) {
       if (!this.responseData.root_text && !this.responseData.translation) {
         this.lastError = {
