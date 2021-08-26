@@ -10,7 +10,7 @@ import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
 import {
   navIndex,
-  RefreshNav,
+  RefreshNavNew,
   setNavigation,
   setCurrentNavPosition,
 } from '../navigation/sc-navigation-common';
@@ -149,7 +149,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         forceRefresh = true;
       }
 
-      RefreshNav(this.categoryId, true);
+      RefreshNavNew(this.categoryId, true);
     }
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
@@ -193,11 +193,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
-      const navArray = store.getState().navigationArray;
-      const currentNav = navArray.find(x => x !== null && x?.groupId === this.suttaplexData[0].uid);
-      if (this.suttaplexData[0].type === 'leaf' || !currentNav) {
-        this._updateNav();
-      }
+      // const navArray = store.getState().navigationArray;
+      // const currentNav = navArray.find(x => x !== null && x?.groupId === this.suttaplexData[0].uid);
+      // if (this.suttaplexData[0].type === 'leaf' || !currentNav) {
+      //   this._updateNav();
+      // }
+      RefreshNavNew(this.categoryId, true);
 
       document.dispatchEvent(
         new CustomEvent('metadata', {
@@ -225,7 +226,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       type: navIndexesOfType.type,
     };
     setNavigation(navArray);
-    setCurrentNavPosition(navIndexesOfType.position);
+    //setCurrentNavPosition(navIndexesOfType.position);
   }
 
   async initTableView() {

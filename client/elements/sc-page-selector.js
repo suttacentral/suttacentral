@@ -65,8 +65,8 @@ const routes = {
   },
   'NAVIGATION': {
     path: '/pitaka/:ids(.+)',
-    content: html`<sc-navigation />`,
-    loader: () => import('./navigation/sc-navigation.js'),
+    content: html`<sc-navigation-new />`,
+    loader: () => import('./navigation/sc-navigation-new.js'),
   },
   'ABBREVIATIONS': {
     path: '/abbreviations',
@@ -582,7 +582,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
           type: 'staticPage',
         });
         this.actions.setNavigation(navArray);
-        this.actions.setCurrentNavPosition(1);
+        // this.actions.setCurrentNavPosition(1);
       }
     }
   }

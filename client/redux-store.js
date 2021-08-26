@@ -54,7 +54,7 @@ const initialState = {
       url: '/',
       type: 'home',
       position: 0,
-      navigationArrayLength: 1,
+      index: 0,
     },
   ],
   currentNavPosition: 1,

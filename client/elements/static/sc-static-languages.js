@@ -57,7 +57,7 @@ class SCStaticLanguages extends SCStaticPage {
       type: 'LanguageDetailPage',
     };
     setNavigation(navArray);
-    setCurrentNavPosition(navIndex.navArrayLength);
+    // setCurrentNavPosition(navIndex.navArrayLength);
     this.actions.changeToolbarTitle('Languages on SuttaCentral');
   }
 
@@ -66,7 +66,7 @@ class SCStaticLanguages extends SCStaticPage {
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
     };

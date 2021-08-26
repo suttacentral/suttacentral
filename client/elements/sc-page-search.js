@@ -623,7 +623,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _updateNav() {
-    const navIndexesOfType = navIndex.get('searchPage');
+    // const navIndexesOfType = navIndex.get('searchPage');
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
@@ -633,7 +633,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       type: 'searchPage',
     });
     this.actions.setNavigation(navArray);
-    this.actions.setCurrentNavPosition(navIndexesOfType.position);
+    // this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
 
   // Clears search result arrays, resets variables

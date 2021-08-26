@@ -1043,8 +1043,10 @@ class SuttaFullPath(Resource):
         db = get_db()
         full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
         if full_path['full_path'].count('/sutta/minor') > 1:
-            rIndex = full_path['full_path'].rfind('/sutta/minor')
-            full_path['full_path'] = full_path['full_path'][:rIndex]
+            if full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count('kn/dhp') > 0:
+                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
+            if uid == 'dhp' and full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count('/kn') > 0:
+                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
         return full_path
 
 

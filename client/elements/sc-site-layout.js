@@ -513,23 +513,24 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _initNavigation() {
     this.navArray = store.getState().navigationArray;
-    this.currentNavPosition = store.getState().currentNavPosition;
+    // this.currentNavPosition = store.getState().currentNavPosition;
     if (!this.navArray) {
       this.navArray = [
         {
+          uid: 'home',
           title: 'Home',
           url: '/',
           type: 'home',
           position: 0,
-          navigationArrayLength: 1,
+          index: 0,
         },
       ];
       this.actions.setNavigation(this.navArray);
     }
 
-    if (!this.currentNavPosition) {
-      this.actions.setCurrentNavPosition(0);
-    }
+    // if (!this.currentNavPosition) {
+    //   this.actions.setCurrentNavPosition(0);
+    // }
   }
 
   _initStaticPagesToolbarDisplayState() {
