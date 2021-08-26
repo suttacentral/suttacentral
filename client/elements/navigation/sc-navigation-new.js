@@ -34,7 +34,6 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   async _parseURL() {
-    // 只需要读取url最后的一项
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
@@ -43,9 +42,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   _verifyURL() {
-    // 只需要读取url最后的一项
     this.currentUid = this._getRoutePathLastItem();
-    // 获取suttafullpath, 然后跟当前的routePath比较
     fetch(`${API_ROOT}/suttafullpath/${this.currentUid}`)
       .then(r => r.json())
       .then(suttaFullPath => {
