@@ -228,6 +228,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         suttaTitle = acronyms[0];
       }
     }
+    const navSuttaItemIndex = this.navArray.findIndex(item => item.type === 'sutta');
+    if (navSuttaItemIndex !== -1) {
+      delete this.navArray[navSuttaItemIndex];
+    }
     this.navArray.push({
       uid: this.suttaId,
       title: suttaTitle,
@@ -282,7 +286,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
-    if (!this.responseData || (!this.responseData.root_text && !this.responseData.translation)) {
+    if (
+      !this.responseData ||
+      (!this.responseData.root_text &&
+        !this.responseData.translation &&
+        !this.responseData.bilara_root_text &&
+        !this.responseData.bilara_translation)
+    ) {
       if (!this.responseData.root_text && !this.responseData.translation) {
         this.lastError = {
           type: 'data-load-error',
