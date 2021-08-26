@@ -13,10 +13,8 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   @state() compactStyles = {};
   @state() localizedStringsPath = '/localization/elements/sc-navigation';
   @state() routePath = store.getState().currentRoute.path;
-  // @state() currentNavPosition = store.getState().currentNavPosition;
   @state() siteLanguage = store.getState().siteLanguage;
   @state() fullSiteLanguageName = store.getState().fullSiteLanguageName;
-  @state() tipitakaUids = ['sutta', 'vinaya', 'abhidhamma'];
   @state() lastSelectedItemRootLangISO = '';
   @state() currentMenuData = [];
   @state() currentUid = this._getRoutePathLastItem();
@@ -49,10 +47,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         if (!suttaFullPath || !suttaFullPath.full_path) {
           dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
         }
-        console.log(`${suttaFullPath.full_path}/${this.currentUid}`);
-        console.log(this.routePath);
         if (`${suttaFullPath.full_path}/${this.currentUid}` !== this.routePath) {
-          console.log('路径不一致');
           dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
         } else {
           return true;
