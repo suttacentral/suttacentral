@@ -286,7 +286,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
-    debugger;
     if (
       !this.responseData ||
       (!this.responseData.root_text &&
