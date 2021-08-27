@@ -147,8 +147,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   async _onCardClick(params) {
-    const url = `${API_ROOT}/menu/${params.childId}?language=${this.siteLanguage || 'en'}`;
-    fetch(url)
+    fetch(this._computeMenuApiUrl(params.childId))
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
@@ -173,6 +172,10 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  _computeMenuApiUrl(uid) {
+    return `${API_ROOT}/menu/${uid}?language=${this.siteLanguage || 'en'}`;
   }
 
   get actions() {
@@ -221,9 +224,8 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   async _fetchMenuData(childId) {
-    const url = `${API_ROOT}/menu/${childId}?language=${this.siteLanguage || 'en'}`;
     try {
-      const childrenData = await (await fetch(url)).json();
+      const childrenData = await (await fetch(this._computeMenuApiUrl(childId))).json();
       return childrenData;
     } catch (error) {
       console.log(error);
