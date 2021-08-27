@@ -151,12 +151,6 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
@@ -216,7 +210,6 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
   _navClick(nav) {
     this._hideTopSheets();
-    // this.actions.setCurrentNavPosition(nav.position);
     if (nav.type === 'home') {
       this.navArray.length = 1;
       this.actions.setNavigation(this.navArray);

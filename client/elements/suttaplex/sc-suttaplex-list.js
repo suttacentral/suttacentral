@@ -8,12 +8,7 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
-import {
-  navIndex,
-  RefreshNavNew,
-  setNavigation,
-  setCurrentNavPosition,
-} from '../navigation/sc-navigation-common';
+import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { transformId } from '../../utils/suttaplex';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
@@ -193,11 +188,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
-      // const navArray = store.getState().navigationArray;
-      // const currentNav = navArray.find(x => x !== null && x?.groupId === this.suttaplexData[0].uid);
-      // if (this.suttaplexData[0].type === 'leaf' || !currentNav) {
-      //   this._updateNav();
-      // }
       RefreshNavNew(this.categoryId, true);
 
       document.dispatchEvent(
@@ -212,21 +202,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         })
       );
     }
-  }
-
-  _updateNav() {
-    const navIndexesOfType = navIndex.get('sutta');
-    const navArray = store.getState().navigationArray;
-    navArray[navIndexesOfType.index] = {
-      title:
-        this.suttaplexData[0].acronym ||
-        this.suttaplexData[0].translated_title ||
-        this.suttaplexData[0].original_title,
-      url: store.getState().currentRoute.path,
-      type: navIndexesOfType.type,
-    };
-    setNavigation(navArray);
-    //setCurrentNavPosition(navIndexesOfType.position);
   }
 
   async initTableView() {

@@ -7,7 +7,7 @@ import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
 import '../addons/sc-pie-chart';
 import { store } from '../../redux-store';
-import { navIndex, setNavigation, setCurrentNavPosition } from '../navigation/sc-navigation-common';
+import { navIndex, setNavigation } from '../navigation/sc-navigation-common';
 
 class SCStaticLanguages extends SCStaticPage {
   static get properties() {
@@ -57,7 +57,6 @@ class SCStaticLanguages extends SCStaticPage {
       type: 'LanguageDetailPage',
     };
     setNavigation(navArray);
-    // setCurrentNavPosition(navIndex.navArrayLength);
     this.actions.changeToolbarTitle('Languages on SuttaCentral');
   }
 

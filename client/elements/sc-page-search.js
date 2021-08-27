@@ -7,8 +7,8 @@ import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
-import { navIndex } from './navigation/sc-navigation-common';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
+
 import(
   /* webpackMode: "lazy" */
   /* webpackPrefetch: true */
@@ -542,12 +542,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       changeLinearProgressActiveState(active) {
         store.dispatch({
           type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
@@ -623,7 +617,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _updateNav() {
-    // const navIndexesOfType = navIndex.get('searchPage');
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
@@ -633,7 +626,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       type: 'searchPage',
     });
     this.actions.setNavigation(navArray);
-    // this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
 
   // Clears search result arrays, resets variables

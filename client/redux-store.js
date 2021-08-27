@@ -50,14 +50,13 @@ const initialState = {
   toolbarTitle: '',
   navigationArray: [
     {
+      uid: 'home',
       title: 'Home',
       url: '/',
       type: 'home',
-      position: 0,
       index: 0,
     },
   ],
-  currentNavPosition: 1,
   displaySettingMenu: false,
   displayToolButton: false,
   displayInfoButton: false,
@@ -200,8 +199,6 @@ const reducer = (state, action) => {
       return { ...state, displaySuttaInfo: action.displaySuttaInfo };
     case 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE':
       return { ...state, displayParallelTableView: action.displayParallelTableView };
-    case 'CHANGE_CURRENT_NAV_POSITION_STATE':
-      return { ...state, currentNavPosition: action.currentNavPosition };
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
       return { ...state, staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState };
     case 'UPDATE_NAV_DATA_CACHE':

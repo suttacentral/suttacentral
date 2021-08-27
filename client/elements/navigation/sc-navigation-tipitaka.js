@@ -72,12 +72,12 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
                 <section class="card home-card">
                   <a
                     class="header-link"
-                    title="${item.translated_name || item.root_name}"
+                    title=${item.translated_name || item.root_name}
                     href="/pitaka/${item.uid}"
                   >
                     <header>
                       <span class="header-left">
-                        <span class="title" lang="${this.siteLanguage}">
+                        <span class="title" lang=${this.siteLanguage}>
                           ${item.translated_name || item.root_name}
                         </span>
                         <div class="navigation-nerdy-row">
@@ -98,7 +98,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
                   </a>
                   <div class="nav-card-content">
                     <div class="blurb" id="${item.root_name}_blurb">${item.blurb}</div>
-                    <a class="essay-link" href="${this.pitakaGuide.get(item.uid)}">
+                    <a class="essay-link" href=${this.pitakaGuide.get(item.uid)}>
                       <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
                     </a>
                   </div>

@@ -272,12 +272,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       setStaticPagesToolbarDisplayState(toolbarDisplayState) {
         store.dispatch({
           type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
@@ -582,7 +576,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
           type: 'staticPage',
         });
         this.actions.setNavigation(navArray);
-        // this.actions.setCurrentNavPosition(1);
       }
     }
   }

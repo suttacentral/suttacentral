@@ -279,12 +279,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       setStaticPagesToolbarDisplayState(toolbarDisplayState) {
         store.dispatch({
           type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
@@ -513,7 +507,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _initNavigation() {
     this.navArray = store.getState().navigationArray;
-    // this.currentNavPosition = store.getState().currentNavPosition;
     if (!this.navArray) {
       this.navArray = [
         {
@@ -521,16 +514,11 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           title: 'Home',
           url: '/',
           type: 'home',
-          position: 0,
           index: 0,
         },
       ];
       this.actions.setNavigation(this.navArray);
     }
-
-    // if (!this.currentNavPosition) {
-    //   this.actions.setCurrentNavPosition(0);
-    // }
   }
 
   _initStaticPagesToolbarDisplayState() {

@@ -11,7 +11,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
-import { navIndex, RefreshNavNew } from '../navigation/sc-navigation-common';
+import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
@@ -185,12 +185,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       changeLinearProgressActiveState(active) {
         store.dispatch({
           type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
@@ -214,7 +208,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!this.responseData || this.refreshing) {
       return;
     }
-    // const navIndexesOfType = navIndex.get('sutta');
     this.navArray = store.getState().navigationArray;
     let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
     if (!suttaTitle) {
@@ -238,11 +231,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       url: store.getState().currentRoute.path,
       type: 'sutta',
       index: 99,
-      // position: navIndexesOfType.position,
     });
 
     this.actions.setNavigation(this.navArray);
-    //this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
 
   updated(changedProps) {
