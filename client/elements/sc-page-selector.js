@@ -65,8 +65,8 @@ const routes = {
   },
   'NAVIGATION': {
     path: '/pitaka/:ids(.+)',
-    content: html`<sc-navigation />`,
-    loader: () => import('./navigation/sc-navigation.js'),
+    content: html`<sc-navigation-new />`,
+    loader: () => import('./navigation/sc-navigation-new.js'),
   },
   'ABBREVIATIONS': {
     path: '/abbreviations',
@@ -270,12 +270,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SET_NAVIGATION',
           navigationArray: navArray,
-        });
-      },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
         });
       },
       setStaticPagesToolbarDisplayState(toolbarDisplayState) {
@@ -582,7 +576,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
           type: 'staticPage',
         });
         this.actions.setNavigation(navArray);
-        this.actions.setCurrentNavPosition(1);
       }
     }
   }

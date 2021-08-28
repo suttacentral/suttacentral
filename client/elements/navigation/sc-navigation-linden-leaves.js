@@ -1,9 +1,9 @@
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css } from 'lit';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 
-import { navigationNormalModeStyles } from './sc-navigation-styles.js';
+import { navigationNormalModeStyles } from './sc-navigation-styles';
 
 import '../menus/sc-action-items-universal';
 import { icon } from '../../img/sc-icon';
@@ -151,16 +151,10 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
-          title: title,
+          title,
         });
       },
     };
@@ -171,6 +165,9 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     this.requestUpdate();
     if (this.navArray !== state.navigationArray) {
       this.navArray = state.navigationArray;
+      this.navArray = this.navArray.filter(function (e) {
+        return e;
+      });
     }
   }
 
@@ -213,7 +210,6 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
   _navClick(nav) {
     this._hideTopSheets();
-    this.actions.setCurrentNavPosition(nav.position);
     if (nav.type === 'home') {
       this.navArray.length = 1;
       this.actions.setNavigation(this.navArray);
@@ -222,7 +218,7 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
     const routePath = store.getState().currentRoute.path;
     this.actions.changeToolbarTitle(nav.title);
-    this.navArray.length = nav.position + 1 || 1;
+    this.navArray.length = nav.index + 1 || 1;
     this.actions.setNavigation(this.navArray);
     this.requestUpdate();
 

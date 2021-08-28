@@ -11,7 +11,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
-import { navIndex, RefreshNav } from '../navigation/sc-navigation-common';
+import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 /*
   This element makes a server request for a sutta text, dispatches it to the redux store and subsequently shows
@@ -155,7 +155,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   _refreshData(forceRefresh) {
     this._paramChanged();
     this.refreshing = true;
-    RefreshNav(this.suttaId, forceRefresh);
+    RefreshNavNew(this.suttaId, forceRefresh);
     this.refreshing = false;
   }
 
@@ -185,12 +185,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           navigationArray: navArray,
         });
       },
-      setCurrentNavPosition(position) {
-        store.dispatch({
-          type: 'CHANGE_CURRENT_NAV_POSITION_STATE',
-          currentNavPosition: position,
-        });
-      },
       changeLinearProgressActiveState(active) {
         store.dispatch({
           type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
@@ -210,11 +204,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     });
   }
 
-  async _updateNav() {
+  _updateNav() {
     if (!this.responseData || this.refreshing) {
       return;
     }
-    const navIndexesOfType = navIndex.get('sutta');
     this.navArray = store.getState().navigationArray;
     let suttaTitle = this.responseData.translation ? this.responseData.translation.title : '';
     if (!suttaTitle) {
@@ -228,22 +221,19 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         suttaTitle = acronyms[0];
       }
     }
-    this.navArray[navIndexesOfType.index] = {
+    const navSuttaItemIndex = this.navArray.findIndex(item => item.type === 'sutta');
+    if (navSuttaItemIndex !== -1) {
+      delete this.navArray[navSuttaItemIndex];
+    }
+    this.navArray.push({
+      uid: this.suttaId,
       title: suttaTitle,
       url: store.getState().currentRoute.path,
-      type: navIndexesOfType.type,
-      position: navIndexesOfType.position,
-      groupId: this.responseData.root_text
-        ? this.responseData.root_text?.uid
-        : this.responseData.translation?.uid,
-      groupName: this.responseData.root_text
-        ? this.responseData.root_text?.title
-        : this.responseData.translation?.title,
-      navigationArrayLength: navIndexesOfType.navArrayLength,
-    };
+      type: 'sutta',
+      index: 99,
+    });
 
     this.actions.setNavigation(this.navArray);
-    this.actions.setCurrentNavPosition(navIndexesOfType.position);
   }
 
   updated(changedProps) {
@@ -287,7 +277,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
-    if (!this.responseData || (!this.responseData.root_text && !this.responseData.translation)) {
+    if (
+      !this.responseData ||
+      (!this.responseData.root_text &&
+        !this.responseData.translation &&
+        !this.responseData.bilara_root_text &&
+        !this.responseData.bilara_translated_text)
+    ) {
       if (!this.responseData.root_text && !this.responseData.translation) {
         this.lastError = {
           type: 'data-load-error',
