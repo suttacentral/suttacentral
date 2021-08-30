@@ -60,8 +60,8 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
   languageTemplate(language) {
     return html`
       <mwc-list-item
-        id="${language.uid}"
-        @click="${this._selectedLanguageNumChanged}"
+        id=${language.uid}
+        @click=${this._selectedLanguageNumChanged}
         class="language-name"
       >
         ${language.name}
@@ -126,7 +126,7 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
         <mwc-icon-button
           title="Return to main menu"
           class="more-menu-return-arrow"
-          @click="${this._showMoreMenu}"
+          @click=${this._showMoreMenu}
         >
           ${icon.arrow_left}
         </mwc-icon-button>

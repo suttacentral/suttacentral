@@ -16,7 +16,7 @@ export const typographyCommonStyles = css`
     justify-content: center;
   }
 
-main > article,
+  main > article,
   div > article {
     margin: 0 3vw;
   }
@@ -294,7 +294,7 @@ main > article,
   }
 
   .expansion-instructions{
-     font-style: italic;
+    font-style: italic;
 
     color: var(--sc-secondary-text-color);
   }
@@ -396,15 +396,15 @@ main > article,
     display: none;
   }
 
-   /* style highlighted text, see  zz3/zz/test and zz1/zz/test*/
+  /* style highlighted text, see  zz3/zz/test and zz1/zz/test*/
 
- /* Vinaya classes */
+  /* Vinaya classes */
 
   .kamma {
     font-weight: 600;
   }
 
-    .highlight .kamma {
+  .highlight .kamma {
     outline: 2px solid var(--sc-secondary-accent-color);
     position: relative;
     padding: 0 0.25em;
@@ -572,88 +572,113 @@ main > article,
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
   }
+
   .suppliedmetre {
     color: var(--sc-secondary-text-color);
   }
+
   .gap {
     color: var(--sc-secondary-text-color);
   }
+
   .delscribe {
     text-decoration: line-through;
 
     text-decoration-color: var(--sc-secondary-text-color);
   }
+
   .del {
     text-decoration: line-through;
 
     text-decoration-color: var(--sc-secondary-text-color);
   }
+
   .scribe {
     font-style: italic;
   }
+
   .alt-title {
     display: none;
   }
+
   .hidden {
     display: none;
   }
+
   .metre {
     display: none;
   }
+
   .t-gaiji {
     color: var(--sc-primary-accent-color);
   }
+
   .rule-number {
     color: var(--sc-secondary-text-color);
   }
+
   .allowance {
     font-weight: bold;
   }
+
   .t-note {
     color: var(--sc-secondary-text-color);
   }
+
   .vagga-number {
     color: var(--sc-secondary-text-color);
   }
-  .counter  {
+
+  .counter {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-dense-font-size-s);
     font-weight: 400;
     color: var(--sc-secondary-text-color);
   }
+
   .term {
     font-weight: bold;
   }
+
   .highlight .orthodox::before {
-    content: '☑' ';
+    content: '☑';
     color: var(--sc-toast-success-color);
   }
+
   .highlight .heterodox::before {
     content: '☒ ';
     color: var(--sc-toast-error-color);
   }
+
   .highlight .term {
     color: var(--sc-primary-accent-color);
   }
+
   .highlight .gloss {
     color: var(--sc-primary-accent-color);
   }
+
   .highlight .surplus {
     color: var(--sc-secondary-accent-color);
   }
+
   .highlight .supplied {
     color: var(--sc-primary-color);
   }
+
   .highlight .expanded {
     color: var(--sc-secondary-text-color);
   }
+
   .highlight .var {
     color: var(--sc-secondary-accent-color);
   }
+
   .highlight .corr,
   .highlight .corrected {
     color: var(--sc-primary-accent-color);
   }
+
   .highlight .unclear {
     color: var(--sc-secondary-text-color);
   }
@@ -675,6 +700,7 @@ main > article,
   #simple_text_content .ref {
     display: none;
   }
+
   #simple_text_content .legacy-reference .ref {
     font-family: var(--sc-sans-font);
     font-size: 0.8em;
@@ -702,50 +728,50 @@ main > article,
 
 /* helper metadata in HTML data- */
 
-.highlight  [data-counter]::after{
-      padding: 0 0.25rem;
-      margin: 0 0 0 0.5rem;
-      background-color: var(--sc-icon-color);
-      color: white;
-      font-weight: 600;
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-xs);
-      border-radius: 4px;
-}
+  .highlight [data-counter]::after {
+    padding: 0 0.25rem;
+    margin: 0 0 0 0.5rem;
+    background-color: var(--sc-icon-color);
+    color: white;
+    font-weight: 600;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-xs);
+    border-radius: 4px;
+  }
 
-.highlight  [data-counter]::after{
-     content: attr(data-counter);
-}
+  .highlight [data-counter]::after {
+    content: attr(data-counter);
+  }
 
-.highlight  [data-doxy]::before{
-      margin: 0 0.5rem 0 0;
-      font-weight: 600;
-      font-family: sans-serif;
-      font-size: var(--sc-skolar-font-size-xs);
-} 
+  .highlight [data-doxy]::before {
+    margin: 0 0.5rem 0 0;
+    font-weight: 600;
+    font-family: sans-serif;
+    font-size: var(--sc-skolar-font-size-xs);
+  }
 
-.highlight  [data-doxy='orthodox']::before{
-     content: '👍🏿';
-}
+  .highlight [data-doxy='orthodox']::before {
+    content: '👍🏿';
+  }
 
-.highlight  [data-doxy='heterodox']::before{
-     content: '👎🏽';
-}
+  .highlight  [data-doxy='heterodox']::before {
+    content: '👎🏽';
+  }
 
-.highlight  [data-direction]::before{
-      margin: 0 0.5rem 0 0;
-      font-weight: 600;
-      font-family: sans-serif;
-      font-size: var(--sc-skolar-font-size-xs);
-} 
+  .highlight  [data-direction]::before {
+    margin: 0 0.5rem 0 0;
+    font-weight: 600;
+    font-family: sans-serif;
+    font-size: var(--sc-skolar-font-size-xs);
+  }
 
-.highlight  [data-direction='forward']::before{
-     content: '👉🏾';
-     color: var(--sc-icon-color);  
-}
+  .highlight [data-direction='forward']::before {
+    content: '👉🏾';
+    color: var(--sc-icon-color);
+  }
 
-.highlight  [data-direction='reverse']::before{
-     content: '👈🏼';
-     color: var(--sc-icon-color);  
-}
+  .highlight [data-direction='reverse']::before {
+    content: '👈🏼';
+    color: var(--sc-icon-color);
+  }
 `;

@@ -141,11 +141,10 @@ class SCMenuMore extends LitLocalized(LitElement) {
 
   getDiscourseUrl(routeName) {
     if (routeName === 'SUTTA') {
-      const sutta_id = window.location.pathname.split('/')[1];
-      return `https://discourse.suttacentral.net/search?q="${sutta_id}%20"`;
-    } else {
-      return 'https://discourse.suttacentral.net';
+      const suttaId = window.location.pathname.split('/')[1];
+      return `https://discourse.suttacentral.net/search?q="${suttaId}%20"`;
     }
+    return 'https://discourse.suttacentral.net';
   }
 
   getDiscourseTitle(routeName) {
@@ -190,7 +189,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
       <mwc-list multi>
         <mwc-list-item
           class="more-menu-mwc-list-item language-choice-box"
-          @click="${this._showLanguageMenu}"
+          @click=${this._showLanguageMenu}
         >
           <div class="menu-item-wrapper">
             ${icon.language}
@@ -219,8 +218,8 @@ class SCMenuMore extends LitLocalized(LitElement) {
           class="more-menu-mwc-list-item"
           id="theme_toggler"
           left
-          ?selected="${this.darkThemeChosen}"
-          @request-selected="${this._onThemeChanged}"
+          ?selected=${this.darkThemeChosen}
+          @request-selected=${this._onThemeChanged}
         >
           ${this.localize('DarkTheme')}
         </mwc-check-list-item>
@@ -228,8 +227,8 @@ class SCMenuMore extends LitLocalized(LitElement) {
           class="more-menu-mwc-list-item"
           id="alwaysShowToolbar_toggler"
           left
-          ?selected="${this.alwaysShowUniversalToolbar}"
-          @request-selected="${this._onToolbarDisplayModeChanged}"
+          ?selected=${this.alwaysShowUniversalToolbar}
+          @request-selected=${this._onToolbarDisplayModeChanged}
         >
           ${this.localize('AlwaysShowToolbar')}
         </mwc-check-list-item>
@@ -276,8 +275,8 @@ class SCMenuMore extends LitLocalized(LitElement) {
         <li divider role="separator"></li>
         <a
           class="more-menu-link"
-          href="${this.getDiscourseUrl(this.routeName)}"
-          title="${this.getDiscourseTitle(this.routeName)}"
+          href=${this.getDiscourseUrl(this.routeName)}
+          title=${this.getDiscourseTitle(this.routeName)}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -301,7 +300,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   _renderLanguageBaseMenu() {
-    return html` <sc-menu-language-base noRoot="true"></sc-menu-language-base> `;
+    return html` <sc-menu-language-base ?noroot=${true}></sc-menu-language-base> `;
   }
 
   render() {
