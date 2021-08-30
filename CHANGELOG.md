@@ -1,14 +1,23 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.08.30
+
+- Rewrite the navigation module.
+- Update dependencies.
+- Update aksharamukha to support more scripts conversion.
+- Add missing aria-label for close search
+- Fix bug about: https://discourse.suttacentral.net/t/suttacentral-2021-bug-reports-here/19609/116
+- Remove sentry related code.
+
 ## 2021.08.21
 
--  Configure Ngnix uwsgi_cache.
--  Add indexes to ArangoDB collections.
--  Lazy loading of parallels data.
--  Rewrite the breadcrumb related code.
--  Use micro-sentry instead of sentry(Need to observe whether it is effective ).
--  Updating the font for the Sharada script in CSS.
+- Configure Ngnix uwsgi_cache.
+- Add indexes to ArangoDB collections.
+- Lazy loading of parallels data.
+- Rewrite the breadcrumb related code.
+- Use micro-sentry instead of sentry(Need to observe whether it is effective ).
+- Updating the font for the Sharada script in CSS.
 
 ## 2021.08.04
 
