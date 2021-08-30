@@ -77,7 +77,6 @@ const initialState = {
     displayOrganizationalToolbar: false,
     displayGuidesToolbar: false,
   },
-  navDataCache: {},
   linearProgressActive: false,
 };
 
@@ -201,8 +200,6 @@ const reducer = (state, action) => {
       return { ...state, displayParallelTableView: action.displayParallelTableView };
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
       return { ...state, staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState };
-    case 'UPDATE_NAV_DATA_CACHE':
-      return { ...state, navDataCache: action.navDataCache };
     case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
       return { ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar };
     case 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE':
