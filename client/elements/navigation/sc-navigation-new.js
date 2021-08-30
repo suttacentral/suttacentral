@@ -239,6 +239,19 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       <main>${this.cardContentTemplate}</main>
     `;
   }
+
+  updated() {
+    this._addBlurbsClickEvent();
+  }
+
+  _addBlurbsClickEvent() {
+    this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
+      // eslint-disable-next-line no-param-reassign
+      element.onclick = () => {
+        element.classList.toggle('blurbShrink');
+      };
+    });
+  }
 }
 
 customElements.define('sc-navigation-new', SCNavigationNew);

@@ -56,6 +56,7 @@ function genNavDetailNew(uid, currentURL, data, navArray, navIndex) {
           title: acronym || menuData[0].translated_name || menuData[0].root_name,
           url: currentURL,
           index: navIndex,
+          type: 'navigation',
         });
         navArray.sort(sortData);
         setNavigation(navArray);
