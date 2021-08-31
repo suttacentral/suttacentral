@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { html, css, LitElement, svg } from 'lit';
+import { html, LitElement } from 'lit';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
 import {
@@ -176,13 +176,13 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       ${suttaplexCss}
 
-      <article class="suttaplex ${this.suttaplexListStyle}" id="${this.item.uid}">
+      <article class="suttaplex ${this.suttaplexListStyle}" id=${this.item.uid}>
         <div>
           <div class="top-row">
             <h1
-              class="${this.suttaplexListStyle}"
-              title="${this.mainHeadingTitle}"
-              @click="${this.toggleCompact}"
+              class=${this.suttaplexListStyle}
+              title=${this.mainHeadingTitle}
+              @click=${this.toggleCompact}
             >
               ${this.mainHeading}
             </h1>
@@ -199,8 +199,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               html`
                 <div
                   class="blurb"
-                  title="${this.localize('blurb')}"
-                  .innerHTML="${this.item.blurb}"
+                  title=${this.localize('blurb')}
+                  .innerHTML=${this.item.blurb}
                 ></div>
               `}
             `
@@ -221,7 +221,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       <div class="top-row-icons">
         ${this.difficulty
           ? html`
-              <span class="difficulty_icon" title="${this.localize(this.difficulty)}">
+              <span class="difficulty_icon" title=${this.localize(this.difficulty)}>
                 ${this.difficultyLevelIconName}
               </span>
             `
@@ -230,10 +230,10 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ? html`
               <a
                 class="top-menu-button"
-                href="${this.listenUrl}"
+                href=${this.listenUrl}
                 target="_blank"
                 title="Listen to this sutta"
-                aria-label="${this.localize('listenSutta')}"
+                aria-label=${this.localize('listenSutta')}
                 rel="noopener noreferrer"
               >
                 ${icon.speaker}
@@ -247,7 +247,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             <sc-menu-suttaplex-share
               id="suttaplex_share_menu"
               tabIndex="0"
-              .item="${this.item}"
+              .item=${this.item}
             ></sc-menu-suttaplex-share>
           </ul>
         </details>
@@ -257,14 +257,14 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
 
   get volPageTemplate() {
     return html`
-      <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+      <span class="vol-page nerdy-row-element" title=${this.volPageTitle}>
         ${icon.book}
         <span class="visible">${this.briefVolPage}</span>
         <span class="hidden" aria-hidden="true">${this.volPage}</span>
       </span>
       ${this.altVolPage && this.altVolPage !== this.volPage
         ? html`
-            <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
+            <span class="vol-page nerdy-row-element" title=${this.volPageTitle}>
               ${icon.book}
               <span class="visible">${this.briefAltVolPage}</span>
               <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
@@ -280,13 +280,13 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.item.translated_title &&
         this.item.original_title &&
         html`
-          <span title="${this.localize('originalTitle')}" class="nerdy-row-element subTitle">
+          <span title=${this.localize('originalTitle')} class="nerdy-row-element subTitle">
             ${this.item.original_title}
           </span>
         `}
         ${(this.item.translated_title || this.item.original_title) &&
         html`
-          <span title="${this.acronymTitle}" class="nerdy-row-element">${this.acronymOrUid}</span>
+          <span title=${this.acronymTitle} class="nerdy-row-element">${this.acronymOrUid}</span>
         `}
         ${this.item.volpages &&
         html`
@@ -295,7 +295,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           html`
             <details class="suttaplex-details">
               <summary>${this.volPageTemplate}</summary>
-              <p class="volpage-biblio-info" .innerHTML="${this.item.biblio}"></p>
+              <p class="volpage-biblio-info" .innerHTML=${this.item.biblio}></p>
             </details>
           `}
         `}
@@ -323,9 +323,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.translationsInUserLanguage.map(
             translation => html`
               <sc-suttaplex-tx
-                .item="${this.item}"
-                .translation="${translation}"
-                .isCompact="${this.isCompact}"
+                .item=${this.item}
+                .translation=${translation}
+                .isCompact=${this.isCompact}
               ></sc-suttaplex-tx>
             `
           )}
@@ -350,9 +350,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.rootTexts.map(
             translation => html`
               <sc-suttaplex-tx
-                .item="${this.item}"
-                .translation="${translation}"
-                .isRoot="${true}"
+                .item=${this.item}
+                .translation=${translation}
+                .isRoot=${true}
               ></sc-suttaplex-tx>
             `
           )}
@@ -368,8 +368,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <details
         class="section-details"
-        ?open="${this.translationsOpened}"
-        @toggle="${e => (this.translationsOpened = e.target.open)}"
+        ?open=${this.translationsOpened}
+        @toggle=${e => (this.translationsOpened = e.target.open)}
       >
         <summary>
           <h3>
@@ -380,10 +380,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.translationsOpened
           ? this.translationsInModernLanguages.map(
               translation => html`
-                <sc-suttaplex-tx
-                  .item="${this.item}"
-                  .translation="${translation}"
-                ></sc-suttaplex-tx>
+                <sc-suttaplex-tx .item=${this.item} .translation=${translation}></sc-suttaplex-tx>
               `
             )
           : ''}
@@ -397,8 +394,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     return html`
       <details
         class="section-details"
-        ?open="${this.parallelsOpened}"
-        @toggle="${e => (this.parallelsOpened = e.target.open)}"
+        ?open=${this.parallelsOpened}
+        @toggle=${e => (this.parallelsOpened = e.target.open)}
       >
         <summary>
           <h3>
@@ -407,21 +404,17 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           </h3>
         </summary>
 
-        ${
-          this.areParallelsAvailable
-            ? html`
-                <sc-parallel-list
-                  .rootLang="${this.item.root_lang}"
-                  .itemUid="${this.item.uid}"
-                  .rootText="${this.rootLangText}"
-                  .expansionData="${this.expansionData}"
-                ></sc-parallel-list>
-              `
-            : ''
-        }
-
+        ${this.areParallelsAvailable
+          ? html`
+              <sc-parallel-list
+                .rootLang=${this.item.root_lang}
+                .itemUid=${this.item.uid}
+                .rootText=${this.rootLangText}
+                .expansionData=${this.expansionData}
+              ></sc-parallel-list>
+            `
+          : ''}
         ${!this.item.parallel_count ? html` <h3>${this.localize('hasNoParallels')}</h3> ` : ''}
-        </template>
       </details>
     `;
   }
