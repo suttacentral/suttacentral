@@ -21,7 +21,7 @@ class SCSuttaplexTx extends LitElement {
     return html`
       ${suttaplexTxCss}
 
-      <a href="${this.translationUrl}" class="tx ${this.isCompact ? 'compact' : ''}">
+      <a href=${this.translationUrl} class="tx ${this.isCompact ? 'compact' : ''}">
         ${icon.translation}
         <div class="tx-details">
           <span class="tx-creator">${this.translation.author}</span>
@@ -31,7 +31,7 @@ class SCSuttaplexTx extends LitElement {
               ? `${this.translation.lang_name} & ${this.item.root_lang_name}`
               : ''}
             ${!this.isRoot && !this.translation.segmented ? this.translation.lang_name : ''}
-            ${this.translation.publication_date ? +this.translation.publication_date : ''}
+            ${this.translation.publication_date ? this.translation.publication_date : ''}
           </span>
         </div>
       </a>
