@@ -1,5 +1,5 @@
 import { LitElement, html, svg } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-menu-search-filter';
 import './addons/sc-error-icon';

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable indent */
 import { LitElement, html, css } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../constants';
 import { dictStyles } from './styles/sc-dict-styles';
 

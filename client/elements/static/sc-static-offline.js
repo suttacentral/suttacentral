@@ -2,7 +2,7 @@
 /* eslint-disable no-plusplus */
 import { LitElement, html, css, svg } from 'lit';
 import { queue } from 'd3-queue';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-checkbox';
 import '@material/mwc-switch';

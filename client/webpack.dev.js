@@ -1,6 +1,6 @@
 const { merge } = require('webpack-merge');
 
-module.exports = merge(require('./webpack.common'), {
+module.exports = merge(require('./webpack.common-injectManifest'), {
   mode: 'development',
   devtool: 'eval-source-map',
   devServer: {
@@ -10,6 +10,7 @@ module.exports = merge(require('./webpack.common'), {
     historyApiFallback: {
       disableDotRule: true,
     },
+    hot: true,
   },
   performance: {
     hints: 'warning',

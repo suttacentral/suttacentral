@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
 import { store } from '../../redux-store';

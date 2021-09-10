@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 import { html } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { SCTextCommon } from './sc-text-common';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
