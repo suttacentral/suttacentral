@@ -10,13 +10,12 @@ clientsClaim();
 self.skipWaiting();
 
 precacheAndRoute([
-  { url: '/localization/elements/static_home-page/en.json', revision: null },
   { url: '/localization/elements/sc-site-layout/en.json', revision: null },
+  { url: '/localization/elements/sc-page-selector/en.json', revision: null },
+  { url: '/localization/elements/sc-navigation/en.json', revision: null },
+  { url: '/localization/elements/static_home-page/en.json', revision: null },
   { url: '/localization/elements/sc-universal-action-items/en.json', revision: null },
-  { url: '/files/fonts/RaloksSansPEVFWeb-Its_0.3.woff2', revision: null },
-  { url: '/files/fonts/RaloksSansPEVFWeb-Ups_0.3.woff2', revision: null },
-  { url: '/fonts/RaloksPEVFWeb-Ups_0.3.woff2', revision: null },
-  { url: '/fonts/RaloksPEVFWeb-Its_0.3.woff2', revision: null },
+  { url: '/localization/elements/sc-more-menu/en.json', revision: null },
 ]);
 precacheAndRoute(self.__WB_MANIFEST);
 
