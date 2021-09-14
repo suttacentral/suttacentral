@@ -3,8 +3,28 @@
   "version": "2.2.0",
   "private": true,
   "scripts": {
-    "dev": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --watch --config webpack.prod.js"
+    "build": "webpack --watch --config webpack.prod.js",
+    "dev": "webpack serve --open --config webpack.dev.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "prettier": {
+    "arrowParens": "avoid",
+    "htmlWhitespaceSensitivity": "css",
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5"
   },
   "dependencies": {
     "@material/mwc-button": "0.22.1",
@@ -21,11 +41,12 @@
     "@material/mwc-switch": "0.22.1",
     "@material/mwc-textarea": "^0.22.1",
     "@material/mwc-textfield": "0.22.1",
-    "@stripe/stripe-js": "^1.16.0",
+    "@micro-sentry/browser": "2.1.0",
+    "@stripe/stripe-js": "^1.17.1",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "d3-queue": "^3.0.7",
     "history": "^5.0.0",
-    "lit": "2.0.0-rc.3",
+    "lit": "2.0.0-rc.4",
     "path-to-regexp": "^6.2.0",
     "pwa-helpers": "^0.9.1",
     "redux": "^4.1.1",
@@ -33,17 +54,11 @@
     "turbolinks": "^5.2.0",
     "viewerjs": "^1.10.1",
     "web-animations-js": "^2.3.2",
-    "workbox-sw": "6.2.4",
-    "@micro-sentry/browser": "2.1.0"
+    "workbox-sw": "6.2.4"
   },
   "devDependencies": {
-    "webpack-cli": "4.8.0",
-    "webpack-merge": "^5.8.0",
-    "clean-webpack-plugin": "4.0.0-alpha.0",
-    "copy-webpack-plugin": "9.0.1",
-    "html-webpack-plugin": "5.3.2",
-    "workbox-webpack-plugin": "6.2.4",
-    "@babel/core": "7.15.0",
+    "@babel/core": "7.15.5",
+    "@babel/eslint-parser": "7.15.4",
     "@babel/plugin-proposal-async-do-expressions": "7.14.5",
     "@babel/plugin-proposal-class-properties": "7.14.5",
     "@babel/plugin-proposal-class-static-block": "7.14.5",
@@ -53,10 +68,12 @@
     "@babel/plugin-proposal-pipeline-operator": "7.14.5",
     "@babel/plugin-proposal-throw-expressions": "7.14.5",
     "@babel/plugin-syntax-top-level-await": "7.14.5",
-    "@babel/plugin-transform-runtime": "7.14.5",
-    "@babel/preset-env": "7.15.0",
+    "@babel/plugin-transform-runtime": "7.15.0",
+    "@babel/preset-env": "7.15.6",
     "babel-loader": "8.2.2",
-    "browser-sync": "2.27.4",
+    "browser-sync": "2.27.5",
+    "clean-webpack-plugin": "4.0.0",
+    "copy-webpack-plugin": "9.0.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-node": "^4.1.0",
@@ -70,33 +87,22 @@
     "eslint-plugin-promise": "5.1.0",
     "eslint-plugin-unused-imports": "^1.1.4",
     "eslint-plugin-wc": "^1.3.1",
-    "htmlparser2": "6.1.0",
-    "husky": "^7.0.0",
-    "lint-staged": "^11.0.0",
-    "node-fetch": "^2.6.1",
-    "prettier": "2.3.2",
-    "webpack": "5.51.1",
+    "html-webpack-plugin": "5.3.2",
+    "htmlparser2": "7.1.1",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
+    "node-fetch": "^3.0.0",
+    "prettier": "2.4.0",
+    "webpack": "5.52.0",
     "webpack-bundle-analyzer": "4.4.2",
-    "webpack-dev-server": "^3.11.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "tabWidth": 2,
-    "semi": true,
-    "printWidth": 100,
-    "trailingComma": "es5",
-    "arrowParens": "avoid",
-    "htmlWhitespaceSensitivity": "css"
-  },
-  "browserslist": [
-    "defaults"
-  ]
+    "webpack-cli": "4.8.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0",
+    "workbox-cacheable-response": "6.2.4",
+    "workbox-expiration": "6.2.4",
+    "workbox-precaching": "6.2.4",
+    "workbox-routing": "6.2.4",
+    "workbox-strategies": "6.2.4",
+    "workbox-webpack-plugin": "6.2.4"
+  }
 }

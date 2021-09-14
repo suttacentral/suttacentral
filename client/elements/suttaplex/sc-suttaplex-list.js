@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { cache } from 'lit/directives/cache.js';
-import { repeat } from 'lit/directives/repeat';
+import { repeat } from 'lit/directives/repeat.js';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';

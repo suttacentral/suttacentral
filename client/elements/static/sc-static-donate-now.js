@@ -7,7 +7,7 @@ import '@material/mwc-textfield';
 import '@material/mwc-radio';
 import '@material/mwc-formfield';
 
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { icon } from '../../img/sc-icon';
 

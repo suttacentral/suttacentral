@@ -1,5 +1,5 @@
 import { css, html } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
@@ -531,7 +531,6 @@ class SCStaticHomePage extends SCStaticPage {
               height="360"
               controls
               preload="none"
-              style=""
               poster="/img/home-page/video_overlay.jpg"
             >
               <source
@@ -561,7 +560,7 @@ class SCStaticHomePage extends SCStaticPage {
           </blockquote>
           <a
             class="link-button quote-button ripple"
-            href="${this.randomEpigrah ? '/' + this.randomEpigrah.uid : ''}"
+            href=${this.randomEpigrah ? `/${this.randomEpigrah.uid}` : ''}
           >
             Read this sutta
           </a>

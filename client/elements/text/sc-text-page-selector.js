@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
 
 import './sc-text-bilara';
 import './sc-text-legacy';
@@ -18,7 +17,6 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
   either the simple sutta text view or the segmented view.
 */
 
-@customElement('sc-text-page-selector')
 class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
@@ -56,7 +54,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           <sc-text-stepper
             .next=${this.next}
             .previous=${this.previous}
-            .lang="${this.langIsoCode}"
+            .lang=${this.langIsoCode}
           ></sc-text-stepper>
         `
       : '';
@@ -64,7 +62,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   get displayErrorTemplate() {
     return this._shouldDisplayError() && !this.isLoading
-      ? html` <sc-error-icon type="${this.lastError.type || 'data-load-error'}"></sc-error-icon> `
+      ? html` <sc-error-icon type=${this.lastError.type || 'data-load-error'}></sc-error-icon> `
       : '';
   }
 
@@ -92,7 +90,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             id="segmented_text"
             .rootSutta=${this.rootSutta}
             .bilaraRootSutta=${this.bilaraRootSutta}
-            .markup="${this.suttaMarkup}"
+            .markup=${this.suttaMarkup}
             .translatedSutta=${this.translatedSutta}
             .bilaraTranslatedSutta=${this.bilaraTranslatedSutta}
             .suttaComment=${this.suttaComment}
@@ -544,3 +542,5 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     );
   }
 }
+
+customElements.define('sc-text-page-selector', SCTextPageSelector);

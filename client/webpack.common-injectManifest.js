@@ -1,6 +1,7 @@
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const OUTPUT_PATH = 'build';
@@ -28,48 +29,9 @@ module.exports = {
         removeComments: true,
       },
     }),
-    new WorkboxPlugin.GenerateSW({
-      cacheId: 'SuttaCentral PWA',
-      swDest: 'sw-generated.js',
-      skipWaiting: true,
-      clientsClaim: true,
-      importScripts: ['node_modules/workbox-sw/build/workbox-sw.js'],
-      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
-      runtimeCaching: [
-        {
-          urlPattern: new RegExp('/api/((?!ebook).*)'),
-          handler: 'StaleWhileRevalidate',
-        },
-        {
-          urlPattern: /\.(?:js|css|html|map|json|ico)$/,
-          handler: 'StaleWhileRevalidate',
-        },
-        {
-          urlPattern: new RegExp('/node_modules/(.*)'),
-          handler: 'StaleWhileRevalidate',
-        },
-        {
-          urlPattern: new RegExp('/search'),
-          handler: 'NetworkFirst',
-        },
-        {
-          urlPattern: new RegExp('/(?:img|files)/(.*)'),
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'assets',
-            expiration: {
-              maxAgeSeconds: 7 * 24 * 60 * 60,
-            },
-            cacheableResponse: { statuses: [0, 200] },
-          },
-        },
-        {
-          urlPattern: new RegExp('^https://(?:js|m).stripe.com/(.*)'),
-          handler: 'CacheFirst',
-        },
-      ],
-      navigateFallback: '/index.html',
-      navigateFallbackDenylist: [/^\/img\/.*/, /^\/ebook\/.*/, /^\/api\/.*/, /^\/files\/.*/],
+    new InjectManifest({
+      swSrc: './service-worker.js',
+      swDest: 'service-worker.js',
       exclude: [/\.(woff(2)?|ttf|epub)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
     }),
     new BundleAnalyzerPlugin(),

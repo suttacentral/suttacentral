@@ -58,7 +58,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     """Configuration for Production"""
 
-    DEBUG = True
+    pass
 
 
 app_config = {
