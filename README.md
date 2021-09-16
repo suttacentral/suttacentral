@@ -1,6 +1,4 @@
 # SuttaCentral server and client repository
-[![Build Status](https://travis-ci.org/suttacentral/suttacentral.svg?branch=development)](https://travis-ci.org/suttacentral/suttacentral)
-
 
 # Deploying
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
