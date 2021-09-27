@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
+import { reduxActions } from '../addons/sc-redux-actions';
 
 import { SCTextCommon } from './sc-text-common';
 import '../lookups/sc-lookup-pli';
@@ -66,19 +67,16 @@ class SCTextBilara extends SCTextCommon {
     const { textOptions } = store.getState();
     this.showParagraphs = textOptions.paragraphsEnabled;
     this.paragraphs = textOptions.paragraphDescriptions;
-    this.chosenTextView = textOptions.segmentedSuttaTextView;
-    this.displayedReferences = textOptions.displayedReferences;
-    this.chosenNoteDisplayType = textOptions.noteDisplayType;
-    this.paliScript = textOptions.script;
     this.isPaliLookupEnabled = textOptions.paliLookupActivated;
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
-    this.showHighlighting = textOptions.showHighlighting;
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/sc-text';
     this.commentSpanRectInfo = new Map();
     this.rootEdition = [];
+
+    this._setTextViewState();
 
     this._hashChangeHandler = () => {
       setTimeout(() => {
@@ -367,6 +365,78 @@ class SCTextBilara extends SCTextCommon {
 
   _putGraphsIntoSpans(selector, lang) {
     this._startGeneratingSpans(selector, 'graph', lang);
+  }
+
+  _setTextViewState() {
+    const notes = this._getParam(window.location.href, 'notes');
+    const lang = this._getParam(window.location.href, 'lang');
+    const layout = this._getParam(window.location.href, 'layout');
+    const script = this._getParam(window.location.href, 'script');
+    const highlight = this._getParam(window.location.href, 'highlight');
+    const reference = this._getParam(window.location.href, 'reference');
+    const { textOptions } = store.getState();
+
+    if (notes && ['none', 'tooltip', 'sidenote'].includes(notes.toLowerCase())) {
+      this.chosenNoteDisplayType = notes;
+      if (notes.toLowerCase() === 'tooltip') {
+        this.chosenNoteDisplayType = 'asterisk';
+        reduxActions.setNoteDisplayType('asterisk');
+      }
+      if (notes.toLowerCase() === 'sidenote') {
+        this.chosenNoteDisplayType = 'sidenotes';
+        reduxActions.setNoteDisplayType('sidenotes');
+      }
+    } else {
+      this.chosenNoteDisplayType = textOptions.noteDisplayType;
+    }
+
+    if (layout && ['column', 'row'].includes(layout.toLowerCase())) {
+      this.chosenTextView = layout === 'row' ? 'sidebyside' : 'linebyline';
+      reduxActions.chooseSegmentedSuttaTextView(layout === 'row' ? 'sidebyside' : 'linebyline');
+    } else {
+      this.chosenTextView = textOptions.segmentedSuttaTextView;
+    }
+
+    if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
+      this.showHighlighting = highlight === 'true';
+      reduxActions.setShowHighlighting(highlight === 'true');
+    } else {
+      this.showHighlighting = textOptions.showHighlighting;
+    }
+
+    if (script && scriptIdentifiers.find(x => x.script === script)) {
+      this.paliScript = script;
+      reduxActions.choosePaliTextScript(script);
+    } else {
+      this.paliScript = textOptions.script;
+    }
+
+    if (reference) {
+      const paramReference = [];
+      fetch(`${API_ROOT}/pali_reference_edition`)
+        .then(r => r.json())
+        .then(data => {
+          const refs = reference.split('/');
+          // eslint-disable-next-line no-restricted-syntax
+          for (const ref of refs) {
+            if (
+              ref.toLowerCase() === 'main' ||
+              ref.toLowerCase() === 'none' ||
+              data.find(x => x.edition_set === ref)
+            ) {
+              paramReference.push(ref);
+            }
+          }
+          // eslint-disable-next-line promise/always-return
+          if (paramReference.length > 0) {
+            this.displayedReferences = paramReference;
+            reduxActions.setReferenceDisplayType(paramReference);
+          }
+        })
+        .catch(e => console.error(e));
+    } else {
+      this.displayedReferences = textOptions.displayedReferences;
+    }
   }
 
   _changeTextView() {
@@ -1053,10 +1123,26 @@ class SCTextBilara extends SCTextCommon {
   async _setScriptOfSegments() {
     await this._scriptTransliterate(this.suttaId, this._scriptFunctionName());
     this._addTransliteratedRootText();
+    if (this.shadowRoot.querySelectorAll('.variant').length === 0) {
+      this._addVariantText();
+    }
   }
 
   _scriptFunctionName() {
     return this.paliScript.charAt(0).toUpperCase() + this.paliScript.slice(1);
+  }
+
+  _getParam(url, name) {
+    try {
+      const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+      const r = url.split('?')[1].match(reg);
+      if (r != null) {
+        return r[2];
+      }
+      return '';
+    } catch (e) {
+      return '';
+    }
   }
 }
 
