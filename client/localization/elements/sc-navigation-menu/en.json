@@ -13,6 +13,8 @@
         "xto": "Tokharian A",
         "uig": "Uighur, Uyghur",
         "san": "Sanskrit",
-        "xct": "Classical Tibetan"
+        "xct": "Classical Tibetan",
+        "showParallelsAndDetails": "SHOW PARALLELS AND DETAILS",
+        "hideParallelsAndDetails": "HIDE PARALLELS AND DETAILS"
     }
 }

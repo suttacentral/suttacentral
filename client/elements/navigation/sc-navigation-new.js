@@ -164,7 +164,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
             this.currentMenuData[0].root_name ||
             this.currentMenuData[0].uid;
           this.actions.changeToolbarTitle(toolbarTitle);
-          if (!hasChildren) {
+          if (!hasChildren || this.isPatimokkha(this.currentMenuData[0]?.uid)) {
             dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
           }
         }
@@ -172,6 +172,10 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  isPatimokkha(uid) {
+    return uid.endsWith('-pm');
   }
 
   _computeMenuApiUrl(uid) {
