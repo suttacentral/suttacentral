@@ -156,6 +156,9 @@ class SCTextBilara extends SCTextCommon {
         this._initReference();
         this._addReferenceText();
       }
+      if (window.location.href.includes('#')) {
+        this._initReference();
+      }
       this._addVariantText();
       this._paliLookupStateChanged();
       this._chineseLookupStateChanged();
@@ -196,10 +199,18 @@ class SCTextBilara extends SCTextCommon {
       if (targetElement) {
         targetElement.scrollIntoView();
         window.scrollTo(0, window.scrollY - margin);
+        this._clearRefFocusedClass();
+        targetElement.classList.add('refFocused');
       }
     } catch (e) {
       console.error(e);
     }
+  }
+
+  _clearRefFocusedClass() {
+    this.shadowRoot.querySelectorAll('.refFocused').forEach(element => {
+      element.classList.remove('refFocused');
+    });
   }
 
   _recalculateCommentSpanHeight() {
@@ -451,19 +462,21 @@ class SCTextBilara extends SCTextCommon {
     this.currentStyles = this.mapStyles.get(viewCompose)
       ? this.mapStyles.get(viewCompose)
       : plainStyles;
-    const isNone = this.displayedReferences.includes('none');
+
+    const isNone = this.displayedReferences.includes('none') && !window.location.href.includes('#');
     if (isNone) {
       this.referencesDisplayStyles = hideReferenceStyles;
     } else {
-      const isMain = this.displayedReferences.includes('main');
+      const isMain =
+        this.displayedReferences.includes('main') || window.location.href.includes('#');
       this.referencesDisplayStyles = html`
         <style>
           .reference {
-              display: inline;
+            display: inline;
           }
 
           .reference a {
-              display: none;
+            display: none;
           }
 
           ${isMain
@@ -480,6 +493,7 @@ class SCTextBilara extends SCTextCommon {
         </style>
       `;
     }
+
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
   }
 

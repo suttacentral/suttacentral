@@ -30,6 +30,10 @@ export const commonStyles = css`
     hyphenate-limit-last: always;
     hyphenate-limit-zone: 8%;
   }
+
+  .refFocused {
+    background-color: var(--sc-primary-color) !important;
+  }
 `;
 
 export const plainStyles = html`
