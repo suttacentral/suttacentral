@@ -20,7 +20,7 @@ class SCSuttaplexSectionTitle extends LitElement {
         <div class=${this.titleClass} style="font-size: 1.333em">
           ${this.inputTitle}${this.isPatimokkhaRuleCategory &&
           this.inputTitle !== this.originalTitle
-            ? `–${this.originalTitle}`
+            ? `—${this.originalTitle}`
             : ''}
         </div>
       </div>
