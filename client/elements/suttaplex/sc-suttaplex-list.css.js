@@ -55,6 +55,10 @@ export const suttaplexListCss = html`
       --mdc-theme-on-primary: white;
       margin-bottom: 1em;
     }
+
+    .compact {
+      margin-top: 1em;
+    }
   </style>
 `;
 

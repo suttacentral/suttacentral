@@ -1,5 +1,6 @@
+/* eslint-disable import/prefer-default-export */
 import { LitElement, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+// eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
@@ -9,19 +10,32 @@ import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCNavigationNew extends LitLocalized(LitElement) {
-  @state() isCompactMode = store.getState().suttaplexListDisplay;
-  @state() compactStyles = {};
-  @state() localizedStringsPath = '/localization/elements/sc-navigation';
-  @state() routePath = store.getState().currentRoute.path;
-  @state() siteLanguage = store.getState().siteLanguage;
-  @state() fullSiteLanguageName = store.getState().fullSiteLanguageName;
-  @state() lastSelectedItemRootLangISO = '';
-  @state() currentMenuData = [];
-  @state() currentUid = this._getRoutePathLastItem();
+  static get properties() {
+    return {
+      isCompactMode: { type: String, state: true },
+      compactStyles: { type: Object, state: true },
+      localizedStringsPath: { type: String, state: true },
+      routePath: { type: String, state: true },
+      siteLanguage: { type: String, state: true },
+      fullSiteLanguageName: { type: String, state: true },
+      lastSelectedItemRootLangISO: { type: String, state: true },
+      currentMenuData: { type: Array, state: true },
+      currentUid: { type: String, state: true },
+    };
+  }
 
   constructor() {
     super();
+    this.isCompactMode = store.getState().suttaplexListDisplay;
+    this.compactStyles = {};
+    this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.routePath = store.getState().currentRoute.path;
+    this.siteLanguage = store.getState().siteLanguage;
+    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.lastSelectedItemRootLangISO = '';
+    this.currentMenuData = [];
     this.currentUid = this._getRoutePathLastItem();
+
     this._verifyURL();
     this._viewModeChanged();
     this._parseURL();

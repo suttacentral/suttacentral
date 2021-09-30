@@ -5,6 +5,8 @@ class SCSuttaplexSectionTitle extends LitElement {
     return {
       inputTitle: String,
       inputType: String,
+      originalTitle: String,
+      isPatimokkhaRuleCategory: Boolean,
     };
   }
 
@@ -15,7 +17,12 @@ class SCSuttaplexSectionTitle extends LitElement {
   render() {
     return html`
       <div class="node-head-container">
-        <div class="${this.titleClass}" style="font-size: 1.333em">${this.inputTitle}</div>
+        <div class=${this.titleClass} style="font-size: 1.333em">
+          ${this.inputTitle}${this.isPatimokkhaRuleCategory &&
+          this.inputTitle !== this.originalTitle
+            ? `–${this.originalTitle}`
+            : ''}
+        </div>
       </div>
     `;
   }
