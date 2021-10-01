@@ -514,7 +514,6 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 
 PARALLELS = '''
 FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
-    FILTER v.uid != null
     LET target = DOCUMENT(e._to)
 
     LET legacy_translations = (
@@ -612,7 +611,7 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
             volpages: volpages,
             alt_volpages: alt_volpages,
             acronym: v.acronym,
-            uid: v.uid,
+            uid: v.uid ? v.uid : 'orphan',
             root_lang: v.root_lang,
             original_title: original_titles,
             translated_title: translated_titles,
