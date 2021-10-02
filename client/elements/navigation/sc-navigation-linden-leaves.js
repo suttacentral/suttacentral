@@ -183,7 +183,7 @@ class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
                         ${this.navArray.length !== i + 1
                           ? html`
                               <li @click=${() => this._navClick(nav)}>
-                                <a href="${nav.url}">${this.localize(nav.title)}</a>
+                                <a href=${nav.url}>${this.localize(nav.title)}</a>
                                 ${icon.chevron_right}
                               </li>
                             `

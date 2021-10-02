@@ -30,6 +30,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       rootTextsOpened: Boolean,
       compactToggle: Boolean,
       hasVoice: Boolean,
+      isPatimokkha: Boolean,
+      isPatimokkhaDetails: Boolean,
     };
   }
 
@@ -205,11 +207,12 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               `}
             `
           : ''}
-        ${this.userLanguageTranslationsTemplate}
+        ${!this.isPatimokkhaDetails ? this.userLanguageTranslationsTemplate : ''}
         ${!this.isCompact
           ? html`
-              ${this.rootTextsTemplate} ${this.modernLanguageTranslationsTemplate}
-              ${this.parallelsTemplate}
+              ${!this.isPatimokkhaDetails ? this.rootTextsTemplate : ''}
+              ${!this.isPatimokkhaDetails ? this.modernLanguageTranslationsTemplate : ''}
+              ${this.isPatimokkha && !this.isPatimokkhaDetails ? '' : this.parallelsTemplate}
             `
           : ''}
       </article>

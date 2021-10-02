@@ -47,7 +47,7 @@ function genNavDetailNew(uid, currentURL, data, navArray, navIndex) {
         menuData[0] &&
         menuData[0].children &&
         menuData[0].children.some(child => ['branch'].includes(child.node_type));
-      if (!hasChildren) {
+      if (!hasChildren || isPatimokkha(menuData[0].uid)) {
         currentURL = `/${uid}`;
       }
       if (!navArray.find(x => x.uid === uid) && menuData[0].node_type !== 'leaf') {
@@ -65,6 +65,10 @@ function genNavDetailNew(uid, currentURL, data, navArray, navIndex) {
     .catch(error => {
       console.log(error);
     });
+}
+
+function isPatimokkha(uid) {
+  return uid.endsWith('-pm');
 }
 
 function sortData(a, b) {

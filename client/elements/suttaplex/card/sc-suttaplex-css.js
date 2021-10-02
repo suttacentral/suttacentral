@@ -172,9 +172,9 @@ export const suttaplexCss = html`
       line-height: 1.4;
     }
 
-.vol-page{
+    .vol-page {
       font-stretch: condensed;
-}
+    }
 
     .popuptext {
       overflow: visible;
@@ -265,16 +265,17 @@ export const suttaplexCss = html`
       opacity: 0;
     }
 
- .book {
-    width: 16px;
-    height: 16px;
-}
+    .book {
+      width: 16px;
+      height: 16px;
+    }
 
     @media only screen and (max-width: 600px) {
       .book {
         display: none;
       }
     }
+  </style>
 `;
 
 export const suttaplexTxCss = html`

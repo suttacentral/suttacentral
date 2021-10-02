@@ -45,6 +45,20 @@ export const suttaplexListCss = html`
       transform: translate(-50%, -50%);
       z-index: 999;
     }
+
+    .hidden {
+      display: none;
+    }
+
+    mwc-button {
+      --mdc-theme-primary: var(--sc-primary-accent-color);
+      --mdc-theme-on-primary: white;
+      margin-bottom: 1em;
+    }
+
+    .compact {
+      margin-top: 1em;
+    }
   </style>
 `;
 

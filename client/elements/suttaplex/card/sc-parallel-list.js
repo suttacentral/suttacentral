@@ -129,12 +129,12 @@ class SCParallels extends LitLocalized(LitElement) {
                       <tr class="parallels-row">
                         <td
                           class="parallels-root-cell parallels-table-cell"
-                          rowspan="${this.getRowspan(rootId)}"
+                          rowspan=${this.getRowspan(rootId)}
                         >
-                          <a class="root-link" href="${this.computeUrl(rootId)}">
+                          <a class="root-link" href=${this.computeUrl(rootId)}>
                             <div
                               class="parallels-root-id root"
-                              title="${this.localize('suttaCentralID')}"
+                              title=${this.localize('suttaCentralID')}
                             >
                               ${transformId(rootId, this.expansionData)}
                             </div>
@@ -142,15 +142,15 @@ class SCParallels extends LitLocalized(LitElement) {
                         </td>
                         <td
                           class="parallels-relation-cell"
-                          title="${this.getFirstParallelIconTitle(rootId)}"
+                          title=${this.getFirstParallelIconTitle(rootId)}
                         >
                           ${this.getFirstParallelIcon(rootId)}
                         </td>
                         <td class="parallels-parallel-cell">
                           <sc-parallel-item
-                            .parallelItem="${this.getFirstParallelItem(rootId)}"
-                            .remark="${this.getFirstParallelRemark(rootId)}"
-                            .expansionData="${this.expansionData}"
+                            .parallelItem=${this.getFirstParallelItem(rootId)}
+                            .remark=${this.getFirstParallelRemark(rootId)}
+                            .expansionData=${this.expansionData}
                           ></sc-parallel-item>
                         </td>
                       </tr>
@@ -160,15 +160,15 @@ class SCParallels extends LitLocalized(LitElement) {
                           <tr>
                             <td
                               class="parallels-relation-cell"
-                              title="${this.computeIconTitle(item)}"
+                              title=${this.computeIconTitle(item)}
                             >
                               ${this.getParallelIcon(item)}
                             </td>
                             <td class="parallels-parallel-cell">
                               <sc-parallel-item
-                                .parallelItem="${item.to}"
-                                .remark="${item.remark}"
-                                .expansionData="${this.expansionData}"
+                                .parallelItem=${item.to}
+                                .remark=${item.remark}
+                                .expansionData=${this.expansionData}
                               ></sc-parallel-item>
                             </td>
                           </tr>

@@ -11,6 +11,8 @@ import '../addons/sc-error-icon';
 import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { transformId } from '../../utils/suttaplex';
 
+import '@material/mwc-button';
+
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static get properties() {
     return {
@@ -97,6 +99,14 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   isSuttaplex(item) {
     return item.type === 'leaf';
+  }
+
+  isPatimokkha() {
+    return this.categoryId?.endsWith('-pm');
+  }
+
+  isPatimokkhaRuleCategory(uid) {
+    return uid?.includes('-pm-');
   }
 
   shouldExpandAll() {
@@ -280,8 +290,50 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .difficulty="${this.computeItemDifficulty(item.difficulty)}"
         .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}"
         .expansionData="${this.expansionData}"
+        .isPatimokkha=${this.isPatimokkha()}
+        .isPatimokkhaDetails=${this.isPatimokkha() && item.uid !== this.categoryId}
+        class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
       ></sc-suttaplex>
+      ${this.isPatimokkha && item.uid === this.categoryId ? html`
+        <mwc-button
+          id="btnShowParallelsAndDetails"
+          raised
+          fullwidth
+          @click=${this.onShowParallelsClick}
+          label=${this.localize('showParallelsAndDetails')}
+          class=${this._calculateButtonClass()}
+        ></mwc-button>
+      ` : ''}
     `;
+  }
+
+  _calculateButtonClass() {
+    const classList = [];
+    if (this.suttaplexListDisplay) {
+      classList.push('compact');
+    }
+    if(!this.isPatimokkha()) {
+      classList.push('hidden');
+    }
+    return classList.join(' ');
+  }
+
+  onShowParallelsClick() {
+    const hiddenCards = this.shadowRoot.querySelectorAll('.hidden');
+    const showedCards = this.shadowRoot.querySelectorAll('.show');
+    if (hiddenCards.length > 0 && showedCards.length === 0) {
+      this.shadowRoot.querySelectorAll('.hidden').forEach(x => {
+        x.classList.remove('hidden')
+        x.classList.add('show');
+        this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize('hideParallelsAndDetails');
+      });
+    } else {
+      this.shadowRoot.querySelectorAll('.show').forEach(x => {
+        x.classList.remove('show')
+        x.classList.add('hidden');
+        this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize('showParallelsAndDetails');
+      });
+    }
   }
 
   sectionTemplate(item) {
@@ -293,6 +345,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           .inputType="${item.type}"
           .label="${this.localize('expandSection')}"
           .opened="${this.shouldExpandAll()}"
+          .originalTitle=${item.original_title}
+          .isPatimokkhaRuleCategory=${this.isPatimokkhaRuleCategory(item.uid)}
+          class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
         ></sc-suttaplex-section-title>
       </section>
     `;
@@ -353,7 +408,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           this.suttaplexData,
           item => item.key,
           item =>
-            this.isSuttaplex(item) ? this.suttaplexTemplate(item) : this.sectionTemplate(item)
+            this.isSuttaplex(item) || (this.isPatimokkha() && !this.isPatimokkhaRuleCategory(item.uid)) ? this.suttaplexTemplate(item) : this.sectionTemplate(item)
         )}
       </div>
     `;
