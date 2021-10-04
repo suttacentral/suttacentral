@@ -136,6 +136,7 @@ class SCTextBilara extends SCTextCommon {
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', this._onClickHandler);
     this._updateView();
+    this._updateURLParams();
   }
 
   disconnectedCallback() {
@@ -282,9 +283,11 @@ class SCTextBilara extends SCTextCommon {
   updated(changedProps) {
     if (changedProps.has('chosenTextView')) {
       this._changeTextView();
+      this._updateURLParams();
     }
     if (changedProps.has('paliScript')) {
       this._changeScript();
+      this._updateURLParams();
     }
     if (changedProps.has('isPaliLookupEnabled')) {
       this._paliLookupStateChanged();
@@ -304,12 +307,15 @@ class SCTextBilara extends SCTextCommon {
       } else {
         this._deleteReference();
       }
+      this._updateURLParams();
     }
     if (changedProps.has('chosenNoteDisplayType')) {
       this._changeTextView();
+      this._updateURLParams();
     }
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
+      this._updateURLParams();
     }
   }
 
@@ -378,32 +384,39 @@ class SCTextBilara extends SCTextCommon {
     this._startGeneratingSpans(selector, 'graph', lang);
   }
 
+  _updateURLParams() {
+    const {
+      segmentedSuttaTextView,
+      displayedReferences,
+      noteDisplayType,
+      showHighlighting,
+      script,
+    } = store.getState().textOptions;
+    const urlParams = `?layout=${segmentedSuttaTextView}&reference=${displayedReferences.join(
+      '/'
+    )}&notes=${noteDisplayType}&highlight=${showHighlighting}&script=${script}`;
+    // eslint-disable-next-line no-restricted-globals
+    history.pushState(null, null, urlParams);
+  }
+
   _setTextViewState() {
     const notes = this._getParam(window.location.href, 'notes');
-    const lang = this._getParam(window.location.href, 'lang');
+    // const lang = this._getParam(window.location.href, 'lang');
     const layout = this._getParam(window.location.href, 'layout');
     const script = this._getParam(window.location.href, 'script');
     const highlight = this._getParam(window.location.href, 'highlight');
     const reference = this._getParam(window.location.href, 'reference');
     const { textOptions } = store.getState();
 
-    if (notes && ['none', 'tooltip', 'sidenote'].includes(notes.toLowerCase())) {
-      this.chosenNoteDisplayType = notes;
-      if (notes.toLowerCase() === 'tooltip') {
-        this.chosenNoteDisplayType = 'asterisk';
-        reduxActions.setNoteDisplayType('asterisk');
-      }
-      if (notes.toLowerCase() === 'sidenote') {
-        this.chosenNoteDisplayType = 'sidenotes';
-        reduxActions.setNoteDisplayType('sidenotes');
-      }
+    if (notes && ['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {
+      this.chosenNoteDisplayType = notes.toLowerCase();
+      reduxActions.setNoteDisplayType(this.chosenNoteDisplayType);
     } else {
       this.chosenNoteDisplayType = textOptions.noteDisplayType;
     }
 
-    if (layout && ['column', 'row'].includes(layout.toLowerCase())) {
-      this.chosenTextView = layout === 'row' ? 'sidebyside' : 'linebyline';
-      reduxActions.chooseSegmentedSuttaTextView(layout === 'row' ? 'sidebyside' : 'linebyline');
+    if (layout && ['sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
+      reduxActions.chooseSegmentedSuttaTextView(layout.toLowerCase());
     } else {
       this.chosenTextView = textOptions.segmentedSuttaTextView;
     }

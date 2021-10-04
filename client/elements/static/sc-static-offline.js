@@ -698,11 +698,11 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             <p>${this.localize('selectDifferentLang')}</p>
             <h3>${this.localize('downloadParallels')}</h3>
             <mwc-formfield label="${this.localize('downloadParallelsDescription')}">
-              <mwc-switch
+              <mwc-checkbox
                 ?checked="${this.shouldDownloadParallels}"
                 ?disabled="${this.isDownloadButtonDisabled}"
                 @change="${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}"
-              ></mwc-switch>
+              ></mwc-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">
@@ -714,11 +714,11 @@ class SCStaticOffline extends LitLocalized(LitElement) {
                 this.defaultPaliDictToLang.name
               )}"
             >
-              <mwc-switch
+              <mwc-checkbox
                 ?checked="${this.shouldDownloadRootTexts}"
                 ?disabled="${this.isDownloadButtonDisabled}"
                 @change="${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}"
-              ></mwc-switch>
+              ></mwc-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">

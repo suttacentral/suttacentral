@@ -13,7 +13,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
-const DEFAULT_REFERENC_OPTION = [
+const DEFAULT_REFERENCE_OPTION = [
   {
     name: 'None',
     edition_set: 'none',
@@ -129,6 +129,50 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-top-sheet';
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
     this.showHighlighting = textOptions.showHighlighting;
+    this.displayedReferences = textOptions.displayedReferences;
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.selectedTextView !== state.textOptions.segmentedSuttaTextView) {
+      this.selectedTextView = state.textOptions.segmentedSuttaTextView;
+    }
+    if (this.paliScript !== state.textOptions.script) {
+      this.paliScript = state.textOptions.script;
+      this.#setPaliScriptSelected();
+    }
+    const currentReferences = this.buildReferences(this.displayedReferences);
+    const incomingReferences = this.buildReferences(state.textOptions.displayedReferences);
+    if (currentReferences !== incomingReferences) {
+      this.displayedReferences = state.textOptions.displayedReferences;
+      if (this.displayedReferences?.length) {
+        this.references.forEach((ref) => {
+          ref.checked = false;
+        });
+        this.displayedReferences.forEach(edition_set => {
+          const reference = this.references.find(
+            reference => reference.edition_set === edition_set
+          );
+          if (reference) reference.checked = true;
+        });
+      } else {
+        const defaultDisplayedReference = this.references.find(
+          reference => reference.edition_set === 'none'
+        );
+        defaultDisplayedReference.checked = true;
+      }
+      this.requestUpdate();
+    }
+    if (this.selectedNoteDisplayType !== state.textOptions.noteDisplayType) {
+      this.selectedNoteDisplayType = state.textOptions.noteDisplayType;
+    }
+    if (this.showHighlighting !== state.textOptions.showHighlighting) {
+      this.showHighlighting = state.textOptions.showHighlighting;
+    }
+  }
+
+  buildReferences(refs) {
+    return Array.isArray(refs) ? refs.reduce((acc, editionSet) => acc + editionSet, '') : '';
   }
 
   static get styles() {
@@ -298,7 +342,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     fetch(`${API_ROOT}/pali_reference_edition`)
       .then(r => r.json())
       .then(data => {
-        this.references = DEFAULT_REFERENC_OPTION.concat(data).map(item => {
+        this.references = DEFAULT_REFERENCE_OPTION.concat(data).map(item => {
           return item.checked ? item : { ...item, checked: false };
         });
         const {
@@ -588,19 +632,20 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
           <p>${this.localize('showHighlightingDescription')}</p>
         </details>
         <div class="form-controls">
-          <mwc-switch
-            ?checked="${this.showHighlighting}"
-            @change="${this._onShowHighlightingChanged}"
-          ></mwc-switch>
+          <mwc-formfield label="Show Highlighting">
+            <mwc-checkbox
+              ?checked="${this.showHighlighting}"
+              @change="${this._onShowHighlightingChanged}"
+            ></mwc-checkbox>
+          </mwc-formfield>
         </div>
       </div>
     `;
   }
 
   _onShowHighlightingChanged(e) {
-    this.showHighlighting = e.target.checked;
     this.actions.setShowHighlighting(e.target.checked);
-    const msg = this.showHighlighting ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
+    const msg = e.target.checked ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
     this._showToast(this.localize(msg));
   }
 
