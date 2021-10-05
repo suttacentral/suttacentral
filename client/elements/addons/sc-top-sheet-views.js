@@ -4,7 +4,6 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/mwc-formfield';
 import '@material/mwc-radio';
 import '@material/mwc-checkbox';
-import '@material/mwc-switch';
 import '@material/mwc-list/mwc-list-item';
 
 import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converter';
@@ -274,12 +273,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
           margin-right: 8px;
 
           column-count: 4;
-        }
-
-        mwc-switch {
-          padding: 12px;
-
-          --mdc-theme-surface: var(--sc-tertiary-background-color);
         }
 
         mwc-checkbox {

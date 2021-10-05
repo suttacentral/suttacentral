@@ -5,7 +5,6 @@ import { queue } from 'd3-queue';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-checkbox';
-import '@material/mwc-switch';
 import '@material/mwc-button';
 import '@material/mwc-linear-progress';
 import { icon } from '../../img/sc-icon';
@@ -551,11 +550,6 @@ class SCStaticOffline extends LitLocalized(LitElement) {
         .option-multi-select {
           display: flex;
           flex-direction: column;
-        }
-
-        mwc-switch {
-          --mdc-theme-surface: var(--sc-tertiary-background-color);
-          padding-left: 16px;
         }
 
         mwc-checkbox {
