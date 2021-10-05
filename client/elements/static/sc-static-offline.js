@@ -5,7 +5,6 @@ import { queue } from 'd3-queue';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-checkbox';
-import '@material/mwc-switch';
 import '@material/mwc-button';
 import '@material/mwc-linear-progress';
 import { icon } from '../../img/sc-icon';
@@ -553,11 +552,6 @@ class SCStaticOffline extends LitLocalized(LitElement) {
           flex-direction: column;
         }
 
-        mwc-switch {
-          --mdc-theme-surface: var(--sc-tertiary-background-color);
-          padding-left: 16px;
-        }
-
         mwc-checkbox {
           --mdc-checkbox-unchecked-color: var(--sc-icon-color);
         }
@@ -698,11 +692,11 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             <p>${this.localize('selectDifferentLang')}</p>
             <h3>${this.localize('downloadParallels')}</h3>
             <mwc-formfield label="${this.localize('downloadParallelsDescription')}">
-              <mwc-switch
+              <mwc-checkbox
                 ?checked="${this.shouldDownloadParallels}"
                 ?disabled="${this.isDownloadButtonDisabled}"
                 @change="${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}"
-              ></mwc-switch>
+              ></mwc-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">
@@ -714,11 +708,11 @@ class SCStaticOffline extends LitLocalized(LitElement) {
                 this.defaultPaliDictToLang.name
               )}"
             >
-              <mwc-switch
+              <mwc-checkbox
                 ?checked="${this.shouldDownloadRootTexts}"
                 ?disabled="${this.isDownloadButtonDisabled}"
                 @change="${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}"
-              ></mwc-switch>
+              ></mwc-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">
