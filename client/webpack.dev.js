@@ -1,6 +1,6 @@
 const { merge } = require('webpack-merge');
 
-module.exports = merge(require('./webpack.common-injectManifest'), {
+module.exports = merge(require('./webpack.common'), {
   mode: 'development',
   devtool: 'eval-source-map',
   devServer: {
