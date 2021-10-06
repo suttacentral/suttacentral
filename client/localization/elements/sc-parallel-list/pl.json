@@ -1,10 +1,6 @@
 {
-    "pl": {
-        "suttaCentralID": "Identyfikator SuttaCentral",
-        "GoToTextInOriginalLanguage": "Przejdź to tekstu w orginalnym języku",
-        "ResemblingParallel": "",
-        "FullParallel": "",
-        "RetellingParallel": "",
-        "Mention": ""
-    }
+  "pl": {
+    "suttaCentralID": "Identyfikator SuttaCentral",
+    "GoToTextInOriginalLanguage": "Przejdź to tekstu w orginalnym języku"
+  }
 }
