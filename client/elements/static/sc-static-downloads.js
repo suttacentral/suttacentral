@@ -22,9 +22,9 @@ class SCStaticDownloadsPage extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('c20c35ef53bf1b70789ce94e66800147')}</h1>
-          <h2>${this.localize('0f47776094370e032467a8ac23182881')}</h2>
-          <p>${unsafeHTML(this.localize('38e4989cbe5b5596eef6db24cca413b5'))}</p>
+          <h1>${this.localize('downloads:1')}</h1>
+          <h2>${this.localize('downloads:2')}</h2>
+          <p>${unsafeHTML(this.localize('downloads:3'))}</p>
           <ul>
             <li>
               <a href="/api/ebook/dn_en_sujato.epub" download target="_blank">
@@ -81,28 +81,28 @@ class SCStaticDownloadsPage extends SCStaticPage {
               </a>
             </li>
           </ul>
-          <h2>${this.localize('c1c1e70d557e9ba9b036ef879a504ce6')}</h2>
-          <p>${unsafeHTML(this.localize('b64911b8fd3c48b5da708fd28ac1e303'))}</p>
-          <h2>${this.localize('62ff57d3bbb642c261331645599a1f56')}</h2>
-          <p>${unsafeHTML(this.localize('27e0c05c3adc9f5c748340495571633c'))}</p>
-          <p>${this.localize('ac389e41b6828374e621967357b6a4eb')}</p>
-          <p>${this.localize('b98f1fe799bdd20776773c1b76145dbd')}</p>
+          <h2>${this.localize('downloads:4')}</h2>
+          <p>${unsafeHTML(this.localize('downloads:5'))}</p>
+          <h2>${this.localize('downloads:6')}</h2>
+          <p>${unsafeHTML(this.localize('downloads:7'))}</p>
+          <p>${this.localize('downloads:8')}</p>
+          <p>${this.localize('downloads:9')}</p>
           <table>
             <tr>
-              <td>${unsafeHTML(this.localize('8baf6965c84e3c8c75a9e1fd8e292d1e'))}</td>
-              <td>${unsafeHTML(this.localize('706ad432849394f0702d65b0bdecab4b'))}</td>
+              <td>${unsafeHTML(this.localize('downloads:10'))}</td>
+              <td>${unsafeHTML(this.localize('downloads:11'))}</td>
             </tr>
             <tr>
-              <td>${unsafeHTML(this.localize('2ef270b548e325cba89c9a9ae3fd42cc'))}</td>
-              <td>${this.localize('f455c862232872d2badece1044fad75f')}</td>
+              <td>${unsafeHTML(this.localize('downloads:12'))}</td>
+              <td>${this.localize('downloads:13')}</td>
             </tr>
             <tr>
-              <td>${unsafeHTML(this.localize('eac7b279bd5587dca87d58aeb756c0b2'))}</td>
-              <td>${unsafeHTML(this.localize('a9f2623cf5b72eb09b1a2962e18955be'))}</td>
+              <td>${unsafeHTML(this.localize('downloads:14'))}</td>
+              <td>${unsafeHTML(this.localize('downloads:15'))}</td>
             </tr>
           </table>
-          <h2>${this.localize('aa9d1327240db97befef1e39dd7a3377')}</h2>
-          <p>${unsafeHTML(this.localize('eee6d23294bbce6a8fc67d3b5755ce6b'))}</p>
+          <h2>${this.localize('downloads:16')}</h2>
+          <p>${unsafeHTML(this.localize('downloads:17'))}</p>
         </article>
       </main>
     `;

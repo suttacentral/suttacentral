@@ -16,14 +16,14 @@ class SCStaticAbout extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('55d139c73398413f27c7e15a4cad3a59')}</h1>
-          <p>${this.localize('43c1abba8207309efd6799a3a7011ff7')}</p>
-          <p>${this.localize('0e5c6c307a41274b2d6770164f0a82cb')}</p>
-          <p>${this.localize('472d2708a4d2c1bb61927b952d555f6c')}</p>
-          <p>${this.localize('2923d6f291c43d749c0476a7f1c6ab34')}</p>
-          <p>${unsafeHTML(this.localize('0b7d30e53b1e5443951598ca356322cd'))}</p>
-          <h2>${this.localize('7d7ecfc5a78d4287f72b459e973c472c')}</h2>
-          <p>${this.localize('cf6137f06caf2b738caa0cd89612f3ec')}</p>
+          <h1>${this.localize('about:1')}</h1>
+          <p>${this.localize('about:2')}</p>
+          <p>${this.localize('about:3')}</p>
+          <p>${this.localize('about:4')}</p>
+          <p>${this.localize('about:5')}</p>
+          <p>${unsafeHTML(this.localize('about:6'))}</p>
+          <h2>${this.localize('about:7')}</h2>
+          <p>${this.localize('about:8')}</p>
         </article>
       </main>
     `;

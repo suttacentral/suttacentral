@@ -548,13 +548,13 @@ class SCStaticHomePage extends SCStaticPage {
             </video>
           </section>
           <section class="plain" style="min-height: 134px">
-            <p>${unsafeHTML(this.localize('2797e2ab111cd1d938bd327b38002092'))}</p>
-            <p>${unsafeHTML(this.localize('9db604c6c61c4cb7431619341bc037bf'))}</p>
+            <p>${unsafeHTML(this.localize('home:1'))}</p>
+            <p>${unsafeHTML(this.localize('home:2'))}</p>
           </section>
         </section>
 
         <section class="plain quotation">
-          <h2>${unsafeHTML(this.localize('6fa47a464d90ac462faad21974edfb66'))}</h2>
+          <h2>${unsafeHTML(this.localize('home:3'))}</h2>
           <blockquote>
             <span>${this.randomEpigrah ? this.randomEpigrah.epigraph : ''}</span>
           </blockquote>
@@ -577,8 +577,8 @@ class SCStaticHomePage extends SCStaticPage {
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('742e700832d62bb2f6a17592968b4dab')}</h2>
-                <p>${this.localize('0ae097eff8e01d83a486582e1648d803')}</p>
+                <h2>${this.localize('home:4')}</h2>
+                <p>${this.localize('home:5')}</p>
               </div>
               <div class="card-actions">
                 <a href="/introduction" class="link-button">Introduction</a>
@@ -600,8 +600,8 @@ class SCStaticHomePage extends SCStaticPage {
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('a5172cf2c34de3fc8e2af331ac915ec9')}</h2>
-                <p>${this.localize('72b2622af85398029ea11349175e83af')}</p>
+                <h2>${this.localize('home:6')}</h2>
+                <p>${this.localize('home:7')}</p>
               </div>
               <div class="card-actions">
                 <a href="/start" class="link-button">Get started</a>
@@ -752,8 +752,8 @@ class SCStaticHomePage extends SCStaticPage {
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('078365b3da2eb8b34d23c36661309359')}</h2>
-                <p>${unsafeHTML(this.localize('2e64b76d5549e9dc3e83c5845571322a'))}</p>
+                <h2>${this.localize('home:24')}</h2>
+                <p>${unsafeHTML(this.localize('home:25'))}</p>
               </div>
               <div class="card-actions">
                 <a href="/general-guide-sujato" class="link-button">Guides</a>
@@ -773,8 +773,8 @@ class SCStaticHomePage extends SCStaticPage {
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('149842aa5477edb219ce272ec2aab269')}</h2>
-                <p>${this.localize('70a49d1ca4c56cd629f76e90d6b6cc0f')}</p>
+                <h2>${this.localize('home:27')}</h2>
+                <p>${this.localize('home:28')}</p>
               </div>
               <div class="card-actions">
                 <a href="/subjects" class="link-button">Indexes</a>
