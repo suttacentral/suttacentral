@@ -2,7 +2,7 @@ const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-module.exports = merge(require('./webpack.common-injectManifest'), {
+module.exports = merge(require('./webpack.common'), {
   mode: 'production',
   optimization: {
     usedExports: true,

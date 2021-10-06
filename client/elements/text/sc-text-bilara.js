@@ -415,7 +415,7 @@ class SCTextBilara extends SCTextCommon {
       this.chosenNoteDisplayType = textOptions.noteDisplayType;
     }
 
-    if (layout && ['sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
+    if (layout && ['plain', 'sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
       reduxActions.chooseSegmentedSuttaTextView(layout.toLowerCase());
     } else {
       this.chosenTextView = textOptions.segmentedSuttaTextView;
