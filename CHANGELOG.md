@@ -1,6 +1,15 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.10.07
+
+- Fix: Bug in publication date for SA-2. #2266
+- Update dependencies.
+- Let users share state of text by extending URLs. #1907
+- When the user modifies the view settings, update the URL #1907
+- Fix:hash # in URLs does not work as expected. #2147 #2148
+- Apply: patimokkha texts: a new model. #2013
+
 ## 2021.08.30
 
 - Rewrite the navigation module.
