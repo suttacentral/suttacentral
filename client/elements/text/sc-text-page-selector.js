@@ -405,12 +405,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     let suttaMarkup = '';
 
     this.bilaraSuttaKeysOrder.forEach(key => {
+      const value = this.bilaraSuttaMarkup[key];
       if (key !== '~') {
-        const value = this.bilaraSuttaMarkup[key];
         if (value.includes('{}')) {
           suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
         } else {
-          suttaMarkup += value + `<span class="segment" id="${key}"></span>`;
+          suttaMarkup += `${value}<span class="segment" id="${key}"></span>`;
         }
       } else {
         suttaMarkup += value;
