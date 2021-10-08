@@ -64,7 +64,7 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
         id="btnCopyLink"
         class="table-element button-text"
         @click=${this._copyLink}
-        title="${this._computeLink(this.item)}"
+        title=${this._computeLink(this.item)}
       >
         ${icon.link} ${this.localize('copyLink')}
       </li>
@@ -96,11 +96,10 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/sc-suttaplex-share-menu';
   }
 
-  firstUpdated() {
-    this._fetchParallels();
-  }
-
   async _fetchParallels() {
+    if (this.parallels) {
+      return;
+    }
     this.loadingParallels = true;
     this.parallels = await (await fetch(this._getAPIEndpoint(this.item))).json();
     this.loadingParallels = false;
@@ -130,6 +129,7 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   // copy the parallels-table in html-string
   _copyContent() {
     try {
+      this._fetchParallels();
       const table = this._computeCopyTable();
       copyToClipboard(table);
       this._notifyCopy(this.localize('tableCopied'), true);
@@ -163,6 +163,7 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
 
   //  copy cite-information about parallels and bibliography.
   _copyCite() {
+    this._fetchParallels();
     this._computeCiteData();
     try {
       const cite = this._computeCiteData();
@@ -194,12 +195,14 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   _computeCopyTable() {
     const head = `<!DOCTYPE>\n<html>\n<head>\n  <title>${this.item.uid} ${this.item.original_title}</title>\n</head>\n`;
     let body = `<body>\n<table>\n  <caption>${this.item.original_title}</caption>\n`;
-    for (let section of Object.keys(this.parallels)) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const section of Object.keys(this.parallels)) {
       let tbody = '<tbody>\n';
-      let size = this.parallels[section].length;
+      const size = this.parallels[section].length;
       let first = true;
       let tr = '';
-      for (let parallel of this.parallels[section]) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const parallel of this.parallels[section]) {
         tr = '  <tr>\n';
         if (first) {
           tr += `    <td rowspan=${size}>${section}</td>\n`;
@@ -219,17 +222,19 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
 
   _computeCiteData() {
     let result = '';
-    for (let section of Object.keys(this.parallels)) {
-      let acronymUid = this._generateAcronymUid(this.item.acronym, section);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const section of Object.keys(this.parallels)) {
+      const acronymUid = this._generateAcronymUid(this.item.acronym, section);
       result += `Parallels for ${acronymUid} ${this.item.original_title} `;
-      let volpages = volPagesToString(this.item.volpages);
+      const volpages = volPagesToString(this.item.volpages);
       result += volpages ? `(${volpages})` : '';
       result = this._strip(result, ' ');
       result += ': ';
-      for (let parallel of this.parallels[section]) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const parallel of this.parallels[section]) {
         result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
         result += ' ';
-        let parallelVolpages = volPagesToString(parallel.to.volpages);
+        const parallelVolpages = volPagesToString(parallel.to.volpages);
         result += parallelVolpages ? `(${parallelVolpages}) ` : '';
         if (parallel.to.biblio) {
           result += this._getTextFromHtml(parallel.to.biblio);
@@ -254,18 +259,17 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
 
   _generateAcronymUid(acronym, uid) {
     if (acronym) {
-      let paragraph = uid.split(/#(.+)/)[1];
+      const paragraph = uid.split(/#(.+)/)[1];
       if (paragraph) {
         acronym += `#${paragraph}`;
       }
       return acronym;
-    } else {
-      return uid;
     }
+    return uid;
   }
 
   _getTextFromHtml(htmlString) {
-    let tmp = document.createElement('div');
+    const tmp = document.createElement('div');
     tmp.innerHTML = htmlString;
     return tmp.textContent;
   }
