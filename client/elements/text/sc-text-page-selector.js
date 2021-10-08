@@ -219,7 +219,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
         suttaTitle = acronyms[0];
       }
     }
-    const navSuttaItemIndex = this.navArray.findIndex(item => item.type === 'sutta');
+    const navSuttaItemIndex = this.navArray.findIndex(item => item?.type === 'sutta');
     if (navSuttaItemIndex !== -1) {
       delete this.navArray[navSuttaItemIndex];
     }
