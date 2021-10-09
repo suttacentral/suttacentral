@@ -1,6 +1,12 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.10.09
+
+- Fix: Sometimes an error message appears when switching sutta.
+- Fix a logic error in sc-text-page-selector.js.
+- Optimize suttaplex list loading speed.
+
 ## 2021.10.07
 
 - Fix: Bug in publication date for SA-2. #2266
