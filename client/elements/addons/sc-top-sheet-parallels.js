@@ -34,13 +34,18 @@ class SCTopSheetParallels extends SCTopSheetCommon {
     this.style.display = 'none';
   }
 
+  areParallelsOpen() {
+    return this.suttaplexItem?.parallel_count > 0;
+  }
+
   render() {
     return html`
       <section>
         <sc-suttaplex
           .item=${this.suttaplexItem}
-          .clearBorderRadius="${true}"
-          .suttaplexListStyle="${''}"
+          .parallelsOpened=${this.areParallelsOpen()}
+          .clearBorderRadius=${true}
+          .suttaplexListStyle=${''}
         ></sc-suttaplex>
       </section>
     `;
