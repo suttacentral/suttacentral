@@ -87,7 +87,7 @@ There is a Makefile with following commands:
 * `test-client` - Run only frontend tests.
 * `test-server` - Run only server test.
 * `load-data` - Pulls most recent data from github and loads it from `server/sc-data` folder to the db.
-* `delete-databse` - Delete database from ArangoDB.
+* `delete-database` - Delete database from ArangoDB.
 * `index-elasticsearch` - Index ElasticSearch with data from the db.
 * `run-preview-env` - Fully rebuild and run most recent development version.
 * `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ElasticSearch.
