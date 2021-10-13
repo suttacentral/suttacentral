@@ -396,7 +396,7 @@ class SCTextBilara extends SCTextCommon {
       '/'
     )}&notes=${noteDisplayType}&highlight=${showHighlighting}&script=${script}`;
     // eslint-disable-next-line no-restricted-globals
-    history.pushState(null, null, urlParams);
+    history.replaceState(null, null, urlParams);
   }
 
   _setTextViewState() {
