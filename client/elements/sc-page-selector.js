@@ -399,7 +399,9 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   updated() {
-    this._createMetaData();
+    if (this.currentRoute.name !== 'SUTTA') {
+      this._createMetaData();
+    }
     this._updateNav();
     this._changeToolbarTitle();
     this._loadScActionItems();
