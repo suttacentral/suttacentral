@@ -122,7 +122,9 @@ class SCStaticLanguages extends SCStaticPage {
     const chart = (name, percent) => html`
       <figure>
         <sc-pie-chart percent="${percent}"></sc-pie-chart>
-        <figcaption>${this.localize('languages:8', { lang: name })}</figcaption>
+        <figcaption>
+          ${this.localize('languages:percentageOfOriginalTexts', { lang: name })}
+        </figcaption>
       </figure>
     `;
 
@@ -133,9 +135,11 @@ class SCStaticLanguages extends SCStaticPage {
             ${percent
               ? html`
                   ${chart(name, percent)} ${listOfRootLanguage()}
-                  ${list('languages:5', this.languageData.author)}
+                  ${list('languages:translators', this.languageData.author)}
                 `
-              : html` ${listOfRootLanguage()} ${list('languages:7', this.languageData.author)} `}
+              : html`
+                  ${listOfRootLanguage()} ${list('languages:authors', this.languageData.author)}
+                `}
           `
         : ''}
     `;
@@ -154,8 +158,9 @@ class SCStaticLanguages extends SCStaticPage {
     `;
 
     return html`
-      <h1>${this.localize('languages:1')}</h1>
-      ${list('languages:2', this.languages.ancient)} ${list('languages:3', this.languages.modern)}
+      <h1>${this.localize('languages:languagesOnSuttaCentral')}</h1>
+      ${list('languages:ancientLanguages', this.languages.ancient)}
+      ${list('languages:modernLanguages', this.languages.modern)}
     `;
   }
 

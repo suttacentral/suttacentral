@@ -15,135 +15,135 @@ const isoCodes = [
 ];
 
 const staticPages = [
-  'HOME',
-  'ABBREVIATIONS',
-  'ABHIDHAMMA',
-  'ABOUT',
-  'ACKNOWLEDGMENTS',
-  'A-NEW-BEGINNING',
-  'AN-GUIDE-SUJATO',
-  'AN-INTRODUCTION-BODHI',
-  'DISCOURSES',
-  'DN-GUIDE-SUJATO',
-  'DONATE-NOW',
-  'DONATIONS',
-  'DONATION-SUCCESS',
-  'DOWNLOADS',
-  'GENERAL-GUIDE-SUJATO',
-  'INTRODUCTION',
-  'LANGUAGES',
-  'LICENSING',
-  'METHODOLOGY',
-  'MN-GUIDE-SUJATO',
-  'NAMES',
-  'NUMBERING',
-  'OFFLINE',
-  'SIMILES',
-  'SN-GUIDE-SUJATO',
-  'START',
-  'SUBJECTS',
-  'TERMINOLOGY',
-  'VINAYA',
+  'home',
+  'abbreviations',
+  'abhidhamma',
+  'about',
+  'acknowledgments',
+  'aNewBeginning',
+  'anGuideSujato',
+  'anIntroductionBodhi',
+  'discourses',
+  'dnGuideSujato',
+  'donateNow',
+  'donations',
+  'donationSuccess',
+  'downloads',
+  'generalGuideSujato',
+  'introduction',
+  'languages',
+  'licensing',
+  'methodology',
+  'mnGuideSujato',
+  'names',
+  'numbering',
+  'offline',
+  'similes',
+  'snGuideSujato',
+  'start',
+  'subjects',
+  'terminology',
+  'vinaya',
 ];
 
 // prettier-ignore
 const routes = {
-  'HOME': {
+  'home': {
     path: '/',
     content: html`<sc-static-home />`,
     loader: () => import('./static/sc-static-home.js'),
   },
-  'SEARCH': {
+  'search': {
     path: '/search',
     content: html`<sc-page-search />`,
     loader: () => import('./sc-page-search.js'),
   },
-  'DEFINE': {
+  'define': {
     path: '/define/:word',
     content: html`<sc-page-dictionary />`,
     loader: () => import('./sc-page-dictionary.js')
   },
-  'NAVIGATION': {
+  'navigation': {
     path: '/pitaka/:ids(.+)',
     content: html`<sc-navigation-new />`,
     loader: () => import('./navigation/sc-navigation-new.js'),
   },
-  'ABBREVIATIONS': {
+  'abbreviations': {
     path: '/abbreviations',
     content: html`<sc-static-abbreviations />`,
     loader: () => import('./static/sc-static-abbreviations.js'),
   },
-  'ABHIDHAMMA': {
+  'abhidhamma': {
     path: '/abhidhamma-guide-sujato',
     content: html`<sc-static-abhidhamma />`,
     loader: () => import('./static/sc-static-abhidhamma.js')
   },
-  'ABOUT': {
+  'about': {
     path: '/about',
     content: html`<sc-static-about />`,
     loader: () => import('./static/sc-static-about.js'),
   },
-  'ACKNOWLEDGMENTS': {
+  'acknowledgments': {
     path: '/acknowledgments',
     content: html`<sc-static-acknowledgments />`,
     loader: () => import('./static/sc-static-acknowledgments.js'),
   },
-  'A-NEW-BEGINNING': {
+  'aNewBeginning': {
     path: '/a-new-beginning',
     content: html`<sc-static-a-new-beginning />`,
     loader: () => import('./static/sc-static-a-new-beginning.js')
   },
-  'AN-GUIDE-SUJATO': {
+  'anGuideSujato': {
     path: '/an-guide-sujato',
     content: html`<sc-static-an-guide-sujato />`,
     loader: () => import('./static/sc-static-an-guide-sujato.js')
   },
-  'AN-INTRODUCTION-BODHI': {
+  'anIntroductionBodhi': {
     path: '/an-introduction-bodhi',
     content: html`<sc-static-an-introduction-bodhi />`,
     loader: () => import('./static/sc-static-an-introduction-bodhi.js')
   },
-  'DISCOURSES': {
+  'discourses': {
     path: '/discourses-guide-sujato',
     content: html`<sc-static-discourses />`,
     loader: () => import('./static/sc-static-discourses.js')
   },
-  'DN-GUIDE-SUJATO': {
+  'dnGuideSujato': {
     path: '/dn-guide-sujato',
     content: html`<sc-static-dn-guide-sujato />`,
     loader: () => import('./static/sc-static-dn-guide-sujato.js')
   },
-  'DONATE-NOW': {
+  'donateNow': {
     path: '/donate-now',
     content: html`<sc-static-donate-now />`,
     loader: () => import('./static/sc-static-donate-now.js'),
   },
-  'DONATIONS': {
+  'donations': {
     path: '/donations',
     content: html`<sc-static-donations />`,
     loader: () => import('./static/sc-static-donations.js'),
   },
-  'DONATION-SUCCESS': {
+  'donationSuccess': {
     path: '/donation-success',
     content: html`<sc-static-donation-success/>`,
     loader: () => import('./static/sc-static-donation-success.js')
   },
-  'DOWNLOADS': {
+  'downloads': {
     path: '/downloads',
     content: html`<sc-static-downloads />`,
     loader: () => import('./static/sc-static-downloads.js'),
   },
-  'GENERAL-GUIDE-SUJATO': {
+  'generalGuideSujato': {
     path: '/general-guide-sujato',
     content: html`<sc-static-general-guide-sujato />`,
     loader: () => import('./static/sc-static-general-guide-sujato.js')
   },
-  'INTRODUCTION': {
+  'introduction': {
     path: '/introduction',
     content: html`<sc-static-introduction />`,
     loader: () => import('./static/sc-static-introduction.js'),
   },
-  'LANGUAGES': {
+  'languages': {
     path: '/languages',
     content: html`<sc-static-languages />`,
     loader: () => import('./static/sc-static-languages.js')
@@ -153,72 +153,72 @@ const routes = {
     content: html`<sc-static-languages />`,
     loader: () => import('./static/sc-static-languages.js')
   },
-  'LICENSING': {
+  'licensing': {
     path: '/licensing',
     content: html`<sc-static-licensing />`,
     loader: () => import('./static/sc-static-licensing.js'),
   },
-  'METHODOLOGY': {
+  'methodology': {
     path: '/methodology',
     content: html`<sc-static-methodology />`,
     loader: () => import('./static/sc-static-methodology.js'),
   },
-  'MN-GUIDE-SUJATO': {
+  'mnGuideSujato': {
     path: '/mn-guide-sujato',
     content: html`<sc-static-mn-guide-sujato />`,
     loader: () => import('./static/sc-static-mn-guide-sujato.js')
   },
-  'NAMES': {
+  'names': {
     path: '/names',
     content: html`<sc-static-names />`,
     loader: () => import('./static/sc-static-names.js')
   },
-  'NUMBERING': {
+  'numbering': {
     path: '/numbering',
     content: html`<sc-static-numbering />`,
     loader: () => import('./static/sc-static-numbering.js'),
   },
-  'OFFLINE': {
+  'offline': {
     path: '/offline',
     content: html`<sc-static-offline />`,
     loader: () => import('./static/sc-static-offline.js'),
   },
-  'SIMILES': {
+  'similes': {
     path: '/similes',
     content: html`<sc-static-similes />`,
     loader: () => import('./static/sc-static-similes.js')
   },
-  'SN-GUIDE-SUJATO': {
+  'snGuideSujato': {
     path: '/sn-guide-sujato',
     content: html`<sc-static-sn-guide-sujato />`,
     loader: () => import('./static/sc-static-sn-guide-sujato.js')
   },
-  'START': {
+  'start': {
     path: '/start',
     content: html`<sc-static-start />`,
     loader: () => import('./static/sc-static-start.js'),
   },
-  'SUBJECTS': {
+  'subjects': {
     path: '/subjects',
     content: html`<sc-static-subjects />`,
     loader: () => import('./static/sc-static-subjects.js')
   },
-  'TERMINOLOGY': {
+  'terminology': {
     path: '/terminology',
     content: html`<sc-static-terminology />`,
     loader: () => import('./static/sc-static-terminology.js'),
   },
-  'VINAYA': {
+  'vinaya': {
     path: '/vinaya-guide-brahmali',
     content: html`<sc-static-vinaya />`,
     loader: () => import('./static/sc-static-vinaya.js')
   },
-  'SUTTA': {
+  'sutta': {
     path: '/:suttaId/:langIsoCode/:authorUid',
     loader: () => import('./text/sc-text-page-selector.js'),
     content: html`<sc-text-page-selector />`
   },
-  'SUTTAPLEX': {
+  'suttaplex': {
     path: '/:categoryId',
     content: html`<sc-suttaplex-list />`,
     loader: () => import('./suttaplex/sc-suttaplex-list.js')
@@ -333,7 +333,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _loadScActionItems() {
-    if (this.currentRoute.name !== 'HOME') {
+    if (this.currentRoute.name !== 'home') {
       const scSiteLayout = document.querySelector('sc-site-layout');
       const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
       if (!scActionItems) {
@@ -357,7 +357,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _loadTopSheets() {
-    if (this.currentRoute.name !== 'HOME') {
+    if (this.currentRoute.name !== 'home') {
       const topSheets = new Map([
         ['setting_menu', 'sc-top-sheet-views'],
         ['sutta_parallels', 'sc-top-sheet-parallels'],
@@ -487,7 +487,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
-    const pageName = this.localize(`${this.currentRoute.name || 'NOT-FOUND'}`);
+    const pageName = this.tryLocalize(
+      `interface:${this.currentRoute.name || 'NOT-FOUND'}`,
+      this.currentRoute.name
+    );
     dispatchCustomEvent(document, 'metadata', {
       pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
       title: `SuttaCentral—${pageName.toLowerCase()}`,
@@ -500,25 +503,25 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _setVisibleToolbar() {
-    this.shouldShowSecondToolbar = ['SUBJECTS', 'SIMILES', 'NAMES', 'TERMINOLOGY'].includes(
+    this.shouldShowSecondToolbar = ['subjects', 'similes', 'names', 'terminology'].includes(
       this.currentRoute.name
     );
-    this.shouldShowTipitakaToolbar = ['DISCOURSES', 'VINAYA', 'ABHIDHAMMA'].includes(
+    this.shouldShowTipitakaToolbar = ['discourses', 'vinaya', 'abhidhamma'].includes(
       this.currentRoute.name
     );
-    this.shouldShowAcademicToolbar = ['NUMBERING', 'ABBREVIATIONS', 'METHODOLOGY'].includes(
+    this.shouldShowAcademicToolbar = ['numbering', 'abbreviations', 'methodology'].includes(
       this.currentRoute.name
     );
-    this.shouldShowOrganizationalToolbar = ['ACKNOWLEDGMENTS', 'LICENSING', 'ABOUT'].includes(
+    this.shouldShowOrganizationalToolbar = ['acknowledgments', 'licensing', 'about'].includes(
       this.currentRoute.name
     );
     this.shouldShowGuidesToolbar = [
-      'GENERAL-GUIDE-SUJATO',
-      'DN-GUIDE-SUJATO',
-      'MN-GUIDE-SUJATO',
-      'SN-GUIDE-SUJATO',
-      'AN-GUIDE-SUJATO',
-      'AN-INTRODUCTION-BODHI',
+      'generalGuideSujato',
+      'dnGuideSujato',
+      'mnGuideSujato',
+      'snGuideSujato',
+      'anGuideSujato',
+      'anIntroductionBodhi',
     ].includes(this.currentRoute.name);
 
     const isToolbarSelected = !(
@@ -541,25 +544,25 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _changeToolbarTitle() {
     switch (this.currentRoute.name) {
-      case 'SEARCH':
+      case 'search':
         this.actions.changeToolbarTitle(this.localize('interface:searchResults'));
         break;
-      case 'DEFINE':
+      case 'define':
         this.actions.changeToolbarTitle(this.localize('interface:dictionaryResults'));
         break;
-      case 'HOME':
+      case 'home':
         this.actions.changeToolbarTitle('SuttaCentral');
         break;
-      case 'NAVIGATION':
+      case 'navigation':
         return;
-      case 'SUTTAPLEX':
+      case 'suttaplex':
         return;
-      case 'SUTTA':
+      case 'sutta':
         return;
       default:
-        const key = `${this.currentRoute.name}-TITLE`;
+        const key = `${this.currentRoute.name}Title`;
         if (this.__resources[key]) {
-          const pageNameTitle = this.localize(key);
+          const pageNameTitle = this.localize(`interface:${key}`);
           this.actions.changeToolbarTitle(pageNameTitle);
         } else {
           this.actions.changeToolbarTitle('');
@@ -571,7 +574,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
     if (staticPages.includes(this.currentRoute.name)) {
       const navArray = store.getState().navigationArray;
       const currentPath = this.currentRoute.path;
-      const pageName = this.localize(`${this.currentRoute.name}`);
+      const pageName = this.currentRoute.name;
       navArray.length = 1;
       if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
         navArray.push({
@@ -585,20 +588,20 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _recalculateView() {
-    this.actions.changeDisplayToolButtonState(this.currentRoute.name === 'SUTTA');
-    this.actions.changeDisplayInfoButtonState(this.currentRoute.name === 'SUTTA');
+    this.actions.changeDisplayToolButtonState(this.currentRoute.name === 'sutta');
+    this.actions.changeDisplayInfoButtonState(this.currentRoute.name === 'sutta');
 
     const contextToolbar = this.parentNode.querySelector('#context_toolbar');
     const expandClass = 'contextToolbarExpand';
-    this.currentRoute.name === 'SUTTA'
+    this.currentRoute.name === 'sutta'
       ? contextToolbar.classList.add(expandClass)
       : contextToolbar.classList.remove(expandClass);
 
     this.parentNode.querySelector('#static_pages_nav_menu').style.display = [
-      'SEARCH',
-      'NAVIGATION',
-      'SUTTA',
-      'SUTTAPLEX',
+      'search',
+      'navigation',
+      'sutta',
+      'suttaplex',
     ].includes(this.currentRoute.name)
       ? 'none'
       : 'block';
@@ -609,7 +612,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _setTitleState() {
-    if (this.currentRoute.name === 'HOME') {
+    if (this.currentRoute.name === 'home') {
       this.parentNode.querySelector('#context_toolbar').style.height = '180px';
       this.parentNode.querySelector('.sc_logo').style.display = '';
       this.parentNode.querySelector('#title').classList.add('homeTitle');
@@ -628,13 +631,13 @@ class SCPageSelector extends LitLocalized(LitElement) {
   _setActionItemsDisplayState() {
     const scActionItems = this.parentNode.querySelector('#action_items');
     if (scActionItems) {
-      scActionItems.style.display = this.currentRoute.name === 'HOME' ? 'none' : 'flex';
+      scActionItems.style.display = this.currentRoute.name === 'home' ? 'none' : 'flex';
     }
   }
 
   _setViewModeButtonDisplayState() {
     this.actions.changeDisplayViewModeButtonState(
-      ['HOME', 'SUTTAPLEX', 'NAVIGATION'].includes(this.currentRoute.name)
+      ['home', 'suttaplex', 'navigation'].includes(this.currentRoute.name)
     );
   }
 }

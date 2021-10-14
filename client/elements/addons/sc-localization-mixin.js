@@ -29,11 +29,13 @@ export const LitLocalized = base =>
       return this._languageLoaded;
     }
 
-    localize(key, params) {
+    localize(key, params, tryLocalize) {
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
       if (!string && this._languageLoaded) {
+        //if (!tryLocalize) {
         console.warn('missing translation key', key);
+        //}
       }
 
       if (params) {
@@ -61,6 +63,15 @@ export const LitLocalized = base =>
       }
 
       return string || key;
+    }
+
+    tryLocalize(key, fallback) {
+      /* In a few legacy cases we WANT to display the localization key
+         if it hasn't been localized */
+
+      const result = this.localize(key, null, true);
+      if (result == key) return fallback;
+      return result;
     }
 
     stateChanged(state) {

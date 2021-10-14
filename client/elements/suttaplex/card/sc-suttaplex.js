@@ -224,7 +224,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       <div class="top-row-icons">
         ${this.difficulty
           ? html`
-              <span class="difficulty_icon" title=${this.localize(this.difficulty)}>
+              <span class="difficulty_icon" title=${this.localize(`suttaplex:${this.difficulty}`)}>
                 ${this.difficultyLevelIconName}
               </span>
             `
@@ -316,7 +316,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               <h3>
                 <b>
                   ${this.translationsInUserLanguage.length}
-                  ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
+                  ${this.localize(`suttaplex:${translationKey}`, {
+                    lang: this.fullSiteLanguageName,
+                  })}
                 </b>
                 ${this.localize('suttaplex:inYourLanguage')}
               </h3>
@@ -344,7 +346,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${!this.isCompact
           ? html`
               <h3>
-                <b>${this.rootTexts.length} ${this.localize(translationKey)}</b>
+                <b>${this.rootTexts.length} ${this.localize(`suttaplex:${translationKey}`)}</b>
                 ${this.localize('suttaplex:ofRootText')}
               </h3>
             `
@@ -376,7 +378,10 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       >
         <summary>
           <h3>
-            <b>${this.translationsInModernLanguages.length} ${this.localize(translationKey)}</b>
+            <b
+              >${this.translationsInModernLanguages.length}
+              ${this.localize(`suttaplex:${translationKey}`)}</b
+            >
             ${this.localize('suttaplex:inModernLanguages')}
           </h3>
         </summary>
@@ -402,7 +407,11 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       >
         <summary>
           <h3>
-            <b>${this.localize(translationKey, { count: this.item.parallel_count })}</b>
+            <b
+              >${this.localize(`suttaplex:${translationKey}`, {
+                count: this.item.parallel_count,
+              })}</b
+            >
             ${this.localize('suttaplex:inAncientTexts')}
           </h3>
         </summary>

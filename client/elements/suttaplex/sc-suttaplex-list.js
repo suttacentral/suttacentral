@@ -301,7 +301,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               raised
               fullwidth
               @click=${this.onShowParallelsClick}
-              label=${this.localize('navigation:showParallelsAndDetails')}
+              label=${this.localize('interface:showParallelsAndDetails')}
               class=${this._calculateButtonClass()}
             ></mwc-button>
           `
@@ -328,7 +328,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         x.classList.remove('hidden');
         x.classList.add('show');
         this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize(
-          'navigation:hideParallelsAndDetails'
+          'interface:hideParallelsAndDetails'
         );
       });
     } else {
@@ -336,7 +336,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         x.classList.remove('show');
         x.classList.add('hidden');
         this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize(
-          'navigation:showParallelsAndDetails'
+          'interface:showParallelsAndDetails'
         );
       });
     }
@@ -349,7 +349,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           .inputTitle="${item.translated_title || item.original_title}"
           .inputText="${item.blurb}"
           .inputType="${item.type}"
-          .label="${this.localize('navigation:expandSection')}"
+          .label="${this.localize('interface:expandSection')}"
           .opened="${this.shouldExpandAll()}"
           .originalTitle=${item.original_title}
           .isPatimokkhaRuleCategory=${this.isPatimokkhaRuleCategory(item.uid)}

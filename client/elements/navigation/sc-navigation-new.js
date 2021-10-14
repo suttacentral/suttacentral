@@ -139,7 +139,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                   ? html`
                       <a href="/${pitakaGuide.get(child.uid)}" class="essay-link">
                         <div class="essay" id="${child.uid}_essay">
-                          ${this.localize(`${child.uid}_essayTitle`)}
+                          ${this.localize(`interface:${child.uid}EssayTitle`)}
                         </div>
                       </a>
                     `
@@ -148,7 +148,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('navigation:shortcutToFullList')}
+                          ${this.localize('interface:shortcutToFullList')}
                         </a>
                       </div>
                     `

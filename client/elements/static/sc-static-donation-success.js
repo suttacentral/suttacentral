@@ -6,7 +6,7 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/donate-success';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   static get styles() {
