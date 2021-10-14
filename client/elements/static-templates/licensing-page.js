@@ -97,7 +97,7 @@ class SCLicensingPage extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_licensing-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

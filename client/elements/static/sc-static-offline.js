@@ -92,7 +92,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-offline-page';
+    this.localizedStringsPath = '/localization/elements/offline';
     this.paliLookupLanguages = [
       {
         name: 'English',

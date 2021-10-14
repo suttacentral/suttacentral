@@ -341,7 +341,7 @@ class SCDNGuide extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_dn-guide-sujato-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

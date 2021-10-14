@@ -369,7 +369,7 @@ class SCANGuide extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_an-guide-sujato-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

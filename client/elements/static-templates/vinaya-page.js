@@ -212,7 +212,7 @@ class SCVinaya extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_vinaya-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

@@ -72,7 +72,7 @@ class SCTextBilara extends SCTextCommon {
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
     this.hasScriptBeenChanged = false;
-    this.localizedStringsPath = '/localization/elements/sc-text';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.commentSpanRectInfo = new Map();
     this.rootEdition = [];
 
@@ -748,7 +748,7 @@ class SCTextBilara extends SCTextCommon {
     anchor.className = 'sc';
     anchor.id = subKey;
     anchor.href = `#${subKey}`;
-    anchor.title = this.localize('segmentNumber');
+    anchor.title = this.localize('text:segmentNumber');
     const text = document.createTextNode(subKey);
     anchor.appendChild(text);
     return anchor;

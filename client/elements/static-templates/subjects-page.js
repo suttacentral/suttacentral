@@ -3808,7 +3808,7 @@ class SCSubjects extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_subjects-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

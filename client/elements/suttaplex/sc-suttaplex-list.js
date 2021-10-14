@@ -49,7 +49,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-navigation-menu';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.siteLanguage = store.getState().siteLanguage;
     this.displayParallelTableView = store.getState().displayParallelTableView;
     this.#showTableViewButton();
@@ -193,7 +193,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (this.suttaplexData && this.suttaplexData.length) {
       this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
 
-      let description = this.localize('metaDescriptionText');
+      let description = this.localize('interface:metaDescriptionText');
       if (this.suttaplexData[0].blurb) {
         description = this.suttaplexData[0].blurb;
       }
@@ -294,16 +294,18 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .isPatimokkhaDetails=${this.isPatimokkha() && item.uid !== this.categoryId}
         class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
       ></sc-suttaplex>
-      ${this.isPatimokkha && item.uid === this.categoryId ? html`
-        <mwc-button
-          id="btnShowParallelsAndDetails"
-          raised
-          fullwidth
-          @click=${this.onShowParallelsClick}
-          label=${this.localize('showParallelsAndDetails')}
-          class=${this._calculateButtonClass()}
-        ></mwc-button>
-      ` : ''}
+      ${this.isPatimokkha && item.uid === this.categoryId
+        ? html`
+            <mwc-button
+              id="btnShowParallelsAndDetails"
+              raised
+              fullwidth
+              @click=${this.onShowParallelsClick}
+              label=${this.localize('navigation:showParallelsAndDetails')}
+              class=${this._calculateButtonClass()}
+            ></mwc-button>
+          `
+        : ''}
     `;
   }
 
@@ -312,7 +314,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (this.suttaplexListDisplay) {
       classList.push('compact');
     }
-    if(!this.isPatimokkha()) {
+    if (!this.isPatimokkha()) {
       classList.push('hidden');
     }
     return classList.join(' ');
@@ -323,15 +325,19 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     const showedCards = this.shadowRoot.querySelectorAll('.show');
     if (hiddenCards.length > 0 && showedCards.length === 0) {
       this.shadowRoot.querySelectorAll('.hidden').forEach(x => {
-        x.classList.remove('hidden')
+        x.classList.remove('hidden');
         x.classList.add('show');
-        this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize('hideParallelsAndDetails');
+        this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize(
+          'navigation:hideParallelsAndDetails'
+        );
       });
     } else {
       this.shadowRoot.querySelectorAll('.show').forEach(x => {
-        x.classList.remove('show')
+        x.classList.remove('show');
         x.classList.add('hidden');
-        this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize('showParallelsAndDetails');
+        this.shadowRoot.querySelector('#btnShowParallelsAndDetails').label = this.localize(
+          'navigation:showParallelsAndDetails'
+        );
       });
     }
   }
@@ -343,7 +349,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           .inputTitle="${item.translated_title || item.original_title}"
           .inputText="${item.blurb}"
           .inputType="${item.type}"
-          .label="${this.localize('expandSection')}"
+          .label="${this.localize('navigation:expandSection')}"
           .opened="${this.shouldExpandAll()}"
           .originalTitle=${item.original_title}
           .isPatimokkhaRuleCategory=${this.isPatimokkhaRuleCategory(item.uid)}
@@ -408,7 +414,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           this.suttaplexData,
           item => item.key,
           item =>
-            this.isSuttaplex(item) || (this.isPatimokkha() && !this.isPatimokkhaRuleCategory(item.uid)) ? this.suttaplexTemplate(item) : this.sectionTemplate(item)
+            this.isSuttaplex(item) ||
+            (this.isPatimokkha() && !this.isPatimokkhaRuleCategory(item.uid))
+              ? this.suttaplexTemplate(item)
+              : this.sectionTemplate(item)
         )}
       </div>
     `;

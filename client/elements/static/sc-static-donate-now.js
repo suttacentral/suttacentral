@@ -35,7 +35,7 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-donate-now-page';
+    this.localizedStringsPath = '/localization/elements/donate-now';
     this.isError = false;
   }
 
