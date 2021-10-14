@@ -1,6 +1,13 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.10.14
+
+- Open parallels by default for suttaplex in individual sutta texts. #2281
+- Fix:Sutta Titles extracted for suttaplax are not always correct. #2289
+- Clicking on reference should not change <title>. #2294
+- Fix: Back button has problems in some cases. #2293
+
 ## 2021.10.09
 
 - Fix: Sometimes an error message appears when switching sutta.
