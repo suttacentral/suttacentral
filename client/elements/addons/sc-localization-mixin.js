@@ -33,7 +33,7 @@ export const LitLocalized = base =>
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
       if (!string && this._languageLoaded) {
-        // console.warn('missing translation key', key);
+        console.warn('missing translation key', key);
       }
 
       if (params) {
@@ -49,7 +49,7 @@ export const LitLocalized = base =>
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
       if (!string && this._languageLoaded) {
-        // console.warn('missing translation key', key);
+        console.warn('missing translation key', key);
       }
 
       if (params.length) {
@@ -85,7 +85,7 @@ export const LitLocalized = base =>
         if (!this.localizedStringsPath) {
           return;
         }
-        const path = `${this.localizedStringsPath}/${lang}.json`;
+        const path = `${this.localizedStringsPath}_${lang}.json`;
 
         if (path in localizationCache) {
           return localizationCache[path];
@@ -93,7 +93,6 @@ export const LitLocalized = base =>
 
         localizationCache[path] = fetch(path)
           .then(r => r.json())
-          .then(data => data[lang])
           .catch(() => ({}));
 
         return localizationCache[path];
