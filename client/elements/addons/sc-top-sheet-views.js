@@ -383,7 +383,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.textViewArray.map(
                 item => html`
-                  <mwc-formfield label="${this.localize(item.textViewLabel)}">
+                  <mwc-formfield label="${this.localize(`dictionary:${item.textViewLabel}`)}">
                     <mwc-radio
                       name="textView"
                       value="${item.textView}"
@@ -407,7 +407,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
       this.localizeEx(
         'dictionary:textViewEnabled',
         'textView',
-        this.localize(e.target.dataset.type)
+        this.localize(`dictionary:${e.target.dataset.type}`)
       )
     );
   }
@@ -423,7 +423,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.noteDisplayTypeArray.map(
                 ({ displayType, displayTypeLabel }) => html`
-                  <mwc-formfield label="${this.localize(displayType)}">
+                  <mwc-formfield label="${this.localize(`dictionary:${displayType}`)}">
                     <mwc-radio
                       name="noteDisplayType"
                       value="${displayType}"
@@ -476,7 +476,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
 
     if (isActive) {
       const dictChangeMessage = this.localizeEx(
-        'lookupDictionaryEnabled',
+        'dictionary:lookupDictionaryEnabled',
         'lookupDictionary',
         this.paliLookupLanguage
       );
@@ -643,7 +643,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   _onShowHighlightingChanged(e) {
     this.actions.setShowHighlighting(e.target.checked);
     const msg = e.target.checked ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
-    this._showToast(this.localize(msg));
+    this._showToast(this.localize(`dictionary:${msg}`));
   }
 
   _onNoteDisplayTypeChanged(e) {

@@ -99,7 +99,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
                   <div class="nav-card-content">
                     <div class="blurb" id="${item.root_name}_blurb">${item.blurb}</div>
                     <a class="essay-link" href=${this.pitakaGuide.get(item.uid)}>
-                      <div class="essay">${this.localize(`${item.uid}_essayTitle`)}</div>
+                      <div class="essay">${this.localize(`interface:${item.uid}EssayTitle`)}</div>
                     </a>
                   </div>
                 </section>

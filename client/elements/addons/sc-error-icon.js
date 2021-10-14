@@ -75,7 +75,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
 
       <div class="error">
         ${icon[image]}
-        <div>${this.localize(message)}</div>
+        <div>${this.localize(`interface:${message}`)}</div>
       </div>
     `;
   }

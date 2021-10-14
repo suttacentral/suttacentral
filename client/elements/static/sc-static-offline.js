@@ -92,7 +92,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/offline';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.paliLookupLanguages = [
       {
         name: 'English',
@@ -178,7 +178,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       this._pauseDownload();
       this.isDownloadPaused = true;
       this.isDownloadPausedBecauseOffline = true;
-      this._showToast('info', this.localize('networkLost'));
+      this._showToast('info', this.localize('offline:networkLost'));
     });
     window.addEventListener('online', () => {
       if (!this.D3queue || !this.isDownloadPausedBecauseOffline) return;
@@ -186,7 +186,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       this.cacheDownloadInProgress = true;
       this.isDownloadPaused = false;
       this.isDownloadPausedBecauseOffline = false;
-      this._showToast('info', this.localize('networkRecovered'));
+      this._showToast('info', this.localize('offline:networkRecovered'));
     });
   }
 
@@ -260,14 +260,14 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   _getDownloadButtonText() {
     if (this.isDownloadPaused) {
-      return this.localize('downloadPaused');
+      return this.localize('offline:offline:downloadPaused');
     } else if (this.cacheDownloadInProgress) {
-      return this.localize('downloadInProgress');
+      return this.localize('offline:offline:downloadInProgress');
     } else if (this.isDownloadButtonDisabled) {
-      return this.localize('alreadyDownloaded');
+      return this.localize('offline:offline:alreadyDownloaded');
     } else {
       return `${this.localizeEx(
-        'downloadButton',
+        'offline:downloadButton',
         'languageName',
         this.chosenLanguageNativeName
       )} ${this._showDownloadSize(this.downloadSize)}`;
@@ -284,7 +284,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
   }
 
   makeOffline() {
-    this._showToast('info', this.localize('downloadStarted'));
+    this._showToast('info', this.localize('offline:downloadStarted'));
     this.cacheDownloadInProgress = true;
     fetch(this._getCollectionUrl('sutta'))
       .then(r => r.json())
@@ -294,7 +294,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
         this._cacheAllItems();
       })
       .catch(error => {
-        this._showToast('error', this.localize('networkError'));
+        this._showToast('error', this.localize('offline:networkError'));
         this.cacheDownloadInProgress = false;
         console.error(error.error);
       });
@@ -346,22 +346,22 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       this.cacheDownloadInProgress = false;
       if (this.isCanceled) {
         this.isCanceled = false;
-        this._showToast('info', this.localize('canceled'));
+        this._showToast('info', this.localize('offline:canceled'));
         return;
       }
       if (failed === 0) {
         this._saveDownloadedSettings();
         this._showToast(
           'success',
-          this.localize('downloadComplete', 'lang', this.chosenLanguageNativeName)
+          this.localize('offline:downloadComplete', 'lang', this.chosenLanguageNativeName)
         );
       } else if (failed > 0 && passed > 0) {
         this._showToast(
           'error',
-          this.localizeEx('downloadErrored', 'failed', failed, 'total', passed + failed)
+          this.localizeEx('offline:downloadErrored', 'failed', failed, 'total', passed + failed)
         );
       } else {
-        this._showToast('error', this.localize('networkError'));
+        this._showToast('error', this.localize('offline:networkError'));
       }
     });
   }
@@ -635,7 +635,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       },
     });
     this.downloadedUrls = store.getState().downloadedUrls;
-    this._showToast('info', this.localize('resetComplete'));
+    this._showToast('info', this.localize('offline:resetComplete'));
   }
 
   _showAddToHomeScreenPrompt() {
@@ -671,27 +671,27 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     return html`
       <main>
         <article class="row">
-          <h1>${this.localize('usingOffline')}</h1>
+          <h1>${this.localize('offline:usingOffline')}</h1>
           <p id="pwa-support-info">
             ${this.isPWASupport
-              ? html` ${this.localize('supportsPWAs')} ${icon.check_circle_outline} `
-              : html` ${this.localize('doesntSupportPWAs')} ${icon.highlight_off} `}
+              ? html` ${this.localize('offline:supportsPWAs')} ${icon.check_circle_outline} `
+              : html` ${this.localize('offline:doesntSupportPWAs')} ${icon.highlight_off} `}
           </p>
-          <p>${unsafeHTML(this.localize('pwaDescription'))}</p>
-          <p>${this.localize('additionalInfo')}</p>
-          <p>${this.localize('newTech')}</p>
+          <p>${unsafeHTML(this.localize('offline:pwaDescription'))}</p>
+          <p>${this.localize('offline:additionalInfo')}</p>
+          <p>${this.localize('offline:newTech')}</p>
           <ul>
-            <li>${this.localize('suttasOnly')}</li>
-            <li>${this.localize('oneLang')}</li>
-            <li>${this.localize('certainFunctions')}</li>
+            <li>${this.localize('offline:suttasOnly')}</li>
+            <li>${this.localize('offline:oneLang')}</li>
+            <li>${this.localize('offline:certainFunctions')}</li>
           </ul>
-          <p>${this.localize('extraFeatures')}</p>
+          <p>${this.localize('offline:extraFeatures')}</p>
           <hr />
           <div class="row">
-            <h3>${this.localize('language')}</h3>
-            <p>${this.localize('selectDifferentLang')}</p>
-            <h3>${this.localize('downloadParallels')}</h3>
-            <mwc-formfield label="${this.localize('downloadParallelsDescription')}">
+            <h3>${this.localize('offline:language')}</h3>
+            <p>${this.localize('offline:selectDifferentLang')}</p>
+            <h3>${this.localize('offline:downloadParallels')}</h3>
+            <mwc-formfield label="${this.localize('offline:downloadParallelsDescription')}">
               <mwc-checkbox
                 ?checked="${this.shouldDownloadParallels}"
                 ?disabled="${this.isDownloadButtonDisabled}"
@@ -700,10 +700,10 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             </mwc-formfield>
           </div>
           <div class="row">
-            <h3>${this.localize('downloadRootTexts')}</h3>
+            <h3>${this.localize('offline:downloadRootTexts')}</h3>
             <mwc-formfield
               label="${this.localizeEx(
-                'downloadRootTextsDescription',
+                'offline:downloadRootTextsDescription',
                 'toLang',
                 this.defaultPaliDictToLang.name
               )}"
@@ -716,8 +716,8 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             </mwc-formfield>
           </div>
           <div class="row">
-            <h3>${this.localize('paliLookups')}</h3>
-            <p>${this.localize('paliLookupsDescription')}</p>
+            <h3>${this.localize('offline:paliLookups')}</h3>
+            <p>${this.localize('offline:paliLookupsDescription')}</p>
             <div class="option-multi-select">
               ${this.paliLookupLanguages.map(lang => {
                 return html`
@@ -734,8 +734,8 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             </div>
           </div>
           <div class="row">
-            <h3>${this.localize('chineseLookups')}</h3>
-            <p>${this.localize('chineseLookupsDescription')}</p>
+            <h3>${this.localize('offline:chineseLookups')}</h3>
+            <p>${this.localize('offline:chineseLookupsDescription')}</p>
             <div class="option-multi-select">
               ${this.chineseLookupLanguages.map(lang => {
                 return html`
@@ -763,12 +763,12 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             <mwc-button
               @click="${this._showAddToHomeScreenPrompt}"
               outlined
-              label="${this.localize('addToHomeScreen')}"
+              label="${this.localize('offline:addToHomeScreen')}"
             ></mwc-button>
             <mwc-button
               @click="${this._resetDownloadHistory}"
               outlined
-              label="${this.localize('resetButton')}"
+              label="${this.localize('offline:resetButton')}"
             ></mwc-button>
           </div>
           ${this.cacheDownloadInProgress
@@ -776,7 +776,7 @@ class SCStaticOffline extends LitLocalized(LitElement) {
                 <div class="row">
                   <div class="card">
                     <div class="card-header">
-                      ${this.localize('downloading')}: ${this.currentDownloadingUrl}
+                      ${this.localize('offline:downloading')}: ${this.currentDownloadingUrl}
                     </div>
                     <div class="card-body">
                       <span class="pointer" @click="${this._resumeOrPauseDownload}">

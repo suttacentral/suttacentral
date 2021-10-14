@@ -3,7 +3,7 @@ import { compose, createStore } from 'redux';
 
 const initialState = {
   currentRoute: {
-    name: 'HOME',
+    name: 'home',
     path: '/',
     params: {},
   },
@@ -51,7 +51,7 @@ const initialState = {
   navigationArray: [
     {
       uid: 'home',
-      title: 'Home',
+      title: 'home',
       url: '/',
       type: 'home',
       index: 0,
