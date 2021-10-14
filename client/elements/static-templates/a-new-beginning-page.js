@@ -65,7 +65,7 @@ class SCANewBeginning extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_a-new-beginning-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

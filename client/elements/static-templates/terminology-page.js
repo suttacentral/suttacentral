@@ -889,7 +889,7 @@ class SCTerminology extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_terminology-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

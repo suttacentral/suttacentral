@@ -37,7 +37,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-suttaplex';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.hasVoice = false;
   }
 
@@ -112,12 +112,12 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get acronymTitle() {
-    let scAcronymTitle = this.localize('suttaCentralID');
+    let scAcronymTitle = this.localize('suttaplex:suttaCentralID');
     if (this.item && this.item.acronym) {
       const altNumber = this.item.acronym.split('//')[1];
       if (altNumber) {
         const book = altNumber[0] === 'T' ? 'Taishō' : 'PTS';
-        scAcronymTitle += `\n${this.localize('alternateText', 'book', book)} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize('parallel:alternateText', 'book', book)} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -158,8 +158,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
 
   get volPageTitle() {
     return hasTwoPTSEditions(this.item.volpages)
-      ? this.localize('volumeAndPagePTS1', this.item.volpages)
-      : this.localize('volumeAndPage');
+      ? this.localize('parallel:volumeAndPagePTS1', this.item.volpages)
+      : this.localize('suttaplex:volumeAndPage');
   }
 
   get isCompact() {
@@ -201,7 +201,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               html`
                 <div
                   class="blurb"
-                  title=${this.localize('blurb')}
+                  title=${this.localize('suttaplex:blurb')}
                   .innerHTML=${this.item.blurb}
                 ></div>
               `}
@@ -236,7 +236,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                 href=${this.listenUrl}
                 target="_blank"
                 title="Listen to this sutta"
-                aria-label=${this.localize('listenSutta')}
+                aria-label=${this.localize('suttaplex:listenSutta')}
                 rel="noopener noreferrer"
               >
                 ${icon.speaker}
@@ -283,7 +283,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.item.translated_title &&
         this.item.original_title &&
         html`
-          <span title=${this.localize('originalTitle')} class="nerdy-row-element subTitle">
+          <span title=${this.localize('parallel:originalTitle')} class="nerdy-row-element subTitle">
             ${this.item.original_title}
           </span>
         `}
@@ -318,7 +318,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                   ${this.translationsInUserLanguage.length}
                   ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
                 </b>
-                ${this.localize('inYourLanguage')}
+                ${this.localize('suttaplex:inYourLanguage')}
               </h3>
             `
           : ''}
@@ -345,7 +345,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ? html`
               <h3>
                 <b>${this.rootTexts.length} ${this.localize(translationKey)}</b>
-                ${this.localize('ofRootText')}
+                ${this.localize('suttaplex:ofRootText')}
               </h3>
             `
           : ''}
@@ -377,7 +377,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         <summary>
           <h3>
             <b>${this.translationsInModernLanguages.length} ${this.localize(translationKey)}</b>
-            ${this.localize('inModernLanguages')}
+            ${this.localize('suttaplex:inModernLanguages')}
           </h3>
         </summary>
         ${this.translationsOpened
@@ -403,7 +403,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         <summary>
           <h3>
             <b>${this.localize(translationKey, { count: this.item.parallel_count })}</b>
-            ${this.localize('inAncientTexts')}
+            ${this.localize('suttaplex:inAncientTexts')}
           </h3>
         </summary>
 
@@ -417,7 +417,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               ></sc-parallel-list>
             `
           : ''}
-        ${!this.item.parallel_count ? html` <h3>${this.localize('hasNoParallels')}</h3> ` : ''}
+        ${!this.item.parallel_count
+          ? html` <h3>${this.localize('suttaplex:hasNoParallels')}</h3> `
+          : ''}
       </details>
     `;
   }

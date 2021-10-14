@@ -28,7 +28,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     super();
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.compactStyles = {};
-    this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.routePath = store.getState().currentRoute.path;
     this.siteLanguage = store.getState().siteLanguage;
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
@@ -148,7 +148,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                   ? html`
                       <div class="shortcut">
                         <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('shortcutToFullList')}
+                          ${this.localize('navigation:shortcutToFullList')}
                         </a>
                       </div>
                     `

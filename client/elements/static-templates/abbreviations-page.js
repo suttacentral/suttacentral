@@ -607,7 +607,7 @@ class SCAbbreviationsPage extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_abbreviations-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

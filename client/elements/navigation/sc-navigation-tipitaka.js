@@ -41,7 +41,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
     this.navArray = store.getState().navigationArray;
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
     this.siteLanguage = store.getState().siteLanguage;
-    this.localizedStringsPath = '/localization/elements/sc-navigation';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.pitakaGuide = new Map([
       ['sutta', 'discourses-guide-sujato'],
       ['vinaya', 'vinaya-guide-brahmali'],

@@ -92,7 +92,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-more-menu';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.languageListResponse = [];
     this.routeName = store.getState().currentRoute.name;
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
@@ -181,7 +181,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   _displayCurrentSiteLanguage() {
-    return `${this.localize('languageLabel')}: ${this.fullSiteLanguageName}`;
+    return `${this.localize('menu:languageLabel')}: ${this.fullSiteLanguageName}`;
   }
 
   _renderMoreMenu() {
@@ -201,17 +201,21 @@ class SCMenuMore extends LitLocalized(LitElement) {
         </mwc-list-item>
         <a class="more-menu-link" href="/donations">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.pray} ${this.localize('Donations')}</div>
+            <div class="menu-item-wrapper">${icon.pray} ${this.localize('menu:donations')}</div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/offline">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.offline_bolt} ${this.localize('UseOffline')}</div>
+            <div class="menu-item-wrapper">
+              ${icon.offline_bolt} ${this.localize('menu:useOffline')}
+            </div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/downloads">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.file_download} ${this.localize('Downloads')}</div>
+            <div class="menu-item-wrapper">
+              ${icon.file_download} ${this.localize('menu:downloads')}
+            </div>
           </mwc-list-item>
         </a>
         <mwc-check-list-item
@@ -221,7 +225,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.darkThemeChosen}
           @request-selected=${this._onThemeChanged}
         >
-          ${this.localize('DarkTheme')}
+          ${this.localize('menu:darkTheme')}
         </mwc-check-list-item>
         <mwc-check-list-item
           class="more-menu-mwc-list-item"
@@ -230,46 +234,52 @@ class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.alwaysShowUniversalToolbar}
           @request-selected=${this._onToolbarDisplayModeChanged}
         >
-          ${this.localize('AlwaysShowToolbar')}
+          ${this.localize('menu:alwaysShowToolbar')}
         </mwc-check-list-item>
         <li divider role="separator"></li>
         <a class="more-menu-link" href="/languages">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.translate} ${this.localize('Languages')}</div>
+            <div class="menu-item-wrapper">
+              ${icon.translate} ${this.localize('menu:languages')}
+            </div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/numbering">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">
-              ${icon.format_list_numbered} ${this.localize('Numbering')}
+              ${icon.format_list_numbered} ${this.localize('menu:numbering')}
             </div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/abbreviations">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">
-              ${icon.abbreviations} ${this.localize('Abbreviations')}
+              ${icon.abbreviations} ${this.localize('menu:abbreviations')}
             </div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/methodology">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.school} ${this.localize('Methodology')}</div>
+            <div class="menu-item-wrapper">${icon.school} ${this.localize('menu:methodology')}</div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/acknowledgments">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.people} ${this.localize('Acknowledgments')}</div>
+            <div class="menu-item-wrapper">
+              ${icon.people} ${this.localize('menu:acknowledgments')}
+            </div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/licensing">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.copyright} ${this.localize('Licensing')}</div>
+            <div class="menu-item-wrapper">
+              ${icon.copyright} ${this.localize('menu:licensing')}
+            </div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/about">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.info_outline} ${this.localize('About')}</div>
+            <div class="menu-item-wrapper">${icon.info_outline} ${this.localize('menu:about')}</div>
           </mwc-list-item>
         </a>
         <li divider role="separator"></li>
@@ -281,7 +291,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
           rel="noopener noreferrer"
         >
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.forum} ${this.localize('Discuss')}</div>
+            <div class="menu-item-wrapper">${icon.forum} ${this.localize('menu:discuss')}</div>
           </mwc-list-item>
         </a>
         <a
@@ -292,7 +302,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
           rel="noopener noreferrer"
         >
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.speaker} ${this.localize('Voice')}</div>
+            <div class="menu-item-wrapper">${icon.speaker} ${this.localize('menu:voice')}</div>
           </mwc-list-item>
         </a>
       </mwc-list>

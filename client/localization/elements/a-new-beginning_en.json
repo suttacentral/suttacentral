@@ -1,0 +1,17 @@
+{
+  "a-new-beginning:1": "SuttaCentral 2018",
+  "a-new-beginning:2": "Welcome to the next generation of SuttaCentral! Our site has gone through a lot of changes since our humble beginnings in 2005. Here’s what’s new.",
+  "a-new-beginning:3": "The new site features a new translation of the four Pali _nikāyas_, prepared for SuttaCentral by Bhante Sujato. It’s a warm and lucid text, with an emphasis on accuracy and clarity. We believe it’s the first ever complete, consistent, and unified translation of the four _nikāyas_ in any European language. SuttaCentral is proud to make it freely available without any copyright restrictions.",
+  "a-new-beginning:4": "The sutta translations are accompanied by an ongoing translation of the Pali Vinaya by Bhante Brahmali. The classic Vinaya translation by I.B. Horner has long been in need of an update. Bhante Brahmali’s new translation is clear and accessible, and stems from his long experience not only with Pali and the texts, but with living in a community that runs according to the Vinaya. This new translation is being progressively introduced to the site.",
+  "a-new-beginning:5": "Both these new translations are being implemented on a segmented basis. That means that each segment of the Pali text is matched with the corresponding translation. This allows us to display the original texts with translation segment by segment. It also gives us a way of reliably and consistently referencing the Pali text at a granular level, something that has never before been possible. These segmented texts use a software called Bilara which is designed to make translator’s jobs easier. They’re intended, not just as stand-alone translations, but as the basis for a new generation of translations into other languages.",
+  "a-new-beginning:6": "We’ve also completely rebuilt the site. All the old features are still here, but there’s lots that’s new.",
+  "a-new-beginning:7": "Open and inviting design, based on clear, considered, and familiar patterns.",
+  "a-new-beginning:8": "Side menu offers more detailed and flexible navigation. For the first time, our site navigation accurately reflects the traditional hierarchical structure of the texts.",
+  "a-new-beginning:9": "Descriptive summaries explain the texts and categories.",
+  "a-new-beginning:10": "Parallels show the relationships between texts more clearly.",
+  "a-new-beginning:11": "Thousands more parallels and connections.",
+  "a-new-beginning:12": "We now support multiple translations in the same language.",
+  "a-new-beginning:13": "The site is internationalized, so you can view it in a variety of languages. We’ll support more languages over time.",
+  "a-new-beginning:14": "Cutting-edge Progressive Web App technologies make the site available offline on supported systems. This is ideal for people out of internet range, or who have limited data plans.",
+  "a-new-beginning:15": "The translation software is integrated with the site, making it not just a place for presenting texts, but a publishing platform for translating suttas."
+}

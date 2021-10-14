@@ -363,7 +363,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
               <span class="search-result-number">
                 ${this._calculateResultCount(this.resultCount)}
               </span>
-              <span class="search-result-description">${this.localize('resultsFor')}</span>
+              <span class="search-result-description">${this.localize('search:resultsFor')}</span>
               <span class="search-result-term">${this.searchQuery}</span>
             </h1>
             <sc-menu-search-filter
@@ -390,7 +390,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                   <mwc-button
                     @click="${this._loadMoreData}"
                     unelevated
-                    label="${this.localize('loadMore')}"
+                    label="${this.localize('search:loadMore')}"
                   ></mwc-button>
                 </div>
               `
@@ -479,7 +479,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.currentPage = 0;
     this.currentFilter = 'all';
     this.searchResultElemHeight = 170;
-    this.localizedStringsPath = '/localization/elements/sc-page-search';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.totalLoadedResults = 0;
     this.isOnline = store.getState().isOnline;
     this.dictionaryTitles = {
@@ -621,7 +621,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
     navArray.push({
-      title: this.localize('Search'),
+      title: this.localize('search:search'),
       url: `${currentPath}?query=${this.searchQuery}`,
       type: 'searchPage',
     });
@@ -825,9 +825,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _createMetaData() {
-    const description = this.localize('metaDescriptionText');
-    const searchResultsText = this.localize('searchResultsText');
-    const toolbarTitle = `${this.localize('Search')}: ${this.searchQuery}`;
+    const description = this.localize('interface:metaDescriptionText');
+    const searchResultsText = this.localize('search:searchResultsText');
+    const toolbarTitle = `${this.localize('search:search')}: ${this.searchQuery}`;
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {

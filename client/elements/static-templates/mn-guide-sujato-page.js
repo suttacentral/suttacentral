@@ -337,7 +337,7 @@ class SCMNGuide extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_mn-guide-sujato-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

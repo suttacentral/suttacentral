@@ -151,7 +151,7 @@ class SCNumberingPage extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_numbering-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

@@ -277,7 +277,7 @@ class Discourses extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_discourses-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

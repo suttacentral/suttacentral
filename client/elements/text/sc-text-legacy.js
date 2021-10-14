@@ -135,7 +135,7 @@ class SCTextLegacy extends SCTextCommon {
       divy: 'Divyāvadāna (1886)',
       ms84: 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
     };
-    this.localizedStringsPath = '/localization/elements/sc-text';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.inputElement = {};
     this._hashChangeHandler = () => {
       setTimeout(() => {
@@ -395,7 +395,7 @@ class SCTextLegacy extends SCTextCommon {
             ${displayText}
             </span>
             <span 
-            title="${this.localize('viewImage')}" class="image-book-link">
+            title="${this.localize('text:viewImage')}" class="image-book-link">
             ${icon.book}
             </span>
         </span>

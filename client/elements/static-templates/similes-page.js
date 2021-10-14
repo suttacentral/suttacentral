@@ -2400,7 +2400,7 @@ class SCSimiles extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_similes-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

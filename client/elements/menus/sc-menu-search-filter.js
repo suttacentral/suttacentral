@@ -40,7 +40,7 @@ class SCMenuSearchFilter extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.searchSelected = 'all';
-    this.localizedStringsPath = '/localization/elements/sc-search-filter-menu';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   _onSelectedItemChanged(e) {
@@ -70,18 +70,18 @@ class SCMenuSearchFilter extends LitLocalized(LitElement) {
     return html`
       <mwc-select
         class="filter-dropdown"
-        label="${this.localize('filter')}"
+        label="${this.localize('search:filter')}"
         @selected="${e => this._onSelectedItemChanged(e)}"
       >
-        <mwc-list-item id="all" value="all" selected>${this.localize('all')}</mwc-list-item>
+        <mwc-list-item id="all" value="all" selected>${this.localize('search:all')}</mwc-list-item>
         <mwc-list-item id="root-texts" value="root-texts">
-          ${this.localize('rootTexts')}
+          ${this.localize('search:rootTexts')}
         </mwc-list-item>
         <mwc-list-item id="translations" value="translations">
-          ${this.localize('translations')}
+          ${this.localize('search:translations')}
         </mwc-list-item>
         <mwc-list-item id="dictionaries" value="dictionaries">
-          ${this.localize('dictionaries')}
+          ${this.localize('search:dictionaries')}
         </mwc-list-item>
       </mwc-select>
     `;

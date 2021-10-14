@@ -39,7 +39,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
               ${icon.sc_logo}
               <span>${this.toolbarTitle}</span>
             </div>
-            <div id="subTitle">${this.localize('pageSubtitle')}</div>
+            <div id="subTitle">${this.localize('interface:pageSubtitle')}</div>
           </div>
         </div>
         <sc-linear-progress .active="${this.linearProgressActive}"></sc-linear-progress>
@@ -66,13 +66,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayFirstToolbar
         ? html`
             <li>
-              <a href="/introduction">${this.localize('INTRODUCTION')}</a>
+              <a href="/introduction">${this.localize('interface:INTRODUCTION')}</a>
             </li>
             <li>
-              <a href="/donations">${this.localize('DONATIONS')}</a>
+              <a href="/donations">${this.localize('interface:DONATIONS')}</a>
             </li>
             <li>
-              <a href="/offline">${this.localize('USEOFFLINE')}</a>
+              <a href="/offline">${this.localize('interface:USEOFFLINE')}</a>
             </li>
             <li>
               <a
@@ -82,7 +82,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
                 target="_blank"
                 rel="noopener"
               >
-                ${this.localize('WHATSNEW')}
+                ${this.localize('interface:WHATSNEW')}
               </a>
             </li>
           `
@@ -96,16 +96,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displaySecondToolbar
         ? html`
             <li>
-              <a href="/subjects">${this.localize('SUBJECTS')}</a>
+              <a href="/subjects">${this.localize('interface:SUBJECTS')}</a>
             </li>
             <li>
-              <a href="/similes">${this.localize('SIMILES')}</a>
+              <a href="/similes">${this.localize('interface:SIMILES')}</a>
             </li>
             <li>
-              <a href="/names">${this.localize('NAMES')}</a>
+              <a href="/names">${this.localize('interface:NAMES')}</a>
             </li>
             <li>
-              <a href="/terminology">${this.localize('TERMINOLOGY')}</a>
+              <a href="/terminology">${this.localize('interface:TERMINOLOGY')}</a>
             </li>
           `
         : ''}
@@ -118,13 +118,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayTipitakaToolbar
         ? html`
             <li>
-              <a href="/discourses">${this.localize('DISCOURSES')}</a>
+              <a href="/discourses">${this.localize('interface:DISCOURSES')}</a>
             </li>
             <li>
-              <a href="/vinaya">${this.localize('VINAYA')}</a>
+              <a href="/vinaya">${this.localize('interface:VINAYA')}</a>
             </li>
             <li>
-              <a href="/abhidhamma">${this.localize('ABHIDHAMMA')}</a>
+              <a href="/abhidhamma">${this.localize('interface:ABHIDHAMMA')}</a>
             </li>
           `
         : ''}
@@ -137,13 +137,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayAcademicToolbar
         ? html`
             <li>
-              <a href="/numbering">${this.localize('NUMBERING')}</a>
+              <a href="/numbering">${this.localize('interface:NUMBERING')}</a>
             </li>
             <li>
-              <a href="/abbreviations">${this.localize('ABBREVIATIONS')}</a>
+              <a href="/abbreviations">${this.localize('interface:ABBREVIATIONS')}</a>
             </li>
             <li>
-              <a href="/methodology">${this.localize('METHODOLOGY')}</a>
+              <a href="/methodology">${this.localize('interface:METHODOLOGY')}</a>
             </li>
           `
         : ''}
@@ -156,13 +156,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayOrganizationalToolbar
         ? html`
             <li>
-              <a href="/acknowledgments">${this.localize('ACKNOWLEDGMENTS')}</a>
+              <a href="/acknowledgments">${this.localize('interface:ACKNOWLEDGMENTS')}</a>
             </li>
             <li>
-              <a href="/licensing">${this.localize('LICENSING')}</a>
+              <a href="/licensing">${this.localize('interface:LICENSING')}</a>
             </li>
             <li>
-              <a href="/about">${this.localize('ABOUT')}</a>
+              <a href="/about">${this.localize('interface:ABOUT')}</a>
             </li>
           `
         : ''}
@@ -175,19 +175,19 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayGuidesToolbar
         ? html`
             <li>
-              <a href="/general-guide-sujato">${this.localize('GENERAL')}</a>
+              <a href="/general-guide-sujato">${this.localize('interface:GENERAL')}</a>
             </li>
             <li>
-              <a href="/dn-guide-sujato">${this.localize('LONG')}</a>
+              <a href="/dn-guide-sujato">${this.localize('interface:LONG')}</a>
             </li>
             <li>
-              <a href="/mn-guide-sujato">${this.localize('MIDDLE')}</a>
+              <a href="/mn-guide-sujato">${this.localize('interface:MIDDLE')}</a>
             </li>
             <li>
-              <a href="/sn-guide-sujato">${this.localize('LINKED')}</a>
+              <a href="/sn-guide-sujato">${this.localize('interface:LINKED')}</a>
             </li>
             <li>
-              <a href="/an-guide-sujato">${this.localize('NUMBERED')}</a>
+              <a href="/an-guide-sujato">${this.localize('interface:NUMBERED')}</a>
             </li>
           `
         : ''}
@@ -240,7 +240,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.siteLanguage = state.siteLanguage;
     this.appColorTheme = state.colorTheme;
     this._colorThemeChanged();
-    this.localizedStringsPath = '/localization/elements/sc-site-layout';
+    this.localizedStringsPath = '/localization/elements/interface';
     this.changedRoute = state.currentRoute;
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;
@@ -455,8 +455,12 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } =
-          store.getState();
+        const {
+          displaySettingMenu,
+          displaySuttaParallels,
+          displaySuttaToC,
+          displaySuttaInfo,
+        } = store.getState();
         if (
           this.changedRoute.path !== '/' &&
           !displaySettingMenu &&

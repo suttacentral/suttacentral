@@ -464,7 +464,7 @@ class SCANIntroduction extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_an-introduction-bodhi-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

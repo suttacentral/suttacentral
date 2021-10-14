@@ -113,7 +113,7 @@ class SCStart extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_start-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 

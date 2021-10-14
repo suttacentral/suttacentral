@@ -890,7 +890,7 @@ class SCMethodologyPage extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/static_methodology-page';
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 }
 
