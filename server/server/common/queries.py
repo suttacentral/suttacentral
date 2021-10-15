@@ -1138,14 +1138,14 @@ RETURN {
 }
 '''
 
-DOC_ROOT = '''
+ALL_DOC_UID_BY_ROOT_UID = '''
+LET root_uid = (
 FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges 
     FILTER doc.type == 'root'
     RETURN doc.uid
-'''
+)[0]
 
-ALL_DOC_UID_BY_ROOT_UID = '''
-FOR docs IN 0..10 OUTBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+FOR docs IN 0..10 OUTBOUND DOCUMENT('super_nav_details', root_uid) super_nav_details_edges
     FILTER docs.type == 'leaf'
     RETURN docs.uid
 '''

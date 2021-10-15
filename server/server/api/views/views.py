@@ -35,7 +35,6 @@ from common.queries import (
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
     SUTTA_PATH,
-    DOC_ROOT,
     ALL_DOC_UID_BY_ROOT_UID,
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
@@ -594,10 +593,7 @@ class Sutta(Resource):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
 
-        doc_path = list(db.aql.execute(DOC_ROOT, bind_vars={'uid': uid}))
-        root_uid = "".join(doc_path)
-
-        all_doc_uid = list(db.aql.execute(ALL_DOC_UID_BY_ROOT_UID, bind_vars={'uid': root_uid}))
+        all_doc_uid = list(db.aql.execute(ALL_DOC_UID_BY_ROOT_UID, bind_vars={'uid': uid}))
         if uid in all_doc_uid:
             uid_index = all_doc_uid.index(uid)
             if uid_index != 0:
