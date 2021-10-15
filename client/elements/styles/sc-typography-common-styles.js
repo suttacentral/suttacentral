@@ -275,7 +275,7 @@ export const typographyCommonStyles = css`
     text-align: center;
   }
 
-  .roman-numerals{
+  .roman-numerals {
     text-transform: uppercase;
     letter-spacing: var(--sc-caps-letter-spacing);
     text-decoration: underline overline;
@@ -285,6 +285,7 @@ export const typographyCommonStyles = css`
 
   .speaker {
     font-style: italic;
+    text-indent: 3em;
   }
 
   .pe {
@@ -293,7 +294,7 @@ export const typographyCommonStyles = css`
     color: var(--sc-secondary-text-color);
   }
 
-  .expansion-instructions{
+  .expansion-instructions {
     font-style: italic;
 
     color: var(--sc-secondary-text-color);
@@ -544,10 +545,10 @@ export const typographyCommonStyles = css`
   }
 
   .help-heading {
-    font-style: italic
+    font-style: italic;
   }
 
-/* descriptive classes */
+  /* descriptive classes */
 
   .xu {
     font-size: var(--sc-dense-font-size-s);
@@ -726,7 +727,7 @@ export const typographyCommonStyles = css`
     font-variant-caps: normal;
   }
 
-/* helper metadata in HTML data- */
+  /* helper metadata in HTML data- */
 
   .highlight [data-counter]::after {
     padding: 0 0.25rem;
@@ -754,11 +755,11 @@ export const typographyCommonStyles = css`
     content: '👍🏿';
   }
 
-  .highlight  [data-doxy='heterodox']::before {
+  .highlight [data-doxy='heterodox']::before {
     content: '👎🏽';
   }
 
-  .highlight  [data-direction]::before {
+  .highlight [data-direction]::before {
     margin: 0 0.5rem 0 0;
     font-weight: 600;
     font-family: sans-serif;
