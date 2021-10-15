@@ -32,10 +32,11 @@ from common.queries import (
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
     SEGMENTED_SUTTA_VIEW,
-    SUTTA_NEIGHBORS,
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
     SUTTA_PATH,
+    DOC_ROOT,
+    ALL_DOC_UID_BY_ROOT_UID,
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
     AVAILABLE_VOICES
@@ -592,33 +593,29 @@ class Sutta(Resource):
     def calculate_sutta_neighbors(uid, doc, textType, siteLang):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
-        for i in range(1, 10):
-            results = db.aql.execute(SUTTA_NEIGHBORS, bind_vars={'uid': uid, 'level': i})
-            result = next(results)
-            if uid in result:
-                uid_index = result.index(uid)
-                if uid_index != 0:
-                    sutta_prev_next['prev_uid'] = result[uid_index - 1]
-                if uid_index != len(result) - 1:
-                    sutta_prev_next['next_uid'] = result[uid_index + 1]
-                if sutta_prev_next['prev_uid'] and sutta_prev_next['next_uid']:
-                    break
+
+        doc_path = list(db.aql.execute(DOC_ROOT, bind_vars={'uid': uid}))
+        root_uid = "".join(doc_path)
+
+        all_doc_uid = list(db.aql.execute(ALL_DOC_UID_BY_ROOT_UID, bind_vars={'uid': root_uid}))
+        if uid in all_doc_uid:
+            uid_index = all_doc_uid.index(uid)
+            if uid_index != 0:
+                sutta_prev_next['prev_uid'] = all_doc_uid[uid_index - 1]
+            if uid_index != len(all_doc_uid) - 1:
+                sutta_prev_next['next_uid'] = all_doc_uid[uid_index + 1]
+
         if doc['previous']:
             doc['previous']['uid'] = sutta_prev_next.get('prev_uid', '')
         if doc['next']:
             doc['next']['uid'] = sutta_prev_next.get('next_uid', '')
 
-        is_root = False
-        if textType == 'root_text':
-            is_root = True
-
         for k, v in sutta_prev_next.items():
-            name_results = db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': siteLang})
-            name_result = list(name_results)
+            name_result = list(db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': siteLang}))
             if k == 'next_uid' and doc['next']:
-                doc['next']['name'] = name_result
+                doc['next']['name'] = name_result[0]
             elif k == 'prev_uid' and doc['previous']:
-                doc['previous']['name'] = name_result
+                doc['previous']['name'] = name_result[0]
 
 
 class SegmentedSutta(Resource):
