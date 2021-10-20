@@ -1150,6 +1150,24 @@ FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_uid) super_nav_det
     RETURN docs.uid
 '''
 
+CANDIDATE_AUTHORS = '''
+LET bilara_translations = (
+    FOR doc IN sc_bilara_texts
+        FILTER doc.uid == @uid AND doc.lang == @lang AND 'translation' IN doc.muids AND doc.muids[2] != @author_uid
+        SORT RAND()
+        return doc.muids[2]
+)
+
+LET legacy_translations = (
+    FOR html IN html_text
+        FILTER html.uid == @uid AND html.lang == @lang AND html.author_uid != @author_uid
+        SORT RAND()
+        RETURN html.author_uid
+)
+
+RETURN UNION(bilara_translations, legacy_translations)
+'''
+
 SUTTA_PALI_REFERENCE = '''
 FOR pali IN pali_reference_edition
     COLLECT edition_set = pali.edition_set, name = pali.name, short_name = pali.short_name

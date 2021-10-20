@@ -38,7 +38,8 @@ from common.queries import (
     ALL_DOC_UID_BY_ROOT_UID,
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
-    AVAILABLE_VOICES
+    AVAILABLE_VOICES,
+    CANDIDATE_AUTHORS
 )
 
 from common.utils import (
@@ -569,6 +570,7 @@ class Sutta(Resource):
                 self.convert_paths_to_content(doc)
                 self.calculate_sutta_neighbors(uid, doc, k, siteLang)
 
+        self.get_candidate_authors(uid, author_uid, siteLang, result)
         return result, 200
 
     @staticmethod
@@ -613,6 +615,11 @@ class Sutta(Resource):
             elif k == 'prev_uid' and doc['previous']:
                 doc['previous']['name'] = name_result[0]
 
+    @staticmethod
+    def get_candidate_authors(uid, author_uid, lang, doc):
+        db = get_db()
+        candidate_authors = db.aql.execute(CANDIDATE_AUTHORS, bind_vars={'uid': uid, 'lang': lang, 'author_uid': author_uid}).next()
+        doc['candidate_authors'] = candidate_authors
 
 class SegmentedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
