@@ -93,7 +93,11 @@ class SCParallelItem extends LitLocalized(LitElement) {
       if (altNumber) {
         let book = '';
         altNumber[0] === 'T' ? (book = 'Taishō') : (book = 'PTS');
-        scAcronymTitle += `\n${this.localize('parallel:alternateText', 'book', book)} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize(
+          'suttaplex:alternateText',
+          'book',
+          book
+        )} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -143,7 +147,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
 
   get volPageTitle() {
     return hasTwoPTSEditions(this.parallelItem.volpages)
-      ? this.localize('parallel:volumeAndPagePTS1', this.parallelItem.volpages)
+      ? this.localize('suttaplex:volumeAndPagePTS1', this.parallelItem.volpages)
       : this.localize('suttaplex:volumeAndPage');
   }
 
@@ -175,7 +179,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
               ${this.parallelItem.translated_title && this.parallelItem.original_title
                 ? html`
                     <div
-                      title="${this.localize('parallel:originalTitle')}"
+                      title="${this.localize('suttaplex:originalTitle')}"
                       class="nerdy-row-element"
                     >
                       ${this.titleWithoutSuttaText}
