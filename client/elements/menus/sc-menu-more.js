@@ -97,6 +97,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
     this.routeName = store.getState().currentRoute.name;
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
     this.languageIsVisible = store.getState().languageMenuVisibility;
+    this.suttaId = store.getState().currentRoute.params.suttaId;
   }
 
   get actions() {
@@ -126,6 +127,10 @@ class SCMenuMore extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.routeName !== state.currentRoute.name) {
       this.routeName = state.currentRoute.name;
+    }
+    if (this.routeName === 'sutta' && this.suttaId !== state.currentRoute.params.suttaId) {
+      this.suttaId = state.currentRoute.params.suttaId;
+      this.requestUpdate();
     }
     if (this.appTheme !== state.colorTheme) {
       this.appTheme = state.colorTheme;
