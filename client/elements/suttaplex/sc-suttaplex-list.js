@@ -5,6 +5,7 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
@@ -40,6 +41,18 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           linearProgressActive: active,
         });
       },
+      changeDisplayParallelTableViewState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
+          displayParallelTableView: displayState,
+        });
+      },
+      toggleSuttaplexDisplay(suttaplexdisplay) {
+        store.dispatch({
+          type: 'SUTTPLEX_LIST_DISPLAY',
+          suttaplexdisplay,
+        });
+      }
     };
   }
 
@@ -53,6 +66,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.displayParallelTableView = store.getState().displayParallelTableView;
     this.#showTableViewButton();
+    this._setViewState();
   }
 
   #showTableViewButton() {
@@ -84,6 +98,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       this._hideTopSheets();
     });
     this._fetchExpansionData();
+    this._updateURLParams();
   }
 
   async _fetchExpansionData() {
@@ -159,9 +174,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
       this.suttaplexListDisplay = state.suttaplexListDisplay;
+      this._updateURLParams();
     }
     if (this.displayParallelTableView !== state.displayParallelTableView) {
       this.displayParallelTableView = state.displayParallelTableView;
+      this._updateURLParams();
       this.requestUpdate();
     }
   }
@@ -339,6 +356,39 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           'interface:showParallelsAndDetails'
         );
       });
+    }
+  }
+
+  _setViewState() {
+    const view = getURLParam(window.location.href, 'view');
+    if (view && ['normal', 'dense', 'table'].includes(view.toLowerCase())) {
+      if (view === 'normal') {
+        this.displayParallelTableView = false;
+        this.suttaplexListDisplay = false;
+        this.actions.changeDisplayParallelTableViewState(false);
+        this.actions.toggleSuttaplexDisplay(false);
+      }
+      if (view === 'dense') {
+        this.displayParallelTableView = false;
+        this.suttaplexListDisplay = true;
+        this.actions.changeDisplayParallelTableViewState(false);
+        this.actions.toggleSuttaplexDisplay(true);
+      }
+      if (view === 'table') {
+        this.displayParallelTableView = true;
+        this.actions.changeDisplayParallelTableViewState(true);
+      }
+    }
+  }
+
+  _updateURLParams() {
+    const { suttaplexListDisplay, displayParallelTableView } = store.getState();
+    if (!displayParallelTableView) {
+      const urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}`
+      history.replaceState(null, null, urlParams);
+    } else {
+      const urlParams = '?view=table';
+      history.replaceState(null, null, urlParams);
     }
   }
 

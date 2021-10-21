@@ -5,7 +5,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from '../addons/sc-redux-actions';
-
+import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { SCTextCommon } from './sc-text-common';
 import '../lookups/sc-lookup-pli';
 import '../lookups/sc-lookup-lzh2en';
@@ -400,12 +400,12 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _setTextViewState() {
-    const notes = this._getParam(window.location.href, 'notes');
-    // const lang = this._getParam(window.location.href, 'lang');
-    const layout = this._getParam(window.location.href, 'layout');
-    const script = this._getParam(window.location.href, 'script');
-    const highlight = this._getParam(window.location.href, 'highlight');
-    const reference = this._getParam(window.location.href, 'reference');
+    const notes = getURLParam(window.location.href, 'notes');
+    const root = getURLParam(window.location.href, 'root');
+    const layout = getURLParam(window.location.href, 'layout');
+    const script = getURLParam(window.location.href, 'script');
+    const highlight = getURLParam(window.location.href, 'highlight');
+    const reference = getURLParam(window.location.href, 'reference');
     const { textOptions } = store.getState();
 
     if (notes && ['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {
@@ -1157,19 +1157,6 @@ class SCTextBilara extends SCTextCommon {
 
   _scriptFunctionName() {
     return this.paliScript.charAt(0).toUpperCase() + this.paliScript.slice(1);
-  }
-
-  _getParam(url, name) {
-    try {
-      const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
-      const r = url.split('?')[1].match(reg);
-      if (r != null) {
-        return r[2];
-      }
-      return '';
-    } catch (e) {
-      return '';
-    }
   }
 }
 
