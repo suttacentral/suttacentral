@@ -618,8 +618,12 @@ class Sutta(Resource):
     @staticmethod
     def get_candidate_authors(uid, author_uid, lang, doc):
         db = get_db()
-        candidate_authors = db.aql.execute(CANDIDATE_AUTHORS, bind_vars={'uid': uid, 'lang': lang, 'author_uid': author_uid}).next()
+        candidate_authors = db.aql.execute(
+            CANDIDATE_AUTHORS,
+            bind_vars={'uid': uid, 'lang': lang, 'author_uid': author_uid}
+        ).next()
         doc['candidate_authors'] = candidate_authors
+
 
 class SegmentedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
