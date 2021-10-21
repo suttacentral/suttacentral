@@ -743,18 +743,6 @@ SUTTA_VIEW = (
 '''
 )
 
-SUTTA_NEIGHBORS = '''
-LET parent = (
-    FOR parent_doc IN @level INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
-        RETURN parent_doc
-)[0]
-LET neighbors = (
-    FOR docs IN @level OUTBOUND parent super_nav_details_edges
-        RETURN docs.uid
-)
-RETURN neighbors
-'''
-
 SUTTA_NAME = '''
 LET translated_name = (
     FOR name IN names
@@ -1142,12 +1130,42 @@ FOR doc IN sc_bilara_texts
 
 SUTTA_PATH = '''
 LET path_docs = (
-    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges 
+    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
         RETURN doc.uid
 )
 RETURN {
     'full_path': CONCAT_SEPARATOR('/', REVERSE(APPEND(path_docs, '/pitaka')))
 }
+'''
+
+ALL_DOC_UID_BY_ROOT_UID = '''
+LET root_uid = REVERSE(POP(
+FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+    FILTER doc.type == 'branch'
+    RETURN doc.uid
+))[0]
+
+FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_uid) super_nav_details_edges
+    FILTER docs.type == 'leaf'
+    RETURN docs.uid
+'''
+
+CANDIDATE_AUTHORS = '''
+LET bilara_translations = (
+    FOR doc IN sc_bilara_texts
+        FILTER doc.uid == @uid AND doc.lang == @lang AND 'translation' IN doc.muids AND doc.muids[2] != @author_uid
+        SORT RAND()
+        return doc.muids[2]
+)
+
+LET legacy_translations = (
+    FOR html IN html_text
+        FILTER html.uid == @uid AND html.lang == @lang AND html.author_uid != @author_uid
+        SORT RAND()
+        RETURN html.author_uid
+)
+
+RETURN UNION(bilara_translations, legacy_translations)
 '''
 
 SUTTA_PALI_REFERENCE = '''

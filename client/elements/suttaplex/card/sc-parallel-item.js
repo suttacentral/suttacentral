@@ -93,11 +93,7 @@ class SCParallelItem extends LitLocalized(LitElement) {
       if (altNumber) {
         let book = '';
         altNumber[0] === 'T' ? (book = 'Taishō') : (book = 'PTS');
-        scAcronymTitle += `\n${this.localize(
-          'suttaplex:alternateText',
-          'book',
-          book
-        )} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize('suttaplex:alternateText', 'book', book)} ${altNumber}`;
       }
     }
     return scAcronymTitle;

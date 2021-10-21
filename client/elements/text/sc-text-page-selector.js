@@ -302,6 +302,12 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.translatedSutta = this.responseData.translation;
       this.rootSutta = this.responseData.root_text;
       if (!this.responseData.root_text && !this.responseData.translation) {
+        if (this.responseData.candidate_authors.length > 0) {
+          dispatchCustomEvent(this, 'sc-navigate', {
+            pathname: `/${this.suttaId}/${this.langIsoCode}/${this.responseData.candidate_authors[0]}`,
+          });
+          return;
+        }
         this.showParallelsTopSheet();
         const bilaraRootText = this.responseData.bilara_root_text;
         dispatchCustomEvent(this, 'sc-navigate', {

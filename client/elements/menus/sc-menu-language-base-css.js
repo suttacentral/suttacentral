@@ -73,6 +73,7 @@ export const languageBaseMenuCss = html`
 
     .language-base-menu-head-main {
       font-weight: 700;
+      color: var(--sc-primary-text-color);
       padding-left: 8px;
     }
 

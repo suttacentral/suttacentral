@@ -155,7 +155,7 @@ class SCTextStepper extends LitElement {
         <div class="button-container">
           ${this.previous && this.previous.uid
             ? html`
-                <a href="${this._getUrl(this.previous)}" class="link">
+                <a href=${this._getUrl(this.previous)} class="link">
                   <div class="button button-left">
                     <div class="text">
                       ${icon.arrow_left}
@@ -175,7 +175,7 @@ class SCTextStepper extends LitElement {
         <div class="button-container">
           ${this.next && this.next.uid
             ? html`
-                <a href="${this._getUrl(this.next)}" class="link">
+                <a href=${this._getUrl(this.next)} class="link">
                   <div class="button button-right">
                     <div class="text">
                       <div class="text-element text-element-right">
