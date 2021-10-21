@@ -260,11 +260,11 @@ class SCStaticOffline extends LitLocalized(LitElement) {
 
   _getDownloadButtonText() {
     if (this.isDownloadPaused) {
-      return this.localize('offline:offline:downloadPaused');
+      return this.localize('offline:downloadPaused');
     } else if (this.cacheDownloadInProgress) {
-      return this.localize('offline:offline:downloadInProgress');
+      return this.localize('offline:downloadInProgress');
     } else if (this.isDownloadButtonDisabled) {
-      return this.localize('offline:offline:alreadyDownloaded');
+      return this.localize('offline:alreadyDownloaded');
     } else {
       return `${this.localizeEx(
         'offline:downloadButton',

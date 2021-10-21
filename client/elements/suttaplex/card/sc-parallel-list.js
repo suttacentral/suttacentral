@@ -78,13 +78,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return this.localize('parallel:resemblingParallel');
+          return this.localize('suttaplex:resemblingParallel');
         }
-        return this.localize('parallel:fullParallel');
+        return this.localize('suttaplex:fullParallel');
       case 'retelling':
-        return this.localize('parallel:retellingParallel');
+        return this.localize('suttaplex:retellingParallel');
       case 'mention':
-        return this.localize('parallel:mention');
+        return this.localize('suttaplex:mention');
     }
   }
 
