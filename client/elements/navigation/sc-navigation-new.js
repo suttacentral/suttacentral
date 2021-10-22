@@ -49,8 +49,24 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
+      if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
+        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
+        return;
+      }
+      this._setToolbarTitle();
       RefreshNavNew(this.currentUid, true);
     }
+  }
+
+  _menuHasChildren() {
+    if (!this.currentMenuData || this.currentMenuData.length === 0) {
+      return false;
+    }
+    return (
+      this.currentMenuData[0] &&
+      this.currentMenuData[0].children &&
+      this.currentMenuData[0].children.some(child => ['branch'].includes(child.node_type))
+    );
   }
 
   _verifyURL() {
@@ -92,7 +108,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
               <section class="card">
                 <a
                   class="header-link"
-                  href="${this._genCurrentURL(child.uid)}"
+                  href=${this._genCurrentURL(child.uid)}
                   @click=${() =>
                     this._onCardClick({
                       childId: child.uid,
@@ -108,7 +124,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                       <div class="navigation-nerdy-row">
                         <span
                           class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
-                          lang="${child.root_lang_iso || this.lastSelectedItemRootLangISO}"
+                          lang=${child.root_lang_iso || this.lastSelectedItemRootLangISO}
                           translate="no"
                         >
                           ${child.root_name}
@@ -165,20 +181,10 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
-        const hasChildren =
-          this.currentMenuData[0] &&
-          this.currentMenuData[0].children &&
-          this.currentMenuData[0].children.some(child => ['branch'].includes(child.node_type));
-
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
-
         if (params.dispatchState) {
-          const toolbarTitle =
-            this.currentMenuData[0].translated_name ||
-            this.currentMenuData[0].root_name ||
-            this.currentMenuData[0].uid;
-          this.actions.changeToolbarTitle(toolbarTitle);
-          if (!hasChildren || this.isPatimokkha(this.currentMenuData[0]?.uid)) {
+          this._setToolbarTitle();
+          if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
             dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
           }
         }
@@ -188,7 +194,18 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       });
   }
 
-  isPatimokkha(uid) {
+  _setToolbarTitle() {
+    if (!this.currentMenuData || this.currentMenuData.length === 0) {
+      return;
+    }
+    const toolbarTitle =
+      this.currentMenuData[0].translated_name ||
+      this.currentMenuData[0].root_name ||
+      this.currentMenuData[0].uid;
+    this.actions.changeToolbarTitle(toolbarTitle);
+  }
+
+  _isPatimokkha(uid) {
     return uid.endsWith('-pm');
   }
 
