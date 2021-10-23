@@ -513,20 +513,14 @@ class SCStaticHomePage extends SCStaticPage {
     return html`
       <main>
         <section class="tipitaka-section">
-          <h2>
-            Tipiṭaka—
-            <i>the</i>
-            Three Baskets
-            <i>of the</i>
-            Buddhist canon
-          </h2>
+          <h2>${unsafeHTML(this.localize('home:1'))}</h2>
         </section>
         <sc-navigation-tipitaka></sc-navigation-tipitaka>
 
         <section class="top-two">
           <section class="video">
             <video
-              title="SuttaCentral promotional video 2020"
+              title="${this.localize('home:2')}"
               width="640"
               height="360"
               controls
@@ -548,13 +542,13 @@ class SCStaticHomePage extends SCStaticPage {
             </video>
           </section>
           <section class="plain" style="min-height: 134px">
-            <p>${unsafeHTML(this.localize('home:1'))}</p>
-            <p>${unsafeHTML(this.localize('home:2'))}</p>
+            <p>${unsafeHTML(this.localize('home:3'))}</p>
+            <p>${unsafeHTML(this.localize('home:4'))}</p>
           </section>
         </section>
 
         <section class="plain quotation">
-          <h2>${unsafeHTML(this.localize('home:3'))}</h2>
+          <h2>${this.localize('home:5')}</h2>
           <blockquote>
             <span>${this.randomEpigrah ? this.randomEpigrah.epigraph : ''}</span>
           </blockquote>
@@ -562,7 +556,7 @@ class SCStaticHomePage extends SCStaticPage {
             class="link-button quote-button ripple"
             href=${this.randomEpigrah ? `/${this.randomEpigrah.uid}` : ''}
           >
-            Read this sutta
+            ${this.localize('home:6')}
           </a>
         </section>
 
@@ -573,15 +567,15 @@ class SCStaticHomePage extends SCStaticPage {
                 <source srcset="/img/home-page/pali1.avif" type="image/avif" />
                 <img src="/img/home-page/pali1.jpg" alt="Pali manuscript" style="width:100%" />
               </picture>
-              <figcaption>Palm leaf (ola) manuscript from Myanmar, ca. 19th century</figcaption>
+              <figcaption>${this.localize('home:7')}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:4')}</h2>
-                <p>${this.localize('home:5')}</p>
+                <h2>${this.localize('home:8')}</h2>
+                <p>${this.localize('home:9')}</p>
               </div>
               <div class="card-actions">
-                <a href="/introduction" class="link-button">Introduction</a>
+                <a href="/introduction" class="link-button">${this.localize('home:10')}</a>
               </div>
             </div>
           </article>
@@ -596,15 +590,15 @@ class SCStaticHomePage extends SCStaticPage {
                   style="width:100%"
                 />
               </picture>
-              <figcaption>A block from the Tripiṭaka Koreana at Haeinsa Temple</figcaption>
+              <figcaption>${this.localize('home:11')}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:6')}</h2>
-                <p>${this.localize('home:7')}</p>
+                <h2>${this.localize('home:12')}</h2>
+                <p>${this.localize('home:13')}</p>
               </div>
               <div class="card-actions">
-                <a href="/start" class="link-button">Get started</a>
+                <a href="/start" class="link-button">${this.localize('home:14')}</a>
               </div>
             </div>
           </article>
@@ -612,7 +606,7 @@ class SCStaticHomePage extends SCStaticPage {
 
         <section class="sc-related">
           <div class="related-projects-heading">
-            <h2>Related projects</h2>
+            <h2>${this.localize('home:15')}</h2>
           </div>
           <div class="sc-related-items-wrapper">
             <article class="card dark-accent">
@@ -620,25 +614,21 @@ class SCStaticHomePage extends SCStaticPage {
                 href="https://voice.suttacentral.net/scv/index.html#/sutta"
                 target="_blank"
                 rel="noopener"
-                title="Visit SuttaCentral Voice"
+                title="${this.localize('home:16')}"
               >
                 <header>
                   <span>${icon.speaker}</span>
                   <h3>
                     <span>SuttaCentral Voice</span>
-                    <span class="sc-related-item-subtitle">listen to suttas</span>
+                    <span class="sc-related-item-subtitle">${this.localize('home:17')}</span>
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>
-                  Voice makes SuttaCentral’s texts and translations accessible to the visually
-                  impaired and the sighted. The suttas began as an oral transmission, and now they
-                  are an oral transmission again.
-                </p>
+                <p>${this.localize('home:18')}</p>
                 <ul>
-                  <li>Find Suttas on Voice.</li>
-                  <li>Or on SuttaCentral, click the speaker icon on Sutta cards.</li>
+                  <li>${this.localize('home:19')}</li>
+                  <li>${this.localize('home:20')}.</li>
                 </ul>
               </div>
             </article>
@@ -647,7 +637,7 @@ class SCStaticHomePage extends SCStaticPage {
                 href="https://buddhanexus.net/"
                 target="_blank"
                 rel="noopener"
-                title="Visit BuddhaNexus"
+                title="${this.localize('home:21')}"
               >
                 <header>
                   <span>
@@ -658,17 +648,12 @@ class SCStaticHomePage extends SCStaticPage {
                   </span>
                   <h3>
                     <span>BuddhaNexus</span>
-                    <span class="sc-related-item-subtitle">mapping suttas with AI</span>
+                    <span class="sc-related-item-subtitle">${this.localize('home:22')}</span>
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>
-                  Cutting-edge application of neural nets to explore hidden relations between
-                  Buddhist texts. Pali texts are from SuttaCentral. Taking the idea of parallels a
-                  step further, this technology opens up possibilities of deeper insights into the
-                  evolution of texts of all traditions and periods.
-                </p>
+                <p>${this.localize('home:23')}</p>
               </div>
             </article>
             <article class="card primary-color">
@@ -676,25 +661,22 @@ class SCStaticHomePage extends SCStaticPage {
                 href="https://discourse.suttacentral.net/"
                 target="_blank"
                 rel="noopener"
-                title="Visit SuttaCentral forum"
+                title="${this.localize('home:24')}"
               >
                 <header>
                   <span>${icon.people}</span>
                   <h3>
                     <span>Discuss & Discover</span>
-                    <span class="sc-related-item-subtitle">SuttaCentral forum</span>
+                    <span class="sc-related-item-subtitle">${this.localize('home:25')}</span>
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>
-                  Join our vibrant and friendly community of Sutta lovers. Absolute beginners and
-                  learned experts all get to learn from each other.
-                </p>
+                <p>${this.localize('home:26')}</p>
                 <ul>
-                  <li>Share your experiences</li>
-                  <li>Ask questions</li>
-                  <li>Find talks, chanting, books, and articles.</li>
+                  <li>${this.localize('home:27')}</li>
+                  <li>${this.localize('home:28')}</li>
+                  <li>${this.localize('home:29')}</li>
                 </ul>
               </div>
             </article>
@@ -703,29 +685,25 @@ class SCStaticHomePage extends SCStaticPage {
                 href="https://bilara.suttacentral.net/"
                 target="_blank"
                 rel="noopener"
-                title="Visit Bilara translation webapp"
+                title="${this.localize('home:30')}"
               >
                 <header>
                   <span>${icon.bilara}</span>
                   <h3>
                     <span>Bilara</span>
-                    <span class="sc-related-item-subtitle">computer assisted translation</span>
+                    <span class="sc-related-item-subtitle">${this.localize('home:31')}</span>
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>
-                  Built from the ground up by SuttaCentral, Bilara is a web interface for Sutta
-                  translation. Our team is using it to create new translations of Suttas in the
-                  world’s languages.
-                </p>
+                <p>${this.localize('home:32')}</p>
               </div>
             </article>
           </div>
         </section>
 
         <section class="plain quotation">
-          <h2>Why we read</h2>
+          <h2>${this.localize('home:33')}</h2>
           <blockquote>
             <span>${this.whyWeRead}</span>
           </blockquote>
@@ -733,7 +711,7 @@ class SCStaticHomePage extends SCStaticPage {
             class="link-button quote-button"
             href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
           >
-            Testimonies
+            ${this.localize('home:34')}
           </a>
         </section>
 
@@ -748,15 +726,15 @@ class SCStaticHomePage extends SCStaticPage {
                   style="width:100%"
                 />
               </picture>
-              <figcaption>Pali manuscript from Myanmar</figcaption>
+              <figcaption>${this.localize('home:35')}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:24')}</h2>
-                <p>${unsafeHTML(this.localize('home:25'))}</p>
+                <h2>${this.localize('home:36')}</h2>
+                <p>${unsafeHTML(this.localize('home:37'))}</p>
               </div>
               <div class="card-actions">
-                <a href="/general-guide-sujato" class="link-button">Guides</a>
+                <a href="/general-guide-sujato" class="link-button">${this.localize('home:38')}</a>
               </div>
             </div>
           </article>
@@ -767,17 +745,15 @@ class SCStaticHomePage extends SCStaticPage {
                 <source srcset="/img/home-page/bhikkhuni.avif" type="image/avif" />
                 <img src="/img/home-page/bhikkhuni.jpg" alt="Pali manuscript" style="width:100%" />
               </picture>
-              <figcaption>
-                Bhikkhuni-patimokkha, Burmese manuscript, 19th century. British Library
-              </figcaption>
+              <figcaption>${this.localize('home:39')}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:27')}</h2>
-                <p>${this.localize('home:28')}</p>
+                <h2>${this.localize('home:40')}</h2>
+                <p>${this.localize('home:41')}</p>
               </div>
               <div class="card-actions">
-                <a href="/subjects" class="link-button">Indexes</a>
+                <a href="/subjects" class="link-button">${this.localize('home:42')}</a>
               </div>
             </div>
           </article>
