@@ -387,192 +387,192 @@ class SCStaticAbbreviations extends SCStaticPage {
               <td>${this.localize('abbreviations:187')}</td>
             </tr>
             <tr>
-              <td>${this.localize('abbreviations:186')}</td>
               <td>${this.localize('abbreviations:188')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:189')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:190')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:191')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:192')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:193')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:194')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:195')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:196')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:197')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:198')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:199')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:200')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:201')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:202')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:203')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:204')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:205')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:206')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:207')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:208')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:209')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:210')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:211')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:212')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:213')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:214')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:215')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:216')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:217')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:218')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:219')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:220')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:221')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:222')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:223')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:224')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:225')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:226')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:227')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:228')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:229')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:230')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:231')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:232')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:233')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:234')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:235')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:236')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:237')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:238')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:239')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:240')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:241')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:242')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:243')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:244')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:245')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:246')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:247')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:248')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:249')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:250')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:251')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:252')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:253')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:254')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:255')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:256')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:257')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:258')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:259')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:260')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:261')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:262')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:263')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:264')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:265')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:266')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:267')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:268')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:269')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:270')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:271')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:272')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:273')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:274')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:275')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:276')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('abbreviations:277')}</td>
-              <td>${this.localize('abbreviations:278')}</td>
             </tr>
             <tr>
+              <td>${this.localize('abbreviations:278')}</td>
               <td>${this.localize('abbreviations:279')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('abbreviations:280')}</td>
+              <td>${this.localize('abbreviations:281')}</td>
             </tr>
           </table>
         </article>
