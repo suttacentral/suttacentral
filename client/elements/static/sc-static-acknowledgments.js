@@ -46,10 +46,6 @@ class SCStaticAcknowledgments extends SCStaticPage {
               <td>${this.localize('acknowledgments:16')}</td>
             </tr>
             <tr>
-              <td>${this.localize('acknowledgments:7')}</td>
-              <td>${this.localize('acknowledgments:8')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:17')}</td>
               <td>${this.localize('acknowledgments:18')}</td>
             </tr>
@@ -57,37 +53,33 @@ class SCStaticAcknowledgments extends SCStaticPage {
               <td>${this.localize('acknowledgments:19')}</td>
               <td>${this.localize('acknowledgments:20')}</td>
             </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:21')}</td>
+              <td>${this.localize('acknowledgments:22')}</td>
+            </tr>
           </table>
-          <h2>${this.localize('acknowledgments:21')}</h2>
-          <p>${this.localize('acknowledgments:22')}</p>
+          <h2>${this.localize('acknowledgments:23')}</h2>
+          <p>${this.localize('acknowledgments:24')}</p>
           <table>
-            <tr>
-              <td>${this.localize('acknowledgments:15')}</td>
-              <td>${this.localize('acknowledgments:16')}</td>
-            </tr>
-            <tr>
-              <td>${this.localize('acknowledgments:23')}</td>
-              <td>${this.localize('acknowledgments:24')}</td>
-            </tr>
             <tr>
               <td>${this.localize('acknowledgments:25')}</td>
               <td>${this.localize('acknowledgments:26')}</td>
             </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:27')}</td>
+              <td>${this.localize('acknowledgments:28')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:29')}</td>
+              <td>${this.localize('acknowledgments:30')}</td>
+            </tr>
           </table>
-          <p>${this.localize('acknowledgments:27')}</p>
-          <h2>${this.localize('acknowledgments:28')}</h2>
-          <p>${this.localize('acknowledgments:29')}</p>
-          <h2>${this.localize('acknowledgments:30')}</h2>
           <p>${this.localize('acknowledgments:31')}</p>
+          <h2>${this.localize('acknowledgments:32')}</h2>
+          <p>${this.localize('acknowledgments:33')}</p>
+          <h2>${this.localize('acknowledgments:34')}</h2>
+          <p>${this.localize('acknowledgments:35')}</p>
           <table>
-            <tr>
-              <td>${this.localize('acknowledgments:32')}</td>
-              <td>${this.localize('acknowledgments:33')}</td>
-            </tr>
-            <tr>
-              <td>${this.localize('acknowledgments:34')}</td>
-              <td>${this.localize('acknowledgments:35')}</td>
-            </tr>
             <tr>
               <td>${this.localize('acknowledgments:36')}</td>
               <td>${this.localize('acknowledgments:37')}</td>
@@ -178,19 +170,15 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:80')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:81')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:82')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:83')}</td>
-              <td>${this.localize('acknowledgments:84')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:84')}</td>
               <td>${this.localize('acknowledgments:85')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:86')}</td>
@@ -198,11 +186,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:88')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:89')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:90')}</td>
@@ -210,23 +194,19 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:92')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:93')}</td>
-              <td>${unsafeHTML(this.localize('acknowledgments:94'))}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:94')}</td>
               <td>${this.localize('acknowledgments:95')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:96')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:97')}</td>
-              <td>${this.localize('acknowledgments:98')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:98')}</td>
               <td>${this.localize('acknowledgments:99')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:100')}</td>
@@ -234,7 +214,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:102')}</td>
-              <td>${this.localize('acknowledgments:103')}</td>
+              <td>${unsafeHTML(this.localize('acknowledgments:103'))}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:104')}</td>
@@ -258,23 +238,15 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:114')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:115')}</td>
-              <td>${this.localize('acknowledgments:116')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:116')}</td>
               <td>${this.localize('acknowledgments:117')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:118')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:119')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:120')}</td>
@@ -286,23 +258,19 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:124')}</td>
-              <td>${unsafeHTML(this.localize('acknowledgments:94'))}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:125')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:126')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:127')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:128')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:129')}</td>
-              <td>${this.localize('acknowledgments:130')}</td>
             </tr>
             <tr>
-              <td>${this.localize('acknowledgments:131')}</td>
               <td>${this.localize('acknowledgments:130')}</td>
+              <td>${this.localize('acknowledgments:131')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:132')}</td>
@@ -310,11 +278,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:134')}</td>
-              <td>${this.localize('acknowledgments:128')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:135')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:136')}</td>
@@ -322,43 +286,35 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:138')}</td>
-              <td>${this.localize('acknowledgments:139')}</td>
+              <td>${unsafeHTML(this.localize('acknowledgments:139'))}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:140')}</td>
-              <td>${this.localize('acknowledgments:75')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:141')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:142')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:143')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:144')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:145')}</td>
-              <td>${this.localize('acknowledgments:146')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:146')}</td>
               <td>${this.localize('acknowledgments:147')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:148')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:149')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:150')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:151')}</td>
-              <td>${this.localize('acknowledgments:152')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:152')}</td>
               <td>${this.localize('acknowledgments:153')}</td>
-              <td>${this.localize('acknowledgments:39')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:154')}</td>
@@ -378,11 +334,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:162')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:163')}</td>
-              <td>${this.localize('acknowledgments:155')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:164')}</td>
@@ -390,15 +342,11 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:166')}</td>
-              <td>${this.localize('acknowledgments:155')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:167')}</td>
-              <td>${this.localize('acknowledgments:168')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:168')}</td>
               <td>${this.localize('acknowledgments:169')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:170')}</td>
@@ -406,11 +354,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:172')}</td>
-              <td>${this.localize('acknowledgments:168')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:173')}</td>
-              <td>${this.localize('acknowledgments:96')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:174')}</td>
@@ -418,11 +362,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:176')}</td>
-              <td>${this.localize('acknowledgments:59')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:177')}</td>
-              <td>${this.localize('acknowledgments:159')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:178')}</td>
@@ -438,119 +378,91 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:184')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
-              <td>${this.localize('acknowledgments:7')}</td>
-              <td>${this.localize('acknowledgments:146')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:185')}</td>
-              <td>${this.localize('acknowledgments:186')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:186')}</td>
               <td>${this.localize('acknowledgments:187')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:188')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:189')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:190')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:191')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:192')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:193')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:194')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:195')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:196')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:197')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:198')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:199')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:200')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:201')}</td>
-              <td>${this.localize('acknowledgments:202')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:202')}</td>
               <td>${this.localize('acknowledgments:203')}</td>
-              <td>${this.localize('acknowledgments:157')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:204')}</td>
-              <td>${this.localize('acknowledgments:159')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:205')}</td>
-              <td>${this.localize('acknowledgments:146')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:206')}</td>
-              <td>${this.localize('acknowledgments:107')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:207')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:208')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:209')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:210')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:211')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:212')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:213')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:214')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:215')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:216')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:217')}</td>
-              <td>${this.localize('acknowledgments:218')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:218')}</td>
               <td>${this.localize('acknowledgments:219')}</td>
-              <td>${this.localize('acknowledgments:175')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:220')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:221')}</td>
-              <td>${this.localize('acknowledgments:222')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:222')}</td>
               <td>${this.localize('acknowledgments:223')}</td>
-              <td>${this.localize('acknowledgments:96')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:224')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:225')}</td>
-              <td>${this.localize('acknowledgments:226')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:226')}</td>
               <td>${this.localize('acknowledgments:227')}</td>
-              <td>${this.localize('acknowledgments:159')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:228')}</td>
@@ -566,43 +478,31 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:234')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:235')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:236')}</td>
-              <td>${this.localize('acknowledgments:155')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:237')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:238')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:239')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:240')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:241')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:242')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:243')}</td>
-              <td>${this.localize('acknowledgments:244')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:244')}</td>
               <td>${this.localize('acknowledgments:245')}</td>
-              <td>${this.localize('acknowledgments:159')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:246')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:247')}</td>
-              <td>${this.localize('acknowledgments:179')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:248')}</td>
@@ -610,15 +510,11 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:250')}</td>
-              <td>${this.localize('acknowledgments:59')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:251')}</td>
-              <td>${this.localize('acknowledgments:252')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:252')}</td>
               <td>${this.localize('acknowledgments:253')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:254')}</td>
@@ -626,23 +522,19 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:256')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:257')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:258')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:259')}</td>
+            </tr>
+            <tr>
               <td>${this.localize('acknowledgments:260')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:261')}</td>
-              <td>${this.localize('acknowledgments:262')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:262')}</td>
               <td>${this.localize('acknowledgments:263')}</td>
-              <td>${this.localize('acknowledgments:107')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:264')}</td>
@@ -650,19 +542,11 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:266')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:267')}</td>
-              <td>${this.localize('acknowledgments:192')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:268')}</td>
-              <td>${this.localize('acknowledgments:61')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:269')}</td>
-              <td>${this.localize('acknowledgments:96')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:270')}</td>
@@ -670,31 +554,19 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:272')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:273')}</td>
-              <td>${this.localize('acknowledgments:96')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:274')}</td>
-              <td>${this.localize('acknowledgments:175')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:275')}</td>
-              <td>${this.localize('acknowledgments:276')}</td>
             </tr>
             <tr>
+              <td>${this.localize('acknowledgments:276')}</td>
               <td>${this.localize('acknowledgments:277')}</td>
-              <td>${this.localize('acknowledgments:51')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:278')}</td>
-              <td>${this.localize('acknowledgments:271')}</td>
-            </tr>
-            <tr>
               <td>${this.localize('acknowledgments:279')}</td>
-              <td>${this.localize('acknowledgments:96')}</td>
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:280')}</td>
@@ -702,7 +574,135 @@ class SCStaticAcknowledgments extends SCStaticPage {
             </tr>
             <tr>
               <td>${this.localize('acknowledgments:282')}</td>
-              <td>${this.localize('acknowledgments:168')}</td>
+              <td>${this.localize('acknowledgments:283')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:284')}</td>
+              <td>${this.localize('acknowledgments:285')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:286')}</td>
+              <td>${this.localize('acknowledgments:287')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:288')}</td>
+              <td>${this.localize('acknowledgments:289')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:290')}</td>
+              <td>${this.localize('acknowledgments:291')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:292')}</td>
+              <td>${this.localize('acknowledgments:293')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:294')}</td>
+              <td>${this.localize('acknowledgments:295')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:296')}</td>
+              <td>${this.localize('acknowledgments:297')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:298')}</td>
+              <td>${this.localize('acknowledgments:299')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:300')}</td>
+              <td>${this.localize('acknowledgments:301')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:302')}</td>
+              <td>${this.localize('acknowledgments:303')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:304')}</td>
+              <td>${this.localize('acknowledgments:305')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:306')}</td>
+              <td>${this.localize('acknowledgments:307')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:308')}</td>
+              <td>${this.localize('acknowledgments:309')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:310')}</td>
+              <td>${this.localize('acknowledgments:311')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:312')}</td>
+              <td>${this.localize('acknowledgments:313')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:314')}</td>
+              <td>${this.localize('acknowledgments:315')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:316')}</td>
+              <td>${this.localize('acknowledgments:317')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:318')}</td>
+              <td>${this.localize('acknowledgments:319')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:320')}</td>
+              <td>${this.localize('acknowledgments:321')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:322')}</td>
+              <td>${this.localize('acknowledgments:323')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:324')}</td>
+              <td>${this.localize('acknowledgments:325')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:326')}</td>
+              <td>${this.localize('acknowledgments:327')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:328')}</td>
+              <td>${this.localize('acknowledgments:329')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:330')}</td>
+              <td>${this.localize('acknowledgments:331')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:332')}</td>
+              <td>${this.localize('acknowledgments:333')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:334')}</td>
+              <td>${this.localize('acknowledgments:335')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:336')}</td>
+              <td>${this.localize('acknowledgments:337')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:338')}</td>
+              <td>${this.localize('acknowledgments:339')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:340')}</td>
+              <td>${this.localize('acknowledgments:341')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:342')}</td>
+              <td>${this.localize('acknowledgments:343')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:344')}</td>
+              <td>${this.localize('acknowledgments:345')}</td>
+            </tr>
+            <tr>
+              <td>${this.localize('acknowledgments:346')}</td>
+              <td>${this.localize('acknowledgments:347')}</td>
             </tr>
           </table>
         </article>
