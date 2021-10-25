@@ -54,6 +54,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         return;
       }
       this._setToolbarTitle();
+      this._createMetaData();
       RefreshNavNew(this.currentUid, true);
     }
   }
@@ -184,10 +185,12 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
+          this._createMetaData();
           if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
             dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
           }
         }
+        return true;
       })
       .catch(error => {
         console.log(error);
@@ -198,11 +201,31 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
-    const toolbarTitle =
-      this.currentMenuData[0].translated_name ||
+    this.actions.changeToolbarTitle(this._getTitle());
+  }
+
+  _getTitle() {
+    return (
       this.currentMenuData[0].root_name ||
-      this.currentMenuData[0].uid;
-    this.actions.changeToolbarTitle(toolbarTitle);
+      this.currentMenuData[0].translated_name ||
+      this.currentMenuData[0].uid
+    );
+  }
+
+  _createMetaData() {
+    if (!this.currentMenuData || this.currentMenuData.length === 0) {
+      return;
+    }
+    const description = this.localize('interface:metaDescriptionText');
+    document.dispatchEvent(
+      new CustomEvent('metadata', {
+        detail: {
+          pageTitle: `${this._getTitle()}-navigation`,
+          title: `${this._getTitle()}-navigation`,
+          description,
+        },
+      })
+    );
   }
 
   _isPatimokkha(uid) {
@@ -248,7 +271,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   _genCurrentURL(lastPath) {
     if (!lastPath) {
-      return;
+      return '';
     }
     const currentURL = window.location.href;
     let cleanURL = '';
