@@ -36,9 +36,18 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
                 'blurb': blurb
             })
 
-    print(f'{len(blurbs)} blurbs added or updated')
+    check_val  = set()
+    res = []
+    for i in blurbs:
+        if i["_key"] not in check_val:
+            res.append(i)
+            check_val.add(i["_key"])
+        else:
+            print(f'Duplicate key value：{i["_key"]}')
+
+    print(f'{len(res)} blurbs added or updated')
     db['blurbs'].truncate()
-    db['blurbs'].import_bulk(blurbs)
+    db['blurbs'].import_bulk(res)
 
 
 def parse_name_file_content(
@@ -79,9 +88,18 @@ def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> 
         file_content: Dict[str, str] = json_load(name_file)
         names.extend(parse_name_file_content(file_content, is_root, lang, languages))
 
-    print(f'{len(names)} names added or updated')
+    check_val  = set()
+    res = []
+    for i in names:
+        if i["_key"] not in check_val:
+            res.append(i)
+            check_val.add(i["_key"])
+        else:
+            print(f'Duplicate key value：{i["_key"]}')
+
+    print(f'{len(res)} names added or updated')
     db['names'].truncate()
-    db['names'].import_bulk(names)
+    db['names'].import_bulk(res)
 
 
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
