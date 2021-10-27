@@ -1,6 +1,19 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.10.27
+
+- When loading data, the duplicate values of blurbs and names are prompted. #2312
+- Prev/next should show a translation if you are coming from a translation. #2300
+- Apply:Stateful URLs for parallels. #2301
+- Localization update. #2297
+- Ensure prev/next works in Anguttara Ones and Twos and elsewhere. #2298
+- Update D&D search when navigating suttas. #2303
+- Make URLs case-insensitive. #2305
+- Fix:Toolbar title is wrong in some cases. #2307
+- Fix: Navigation bugs. #2311
+- Update dependencies. #2295
+
 ## 2021.10.14
 
 - Open parallels by default for suttaplex in individual sutta texts. #2281
