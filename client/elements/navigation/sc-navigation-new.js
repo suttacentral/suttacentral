@@ -220,8 +220,8 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
-          pageTitle: `${this._getTitle()}-navigation`,
-          title: `${this._getTitle()}-navigation`,
+          pageTitle: `${this._getTitle()}—navigation`,
+          title: `${this._getTitle()}—navigation`,
           description,
         },
       })
@@ -273,6 +273,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (!lastPath) {
       return '';
     }
+    // TODO: 是否需要实时获取相关的数据以确定正确的URL
     const currentURL = window.location.href;
     let cleanURL = '';
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
