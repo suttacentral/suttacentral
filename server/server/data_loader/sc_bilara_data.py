@@ -6,7 +6,7 @@ from arango.database import Database
 
 from data_loader.languages import process_languages
 from data_loader.util import json_load
-
+import shutil
 
 def load_publications(db: Database, sc_bilara_data_dir: Path) -> None:
     publication_file = sc_bilara_data_dir / '_publication.json'
@@ -47,7 +47,7 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
 
     print(f'{len(res)} blurbs added or updated')
     db['blurbs'].truncate()
-    db['blurbs'].import_bulk(res)
+    db['blurbs'].import_bulk_logged(res)
 
 
 def parse_name_file_content(
@@ -99,7 +99,7 @@ def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> 
 
     print(f'{len(res)} names added or updated')
     db['names'].truncate()
-    db['names'].import_bulk(res)
+    db['names'].import_bulk_logged(res)
 
 
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
@@ -174,3 +174,5 @@ def load_bilara_edition(db: Database, sc_bilara_data_dir: Path) -> None:
         })
 
     return docs
+
+

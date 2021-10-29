@@ -6,6 +6,7 @@ from collections import defaultdict
 from itertools import product
 from pathlib import Path
 from typing import Dict
+import subprocess
 
 import regex
 from arango.database import Database
@@ -38,39 +39,11 @@ from . import (
     sc_bilara_data,
     navigation,
     hyphenation,
+    copy_localization,
 )
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
 from .util import json_load
-
-
-def update_data(repo: Repo, repo_addr: str):
-    """Updates given git repo.
-
-    Args:
-        repo: Git data repo.
-        repo_addr: url address of the repo
-    """
-    logging.info(f'Updating repo in {repo.working_dir}')
-    if 'origin' not in [r.name for r in repo.remotes]:
-        repo.create_remote('origin', repo_addr)
-    repo.remotes.origin.fetch('+refs/heads/*:refs/remotes/origin/*')
-    repo.remotes.origin.pull()
-
-
-def get_data(repo_dir: Path, repo_addr: str) -> Repo:
-    """Clones git data repo to repo_dir
-
-    Args:
-        repo_dir: Path to data dir.
-        repo_addr: repo url.
-
-    Returns:
-        Cloned repo.
-    """
-    logging.info(f'Cloning the repo: {repo_addr}')
-    return Repo.clone_from(repo_addr, repo_dir)
-
 
 def collect_data(repo_dir: Path, repo_addr: str):
     """Ensure data is in data dir and update it if needed and if it's git repo.
@@ -79,15 +52,11 @@ def collect_data(repo_dir: Path, repo_addr: str):
         repo_dir: Path to data directory.
     """
     print(f'downloading {repo_addr}')
-    if not repo_dir.exists():
-        get_data(repo_dir, repo_addr)
+    if not (repo_dir / '.git').exists():
+        subprocess.run(['git', 'clone', '--depth', '1', '--branch', 'master', repo_addr, './'], cwd=repo_dir)
     else:
-        try:
-            repo = Repo(str(repo_dir))
-        except InvalidGitRepositoryError:
-            pass
-        else:
-            update_data(repo, repo_addr)
+        subprocess.run(['git', 'pull'], cwd=repo_dir)
+        
 
 
 def load_child_range(db: Database, structure_dir: Path) -> None:
@@ -440,6 +409,7 @@ def run(no_pull=False):
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
     localized_elements_dir = current_app.config.get('ASSETS_DIR') / 'localization/elements'
 
+
     languages_file = structure_dir / 'language.json'
 
     storage_dir = current_app.config.get('STORAGE_DIR')
@@ -458,6 +428,12 @@ def run(no_pull=False):
         print_stage("Retrieving Data Repository")
         collect_data(data_dir, current_app.config.get('DATA_REPO'))
 
+    print_stage("Copying localization files")
+    copy_localization.copy_localization(sc_bilara_data_dir, localized_elements_dir)
+
+    print_stage("Loading languages")
+    languages.load_languages(db, languages_file, localized_elements_dir)
+    
     print_stage("Loading images")
     images_files.load_images_links(db)
 
@@ -487,9 +463,6 @@ def run(no_pull=False):
 
     print_stage('Loading shortcuts.json')
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
-
-    print_stage("Loading languages")
-    languages.load_languages(db, languages_file, localized_elements_dir)
 
     print_stage("Building and loading navigation from structure_dir")
     navigation.add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
