@@ -95,7 +95,7 @@ class SCStaticHomePage extends SCStaticPage {
         font-variant-caps: all-small-caps;
       }
 
-      .tipitaka-section h2 i {
+      .tipitaka-section h2 em {
         font-size: 0.6667em;
         font-style: italic;
         font-weight: 500;
