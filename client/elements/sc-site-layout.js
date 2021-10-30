@@ -118,13 +118,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.staticPagesToolbarDisplayState.displayTipitakaToolbar
         ? html`
             <li>
-              <a href="/discourses">${this.localize('interface:discourses')}</a>
+              <a href="/discourses-guide-sujato">${this.localize('interface:discourses')}</a>
             </li>
             <li>
-              <a href="/vinaya">${this.localize('interface:vinaya')}</a>
+              <a href="/vinaya-guide-brahmali">${this.localize('interface:vinaya')}</a>
             </li>
             <li>
-              <a href="/abhidhamma">${this.localize('interface:abhidhamma')}</a>
+              <a href="/abhidhamma-guide-sujato">${this.localize('interface:abhidhamma')}</a>
             </li>
           `
         : ''}
