@@ -18,7 +18,12 @@ module.exports = merge(require('./webpack.common'), {
         'img/**',
         'polyfills/*.js',
         'files/fonts/**',
-        'localization/elements/**/*.json',
+        {
+          context: 'localization/elements/build/',
+          from: '*.json',
+          to: 'localization/elements/',
+          force: true,
+        },
         'elements/styles/*.json',
         'node_modules/web-animations-js/*.js',
         'node_modules/@webcomponents/**/*.js',

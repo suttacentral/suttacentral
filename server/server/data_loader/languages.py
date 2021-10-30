@@ -30,24 +30,11 @@ def _load_language_file(db: Database, language_file: Path):
 
 def _update_languages(db: Database, localized_elements_dir: Path):
     num_strings_by_lang = Counter()
-    for element_dir in tqdm(localized_elements_dir.glob('*')):
-        if not element_dir.is_dir():
-            continue
-
-        en_file = element_dir / 'en.json'
-        if not en_file.exists():
-            logging.warning(f'{element_dir} does not contain en.json')
-            continue
-
-        en_keys = set(json_load(en_file)['en'].keys())
-        num_strings_by_lang['en'] += len(en_keys)
-        for file in element_dir.glob('*.json'):
-            if file.stem == 'en':
-                continue
-
-            lang_keys = set(json_load(file)[file.stem].keys())
-            num_strings_by_lang[file.stem] += len(lang_keys.intersection(en_keys))
-
+    for file in (localized_elements_dir / 'build').glob('*.json'):
+        element, lang = file.stem.split('_')
+        count = len(json_load(file))
+        num_strings_by_lang[lang] += count
+        
     updates = []
     num_en = num_strings_by_lang['en']
 

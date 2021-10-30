@@ -5,7 +5,7 @@ const FALLBACK_LANGUAGE = 'en';
 
 // I don't want to make call for /api/languages
 // because it would block the rendering
-const SUPPORTED_TRANSLATIONS = ['en', 'pl', 'pt', 'zh'];
+const SUPPORTED_TRANSLATIONS = ['en', 'de', 'pl', 'pt', 'zh'];
 
 const localizationCache = {};
 
@@ -33,9 +33,9 @@ export const LitLocalized = base =>
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
       if (!string && this._languageLoaded) {
-        //if (!tryLocalize) {
-        console.warn('missing translation key', key);
-        //}
+        if (!tryLocalize) {
+          console.warn('missing translation key', key);
+        }
       }
 
       if (params) {

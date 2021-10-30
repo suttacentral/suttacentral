@@ -1,7 +1,6 @@
 version: '2'
 
 services:
-
   sc-flask:
     build:
       context: ./server/
@@ -17,6 +16,7 @@ services:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
       - working-storage-volume:/opt/sc/storage
+      - sc-data-volume:/opt/sc/sc-flask/sc-data
     expose:
       - '5000'
     depends_on:
@@ -88,6 +88,8 @@ services:
     container_name: 'sc-frontend'
     labels:
       application: 'sc-frontend'
+    volumes:
+      - sc-data-volume:/opt/sc/sc-data
     working_dir: /opt/sc/frontend
 
   sc-chrome-headless:
@@ -121,6 +123,7 @@ networks:
 volumes:
   db-data-volume:
   nginx-logs:
+  sc-data-volume:
   working-storage-volume:
   socket-volume:
   elasticsearch-data:
