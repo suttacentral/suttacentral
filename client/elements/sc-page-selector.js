@@ -403,6 +403,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       this._createMetaData();
     }
     this._updateNav();
+    this._setVisibleToolbar();
     this._changeToolbarTitle();
     this._loadScActionItems();
     this._loadTopSheets();
