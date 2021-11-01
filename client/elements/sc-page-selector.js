@@ -403,6 +403,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       this._createMetaData();
     }
     this._updateNav();
+    this._setVisibleToolbar();
     this._changeToolbarTitle();
     this._loadScActionItems();
     this._loadTopSheets();
@@ -572,9 +573,9 @@ class SCPageSelector extends LitLocalized(LitElement) {
       case 'sutta':
         return;
       default:
-        const key = `${this.currentRoute.name}Title`;
+        const key = `interface:${this.currentRoute.name}Title`;
         if (this.__resources[key]) {
-          const pageNameTitle = this.localize(`interface:${key}`);
+          const pageNameTitle = this.localize(key);
           this.actions.changeToolbarTitle(pageNameTitle);
         } else {
           this.actions.changeToolbarTitle('');
