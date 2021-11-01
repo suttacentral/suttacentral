@@ -130,6 +130,9 @@
         text-decoration: underline;
       }
     </style>
+    <% if (htmlWebpackPlugin.options.isVite) { %>
+      <script type="module" src="./elements/sc-site-layout.js"></script>
+    <% } %>
   </head>
   <body>
     <sc-site-layout unresolved></sc-site-layout>
