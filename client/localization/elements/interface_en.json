@@ -233,6 +233,7 @@
   "search:all": "All",
   "search:dictionaries": "Dictionaries",
   "search:filter": "Filter",
+  "search:hint": "Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.",
   "search:loadMore": "Load more",
   "search:resultsFor": "results for",
   "search:rootTexts": "Root texts",

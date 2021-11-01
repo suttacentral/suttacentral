@@ -371,7 +371,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
               id="filter_menu"
             ></sc-menu-search-filter>
           </div>
-          <aside>Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.</aside>
+          <aside>${this.localize('search:hint')}</aside>
           <div class="dictionary-snippet-card">
             <sc-suttaplex
               .item=${this.suttaplex}
