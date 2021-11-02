@@ -103,7 +103,7 @@ class SCStaticVinaya extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/vinaya';
+    this.localizedStringsPath = '/localization/elements/build/vinaya';
   }
 }
 

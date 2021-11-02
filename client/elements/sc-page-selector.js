@@ -307,7 +307,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.router = new RoutingService();
     this.router.addRoutes(routes);
     this._stopListening = undefined;

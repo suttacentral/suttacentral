@@ -240,7 +240,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.siteLanguage = state.siteLanguage;
     this.appColorTheme = state.colorTheme;
     this._colorThemeChanged();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.changedRoute = state.currentRoute;
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;

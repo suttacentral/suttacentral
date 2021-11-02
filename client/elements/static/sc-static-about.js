@@ -31,7 +31,7 @@ class SCStaticAbout extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/about';
+    this.localizedStringsPath = '/localization/elements/build/about';
   }
 }
 

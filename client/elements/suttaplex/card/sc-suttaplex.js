@@ -37,7 +37,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.hasVoice = false;
   }
 

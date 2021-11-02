@@ -125,7 +125,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     this.textualInfoToggleEnabled = textOptions.paragraphsEnabled;
     this.textualInfoResponse = {};
     this.textualParagraphs = textOptions.paragraphDescriptions;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
     this.showHighlighting = textOptions.showHighlighting;
     this.displayedReferences = textOptions.displayedReferences;
@@ -522,7 +522,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
 
     if (isActive) {
       const dictChangeMessage = this.localizeEx(
-        'lookupDictionaryEnabled',
+        'dictionary:lookupDictionaryEnabled',
         'lookupDictionary',
         this.chineseLookupLanguage
       );
@@ -566,7 +566,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     selPaliScriptsElement.classList.add(`${selectedScript.toLowerCase()}-script`);
     scTopsheetViews.actions.choosePaliTextScript(selectedScript);
     const scriptChangeMessage = scTopsheetViews.localizeEx(
-      'scriptChanged',
+      'dictionary:scriptChanged',
       'paliScript',
       selectedScript
     );

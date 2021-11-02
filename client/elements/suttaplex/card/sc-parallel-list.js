@@ -28,7 +28,7 @@ class SCParallels extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
   }
 
   shouldUpdate(changedProperties) {

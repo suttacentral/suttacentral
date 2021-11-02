@@ -712,7 +712,7 @@ class SCStaticAcknowledgments extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/acknowledgments';
+    this.localizedStringsPath = '/localization/elements/build/acknowledgments';
   }
 }
 

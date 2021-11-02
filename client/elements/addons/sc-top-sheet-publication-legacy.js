@@ -7,7 +7,7 @@ class SCTopSheetPublicationLegacy extends SCTopSheetCommon {
   constructor() {
     super();
     this.infoDialogMetaArea = '';
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
   }
 
   static get styles() {

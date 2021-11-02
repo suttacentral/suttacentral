@@ -265,7 +265,7 @@ class SCStaticANIntroductionBodhi extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/an-introduction-bodhi';
+    this.localizedStringsPath = '/localization/elements/build/an-introduction-bodhi';
   }
 }
 

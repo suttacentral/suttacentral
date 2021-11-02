@@ -544,7 +544,7 @@ class SCStaticTerminology extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/terminology';
+    this.localizedStringsPath = '/localization/elements/build/terminology';
   }
 }
 

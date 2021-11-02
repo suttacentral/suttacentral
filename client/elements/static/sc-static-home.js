@@ -764,7 +764,7 @@ class SCStaticHomePage extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/home';
+    this.localizedStringsPath = '/localization/elements/build/home';
   }
 }
 

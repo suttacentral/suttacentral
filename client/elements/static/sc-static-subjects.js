@@ -1859,7 +1859,7 @@ class SCStaticSubjects extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/subjects';
+    this.localizedStringsPath = '/localization/elements/build/subjects';
   }
 }
 

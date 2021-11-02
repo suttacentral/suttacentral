@@ -72,7 +72,7 @@ class SCTextBilara extends SCTextCommon {
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
     this.hasScriptBeenChanged = false;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.commentSpanRectInfo = new Map();
     this.rootEdition = [];
 

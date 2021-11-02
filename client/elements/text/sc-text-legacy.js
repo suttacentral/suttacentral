@@ -135,7 +135,7 @@ class SCTextLegacy extends SCTextCommon {
       divy: 'Divyāvadāna (1886)',
       ms84: 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
     };
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.inputElement = {};
     this._hashChangeHandler = () => {
       setTimeout(() => {

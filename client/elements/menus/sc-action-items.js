@@ -223,7 +223,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.colorTheme = store.getState().colorTheme;
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.mode = store.getState().toolbarOptions.mode;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.currentRoute = store.getState().currentRoute;
 
     this.actions.changeDisplaySettingMenuState(false);

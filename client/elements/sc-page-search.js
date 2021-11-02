@@ -479,7 +479,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.currentPage = 0;
     this.currentFilter = 'all';
     this.searchResultElemHeight = 170;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.totalLoadedResults = 0;
     this.isOnline = store.getState().isOnline;
     this.dictionaryTitles = {

@@ -20,7 +20,7 @@ class SCStaticLanguages extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/languages';
+    this.localizedStringsPath = '/localization/elements/build/languages';
     this.fetchList();
   }
 

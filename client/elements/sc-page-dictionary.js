@@ -256,7 +256,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
     this.adjacentReturns = [];
     this.similarReturns = [];
     this.dictionaryWord = store.getState().currentRoute.params.word;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.dictionaryTitles = {
       ncped: 'New Concise Pali English Dictionary',
       cped: 'Concise Pali English Dictionary',

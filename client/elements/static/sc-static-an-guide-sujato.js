@@ -160,7 +160,7 @@ class SCStaticANGuideSujato extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/an-guide-sujato';
+    this.localizedStringsPath = '/localization/elements/build/an-guide-sujato';
   }
 }
 

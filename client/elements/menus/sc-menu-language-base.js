@@ -43,7 +43,7 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.languageListResponse = [];
   }
 

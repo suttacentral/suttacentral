@@ -135,7 +135,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;

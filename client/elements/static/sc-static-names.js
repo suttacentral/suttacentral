@@ -2506,7 +2506,7 @@ class SCStaticNames extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/names';
+    this.localizedStringsPath = '/localization/elements/build/names';
   }
 }
 

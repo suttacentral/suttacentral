@@ -561,7 +561,7 @@ class SCStaticSNGuideSujato extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sn-guide-sujato';
+    this.localizedStringsPath = '/localization/elements/build/sn-guide-sujato';
   }
 }
 

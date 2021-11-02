@@ -16,7 +16,7 @@ cssselect==1.1.0
 pytest==6.2.4
 pytest-flask==1.2.0
 pytest-sugar==0.9.4
-pyppeteer==0.2.5
+pyppeteer==0.2.6
 python-arango==7.2.0
 regex==2021.7.6
 requests==2.26.0
@@ -25,7 +25,7 @@ Sphinx==4.1.1
 sphinxcontrib-websupport==1.2.4
 stripe==2.60.0
 termcolor==1.1.0
-tqdm==4.61.2
+tqdm==4.62.3
 uWSGI==2.0.19.1
 Werkzeug==2.0.1
 Flask-Caching==1.10.1

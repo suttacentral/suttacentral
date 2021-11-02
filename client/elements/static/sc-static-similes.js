@@ -1189,7 +1189,7 @@ class SCStaticSimiles extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/similes';
+    this.localizedStringsPath = '/localization/elements/build/similes';
   }
 }
 

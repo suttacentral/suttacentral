@@ -132,7 +132,7 @@ class SCStaticDiscourses extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/discourses';
+    this.localizedStringsPath = '/localization/elements/build/discourses';
   }
 }
 

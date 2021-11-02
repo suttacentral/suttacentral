@@ -92,7 +92,7 @@ class SCStaticNumbering extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/numbering';
+    this.localizedStringsPath = '/localization/elements/build/numbering';
   }
 }
 

@@ -14,7 +14,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
 
     this.messages = {
       'no-network': {

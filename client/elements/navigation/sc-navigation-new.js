@@ -28,7 +28,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     super();
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.compactStyles = {};
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.routePath = store.getState().currentRoute.path;
     this.siteLanguage = store.getState().siteLanguage;
     this.fullSiteLanguageName = store.getState().fullSiteLanguageName;

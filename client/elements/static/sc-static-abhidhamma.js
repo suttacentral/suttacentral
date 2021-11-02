@@ -100,7 +100,7 @@ class SCStaticAbhidhamma extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/abhidhamma';
+    this.localizedStringsPath = '/localization/elements/build/abhidhamma';
   }
 }
 

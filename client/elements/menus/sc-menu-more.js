@@ -92,7 +92,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.languageListResponse = [];
     this.routeName = store.getState().currentRoute.name;
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;

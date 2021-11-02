@@ -40,7 +40,7 @@ class SCStaticANewBeginning extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/a-new-beginning';
+    this.localizedStringsPath = '/localization/elements/build/a-new-beginning';
   }
 }
 

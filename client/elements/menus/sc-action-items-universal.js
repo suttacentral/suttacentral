@@ -97,7 +97,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.search_input = this.shadowRoot?.getElementById('search_input');
   }
 

@@ -134,7 +134,7 @@ class SCStaticIntroduction extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/introduction';
+    this.localizedStringsPath = '/localization/elements/build/introduction';
   }
 }
 

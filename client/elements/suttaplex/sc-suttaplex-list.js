@@ -62,7 +62,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.siteLanguage = store.getState().siteLanguage;
     this.displayParallelTableView = store.getState().displayParallelTableView;
     this.#showTableViewButton();

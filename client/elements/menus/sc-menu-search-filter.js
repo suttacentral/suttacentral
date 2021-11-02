@@ -40,7 +40,7 @@ class SCMenuSearchFilter extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.searchSelected = 'all';
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
   }
 
   _onSelectedItemChanged(e) {

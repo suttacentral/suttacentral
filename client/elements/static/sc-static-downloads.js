@@ -110,7 +110,7 @@ class SCStaticDownloadsPage extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/downloads';
+    this.localizedStringsPath = '/localization/elements/build/downloads';
   }
 }
 

@@ -287,7 +287,7 @@ class SCStaticGeneralGuideSujato extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/general-guide-sujato';
+    this.localizedStringsPath = '/localization/elements/build/general-guide-sujato';
   }
 }
 

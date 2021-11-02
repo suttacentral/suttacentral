@@ -110,7 +110,7 @@ class SCStaticDonations extends SCStaticPage {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/donations';
+    this.localizedStringsPath = '/localization/elements/build/donations';
   }
 }
 

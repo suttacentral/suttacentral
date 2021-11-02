@@ -35,7 +35,7 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/build/interface';
     this.isError = false;
   }
 
@@ -43,8 +43,8 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
     return css`
       ${layoutSimpleStyles}
       ${typographyCommonStyles}
-            /* allow mwc-select to drop below container */
-          article {
+      /* allow mwc-select to drop below container */
+      article {
         content-visibility: visible;
         height: 100vh;
       }
