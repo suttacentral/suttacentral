@@ -6,6 +6,7 @@ const FALLBACK_LANGUAGE = 'en';
 // I don't want to make call for /api/languages
 // because it would block the rendering
 const SUPPORTED_TRANSLATIONS = ['en', 'de', 'pl', 'pt', 'zh'];
+const USE_PRODUCTION_LOCALIZATION = true;
 
 const localizationCache = {};
 
@@ -96,14 +97,13 @@ export const LitLocalized = base =>
         if (!this.localizedStringsPath) {
           return;
         }
-        if (
-          process.env.NODE_ENV === 'development' &&
-          !this.localizedStringsPath.includes('build')
-        ) {
-          this.localizedStringsPath = this.localizedStringsPath.replace(
-            '/localization/elements',
-            '/localization/elements/build'
-          );
+        if (!USE_PRODUCTION_LOCALIZATION) {
+          if (!this.localizedStringsPath.includes('build')) {
+            this.localizedStringsPath = this.localizedStringsPath.replace(
+              '/localization/elements',
+              '/localization/elements/build'
+            );
+          }
         }
         const path = `${this.localizedStringsPath}_${lang}.json`;
 
