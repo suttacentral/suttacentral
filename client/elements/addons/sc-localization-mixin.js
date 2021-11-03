@@ -96,6 +96,15 @@ export const LitLocalized = base =>
         if (!this.localizedStringsPath) {
           return;
         }
+        if (
+          process.env.NODE_ENV === 'development' &&
+          !this.localizedStringsPath.includes('build')
+        ) {
+          this.localizedStringsPath = this.localizedStringsPath.replace(
+            '/localization/elements',
+            '/localization/elements/build'
+          );
+        }
         const path = `${this.localizedStringsPath}_${lang}.json`;
 
         if (path in localizationCache) {
