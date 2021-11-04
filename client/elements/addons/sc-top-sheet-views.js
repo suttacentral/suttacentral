@@ -522,7 +522,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
 
     if (isActive) {
       const dictChangeMessage = this.localizeEx(
-        'lookupDictionaryEnabled',
+        'dictionary:lookupDictionaryEnabled',
         'lookupDictionary',
         this.chineseLookupLanguage
       );
@@ -566,7 +566,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
     selPaliScriptsElement.classList.add(`${selectedScript.toLowerCase()}-script`);
     scTopsheetViews.actions.choosePaliTextScript(selectedScript);
     const scriptChangeMessage = scTopsheetViews.localizeEx(
-      'scriptChanged',
+      'dictionary:scriptChanged',
       'paliScript',
       selectedScript
     );
