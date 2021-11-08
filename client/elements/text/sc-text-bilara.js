@@ -154,11 +154,12 @@ class SCTextBilara extends SCTextCommon {
       }
       if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
         this._deleteReference();
-        this._initReference();
+        this._addSCReference();
         this._addReferenceText();
       }
       if (window.location.href.includes('#')) {
-        this._initReference();
+        this._deleteSCReference();
+        this._addSCReference();
       }
       this._addVariantText();
       this._paliLookupStateChanged();
@@ -194,13 +195,11 @@ class SCTextBilara extends SCTextCommon {
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      const targetElement = this.shadowRoot.querySelector(
-        `#${CSS.escape(location.hash.substr(1))}`
-      );
+      const targetElement = this.shadowRoot.querySelector(`#${CSS.escape(sectionId)}`);
       if (targetElement) {
         targetElement.scrollIntoView();
         window.scrollTo(0, window.scrollY - margin);
-        this._clearRefFocusedClass();
+        this._removeRefFocusedClass();
         targetElement.classList.add('refFocused');
       }
     } catch (e) {
@@ -208,7 +207,7 @@ class SCTextBilara extends SCTextCommon {
     }
   }
 
-  _clearRefFocusedClass() {
+  _removeRefFocusedClass() {
     this.shadowRoot.querySelectorAll('.refFocused').forEach(element => {
       element.classList.remove('refFocused');
     });
@@ -302,7 +301,7 @@ class SCTextBilara extends SCTextCommon {
       this._changeTextView();
       if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
         this._deleteReference();
-        this._initReference();
+        this._addSCReference();
         this._addReferenceText();
       } else {
         this._deleteReference();
@@ -394,7 +393,9 @@ class SCTextBilara extends SCTextCommon {
     } = store.getState().textOptions;
     const urlParams = `?layout=${segmentedSuttaTextView}&reference=${displayedReferences.join(
       '/'
-    )}&notes=${noteDisplayType}&highlight=${showHighlighting}&script=${script}`;
+    )}&notes=${noteDisplayType}&highlight=${showHighlighting}&script=${script}${
+      window.location.hash
+    }`;
     // eslint-disable-next-line no-restricted-globals
     history.replaceState(null, null, urlParams);
   }
@@ -710,7 +711,7 @@ class SCTextBilara extends SCTextCommon {
     return spanElement;
   }
 
-  _initReference() {
+  _addSCReference() {
     if (!this.bilaraRootSutta || this._articleElement().length === 0) {
       return;
     }
@@ -719,7 +720,7 @@ class SCTextBilara extends SCTextCommon {
       const segmentElement = this.shadowRoot.querySelector(`#${CSS.escape(key)}`);
       if (segmentElement) {
         const refSpan = this._addReferenceSpan();
-        refSpan.appendChild(this._addDefaultReferenceAnchor(key));
+        refSpan.appendChild(this._addSCReferenceAnchor(key));
         this._prependChild(segmentElement, refSpan);
       }
     });
@@ -728,6 +729,14 @@ class SCTextBilara extends SCTextCommon {
   _deleteReference() {
     this._articleElement().forEach(article => {
       article.querySelectorAll('.reference').forEach(element => {
+        element.parentNode.removeChild(element);
+      });
+    });
+  }
+
+  _deleteSCReference() {
+    this._articleElement().forEach(article => {
+      article.querySelectorAll('.reference .sc').forEach(element => {
         element.parentNode.removeChild(element);
       });
     });
@@ -742,7 +751,7 @@ class SCTextBilara extends SCTextCommon {
     return parent;
   }
 
-  _addDefaultReferenceAnchor(key) {
+  _addSCReferenceAnchor(key) {
     const subKey = key.substring(key.indexOf(':') + 1, key.length);
     const anchor = document.createElement('a');
     anchor.className = 'sc';
