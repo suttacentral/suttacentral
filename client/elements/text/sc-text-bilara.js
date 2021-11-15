@@ -221,9 +221,7 @@ class SCTextBilara extends SCTextCommon {
     }
     Object.entries(this.suttaComment).forEach(([key, value]) => {
       const translationSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .translation`);
-      if (translationSpan) {
-        translationSpan.appendChild(this._addCommentSpan(value));
-      }
+      translationSpan?.appendChild(this._addCommentSpan(value));
     });
   }
 
@@ -231,8 +229,7 @@ class SCTextBilara extends SCTextCommon {
     const span = document.createElement('span');
     span.className = 'comment';
     span.dataset.tooltip = value;
-    const text = document.createTextNode(value);
-    span.appendChild(text);
+    span.appendChild(document.createTextNode(value));
     return span;
   }
 
