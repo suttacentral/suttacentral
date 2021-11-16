@@ -16,7 +16,7 @@ class SCStaticSimiles extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('similes:1')}</h1>
+          <h1>${unsafeHTML(this.localize('similes:1'))}</h1>
           <nav class="contents">
             <ul class="entry-list">
               <li>${unsafeHTML(this.localize('similes:2'))}</li>
@@ -47,18 +47,18 @@ class SCStaticSimiles extends SCStaticPage {
           </nav>
           <h2>${unsafeHTML(this.localize('similes:26'))}</h2>
           <dl>
-            <dt>${this.localize('similes:27')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:27'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:28'))}</dd>
-            <dt>${this.localize('similes:29')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:29'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:30'))}</dd>
-            <dt>${this.localize('similes:31')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:31'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:32'))}</dd>
-            <dt id="archer">${this.localize('similes:33')}</dt>
+            <dt id="archer">${unsafeHTML(this.localize('similes:33'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:34'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:35'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:36'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:37'))}</dd>
-            <dt id="arrow">${this.localize('similes:38')}</dt>
+            <dt id="arrow">${unsafeHTML(this.localize('similes:38'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:39'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:40'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:41'))}</dd>
@@ -72,23 +72,23 @@ class SCStaticSimiles extends SCStaticPage {
           </dl>
           <h2>${unsafeHTML(this.localize('similes:49'))}</h2>
           <dl>
-            <dt>${this.localize('similes:50')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:50'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:51'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:52'))}</dd>
             <dd></dd>
             <dt>${unsafeHTML(this.localize('similes:53'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:54'))}</dd>
-            <dt>${this.localize('similes:55')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:55'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:56'))}</dd>
-            <dt>${this.localize('similes:57')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:57'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:58'))}</dd>
-            <dt>${this.localize('similes:59')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:59'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:60'))}</dd>
-            <dt>${this.localize('similes:61')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:61'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:62'))}</dd>
-            <dt>${this.localize('similes:63')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:63'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:64'))}</dd>
-            <dt>${this.localize('similes:65')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:65'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:66'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:67'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:68'))}</dd>
@@ -96,124 +96,124 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:70'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:71'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:72')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:72'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:73'))}</dd>
-            <dt>${this.localize('similes:74')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:74'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:75'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:76'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:77')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:77'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:78'))}</dd>
-            <dt>${this.localize('similes:79')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:79'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:80'))}</dd>
-            <dt>${this.localize('similes:81')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:81'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:82'))}</dd>
-            <dt>${this.localize('similes:83')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:83'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:84'))}</dd>
-            <dt>${this.localize('similes:85')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:85'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:86'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:87'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:88')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:88'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:89'))}</dd>
-            <dt>${this.localize('similes:90')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:90'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:91'))}</dd>
-            <dt>${this.localize('similes:92')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:92'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:93'))}</dd>
-            <dt>${this.localize('similes:94')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:94'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:95'))}</dd>
-            <dt>${this.localize('similes:96')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:96'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:97'))}</dd>
-            <dt id="bull">${this.localize('similes:98')}</dt>
+            <dt id="bull">${unsafeHTML(this.localize('similes:98'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:99'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:100'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:101'))}</dd>
-            <dt>${this.localize('similes:102')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:102'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:103'))}</dd>
-            <dt>${this.localize('similes:104')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:104'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:105'))}</dd>
-            <dt>${this.localize('similes:106')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:106'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:107'))}</dd>
             <dt>${unsafeHTML(this.localize('similes:108'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:109'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:110'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:111'))}</dd>
-            <dt>${this.localize('similes:112')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:112'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:113'))}</dd>
-            <dt>${this.localize('similes:114')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:114'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:115'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:116'))}</h2>
           <dl>
-            <dt>${this.localize('similes:117')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:117'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:118'))}</dd>
-            <dt id="carpenter">${this.localize('similes:119')}</dt>
+            <dt id="carpenter">${unsafeHTML(this.localize('similes:119'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:120'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:121'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:122'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:123')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:123'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:124'))}</dd>
-            <dt>${this.localize('similes:125')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:125'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:126'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:127'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:128')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:128'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:129'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:130'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:131')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:131'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:132'))}</dd>
-            <dt>${this.localize('similes:133')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:133'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:134'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:135'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:136'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:137')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:137'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:138'))}</dd>
-            <dt>${this.localize('similes:139')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:139'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:140'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:141'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:142'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:143'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:144'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:145')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:145'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:146'))}</dd>
-            <dt id="charioteer">${this.localize('similes:147')}</dt>
+            <dt id="charioteer">${unsafeHTML(this.localize('similes:147'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:148'))}</dd>
-            <dt>${this.localize('similes:149')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:149'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:150'))}</dd>
-            <dt>${this.localize('similes:151')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:151'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:152'))}</dd>
-            <dt>${this.localize('similes:153')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:153'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:154'))}</dd>
-            <dt>${this.localize('similes:155')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:155'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:156'))}</dd>
-            <dt>${this.localize('similes:157')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:157'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:158'))}</dd>
-            <dt>${this.localize('similes:159')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:159'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:160'))}</dd>
-            <dt>${this.localize('similes:161')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:161'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:162'))}</dd>
-            <dt>${this.localize('similes:163')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:163'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:164'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:165'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:166'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:167')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:167'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:168'))}</dd>
-            <dt>${this.localize('similes:169')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:169'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:170'))}</dd>
-            <dt>${this.localize('similes:171')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:171'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:172'))}</dd>
-            <dt>${this.localize('similes:173')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:173'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:174'))}</dd>
-            <dt>${this.localize('similes:175')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:175'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:176'))}</dd>
-            <dt>${this.localize('similes:177')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:177'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:178'))}</dd>
-            <dt id="cow">${this.localize('similes:179')}</dt>
+            <dt id="cow">${unsafeHTML(this.localize('similes:179'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:180'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:181'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:182'))}</dd>
@@ -224,7 +224,7 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:187'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:188'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:189'))}</dd>
-            <dt id="cowherd">${this.localize('similes:190')}</dt>
+            <dt id="cowherd">${unsafeHTML(this.localize('similes:190'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:191'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:192'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:193'))}</dd>
@@ -233,67 +233,67 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:196'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:197'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:198'))}</dd>
-            <dt id="crafts">${this.localize('similes:199')}</dt>
+            <dt id="crafts">${unsafeHTML(this.localize('similes:199'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:200'))}</dd>
-            <dt>${this.localize('similes:201')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:201'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:202'))}</dd>
-            <dt>${this.localize('similes:203')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:203'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:204'))}</dd>
-            <dt>${this.localize('similes:205')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:205'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:206'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:207'))}</h2>
           <dl>
-            <dt>${this.localize('similes:208')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:208'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:209'))}</dd>
-            <dt>${this.localize('similes:210')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:210'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:211'))}</dd>
-            <dt>${this.localize('similes:212')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:212'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:213'))}</dd>
-            <dt>${this.localize('similes:214')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:214'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:215'))}</dd>
-            <dt>${this.localize('similes:216')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:216'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:217'))}</dd>
-            <dt>${this.localize('similes:218')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:218'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:219'))}</dd>
-            <dt id="doctor">${this.localize('similes:220')}</dt>
+            <dt id="doctor">${unsafeHTML(this.localize('similes:220'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:221'))}</dd>
-            <dt>${this.localize('similes:222')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:222'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:223'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:224'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:225'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:226')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:226'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:227'))}</dd>
-            <dt>${this.localize('similes:228')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:228'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:229'))}</dd>
-            <dt>${this.localize('similes:230')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:230'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:231'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:232'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:233')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:233'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:234'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:235'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:236'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:237')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:237'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:238'))}</dd>
-            <dt>${this.localize('similes:239')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:239'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:240'))}</dd>
-            <dt>${this.localize('similes:241')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:241'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:242'))}</dd>
-            <dt>${this.localize('similes:243')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:243'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:244'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:245'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:246')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:246'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:247'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:248'))}</h2>
           <dl>
-            <dt>${this.localize('similes:249')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:249'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:250'))}</dd>
-            <dt id="elephant">${this.localize('similes:251')}</dt>
+            <dt id="elephant">${unsafeHTML(this.localize('similes:251'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:252'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:253'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:254'))}</dd>
@@ -307,30 +307,30 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:262'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:263'))}</dd>
             <dd></dd>
-            <dt id="e-tamer">${this.localize('similes:264')}</dt>
+            <dt id="e-tamer">${unsafeHTML(this.localize('similes:264'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:265'))}</dd>
-            <dt>${this.localize('similes:266')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:266'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:267'))}</dd>
-            <dt>${this.localize('similes:268')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:268'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:269'))}</dd>
-            <dt>${this.localize('similes:270')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:270'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:271'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:272'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:273')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:273'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:274'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:275'))}</h2>
           <dl>
-            <dt>${this.localize('similes:276')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:276'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:277'))}</dd>
-            <dt>${this.localize('similes:278')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:278'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:279'))}</dd>
-            <dt>${this.localize('similes:280')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:280'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:281'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:282'))}</dd>
             <dd></dd>
-            <dt id="fire">${this.localize('similes:283')}</dt>
+            <dt id="fire">${unsafeHTML(this.localize('similes:283'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:284'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:285'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:286'))}</dd>
@@ -343,15 +343,15 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:293'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:294'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:295')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:295'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:296'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:297'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:298')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:298'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:299'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:300'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:301')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:301'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:302'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:303'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:304'))}</dd>
@@ -361,9 +361,9 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:308'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:309'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:310')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:310'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:311'))}</dd>
-            <dt>${this.localize('similes:312')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:312'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:313'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:314'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:315'))}</dd>
@@ -373,36 +373,36 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:318'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:319'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:320'))}</dd>
-            <dt>${this.localize('similes:321')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:321'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:322'))}</dd>
-            <dt id="flood">${this.localize('similes:323')}</dt>
+            <dt id="flood">${unsafeHTML(this.localize('similes:323'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:324'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:325'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:326'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:327'))}</dd>
-            <dt id="flower">${this.localize('similes:328')}</dt>
+            <dt id="flower">${unsafeHTML(this.localize('similes:328'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:329'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:330'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:331'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:332'))}</dd>
-            <dt>${this.localize('similes:333')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:333'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:334'))}</dd>
-            <dt>${this.localize('similes:335')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:335'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:336'))}</dd>
-            <dt>${this.localize('similes:337')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:337'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:338'))}</dd>
-            <dt>${this.localize('similes:339')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:339'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:340'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:341'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:342')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:342'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:343'))}</dd>
-            <dt>${this.localize('similes:344')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:344'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:345'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:346'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:347'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:348')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:348'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:349'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:350'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:351'))}</dd>
@@ -419,88 +419,88 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:362'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:363'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:364')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:364'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:365'))}</dd>
-            <dt>${this.localize('similes:366')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:366'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:367'))}</dd>
-            <dt>${this.localize('similes:368')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:368'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:369'))}</dd>
-            <dt>${this.localize('similes:370')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:370'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:371'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:372'))}</h2>
           <dl>
-            <dt>${this.localize('similes:373')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:373'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:374'))}</dd>
-            <dt>${this.localize('similes:375')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:375'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:376'))}</dd>
-            <dt>${this.localize('similes:377')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:377'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:378'))}</dd>
-            <dt>${this.localize('similes:379')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:379'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:380'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:381'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:382'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:383'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:384'))}</dd>
             <dd></dd>
-            <dt id="goldsmith">${this.localize('similes:385')}</dt>
+            <dt id="goldsmith">${unsafeHTML(this.localize('similes:385'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:386'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:387'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:388')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:388'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:389'))}</dd>
-            <dt>${this.localize('similes:390')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:390'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:391'))}</dd>
-            <dt>${this.localize('similes:392')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:392'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:393'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:394'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:395')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:395'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:396'))}</dd>
-            <dt>${this.localize('similes:397')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:397'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:398'))}</dd>
-            <dt>${this.localize('similes:399')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:399'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:400'))}</dd>
-            <dt>${this.localize('similes:401')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:401'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:402'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:403'))}</h2>
           <dl>
-            <dt>${this.localize('similes:404')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:404'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:405'))}</dd>
-            <dt>${this.localize('similes:406')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:406'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:407'))}</dd>
-            <dt>${this.localize('similes:408')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:408'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:409'))}</dd>
-            <dt>${this.localize('similes:410')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:410'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:411'))}</dd>
-            <dt>${this.localize('similes:412')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:412'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:413'))}</dd>
-            <dt>${this.localize('similes:414')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:414'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:415'))}</dd>
-            <dt>${this.localize('similes:416')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:416'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:417'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:418'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:419'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:420'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:421')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:421'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:422'))}</dd>
-            <dt>${this.localize('similes:423')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:423'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:424'))}</dd>
-            <dt>${this.localize('similes:425')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:425'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:426'))}</dd>
-            <dt>${this.localize('similes:427')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:427'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:428'))}</dd>
-            <dt>${this.localize('similes:429')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:429'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:430'))}</dd>
-            <dt>${this.localize('similes:431')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:431'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:432'))}</dd>
-            <dt>${this.localize('similes:433')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:433'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:434'))}</dd>
-            <dt>${this.localize('similes:435')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:435'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:436'))}</dd>
-            <dt id="horse">${this.localize('similes:437')}</dt>
+            <dt id="horse">${unsafeHTML(this.localize('similes:437'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:438'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:439'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:440'))}</dd>
@@ -512,9 +512,9 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:446'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:447'))}</dd>
             <dd></dd>
-            <dt id="horsetrainer">${this.localize('similes:448')}</dt>
+            <dt id="horsetrainer">${unsafeHTML(this.localize('similes:448'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:449'))}</dd>
-            <dt id="house">${this.localize('similes:450')}</dt>
+            <dt id="house">${unsafeHTML(this.localize('similes:450'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:451'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:452'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:453'))}</dd>
@@ -524,34 +524,34 @@ class SCStaticSimiles extends SCStaticPage {
           </dl>
           <h2>${unsafeHTML(this.localize('similes:456'))}</h2>
           <dl>
-            <dt>${this.localize('similes:457')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:457'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:458'))}</dd>
-            <dt>${this.localize('similes:459')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:459'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:460'))}</dd>
-            <dt>${this.localize('similes:461')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:461'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:462'))}</dd>
-            <dt>${this.localize('similes:463')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:463'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:464'))}</dd>
-            <dt>${this.localize('similes:465')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:465'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:466'))}</dd>
-            <dt>${this.localize('similes:467')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:467'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:468'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:469'))}</dd>
             <dd></dd>
-            <dt id="irrigator">${this.localize('similes:470')}</dt>
+            <dt id="irrigator">${unsafeHTML(this.localize('similes:470'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:471'))}</dd>
-            <dt>${this.localize('similes:472')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:472'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:473'))}</dd>
             <dt>${unsafeHTML(this.localize('similes:474'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:475'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:476'))}</h2>
           <dl>
-            <dt>${this.localize('similes:477')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:477'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:478'))}</dd>
-            <dt>${this.localize('similes:479')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:479'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:480'))}</dd>
-            <dt id="jar">${this.localize('similes:481')}</dt>
+            <dt id="jar">${unsafeHTML(this.localize('similes:481'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:482'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:483'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:484'))}</dd>
@@ -559,7 +559,7 @@ class SCStaticSimiles extends SCStaticPage {
           </dl>
           <h2>${unsafeHTML(this.localize('similes:485'))}</h2>
           <dl>
-            <dt id="king">${this.localize('similes:486')}</dt>
+            <dt id="king">${unsafeHTML(this.localize('similes:486'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:487'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:488'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:489'))}</dd>
@@ -567,7 +567,7 @@ class SCStaticSimiles extends SCStaticPage {
           </dl>
           <h2>${unsafeHTML(this.localize('similes:490'))}</h2>
           <dl>
-            <dt id="lake">${this.localize('similes:491')}</dt>
+            <dt id="lake">${unsafeHTML(this.localize('similes:491'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:492'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:493'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:494'))}</dd>
@@ -575,41 +575,41 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:496'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:497'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:498')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:498'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:499'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:500'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:501'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:502'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:503')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:503'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:504'))}</dd>
-            <dt>${this.localize('similes:505')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:505'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:506'))}</dd>
-            <dt>${this.localize('similes:507')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:507'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:508'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:509'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:510')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:510'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:511'))}</dd>
-            <dt>${this.localize('similes:512')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:512'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:513'))}</dd>
-            <dt>${this.localize('similes:514')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:514'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:515'))}</dd>
-            <dt>${this.localize('similes:516')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:516'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:517'))}</dd>
-            <dt id="lion">${this.localize('similes:518')}</dt>
+            <dt id="lion">${unsafeHTML(this.localize('similes:518'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:519'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:520'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:521')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:521'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:522'))}</dd>
-            <dt>${this.localize('similes:523')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:523'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:524'))}</dd>
-            <dt>${this.localize('similes:525')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:525'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:526'))}</dd>
-            <dt>${this.localize('similes:527')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:527'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:528'))}</dd>
-            <dt id="lotus">${this.localize('similes:529')}</dt>
+            <dt id="lotus">${unsafeHTML(this.localize('similes:529'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:530'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:531'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:532'))}</dd>
@@ -618,16 +618,16 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:535'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:536'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:537'))}</dd>
-            <dt>${this.localize('similes:538')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:538'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:539'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:540'))}</h2>
           <dl>
-            <dt>${this.localize('similes:541')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:541'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:542'))}</dd>
-            <dt id="magician">${this.localize('similes:543')}</dt>
+            <dt id="magician">${unsafeHTML(this.localize('similes:543'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:544'))}</dd>
-            <dt id="man">${this.localize('similes:545')}</dt>
+            <dt id="man">${unsafeHTML(this.localize('similes:545'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:546'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:547'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:548'))}</dd>
@@ -641,34 +641,34 @@ class SCStaticSimiles extends SCStaticPage {
             <dd></dd>
             <dt>${unsafeHTML(this.localize('similes:556'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:557'))}</dd>
-            <dt>${this.localize('similes:558')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:558'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:559'))}</dd>
-            <dt>${this.localize('similes:560')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:560'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:561'))}</dd>
-            <dt>${this.localize('similes:562')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:562'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:563'))}</dd>
-            <dt>${this.localize('similes:564')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:564'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:565'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:566'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:567'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:568'))}</dd>
-            <dt>${this.localize('similes:569')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:569'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:570'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:571'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:572')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:572'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:573'))}</dd>
-            <dt>${this.localize('similes:574')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:574'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:575'))}</dd>
-            <dt>${this.localize('similes:576')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:576'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:577'))}</dd>
-            <dt id="monkey">${this.localize('similes:578')}</dt>
+            <dt id="monkey">${unsafeHTML(this.localize('similes:578'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:579'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:580'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:581'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:582'))}</dd>
             <dd></dd>
-            <dt id="moon">${this.localize('similes:583')}</dt>
+            <dt id="moon">${unsafeHTML(this.localize('similes:583'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:584'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:585'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:586'))}</dd>
@@ -678,41 +678,41 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:590'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:591'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:592')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:592'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:593'))}</dd>
-            <dt>${this.localize('similes:594')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:594'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:595'))}</dd>
-            <dt>${this.localize('similes:596')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:596'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:597'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:598'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:599'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:600'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:601')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:601'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:602'))}</dd>
-            <dt>${this.localize('similes:603')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:603'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:604'))}</dd>
-            <dt>${this.localize('similes:605')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:605'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:606'))}</dd>
-            <dt>${this.localize('similes:607')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:607'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:608'))}</dd>
-            <dt>${this.localize('similes:609')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:609'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:610'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:611'))}</dd>
             <dd></dd>
-            <dt id="mustardseed">${this.localize('similes:612')}</dt>
+            <dt id="mustardseed">${unsafeHTML(this.localize('similes:612'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:613'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:614'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:615'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:616'))}</h2>
           <dl>
-            <dt>${this.localize('similes:617')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:617'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:618'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:619'))}</h2>
           <dl>
-            <dt id="ocean">${this.localize('similes:620')}</dt>
+            <dt id="ocean">${unsafeHTML(this.localize('similes:620'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:621'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:622'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:623'))}</dd>
@@ -725,15 +725,15 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:630'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:631'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:632'))}</dd>
-            <dt>${this.localize('similes:633')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:633'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:634'))}</dd>
-            <dt>${this.localize('similes:635')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:635'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:636'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:637'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:638')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:638'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:639'))}</dd>
-            <dt id="ox">${this.localize('similes:640')}</dt>
+            <dt id="ox">${unsafeHTML(this.localize('similes:640'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:641'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:642'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:643'))}</dd>
@@ -742,92 +742,92 @@ class SCStaticSimiles extends SCStaticPage {
           </dl>
           <h2>${unsafeHTML(this.localize('similes:645'))}</h2>
           <dl>
-            <dt>${this.localize('similes:646')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:646'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:647'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:648'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:649')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:649'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:650'))}</dd>
-            <dt>${this.localize('similes:651')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:651'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:652'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:653'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:654')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:654'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:655'))}</dd>
-            <dt>${this.localize('similes:656')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:656'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:657'))}</dd>
-            <dt>${this.localize('similes:658')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:658'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:659'))}</dd>
-            <dt>${this.localize('similes:660')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:660'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:661'))}</dd>
-            <dt>${this.localize('similes:662')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:662'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:663'))}</dd>
-            <dt>${this.localize('similes:664')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:664'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:665'))}</dd>
-            <dt>${this.localize('similes:666')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:666'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:667'))}</dd>
-            <dt>${this.localize('similes:668')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:668'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:669'))}</dd>
-            <dt>${this.localize('similes:670')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:670'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:671'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:672'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:673')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:673'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:674'))}</dd>
-            <dt>${this.localize('similes:675')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:675'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:676'))}</dd>
-            <dt>${this.localize('similes:677')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:677'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:678'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:679'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:680')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:680'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:681'))}</dd>
-            <dt>${this.localize('similes:682')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:682'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:683'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:684'))}</dd>
             <dd></dd>
-            <dt id="pool">${this.localize('similes:685')}</dt>
+            <dt id="pool">${unsafeHTML(this.localize('similes:685'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:686'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:687'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:688')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:688'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:689'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:690'))}</dd>
             <dd></dd>
-            <dt id="pot">${this.localize('similes:691')}</dt>
+            <dt id="pot">${unsafeHTML(this.localize('similes:691'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:692'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:693'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:694'))}</dd>
             <dd></dd>
             <dt>${unsafeHTML(this.localize('similes:695'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:696'))}</dd>
-            <dt>${this.localize('similes:697')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:697'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:698'))}</dd>
-            <dt>${this.localize('similes:699')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:699'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:700'))}</dd>
-            <dt>${this.localize('similes:701')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:701'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:702'))}</dd>
-            <dt>${this.localize('similes:703')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:703'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:704'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:705'))}</h2>
           <dl>
-            <dt>${this.localize('similes:706')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:706'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:707'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:708'))}</h2>
           <dl>
-            <dt>${this.localize('similes:709')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:709'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:710'))}</dd>
-            <dt>${this.localize('similes:711')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:711'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:712'))}</dd>
-            <dt>${this.localize('similes:713')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:713'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:714'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:715'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:716')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:716'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:717'))}</dd>
-            <dt id="rain">${this.localize('similes:718')}</dt>
+            <dt id="rain">${unsafeHTML(this.localize('similes:718'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:719'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:720'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:721'))}</dd>
@@ -836,28 +836,28 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:724'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:725'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:726')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:726'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:727'))}</dd>
-            <dt>${this.localize('similes:728')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:728'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:729'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:730'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:731'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:732')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:732'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:733'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:734'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:735')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:735'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:736'))}</dd>
-            <dt>${this.localize('similes:737')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:737'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:738'))}</dd>
-            <dt>${this.localize('similes:739')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:739'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:740'))}</dd>
-            <dt>${this.localize('similes:741')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:741'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:742'))}</dd>
-            <dt>${this.localize('similes:743')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:743'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:744'))}</dd>
-            <dt id="river">${this.localize('similes:745')}</dt>
+            <dt id="river">${unsafeHTML(this.localize('similes:745'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:746'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:747'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:748'))}</dd>
@@ -865,34 +865,34 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:750'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:751'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:752'))}</dd>
-            <dt>${this.localize('similes:753')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:753'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:754'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:755'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:756')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:756'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:757'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:758'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:759')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:759'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:760'))}</dd>
-            <dt>${this.localize('similes:761')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:761'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:762'))}</dd>
-            <dt>${this.localize('similes:763')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:763'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:764'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:765'))}</h2>
           <dl>
-            <dt>${this.localize('similes:766')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:766'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:767'))}</dd>
-            <dt>${this.localize('similes:768')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:768'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:769'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:770'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:771')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:771'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:772'))}</dd>
-            <dt>${this.localize('similes:773')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:773'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:774'))}</dd>
-            <dt>${this.localize('similes:775')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:775'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:776'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:777'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:778'))}</dd>
@@ -901,152 +901,152 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:781'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:782'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:783'))}</dd>
-            <dt>${this.localize('similes:784')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:784'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:785'))}</dd>
-            <dt>${this.localize('similes:786')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:786'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:787'))}</dd>
-            <dt>${this.localize('similes:788')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:788'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:789'))}</dd>
-            <dt>${this.localize('similes:790')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:790'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:791'))}</dd>
-            <dt>${this.localize('similes:792')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:792'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:793'))}</dd>
-            <dt>${this.localize('similes:794')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:794'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:795'))}</dd>
-            <dt>${this.localize('similes:796')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:796'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:797'))}</dd>
-            <dt>${this.localize('similes:798')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:798'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:799'))}</dd>
-            <dt id="shore">${this.localize('similes:800')}</dt>
+            <dt id="shore">${unsafeHTML(this.localize('similes:800'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:801'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:802'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:803'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:804'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:805'))}</dd>
-            <dt>${this.localize('similes:806')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:806'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:807'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:808'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:809')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:809'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:810'))}</dd>
-            <dt id="silversmith">${this.localize('similes:811')}</dt>
+            <dt id="silversmith">${unsafeHTML(this.localize('similes:811'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:812'))}</dd>
-            <dt>${this.localize('similes:813')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:813'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:814'))}</dd>
-            <dt>${this.localize('similes:815')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:815'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:816'))}</dd>
-            <dt id="snake">${this.localize('similes:817')}</dt>
+            <dt id="snake">${unsafeHTML(this.localize('similes:817'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:818'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:819'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:820'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:821'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:822')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:822'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:823'))}</dd>
-            <dt>${this.localize('similes:824')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:824'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:825'))}</dd>
-            <dt>${this.localize('similes:826')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:826'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:827'))}</dd>
-            <dt>${this.localize('similes:828')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:828'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:829'))}</dd>
-            <dt>${this.localize('similes:830')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:830'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:831'))}</dd>
-            <dt>${this.localize('similes:832')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:832'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:833'))}</dd>
-            <dt>${this.localize('similes:834')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:834'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:835'))}</dd>
-            <dt>${this.localize('similes:836')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:836'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:837'))}</dd>
-            <dt>${this.localize('similes:838')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:838'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:839'))}</dd>
-            <dt>${this.localize('similes:840')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:840'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:841'))}</dd>
-            <dt>${this.localize('similes:842')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:842'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:843'))}</dd>
-            <dt>${this.localize('similes:844')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:844'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:845'))}</dd>
-            <dt>${this.localize('similes:846')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:846'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:847'))}</dd>
-            <dt>${this.localize('similes:848')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:848'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:849'))}</dd>
-            <dt>${this.localize('similes:850')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:850'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:851'))}</dd>
-            <dt id="stream">${this.localize('similes:852')}</dt>
+            <dt id="stream">${unsafeHTML(this.localize('similes:852'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:853'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:854'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:855'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:856'))}</dd>
-            <dt>${this.localize('similes:857')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:857'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:858'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:859'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:860'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:861')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:861'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:862'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:863'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:864'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:865')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:865'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:866'))}</dd>
-            <dt>${this.localize('similes:867')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:867'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:868'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:869'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:870'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:871'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:872')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:872'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:873'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:874'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:875'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:876')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:876'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:877'))}</dd>
-            <dt>${this.localize('similes:878')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:878'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:879'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:880'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:881')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:881'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:882'))}</dd>
-            <dt>${this.localize('similes:883')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:883'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:884'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:885'))}</h2>
           <dl>
-            <dt>${this.localize('similes:886')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:886'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:887'))}</dd>
-            <dt>${this.localize('similes:888')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:888'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:889'))}</dd>
-            <dt>${this.localize('similes:890')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:890'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:891'))}</dd>
-            <dt>${this.localize('similes:892')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:892'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:893'))}</dd>
-            <dt>${this.localize('similes:894')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:894'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:895'))}</dd>
-            <dt>${this.localize('similes:896')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:896'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:897'))}</dd>
-            <dt>${this.localize('similes:898')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:898'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:899'))}</dd>
-            <dt>${this.localize('similes:900')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:900'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:901'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:902'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:903')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:903'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:904'))}</dd>
-            <dt>${this.localize('similes:905')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:905'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:906'))}</dd>
-            <dt>${this.localize('similes:907')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:907'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:908'))}</dd>
             <dt>${unsafeHTML(this.localize('similes:909'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:910'))}</dd>
-            <dt>${this.localize('similes:911')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:911'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:912'))}</dd>
-            <dt>${this.localize('similes:913')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:913'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:914'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:915'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:916')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:916'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:917'))}</dd>
-            <dt id="tree">${this.localize('similes:918')}</dt>
+            <dt id="tree">${unsafeHTML(this.localize('similes:918'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:919'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:920'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:921'))}</dd>
@@ -1060,53 +1060,53 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:929'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:930'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:931')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:931'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:932'))}</dd>
             <dt>${unsafeHTML(this.localize('similes:933'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:934'))}</dd>
-            <dt>${this.localize('similes:935')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:935'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:936'))}</dd>
             <dt>${unsafeHTML(this.localize('similes:937'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:938'))}</dd>
-            <dt>${this.localize('similes:939')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:939'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:940'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:941'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:942')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:942'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:943'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:944'))}</h2>
           <dl>
-            <dt id="upright">${this.localize('similes:945')}</dt>
+            <dt id="upright">${unsafeHTML(this.localize('similes:945'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:946'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:947'))}</h2>
           <dl>
-            <dt>${this.localize('similes:948')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:948'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:949'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:950'))}</dd>
             <dd></dd>
-            <dt id="vine">${this.localize('similes:951')}</dt>
+            <dt id="vine">${unsafeHTML(this.localize('similes:951'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:952'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:953'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:954')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:954'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:955'))}</dd>
-            <dt>${this.localize('similes:956')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:956'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:957'))}</dd>
-            <dt>${this.localize('similes:958')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:958'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:959'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:960'))}</h2>
           <dl>
-            <dt id="warrior">${this.localize('similes:961')}</dt>
+            <dt id="warrior">${unsafeHTML(this.localize('similes:961'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:962'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:963'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:964'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:965')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:965'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:966'))}</dd>
-            <dt id="water">${this.localize('similes:967')}</dt>
+            <dt id="water">${unsafeHTML(this.localize('similes:967'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:968'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:969'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:970'))}</dd>
@@ -1117,18 +1117,18 @@ class SCStaticSimiles extends SCStaticPage {
             <dd></dd>
             <dt>${unsafeHTML(this.localize('similes:975'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:976'))}</dd>
-            <dt>${this.localize('similes:977')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:977'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:978'))}</dd>
-            <dt>${this.localize('similes:979')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:979'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:980'))}</dd>
-            <dt>${this.localize('similes:981')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:981'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:982'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:983'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:984')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:984'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:985'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:986'))}</dd>
-            <dt id="wind">${this.localize('similes:987')}</dt>
+            <dt id="wind">${unsafeHTML(this.localize('similes:987'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:988'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:989'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:990'))}</dd>
@@ -1136,24 +1136,24 @@ class SCStaticSimiles extends SCStaticPage {
             <dd>${unsafeHTML(this.localize('similes:992'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:993'))}</dd>
             <dd></dd>
-            <dt>${this.localize('similes:994')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:994'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:995'))}</dd>
-            <dt>${this.localize('similes:996')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:996'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:997'))}</dd>
-            <dt>${this.localize('similes:998')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:998'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:999'))}</dd>
-            <dt>${this.localize('similes:1000')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:1000'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:1001'))}</dd>
-            <dt>${this.localize('similes:1002')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:1002'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:1003'))}</dd>
           </dl>
           <h2>${unsafeHTML(this.localize('similes:1004'))}</h2>
           <dl>
-            <dt>${this.localize('similes:1005')}</dt>
+            <dt>${unsafeHTML(this.localize('similes:1005'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:1006'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:1007'))}</dd>
             <dd></dd>
-            <dt id="yokes">${this.localize('similes:1008')}</dt>
+            <dt id="yokes">${unsafeHTML(this.localize('similes:1008'))}</dt>
             <dd>${unsafeHTML(this.localize('similes:1009'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:1010'))}</dd>
             <dd>${unsafeHTML(this.localize('similes:1011'))}</dd>
@@ -1162,25 +1162,25 @@ class SCStaticSimiles extends SCStaticPage {
           <aside class="about-index">
             <p>${unsafeHTML(this.localize('similes:1013'))}</p>
             <ul>
-              <li>${this.localize('similes:1014')}</li>
-              <li>${this.localize('similes:1015')}</li>
-              <li>${this.localize('similes:1016')}</li>
-              <li>${this.localize('similes:1017')}</li>
-              <li>${this.localize('similes:1018')}</li>
+              <li>${unsafeHTML(this.localize('similes:1014'))}</li>
+              <li>${unsafeHTML(this.localize('similes:1015'))}</li>
+              <li>${unsafeHTML(this.localize('similes:1016'))}</li>
+              <li>${unsafeHTML(this.localize('similes:1017'))}</li>
+              <li>${unsafeHTML(this.localize('similes:1018'))}</li>
               <li>${unsafeHTML(this.localize('similes:1019'))}</li>
             </ul>
-            <p>${this.localize('similes:1020')}</p>
-            <blockquote>${this.localize('similes:1021')}</blockquote>
-            <p>${this.localize('similes:1022')}</p>
+            <p>${unsafeHTML(this.localize('similes:1020'))}</p>
+            <blockquote>${unsafeHTML(this.localize('similes:1021'))}</blockquote>
+            <p>${unsafeHTML(this.localize('similes:1022'))}</p>
             <ul>
-              <li>${this.localize('similes:1023')}</li>
-              <li>${this.localize('similes:1024')}</li>
+              <li>${unsafeHTML(this.localize('similes:1023'))}</li>
+              <li>${unsafeHTML(this.localize('similes:1024'))}</li>
             </ul>
           </aside>
           <aside class="static-copyright">
-            <p>${this.localize('similes:1025')}</p>
+            <p>${unsafeHTML(this.localize('similes:1025'))}</p>
             <blockquote>${unsafeHTML(this.localize('similes:1026'))}</blockquote>
-            <p>${this.localize('similes:1027')}</p>
+            <p>${unsafeHTML(this.localize('similes:1027'))}</p>
           </aside>
         </article>
       </main>

@@ -58,51 +58,51 @@ class SCStaticDonations extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('donations:1')}</h1>
-          <p>${this.localize('donations:2')}</p>
+          <h1>${unsafeHTML(this.localize('donations:1'))}</h1>
+          <p>${unsafeHTML(this.localize('donations:2'))}</p>
           <a class="donate-link" href="/donate-now">
             <div class="link-button">${unsafeHTML(this.localize('donations:3'))}</div>
           </a>
-          <h2>${this.localize('donations:4')}</h2>
+          <h2>${unsafeHTML(this.localize('donations:4'))}</h2>
           <ul>
-            <li>${this.localize('donations:5')}</li>
-            <li>${this.localize('donations:6')}</li>
-            <li>${this.localize('donations:7')}</li>
-            <li>${this.localize('donations:8')}</li>
+            <li>${unsafeHTML(this.localize('donations:5'))}</li>
+            <li>${unsafeHTML(this.localize('donations:6'))}</li>
+            <li>${unsafeHTML(this.localize('donations:7'))}</li>
+            <li>${unsafeHTML(this.localize('donations:8'))}</li>
           </ul>
-          <h2>${this.localize('donations:9')}</h2>
+          <h2>${unsafeHTML(this.localize('donations:9'))}</h2>
           <p>${unsafeHTML(this.localize('donations:10'))}</p>
           <table class="account-data">
             <tr>
-              <td>${this.localize('donations:11')}</td>
+              <td>${unsafeHTML(this.localize('donations:11'))}</td>
               <td>${unsafeHTML(this.localize('donations:12'))}</td>
             </tr>
             <tr>
-              <td>${this.localize('donations:13')}</td>
+              <td>${unsafeHTML(this.localize('donations:13'))}</td>
               <td>${unsafeHTML(this.localize('donations:14'))}</td>
             </tr>
             <tr>
-              <td>${this.localize('donations:15')}</td>
+              <td>${unsafeHTML(this.localize('donations:15'))}</td>
               <td>${unsafeHTML(this.localize('donations:16'))}</td>
             </tr>
             <tr>
-              <td>${this.localize('donations:17')}</td>
+              <td>${unsafeHTML(this.localize('donations:17'))}</td>
               <td>${unsafeHTML(this.localize('donations:18'))}</td>
             </tr>
             <tr>
-              <td>${this.localize('donations:19')}</td>
+              <td>${unsafeHTML(this.localize('donations:19'))}</td>
               <td>${unsafeHTML(this.localize('donations:20'))}</td>
             </tr>
             <tr>
-              <td>${this.localize('donations:21')}</td>
+              <td>${unsafeHTML(this.localize('donations:21'))}</td>
               <td>${unsafeHTML(this.localize('donations:22'))}</td>
             </tr>
           </table>
-          <p>${this.localize('donations:23')}</p>
-          <h2>${this.localize('donations:24')}</h2>
-          <p>${this.localize('donations:25')}</p>
+          <p>${unsafeHTML(this.localize('donations:23'))}</p>
+          <h2>${unsafeHTML(this.localize('donations:24'))}</h2>
+          <p>${unsafeHTML(this.localize('donations:25'))}</p>
           <p>${unsafeHTML(this.localize('donations:26'))}</p>
-          <p>${this.localize('donations:27')}</p>
+          <p>${unsafeHTML(this.localize('donations:27'))}</p>
         </article>
       </main>
     `;

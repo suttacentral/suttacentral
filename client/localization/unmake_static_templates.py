@@ -8,7 +8,7 @@ from common import static_elements_dir, localization_data_dir, templates_dir, ge
 
 
 
-template_regex = re.compile(r'(\$\{t`)([^`]+?)(`\})')
+generic_template_regex = re.compile(r'(\$\{t`)([^`]+?)(`\})')
 
 for file in sorted(templates_dir.glob('*.js')):
     with file.open(encoding='utf8') as f:
@@ -21,22 +21,25 @@ for file in sorted(templates_dir.glob('*.js')):
 
 
     locale_data = {}
-    
-    def sub_fn(m):
-        segment = re.sub(r'\s+', ' ', m[2])
-        segment_id = f'{locale_name}:{len(locale_data) + 1}'
-        locale_data[segment_id] = segment
+    counter = 0
+    def tag_sub_fn(m):
+        global counter
+        counter += 1
+        pos = m.start(0)
 
-        fun = ''
-        # Is this a segment with inline tags?
-        if re.search(r'\*.+\*|\_.+\_|\<.+\>', segment):
-            fun = f"unsafeHTML(this.localize('{segment_id}'))"
+        segment_id = f'{locale_name}:{counter}'
+        segment_string = re.sub(r'\s+', ' ', m[2])
+        locale_data[segment_id] = segment_string
+
+        lookbehind = string[pos-20:pos]
+
+        if re.search(r'>\s*$', lookbehind):
+            return f"${{unsafeHTML(this.localize('{segment_id}'))}}"
         else:
-            fun = f"this.localize('{segment_id}')"
+            print(lookbehind)
+            return f"${{this.localize('{segment_id}')}}"
 
-        return f"${{{fun}}}"
-    
-    new_string = template_regex.sub(sub_fn, string)
+    new_string = generic_template_regex.sub(tag_sub_fn, string)
 
     with locale_data_file.open('r', encoding='utf8') as f:
         old_locale_data = json.load(f)
@@ -50,3 +53,5 @@ for file in sorted(templates_dir.glob('*.js')):
     
     with (static_elements_dir / file.name).open('w', encoding='utf8') as f:
         f.write(new_string)
+
+    

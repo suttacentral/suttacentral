@@ -16,22 +16,22 @@ class SCStaticANewBeginning extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('a-new-beginning:1')}</h1>
-          <p>${this.localize('a-new-beginning:2')}</p>
+          <h1>${unsafeHTML(this.localize('a-new-beginning:1'))}</h1>
+          <p>${unsafeHTML(this.localize('a-new-beginning:2'))}</p>
           <p>${unsafeHTML(this.localize('a-new-beginning:3'))}</p>
-          <p>${this.localize('a-new-beginning:4')}</p>
-          <p>${this.localize('a-new-beginning:5')}</p>
-          <p>${this.localize('a-new-beginning:6')}</p>
+          <p>${unsafeHTML(this.localize('a-new-beginning:4'))}</p>
+          <p>${unsafeHTML(this.localize('a-new-beginning:5'))}</p>
+          <p>${unsafeHTML(this.localize('a-new-beginning:6'))}</p>
           <ul>
-            <li>${this.localize('a-new-beginning:7')}</li>
-            <li>${this.localize('a-new-beginning:8')}</li>
-            <li>${this.localize('a-new-beginning:9')}</li>
-            <li>${this.localize('a-new-beginning:10')}</li>
-            <li>${this.localize('a-new-beginning:11')}</li>
-            <li>${this.localize('a-new-beginning:12')}</li>
-            <li>${this.localize('a-new-beginning:13')}</li>
-            <li>${this.localize('a-new-beginning:14')}</li>
-            <li>${this.localize('a-new-beginning:15')}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:7'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:8'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:9'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:10'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:11'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:12'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:13'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:14'))}</li>
+            <li>${unsafeHTML(this.localize('a-new-beginning:15'))}</li>
           </ul>
         </article>
       </main>

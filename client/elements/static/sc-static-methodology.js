@@ -26,7 +26,7 @@ class SCStaticMethodologyPage extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('methodology:1')}</h1>
+          <h1>${unsafeHTML(this.localize('methodology:1'))}</h1>
           <nav class="contents">
             <ol>
               <li>${unsafeHTML(this.localize('methodology:2'))}</li>
@@ -37,84 +37,84 @@ class SCStaticMethodologyPage extends SCStaticPage {
               <li>${unsafeHTML(this.localize('methodology:7'))}</li>
             </ol>
           </nav>
-          <h2 id="item1">${this.localize('methodology:8')}</h2>
+          <h2 id="item1">${unsafeHTML(this.localize('methodology:8'))}</h2>
           <p>${unsafeHTML(this.localize('methodology:9'))}</p>
           <blockquote>${unsafeHTML(this.localize('methodology:10'))}</blockquote>
           <p>${unsafeHTML(this.localize('methodology:11'))}</p>
-          <p>${this.localize('methodology:12')}</p>
+          <p>${unsafeHTML(this.localize('methodology:12'))}</p>
           <p>${unsafeHTML(this.localize('methodology:13'))}</p>
-          <p>${this.localize('methodology:14')}</p>
-          <h2 id="item2">${this.localize('methodology:15')}</h2>
-          <p class="byline">${this.localize('methodology:16')}</p>
-          <h3>${this.localize('methodology:17')}</h3>
-          <p>${this.localize('methodology:18')}</p>
+          <p>${unsafeHTML(this.localize('methodology:14'))}</p>
+          <h2 id="item2">${unsafeHTML(this.localize('methodology:15'))}</h2>
+          <p class="byline">${unsafeHTML(this.localize('methodology:16'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:17'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:18'))}</p>
           <ul>
             <li>${unsafeHTML(this.localize('methodology:19'))}</li>
             <li>${unsafeHTML(this.localize('methodology:20'))}</li>
           </ul>
-          <p>${this.localize('methodology:21')}</p>
-          <p>${this.localize('methodology:22')}</p>
-          <p>${this.localize('methodology:23')}</p>
+          <p>${unsafeHTML(this.localize('methodology:21'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:22'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:23'))}</p>
           <ul>
             <li>${unsafeHTML(this.localize('methodology:24'))}</li>
             <li>${unsafeHTML(this.localize('methodology:25'))}</li>
             <li>${unsafeHTML(this.localize('methodology:26'))}</li>
             <li>${unsafeHTML(this.localize('methodology:27'))}</li>
           </ul>
-          <p>${this.localize('methodology:28')}</p>
-          <h3>${this.localize('methodology:29')}</h3>
-          <p>${this.localize('methodology:30')}</p>
-          <p>${this.localize('methodology:31')}</p>
-          <h2 id="item3">${this.localize('methodology:32')}</h2>
-          <p class="byline">${this.localize('methodology:33')}</p>
-          <p>${this.localize('methodology:34')}</p>
+          <p>${unsafeHTML(this.localize('methodology:28'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:29'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:30'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:31'))}</p>
+          <h2 id="item3">${unsafeHTML(this.localize('methodology:32'))}</h2>
+          <p class="byline">${unsafeHTML(this.localize('methodology:33'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:34'))}</p>
           <p>${unsafeHTML(this.localize('methodology:35'))}</p>
-          <p>${this.localize('methodology:36')}</p>
+          <p>${unsafeHTML(this.localize('methodology:36'))}</p>
           <p>${unsafeHTML(this.localize('methodology:37'))}</p>
           <p>${unsafeHTML(this.localize('methodology:38'))}</p>
-          <p>${this.localize('methodology:39')}</p>
+          <p>${unsafeHTML(this.localize('methodology:39'))}</p>
           <p>${unsafeHTML(this.localize('methodology:40'))}</p>
-          <p>${this.localize('methodology:41')}</p>
-          <p>${this.localize('methodology:42')}</p>
-          <p>${this.localize('methodology:43')}</p>
-          <h2 id="item4">${this.localize('methodology:44')}</h2>
-          <h3>${this.localize('methodology:45')}</h3>
-          <p>${this.localize('methodology:46')}</p>
-          <p>${this.localize('methodology:47')}</p>
-          <p>${this.localize('methodology:48')}</p>
-          <p>${this.localize('methodology:49')}</p>
-          <p>${this.localize('methodology:50')}</p>
-          <h3>${this.localize('methodology:51')}</h3>
-          <p>${this.localize('methodology:52')}</p>
-          <h3>${this.localize('methodology:53')}</h3>
-          <p>${this.localize('methodology:54')}</p>
-          <h3>${this.localize('methodology:55')}</h3>
-          <p>${this.localize('methodology:56')}</p>
-          <h3>${this.localize('methodology:57')}</h3>
-          <p>${this.localize('methodology:58')}</p>
-          <h2 id="item5">${this.localize('methodology:59')}</h2>
-          <p>${this.localize('methodology:60')}</p>
-          <p>${this.localize('methodology:61')}</p>
-          <p>${this.localize('methodology:62')}</p>
-          <h3>${this.localize('methodology:63')}</h3>
-          <p>${this.localize('methodology:64')}</p>
-          <h3>${this.localize('methodology:65')}</h3>
-          <p>${this.localize('methodology:66')}</p>
-          <p>${this.localize('methodology:67')}</p>
+          <p>${unsafeHTML(this.localize('methodology:41'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:42'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:43'))}</p>
+          <h2 id="item4">${unsafeHTML(this.localize('methodology:44'))}</h2>
+          <h3>${unsafeHTML(this.localize('methodology:45'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:46'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:47'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:48'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:49'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:50'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:51'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:52'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:53'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:54'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:55'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:56'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:57'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:58'))}</p>
+          <h2 id="item5">${unsafeHTML(this.localize('methodology:59'))}</h2>
+          <p>${unsafeHTML(this.localize('methodology:60'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:61'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:62'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:63'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:64'))}</p>
+          <h3>${unsafeHTML(this.localize('methodology:65'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:66'))}</p>
+          <p>${unsafeHTML(this.localize('methodology:67'))}</p>
           <p>${unsafeHTML(this.localize('methodology:68'))}</p>
-          <h3>${this.localize('methodology:69')}</h3>
-          <p>${this.localize('methodology:70')}</p>
+          <h3>${unsafeHTML(this.localize('methodology:69'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:70'))}</p>
           <ul>
-            <li>${this.localize('methodology:71')}</li>
+            <li>${unsafeHTML(this.localize('methodology:71'))}</li>
             <li>${unsafeHTML(this.localize('methodology:72'))}</li>
-            <li>${this.localize('methodology:73')}</li>
-            <li>${this.localize('methodology:74')}</li>
-            <li>${this.localize('methodology:75')}</li>
+            <li>${unsafeHTML(this.localize('methodology:73'))}</li>
+            <li>${unsafeHTML(this.localize('methodology:74'))}</li>
+            <li>${unsafeHTML(this.localize('methodology:75'))}</li>
           </ul>
           <p>${unsafeHTML(this.localize('methodology:76'))}</p>
-          <h2 id="item6">${this.localize('methodology:77')}</h2>
-          <h3>${this.localize('methodology:78')}</h3>
-          <p>${this.localize('methodology:79')}</p>
+          <h2 id="item6">${unsafeHTML(this.localize('methodology:77'))}</h2>
+          <h3>${unsafeHTML(this.localize('methodology:78'))}</h3>
+          <p>${unsafeHTML(this.localize('methodology:79'))}</p>
           <ul>
             <li>${unsafeHTML(this.localize('methodology:80'))}</li>
             <li>${unsafeHTML(this.localize('methodology:81'))}</li>
@@ -308,7 +308,7 @@ class SCStaticMethodologyPage extends SCStaticPage {
             <li>${unsafeHTML(this.localize('methodology:269'))}</li>
             <li>${unsafeHTML(this.localize('methodology:270'))}</li>
           </ul>
-          <h3>${this.localize('methodology:271')}</h3>
+          <h3>${unsafeHTML(this.localize('methodology:271'))}</h3>
           <ul>
             <li>${unsafeHTML(this.localize('methodology:272'))}</li>
             <li>${unsafeHTML(this.localize('methodology:273'))}</li>
@@ -334,7 +334,7 @@ class SCStaticMethodologyPage extends SCStaticPage {
             <li>${unsafeHTML(this.localize('methodology:293'))}</li>
             <li>${unsafeHTML(this.localize('methodology:294'))}</li>
           </ul>
-          <h3>${this.localize('methodology:295')}</h3>
+          <h3>${unsafeHTML(this.localize('methodology:295'))}</h3>
           <ul>
             <li>${unsafeHTML(this.localize('methodology:296'))}</li>
             <li>${unsafeHTML(this.localize('methodology:297'))}</li>
