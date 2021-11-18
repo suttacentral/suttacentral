@@ -1,6 +1,13 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.11.19
+
+- FIx: ATB and title for static page essays is buggy. #2315
+- Use vite instead of webpack (development mode). #2319
+- Modify the code to fit the new localization directory (development mode). #2321
+- Ensure reference highlights work regardless of whether the reference is actually activated. #2323
+
 ## 2021.10.27
 
 - When loading data, the duplicate values of blurbs and names are prompted. #2312
