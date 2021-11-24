@@ -418,7 +418,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     const rootDOM = this.shadowRoot;
     addEventListener(
       'scroll',
-      throttle(500, () => {
+      throttle(800, () => {
         const transitionStyle = 'transform 200ms ease-in-out';
         rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
         rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
@@ -450,17 +450,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     let lastScrollTop = 0;
     addEventListener(
       'scroll',
-      throttle(500, () => {
+      throttle(800, () => {
         const { alwaysShowUniversalToolbar } = store.getState();
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        const {
-          displaySettingMenu,
-          displaySuttaParallels,
-          displaySuttaToC,
-          displaySuttaInfo,
-        } = store.getState();
+        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } =
+          store.getState();
         if (
           this.changedRoute.path !== '/' &&
           !displaySettingMenu &&
