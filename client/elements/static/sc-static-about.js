@@ -16,14 +16,14 @@ class SCStaticAbout extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('about:1')}</h1>
-          <p>${this.localize('about:2')}</p>
-          <p>${this.localize('about:3')}</p>
-          <p>${this.localize('about:4')}</p>
-          <p>${this.localize('about:5')}</p>
+          <h1>${unsafeHTML(this.localize('about:1'))}</h1>
+          <p>${unsafeHTML(this.localize('about:2'))}</p>
+          <p>${unsafeHTML(this.localize('about:3'))}</p>
+          <p>${unsafeHTML(this.localize('about:4'))}</p>
+          <p>${unsafeHTML(this.localize('about:5'))}</p>
           <p>${unsafeHTML(this.localize('about:6'))}</p>
-          <h2>${this.localize('about:7')}</h2>
-          <p>${this.localize('about:8')}</p>
+          <h2>${unsafeHTML(this.localize('about:7'))}</h2>
+          <p>${unsafeHTML(this.localize('about:8'))}</p>
         </article>
       </main>
     `;

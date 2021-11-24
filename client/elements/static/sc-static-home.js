@@ -548,7 +548,7 @@ class SCStaticHomePage extends SCStaticPage {
         </section>
 
         <section class="plain quotation">
-          <h2>${this.localize('home:5')}</h2>
+          <h2>${unsafeHTML(this.localize('home:5'))}</h2>
           <blockquote>
             <span>${this.randomEpigrah ? this.randomEpigrah.epigraph : ''}</span>
           </blockquote>
@@ -556,7 +556,7 @@ class SCStaticHomePage extends SCStaticPage {
             class="link-button quote-button ripple"
             href=${this.randomEpigrah ? `/${this.randomEpigrah.uid}` : ''}
           >
-            ${this.localize('home:6')}
+            ${unsafeHTML(this.localize('home:6'))}
           </a>
         </section>
 
@@ -567,15 +567,17 @@ class SCStaticHomePage extends SCStaticPage {
                 <source srcset="/img/home-page/pali1.avif" type="image/avif" />
                 <img src="/img/home-page/pali1.jpg" alt="Pali manuscript" style="width:100%" />
               </picture>
-              <figcaption>${this.localize('home:7')}</figcaption>
+              <figcaption>${unsafeHTML(this.localize('home:7'))}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:8')}</h2>
-                <p>${this.localize('home:9')}</p>
+                <h2>${unsafeHTML(this.localize('home:8'))}</h2>
+                <p>${unsafeHTML(this.localize('home:9'))}</p>
               </div>
               <div class="card-actions">
-                <a href="/introduction" class="link-button">${this.localize('home:10')}</a>
+                <a href="/introduction" class="link-button"
+                  >${unsafeHTML(this.localize('home:10'))}</a
+                >
               </div>
             </div>
           </article>
@@ -590,15 +592,15 @@ class SCStaticHomePage extends SCStaticPage {
                   style="width:100%"
                 />
               </picture>
-              <figcaption>${this.localize('home:11')}</figcaption>
+              <figcaption>${unsafeHTML(this.localize('home:11'))}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:12')}</h2>
-                <p>${this.localize('home:13')}</p>
+                <h2>${unsafeHTML(this.localize('home:12'))}</h2>
+                <p>${unsafeHTML(this.localize('home:13'))}</p>
               </div>
               <div class="card-actions">
-                <a href="/start" class="link-button">${this.localize('home:14')}</a>
+                <a href="/start" class="link-button">${unsafeHTML(this.localize('home:14'))}</a>
               </div>
             </div>
           </article>
@@ -606,7 +608,7 @@ class SCStaticHomePage extends SCStaticPage {
 
         <section class="sc-related">
           <div class="related-projects-heading">
-            <h2>${this.localize('home:15')}</h2>
+            <h2>${unsafeHTML(this.localize('home:15'))}</h2>
           </div>
           <div class="sc-related-items-wrapper">
             <article class="card dark-accent">
@@ -620,15 +622,17 @@ class SCStaticHomePage extends SCStaticPage {
                   <span>${icon.speaker}</span>
                   <h3>
                     <span>SuttaCentral Voice</span>
-                    <span class="sc-related-item-subtitle">${this.localize('home:17')}</span>
+                    <span class="sc-related-item-subtitle"
+                      >${unsafeHTML(this.localize('home:17'))}</span
+                    >
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>${this.localize('home:18')}</p>
+                <p>${unsafeHTML(this.localize('home:18'))}</p>
                 <ul>
-                  <li>${this.localize('home:19')}</li>
-                  <li>${this.localize('home:20')}.</li>
+                  <li>${unsafeHTML(this.localize('home:19'))}</li>
+                  <li>${unsafeHTML(this.localize('home:20'))}.</li>
                 </ul>
               </div>
             </article>
@@ -648,12 +652,14 @@ class SCStaticHomePage extends SCStaticPage {
                   </span>
                   <h3>
                     <span>BuddhaNexus</span>
-                    <span class="sc-related-item-subtitle">${this.localize('home:22')}</span>
+                    <span class="sc-related-item-subtitle"
+                      >${unsafeHTML(this.localize('home:22'))}</span
+                    >
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>${this.localize('home:23')}</p>
+                <p>${unsafeHTML(this.localize('home:23'))}</p>
               </div>
             </article>
             <article class="card primary-color">
@@ -667,16 +673,18 @@ class SCStaticHomePage extends SCStaticPage {
                   <span>${icon.people}</span>
                   <h3>
                     <span>Discuss & Discover</span>
-                    <span class="sc-related-item-subtitle">${this.localize('home:25')}</span>
+                    <span class="sc-related-item-subtitle"
+                      >${unsafeHTML(this.localize('home:25'))}</span
+                    >
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>${this.localize('home:26')}</p>
+                <p>${unsafeHTML(this.localize('home:26'))}</p>
                 <ul>
-                  <li>${this.localize('home:27')}</li>
-                  <li>${this.localize('home:28')}</li>
-                  <li>${this.localize('home:29')}</li>
+                  <li>${unsafeHTML(this.localize('home:27'))}</li>
+                  <li>${unsafeHTML(this.localize('home:28'))}</li>
+                  <li>${unsafeHTML(this.localize('home:29'))}</li>
                 </ul>
               </div>
             </article>
@@ -691,19 +699,21 @@ class SCStaticHomePage extends SCStaticPage {
                   <span>${icon.bilara}</span>
                   <h3>
                     <span>Bilara</span>
-                    <span class="sc-related-item-subtitle">${this.localize('home:31')}</span>
+                    <span class="sc-related-item-subtitle"
+                      >${unsafeHTML(this.localize('home:31'))}</span
+                    >
                   </h3>
                 </header>
               </a>
               <div class="related-projects-content">
-                <p>${this.localize('home:32')}</p>
+                <p>${unsafeHTML(this.localize('home:32'))}</p>
               </div>
             </article>
           </div>
         </section>
 
         <section class="plain quotation">
-          <h2>${this.localize('home:33')}</h2>
+          <h2>${unsafeHTML(this.localize('home:33'))}</h2>
           <blockquote>
             <span>${this.whyWeRead}</span>
           </blockquote>
@@ -711,7 +721,7 @@ class SCStaticHomePage extends SCStaticPage {
             class="link-button quote-button"
             href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
           >
-            ${this.localize('home:34')}
+            ${unsafeHTML(this.localize('home:34'))}
           </a>
         </section>
 
@@ -726,15 +736,17 @@ class SCStaticHomePage extends SCStaticPage {
                   style="width:100%"
                 />
               </picture>
-              <figcaption>${this.localize('home:35')}</figcaption>
+              <figcaption>${unsafeHTML(this.localize('home:35'))}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:36')}</h2>
+                <h2>${unsafeHTML(this.localize('home:36'))}</h2>
                 <p>${unsafeHTML(this.localize('home:37'))}</p>
               </div>
               <div class="card-actions">
-                <a href="/general-guide-sujato" class="link-button">${this.localize('home:38')}</a>
+                <a href="/general-guide-sujato" class="link-button"
+                  >${unsafeHTML(this.localize('home:38'))}</a
+                >
               </div>
             </div>
           </article>
@@ -745,15 +757,15 @@ class SCStaticHomePage extends SCStaticPage {
                 <source srcset="/img/home-page/bhikkhuni.avif" type="image/avif" />
                 <img src="/img/home-page/bhikkhuni.jpg" alt="Pali manuscript" style="width:100%" />
               </picture>
-              <figcaption>${this.localize('home:39')}</figcaption>
+              <figcaption>${unsafeHTML(this.localize('home:39'))}</figcaption>
             </figure>
             <div class="card-content">
               <div class="card-text">
-                <h2>${this.localize('home:40')}</h2>
-                <p>${this.localize('home:41')}</p>
+                <h2>${unsafeHTML(this.localize('home:40'))}</h2>
+                <p>${unsafeHTML(this.localize('home:41'))}</p>
               </div>
               <div class="card-actions">
-                <a href="/subjects" class="link-button">${this.localize('home:42')}</a>
+                <a href="/subjects" class="link-button">${unsafeHTML(this.localize('home:42'))}</a>
               </div>
             </div>
           </article>

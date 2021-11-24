@@ -16,8 +16,8 @@ class SCStaticANGuideSujato extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('an-guide-sujato:1')}</h1>
-          <p class="byline">${this.localize('an-guide-sujato:2')}</p>
+          <h1>${unsafeHTML(this.localize('an-guide-sujato:1'))}</h1>
+          <p class="byline">${unsafeHTML(this.localize('an-guide-sujato:2'))}</p>
           <nav class="contents">
             <ol>
               <li>${unsafeHTML(this.localize('an-guide-sujato:3'))}</li>
@@ -30,77 +30,77 @@ class SCStaticANGuideSujato extends SCStaticPage {
           <p>${unsafeHTML(this.localize('an-guide-sujato:8'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:9'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:10'))}</p>
-          <p>${this.localize('an-guide-sujato:11')}</p>
-          <p>${this.localize('an-guide-sujato:12')}</p>
-          <p>${this.localize('an-guide-sujato:13')}</p>
-          <p>${this.localize('an-guide-sujato:14')}</p>
-          <h2 id="item1">${this.localize('an-guide-sujato:15')}</h2>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:11'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:12'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:13'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:14'))}</p>
+          <h2 id="item1">${unsafeHTML(this.localize('an-guide-sujato:15'))}</h2>
           <p>${unsafeHTML(this.localize('an-guide-sujato:16'))}</p>
-          <p>${this.localize('an-guide-sujato:17')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:17'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:18'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:19'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:20'))}</p>
-          <p>${this.localize('an-guide-sujato:21')}</p>
-          <p>${this.localize('an-guide-sujato:22')}</p>
-          <p>${this.localize('an-guide-sujato:23')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:21'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:22'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:23'))}</p>
           <ol>
-            <li>${this.localize('an-guide-sujato:24')}</li>
-            <li>${this.localize('an-guide-sujato:25')}</li>
-            <li>${this.localize('an-guide-sujato:26')}</li>
+            <li>${unsafeHTML(this.localize('an-guide-sujato:24'))}</li>
+            <li>${unsafeHTML(this.localize('an-guide-sujato:25'))}</li>
+            <li>${unsafeHTML(this.localize('an-guide-sujato:26'))}</li>
           </ol>
           <p>${unsafeHTML(this.localize('an-guide-sujato:27'))}</p>
-          <p>${this.localize('an-guide-sujato:28')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:28'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:29'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:30'))}</p>
-          <p>${this.localize('an-guide-sujato:31')}</p>
-          <h3>${this.localize('an-guide-sujato:32')}</h3>
-          <p>${this.localize('an-guide-sujato:33')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:31'))}</p>
+          <h3>${unsafeHTML(this.localize('an-guide-sujato:32'))}</h3>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:33'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:34'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:35'))}</p>
           <dl>
-            <dt>${this.localize('an-guide-sujato:36')}</dt>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:36'))}</dt>
             <dd>${unsafeHTML(this.localize('an-guide-sujato:37'))}</dd>
-            <dt>${this.localize('an-guide-sujato:38')}</dt>
-            <dd>${this.localize('an-guide-sujato:39')}</dd>
-            <dt>${this.localize('an-guide-sujato:40')}</dt>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:38'))}</dt>
+            <dd>${unsafeHTML(this.localize('an-guide-sujato:39'))}</dd>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:40'))}</dt>
             <dd>${unsafeHTML(this.localize('an-guide-sujato:41'))}</dd>
-            <dt>${this.localize('an-guide-sujato:42')}</dt>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:42'))}</dt>
             <dd>${unsafeHTML(this.localize('an-guide-sujato:43'))}</dd>
-            <dt>${this.localize('an-guide-sujato:44')}</dt>
-            <dd>${this.localize('an-guide-sujato:45')}</dd>
-            <dt>${this.localize('an-guide-sujato:46')}</dt>
-            <dd>${this.localize('an-guide-sujato:47')}</dd>
-            <dt>${this.localize('an-guide-sujato:48')}</dt>
-            <dd>${this.localize('an-guide-sujato:49')}</dd>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:44'))}</dt>
+            <dd>${unsafeHTML(this.localize('an-guide-sujato:45'))}</dd>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:46'))}</dt>
+            <dd>${unsafeHTML(this.localize('an-guide-sujato:47'))}</dd>
+            <dt>${unsafeHTML(this.localize('an-guide-sujato:48'))}</dt>
+            <dd>${unsafeHTML(this.localize('an-guide-sujato:49'))}</dd>
           </dl>
           <p>${unsafeHTML(this.localize('an-guide-sujato:50'))}</p>
-          <p>${this.localize('an-guide-sujato:51')}</p>
-          <h3>${this.localize('an-guide-sujato:52')}</h3>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:51'))}</p>
+          <h3>${unsafeHTML(this.localize('an-guide-sujato:52'))}</h3>
           <p>${unsafeHTML(this.localize('an-guide-sujato:53'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:54'))}</p>
-          <p>${this.localize('an-guide-sujato:55')}</p>
-          <p>${this.localize('an-guide-sujato:56')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:55'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:56'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:57'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:58'))}</p>
-          <h3>${this.localize('an-guide-sujato:59')}</h3>
-          <p>${this.localize('an-guide-sujato:60')}</p>
-          <p>${this.localize('an-guide-sujato:61')}</p>
-          <p>${this.localize('an-guide-sujato:62')}</p>
+          <h3>${unsafeHTML(this.localize('an-guide-sujato:59'))}</h3>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:60'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:61'))}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:62'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:63'))}</p>
-          <h2 id="item2">${this.localize('an-guide-sujato:64')}</h2>
-          <p>${this.localize('an-guide-sujato:65')}</p>
+          <h2 id="item2">${unsafeHTML(this.localize('an-guide-sujato:64'))}</h2>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:65'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:66'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:67'))}</p>
-          <p>${this.localize('an-guide-sujato:68')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:68'))}</p>
           <ul>
-            <li>${this.localize('an-guide-sujato:69')}</li>
-            <li>${this.localize('an-guide-sujato:70')}</li>
-            <li>${this.localize('an-guide-sujato:71')}</li>
+            <li>${unsafeHTML(this.localize('an-guide-sujato:69'))}</li>
+            <li>${unsafeHTML(this.localize('an-guide-sujato:70'))}</li>
+            <li>${unsafeHTML(this.localize('an-guide-sujato:71'))}</li>
             <li>${unsafeHTML(this.localize('an-guide-sujato:72'))}</li>
             <li>${unsafeHTML(this.localize('an-guide-sujato:73'))}</li>
             <li>${unsafeHTML(this.localize('an-guide-sujato:74'))}</li>
           </ul>
-          <p>${this.localize('an-guide-sujato:75')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:75'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:76'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:77'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:78'))}</p>
@@ -110,7 +110,7 @@ class SCStaticANGuideSujato extends SCStaticPage {
           <p>${unsafeHTML(this.localize('an-guide-sujato:82'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:83'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:84'))}</p>
-          <h2 id="item3">${this.localize('an-guide-sujato:85')}</h2>
+          <h2 id="item3">${unsafeHTML(this.localize('an-guide-sujato:85'))}</h2>
           <p>${unsafeHTML(this.localize('an-guide-sujato:86'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:87'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:88'))}</p>
@@ -125,20 +125,20 @@ class SCStaticANGuideSujato extends SCStaticPage {
           <p>${unsafeHTML(this.localize('an-guide-sujato:97'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:98'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:99'))}</p>
-          <h2 id="item4">${this.localize('an-guide-sujato:100')}</h2>
-          <p>${this.localize('an-guide-sujato:101')}</p>
+          <h2 id="item4">${unsafeHTML(this.localize('an-guide-sujato:100'))}</h2>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:101'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:102'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:103'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:104'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:105'))}</p>
-          <p>${this.localize('an-guide-sujato:106')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:106'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:107'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:108'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:109'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:110'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:111'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:112'))}</p>
-          <p>${this.localize('an-guide-sujato:113')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:113'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:114'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:115'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:116'))}</p>
@@ -148,11 +148,11 @@ class SCStaticANGuideSujato extends SCStaticPage {
           <p>${unsafeHTML(this.localize('an-guide-sujato:120'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:121'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:122'))}</p>
-          <p>${this.localize('an-guide-sujato:123')}</p>
-          <h2 id="item5">${this.localize('an-guide-sujato:124')}</h2>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:123'))}</p>
+          <h2 id="item5">${unsafeHTML(this.localize('an-guide-sujato:124'))}</h2>
           <p>${unsafeHTML(this.localize('an-guide-sujato:125'))}</p>
           <p>${unsafeHTML(this.localize('an-guide-sujato:126'))}</p>
-          <p>${this.localize('an-guide-sujato:127')}</p>
+          <p>${unsafeHTML(this.localize('an-guide-sujato:127'))}</p>
         </article>
       </main>
     `;

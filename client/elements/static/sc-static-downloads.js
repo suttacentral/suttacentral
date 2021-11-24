@@ -22,8 +22,8 @@ class SCStaticDownloadsPage extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('downloads:1')}</h1>
-          <h2>${this.localize('downloads:2')}</h2>
+          <h1>${unsafeHTML(this.localize('downloads:1'))}</h1>
+          <h2>${unsafeHTML(this.localize('downloads:2'))}</h2>
           <p>${unsafeHTML(this.localize('downloads:3'))}</p>
           <ul>
             <li>
@@ -81,12 +81,12 @@ class SCStaticDownloadsPage extends SCStaticPage {
               </a>
             </li>
           </ul>
-          <h2>${this.localize('downloads:4')}</h2>
+          <h2>${unsafeHTML(this.localize('downloads:4'))}</h2>
           <p>${unsafeHTML(this.localize('downloads:5'))}</p>
-          <h2>${this.localize('downloads:6')}</h2>
+          <h2>${unsafeHTML(this.localize('downloads:6'))}</h2>
           <p>${unsafeHTML(this.localize('downloads:7'))}</p>
-          <p>${this.localize('downloads:8')}</p>
-          <p>${this.localize('downloads:9')}</p>
+          <p>${unsafeHTML(this.localize('downloads:8'))}</p>
+          <p>${unsafeHTML(this.localize('downloads:9'))}</p>
           <table>
             <tr>
               <td>${unsafeHTML(this.localize('downloads:10'))}</td>
@@ -94,14 +94,14 @@ class SCStaticDownloadsPage extends SCStaticPage {
             </tr>
             <tr>
               <td>${unsafeHTML(this.localize('downloads:12'))}</td>
-              <td>${this.localize('downloads:13')}</td>
+              <td>${unsafeHTML(this.localize('downloads:13'))}</td>
             </tr>
             <tr>
               <td>${unsafeHTML(this.localize('downloads:14'))}</td>
               <td>${unsafeHTML(this.localize('downloads:15'))}</td>
             </tr>
           </table>
-          <h2>${this.localize('downloads:16')}</h2>
+          <h2>${unsafeHTML(this.localize('downloads:16'))}</h2>
           <p>${unsafeHTML(this.localize('downloads:17'))}</p>
         </article>
       </main>

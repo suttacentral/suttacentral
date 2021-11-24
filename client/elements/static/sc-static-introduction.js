@@ -16,11 +16,11 @@ class SCStaticIntroduction extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>${this.localize('introduction:1')}</h1>
-          <h2>${this.localize('introduction:2')}</h2>
-          <p>${this.localize('introduction:3')}</p>
+          <h1>${unsafeHTML(this.localize('introduction:1'))}</h1>
+          <h2>${unsafeHTML(this.localize('introduction:2'))}</h2>
+          <p>${unsafeHTML(this.localize('introduction:3'))}</p>
           <p>${unsafeHTML(this.localize('introduction:4'))}</p>
-          <p>${this.localize('introduction:5')}</p>
+          <p>${unsafeHTML(this.localize('introduction:5'))}</p>
           <picture>
             <source
               srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif"
@@ -34,11 +34,11 @@ class SCStaticIntroduction extends SCStaticPage {
               width="640px"
             />
           </picture>
-          <h2>${this.localize('introduction:8')}</h2>
-          <p>${this.localize('introduction:9')}</p>
-          <p>${this.localize('introduction:10')}</p>
-          <p>${this.localize('introduction:11')}</p>
-          <h2>${this.localize('introduction:12')}</h2>
+          <h2>${unsafeHTML(this.localize('introduction:8'))}</h2>
+          <p>${unsafeHTML(this.localize('introduction:9'))}</p>
+          <p>${unsafeHTML(this.localize('introduction:10'))}</p>
+          <p>${unsafeHTML(this.localize('introduction:11'))}</p>
+          <h2>${unsafeHTML(this.localize('introduction:12'))}</h2>
           <p>
             <picture>
               <source srcset="/img/static-pages/birchbark_w400.avif" type="image/avif" />
@@ -49,24 +49,24 @@ class SCStaticIntroduction extends SCStaticPage {
                 title="${this.localize('introduction:14')}"
               />
             </picture>
-            ${this.localize('introduction:15')}
-            <i lang="pi">${this.localize('introduction:16')}</i>
-            ${this.localize('introduction:17')}
-            <i lang="san">${this.localize('introduction:18')}</i>
-            ${this.localize('introduction:19')}
+            ${unsafeHTML(this.localize('introduction:15'))}
+            <i lang="pi">${unsafeHTML(this.localize('introduction:16'))}</i>
+            ${unsafeHTML(this.localize('introduction:17'))}
+            <i lang="san">${unsafeHTML(this.localize('introduction:18'))}</i>
+            ${unsafeHTML(this.localize('introduction:19'))}
           </p>
           <ul>
             <li>${unsafeHTML(this.localize('introduction:20'))}</li>
             <li>${unsafeHTML(this.localize('introduction:21'))}</li>
             <li>${unsafeHTML(this.localize('introduction:22'))}</li>
           </ul>
-          <p>${this.localize('introduction:23')}</p>
+          <p>${unsafeHTML(this.localize('introduction:23'))}</p>
           <p>${unsafeHTML(this.localize('introduction:24'))}</p>
-          <p>${this.localize('introduction:25')}</p>
+          <p>${unsafeHTML(this.localize('introduction:25'))}</p>
           <ul>
             <li>
-              <strong>${this.localize('introduction:26')}</strong>
-              ${this.localize('introduction:27')}
+              <strong>${unsafeHTML(this.localize('introduction:26'))}</strong>
+              ${unsafeHTML(this.localize('introduction:27'))}
               <ul>
                 <li>${unsafeHTML(this.localize('introduction:28'))}</li>
                 <li>${unsafeHTML(this.localize('introduction:29'))}</li>
@@ -77,7 +77,7 @@ class SCStaticIntroduction extends SCStaticPage {
             <li>${unsafeHTML(this.localize('introduction:32'))}</li>
             <li>${unsafeHTML(this.localize('introduction:33'))}</li>
           </ul>
-          <h2>${this.localize('introduction:34')}</h2>
+          <h2>${unsafeHTML(this.localize('introduction:34'))}</h2>
           <p>
             <picture>
               <source srcset="/img/static-pages/dn20.avif" type="image/avif" />
@@ -89,44 +89,44 @@ class SCStaticIntroduction extends SCStaticPage {
                 width="640px"
               />
             </picture>
-            ${this.localize('introduction:37')}
+            ${unsafeHTML(this.localize('introduction:37'))}
           </p>
           <p>${unsafeHTML(this.localize('introduction:38'))}</p>
-          <p>${this.localize('introduction:39')}</p>
-          <h2>${this.localize('introduction:40')}</h2>
-          <p>${this.localize('introduction:41')}</p>
-          <h3>${this.localize('introduction:42')}</h3>
-          <p>${this.localize('introduction:43')}</p>
-          <h4>${this.localize('introduction:44')}</h4>
+          <p>${unsafeHTML(this.localize('introduction:39'))}</p>
+          <h2>${unsafeHTML(this.localize('introduction:40'))}</h2>
+          <p>${unsafeHTML(this.localize('introduction:41'))}</p>
+          <h3>${unsafeHTML(this.localize('introduction:42'))}</h3>
+          <p>${unsafeHTML(this.localize('introduction:43'))}</p>
+          <h4>${unsafeHTML(this.localize('introduction:44'))}</h4>
           <p>${unsafeHTML(this.localize('introduction:45'))}</p>
           <p>${unsafeHTML(this.localize('introduction:46'))}</p>
-          <h4>${this.localize('introduction:47')}</h4>
+          <h4>${unsafeHTML(this.localize('introduction:47'))}</h4>
           <p>${unsafeHTML(this.localize('introduction:48'))}</p>
-          <h4>${this.localize('introduction:49')}</h4>
+          <h4>${unsafeHTML(this.localize('introduction:49'))}</h4>
           <p>${unsafeHTML(this.localize('introduction:50'))}</p>
-          <h3>${this.localize('introduction:51')}</h3>
+          <h3>${unsafeHTML(this.localize('introduction:51'))}</h3>
           <p>${unsafeHTML(this.localize('introduction:52'))}</p>
-          <h4>${this.localize('introduction:53')}</h4>
+          <h4>${unsafeHTML(this.localize('introduction:53'))}</h4>
           <p>${unsafeHTML(this.localize('introduction:54'))}</p>
-          <p>${this.localize('introduction:55')}</p>
+          <p>${unsafeHTML(this.localize('introduction:55'))}</p>
           <p>${unsafeHTML(this.localize('introduction:56'))}</p>
-          <h4>${this.localize('introduction:57')}</h4>
-          <p>${this.localize('introduction:58')}</p>
-          <p>${this.localize('introduction:59')}</p>
+          <h4>${unsafeHTML(this.localize('introduction:57'))}</h4>
+          <p>${unsafeHTML(this.localize('introduction:58'))}</p>
+          <p>${unsafeHTML(this.localize('introduction:59'))}</p>
           <ul>
             <li>${unsafeHTML(this.localize('introduction:60'))}</li>
             <li>${unsafeHTML(this.localize('introduction:61'))}</li>
             <li>${unsafeHTML(this.localize('introduction:62'))}</li>
           </ul>
-          <p>${this.localize('introduction:63')}</p>
-          <h4>${this.localize('introduction:64')}</h4>
+          <p>${unsafeHTML(this.localize('introduction:63'))}</p>
+          <h4>${unsafeHTML(this.localize('introduction:64'))}</h4>
           <p>${unsafeHTML(this.localize('introduction:65'))}</p>
-          <h3>${this.localize('introduction:66')}</h3>
-          <p>${this.localize('introduction:67')}</p>
+          <h3>${unsafeHTML(this.localize('introduction:66'))}</h3>
+          <p>${unsafeHTML(this.localize('introduction:67'))}</p>
           <p>${unsafeHTML(this.localize('introduction:68'))}</p>
-          <h3>${this.localize('introduction:69')}</h3>
-          <p>${this.localize('introduction:70')}</p>
-          <p>${this.localize('introduction:71')}</p>
+          <h3>${unsafeHTML(this.localize('introduction:69'))}</h3>
+          <p>${unsafeHTML(this.localize('introduction:70'))}</p>
+          <p>${unsafeHTML(this.localize('introduction:71'))}</p>
         </article>
       </main>
     `;
