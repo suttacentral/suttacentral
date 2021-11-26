@@ -416,9 +416,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaInfoState(false);
     });
     const rootDOM = this.shadowRoot;
+    let scrollDistance = 0;
     addEventListener(
       'scroll',
-      throttle(800, () => {
+      throttle(500, () => {
+        const syntheticEvent = new WheelEvent('syntheticWheel', { deltaY: 4, deltaMode: 0 });
+        scrollDistance += syntheticEvent.deltaY;
+        if (scrollDistance !== 16) {
+          return;
+        }
+        scrollDistance = 0;
         const transitionStyle = 'transform 200ms ease-in-out';
         rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
         rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
@@ -450,7 +457,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     let lastScrollTop = 0;
     addEventListener(
       'scroll',
-      throttle(800, () => {
+      throttle(500, () => {
         const { alwaysShowUniversalToolbar } = store.getState();
         if (alwaysShowUniversalToolbar) {
           return;
