@@ -422,7 +422,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       throttle(500, () => {
         const syntheticEvent = new WheelEvent('syntheticWheel', { deltaY: 4, deltaMode: 0 });
         scrollDistance += syntheticEvent.deltaY;
-        if (scrollDistance !== 16) {
+        if (scrollDistance !== 24) {
           return;
         }
         scrollDistance = 0;
