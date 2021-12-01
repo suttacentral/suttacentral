@@ -227,6 +227,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       toolbarTitle: { type: String },
       staticPagesToolbarDisplayState: { type: Object },
       linearProgressActive: { type: Boolean },
+      toolbarPosition: { type: Object },
     };
   }
 
@@ -257,6 +258,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       };
     }
     this.linearProgressActive = false;
+    this.toolbarPosition = state.toolbarPosition;
   }
 
   get actions() {
@@ -331,6 +333,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (this.linearProgressActive !== state.linearProgressActive) {
       this.linearProgressActive = state.linearProgressActive;
+    }
+    if (this.toolbarPosition !== state.toolbarOptions) {
+      this.toolbarPosition = state.toolbarPosition;
     }
   }
 
@@ -419,6 +424,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     addEventListener(
       'scroll',
       throttle(500, () => {
+        if (!this.toolbarPosition.scrollForToolbar) {
+          return;
+        }
         const transitionStyle = 'transform 200ms ease-in-out';
         rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
         rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
@@ -451,6 +459,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     addEventListener(
       'scroll',
       throttle(500, () => {
+        if (!this.toolbarPosition.scrollForToolbar) {
+          return;
+        }
         const { alwaysShowUniversalToolbar } = store.getState();
         if (alwaysShowUniversalToolbar) {
           return;
@@ -491,6 +502,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this._initStaticPagesToolbarDisplayState();
     this._addStaticPageLinkEventListener();
     this._setStaticPageMenuItemSelected();
+    this._setToolbarPosition();
 
     window.addEventListener('error', e => {
       microSentryClient.report(e);
@@ -547,6 +559,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this._addStaticPageLinkEventListener();
       this._setStaticPageMenuItemSelected();
     }
+    if (changedProps.has('toolbarPosition')) {
+      this._setToolbarPosition();
+    }
   }
 
   _routeChanged() {
@@ -581,6 +596,16 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   _setSiteLanguage() {
     // main_menu_root is defined in index.html
     document.getElementById('main_html_root').lang = this.siteLanguage;
+  }
+
+  _setToolbarPosition() {
+    if (this.toolbarPosition.toolbarAtTop) {
+      if (this.shadowRoot.querySelector('#universal_toolbar')) {
+        this.shadowRoot.querySelector('#universal_toolbar').style.position = 'relative';
+      }
+    } else if (this.shadowRoot.querySelector('#universal_toolbar')) {
+      this.shadowRoot.querySelector('#universal_toolbar').style.position = 'sticky';
+    }
   }
 }
 

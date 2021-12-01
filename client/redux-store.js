@@ -78,6 +78,11 @@ const initialState = {
     displayGuidesToolbar: false,
   },
   linearProgressActive: false,
+  toolbarPosition: {
+    scrollForToolbar: true,
+    fixedToolbar: false,
+    toolbarAtTop: false,
+  },
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -200,6 +205,8 @@ const reducer = (state, action) => {
       return { ...state, displayParallelTableView: action.displayParallelTableView };
     case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
       return { ...state, staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState };
+    case 'CHANGE_TOOLBAR_POSITION':
+      return { ...state, toolbarPosition: action.toolbarPosition };
     case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
       return { ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar };
     case 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE':
