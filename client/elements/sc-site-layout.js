@@ -421,49 +421,27 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaInfoState(false);
     });
     const rootDOM = this.shadowRoot;
-    let scrollDistance = 0;
-    addEventListener(
+    document.addEventListener(
       'scroll',
       throttle(500, () => {
         if (!this.toolbarPosition.scrollForToolbar) {
           return;
         }
-        const syntheticEvent = new WheelEvent('syntheticWheel', { deltaY: 4, deltaMode: 0 });
-        scrollDistance += syntheticEvent.deltaY;
-        if (scrollDistance !== 24) {
-          return;
-        }
-        scrollDistance = 0;
-        const transitionStyle = 'transform 200ms ease-in-out';
-        rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
-        rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
-        rootDOM.getElementById('mainTitle').style.transition = transitionStyle;
-        rootDOM.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
+        this._setUniversalToolbarTransformStyles();
 
         if (
           this.changedRoute.path === '/' &&
           (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)
         ) {
-          rootDOM.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
-          rootDOM.getElementById('breadCrumb').style.transform = 'translateY(120px)';
-          rootDOM.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
-          rootDOM.getElementById('subTitle').style.opacity = '0';
-          rootDOM.getElementById('subTitle').style.transform = 'scale(0)';
-          if (window.innerWidth < 480) {
-            rootDOM.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
-          }
+          this._universalToolbarTransform();
         } else {
-          rootDOM.getElementById('universal_toolbar').style.transform = 'none';
-          rootDOM.getElementById('breadCrumb').style.transform = 'none';
-          rootDOM.getElementById('mainTitle').style.transform = 'scale(1)';
-          rootDOM.getElementById('subTitle').style.opacity = '1';
-          rootDOM.getElementById('subTitle').style.transform = 'scale(1)';
+          this._resetUniversalToolbar();
         }
       })
     );
 
     let lastScrollTop = 0;
-    addEventListener(
+    document.addEventListener(
       'scroll',
       throttle(500, () => {
         if (!this.toolbarPosition.scrollForToolbar) {
@@ -473,8 +451,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } =
-          store.getState();
+        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } = store.getState();
         if (
           this.changedRoute.path !== '/' &&
           !displaySettingMenu &&
@@ -510,6 +487,33 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     window.addEventListener('error', e => {
       microSentryClient.report(e);
     });
+  }
+
+  _setUniversalToolbarTransformStyles() {
+    const transitionStyle = 'transform 200ms ease-in-out';
+    this.shadowRoot.getElementById('universal_toolbar').style.transition = transitionStyle;
+    this.shadowRoot.getElementById('breadCrumb').style.transition = transitionStyle;
+    this.shadowRoot.getElementById('mainTitle').style.transition = transitionStyle;
+    this.shadowRoot.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
+  }
+
+  _universalToolbarTransform() {
+    this.shadowRoot.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
+    this.shadowRoot.getElementById('breadCrumb').style.transform = 'translateY(120px)';
+    this.shadowRoot.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
+    this.shadowRoot.getElementById('subTitle').style.opacity = '0';
+    this.shadowRoot.getElementById('subTitle').style.transform = 'scale(0)';
+    if (window.innerWidth < 480) {
+      this.shadowRoot.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
+    }
+  }
+
+  _resetUniversalToolbar() {
+    this.shadowRoot.getElementById('universal_toolbar').style.transform = 'none';
+    this.shadowRoot.getElementById('breadCrumb').style.transform = 'none';
+    this.shadowRoot.getElementById('mainTitle').style.transform = 'scale(1)';
+    this.shadowRoot.getElementById('subTitle').style.opacity = '1';
+    this.shadowRoot.getElementById('subTitle').style.transform = 'scale(1)';
   }
 
   _setStaticPageMenuItemSelected() {
@@ -602,12 +606,15 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _setToolbarPosition() {
+    const universalToolbar = this.shadowRoot.querySelector('#universal_toolbar');
+    if (!universalToolbar) {
+      return;
+    }
     if (this.toolbarPosition.toolbarAtTop) {
-      if (this.shadowRoot.querySelector('#universal_toolbar')) {
-        this.shadowRoot.querySelector('#universal_toolbar').style.position = 'relative';
-      }
-    } else if (this.shadowRoot.querySelector('#universal_toolbar')) {
-      this.shadowRoot.querySelector('#universal_toolbar').style.position = 'sticky';
+      this._resetUniversalToolbar();
+      universalToolbar.style.position = 'relative';
+    } else {
+      universalToolbar.style.position = 'sticky';
     }
   }
 }
