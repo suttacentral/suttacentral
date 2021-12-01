@@ -421,12 +421,19 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaInfoState(false);
     });
     const rootDOM = this.shadowRoot;
+    let scrollDistance = 0;
     document.addEventListener(
       'scroll',
       throttle(500, () => {
         if (!this.toolbarPosition.scrollForToolbar) {
           return;
         }
+        const syntheticEvent = new WheelEvent('syntheticWheel', { deltaY: 4, deltaMode: 0 });
+        scrollDistance += syntheticEvent.deltaY;
+        if (this.changedRoute.path !== '/' && scrollDistance !== 24) {
+          return;
+        }
+        scrollDistance = 0;
         this._setUniversalToolbarTransformStyles();
 
         if (
