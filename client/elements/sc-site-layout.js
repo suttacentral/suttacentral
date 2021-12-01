@@ -421,12 +421,19 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaInfoState(false);
     });
     const rootDOM = this.shadowRoot;
+    let scrollDistance = 0;
     addEventListener(
       'scroll',
       throttle(500, () => {
         if (!this.toolbarPosition.scrollForToolbar) {
           return;
         }
+        const syntheticEvent = new WheelEvent('syntheticWheel', { deltaY: 4, deltaMode: 0 });
+        scrollDistance += syntheticEvent.deltaY;
+        if (scrollDistance !== 24) {
+          return;
+        }
+        scrollDistance = 0;
         const transitionStyle = 'transform 200ms ease-in-out';
         rootDOM.getElementById('universal_toolbar').style.transition = transitionStyle;
         rootDOM.getElementById('breadCrumb').style.transition = transitionStyle;
@@ -466,12 +473,8 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        const {
-          displaySettingMenu,
-          displaySuttaParallels,
-          displaySuttaToC,
-          displaySuttaInfo,
-        } = store.getState();
+        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } =
+          store.getState();
         if (
           this.changedRoute.path !== '/' &&
           !displaySettingMenu &&
