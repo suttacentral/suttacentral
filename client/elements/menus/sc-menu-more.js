@@ -1,10 +1,12 @@
 import { LitElement, html, css } from 'lit';
 import { store } from '../../redux-store';
+import { reduxActions } from '../addons/sc-redux-actions';
 import './sc-menu-language-base';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-list/mwc-check-list-item';
+import '@material/mwc-list/mwc-radio-list-item';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
@@ -41,6 +43,12 @@ class SCMenuMore extends LitLocalized(LitElement) {
       mwc-check-list-item {
         --mdc-list-side-padding: 8px;
         --mdc-list-item-graphic-margin: 8px;
+        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
+      }
+
+      mwc-radio-list-item {
+        --mdc-list-side-padding: 4px;
+        --mdc-list-item-graphic-margin: 4px;
         --mdc-checkbox-unchecked-color: var(--sc-icon-color);
       }
 
@@ -98,6 +106,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
     this.languageIsVisible = store.getState().languageMenuVisibility;
     this.suttaId = store.getState().currentRoute.params.suttaId;
+    this.toolbarPosition = store.getState().toolbarPosition;
   }
 
   get actions() {
@@ -142,6 +151,9 @@ class SCMenuMore extends LitLocalized(LitElement) {
     if (this.languageIsVisible !== state.languageMenuVisibility) {
       this.languageIsVisible = state.languageMenuVisibility;
     }
+    if (this.toolbarPosition !== state.toolbarPosition) {
+      this.toolbarPosition = state.toolbarPosition;
+    }
   }
 
   getDiscourseUrl(routeName) {
@@ -179,6 +191,28 @@ class SCMenuMore extends LitLocalized(LitElement) {
   _onToolbarDisplayModeChanged(e) {
     const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
     this.actions.changeAlwaysShowToolbarState(chk.checked);
+  }
+
+  _onToolbarPositionChanged(e) {
+    const toolbarPosition = {};
+    if (e.currentTarget.id === 'radioScrollForToolbar' && e.detail.selected) {
+      toolbarPosition.scrollForToolbar = true;
+      toolbarPosition.fixedToolbar = false;
+      toolbarPosition.toolbarAtTop = false;
+    }
+    if (e.currentTarget.id === 'radioFixedToolbar' && e.detail.selected) {
+      toolbarPosition.scrollForToolbar = false;
+      toolbarPosition.fixedToolbar = true;
+      toolbarPosition.toolbarAtTop = false;
+    }
+    if (e.currentTarget.id === 'radioToolbarAtTop' && e.detail.selected) {
+      toolbarPosition.scrollForToolbar = false;
+      toolbarPosition.fixedToolbar = false;
+      toolbarPosition.toolbarAtTop = true;
+    }
+    if (JSON.stringify(toolbarPosition) !== '{}') {
+      reduxActions.changeToolbarPosition(toolbarPosition);
+    }
   }
 
   _showLanguageMenu() {
@@ -234,15 +268,31 @@ class SCMenuMore extends LitLocalized(LitElement) {
         >
           ${this.localize('interface:darkTheme')}
         </mwc-check-list-item>
-        <mwc-check-list-item
-          class="more-menu-mwc-list-item"
-          id="alwaysShowToolbar_toggler"
+        <li divider role="separator"></li>
+        <mwc-radio-list-item
           left
-          ?selected=${this.alwaysShowUniversalToolbar}
-          @request-selected=${this._onToolbarDisplayModeChanged}
+          group="toolbarPosition"
+          ?selected=${this.toolbarPosition.scrollForToolbar}
+          id="radioScrollForToolbar"
+          @request-selected=${this._onToolbarPositionChanged}
+          >Scroll for toolbar</mwc-radio-list-item
         >
-          ${this.localize('interface:alwaysShowToolbar')}
-        </mwc-check-list-item>
+        <mwc-radio-list-item
+          left
+          group="toolbarPosition"
+          ?selected=${this.toolbarPosition.fixedToolbar}
+          @request-selected=${this._onToolbarPositionChanged}
+          id="radioFixedToolbar"
+          >Fixed toolbar</mwc-radio-list-item
+        >
+        <mwc-radio-list-item
+          left
+          group="toolbarPosition"
+          ?selected=${this.toolbarPosition.toolbarAtTop}
+          @request-selected=${this._onToolbarPositionChanged}
+          id="radioToolbarAtTop"
+          >Toolbar at top</mwc-radio-list-item
+        >
         <li divider role="separator"></li>
         <a class="more-menu-link" href="/languages">
           <mwc-list-item class="more-menu-mwc-list-item">
