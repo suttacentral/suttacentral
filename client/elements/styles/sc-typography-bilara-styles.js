@@ -109,6 +109,8 @@ export const typographyBilaraStyles = css`
     font-variant-caps: normal;
 
     text-align: left;
+
+    text-indent: 0;
   }
   .comment {
     border-color: var(--sc-primary-accent-color);
