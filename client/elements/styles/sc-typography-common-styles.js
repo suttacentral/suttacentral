@@ -285,7 +285,8 @@ export const typographyCommonStyles = css`
 
   .speaker {
     font-style: italic;
-    text-indent: 3em;
+    text-indent: 2em;
+    display: block;
   }
 
   .pe {

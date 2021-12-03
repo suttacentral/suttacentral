@@ -63,7 +63,8 @@ export const typographyBilaraStyles = css`
     list-style-type: none;
   }
 
-  .verse-line .text {
+  .verse-line .translation,
+  .verse-line .root {
     display: block;
     margin-left: 2em;
   }
