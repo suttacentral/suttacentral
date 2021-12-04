@@ -36,4 +36,11 @@ export class reduxActions {
       script,
     });
   }
+
+  static changeToolbarPosition(toolbarPosition) {
+    store.dispatch({
+      type: 'CHANGE_TOOLBAR_POSITION',
+      toolbarPosition,
+    });
+  }
 }
