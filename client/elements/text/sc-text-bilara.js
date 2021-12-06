@@ -228,9 +228,15 @@ class SCTextBilara extends SCTextCommon {
   _addCommentSpan(value) {
     const span = document.createElement('span');
     span.className = 'comment';
-    span.dataset.tooltip = value;
+    span.dataset.tooltip = this._stripHTML(value);
     span.innerHTML = value;
     return span;
+  }
+
+  _stripHTML(htmlText) {
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = htmlText;
+    return tmp.textContent || tmp.innerText || '';
   }
 
   _recalculateCommentSpanHeight() {
