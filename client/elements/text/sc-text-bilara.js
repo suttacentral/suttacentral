@@ -59,6 +59,7 @@ class SCTextBilara extends SCTextCommon {
       notesDisplayStyles: { type: Object },
       showHighlighting: { type: Boolean },
       rootEdition: { type: Array },
+      originSuttaId: { type: String },
     };
   }
 
@@ -177,6 +178,39 @@ class SCTextBilara extends SCTextCommon {
       uid: this.suttaId,
       lang: this.translatedSutta?.lang || 'en',
     });
+
+    if (this.originSuttaId) {
+      const UIDS = [];
+      const allArticle = this.shadowRoot.querySelectorAll('article');
+      allArticle.forEach(item => {
+        UIDS.push(item.id);
+        item.style.display = 'none';
+      });
+      let sutta = this.shadowRoot.querySelector(`#${CSS.escape(this.originSuttaId)}`);
+      if (sutta) {
+        sutta.style.display = 'block';
+      } else {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const uid of UIDS) {
+          if (this.originSuttaId.indexOf('.') && this.suttaId.indexOf('-')) {
+            const suttaNo = this.originSuttaId.split('.')[1];
+            const suttaRange = uid.split('.')[1];
+            const rangeBegin = suttaRange.split('-')[0];
+            const rangeEnd = suttaRange.split('-')[1];
+            if (
+              parseInt(suttaNo, 10) <= parseInt(rangeEnd, 10) &&
+              parseInt(suttaNo, 10) >= parseInt(rangeBegin, 10)
+            ) {
+              sutta = this.shadowRoot.querySelector(`#${CSS.escape(uid)}`);
+              if (sutta) {
+                sutta.style.display = 'block';
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
   }
 
   _hideTopSheets() {
@@ -1001,19 +1035,7 @@ class SCTextBilara extends SCTextCommon {
     }
   }
 
-  _byPassLookupClick() {
-    return (
-      store.getState().displaySettingMenu ||
-      store.getState().displaySuttaParallels ||
-      store.getState().displaySuttaToC ||
-      store.getState().displaySuttaInfo
-    );
-  }
-
   onPaliWordClick(e) {
-    if (e.currentTarget.getRootNode().host._byPassLookupClick()) {
-      return;
-    }
     const scBilaraText = e.currentTarget.getRootNode().host;
     const lookup = scBilaraText.shadowRoot.querySelector('#pali_lookup');
     scBilaraText._removeDefineFocusedClass();
@@ -1031,9 +1053,6 @@ class SCTextBilara extends SCTextCommon {
   }
 
   onChineseWordClick(e) {
-    if (e.currentTarget.getRootNode().host._byPassLookupClick()) {
-      return;
-    }
     const scBilaraText = e.currentTarget.getRootNode().host;
     const lookup = scBilaraText.shadowRoot.querySelector('#chinese_lookup');
     scBilaraText._removeDefineFocusedClass();

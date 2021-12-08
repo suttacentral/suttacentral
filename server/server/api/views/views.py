@@ -39,7 +39,8 @@ from common.queries import (
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
     AVAILABLE_VOICES,
-    CANDIDATE_AUTHORS
+    CANDIDATE_AUTHORS,
+    VAGGA_CHILDREN
 )
 
 from common.utils import (
@@ -563,6 +564,24 @@ class Sutta(Resource):
         )
 
         result = results.next()
+
+        if result['root_text'] is None and result['translation'] is None and uid.count('.') == 1:
+            firstPart = uid[:uid.find('.')]
+            secondPart = uid[uid.find('.') + 1:]
+            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': firstPart}))
+            for child in vaggaChildren:
+                if child.count('-'):
+                    childRange = child[child.find('.')+1:]
+                    range_begin = childRange[:childRange.find('-')]
+                    range_end = childRange[childRange.find('-')+1:]
+                    if range(int(range_begin), int(range_end)).count(int(secondPart)):
+                        results = db.aql.execute(
+                            SUTTA_VIEW,
+                            bind_vars={'uid': child, 'language': lang, 'author_uid': author_uid},
+                        )
+                        result = results.next()
+                        result['range_uid'] = child
+
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):
             doc = result[k]

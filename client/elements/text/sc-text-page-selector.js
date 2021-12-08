@@ -97,6 +97,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaReference=${this.suttaReference}
             .suttaVariant=${this.suttaVariant}
             .suttaId=${this.suttaId}
+            .originSuttaId=${this.originSuttaId}
           ></sc-text-bilara>
         `
       : '';
@@ -275,6 +276,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
+    if (this.responseData.range_uid && this.responseData.range_uid !== this.suttaId) {
+      this.originSuttaId = this.suttaId;
+      dispatchCustomEvent(this, 'sc-navigate', {
+        pathname: `/${this.responseData.range_uid}/${this.langIsoCode}/${this.authorUid}`,
+      });
+      return;
+    }
     if (
       !this.responseData ||
       (!this.responseData.root_text &&
