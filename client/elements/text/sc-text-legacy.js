@@ -63,6 +63,10 @@ class SCTextLegacy extends SCTextCommon {
     `;
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   static get properties() {
     return {
       // in simple texts, both root texts and translations are returned by the API in the translation object.
@@ -177,7 +181,7 @@ class SCTextLegacy extends SCTextCommon {
       this._hideTopSheets();
       this.actions.changeDisplaySettingMenuState(false);
     });
-    this.inputElement = this.shadowRoot.querySelector('#simple_text_content');
+    this.inputElement = this.querySelector('#simple_text_content');
   }
 
   firstUpdated() {
@@ -187,7 +191,7 @@ class SCTextLegacy extends SCTextCommon {
   _hideTopSheets() {
     const scActionItems = document
       .querySelector('sc-site-layout')
-      .shadowRoot.querySelector('#action_items');
+      .querySelector('#action_items');
     scActionItems?.hideItems();
   }
 
@@ -226,7 +230,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _articleElement() {
-    return this.shadowRoot.querySelectorAll('article');
+    return this.querySelectorAll('article');
   }
 
   _showHighlightingChanged() {
@@ -345,7 +349,7 @@ class SCTextLegacy extends SCTextCommon {
     if (divisionId === 'iti') divisionId = 'it';
     if (this.paragraphs && this.showParagraphs) {
       this.paragraphs.forEach(paragraph => {
-        const refs = this.shadowRoot
+        const refs = this
           .querySelector('#simple_text_content')
           .querySelectorAll(`.${paragraph.uid}`);
         Array.from(refs).forEach(item => {
@@ -423,7 +427,7 @@ class SCTextLegacy extends SCTextCommon {
 
   // adds a class to the main container to either show or hide the textual info incl. paragraphs
   _setTextualInformationVisible(visible) {
-    const textElement = this.shadowRoot.querySelector('#simple_text_content');
+    const textElement = this.querySelector('#simple_text_content');
     if (textElement) {
       visible ? textElement.classList.add('infomode') : textElement.classList.remove('infomode');
       for (let key in this.classTitles) {
@@ -462,7 +466,7 @@ class SCTextLegacy extends SCTextCommon {
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      const targetElement = this.shadowRoot.querySelector(
+      const targetElement = this.querySelector(
         `h2:nth-of-type(${location.hash.substr(1)})`
       );
       if (targetElement) {
@@ -486,7 +490,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _disableLookup() {
-    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    const scBottomSheet = this.querySelector('sc-bottom-sheet');
     if (scBottomSheet) {
       scBottomSheet.hide();
     }
@@ -497,7 +501,7 @@ class SCTextLegacy extends SCTextCommon {
   _conditionallyPutIntoSpans(lang) {
     const suttaLang = this.sutta?.lang;
     if (suttaLang === lang) {
-      if (this.shadowRoot.querySelector('article')) {
+      if (this.querySelector('article')) {
         this._putIntoSpans('article', lang);
         this._addWordSpanId();
       }
@@ -515,7 +519,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _startGeneratingSpans(selector, unit, lang) {
-    let segments = this.shadowRoot.querySelectorAll(selector);
+    let segments = this.querySelectorAll(selector);
     segments = Array.from(segments);
     let empty = true;
     while (segments.length > 0) {
@@ -614,20 +618,20 @@ class SCTextLegacy extends SCTextCommon {
 
   _addWordSpanId() {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll('span.lookup_element:not(a span)').forEach(word => {
+    this.querySelectorAll('span.lookup_element:not(a span)').forEach(word => {
       word.id = `word_${wordIdSeed}`;
       wordIdSeed++;
     });
   }
 
   _addLookupEvent(selector) {
-    const chineseLookup = this.shadowRoot.querySelector('#chinese_lookup');
-    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const chineseLookup = this.querySelector('#chinese_lookup');
+    const allWordSpans = this.querySelectorAll(selector);
     const arraySpans = Array.from(allWordSpans);
     arraySpans.forEach(word => {
       word.onclick = e => {
         if (!this.isChineseLookupEnabled) return;
-        const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+        const scBottomSheet = this.querySelector('sc-bottom-sheet');
         if (scBottomSheet) {
           this._removeDefineFocusedClass();
           this._addDefineFocusedClass(e.currentTarget);
@@ -642,13 +646,13 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _removeDefineFocusedClass() {
-    this.shadowRoot.querySelectorAll('.spanFocused').forEach(dfElement => {
+    this.querySelectorAll('.spanFocused').forEach(dfElement => {
       dfElement.classList.remove('spanFocused');
     });
   }
 
   _removeLookupEvent(selector) {
-    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const allWordSpans = this.querySelectorAll(selector);
     const arraySpans = Array.from(allWordSpans);
     arraySpans.forEach(word => {
       word.onclick = null;
