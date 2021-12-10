@@ -30,6 +30,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     `;
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   static get styles() {
     return css`
       :host {
@@ -195,7 +199,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('show-image', e => {
-      const scTextImageElement = this.shadowRoot.querySelector('#sc_text_image');
+      const scTextImageElement = this.querySelector('#sc_text_image');
       if (scTextImageElement) {
         scTextImageElement.showImage(e.detail);
       }
