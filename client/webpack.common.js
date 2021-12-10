@@ -70,7 +70,7 @@ module.exports = {
       ],
       navigateFallback: '/index.html',
       navigateFallbackDenylist: [/^\/img\/.*/, /^\/ebook\/.*/, /^\/api\/.*/, /^\/files\/.*/],
-      exclude: [/\.(woff(2)?|ttf|epub)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
+      exclude: [/\.(woff(2)?|ttf|epub|otf)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
     }),
     new BundleAnalyzerPlugin(),
   ],
