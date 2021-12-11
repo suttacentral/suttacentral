@@ -46,6 +46,11 @@ export const plainStyles = html`
       display: none;
     }
 
+    .verse-line .translation {
+      display: block;
+      margin-left: 2em;
+    }
+
     /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
     .comment,
     .variant {
@@ -74,6 +79,11 @@ export const plainPaliStyles = html`
     section,
     article {
       max-width: 720px;
+    }
+
+    .verse-line .root {
+      display: block;
+      text-indent: 2em;
     }
 
     .comment,
@@ -146,6 +156,11 @@ export const plainPlusStyles = html`
 
       grid-column: 2;
       grid-row: 1;
+    }
+
+    .verse-line .translation,
+    .verse-line .root {
+      text-indent: 2em;
     }
 
     @media only screen and (max-width: 600px) {
@@ -236,6 +251,11 @@ export const sideBySideStyles = html`
       grid-column-gap: var(--sc-size-lg);
     }
 
+    .verse-line .translation,
+    .verse-line .root {
+      text-indent: 2em;
+    }
+
     .translation {
       grid-column: 1;
     }
@@ -308,6 +328,11 @@ export const sideBySidePlusStyles = html`
 
       grid-template-columns: 60px 1fr 1fr;
       grid-column-gap: var(--sc-size-lg);
+    }
+
+    .verse-line .translation,
+    .verse-line .root {
+      text-indent: 2em;
     }
 
     .reference {
@@ -422,6 +447,11 @@ export const lineByLineStyles = html`
       display: grid;
 
       grid-template-columns: minmax(200px, 720px);
+    }
+
+    .verse-line .translation,
+    .verse-line .root {
+      text-indent: 2em;
     }
 
     .reference {

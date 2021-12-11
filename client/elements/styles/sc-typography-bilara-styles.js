@@ -63,11 +63,6 @@ export const typographyBilaraStyles = css`
     list-style-type: none;
   }
 
-  .verse-line .text {
-    display: block;
-    margin-left: 2em;
-  }
-
   /* lookup */
 
   .spanFocused {
@@ -98,7 +93,7 @@ export const typographyBilaraStyles = css`
     padding: var(--sc-size-sm) var(--sc-size-md);
 
     color: var(--sc-secondary-text-color);
-    border-width: 0 0 0 8px;
+    border-width: 1px 0 0 8px;
     border-style: solid;
     border-color: transparent;
     border-radius: var(--sc-size-sm);
@@ -109,6 +104,8 @@ export const typographyBilaraStyles = css`
     font-variant-caps: normal;
 
     text-align: left;
+
+    text-indent: 0;
   }
   .comment {
     border-color: var(--sc-primary-accent-color);
