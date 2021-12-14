@@ -20,6 +20,16 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
+      <style>
+        .text-options {
+          padding: var(--sc-size-lg);
+        }
+
+        .wrapper {
+          min-height: calc(100vh - 336px);
+          margin-bottom: 64px;
+        }
+      </style>
       <div class="wrapper">
         ${this.displaySimpleTextTemplate} ${this.displaySegmentedTextTemplate}
         ${this.displayErrorTemplate}
@@ -39,15 +49,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       :host {
         display: flex;
         flex-direction: column;
-      }
-
-      .text-options {
-        padding: var(--sc-size-lg);
-      }
-
-      .wrapper {
-        min-height: calc(100vh - 336px);
-        margin-bottom: 64px;
       }
     `;
   }

@@ -244,17 +244,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
         box-sizing: border-box;
         height: 100%;
       }
-
-      .container {
-        padding-top: 64px;
-        padding-bottom: 64px;
-      }
-
-      .link-anchor {
-        position: absolute;
-        width: calc(100% + 20px);
-        height: 100%;
-      }
     `;
   }
 
@@ -430,13 +419,31 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   render() {
     return this.routeDefinition
-      ? html` <div class="container">${this.routeDefinition.content}</div> `
+      ? html`
+          <style>
+            .container {
+              padding-top: 64px;
+              padding-bottom: 64px;
+            }
+
+            .link-anchor {
+              position: absolute;
+              width: calc(100% + 20px);
+              height: 100%;
+            }
+          </style>
+          <div class="container">${this.routeDefinition.content}</div>
+        `
       : html`
           <div class="page-not-found-container">
             <h2>${this.localize('error:error404')}</h2>
             <h3>${this.localize('interface:pageNotFound')}</h3>
           </div>
         `;
+  }
+
+  createRenderRoot() {
+    return this;
   }
 
   _changeRoute(location) {
