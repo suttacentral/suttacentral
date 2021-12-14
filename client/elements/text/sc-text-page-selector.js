@@ -21,6 +21,14 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
+        sc-text-page-selector {
+          font-family: var(--sc-serif-font);
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+          line-height: 1.5;
+          color: var(--sc-primary-text-color);
+        }
+
         .text-options {
           padding: var(--sc-size-lg);
         }
@@ -351,7 +359,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!this.SuttaParallelsDisplayed) {
       this.SuttaParallelsDisplayed = true;
       const scSiteLayout = document.querySelector('sc-site-layout');
-      scSiteLayout?.shadowRoot.querySelector('#action_items')?.showParallelsTopSheet();
+      scSiteLayout?.querySelector('#action_items')?.showParallelsTopSheet();
     }
   }
 

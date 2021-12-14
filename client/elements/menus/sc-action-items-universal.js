@@ -121,9 +121,7 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
     });
 
     this.moreMenu.anchor.addEventListener('click', () => {
-      const scActionItems = document
-        .querySelector('sc-site-layout')
-        .shadowRoot.querySelector('#action_items');
+      const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
       scActionItems?.hideTopSheets();
     });
   }

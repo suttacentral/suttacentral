@@ -23,13 +23,14 @@ const microSentryClient = new BrowserMicroSentryClient({
 
 class SCSiteLayout extends LitLocalized(LitElement) {
   static get styles() {
-    return css`
-      ${SCSiteLayoutStyles}
-    `;
+    return css``;
   }
 
   render() {
     return html`
+      <style>
+        ${SCSiteLayoutStyles}
+      </style>
       <div id="universal_toolbar">
         <sc-navigation-linden-leaves id="breadCrumb"></sc-navigation-linden-leaves>
 
@@ -58,6 +59,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
       <sc-page-selector id="page_selector"></sc-page-selector>
     `;
+  }
+
+  createRenderRoot() {
+    return this;
   }
 
   get toolbarSelectedTemplate() {
@@ -195,7 +200,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _removeSelectedClass() {
-    this.shadowRoot.querySelectorAll('.staticPageSelected').forEach(e => {
+    this.querySelectorAll('.staticPageSelected').forEach(e => {
       e.classList.remove('staticPageSelected');
     });
   }
@@ -205,7 +210,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _addStaticPageLinkEventListener() {
-    this.shadowRoot.querySelectorAll('#static_pages_nav_menu nav li a').forEach(element => {
+    this.querySelectorAll('#static_pages_nav_menu nav li a').forEach(element => {
       element.addEventListener('click', e => {
         this._removeSelectedClass();
         this._addSelectedClass(element);
@@ -374,53 +379,53 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
 
     this.addEventListener('hide-sc-top-sheet', e => {
-      this.shadowRoot.querySelector('#setting_menu')?.hide();
+      this.querySelector('#setting_menu')?.hide();
       this.actions.changeDisplaySettingMenuState(false);
     });
 
     this.addEventListener('show-sc-top-sheet', e => {
-      this.shadowRoot.querySelector('#setting_menu')?.show();
+      this.querySelector('#setting_menu')?.show();
     });
 
     this.addEventListener('hide-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels')?.hide();
+      this.querySelector('#sutta_parallels')?.hide();
       this.actions.changeDisplaySuttaParallelsState(false);
     });
 
     this.addEventListener('show-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels')?.show();
+      this.querySelector('#sutta_parallels')?.show();
     });
 
     this.addEventListener('bind-data-to-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
+      this.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
     });
 
     this.addEventListener('hide-sc-sutta-toc', e => {
-      this.shadowRoot.querySelector('#sutta_toc')?.hide();
+      this.querySelector('#sutta_toc')?.hide();
       this.actions.changeDisplaySuttaToCState(false);
     });
 
     this.addEventListener('show-sc-sutta-toc', e => {
-      this.shadowRoot.querySelector('#sutta_toc')?.show();
+      this.querySelector('#sutta_toc')?.show();
     });
 
     this.addEventListener('show-sc-sutta-info', e => {
       if (e.detail.isSegmentedText) {
-        this.shadowRoot.querySelector('#bilara-sutta-info')?.show();
+        this.querySelector('#bilara-sutta-info')?.show();
       } else {
-        this.shadowRoot.querySelector('#sutta-info')?.show();
+        this.querySelector('#sutta-info')?.show();
       }
     });
 
     this.addEventListener('hide-sc-sutta-info', e => {
-      this.shadowRoot.querySelector('#sutta-info')?.hide();
-      const pubInfo = this.shadowRoot.querySelector('#bilara-sutta-info');
+      this.querySelector('#sutta-info')?.hide();
+      const pubInfo = this.querySelector('#bilara-sutta-info');
       if (pubInfo && pubInfo.hide) {
         pubInfo.hide();
       }
       this.actions.changeDisplaySuttaInfoState(false);
     });
-    const rootDOM = this.shadowRoot;
+
     let scrollDistance = 0;
     document.addEventListener(
       'scroll',
@@ -469,7 +474,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
           if (currentScrollTop > lastScrollTop) {
             const universalToolbarHeight = 156;
-            rootDOM.getElementById(
+            this.getElementById(
               'universal_toolbar'
             ).style.transform = `translateY(-${universalToolbarHeight}px)`;
           }
@@ -479,10 +484,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     );
 
     window.addEventListener('resize', () => {
-      rootDOM.getElementById('universal_toolbar').style.transition = '';
-      rootDOM.getElementById('breadCrumb').style.transition = '';
-      rootDOM.getElementById('mainTitle').style.transition = '';
-      rootDOM.getElementById('subTitle').style.transition = '';
+      this.getElementById('universal_toolbar').style.transition = '';
+      this.getElementById('breadCrumb').style.transition = '';
+      this.getElementById('mainTitle').style.transition = '';
+      this.getElementById('subTitle').style.transition = '';
     });
 
     this._initNavigation();
@@ -498,34 +503,34 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _setUniversalToolbarTransformStyles() {
     const transitionStyle = 'transform 200ms ease-in-out';
-    this.shadowRoot.getElementById('universal_toolbar').style.transition = transitionStyle;
-    this.shadowRoot.getElementById('breadCrumb').style.transition = transitionStyle;
-    this.shadowRoot.getElementById('mainTitle').style.transition = transitionStyle;
-    this.shadowRoot.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
+    this.getElementById('universal_toolbar').style.transition = transitionStyle;
+    this.getElementById('breadCrumb').style.transition = transitionStyle;
+    this.getElementById('mainTitle').style.transition = transitionStyle;
+    this.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
   }
 
   _universalToolbarTransform() {
-    this.shadowRoot.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
-    this.shadowRoot.getElementById('breadCrumb').style.transform = 'translateY(120px)';
-    this.shadowRoot.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
-    this.shadowRoot.getElementById('subTitle').style.opacity = '0';
-    this.shadowRoot.getElementById('subTitle').style.transform = 'scale(0)';
+    this.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
+    this.getElementById('breadCrumb').style.transform = 'translateY(120px)';
+    this.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
+    this.getElementById('subTitle').style.opacity = '0';
+    this.getElementById('subTitle').style.transform = 'scale(0)';
     if (window.innerWidth < 480) {
-      this.shadowRoot.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
+      this.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
     }
   }
 
   _resetUniversalToolbar() {
-    this.shadowRoot.getElementById('universal_toolbar').style.transform = 'none';
-    this.shadowRoot.getElementById('breadCrumb').style.transform = 'none';
-    this.shadowRoot.getElementById('mainTitle').style.transform = 'scale(1)';
-    this.shadowRoot.getElementById('subTitle').style.opacity = '1';
-    this.shadowRoot.getElementById('subTitle').style.transform = 'scale(1)';
+    this.getElementById('universal_toolbar').style.transform = 'none';
+    this.getElementById('breadCrumb').style.transform = 'none';
+    this.getElementById('mainTitle').style.transform = 'scale(1)';
+    this.getElementById('subTitle').style.opacity = '1';
+    this.getElementById('subTitle').style.transform = 'scale(1)';
   }
 
   _setStaticPageMenuItemSelected() {
     this._removeSelectedClass();
-    const element = this.shadowRoot.querySelector(`nav a[href="${this.changedRoute.path}"]`);
+    const element = this.querySelector(`nav a[href="${this.changedRoute.path}"]`);
     if (element) {
       element.classList.add('staticPageSelected');
     }
@@ -579,7 +584,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _routeChanged() {
-    this.shadowRoot.querySelector('#sutta-info')?.hide();
+    this.querySelector('#sutta-info')?.hide();
   }
 
   _colorThemeChanged(newVal, oldVal) {
@@ -613,7 +618,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _setToolbarPosition() {
-    const universalToolbar = this.shadowRoot.querySelector('#universal_toolbar');
+    const universalToolbar = this.querySelector('#universal_toolbar');
     if (!universalToolbar) {
       return;
     }

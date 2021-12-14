@@ -71,7 +71,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   #showTableViewButton() {
     const scSiteLayout = document.querySelector('sc-site-layout');
-    const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
+    const scActionItems = scSiteLayout?.querySelector('#action_items');
     const btnShowParallelTableView = scActionItems?.shadowRoot.querySelector(
       '#btnShowParallelTableView'
     );
@@ -108,7 +108,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   _hideTopSheets() {
     const scActionItems = document
       .querySelector('sc-site-layout')
-      .shadowRoot.querySelector('#action_items');
+      .querySelector('#action_items');
     scActionItems?.hideItems();
   }
 

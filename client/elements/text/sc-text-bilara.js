@@ -186,7 +186,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _hideTopSheets() {
-    document.querySelector('sc-site-layout').shadowRoot.querySelector('#action_items')?.hideItems();
+    document.querySelector('sc-site-layout').querySelector('#action_items')?.hideItems();
   }
 
   _segmentedTextContentElement() {
@@ -224,7 +224,7 @@ class SCTextBilara extends SCTextCommon {
       return;
     }
     Object.entries(this.suttaComment).forEach(([key, value]) => {
-      const translationSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .translation`);
+      const translationSpan = this.querySelector(`#${CSS.escape(key)} .translation`);
       translationSpan?.appendChild(this._addCommentSpan(value));
     });
   }

@@ -317,11 +317,11 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
 
   _loadScToasts() {
     const scSiteLayout = document.querySelector('sc-site-layout');
-    const scToasts = scSiteLayout?.shadowRoot.querySelector('sc-toasts');
+    const scToasts = scSiteLayout?.querySelector('sc-toasts');
     if (!scToasts) {
       import('../addons/sc-toasts');
       const newScToasts = document.createElement('sc-toasts');
-      scSiteLayout.shadowRoot.appendChild(newScToasts);
+      scSiteLayout.appendChild(newScToasts);
     }
   }
 
@@ -559,7 +559,7 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
   _onPaliScriptChanged(e) {
     const scTopsheetViews = document
       .querySelector('sc-site-layout')
-      .shadowRoot.querySelector('#setting_menu');
+      .querySelector('#setting_menu');
     const selectedScript = scriptIdentifiers[e.currentTarget.selectedIndex].script;
     const selPaliScriptsElement = scTopsheetViews.shadowRoot.querySelector('#selPaliScripts');
     selPaliScriptsElement.classList.remove(...this.classList);
