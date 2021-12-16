@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
@@ -5,14 +6,11 @@ import { LitLocalized } from './sc-localization-mixin';
 export class SCStaticPage extends LitLocalized(LitElement) {
   static get properties() {
     return {
-      currentId: {
-        type: String,
-        value: '',
-      },
+      currentId: { type: String },
     };
   }
 
-  firstUpdated(props) {
+  firstUpdated() {
     const targetMainElement = this.shadowRoot.querySelector('main');
 
     if (targetMainElement) {
