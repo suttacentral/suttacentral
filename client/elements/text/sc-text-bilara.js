@@ -163,6 +163,7 @@ class SCTextBilara extends SCTextCommon {
         this._addSCReference();
       }
       this._addVariantText();
+      this._addCommentText();
       this._paliLookupStateChanged();
       this._chineseLookupStateChanged();
       this._showHighlightingChanged();
@@ -172,6 +173,7 @@ class SCTextBilara extends SCTextCommon {
 
     setTimeout(() => {
       this._changeTextView();
+      this._recalculateCommentSpanHeight();
     }, 0);
     this.actions.changeSuttaMetaText('');
     this.actions.changeSuttaPublicationInfo({
@@ -247,6 +249,30 @@ class SCTextBilara extends SCTextCommon {
     });
   }
 
+  _addCommentText() {
+    if (!this.suttaComment || this._articleElement().length === 0) {
+      return;
+    }
+    Object.entries(this.suttaComment).forEach(([key, value]) => {
+      const translationSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .translation`);
+      translationSpan?.appendChild(this._addCommentSpan(value));
+    });
+  }
+
+  _addCommentSpan(value) {
+    const span = document.createElement('span');
+    span.className = 'comment';
+    span.dataset.tooltip = this._stripHTML(value);
+    span.innerHTML = value;
+    return span;
+  }
+
+  _stripHTML(htmlText) {
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = htmlText;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
   _recalculateCommentSpanHeight() {
     const gutterWidth = 5;
     this.commentSpanRectInfo.clear();
@@ -278,14 +304,6 @@ class SCTextBilara extends SCTextCommon {
       element.removeAttribute('style');
       element.onmouseover = null;
       element.onmouseleave = null;
-    });
-  }
-
-  _getCommentSpanRectInfo() {
-    this.commentSpanRectInfo.clear();
-    const Comments = this.shadowRoot.querySelectorAll('.comment');
-    Comments.forEach(element => {
-      this.commentSpanRectInfo.set(element.id, element.getBoundingClientRect());
     });
   }
 
@@ -349,6 +367,13 @@ class SCTextBilara extends SCTextCommon {
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
       this._updateURLParams();
+    }
+    if (changedProps.has('currentStyles')) {
+      if (this._isPlusStyle()) {
+        this._recalculateCommentSpanHeight();
+      } else {
+        this._resetCommentSpan();
+      }
     }
   }
 
@@ -795,28 +820,6 @@ class SCTextBilara extends SCTextCommon {
     const text = document.createTextNode(subKey);
     anchor.appendChild(text);
     return anchor;
-  }
-
-  _addCommentText() {
-    if (!this.suttaComment || this._articleElement().length === 0) {
-      return;
-    }
-    Object.entries(this.suttaComment).forEach(([key, value]) => {
-      const translationSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .translation`);
-      if (translationSpan) {
-        translationSpan.appendChild(this._addCommentSpan(value));
-      }
-    });
-  }
-
-  _addCommentSpan(value) {
-    const span = document.createElement('span');
-    span.className = 'comment';
-    span.title = 'translator’s note';
-    span.dataset.tooltip = value;
-    const text = document.createTextNode(value);
-    span.appendChild(text);
-    return span;
   }
 
   _addVariantText() {

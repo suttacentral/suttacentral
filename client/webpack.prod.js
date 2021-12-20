@@ -11,7 +11,9 @@ module.exports = merge(require('./webpack.common'), {
     moduleIds: 'deterministic',
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanAfterEveryBuildPatterns: ['*.LICENSE.txt'],
+    }),
     new CopyPlugin({
       patterns: [
         'manifest.json',

@@ -1,6 +1,17 @@
 
 # SuttaCentral ChangeLog
 
+## 2021.12.16
+
+- Clicking outside top sheet only cause top sheet to retract. #2328
+- reduce sensitivity for toolbar appearance. #2327
+- Execute the scroll event according to the scroll distance.
+- Add option for positioning tool bar at top. #2337
+- Update dependencies.
+- Try to use Cloudflare web analytics.
+- Implement comments for segmented texts. #2276
+- Make the service worker not load pointless files. #2346
+
 ## 2021.11.19
 
 - Fix: ATB and title for static page essays is buggy. #2315
