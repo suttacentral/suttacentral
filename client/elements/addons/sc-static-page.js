@@ -11,7 +11,7 @@ export class SCStaticPage extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    const targetMainElement = this.shadowRoot.querySelector('main');
+    const targetMainElement = this.querySelector('main') || this.shadowRoot?.querySelector('main');
 
     if (targetMainElement) {
       targetMainElement.addEventListener('click', () => {

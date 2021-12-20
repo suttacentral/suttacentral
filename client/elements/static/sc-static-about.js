@@ -7,6 +7,10 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
 class SCStaticAbout extends SCStaticPage {
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <style>

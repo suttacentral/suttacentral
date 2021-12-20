@@ -189,9 +189,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _hideTopSheets() {
-    const scActionItems = document
-      .querySelector('sc-site-layout')
-      .querySelector('#action_items');
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideItems();
   }
 
@@ -349,9 +347,9 @@ class SCTextLegacy extends SCTextCommon {
     if (divisionId === 'iti') divisionId = 'it';
     if (this.paragraphs && this.showParagraphs) {
       this.paragraphs.forEach(paragraph => {
-        const refs = this
-          .querySelector('#simple_text_content')
-          .querySelectorAll(`.${paragraph.uid}`);
+        const refs = this.querySelector('#simple_text_content').querySelectorAll(
+          `.${paragraph.uid}`
+        );
         Array.from(refs).forEach(item => {
           if (this._shouldDisplayBookIcon(divisionId, item.id)) {
             this._processVolPageInfo(item, divisionId, paragraph);

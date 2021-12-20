@@ -1018,14 +1018,9 @@ class SCTextBilara extends SCTextCommon {
   }
 
   onPaliWordClick(e) {
-    //console.log(e.currentTarget.getRootNode().querySelector('sc-text-bilara')._byPassLookupClick);
-    // if (e.currentTarget.getRootNode().host._byPassLookupClick()) {
-    //   return;
-    // }
     if (e.currentTarget.getRootNode().querySelector('sc-text-bilara')._byPassLookupClick()) {
       return;
     }
-    // const scBilaraText = e.currentTarget.getRootNode().host;
     const scBilaraText = e.currentTarget.getRootNode().querySelector('sc-text-bilara');
     const lookup = scBilaraText.querySelector('#pali_lookup');
     scBilaraText._removeDefineFocusedClass();
@@ -1043,13 +1038,9 @@ class SCTextBilara extends SCTextCommon {
   }
 
   onChineseWordClick(e) {
-    // if (e.currentTarget.getRootNode().host._byPassLookupClick()) {
-    //   return;
-    // }
     if (e.currentTarget.getRootNode().querySelector('sc-text-bilara')._byPassLookupClick()) {
       return;
     }
-    // const scBilaraText = e.currentTarget.getRootNode().host;
     const scBilaraText = e.currentTarget.getRootNode().querySelector('sc-text-bilara');
     const lookup = scBilaraText.querySelector('#chinese_lookup');
     scBilaraText._removeDefineFocusedClass();

@@ -431,6 +431,14 @@ class SCPageSelector extends LitLocalized(LitElement) {
               width: calc(100% + 20px);
               height: 100%;
             }
+
+            sc-page-selector {
+              font-family: var(--sc-serif-font);
+              font-size: var(--sc-skolar-font-size-md);
+              font-weight: 400;
+              line-height: 1.5;
+              color: var(--sc-primary-text-color);
+            }
           </style>
           <div class="container">${this.routeDefinition.content}</div>
         `
