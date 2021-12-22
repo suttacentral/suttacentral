@@ -27,6 +27,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           font-weight: 400;
           line-height: 1.5;
           color: var(--sc-primary-text-color);
+
+          display: flex;
+          flex-direction: column;
         }
 
         .text-options {
@@ -50,15 +53,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   createRenderRoot() {
     return this;
-  }
-
-  static get styles() {
-    return css`
-      :host {
-        display: flex;
-        flex-direction: column;
-      }
-    `;
   }
 
   get displayStepper() {
