@@ -289,7 +289,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
           if (currentScrollTop > lastScrollTop) {
             const universalToolbarHeight = 156;
-            this.getElementById(
+            document.getElementById(
               'universal_toolbar'
             ).style.transform = `translateY(-${universalToolbarHeight}px)`;
           }
@@ -299,10 +299,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     );
 
     window.addEventListener('resize', () => {
-      this.getElementById('universal_toolbar').style.transition = '';
-      this.getElementById('breadCrumb').style.transition = '';
-      this.getElementById('mainTitle').style.transition = '';
-      this.getElementById('subTitle').style.transition = '';
+      document.getElementById('universal_toolbar').style.transition = '';
+      document.getElementById('breadCrumb').style.transition = '';
+      document.getElementById('mainTitle').style.transition = '';
+      document.getElementById('subTitle').style.transition = '';
     });
 
     this._initNavigation();
@@ -315,29 +315,29 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _setUniversalToolbarTransformStyles() {
     const transitionStyle = 'transform 200ms ease-in-out';
-    this.getElementById('universal_toolbar').style.transition = transitionStyle;
-    this.getElementById('breadCrumb').style.transition = transitionStyle;
-    this.getElementById('mainTitle').style.transition = transitionStyle;
-    this.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
+    document.getElementById('universal_toolbar').style.transition = transitionStyle;
+    document.getElementById('breadCrumb').style.transition = transitionStyle;
+    document.getElementById('mainTitle').style.transition = transitionStyle;
+    document.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
   }
 
   _universalToolbarTransform() {
-    this.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
-    this.getElementById('breadCrumb').style.transform = 'translateY(120px)';
-    this.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
-    this.getElementById('subTitle').style.opacity = '0';
-    this.getElementById('subTitle').style.transform = 'scale(0)';
+    document.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
+    document.getElementById('breadCrumb').style.transform = 'translateY(120px)';
+    document.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
+    document.getElementById('subTitle').style.opacity = '0';
+    document.getElementById('subTitle').style.transform = 'scale(0)';
     if (window.innerWidth < 480) {
-      this.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
+      document.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
     }
   }
 
   _resetUniversalToolbar() {
-    this.getElementById('universal_toolbar').style.transform = 'none';
-    this.getElementById('breadCrumb').style.transform = 'none';
-    this.getElementById('mainTitle').style.transform = 'scale(1)';
-    this.getElementById('subTitle').style.opacity = '1';
-    this.getElementById('subTitle').style.transform = 'scale(1)';
+    document.getElementById('universal_toolbar').style.transform = 'none';
+    document.getElementById('breadCrumb').style.transform = 'none';
+    document.getElementById('mainTitle').style.transform = 'scale(1)';
+    document.getElementById('subTitle').style.opacity = '1';
+    document.getElementById('subTitle').style.transform = 'scale(1)';
   }
 
   _initNavigation() {

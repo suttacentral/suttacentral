@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { css } from 'lit';
 
 export const typographyStaticStyles = css`
@@ -115,5 +116,13 @@ export const typographyStaticStyles = css`
     color: var(--sc-secondary-text-color);
     border: var(--sc-border);
     border-radius: 2px;
+  }
+
+  sc-page-selector {
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-skolar-font-size-md);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--sc-primary-text-color);
   }
 `;
