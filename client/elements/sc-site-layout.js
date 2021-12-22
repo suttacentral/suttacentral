@@ -293,6 +293,9 @@ class SCSiteLayout extends LitLocalized(LitElement) {
               'universal_toolbar'
             ).style.transform = `translateY(-${universalToolbarHeight}px)`;
           }
+          if (currentScrollTop < 10) {
+            this._resetUniversalToolbar();
+          }
           lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
         }
       })

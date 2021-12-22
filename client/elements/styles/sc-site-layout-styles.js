@@ -2,7 +2,7 @@
 import { css } from 'lit';
 
 export const SCSiteLayoutStyles = css`
-  :host {
+  sc-site-layout {
     display: block;
   }
 

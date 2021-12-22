@@ -237,16 +237,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
     };
   }
 
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        box-sizing: border-box;
-        height: 100%;
-      }
-    `;
-  }
-
   get actions() {
     return {
       changeRoute(name, params, path) {
@@ -429,6 +419,12 @@ class SCPageSelector extends LitLocalized(LitElement) {
             .link-anchor {
               position: absolute;
               width: calc(100% + 20px);
+              height: 100%;
+            }
+
+            sc-page-selector {
+              display: block;
+              box-sizing: border-box;
               height: 100%;
             }
           </style>
