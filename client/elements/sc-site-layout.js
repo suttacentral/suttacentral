@@ -16,7 +16,7 @@ import { store } from '../redux-store';
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
-import { SCColors } from './styles/sc-colors';
+// import { SCColors } from './styles/sc-colors';
 
 const microSentryClient = new BrowserMicroSentryClient({
   dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
@@ -163,7 +163,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     super.connectedCallback();
     this._createGlobalStylesheet(SCUtilityStyles);
     this._createGlobalStylesheet(SCFontStyles);
-    this._createGlobalStylesheet(SCColors);
+    // this._createGlobalStylesheet(SCColors);
     this._calculateScrollbarWidth();
   }
 
