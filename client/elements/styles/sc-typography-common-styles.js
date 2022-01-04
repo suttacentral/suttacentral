@@ -102,6 +102,7 @@ export const typographyCommonStyles = css`
   }
 
   header ul {
+    display: block;
     margin: 0;
     padding: 0;
 
@@ -583,7 +584,7 @@ export const typographyCommonStyles = css`
     color: var(--sc-secondary-text-color);
   }
 
-  .delscribe {
+  .describe {
     text-decoration: line-through;
 
     text-decoration-color: var(--sc-secondary-text-color);

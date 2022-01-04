@@ -20,6 +20,27 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 class SCTextPageSelector extends LitLocalized(LitElement) {
   render() {
     return html`
+      <style>
+        sc-text-page-selector {
+          font-family: var(--sc-serif-font);
+          font-size: var(--sc-skolar-font-size-md);
+          font-weight: 400;
+          line-height: 1.5;
+          color: var(--sc-primary-text-color);
+
+          display: flex;
+          flex-direction: column;
+        }
+
+        .text-options {
+          padding: var(--sc-size-lg);
+        }
+
+        .wrapper {
+          min-height: calc(100vh - 336px);
+          margin-bottom: 64px;
+        }
+      </style>
       <div class="wrapper">
         ${this.displaySimpleTextTemplate} ${this.displaySegmentedTextTemplate}
         ${this.displayErrorTemplate}
@@ -30,22 +51,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     `;
   }
 
-  static get styles() {
-    return css`
-      :host {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .text-options {
-        padding: var(--sc-size-lg);
-      }
-
-      .wrapper {
-        min-height: calc(100vh - 336px);
-        margin-bottom: 64px;
-      }
-    `;
+  createRenderRoot() {
+    return this;
   }
 
   get displayStepper() {
@@ -195,7 +202,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('show-image', e => {
-      const scTextImageElement = this.shadowRoot.querySelector('#sc_text_image');
+      const scTextImageElement = this.querySelector('#sc_text_image');
       if (scTextImageElement) {
         scTextImageElement.showImage(e.detail);
       }
@@ -346,7 +353,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!this.SuttaParallelsDisplayed) {
       this.SuttaParallelsDisplayed = true;
       const scSiteLayout = document.querySelector('sc-site-layout');
-      scSiteLayout?.shadowRoot.querySelector('#action_items')?.showParallelsTopSheet();
+      scSiteLayout?.querySelector('#action_items')?.showParallelsTopSheet();
     }
   }
 

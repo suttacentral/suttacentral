@@ -237,27 +237,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
     };
   }
 
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        box-sizing: border-box;
-        height: 100%;
-      }
-
-      .container {
-        padding-top: 64px;
-        padding-bottom: 64px;
-      }
-
-      .link-anchor {
-        position: absolute;
-        width: calc(100% + 20px);
-        height: 100%;
-      }
-    `;
-  }
-
   get actions() {
     return {
       changeRoute(name, params, path) {
@@ -335,7 +314,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
   _loadScActionItems() {
     if (this.currentRoute.name !== 'home') {
       const scSiteLayout = document.querySelector('sc-site-layout');
-      const scActionItems = scSiteLayout?.shadowRoot.querySelector('#action_items');
+      const scActionItems = scSiteLayout?.querySelector('#action_items');
       if (!scActionItems) {
         import(
           /* webpackMode: "lazy" */
@@ -343,7 +322,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
           './menus/sc-action-items'
         )
           .then(module => {
-            const contextToolbar = scSiteLayout?.shadowRoot.querySelector('#context_toolbar');
+            const contextToolbar = scSiteLayout?.querySelector('#context_toolbar');
             const newScActionItems = document.createElement('sc-action-items');
             newScActionItems.id = 'action_items';
             contextToolbar.appendChild(newScActionItems);
@@ -369,7 +348,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       const scSiteLayout = document.querySelector('sc-site-layout');
       // eslint-disable-next-line no-restricted-syntax
       for (const key of topSheets.keys()) {
-        const topSheet = scSiteLayout?.shadowRoot.querySelector(`#${key}`);
+        const topSheet = scSiteLayout?.querySelector(`#${key}`);
         if (!topSheet) {
           needToLoadTopSheets = true;
           break;
@@ -391,8 +370,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   // eslint-disable-next-line class-methods-use-this
   _appendTopSheet(topSheetId, topSheetTagName, scSiteLayout) {
-    const universalToolbar = scSiteLayout?.shadowRoot.querySelector('#universal_toolbar');
-    const navMenu = scSiteLayout?.shadowRoot.querySelector('#static_pages_nav_menu');
+    const universalToolbar = scSiteLayout?.querySelector('#universal_toolbar');
+    const navMenu = scSiteLayout?.querySelector('#static_pages_nav_menu');
     const newTopSheet = document.createElement(topSheetTagName);
     newTopSheet.id = topSheetId;
     universalToolbar.insertBefore(newTopSheet, navMenu);
@@ -430,13 +409,37 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   render() {
     return this.routeDefinition
-      ? html` <div class="container">${this.routeDefinition.content}</div> `
+      ? html`
+          <style>
+            .container {
+              padding-top: 64px;
+              padding-bottom: 64px;
+            }
+
+            .link-anchor {
+              position: absolute;
+              width: calc(100% + 20px);
+              height: 100%;
+            }
+
+            sc-page-selector {
+              display: block;
+              box-sizing: border-box;
+              height: 100%;
+            }
+          </style>
+          <div class="container">${this.routeDefinition.content}</div>
+        `
       : html`
           <div class="page-not-found-container">
             <h2>${this.localize('error:error404')}</h2>
             <h3>${this.localize('interface:pageNotFound')}</h3>
           </div>
         `;
+  }
+
+  createRenderRoot() {
+    return this;
   }
 
   _changeRoute(location) {

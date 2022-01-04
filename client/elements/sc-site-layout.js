@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 
 import { BrowserMicroSentryClient } from '@micro-sentry/browser';
 
@@ -8,6 +8,7 @@ import { icon } from '../img/sc-icon';
 import './sc-page-selector';
 import './navigation/sc-navigation-linden-leaves';
 import './addons/sc-linear-progress';
+import './menus/sc-menu-static-pages-nav';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { store } from '../redux-store';
@@ -15,21 +16,22 @@ import { store } from '../redux-store';
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
-import { SCColors } from './styles/sc-colors';
 
 const microSentryClient = new BrowserMicroSentryClient({
   dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
 });
 
 class SCSiteLayout extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      ${SCSiteLayoutStyles}
-    `;
+  createRenderRoot() {
+    return this;
   }
 
   render() {
     return html`
+      <style>
+        ${SCSiteLayoutStyles}
+      </style>
+
       <div id="universal_toolbar">
         <sc-navigation-linden-leaves id="breadCrumb"></sc-navigation-linden-leaves>
 
@@ -42,175 +44,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
             <div id="subTitle">${this.localize('interface:pageSubtitle')}</div>
           </div>
         </div>
-        <sc-linear-progress .active="${this.linearProgressActive}"></sc-linear-progress>
 
-        <div id="static_pages_nav_menu">
-          <nav>
-            <ul>
-              ${this.toolbarSelectedTemplate} ${this.shouldShowSecondToolbarTemplate}
-              ${this.shouldShowTipitakaToolbarTemplate} ${this.shouldShowAcademicToolbarTemplate}
-              ${this.shouldShowOrganizationalToolbarTemplate}
-              ${this.shouldShowGuidesToolbarTemplate}
-            </ul>
-          </nav>
-        </div>
+        <sc-linear-progress .active=${this.linearProgressActive}></sc-linear-progress>
+        <sc-menu-static-pages-nav id="static_pages_nav_menu"></sc-menu-static-pages-nav>
       </div>
 
       <sc-page-selector id="page_selector"></sc-page-selector>
     `;
-  }
-
-  get toolbarSelectedTemplate() {
-    return html`
-      ${this.staticPagesToolbarDisplayState &&
-      this.staticPagesToolbarDisplayState.displayFirstToolbar
-        ? html`
-            <li>
-              <a href="/introduction">${this.localize('interface:introduction')}</a>
-            </li>
-            <li>
-              <a href="/donations">${this.localize('interface:donations')}</a>
-            </li>
-            <li>
-              <a href="/offline">${this.localize('interface:useOffline')}</a>
-            </li>
-            <li>
-              <a
-                href="https://discourse.suttacentral.net/c/meta/updates"
-                class="external"
-                title="See updates on SuttaCentral forum"
-                target="_blank"
-                rel="noopener"
-              >
-                ${this.localize('interface:whatsnew')}
-              </a>
-            </li>
-          `
-        : ''}
-    `;
-  }
-
-  get shouldShowSecondToolbarTemplate() {
-    return html`
-      ${this.staticPagesToolbarDisplayState &&
-      this.staticPagesToolbarDisplayState.displaySecondToolbar
-        ? html`
-            <li>
-              <a href="/subjects">${this.localize('interface:subjects')}</a>
-            </li>
-            <li>
-              <a href="/similes">${this.localize('interface:similes')}</a>
-            </li>
-            <li>
-              <a href="/names">${this.localize('interface:names')}</a>
-            </li>
-            <li>
-              <a href="/terminology">${this.localize('interface:terminology')}</a>
-            </li>
-          `
-        : ''}
-    `;
-  }
-
-  get shouldShowTipitakaToolbarTemplate() {
-    return html`
-      ${this.staticPagesToolbarDisplayState &&
-      this.staticPagesToolbarDisplayState.displayTipitakaToolbar
-        ? html`
-            <li>
-              <a href="/discourses-guide-sujato">${this.localize('interface:discourses')}</a>
-            </li>
-            <li>
-              <a href="/vinaya-guide-brahmali">${this.localize('interface:vinaya')}</a>
-            </li>
-            <li>
-              <a href="/abhidhamma-guide-sujato">${this.localize('interface:abhidhamma')}</a>
-            </li>
-          `
-        : ''}
-    `;
-  }
-
-  get shouldShowAcademicToolbarTemplate() {
-    return html`
-      ${this.staticPagesToolbarDisplayState &&
-      this.staticPagesToolbarDisplayState.displayAcademicToolbar
-        ? html`
-            <li>
-              <a href="/numbering">${this.localize('interface:numbering')}</a>
-            </li>
-            <li>
-              <a href="/abbreviations">${this.localize('interface:abbreviations')}</a>
-            </li>
-            <li>
-              <a href="/methodology">${this.localize('interface:methodology')}</a>
-            </li>
-          `
-        : ''}
-    `;
-  }
-
-  get shouldShowOrganizationalToolbarTemplate() {
-    return html`
-      ${this.staticPagesToolbarDisplayState &&
-      this.staticPagesToolbarDisplayState.displayOrganizationalToolbar
-        ? html`
-            <li>
-              <a href="/acknowledgments">${this.localize('interface:acknowledgments')}</a>
-            </li>
-            <li>
-              <a href="/licensing">${this.localize('interface:licensing')}</a>
-            </li>
-            <li>
-              <a href="/about">${this.localize('interface:about')}</a>
-            </li>
-          `
-        : ''}
-    `;
-  }
-
-  get shouldShowGuidesToolbarTemplate() {
-    return html`
-      ${this.staticPagesToolbarDisplayState &&
-      this.staticPagesToolbarDisplayState.displayGuidesToolbar
-        ? html`
-            <li>
-              <a href="/general-guide-sujato">${this.localize('interface:general')}</a>
-            </li>
-            <li>
-              <a href="/dn-guide-sujato">${this.localize('interface:long')}</a>
-            </li>
-            <li>
-              <a href="/mn-guide-sujato">${this.localize('interface:middle')}</a>
-            </li>
-            <li>
-              <a href="/sn-guide-sujato">${this.localize('interface:linked')}</a>
-            </li>
-            <li>
-              <a href="/an-guide-sujato">${this.localize('interface:numbered')}</a>
-            </li>
-          `
-        : ''}
-    `;
-  }
-
-  _removeSelectedClass() {
-    this.shadowRoot.querySelectorAll('.staticPageSelected').forEach(e => {
-      e.classList.remove('staticPageSelected');
-    });
-  }
-
-  _addSelectedClass(e) {
-    e.classList.add('staticPageSelected');
-  }
-
-  _addStaticPageLinkEventListener() {
-    this.shadowRoot.querySelectorAll('#static_pages_nav_menu nav li a').forEach(element => {
-      element.addEventListener('click', e => {
-        this._removeSelectedClass();
-        this._addSelectedClass(element);
-      });
-    });
   }
 
   static get properties() {
@@ -225,7 +65,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       changedRoute: { type: Object },
       displaySettingMenu: { type: Boolean },
       toolbarTitle: { type: String },
-      staticPagesToolbarDisplayState: { type: Object },
       linearProgressActive: { type: Boolean },
       toolbarPosition: { type: Object },
     };
@@ -246,17 +85,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     this.displaySettingMenu = state.displaySettingMenu;
     this.toolbarTitle = state.toolbarOptions.title;
     this.shouldShowFirstToolbar = true;
-    this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
-    if (!this.staticPagesToolbarDisplayState) {
-      this.staticPagesToolbarDisplayState = {
-        displayFirstToolbar: true,
-        displaySecondToolbar: false,
-        displayTipitakaToolbar: false,
-        displayAcademicToolbar: false,
-        displayOrganizationalToolbar: false,
-        displayGuidesToolbar: false,
-      };
-    }
     this.linearProgressActive = false;
     this.toolbarPosition = state.toolbarPosition;
   }
@@ -279,12 +107,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SET_NAVIGATION',
           navigationArray: navArray,
-        });
-      },
-      setStaticPagesToolbarDisplayState(toolbarDisplayState) {
-        store.dispatch({
-          type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
-          staticPagesToolbarDisplayState: toolbarDisplayState,
         });
       },
       changeDisplaySuttaParallelsState(displayState) {
@@ -325,9 +147,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.appColorTheme !== state.colorTheme) {
       this.appColorTheme = state.colorTheme;
     }
-    if (this.staticPagesToolbarDisplayState !== state.staticPagesToolbarDisplayState) {
-      this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
-    }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
     }
@@ -343,7 +162,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     super.connectedCallback();
     this._createGlobalStylesheet(SCUtilityStyles);
     this._createGlobalStylesheet(SCFontStyles);
-    this._createGlobalStylesheet(SCColors);
     this._calculateScrollbarWidth();
   }
 
@@ -351,7 +169,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     const setScrollbarWidth = () =>
       document.body.style.setProperty(
         '--scrollbar-width',
-        window.innerWidth - document.documentElement.clientWidth + 'px'
+        `${window.innerWidth - document.documentElement.clientWidth}px`
       );
 
     window.addEventListener('resize', setScrollbarWidth, { passive: true });
@@ -373,54 +191,54 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       });
     });
 
-    this.addEventListener('hide-sc-top-sheet', e => {
-      this.shadowRoot.querySelector('#setting_menu')?.hide();
+    this.addEventListener('hide-sc-top-sheet', () => {
+      this.querySelector('#setting_menu')?.hide();
       this.actions.changeDisplaySettingMenuState(false);
     });
 
-    this.addEventListener('show-sc-top-sheet', e => {
-      this.shadowRoot.querySelector('#setting_menu')?.show();
+    this.addEventListener('show-sc-top-sheet', () => {
+      this.querySelector('#setting_menu')?.show();
     });
 
-    this.addEventListener('hide-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels')?.hide();
+    this.addEventListener('hide-sc-sutta-parallels', () => {
+      this.querySelector('#sutta_parallels')?.hide();
       this.actions.changeDisplaySuttaParallelsState(false);
     });
 
-    this.addEventListener('show-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels')?.show();
+    this.addEventListener('show-sc-sutta-parallels', () => {
+      this.querySelector('#sutta_parallels')?.show();
     });
 
     this.addEventListener('bind-data-to-sc-sutta-parallels', e => {
-      this.shadowRoot.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
+      this.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
     });
 
-    this.addEventListener('hide-sc-sutta-toc', e => {
-      this.shadowRoot.querySelector('#sutta_toc')?.hide();
+    this.addEventListener('hide-sc-sutta-toc', () => {
+      this.querySelector('#sutta_toc')?.hide();
       this.actions.changeDisplaySuttaToCState(false);
     });
 
-    this.addEventListener('show-sc-sutta-toc', e => {
-      this.shadowRoot.querySelector('#sutta_toc')?.show();
+    this.addEventListener('show-sc-sutta-toc', () => {
+      this.querySelector('#sutta_toc')?.show();
     });
 
     this.addEventListener('show-sc-sutta-info', e => {
       if (e.detail.isSegmentedText) {
-        this.shadowRoot.querySelector('#bilara-sutta-info')?.show();
+        this.querySelector('#bilara-sutta-info')?.show();
       } else {
-        this.shadowRoot.querySelector('#sutta-info')?.show();
+        this.querySelector('#sutta-info')?.show();
       }
     });
 
-    this.addEventListener('hide-sc-sutta-info', e => {
-      this.shadowRoot.querySelector('#sutta-info')?.hide();
-      const pubInfo = this.shadowRoot.querySelector('#bilara-sutta-info');
+    this.addEventListener('hide-sc-sutta-info', () => {
+      this.querySelector('#sutta-info')?.hide();
+      const pubInfo = this.querySelector('#bilara-sutta-info');
       if (pubInfo && pubInfo.hide) {
         pubInfo.hide();
       }
       this.actions.changeDisplaySuttaInfoState(false);
     });
-    const rootDOM = this.shadowRoot;
+
     let scrollDistance = 0;
     document.addEventListener(
       'scroll',
@@ -469,9 +287,12 @@ class SCSiteLayout extends LitLocalized(LitElement) {
           const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
           if (currentScrollTop > lastScrollTop) {
             const universalToolbarHeight = 156;
-            rootDOM.getElementById(
+            document.getElementById(
               'universal_toolbar'
             ).style.transform = `translateY(-${universalToolbarHeight}px)`;
+          }
+          if (currentScrollTop < 10) {
+            this._resetUniversalToolbar();
           }
           lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
         }
@@ -479,16 +300,13 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     );
 
     window.addEventListener('resize', () => {
-      rootDOM.getElementById('universal_toolbar').style.transition = '';
-      rootDOM.getElementById('breadCrumb').style.transition = '';
-      rootDOM.getElementById('mainTitle').style.transition = '';
-      rootDOM.getElementById('subTitle').style.transition = '';
+      document.getElementById('universal_toolbar').style.transition = '';
+      document.getElementById('breadCrumb').style.transition = '';
+      document.getElementById('mainTitle').style.transition = '';
+      document.getElementById('subTitle').style.transition = '';
     });
 
     this._initNavigation();
-    this._initStaticPagesToolbarDisplayState();
-    this._addStaticPageLinkEventListener();
-    this._setStaticPageMenuItemSelected();
     this._setToolbarPosition();
 
     window.addEventListener('error', e => {
@@ -498,37 +316,29 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _setUniversalToolbarTransformStyles() {
     const transitionStyle = 'transform 200ms ease-in-out';
-    this.shadowRoot.getElementById('universal_toolbar').style.transition = transitionStyle;
-    this.shadowRoot.getElementById('breadCrumb').style.transition = transitionStyle;
-    this.shadowRoot.getElementById('mainTitle').style.transition = transitionStyle;
-    this.shadowRoot.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
+    document.getElementById('universal_toolbar').style.transition = transitionStyle;
+    document.getElementById('breadCrumb').style.transition = transitionStyle;
+    document.getElementById('mainTitle').style.transition = transitionStyle;
+    document.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
   }
 
   _universalToolbarTransform() {
-    this.shadowRoot.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
-    this.shadowRoot.getElementById('breadCrumb').style.transform = 'translateY(120px)';
-    this.shadowRoot.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
-    this.shadowRoot.getElementById('subTitle').style.opacity = '0';
-    this.shadowRoot.getElementById('subTitle').style.transform = 'scale(0)';
+    document.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
+    document.getElementById('breadCrumb').style.transform = 'translateY(120px)';
+    document.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
+    document.getElementById('subTitle').style.opacity = '0';
+    document.getElementById('subTitle').style.transform = 'scale(0)';
     if (window.innerWidth < 480) {
-      this.shadowRoot.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
+      document.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
     }
   }
 
   _resetUniversalToolbar() {
-    this.shadowRoot.getElementById('universal_toolbar').style.transform = 'none';
-    this.shadowRoot.getElementById('breadCrumb').style.transform = 'none';
-    this.shadowRoot.getElementById('mainTitle').style.transform = 'scale(1)';
-    this.shadowRoot.getElementById('subTitle').style.opacity = '1';
-    this.shadowRoot.getElementById('subTitle').style.transform = 'scale(1)';
-  }
-
-  _setStaticPageMenuItemSelected() {
-    this._removeSelectedClass();
-    const element = this.shadowRoot.querySelector(`nav a[href="${this.changedRoute.path}"]`);
-    if (element) {
-      element.classList.add('staticPageSelected');
-    }
+    document.getElementById('universal_toolbar').style.transform = 'none';
+    document.getElementById('breadCrumb').style.transform = 'none';
+    document.getElementById('mainTitle').style.transform = 'scale(1)';
+    document.getElementById('subTitle').style.opacity = '1';
+    document.getElementById('subTitle').style.transform = 'scale(1)';
   }
 
   _initNavigation() {
@@ -547,17 +357,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
   }
 
-  _initStaticPagesToolbarDisplayState() {
-    this.actions.setStaticPagesToolbarDisplayState({
-      displayFirstToolbar: true,
-      displaySecondToolbar: false,
-      displayTipitakaToolbar: false,
-      displayAcademicToolbar: false,
-      displayOrganizationalToolbar: false,
-      displayGuidesToolbar: false,
-    });
-  }
-
   updated(changedProps) {
     if (changedProps.has('siteLanguage')) {
       this._setSiteLanguage();
@@ -567,11 +366,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (changedProps.has('changedRoute')) {
       this._routeChanged();
-      this._setStaticPageMenuItemSelected();
-    }
-    if (changedProps.has('staticPagesToolbarDisplayState')) {
-      this._addStaticPageLinkEventListener();
-      this._setStaticPageMenuItemSelected();
     }
     if (changedProps.has('toolbarPosition')) {
       this._setToolbarPosition();
@@ -579,7 +373,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _routeChanged() {
-    this.shadowRoot.querySelector('#sutta-info')?.hide();
+    this.querySelector('#sutta-info')?.hide();
   }
 
   _colorThemeChanged(newVal, oldVal) {
@@ -613,7 +407,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _setToolbarPosition() {
-    const universalToolbar = this.shadowRoot.querySelector('#universal_toolbar');
+    const universalToolbar = this.querySelector('#universal_toolbar');
     if (!universalToolbar) {
       return;
     }

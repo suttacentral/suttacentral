@@ -132,6 +132,10 @@ class SCTextBilara extends SCTextCommon {
     `;
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   firstUpdated() {
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', this._onClickHandler);
@@ -182,22 +186,22 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _hideTopSheets() {
-    document.querySelector('sc-site-layout').shadowRoot.querySelector('#action_items')?.hideItems();
+    document.querySelector('sc-site-layout').querySelector('#action_items')?.hideItems();
   }
 
   _segmentedTextContentElement() {
-    return this.shadowRoot.querySelector('#segmented_text_content');
+    return this.querySelector('#segmented_text_content');
   }
 
   _articleElement() {
-    return this.shadowRoot.querySelectorAll('article');
+    return this.querySelectorAll('article');
   }
 
   // Scrolls to the chosen section
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      const targetElement = this.shadowRoot.querySelector(`#${CSS.escape(sectionId)}`);
+      const targetElement = this.querySelector(`#${CSS.escape(sectionId)}`);
       if (targetElement) {
         targetElement.scrollIntoView();
         window.scrollTo(0, window.scrollY - margin);
@@ -210,7 +214,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _removeRefFocusedClass() {
-    this.shadowRoot.querySelectorAll('.refFocused').forEach(element => {
+    this.querySelectorAll('.refFocused').forEach(element => {
       element.classList.remove('refFocused');
     });
   }
@@ -220,7 +224,7 @@ class SCTextBilara extends SCTextCommon {
       return;
     }
     Object.entries(this.suttaComment).forEach(([key, value]) => {
-      const translationSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .translation`);
+      const translationSpan = this.querySelector(`#${CSS.escape(key)} .translation`);
       translationSpan?.appendChild(this._addCommentSpan(value));
     });
   }
@@ -242,11 +246,11 @@ class SCTextBilara extends SCTextCommon {
   _recalculateCommentSpanHeight() {
     const gutterWidth = 5;
     this.commentSpanRectInfo.clear();
-    const Comments = this.shadowRoot.querySelectorAll('.comment');
+    const Comments = this.querySelectorAll('.comment');
     Comments.forEach(element => {
       const rect = element.getBoundingClientRect();
       const elementNoId = element.id.slice(8); // id:comment_1 => get: 1
-      const nextComment = this.shadowRoot.querySelector(
+      const nextComment = this.querySelector(
         `#comment_${parseInt(elementNoId, 10) + 1}`
       );
       if (nextComment) {
@@ -265,7 +269,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _resetCommentSpan() {
-    const Comments = this.shadowRoot.querySelectorAll('.comment');
+    const Comments = this.querySelectorAll('.comment');
     Comments.forEach(element => {
       element.removeAttribute('style');
       element.onmouseover = null;
@@ -275,14 +279,14 @@ class SCTextBilara extends SCTextCommon {
 
   _addCommentSpanId() {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll('span.comment').forEach(word => {
+    this.querySelectorAll('span.comment').forEach(word => {
       word.id = `comment_${wordIdSeed}`;
       wordIdSeed++;
     });
   }
 
   _addCommentSpanMouseEvent() {
-    const Comments = this.shadowRoot.querySelectorAll('.comment');
+    const Comments = this.querySelectorAll('.comment');
     Comments.forEach(element => {
       element.onmouseover = e => {
         e.currentTarget.style.overflow = 'auto';
@@ -383,14 +387,14 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _disableLookup() {
-    this.shadowRoot.querySelector('sc-bottom-sheet')?.hide();
+    this.querySelector('sc-bottom-sheet')?.hide();
     this._removeDefineFocusedClass();
     this._removeLookupEvent('.root .text .word');
   }
 
   _conditionallyPutIntoSpans(lang) {
     if (this.rootSutta.lang === lang) {
-      if (this.shadowRoot.querySelector('.root')) {
+      if (this.querySelector('.root')) {
         this._putIntoSpans('.root', lang);
       }
     }
@@ -656,7 +660,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addTransliteratedRootTextToSpan(key, value) {
-    const spanElement = this.shadowRoot.querySelector(`#${key} .root .text`);
+    const spanElement = this.querySelector(`#${key} .root .text`);
     if (spanElement) {
       spanElement.classList.add(`${this.paliScript.toLowerCase()}-script`);
       spanElement.innerHTML = this._tweakText(value);
@@ -664,7 +668,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addRootTextToSpan(key, value) {
-    const spanElement = this.shadowRoot.querySelector(`#${key} .root .text`);
+    const spanElement = this.querySelector(`#${key} .root .text`);
     if (spanElement) {
       spanElement.innerHTML = this._tweakText(value);
     }
@@ -703,7 +707,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addRootSuttaMarkupToSpan(key) {
-    const segmentElement = this.shadowRoot.querySelector(`#${key}`);
+    const segmentElement = this.querySelector(`#${key}`);
     if (segmentElement) {
       segmentElement.appendChild(this._addRootSuttaSpan());
     }
@@ -720,7 +724,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addTranslationSuttaMarkupToSpan(key) {
-    const segmentElement = this.shadowRoot.querySelector(`#${key}`);
+    const segmentElement = this.querySelector(`#${key}`);
     if (segmentElement) {
       segmentElement.appendChild(this._addTranslationSuttaSpan());
     }
@@ -742,7 +746,7 @@ class SCTextBilara extends SCTextCommon {
     }
 
     Object.keys(this.bilaraRootSutta).forEach(key => {
-      const segmentElement = this.shadowRoot.querySelector(`#${CSS.escape(key)}`);
+      const segmentElement = this.querySelector(`#${CSS.escape(key)}`);
       if (segmentElement) {
         const refSpan = this._addReferenceSpan();
         refSpan.appendChild(this._addSCReferenceAnchor(key));
@@ -793,7 +797,7 @@ class SCTextBilara extends SCTextCommon {
       return;
     }
     Object.entries(this.suttaVariant).forEach(([key, value]) => {
-      const rootSpan = this.shadowRoot.querySelector(`#${CSS.escape(key)} .root`);
+      const rootSpan = this.querySelector(`#${CSS.escape(key)} .root`);
       if (rootSpan) {
         rootSpan.appendChild(this._addVariantSpan(value));
       }
@@ -833,7 +837,7 @@ class SCTextBilara extends SCTextCommon {
     }
     await this._fetchRootEdition();
     Object.entries(this.suttaReference).forEach(([key, value]) => {
-      const refElement = this.shadowRoot.querySelector(`#${CSS.escape(key)} .reference`);
+      const refElement = this.querySelector(`#${CSS.escape(key)} .reference`);
       if (refElement) {
         this._addReferenceAnchor(value, refElement);
       }
@@ -900,7 +904,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _addTranslationTextToSpan(key, value) {
-    const spanElement = this.shadowRoot.querySelector(`#${key} .translation .text`);
+    const spanElement = this.querySelector(`#${key} .translation .text`);
     if (spanElement) {
       spanElement.innerHTML = this._tweakText(value);
     }
@@ -915,7 +919,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _startGeneratingSpans(selector, unit) {
-    let segments = this.shadowRoot.querySelectorAll(selector);
+    let segments = this.querySelectorAll(selector);
     segments = Array.from(segments);
     let empty = true;
     while (segments.length > 0) {
@@ -989,14 +993,14 @@ class SCTextBilara extends SCTextCommon {
 
   _addWordSpanId(selector) {
     let wordIdSeed = 0;
-    this.shadowRoot.querySelectorAll(selector).forEach(word => {
+    this.querySelectorAll(selector).forEach(word => {
       word.id = `word_${wordIdSeed}`;
       wordIdSeed++;
     });
   }
 
   _addPaliLookupEvent(selector) {
-    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const allWordSpans = this.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
     // eslint-disable-next-line no-restricted-syntax
     for (const word of spans) {
@@ -1014,18 +1018,18 @@ class SCTextBilara extends SCTextCommon {
   }
 
   onPaliWordClick(e) {
-    if (e.currentTarget.getRootNode().host._byPassLookupClick()) {
+    if (e.currentTarget.getRootNode().querySelector('sc-text-bilara')._byPassLookupClick()) {
       return;
     }
-    const scBilaraText = e.currentTarget.getRootNode().host;
-    const lookup = scBilaraText.shadowRoot.querySelector('#pali_lookup');
+    const scBilaraText = e.currentTarget.getRootNode().querySelector('sc-text-bilara');
+    const lookup = scBilaraText.querySelector('#pali_lookup');
     scBilaraText._removeDefineFocusedClass();
     scBilaraText._addDefineFocusedClass(e.currentTarget);
     scBilaraText._setSCBottomSheet(e.currentTarget, lookup);
   }
 
   _addChineseLookupEvent(selector) {
-    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const allWordSpans = this.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
     // eslint-disable-next-line no-restricted-syntax
     for (const word of spans) {
@@ -1034,11 +1038,11 @@ class SCTextBilara extends SCTextCommon {
   }
 
   onChineseWordClick(e) {
-    if (e.currentTarget.getRootNode().host._byPassLookupClick()) {
+    if (e.currentTarget.getRootNode().querySelector('sc-text-bilara')._byPassLookupClick()) {
       return;
     }
-    const scBilaraText = e.currentTarget.getRootNode().host;
-    const lookup = scBilaraText.shadowRoot.querySelector('#chinese_lookup');
+    const scBilaraText = e.currentTarget.getRootNode().querySelector('sc-text-bilara');
+    const lookup = scBilaraText.querySelector('#chinese_lookup');
     scBilaraText._removeDefineFocusedClass();
     scBilaraText._addDefineFocusedClass(e.currentTarget);
     scBilaraText._setSCBottomSheet(e.currentTarget, lookup);
@@ -1050,13 +1054,13 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _removeDefineFocusedClass() {
-    this.shadowRoot.querySelectorAll('.spanFocused').forEach(dfElement => {
+    this.querySelectorAll('.spanFocused').forEach(dfElement => {
       dfElement.classList.remove('spanFocused');
     });
   }
 
   _removeLookupEvent(selector) {
-    const allWordSpans = this.shadowRoot.querySelectorAll(selector);
+    const allWordSpans = this.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
     spans.forEach(word => {
       word.removeEventListener('click', this.onPaliWordClick);
@@ -1065,7 +1069,7 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _setSCBottomSheet(word, lookup) {
-    const scBottomSheet = this.shadowRoot.querySelector('sc-bottom-sheet');
+    const scBottomSheet = this.querySelector('sc-bottom-sheet');
     scBottomSheet.currentTarget = word;
     let keyword = '';
     if (lookup.id === 'chinese_lookup') {
@@ -1104,7 +1108,7 @@ class SCTextBilara extends SCTextCommon {
     if (!this.rootSutta || this.rootSutta.lang !== 'pli') {
       return;
     }
-    const segments = this.shadowRoot.querySelectorAll('.root');
+    const segments = this.querySelectorAll('.root');
     if (this.hasScriptBeenChanged) {
       this._resetScript();
     }
@@ -1177,7 +1181,7 @@ class SCTextBilara extends SCTextCommon {
   async _setScriptOfSegments() {
     await this._scriptTransliterate(this.suttaId, this._scriptFunctionName());
     this._addTransliteratedRootText();
-    if (this.shadowRoot.querySelectorAll('.variant').length === 0) {
+    if (this.querySelectorAll('.variant').length === 0) {
       this._addVariantText();
     }
   }

@@ -49,7 +49,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
       mwc-radio-list-item {
         --mdc-list-side-padding: 4px;
         --mdc-list-item-graphic-margin: 4px;
-        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
+        --mdc-radio-unchecked-color: var(--sc-icon-color);
       }
 
       [role='separator'] {
@@ -270,6 +270,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
         </mwc-check-list-item>
         <li divider role="separator"></li>
         <mwc-radio-list-item
+          class="more-menu-mwc-list-item"
           left
           group="toolbarPosition"
           ?selected=${this.toolbarPosition.scrollForToolbar}
@@ -278,6 +279,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
           >Scroll for toolbar</mwc-radio-list-item
         >
         <mwc-radio-list-item
+          class="more-menu-mwc-list-item"
           left
           group="toolbarPosition"
           ?selected=${this.toolbarPosition.fixedToolbar}
@@ -286,6 +288,7 @@ class SCMenuMore extends LitLocalized(LitElement) {
           >Fixed toolbar</mwc-radio-list-item
         >
         <mwc-radio-list-item
+          class="more-menu-mwc-list-item"
           left
           group="toolbarPosition"
           ?selected=${this.toolbarPosition.toolbarAtTop}
