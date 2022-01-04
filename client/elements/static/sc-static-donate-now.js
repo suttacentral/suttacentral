@@ -43,8 +43,8 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
     return css`
       ${layoutSimpleStyles}
       ${typographyCommonStyles}
-            /* allow mwc-select to drop below container */
-          article {
+      /* allow mwc-select to drop below container */
+      article {
         content-visibility: visible;
         height: 100vh;
       }

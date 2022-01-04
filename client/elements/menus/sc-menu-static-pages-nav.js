@@ -1,0 +1,259 @@
+import { LitElement, html } from 'lit';
+
+import { LitLocalized } from '../addons/sc-localization-mixin';
+import { store } from '../../redux-store';
+
+import { SCMenuStaticPagesNavStyles } from '../styles/sc-menu-static-pages-nav-styles';
+
+class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
+  static get properties() {
+    return {
+      staticPagesToolbarDisplayState: { type: Object },
+      changedRoute: { type: Object },
+    };
+  }
+
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+    const state = store.getState();
+    this.changedRoute = state.currentRoute;
+    this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
+    if (!this.staticPagesToolbarDisplayState) {
+      this.staticPagesToolbarDisplayState = {
+        displayFirstToolbar: true,
+        displaySecondToolbar: false,
+        displayTipitakaToolbar: false,
+        displayAcademicToolbar: false,
+        displayOrganizationalToolbar: false,
+        displayGuidesToolbar: false,
+      };
+    }
+  }
+
+  _initStaticPagesToolbarDisplayState() {
+    this.actions.setStaticPagesToolbarDisplayState({
+      displayFirstToolbar: true,
+      displaySecondToolbar: false,
+      displayTipitakaToolbar: false,
+      displayAcademicToolbar: false,
+      displayOrganizationalToolbar: false,
+      displayGuidesToolbar: false,
+    });
+  }
+
+  get actions() {
+    return {
+      setStaticPagesToolbarDisplayState(toolbarDisplayState) {
+        store.dispatch({
+          type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
+          staticPagesToolbarDisplayState: toolbarDisplayState,
+        });
+      },
+    };
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.staticPagesToolbarDisplayState !== state.staticPagesToolbarDisplayState) {
+      this.staticPagesToolbarDisplayState = state.staticPagesToolbarDisplayState;
+    }
+    if (this.changedRoute !== state.currentRoute) {
+      this.changedRoute = state.currentRoute;
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._addStaticPageLinkEventListener();
+  }
+
+  firstUpdated() {
+    this._initStaticPagesToolbarDisplayState();
+    this._setStaticPageMenuItemSelected();
+  }
+
+  updated(changedProps) {
+    if (changedProps.has('changedRoute')) {
+      this._setStaticPageMenuItemSelected();
+    }
+    if (changedProps.has('staticPagesToolbarDisplayState')) {
+      this._addStaticPageLinkEventListener();
+      this._setStaticPageMenuItemSelected();
+    }
+  }
+
+  _addStaticPageLinkEventListener() {
+    this.shadowRoot.querySelectorAll('#static_pages_nav_menu nav li a').forEach(element => {
+      element.addEventListener('click', () => {
+        this._removeSelectedClass();
+        this._addSelectedClass(element);
+      });
+    });
+  }
+
+  _setStaticPageMenuItemSelected() {
+    this._removeSelectedClass();
+    const element = this.shadowRoot.querySelector(
+      `nav a[href="${this.changedRoute.path.toLowerCase()}"]`
+    );
+    element?.classList.add('staticPageSelected');
+  }
+
+  _removeSelectedClass() {
+    this.shadowRoot.querySelectorAll('.staticPageSelected').forEach(e => {
+      e.classList.remove('staticPageSelected');
+    });
+  }
+
+  _addSelectedClass(e) {
+    e?.classList.add('staticPageSelected');
+  }
+
+  render() {
+    return html`
+      <style>
+        ${SCMenuStaticPagesNavStyles}
+      </style>
+      <div id="static_pages_nav_menu">
+        <nav>
+          <ul>
+            ${this.toolbarSelectedTemplate} ${this.shouldShowSecondToolbarTemplate}
+            ${this.shouldShowTipitakaToolbarTemplate} ${this.shouldShowAcademicToolbarTemplate}
+            ${this.shouldShowOrganizationalToolbarTemplate} ${this.shouldShowGuidesToolbarTemplate}
+          </ul>
+        </nav>
+      </div>
+    `;
+  }
+
+  get toolbarSelectedTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayFirstToolbar
+        ? html`
+            <li>
+              <a href="/introduction">${this.localize('interface:introduction')}</a>
+            </li>
+            <li>
+              <a href="/donations">${this.localize('interface:donations')}</a>
+            </li>
+            <li>
+              <a href="/offline">${this.localize('interface:useOffline')}</a>
+            </li>
+            <li>
+              <a
+                href="https://discourse.suttacentral.net/c/meta/updates"
+                class="external"
+                title="See updates on SuttaCentral forum"
+                target="_blank"
+                rel="noopener"
+              >
+                ${this.localize('interface:whatsnew')}
+              </a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+
+  get shouldShowSecondToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displaySecondToolbar
+        ? html`
+            <li>
+              <a href="/subjects">${this.localize('interface:subjects')}</a>
+            </li>
+            <li>
+              <a href="/similes">${this.localize('interface:similes')}</a>
+            </li>
+            <li>
+              <a href="/names">${this.localize('interface:names')}</a>
+            </li>
+            <li>
+              <a href="/terminology">${this.localize('interface:terminology')}</a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+
+  get shouldShowTipitakaToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayTipitakaToolbar
+        ? html`
+            <li>
+              <a href="/discourses-guide-sujato">${this.localize('interface:discourses')}</a>
+            </li>
+            <li>
+              <a href="/vinaya-guide-brahmali">${this.localize('interface:vinaya')}</a>
+            </li>
+            <li>
+              <a href="/abhidhamma-guide-sujato">${this.localize('interface:abhidhamma')}</a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+
+  get shouldShowAcademicToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayAcademicToolbar
+        ? html`
+            <li>
+              <a href="/numbering">${this.localize('interface:numbering')}</a>
+            </li>
+            <li>
+              <a href="/abbreviations">${this.localize('interface:abbreviations')}</a>
+            </li>
+            <li>
+              <a href="/methodology">${this.localize('interface:methodology')}</a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+
+  get shouldShowOrganizationalToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayOrganizationalToolbar
+        ? html`
+            <li>
+              <a href="/acknowledgments">${this.localize('interface:acknowledgments')}</a>
+            </li>
+            <li>
+              <a href="/licensing">${this.localize('interface:licensing')}</a>
+            </li>
+            <li>
+              <a href="/about">${this.localize('interface:about')}</a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+
+  get shouldShowGuidesToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayGuidesToolbar
+        ? html`
+            <li>
+              <a href="/general-guide-sujato">${this.localize('interface:general')}</a>
+            </li>
+            <li>
+              <a href="/dn-guide-sujato">${this.localize('interface:long')}</a>
+            </li>
+            <li>
+              <a href="/mn-guide-sujato">${this.localize('interface:middle')}</a>
+            </li>
+            <li>
+              <a href="/sn-guide-sujato">${this.localize('interface:linked')}</a>
+            </li>
+            <li>
+              <a href="/an-guide-sujato">${this.localize('interface:numbered')}</a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+}
+
+customElements.define('sc-menu-static-pages-nav', SCMenuStaticPagesNav);

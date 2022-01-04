@@ -1,7 +1,8 @@
+/* eslint-disable import/prefer-default-export */
 import { css } from 'lit';
 
 export const SCSiteLayoutStyles = css`
-  :host {
+  sc-site-layout {
     display: block;
   }
 
@@ -119,101 +120,12 @@ export const SCSiteLayoutStyles = css`
     height: 1.25em;
   }
 
-  #static_pages_nav_menu {
-    height: 48px;
-
-    background-color: var(--sc-primary-color-dark);
-  }
-
-  nav {
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    flex-direction: row;
-
-    box-sizing: border-box;
-    height: 48px;
-    padding: 0 8px;
-
-    white-space: nowrap;
-
-    background-color: var(--sc-primary-color-dark);
-  }
-
-  ul {
-    display: flex;
-
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    font-size: var(--sc-skolar-font-size-md);
-    font-weight: 500;
-
-    margin-right: 8px;
-
-    list-style-type: none;
-
-    letter-spacing: var(--sc-caps-letter-spacing);
-    font-variant-caps: all-small-caps;
-
-    align-items: center;
-  }
-
-  li a {
-    position: relative;
-
-    display: flex;
-
-    box-sizing: border-box;
-    height: 100%;
-    padding: 4px 8px 0;
-
-    text-decoration: none;
-
-    color: white;
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
-
-    border-bottom: 4px solid rgba(0, 0, 0, 0);
-
-    align-items: center;
-
-    transition: all 200ms ease;
-  }
-
-  li a:hover {
-    cursor: pointer;
-
-    color: white;
-    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1);
-    border-bottom: 4px solid var(--sc-primary-color-light);
-
-    transition: all 200ms ease;
-  }
-
-  li a:active {
-    background-color: var(--sc-primary-color-light-transparent);
-
-    transition: background-color 200ms ease;
-  }
-
-  li a:hover .external {
-    visibility: visible;
-  }
-
   svg.external {
     width: 15px;
     height: 15px;
     fill: white;
     margin: 6px 0 0 6px;
     visibility: hidden;
-  }
-
-  .staticPageSelected {
-    opacity: 1;
-    border-bottom: 4px solid var(--sc-primary-color-light);
   }
 
   @media only screen and (max-width: 600px) {

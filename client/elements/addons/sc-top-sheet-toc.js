@@ -81,9 +81,7 @@ class SCTopSheetToC extends SCTopSheetCommon {
   }
 
   _hideMenu() {
-    const scActionItems = document
-      .querySelector('sc-site-layout')
-      .shadowRoot.querySelector('#action_items');
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideItems();
 
     this.actions.changeDisplaySettingMenuState(false);
