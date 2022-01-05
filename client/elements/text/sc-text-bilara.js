@@ -59,7 +59,7 @@ class SCTextBilara extends SCTextCommon {
       notesDisplayStyles: { type: Object },
       showHighlighting: { type: Boolean },
       rootEdition: { type: Array },
-      originSuttaId: { type: String },
+      isRangeSutta: { type: Boolean },
     };
   }
 
@@ -185,21 +185,21 @@ class SCTextBilara extends SCTextCommon {
       lang: this.translatedSutta?.lang || 'en',
     });
 
-    if (this.originSuttaId) {
+    if (this.isRangeSutta) {
       const UIDS = [];
-      const allArticle = this.shadowRoot.querySelectorAll('article');
+      const allArticle = this.querySelectorAll('article');
       allArticle.forEach(item => {
         UIDS.push(item.id);
         item.style.display = 'none';
       });
-      let sutta = this.shadowRoot.querySelector(`#${CSS.escape(this.originSuttaId)}`);
+      let sutta = this.querySelector(`#${CSS.escape(this.suttaId)}`);
       if (sutta) {
         sutta.style.display = 'block';
       } else {
         // eslint-disable-next-line no-restricted-syntax
         for (const uid of UIDS) {
-          if (this.originSuttaId.indexOf('.') && this.suttaId.indexOf('-')) {
-            const suttaNo = this.originSuttaId.split('.')[1];
+          if (this.rootSutta.uid.indexOf('.') && this.suttaId.indexOf('-')) {
+            const suttaNo = this.rootSutta.uid.split('.')[1];
             const suttaRange = uid.split('.')[1];
             const rangeBegin = suttaRange.split('-')[0];
             const rangeEnd = suttaRange.split('-')[1];
@@ -1040,6 +1040,15 @@ class SCTextBilara extends SCTextCommon {
     for (const word of spans) {
       word.addEventListener('click', this.onPaliWordClick);
     }
+  }
+
+  _byPassLookupClick() {
+    return (
+      store.getState().displaySettingMenu ||
+      store.getState().displaySuttaParallels ||
+      store.getState().displaySuttaToC ||
+      store.getState().displaySuttaInfo
+    );
   }
 
   onPaliWordClick(e) {

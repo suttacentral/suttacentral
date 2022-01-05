@@ -104,7 +104,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaReference=${this.suttaReference}
             .suttaVariant=${this.suttaVariant}
             .suttaId=${this.suttaId}
-            .originSuttaId=${this.originSuttaId}
+            .isRangeSutta=${this.isRangeSutta}
           ></sc-text-bilara>
         `
       : '';
@@ -283,13 +283,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _onResponse() {
-    if (this.responseData.range_uid && this.responseData.range_uid !== this.suttaId) {
-      this.originSuttaId = this.suttaId;
-      dispatchCustomEvent(this, 'sc-navigate', {
-        pathname: `/${this.responseData.range_uid}/${this.langIsoCode}/${this.authorUid}`,
-      });
-      return;
-    }
     if (
       !this.responseData ||
       (!this.responseData.root_text &&
@@ -373,10 +366,15 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _getBilaraTextUrl() {
-    if (this.authorUid) {
-      return `${API_ROOT}/bilarasuttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+    let suttaId = this.suttaId;
+    if (this.responseData.root_text.uid !== this.suttaId) {
+      suttaId = this.responseData.root_text.uid;
+      this.isRangeSutta = true;
     }
-    return `${API_ROOT}/bilarasuttas/${this.suttaId}?lang=${this.langIsoCode}`;
+    if (this.authorUid) {
+      return `${API_ROOT}/bilarasuttas/${suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+    }
+    return `${API_ROOT}/bilarasuttas/${suttaId}?lang=${this.langIsoCode}`;
   }
 
   async _fetchSuttaText() {

@@ -581,6 +581,12 @@ class Sutta(Resource):
                         )
                         result = results.next()
                         result['range_uid'] = child
+                        if result['range_uid'] is not None:
+                            results = db.aql.execute(
+                                SUTTA_VIEW,
+                                bind_vars={'uid': result['range_uid'], 'language': lang, 'author_uid': author_uid},
+                            )
+                            result = results.next()
 
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):
