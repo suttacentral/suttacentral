@@ -11,7 +11,13 @@ export class SCStaticPage extends LitLocalized(LitElement) {
   static get properties() {
     return {
       currentId: { type: String },
+      siteLanguage: { type: String },
     };
+  }
+
+  constructor() {
+    super();
+    this.siteLanguage = store.getState().siteLanguage;
   }
 
   connectedCallback() {
@@ -44,6 +50,14 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     });
 
     this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._updateUrlParams();
+    }
   }
 
   _scrollToSection(sectionId, currentId) {
