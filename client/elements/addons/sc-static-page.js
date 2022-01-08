@@ -2,12 +2,34 @@
 import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
+import { store } from '../../redux-store';
+import { API_ROOT } from '../../constants';
+import { getURLParam } from './sc-functions-miscellaneous';
+import { reduxActions } from './sc-redux-actions';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
   static get properties() {
     return {
       currentId: { type: String },
+      siteLanguage: { type: String },
     };
+  }
+
+  constructor() {
+    super();
+    this.siteLanguage = store.getState().siteLanguage;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // this._fetchLanguageList();
+    const { currentRoute } = store.getState();
+    if (!this.getUrlLangParam && currentRoute.path !== '/') {
+      this._updateUrlParams();
+    }
+    if (this.getUrlLangParam !== store.getState().siteLanguage && currentRoute.path !== '/') {
+      this.changeSiteLanguage(this.getUrlLangParam);
+    }
   }
 
   firstUpdated() {
@@ -21,8 +43,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
       });
     }
 
-    // since url navigation is using pushState, hashchange event fires only when
-    // using browser's back/forward functionality, and not when clicking a link
     window.addEventListener('hashchange', () => {
       setTimeout(() => {
         this.currentId = this._scrollToSection(window.location.hash, this.currentId);
@@ -30,6 +50,14 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     });
 
     this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._updateUrlParams();
+    }
   }
 
   _scrollToSection(sectionId, currentId) {
@@ -45,5 +73,39 @@ export class SCStaticPage extends LitLocalized(LitElement) {
       });
     }
     return sectionId;
+  }
+
+  _updateUrlParams() {
+    window.history.replaceState(null, null, `?lang=${store.getState().siteLanguage}`);
+  }
+
+  get getUrlLangParam() {
+    return getURLParam(window.location.href, 'lang');
+  }
+
+  async changeSiteLanguage(lang) {
+    await this._fetchLanguageList();
+    if (!this.languageListResponse || this.languageListResponse.length === 0) {
+      return;
+    }
+    try {
+      const chosenLanguage = this.languageListResponse.find(x => x.iso_code === lang);
+      if (chosenLanguage) {
+        reduxActions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async _fetchLanguageList() {
+    try {
+      this.languageListResponse = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
+      this.languageListResponse = this.languageListResponse.filter(
+        lang => !lang.is_root && lang.localized
+      );
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

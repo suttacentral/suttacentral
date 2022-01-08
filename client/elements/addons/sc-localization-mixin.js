@@ -71,7 +71,7 @@ export const LitLocalized = base =>
          if it hasn't been localized */
 
       const result = this.localize(key, null, true);
-      if (result == key) return fallback;
+      if (result === key) return fallback;
       return result;
     }
 
@@ -97,7 +97,7 @@ export const LitLocalized = base =>
         if (!this.localizedStringsPath) {
           return;
         }
-        if (!USE_PRODUCTION_LOCALIZATION) {
+        if (USE_PRODUCTION_LOCALIZATION) {
           if (!this.localizedStringsPath.includes('build')) {
             this.localizedStringsPath = this.localizedStringsPath.replace(
               '/localization/elements',
