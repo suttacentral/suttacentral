@@ -1,6 +1,12 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.01.12
+
+- Lift main content into light DOM. #2334
+- Identify user language on static pages.
+- Update lit to latest version (2.1.1)
+
 ## 2021.12.16
 
 - Clicking outside top sheet only cause top sheet to retract. #2328
