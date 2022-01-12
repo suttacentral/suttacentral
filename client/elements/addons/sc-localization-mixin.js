@@ -71,7 +71,7 @@ export const LitLocalized = base =>
          if it hasn't been localized */
 
       const result = this.localize(key, null, true);
-      if (result == key) return fallback;
+      if (result === key) return fallback;
       return result;
     }
 

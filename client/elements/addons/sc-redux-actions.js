@@ -43,4 +43,12 @@ export class reduxActions {
       toolbarPosition,
     });
   }
+
+  static changeLanguage(language, fullName) {
+    store.dispatch({
+      type: 'CHANGE_SITE_LANGUAGE',
+      language,
+      fullName,
+    });
+  }
 }

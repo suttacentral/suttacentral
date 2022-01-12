@@ -11,7 +11,7 @@ const isoCodes = [
   'he', 'id', 'it', 'la', 'hu', 'nl', 'no', 'ot', 'pli', 'pl', 'pt',
   'pra', 'ro', 'san', 'sr', 'fi', 'sv', 'xct', 'xto', 'vn', 'uig',
   'ru', 'mr', 'hi', 'ta', 'si', 'th', 'my', 'kho', 'ko', 'jp', 'zh',
-  'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl', 'jpn', 'vi', 'bn', 'zz'
+  'bo', 'pi', 'ug', 'gr', 'pr', 'skt', 'sl', 'jpn', 'vi', 'bn', 'lt', 'zz'
 ];
 
 const staticPages = [
