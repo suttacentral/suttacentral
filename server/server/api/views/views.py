@@ -574,7 +574,7 @@ class Sutta(Resource):
                     childRange = child[child.find('.')+1:]
                     range_begin = childRange[:childRange.find('-')]
                     range_end = childRange[childRange.find('-')+1:]
-                    if range(int(range_begin), int(range_end)).count(int(secondPart)):
+                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
                         results = db.aql.execute(
                             SUTTA_VIEW,
                             bind_vars={'uid': child, 'language': lang, 'author_uid': author_uid},
@@ -587,6 +587,7 @@ class Sutta(Resource):
                                 bind_vars={'uid': result['range_uid'], 'language': lang, 'author_uid': author_uid},
                             )
                             result = results.next()
+                            result['range_uid'] = child
 
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):

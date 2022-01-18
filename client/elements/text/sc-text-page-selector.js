@@ -105,6 +105,8 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaVariant=${this.suttaVariant}
             .suttaId=${this.suttaId}
             .isRangeSutta=${this.isRangeSutta}
+            .range_uid=${this.range_uid}
+            .transformedSuttaId=${this.transformedSuttaId}
           ></sc-text-bilara>
         `
       : '';
@@ -267,6 +269,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     if (state.currentRoute.params.suttaId !== this.suttaId && state.currentRoute.params.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
+      this.isRangeSutta = false;
       this._refreshData(false);
     }
     if (this.siteLanguage !== state.siteLanguage) {
@@ -347,6 +350,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
 
     this._getBilaraText();
+
+    if (this.responseData.root_text.uid !== this.suttaId) {
+      this.isRangeSutta = true;
+      this.range_uid = this.responseData.range_uid;
+      this._serveRangeSuttasPerSutta();
+    }
+
     this._updateNav();
   }
 
@@ -369,12 +379,55 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     let suttaId = this.suttaId;
     if (this.responseData.root_text.uid !== this.suttaId) {
       suttaId = this.responseData.root_text.uid;
-      this.isRangeSutta = true;
+      // this.isRangeSutta = true;
+      // this.range_uid = this.responseData.range_uid;
+      // this._serveRangeSuttasPerSutta();
     }
     if (this.authorUid) {
       return `${API_ROOT}/bilarasuttas/${suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
     }
     return `${API_ROOT}/bilarasuttas/${suttaId}?lang=${this.langIsoCode}`;
+  }
+
+  _serveRangeSuttasPerSutta() {
+    RefreshNavNew(this.range_uid, true);
+    if (
+      this.range_uid.split('.').length > 1 &&
+      this.range_uid.split('.')[1].split('-').length > 1
+    ) {
+      const rangeUids = this.range_uid.split('.')[1].split('-');
+      const previousNo = parseInt(this.suttaId.split('.')[1], 10) - 1;
+      const nextNo = parseInt(this.suttaId.split('.')[1], 10) + 1;
+      if (previousNo >= parseInt(rangeUids[0], 10)) {
+        const previousUid = `${this.suttaId.split('.')[0]}.${
+          parseInt(this.suttaId.split('.')[1], 10) - 1
+        }`;
+        this.previous = {
+          author_uid: this.authorUid,
+          lang: this.langIsoCode,
+          uid: previousUid,
+          name: this._transformId(
+            `${this.suttaId.split('.')[0]}.${parseInt(this.suttaId.split('.')[1], 10) - 1}`,
+            this.expansionReturns
+          ),
+        };
+      }
+
+      if (nextNo <= parseInt(rangeUids[1], 10)) {
+        const nextUid = `${this.suttaId.split('.')[0]}.${
+          parseInt(this.suttaId.split('.')[1], 10) + 1
+        }`;
+        this.next = {
+          author_uid: this.authorUid,
+          lang: this.langIsoCode,
+          uid: nextUid,
+          name: this._transformId(
+            `${this.suttaId.split('.')[0]}.${parseInt(this.suttaId.split('.')[1], 10) + 1}`,
+            this.expansionReturns
+          ),
+        };
+      }
+    }
   }
 
   async _fetchSuttaText() {
@@ -497,14 +550,21 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
     const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
     const author = responseData.translation ? responseData.translation.author : rootTextAuthor;
-    const acronym = responseData.suttaplex.acronym
+    let acronym = responseData.suttaplex.acronym
       ? responseData.suttaplex.acronym.split(/\/\//)[0]
       : this._transformId(responseData.suttaplex.uid, expansionReturns);
+
+    let pageTitle = `${acronym}: ${title}${author ? `—${author}` : ''}`;
+    if (this.isRangeSutta) {
+      this.transformedSuttaId = this._transformId(this.suttaId, this.expansionReturns);
+      title = this.transformedSuttaId;
+      pageTitle = `${title}${author ? `—${author}` : ''}`;
+    }
 
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
-          pageTitle: `${acronym}: ${title}${author ? `—${author}` : ''}`,
+          pageTitle,
           title: `${title}${author ? `—${author}` : ''}`,
           description,
           openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
@@ -531,7 +591,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       uidParts.forEach(item => {
         if (!expansionReturns[0][item]) {
           const tailMatch = item.match(/\d+.*/g);
-          if (tailMatch) tail = tailMatch[0] + '–';
+          if (tailMatch) tail = `${tailMatch[0]}–`;
           const itemMatch = item.match(/[a-z]*/g);
           if (itemMatch) item = itemMatch[0];
         }
