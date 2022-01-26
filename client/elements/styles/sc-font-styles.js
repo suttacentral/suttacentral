@@ -1241,6 +1241,11 @@ export const SCFontStyles = css`
     --sc-devanagari-serif-font: 'Skolar Devanagari', 'Skolar PE', 'Noto Serif',
       'Noto Sans Devanagari', 'Noto Sans', serif;
 
+    --sc-gujarati-sans-font: 'Noto Sans Gujarati ', 'Noto Sans', sans-serif;
+
+    --sc-gujarati-serif-font: 'Noto Serif Gujarati', 'Noto Serif', 'Noto Sans Gujarati', 'Noto Sans',
+      serif;
+
     --sc-myanmar-sans-font: 'Noto Sans Myanmar', 'Noto Sans', sans-serif;
 
     --sc-myanmar-serif-font: 'Noto Serif Myanmar', 'Noto Serif', 'Noto Sans Myanmar', 'Noto Sans',
