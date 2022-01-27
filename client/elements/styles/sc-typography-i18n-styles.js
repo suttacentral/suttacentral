@@ -13,6 +13,7 @@ export const typographyI18nStyles = css`
   [lang='fa'] *,
   [lang='he'] *,
   [lang='hi'] *,
+  [lang='gu'] *,
   [lang='jpn'] *,
   [lang='kln'] *,
   [lang='ko'] *,
@@ -40,6 +41,7 @@ export const typographyI18nStyles = css`
   [lang='fa'] *,
   [lang='he'] *,
   [lang='hi'] *,
+  [lang='gu'] *,
   [lang='jpn'] *,
   [lang='kln'] *,
   [lang='ko'] *,
@@ -61,6 +63,7 @@ export const typographyI18nStyles = css`
   [lang='fa'] h1,
   [lang='he'] h1,
   [lang='hi'] h1,
+  [lang='gu'] h1,
   [lang='jpn'] h1,
   [lang='kln'] h1,
   [lang='ko'] h1,
@@ -79,6 +82,7 @@ export const typographyI18nStyles = css`
   [lang='fa'] h2,
   [lang='he'] h2,
   [lang='hi'] h2,
+  [lang='gu'] h2,
   [lang='jpn'] h2,
   [lang='kln'] h2,
   [lang='ko'] h2,
@@ -123,6 +127,10 @@ export const typographyI18nStyles = css`
   }
   [lang='hi'] {
     font-family: var(--sc-devanagari-serif-font);
+    font-size: var(--sc-tall-font-size-md);
+  }
+  [lang='gu'] {
+    font-family: var(--sc-gujarati-serif-font);
     font-size: var(--sc-tall-font-size-md);
   }
   [lang='jpn'] {
