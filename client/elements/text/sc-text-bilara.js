@@ -187,24 +187,45 @@ class SCTextBilara extends SCTextCommon {
       lang: this.translatedSutta?.lang || 'en',
     });
 
-    this._serveRangeSuttaPerSutta();
+    this._serveRangeSuttasPerSutta();
   }
 
-  _serveRangeSuttaPerSutta() {
+  _serveRangeSuttasPerSutta() {
     if (this.isRangeSutta) {
       const UIDS = [];
       const allArticle = this.querySelectorAll('article');
-      allArticle.forEach(item => {
-        UIDS.push(item.id);
-        item.style.display = 'none';
-      });
+      if (this.suttaId.indexOf('dhp') < 0) {
+        allArticle.forEach(item => {
+          UIDS.push(item.id);
+          item.style.display = 'none';
+        });
+      }
+      if (this.suttaId.indexOf('dhp') !== -1) {
+        const dhpVerses = this.querySelectorAll('article span.segment');
+        // eslint-disable-next-line no-restricted-syntax
+        for (const verse of dhpVerses) {
+          if (verse.id.split(':')[0].toLowerCase() !== this.suttaId.toLowerCase()) {
+            const blockquote = this.querySelector(`#${CSS.escape(verse.id)} + blockquote`);
+            if (blockquote) {
+              blockquote.style.display = 'none';
+            }
+            this.querySelector(`#${CSS.escape(verse.id)}`).style.display = 'none';
+          }
+        }
+        const titles = this.querySelectorAll('header h1 span.segment');
+        // eslint-disable-next-line no-restricted-syntax
+        for (const dhp of titles) {
+          dhp.style.display = '';
+        }
+      }
+
       let sutta = this.querySelector(`#${CSS.escape(this.suttaId)}`);
       if (sutta) {
         sutta.style.display = 'block';
       } else {
         // eslint-disable-next-line no-restricted-syntax
         for (const uid of UIDS) {
-          if (this.rootSutta.uid.indexOf('.') && this.suttaId.indexOf('-')) {
+          if (this.rootSutta.uid.indexOf('.') > -1 && this.suttaId.indexOf('-')) {
             const suttaNo = this.rootSutta.uid.split('.')[1];
             const suttaRange = uid.split('.')[1];
             const rangeBegin = suttaRange.split('-')[0];
@@ -224,13 +245,15 @@ class SCTextBilara extends SCTextCommon {
       }
 
       setTimeout(() => {
-        const suttaTitle = this.suttaId.split('.')[1];
-        this._updateSuttaTitle('.range-title .root .text', suttaTitle);
-        this._updateSuttaTitle('.range-title .translation .text', suttaTitle);
-        this._updateSuttaTitle('.sutta-title .root .text', suttaTitle);
-        this._updateSuttaTitle('.sutta-title .translation .text', suttaTitle);
-        this._updateSuttaTitle(`#${CSS.escape(this.suttaId)} .root .text`, '');
-        this._updateSuttaTitle(`#${CSS.escape(this.suttaId)} .translation .text`, '');
+        if (this.suttaId.indexOf('dhp') === -1) {
+          const suttaTitle = this.suttaId.split('.')[1];
+          this._updateSuttaTitle('.range-title .root .text', suttaTitle);
+          this._updateSuttaTitle('.range-title .translation .text', suttaTitle);
+          this._updateSuttaTitle('.sutta-title .root .text', suttaTitle);
+          this._updateSuttaTitle('.sutta-title .translation .text', suttaTitle);
+          this._updateSuttaTitle(`#${CSS.escape(this.suttaId)} h2 .root .text`, '');
+          this._updateSuttaTitle(`#${CSS.escape(this.suttaId)} h2 .translation .text`, '');
+        }
 
         const currentNav = store.getState().navigationArray;
         const lastNavItem = currentNav[currentNav.length - 1];

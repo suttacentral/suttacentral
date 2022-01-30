@@ -588,6 +588,43 @@ class Sutta(Resource):
                             )
                             result = results.next()
                             result['range_uid'] = child
+                            result['vaggaBegin'] = vaggaChildren[0]
+                            result['vaggaEnd'] = vaggaChildren[-1]
+
+        if result['root_text'] is None and result['translation'] is None and uid[0:3].lower() == 'dhp':
+            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
+            for child in vaggaChildren:
+                if child.count('-'):
+                    secondPart = uid.strip('dhp')
+                    childRange = child.strip('dhp')
+                    range_begin = childRange[:childRange.find('-')]
+                    range_end = childRange[childRange.find('-')+1:]
+                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
+                        results = db.aql.execute(
+                            SUTTA_VIEW,
+                            bind_vars={'uid': child, 'language': lang, 'author_uid': author_uid},
+                        )
+                        result = results.next()
+                        result['range_uid'] = child
+                        if result['range_uid'] is not None:
+                            results = db.aql.execute(
+                                SUTTA_VIEW,
+                                bind_vars={'uid': result['range_uid'], 'language': lang, 'author_uid': author_uid},
+                            )
+                            result = results.next()
+                            result['range_uid'] = child
+                            result['vaggaBegin'] = vaggaChildren[0]
+                            result['vaggaEnd'] = vaggaChildren[-1]
+
+        if uid != 'pli-tv-bi-vb-sk1-75' and uid[0:15] == 'pli-tv-bi-vb-sk':
+            results = db.aql.execute(
+                SUTTA_VIEW,
+                bind_vars={'uid': 'pli-tv-bi-vb-sk1-75', 'language': lang, 'author_uid': author_uid},
+            )
+            result = results.next()
+            result['range_uid'] = 'pli-tv-bi-vb-sk1-75'
+            result['vaggaBegin'] = 'pli-tv-bi-vb-sk1'
+            result['vaggaEnd'] = 'pli-tv-bi-vb-sk75'
 
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):
