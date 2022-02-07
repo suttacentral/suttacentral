@@ -25,3 +25,4 @@ environment_prod.yml
 client/.eslintrc.json
 client/.eslintrc.js
 client/.prettierrc
+client/files/fonts/woff2_compress

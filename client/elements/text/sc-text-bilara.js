@@ -200,6 +200,7 @@ class SCTextBilara extends SCTextCommon {
           item.style.display = 'none';
         });
       }
+
       if (this.suttaId.indexOf('dhp') !== -1) {
         const dhpVerses = this.querySelectorAll('article span.segment');
         // eslint-disable-next-line no-restricted-syntax
@@ -225,16 +226,17 @@ class SCTextBilara extends SCTextCommon {
       } else {
         // eslint-disable-next-line no-restricted-syntax
         for (const uid of UIDS) {
-          if (this.rootSutta.uid.indexOf('.') > -1 && this.suttaId.indexOf('-')) {
+          if (this.rootSutta.uid.indexOf('.') > -1) {
             const suttaNo = this.rootSutta.uid.split('.')[1];
             const suttaRange = uid.split('.')[1];
             const rangeBegin = suttaRange.split('-')[0];
             const rangeEnd = suttaRange.split('-')[1];
             if (
-              parseInt(suttaNo, 10) <= parseInt(rangeEnd, 10) &&
-              parseInt(suttaNo, 10) >= parseInt(rangeBegin, 10)
+              (parseInt(suttaNo, 10) <= parseInt(rangeEnd, 10) &&
+                parseInt(suttaNo, 10) >= parseInt(rangeBegin, 10)) ||
+              this.rootSutta.uid.indexOf('-') > -1
             ) {
-              sutta = this.shadowRoot.querySelector(`#${CSS.escape(uid)}`);
+              sutta = this.querySelector(`#${CSS.escape(uid)}`);
               if (sutta) {
                 sutta.style.display = 'block';
               }
