@@ -4,7 +4,7 @@ import { css } from 'lit';
 export const SCFontStyles = css`
   @font-face {
     font-family: 'Skolar PE Variable';
-    src: url('/files/fonts/RaloksPEVFWeb-Ups_0.3.woff2') format('woff2-variations');
+    src: url('/files/fonts/SkolarPEVFWeb-Ups.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: normal;
     font-stretch: normal;
@@ -13,7 +13,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Skolar PE Variable';
-    src: url('/files/fonts/RaloksPEVFWeb-Its_0.3.woff2') format('woff2-variations');
+    src: url('/files/fonts/SkolarPEVFWeb-Its.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: italic;
     font-stretch: normal;
@@ -22,7 +22,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Skolar Sans PE Variable';
-    src: url('/files/fonts/RaloksSansPEVFWeb-Ups_0.3.woff2') format('woff2-variations');
+    src: url('/files/fonts/SkolarSansPEVFWeb-Ups.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: normal;
     font-stretch: 80% 115%;
@@ -31,7 +31,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Skolar Sans PE Variable';
-    src: url('/files/fonts/RaloksSansPEVFWeb-Its_0.3.woff2') format('woff2-variations');
+    src: url('/files/fonts/SkolarSansPEVFWeb-Its.woff2') format('woff2-variations');
     font-weight: 100 1000;
     font-style: italic;
     font-stretch: 80% 115%;
@@ -485,7 +485,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Serif Ahom';
-    src: url('/files/fonts/NotoSerifAhom-Regular.otf');
+    src: url('/files/fonts/NotoSerifAhom-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -493,7 +493,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Ariyaka';
-    src: url('/files/fonts/ariyaka.TTF');
+    src: url('/files/fonts/ariyaka.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -501,7 +501,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Avestan';
-    src: url('/files/fonts/NotoSansAvestan-Regular.otf');
+    src: url('/files/fonts/NotoSansAvestan-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -509,7 +509,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Serif Bali';
-    src: url('/files/fonts/NotoSerifBalinese-Regular.otf');
+    src: url('/files/fonts/NotoSerifBalinese-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -517,7 +517,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Batak';
-    src: url('/files/fonts/NotoSansBatak-Regular.otf');
+    src: url('/files/fonts/NotoSansBatak-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -525,7 +525,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Bhaiksuki';
-    src: url('/files/fonts/NotoSansBhaiksuki-Regular.otf');
+    src: url('/files/fonts/NotoSansBhaiksuki-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -533,7 +533,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Brahmi';
-    src: url('/files/fonts/NotoSansBrahmi-Regular.otf');
+    src: url('/files/fonts/NotoSansBrahmi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -541,7 +541,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Buhid';
-    src: url('/files/fonts/NotoSansBuhid-Regular.otf');
+    src: url('/files/fonts/NotoSansBuhid-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -549,7 +549,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Chakma';
-    src: url('/files/fonts/NotoSansChakma-Regular.otf');
+    src: url('/files/fonts/NotoSansChakma-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -557,7 +557,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans ChakmaPali';
-    src: url('/files/fonts/chakmapali.otf');
+    src: url('/files/fonts/chakmapali.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -565,7 +565,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Cham';
-    src: url('/files/fonts/NotoSansCham-Regular.otf');
+    src: url('/files/fonts/NotoSansCham-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -573,7 +573,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Serif Dogra';
-    src: url('/files/fonts/NotoSerifDogra-Regular.otf');
+    src: url('/files/fonts/NotoSerifDogra-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -581,7 +581,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans GunjalaGondi';
-    src: url('/files/fonts/NotoSansGunjalaGondi-Regular.otf');
+    src: url('/files/fonts/NotoSansGunjalaGondi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -589,7 +589,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans MasaramGondi';
-    src: url('/files/fonts/NotoSansMasaramGondi-Regular.otf');
+    src: url('/files/fonts/NotoSansMasaramGondi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -597,7 +597,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Grantha2';
-    src: url('/files/fonts/NotoSansGrantha-RegularZach.otf');
+    src: url('/files/fonts/NotoSansGrantha-RegularZach.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -613,7 +613,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Serif Gujarati';
-    src: url('/files/fonts/NotoSerifGujarati-Regular.otf');
+    src: url('/files/fonts/NotoSerifGujarati-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -621,7 +621,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Javanese';
-    src: url('/files/fonts/NotoSansJavanese-Regular.otf');
+    src: url('/files/fonts/NotoSansJavanese-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -629,7 +629,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Kaithi';
-    src: url('/files/fonts/NotoSansKaithi-Regular.otf');
+    src: url('/files/fonts/NotoSansKaithi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -637,7 +637,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Kharoshthi';
-    src: url('/files/fonts/NotoSansKharoshthi-Regular.otf');
+    src: url('/files/fonts/NotoSansKharoshthi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -645,7 +645,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Khojki';
-    src: url('/files/fonts/NotoSansKhojki-Regular.otf');
+    src: url('/files/fonts/NotoSansKhojki-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -653,7 +653,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Khudawadi';
-    src: url('/files/fonts/NotoSansKhudawadi-Regular.otf');
+    src: url('/files/fonts/NotoSansKhudawadi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -669,7 +669,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Lepcha';
-    src: url('/files/fonts/NotoSansLepcha-Regular.otf');
+    src: url('/files/fonts/NotoSansLepcha-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -677,7 +677,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Limbu';
-    src: url('/files/fonts/NotoSansLimbu-Regular.otf');
+    src: url('/files/fonts/NotoSansLimbu-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -685,7 +685,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Mahajani';
-    src: url('/files/fonts/NotoSansMahajani-Regular.otf');
+    src: url('/files/fonts/NotoSansMahajani-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -693,7 +693,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Marchen';
-    src: url('/files/fonts/NotoSansMarchen-Regular.otf');
+    src: url('/files/fonts/NotoSansMarchen-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -701,7 +701,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans MarchenB';
-    src: url('/files/fonts/BabelStoneMarchen.ttf');
+    src: url('/files/fonts/BabelStoneMarchen.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -709,7 +709,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Meetei Mayek';
-    src: url('/files/fonts/NotoSansMeeteiMayek-Regular.otf');
+    src: url('/files/fonts/NotoSansMeeteiMayek-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -717,7 +717,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Modi';
-    src: url('/files/fonts/NotoSansModi-Regular.otf');
+    src: url('/files/fonts/NotoSansModi-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -725,7 +725,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'MQG8F02';
-    src: url('/files/fonts/MQG8F02.ttf');
+    src: url('/files/fonts/MQG8F02.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -733,7 +733,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Mro';
-    src: url('/files/fonts/NotoSansMro-Regular.otf');
+    src: url('/files/fonts/NotoSansMro-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -741,7 +741,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Multani';
-    src: url('/files/fonts/NotoSansMultani-Regular.otf');
+    src: url('/files/fonts/NotoSansMultani-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -749,7 +749,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Newa';
-    src: url('/files/fonts/NotoSansNewa-Regular.otf');
+    src: url('/files/fonts/NotoSansNewa-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -757,7 +757,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans PhagsPa';
-    src: url('/files/fonts/NotoSansPhagsPa-Regular.otf');
+    src: url('/files/fonts/NotoSansPhagsPa-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -765,7 +765,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Rejang';
-    src: url('/files/fonts/NotoSansRejang-Regular.otf');
+    src: url('/files/fonts/NotoSansRejang-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -773,7 +773,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans HanifiRohingya';
-    src: url('/files/fonts/NotoSansHanifiRohingya-Regular.otf');
+    src: url('/files/fonts/NotoSansHanifiRohingya-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -781,7 +781,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Ol Chiki';
-    src: url('/files/fonts/NotoSansOlChiki-Regular.otf');
+    src: url('/files/fonts/NotoSansOlChiki-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -789,7 +789,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Satisar Sharada';
-    src: url('/files/fonts/Sharada.ttf');
+    src: url('/files/fonts/Sharada.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -797,7 +797,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Siddham';
-    src: url('/files/fonts/NotoSansSiddham-Regular.otf');
+    src: url('/files/fonts/NotoSansSiddham-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -805,7 +805,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans SoraSompeng';
-    src: url('/files/fonts/NotoSansSoraSompeng-Regular.otf');
+    src: url('/files/fonts/NotoSansSoraSompeng-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -813,7 +813,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Soyombo';
-    src: url('/files/fonts/NotoSansSoyombo-Regular.otf');
+    src: url('/files/fonts/NotoSansSoyombo-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -821,7 +821,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Sundanese';
-    src: url('/files/fonts/NotoSansSundanese-Regular.otf');
+    src: url('/files/fonts/NotoSansSundanese-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -829,7 +829,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans SylotiNagri';
-    src: url('/files/fonts/NotoSansSylotiNagri-Regular.otf');
+    src: url('/files/fonts/NotoSansSylotiNagri-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -837,7 +837,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Tagalog';
-    src: url('/files/fonts/NotoSansTagalog-Regular.otf');
+    src: url('/files/fonts/NotoSansTagalog-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -845,7 +845,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Tagbanwa';
-    src: url('/files/fonts/NotoSansTagbanwa-Regular.otf');
+    src: url('/files/fonts/NotoSansTagbanwa-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -853,7 +853,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Takri';
-    src: url('/files/fonts/NotoSansTakri-Regular.otf');
+    src: url('/files/fonts/NotoSansTakri-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -861,7 +861,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Adinatha Tamil Brahmi';
-    src: url('/files/fonts/AdinathaTamilBrahmi2.otf');
+    src: url('/files/fonts/AdinathaTamilBrahmi2.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -869,7 +869,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Tai Tham';
-    src: url('/files/fonts/NotoSansTaiTham-Regular.ttf');
+    src: url('/files/fonts/NotoSansTaiTham-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -877,7 +877,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Lamphun';
-    src: url('/files/fonts/Pali_Khottabun.ttf');
+    src: url('/files/fonts/Pali_Khottabun.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -885,7 +885,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'A Tai Tham KH New';
-    src: url('/files/fonts/A-Tai-Tham-KH-New-V2.ttf');
+    src: url('/files/fonts/A-Tai-Tham-KH-New-V2.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -893,7 +893,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Pali TaiLue';
-    src: url('/files/fonts/Pali_TaiLue.ttf');
+    src: url('/files/fonts/Pali_TaiLue.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -901,7 +901,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Tirhuta';
-    src: url('/files/fonts/NotoSansTirhuta-Regular.otf');
+    src: url('/files/fonts/NotoSansTirhuta-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -909,7 +909,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Wancho';
-    src: url('/files/fonts/NotoSansWancho-Regular.otf');
+    src: url('/files/fonts/NotoSansWancho-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -917,7 +917,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans WarangCiti';
-    src: url('/files/fonts/NotoSansWarangCiti-Regular.otf');
+    src: url('/files/fonts/NotoSansWarangCiti-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -925,7 +925,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Zanabazar Square';
-    src: url('/files/fonts/NotoSansZanabazarSquare-Regular.otf');
+    src: url('/files/fonts/NotoSansZanabazarSquare-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -933,7 +933,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'MithilaUni';
-    src: url('/files/fonts/MithilaUni.ttf');
+    src: url('/files/fonts/MithilaUni.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -941,7 +941,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'PaliTilok';
-    src: url('/files/fonts/Pali_Tilok.ttf');
+    src: url('/files/fonts/Pali_Tilok.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -949,7 +949,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Agastya Extended Tamil';
-    src: url('/files/fonts/AgastyaExtendedTamil.otf');
+    src: url('/files/fonts/AgastyaExtendedTamil.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -957,7 +957,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'e-Vatteluttu';
-    src: url('/files/fonts/e-VatteluttuOT.ttf');
+    src: url('/files/fonts/e-VatteluttuOT.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -965,7 +965,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'RanjanaUnicode';
-    src: url('/files/fonts/RanjanaUNICODE1.0.TTF');
+    src: url('/files/fonts/RanjanaUNICODE1.0.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -973,7 +973,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Hanunoo';
-    src: url('/files/fonts/NotoSansHanunoo-Regular.otf');
+    src: url('/files/fonts/NotoSansHanunoo-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -981,7 +981,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Patimokkha';
-    src: url('/files/fonts/Patimokkha.ttf');
+    src: url('/files/fonts/Patimokkha.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -989,7 +989,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Nastaliq Urdu';
-    src: url('/files/fonts/NotoNastaliqUrdu-Regular.otf');
+    src: url('/files/fonts/NotoNastaliqUrdu-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -997,7 +997,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'BabelStone PhagsPa TibA';
-    src: url('/files/fonts/BabelStonePhagspaTibetanA_v2.ttf');
+    src: url('/files/fonts/BabelStonePhagspaTibetanA_v2.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1005,7 +1005,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'BabelStone PhagsPa Seal';
-    src: url('/files/fonts/BabelStonePhagspaSeal_v1.ttf');
+    src: url('/files/fonts/BabelStonePhagspaSeal_v1.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1021,7 +1021,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Bengali Vedic';
-    src: url('/files/fonts/Lohit-Oriya-Vedic.otf');
+    src: url('/files/fonts/NotoSansBengali-Vedic.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1037,7 +1037,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Gurmukhi Vedic';
-    src: url('/files/fonts/NotoSansGurmukhi-Vedic.otf');
+    src: url('/files/fonts/NotoSansGurmukhi-Vedic.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1045,7 +1045,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Mukta Malar Regular';
-    src: url('/files/fonts/MuktaMalar-Regular.ttf');
+    src: url('/files/fonts/MuktaMalar-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1053,7 +1053,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Tibetan Dbu Med';
-    src: url('/files/fonts/Qomolangma-Betsu.ttf');
+    src: url('/files/fonts/Qomolangma-Betsu.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1061,7 +1061,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Saurashtra';
-    src: url('/files/fonts/NotoSansSaurashtra-Regular.otf');
+    src: url('/files/fonts/NotoSansSaurashtra-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1069,7 +1069,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Khamti Regular';
-    src: url('/files/fonts/Khamti-Regular.otf');
+    src: url('/files/fonts/Khamti-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1077,15 +1077,15 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Kannada';
-    src: url('/files/fonts/NotoSansKannada-Regular.otf');
+    src: url('/files/fonts/NotoSansKannada-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
   }
 
   @font-face {
-    font-family: 'Tantular Kawi';
-    src: url('/files/fonts/Tantular Kawi.ttf');
+    font-family: 'TantularKawi';
+    src: url('/files/fonts/TantularKawi.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1093,7 +1093,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Purnawarman';
-    src: url('/files/fonts/adn_Purnawarman_1584765777.ttf');
+    src: url('/files/fonts/adn_Purnawarman_1584765777.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1101,7 +1101,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Buginese';
-    src: url('/files/fonts/NotoSansBuginese-Regular.otf');
+    src: url('/files/fonts/NotoSansBuginese-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1109,7 +1109,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Malayalam';
-    src: url('/files/fonts/NotoSansMalayalam-Regular.otf');
+    src: url('/files/fonts/NotoSansMalayalam-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1117,7 +1117,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Meera';
-    src: url('/files/fonts/Meera-Regular.ttf');
+    src: url('/files/fonts/Meera-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1125,7 +1125,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Telugu';
-    src: url('/files/fonts/Lohit-Telugu.ttf');
+    src: url('/files/fonts/Lohit-Telugu.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1133,7 +1133,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Aazhvaar Telugu';
-    src: url('/files/fonts/AazhvaarTelugu.otf');
+    src: url('/files/fonts/AazhvaarTelugu.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1141,7 +1141,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans Khmer';
-    src: url('/files/fonts/NotoSerifKhmer-Regular.otf');
+    src: url('/files/fonts/NotoSerifKhmer-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1149,7 +1149,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Noto Sans OldPersian';
-    src: url('/files/fonts/NotoSansOldPersian-Regular.otf');
+    src: url('/files/fonts/NotoSansOldPersian-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1157,7 +1157,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'e-Grantamil';
-    src: url('/files/fonts/e-Grantamil.ttf');
+    src: url('/files/fonts/e-Grantamil.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1165,7 +1165,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Agastya Serif';
-    src: url('/files/fonts/AgastyaSerif.otf');
+    src: url('/files/fonts/AgastyaSerif.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1173,7 +1173,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Muktamsiddham';
-    src: url('/files/fonts/Muktamsiddham.otf');
+    src: url('/files/fonts/Muktamsiddham.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1181,7 +1181,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Kaccayana Thai';
-    src: url('/files/fonts/KaccayanaThai.otf');
+    src: url('/files/fonts/KaccayanaThai.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1189,7 +1189,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'e-Pandya';
-    src: url('/files/fonts/e-Pandya.ttf');
+    src: url('/files/fonts/e-Pandya.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1197,7 +1197,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'ApDevaSiddham';
-    src: url('/files/fonts/ApDevaSiddham.ttf');
+    src: url('/files/fonts/ApDevaSiddham.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -1205,7 +1205,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'AnnaPurna';
-    src: url('/files/fonts/AnnapurnaSIL-TT-Regular.ttf');
+    src: url('/files/fonts/AnnapurnaSIL-TT-Regular.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
