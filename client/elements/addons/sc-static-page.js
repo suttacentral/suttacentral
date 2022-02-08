@@ -64,7 +64,7 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     if (!sectionId || currentId === sectionId) {
       return currentId;
     }
-    const firstSection = this.shadowRoot.querySelector(sectionId);
+    const firstSection = this.querySelector(sectionId) || this.shadowRoot.querySelector(sectionId);
     if (firstSection) {
       firstSection.scrollIntoView({
         behavior: 'instant',
