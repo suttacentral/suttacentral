@@ -29,6 +29,7 @@ import {
 } from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
+import { setNavigation } from '../navigation/sc-navigation-common'
 
 class SCTextBilara extends SCTextCommon {
   static get properties() {
@@ -59,6 +60,8 @@ class SCTextBilara extends SCTextCommon {
       notesDisplayStyles: { type: Object },
       showHighlighting: { type: Boolean },
       rootEdition: { type: Array },
+      isRangeSutta: { type: Boolean },
+      transformedSuttaId: { type: String },
     };
   }
 
@@ -183,6 +186,104 @@ class SCTextBilara extends SCTextCommon {
       uid: this.suttaId,
       lang: this.translatedSutta?.lang || 'en',
     });
+
+    this._serveRangeSuttasPerSutta();
+  }
+
+  _serveRangeSuttasPerSutta() {
+    if (this.isRangeSutta) {
+      const UIDS = [];
+      const allArticle = this.querySelectorAll('article');
+      if (this.suttaId.indexOf('dhp') < 0) {
+        allArticle.forEach(item => {
+          UIDS.push(item.id);
+          item.style.display = 'none';
+        });
+      }
+
+      if (this.suttaId.indexOf('dhp') !== -1) {
+        const dhpVerses = this.querySelectorAll('article span.segment');
+        // eslint-disable-next-line no-restricted-syntax
+        for (const verse of dhpVerses) {
+          if (verse.id.split(':')[0].toLowerCase() !== this.suttaId.toLowerCase()) {
+            const blockquote = this.querySelector(`#${CSS.escape(verse.id)} + blockquote`);
+            if (blockquote) {
+              blockquote.style.display = 'none';
+            }
+            this.querySelector(`#${CSS.escape(verse.id)}`).style.display = 'none';
+          }
+        }
+        const titles = this.querySelectorAll('header h1 span.segment');
+        // eslint-disable-next-line no-restricted-syntax
+        for (const dhp of titles) {
+          dhp.style.display = '';
+        }
+      }
+
+      let sutta = this.querySelector(`#${CSS.escape(this.suttaId)}`);
+      if (sutta) {
+        sutta.style.display = 'block';
+      } else {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const uid of UIDS) {
+          if (this.rootSutta.uid.indexOf('.') > -1) {
+            const suttaNo = this.rootSutta.uid.split('.')[1];
+            const suttaRange = uid.split('.')[1];
+            const rangeBegin = suttaRange.split('-')[0];
+            const rangeEnd = suttaRange.split('-')[1];
+            if (
+              (parseInt(suttaNo, 10) <= parseInt(rangeEnd, 10) &&
+                parseInt(suttaNo, 10) >= parseInt(rangeBegin, 10)) ||
+              this.rootSutta.uid.indexOf('-') > -1
+            ) {
+              sutta = this.querySelector(`#${CSS.escape(uid)}`);
+              if (sutta) {
+                sutta.style.display = 'block';
+              }
+              break;
+            }
+          }
+        }
+      }
+
+      setTimeout(() => {
+        if (this.suttaId.indexOf('dhp') === -1) {
+          const suttaTitle = this.suttaId.split('.')[1];
+          this._updateSuttaTitle('.range-title .root .text', suttaTitle);
+          this._updateSuttaTitle('.range-title .translation .text', suttaTitle);
+          this._updateSuttaTitle('.sutta-title .root .text', suttaTitle);
+          this._updateSuttaTitle('.sutta-title .translation .text', suttaTitle);
+          this._updateSuttaTitle(`#${CSS.escape(this.suttaId)} h2 .root .text`, '');
+          this._updateSuttaTitle(`#${CSS.escape(this.suttaId)} h2 .translation .text`, '');
+        }
+
+        const currentNav = store.getState().navigationArray;
+        const lastNavItem = currentNav[currentNav.length - 1];
+        if (lastNavItem.uid !== 'home') {
+          lastNavItem.title = this.transformedSuttaId;
+          setNavigation(currentNav);
+        }
+      }, 100);
+
+      this.actions.changeSuttaPublicationInfo({
+        uid: this.range_uid,
+        lang: this.translatedSutta?.lang || 'en',
+      });
+
+      this.actions.showToc([]);
+
+      document.querySelector('sc-site-layout').querySelector('#action_items').range_uid =
+        this.range_uid;
+    } else {
+      document.querySelector('sc-site-layout').querySelector('#action_items').range_uid = '';
+    }
+  }
+
+  _updateSuttaTitle(selector, suttaTitle) {
+    const span = this.querySelector(selector);
+    if (span) {
+      span.textContent = suttaTitle;
+    }
   }
 
   _hideTopSheets() {

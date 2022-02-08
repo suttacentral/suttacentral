@@ -104,6 +104,9 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
             .suttaReference=${this.suttaReference}
             .suttaVariant=${this.suttaVariant}
             .suttaId=${this.suttaId}
+            .isRangeSutta=${this.isRangeSutta}
+            .range_uid=${this.range_uid}
+            .transformedSuttaId=${this.transformedSuttaId}
           ></sc-text-bilara>
         `
       : '';
@@ -266,6 +269,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
     if (state.currentRoute.params.suttaId !== this.suttaId && state.currentRoute.params.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
+      this.isRangeSutta = false;
       this._refreshData(false);
     }
     if (this.siteLanguage !== state.siteLanguage) {
@@ -346,6 +350,13 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     }
 
     this._getBilaraText();
+
+    if (this.responseData.root_text.uid !== this.suttaId) {
+      this.isRangeSutta = true;
+      this.range_uid = this.responseData.range_uid;
+      this._serveRangeSuttasPerSutta();
+    }
+
     this._updateNav();
   }
 
@@ -365,10 +376,115 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _getBilaraTextUrl() {
-    if (this.authorUid) {
-      return `${API_ROOT}/bilarasuttas/${this.suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+    let suttaId = this.suttaId;
+    if (this.responseData.root_text.uid !== this.suttaId) {
+      suttaId = this.responseData.root_text.uid;
     }
-    return `${API_ROOT}/bilarasuttas/${this.suttaId}?lang=${this.langIsoCode}`;
+    if (this.authorUid) {
+      return `${API_ROOT}/bilarasuttas/${suttaId}/${this.authorUid}?lang=${this.langIsoCode}`;
+    }
+    return `${API_ROOT}/bilarasuttas/${suttaId}?lang=${this.langIsoCode}`;
+  }
+
+  _serveRangeSuttasPerSutta() {
+    RefreshNavNew(this.range_uid, true);
+    if (
+      this.range_uid.split('.').length > 1 &&
+      this.range_uid.split('.')[1].split('-').length > 1
+    ) {
+      // const rangeUids = this.range_uid.split('.')[1].split('-');
+      const previousNo = parseInt(this.suttaId.split('.')[1], 10) - 1;
+      const nextNo = parseInt(this.suttaId.split('.')[1], 10) + 1;
+      if (previousNo >= parseInt(this._extractVaggaBeginUid(this.responseData.vaggaBegin), 10)) {
+        const previousUid = `${this.suttaId.split('.')[0]}.${
+          parseInt(this.suttaId.split('.')[1], 10) - 1
+        }`;
+        const suttaName = this._transformId(
+          `${this.suttaId.split('.')[0]}.${parseInt(this.suttaId.split('.')[1], 10) - 1}`,
+          this.expansionReturns
+        );
+        this._setPreviousSuttaInfo(previousUid, suttaName);
+      }
+      if (nextNo <= parseInt(this._extractVaggaEndUid(this.responseData.vaggaEnd), 10)) {
+        const nextUid = `${this.suttaId.split('.')[0]}.${
+          parseInt(this.suttaId.split('.')[1], 10) + 1
+        }`;
+        const suttaName = this._transformId(
+          `${this.suttaId.split('.')[0]}.${parseInt(this.suttaId.split('.')[1], 10) + 1}`,
+          this.expansionReturns
+        );
+        this._setNextSuttaInfo(nextUid, suttaName);
+      }
+    }
+    if (this.suttaId === 'pli-tv-bi-vb-sk1') {
+      this.previous = null;
+      this._setNextSuttaInfo('pli-tv-bi-vb-sk75', 'pli-tv-bi-vb-sk75');
+    }
+    if (this.suttaId === 'pli-tv-bi-vb-sk75') {
+      this.next = null;
+      this._setPreviousSuttaInfo('pli-tv-bi-vb-sk1', 'pli-tv-bi-vb-sk1');
+    }
+
+    if (this.suttaId.indexOf('dhp') !== -1) {
+      const previousNo = parseInt(this.suttaId.replace('dhp', ''), 10) - 1;
+      const nextNo = parseInt(this.suttaId.replace('dhp', ''), 10) + 1;
+      const dhpBeginNo = parseInt(
+        this.responseData.vaggaBegin.replace('dhp', '').split('-')[0],
+        10
+      );
+      const dhpEndNo = parseInt(this.responseData.vaggaEnd.replace('dhp', '').split('-')[1], 10);
+      if (previousNo >= dhpBeginNo) {
+        const previousUid = `dhp${previousNo}`;
+        this._setPreviousSuttaInfo(
+          previousUid,
+          this._transformId(previousUid, this.expansionReturns)
+        );
+      }
+      if (nextNo <= dhpEndNo) {
+        const nextUid = `dhp${nextNo}`;
+        this._setNextSuttaInfo(nextUid, this._transformId(nextUid, this.expansionReturns));
+      }
+    }
+  }
+
+  _setNextSuttaInfo(nextUid, suttaName) {
+    this.next = {
+      author_uid: this.authorUid,
+      lang: this.langIsoCode,
+      uid: nextUid,
+      name: suttaName,
+    };
+  }
+
+  _setPreviousSuttaInfo(previousUid, suttaName) {
+    this.previous = {
+      author_uid: this.authorUid,
+      lang: this.langIsoCode,
+      uid: previousUid,
+      name: suttaName,
+    };
+  }
+
+  _extractVaggaBeginUid(rangeUid) {
+    if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length > 1) {
+      console.log(rangeUid.split('.')[1].split('-')[0]);
+      return rangeUid.split('.')[1].split('-')[0];
+    }
+    if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length === 1) {
+      return rangeUid.split('.')[1];
+    }
+    return 0;
+  }
+
+  _extractVaggaEndUid(rangeUid) {
+    if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length > 1) {
+      console.log(rangeUid.split('.')[1].split('-')[1]);
+      return rangeUid.split('.')[1].split('-')[1];
+    }
+    if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length === 1) {
+      return rangeUid.split('.')[1];
+    }
+    return 0;
   }
 
   async _fetchSuttaText() {
@@ -491,14 +607,21 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
     const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
     const author = responseData.translation ? responseData.translation.author : rootTextAuthor;
-    const acronym = responseData.suttaplex.acronym
+    let acronym = responseData.suttaplex.acronym
       ? responseData.suttaplex.acronym.split(/\/\//)[0]
       : this._transformId(responseData.suttaplex.uid, expansionReturns);
+
+    let pageTitle = `${acronym}: ${title}${author ? `—${author}` : ''}`;
+    if (this.isRangeSutta) {
+      this.transformedSuttaId = this._transformId(this.suttaId, this.expansionReturns);
+      title = this.transformedSuttaId;
+      pageTitle = `${title}${author ? `—${author}` : ''}`;
+    }
 
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
-          pageTitle: `${acronym}: ${title}${author ? `—${author}` : ''}`,
+          pageTitle,
           title: `${title}${author ? `—${author}` : ''}`,
           description,
           openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
@@ -525,7 +648,7 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       uidParts.forEach(item => {
         if (!expansionReturns[0][item]) {
           const tailMatch = item.match(/\d+.*/g);
-          if (tailMatch) tail = tailMatch[0] + '–';
+          if (tailMatch) tail = `${tailMatch[0]}–`;
           const itemMatch = item.match(/[a-z]*/g);
           if (itemMatch) item = itemMatch[0];
         }

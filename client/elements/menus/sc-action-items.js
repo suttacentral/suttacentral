@@ -212,6 +212,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
       colorTheme: { type: String },
       suttaMetaText: { type: String },
       suttaPublicationInfo: { type: Object },
+      range_uid: { type: String },
     };
   }
 
@@ -485,7 +486,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _onBtnShowParallelsClick() {
-    this.#bindDataToSCSuttaParallels(store.getState().currentRoute.params.suttaId);
+    this.bindDataToSCSuttaParallels(this.range_uid || store.getState().currentRoute.params.suttaId);
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
       const { displaySettingMenu, displaySuttaInfo, displaySuttaToC } = store.getState();
@@ -509,7 +510,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
-  #bindDataToSCSuttaParallels(uid) {
+  bindDataToSCSuttaParallels(uid) {
     if (!uid) {
       return;
     }

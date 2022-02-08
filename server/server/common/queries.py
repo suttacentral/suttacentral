@@ -761,6 +761,12 @@ LET root_name = (
 RETURN translated_name ? translated_name : root_name
 '''
 
+VAGGA_CHILDREN = '''
+    FOR doc IN 1..100 OUTBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+      FILTER doc.type == 'leaf'
+          RETURN doc.uid
+'''
+
 SEGMENTED_SUTTA_VIEW = '''
 
 LET result = MERGE(
