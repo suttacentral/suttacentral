@@ -38,6 +38,7 @@ from common.queries import (
     ALL_DOC_UID_BY_ROOT_UID,
     SUTTA_PALI_REFERENCE,
     SUTTA_PUBLICATION_INFO,
+    PLI_SUTTA_PUBLICATION_INFO,
     AVAILABLE_VOICES,
     CANDIDATE_AUTHORS,
     VAGGA_CHILDREN
@@ -1131,7 +1132,11 @@ class PublicationInfo(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, lang):
         db = get_db()
-        publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang}))
+        publication_info = None
+        if lang == 'pli':
+            publication_info = list(db.aql.execute(PLI_SUTTA_PUBLICATION_INFO))
+        else:
+            publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang}))
         if not publication_info:
             return {'error': 'Not Found'}, 404
         return publication_info
