@@ -211,7 +211,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
   }
 
   fetchPublications() {
-    if (!this.textUID || !this.lang || this.lang === 'pli') {
+    if (!this.textUID || !this.lang) {
       this.actions.changeSuttaPublicationInfo(null);
       return;
     }

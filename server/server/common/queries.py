@@ -1201,6 +1201,12 @@ FOR d IN publications
     RETURN d
 '''
 
+PLI_SUTTA_PUBLICATION_INFO = '''
+FOR pliPublication IN publications
+    FILTER pliPublication.publication_number == 'scpub64'
+    RETURN pliPublication
+'''
+
 AVAILABLE_VOICES = '''
 FOR v IN available_voices
     FILTER v.uid == @uid
