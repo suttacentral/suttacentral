@@ -1,6 +1,14 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.02.09
+
+- Update fonts, use woff2 to instead of ttf,otf. #2347
+- Serve range suttas per-sutta. #2296
+- Fix: Info not present on root texts. #2378
+- Fix: Fragment URLs involving /subjects display erratic behavior. #2380
+- Update dependencies.
+
 ## 2022.01.12
 
 - Lift main content into light DOM. #2334
