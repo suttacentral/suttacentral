@@ -17,41 +17,9 @@ class SCTextLegacy extends SCTextCommon {
     return html`
       <style>
         ${layoutSimpleStyles}
-          ${typographyCommonStyles}
-          ${typographyLegacyStyles}
-          ${typographyI18nStyles}
-          .image-link {
-          cursor: pointer;
-        }
-
-        .image-book-link {
-          margin-bottom: 0.5em;
-          margin-left: 0.2em;
-        }
-
-        .image-book-link:before {
-          display: none;
-        }
-
-        .text-center {
-          text-align: center;
-        }
-
-        .margin-top-xl {
-          margin-top: var(--sc-size-xl);
-        }
-
-        article p,
-        .word,
-        .translated-text,
-        .original-text {
-          transition: background-color 300ms ease-in;
-        }
-
-        p,
-        li {
-          hanging-punctuation: first last;
-        }
+        ${typographyCommonStyles}
+        ${typographyLegacyStyles}
+        ${typographyI18nStyles}
       </style>
 
       <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
