@@ -54,7 +54,7 @@ class SCTextLegacy extends SCTextCommon {
         }
       </style>
 
-      <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
+      <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
         ${unsafeHTML(this._extractSuttaText())}
       </main>
 
@@ -143,7 +143,7 @@ class SCTextLegacy extends SCTextCommon {
     this.inputElement = {};
     this._hashChangeHandler = () => {
       setTimeout(() => {
-        this._scrollToSection(window.location.hash.substr(1));
+        this._scrollToSection(window.location.hash.substring(1));
       }, 0);
     };
   }
@@ -464,9 +464,12 @@ class SCTextLegacy extends SCTextCommon {
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      const targetElement = this.querySelector(
-        `h2:nth-of-type(${location.hash.substr(1)})`
-      );
+      let targetElement = null;
+      if (isNaN(sectionId)) {
+        targetElement = this.querySelector(`#${CSS.escape(sectionId)}`);
+      } else {
+        targetElement = this.querySelector(`h2:nth-of-type(${sectionId})`);
+      }
       if (targetElement) {
         targetElement.scrollIntoView();
         window.scrollTo(0, window.scrollY - margin);
