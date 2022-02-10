@@ -42,13 +42,11 @@ class SCTextLegacy extends SCTextCommon {
       // If true, shows the paragraph numbers on the right of the text.
       showParagraphs: { type: Boolean },
       paragraphs: { type: Array },
-      suttaTitle: { type: String },
       author: { type: String },
       error: { type: Object },
       lang: { type: String },
       isLoading: { type: Boolean },
       isTextViewHidden: { type: Boolean },
-      tooltipCount: { type: Number },
       spansForWordsGenerated: { type: Boolean },
       spansForGraphsGenerated: { type: Boolean },
       isChineseLookupEnabled: { type: Boolean },
@@ -69,12 +67,10 @@ class SCTextLegacy extends SCTextCommon {
     this.sutta = {};
     this.showParagraphs = false;
     this.paragraphs = textOptionsState.paragraphDescriptions;
-    this.suttaTitle = '';
     this.author = '';
     this.lang = '';
     this.isLoading = false;
     this.isTextViewHidden = false;
-    this.tooltipCount = 0;
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
@@ -277,7 +273,6 @@ class SCTextLegacy extends SCTextCommon {
     }
     this.author = this.sutta.author;
     this.lang = this.sutta.lang;
-    this.suttaTitle = this.sutta.title;
   }
 
   _extractSuttaText() {
