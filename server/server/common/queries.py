@@ -1270,3 +1270,51 @@ FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edge
         parallels: parallels
     }
 '''
+
+
+EBOOK_DATA_QUERY = '''
+LET translation_filter = SPLIT(@translation_muids, '-')
+
+FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {bfs: False}
+    LET uid = doc.uid
+    LET name = FIRST(FOR name_doc IN names FILTER name_doc.uid == doc.uid AND name_doc.lang == @lang RETURN name_doc.name)
+
+    LET blurb = FIRST(
+        FOR blurb_doc in blurbs
+        FILTER blurb_doc.uid == uid
+        FILTER blurb_doc.lang == @lang
+        RETURN blurb_doc
+    )
+
+    LET translation_file = FIRST(
+        FOR file_doc IN sc_bilara_texts
+        FILTER file_doc.uid == uid
+        FILTER translation_filter ALL IN file_doc.muids
+        RETURN file_doc
+    )
+
+    LET markup_file = FIRST(
+        FOR file_doc IN sc_bilara_texts
+        FILTER file_doc.uid == uid
+        FILTER 'html' IN file_doc.muids
+        RETURN file_doc
+    )
+
+    LET reference_file = FIRST(
+        FOR file_doc IN sc_bilara_texts
+        FILTER file_doc.uid == uid
+        FILTER 'reference' IN file_doc.muids
+        RETURN file_doc
+    )
+    RETURN {
+        uid: doc.uid,
+        type: doc.type,
+        name: name,
+        blurb: blurb.blurb,
+        files: doc.type == 'leaf' ? {
+            translation: translation_file.file_path,
+            reference: reference_file.file_path,
+            markup: markup_file.file_path
+            } : null
+        } 
+'''
