@@ -8,7 +8,6 @@ from flask import Blueprint, Flask, make_response, json, request
 from flask_cors import CORS
 from flask_restful import Api
 
-from api.ebook.ebook import EBook
 from api.views import (
     Currencies,
     Donations,
@@ -97,7 +96,6 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(CollectionUrlList, '/pwa/collection/<string:collection>')
     api.add_resource(PWASizes, '/pwa/sizes')
     api.add_resource(Redirect, '/redirect/<path:url>')
-    api.add_resource(EBook, '/ebook/<string:name>')
     api.add_resource(
         SegmentedSutta, '/bilarasuttas/<string:uid>/<string:author_uid>', '/bilarasuttas/<string:uid>'
     )
