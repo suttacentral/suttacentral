@@ -1,9 +1,5 @@
 import { html } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
-import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
-import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
 class SCStaticPaliTipitaka extends SCStaticPage {
@@ -1371,11 +1367,6 @@ class SCStaticPaliTipitaka extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    // this.localizedStringsPath = '/localization/elements/static_pali-tipitaka-page';
   }
 }
 
