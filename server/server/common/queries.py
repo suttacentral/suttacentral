@@ -1272,6 +1272,16 @@ FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edge
 '''
 
 
+{
+    "lang": "en",
+    "file_data": {
+        "translation": "translation-en-sujato",
+        "reference": "reference",
+        "markup": "html",
+        "comment": "comment-en-sujato",
+    }
+}
+
 EBOOK_DATA_QUERY = '''
 LET translation_filter = SPLIT(@translation_muids, '-')
 
@@ -1306,6 +1316,14 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
         FILTER 'reference' IN file_doc.muids
         RETURN file_doc
     )
+
+    LET comment_file = FIRST(
+        FOR file_doc IN sc_bilara_texts
+        FILTER file_doc.uid == uid
+        FILTER 'reference' IN file_doc.muids
+        RETURN file_doc
+    )
+
     RETURN {
         uid: doc.uid,
         type: doc.type,
