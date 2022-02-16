@@ -7,10 +7,10 @@ import { dispatchCustomEvent } from '../utils/customEvent';
 
 // prettier-ignore
 const isoCodes = [
-'af', 'ar', 'bn', 'bo', 'ca', 'cs', 'de', 'en', 'es', 'fa', 'fi', 
-'fr', 'gr', 'gu', 'he', 'hi', 'hu', 'id', 'it', 'jp', 'jpn', 'kho', 
-'ko', 'la', 'lt', 'lzh', 'mr', 'my', 'nl', 'no', 'ot', 'pgd', 'pi', 
-'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl', 
+'af', 'ar', 'bn', 'bo', 'ca', 'cs', 'de', 'en', 'es', 'fa', 'fi',
+'fr', 'gr', 'gu', 'he', 'hi', 'hu', 'id', 'it', 'jp', 'jpn', 'kho',
+'ko', 'la', 'lt', 'lzh', 'mr', 'my', 'nl', 'no', 'ot', 'pgd', 'pi',
+'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl',
 'sr', 'sv', 'ta', 'th', 'ug', 'uig', 'vi', 'vn', 'xct', 'xto', 'zh', 'zz'
 ];
 
@@ -44,6 +44,7 @@ const staticPages = [
   'subjects',
   'terminology',
   'vinaya',
+  'palitipitaka',
 ];
 
 // prettier-ignore
@@ -207,6 +208,11 @@ const routes = {
     path: '/terminology',
     content: html`<sc-static-terminology />`,
     loader: () => import('./static/sc-static-terminology.js'),
+  },
+  'palitipitaka': {
+    path: '/pali-tipitaka',
+    content: html`<sc-static-pali-tipitaka />`,
+    loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
   'vinaya': {
     path: '/vinaya-guide-brahmali',
@@ -522,9 +528,12 @@ class SCPageSelector extends LitLocalized(LitElement) {
     this.shouldShowSecondToolbar = ['subjects', 'similes', 'names', 'terminology'].includes(
       this.currentRoute.name
     );
-    this.shouldShowTipitakaToolbar = ['discourses', 'vinaya', 'abhidhamma'].includes(
-      this.currentRoute.name
-    );
+    this.shouldShowTipitakaToolbar = [
+      'discourses',
+      'vinaya',
+      'abhidhamma',
+      'palitipitaka',
+    ].includes(this.currentRoute.name);
     this.shouldShowAcademicToolbar = ['numbering', 'abbreviations', 'methodology'].includes(
       this.currentRoute.name
     );
