@@ -1273,18 +1273,12 @@ FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edge
 
 
 {
+    "uid": "dn",
     "lang": "en",
-    "file_data": {
-        "translation": "translation-en-sujato",
-        "reference": "reference",
-        "markup": "html",
-        "comment": "comment-en-sujato",
-    }
+    "file_data": "translation-en-sujato,comment-en-sujato,html,reference"
 }
 
 EBOOK_DATA_QUERY = '''
-LET translation_filter = SPLIT(@translation_muids, '-')
-
 FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {bfs: False}
     LET uid = doc.uid
     LET name = FIRST(FOR name_doc IN names FILTER name_doc.uid == doc.uid AND name_doc.lang == @lang RETURN name_doc.name)
@@ -1296,43 +1290,20 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
         RETURN blurb_doc
     )
 
-    LET translation_file = FIRST(
+    LET files = MERGE(
         FOR file_doc IN sc_bilara_texts
-        FILTER file_doc.uid == uid
-        FILTER translation_filter ALL IN file_doc.muids
-        RETURN file_doc
+            FILTER file_doc.uid == uid
+            FOR key IN ATTRIBUTES(@file_data)
+                LET value = SPLIT(@file_data[key], '-')
+                FILTER file_doc.muids ALL IN value
+                RETURN {[key]: file_doc.file_path}
     )
-
-    LET markup_file = FIRST(
-        FOR file_doc IN sc_bilara_texts
-        FILTER file_doc.uid == uid
-        FILTER 'html' IN file_doc.muids
-        RETURN file_doc
-    )
-
-    LET reference_file = FIRST(
-        FOR file_doc IN sc_bilara_texts
-        FILTER file_doc.uid == uid
-        FILTER 'reference' IN file_doc.muids
-        RETURN file_doc
-    )
-
-    LET comment_file = FIRST(
-        FOR file_doc IN sc_bilara_texts
-        FILTER file_doc.uid == uid
-        FILTER 'reference' IN file_doc.muids
-        RETURN file_doc
-    )
-
+    
     RETURN {
-        uid: doc.uid,
+        uid,
         type: doc.type,
         name: name,
         blurb: blurb.blurb,
-        files: doc.type == 'leaf' ? {
-            translation: translation_file.file_path,
-            reference: reference_file.file_path,
-            markup: markup_file.file_path
-            } : null
-        } 
+        files
+    }
 '''
