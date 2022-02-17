@@ -34,7 +34,7 @@ def load_publication_editions(db: Database, sc_bilara_data_dir: Path) -> None:
     editions_dir = sc_bilara_data_dir / '_publication'
     for file in editions_dir.glob('**/*.json'):
         doc = json_load(file)
-        doc['working_dir'] = str(file.parent.relative_to(sc_bilara_data_dir.parent))
+        doc['working_dir'] = str(file.parent.absolute())
         doc['edition_id'] = file.stem
         doc['_key'] = file.stem
         docs.append(doc)

@@ -50,7 +50,7 @@ from common.arangodb import ArangoDB
 from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
 from search.view import Search, InstantSearch
-from api.views.publication_v2 import Edition, Editions, EditionData
+from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -114,7 +114,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Shortcuts, '/shortcuts')
     api.add_resource(Editions, '/publication/editions')
     api.add_resource(Edition, '/publication/edition/<string:edition_id>')
-    api.add_resource(EditionData, '/publication/data/<string:uid>')
+    api.add_resource(EditionFiles, '/publication/edition/<string:edition_id>/files')
+    api.add_resource(EditionMainmatter, '/publication/edition/<string:edition_id>/<string:uid>')
 
     api.add_resource
     app.register_blueprint(api_bp)
