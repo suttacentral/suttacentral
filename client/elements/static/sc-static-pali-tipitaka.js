@@ -72,7 +72,7 @@ class SCStaticPaliTipitaka extends SCStaticPage {
         }
 
         .third a {
-          height: 4.6rem;
+          height: 3.8rem;
           margin: 0;
 
           border-bottom: none;
@@ -111,20 +111,28 @@ class SCStaticPaliTipitaka extends SCStaticPage {
 
         root {
           display: block;
+
+          font-family: var(--sc-serif-font), serif;
         }
 
         translation {
-          font-family: 'skolar sans', sans-serif;
+          font-family: var(--sc-sans-font), sans-serif;
 
-          color: #757575;
+          color: var(--sc-secondary-text-color);
         }
 
-        a {
+        li a {
           text-decoration: none;
         }
 
-        a:hover {
-          background-color: #eee;
+        li a:hover {
+          background-color: var(--sc-tertiary-background-color);
+
+          text-decoration: none;
+        }
+
+        li a:hover translation {
+          color: var(--sc-primary-color);
         }
 
         @media only screen and (max-width: 2400px) {
@@ -745,7 +753,9 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                             <li>
                               <a href="https://suttacentral.net/sn3">
                                 <root>Kosalasaṁyutta</root>
-                                <translation>Linked Discourses With King Pasenadi of Kosala</translation>
+                                <translation
+                                  >Linked Discourses With King Pasenadi of Kosala</translation
+                                >
                               </a>
                             </li>
                             <li>
@@ -801,7 +811,9 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                         <li>
                           <a href="https://suttacentral.net/sn-nidanavaggasamyutta">
                             <root>Nidānavaggasaṁyutta</root>
-                            <translation>The Group of Linked Discourses Beginning With Causation</translation>
+                            <translation
+                              >The Group of Linked Discourses Beginning With Causation</translation
+                            >
                           </a>
                           <ul class="vertical fifth samyutta">
                             <li>
@@ -825,7 +837,9 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                             <li>
                               <a href="https://suttacentral.net/sn15">
                                 <root>Anamataggasaṁyutta</root>
-                                <translation>Linked Discourses on the Unknowable Beginning</translation>
+                                <translation
+                                  >Linked Discourses on the Unknowable Beginning</translation
+                                >
                               </a>
                             </li>
                             <li>
@@ -869,8 +883,10 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                         <li>
                           <a href="https://suttacentral.net/sn-khandhavaggasamyutta">
                             <root>Khandhavaggasaṁyutta</root>
-                            <translation>The Group of Linked Discourses Beginning With the
-                              Aggregates</translation>
+                            <translation
+                              >The Group of Linked Discourses Beginning With the
+                              Aggregates</translation
+                            >
                           </a>
                           <ul class="vertical fifth samyutta">
                             <li>
@@ -956,8 +972,10 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                         <li>
                           <a href="https://suttacentral.net/sn-salayatanavaggasamyutta">
                             <root>Saḷāyatanavaggasaṁyutta</root>
-                            <translation>The Group of Linked Discourses Beginning With the Six Sense
-                              Fields</translation>
+                            <translation
+                              >The Group of Linked Discourses Beginning With the Six Sense
+                              Fields</translation
+                            >
                           </a>
                           <ul class="vertical fifth samyutta">
                             <li>
@@ -999,7 +1017,9 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                             <li>
                               <a href="https://suttacentral.net/sn41">
                                 <root>Cittasaṁyutta</root>
-                                <translation>Linked Discourses with Citta the Householder</translation>
+                                <translation
+                                  >Linked Discourses with Citta the Householder</translation
+                                >
                               </a>
                             </li>
                             <li>
@@ -1037,13 +1057,17 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                             <li>
                               <a href="https://suttacentral.net/sn46">
                                 <root>Bojjhaṅgasaṁyutta</root>
-                                <translation>Linked Discourses on the Awakening Factors</translation>
+                                <translation
+                                  >Linked Discourses on the Awakening Factors</translation
+                                >
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/sn47">
                                 <root>Satipaṭṭhānasaṁyutta</root>
-                                <translation>Linked Discourses on Mindfulness Meditation</translation>
+                                <translation
+                                  >Linked Discourses on Mindfulness Meditation</translation
+                                >
                               </a>
                             </li>
                             <li>
@@ -1067,7 +1091,9 @@ class SCStaticPaliTipitaka extends SCStaticPage {
                             <li>
                               <a href="https://suttacentral.net/sn51">
                                 <root>Iddhipādasaṁyutta</root>
-                                <translation>Linked Discourses on the Bases of Psychic Power</translation>
+                                <translation
+                                  >Linked Discourses on the Bases of Psychic Power</translation
+                                >
                               </a>
                             </li>
                             <li>
