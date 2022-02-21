@@ -509,10 +509,13 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
-    const pageName = this.tryLocalize(
+    let pageName = this.tryLocalize(
       `interface:${this.currentRoute.name || 'NOT-FOUND'}`,
       this.currentRoute.name
     );
+    if (pageName === 'palitipitaka') {
+      pageName = 'Three Baskets of the Pāḷi Canon';
+    }
     dispatchCustomEvent(document, 'metadata', {
       pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
       title: `SuttaCentral—${pageName.toLowerCase()}`,
