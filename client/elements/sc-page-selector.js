@@ -584,6 +584,9 @@ class SCPageSelector extends LitLocalized(LitElement) {
         return;
       case 'sutta':
         return;
+      case 'palitipitaka':
+        this.actions.changeToolbarTitle('Pāḷi Tipiṭaka');
+        break;
       default:
         const key = `interface:${this.currentRoute.name}Title`;
         if (this.__resources[key]) {
@@ -599,7 +602,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
     if (staticPages.includes(this.currentRoute.name)) {
       const navArray = store.getState().navigationArray;
       const currentPath = this.currentRoute.path;
-      const pageName = this.currentRoute.name;
+      let pageName = this.currentRoute.name;
+      if (pageName === 'palitipitaka') {
+        pageName = 'Three Baskets of the Pāḷi Canon';
+      }
       navArray.length = 1;
       if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
         navArray.push({

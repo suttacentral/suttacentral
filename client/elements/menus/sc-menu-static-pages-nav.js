@@ -191,7 +191,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
               <a href="/abhidhamma-guide-sujato">${this.localize('interface:abhidhamma')}</a>
             </li>
             <li>
-              <a href="/pali-tipitaka">Pali Tipitaka</a>
+              <a href="/pali-tipitaka">Pali Canon Overview</a>
             </li>
           `
         : ''}
