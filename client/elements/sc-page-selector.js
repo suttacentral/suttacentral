@@ -7,10 +7,10 @@ import { dispatchCustomEvent } from '../utils/customEvent';
 
 // prettier-ignore
 const isoCodes = [
-'af', 'ar', 'bn', 'bo', 'ca', 'cs', 'de', 'en', 'es', 'fa', 'fi', 
-'fr', 'gr', 'gu', 'he', 'hi', 'hu', 'id', 'it', 'jp', 'jpn', 'kho', 
-'ko', 'la', 'lt', 'lzh', 'mr', 'my', 'nl', 'no', 'ot', 'pgd', 'pi', 
-'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl', 
+'af', 'ar', 'bn', 'bo', 'ca', 'cs', 'de', 'en', 'es', 'fa', 'fi',
+'fr', 'gr', 'gu', 'he', 'hi', 'hu', 'id', 'it', 'jp', 'jpn', 'kho',
+'ko', 'la', 'lt', 'lzh', 'mr', 'my', 'nl', 'no', 'ot', 'pgd', 'pi',
+'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl',
 'sr', 'sv', 'ta', 'th', 'ug', 'uig', 'vi', 'vn', 'xct', 'xto', 'zh', 'zz'
 ];
 
@@ -44,6 +44,7 @@ const staticPages = [
   'subjects',
   'terminology',
   'vinaya',
+  'palitipitaka',
 ];
 
 // prettier-ignore
@@ -207,6 +208,11 @@ const routes = {
     path: '/terminology',
     content: html`<sc-static-terminology />`,
     loader: () => import('./static/sc-static-terminology.js'),
+  },
+  'palitipitaka': {
+    path: '/pali-tipitaka',
+    content: html`<sc-static-pali-tipitaka />`,
+    loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
   'vinaya': {
     path: '/vinaya-guide-brahmali',
@@ -503,10 +509,13 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
-    const pageName = this.tryLocalize(
+    let pageName = this.tryLocalize(
       `interface:${this.currentRoute.name || 'NOT-FOUND'}`,
       this.currentRoute.name
     );
+    if (pageName === 'palitipitaka') {
+      pageName = 'Three Baskets of the Pāḷi Canon';
+    }
     dispatchCustomEvent(document, 'metadata', {
       pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
       title: `SuttaCentral—${pageName.toLowerCase()}`,
@@ -522,9 +531,12 @@ class SCPageSelector extends LitLocalized(LitElement) {
     this.shouldShowSecondToolbar = ['subjects', 'similes', 'names', 'terminology'].includes(
       this.currentRoute.name
     );
-    this.shouldShowTipitakaToolbar = ['discourses', 'vinaya', 'abhidhamma'].includes(
-      this.currentRoute.name
-    );
+    this.shouldShowTipitakaToolbar = [
+      'discourses',
+      'vinaya',
+      'abhidhamma',
+      'palitipitaka',
+    ].includes(this.currentRoute.name);
     this.shouldShowAcademicToolbar = ['numbering', 'abbreviations', 'methodology'].includes(
       this.currentRoute.name
     );
@@ -575,6 +587,9 @@ class SCPageSelector extends LitLocalized(LitElement) {
         return;
       case 'sutta':
         return;
+      case 'palitipitaka':
+        this.actions.changeToolbarTitle('Pāḷi Tipiṭaka');
+        break;
       default:
         const key = `interface:${this.currentRoute.name}Title`;
         if (this.__resources[key]) {
@@ -590,7 +605,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
     if (staticPages.includes(this.currentRoute.name)) {
       const navArray = store.getState().navigationArray;
       const currentPath = this.currentRoute.path;
-      const pageName = this.currentRoute.name;
+      let pageName = this.currentRoute.name;
+      if (pageName === 'palitipitaka') {
+        pageName = 'Three Baskets of the Pāḷi Canon';
+      }
       navArray.length = 1;
       if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
         navArray.push({
