@@ -106,7 +106,7 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
-    all_files = {file for file in sc_bilara_data_dir.glob('**/*.json') if not file.name.startswith('_')}
+    all_files = {file for file in sc_bilara_data_dir.glob('**/*.json') if not file.name.startswith('_') and file.name.find('scpub') < 0}
     files: Set[Path] = all_files.difference({
         *sc_bilara_data_dir.glob('**/name/**/*.json'),
         *sc_bilara_data_dir.glob('**/blurb/*.json'),
