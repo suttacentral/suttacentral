@@ -343,7 +343,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _initNavigation() {
     this.navArray = store.getState().navigationArray;
-    if (!this.navArray) {
+    if (!this.navArray || this.navArray[0].uid !== 'home') {
       this.navArray = [
         {
           uid: 'home',
