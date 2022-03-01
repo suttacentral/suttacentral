@@ -365,7 +365,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #setBtnShowParallelTableViewDisplayState() {
-    const displayStyle = this.currentRoute.name === 'SUTTAPLEX' ? 'inherit' : 'none';
+    const displayStyle = this.currentRoute.name.toUpperCase() === 'SUTTAPLEX' ? 'inherit' : 'none';
     const btnShowParallelTableView = this.shadowRoot.querySelector('#btnShowParallelTableView');
     if (btnShowParallelTableView) {
       btnShowParallelTableView.style.display = displayStyle;
