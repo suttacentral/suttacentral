@@ -11,6 +11,9 @@ import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles';
 import '../lookups/sc-lookup-lzh2en';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
+import { API_ROOT } from '../../constants';
+import { getURLParam } from '../addons/sc-functions-miscellaneous';
+import { reduxActions } from '../addons/sc-redux-actions';
 
 class SCTextLegacy extends SCTextCommon {
   render() {
@@ -149,6 +152,8 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   firstUpdated() {
+    this._filterUrlParameters();
+    this._setTextViewState();
     this._updateView();
   }
 
@@ -631,6 +636,55 @@ class SCTextLegacy extends SCTextCommon {
     scBottomSheet.currentDefineDetail = lookupResult.html;
     scBottomSheet.lookup = chineseLookup;
     scBottomSheet.show();
+  }
+
+  _filterUrlParameters() {
+    const baseUrl = window.location.href.split('?')[0];
+    const params = new URLSearchParams(window.location.href.split('?')[1]);
+    params.delete('layout');
+    params.delete('notes');
+    params.delete('script');
+    window.history.replaceState(null, null, `${baseUrl}?${params}`);
+  }
+
+  _setTextViewState() {
+    const highlight = getURLParam(window.location.href, 'highlight');
+    const reference = getURLParam(window.location.href, 'reference');
+    const { textOptions } = store.getState();
+
+    if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
+      this.showHighlighting = highlight === 'true';
+      reduxActions.setShowHighlighting(highlight === 'true');
+    } else {
+      this.showHighlighting = textOptions.showHighlighting;
+    }
+
+    if (reference) {
+      const paramReference = [];
+      fetch(`${API_ROOT}/pali_reference_edition`)
+        .then(r => r.json())
+        .then(data => {
+          const refs = reference.split('/');
+          // eslint-disable-next-line no-restricted-syntax
+          for (const ref of refs) {
+            if (
+              ref.toLowerCase() === 'main' ||
+              ref.toLowerCase() === 'none' ||
+              data.find(x => x.edition_set === ref)
+            ) {
+              paramReference.push(ref);
+            }
+          }
+          // eslint-disable-next-line promise/always-return
+          if (paramReference.length > 0) {
+            this.chosenReferenceDisplayType = paramReference;
+            reduxActions.setReferenceDisplayType(paramReference);
+          }
+        })
+        .catch(e => console.error(e));
+    } else {
+      this.chosenReferenceDisplayType = textOptions.displayedReferences;
+    }
   }
 }
 
