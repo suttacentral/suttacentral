@@ -152,7 +152,7 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   firstUpdated() {
-    this._filterUrlParameters();
+    this._updateURLSearchParams();
     this._setTextViewState();
     this._updateView();
   }
@@ -190,9 +190,11 @@ class SCTextLegacy extends SCTextCommon {
     }
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('chosenReferenceDisplayType')) {
       this._referenceDisplayTypeChanged();
+      this._updateURLSearchParams();
     }
   }
 
@@ -638,13 +640,17 @@ class SCTextLegacy extends SCTextCommon {
     scBottomSheet.show();
   }
 
-  _filterUrlParameters() {
-    const baseUrl = window.location.href.split('?')[0];
-    const params = new URLSearchParams(window.location.href.split('?')[1]);
-    params.delete('layout');
-    params.delete('notes');
-    params.delete('script');
-    window.history.replaceState(null, null, `${baseUrl}?${params}`);
+  _updateURLSearchParams() {
+    const textLegacy = this?.parentNode?.querySelector('sc-text-legacy');
+    if (!textLegacy) {
+      return;
+    }
+    const { displayedReferences, showHighlighting } = store.getState().textOptions;
+    const urlParams = `?reference=${displayedReferences.join('/')}&highlight=${showHighlighting}${
+      window.location.hash
+    }`;
+    // eslint-disable-next-line no-restricted-globals
+    history.replaceState(null, null, urlParams);
   }
 
   _setTextViewState() {
