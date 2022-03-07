@@ -152,9 +152,9 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   firstUpdated() {
-    this._updateURLSearchParams();
     this._setTextViewState();
     this._updateView();
+    this._updateURLSearchParams();
   }
 
   _hideTopSheets() {
