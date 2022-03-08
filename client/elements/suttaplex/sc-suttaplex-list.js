@@ -10,7 +10,7 @@ import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
 import { RefreshNavNew } from '../navigation/sc-navigation-common';
-import { transformId } from '../../utils/suttaplex';
+import { transformId, getParagraphRange } from '../../utils/suttaplex';
 
 import '@material/mwc-button';
 
@@ -246,6 +246,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           name: item.name,
           acronym: item.acronym,
           to: [],
+          original_root: item.original_root,
         });
       } else {
         for (const parallel of item.parallels) {
@@ -266,6 +267,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               acronym: parallel.to.acronym
                 ? parallel.to.acronym
                 : transformId(parallel.to.uid, this.expansionData),
+              parallel_root: parallel.to.parallel_root
             });
           } else {
             this.parallelsLite.push({
@@ -276,6 +278,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                 : '',
               name: item.name,
               acronym: item.acronym,
+              original_root: item.original_root,
               to: [
                 {
                   to: parallel.to.to,
@@ -290,6 +293,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                   acronym: parallel.to.acronym
                     ? parallel.to.acronym
                     : transformId(parallel.to.uid, this.expansionData),
+                  parallel_root: parallel.to.parallel_root
                 },
               ],
             });
@@ -419,7 +423,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                 item => html`
                   <tr>
                     <td class="sutta_uid">
-                      <a class="uid" href="/${item.from}"
+                      <a class="uid" href=${this._getRootSuttaUrl(item.original_root, item.uid, item.from)}
                         >${item.acronym || item.from}${item.fromTitle.split(':').length > 1
                           ? ':' + item.fromTitle.split(':')[1]
                           : ''}</a
@@ -428,17 +432,17 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                     <td class="sutta_title">${item.name}</td>
                     <td class="parallels">
                       ${item.to.map(
-                        (to, i) => html`
+                        (toItem, i) => html`
                           ${item.to.length !== i + 1
-                            ? html`<a class="uid" href="/${to.uid}"
-                                  >${to.acronym || to.uid}${to.toTitle.split(':').length > 1
-                                    ? ':' + to.toTitle.split(':')[1]
+                            ? html`<a class="uid" href=${this._getRootSuttaUrl(toItem.parallel_root, toItem.uid, toItem.to)}
+                                  >${toItem.acronym || toItem.uid}${toItem.toTitle.split(':').length > 1
+                                    ? ':' + toItem.toTitle.split(':')[1]
                                     : ''}</a
                                 >,`
                             : html`
-                                <a class="uid" href="/${to.uid}"
-                                  >${to.acronym || to.uid}${to.toTitle.split(':').length > 1
-                                    ? ':' + to.toTitle.split(':')[1]
+                                <a class="uid" href=${this._getRootSuttaUrl(toItem.parallel_root, toItem.uid, toItem.to)}
+                                  >${toItem.acronym || toItem.uid}${toItem.toTitle.split(':').length > 1
+                                    ? ':' + toItem.toTitle.split(':')[1]
                                     : ''}</a
                                 >
                               `}
@@ -452,6 +456,16 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           </table>
         `
       : '';
+  }
+
+  _getRootSuttaUrl(rootDetail, originalUid, uidAndHash) {
+    if (rootDetail && rootDetail[0]?.uid && rootDetail[0]?.lang && rootDetail[0]?.author_uid) {
+      return (
+        `/${rootDetail[0].uid}/${rootDetail[0].lang}` +
+        `/${rootDetail[0].author_uid}${getParagraphRange(uidAndHash, true)}`
+      );
+    }
+    return `/${originalUid}`;
   }
 
   normalViewTemplate() {

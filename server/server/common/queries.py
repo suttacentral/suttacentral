@@ -1253,20 +1253,72 @@ FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edge
     FILTER v.type == 'leaf'
     LET parallels = (
         FOR k, e IN OUTBOUND CONCAT('super_nav_details/', v.uid) relationship
+            LET parallel_legacy_root = (
+                FOR text IN html_text
+                    FILTER text.uid == k.uid AND text.lang == 'lzh'
+                    LIMIT 1
+                    LET res = {
+                        uid: text.uid,
+                        lang: text.lang,
+                        author_uid: text.author_uid,
+                        }
+                    RETURN res
+                )
+
+            LET parallel_bilara_root = (
+                FOR text IN sc_bilara_texts
+                    FILTER text.uid == k.uid AND 'root' IN text.muids
+                    LET res = {
+                        uid: text.uid,
+                        lang: text.lang,
+                        author_uid: text.muids[2],
+                    }
+                    RETURN res
+            )
+
+            LET parallel_root = FLATTEN([parallel_bilara_root, parallel_legacy_root])
+
             RETURN {
                 from: e.from,
                 to: {
                     to: e.to,
                     uid: k.uid,
-                    acronym: k.acronym
+                    acronym: k.acronym,
+                    parallel_root: parallel_root
                 }
             }
     )
+
+    LET original_legacy_root = (
+        FOR text IN html_text
+            FILTER text.uid == v.uid AND text.lang == 'lzh'
+            LIMIT 1
+            LET res = {
+                uid: text.uid,
+                lang: text.lang,
+                author_uid: text.author_uid,
+                }
+            RETURN res
+        )
+
+    LET original_bilara_root = (
+        FOR text IN sc_bilara_texts
+            FILTER text.uid == v.uid AND 'root' IN text.muids
+            LET res = {
+                uid: text.uid,
+                lang: text.lang,
+                author_uid: text.muids[2],
+            }
+            RETURN res
+    )
+
+    LET original_root = FLATTEN([original_bilara_root, original_legacy_root])
 
     RETURN {
         uid: v.uid,
         name: v.name,
         acronym: v.acronym,
-        parallels: parallels
+        parallels: parallels,
+        original_root: original_root
     }
 '''
