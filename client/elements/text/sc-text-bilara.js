@@ -143,7 +143,7 @@ class SCTextBilara extends SCTextCommon {
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', this._onClickHandler);
     this._updateView();
-    this._updateURLParams();
+    this._updateURLSearchParams();
   }
 
   disconnectedCallback() {
@@ -405,11 +405,11 @@ class SCTextBilara extends SCTextCommon {
   updated(changedProps) {
     if (changedProps.has('chosenTextView')) {
       this._changeTextView();
-      this._updateURLParams();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('paliScript')) {
       this._changeScript();
-      this._updateURLParams();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('isPaliLookupEnabled')) {
       this._paliLookupStateChanged();
@@ -429,15 +429,15 @@ class SCTextBilara extends SCTextCommon {
       } else {
         this._deleteReference();
       }
-      this._updateURLParams();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('chosenNoteDisplayType')) {
       this._changeTextView();
-      this._updateURLParams();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
-      this._updateURLParams();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('currentStyles')) {
       if (this._isPlusStyle()) {
@@ -513,7 +513,11 @@ class SCTextBilara extends SCTextCommon {
     this._startGeneratingSpans(selector, 'graph', lang);
   }
 
-  _updateURLParams() {
+  _updateURLSearchParams() {
+    const textBilara = this?.parentNode?.querySelector('sc-text-bilara');
+    if (!textBilara) {
+      return;
+    }
     const {
       segmentedSuttaTextView,
       displayedReferences,

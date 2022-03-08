@@ -11,50 +11,21 @@ import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles';
 import '../lookups/sc-lookup-lzh2en';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
+import { API_ROOT } from '../../constants';
+import { getURLParam } from '../addons/sc-functions-miscellaneous';
+import { reduxActions } from '../addons/sc-redux-actions';
 
 class SCTextLegacy extends SCTextCommon {
   render() {
     return html`
       <style>
         ${layoutSimpleStyles}
-          ${typographyCommonStyles}
-          ${typographyLegacyStyles}
-          ${typographyI18nStyles}
-          .image-link {
-          cursor: pointer;
-        }
-
-        .image-book-link {
-          margin-bottom: 0.5em;
-          margin-left: 0.2em;
-        }
-
-        .image-book-link:before {
-          display: none;
-        }
-
-        .text-center {
-          text-align: center;
-        }
-
-        .margin-top-xl {
-          margin-top: var(--sc-size-xl);
-        }
-
-        article p,
-        .word,
-        .translated-text,
-        .original-text {
-          transition: background-color 300ms ease-in;
-        }
-
-        p,
-        li {
-          hanging-punctuation: first last;
-        }
+        ${typographyCommonStyles}
+        ${typographyLegacyStyles}
+        ${typographyI18nStyles}
       </style>
 
-      <main id="simple_text_content" class="html-text-content" ?hidden="${this.isTextViewHidden}">
+      <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
         ${unsafeHTML(this._extractSuttaText())}
       </main>
 
@@ -74,13 +45,11 @@ class SCTextLegacy extends SCTextCommon {
       // If true, shows the paragraph numbers on the right of the text.
       showParagraphs: { type: Boolean },
       paragraphs: { type: Array },
-      suttaTitle: { type: String },
       author: { type: String },
       error: { type: Object },
       lang: { type: String },
       isLoading: { type: Boolean },
       isTextViewHidden: { type: Boolean },
-      tooltipCount: { type: Number },
       spansForWordsGenerated: { type: Boolean },
       spansForGraphsGenerated: { type: Boolean },
       isChineseLookupEnabled: { type: Boolean },
@@ -101,12 +70,10 @@ class SCTextLegacy extends SCTextCommon {
     this.sutta = {};
     this.showParagraphs = false;
     this.paragraphs = textOptionsState.paragraphDescriptions;
-    this.suttaTitle = '';
     this.author = '';
     this.lang = '';
     this.isLoading = false;
     this.isTextViewHidden = false;
-    this.tooltipCount = 0;
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
@@ -143,7 +110,7 @@ class SCTextLegacy extends SCTextCommon {
     this.inputElement = {};
     this._hashChangeHandler = () => {
       setTimeout(() => {
-        this._scrollToSection(window.location.hash.substr(1));
+        this._scrollToSection(window.location.hash.substring(1));
       }, 0);
     };
   }
@@ -185,7 +152,9 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   firstUpdated() {
+    this._setTextViewState();
     this._updateView();
+    this._updateURLSearchParams();
   }
 
   _hideTopSheets() {
@@ -221,9 +190,11 @@ class SCTextLegacy extends SCTextCommon {
     }
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
+      this._updateURLSearchParams();
     }
     if (changedProps.has('chosenReferenceDisplayType')) {
       this._referenceDisplayTypeChanged();
+      this._updateURLSearchParams();
     }
   }
 
@@ -309,7 +280,6 @@ class SCTextLegacy extends SCTextCommon {
     }
     this.author = this.sutta.author;
     this.lang = this.sutta.lang;
-    this.suttaTitle = this.sutta.title;
   }
 
   _extractSuttaText() {
@@ -464,9 +434,12 @@ class SCTextLegacy extends SCTextCommon {
   _scrollToSection(sectionId, margin = 120) {
     if (!sectionId) return;
     try {
-      const targetElement = this.querySelector(
-        `h2:nth-of-type(${location.hash.substr(1)})`
-      );
+      let targetElement = null;
+      if (isNaN(sectionId)) {
+        targetElement = this.querySelector(`#${CSS.escape(sectionId)}`);
+      } else {
+        targetElement = this.querySelector(`h2:nth-of-type(${sectionId})`);
+      }
       if (targetElement) {
         targetElement.scrollIntoView();
         window.scrollTo(0, window.scrollY - margin);
@@ -665,6 +638,59 @@ class SCTextLegacy extends SCTextCommon {
     scBottomSheet.currentDefineDetail = lookupResult.html;
     scBottomSheet.lookup = chineseLookup;
     scBottomSheet.show();
+  }
+
+  _updateURLSearchParams() {
+    const textLegacy = this?.parentNode?.querySelector('sc-text-legacy');
+    if (!textLegacy) {
+      return;
+    }
+    const { displayedReferences, showHighlighting } = store.getState().textOptions;
+    const urlParams = `?reference=${displayedReferences.join('/')}&highlight=${showHighlighting}${
+      window.location.hash
+    }`;
+    // eslint-disable-next-line no-restricted-globals
+    history.replaceState(null, null, urlParams);
+  }
+
+  _setTextViewState() {
+    const highlight = getURLParam(window.location.href, 'highlight');
+    const reference = getURLParam(window.location.href, 'reference');
+    const { textOptions } = store.getState();
+
+    if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
+      this.showHighlighting = highlight === 'true';
+      reduxActions.setShowHighlighting(highlight === 'true');
+    } else {
+      this.showHighlighting = textOptions.showHighlighting;
+    }
+
+    if (reference) {
+      const paramReference = [];
+      fetch(`${API_ROOT}/pali_reference_edition`)
+        .then(r => r.json())
+        .then(data => {
+          const refs = reference.split('/');
+          // eslint-disable-next-line no-restricted-syntax
+          for (const ref of refs) {
+            if (
+              ref.toLowerCase() === 'main' ||
+              ref.toLowerCase() === 'none' ||
+              data.find(x => x.edition_set === ref)
+            ) {
+              paramReference.push(ref);
+            }
+          }
+          // eslint-disable-next-line promise/always-return
+          if (paramReference.length > 0) {
+            this.chosenReferenceDisplayType = paramReference;
+            reduxActions.setReferenceDisplayType(paramReference);
+          }
+        })
+        .catch(e => console.error(e));
+    } else {
+      this.chosenReferenceDisplayType = textOptions.displayedReferences;
+    }
   }
 }
 
