@@ -535,12 +535,12 @@ class SCTextBilara extends SCTextCommon {
   }
 
   _setTextViewState() {
-    const notes = getURLParam(window.location.href, 'notes');
-    const root = getURLParam(window.location.href, 'root');
-    const layout = getURLParam(window.location.href, 'layout');
-    const script = getURLParam(window.location.href, 'script');
-    const highlight = getURLParam(window.location.href, 'highlight');
-    const reference = getURLParam(window.location.href, 'reference');
+    const notes = getURLParam('notes');
+    const root = getURLParam('root');
+    const layout = getURLParam('layout');
+    const script = getURLParam('script');
+    const highlight = getURLParam('highlight');
+    const reference = getURLParam('reference');
     const { textOptions } = store.getState();
 
     if (notes && ['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {

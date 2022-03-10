@@ -80,7 +80,7 @@ export class SCStaticPage extends LitLocalized(LitElement) {
   }
 
   get getUrlLangParam() {
-    return getURLParam(window.location.href, 'lang');
+    return getURLParam('lang');
   }
 
   async changeSiteLanguage(lang) {
