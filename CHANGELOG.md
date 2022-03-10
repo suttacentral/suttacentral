@@ -8,7 +8,7 @@
 
 ## 2022.02.23
 
--- Add page Pali Tipitaka. #2237
+- Add page Pali Tipitaka. #2237
 
 ## 2022.02.09
 
