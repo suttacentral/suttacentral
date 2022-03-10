@@ -1,6 +1,15 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.03.10
+
+- Make Suttaplex Tableview's link consistent with Normalview.
+- Fix: Deep links on legacy texts broken.
+
+## 2022.02.23
+
+-- Add page Pali Tipitaka.
+
 ## 2022.02.09
 
 - Update fonts, use woff2 to instead of ttf,otf. #2347
