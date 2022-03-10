@@ -4,11 +4,11 @@
 ## 2022.03.10
 
 - Make Suttaplex Tableview's link consistent with Normalview.
-- Fix: Deep links on legacy texts broken.
+- Fix: Deep links on legacy texts broken. #2372
 
 ## 2022.02.23
 
--- Add page Pali Tipitaka.
+-- Add page Pali Tipitaka. #2237
 
 ## 2022.02.09
 
