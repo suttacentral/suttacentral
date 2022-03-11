@@ -22,7 +22,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    // this._fetchLanguageList();
     const { currentRoute } = store.getState();
     if (!this.getUrlLangParam && currentRoute.path !== '/') {
       this._updateUrlParams();
