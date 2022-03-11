@@ -364,7 +364,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   _setViewState() {
-    const view = getURLParam(window.location.href, 'view');
+    const view = getURLParam('view');
     if (view && ['normal', 'dense', 'table'].includes(view.toLowerCase())) {
       if (view === 'normal') {
         this.displayParallelTableView = false;

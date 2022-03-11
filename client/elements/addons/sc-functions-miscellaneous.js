@@ -1,12 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
-export function getURLParam(url, name) {
+export function getURLParam(name) {
   try {
-    const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
-    const r = url.split('?')[1].match(reg);
-    if (r != null) {
-      return r[2];
-    }
-    return '';
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get(name);
   } catch (e) {
     return '';
   }

@@ -654,8 +654,8 @@ class SCTextLegacy extends SCTextCommon {
   }
 
   _setTextViewState() {
-    const highlight = getURLParam(window.location.href, 'highlight');
-    const reference = getURLParam(window.location.href, 'reference');
+    const highlight = getURLParam('highlight');
+    const reference = getURLParam('reference');
     const { textOptions } = store.getState();
 
     if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
