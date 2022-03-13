@@ -494,7 +494,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
     this.actions.changeLinearProgressActiveState(this.loadingResults);
-    this._updateNav();
   }
 
   connectedCallback() {
@@ -840,6 +839,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       })
     );
     this.actions.changeToolbarTitle(toolbarTitle);
+    this._updateNav();
   }
 
   _computeItemDifficulty(difficulty) {
