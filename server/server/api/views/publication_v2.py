@@ -1,6 +1,6 @@
 from pathlib import Path
 from flask_restful import Resource
-from flask import request, current_app
+from flask import request, jsonify
 from common.arangodb import get_db
 from data_loader.util import json_load
 from base64 import b64encode
@@ -148,7 +148,7 @@ class EditionMainmatter(Resource):
           for k, file_path in list(doc['mainmatter'].items()):
               if file_path:
                   doc['mainmatter'][k] = json_load(file_path)
-    return result
+    return jsonify(result)
 
 
 class EditionData(Resource):
