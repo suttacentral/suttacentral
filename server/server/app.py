@@ -117,7 +117,6 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(EditionFiles, '/publication/edition/<string:edition_id>/files')
     api.add_resource(EditionMainmatter, '/publication/edition/<string:edition_id>/<string:uid>')
 
-    api.add_resource
     app.register_blueprint(api_bp)
     register_extensions(app)
 

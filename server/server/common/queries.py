@@ -1271,13 +1271,6 @@ FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edge
     }
 '''
 
-
-{
-    "uid": "dn",
-    "lang": "en",
-    "file_data": "translation-en-sujato,comment-en-sujato,html,reference"
-}
-
 EBOOK_DATA_QUERY = '''
 FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {bfs: False}
     LET uid = doc.uid
