@@ -21,6 +21,7 @@ from api.views import (
     ParallelsLite,
     Sutta,
     SuttaplexList,
+    RangeSuttaplexList,
     Images,
     Epigraphs,
     WhyWeRead,
@@ -75,6 +76,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Menu, '/menu', '/menu/<path:submenu_id>')
     api.add_resource(TipitakaMenu, '/tipitaka_menu')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
+    api.add_resource(RangeSuttaplexList, '/range_suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
     api.add_resource(ParallelsLite, '/parallels_lite/<path:uid>')
     api.add_resource(

@@ -32,6 +32,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       hasVoice: Boolean,
       isPatimokkha: Boolean,
       isPatimokkhaDetails: Boolean,
+      isRangeSuttaplex: Boolean,
     };
   }
 
@@ -93,6 +94,14 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   get mainHeading() {
     if (!this.item) {
       return '';
+    }
+    if (this.isRangeSuttaplex) {
+      return (
+        this.item.title ||
+        this.item.translated_title ||
+        this.item.original_title ||
+        this.acronymOrUid
+      );
     }
     return this.item.translated_title || this.item.original_title || this.acronymOrUid;
   }
@@ -192,7 +201,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             ${this.topRowIconsTemplate}
           </div>
 
-          ${this.nerdyRowTemplate}
+          ${!this.isRangeSuttaplex ? this.nerdyRowTemplate : ''}
         </div>
 
         ${!this.isCompact
@@ -212,7 +221,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ? html`
               ${!this.isPatimokkhaDetails ? this.rootTextsTemplate : ''}
               ${!this.isPatimokkhaDetails ? this.modernLanguageTranslationsTemplate : ''}
-              ${this.isPatimokkha && !this.isPatimokkhaDetails ? '' : this.parallelsTemplate}
+              ${(this.isPatimokkha && !this.isPatimokkhaDetails) || this.isRangeSuttaplex
+                ? ''
+                : this.parallelsTemplate}
             `
           : ''}
       </article>

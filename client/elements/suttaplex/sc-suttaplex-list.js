@@ -60,6 +60,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     return `${API_ROOT}/suttaplex/${this.categoryId}?language=${this.language}`;
   }
 
+  get rangeSuttaplexApiUrl() {
+    return `${API_ROOT}/range_suttaplex/${this.categoryId}?language=${this.language}`;
+  }
+
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/interface';
@@ -189,7 +193,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.networkError = null;
 
     try {
-      const responseData = await fetch(this.apiUrl).then(r => r.json());
+      let responseData = await fetch(this.apiUrl).then(r => r.json());
+      if (!responseData[0].uid) {
+        responseData = await fetch(this.rangeSuttaplexApiUrl).then(r => r.json());
+        this.isRangeSuttaplex = true;
+        this.rangeCategoryId = responseData[0].uid;
+      }
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -215,13 +224,17 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
-      RefreshNavNew(this.categoryId, true);
+      if (!this.isRangeSuttaplex) {
+        RefreshNavNew(this.categoryId, true);
+      } else {
+        RefreshNavNew(this.rangeCategoryId, true);
+      }
 
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
             pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
-            title: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
+            title: `${this.suttaplexData[0].title || this.suttaplexData[0].original_title}—Suttas and Parallels`,
             description,
             bubbles: true,
             composed: true,
@@ -313,6 +326,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .expansionData="${this.expansionData}"
         .isPatimokkha=${this.isPatimokkha()}
         .isPatimokkhaDetails=${this.isPatimokkha() && item.uid !== this.categoryId}
+        .isRangeSuttaplex=${this.isRangeSuttaplex}
         class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
