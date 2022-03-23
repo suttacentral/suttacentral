@@ -392,7 +392,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       this.range_uid.split('.').length > 1 &&
       this.range_uid.split('.')[1].split('-').length > 1
     ) {
-      // const rangeUids = this.range_uid.split('.')[1].split('-');
       const previousNo = parseInt(this.suttaId.split('.')[1], 10) - 1;
       const nextNo = parseInt(this.suttaId.split('.')[1], 10) + 1;
       if (previousNo >= parseInt(this._extractVaggaBeginUid(this.responseData.vaggaBegin), 10)) {

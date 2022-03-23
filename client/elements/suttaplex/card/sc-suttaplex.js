@@ -32,7 +32,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       hasVoice: Boolean,
       isPatimokkha: Boolean,
       isPatimokkhaDetails: Boolean,
-      isRangeSuttaplex: Boolean,
+      isSuttaInRangeSutta: Boolean,
+      inRangeSuttaId: String,
     };
   }
 
@@ -95,7 +96,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     if (!this.item) {
       return '';
     }
-    if (this.isRangeSuttaplex) {
+    if (this.isSuttaInRangeSutta) {
       return (
         this.item.title ||
         this.item.translated_title ||
@@ -201,7 +202,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             ${this.topRowIconsTemplate}
           </div>
 
-          ${!this.isRangeSuttaplex ? this.nerdyRowTemplate : ''}
+          ${!this.isSuttaInRangeSutta ? this.nerdyRowTemplate : ''}
         </div>
 
         ${!this.isCompact
@@ -221,7 +222,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ? html`
               ${!this.isPatimokkhaDetails ? this.rootTextsTemplate : ''}
               ${!this.isPatimokkhaDetails ? this.modernLanguageTranslationsTemplate : ''}
-              ${(this.isPatimokkha && !this.isPatimokkhaDetails) || this.isRangeSuttaplex
+              ${(this.isPatimokkha && !this.isPatimokkhaDetails) || this.isSuttaInRangeSutta
                 ? ''
                 : this.parallelsTemplate}
             `
@@ -342,6 +343,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                 .item=${this.item}
                 .translation=${translation}
                 .isCompact=${this.isCompact}
+                .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
+                .inRangeSuttaId=${this.inRangeSuttaId}
               ></sc-suttaplex-tx>
             `
           )}

@@ -197,7 +197,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       let responseData = await fetch(this.apiUrl).then(r => r.json());
       if (!responseData[0].uid) {
         responseData = await fetch(this.rangeSuttaplexApiUrl).then(r => r.json());
-        this.isRangeSuttaplex = true;
+        this.isSuttaInRangeSutta = true;
         this.rangeCategoryId = responseData[0].uid;
       }
       this.suttaplexData = [];
@@ -223,7 +223,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         description = this.suttaplexData[0].blurb;
       }
 
-      if (!this.isRangeSuttaplex) {
+      if (!this.isSuttaInRangeSutta) {
         RefreshNavNew(this.categoryId, true);
         this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
       } else {
@@ -336,7 +336,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .expansionData="${this.expansionData}"
         .isPatimokkha=${this.isPatimokkha()}
         .isPatimokkhaDetails=${this.isPatimokkha() && item.uid !== this.categoryId}
-        .isRangeSuttaplex=${this.isRangeSuttaplex}
+        .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
+        .inRangeSuttaId=${this.categoryId}
         class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
