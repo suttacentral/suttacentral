@@ -457,10 +457,6 @@ class RangeSuttaplexList(Resource):
                         results = db.aql.execute(
                             SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child}
                         )
-                        # result = results.next()
-                        # result['range_uid'] = child
-                        # result['vaggaBegin'] = vaggaChildren[0]
-                        # result['vaggaEnd'] = vaggaChildren[-1]
         elif uid.count('.') == 1 and uid.count('-') == 0:
             firstPart = uid[:uid.find('.')]
             secondPart = uid[uid.find('.') + 1:]
@@ -474,6 +470,10 @@ class RangeSuttaplexList(Resource):
                         results = db.aql.execute(
                             SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child}
                         )
+        elif uid != 'pli-tv-bi-vb-sk1-75' and uid[0:15] == 'pli-tv-bi-vb-sk':
+            results = db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': 'pli-tv-bi-vb-sk1-75'}
+            )
         else:
             results = db.aql.execute(
                 SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
@@ -502,6 +502,9 @@ class RangeSuttaplexList(Resource):
             )
             if uid[0:3].lower() == 'dhp':
                 result['title'] = uid.replace('dhp', 'Dhammapada ')
+            else:
+                result['title'] = uid
+
             if parent:
                 try:
                     parent['children'].append(result)

@@ -11,6 +11,7 @@ import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
 import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { transformId, getParagraphRange } from '../../utils/suttaplex';
+import { setNavigation } from '../navigation/sc-navigation-common';
 
 import '@material/mwc-button';
 
@@ -217,7 +218,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   _updateMetaData() {
     if (this.suttaplexData && this.suttaplexData.length) {
-      this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
+      // this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
 
       let description = this.localize('interface:metaDescriptionText');
       if (this.suttaplexData[0].blurb) {
@@ -226,14 +227,27 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
       if (!this.isRangeSuttaplex) {
         RefreshNavNew(this.categoryId, true);
+        this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
       } else {
         RefreshNavNew(this.rangeCategoryId, true);
+        this.actions.changeToolbarTitle(this.suttaplexData[0].title);
+
+        setTimeout(() => {
+          const currentNav = store.getState().navigationArray;
+          const lastNavItem = currentNav[currentNav.length - 1];
+          if (lastNavItem.uid !== 'home') {
+            lastNavItem.title = this.suttaplexData[0].title;
+            setNavigation(currentNav);
+          }
+        }, 100);
+        // document.querySelector('sc-site-layout').querySelector('#action_items').range_uid =
+        // this.suttaplexData[0].uid;
       }
 
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
-            pageTitle: `${this.suttaplexData[0].original_title}—Suttas and Parallels`,
+            pageTitle: `${this.suttaplexData[0].title || this.suttaplexData[0].original_title}—Suttas and Parallels`,
             title: `${this.suttaplexData[0].title || this.suttaplexData[0].original_title}—Suttas and Parallels`,
             description,
             bubbles: true,
