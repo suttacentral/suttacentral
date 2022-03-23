@@ -218,8 +218,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   _updateMetaData() {
     if (this.suttaplexData && this.suttaplexData.length) {
-      // this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
-
       let description = this.localize('interface:metaDescriptionText');
       if (this.suttaplexData[0].blurb) {
         description = this.suttaplexData[0].blurb;
@@ -240,8 +238,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             setNavigation(currentNav);
           }
         }, 100);
-        // document.querySelector('sc-site-layout').querySelector('#action_items').range_uid =
-        // this.suttaplexData[0].uid;
       }
 
       document.dispatchEvent(
