@@ -17,6 +17,7 @@ from .views import (
     ParallelsLite,
     Sutta,
     SuttaplexList,
+    RangeSuttaplexList,
     Images,
     Epigraphs,
     WhyWeRead,

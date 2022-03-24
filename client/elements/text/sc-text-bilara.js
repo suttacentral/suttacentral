@@ -29,7 +29,7 @@ import {
 } from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
-import { setNavigation } from '../navigation/sc-navigation-common'
+import { setNavigation } from '../navigation/sc-navigation-common';
 
 class SCTextBilara extends SCTextCommon {
   static get properties() {

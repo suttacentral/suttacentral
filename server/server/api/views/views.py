@@ -373,6 +373,137 @@ class SuttaplexList(Resource):
             result['translations'] = sorted(
                 result['translations'], key=language_sort(result['root_lang'])
             )
+            if parent:
+                try:
+                    parent['children'].append(result)
+                except KeyError:
+                    parent['children'] = [result]
+
+        data = flat_tree(data)
+
+        return data, 200
+
+
+class RangeSuttaplexList(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        """
+        Send suttaplex for given uid. It is represented in flat list structure where order matters.
+        [vagga, vagga, text, text] represents:
+        vagga
+            vagga
+                text
+                text
+        ---
+        parameters:
+           - in: path
+             name: uid
+             type: string
+             required: true
+        responses:
+            200:
+                description: Suttaplex list
+                schema:
+                    id: suttaplex-list
+                    type: array
+                    items:
+                        $ref: '#/definitions/Suttaplex'
+        definitions:
+            Suttaplex:
+                type: object
+                properties:
+                    uid:
+                        type: string
+                    blurb:
+                        type: string
+                    difficulty:
+                        required: false
+                        type: number
+                    original_title:
+                        type: string
+                    type:
+                        type: string
+                    translations:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Translation'
+            Translation:
+                type: object
+                properties:
+                    author:
+                        type: string
+                    id:
+                        type: string
+                    lang:
+                        type: string
+                    title:
+                        type: string
+        """
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
+        uid = uid.replace('/', '-').strip('-')
+        db = get_db()
+        if uid[0:3].lower() == 'dhp' and uid.count('-') == 0:
+            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
+            for child in vaggaChildren:
+                if child.count('-'):
+                    secondPart = uid.strip('dhp')
+                    childRange = child.strip('dhp')
+                    range_begin = childRange[:childRange.find('-')]
+                    range_end = childRange[childRange.find('-')+1:]
+                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
+                        # range_uid = child
+                        results = db.aql.execute(
+                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child}
+                        )
+        elif uid.count('.') == 1 and uid.count('-') == 0:
+            firstPart = uid[:uid.find('.')]
+            secondPart = uid[uid.find('.') + 1:]
+            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': firstPart}))
+            for child in vaggaChildren:
+                if child.count('-'):
+                    childRange = child[child.find('.')+1:]
+                    range_begin = childRange[:childRange.find('-')]
+                    range_end = childRange[childRange.find('-')+1:]
+                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
+                        results = db.aql.execute(
+                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child}
+                        )
+        elif uid != 'pli-tv-bi-vb-sk1-75' and uid[0:15] == 'pli-tv-bi-vb-sk':
+            results = db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': 'pli-tv-bi-vb-sk1-75'}
+            )
+        else:
+            results = db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
+            )
+
+        difficulties = {3: 'advanced', 2: 'intermediate', 1: 'beginner'}
+
+        data = []
+        edges = {}
+        for result in results:
+            _from = result.pop('from')
+            if result['difficulty']:
+                result['difficulty'] = {
+                    'name': difficulties[result['difficulty']],
+                    'level': result['difficulty'],
+                }
+            parent = None
+            try:
+                parent = edges[_from]
+            except KeyError:
+                data.append(result)
+            _id = f'super_nav_details/{result["uid"]}'
+            edges[_id] = result
+            result['translations'] = sorted(
+                result['translations'], key=language_sort(result['root_lang'])
+            )
+            if uid[0:3].lower() == 'dhp':
+                result['title'] = uid.replace('dhp', 'Dhammapada ')
+            else:
+                result['title'] = uid
 
             if parent:
                 try:
@@ -582,15 +713,8 @@ class Sutta(Resource):
                         )
                         result = results.next()
                         result['range_uid'] = child
-                        if result['range_uid'] is not None:
-                            results = db.aql.execute(
-                                SUTTA_VIEW,
-                                bind_vars={'uid': result['range_uid'], 'language': lang, 'author_uid': author_uid},
-                            )
-                            result = results.next()
-                            result['range_uid'] = child
-                            result['vaggaBegin'] = vaggaChildren[0]
-                            result['vaggaEnd'] = vaggaChildren[-1]
+                        result['vaggaBegin'] = vaggaChildren[0]
+                        result['vaggaEnd'] = vaggaChildren[-1]
 
         if result['root_text'] is None and result['translation'] is None and uid[0:3].lower() == 'dhp':
             vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
@@ -607,15 +731,8 @@ class Sutta(Resource):
                         )
                         result = results.next()
                         result['range_uid'] = child
-                        if result['range_uid'] is not None:
-                            results = db.aql.execute(
-                                SUTTA_VIEW,
-                                bind_vars={'uid': result['range_uid'], 'language': lang, 'author_uid': author_uid},
-                            )
-                            result = results.next()
-                            result['range_uid'] = child
-                            result['vaggaBegin'] = vaggaChildren[0]
-                            result['vaggaEnd'] = vaggaChildren[-1]
+                        result['vaggaBegin'] = vaggaChildren[0]
+                        result['vaggaEnd'] = vaggaChildren[-1]
 
         if uid != 'pli-tv-bi-vb-sk1-75' and uid[0:15] == 'pli-tv-bi-vb-sk':
             results = db.aql.execute(

@@ -10,10 +10,15 @@ class SCSuttaplexTx extends LitElement {
       translation: Object,
       isCompact: Boolean,
       isRoot: Boolean,
+      isSuttaInRangeSutta: Boolean,
+      inRangeSuttaId: String,
     };
   }
 
   get translationUrl() {
+    if (this.isSuttaInRangeSutta && this.translation.segmented && this.inRangeSuttaId) {
+      return `/${this.inRangeSuttaId}/${this.translation.lang}/${this.translation.author_uid}`;
+    }
     return `/${this.item.uid}/${this.translation.lang}/${this.translation.author_uid}`;
   }
 
