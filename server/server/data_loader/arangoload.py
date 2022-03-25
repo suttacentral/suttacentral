@@ -479,6 +479,10 @@ def run(no_pull=False):
     print_stage('Load publications from sc_bilara_data')
     sc_bilara_data.load_publications(db, sc_bilara_data_dir)
 
+    print_stage('Load publication editions from sc_bilara_data')
+    sc_bilara_data.load_publication_editions(db, sc_bilara_data_dir)
+
+
     print_stage('Load texts from sc_bilara_data')
     sc_bilara_data.load_texts(db, sc_bilara_data_dir)
 
