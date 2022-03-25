@@ -18,6 +18,31 @@ def load_publications(db: Database, sc_bilara_data_dir: Path) -> None:
     db['publications'].truncate()
     db['publications'].import_bulk(docs)
 
+def load_publication_editions(db: Database, sc_bilara_data_dir: Path) -> None:
+    publications_file = sc_bilara_data_dir / '_publication-v2.json'
+    publications: Dict[str, str] = json_load(publications_file)
+    docs = []
+    for pub in publications:
+        pub['_key'] = pub['publication_number']
+        docs.append(pub)
+
+    print(f'{len(docs)} publications (v2) added or updated')
+    db['publications_v2'].truncate()
+    db['publications_v2'].import_bulk(docs)
+
+    docs = []
+    editions_dir = sc_bilara_data_dir / '_publication'
+    for file in editions_dir.glob('**/*.json'):
+        doc = json_load(file)
+        doc['working_dir'] = str(file.parent.absolute())
+        doc['edition_id'] = file.stem
+        doc['_key'] = file.stem
+        docs.append(doc)
+
+    print(f'{len(docs)} publication editions added or updated')
+
+    db['publication_editions'].truncate()
+    db['publication_editions'].import_bulk(docs)
 
 def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
     blurbs = []
@@ -101,16 +126,16 @@ def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> 
     db['names'].truncate()
     db['names'].import_bulk_logged(res)
 
-
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
-    all_files = {file for file in sc_bilara_data_dir.glob('**/*.json') if not file.name.startswith('_') and file.name.find('scpub') < 0}
-    files: Set[Path] = all_files.difference({
-        *sc_bilara_data_dir.glob('**/name/**/*.json'),
-        *sc_bilara_data_dir.glob('**/blurb/*.json'),
-    })
+    folders: List[Path] = {folder for folder in sc_bilara_data_dir.glob('*') 
+                           if not folder.name.startswith(('_', '.')) and not folder.name in {'name', 'blurb'}}
+    
+    files: List[Path] = []
+    for folder in folders:
+        files.extend(file for file in folder.glob('**/*.json') if not file.name.startswith(('_', '.')))
 
     for file in files:
         uid, muids = file.stem.split('_')
