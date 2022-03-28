@@ -87,7 +87,7 @@ class SCStaticDonations extends SCStaticPage {
                   button.remove();
                 }
               }}"
-              >${unsafeHTML(this.localize('donations:3'))}</mwc-button
+              >DONATE</mwc-button
             >
           </form>
 
