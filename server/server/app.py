@@ -8,7 +8,6 @@ from flask import Blueprint, Flask, make_response, json, request
 from flask_cors import CORS
 from flask_restful import Api
 
-from api.ebook.ebook import EBook
 from api.views import (
     Currencies,
     Donations,
@@ -52,12 +51,14 @@ from common.arangodb import ArangoDB
 from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
 from search.view import Search, InstantSearch
+from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles
 
 
 def app_factory() -> Tuple[Api, Flask]:
     """app factory. Handles app object creation for better readability"""
     app = Flask(__name__)
     app.config.from_object(app_config[os.getenv('ENVIRONMENT')])
+    app.config['JSON_SORT_KEYS'] = False
     api_bp = Blueprint('api', __name__)
     api = Api(api_bp)
 
@@ -97,7 +98,6 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(CollectionUrlList, '/pwa/collection/<string:collection>')
     api.add_resource(PWASizes, '/pwa/sizes')
     api.add_resource(Redirect, '/redirect/<path:url>')
-    api.add_resource(EBook, '/ebook/<string:name>')
     api.add_resource(
         SegmentedSutta, '/bilarasuttas/<string:uid>/<string:author_uid>', '/bilarasuttas/<string:uid>'
     )
@@ -115,6 +115,11 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(RootEdition, '/root_edition')
     api.add_resource(Guides, '/guides')
     api.add_resource(Shortcuts, '/shortcuts')
+    api.add_resource(Editions, '/publication/editions')
+    api.add_resource(Edition, '/publication/edition/<string:edition_id>')
+    api.add_resource(EditionFiles, '/publication/edition/<string:edition_id>/files')
+    api.add_resource(EditionMainmatter, '/publication/edition/<string:edition_id>/<string:uid>')
+
     app.register_blueprint(api_bp)
     register_extensions(app)
 
