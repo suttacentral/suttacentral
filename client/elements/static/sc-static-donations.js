@@ -5,6 +5,7 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCStaticDonations extends SCStaticPage {
   render() {
@@ -55,14 +56,41 @@ class SCStaticDonations extends SCStaticPage {
         .account-data td {
           padding-right: var(--sc-size-md);
         }
+
+        mwc-button {
+          --mdc-theme-primary: var(--sc-primary-accent-color);
+
+          --mdc-typography-button-font-family: var(--sc-sans-font);
+          --mdc-typography-button-font-weight: 600;
+        }
       </style>
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('donations:1'))}</h1>
           <p>${unsafeHTML(this.localize('donations:2'))}</p>
-          <a class="donate-link" href="/donate-now">
-            <div class="link-button">${unsafeHTML(this.localize('donations:3'))}</div>
-          </a>
+
+          <form @submit="${this.onSubmit}">
+            <div class="h-captcha" data-sitekey="dc0577e4-0875-408c-8541-bae2fd44504f"></div>
+            <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+            <mwc-button
+              raised
+              class="donate-link"
+              @click="${({ target }) => {
+                const form = target.closest('form');
+                if (form.requestSubmit) {
+                  form.requestSubmit();
+                } else {
+                  const button = document.createElement('input');
+                  button.type = 'submit';
+                  form.append(button);
+                  button.click();
+                  button.remove();
+                }
+              }}"
+              >${unsafeHTML(this.localize('donations:3'))}</mwc-button
+            >
+          </form>
+
           <h2>${unsafeHTML(this.localize('donations:4'))}</h2>
           <ul>
             <li>${unsafeHTML(this.localize('donations:5'))}</li>
@@ -106,6 +134,11 @@ class SCStaticDonations extends SCStaticPage {
         </article>
       </main>
     `;
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/donate-now` });
   }
 
   constructor() {
