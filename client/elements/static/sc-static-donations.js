@@ -8,6 +8,10 @@ import { SCStaticPage } from '../addons/sc-static-page';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCStaticDonations extends SCStaticPage {
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <style>
