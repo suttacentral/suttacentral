@@ -73,27 +73,9 @@ class SCStaticDonations extends SCStaticPage {
           <h1>${unsafeHTML(this.localize('donations:1'))}</h1>
           <p>${unsafeHTML(this.localize('donations:2'))}</p>
 
-          <form @submit="${this.onSubmit}">
-            <div class="h-captcha" data-sitekey="dc0577e4-0875-408c-8541-bae2fd44504f"></div>
-            <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-            <mwc-button
-              raised
-              class="donate-link"
-              @click="${({ target }) => {
-                const form = target.closest('form');
-                if (form.requestSubmit) {
-                  form.requestSubmit();
-                } else {
-                  const button = document.createElement('input');
-                  button.type = 'submit';
-                  form.append(button);
-                  button.click();
-                  button.remove();
-                }
-              }}"
-              >DONATE</mwc-button
-            >
-          </form>
+          <mwc-button class="donate-link" raised @click=${this._donateNow}
+            >${unsafeHTML(this.localize('donations:3'))}</mwc-button
+          >
 
           <h2>${unsafeHTML(this.localize('donations:4'))}</h2>
           <ul>
@@ -140,9 +122,8 @@ class SCStaticDonations extends SCStaticPage {
     `;
   }
 
-  onSubmit(e) {
-    e.preventDefault();
-    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/donate-now` });
+  _donateNow() {
+    window.location.href = '/donate-now';
   }
 
   constructor() {
