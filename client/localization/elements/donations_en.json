@@ -1,7 +1,7 @@
 {
   "donations:1": "SuttaCentral Donations",
   "donations:2": "Your donation is greatly appreciated. It will support the ongoing development of SuttaCentral so we can continue to bring the Buddha’s word to people all around the world.",
-  "donations:3": "<a class='donate-link' href='/donate-now'> <paper-button class='donate-button' raised=''>DONATE</paper-button> </a>",
+  "donations:3": "DONATE",
   "donations:4": "What does SuttaCentral spend money on?",
   "donations:5": "IT development: we employ professional programmers in addition to volunteers.",
   "donations:6": "Servers: costs of servers and other infrastructure.",
