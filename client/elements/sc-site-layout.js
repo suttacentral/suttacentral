@@ -33,6 +33,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       </style>
 
       <div id="universal_toolbar">
+        <a class="skip-to-content-link" href="/discourses-guide-sujato">
+          Skip to discourses guide
+        </a>
+
         <sc-navigation-linden-leaves id="breadCrumb"></sc-navigation-linden-leaves>
 
         <div id="context_toolbar">
