@@ -47,59 +47,59 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.bm:before {
-      content: 'BM ';
+      content: 'BM ';
     }
 
     .textual-info-paragraph.bn:before {
-      content: 'BN ';
+      content: 'BN ';
     }
 
     .textual-info-paragraph.bps:before {
-      content: 'BPS ';
+      content: 'BPS ';
     }
 
     .textual-info-paragraph.bs:before {
-      content: 'BS ';
+      content: 'BS ';
     }
 
     .textual-info-paragraph.bv:before {
-      content: 'BV ';
+      content: 'BV ';
     }
 
     .textual-info-paragraph.by:before {
-      content: 'BY ';
+      content: 'BY ';
     }
 
     .textual-info-paragraph.bjt:before {
-      content: 'BJT ';
+      content: 'BJT ';
     }
 
     .textual-info-paragraph.cps:before {
-      content: 'Cps ';
+      content: 'Cps ';
     }
 
     .textual-info-paragraph.d-vp:before {
-      content: 'D vp ';
+      content: 'D vp ';
     }
 
     .textual-info-paragraph.divy:before {
-      content: 'Divy ';
+      content: 'Divy ';
     }
 
     .textual-info-paragraph.dkd:before {
-      content: 'DkD ';
+      content: 'DkD ';
     }
 
     .textual-info-paragraph.dkm:before {
-      content: 'DkM ';
+      content: 'DkM ';
     }
 
     .textual-info-paragraph.eno89:before {
-      content: 'Eno ';
+      content: 'Eno ';
     }
 
     .textual-info-paragraph.es:before {
-      content: 'ES ';
+      content: 'ES ';
     }
 
     .textual-info-paragraph.fa:before {
@@ -107,39 +107,39 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.fuk03:before {
-      content: 'Fuk ';
+      content: 'Fuk ';
     }
 
     .textual-info-paragraph.fol:before {
-      content: 'Fol ';
+      content: 'Fol ';
     }
 
     .textual-info-paragraph.gl:before {
-      content: 'GL ';
+      content: 'GL ';
     }
 
     .textual-info-paragraph.gs:before {
-      content: 'GS ';
+      content: 'GS ';
     }
 
     .textual-info-paragraph.gn:before {
-      content: 'Verse ';
+      content: 'Verse ';
     }
 
     .textual-info-paragraph.hh:before {
-      content: 'HH ';
+      content: 'HH ';
     }
 
     .textual-info-paragraph.hn:before {
-      content: 'HN ';
+      content: 'HN ';
     }
 
     .textual-info-paragraph.hnfolio:before {
-      content: 'Folio ';
+      content: 'Folio ';
     }
 
     .textual-info-paragraph.ia:before {
-      content: 'IA ';
+      content: 'IA ';
     }
 
     .textual-info-paragraph.flw:before {
@@ -147,27 +147,27 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.gbm:before {
-      content: 'GBM ';
+      content: 'GBM ';
     }
 
     .textual-info-paragraph.gno78:before {
-      content: 'Gno ';
+      content: 'Gno ';
     }
 
     .textual-info-paragraph.har04:before {
-      content: 'Har ';
+      content: 'Har ';
     }
 
     .textual-info-paragraph.hoe16:before {
-      content: 'Hoe ';
+      content: 'Hoe ';
     }
 
     .textual-info-paragraph[class^='hos']:before {
-      content: 'Hos ';
+      content: 'Hos ';
     }
 
     .textual-info-paragraph.hs:before {
-      content: 'Hs ';
+      content: 'Hs ';
     }
 
     .textual-info-paragraph.jb:before {
@@ -175,19 +175,19 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.jd:before {
-      content: 'JD ';
+      content: 'JD ';
     }
 
     .textual-info-paragraph.jsk:before {
-      content: 'JSK ';
+      content: 'JSK ';
     }
 
     .textual-info-paragraph.jw:before {
-      content: 'JW ';
+      content: 'JW ';
     }
 
     .textual-info-paragraph.vjw:before {
-      content: 'JW Verse ';
+      content: 'JW Verse ';
     }
 
     .textual-info-paragraph.lh:before {
@@ -195,11 +195,11 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.kat:before {
-      content: 'Kathina-v ';
+      content: 'Kathina-v ';
     }
 
     .textual-info-paragraph.kel:before {
-      content: 'Kel ';
+      content: 'Kel ';
     }
 
     .textual-info-paragraph.kl:before {
@@ -207,11 +207,11 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.ks:before {
-      content: 'KS ';
+      content: 'KS ';
     }
 
     .textual-info-paragraph[class^='mat']:before {
-      content: 'Mat ';
+      content: 'Mat ';
     }
 
     .textual-info-paragraph.mb:before {
@@ -223,15 +223,15 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.mkv:before {
-      content: 'Mkv ';
+      content: 'Mkv ';
     }
 
     .textual-info-paragraph.mit57:before {
-      content: 'Mit ';
+      content: 'Mit ';
     }
 
     .textual-info-paragraph.ms:before {
-      content: 'MS ';
+      content: 'MS ';
     }
 
     .textual-info-paragraph.msdiv:before {
@@ -263,15 +263,15 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.mt:before {
-      content: 'MT ';
+      content: 'MT ';
     }
 
     .textual-info-paragraph.nm:before {
-      content: 'NM ';
+      content: 'NM ';
     }
 
     .textual-info-paragraph.np:before {
-      content: 'NP ';
+      content: 'NP ';
     }
 
     .textual-info-paragraph.nst:before {
@@ -279,7 +279,7 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.of:before {
-      content: 'OF ';
+      content: 'OF ';
     }
 
     .textual-info-paragraph.pand-v:before {
@@ -287,7 +287,7 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.pl:before {
-      content: 'PL ';
+      content: 'PL ';
     }
 
     .textual-info-paragraph.pos-v:before {
@@ -315,31 +315,31 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.nya:before {
-      content: 'Nya ';
+      content: 'Nya ';
     }
 
     .textual-info-paragraph .pts:before {
-      content: 'PTS ';
+      content: 'PTS ';
     }
 
     .textual-info-paragraph.pts:before {
-      content: 'PTS ';
+      content: 'PTS ';
     }
 
     .textual-info-paragraph .pts1ed:before {
-      content: 'PTS \\(1st ed.) ';
+      content: 'PTS (1st ed.) ';
     }
 
     .textual-info-paragraph.pts1ed:before {
-      content: 'PTS \\(1st ed.) ';
+      content: 'PTS (1st ed.) ';
     }
 
     .textual-info-paragraph.pts2ed:before {
-      content: 'PTS \\(2nd ed.) ';
+      content: 'PTS (2nd ed.) ';
     }
 
     .textual-info-paragraph .pts2ed:before {
-      content: 'PTS \\(2nd ed.) ';
+      content: 'PTS (2nd ed.) ';
     }
 
     .textual-info-paragraph .pts-vp-pli:before {
@@ -363,7 +363,7 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.pts_pn:before {
-      content: 'PTS ';
+      content: 'PTS ';
     }
 
     .textual-info-paragraph.pts-s:before {
@@ -391,65 +391,65 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph[class^='san']:before {
-      content: 'San ';
+      content: 'San ';
     }
 
     .textual-info-paragraph.sag:before {
-      content: 'Sag ';
+      content: 'Sag ';
     }
 
     .textual-info-paragraph.say-v:before {
-      content: 'Say-v ';
+      content: 'Say-v ';
     }
 
     .textual-info-paragraph.sb:before {
-      content: 'SB ';
+      content: 'SB ';
     }
 
     .textual-info-paragraph.sbh:before {
-      content: 'Sbh ';
+      content: 'Sbh ';
     }
 
     .textual-info-paragraph.sbvi:before {
-      content: 'Sbv i ';
+      content: 'Sbv i ';
     }
 
     .textual-info-paragraph.sbvii:before {
-      content: 'Sbv ii ';
+      content: 'Sbv ii ';
     }
 
     .textual-info-paragraph.sc:before {
-      content: 'SC ';
+      content: 'SC ';
     }
 
     .textual-info-paragraph.segmented-textual-info-paragraph.textual-info-paragraph-inline.sc:before {
-      content: 'SC ';
+      content: 'SC ';
     }
 
     .textual-info-paragraph.sen:before {
-      content: 'Sen ';
+      content: 'Sen ';
     }
 
     .textual-info-paragraph.sht:before {
-      content: 'SHT ';
+      content: 'SHT ';
     }
 
     .textual-info-paragraph.svsv:before,
     .textual-info-paragraph.svv:before {
-      content: 'SNP ';
+      content: 'SNP ';
     }
 
     .textual-info-paragraph.ss:before {
-      content: 'SS ';
+      content: 'SS ';
     }
 
     .textual-info-paragraph.sv:before {
-      content: 'SV ';
+      content: 'SV ';
     }
 
     .textual-info-paragraph.t:before,
     .textual-info-paragraph.t-linehead:before {
-      content: 'T ';
+      content: 'T ';
     }
 
     .textual-info-paragraph.tb:before {
@@ -461,11 +461,11 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph[class^='tri']:before {
-      content: 'Tri ';
+      content: 'Tri ';
     }
 
     .textual-info-paragraph.us:before {
-      content: 'Ud ';
+      content: 'Ud ';
     }
 
     .textual-info-paragraph.ttc:before {
@@ -473,11 +473,11 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.uv:before {
-      content: 'Uv ';
+      content: 'Uv ';
     }
 
     .textual-info-paragraph.uvs:before {
-      content: 'UvS ';
+      content: 'UvS ';
     }
 
     .textual-info-paragraph.vgns:before,
@@ -490,7 +490,7 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph[class^='vai']:before {
-      content: 'Vai ';
+      content: 'Vai ';
     }
 
     .textual-info-paragraph.var-v:before {
@@ -498,27 +498,27 @@ export const textParagraphNumStyles = html`
     }
 
     .textual-info-paragraph.vns:before {
-      content: 'SC verse ';
+      content: 'SC verse ';
     }
 
     .textual-info-paragraph.vnp:before {
-      content: 'PTS verse ';
+      content: 'PTS verse ';
     }
 
     .textual-info-paragraph.vn:before {
-      content: 'Vn ';
+      content: 'Vn ';
     }
 
     .textual-info-paragraph[class^='wal']:before {
-      content: 'Wal ';
+      content: 'Wal ';
     }
 
     .textual-info-paragraph.wg:before {
-      content: 'WG ';
+      content: 'WG ';
     }
 
     .textual-info-paragraph.wp:before {
-      content: 'WP ';
+      content: 'WP ';
     }
 
     .textual-info-paragraph.wpv:before {
@@ -527,15 +527,15 @@ export const textParagraphNumStyles = html`
 
     .textual-info-paragraph.wr:before,
     .textual-info-paragraph.wrh:before {
-      content: 'WR ';
+      content: 'WR ';
     }
 
     .textual-info-paragraph.wx:before {
-      content: 'Wx ';
+      content: 'Wx ';
     }
 
     .textual-info-paragraph.yam72:before {
-      content: 'Yam ';
+      content: 'Yam ';
     }
 
     .infomode #text a.msdiv,

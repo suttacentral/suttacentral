@@ -1,6 +1,13 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.03.30
+
+- Serve range suttaplexes per-sutta. suttacentral/suttacentral#2409
+- "search:hint" just says search:hint, doesn't return proper value suttacentral/suttacentral#2384
+- In universal toolbar, search result has search:search suttacentral/suttacentral#2405
+- Put hcaptcha on donations page. suttacentral/suttacentral#2419
+
 ## 2022.03.10
 
 - Make Suttaplex Tableview's link consistent with Normalview.
