@@ -135,4 +135,18 @@ export const SCSiteLayoutStyles = css`
       height: 112px !important;
     }
   }
+
+  .skip-to-content-link {
+    background: #e77e23;
+    height: 30px;
+    left: 50%;
+    padding: 8px;
+    position: absolute;
+    transform: translateY(-100%);
+    transition: transform 0.3s;
+  }
+
+  .skip-to-content-link:focus {
+    transform: translateY(0%);
+  }
 `;
