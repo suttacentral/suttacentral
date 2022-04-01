@@ -8,6 +8,7 @@ import { icon } from '../img/sc-icon';
 import './sc-page-selector';
 import './navigation/sc-navigation-linden-leaves';
 import './addons/sc-linear-progress';
+import './addons/sc-site-footer';
 import './menus/sc-menu-static-pages-nav';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
@@ -54,6 +55,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       </div>
 
       <sc-page-selector id="page_selector"></sc-page-selector>
+      <sc-site-footer id="site_footer"></sc-site-footer>
     `;
   }
 
