@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit';
 
-class ScSiteFooter extends LitElement {
+import { LitLocalized } from './sc-localization-mixin';
+
+class ScSiteFooter extends LitLocalized(LitElement) {
   static get styles() {
     return css`
       :host {
@@ -51,6 +53,11 @@ class ScSiteFooter extends LitElement {
     `;
   }
 
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+  }
+
   render() {
     return html`
       <footer>
@@ -74,7 +81,7 @@ class ScSiteFooter extends LitElement {
               <li><a href="/numbering">Sutta numbering systems</a></li>
               <li><a href="/methodology">Methodology for parallels</a></li>
               <li>
-                <a href="/https://github.com/suttacentral/suttacentral">Source code on Github</a>
+                <a href="https://github.com/suttacentral/suttacentral">Source code on Github</a>
               </li>
             </ul>
           </div>
