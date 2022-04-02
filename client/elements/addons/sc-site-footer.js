@@ -7,18 +7,25 @@ class ScSiteFooter extends LitLocalized(LitElement) {
     return css`
       :host {
         display: block;
+
+        margin-top: auto;
+
+        justify-self: flex-end;
       }
 
       footer {
-        background-color: var(--sc-tertiary-background-color);
         padding: 4em 4vw;
+
+        background-color: var(--sc-tertiary-background-color);
       }
 
       .footer-top {
-        width: 100%;
         display: flex;
-        flex-wrap: wrap;
         flex-direction: row;
+
+        width: 100%;
+
+        flex-wrap: wrap;
         justify-content: space-around;
         align-items: left;
         align-items: stretch;
@@ -26,8 +33,9 @@ class ScSiteFooter extends LitLocalized(LitElement) {
       }
 
       .footer-top div {
-        flex: 1;
         min-width: 16em;
+
+        flex: 1;
       }
 
       footer ul {
@@ -35,20 +43,55 @@ class ScSiteFooter extends LitLocalized(LitElement) {
       }
 
       footer li {
+        line-height: 1.5;
+
         padding: 1em 0 0 0;
+
         list-style-type: none;
       }
 
       .footer-bottom {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+
         text-align: center;
+
+        justify-content: space-around;
       }
 
       .footer-bottom li {
         display: inline-block;
+
         padding: 1em 2em 0 2em;
+      }
+
+      a {
+        transition: all 200ms ease;
+        text-decoration: none;
+
+        color: inherit;
+
+        text-decoration-color: var(--sc-primary-color-light);
+        text-decoration-thickness: 0.15em;
+        text-underline-offset: 0.06em;
+      }
+
+      a:hover {
+        text-decoration: underline;
+
+        background-color: var(--sc-primary-color-light-transparent);
+
+        text-decoration-color: var(--sc-primary-color);
+        text-decoration-thickness: 0.15em;
+        text-underline-offset: 0.06em;
+      }
+
+      a:active {
+        background-color: var(--sc-primary-color-light);
+      }
+
+      a:visited {
+        text-decoration-color: var(--sc-primary-color-dark);
       }
     `;
   }
@@ -98,10 +141,14 @@ class ScSiteFooter extends LitLocalized(LitElement) {
                   >SuttaCentral Voice—listen to suttas</a
                 >
               </li>
-              <li><a href="https://buddhanexus.net">BuddhaNexus—mapping suttas with AI</a></li>
               <li>
-                Reading Faithfully—Devotional and contemplative sutta reading for the faithful
-                disciple
+                <a href="https://buddhanexus.net">BuddhaNexus—mapping suttas with AI</a>
+              </li>
+              <li>
+                <a href="https://readingfaithfully.org/"
+                  >Reading Faithfully—Devotional and contemplative sutta reading for the faithful
+                  disciple</a
+                >
               </li>
             </ul>
           </div>
