@@ -3,7 +3,9 @@ import { css } from 'lit';
 
 export const SCSiteLayoutStyles = css`
   sc-site-layout {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
   }
 
   p a,
