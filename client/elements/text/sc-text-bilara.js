@@ -38,8 +38,6 @@ class SCTextBilara extends SCTextCommon {
       bilaraRootSutta: { type: Object },
       translatedSutta: { type: Object },
       bilaraTranslatedSutta: { type: Object },
-      showParagraphs: { type: Boolean },
-      paragraphs: { type: Array },
       suttaId: { type: String },
       suttaReference: { type: Object },
       suttaComment: { type: Object },
@@ -68,8 +66,6 @@ class SCTextBilara extends SCTextCommon {
   constructor() {
     super();
     const { textOptions } = store.getState();
-    this.showParagraphs = textOptions.paragraphsEnabled;
-    this.paragraphs = textOptions.paragraphDescriptions;
     this.isPaliLookupEnabled = textOptions.paliLookupActivated;
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
@@ -638,6 +634,10 @@ class SCTextBilara extends SCTextCommon {
           ${this.displayedReferences.map(
             referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline; } `
           )}
+
+          ${this.displayedReferences.includes('pts')
+            ? html`.reference a.vnp { display: inline; }`
+            : ''}
         </style>
       `;
     }
