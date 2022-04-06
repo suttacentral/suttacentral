@@ -268,8 +268,9 @@ class SCTextBilara extends SCTextCommon {
 
       this.actions.showToc([]);
 
-      document.querySelector('sc-site-layout').querySelector('#action_items').range_uid =
-        this.range_uid;
+      document
+        .querySelector('sc-site-layout')
+        .querySelector('#action_items').range_uid = this.range_uid;
     } else {
       document.querySelector('sc-site-layout').querySelector('#action_items').range_uid = '';
     }
@@ -347,9 +348,7 @@ class SCTextBilara extends SCTextCommon {
     Comments.forEach(element => {
       const rect = element.getBoundingClientRect();
       const elementNoId = element.id.slice(8); // id:comment_1 => get: 1
-      const nextComment = this.querySelector(
-        `#comment_${parseInt(elementNoId, 10) + 1}`
-      );
+      const nextComment = this.querySelector(`#comment_${parseInt(elementNoId, 10) + 1}`);
       if (nextComment) {
         const nextCommentTop = nextComment.getBoundingClientRect().top;
         if (rect.top + rect.height > nextCommentTop) {
@@ -625,7 +624,8 @@ class SCTextBilara extends SCTextCommon {
 
           ${isMain
             ? `
-            .reference a.sc {
+            .reference a.sc,
+            .reference a.vns {
               display: inline;
             }
           `
