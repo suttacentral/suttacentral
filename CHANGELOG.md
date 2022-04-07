@@ -3,10 +3,10 @@
 
 ## 2022.04.08
 
-- Display vnp and vns reference numbers. #2426
+- Display vnp and vns reference numbers. suttacentral/suttacentral#2426
 - Update dependencies.
-- Add site footer. #2407
-- Add "skip top main nav" accessibility link. #2367
+- Add site footer. suttacentral/suttacentral#2407
+- Add "skip top main nav" accessibility link. suttacentral/suttacentral#2367
 
 ## 2022.03.30
 
