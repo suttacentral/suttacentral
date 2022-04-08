@@ -1,6 +1,13 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.04.08
+
+- Display vnp and vns reference numbers. suttacentral/suttacentral#2426
+- Update dependencies.
+- Add site footer. suttacentral/suttacentral#2407
+- Add "skip top main nav" accessibility link. suttacentral/suttacentral#2367
+
 ## 2022.03.30
 
 - Serve range suttaplexes per-sutta. suttacentral/suttacentral#2409
