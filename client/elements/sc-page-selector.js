@@ -462,6 +462,12 @@ class SCPageSelector extends LitLocalized(LitElement) {
     if (params.suttaId) {
       params.suttaId = params?.suttaId.toLowerCase();
     }
+    if (params.word) {
+      params.word = params?.word.toLowerCase();
+    }
+    if (params.query) {
+      params.query = params?.query.toLowerCase();
+    }
     this.actions.changeRoute(route, params, location.pathname);
   }
 
