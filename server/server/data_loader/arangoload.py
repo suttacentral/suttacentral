@@ -296,6 +296,13 @@ def process_difficulty(db, additional_info_dir):
 
     db.collection('difficulties').import_bulk_logged(docs, wipe=True)
 
+def process_prioritize(db, additional_info_dir):
+    print('Loading prioritize')
+    prioritize_file = additional_info_dir / 'prioritize.json'
+    prioritize_info = json_load(prioritize_file)
+    db['prioritize'].truncate()
+    db.collection('prioritize').import_bulk_logged(prioritize_info, wipe=True)
+
 
 def make_yellow_brick_road(db: Database):
     db.collection('yellow_brick_road').truncate()
@@ -505,6 +512,9 @@ def run(no_pull=False):
 
     print_stage("Loading difficulty from additional_info")
     process_difficulty(db, additional_info_dir)
+
+    print_stage("Loading prioritize from additional_info")
+    process_prioritize(db, additional_info_dir)
 
     print_stage('Loading simple dictionaries')
     dictionaries.load_simple_dictionaries(db, dictionaries_dir)
