@@ -141,7 +141,11 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       const altNumber = this.item.acronym.split('//')[1];
       if (altNumber) {
         const book = altNumber[0] === 'T' ? 'Taishō' : 'PTS';
-        scAcronymTitle += `\n${this.localize('suttaplex:alternateText', 'book', book)} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize(
+          'suttaplex:alternateText',
+          'book',
+          book
+        )} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -309,7 +313,10 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.item.translated_title &&
         this.item.original_title &&
         html`
-          <span title=${this.localize('suttaplex:originalTitle')} class="nerdy-row-element subTitle">
+          <span
+            title=${this.localize('suttaplex:originalTitle')}
+            class="nerdy-row-element subTitle"
+          >
             ${this.item.original_title}
           </span>
         `}
