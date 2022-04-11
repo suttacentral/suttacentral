@@ -28,7 +28,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           display: block;
 
           width: 100%;
-          height: calc(100vh - var(--sc-size-xxl));
 
           color: var(--sc-primary-text-color);
         }
