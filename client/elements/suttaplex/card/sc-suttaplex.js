@@ -47,8 +47,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   connectedCallback() {
     super.connectedCallback();
 
-    this.orderTranslationsByTranslator();
-
     this._fetchExpansionData();
     this._fetchAvailableVoice();
 
@@ -62,14 +60,14 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     }, 1000);
   }
 
-  orderTranslationsByTranslator() {
+  orderTranslationsByTranslator(translations) {
     if (this.priorityAuthorUid) {
-      const priorityTranslationItemIndex = this.item.translations.findIndex(
-        item => item.author_uid === this.priorityAuthorUid
+      const priorityTranslationItemIndex = translations.findIndex(
+        item =>
+          item.author_uid === this.priorityAuthorUid ||
+          this.priorityAuthorUid.includes(item.author_uid)
       );
-      this.item.translations.unshift(
-        this.item.translations.splice(priorityTranslationItemIndex, 1)[0]
-      );
+      translations.unshift(translations.splice(priorityTranslationItemIndex, 1)[0]);
     }
   }
 
@@ -78,6 +76,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
       this._translationsInUserLanguage = translations.filter(item => item.lang === lang);
+      this.orderTranslationsByTranslator(this._translationsInUserLanguage);
       this.translationsInModernLanguages = translations.filter(
         item => !item.is_root && item.lang !== lang
       );
