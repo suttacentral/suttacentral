@@ -213,6 +213,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
       suttaMetaText: { type: String },
       suttaPublicationInfo: { type: Object },
       range_uid: { type: String },
+      siteLanguage: { type: String },
     };
   }
 
@@ -226,6 +227,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/interface';
     this.currentRoute = store.getState().currentRoute;
+    this.siteLanguage = store.getState().siteLanguage;
 
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
@@ -607,6 +609,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
       this.#setBtnShowParallelTableViewDisplayState();
+    }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
     }
   }
 
