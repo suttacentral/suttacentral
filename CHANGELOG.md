@@ -1,6 +1,11 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.04.14
+
+- Fix:Parallels card data not reloaded with site language change.
+- Adopt translation with 90% translation completion (originally 95%).
+
 ## 2022.04.08
 
 - Display vnp and vns reference numbers. suttacentral/suttacentral#2426
