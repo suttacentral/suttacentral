@@ -17,7 +17,8 @@ export const typographyCommonStyles = css`
   }
 
   main > article,
-  div > article {
+  div > article,
+  .range {
     margin: 0 3vw;
   }
 
