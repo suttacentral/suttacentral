@@ -39,6 +39,16 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
         RETURN blurb_doc
     )
 
+    LET edition_details = (
+        FOR pub_ed IN publication_editions
+            FILTER pub_ed.text_uid == doc.uid
+            RETURN {
+                text_uid: pub_ed.text_uid,
+                publication_type: pub_ed.publication_type,
+                volumes: pub_ed.volumes
+            }
+    )
+
     LET mainmatter = MERGE(
         FOR file_doc IN sc_bilara_texts
             FILTER file_doc.uid == uid
@@ -53,6 +63,8 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
         type: doc.type,
         name: name,
         blurb: blurb.blurb,
+        acronym: doc.acronym,
+        editionDetails: edition_details,
         mainmatter
     }
 '''
