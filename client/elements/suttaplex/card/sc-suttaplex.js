@@ -127,7 +127,11 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       const altNumber = this.item.acronym.split('//')[1];
       if (altNumber) {
         const book = altNumber[0] === 'T' ? 'Taishō' : 'PTS';
-        scAcronymTitle += `\n${this.localize('suttaplex:alternateText', 'book', book)} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize(
+          'suttaplex:alternateText',
+          'book',
+          book
+        )} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -295,7 +299,10 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.item.translated_title &&
         this.item.original_title &&
         html`
-          <span title=${this.localize('suttaplex:originalTitle')} class="nerdy-row-element subTitle">
+          <span
+            title=${this.localize('suttaplex:originalTitle')}
+            class="nerdy-row-element subTitle"
+          >
             ${this.item.original_title}
           </span>
         `}
@@ -327,7 +334,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ? html`
               <h3>
                 <b>
-                  ${this.translationsInUserLanguage.length}
                   ${this.localize(`suttaplex:${translationKey}`, {
                     lang: this.fullSiteLanguageName,
                   })}
@@ -360,7 +366,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${!this.isCompact
           ? html`
               <h3>
-                <b>${this.rootTexts.length} ${this.localize(`suttaplex:${translationKey}`)}</b>
+                <b>${this.localize(`suttaplex:${translationKey}`)}</b>
                 ${this.localize('suttaplex:ofRootText')}
               </h3>
             `
@@ -392,11 +398,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       >
         <summary>
           <h3>
-            <b
-              >${this.translationsInModernLanguages.length}
-              ${this.localize(`suttaplex:${translationKey}`)}</b
-            >
+            <b> ${this.localize(`suttaplex:${translationKey}`)}</b>
             ${this.localize('suttaplex:inModernLanguages')}
+            <b>(${this.translationsInModernLanguages.length})</b>
           </h3>
         </summary>
         ${this.translationsOpened
@@ -421,12 +425,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       >
         <summary>
           <h3>
-            <b
-              >${this.localize(`suttaplex:${translationKey}`, {
-                count: this.item.parallel_count,
-              })}</b
-            >
+            <b>${this.localize(`suttaplex:${translationKey}`, { count: '' })}</b>
             ${this.localize('suttaplex:inAncientTexts')}
+            <b>(${this.item.parallel_count})</b>
           </h3>
         </summary>
 
