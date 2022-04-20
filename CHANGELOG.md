@@ -1,6 +1,12 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.04.20
+
+- Add edition volumes details to publication endpoint.
+- Reduce or remove need for plurals. suttacentral/suttacentral#2265
+- Order translations by translator. suttacentral/suttacentral#2408
+
 ## 2022.04.14
 
 - Fix:Parallels card data not reloaded with site language change.
