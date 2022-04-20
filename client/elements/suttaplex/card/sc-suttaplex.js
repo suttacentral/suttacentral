@@ -34,6 +34,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       isPatimokkhaDetails: Boolean,
       isSuttaInRangeSutta: Boolean,
       inRangeSuttaId: String,
+      priorityAuthorUid: String,
     };
   }
 
@@ -59,11 +60,23 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     }, 1000);
   }
 
+  orderTranslationsByTranslator(translations) {
+    if (this.priorityAuthorUid) {
+      const priorityTranslationItemIndex = translations.findIndex(
+        item =>
+          item.author_uid === this.priorityAuthorUid ||
+          this.priorityAuthorUid.includes(item.author_uid)
+      );
+      translations.unshift(translations.splice(priorityTranslationItemIndex, 1)[0]);
+    }
+  }
+
   shouldUpdate(changedProperties) {
     if (changedProperties.has('item') || changedProperties.has('language')) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
       this._translationsInUserLanguage = translations.filter(item => item.lang === lang);
+      this.orderTranslationsByTranslator(this._translationsInUserLanguage);
       this.translationsInModernLanguages = translations.filter(
         item => !item.is_root && item.lang !== lang
       );
