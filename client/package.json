@@ -1,6 +1,6 @@
 {
   "name": "suttacentral",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "private": true,
   "scripts": {
     "build": "webpack --watch --config webpack.prod.js",
@@ -53,20 +53,20 @@
     "turbolinks": "^5.2.0",
     "viewerjs": "^1.10.4",
     "web-animations-js": "^2.3.2",
-    "workbox-sw": "6.5.2"
+    "workbox-sw": "6.5.3"
   },
   "devDependencies": {
-    "@babel/core": "7.17.8",
+    "@babel/core": "7.17.9",
     "@babel/eslint-parser": "7.17.0",
     "@babel/plugin-proposal-async-do-expressions": "7.16.7",
-    "@babel/plugin-proposal-decorators": "7.17.8",
+    "@babel/plugin-proposal-decorators": "7.17.9",
     "@babel/plugin-proposal-do-expressions": "7.16.7",
     "@babel/plugin-proposal-function-bind": "7.16.7",
     "@babel/plugin-proposal-pipeline-operator": "7.17.6",
     "@babel/plugin-proposal-throw-expressions": "7.16.7",
     "@babel/plugin-transform-runtime": "7.17.0",
     "@babel/preset-env": "7.16.11",
-    "babel-loader": "8.2.3",
+    "babel-loader": "8.2.5",
     "browser-sync": "2.27.9",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "10.2.4",
@@ -89,7 +89,7 @@
     "lint-staged": "^12.3.7",
     "node-fetch": "^3.2.3",
     "prettier": "2.6.1",
-    "webpack": "5.71.0",
+    "webpack": "5.72.0",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-cli": "4.9.2",
     "webpack-dev-server": "^3.11.2",
