@@ -48,6 +48,32 @@ class SCStaticHomePage extends SCStaticPage {
         </section>
         <sc-navigation-tipitaka></sc-navigation-tipitaka>
 
+        <section class="plain editions">
+          <h2>SuttaCentral Editions</h2>
+          <a href="/editions">
+            <figure>
+              <picture>
+                <source srcset="/img/home-page/editions.png" type="image/png" />
+                <img
+                  src="/img/home-page/editions.png"
+                  alt="SuttaCentral editions covers"
+                  style="width:100%"
+                />
+              </picture>
+            </figure>
+
+            <div class="call-to-action">Read selected SuttaCentral translations as books</div>
+          </a>
+          <div class="pills">
+            <span class="paperback">paperback</span>
+            <span class="hardcover">hardcover</span>
+            <span class="epub">epub</span>
+            <span class="pdf">pdf</span>
+            <span class="html">html</span>
+            <span class="latex">latex</span>
+          </div>
+        </section>
+
         <section class="top-two">
           <section class="video">
             <video
