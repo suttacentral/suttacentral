@@ -76,6 +76,7 @@ export const staticHomeStyles = css`
     font-size: 1.5rem;
     padding: 1rem 0 0 0;
     font-style: italic;
+    color: var(--sc-primary-text-color);
   }
 
   .editions .pills {
