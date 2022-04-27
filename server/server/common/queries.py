@@ -260,6 +260,7 @@ RETURN {
 TIPITAKA_MENU = '''
 FOR navigation_doc IN super_nav_details
     FILTER navigation_doc.type == 'root'
+        AND navigation_doc.uid IN ['sutta', 'vinaya', 'abhidhamma']
 
     LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
     LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
