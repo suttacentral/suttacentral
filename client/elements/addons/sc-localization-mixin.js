@@ -97,7 +97,7 @@ export const LitLocalized = base =>
         if (!this.localizedStringsPath) {
           return;
         }
-        if (USE_PRODUCTION_LOCALIZATION) {
+        if (!USE_PRODUCTION_LOCALIZATION) {
           if (!this.localizedStringsPath.includes('build')) {
             this.localizedStringsPath = this.localizedStringsPath.replace(
               '/localization/elements',
