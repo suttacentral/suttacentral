@@ -51,4 +51,11 @@ export class reduxActions {
       fullName,
     });
   }
+
+  static changeToolbarTitle(title) {
+    store.dispatch({
+      type: 'CHANGE_TOOLBAR_TITLE',
+      title,
+    });
+  }
 }

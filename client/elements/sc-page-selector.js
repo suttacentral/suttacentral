@@ -45,6 +45,7 @@ const staticPages = [
   'terminology',
   'vinaya',
   'palitipitaka',
+  'publicationAn',
 ];
 
 // prettier-ignore
@@ -73,6 +74,11 @@ const routes = {
     path: '/abbreviations',
     content: html`<sc-static-abbreviations />`,
     loader: () => import('./static/sc-static-abbreviations.js'),
+  },
+  'publicationEditions': {
+    path: '/publication-editions',
+    content: html`<sc-publication-editions />`,
+    loader: () => import('./publication/sc-publication-editions.js'),
   },
   'abhidhamma': {
     path: '/abhidhamma-guide-sujato',
@@ -214,6 +220,31 @@ const routes = {
     content: html`<sc-static-pali-tipitaka />`,
     loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
+  'publicationAN': {
+    path: '/publication-an',
+    content: html`<sc-publication-an />`,
+    loader: () => import('./publication/sc-publication-an.js')
+  },
+  'publicationDN': {
+    path: '/publication-dn',
+    content: html`<sc-publication-dn />`,
+    loader: () => import('./publication/sc-publication-dn.js')
+  },
+  'publicationMN': {
+    path: '/publication-mn',
+    content: html`<sc-publication-mn />`,
+    loader: () => import('./publication/sc-publication-mn.js')
+  },
+  'publicationSN': {
+    path: '/publication-sn',
+    content: html`<sc-publication-sn />`,
+    loader: () => import('./publication/sc-publication-sn.js')
+  },
+  'publicationMinor': {
+    path: '/publication-minor',
+    content: html`<sc-publication-minor />`,
+    loader: () => import('./publication/sc-publication-minor.js')
+  },
   'vinaya': {
     path: '/vinaya-guide-brahmali',
     content: html`<sc-static-vinaya />`,
@@ -240,6 +271,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       shouldShowAcademicToolbar: { type: Object },
       shouldShowOrganizationalToolbar: { type: Object },
       shouldShowGuidesToolbar: { type: Object },
+      shouldShowPublicationToolbar: { type: Object },
     };
   }
 
@@ -563,8 +595,18 @@ class SCPageSelector extends LitLocalized(LitElement) {
       this.shouldShowTipitakaToolbar ||
       this.shouldShowAcademicToolbar ||
       this.shouldShowOrganizationalToolbar ||
-      this.shouldShowGuidesToolbar
+      this.shouldShowGuidesToolbar ||
+      this.shouldShowPublicationToolbar
     );
+
+    this.shouldShowPublicationToolbar = [
+      'publicationEditions',
+      'publicationDN',
+      'publicationMN',
+      'publicationSN',
+      'publicationAN',
+      'publicationMinor',
+    ].includes(this.currentRoute.name);
 
     this.actions.setStaticPagesToolbarDisplayState({
       displayFirstToolbar: isToolbarSelected,
@@ -573,6 +615,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       displayAcademicToolbar: this.shouldShowAcademicToolbar,
       displayOrganizationalToolbar: this.shouldShowOrganizationalToolbar,
       displayGuidesToolbar: this.shouldShowGuidesToolbar,
+      displayPublicationToolbar: this.shouldShowPublicationToolbar,
     });
   }
 

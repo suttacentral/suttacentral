@@ -76,6 +76,7 @@ const initialState = {
     displayAcademicToolbar: false,
     displayOrganizationalToolbar: false,
     displayGuidesToolbar: false,
+    displayPublicationToolbar: false,
   },
   linearProgressActive: false,
   toolbarPosition: {

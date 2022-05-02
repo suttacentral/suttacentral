@@ -27,6 +27,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
         displayAcademicToolbar: false,
         displayOrganizationalToolbar: false,
         displayGuidesToolbar: false,
+        displayPublicationToolbar: false,
       };
     }
   }
@@ -39,6 +40,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       displayAcademicToolbar: false,
       displayOrganizationalToolbar: false,
       displayGuidesToolbar: false,
+      displayPublicationToolbar: false,
     });
   }
 
@@ -121,6 +123,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
             ${this.toolbarSelectedTemplate} ${this.shouldShowSecondToolbarTemplate}
             ${this.shouldShowTipitakaToolbarTemplate} ${this.shouldShowAcademicToolbarTemplate}
             ${this.shouldShowOrganizationalToolbarTemplate} ${this.shouldShowGuidesToolbarTemplate}
+            ${this.shouldShowPublicationToolbarTemplate}
           </ul>
         </nav>
       </div>
@@ -252,6 +255,30 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
             </li>
             <li>
               <a href="/an-guide-sujato">${this.localize('interface:numbered')}</a>
+            </li>
+          `
+        : ''}
+    `;
+  }
+
+  get shouldShowPublicationToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayPublicationToolbar
+        ? html`
+            <li>
+              <a href="/publication-dn">Pub-Dīgha Nikāya</a>
+            </li>
+            <li>
+              <a href="/publication-mn">Pub-Majjhima Nikāya</a>
+            </li>
+            <li>
+              <a href="/publication-sn">Pub-Saṁyutta Nikāya</a>
+            </li>
+            <li>
+              <a href="/publication-an">Pub-Aṅguttara Nikāya</a>
+            </li>
+            <li>
+              <a href="/publication-minor">Pub-Khuddaka Nikāya</a>
             </li>
           `
         : ''}
