@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.05.04
+
+- Add `Github Suttacentral awesome` link.
+
 ## 2022.04.29
 
 - Add localization support for French and Vietnamese.
