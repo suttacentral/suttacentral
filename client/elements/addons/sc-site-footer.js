@@ -153,6 +153,11 @@ class ScSiteFooter extends LitLocalized(LitElement) {
                   disciple</a
                 >
               </li>
+              <li>
+                <a href="https://github.com/suttacentral/awesome"
+                  >Awesome SuttaCentral—Awesome stuff built on top of SuttaCentral’s awesomeness</a
+                >
+              </li>
             </ul>
           </div>
         </section>

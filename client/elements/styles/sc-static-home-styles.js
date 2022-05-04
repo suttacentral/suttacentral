@@ -514,6 +514,10 @@ export const staticHomeStyles = css`
     padding-left: 1em;
 
     border-bottom: 2px solid var(--sc-border-color);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .related-projects-heading h2 {
@@ -526,6 +530,45 @@ export const staticHomeStyles = css`
     font-variant-caps: all-small-caps;
 
     color: var(--sc-secondary-text-color);
+  }
+
+  .related-projects-heading a {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+
+    padding-left: 1em;
+
+    color: var(--sc-secondary-text-color);
+    transition: all 200ms ease;
+    text-decoration: none;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.06em;
+  }
+
+  .related-projects-heading a:hover {
+    text-decoration: underline;
+
+    background-color: var(--sc-primary-color-light-transparent);
+
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.06em;
+  }
+
+  .related-projects-heading a:active {
+    background-color: var(--sc-primary-color-light);
+  }
+
+  .related-projects-heading a:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+
+  .related-projects-heading .icon {
+    fill: var(--sc-icon-color);
   }
 
   @media (max-width: 1120px) {
