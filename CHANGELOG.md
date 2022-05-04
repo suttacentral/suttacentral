@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.04.29
+
+- Add localization support for French and Vietnamese.
+
 ## 2022.04.20
 
 - Add edition volumes details to publication endpoint.
