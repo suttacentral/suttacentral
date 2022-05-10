@@ -80,6 +80,31 @@ const routes = {
     content: html`<sc-publication-editions />`,
     loader: () => import('./publication/sc-publication-editions.js'),
   },
+  'publicationEditionPreface': {
+    path: '/publication-edition-preface',
+    content: html`<sc-publication-edition-preface />`,
+    loader: () => import('./publication/sc-publication-edition-preface.js'),
+  },
+  'publicationEditionAcknowledgements': {
+    path: '/publication-edition-acknowledgements',
+    content: html`<sc-publication-edition-acknowledgements />`,
+    loader: () => import('./publication/sc-publication-edition-acknowledgements.js'),
+  },
+  'publicationEditionAbbreviations': {
+    path: '/publication-edition-abbreviations',
+    content: html`<sc-publication-edition-abbreviations />`,
+    loader: () => import('./publication/sc-publication-edition-abbreviations.js'),
+  },
+  'publicationEditionIndex': {
+    path: '/publication-edition-index',
+    content: html`<sc-publication-edition-index />`,
+    loader: () => import('./publication/sc-publication-edition-index.js'),
+  },
+  'publicationEditionIntroduction': {
+    path: '/publication-edition-introduction',
+    content: html`<sc-publication-edition-introduction />`,
+    loader: () => import('./publication/sc-publication-edition-introduction.js'),
+  },
   'abhidhamma': {
     path: '/abhidhamma-guide-sujato',
     content: html`<sc-static-abhidhamma />`,
@@ -606,6 +631,11 @@ class SCPageSelector extends LitLocalized(LitElement) {
       'publicationSN',
       'publicationAN',
       'publicationMinor',
+      'publicationEditionPreface',
+      'publicationEditionAcknowledgements',
+      'publicationEditionAbbreviations',
+      'publicationEditionIndex',
+      'publicationEditionIntroduction',
     ].includes(this.currentRoute.name);
 
     this.actions.setStaticPagesToolbarDisplayState({

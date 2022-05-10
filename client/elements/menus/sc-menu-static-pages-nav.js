@@ -266,19 +266,19 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       ${this.staticPagesToolbarDisplayState?.displayPublicationToolbar
         ? html`
             <li>
-              <a href="/publication-dn">Pub-Dīgha Nikāya</a>
+              <a href="/publication-edition-preface">Preface</a>
             </li>
             <li>
-              <a href="/publication-mn">Pub-Majjhima Nikāya</a>
+              <a href="/publication-edition-acknowledgements">Acknowledgements</a>
             </li>
             <li>
-              <a href="/publication-sn">Pub-Saṁyutta Nikāya</a>
+              <a href="/publication-edition-introduction">Introduction</a>
             </li>
             <li>
-              <a href="/publication-an">Pub-Aṅguttara Nikāya</a>
+              <a href="/publication-edition-abbreviations">Abbreviations</a>
             </li>
             <li>
-              <a href="/publication-minor">Pub-Khuddaka Nikāya</a>
+              <a href="/publication-edition-index">Index</a>
             </li>
           `
         : ''}
