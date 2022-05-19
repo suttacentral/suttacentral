@@ -60,6 +60,13 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     }, 1000);
   }
 
+  updated(changedProps) {
+    super.update(changedProps);
+    if (changedProps.has('item')) {
+      this._fetchAvailableVoice();
+    }
+  }
+
   orderTranslationsByTranslator(translations) {
     if (this.priorityAuthorUid) {
       const priorityTranslationItemIndex = translations.findIndex(
