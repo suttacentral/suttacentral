@@ -1,6 +1,11 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.05.23
+
+- Show sc-voice icon in suttaplex on sutta pages.
+- Update voice list information.
+
 ## 2022.05.04
 
 - Add `Github Suttacentral awesome` link.
