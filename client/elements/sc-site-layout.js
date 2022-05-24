@@ -282,7 +282,8 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } = store.getState();
+        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } =
+          store.getState();
         if (
           this.changedRoute.path !== '/' &&
           !displaySettingMenu &&

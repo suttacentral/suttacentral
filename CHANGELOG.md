@@ -1,6 +1,30 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.05.23
+
+- Show sc-voice icon in suttaplex on sutta pages.
+- Update voice list information.
+
+## 2022.05.04
+
+- Add `Github Suttacentral awesome` link.
+
+## 2022.04.29
+
+- Add localization support for French and Vietnamese.
+
+## 2022.04.20
+
+- Add edition volumes details to publication endpoint.
+- Reduce or remove need for plurals. suttacentral/suttacentral#2265
+- Order translations by translator. suttacentral/suttacentral#2408
+
+## 2022.04.14
+
+- Fix:Parallels card data not reloaded with site language change.
+- Adopt translation with 90% translation completion (originally 95%).
+
 ## 2022.04.08
 
 - Display vnp and vns reference numbers. suttacentral/suttacentral#2426

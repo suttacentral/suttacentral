@@ -26,7 +26,7 @@ def copy_localization(sc_bilara_data_dir: Path, localized_elements_dir: Path) ->
                     lang_count = len(json.load(f))
                 
                 completion = lang_count / en_count
-                if completion < 0.95:
+                if completion < 0.90:
                     print(f'Skipping {file.name} because completion is only {completion}')
                     continue
             

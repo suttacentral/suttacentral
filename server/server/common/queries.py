@@ -260,6 +260,7 @@ RETURN {
 TIPITAKA_MENU = '''
 FOR navigation_doc IN super_nav_details
     FILTER navigation_doc.type == 'root'
+        LIMIT 3
 
     LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
     LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
@@ -493,6 +494,19 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             RETURN altVolpages.alt_volpage
     )[0]
 
+    LET path_docs = (
+        FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+            RETURN doc.uid
+    )
+
+    LET priority_author = (
+        FOR priority IN prioritize
+            FILTER priority.tree == path_docs[LAST(path_docs)-1]
+                AND priority.translation_lang == @language
+                AND priority.root_lang == v.root_lang
+        return priority.creator
+    )[0]
+
     RETURN {
         acronym: v.acronym,
         volpages: volpages,
@@ -509,6 +523,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         translations: filtered_translations,
         parallel_count: parallel_count,
         biblio: biblio,
+        priority_author_uid: priority_author,
     }
 '''
 

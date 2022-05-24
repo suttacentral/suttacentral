@@ -200,6 +200,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this.isSuttaInRangeSutta = true;
         this.rangeCategoryId = responseData[0].uid;
       }
+      this.priorityAuthorUid = responseData[0].priority_author_uid;
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -338,6 +339,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .isPatimokkhaDetails=${this.isPatimokkha() && item.uid !== this.categoryId}
         .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
         .inRangeSuttaId=${this.categoryId}
+        .priorityAuthorUid=${this.priorityAuthorUid}
         class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
