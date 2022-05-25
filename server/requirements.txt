@@ -46,7 +46,7 @@ pluggy==0.13.1
 py==1.11.0
 pyee==8.2.2
 Pygments==2.11.2
-PyJWT==2.3.0
+PyJWT==2.4.0
 pykakasi==2.2.1
 pyparsing==3.0.7
 pyppeteer==0.2.6
