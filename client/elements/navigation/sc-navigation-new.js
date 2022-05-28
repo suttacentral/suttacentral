@@ -187,6 +187,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
           this._setToolbarTitle();
           this._createMetaData();
           if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
+            window.history.replaceState(null, null, `/${params.childId}`);
             dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
           }
         }
@@ -273,7 +274,6 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (!lastPath) {
       return '';
     }
-    // TODO: 是否需要实时获取相关的数据以确定正确的URL
     const currentURL = window.location.href;
     let cleanURL = '';
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
