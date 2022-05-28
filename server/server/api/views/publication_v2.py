@@ -32,6 +32,13 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
     LET uid = doc.uid
     LET name = FIRST(FOR name_doc IN names FILTER name_doc.uid == doc.uid AND name_doc.lang == lang RETURN name_doc.name)
 
+    LET root_name = (
+        FOR rootName IN names
+            FILTER rootName.uid == @uid AND rootName.is_root == true
+            LIMIT 1
+            RETURN rootName.name
+    )[0]
+
     LET blurb = FIRST(
         FOR blurb_doc in blurbs
         FILTER blurb_doc.uid == uid
@@ -62,6 +69,7 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
         uid,
         type: doc.type,
         name: name,
+        root_name: root_name,
         blurb: blurb.blurb,
         acronym: doc.acronym,
         editionDetails: edition_details,

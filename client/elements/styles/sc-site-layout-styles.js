@@ -112,7 +112,8 @@ export const SCSiteLayoutStyles = css`
 
   @media print {
     #universal_toolbar,
-    #title {
+    #title,
+    #site_footer {
       display: none;
     }
   }
