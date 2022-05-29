@@ -49,6 +49,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
+      this._checkIfChildrenExists();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
         return;
@@ -109,7 +110,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
               <section class="card">
                 <a
                   class="header-link"
-                  href=${this._genCurrentURL(child.uid)}
+                  href=${this._genCurrentURL(child.uid, child.has_children)}
                   @click=${() =>
                     this._onCardClick({
                       childId: child.uid,
@@ -182,12 +183,15 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
+        this._checkIfChildrenExists();
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
           this._createMetaData();
           if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
-            dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${params.childId}` });
+            dispatchCustomEvent(this, 'sc-navigate', {
+              pathname: `/${params.childId}`,
+            });
           }
         }
         return true;
@@ -269,11 +273,15 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     }
   }
 
-  _genCurrentURL(lastPath) {
+  _genCurrentURL(lastPath, hasChildren) {
     if (!lastPath) {
       return '';
     }
-    // TODO: 是否需要实时获取相关的数据以确定正确的URL
+    if (typeof hasChildren !== 'undefined' && !hasChildren) {
+      const { suttaplexListDisplay } = store.getState();
+      const urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}`;
+      return `/${lastPath}${urlParams}`;
+    }
     const currentURL = window.location.href;
     let cleanURL = '';
     if (currentURL.indexOf(`/${lastPath}`) === -1) {
@@ -301,6 +309,28 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   updated() {
     this._addBlurbsClickEvent();
+  }
+
+  async _checkIfChildrenExists() {
+    // eslint-disable-next-line no-restricted-syntax
+    console.log('_checkIfChildrenExists');
+    if (!this.currentMenuData || this.currentMenuData.length === 0) {
+      return;
+    }
+    // eslint-disable-next-line no-restricted-syntax
+    for (const child of this.currentMenuData[0].children) {
+      const childrenData = await this._fetchMenuData(child.uid);
+      if (
+        childrenData[0] &&
+        childrenData[0].children &&
+        childrenData[0].children.some(item => ['branch'].includes(item.node_type))
+      ) {
+        this.currentMenuData[0].children.find(x => x.uid === child.uid).has_children = true;
+      } else {
+        this.currentMenuData[0].children.find(x => x.uid === child.uid).has_children = false;
+        this.requestUpdate();
+      }
+    }
   }
 
   _addBlurbsClickEvent() {
