@@ -34,7 +34,7 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
 
     LET root_name = (
         FOR rootName IN names
-            FILTER rootName.uid == @uid AND rootName.is_root == true
+            FILTER rootName.uid == uid AND rootName.is_root == true
             LIMIT 1
             RETURN rootName.name
     )[0]
