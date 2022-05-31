@@ -6,7 +6,7 @@ import { SCPublicationEditionsStyles } from '../styles/sc-publication-editions-s
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 
-class ScPublicationEditions  extends LitLocalized(LitElement) {
+class ScPublicationEditions extends LitLocalized(LitElement) {
   static get styles() {
     return css`
       ${SCPublicationEditionsStyles}
@@ -62,7 +62,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/publication-dn">
+            <a href="/publication-edition/dn">
               <header>
                 <h2 class="translation_title">Long Discourses</h2>
                 <span class="translation_subtitle">A faithful translation of the Dīgha Nikāya</span>
@@ -80,7 +80,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/publication-mn">
+            <a href="/publication-edition/mn">
               <header>
                 <h2 class="translation_title">Middle Discourses</h2>
                 <span class="translation_subtitle">A lucid translation of the Majjhima Nikāya</span>
@@ -98,7 +98,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/publication-sn">
+            <a href="/publication-edition/sn">
               <header>
                 <h2 class="translation_title">Linked Discourses</h2>
                 <span class="translation_subtitle">A plain translation of the Saṁyutta Nikāya</span>
@@ -115,7 +115,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/publication-an">
+            <a href="/publication-edition/an">
               <header>
                 <h2 class="translation_title">Numbered Discourses</h2>
                 <span class="translation_subtitle"
@@ -135,7 +135,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/dhp">
               <header>
                 <h2 class="translation_title">Sayings of the Dhamma</h2>
                 <span class="translation_subtitle">A meaningful translation of the Dhammapada</span>
@@ -150,7 +150,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/ud">
               <header>
                 <h2 class="translation_title">Heartfelt Sayings</h2>
                 <span class="translation_subtitle">An uplifting translation of the Udāna</span>
@@ -166,7 +166,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/iti">
               <header>
                 <h2 class="translation_title">So It Was Said</h2>
                 <span class="translation_subtitle">A delectable translation of the Itivuttaka</span>
@@ -183,7 +183,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/snp">
               <header>
                 <h2 class="translation_title">Anthology of Discourses</h2>
                 <span class="translation_subtitle"
@@ -203,7 +203,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/thag">
               <header>
                 <h2 class="translation_title">Verses of the Senior Monks</h2>
                 <span class="translation_subtitle"
@@ -221,7 +221,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/thig">
               <header>
                 <h2 class="translation_title">Verses of the Senior Nuns</h2>
                 <span class="translation_subtitle">A friendly translation of the Therīgāthā</span>
@@ -239,7 +239,7 @@ class ScPublicationEditions  extends LitLocalized(LitElement) {
             </p>
           </section>
           <section class="project">
-            <a href="/">
+            <a href="/publication-edition/pli-tv-vi">
               <header>
                 <h2 class="translation_title">Monastic Law</h2>
                 <span class="translation_subtitle"

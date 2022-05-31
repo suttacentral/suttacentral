@@ -5,6 +5,7 @@ import { setNavigation } from '../navigation/sc-navigation-common';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
+import { API_ROOT } from '../../constants';
 
 class ScPublicationEditionPreface extends LitLocalized(LitElement) {
   static get styles() {
@@ -25,6 +26,7 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
   // }
 
   firstUpdated() {
+    this._fetchPreface();
     this._updateNav();
     reduxActions.changeToolbarTitle('Edition Preface');
   }
@@ -39,6 +41,19 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
       type: 'PublicationPage',
     });
     setNavigation(navArray);
+  }
+
+  async _fetchPreface() {
+    try {
+      this.editionDetail = await (await fetch(`${API_ROOT}/publication/edition/dn-en-sujato_scpub2-ed6-html_2022-02-10`)).json();
+      //console.log(this.editionDetail.edition.volumes[0]);
+      // console.log(this.editionDetail.edition.volumes[0].frontmatter[6]);
+      // console.log(this.editionDetail.edition.working_dir);
+      // console.log(this.editionDetail.edition.working_dir + this.editionDetail.edition.volumes[0].frontmatter[6].slice(1));
+      // this.abc = await (await fetch())
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {

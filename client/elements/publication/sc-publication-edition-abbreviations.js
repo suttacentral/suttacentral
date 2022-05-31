@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
@@ -49,1132 +49,1125 @@ class ScPublicationEditionAbbreviations extends LitLocalized(LitElement) {
             <h1>Abbreviations</h1>
           </header>
           <article>
-            <h1>
-              <!--?lit$72637464$-->Abbreviations
-            </h1>
+            <h1>Abbreviations</h1>
             <p>
-              <!--?lit$72637464$-->SuttaCentral is structured around the idea of a distinct entity—usually a sutta, Vinaya
-              rule, or section of text—which has a unique identity. That identity is represented by an abbreviation, which
-              serves both to label the text and to create the <span class="smallcaps">URL</span> for that text. These
-              abbreviations are as short and flexible as we can make them. While we don’t arbitrarily depart from accepted
-              usage, in certain cases the special requirements of SuttaCentral have meant we have adopted new abbreviations.
-              All abbreviations must satisfy the following criteria.
+              SuttaCentral is structured around the idea of a distinct entity—usually a sutta, Vinaya
+              Vinaya rule, or section of text—which has a unique identity. That identity is
+              represented by an abbreviation, which serves both to label the text and to create the
+              <span class="smallcaps">URL</span> for that text. These abbreviations are as short and
+              flexible as we can make them. While we don’t arbitrarily depart from accepted usage,
+              in certain cases the special requirements of SuttaCentral have meant we have adopted
+              new abbreviations. All abbreviations must satisfy the following criteria.
             </p>
             <ul>
+              <li>Unique across the entire SuttaCentral corpus;</li>
               <li>
-                <!--?lit$72637464$-->Unique across the entire SuttaCentral corpus;
-              </li>
-              <li>
-                <!--?lit$72637464$-->No special characters or diacritical marks (as these can’t be used in <span
+                No special characters or diacritical marks (as these can’t be used in <span
                   class="smallcaps">URL</span>s);
               </li>
+              <li>Case insenstive;</li>
               <li>
-                <!--?lit$72637464$-->Case insenstive;
+                Usually two, hopefully no more than three characters long;
               </li>
               <li>
-                <!--?lit$72637464$-->Usually two, hopefully no more than three characters long;
-              </li>
-              <li>
-                <!--?lit$72637464$-->Conforming to recognized standards and conventions such as <span
+                Conforming to recognized standards and conventions such as <span
                   class="smallcaps">ISO</span>.
               </li>
             </ul>
             <p>
-              <!--?lit$72637464$-->To keep the list a reasonable length we omit language codes, which use the two-letter <span
+              To keep the list a reasonable length we omit language codes, which use the two-letter <span
                 class="smallcaps">ISO</span> 639-1 for modern languages, and the three-letter ISO 639-3 codes for ancient
               languages.
             </p>
             <table>
               <caption>
-                <!--?lit$72637464$-->List of Abbreviations
+                List of Abbreviations
               </caption>
               <tbody>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->-a
+                    -a
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Aṭṭhakathā
+                    Aṭṭhakathā
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ab
+                    Ab
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Abhidhamma
+                    Abhidhamma
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->ACIP
+                    ACIP
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Asian Classics Input Project
+                    Asian Classics Input Project
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->AN
+                    AN
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Aṅguttara Nikāya
+                    Aṅguttara Nikāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Arv
+                    Arv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Arthaviniścaya
+                    Arthaviniścaya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->As
+                    As
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Adhikaraṇasamatha
+                    Adhikaraṇasamatha
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Asc
+                    Asc
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Abhisamācārika
+                    Abhisamācārika
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Avs
+                    Avs
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Avadānaśataka
+                    Avadānaśataka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ay
+                    Ay
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Aniyata
+                    Aniyata
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->BA
+                    BA
                   </td>
-                  <td>
-                    <!--?lit$72637464$-->Bhikkhu Adhyāya
-                  </td>
+                  <td>Bhikkhu Adhyāya</td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Bc
+                    Bc
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Buddhacarita
+                    Buddhacarita
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Bi
+                    Bi
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Bhikkhunī
+                    Bhikkhunī
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Bu
+                    Bu
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Bhikkhu
+                    Bhikkhu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Bv
+                    Bv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Buddhavaṁsa
+                    Buddhavaṁsa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->CBETA
+                    CBETA
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Chinese Buddhist Electronic Text Association
+                    Chinese Buddhist Electronic Text Association
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Cp
+                    Cp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Cariyapiṭaka
+                    Cariyapiṭaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->D
+                    D
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Derge edition of Tibetan canon
+                    Derge edition of Tibetan canon
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->DA
+                    DA
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dīrghāgama
+                    Dīrghāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->DDB
+                    DDB
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Digital Dictionary of Buddhism
+                    Digital Dictionary of Buddhism
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Dg
+                    Dg
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dharmaguptaka
+                    Dharmaguptaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->DH
+                    DH
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dun Huang
+                    Dun Huang
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Dhp
+                    Dhp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dhammapada
+                    Dhammapada
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ds
+                    Ds
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dhammasaṅgaṇi
+                    Dhammasaṅgaṇi
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Divy
+                    Divy
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Divyāvadāna
+                    Divyāvadāna
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Dk
+                    Dk
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dharmaskandha
+                    Dharmaskandha
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->DN
+                    DN
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dīgha Nikāya
+                    Dīgha Nikāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Dpvs
+                    Dpvs
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dīpavaṁsa
+                    Dīpavaṁsa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Dt
+                    Dt
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dhātukathā
+                    Dhātukathā
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Du
+                    Du
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dukkaṭa
+                    Dukkaṭa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Dy
+                    Dy
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Dhātukāya
+                    Dhātukāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->EA
+                    EA
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Ekottarikāgama
+                    Ekottarikāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->EA2
+                    EA2
                   </td>
                   <td>
-                    <!--?lit$72637464$-->2nd Ekottarikāgama
+                    2nd Ekottarikāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->ed
+                    ed
                   </td>
                   <td>
-                    <!--?lit$72637464$-->edited, edition, editor
+                    edited, edition, editor
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->F
+                    F
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Fragment
+                    Fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->G
+                    G
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Gilgit
+                    Gilgit
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->GBM
+                    GBM
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Gilgit Buddhist Manuscripts
+                    Gilgit Buddhist Manuscripts
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Gd
+                    Gd
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Garudhamma
+                    Garudhamma
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Gdhp
+                    Gdhp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Gāndhārī Dharmapada
+                    Gāndhārī Dharmapada
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Gf
+                    Gf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Gāndhārī fragment
+                    Gāndhārī fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Gr
+                    Gr
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Gāndhārī
+                    Gāndhārī
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->GRETIL
+                    GRETIL
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Göttingen Register of Electronic Texts in Indian Languages
+                    Göttingen Register of Electronic Texts in Indian Languages
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->GS
+                    GS
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Gradual Sayings
+                    Gradual Sayings
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Hf
+                    Hf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Hybrid Sanskrit fragment
+                    Hybrid Sanskrit fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Hskt
+                    Hskt
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Hybrid Sanskrit
+                    Hybrid Sanskrit
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Hv
+                    Hv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Haimavata
+                    Haimavata
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Iti
+                    Iti
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Itivuttaka
+                    Itivuttaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ja
+                    Ja
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Jātaka
+                    Jātaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Jp
+                    Jp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Jñānaprasthāna
+                    Jñānaprasthāna
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ka
+                    Ka
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Kaśyapīya
+                    Kaśyapīya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->KA
+                    KA
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khuddakāgama
+                    Khuddakāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Kd
+                    Kd
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khandhaka
+                    Khandhaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Kdv
+                    Kdv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khuddakavatthu
+                    Khuddakavatthu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Kf
+                    Kf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khotanese fragment
+                    Khotanese fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Kh
+                    Kh
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khotanese
+                    Khotanese
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Kp
+                    Kp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khuddakapāṭha
+                    Khuddakapāṭha
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->KN
+                    KN
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Khuddaka Nikāya
+                    Khuddaka Nikāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->KS
+                    KS
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Kindred Sayings
+                    Kindred Sayings
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Kv
+                    Kv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Kathāvatthu
+                    Kathāvatthu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Lal
+                    Lal
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Lalitavistara
+                    Lalitavistara
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->ll
+                    ll
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Parallels
+                    Parallels
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Lo
+                    Lo
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Lokuttaravāda
+                    Lokuttaravāda
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->MA
+                    MA
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Madhyamāgama
+                    Madhyamāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mg
+                    Mg
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahāsaṅghika
+                    Mahāsaṅghika
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mh
+                    Mh
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahāsūtras
+                    Mahāsūtras
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mhvs
+                    Mhvs
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahāvaṁsa
+                    Mahāvaṁsa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mi
+                    Mi
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahīśasaka
+                    Mahīśasaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mil
+                    Mil
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Milindapañha
+                    Milindapañha
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->MN
+                    MN
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Majjhima Nikāya
+                    Majjhima Nikāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mpt
+                    Mpt
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahāvyutpatti
+                    Mahāvyutpatti
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ms
+                    Ms
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahasaṅgīti Tipiṭaka
+                    Mahasaṅgīti Tipiṭaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mu
+                    Mu
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mūlasarvāstivāda
+                    Mūlasarvāstivāda
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Mvu
+                    Mvu
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Mahāvastu
+                    Mahāvastu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Nd
+                    Nd
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Niddesa
+                    Niddesa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ne
+                    Ne
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Nettipakaraṇa
+                    Nettipakaraṇa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->NP
+                    NP
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Nissaggiya Pācittiya
+                    Nissaggiya Pācittiya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Oa
+                    Oa
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Other Āgama
+                    Other Āgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Other-t
+                    Other-t
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Other Taishō
+                    Other Taishō
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->P
+                    P
                   </td>
                   <td>
-                    <!--?lit$72637464$-->page
+                    page
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pc
+                    Pc
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Pācittiya
+                    Pācittiya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pd
+                    Pd
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Pātidesanīya
+                    Pātidesanīya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pdhp
+                    Pdhp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Patna Dharmapada
+                    Patna Dharmapada
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pe
+                    Pe
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Peṭakopadesa
+                    Peṭakopadesa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pf
+                    Pf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Prakrit fragment
+                    Prakrit fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pj
+                    Pj
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Pārājika
+                    Pārājika
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pk
+                    Pk
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Prakaraṇapada
+                    Prakaraṇapada
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pm
+                    Pm
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Pātimokkha
+                    Pātimokkha
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pn
+                    Pn
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Pakiṇṇaka
+                    Pakiṇṇaka
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pp
+                    Pp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Puggalapaññatti
+                    Puggalapaññatti
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pr
+                    Pr
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Prākrit
+                    Prākrit
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pr
+                    Pr
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Prajnaptiśāstra
+                    Prajnaptiśāstra
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pvr
+                    Pvr
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Parivāra
+                    Parivāra
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Patthana
+                    Patthana
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Paṭṭhāna
+                    Paṭṭhāna
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pts
+                    Pts
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Paṭisambhidāmagga
+                    Paṭisambhidāmagga
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pu
+                    Pu
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Puggalavāda
+                    Puggalavāda
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Pv
+                    Pv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Petavatthu
+                    Petavatthu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Q
+                    Q
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Qianlong (Peking edition of Tibetan canon)
+                    Qianlong (Peking edition of Tibetan canon)
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->SA
+                    SA
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Saṁyuktāgama
+                    Saṁyuktāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->SA2
+                    SA2
                   </td>
                   <td>
-                    <!--?lit$72637464$-->2nd Saṁyuktāgama
+                    2nd Saṁyuktāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->SA3
+                    SA3
                   </td>
                   <td>
-                    <!--?lit$72637464$-->3rd Saṁyuktāgama
+                    3rd Saṁyuktāgama
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Sab
+                    Sab
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Śāriputrābhidharma
+                    Śāriputrābhidharma
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Sb
+                    Sb
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Saṅghabhedavastu
+                    Saṅghabhedavastu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->SC
+                    SC
                   </td>
                   <td>
-                    <!--?lit$72637464$-->SuttaCentral
+                    SuttaCentral
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Sf
+                    Sf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Sanskrit fragment
+                    Sanskrit fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Sg
+                    Sg
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Saṅgītiparyāya
+                    Saṅgītiparyāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->SHT
+                    SHT
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Sanskrithandschriften aus den Turfanfunden
+                    Sanskrithandschriften aus den Turfanfunden
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Sk
+                    Sk
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Sekhiya
+                    Sekhiya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Skt
+                    Skt
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Sanskrit
+                    Sanskrit
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->SN
+                    SN
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Saṁyutta Nikāya
+                    Saṁyutta Nikāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Snp
+                    Snp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Suttanipāta
+                    Suttanipāta
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Spp
+                    Spp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Śāriputraparipṛcchā
+                    Śāriputraparipṛcchā
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ss
+                    Ss
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Saṅghādisesa
+                    Saṅghādisesa
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Su
+                    Su
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Sutta/sūtra
+                    Sutta/sūtra
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Sarv
+                    Sarv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Sarvāstivāda
+                    Sarvāstivāda
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->T
+                    T
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Taishō Shinshu Daizōkyō
+                    Taishō Shinshu Daizōkyō
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Tc
+                    Tc
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Tibetan Critical editions
+                    Tibetan Critical editions
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Tf
+                    Tf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Turfan
+                    Turfan
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Tha-ap
+                    Tha-ap
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Thera Apadana
+                    Thera Apadana
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Thag
+                    Thag
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Theragāthā
+                    Theragāthā
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Thi-ap
+                    Thi-ap
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Therī Apadana
+                    Therī Apadana
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Thig
+                    Thig
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Therīgāthā
+                    Therīgāthā
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Tl
+                    Tl
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Thullaccaya
+                    Thullaccaya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Tv
+                    Tv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Theravāda
+                    Theravāda
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ud
+                    Ud
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Udāna
+                    Udāna
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Uf
+                    Uf
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Uighur fragment
+                    Uighur fragment
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Up
+                    Up
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Abhidharmakośopayikanāmaṭīkā (Upāyika)
+                    Abhidharmakośopayikanāmaṭīkā (Upāyika)
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Upp
+                    Upp
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Upaliparipṛcchā
+                    Upaliparipṛcchā
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Vb
+                    Vb
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Vibhaṅga
+                    Vibhaṅga
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->VE
+                    VE
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Vinaya Ekottara
+                    Vinaya Ekottara
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Vin
+                    Vin
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Vinaya
+                    Vinaya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Vk
+                    Vk
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Vijñānakāya
+                    Vijñānakāya
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Vns
+                    Vns
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Vinayanidānasūtra
+                    Vinayanidānasūtra
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Vol
+                    Vol
                   </td>
                   <td>
-                    <!--?lit$72637464$-->volume
+                    volume
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->VS
+                    VS
                   </td>
                   <td>
-                    <!--?lit$72637464$-->(Vinaya) Saṁyutta
+                    (Vinaya) Saṁyutta
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Vv
+                    Vv
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Vimānavatthu
+                    Vimānavatthu
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->WP
+                    WP
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Wisdom Publications
+                    Wisdom Publications
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <!--?lit$72637464$-->Ya
+                    Ya
                   </td>
                   <td>
-                    <!--?lit$72637464$-->Yamaka
+                    Yamaka
                   </td>
                 </tr>
               </tbody>

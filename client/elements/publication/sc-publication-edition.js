@@ -5,8 +5,9 @@ import { setNavigation } from '../navigation/sc-navigation-common';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
+import { API_ROOT } from '../../constants';
 
-class ScPublicationMn extends LitLocalized(LitElement) {
+class SCPublicationEdition extends LitLocalized(LitElement) {
   static get styles() {
     return css`
       ${SCPublicationStyles}
@@ -17,16 +18,38 @@ class ScPublicationMn extends LitLocalized(LitElement) {
   }
 
   static get properties() {
-    return {};
+    return {
+      currentUid: { type: String },
+      editionDetail: { type: Object },
+    };
   }
 
-  // constructor() {
-  //   super();
-  // }
+  constructor() {
+    super();
+    this.editionUid = store.getState().currentRoute.params.editionUid;
+    this._fetchAllEditions();
+    setTimeout(() => {
+      if (!this.allEditions) {
+        return;
+      }
+      this.editions = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const edition of this.allEditions) {
+        if (edition.edition_id.substring(0, 9) === 'pli-tv-vi') {
+          edition.uid = 'pli-tv-vi';
+        } else {
+          // eslint-disable-next-line prefer-destructuring
+          edition.uid = edition.edition_id.split('-')[0];
+        }
+      }
+      this.editionId = this.allEditions.find(x => x.uid === this.editionUid).edition_id;
+      this._fetchEditionDetails();
+      this._fetchEditionInfo();
+    }, 100);
+  }
 
   firstUpdated() {
-    this._updateNav();
-    reduxActions.changeToolbarTitle('Publications-Middle Discourses');
+    // this._updateNav();
   }
 
   _updateNav() {
@@ -34,38 +57,79 @@ class ScPublicationMn extends LitLocalized(LitElement) {
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 2;
     navArray.push({
-      title: 'Publications-Middle Discourses',
+      title: `Publications-${this.editionDetail[0].name}`,
       url: `${currentPath}`,
       type: 'PublicationPage',
     });
     setNavigation(navArray);
   }
 
+  async _fetchEditionDetails() {
+    try {
+      this.editionDetail = await (
+        await fetch(this._computePublicationEditionDetailsApiUrl())
+      ).json();
+      if (this.editionDetail && this.editionDetail.length !== 0) { 
+        reduxActions.changeToolbarTitle(`Publications-${this.editionDetail[0].name}`);
+        this._updateNav();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  _computePublicationEditionDetailsApiUrl() {
+    return `${API_ROOT}/publication/edition/${this.editionId}/${this.editionUid}`;
+  }
+
+  _computePublicationEditionInfoApiUrl() {
+    return `${API_ROOT}/publication/edition/${this.editionId}`;
+  }
+
+  async _fetchAllEditions() {
+    try {
+      this.allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async _fetchEditionInfo() {
+    try {
+      this.editionInfo = await (await fetch(this._computePublicationEditionInfoApiUrl())).json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
+    if (!this.editionDetail || this.editionDetail.length === 0 || !this.editionInfo) {
+      return html``;
+    }
     return html`
       <header></header>
       <main>
         <article>
           <header class="page-header">
-            <h1>Middle Discourses</h1>
-            <p class="subtitle">A translation of the Majjhima Nikāya</p>
-            <p class="author">Bhikkhu Sujato</p>
+            <h1>${this.editionDetail[0].name}</h1>
+            <p class="subtitle">A translation of the ${this.editionDetail[0].root_name}</p>
+            <p class="author">${this.editionInfo.publication.creator_name}</p>
           </header>
           <figure class="book-pic">
             <img src="/img/publication-pages/bibliotheca.jpg" alt="" width="300" height="300" />
-            <figcaption>What they look like printed. Probably!</figcaption>
+            <figcaption></figcaption>
           </figure>
           <nav class="toc">
             <ol>
-              <li><a href="#heading1">This translation</a></li>
-              <li><a href="#heading2">The Majjhima Nikāya</a></li>
+              <li><a href="#translation">This translation</a></li>
+              <li><a href="#heading2">The ${this.editionDetail[0].root_name}</a></li>
               <li><a href="#heading3">The Author</a></li>
               <li><a href="#heading4">Available editions</a></li>
               <li><a href="#heading5">Publication details</a></li>
             </ol>
           </nav>
           <section class="description">
-            <h2><a id="heading1">This translation</a></h2>
+            <h2><a id="translation">This translation</a></h2>
 
             <p>
               This translation was part of a project to translate the four Pali Nikāyas with the
@@ -78,9 +142,8 @@ class ScPublicationMn extends LitLocalized(LitElement) {
               <li>free of copyright.</li>
             </ul>
             <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Tawian.</p>
-            <h2><a id="heading2">The Majjhima Nikāya</a></h2>
-            <p class="blurb">
-            The Middle Discourses (Majjhima Nikāya, abbreviated MN) is a collection of 152 discourses in the Pali canon (Tipiṭaka) of the Theravada school of Buddhism. The word “middle” refers to the length of the individual discourses. This is perhaps the most popular collection of early discourses. It contains a wide variety of teachings, many of them presented as narratives between the Buddha and a diverse range of his contemporaries. The collection parallels the Madhyamāgama (MA) of the Sarvāstivāda school, which survives as a translation in the Chinese canon.
+            <h2><a id="heading2">The ${this.editionDetail[0].root_name}</a></h2>
+            <p class="blurb">${this.editionDetail[0].blurb}</p>
             <h2><a id="heading3">The Author</a></h2>
             <figure class="author-pic">
               <img
@@ -127,31 +190,31 @@ class ScPublicationMn extends LitLocalized(LitElement) {
                 <td class="web">Web</td>
                 <td>2018</td>
                 <td>SuttaCentral</td>
-                <td><a href='' class='internal'>Read on SuttaCentral</a></td>
+                <td><a href='/pitaka/sutta/long/dn' class='internal'>Read on SuttaCentral</a></td>
               </tr>
               <tr>
                 <td class='book'>Book, softcover</td>
                 <td>2018</td>
                 <td>SuttaCentral</td>
-                <td><a href='' class='external'>Print on demand</a></td>
+                <td><a href='https://github.com/suttacentral/editions' class='external'>Print on demand</a></td>
               </tr>
               <tr>
                 <td class='book'>Book, hardback</td>
                 <td>2018</td>
                 <td>SuttaCentral</td>
-                <td><a href='' class='external'>Print on demand</a></td>
+                <td><a href='https://github.com/suttacentral/editions' class='external'>Print on demand</a></td>
               </tr>
               <tr>
                 <td class='epub'>Epub</td>
                 <td>2018</td>
                 <td>SuttaCentral</td>
-                <td><a href='' class='download'>Download</a></td>
+                <td><a href='https://github.com/suttacentral/editions' class='download'>Download</a></td>
               </tr>
               <tr>
                 <td class='pdf'>Pdf</td>
                 <td>2018</td>
                 <td>SuttaCentral</td>
-                <td><a href='' class='download'>Download</a></td>
+                <td><a href='https://github.com/suttacentral/editions' class='download'>Download</a></td>
               </tr>
             </table>
           </section>
@@ -160,47 +223,37 @@ class ScPublicationMn extends LitLocalized(LitElement) {
             <h2><a id="heading5">Publication details</a></h2>
             <dl class="publication">
               <dt class="publication_number">SuttaCentral publication number</dt>
-              <dd>scpub5</dd>
+              <dd>${this.editionInfo.publication.publication_number}</dd>
               <dt class="source_url">Source</dt>
-              <dd>
-                https://github.com/suttacentral/bilara-data/tree/master/translation/en/sujato/an
-              </dd>
+              <dd>${this.editionInfo.publication.source_url}</dd>
               <dt class="text_uid">Text ID</dt>
-              <dd>AN</dd>
+              <dd>${this.editionInfo.publication.text_uid}</dd>
               <dt class="publication_status">Publication Status</dt>
-              <dd>Completed, revision is ongoing.</dd>
+              <dd>${this.editionInfo.publication.publication_status}</dd>
               <dt class="license">License</dt>
               <dd>
-                <p>
-                  This translation is an expression of an ancient spiritual text that has been
-                  passed down by the Buddhist tradition for the benefit of all sentient beings. It
-                  is dedicated to the public domain via Creative Commons Zero (CC0). You are
-                  encouraged to copy, reproduce, adapt, alter, or otherwise make use of this
-                  translation. The translator respectfully requests that any use be in accordance
-                  with the values and principles of the Buddhist community.
-                </p>
-                <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">
+                <p>${this.editionInfo.publication.license_statement}</p>
+                <a rel="license" href="${this.editionInfo.publication.license_url}">
                   <p
-                    xmlns:dct="https://purl.org/dc/terms/"
-                    xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#"
+                    xmlns:dct="https://purl.org/dc/terms/" xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#"
                       <img src='/img/publication-pages/cc-zero.svg' alt='CC0' /><span><strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.
-                      </strong><br>To the extent possible under law, <span property='dct:title'>Bhikkhu Sujato</span> has
+                      </strong><br>To the extent possible under law, <span property='dct:title'>${this.editionInfo.publication.creator_name}</span> has
                       waived all copyright and related or neighboring rights to <span property='dct:title'>Numbered
-                        Discourses</span>. This work is published from: <span property='vcard:Country'
-                        datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/an'> Australia</span>.</span>
+                        Discourses</span>. This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${this.editionUid}'> Australia</span>.</span>
                   </p>
+                </a>
                 </a>
               </dd>
             </dl>
           </section>
         </article>
       </main>
-      <footer>
+      <!-- <footer>
         <a class='prev'></a>
         <a class='next' href='preface.html'>Preface</a>
-      </footer>
+      </footer> -->
     `;
   }
 }
 
-customElements.define('sc-publication-mn', ScPublicationMn);
+customElements.define('sc-publication-edition', SCPublicationEdition);
