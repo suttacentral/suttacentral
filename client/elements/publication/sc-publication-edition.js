@@ -46,6 +46,20 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       this._fetchEditionDetails();
       this._fetchEditionInfo();
     }, 100);
+
+    this.collectionURL = new Map([
+      ['dn', '/pitaka/sutta/long/dn'],
+      ['mn', '/pitaka/sutta/middle/mn'],
+      ['sn', '/pitaka/sutta/linked/sn'],
+      ['an', '/pitaka/sutta/numbered/an'],
+      ['dhp', '/dhp'],
+      ['ud', '/pitaka/sutta/minor/kn/ud'],
+      ['iti', '/pitaka/sutta/minor/kn/iti'],
+      ['snp', '/pitaka/sutta/minor/kn/snp'],
+      ['thag', '/pitaka/sutta/minor/kn/thag'],
+      ['thig', '/pitaka/sutta/minor/kn/thig'],
+      ['pli-tv-vi', '/pitaka/vinaya/pli-tv-vi'],
+    ]);
   }
 
   firstUpdated() {
@@ -190,7 +204,9 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
                 <td class="web">Web</td>
                 <td>2018</td>
                 <td>SuttaCentral</td>
-                <td><a href='/pitaka/sutta/long/dn' class='internal'>Read on SuttaCentral</a></td>
+                <td><a href=${this.collectionURL.get(
+                  this.editionUid
+                )} class='internal'>Read on SuttaCentral</a></td>
               </tr>
               <tr>
                 <td class='book'>Book, softcover</td>
@@ -227,7 +243,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
               <dt class="source_url">Source</dt>
               <dd>${this.editionInfo.publication.source_url}</dd>
               <dt class="text_uid">Text ID</dt>
-              <dd>${this.editionInfo.publication.text_uid}</dd>
+              <dd>${this.editionInfo.publication.text_uid.toUpperCase()}</dd>
               <dt class="publication_status">Publication Status</dt>
               <dd>${this.editionInfo.publication.publication_status}</dd>
               <dt class="license">License</dt>
