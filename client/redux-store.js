@@ -84,6 +84,7 @@ const initialState = {
     fixedToolbar: false,
     toolbarAtTop: false,
   },
+  currentEditionId: '',
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -96,6 +97,8 @@ const reducer = (state, action) => {
         ...state,
         currentRoute: { name, params, path },
       };
+    case 'CHANGE_CURRENT_EDITION_ID':
+      return { ...state, currentEditionId: action.currentEditionId };
     case 'CHANGE_SITE_LANGUAGE':
       return { ...state, siteLanguage: action.language, fullSiteLanguageName: action.fullName };
     case 'CHANGE_TOOLBAR_TITLE':

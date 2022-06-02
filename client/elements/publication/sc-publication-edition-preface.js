@@ -1,11 +1,12 @@
 import { LitElement, html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { API_ROOT } from '../../constants';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
-import { API_ROOT } from '../../constants';
 
 class ScPublicationEditionPreface extends LitLocalized(LitElement) {
   static get styles() {
@@ -21,11 +22,8 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
     return {};
   }
 
-  // constructor() {
-  //   super();
-  // }
-
   firstUpdated() {
+    console.log(store.getState().currentEditionId);
     this._fetchPreface();
     this._updateNav();
     reduxActions.changeToolbarTitle('Edition Preface');
@@ -45,57 +43,25 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
 
   async _fetchPreface() {
     try {
-      this.editionDetail = await (await fetch(`${API_ROOT}/publication/edition/dn-en-sujato_scpub2-ed6-html_2022-02-10`)).json();
-      //console.log(this.editionDetail.edition.volumes[0]);
-      // console.log(this.editionDetail.edition.volumes[0].frontmatter[6]);
-      // console.log(this.editionDetail.edition.working_dir);
-      // console.log(this.editionDetail.edition.working_dir + this.editionDetail.edition.volumes[0].frontmatter[6].slice(1));
-      // this.abc = await (await fetch())
+      // this.preface = await (await fetch(`${API_ROOT}/publication/edition/frontmatter/${store.getState().currentEditionId}/preface`)).json();
+      this.editionFiles = await (await fetch(`https://suttacentral.net/api/publication/edition/${store.getState().currentEditionId}/files`)).json();
+      // eslint-disable-next-line no-restricted-syntax
+      for (const key in this.editionFiles) {
+        if (this.editionFiles.hasOwnProperty(key) && key.includes('preface')) {
+          this.preface = this.editionFiles[key];
+        }
+      }
+      this.requestUpdate();
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
-    return html`
-      <main>
-        <article>
-          <header>
-            <h1>Preface</h1>
-          </header>
-          <p>
-            A preface (/ˈprɛfəs/) or proem (/ˈproʊɛm/) is an introduction to a book or other
-            literary work written by the work's author. An introductory essay written by a different
-            person is a foreword and precedes an author's preface. The preface often closes with
-            acknowledgments of those who assisted in the literary work.
-          </p>
-
-          <p>
-            It often covers the story of how the book came into being, or how the idea for the book
-            was developed; this may be followed by thanks and acknowledgments to people who were
-            helpful to the author during the time of writing.
-          </p>
-
-          <p>
-            A preface is often signed (and the date and place of writing often follow the typeset
-            signature); a foreword by another person is always signed. Information essential to the
-            main text is generally placed in a set of explanatory notes, or perhaps in an
-            "Introduction" that may be paginated with Arabic numerals, rather than in the preface.
-            preface. The term preface can also mean any preliminary or introductory statement. It is
-            sometimes abbreviated pref.
-          </p>
-
-          <p>
-            Preface comes from Latin, meaning either "spoken before" (prae and fatia)[1][2] or "made
-            before" (prae + factum). While the former source of the word could have preface meaning
-            the same as prologue, the latter strongly implies an introduction written before the
-            body of the book. With this meaning of stated intention, British publishing up to at
-            least the middle of the twentieth century distinguished between preface and
-            introduction.
-          </p>
-        </article>
-      </main>
-    `;
+    if (!this.preface) {
+      return html``;
+    }
+    return html` <main>${unsafeHTML(this.preface)}</main> `;
   }
 }
 

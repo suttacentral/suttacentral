@@ -512,8 +512,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
 
   _changeRoute(location) {
     const [route, params] = this.router.match(location.pathname);
-    console.log(location);
-    console.log(params);
     if (params.categoryId) {
       params.categoryId = params?.categoryId.toLowerCase();
     }

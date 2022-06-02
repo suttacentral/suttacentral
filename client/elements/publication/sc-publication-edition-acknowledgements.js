@@ -1,4 +1,6 @@
 import { LitElement, html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { API_ROOT } from '../../constants';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
@@ -20,11 +22,8 @@ class ScPublicationEditionAcknowledgements extends LitLocalized(LitElement) {
     return {};
   }
 
-  // constructor() {
-  //   super();
-  // }
-
   firstUpdated() {
+    this._fetchAcknowledgements();
     this._updateNav();
     reduxActions.changeToolbarTitle('Edition Acknowledgements');
   }
@@ -41,32 +40,35 @@ class ScPublicationEditionAcknowledgements extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
+  async _fetchAcknowledgements() {
+    try {
+      // this.preface = await (await fetch(`${API_ROOT}/publication/edition/frontmatter/${store.getState().currentEditionId}/preface`)).json();
+      this.editionFiles = await (
+        await fetch(
+          `https://suttacentral.net/api/publication/edition/${
+            store.getState().currentEditionId
+          }/files`
+        )
+      ).json();
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const key in this.editionFiles) {
+        if (this.editionFiles.hasOwnProperty(key) && key.includes('acknowledgements')) {
+          this.acknowledgements = this.editionFiles[key];
+        }
+      }
+
+      this.requestUpdate();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
-    return html`
-      <main>
-        <article>
-          <h1>Acknowledgements</h1>
-          <p>In the creative arts and scientific literature, an acknowledgement (also spelled acknowledgment in American and
-            Canadian English[1]) is an expression of a gratitude for assistance in creating an original work.
-          </p>
-          <p>Receiving credit by way of acknowledgement rather than authorship indicates that the person or organization did
-            not have a direct hand in producing the work in question, but may have contributed funding, criticism, or
-            encouragement to the author(s). Various schemes exist for classifying acknowledgements.
-          </p>
-
-
-          <p>Apart from citation, which is not usually considered to be an acknowledgement, acknowledgement of conceptual
-            support is widely considered to be the most important for identifying intellectual debt. Some acknowledgements of
-            financial support, on the other hand, may simply be legal formalities imposed by the granting institution.
-            Occasionally, bits of science humor can also be found in acknowledgements.[3]
-          </p>
-          <p>There have been some attempts to extract bibliometric indices from the acknowledgments section (also called
-            "acknowledgments paratext")[4] of research papers in order to evaluate the impact of the acknowledged individuals,
-            sponsors and funding agencies.[5][6]
-          </p>
-        </article>
-      </main>
-    `;
+    if (!this.acknowledgements) {
+      return html``;
+    }
+    return html` <main>${unsafeHTML(this.acknowledgements)}</main> `;
   }
 }
 

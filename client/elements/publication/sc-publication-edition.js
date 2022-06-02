@@ -43,6 +43,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
         }
       }
       this.editionId = this.allEditions.find(x => x.uid === this.editionUid).edition_id;
+      reduxActions.changeCurrentEditionId(this.editionId);
       this._fetchEditionDetails();
       this._fetchEditionInfo();
     }, 100);
