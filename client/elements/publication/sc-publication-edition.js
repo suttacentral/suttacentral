@@ -67,12 +67,25 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     // this._updateNav();
   }
 
+  updated(changedProps) {
+    super.updated(changedProps);
+    this._updateNav();
+  }
+
   _updateNav() {
+    if (!this.editionDetail || !this.editionDetail[0]) {
+      return;
+    }
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
-    navArray.length = 2;
+    navArray.length = 1;
     navArray.push({
-      title: `Publications-${this.editionDetail[0].name}`,
+      title: 'Publications editions',
+      url: `/publication-editions`,
+      type: 'PublicationPage',
+    });
+    navArray.push({
+      title: `Publications-${this.editionDetail[0]?.name || 'edition'}`,
       url: `${currentPath}`,
       type: 'PublicationPage',
     });
@@ -86,7 +99,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       ).json();
       if (this.editionDetail && this.editionDetail.length !== 0) { 
         reduxActions.changeToolbarTitle(`Publications-${this.editionDetail[0].name}`);
-        this._updateNav();
+        //this._updateNav();
       }
     } catch (error) {
       console.log(error);
