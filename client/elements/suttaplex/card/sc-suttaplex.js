@@ -483,6 +483,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     if (!this.item?.uid) {
       return;
     }
+    this.hasVoice = false;
     const voiceApi = `${API_ROOT}/available_voices/${this.item?.uid}`;
     const availableVoice = fetch(voiceApi).then(r => r.json());
     const voices = await availableVoice;
@@ -492,6 +493,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         const voiceInfo = voice.split('/');
         if (!voiceInfo.includes('root') && !voiceInfo.includes('vinaya')) {
           this.hasVoice = voice.split('/').includes(this.language);
+          if (this.hasVoice) {
+            break;
+          }
         }
       }
     }
