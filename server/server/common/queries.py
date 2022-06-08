@@ -799,6 +799,21 @@ LET result = MERGE(
 RETURN result
 '''
 
+SEGMENTED_TRANSLATION_TEXT = '''
+LET result = MERGE(
+    FOR doc IN sc_bilara_texts
+        FILTER doc.uid == @uid
+        FILTER 'translation_text' IN doc.muids OR @language IN doc.muids
+
+        LET type = doc.muids[0]
+        RETURN {
+            [CONCAT(type, '_text')]: doc.file_path
+        }
+)
+
+RETURN result
+'''
+
 CURRENCIES = '''
 FOR currency IN currencies
     FILTER currency.use == true
