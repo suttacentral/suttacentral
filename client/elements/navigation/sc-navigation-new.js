@@ -277,7 +277,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (!lastPath) {
       return '';
     }
-    if (typeof hasChildren !== 'undefined' && !hasChildren) {
+    if ((typeof hasChildren !== 'undefined' && !hasChildren) || this._isPatimokkha(lastPath)) {
       const { suttaplexListDisplay } = store.getState();
       const urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}`;
       return `/${lastPath}${urlParams}`;
@@ -313,7 +313,6 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   async _checkIfChildrenExists() {
     // eslint-disable-next-line no-restricted-syntax
-    console.log('_checkIfChildrenExists');
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
