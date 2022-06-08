@@ -274,12 +274,6 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
             <li>
               <a href="/publication-edition-introduction">Introduction</a>
             </li>
-            <li>
-              <a href="/publication-edition-abbreviations">Abbreviations</a>
-            </li>
-            <li>
-              <a href="/publication-edition-index">Index</a>
-            </li>
           `
         : ''}
     `;

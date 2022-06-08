@@ -90,16 +90,6 @@ const routes = {
     content: html`<sc-publication-edition-acknowledgements />`,
     loader: () => import('./publication/sc-publication-edition-acknowledgements.js'),
   },
-  'publicationEditionAbbreviations': {
-    path: '/publication-edition-abbreviations',
-    content: html`<sc-publication-edition-abbreviations />`,
-    loader: () => import('./publication/sc-publication-edition-abbreviations.js'),
-  },
-  'publicationEditionIndex': {
-    path: '/publication-edition-index',
-    content: html`<sc-publication-edition-index />`,
-    loader: () => import('./publication/sc-publication-edition-index.js'),
-  },
   'publicationEditionIntroduction': {
     path: '/publication-edition-introduction',
     content: html`<sc-publication-edition-introduction />`,
@@ -245,31 +235,6 @@ const routes = {
     content: html`<sc-static-pali-tipitaka />`,
     loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
-  // 'publicationAN': {
-  //   path: '/publication-an',
-  //   content: html`<sc-publication-an />`,
-  //   loader: () => import('./publication/sc-publication-an.js')
-  // },
-  // 'publicationDN': {
-  //   path: '/publication-dn',
-  //   content: html`<sc-publication-dn />`,
-  //   loader: () => import('./publication/sc-publication-dn.js')
-  // },
-  // 'publicationMN': {
-  //   path: '/publication-mn',
-  //   content: html`<sc-publication-mn />`,
-  //   loader: () => import('./publication/sc-publication-mn.js')
-  // },
-  // 'publicationSN': {
-  //   path: '/publication-sn',
-  //   content: html`<sc-publication-sn />`,
-  //   loader: () => import('./publication/sc-publication-sn.js')
-  // },
-  // 'publicationMinor': {
-  //   path: '/publication-minor',
-  //   content: html`<sc-publication-minor />`,
-  //   loader: () => import('./publication/sc-publication-minor.js')
-  // },
   'publicationEdition': {
     path: '/publication-edition/:editionUid',
     content: html`<sc-publication-edition />`,
@@ -630,7 +595,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
     );
 
     this.shouldShowPublicationToolbar = [
-      'publicationEditions',
       'publicationEdition',
       'publicationDN',
       'publicationMN',
