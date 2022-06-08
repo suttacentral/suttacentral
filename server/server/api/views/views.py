@@ -32,6 +32,7 @@ from common.queries import (
     TRANSLATION_COUNT_BY_AUTHOR,
     TRANSLATION_COUNT_BY_LANGUAGE,
     SEGMENTED_SUTTA_VIEW,
+    SEGMENTED_TRANSLATION_TEXT,
     SUTTA_NAME,
     SUTTA_SINGLE_PALI_TEXT,
     SUTTA_PATH,
@@ -378,6 +379,16 @@ class SuttaplexList(Resource):
                     parent['children'].append(result)
                 except KeyError:
                     parent['children'] = [result]
+
+            if  result['translated_title'] == '':
+                translation_text_file = db.aql.execute(
+                    SEGMENTED_TRANSLATION_TEXT,
+                    bind_vars={'uid': result['uid'], 'language': language}
+                )
+                if translation_text_file is not None:
+                    file_result = next(translation_text_file)
+                    if file_result is not None and 'translation_text' in file_result:
+                        result['translated_title'] = json_load(file_result['translation_text'])[result['uid']+':0.3']
 
         data = flat_tree(data)
 
