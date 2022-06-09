@@ -46,6 +46,7 @@ from api.views import (
     RootEdition,
     Guides,
     Shortcuts,
+    CreatorBio,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -120,6 +121,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Edition, '/publication/edition/<string:edition_id>')
     api.add_resource(EditionFiles, '/publication/edition/<string:edition_id>/files')
     api.add_resource(EditionMainmatter, '/publication/edition/<string:edition_id>/<string:uid>')
+    api.add_resource(CreatorBio, '/creator_bio')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
