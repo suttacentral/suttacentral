@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
@@ -46,6 +47,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       reduxActions.changeCurrentEditionId(this.editionId);
       this._fetchEditionDetails();
       this._fetchEditionInfo();
+      this._fetchCreatorBio();
     }, 100);
 
     this.collectionURL = new Map([
@@ -130,8 +132,22 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
+  async _fetchCreatorBio() {
+    try {
+      this.creatorBio = await (await fetch(`${API_ROOT}/creator_bio`)).json();
+      for (const creator of this.creatorBio) {
+        if (this.editionId.includes(creator.creator_uid)) {
+          this.creatorInfo = creator;
+          break;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
-    if (!this.editionDetail || this.editionDetail.length === 0 || !this.editionInfo) {
+    if (!this.editionDetail || this.editionDetail.length === 0 || !this.editionInfo || !this.creatorInfo) {
       return html``;
     }
     return html`
@@ -175,34 +191,14 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
             <h2><a id="heading3">The Author</a></h2>
             <figure class="author-pic">
               <img
-                src="/img/publication-pages/sujato.jpg"
-                alt="Bhikkhu Sujato"
+                src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
+                alt=${this.creatorInfo.creator_uid}
                 width="300"
                 height="300"
               />
-              <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption>
+              <!-- <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption> -->
             </figure>
-            <p>
-              Bhikkhu Sujato (Anthony Aidan Best) was born in Perth on 4/11/1966. In his early life
-              he studied philosophy at UWA and pursued a music career with the band Martha’s
-              Vineyard. He was also active in the animal liberation movement. In 1992 he went to
-              Thailand where he encountered Buddhism, doing several intensive meditation retreats at
-              at Wat Ram Poeng in Chieng Mai. In 1994, while staying at Wat Pan Nanachat in
-              north-east Thailand, he took higher ordination in the Mahā Nikāya order in the
-              tradition of Ajahn Chah. In 1997 he went to Bodhinyana Monastery in Perth, where he
-              stayed for several years with Ajahn Brahm as his teacher. From 2003 to 2012 he ran
-              Santi Forest Monastery in Bundanoon, New South Wales. During this time he wrote
-              several books of often ground-breaking research into matters pertaining to early
-              Buddhism. He was a strong supporter of the successful revival of the bhikkhuni order
-              of fully ordained nuns.
-            </p>
-            <p>
-              In 2004 he founded SuttaCentral together with Rod Bucknell and John Kelly. Seeing the
-              lack of a consistent, accurate, and freely available translation of the Pali suttas,
-              in 2015 he embarked on the project to translate the entire four Nikāyas from Pali,
-              which he completed in 2018. He live in Sydney at the Lokanta Vihara, the “Monastery at
-              the End of the World”.
-            </p>
+            ${unsafeHTML(this.creatorInfo.creator_biography)}
           </section>
           <section>
             <h2><a id="heading4">Available editions</a></h2>
