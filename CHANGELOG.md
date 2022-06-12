@@ -1,6 +1,12 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.06.08
+
+- Fix: vagga-suttas have no voice link. #2288
+- Fix: some translated titles are missing from API. #2457
+- Fix: back button broken. #2455
+
 ## 2022.05.23
 
 - Show sc-voice icon in suttaplex on sutta pages.
