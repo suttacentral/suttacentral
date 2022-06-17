@@ -42,10 +42,9 @@ class ScPublicationEditionAcknowledgements extends LitLocalized(LitElement) {
 
   async _fetchAcknowledgements() {
     try {
-      // this.preface = await (await fetch(`${API_ROOT}/publication/edition/frontmatter/${store.getState().currentEditionId}/preface`)).json();
       this.editionFiles = await (
         await fetch(
-          `https://suttacentral.net/api/publication/edition/${
+          `${API_ROOT}/publication/edition/${
             store.getState().currentEditionId
           }/files`
         )

@@ -22,34 +22,13 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     return {
       currentUid: { type: String },
       editionDetail: { type: Object },
+      editionId: { type: String },
     };
   }
 
   constructor() {
     super();
     this.editionUid = store.getState().currentRoute.params.editionUid;
-    this._fetchAllEditions();
-    setTimeout(() => {
-      if (!this.allEditions) {
-        return;
-      }
-      this.editions = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const edition of this.allEditions) {
-        if (edition.edition_id.substring(0, 9) === 'pli-tv-vi') {
-          edition.uid = 'pli-tv-vi';
-        } else {
-          // eslint-disable-next-line prefer-destructuring
-          edition.uid = edition.edition_id.split('-')[0];
-        }
-      }
-      this.editionId = this.allEditions.find(x => x.uid === this.editionUid).edition_id;
-      reduxActions.changeCurrentEditionId(this.editionId);
-      this._fetchEditionDetails();
-      this._fetchEditionInfo();
-      this._fetchCreatorBio();
-    }, 100);
-
     this.collectionURL = new Map([
       ['dn', '/pitaka/sutta/long/dn'],
       ['mn', '/pitaka/sutta/middle/mn'],
@@ -63,6 +42,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       ['thig', '/pitaka/sutta/minor/kn/thig'],
       ['pli-tv-vi', '/pitaka/vinaya/pli-tv-vi'],
     ]);
+    this._fetchAllEditions();
   }
 
   firstUpdated() {
@@ -71,7 +51,19 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
 
   updated(changedProps) {
     super.updated(changedProps);
+    if (changedProps.has('editionId')) {
+      if (this.editionId) {
+        this._loadNewResult();
+      }
+    }
     this._updateNav();
+  }
+
+  async _loadNewResult() {
+    await this._fetchEditionDetails();
+    await this._fetchEditionInfo();
+    await this._fetchCreatorBio();
+    this.requestUpdate();
   }
 
   _updateNav() {
@@ -87,7 +79,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       type: 'PublicationPage',
     });
     navArray.push({
-      title: `Publications-${this.editionDetail[0]?.name || 'edition'}`,
+      title: `Publications-${this.editionDetail[0]?.translated_name || 'edition'}`,
       url: `${currentPath}`,
       type: 'PublicationPage',
     });
@@ -100,7 +92,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
         await fetch(this._computePublicationEditionDetailsApiUrl())
       ).json();
       if (this.editionDetail && this.editionDetail.length !== 0) { 
-        reduxActions.changeToolbarTitle(`Publications-${this.editionDetail[0].name}`);
+        reduxActions.changeToolbarTitle(`Publications-${this.editionDetail[0].translated_name}`);
         //this._updateNav();
       }
     } catch (error) {
@@ -108,8 +100,12 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
+  // _computePublicationEditionDetailsApiUrl() {
+  //   return `${API_ROOT}/publication/edition/${this.editionId}/${this.editionUid}`;
+  // }
+
   _computePublicationEditionDetailsApiUrl() {
-    return `${API_ROOT}/publication/edition/${this.editionId}/${this.editionUid}`;
+    return `${API_ROOT}/menu/${this.editionUid}`;
   }
 
   _computePublicationEditionInfoApiUrl() {
@@ -119,6 +115,28 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
   async _fetchAllEditions() {
     try {
       this.allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
+      setTimeout(() => {
+        if (!this.allEditions) {
+          return;
+        }
+        this.editions = [];
+        // eslint-disable-next-line no-restricted-syntax
+        for (const edition of this.allEditions) {
+          if (edition.edition_id.substring(0, 9) === 'pli-tv-vi') {
+            edition.uid = 'pli-tv-vi';
+          } else {
+            // eslint-disable-next-line prefer-destructuring
+            edition.uid = edition.edition_id.split('-')[0];
+          }
+        }
+        this.editionId = this.allEditions.find(
+          x => x.uid === this.editionUid && x.edition_id.includes('web')
+        ).edition_id;
+        if (this.editionId) {
+          reduxActions.changeCurrentEditionId(this.editionId);
+          this.requestUpdate();
+        }
+      }, 100);
     } catch (error) {
       console.log(error);
     }
@@ -155,7 +173,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       <main>
         <article>
           <header class="page-header">
-            <h1>${this.editionDetail[0].name}</h1>
+            <h1>${this.editionDetail[0].translated_name}</h1>
             <p class="subtitle">A translation of the ${this.editionDetail[0].root_name}</p>
             <p class="author">${this.editionInfo.publication.creator_name}</p>
           </header>

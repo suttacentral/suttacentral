@@ -43,8 +43,8 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
 
   async _fetchPreface() {
     try {
-      // this.preface = await (await fetch(`${API_ROOT}/publication/edition/frontmatter/${store.getState().currentEditionId}/preface`)).json();
-      this.editionFiles = await (await fetch(`https://suttacentral.net/api/publication/edition/${store.getState().currentEditionId}/files`)).json();
+      this.editionFiles = await (await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)).json();
+      // this.editionFiles = await (await fetch(`https://suttacentral.net/api/publication/edition/${store.getState().currentEditionId}/files`)).json();
       // eslint-disable-next-line no-restricted-syntax
       for (const key in this.editionFiles) {
         if (this.editionFiles.hasOwnProperty(key) && key.includes('preface')) {
