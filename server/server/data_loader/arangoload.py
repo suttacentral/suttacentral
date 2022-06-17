@@ -395,9 +395,11 @@ def update_translated_title():
         titleIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         for i in reversed(titleIndex):
             title = trans.get(translation['uid'] + ':0.' + str(i))
+            if title is None and translation['uid'].find('-') != -1:
+                title = trans.get(translation['uid'].split('-')[0] + ':0.' + str(i))
             if title is not None:
                 break
-        if title is not None and title.find('.') != -1 and len(title.split('.')) == 2:
+        if title is not None and title.find('.') != -1 and len(title.split('.')) == 2 and title.find('Etc.') == -1:
             title = title.split('.')[1].strip()
         db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
 
