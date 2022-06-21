@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.06.22
+
+- Fix: Translation title extraction failed in some cases.
+
 ## 2022.06.08
 
 - Fix: vagga-suttas have no voice link. #2288
