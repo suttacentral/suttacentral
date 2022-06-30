@@ -177,18 +177,6 @@ export const dictStyles = css`
     color: var(--sc-icon-color);
   }
 
-  .google-maps {
-    height: 480px;
-    margin: var(--sc-size-md) 0;
-  }
-
-  .google-maps iframe {
-    width: 100%;
-    height: 480px;
-
-    border: none;
-  }
-
   .info {
     display: none;
   }
