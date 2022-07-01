@@ -1271,6 +1271,14 @@ UPDATE {
 } IN text_extra_info
 '''
 
+UPSERT_TEXT_EXTRA_ACRONYM_INFO = '''
+UPSERT { uid: @uid }
+INSERT { uid: @uid, acronym: @acronym, alt_acronym: null, volpage: null, alt_volpage: null, alt_name: null, biblio_uid: null }
+UPDATE {
+    acronym: @acronym
+} IN text_extra_info
+'''
+
 UPSERT_NAMES = '''
 UPSERT { uid: @uid, lang: @lang }
 INSERT { name: @name, is_root: false, lang: @lang, uid: @uid }
@@ -1383,5 +1391,13 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
         name: name,
         blurb: blurb.blurb,
         files
+    }
+'''
+
+ACRONYM_IS_NULL_UIDS = '''
+FOR doc IN super_nav_details
+    FILTER doc.type == 'leaf' AND doc.acronym == null
+    RETURN {
+        uid: doc.uid
     }
 '''
