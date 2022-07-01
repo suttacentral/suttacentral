@@ -384,7 +384,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   updated() {
-    if (this.currentRoute.name !== 'SUTTA') {
+    if (this.currentRoute.name.toUpperCase() !== 'SUTTA') {
       this._createMetaData();
     }
     this._updateNav();
