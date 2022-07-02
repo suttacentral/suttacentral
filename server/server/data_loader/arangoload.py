@@ -377,6 +377,11 @@ def update_text_extra_info():
 
 
 def update_text_acronym(structure_dir):
+    """Generate acronym from super_extra_info and add to ArangoDB
+
+    Args:
+        structure_dir: Path to structure data directory.
+    """
     db = arangodb.get_db()
     uids = list(db.aql.execute(ACRONYM_IS_NULL_UIDS))
     super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
@@ -387,12 +392,14 @@ def update_text_acronym(structure_dir):
             if (sutta_superior_path is not None):
                 last_index = uid['uid'].rfind('-')
                 acronym = ''
+                # Determine whether it is a range sutta， e.g. an1.1-10
                 if (last_index != -1 and uid['uid'][last_index + 1:].isdigit()):
                     acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ').replace('-', '–')
                 else:
                     first_part_index = uid['uid'].find(path + '-')
                     if first_part_index != -1:
                         second_part = uid['uid'].replace(path + '-', '').capitalize()
+                        # Add spaces before numbers
                         second_part = re.sub(r"([0-9]+(\.[0-9]+)?)",r" \1 ", second_part).strip()
                         acronym = sutta_superior_path['acronym'] + ' ' + second_part
                     else:
