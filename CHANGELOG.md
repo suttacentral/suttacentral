@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.06.23
+
+- Fix: when clicking on a Table of Contents item, the page title changes to "SuttaCentral—discourses".
+
 ## 2022.06.22
 
 - Fix: Translation title extraction failed in some cases.
