@@ -119,6 +119,8 @@ export const SCPublicationEditionsStyles = css`
     width: auto;
     height: 16em;
     margin: 0.5em 1em 1em 0;
+
+    box-shadow: var(--sc-shadow-elevation-8dp);
   }
 
   .down-all {

@@ -2,205 +2,80 @@
 import { css } from 'lit';
 
 export const SCPublicationStyles = css`
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
-  * + * {
-    margin-top: 1em;
-  }
-
-  body {
-    margin-top: 0;
-    line-height: 1.5;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 100vh;
-  }
-
-  .breadcrumbs {
-    background-color: #333;
-    color: white;
-    padding-left: 1em;
-  }
-
-  .breadcrumbs ul {
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
-  }
-
-  .breadcrumbs ul li {
-    padding: 1em 0em 0.5em 1em;
-    margin-top: 0;
-    border-bottom: 8px solid rgba(0, 0, 0, 0);
-  }
-
-  .breadcrumbs ul li:after {
-    content: '>';
-    margin: 0 0 0 1em;
-  }
-
-  .breadcrumbs ul li#selected {
-    margin: 0;
-    border-bottom: 8px solid gold;
-  }
-
-  .breadcrumbs ul li#selected:after {
-    content: ’’;
-    margin: 0 0 0 1em;
-  }
-
-  .toolbar {
-    background-color: darkgoldenrod;
-    color: white;
-    margin-top: 0;
-    padding: 0.5rem 2rem;
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .toolbar span {
-    font-size: 1.5em;
-  }
-
-  .toolbar ul {
-    list-style-type: none;
-    display:  flex;
-    flex-direction: row;
-  }
-
-  .toolbar ul li {
-    padding:  1em 2em 0.5em;
-    margin-top:  0;
-    border-bottom:  8px solid rgba(0,0,0,0);
-  }
-
   main {
-    margin: 4em auto;
     max-width: 720px;
-    flex-grow: 1;
-  }
-
-  header,
-  main,
-  footer {
-    flex-shrink: 0;
-  }
-
-  dt {
-    font-weight: bold;
-  }
-
-  header {
-
-  }
-
-  .page-header {
-    text-align:  center;
+    margin: 2em auto 4em;
   }
 
   h1 {
     margin: 0;
   }
 
-  header p{
-    margin: 8px;
-  }
-
-  p.author {
-    font-size: 1.5em;
+  .translation_subtitle {
+    font-size: var(--sc-skolar-font-size-md);
     font-style: italic;
-    margin-top: 24px;
   }
 
-  .toolbar-toc {
-    position: absolute;
-    left: 0;
-    background-color: white;
-    color: black;
-    width: 100vw;
-    border-bottom: 2px solid #ccc;
-    display: flex;
-    justify-content: center;
-    padding: 2em 0;
+  .creator_name {
+    font-size: var(--sc-skolar-font-size-l);
+
+    text-align: center;
+
+    font-variant-caps: all-small-caps;
   }
 
-
-  .toc ol {
-    border-left: 4px solid gold;
-    padding-left: 2em;
-    margin-bottom: 2em;
-  }
-
-  .toc li {
-
-  }
-
-  img {
-    margin-right: 32px;
-  }
-
-  dd a p {
-    background-color: #eee;
+  dd a {
+    display: block;
+    background-color: var(--sc-tertiary-background-color);
     margin: 1em 0;
-    padding: 16px 32px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-
-  dd a p:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  }
-
-  a {
-    color: inherit;
+    padding: 1em 2em;
     text-decoration: none;
+
+    transition: all 200ms ease;
   }
 
-  section + section {
-    margin-top: 48px;
-    padding-top: 24px;
-    border-top: 1px solid #ccc;
-  }
-
-  section li {
-    margin-left: 2em;
-    margin-top: 0;
+  dd a:hover {
+    background-color: var(--sc-primary-color-light-transparent);
   }
 
   table {
-    margin: 48px auto;
+    margin: 4em auto;
+    width: 100%;
     position: relative;
     border-collapse: collapse;
+    font-family: var(--sc-sans-font);
   }
 
   caption {
-    font-size: 2em;
-    margin-bottom: 16px;
+    font-size: 1.5em;
+    margin-bottom: 0px;
+    font-weight: normal;
   }
 
-  tr {
+  table .icon {
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
   }
 
-  th,
-  td {
-    padding: 16px 32px;
+  table .paperback {
+    width: 36px;
+    height: 36px;
+    margin: -8px 4px 0 -8px;
+  }
+
+  table a .icon {
+    fill: white;
   }
 
   table a {
-    display: block;
-    padding: 8px 16px;
-    background-color: green;
+    display: inline-block;
+    padding: 0.5em 1em 0.5em 0.75em;
+    background-color: var(--sc-primary-accent-color);
     color: white;
+    text-decoration: none;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -209,130 +84,38 @@ export const SCPublicationStyles = css`
 
   table a:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    background-color: var(--sc-primary-accent-color);
   }
 
-  .web:before {
-    content: '🌐';
+  tfoot td:first-child {
+    font-weight: normal;
+    font-size: 0.8em;
   }
 
-  .book:before {
-    content: '📖';
-  }
-
-  .epub:before {
-    content: '🌐';
-  }
-
-  .pdf:before {
-    content: '🌐';
-  }
-
-  .web:before,
-  .book:before,
-  .epub:before,
-  .pdf:before {
-    color: #777;
-    margin-right: 8px;
-  }
-
-  .internal:after,
-  .external:after,
-  .download:after {
-    float: right;
-    margin-left: 16px;
-  }
-
-  .internal:after {
-    content:'⮕';
-  }
-
-  .external:after {
-    content: '⬈';
-  }
-
-  .download:after {
-    content:'⬇';
-  }
-  .author-pic {
+  figure {
     float: right;
     width: 300px;
-    height: 300px;
-    margin: 0 0 24px 32px;
+    height: auto;
+    margin: 0 0 1em 1em;
   }
 
-  .book-pic {
-    float: right;
-    width: 300px;
-    height: 300px;
-    margin: 0 0 24px 32px;
+  figure img {
+    margin-bottom: 8px;
+    box-shadow: var(--sc-shadow-elevation-8dp);
   }
 
   figcaption {
     color: #757575;
     text-align: center;
     font-size: 0.8em;
+    font-family: var(--sc-sans-font);
   }
 
-  .discourses-list {
-    list-style-type: none;
+  dl.publication {
+    font-family: var(--sc-sans-font);
+    font-size: 0.8em;
   }
-
-  .discourses-list li {
+  dt {
     font-weight: bold;
-    margin-top: 0;
-  }
-
-  .discourses-list ul {
-    list-style-type: none;
-    margin-top: 1em;
-    margin-left: 1em;
-  }
-
-  .discourses-list .translation {
-    font-weight: normal;
-  }
-
-  .discourses-list .root {
-    display: block;
-    margin-top: 0;
-    font-weight: normal;
-  }
-
-  .discourses-list a {
-    display: inline-block;
-    padding: 0.5em 1em;
-  }
-
-  .discourses-list a:hover {
-    background-color: #eee;
-  }
-
-  footer {
-    width: 100vw;
-    height: 10rem;
-    background-color: darkgoldenrod;
-    align-self: flex-end;
-    margin: 0;
-    color: white;
-    padding: 0 2em;
-    box-sizing: border-box;
-  }
-
-  footer a {
-    width: 50vw;
-    height: 10rem;
-    margin: 2em;
-
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 1.5em;
-  }
-
-  footer .prev {
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-  }
-
-  footer .next {
-    text-align: right;
   }
 `;

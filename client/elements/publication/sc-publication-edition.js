@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { icon } from '../../img/sc-icon';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
@@ -11,9 +12,9 @@ import { API_ROOT } from '../../constants';
 class SCPublicationEdition extends LitLocalized(LitElement) {
   static get styles() {
     return css`
-      ${SCPublicationStyles}
       ${typographyCommonStyles}
-        ${typographyStaticStyles}
+      ${typographyStaticStyles}
+        ${SCPublicationStyles}
       :host {
         display: block;
       }
@@ -76,12 +77,12 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
     navArray.push({
-      title: 'Publications editions',
-      url: `/publication-editions`,
+      title: 'Editions',
+      url: `/editions`,
       type: 'PublicationPage',
     });
     navArray.push({
-      title: `Publications-${this.editionDetail[0]?.translated_name || 'edition'}`,
+      title: `${this.editionDetail[0]?.translated_name || 'edition'}`,
       url: `${currentPath}`,
       type: 'PublicationPage',
     });
@@ -94,7 +95,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
         await fetch(this._computePublicationEditionDetailsApiUrl())
       ).json();
       if (this.editionDetail && this.editionDetail.length !== 0) {
-        reduxActions.changeToolbarTitle(`Publications-${this.editionDetail[0].translated_name}`);
+        reduxActions.changeToolbarTitle(`${this.editionDetail[0].translated_name}`);
         //this._updateNav();
       }
     } catch (error) {
@@ -180,25 +181,20 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       <main>
         <article>
           <header class="page-header">
-            <h1>${this.editionDetail[0].translated_name}</h1>
-            <p class="subtitle">A translation of the ${this.editionDetail[0].root_name}</p>
-            <p class="author">${this.editionInfo.publication.creator_name}</p>
+            <h1 class="translation_title">${this.editionDetail[0].translated_name}</h1> 
+            <p class="translation_subtitle">A translation of the ${
+              this.editionDetail[0].root_name
+            }</p>
+            <p class="creator_name">${this.editionInfo.publication.creator_name}</p>
           </header>
-          <figure class="book-pic">
-            <img src="/img/publication-pages/bibliotheca.jpg" alt="" width="300" height="300" />
-            <figcaption></figcaption>
+
+
+          <section>
+            <figure class="book-pic">
+            <img src="/img/publication-pages/dn-book.jpg" alt="Cover art for Long Discourses">
+            <figcaption>Paperback edition of Long Discourses</figcaption>
           </figure>
-          <nav class="toc">
-            <ol>
-              <li><a href="#translation">This translation</a></li>
-              <li><a href="#heading2">The ${this.editionDetail[0].root_name}</a></li>
-              <li><a href="#heading3">The Author</a></li>
-              <li><a href="#heading4">Available editions</a></li>
-              <li><a href="#heading5">Publication details</a></li>
-            </ol>
-          </nav>
-          <section class="description">
-            <h2><a id="translation">This translation</a></h2>
+            <h2>This translation</h2>
 
             <p>
               This translation was part of a project to translate the four Pali Nikāyas with the
@@ -211,67 +207,86 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
               <li>free of copyright.</li>
             </ul>
             <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Tawian.</p>
-            <h2><a id="heading2">The ${this.editionDetail[0].root_name}</a></h2>
+            <h2>The ${this.editionDetail[0].root_name}</h2>
             <p class="blurb">${this.editionDetail[0].blurb}</p>
-            <h2><a id="heading3">The Author</a></h2>
+            <h2>The Author</h2>
             <figure class="author-pic">
               <img
                 src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
-                alt=${this.creatorInfo.creator_uid}
-                width="300"
-                height="300"
-              />
-              <!-- <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption> -->
+                alt=${this.creatorInfo.creator_uid}>
+              <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption> 
             </figure>
             ${unsafeHTML(this.creatorInfo.creator_biography)}
           </section>
           <section>
-            <h2><a id="heading4">Available editions</a></h2>
             <table>
-              <caption></caption>
+              <caption>Available editions</caption>
+              <tbody>
               <tr>
-                <th>Type</th>
-                <th>Date</th>
-                <th>Publisher</th>
-                <th></th>
+                <td>${icon.paperback} Book, paperback</td>
+                
+                
+                <td><a href='https://github.com/suttacentral/editions' class='external'>${
+                  icon.external
+                } Print on demand</a></td>
               </tr>
               <tr>
-                <td class="web">Web</td>
-                <td>2018</td>
-                <td>SuttaCentral</td>
-                <td><a href=${this.collectionURL.get(
-                  this.editionUid
-                )} class='internal'>Read on SuttaCentral</a></td>
+                <td>${icon.hardcover} Book, hardcover</td>
+                
+                
+                <td><a href='https://github.com/suttacentral/editions' class='external'>${
+                  icon.external
+                } Print on demand</a></td>
               </tr>
               <tr>
-                <td class='book'>Book, softcover</td>
-                <td>2018</td>
-                <td>SuttaCentral</td>
-                <td><a href='https://github.com/suttacentral/editions' class='external'>Print on demand</a></td>
+                <td>${icon.epub} Epub</td>
+                
+                
+                <td><a href='https://github.com/suttacentral/editions' class='download'>${
+                  icon.file_download
+                } Download</a></td>
               </tr>
               <tr>
-                <td class='book'>Book, hardback</td>
-                <td>2018</td>
-                <td>SuttaCentral</td>
-                <td><a href='https://github.com/suttacentral/editions' class='external'>Print on demand</a></td>
+                <td>${icon.pdf} Pdf</td>
+                
+                
+                <td><a href='https://github.com/suttacentral/editions' class='download'>${
+                  icon.file_download
+                } Download</a></td>
               </tr>
-              <tr>
-                <td class='epub'>Epub</td>
-                <td>2018</td>
-                <td>SuttaCentral</td>
-                <td><a href='https://github.com/suttacentral/editions' class='download'>Download</a></td>
+                            <tr>
+                <td>${icon.html} Raw HTML file</td>
+                
+                
+                <td><a href='https://github.com/suttacentral/editions' class='download'>${
+                  icon.file_download
+                } Download</a></td>
               </tr>
-              <tr>
-                <td class='pdf'>Pdf</td>
-                <td>2018</td>
-                <td>SuttaCentral</td>
-                <td><a href='https://github.com/suttacentral/editions' class='download'>Download</a></td>
+                            <tr>
+                <td>${icon.latex} Raw TeX file</td>
+                
+                
+                <td><a href='https://github.com/suttacentral/editions' class='download'>${
+                  icon.file_download
+                } Download</a></td>
               </tr>
+                            <tr>
+                <td>${icon.web} Web</td>
+                
+                
+                <td><a href=${this.collectionURL.get(this.editionUid)} class='internal'>${
+      icon.translation
+    } Read on SuttaCentral</a></td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr><td>Updated {{05:07:2022}}</td></tr>
+              </tfoot>
             </table>
           </section>
 
           <section>
-            <h2><a id="heading5">Publication details</a></h2>
+            <h2>Publication details</h2>
             <dl class="publication">
               <dt class="publication_number">SuttaCentral publication number</dt>
               <dd>${this.editionInfo.publication.publication_number}</dd>
