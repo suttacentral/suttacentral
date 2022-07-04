@@ -26,12 +26,14 @@ export const SCPublicationStyles = css`
 
   dd a {
     display: block;
-    background-color: var(--sc-tertiary-background-color);
+
     margin: 1em 0;
     padding: 1em 2em;
-    text-decoration: none;
 
     transition: all 200ms ease;
+    text-decoration: none;
+
+    background-color: var(--sc-tertiary-background-color);
   }
 
   dd a:hover {
@@ -39,25 +41,31 @@ export const SCPublicationStyles = css`
   }
 
   table {
-    margin: 4em auto;
-    width: 100%;
-    position: relative;
-    border-collapse: collapse;
     font-family: var(--sc-sans-font);
+
+    position: relative;
+
+    width: 100%;
+    margin: 4em auto;
+
+    border-collapse: collapse;
   }
 
   caption {
     font-size: 1.5em;
-    margin-bottom: 0px;
     font-weight: normal;
+
+    margin-bottom: 0;
   }
 
   table .icon {
-    height: 24px;
-    width: 24px;
     display: inline-block;
-    vertical-align: middle;
+
+    width: 24px;
+    height: 24px;
     margin-right: 8px;
+
+    vertical-align: middle;
   }
 
   table .paperback {
@@ -71,29 +79,34 @@ export const SCPublicationStyles = css`
   }
 
   table a {
-    display: inline-block;
-    padding: 0.5em 1em 0.5em 0.75em;
-    background-color: var(--sc-primary-accent-color);
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: 500;
+
+    display: inline-block;
+
+    padding: 0.5em 1em 0.5em 0.75em;
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-decoration: none;
+
+    color: white;
+    border-radius: 5px;
+    background-color: var(--sc-primary-accent-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   }
 
   table a:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     background-color: var(--sc-primary-accent-color);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
 
   tfoot td:first-child {
-    font-weight: normal;
     font-size: 0.8em;
+    font-weight: normal;
   }
 
   figure {
     float: right;
+
     width: 300px;
     height: auto;
     margin: 0 0 1em 1em;
@@ -101,20 +114,24 @@ export const SCPublicationStyles = css`
 
   figure img {
     margin-bottom: 8px;
+
     box-shadow: var(--sc-shadow-elevation-8dp);
   }
 
   figcaption {
-    color: #757575;
-    text-align: center;
-    font-size: 0.8em;
     font-family: var(--sc-sans-font);
+    font-size: 0.8em;
+
+    text-align: center;
+
+    color: #757575;
   }
 
   dl.publication {
     font-family: var(--sc-sans-font);
     font-size: 0.8em;
   }
+
   dt {
     font-weight: bold;
   }
