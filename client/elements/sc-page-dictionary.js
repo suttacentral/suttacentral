@@ -9,6 +9,12 @@ import { LitLocalized } from './addons/sc-localization-mixin';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { store } from '../redux-store';
 
+import(
+  /* webpackMode: "lazy" */
+  /* webpackPrefetch: true */
+  './sc-map.js'
+);
+
 class SCPageDictionary extends LitLocalized(LitElement) {
   static get styles() {
     return css`
