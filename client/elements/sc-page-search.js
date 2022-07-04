@@ -15,6 +15,12 @@ import(
   './suttaplex/card/sc-suttaplex.js'
 );
 
+import(
+  /* webpackMode: "lazy" */
+  /* webpackPrefetch: true */
+  './sc-map.js'
+);
+
 class SCPageSearch extends LitLocalized(LitElement) {
   render() {
     return html`
@@ -297,18 +303,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
         p + ol,
         p + ul {
           margin: 0.5em 0 1em;
-        }
-
-        .google-maps {
-          height: 480px;
-          margin: var(--sc-size-md-larger) 0;
-        }
-
-        .google-maps iframe {
-          width: 100%;
-          height: 480px;
-
-          border: none;
         }
 
         .d-none {
