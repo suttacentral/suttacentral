@@ -21,7 +21,10 @@ from common.queries import (
     BILARA_REFERENCES,
     UPDATE_TEXT_EXTRA_INFO_VOLPAGE,
     UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE,
-    UPSERT_NAMES
+    UPSERT_NAMES,
+    ACRONYM_IS_NULL_UIDS,
+    SUTTA_PATH,
+    UPSERT_TEXT_EXTRA_ACRONYM_INFO,
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
@@ -44,6 +47,8 @@ from . import (
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
 from .util import json_load
+import re
+from data_loader.extra_info import process_extra_info_file
 
 def collect_data(repo_dir: Path, repo_addr: str):
     """Ensure data is in data dir and update it if needed and if it's git repo.
@@ -371,6 +376,39 @@ def update_text_extra_info():
             db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs2nd)})
 
 
+def update_text_acronym(structure_dir):
+    """Generate acronym from super_extra_info and add to ArangoDB
+
+    Args:
+        structure_dir: Path to structure data directory.
+    """
+    db = arangodb.get_db()
+    uids = list(db.aql.execute(ACRONYM_IS_NULL_UIDS))
+    super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
+    for uid in tqdm(uids):
+        sutta_full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid['uid']}).next()
+        for path in reversed(sutta_full_path['full_path'].split('/')):
+            sutta_superior_path = super_extra_info.get(path)
+            if (sutta_superior_path is not None):
+                last_index = uid['uid'].rfind('-')
+                acronym = ''
+                # Determine whether it is a range sutta， e.g. an1.1-10
+                if (last_index != -1 and uid['uid'][last_index + 1:].isdigit()):
+                    acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ').replace('-', '–')
+                else:
+                    first_part_index = uid['uid'].find(path + '-')
+                    if first_part_index != -1:
+                        second_part = uid['uid'].replace(path + '-', '').capitalize()
+                        # Add spaces before numbers
+                        second_part = re.sub(r"([0-9]+(\.[0-9]+)?)",r" \1 ", second_part).strip()
+                        acronym = sutta_superior_path['acronym'] + ' ' + second_part
+                    else:
+                        acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ')
+                if (acronym != ''):
+                    db.aql.execute(UPSERT_TEXT_EXTRA_ACRONYM_INFO, bind_vars={'uid': uid['uid'], 'acronym': acronym})
+                break
+
+
 def get_pts_ref(ref):
     arr = ref.split(',')
     ptsRefs = []
@@ -544,6 +582,9 @@ def run(no_pull=False):
 
     print_stage("Updating text_extra_info")
     update_text_extra_info()
+
+    print_stage("Update Acronym")
+    update_text_acronym(structure_dir)
 
     print_stage("Generating sitemap")
     sitemap = generate_sitemap(db)
