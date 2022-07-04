@@ -1,9 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-
 import { LitLocalized } from '../addons/sc-localization-mixin';
-import { setNavigation } from '../navigation/sc-navigation-common';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
@@ -12,6 +12,8 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
   static get styles() {
     return css`
       ${SCPublicationStyles}
+      ${typographyCommonStyles}
+        ${typographyStaticStyles}
       :host {
         display: block;
       }
@@ -91,7 +93,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       this.editionDetail = await (
         await fetch(this._computePublicationEditionDetailsApiUrl())
       ).json();
-      if (this.editionDetail && this.editionDetail.length !== 0) { 
+      if (this.editionDetail && this.editionDetail.length !== 0) {
         reduxActions.changeToolbarTitle(`Publications-${this.editionDetail[0].translated_name}`);
         //this._updateNav();
       }
@@ -165,7 +167,12 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
   }
 
   render() {
-    if (!this.editionDetail || this.editionDetail.length === 0 || !this.editionInfo || !this.creatorInfo) {
+    if (
+      !this.editionDetail ||
+      this.editionDetail.length === 0 ||
+      !this.editionInfo ||
+      !this.creatorInfo
+    ) {
       return html``;
     }
     return html`
@@ -281,9 +288,13 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
                   <p
                     xmlns:dct="https://purl.org/dc/terms/" xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#"
                       <img src='/img/publication-pages/cc-zero.svg' alt='CC0' /><span><strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.
-                      </strong><br>To the extent possible under law, <span property='dct:title'>${this.editionInfo.publication.creator_name}</span> has
+                      </strong><br>To the extent possible under law, <span property='dct:title'>${
+                        this.editionInfo.publication.creator_name
+                      }</span> has
                       waived all copyright and related or neighboring rights to <span property='dct:title'>Numbered
-                        Discourses</span>. This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${this.editionUid}'> Australia</span>.</span>
+                        Discourses</span>. This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
+                          this.editionUid
+                        }'> Australia</span>.</span>
                   </p>
                 </a>
                 </a>
