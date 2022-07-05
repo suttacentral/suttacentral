@@ -40,7 +40,7 @@ lxml==4.6.5
 marisa-trie==0.7.7
 MarkupSafe==2.0.1
 mistune==2.0.2
-numpy==1.22.0
+numpy==1.21.5
 packaging==21.3
 pluggy==0.13.1
 py==1.11.0
