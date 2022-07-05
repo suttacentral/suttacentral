@@ -25,6 +25,7 @@ from common.queries import (
     ACRONYM_IS_NULL_UIDS,
     SUTTA_PATH,
     UPSERT_TEXT_EXTRA_ACRONYM_INFO,
+    UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO,
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
@@ -406,6 +407,7 @@ def update_text_acronym(structure_dir):
                         acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ')
                 if (acronym != ''):
                     db.aql.execute(UPSERT_TEXT_EXTRA_ACRONYM_INFO, bind_vars={'uid': uid['uid'], 'acronym': acronym})
+                    db.aql.execute(UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO, bind_vars={'uid': uid['uid'], 'acronym': acronym})
                 break
 
 
