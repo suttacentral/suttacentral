@@ -1279,6 +1279,12 @@ UPDATE {
 } IN text_extra_info
 '''
 
+UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO = '''
+FOR u IN super_nav_details
+    FILTER u.uid == @uid
+    UPDATE u WITH { acronym: @acronym } IN super_nav_details
+'''
+
 UPSERT_NAMES = '''
 UPSERT { uid: @uid, lang: @lang }
 INSERT { name: @name, is_root: false, lang: @lang, uid: @uid }
