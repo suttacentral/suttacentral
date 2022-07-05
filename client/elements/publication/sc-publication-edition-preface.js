@@ -5,12 +5,16 @@ import { API_ROOT } from '../../constants';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 
 class ScPublicationEditionPreface extends LitLocalized(LitElement) {
   static get styles() {
     return css`
+      ${typographyCommonStyles}
+      ${typographyStaticStyles}
       ${SCPublicationStyles}
       :host {
         display: block;
@@ -43,7 +47,9 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
 
   async _fetchPreface() {
     try {
-      this.editionFiles = await (await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)).json();
+      this.editionFiles = await (
+        await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
+      ).json();
       // this.editionFiles = await (await fetch(`https://suttacentral.net/api/publication/edition/${store.getState().currentEditionId}/files`)).json();
       // eslint-disable-next-line no-restricted-syntax
       for (const key in this.editionFiles) {

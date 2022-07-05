@@ -24,7 +24,7 @@ export const SCPublicationStyles = css`
     font-variant-caps: all-small-caps;
   }
 
-  dd a {
+  [rel~='license'] {
     display: block;
 
     margin: 1em 0;
@@ -36,8 +36,12 @@ export const SCPublicationStyles = css`
     background-color: var(--sc-tertiary-background-color);
   }
 
-  dd a:hover {
+  [rel~='license']:hover {
     background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  [rel~='license'] p {
+    margin-top: 0;
   }
 
   table {
