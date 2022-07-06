@@ -2,73 +2,92 @@
 import { css } from 'lit';
 
 export const SCPublicationEditionsStyles = css`
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
-  * + * {
-    margin-top: 1em;
-  }
-
-  body {
-    margin-top: 0;
-    line-height: 1.5;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 100vh;
-  }
-
   main {
-    margin: 4em auto;
     max-width: 720px;
-    flex-grow: 1;
-  }
-
-  main,
-  footer {
-    flex-shrink: 0;
+    margin: 2em auto 4em;
   }
 
   .page-header {
-    text-align:  center;
+    border-bottom: 2px solid var(--sc-primary-color-light);
   }
 
   h1 {
+    font-family: var(--sc-serif-font);
+    font-size: 3rem;
+    font-weight: 300;
+
     margin: 0;
+
+    font-variant-caps: small-caps;
   }
 
-  header p {
-    margin: 8px;
+  .subtitle {
+    font-family: var(--sc-serif-font);
+    font-style: italic;
+
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  .down-all ul {
+    list-style-type: none;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+
+    vertical-align: middle;
+
+    fill: var(--sc-icon-color);
+  }
+
+  .project header {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+
+  .translation_title {
+    font-size: var(--sc-skolar-font-size-static-subtitle);
+
+    color: var(--sc-primary-text-color);
+  }
+
+  .translation_subtitle {
+    font-size: var(--sc-skolar-font-size-md);
+    font-style: italic;
+  }
+
+  .creator_name {
+    font-size: var(--sc-skolar-font-size-l);
+
+    text-align: center;
+
+    font-variant-caps: all-small-caps;
   }
 
   .project a {
-    color: inherit;
-    text-decoration: none;
     display: block;
+
+    text-decoration: none;
+
+    color: inherit;
+    border-radius: 4px;
   }
 
   .project a:hover {
-    background-color: orange;
+    background-color: var(sc-primary-color);
   }
 
-  img {
-    width: 100%;
-    height: auto;
-    margin: 0 0 24px 0;
-    object-fit: cover;
+  .publication_blurb {
+    font-family: var(--sc-sans-font);
+
+    min-height: 20em;
+    padding: 1em;
   }
 
-  figcaption {
-    color: #757575;
-    text-align: center;
-    font-size: 0.8em;
-  }
-
-  .byline {
-    font-size: 1.25em;
-    font-style: italic;
+  h2 {
     margin-top: 0;
   }
 
@@ -77,23 +96,34 @@ export const SCPublicationEditionsStyles = css`
   }
 
   .project {
-    border: 1px solid #ccc;
-    padding: 1em 1em 1em 1em ;
-    border-radius: 4px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .project:before {
+    display: block;
+
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 24px;
+
+    content: '';
+
+    border-bottom: 1px solid var(--sc-border-color);
+  }
+
+  img {
+    display: block;
+    float: left;
+
+    width: auto;
+    height: 16em;
+    margin: 0.5em 1em 1em 0;
+
+    box-shadow: var(--sc-shadow-elevation-8dp);
   }
 
   .down-all {
     margin-bottom: 4em;
-  }
-
-  .button {
-    text-align: center;
-    font-weight: 600;
-    text-transform: uppercase;
-    display: block;
-    padding: 1em;
-    background-color: green;
-    color: white;
-    border-radius: 4px;
   }
 `;

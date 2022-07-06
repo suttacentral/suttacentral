@@ -2,13 +2,18 @@ import { LitElement, html, css } from 'lit';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
+import { icon } from '../../img/sc-icon';
 import { SCPublicationEditionsStyles } from '../styles/sc-publication-editions-styles';
+import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 
 class ScPublicationEditions extends LitLocalized(LitElement) {
   static get styles() {
     return css`
+      ${typographyCommonStyles}
+      ${typographyStaticStyles}
       ${SCPublicationEditionsStyles}
       :host {
         display: block;
@@ -26,7 +31,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._updateNav();
-    reduxActions.changeToolbarTitle('Publications editions');
+    reduxActions.changeToolbarTitle('Editions');
   }
 
   _updateNav() {
@@ -34,7 +39,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
     navArray.push({
-      title: 'Publications editions',
+      title: 'Editions',
       url: `${currentPath}`,
       type: 'PublicationPage',
     });
@@ -49,27 +54,28 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </header>
-          <figure class="book-pic"><img src="/img/publication-pages/editions.jpg" alt="" /></figure>
+              <p>Since 2005 SuttaCentral has provided access to the texts, translations, and parallels of early Buddhist texts. In 2018 we started creating and publishing our own translations of these seminal spiritual classics. The “Editions” series now makes selected translations available as books in various formats, including print, PDF, and EPUB.</p>
+              <p>Editions are selected from our most complete, well-crafted, and reliable translations. They aim to bring these texts to a wider audience in forms that reward mindful reading. Care is taken with every detail of the production, and we aim to meet or exceed professional best standards in every way. These are the core scriptures underlying the entire Buddhist tradition, and we believe that they deserve to be preserved and made available in highest quality without compromise.</p>
+
           <section class="down-all">
-            <h2 class="down-all-notice">Download all editions as a zip file</h2>
-            <a
-              class="button"
-              href="https://github.com/suttacentral/editions/archive/refs/heads/main.zip"
-              >Download</a
-            >
-            <p>
-              <a href="https://github.com/suttacentral/editions">Or go to the source on Github.</a>
-            </p>
+          <ul>
+<li>${icon.translation} Order a printed copy from the  individual edition pages below.</li>
+          <li>${icon.file_download}
+            <a href="https://github.com/suttacentral/editions/archive/refs/heads/main.zip"
+              >Download digital editions in all file types (zip). </a>
+            </li><li>${icon.external}
+              <a href="https://github.com/suttacentral/editions">Go to the source on Github.</a>
+            </li>
           </section>
           <section class="project">
-            <a href="/publication-edition/dn">
+            <a class='header-link' href="/publication-edition/dn">
               <header>
                 <h2 class="translation_title">Long Discourses</h2>
                 <span class="translation_subtitle">A faithful translation of the Dīgha Nikāya</span>
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"> <img src="/img/publication-pages/dn-book.jpg" alt="Cover art for Long Discourses">
               The Long Discourses (Dīgha Nikāya, abbreviated DN) is a collection of 34 discourses in
               in the Pali canon (Tipiṭaka) of the Theravāda school. The word “long” refers to the
               length of the individual discourses, not the collection as a whole, which is in fact
@@ -87,7 +93,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/mn-book.jpg" alt="Cover art for Middle Discourses">
               The Middle Discourses (Majjhima Nikāya) is a collection of 152 discourses in the Pali
               Pali canon (Tipiṭaka) that are of “middle” length. It is perhaps the most popular
               collection of early discourses, its teachings ranging from practical morality for
@@ -105,7 +111,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/sn-book.jpg" alt="Cover art for Linked Discourses">
               The “Linked” or “Connected” Discourses (Saṁyutta Nikāya) is a collection of over a
               thousand short discourses organized by either a theme of Dhamma or the person who is
               speaking. It is the primary source work for fundamental themes such the five
@@ -124,7 +130,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/an-book.jpg" alt="Cover art for Numbered Discourses">
               The “Numbered” or “Numerical” Discourses (Aṅguttara Nikāya) organizes texts in
               numbered sets, from one to eleven. Within each numerical set we find a diverse range
               of teachings, with an emphasis on practical application and teaching of the Dhamma for
@@ -142,7 +148,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">
               The Pali version of this famous text, consisting of 423 verses organized into
               memorable themes. It is the most widely read of the early texts, and has been
               translated many times into many languages. Versions are found in Chinese, Tibetan, and
@@ -157,7 +163,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class='publication_blurb'>The “Heartfelt Sayings” (Udāna) consists of eighty short discourses in mixed prose
+            <p class='publication_blurb'><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">The “Heartfelt Sayings” (Udāna) consists of eighty short discourses in mixed prose
               verse that are inspiring, accessible, and epigrammatic. It forms an ideal introduction
               to the Buddha’s teachings, a combination of simple, catchy, and profound that remains
               as popular today as it has ever been. The collection speaks of meditation, wisdom, and
@@ -173,7 +179,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">
               112 short discourses in mixed prose and verse, arranged in the Aṅguttara style of
               ascending numbered sets, from one to four. Alone among Buddhist texts, its survival is
               attributed not to the Saṅgha, but to a laywoman named Khujjuttarā. According to the
@@ -192,7 +198,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">
               The “Anthology of Discourses” (Suttanipāta) contains 74 short texts in verse or mixed
               prose and verse, arranged in five chapters. It contains some of the most beloved texts
               in popular Buddhism, such as the Ratana, Maṅgala, and Mettā Suttas, which are known to
@@ -212,7 +218,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">
               The “Verses of the Senior Monks” is a collection of about 1288 verses attributed to
               264 of the senior monks alive in the Buddha’s time, or in a few cases, a little later.
               It is a pair with the Therīgāthā, the “Verses of the Senior Nuns”. These verses
@@ -228,7 +234,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Sujato</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">
               The “Verses of the Senior Nuns” is a collection of about 524 verses attributed to 73
               73 of the senior nuns alive in the Buddha’s time or a little later. Celebrating the
               bliss of freedom and the life of meditation, the verses are full of proud and joyous
@@ -248,7 +254,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </header>
             </a>
             <p class="creator_name">Bhikkhu Brahmali</p>
-            <p class="publication_blurb">
+            <p class="publication_blurb"><img src="/img/publication-pages/snp-book.jpg" alt="Cover art for Anthology of Discourses">
               The texts on Monastic Law (vinaya) detail the lifestyle, rules, and procedures for
               Buddhist monks and nuns. They provide the guidelines for Buddhist monastics to this
               day, and in addition, paint a detailed and vivid picture of everyday life in ancient

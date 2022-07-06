@@ -52,7 +52,7 @@ export const staticHomeStyles = css`
   }
 
   .editions {
-    padding: 1em 0 0 0;
+    padding: 1em 0 1em 0;
     background-color: var(--sc-tertiary-background-color);
     width: calc(100vw - var(--scrollbar-width));
     transform: translateX(calc((min(1600px, 100%) - 100%) / 2));
@@ -77,49 +77,6 @@ export const staticHomeStyles = css`
     padding: 1rem 0 0 0;
     font-style: italic;
     color: var(--sc-primary-text-color);
-  }
-
-  .editions .pills {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, auto));
-    align-items: baseline;
-    gap: 1rem;
-    width: 100%;
-    max-width: 50rem;
-    padding: 0 0 1rem 0;
-  }
-
-  .editions .pills span {
-    text-align: center;
-    letter-spacing: var(--sc-caps-letter-spacing);
-
-    font-variant-caps: all-small-caps;
-    font-weight: 600;
-    font-stretch: expanded;
-    color: var(--sc-secondary-text-color);
-  }
-
-  .editions .paperback:before {
-    content: url('/img/home-page/paperback.svg');
-  }
-  .editions .hardcover:before {
-    content: url('/img/home-page/hardcover.svg');
-  }
-  .editions .epub:before {
-    content: url('/img/home-page/epub.svg');
-  }
-  .editions .pdf:before {
-    content: url('/img/home-page/pdf.svg');
-  }
-  .editions .html:before {
-    content: url('/img/home-page/html.svg');
-  }
-  .editions .latex:before {
-    content: url('/img/home-page/latex.svg');
-  }
-
-  .editions :before {
-    display: block;
   }
 
   .editions figure {

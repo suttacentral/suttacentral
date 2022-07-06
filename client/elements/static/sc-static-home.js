@@ -64,14 +64,6 @@ class SCStaticHomePage extends SCStaticPage {
 
             <div class="call-to-action">Read selected SuttaCentral translations as books</div>
           </a>
-          <div class="pills">
-            <span class="paperback">paperback</span>
-            <span class="hardcover">hardcover</span>
-            <span class="epub">epub</span>
-            <span class="pdf">pdf</span>
-            <span class="html">html</span>
-            <span class="latex">latex</span>
-          </div>
         </section>
 
         <section class="top-two">
