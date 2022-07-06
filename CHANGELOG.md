@@ -1,6 +1,12 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.07.06
+
+- Introduce sc-map element. suttacentral/suttacentral#939
+- Generate `acronym` from `super_extra_info`.  suttacentral/suttacentral#2470 
+- Update `super_nav_details` collection `acronym` info. suttacentral/suttacentral#2470 
+
 ## 2022.06.23
 
 - Fix: when clicking on a Table of Contents item, the page title changes to "SuttaCentral—discourses".
