@@ -26,6 +26,8 @@ from common.queries import (
     SUTTA_PATH,
     UPSERT_TEXT_EXTRA_ACRONYM_INFO,
     UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO,
+    SINGLE_ROOT_TEXT,
+    UPSERT_ROOT_NAMES,
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
@@ -438,6 +440,24 @@ def update_translated_title():
         db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
 
 
+def update_root_title():
+    db = arangodb.get_db()
+    root_title_is_null_uids = list(db.aql.execute("FOR u IN super_nav_details FILTER u.root_lang == 'pli' AND u.name == '' RETURN u.uid"))
+    for uid in tqdm(root_title_is_null_uids):
+        root = db.aql.execute(SINGLE_ROOT_TEXT, bind_vars={'uid': uid}).next()
+        if root is not None:
+            rootText = json_load(root['file_path'])
+            title = ''
+            titleIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            for i in reversed(titleIndex):
+                title = rootText.get(uid + ':0.' + str(i))
+                if title is None and uid.find('-') != -1:
+                    title = rootText.get(uid.split('-')[0] + ':0.' + str(i))
+                if title is not None:
+                    break
+            db.aql.execute(UPSERT_ROOT_NAMES, bind_vars={'uid': uid, 'name': title})
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -537,6 +557,9 @@ def run(no_pull=False):
 
     print_stage("Updating names")
     update_translated_title()
+
+    print_stage("Updating root names")
+    update_root_title()
 
     print_stage('Load bilara_author_edition from sc_bilara_data')
     sc_bilara_data.load_bilara_author_edition(db, sc_bilara_data_dir)
