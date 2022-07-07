@@ -1292,6 +1292,14 @@ UPDATE {
 } IN names
 '''
 
+UPSERT_ROOT_NAMES = '''
+UPSERT { uid: @uid, is_root: true }
+INSERT { name: @name, is_root: true, lang: null, uid: @uid }
+UPDATE {
+  name: @name
+} IN names
+'''
+
 PARALLELS_LITE = '''
 FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
     FILTER v.type == 'leaf'
@@ -1406,4 +1414,12 @@ FOR doc IN super_nav_details
     RETURN {
         uid: doc.uid
     }
+'''
+
+SINGLE_ROOT_TEXT = '''
+FOR root IN sc_bilara_texts
+    FILTER 'root' IN root.muids
+    AND root.lang == 'pli'
+    AND root.uid == @uid
+    RETURN root
 '''
