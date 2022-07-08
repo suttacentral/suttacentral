@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.07.08
+
+- Extract root title from root text.
+
 ## 2022.07.06
 
 - Introduce sc-map element. suttacentral/suttacentral#939
