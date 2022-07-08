@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = merge(require('./webpack.common'), {
   mode: 'production',
   productionSourceMap: false,
-  css: {         
+  css: {
     sourceMap: false,
   },
   optimization: {
