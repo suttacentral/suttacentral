@@ -70,9 +70,9 @@ export class SCMap extends LitLocalized(LitElement) {
 
     let layersControl = L.control.layers();
 
-    this.fetchData().then(data =>
-      this.getLayerNames(data).map(layerName => {
-        let layer = this.getLayer(data, layerName);
+    this._fetchData().then(data =>
+      this._getLayerNames(data).map(layerName => {
+        let layer = this._getLayer(data, layerName);
         map.addLayer(layer);
         layersControl.addOverlay(layer, layerName);
       })
@@ -81,7 +81,7 @@ export class SCMap extends LitLocalized(LitElement) {
     layersControl.addTo(map);
   }
 
-  async fetchData() {
+  async _fetchData() {
     return fetch('../files/map-data.json')
       .then(response => {
         if (!response.ok) {
@@ -94,11 +94,11 @@ export class SCMap extends LitLocalized(LitElement) {
       });
   }
 
-  getLayerNames(data) {
+  _getLayerNames(data) {
     return Array.from(new Set(data.features.map(feature => feature.properties.layer)));
   }
 
-  getLayer(data, layerName) {
+  _getLayer(data, layerName) {
     return L.geoJSON(data, {
       filter: (feature, layer) => feature.properties.layer == layerName,
       style: feature => feature.properties.style,
