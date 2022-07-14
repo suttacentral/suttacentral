@@ -38,6 +38,7 @@ export const commonStyles = css`
 
 export const plainStyles = html`
   <style>
+    section,
     article {
       max-width: 720px;
     }
