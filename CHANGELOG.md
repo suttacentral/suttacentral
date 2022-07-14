@@ -1,6 +1,11 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.07.14
+
+- Use SVG <defs> to shrink code for SC logo.
+- Change icons SVG tag to HTML tag.
+
 ## 2022.07.08
 
 - Extract root title from root text.
