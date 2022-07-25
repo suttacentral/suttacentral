@@ -11,14 +11,6 @@ export const typographyBilaraStyles = css`
 
   /* we need some special style resets for segmented texts, because reference numbers are included inside the text HTML and hence are affected by its styles. Instead, try to apply styles to inner elements. */
 
-  dd {
-    margin-left: 0;
-  }
-
-  dd .text {
-    margin-left: 1em;
-  }
-
   ul,
   ol {
     padding-left: 0;
