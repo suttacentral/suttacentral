@@ -2,11 +2,6 @@
 import { css } from 'lit';
 
 export const SCPublicationEditionsStyles = css`
-  main {
-    max-width: 720px;
-    margin: 2em auto 4em;
-  }
-
   .page-header {
     border-bottom: 2px solid var(--sc-primary-color-light);
   }

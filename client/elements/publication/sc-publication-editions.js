@@ -4,6 +4,7 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { icon } from '../../img/sc-icon';
 import { SCPublicationEditionsStyles } from '../styles/sc-publication-editions-styles';
+import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
@@ -12,6 +13,7 @@ import { store } from '../../redux-store';
 class ScPublicationEditions extends LitLocalized(LitElement) {
   static get styles() {
     return css`
+      ${layoutSimpleStyles}
       ${typographyCommonStyles}
       ${typographyStaticStyles}
       ${SCPublicationEditionsStyles}
