@@ -1,6 +1,12 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.07.21
+
+- Normalize trailing spaces. #2454
+- Remove code of frontend about add trailing spaces. #2454
+- Update dependencies.
+
 ## 2022.07.14
 
 - Use SVG <defs> to shrink code for SC logo.
