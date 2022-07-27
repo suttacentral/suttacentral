@@ -768,14 +768,14 @@ class SCTextBilara extends SCTextCommon {
     const spanElement = this.querySelector(`#${key} .root .text`);
     if (spanElement) {
       spanElement.classList.add(`${this.paliScript.toLowerCase()}-script`);
-      spanElement.innerHTML = this._tweakText(value);
+      spanElement.innerHTML = value;
     }
   }
 
   _addRootTextToSpan(key, value) {
     const spanElement = this.querySelector(`#${key} .root .text`);
     if (spanElement) {
-      spanElement.innerHTML = this._tweakText(value);
+      spanElement.innerHTML = value;
     }
   }
 
@@ -1011,12 +1011,8 @@ class SCTextBilara extends SCTextCommon {
   _addTranslationTextToSpan(key, value) {
     const spanElement = this.querySelector(`#${key} .translation .text`);
     if (spanElement) {
-      spanElement.innerHTML = this._tweakText(value);
+      spanElement.innerHTML = value;
     }
-  }
-
-  _tweakText(text) {
-    return text + (text.match(/—$/) ? '' : ' ');
   }
 
   _putWordsIntoSpans(selector, unit) {
