@@ -16,7 +16,9 @@ class ScSiteFooter extends LitLocalized(LitElement) {
       footer {
         padding: 4em 4vw;
 
-        background-color: var(--sc-tertiary-background-color);
+        background-color: var(--sc-secondary-text-color);
+
+        color: var(--sc-tertiary-text-color);
       }
 
       .footer-top {

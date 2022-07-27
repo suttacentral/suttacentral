@@ -19,6 +19,8 @@ class SCTextStepper extends LitElement {
           margin: 0 0 -64px 0;
 
           background-color: var(--sc-secondary-text-color);
+
+          border-bottom: 1px solid var(--sc-icon-color);
         }
 
         .button {
