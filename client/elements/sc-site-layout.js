@@ -425,6 +425,14 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       universalToolbar.style.position = 'sticky';
     }
   }
+
+  hideATB() {
+    this.querySelector('#static_pages_nav_menu')?.classList.add('hidden');
+  }
+
+  showATB() {
+    this.querySelector('#static_pages_nav_menu')?.classList.remove('hidden');
+  }
 }
 
 customElements.define('sc-site-layout', SCSiteLayout);

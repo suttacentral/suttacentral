@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable lit/no-invalid-html */
 /* eslint-disable indent */
 import { css, html, LitElement } from 'lit';
 import { LitLocalized } from './addons/sc-localization-mixin';
@@ -76,24 +78,14 @@ const routes = {
     loader: () => import('./static/sc-static-abbreviations.js'),
   },
   'publicationEditions': {
-    path: '/publication-editions',
+    path: '/editions',
     content: html`<sc-publication-editions />`,
     loader: () => import('./publication/sc-publication-editions.js'),
   },
-  'publicationEditionPreface': {
-    path: '/publication-edition-preface',
-    content: html`<sc-publication-edition-preface />`,
-    loader: () => import('./publication/sc-publication-edition-preface.js'),
-  },
-  'publicationEditionAcknowledgements': {
-    path: '/publication-edition-acknowledgements',
-    content: html`<sc-publication-edition-acknowledgements />`,
-    loader: () => import('./publication/sc-publication-edition-acknowledgements.js'),
-  },
-  'publicationEditionIntroduction': {
-    path: '/publication-edition-introduction',
-    content: html`<sc-publication-edition-introduction />`,
-    loader: () => import('./publication/sc-publication-edition-introduction.js'),
+  'publicationEditionMatter': {
+    path: '/edition/:editionUid/:langIsoCode/:authorUid/:matter',
+    content: html`<sc-publication-edition-matter />`,
+    loader: () => import('./publication/sc-publication-edition-matter.js'),
   },
   'abhidhamma': {
     path: '/abhidhamma-guide-sujato',
@@ -236,7 +228,7 @@ const routes = {
     loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
   'publicationEdition': {
-    path: '/publication-edition/:editionUid',
+    path: '/edition/:editionUid/:langIsoCode/:authorUid',
     content: html`<sc-publication-edition />`,
     loader: () => import('./publication/sc-publication-edition.js')
   },
@@ -601,7 +593,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       'publicationSN',
       'publicationAN',
       'publicationMinor',
-      'publicationEditionPreface',
+      'publicationEditionMatter',
       'publicationEditionAcknowledgements',
       'publicationEditionAbbreviations',
       'publicationEditionIndex',
@@ -636,6 +628,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
         return;
       case 'sutta':
         return;
+      case 'publicationEditionMatter':
+        return;
       case 'palitipitaka':
         this.actions.changeToolbarTitle('Pāḷi Tipiṭaka');
         break;
@@ -645,6 +639,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
           const pageNameTitle = this.localize(key);
           this.actions.changeToolbarTitle(pageNameTitle);
         } else {
+          console.log(`No title for ${this.currentRoute.name}`);
           this.actions.changeToolbarTitle('');
         }
     }

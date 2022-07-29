@@ -65,4 +65,11 @@ export class reduxActions {
       currentEditionId,
     });
   }
+
+  static changeCurrentEditionHomeInfo(currentEditionHomeInfo) {
+    store.dispatch({
+      type: 'CHANGE_CURRENT_EDITION_HOME_INFO',
+      currentEditionHomeInfo,
+    });
+  }
 }

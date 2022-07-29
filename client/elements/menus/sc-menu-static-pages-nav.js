@@ -1,15 +1,16 @@
 import { LitElement, html } from 'lit';
-
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { store } from '../../redux-store';
-
 import { SCMenuStaticPagesNavStyles } from '../styles/sc-menu-static-pages-nav-styles';
+import { API_ROOT } from '../../constants';
 
 class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   static get properties() {
     return {
       staticPagesToolbarDisplayState: { type: Object },
       changedRoute: { type: Object },
+      editionHome: { type: Object },
+      editionMatters: { type: Array },
     };
   }
 
@@ -30,6 +31,12 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
         displayPublicationToolbar: false,
       };
     }
+    this.editionHomeInfo = state.editionHomeInfo;
+    this.editionMatters = [];
+  }
+
+  updateEditionHomeInfo(editionHomeInfo) {
+    this.editionHomeInfo = editionHomeInfo;
   }
 
   _initStaticPagesToolbarDisplayState() {
@@ -62,6 +69,11 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
+      this._fetchMatter();
+      this.requestUpdate();
+    }
+    if (this.currentEditionHomeInfo !== state.currentEditionHomeInfo) {
+      this.editionHomeInfo = state.currentEditionHomeInfo;
     }
   }
 
@@ -73,6 +85,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   firstUpdated() {
     this._initStaticPagesToolbarDisplayState();
     this._setStaticPageMenuItemSelected();
+    this._fetchMatter();
   }
 
   updated(changedProps) {
@@ -261,19 +274,33 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     `;
   }
 
+  async _fetchMatter() {
+    try {
+      this.editionFiles = await (
+        await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
+      ).json();
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      this.editionMatters.length = 0;
+      for (const key in this.editionFiles) {
+        this.editionMatters.push(key.replace('./matter/', '').replace('.html', ''));
+      }
+      this.requestUpdate();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   get shouldShowPublicationToolbarTemplate() {
     return html`
-      ${this.staticPagesToolbarDisplayState?.displayPublicationToolbar
+      ${this.staticPagesToolbarDisplayState?.displayPublicationToolbar && this.editionMatters
         ? html`
             <li>
-              <a href="/publication-edition-preface">Preface</a>
+              <a href=${this.editionHomeInfo?.url}>${this.editionHomeInfo?.title}</a>
             </li>
-            <li>
-              <a href="/publication-edition-acknowledgements">Acknowledgements</a>
-            </li>
-            <li>
-              <a href="/publication-edition-introduction">Introduction</a>
-            </li>
+            ${this.editionMatters.map(
+              matter =>
+                html` <li><a href="${this.editionHomeInfo?.url}/${matter}">${matter}</a></li> `
+            )}
           `
         : ''}
     `;

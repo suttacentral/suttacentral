@@ -10,7 +10,7 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 
-class ScPublicationEditionPreface extends LitLocalized(LitElement) {
+class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   static get styles() {
     return css`
       ${typographyCommonStyles}
@@ -23,14 +23,39 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
   }
 
   static get properties() {
-    return {};
+    return {
+      matter: { type: String },
+      matterContent: { type: Object },
+    };
+  }
+
+  constructor() {
+    super();
+    this.matter = store.getState().currentRoute.params.matter;
+    console.log(this.matter);
   }
 
   firstUpdated() {
-    console.log(store.getState().currentEditionId);
-    this._fetchPreface();
+    this._fetchMatter();
     this._updateNav();
-    reduxActions.changeToolbarTitle('Edition Preface');
+    // eslint-disable-next-line prettier/prettier
+    // reduxActions.changeToolbarTitle(`${store.getState().currentEditionHomeInfo.root_title} — ${this.matter}`);
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.changedRoute !== state.currentRoute) {
+      this.changedRoute = state.currentRoute;
+      this.matter = store.getState().currentRoute.params.matter;
+      if (!this.matter) {
+        return;
+      }
+      this._fetchMatter();
+      console.log(store.getState().currentEditionHomeInfo);
+      const editionHomeInfo = store.getState().currentEditionHomeInfo;
+      reduxActions.changeToolbarTitle(`${editionHomeInfo.root_title} — ${this.matter}`);
+      this.requestUpdate();
+    }
   }
 
   _updateNav() {
@@ -45,16 +70,15 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
-  async _fetchPreface() {
+  async _fetchMatter() {
     try {
       this.editionFiles = await (
         await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
       ).json();
-      // this.editionFiles = await (await fetch(`https://suttacentral.net/api/publication/edition/${store.getState().currentEditionId}/files`)).json();
       // eslint-disable-next-line no-restricted-syntax
       for (const key in this.editionFiles) {
-        if (this.editionFiles.hasOwnProperty(key) && key.includes('preface')) {
-          this.preface = this.editionFiles[key];
+        if (this.editionFiles.hasOwnProperty(key) && key.includes(this.matter.toLowerCase())) {
+          this.matterContent = this.editionFiles[key];
         }
       }
       this.requestUpdate();
@@ -64,11 +88,11 @@ class ScPublicationEditionPreface extends LitLocalized(LitElement) {
   }
 
   render() {
-    if (!this.preface) {
+    if (!this.matterContent) {
       return html``;
     }
-    return html` <main>${unsafeHTML(this.preface)}</main> `;
+    return html` <main>${unsafeHTML(this.matterContent)}</main> `;
   }
 }
 
-customElements.define('sc-publication-edition-preface', ScPublicationEditionPreface);
+customElements.define('sc-publication-edition-matter', SCPublicationEditionMatter);

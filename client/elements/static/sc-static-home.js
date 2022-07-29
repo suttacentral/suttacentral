@@ -50,7 +50,7 @@ class SCStaticHomePage extends SCStaticPage {
 
         <section class="plain editions">
           <h2>SuttaCentral Editions</h2>
-          <a href="/publication-editions">
+          <a href="/editions">
             <figure>
               <picture>
                 <source srcset="/img/home-page/editions.png" type="image/avif" />

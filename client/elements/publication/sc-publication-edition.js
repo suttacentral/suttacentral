@@ -8,6 +8,7 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
+import { setNavigation } from '../navigation/sc-navigation-common';
 
 class SCPublicationEdition extends LitLocalized(LitElement) {
   static get styles() {
@@ -49,7 +50,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    // this._updateNav();
+    document.querySelector('sc-site-layout')?.showATB();
   }
 
   updated(changedProps) {
@@ -57,6 +58,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     if (changedProps.has('editionId')) {
       if (this.editionId) {
         this._loadNewResult();
+        this.updateURL();
       }
     }
     this._updateNav();
@@ -82,7 +84,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       type: 'PublicationPage',
     });
     navArray.push({
-      title: `${this.editionDetail[0]?.translated_name || 'edition'}`,
+      title: `${this.editionDetail[0]?.translated_name?.replace('Collection', '') || 'edition'}`,
       url: `${currentPath}`,
       type: 'PublicationPage',
     });
@@ -94,18 +96,10 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       this.editionDetail = await (
         await fetch(this._computePublicationEditionDetailsApiUrl())
       ).json();
-      if (this.editionDetail && this.editionDetail.length !== 0) {
-        reduxActions.changeToolbarTitle(`${this.editionDetail[0].translated_name}`);
-        //this._updateNav();
-      }
     } catch (error) {
       console.log(error);
     }
   }
-
-  // _computePublicationEditionDetailsApiUrl() {
-  //   return `${API_ROOT}/publication/edition/${this.editionId}/${this.editionUid}`;
-  // }
 
   _computePublicationEditionDetailsApiUrl() {
     return `${API_ROOT}/menu/${this.editionUid}`;
@@ -148,6 +142,16 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
   async _fetchEditionInfo() {
     try {
       this.editionInfo = await (await fetch(this._computePublicationEditionInfoApiUrl())).json();
+      if (this.editionDetail && this.editionDetail.length !== 0) {
+        reduxActions.changeToolbarTitle(
+          `${this.editionDetail[0].root_name} — ${this.editionInfo.publication.creator_name}`
+        );
+        reduxActions.changeCurrentEditionHomeInfo({
+          title: this.editionDetail[0]?.translated_name?.replace('Collection', ''),
+          url: store.getState().currentRoute.path,
+          root_title: this.editionDetail[0].root_name,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -156,6 +160,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
   async _fetchCreatorBio() {
     try {
       this.creatorBio = await (await fetch(`${API_ROOT}/creator_bio`)).json();
+      // eslint-disable-next-line no-restricted-syntax
       for (const creator of this.creatorBio) {
         if (this.editionId.includes(creator.creator_uid)) {
           this.creatorInfo = creator;
@@ -165,6 +170,17 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  updateURL() {
+    if (!this.editionId) {
+      return;
+    }
+    const editionInfo = this.editionId.split('-');
+    const editionSubscription = editionInfo[2].split('_');
+    const urlParams = `/edition/${editionInfo[0]}/${editionInfo[1]}/${editionSubscription[0]}`;
+    // eslint-disable-next-line no-restricted-globals
+    window.history.replaceState(null, null, urlParams);
   }
 
   render() {
