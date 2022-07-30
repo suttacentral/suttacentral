@@ -32,6 +32,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
 
   constructor() {
     super();
+    this.currentRoute = store.getState().currentRoute;
     this.editionUid = store.getState().currentRoute.params.editionUid;
     this.collectionURL = new Map([
       ['dn', '/pitaka/sutta/long/dn'],
@@ -58,10 +59,20 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     if (changedProps.has('editionId')) {
       if (this.editionId) {
         this._loadNewResult();
-        this.updateURL();
       }
     }
     this._updateNav();
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.currentRoute !== state.currentRoute) {
+      this.currentRoute = state.currentRoute;
+      if (this.editionId) {
+        this._loadNewResult();
+        this._updateNav();
+      }
+    }
   }
 
   async _loadNewResult() {
@@ -146,9 +157,10 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
         reduxActions.changeToolbarTitle(
           `${this.editionDetail[0].root_name} — ${this.editionInfo.publication.creator_name}`
         );
+
         reduxActions.changeCurrentEditionHomeInfo({
           title: this.editionDetail[0]?.translated_name?.replace('Collection', ''),
-          url: store.getState().currentRoute.path,
+          url: `/edition/${this.editionUid}/${this.currentRoute.params.langIsoCode}/${this.currentRoute.params.authorUid}`,
           root_title: this.editionDetail[0].root_name,
         });
       }
@@ -172,17 +184,6 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
-  updateURL() {
-    if (!this.editionId) {
-      return;
-    }
-    const editionInfo = this.editionId.split('-');
-    const editionSubscription = editionInfo[2].split('_');
-    const urlParams = `/edition/${editionInfo[0]}/${editionInfo[1]}/${editionSubscription[0]}`;
-    // eslint-disable-next-line no-restricted-globals
-    window.history.replaceState(null, null, urlParams);
-  }
-
   render() {
     if (
       !this.editionDetail ||
@@ -197,7 +198,10 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       <main>
         <article>
           <header class="page-header">
-            <h1 class="translation_title">${this.editionDetail[0].translated_name}</h1> 
+            <h1 class="translation_title">${this.editionDetail[0].translated_name.replace(
+              'Collection',
+              ''
+            )}</h1> 
             <p class="translation_subtitle">A translation of the ${
               this.editionDetail[0].root_name
             }</p>

@@ -7,7 +7,6 @@ import { setNavigation } from '../navigation/sc-navigation-common';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
-import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 
 class SCPublicationEditionMatter extends LitLocalized(LitElement) {
@@ -37,9 +36,6 @@ class SCPublicationEditionMatter extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._fetchMatter();
-    this._updateNav();
-    // eslint-disable-next-line prettier/prettier
-    // reduxActions.changeToolbarTitle(`${store.getState().currentEditionHomeInfo.root_title} — ${this.matter}`);
   }
 
   stateChanged(state) {
@@ -51,10 +47,7 @@ class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         return;
       }
       this._fetchMatter();
-      console.log(store.getState().currentEditionHomeInfo);
-      const editionHomeInfo = store.getState().currentEditionHomeInfo;
-      reduxActions.changeToolbarTitle(`${editionHomeInfo.root_title} — ${this.matter}`);
-      this.requestUpdate();
+      //this.requestUpdate();
     }
   }
 

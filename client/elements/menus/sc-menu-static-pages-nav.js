@@ -35,10 +35,6 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     this.editionMatters = [];
   }
 
-  updateEditionHomeInfo(editionHomeInfo) {
-    this.editionHomeInfo = editionHomeInfo;
-  }
-
   _initStaticPagesToolbarDisplayState() {
     this.actions.setStaticPagesToolbarDisplayState({
       displayFirstToolbar: true,
@@ -72,8 +68,9 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       this._fetchMatter();
       this.requestUpdate();
     }
-    if (this.currentEditionHomeInfo !== state.currentEditionHomeInfo) {
+    if (this.editionHomeInfo !== state.currentEditionHomeInfo) {
       this.editionHomeInfo = state.currentEditionHomeInfo;
+      this._fetchMatter();
     }
   }
 
@@ -281,8 +278,11 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       ).json();
       // eslint-disable-next-line no-restricted-syntax, guard-for-in
       this.editionMatters.length = 0;
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
       for (const key in this.editionFiles) {
-        this.editionMatters.push(key.replace('./matter/', '').replace('.html', ''));
+        if (!key.toLowerCase().includes('test')) {
+          this.editionMatters.push(key.replace('./matter/', '').replace('.html', ''));
+        }
       }
       this.requestUpdate();
     } catch (error) {
@@ -299,7 +299,13 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
             </li>
             ${this.editionMatters.map(
               matter =>
-                html` <li><a href="${this.editionHomeInfo?.url}/${matter}">${matter}</a></li> `
+                html`
+                  <li>
+                    <a href="${this.editionHomeInfo?.url}/${matter}"
+                      >${matter.replace('general_introduction', 'general introduction')}</a
+                    >
+                  </li>
+                `
             )}
           `
         : ''}

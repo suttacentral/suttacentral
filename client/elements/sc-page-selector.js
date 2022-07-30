@@ -77,16 +77,6 @@ const routes = {
     content: html`<sc-static-abbreviations />`,
     loader: () => import('./static/sc-static-abbreviations.js'),
   },
-  'publicationEditions': {
-    path: '/editions',
-    content: html`<sc-publication-editions />`,
-    loader: () => import('./publication/sc-publication-editions.js'),
-  },
-  'publicationEditionMatter': {
-    path: '/edition/:editionUid/:langIsoCode/:authorUid/:matter',
-    content: html`<sc-publication-edition-matter />`,
-    loader: () => import('./publication/sc-publication-edition-matter.js'),
-  },
   'abhidhamma': {
     path: '/abhidhamma-guide-sujato',
     content: html`<sc-static-abhidhamma />`,
@@ -227,10 +217,20 @@ const routes = {
     content: html`<sc-static-pali-tipitaka />`,
     loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
+  'publicationEditions': {
+    path: '/editions',
+    content: html`<sc-publication-editions />`,
+    loader: () => import('./publication/sc-publication-editions.js'),
+  },
   'publicationEdition': {
     path: '/edition/:editionUid/:langIsoCode/:authorUid',
     content: html`<sc-publication-edition />`,
     loader: () => import('./publication/sc-publication-edition.js')
+  },
+  'publicationEditionMatter': {
+    path: '/edition/:editionUid/:langIsoCode/:authorUid/:matter',
+    content: html`<sc-publication-edition-matter />`,
+    loader: () => import('./publication/sc-publication-edition-matter.js'),
   },
   'vinaya': {
     path: '/vinaya-guide-brahmali',
@@ -428,6 +428,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
         this._scrollToTop();
         this._setVisibleToolbar();
         this._recalculateView();
+        document.querySelector('sc-site-layout')?.showATB();
       }
     }
   }
