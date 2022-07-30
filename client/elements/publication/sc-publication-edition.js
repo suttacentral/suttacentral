@@ -300,7 +300,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
               </tr>
               </tbody>
               <tfoot>
-              <tr><td>Updated {{05:07:2022}}</td></tr>
+              <tr><td>Updated 2022-07-20 09:58:52</td></tr>
               </tfoot>
             </table>
           </section>
