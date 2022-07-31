@@ -7,8 +7,16 @@ export const SCPublicationStyles = css`
     margin: 2em auto 4em;
   }
 
+  hgroup {
+    text-align: center;
+  }
+
   h1 {
     margin: 0;
+  }
+
+  hgroup h1 {
+    font-variant-caps: small-caps;
   }
 
   .translation_subtitle {
