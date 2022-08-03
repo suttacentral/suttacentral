@@ -69,7 +69,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
-      if (this.currentRoute.path.includes('/edition') && this.editionId) {
+      if (this.currentRoute.path.includes('/edition/') && this.editionId) {
         this._loadNewResult();
         this._updateNav();
       }

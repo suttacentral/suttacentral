@@ -25,7 +25,13 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     return {};
   }
 
-  firstUpdated() {
+  constructor() {
+    super();
+    this.currentRoute = store.getState().currentRoute;
+  }
+
+  updated(changedProperties) {
+    super.updated(changedProperties);
     this._updateNav();
     reduxActions.changeToolbarTitle('Editions');
     document.querySelector('sc-site-layout')?.hideATB();
