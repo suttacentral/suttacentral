@@ -48,6 +48,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       ['pli-tv-vi', '/pitaka/vinaya/pli-tv-vi'],
     ]);
     this._fetchAllEditions();
+    this.currentDate = new Date();
   }
 
   firstUpdated() {
@@ -68,7 +69,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
-      if (this.editionId) {
+      if (this.currentRoute.path.includes('/edition') && this.editionId) {
         this._loadNewResult();
         this._updateNav();
       }
@@ -202,9 +203,7 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
               'Collection',
               ''
             )}</h1> 
-            <p class="translation_subtitle">A translation of the ${
-              this.editionDetail[0].root_name
-            }</p>
+            <p class="translation_subtitle">${this.editionInfo.publication.translation_subtitle}</p>
             <p class="creator_name">${this.editionInfo.publication.creator_name}</p>
           </header>
 
@@ -244,63 +243,49 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
               <tbody>
               <tr>
                 <td>${icon.paperback} Book, paperback</td>
-                
-                
                 <td><a href='https://github.com/suttacentral/editions' class='external'>${
                   icon.external
                 } Print on demand</a></td>
               </tr>
               <tr>
                 <td>${icon.hardcover} Book, hardcover</td>
-                
-                
                 <td><a href='https://github.com/suttacentral/editions' class='external'>${
                   icon.external
                 } Print on demand</a></td>
               </tr>
               <tr>
                 <td>${icon.epub} Epub</td>
-                
-                
                 <td><a href='https://github.com/suttacentral/editions' class='download'>${
                   icon.file_download
                 } Download</a></td>
               </tr>
               <tr>
                 <td>${icon.pdf} Pdf</td>
-                
-                
                 <td><a href='https://github.com/suttacentral/editions' class='download'>${
                   icon.file_download
                 } Download</a></td>
               </tr>
                             <tr>
                 <td>${icon.html} Raw HTML file</td>
-                
-                
                 <td><a href='https://github.com/suttacentral/editions' class='download'>${
                   icon.file_download
                 } Download</a></td>
               </tr>
                             <tr>
                 <td>${icon.latex} Raw TeX file</td>
-                
-                
                 <td><a href='https://github.com/suttacentral/editions' class='download'>${
                   icon.file_download
                 } Download</a></td>
               </tr>
                             <tr>
                 <td>${icon.web} Web</td>
-                
-                
                 <td><a href=${this.collectionURL.get(this.editionUid)} class='internal'>${
       icon.translation
     } Read on SuttaCentral</a></td>
               </tr>
               </tbody>
               <tfoot>
-              <tr><td>Updated 2022-07-20 09:58:52</td></tr>
+              <tr><td>Updated ${this.currentDate.toLocaleString()}</td></tr>
               </tfoot>
             </table>
           </section>
