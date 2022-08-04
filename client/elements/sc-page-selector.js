@@ -640,7 +640,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
           const pageNameTitle = this.localize(key);
           this.actions.changeToolbarTitle(pageNameTitle);
         } else {
-          console.log(`No title for ${this.currentRoute.name}`);
           this.actions.changeToolbarTitle('');
         }
     }
