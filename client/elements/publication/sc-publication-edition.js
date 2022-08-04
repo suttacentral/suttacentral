@@ -9,6 +9,7 @@ import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { setNavigation } from '../navigation/sc-navigation-common';
+import { coverImage } from '../publication/sc-publication-common';
 
 class SCPublicationEdition extends LitLocalized(LitElement) {
   static get styles() {
@@ -210,7 +211,9 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
 
           <section>
             <figure class="book-pic">
-            <img src="/img/publication-pages/dn-book.jpg" alt="Cover art for Long Discourses">
+            <img src="/img/publication-pages/${coverImage.get(
+              this.editionInfo.publication.text_uid
+            )}" alt="Cover art for Long Discourses">
             <figcaption>Paperback edition of Long Discourses</figcaption>
           </figure>
             <h2>This translation</h2>

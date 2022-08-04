@@ -9,6 +9,7 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
+import { coverImage } from '../publication/sc-publication-common';
 
 class ScPublicationEditions extends LitLocalized(LitElement) {
   static get styles() {
@@ -32,19 +33,6 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     super();
     this.currentRoute = store.getState().currentRoute;
     this.webEditionInfo = [];
-    this.coverImage = new Map([
-      ['dn', 'dn-book.jpg'],
-      ['mn', 'mn-book.jpg'],
-      ['sn', 'sn-book.jpg'],
-      ['an', 'an-book.jpg'],
-      ['dhp', 'snp-book.jpg'],
-      ['ud', 'snp-book.jpg'],
-      ['iti', 'snp-book.jpg'],
-      ['snp', 'snp-book.jpg'],
-      ['thag', 'snp-book.jpg'],
-      ['thig', 'snp-book.jpg'],
-      ['pli-tv-vi', 'snp-book.jpg'],
-    ]);
     this.editionBlurbs = [];
   }
 
@@ -84,6 +72,25 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     }
   }
 
+  _sortWebEditionInfoByUid() {
+    this.webEditionInfo.sort((start, next) => {
+      const order = [
+        'dn',
+        'mn',
+        'sn',
+        'an',
+        'dhp',
+        'ud',
+        'iti',
+        'snp',
+        'thag',
+        'thig',
+        'pli-tv-vi',
+      ];
+      return order.indexOf(start.edition.text_uid) - order.indexOf(next.edition.text_uid);
+    });
+  }
+
   async _fetchEditionInfo(editionId) {
     try {
       this.editionInfo = await (await fetch(`${API_ROOT}/publication/edition/${editionId}`)).json();
@@ -114,6 +121,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
   }
 
   render() {
+    this._sortWebEditionInfoByUid();
     return html`
       <main>
         <article>
@@ -171,9 +179,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
                 <p class="creator_name">${edition.publication.creator_name}</p>
                 <p class="publication_blurb">
                   <img
-                    src="/img/publication-pages/${this.coverImage.get(
-                      edition.publication.text_uid
-                    )}"
+                    src="/img/publication-pages/${coverImage.get(edition.publication.text_uid)}"
                     alt="Cover art for ${edition.publication.translation_title}"
                   />
                   ${this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb}
