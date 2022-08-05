@@ -7,8 +7,13 @@ export const SCPublicationEditionsStyles = css`
     margin: 2em auto 4em;
   }
 
+  hgroup {
+    text-align: center;
+  }
+
   .page-header {
     border-bottom: 2px solid var(--sc-primary-color-light);
+    margin-bottom: 4em;
   }
 
   h1 {
@@ -43,7 +48,7 @@ export const SCPublicationEditionsStyles = css`
     fill: var(--sc-icon-color);
   }
 
-  .project header {
+  .project hgroup {
     margin-bottom: 1rem;
     padding: 1rem;
   }
@@ -71,6 +76,7 @@ export const SCPublicationEditionsStyles = css`
     display: block;
 
     text-decoration: none;
+    text-decoration-color: var(--sc-primary-color-light);
 
     color: inherit;
     border-radius: 4px;
@@ -78,6 +84,11 @@ export const SCPublicationEditionsStyles = css`
 
   .project a:hover {
     background-color: var(sc-primary-color);
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.06em;
+    transition: all 200ms ease;
   }
 
   .publication_blurb {

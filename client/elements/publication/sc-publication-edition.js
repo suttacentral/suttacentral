@@ -199,14 +199,14 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
       <header></header>
       <main>
         <article>
-          <header class="page-header">
+          <hgroup class="page-header">
             <h1 class="translation_title">${this.editionDetail[0].translated_name.replace(
               'Collection',
               ''
             )}</h1> 
             <p class="translation_subtitle">${this.editionInfo.publication.translation_subtitle}</p>
             <p class="creator_name">${this.editionInfo.publication.creator_name}</p>
-          </header>
+          </hgroup>
 
 
           <section>

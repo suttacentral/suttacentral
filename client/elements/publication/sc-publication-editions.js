@@ -125,10 +125,10 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     return html`
       <main>
         <article>
-          <header class="page-header">
+          <hgroup class="page-header">
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
-          </header>
+          </hgroup>
           <p>
             Since 2005 SuttaCentral has provided access to the texts, translations, and parallels of
             early Buddhist texts. In 2018 we started creating and publishing our own translations of
@@ -169,12 +169,12 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
                   href="/edition/${edition.publication.text_uid}/${edition.publication
                     .translation_lang_iso}/${edition.publication.creator_uid}"
                 >
-                  <header>
+                  <hgroup>
                     <h2 class="translation_title">${edition.publication.translation_title}</h2>
                     <span class="translation_subtitle"
                       >${edition.publication.translation_subtitle}</span
                     >
-                  </header>
+                  </hgroup>
                 </a>
                 <p class="creator_name">${edition.publication.creator_name}</p>
                 <p class="publication_blurb">
