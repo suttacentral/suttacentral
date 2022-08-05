@@ -1226,9 +1226,10 @@ LET path_docs = (
     FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
         RETURN doc.uid
 )
-FOR d IN publications
-    FILTER (d.text_uid IN path_docs OR d.text_uid == @uid) AND d.translation_lang_iso == @lang
-    RETURN d
+FOR pub_doc IN publications
+    FILTER (pub_doc.text_uid IN path_docs OR pub_doc.text_uid == @uid) AND pub_doc.translation_lang_iso == @lang
+    AND (pub_doc.author_uid == @authorUid OR @authorUid IN pub_doc.collaborator[*].collaborator_uid)
+    RETURN pub_doc
 '''
 
 PLI_SUTTA_PUBLICATION_INFO = '''

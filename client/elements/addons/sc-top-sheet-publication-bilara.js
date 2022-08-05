@@ -194,6 +194,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
       if (this.publicationData !== null && this.publicationData.uid !== null) {
         this.textUID = this.publicationData.uid;
         this.lang = this.publicationData.lang;
+        this.authorUID = this.publicationData.authorUid;
         this.fetchPublications();
       }
     }
@@ -211,11 +212,11 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
   }
 
   fetchPublications() {
-    if (!this.textUID || !this.lang) {
+    if (!this.textUID || !this.lang || !this.authorUID) {
       this.actions.changeSuttaPublicationInfo(null);
       return;
     }
-    fetch(`${API_ROOT}/publication_info/${this.textUID}/${this.lang}`)
+    fetch(`${API_ROOT}/publication_info/${this.textUID}/${this.lang}/${this.authorUID}`)
       .then(r => r.json())
       .then(data => this.setPublicationInfo(data[0]))
       .catch(e => console.error(e));
