@@ -181,6 +181,7 @@ class SCTextBilara extends SCTextCommon {
     this.actions.changeSuttaPublicationInfo({
       uid: this.suttaId,
       lang: this.translatedSutta?.lang || 'en',
+      authorUid: this.translatedSutta.author_uid,
     });
 
     this._serveRangeSuttasPerSutta();
