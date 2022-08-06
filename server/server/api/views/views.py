@@ -1258,13 +1258,13 @@ class PaliReferenceEdition(Resource):
 
 class PublicationInfo(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self, uid, lang):
+    def get(self, uid, lang, authorUid):
         db = get_db()
         publication_info = None
         if lang == 'pli':
             publication_info = list(db.aql.execute(PLI_SUTTA_PUBLICATION_INFO))
         else:
-            publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang}))
+            publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang, 'authorUid': authorUid}))
         if not publication_info:
             return {'error': 'Not Found'}, 404
         return publication_info

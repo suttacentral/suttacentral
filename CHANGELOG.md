@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.08.06
+
+- Add author_uid to filter publication info. #2503
+
 ## 2022.07.21
 
 - Normalize trailing spaces. #2454
