@@ -745,16 +745,6 @@ class Sutta(Resource):
                         result['vaggaBegin'] = vaggaChildren[0]
                         result['vaggaEnd'] = vaggaChildren[-1]
 
-        if uid != 'pli-tv-bi-vb-sk1-75' and uid[0:15] == 'pli-tv-bi-vb-sk':
-            results = db.aql.execute(
-                SUTTA_VIEW,
-                bind_vars={'uid': 'pli-tv-bi-vb-sk1-75', 'language': lang, 'author_uid': author_uid},
-            )
-            result = results.next()
-            result['range_uid'] = 'pli-tv-bi-vb-sk1-75'
-            result['vaggaBegin'] = 'pli-tv-bi-vb-sk1'
-            result['vaggaEnd'] = 'pli-tv-bi-vb-sk75'
-
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):
             doc = result[k]
