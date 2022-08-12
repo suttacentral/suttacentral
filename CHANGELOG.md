@@ -1,6 +1,11 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.08.12
+
+- Fix: navigation bug for bi-sk #2488
+- Fix: individual suttas split from ranges have wrong content. #2499
+
 ## 2022.08.06
 
 - Add author_uid to filter publication info. #2503
