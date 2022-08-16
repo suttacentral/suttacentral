@@ -21,7 +21,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       ${dictStyles}
 
       .dictionary-results-container {
-        margin: 0 0 var(--sc-size-xxl) 0;
+        margin: 0 3vw var(--sc-size-xxl) 3vw;
       }
 
       .dictionary-results-main {
