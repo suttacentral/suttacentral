@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { icon } from '../../img/sc-icon';
@@ -182,7 +182,9 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
                     src="/img/publication-pages/${coverImage.get(edition.publication.text_uid)}"
                     alt="Cover art for ${edition.publication.translation_title}"
                   />
-                  ${this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb}
+                  ${unsafeHTML(
+                    this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb
+                  )}
                 </p>
               </section>
             `
