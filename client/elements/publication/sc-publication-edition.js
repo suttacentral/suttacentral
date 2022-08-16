@@ -228,9 +228,9 @@ class SCPublicationEdition extends LitLocalized(LitElement) {
               <li>accurate rendition of the Pali;</li>
               <li>free of copyright.</li>
             </ul>
-            <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Tawian.</p>
+            <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
             <h2>The ${this.editionDetail[0].root_name}</h2>
-            <p class="blurb">${this.editionDetail[0].blurb}</p>
+            <p class="blurb">${unsafeHTML(this.editionDetail[0].blurb)}</p>
             <h2>The Author</h2>
             <figure class="author-pic">
               <img
