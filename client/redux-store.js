@@ -76,12 +76,19 @@ const initialState = {
     displayAcademicToolbar: false,
     displayOrganizationalToolbar: false,
     displayGuidesToolbar: false,
+    displayPublicationToolbar: false,
   },
   linearProgressActive: false,
   toolbarPosition: {
     scrollForToolbar: true,
     fixedToolbar: false,
     toolbarAtTop: false,
+  },
+  currentEditionId: '',
+  currentEditionHomeInfo: {
+    title: '',
+    url: '',
+    root_title: '',
   },
 };
 
@@ -95,6 +102,10 @@ const reducer = (state, action) => {
         ...state,
         currentRoute: { name, params, path },
       };
+    case 'CHANGE_CURRENT_EDITION_ID':
+      return { ...state, currentEditionId: action.currentEditionId };
+    case 'CHANGE_CURRENT_EDITION_HOME_INFO':
+      return { ...state, currentEditionHomeInfo: action.currentEditionHomeInfo };
     case 'CHANGE_SITE_LANGUAGE':
       return { ...state, siteLanguage: action.language, fullSiteLanguageName: action.fullName };
     case 'CHANGE_TOOLBAR_TITLE':

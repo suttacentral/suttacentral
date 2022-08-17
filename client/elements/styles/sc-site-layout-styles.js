@@ -152,4 +152,8 @@ export const SCSiteLayoutStyles = css`
   .skip-to-content-link:focus {
     transform: translateY(0%);
   }
+
+  .hidden {
+    display: none !important;
+  }
 `;

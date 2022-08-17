@@ -1286,3 +1286,11 @@ class Shortcuts(Resource):
         db = get_db()
         data = list(db.aql.execute('FOR s IN shortcuts RETURN s.shortcuts'))[0]
         return data, 200
+
+
+class CreatorBio(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('creator_bio').all()
+        return list(data), 200

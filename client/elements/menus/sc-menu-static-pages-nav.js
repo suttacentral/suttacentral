@@ -1,15 +1,16 @@
 import { LitElement, html } from 'lit';
-
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { store } from '../../redux-store';
-
 import { SCMenuStaticPagesNavStyles } from '../styles/sc-menu-static-pages-nav-styles';
+import { API_ROOT } from '../../constants';
 
 class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   static get properties() {
     return {
       staticPagesToolbarDisplayState: { type: Object },
       changedRoute: { type: Object },
+      editionHome: { type: Object },
+      editionMatters: { type: Array },
     };
   }
 
@@ -27,8 +28,11 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
         displayAcademicToolbar: false,
         displayOrganizationalToolbar: false,
         displayGuidesToolbar: false,
+        displayPublicationToolbar: false,
       };
     }
+    this.editionHomeInfo = state.editionHomeInfo;
+    this.editionMatters = [];
   }
 
   _initStaticPagesToolbarDisplayState() {
@@ -39,6 +43,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       displayAcademicToolbar: false,
       displayOrganizationalToolbar: false,
       displayGuidesToolbar: false,
+      displayPublicationToolbar: false,
     });
   }
 
@@ -60,6 +65,12 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
+      this._fetchMatter();
+      this.requestUpdate();
+    }
+    if (this.editionHomeInfo !== state.currentEditionHomeInfo) {
+      this.editionHomeInfo = state.currentEditionHomeInfo;
+      this._fetchMatter();
     }
   }
 
@@ -71,6 +82,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   firstUpdated() {
     this._initStaticPagesToolbarDisplayState();
     this._setStaticPageMenuItemSelected();
+    this._fetchMatter();
   }
 
   updated(changedProps) {
@@ -121,6 +133,7 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
             ${this.toolbarSelectedTemplate} ${this.shouldShowSecondToolbarTemplate}
             ${this.shouldShowTipitakaToolbarTemplate} ${this.shouldShowAcademicToolbarTemplate}
             ${this.shouldShowOrganizationalToolbarTemplate} ${this.shouldShowGuidesToolbarTemplate}
+            ${this.shouldShowPublicationToolbarTemplate}
           </ul>
         </nav>
       </div>
@@ -253,6 +266,47 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
             <li>
               <a href="/an-guide-sujato">${this.localize('interface:numbered')}</a>
             </li>
+          `
+        : ''}
+    `;
+  }
+
+  async _fetchMatter() {
+    try {
+      this.editionFiles = await (
+        await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
+      ).json();
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      this.editionMatters.length = 0;
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const key in this.editionFiles) {
+        if (!key.toLowerCase().includes('test')) {
+          this.editionMatters.push(key.replace('./matter/', '').replace('.html', ''));
+        }
+      }
+      this.requestUpdate();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  get shouldShowPublicationToolbarTemplate() {
+    return html`
+      ${this.staticPagesToolbarDisplayState?.displayPublicationToolbar && this.editionMatters
+        ? html`
+            <li>
+              <a href=${this.editionHomeInfo?.url}>${this.editionHomeInfo?.title}</a>
+            </li>
+            ${this.editionMatters.map(
+              matter =>
+                html`
+                  <li>
+                    <a href="${this.editionHomeInfo?.url}/${matter}"
+                      >${matter.replace('general_introduction', 'general introduction')}</a
+                    >
+                  </li>
+                `
+            )}
           `
         : ''}
     `;
