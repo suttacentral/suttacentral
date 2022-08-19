@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
@@ -69,7 +70,9 @@ class SCTopSheetToC extends SCTopSheetCommon {
                   item =>
                     html`
                       <li>
-                        <a @click=${this._hideMenu} href="${`#${item.link}`}">${item.name}</a>
+                        <a @click=${this._hideMenu} href=${`#${item.link}`}
+                          >${unsafeHTML(item.name)}</a
+                        >
                       </li>
                     `
                 )
