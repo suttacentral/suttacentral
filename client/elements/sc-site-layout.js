@@ -433,6 +433,18 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   showATB() {
     this.querySelector('#static_pages_nav_menu')?.classList.remove('hidden');
   }
+
+  showSiteFooter() {
+    setTimeout(() => {
+      const siteFooter = this.querySelector('#site_footer');
+      siteFooter.style.display = 'block';
+    }, 300);
+  }
+
+  hideSiteFooter() {
+    const siteFooter = this.querySelector('#site_footer');
+    siteFooter.style.display = 'none';
+  }
 }
 
 customElements.define('sc-site-layout', SCSiteLayout);
