@@ -46,12 +46,13 @@ from api.views import (
     RootEdition,
     Guides,
     Shortcuts,
+    CreatorBio,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
 from search.view import Search, InstantSearch
-from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles
+from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -111,7 +112,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Publication, '/publication')
     api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')
     api.add_resource(PaliReferenceEdition, '/pali_reference_edition')
-    api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>')
+    api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>/<string:authorUid>')
     api.add_resource(AvailableVoices, '/available_voices/<string:uid>')
     api.add_resource(RootEdition, '/root_edition')
     api.add_resource(Guides, '/guides')
@@ -120,6 +121,8 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Edition, '/publication/edition/<string:edition_id>')
     api.add_resource(EditionFiles, '/publication/edition/<string:edition_id>/files')
     api.add_resource(EditionMainmatter, '/publication/edition/<string:edition_id>/<string:uid>')
+    api.add_resource(EditionBlurbs, '/publication/edition/blurbs/<string:lang>')
+    api.add_resource(CreatorBio, '/creator_bio')
 
     app.register_blueprint(api_bp)
     register_extensions(app)

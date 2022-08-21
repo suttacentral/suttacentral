@@ -51,4 +51,25 @@ export class reduxActions {
       fullName,
     });
   }
+
+  static changeToolbarTitle(title) {
+    store.dispatch({
+      type: 'CHANGE_TOOLBAR_TITLE',
+      title,
+    });
+  }
+
+  static changeCurrentEditionId(currentEditionId) {
+    store.dispatch({
+      type: 'CHANGE_CURRENT_EDITION_ID',
+      currentEditionId,
+    });
+  }
+
+  static changeCurrentEditionHomeInfo(currentEditionHomeInfo) {
+    store.dispatch({
+      type: 'CHANGE_CURRENT_EDITION_HOME_INFO',
+      currentEditionHomeInfo,
+    });
+  }
 }

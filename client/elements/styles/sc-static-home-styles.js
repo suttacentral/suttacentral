@@ -51,6 +51,38 @@ export const staticHomeStyles = css`
     font-stretch: expanded;
   }
 
+  .editions {
+    padding: 1em 0 1em 0;
+    background-color: var(--sc-tertiary-background-color);
+    width: calc(100vw - var(--scrollbar-width));
+    transform: translateX(calc((min(1600px, 100%) - 100%) / 2));
+    margin-top: 2rem;
+  }
+
+  .editions h2 {
+    font-family: var(--sc-sans-font);
+    letter-spacing: var(--sc-caps-letter-spacing);
+    color: var(--sc-secondary-text-color);
+
+    font-variant-caps: small-caps;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+    font-stretch: expanded;
+    font-size: 2rem;
+  }
+
+  .editions .call-to-action {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 1rem 0 0 0;
+    font-style: italic;
+    color: var(--sc-primary-text-color);
+  }
+
+  .editions figure {
+    height: 240px;
+  }
+
   .tipitaka-section {
     font-size: 1.125rem;
 

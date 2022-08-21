@@ -466,7 +466,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _extractVaggaBeginUid(rangeUid) {
     if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length > 1) {
-      console.log(rangeUid.split('.')[1].split('-')[0]);
       return rangeUid.split('.')[1].split('-')[0];
     }
     if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length === 1) {
@@ -477,7 +476,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
 
   _extractVaggaEndUid(rangeUid) {
     if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length > 1) {
-      console.log(rangeUid.split('.')[1].split('-')[1]);
       return rangeUid.split('.')[1].split('-')[1];
     }
     if (rangeUid.split('.').length > 1 && rangeUid.split('.')[1].split('-').length === 1) {

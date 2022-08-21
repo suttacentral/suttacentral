@@ -115,6 +115,9 @@ class ScSiteFooter extends LitLocalized(LitElement) {
               </li>
               <li><a href="/general-guide-sujato">Reader’s Guides</a></li>
               <li><a href="/subjects">Indexes</a></li>
+              <li>
+                <a href="/editions">SuttaCentral Editions: read selected translations as books</a>
+              </li>
             </ul>
           </div>
           <div class="second">

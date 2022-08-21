@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable lit/no-invalid-html */
 /* eslint-disable indent */
 import { css, html, LitElement } from 'lit';
 import { LitLocalized } from './addons/sc-localization-mixin';
@@ -45,6 +47,7 @@ const staticPages = [
   'terminology',
   'vinaya',
   'palitipitaka',
+  'publicationAn',
 ];
 
 // prettier-ignore
@@ -214,6 +217,21 @@ const routes = {
     content: html`<sc-static-pali-tipitaka />`,
     loader: () => import('./static/sc-static-pali-tipitaka.js')
   },
+  'publicationEditions': {
+    path: '/editions',
+    content: html`<sc-publication-editions />`,
+    loader: () => import('./publication/sc-publication-editions.js'),
+  },
+  'publicationEdition': {
+    path: '/edition/:editionUid/:langIsoCode/:authorUid',
+    content: html`<sc-publication-edition />`,
+    loader: () => import('./publication/sc-publication-edition.js')
+  },
+  'publicationEditionMatter': {
+    path: '/edition/:editionUid/:langIsoCode/:authorUid/:matter',
+    content: html`<sc-publication-edition-matter />`,
+    loader: () => import('./publication/sc-publication-edition-matter.js'),
+  },
   'vinaya': {
     path: '/vinaya-guide-brahmali',
     content: html`<sc-static-vinaya />`,
@@ -240,6 +258,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       shouldShowAcademicToolbar: { type: Object },
       shouldShowOrganizationalToolbar: { type: Object },
       shouldShowGuidesToolbar: { type: Object },
+      shouldShowPublicationToolbar: { type: Object },
     };
   }
 
@@ -392,6 +411,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
     this._changeToolbarTitle();
     this._loadScActionItems();
     this._loadTopSheets();
+    document.querySelector('sc-site-layout')?.showSiteFooter();
   }
 
   disconnectedCallback() {
@@ -409,6 +429,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
         this._scrollToTop();
         this._setVisibleToolbar();
         this._recalculateView();
+        document.querySelector('sc-site-layout')?.showATB();
+        document.querySelector('sc-site-layout')?.hideSiteFooter();
       }
     }
   }
@@ -563,8 +585,23 @@ class SCPageSelector extends LitLocalized(LitElement) {
       this.shouldShowTipitakaToolbar ||
       this.shouldShowAcademicToolbar ||
       this.shouldShowOrganizationalToolbar ||
-      this.shouldShowGuidesToolbar
+      this.shouldShowGuidesToolbar ||
+      this.shouldShowPublicationToolbar
     );
+
+    this.shouldShowPublicationToolbar = [
+      'publicationEdition',
+      'publicationDN',
+      'publicationMN',
+      'publicationSN',
+      'publicationAN',
+      'publicationMinor',
+      'publicationEditionMatter',
+      'publicationEditionAcknowledgements',
+      'publicationEditionAbbreviations',
+      'publicationEditionIndex',
+      'publicationEditionIntroduction',
+    ].includes(this.currentRoute.name);
 
     this.actions.setStaticPagesToolbarDisplayState({
       displayFirstToolbar: isToolbarSelected,
@@ -573,6 +610,7 @@ class SCPageSelector extends LitLocalized(LitElement) {
       displayAcademicToolbar: this.shouldShowAcademicToolbar,
       displayOrganizationalToolbar: this.shouldShowOrganizationalToolbar,
       displayGuidesToolbar: this.shouldShowGuidesToolbar,
+      displayPublicationToolbar: this.shouldShowPublicationToolbar,
     });
   }
 
@@ -592,6 +630,8 @@ class SCPageSelector extends LitLocalized(LitElement) {
       case 'suttaplex':
         return;
       case 'sutta':
+        return;
+      case 'publicationEditionMatter':
         return;
       case 'palitipitaka':
         this.actions.changeToolbarTitle('Pāḷi Tipiṭaka');

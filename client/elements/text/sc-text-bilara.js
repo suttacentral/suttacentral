@@ -178,11 +178,13 @@ class SCTextBilara extends SCTextCommon {
       this._recalculateCommentSpanHeight();
     }, 0);
     this.actions.changeSuttaMetaText('');
-    this.actions.changeSuttaPublicationInfo({
-      uid: this.suttaId,
-      lang: this.translatedSutta?.lang || 'en',
-    });
-
+    if (!this.isRangeSutta) {
+      this.actions.changeSuttaPublicationInfo({
+        uid: this.suttaId,
+        lang: this.translatedSutta?.lang || 'en',
+        authorUid: this.translatedSutta.author_uid,
+      });
+    }
     this._serveRangeSuttasPerSutta();
   }
 
@@ -222,14 +224,14 @@ class SCTextBilara extends SCTextCommon {
       } else {
         // eslint-disable-next-line no-restricted-syntax
         for (const uid of UIDS) {
-          if (this.rootSutta.uid.indexOf('.') > -1) {
-            const suttaNo = this.rootSutta.uid.split('.')[1];
+          if (this.rootSutta.uid.indexOf('.') > -1 && uid.indexOf('-') > -1) {
+            const suttaNo = this.suttaId.split('.')[1];
             const suttaRange = uid.split('.')[1];
             const rangeBegin = suttaRange.split('-')[0];
             const rangeEnd = suttaRange.split('-')[1];
             if (
-              (parseInt(suttaNo, 10) <= parseInt(rangeEnd, 10) &&
-                parseInt(suttaNo, 10) >= parseInt(rangeBegin, 10)) ||
+              parseInt(suttaNo, 10) <= parseInt(rangeEnd, 10) &&
+              parseInt(suttaNo, 10) >= parseInt(rangeBegin, 10) &&
               this.rootSutta.uid.indexOf('-') > -1
             ) {
               sutta = this.querySelector(`#${CSS.escape(uid)}`);
@@ -264,13 +266,13 @@ class SCTextBilara extends SCTextCommon {
       this.actions.changeSuttaPublicationInfo({
         uid: this.range_uid,
         lang: this.translatedSutta?.lang || 'en',
+        authorUid: this.translatedSutta.author_uid,
       });
 
       this.actions.showToc([]);
 
-      document
-        .querySelector('sc-site-layout')
-        .querySelector('#action_items').range_uid = this.range_uid;
+      document.querySelector('sc-site-layout').querySelector('#action_items').range_uid =
+        this.range_uid;
     } else {
       document.querySelector('sc-site-layout').querySelector('#action_items').range_uid = '';
     }

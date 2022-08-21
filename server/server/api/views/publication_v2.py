@@ -77,6 +77,16 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
     }
 '''
 
+EDITION_BLURBS = '''
+FOR doc IN blurbs
+    FILTER doc.uid IN ['dn', 'mn', 'sn', 'an', 'dhp', 'ud', 'iti', 'snp', 'thag', 'thig', 'pli-tv-vi']
+        AND doc.lang == @lang
+    RETURN {
+        uid: doc.uid,
+        blurb: doc.blurb
+    }
+'''
+
 class Edition(Resource):
   def get(self, edition_id):
     db = get_db()
@@ -211,4 +221,12 @@ class EditionData(Resource):
         return result
 
 
+class EditionBlurbs(Resource):
+  def get(self, lang):
+    db = get_db()
+    result = list(db.aql.execute(EDITION_BLURBS, bind_vars={'lang': lang}))
+    if result:
+      return result
+    else:
+      return {}
 

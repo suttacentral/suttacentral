@@ -311,6 +311,12 @@ def process_prioritize(db, additional_info_dir):
     db['prioritize'].truncate()
     db.collection('prioritize').import_bulk_logged(prioritize_info, wipe=True)
 
+def process_creator_bio(db, additional_info_dir):
+    print('Loading creator bio')
+    creator_bio_file = additional_info_dir / 'creator_bio.json'
+    creator_bio_info = json_load(creator_bio_file)
+    db['creator_bio'].truncate()
+    db.collection('creator_bio').import_bulk_logged(creator_bio_info, wipe=True)
 
 def make_yellow_brick_road(db: Database):
     db.collection('yellow_brick_road').truncate()
@@ -580,6 +586,9 @@ def run(no_pull=False):
 
     print_stage("Loading prioritize from additional_info")
     process_prioritize(db, additional_info_dir)
+    
+    print_stage("Loading creator bio from additional_info")
+    process_creator_bio(db, additional_info_dir)
 
     print_stage('Loading simple dictionaries')
     dictionaries.load_simple_dictionaries(db, dictionaries_dir)

@@ -38,4 +38,5 @@ from .views import (
     RootEdition,
     Guides,
     Shortcuts,
+    CreatorBio,
 )
