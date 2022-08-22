@@ -1,6 +1,6 @@
 {
   "name": "suttacentral",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "private": true,
   "scripts": {
     "build": "webpack --watch --config webpack.prod.js",
@@ -85,8 +85,8 @@
     "html-webpack-plugin": "5.5.0",
     "htmlparser2": "8.0.1",
     "husky": "^8.0.1",
-    "lint-staged": "^12.4.1",
-    "node-fetch": "^3.2.4",
+    "lint-staged": "^13.0.3",
+    "node-fetch": "^3.2.10",
     "prettier": "2.7.1",
     "webpack": "5.74.0",
     "webpack-bundle-analyzer": "4.5.0",
@@ -94,9 +94,9 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.8.0",
     "workbox-webpack-plugin": "6.5.4",
-    "vite": "2.9.1",
-    "@rollup/plugin-babel": "^5.3.0",
-    "vite-plugin-pwa": "0.11.3",
-    "vite-plugin-html": "2.1.1"
+    "vite": "3.0.9",
+    "@rollup/plugin-babel": "^5.3.1",
+    "vite-plugin-pwa": "0.12.3",
+    "vite-plugin-html": "3.2.0"
   }
 }

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import babel from '@rollup/plugin-babel';
-import { minifyHtml, injectHtml } from 'vite-plugin-html';
+import { createHtmlPlugin } from 'vite-plugin-html';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -12,16 +13,20 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
-    minifyHtml(),
-    injectHtml({
-      injectData: {
-        htmlWebpackPlugin: {
-          options: {
-            isVite: !isProduction,
+    createHtmlPlugin({
+      minify: true,
+      template: './index.html',
+      inject: {
+        data: {
+          htmlWebpackPlugin: {
+            options: {
+              isDevelopmentMode: !isProduction,
+            },
           },
         },
       },
     }),
+    VitePWA(),
   ],
   build: {
     minify: 'esbuild',
