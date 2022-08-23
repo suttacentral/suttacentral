@@ -130,7 +130,7 @@
         text-decoration: underline;
       }
     </style>
-    <% if (htmlWebpackPlugin.options.isVite) { %>
+    <% if (htmlWebpackPlugin.options.isDevelopmentMode) { %>
       <script type="module" src="./elements/sc-site-layout.js"></script>
     <% } %>
   </head>

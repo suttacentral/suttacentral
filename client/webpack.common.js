@@ -27,6 +27,7 @@ module.exports = {
         collapseWhitespace: true,
         removeComments: true,
       },
+      isDevelopmentMode: !process.env.NODE_ENV === 'production',
     }),
     new WorkboxPlugin.GenerateSW({
       cacheId: 'SuttaCentral PWA',
