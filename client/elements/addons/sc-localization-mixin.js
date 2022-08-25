@@ -123,4 +123,12 @@ export const LitLocalized = base =>
     loadFallbackLanguage() {
       this.__siteLanguageChanged(FALLBACK_LANGUAGE);
     }
+
+    isSupportedLanguage(lang) {
+      return SUPPORTED_TRANSLATIONS.includes(lang);
+    }
+
+    fallbackLanguage() {
+      return FALLBACK_LANGUAGE;
+    }
   };
