@@ -47,7 +47,7 @@
   "dictionary:rememberSettingsDescription": "Select this to remember these settings next time you visit SuttaCentral.",
   "dictionary:rememberSettingsDisabled": "The settings you chose will not be remembered next time you visit SuttaCentral.",
   "dictionary:rememberSettingsEnabled": "The settings you chose will be remembered next time you visit SuttaCentral.",
-  "dictionary:scriptChanged": "Pali is now shown in {paliScript} script.",
+  "dictionary:scriptChanged": "Pali is being converted to {paliScript} script",
   "dictionary:showHighlighting": "Highlight text-critical details",
   "dictionary:showHighlightingDescription": "Where applicable, highlight the text to show extra details such as variant readings, corrections, structure, etc.",
   "dictionary:showHighlightingDisabled": "Show highlighting is now disabled.",
