@@ -29,7 +29,7 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    super.update(changedProps);
+    super.updated(changedProps);
     if (changedProps.has('navArray')) {
       this.actions.setNavigation(this.navArray);
     }
