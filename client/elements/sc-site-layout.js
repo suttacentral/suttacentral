@@ -162,6 +162,10 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.toolbarPosition !== state.toolbarOptions) {
       this.toolbarPosition = state.toolbarPosition;
     }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._setSiteLanguage();
+    }
   }
 
   connectedCallback() {
@@ -365,9 +369,7 @@ class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    if (changedProps.has('siteLanguage')) {
-      this._setSiteLanguage();
-    }
+    super.updated(changedProps);
     if (changedProps.has('appColorTheme')) {
       this._colorThemeChanged();
     }
@@ -410,7 +412,11 @@ class SCSiteLayout extends LitLocalized(LitElement) {
 
   _setSiteLanguage() {
     // main_menu_root is defined in index.html
-    document.getElementById('main_html_root').lang = this.siteLanguage;
+    if (this.isSupportedLanguage(this.siteLanguage)) {
+      document.getElementById('main_html_root').lang = this.siteLanguage;
+    } else {
+      document.getElementById('main_html_root').lang = this.fallbackLanguage();
+    }
   }
 
   _setToolbarPosition() {
