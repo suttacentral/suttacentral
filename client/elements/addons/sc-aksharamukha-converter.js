@@ -483,6 +483,127 @@ export const paliScriptsStyles = css`
     font-family: 'Noto Sans Marchen' !important;
     line-height: 2.5em;
   }
+
+  .arab {
+    direction: rtl;
+  }
+
+  .arab-fa {
+    direction: rtl;
+  }
+
+  .elym-script {
+    font-family: 'Noto Sans Elymaic' !important;
+    direction: rtl;
+  }
+
+  .hatr-script {
+    font-family: 'Noto Sans Hatran' !important;
+    direction: rtl;
+  }
+
+  .hebr-ar-script {
+    direction: rtl;
+  }
+
+  .armi-script {
+    font-family: 'Noto Sans ImperialAramaic' !important;
+    direction: rtl;
+  }
+
+  .phli-script {
+    font-family: 'Noto Sans InscriptionalPahlav' !important;
+    direction: rtl;
+  }
+
+  .prti-script {
+    font-family: 'Noto Sans InscriptionalParthian' !important;
+    direction: rtl;
+  }
+
+  .makasar-script {
+    font-family: 'Adn Salapa Jangang' !important;
+    font-size: 150%;
+  }
+
+  .mani-script {
+    font-family: 'Noto Sans Manichaean' !important;
+    direction: rtl;
+  }
+
+  .nbat-script {
+    font-family: 'Noto Sans Nabataean' !important;
+    direction: rtl;
+  }
+
+  .nandinagari-script {
+    font-family: 'Nandinagari Uni' !important;
+    font-size: 125%;
+  }
+
+  .narb-script {
+    font-family: 'Noto Sans OldNorthArabian' !important;
+    direction: rtl;
+  }
+
+  .sogo-script {
+    font-family: 'Noto Sans OldSogdian' !important;
+    direction: rtl;
+  }
+
+  .sarb-script {
+    font-family: 'Noto Sans OldSouthArabian' !important;
+    direction: rtl;
+  }
+
+  .palm-script {
+    font-family: 'Noto Sans Palmyrene' !important;
+    direction: rtl;
+  }
+
+  .phnx-script {
+    font-family: 'Noto Sans Phoenician' !important;
+    direction: rtl;
+  }
+
+  .phlp-script {
+    font-family: 'Noto Sans PsalterPahlavi' !important;
+    direction: rtl;
+  }
+
+  .samr-script {
+    font-family: 'Noto Sans Samaritan' !important;
+    direction: rtl;
+  }
+
+  .shahmukhi-script {
+    font-family: 'Noto Nastaliq Urdu' !important;
+    direction: rtl;
+  }
+
+  .sogd-script {
+    font-family: 'Noto Sans Sogdian' !important;
+    direction: rtl;
+  }
+
+  .syre-script {
+    font-family: 'Noto Sans Syriac' !important;
+    direction: rtl;
+  }
+
+  .syrj-script {
+    font-family: 'Noto Sans Syriac' !important;
+    direction: rtl;
+  }
+
+  .syrn-script {
+    font-family: 'Noto Sans Syriac' !important;
+    direction: rtl;
+  }
+
+  .ugar-script {
+    font-family: 'Noto Sans Ugaritic' !important;
+  }
 `;
 
 export const scriptIdentifiers = [
@@ -493,6 +614,10 @@ export const scriptIdentifiers = [
   {
     script: 'Ahom',
     language: 'Ahom',
+  },
+  {
+    script: 'Arab',
+    language: 'Arabic',
   },
   {
     script: 'Ariyaka',
@@ -532,7 +657,7 @@ export const scriptIdentifiers = [
   },
   {
     script: 'Bengali',
-    language: 'Bengali',
+    language: 'Bengali (Bangla)',
   },
   {
     script: 'Bhaiksuki',
@@ -575,6 +700,14 @@ export const scriptIdentifiers = [
     language: 'Dogra',
   },
   {
+    script: 'Elym',
+    language: 'Elymaic',
+  },
+  {
+    script: 'Ethi',
+    language: 'Ethiopic (Abjad)',
+  },
+  {
     script: 'GunjalaGondi',
     language: 'Gondi (Gunjala)',
   },
@@ -599,8 +732,28 @@ export const scriptIdentifiers = [
     language: 'Hanunoo',
   },
   {
+    script: 'Hatr',
+    language: 'Hatran',
+  },
+  {
     script: 'Hebrew',
     language: 'Hebrew',
+  },
+  {
+    script: 'Hebr-Ar',
+    language: 'Hebrew (Judeo-Arabic)',
+  },
+  {
+    script: 'Armi',
+    language: 'Imperial Aramaic',
+  },
+  {
+    script: 'Phli',
+    language: 'Inscriptional Pahlavi',
+  },
+  {
+    script: 'Prti',
+    language: 'Inscriptional Parthian',
   },
   {
     script: 'Hiragana',
@@ -671,8 +824,16 @@ export const scriptIdentifiers = [
     language: 'Mahajani',
   },
   {
+    script: 'Makasar',
+    language: 'Makasar',
+  },
+  {
     script: 'Malayalam',
     language: 'Malayalam',
+  },
+  {
+    script: 'Mani',
+    language: 'Manichaean',
   },
   {
     script: 'Marchen',
@@ -703,12 +864,32 @@ export const scriptIdentifiers = [
     language: 'Multani',
   },
   {
+    script: 'Nbat',
+    language: 'Nabataean',
+  },
+  {
+    script: 'Nandinagari',
+    language: 'Nandinagari',
+  },
+  {
     script: 'Newa',
     language: 'Newa (Nepal Bhasa)',
   },
   {
+    script: 'Narb',
+    language: 'Old North Arabian',
+  },
+  {
     script: 'OldPersian',
     language: 'Old Persian',
+  },
+  {
+    script: 'Sogo',
+    language: 'Old Sogdian',
+  },
+  {
+    script: 'Sarb',
+    language: 'Old South Arabian',
   },
   {
     script: 'Oriya',
@@ -719,8 +900,24 @@ export const scriptIdentifiers = [
     language: 'Pallava',
   },
   {
+    script: 'Palm',
+    language: 'Palmyrene',
+  },
+  {
+    script: 'Arab-Fa',
+    language: 'Persian',
+  },
+  {
     script: 'PhagsPa',
     language: 'PhagsPa',
+  },
+  {
+    script: 'Phnx',
+    language: 'Phoenician',
+  },
+  {
+    script: 'Phlp',
+    language: 'Psalter Pahlavi',
   },
   {
     script: 'Gurmukhi',
@@ -739,12 +936,28 @@ export const scriptIdentifiers = [
     language: 'Rohingya (Hanifi)',
   },
   {
+    script: 'BarahaNorth',
+    language: 'Roman (Baraha North)',
+  },
+  {
+    script: 'BarahaSouth',
+    language: 'Roman (Baraha South)',
+  },
+  {
     script: 'RomanColloquial',
     language: 'Roman (Colloquial)',
   },
   {
+    script: 'PersianDMG',
+    language: 'Roman (DMG Persian)',
+  },
+  {
     script: 'HK',
     language: 'Roman (Harvard-Kyoto)',
+  },
+  {
+    script: 'IAST',
+    language: 'Roman (IAST)',
   },
   {
     script: 'IASTPali',
@@ -756,19 +969,47 @@ export const scriptIdentifiers = [
   },
   {
     script: 'ISO',
-    language: 'Roman (ISO 15919)',
+    language: 'Roman (ISO 15919 Indic)',
+  },
+  {
+    script: 'ISOPali',
+    language: 'Roman (ISO 15919: Pāḷi)',
+  },
+  {
+    script: 'ISO233',
+    language: 'Roman (ISO 233 Arabic)',
+  },
+  {
+    script: 'ISO259',
+    language: 'Roman (ISO 259 Hebrew)',
   },
   {
     script: 'Itrans',
     language: 'Roman (ITRANS)',
   },
   {
+    script: 'IASTLOC',
+    language: 'Roman (LoC Burmese)',
+  },
+  {
     script: 'RomanReadable',
     language: 'Roman (Readable)',
   },
   {
+    script: 'HebrewSBL',
+    language: 'Roman (SBL Hebrew)',
+  },
+  {
     script: 'SLP1',
     language: 'Roman (SLP1)',
+  },
+  {
+    script: 'Type',
+    language: 'Roman (Semitic Typeable)',
+  },
+  {
+    script: 'Latn',
+    language: 'Roman (Semitic)',
   },
   {
     script: 'Titus',
@@ -783,12 +1024,20 @@ export const scriptIdentifiers = [
     language: 'Roman (WX)',
   },
   {
+    script: 'Samr',
+    language: 'Samaritan',
+  },
+  {
     script: 'Santali',
     language: 'Santali (Ol Chiki)',
   },
   {
     script: 'Saurashtra',
     language: 'Saurashtra',
+  },
+  {
+    script: 'Shahmukhi',
+    language: 'Shahmukhi',
   },
   {
     script: 'Shan',
@@ -807,6 +1056,10 @@ export const scriptIdentifiers = [
     language: 'Sinhala',
   },
   {
+    script: 'Sogd',
+    language: 'Sogdian',
+  },
+  {
     script: 'SoraSompeng',
     language: 'Sora Sompeng',
   },
@@ -821,6 +1074,18 @@ export const scriptIdentifiers = [
   {
     script: 'SylotiNagri',
     language: 'Syloti Nagari',
+  },
+  {
+    script: 'Syrn',
+    language: 'Syriac (Eastern)',
+  },
+  {
+    script: 'Syre',
+    language: 'Syriac (Estrangela)',
+  },
+  {
+    script: 'Syrj',
+    language: 'Syriac (Western)',
   },
   {
     script: 'Tagalog',
@@ -885,6 +1150,10 @@ export const scriptIdentifiers = [
   {
     script: 'Tirhuta',
     language: 'Tirhuta (Maithili)',
+  },
+  {
+    script: 'Ugar',
+    language: 'Ugar',
   },
   {
     script: 'Urdu',

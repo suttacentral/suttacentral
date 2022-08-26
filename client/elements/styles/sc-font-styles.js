@@ -1211,6 +1211,105 @@ export const SCFontStyles = css`
     font-display: swap;
   }
 
+  @font-face {
+    font-family: 'Noto Sans Elymaic';
+    src: url('/files/fonts/NotoSansElymaic-Regular.woff2');
+    direction: rtl;
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Hatran';
+    src: url('/files/fonts/NotoSansHatran-Regular.woff2');
+    direction: rtl;
+  }
+
+  @font-face {
+    font-family: 'Noto Sans ImperialAramaic';
+    src: url('/files/fonts/NotoSansImperialAramaic-Regular.woff2');
+    direction: rtl;
+  }
+
+  @font-face {
+    font-family: 'Noto Sans InscriptionalPahlav';
+    src: url('/files/fonts/NotoSansInscriptionalPahlavi-Regular.woff2');
+    direction: rtl;
+  }
+
+  @font-face {
+    font-family: 'Noto Sans InscriptionalParthian';
+    src: url('/files/fonts/NotoSansInscriptionalParthian-Regular.woff2');
+    direction: rtl;
+  }
+
+  @font-face {
+    font-family: 'Adn Salapa Jangang';
+    src: url('/files/fonts/AdnSalapaJangang.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Manichaean';
+    src: url('/files/fonts/NotoSansManichaean-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Nabataean';
+    src: url('/files/fonts/NotoSansNabataean-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Nandinagari Uni';
+    src: url('/files/fonts/NandinagariUni.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans OldNorthArabian';
+    src: url('/files/fonts/NotoSansOldNorthArabian-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans OldSogdian';
+    src: url('/files/fonts/noto-sans-old-sogdian-regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans OldSouthArabian';
+    src: url('/files/fonts/NotoSansOldSouthArabian-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Palmyrene';
+    src: url('/files/fonts/NotoSansPalmyrene-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Phoenician';
+    src: url('/files/fonts/NotoSansPhoenician-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans PsalterPahlavi';
+    src: url('/files/fonts/NotoSansPsalterPahlavi-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Samaritan';
+    src: url('/files/fonts/NotoSansSamaritan-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Sogdian';
+    src: url('/files/fonts/NotoSansSogdian-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Syriac';
+    src: url('/files/fonts/NotoSansSyriac-Regular.woff2');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Ugaritic';
+    src: url('/files/fonts/NotoSansUgaritic-Regular.woff2');
+  }
   html {
     --sc-skolar-font-scale: 1.13;
 
