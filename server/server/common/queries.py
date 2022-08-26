@@ -977,7 +977,7 @@ FOR dict IN dictionaries_simple
 EXPANSION = '''
 LET expansion_item = (
     FOR entry IN uid_expansion
-        RETURN { [ entry.uid ]: [ entry.acro, entry.name ] }
+        RETURN { [ entry.uid ]: [ entry.acronym, entry.name ] }
     )
 
 RETURN MERGE(expansion_item)
