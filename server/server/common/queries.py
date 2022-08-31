@@ -1424,3 +1424,16 @@ FOR root IN sc_bilara_texts
     AND root.uid == @uid
     RETURN root
 '''
+
+ABBREVIATION_SUPER_NAME_ACRONYM = '''
+FOR name_doc IN super_name
+    LET acronym = (
+        FOR doc IN super_nav_details
+            FILTER doc.uid == name_doc.uid
+            RETURN doc.acronym
+    )[0]
+    RETURN {
+        name: name_doc.name,
+        acronym: acronym
+    }
+'''

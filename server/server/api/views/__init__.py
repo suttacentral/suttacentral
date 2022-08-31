@@ -39,4 +39,7 @@ from .views import (
     Guides,
     Shortcuts,
     CreatorBio,
+    AbbreviationTexts,
+    AbbreviationEditions,
+    AbbreviationSchools
 )
