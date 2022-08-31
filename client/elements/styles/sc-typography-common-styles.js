@@ -221,10 +221,6 @@ export const typographyCommonStyles = css`
     padding-left: 0;
   }
 
-  blockquote {
-    margin: 0 0 0 2;
-  }
-
   /* links */
 
   a {
