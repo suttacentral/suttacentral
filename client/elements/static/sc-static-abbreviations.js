@@ -26,8 +26,8 @@ class SCStaticAbbreviations extends SCStaticPage {
         ${layoutSimpleStyles}
         ${typographyCommonStyles}
         ${typographyStaticStyles}
-        sc-static-abbreviations table {
-          width: 720px;
+        .abbrTable {
+          max-width: 480px;
         }
       </style>
       <main>
@@ -42,7 +42,7 @@ class SCStaticAbbreviations extends SCStaticPage {
             <li>${unsafeHTML(this.localize('abbreviations:7'))}</li>
           </ul>
           <p>${unsafeHTML(this.localize('abbreviations:8'))}</p>
-          <table>
+          <table class="abbrTable">
             <caption>
               ${unsafeHTML(this.localize('abbreviations:9'))}
             </caption>
@@ -56,7 +56,7 @@ class SCStaticAbbreviations extends SCStaticPage {
             )}
           </table>
 
-          <table>
+          <table class="abbrTable">
             <caption>
               List of Edition Abbreviations
             </caption>
@@ -70,7 +70,7 @@ class SCStaticAbbreviations extends SCStaticPage {
             )}
           </table>
 
-          <table>
+          <table class="abbrTable">
             <caption>
               List of School Abbreviations
             </caption>
