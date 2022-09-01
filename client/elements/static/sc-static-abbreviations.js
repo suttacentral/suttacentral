@@ -28,7 +28,7 @@ class SCStaticAbbreviations extends SCStaticPage {
         ${typographyStaticStyles}
         .abbrTable {
           width: 100%;
-          max-width: 480px;
+          white-space: nowrap;
         }
       </style>
       <main>
