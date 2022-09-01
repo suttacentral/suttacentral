@@ -26,6 +26,9 @@ class SCStaticAbbreviations extends SCStaticPage {
         ${layoutSimpleStyles}
         ${typographyCommonStyles}
         ${typographyStaticStyles}
+        sc-static-abbreviations table {
+          width: 720px;
+        }
       </style>
       <main>
         <article>
