@@ -1,6 +1,18 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.09.01
+
+- Upgrade aksharamukha and support for more script transformations.
+- Change acro to acronym. suttacentral/sc-data#145
+- Add enjambment support.
+
+## 2022.08.23
+
+- Add publication web UI.
+- Make sure HTML in sutta page ToC is rendered.
+- Fix:"flash of footer" when switching pages with ATB.
+
 ## 2022.08.12
 
 - Fix: navigation bug for bi-sk #2488

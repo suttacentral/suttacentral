@@ -287,7 +287,8 @@ def load_json_file(db, change_tracker, json_file):
     if 'uid' in data[0]:
         for d in data:
             d['_key'] = d['uid']
-        db[collection_name].import_bulk_logged(data, wipe=True)
+        db[collection_name].truncate()
+        db[collection_name].import_bulk_logged(data)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -518,6 +519,15 @@ def run(no_pull=False):
     print_stage("Loading uid_expansion.json")
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
 
+    print_stage("Loading uid_expansion_edition.json")
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion_edition.json')
+
+    print_stage("Loading uid_expansion_language.json")
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion_language.json')
+
+    print_stage("Loading uid_expansion_school.json")
+    load_json_file(db, change_tracker, misc_dir / 'uid_expansion_school.json')
+
     print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
 
@@ -547,6 +557,9 @@ def run(no_pull=False):
 
     print_stage('Load names from sc_bilara_data')
     sc_bilara_data.load_names(db, sc_bilara_data_dir, languages_file)
+
+    print_stage('Load super names from sc_bilara_data')
+    sc_bilara_data.load_super_names_root_misc_site(db, sc_bilara_data_dir)
 
     print_stage('Load blurbs from sc_bilara_data')
     sc_bilara_data.load_blurbs(db, sc_bilara_data_dir)
