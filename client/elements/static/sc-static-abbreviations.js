@@ -23,12 +23,7 @@ class SCStaticAbbreviations extends SCStaticPage {
   render() {
     return html`
       <style>
-        ${layoutSimpleStyles}
-        ${typographyCommonStyles}
-        ${typographyStaticStyles}
-        .abbrTable {
-          width: 100%;
-          white-space: nowrap;
+        ${layoutSimpleStyles} ${typographyCommonStyles} ${typographyStaticStyles} .abbrTable {
         }
       </style>
       <main>
@@ -59,7 +54,7 @@ class SCStaticAbbreviations extends SCStaticPage {
 
           <table class="abbrTable">
             <caption>
-              List of Edition Abbreviations
+              Edition Abbreviations
             </caption>
             ${this.abbrEditions.map(
               abbr => html`
@@ -73,7 +68,7 @@ class SCStaticAbbreviations extends SCStaticPage {
 
           <table class="abbrTable">
             <caption>
-              List of School Abbreviations
+              School Abbreviations
             </caption>
             ${this.abbrSchools.map(
               abbr => html`
