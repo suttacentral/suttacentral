@@ -126,6 +126,19 @@ def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> 
     db['names'].truncate()
     db['names'].import_bulk_logged(res)
 
+
+def load_super_names_root_misc_site(db: Database, sc_bilara_data_dir: Path):
+    file_content = json_load(sc_bilara_data_dir / 'root/misc/site/name/super-name_root-misc-site.json')
+    names = []
+    for name in file_content.items():
+        names.append({
+            'uid': name[0].replace('super-name:', '').split('.')[1],
+            'type': 'misc',
+            'name': name[1],
+        })
+    db['super_name'].truncate()
+    db['super_name'].import_bulk_logged(names)
+
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1

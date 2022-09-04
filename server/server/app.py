@@ -47,6 +47,9 @@ from api.views import (
     Guides,
     Shortcuts,
     CreatorBio,
+    AbbreviationTexts,
+    AbbreviationEditions,
+    AbbreviationSchools
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -123,6 +126,9 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(EditionMainmatter, '/publication/edition/<string:edition_id>/<string:uid>')
     api.add_resource(EditionBlurbs, '/publication/edition/blurbs/<string:lang>')
     api.add_resource(CreatorBio, '/creator_bio')
+    api.add_resource(AbbreviationTexts, '/abbreviation_texts')
+    api.add_resource(AbbreviationEditions, '/abbreviation_editions')
+    api.add_resource(AbbreviationSchools, '/abbreviation_schools')
 
     app.register_blueprint(api_bp)
     register_extensions(app)

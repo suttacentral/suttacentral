@@ -42,7 +42,8 @@ from common.queries import (
     PLI_SUTTA_PUBLICATION_INFO,
     AVAILABLE_VOICES,
     CANDIDATE_AUTHORS,
-    VAGGA_CHILDREN
+    VAGGA_CHILDREN,
+    ABBREVIATION_SUPER_NAME_ACRONYM
 )
 
 from common.utils import (
@@ -1293,4 +1294,28 @@ class CreatorBio(Resource):
     def get(self):
         db = get_db()
         data = db.collection('creator_bio').all()
+        return list(data), 200
+
+
+class AbbreviationTexts(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = list(db.aql.execute(ABBREVIATION_SUPER_NAME_ACRONYM))
+        return data, 200
+
+
+class AbbreviationEditions(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('uid_expansion_edition').all()
+        return list(data), 200
+
+
+class AbbreviationSchools(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('uid_expansion_school').all()
         return list(data), 200
