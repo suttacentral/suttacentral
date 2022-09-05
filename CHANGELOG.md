@@ -1,6 +1,11 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.09.05
+
+- Add Jataka numbers to the top level navigation #2523
+
+
 ## 2022.09.01
 
 - Upgrade aksharamukha and support for more script transformations.
