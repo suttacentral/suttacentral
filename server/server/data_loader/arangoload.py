@@ -373,13 +373,13 @@ def update_text_extra_info():
             refs = get_pts_ref(ref)
             for ptsRef in refs:
                 if ptsRef.find('pts-vp-pli2ed') != -1:
-                    ptsRefs2nd.append(ptsRef.replace('pts-vp-pli2ed', 'PTS (2nd ed) '));
+                    ptsRefs2nd.append(ptsRef.replace('pts-vp-pli2ed', 'PTS (2nd ed) '))
                     continue
                 elif ptsRef.find('pts-vp-pli1ed') != -1:
-                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli1ed', 'PTS (1st ed) '));
+                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli1ed', 'PTS (1st ed) '))
                     continue
                 elif ptsRef.find('pts-vp-pli') != -1:
-                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli', 'PTS '));
+                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli', 'PTS '))
         if len(ptsRefs1st) != 0:
             db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs1st)})
         if len(ptsRefs2nd) != 0:
@@ -405,6 +405,8 @@ def update_text_acronym(structure_dir):
                 # Determine whether it is a range sutta， e.g. an1.1-10
                 if (last_index != -1 and uid['uid'][last_index + 1:].isdigit()):
                     acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ').replace('-', '–')
+                    if acronym.find(sutta_superior_path['acronym'] + ' –') != -1:
+                        acronym = acronym.replace(sutta_superior_path['acronym'] + ' –', sutta_superior_path['acronym'] + '–')
                 else:
                     first_part_index = uid['uid'].find(path + '-')
                     if first_part_index != -1:
