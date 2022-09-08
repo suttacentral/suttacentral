@@ -18,25 +18,23 @@ let expansionDataCache;
 
 // eslint-disable-next-line import/prefer-default-export
 export class SCSuttaplex extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      suttaplexListStyle: String,
-      item: Object,
-      localizedStringsPath: String,
-      difficulty: String,
-      expansionData: Array,
-      parallelsOpened: Boolean,
-      translationsOpened: Boolean,
-      rootTextsOpened: Boolean,
-      compactToggle: Boolean,
-      hasVoice: Boolean,
-      isPatimokkha: Boolean,
-      isPatimokkhaDetails: Boolean,
-      isSuttaInRangeSutta: Boolean,
-      inRangeSuttaId: String,
-      priorityAuthorUid: String,
-    };
-  }
+  static properties = {
+    suttaplexListStyle: { type: String },
+    item: { type: Object },
+    localizedStringsPath: { type: String },
+    difficulty: { type: String },
+    expansionData: { type: Array },
+    parallelsOpened: { type: Boolean },
+    translationsOpened: { type: Boolean },
+    rootTextsOpened: { type: Boolean },
+    compactToggle: { type: Boolean },
+    hasVoice: { type: Boolean },
+    isPatimokkha: { type: Boolean },
+    isPatimokkhaDetails: { type: Boolean },
+    isSuttaInRangeSutta: { type: Boolean },
+    inRangeSuttaId: { type: String },
+    priorityAuthorUid: { type: String },
+  };
 
   constructor() {
     super();

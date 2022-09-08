@@ -25,26 +25,163 @@ const DEFAULT_REFERENCE_OPTION = [
   },
 ];
 
-class SCTopSheetViews extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      selectedTextView: { type: String },
-      selectedNoteDisplayType: { type: String },
-      paliLookupArray: { type: Array },
-      paliLookupLanguage: { type: String },
-      chineseLookupArray: { type: Array },
-      chineseLookupLanguage: { type: String },
-      paliScripts: { type: Array },
-      paliScript: { type: String },
-      textualInfoToggleEnabled: { type: Boolean },
-      textualInfoResponse: { type: Object },
-      textualParagraphs: { type: Object },
-      localizedStringsPath: { type: String },
-      references: { type: Array },
-      noteDisplayTypeArray: { type: Array },
-      textViewArray: { type: Array },
-    };
-  }
+export class SCTopSheetViews extends LitLocalized(LitElement) {
+  static properties = {
+    selectedTextView: { type: String },
+    selectedNoteDisplayType: { type: String },
+    paliLookupArray: { type: Array },
+    paliLookupLanguage: { type: String },
+    chineseLookupArray: { type: Array },
+    chineseLookupLanguage: { type: String },
+    paliScripts: { type: Array },
+    paliScript: { type: String },
+    textualInfoToggleEnabled: { type: Boolean },
+    textualInfoResponse: { type: Object },
+    textualParagraphs: { type: Object },
+    localizedStringsPath: { type: String },
+    references: { type: Array },
+    noteDisplayTypeArray: { type: Array },
+    textViewArray: { type: Array },
+  };
+
+  static styles = [
+    paliScriptsStyles,
+    css`
+      :host {
+        display: none;
+
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
+        --mdc-typography-font-family: var(--sc-sans-font);
+        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-typography-body2-font-weight: 500;
+      }
+
+      section {
+        font-family: var(--sc-sans-font);
+
+        position: absolute;
+
+        display: grid;
+        overflow-x: scroll;
+        overflow-y: none;
+
+        width: 100%;
+        padding: 0;
+
+        border-bottom: 1px solid #ccc;
+        background-color: var(--sc-secondary-background-color);
+        box-shadow: var(--sc-shadow-elevation-4dp);
+
+        grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
+      }
+
+      .tools {
+        padding: 8px;
+
+        border-right: 1px solid var(--sc-border-color);
+      }
+
+      .tools:first-of-type {
+        margin-left: 8px;
+      }
+
+      .tools:last-of-type {
+        border-right: none;
+      }
+
+      details {
+        position: relative;
+
+        box-sizing: border-box;
+        margin: 0 0 0 4px;
+      }
+
+      details p {
+        position: absolute;
+        z-index: 10;
+
+        max-width: 360px;
+        margin: 4px 0 0 0;
+        padding: 8px 12px;
+
+        color: var(--sc-primary-text-color);
+        border: 1px solid var(--sc-border-color);
+        border-radius: 8px;
+        background-color: var(--sc-tertiary-background-color);
+        box-shadow: var(--sc-shadow-elevation-4dp);
+      }
+
+      summary {
+        font-weight: 600;
+
+        padding: 8px;
+
+        cursor: pointer;
+
+        color: var(--sc-primary-text-color);
+        outline-color: var(--sc-border-color);
+
+        align-items: baseline;
+      }
+
+      summary::marker {
+        color: var(--sc-icon-color);
+      }
+
+      mwc-formfield {
+        display: block;
+      }
+
+      .two-column {
+        margin-right: 8px;
+
+        column-count: 2;
+      }
+
+      .four-column {
+        margin-right: 8px;
+
+        column-count: 4;
+      }
+
+      mwc-checkbox {
+        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
+      }
+
+      mwc-radio {
+        --mdc-radio-unchecked-color: var(--sc-icon-color);
+      }
+
+      section::-webkit-scrollbar {
+        height: 10px;
+      }
+
+      section::-webkit-scrollbar-track {
+        background: #ccc;
+      }
+
+      section::-webkit-scrollbar-thumb {
+        background: var(--sc-icon-color);
+      }
+
+      mwc-button {
+        --mdc-theme-primary: var(--sc-primary-color);
+        --mdc-theme-on-primary: white;
+      }
+
+      select {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-sm);
+        color: var(--sc-primary-text-color);
+        padding: 8px;
+        width: 100%;
+        margin: 4px 0 0 0;
+        border: 2px solid var(--sc-border-color);
+        border-radius: var(--sc-size-sm);
+        background-color: var(--sc-secondary-background-color);
+      }
+    `,
+  ];
 
   constructor() {
     super();
@@ -172,147 +309,6 @@ class SCTopSheetViews extends LitLocalized(LitElement) {
 
   buildReferences(refs) {
     return Array.isArray(refs) ? refs.reduce((acc, editionSet) => acc + editionSet, '') : '';
-  }
-
-  static get styles() {
-    return [
-      paliScriptsStyles,
-      css`
-        :host {
-          display: none;
-
-          --mdc-theme-secondary: var(--sc-primary-accent-color);
-          --mdc-typography-font-family: var(--sc-sans-font);
-          --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-          --mdc-typography-body2-font-weight: 500;
-        }
-
-        section {
-          font-family: var(--sc-sans-font);
-
-          position: absolute;
-
-          display: grid;
-          overflow-x: scroll;
-          overflow-y: none;
-
-          width: 100%;
-          padding: 0;
-
-          border-bottom: 1px solid #ccc;
-          background-color: var(--sc-secondary-background-color);
-          box-shadow: var(--sc-shadow-elevation-4dp);
-
-          grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
-        }
-
-        .tools {
-          padding: 8px;
-
-          border-right: 1px solid var(--sc-border-color);
-        }
-
-        .tools:first-of-type {
-          margin-left: 8px;
-        }
-
-        .tools:last-of-type {
-          border-right: none;
-        }
-
-        details {
-          position: relative;
-
-          box-sizing: border-box;
-          margin: 0 0 0 4px;
-        }
-
-        details p {
-          position: absolute;
-          z-index: 10;
-
-          max-width: 360px;
-          margin: 4px 0 0 0;
-          padding: 8px 12px;
-
-          color: var(--sc-primary-text-color);
-          border: 1px solid var(--sc-border-color);
-          border-radius: 8px;
-          background-color: var(--sc-tertiary-background-color);
-          box-shadow: var(--sc-shadow-elevation-4dp);
-        }
-
-        summary {
-          font-weight: 600;
-
-          padding: 8px;
-
-          cursor: pointer;
-
-          color: var(--sc-primary-text-color);
-          outline-color: var(--sc-border-color);
-
-          align-items: baseline;
-        }
-
-        summary::marker {
-          color: var(--sc-icon-color);
-        }
-
-        mwc-formfield {
-          display: block;
-        }
-
-        .two-column {
-          margin-right: 8px;
-
-          column-count: 2;
-        }
-
-        .four-column {
-          margin-right: 8px;
-
-          column-count: 4;
-        }
-
-        mwc-checkbox {
-          --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-        }
-
-        mwc-radio {
-          --mdc-radio-unchecked-color: var(--sc-icon-color);
-        }
-
-        section::-webkit-scrollbar {
-          height: 10px;
-        }
-
-        section::-webkit-scrollbar-track {
-          background: #ccc;
-        }
-
-        section::-webkit-scrollbar-thumb {
-          background: var(--sc-icon-color);
-        }
-
-        mwc-button {
-          --mdc-theme-primary: var(--sc-primary-color);
-          --mdc-theme-on-primary: white;
-        }
-
-        select {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-sm);
-          color: var(--sc-primary-text-color);
-          padding: 8px;
-          width: 100%;
-          margin: 4px 0 0 0;
-          border: 2px solid var(--sc-border-color);
-          border-radius: var(--sc-size-sm);
-          background-color: var(--sc-secondary-background-color);
-        }
-      `,
-    ];
   }
 
   _loadScToasts() {

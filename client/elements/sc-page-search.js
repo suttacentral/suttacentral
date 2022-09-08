@@ -22,6 +22,66 @@ import(
 );
 
 class SCPageSearch extends LitLocalized(LitElement) {
+  static properties = {
+    // The query to search for
+    searchQuery: {
+      type: String,
+      hasChanged(newVal) {
+        if (newVal) {
+          return true;
+        }
+      },
+    },
+    // The actual query parameters of the search
+    searchParams: { type: Object },
+    lastSearchResults: { type: Array },
+    allSearchResults: { type: Array },
+    visibleSearchResults: { type: Array },
+    resultCount: { type: Number },
+    resultsPerLoad: { type: Number },
+    currentPage: { type: Number },
+    currentFilter: { type: String },
+    searchResultElemHeight: { type: Number },
+    localizedStringsPath: { type: String },
+    totalLoadedResults: { type: Number },
+    isOnline: { type: Boolean },
+    dictionaryTitles: { type: Object },
+    suttaplex: { type: Array },
+    expansionReturns: { type: Array },
+    waitTimeAfterNewWordExpired: { type: Boolean },
+    loadingResults: { type: Boolean },
+    lastError: { type: Object },
+  };
+
+  constructor() {
+    super();
+    this.searchQuery = store.getState().currentRoute.params.query;
+    this.searchParams = store.getState().searchParams;
+    this.lastSearchResults = [];
+    this.allSearchResults = [];
+    this.visibleSearchResults = [];
+    this.resultCount = 0;
+    this.resultsPerLoad = 50;
+    this.currentPage = 0;
+    this.currentFilter = 'all';
+    this.searchResultElemHeight = 170;
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.totalLoadedResults = 0;
+    this.isOnline = store.getState().isOnline;
+    this.dictionaryTitles = {
+      ncped: 'New Concise Pali English Dictionary',
+      cped: 'Concise Pali English Dictionary',
+      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      dppn: 'Dictionary of Pali Proper Names',
+      pts: 'PTS Pali English Dictionary',
+    };
+    this.suttaplex = [];
+    this.expansionReturns = [];
+    this.waitTimeAfterNewWordExpired = true;
+    this.loadingResults = true;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
+  }
+
   render() {
     return html`
       <style>
@@ -425,68 +485,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           `
         )
       : '';
-  }
-
-  static get properties() {
-    return {
-      // The query to search for
-      searchQuery: {
-        type: String,
-        hasChanged(newVal) {
-          if (newVal) {
-            return true;
-          }
-        },
-      },
-      // The actual query parameters of the search
-      searchParams: { type: Object },
-      lastSearchResults: { type: Array },
-      allSearchResults: { type: Array },
-      visibleSearchResults: { type: Array },
-      resultCount: { type: Number },
-      resultsPerLoad: { type: Number },
-      currentPage: { type: Number },
-      currentFilter: { type: String },
-      searchResultElemHeight: { type: Number },
-      localizedStringsPath: { type: String },
-      totalLoadedResults: { type: Number },
-      isOnline: { type: Boolean },
-      dictionaryTitles: { type: Object },
-      suttaplex: { type: Array },
-      expansionReturns: { type: Array },
-      waitTimeAfterNewWordExpired: { type: Boolean },
-      loadingResults: { type: Boolean },
-      lastError: { type: Object },
-    };
-  }
-
-  constructor() {
-    super();
-    this.searchQuery = store.getState().currentRoute.params.query;
-    this.searchParams = store.getState().searchParams;
-    this.lastSearchResults = [];
-    this.allSearchResults = [];
-    this.visibleSearchResults = [];
-    this.resultCount = 0;
-    this.resultsPerLoad = 50;
-    this.currentPage = 0;
-    this.currentFilter = 'all';
-    this.searchResultElemHeight = 170;
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.totalLoadedResults = 0;
-    this.isOnline = store.getState().isOnline;
-    this.dictionaryTitles = {
-      ncped: 'New Concise Pali English Dictionary',
-      cped: 'Concise Pali English Dictionary',
-      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
-      dppn: 'Dictionary of Pali Proper Names',
-      pts: 'PTS Pali English Dictionary',
-    };
-    this.suttaplex = [];
-    this.expansionReturns = [];
-    this.waitTimeAfterNewWordExpired = true;
-    this.loadingResults = true;
-    this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
   connectedCallback() {

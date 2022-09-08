@@ -1,14 +1,12 @@
 import { html, LitElement } from 'lit';
 
 class SCSuttaplexSectionTitle extends LitElement {
-  static get properties() {
-    return {
-      inputTitle: String,
-      inputType: String,
-      originalTitle: String,
-      isPatimokkhaRuleCategory: Boolean,
-    };
-  }
+  static properties = {
+    inputTitle: { type: String },
+    inputType: { type: String },
+    originalTitle: { type: String },
+    isPatimokkhaRuleCategory: { type: Boolean },
+  };
 
   get titleClass() {
     return this.inputType === 'grouping' ? 'node-top-heading' : 'node-secondary-heading';

@@ -4,13 +4,11 @@ import { LitElement, html, css } from 'lit';
 import { LitLocalized } from './addons/sc-localization-mixin';
 
 export class SCMap extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      zoom: Number,
-      longitude: Number,
-      latitude: Number,
-    };
-  }
+  static properties = {
+    zoom: { type: Number },
+    longitude: { type: Number },
+    latitude: { type: Number },
+  };
 
   constructor() {
     super();
@@ -21,21 +19,19 @@ export class SCMap extends LitLocalized(LitElement) {
     this.mapID = 'z1fKgOqM_IYc.k-W6AbJIxLu8';
   }
 
-  static get styles() {
-    return css`
-      .google-maps {
-        height: 480px;
-        margin: var(--sc-size-md) 0;
-      }
+  static styles = css`
+    .google-maps {
+      height: 480px;
+      margin: var(--sc-size-md) 0;
+    }
 
-      .google-maps iframe {
-        width: 100%;
-        height: 480px;
+    .google-maps iframe {
+      width: 100%;
+      height: 480px;
 
-        border: none;
-      }
-    `;
-  }
+      border: none;
+    }
+  `;
 
   render() {
     return html`

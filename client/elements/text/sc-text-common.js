@@ -2,14 +2,12 @@ import { LitElement, html } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 
 export class SCTextCommon extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      inputElement: { type: Object },
-      showParagraphs: { type: Boolean },
-      chosenTextView: { type: String },
-      lang: { type: String },
-    };
-  }
+  static properties = {
+    inputElement: { type: Object },
+    showParagraphs: { type: Boolean },
+    chosenTextView: { type: String },
+    lang: { type: String },
+  };
 
   constructor() {
     super();

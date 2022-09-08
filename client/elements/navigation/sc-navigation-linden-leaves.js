@@ -1,142 +1,134 @@
 import { LitElement, html, css } from 'lit';
-
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
-
 import { navigationNormalModeStyles } from './sc-navigation-styles';
-
 import '../menus/sc-action-items-universal';
 import { icon } from '../../img/sc-icon';
-
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
-class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
+export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
+  static styles = css`
+    :host {
+      display: block;
 
-        height: 48px;
+      height: 48px;
 
-        background-color: rgb(75, 74, 73);
+      background-color: rgb(75, 74, 73);
 
-        position: relative;
-        z-index: 200;
-      }
+      position: relative;
+      z-index: 200;
+    }
 
-      nav {
-        display: flex;
-        overflow-x: auto;
-        overflow-y: hidden;
-        flex-direction: row;
+    nav {
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-direction: row;
 
-        box-sizing: border-box;
-        height: 48px;
-        padding: 0 8px 0 16px;
+      box-sizing: border-box;
+      height: 48px;
+      padding: 0 8px 0 16px;
 
-        background-color: rgb(75, 74, 73);
+      background-color: rgb(75, 74, 73);
 
-        justify-content: space-between;
-      }
+      justify-content: space-between;
+    }
 
-      ul {
-        display: flex;
+    ul {
+      display: flex;
 
-        margin: 0 12px 0 0;
-        padding: 0;
-      }
+      margin: 0 12px 0 0;
+      padding: 0;
+    }
 
-      li {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-xs);
-        font-weight: 500;
-        font-stretch: condensed;
+    li {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-xs);
+      font-weight: 500;
+      font-stretch: condensed;
 
-        display: flex;
+      display: flex;
 
-        list-style-type: none;
+      list-style-type: none;
 
-        color: white;
+      color: white;
 
-        align-items: center;
+      align-items: center;
 
-        white-space: nowrap;
-      }
+      white-space: nowrap;
+    }
 
-      li a {
-        position: relative;
+    li a {
+      position: relative;
 
-        display: flex;
+      display: flex;
 
-        box-sizing: border-box;
-        height: 100%;
-        padding: 4px 2px 0;
+      box-sizing: border-box;
+      height: 100%;
+      padding: 4px 2px 0;
 
-        text-decoration: none;
+      text-decoration: none;
 
-        opacity: 0.8;
-        color: white;
-        border-bottom: 4px solid rgba(0, 0, 0, 0);
+      opacity: 0.8;
+      color: white;
+      border-bottom: 4px solid rgba(0, 0, 0, 0);
 
-        align-items: center;
+      align-items: center;
 
-        transition: all 200ms ease;
-      }
+      transition: all 200ms ease;
+    }
 
-      li a:hover {
-        cursor: pointer;
+    li a:hover {
+      cursor: pointer;
 
-        opacity: 1;
-        border-bottom: 4px solid var(--sc-primary-color-light);
+      opacity: 1;
+      border-bottom: 4px solid var(--sc-primary-color-light);
 
-        transition: all 200ms ease;
-      }
+      transition: all 200ms ease;
+    }
 
-      li a:active {
-        background-color: var(--sc-primary-color-light-transparent);
+    li a:active {
+      background-color: var(--sc-primary-color-light-transparent);
 
-        transition: background-color 200ms ease;
-      }
+      transition: background-color 200ms ease;
+    }
 
-      li:last-child {
-        box-sizing: border-box;
-        height: 100%;
-        padding: 4px 2px 0;
+    li:last-child {
+      box-sizing: border-box;
+      height: 100%;
+      padding: 4px 2px 0;
 
-        border-bottom: 4px solid var(--sc-primary-color-light);
-      }
+      border-bottom: 4px solid var(--sc-primary-color-light);
+    }
 
-      li:last-child a:hover {
-        cursor: default;
+    li:last-child a:hover {
+      cursor: default;
 
-        color: white;
-        border-bottom: none;
-      }
+      color: white;
+      border-bottom: none;
+    }
 
-      nav li:last-child a {
-        cursor: default;
+    nav li:last-child a {
+      cursor: default;
 
-        opacity: 1;
-      }
+      opacity: 1;
+    }
 
-      li:first-of-type {
-        margin-left: 0;
-      }
+    li:first-of-type {
+      margin-left: 0;
+    }
 
-      .icon {
-        fill: var(--sc-icon-color);
-      }
-    `;
-  }
+    .icon {
+      fill: var(--sc-icon-color);
+    }
+  `;
 
-  static get properties() {
-    return {
-      localizedStringsPath: { type: String },
-      isCompactMode: { type: Boolean },
-      currentStyles: { type: Object },
-      navArray: { type: Array },
-    };
-  }
+  static properties = {
+    localizedStringsPath: { type: String },
+    isCompactMode: { type: Boolean },
+    currentStyles: { type: Object },
+    navArray: { type: Array },
+  };
 
   constructor() {
     super();

@@ -250,16 +250,22 @@ const routes = {
 };
 
 class SCPageSelector extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      currentRoute: { type: Object },
-      shouldShowSecondToolbar: { type: Object },
-      shouldShowTipitakaToolbar: { type: Object },
-      shouldShowAcademicToolbar: { type: Object },
-      shouldShowOrganizationalToolbar: { type: Object },
-      shouldShowGuidesToolbar: { type: Object },
-      shouldShowPublicationToolbar: { type: Object },
-    };
+  static properties = {
+    currentRoute: { type: Object },
+    shouldShowSecondToolbar: { type: Object },
+    shouldShowTipitakaToolbar: { type: Object },
+    shouldShowAcademicToolbar: { type: Object },
+    shouldShowOrganizationalToolbar: { type: Object },
+    shouldShowGuidesToolbar: { type: Object },
+    shouldShowPublicationToolbar: { type: Object },
+  };
+
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.router = new RoutingService();
+    this.router.addRoutes(routes);
+    this._stopListening = undefined;
   }
 
   get actions() {
@@ -307,14 +313,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
         });
       },
     };
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.router = new RoutingService();
-    this.router.addRoutes(routes);
-    this._stopListening = undefined;
   }
 
   connectedCallback() {

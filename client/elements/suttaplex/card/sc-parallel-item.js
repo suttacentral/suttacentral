@@ -13,16 +13,14 @@ import { parallelItemCss } from './sc-suttaplex-css';
 
 const stopPropagation = e => e.stopPropagation();
 
-class SCParallelItem extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      parallelItem: Object,
-      remark: String,
-      rootLangMappings: Object,
-      localizedStringsPath: String,
-      expansionData: Array,
-    };
-  }
+export class SCParallelItem extends LitLocalized(LitElement) {
+  static properties = {
+    parallelItem: { type: Object },
+    remark: { type: String },
+    rootLangMappings: { type: Object },
+    localizedStringsPath: { type: String },
+    expansionData: { type: Array },
+  };
 
   constructor() {
     super();

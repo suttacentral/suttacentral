@@ -4,31 +4,24 @@ import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 
-const styles = css`
-  .contents {
-    margin: 1em 0 2em;
-  }
+export class SCTopSheetToC extends SCTopSheetCommon {
+  static styles = [
+    super.styles,
+    typographyCommonStyles,
+    css`
+      .contents {
+        margin: 1em 0 2em;
+      }
 
-  .unordered-ol {
-    list-style-type: none;
-  }
-`;
+      .unordered-ol {
+        list-style-type: none;
+      }`
+  ];
 
-class SCTopSheetToC extends SCTopSheetCommon {
-  static get styles() {
-    return [super.styles, typographyCommonStyles, styles];
-  }
-
-  static get properties() {
-    return {
-      items: {
-        type: Object,
-      },
-      disableToCListStyle: {
-        type: Boolean,
-      },
-    };
-  }
+  static properties = {
+    items: { type: Object },
+    disableToCListStyle: { type: Boolean },
+  };
 
   get actions() {
     return {

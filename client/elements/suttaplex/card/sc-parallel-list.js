@@ -9,22 +9,20 @@ import './sc-parallel-item';
 import { parallelsListCss } from './sc-suttaplex-css';
 
 class SCParallels extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      itemUid: String,
-      rootKeys: Array,
-      originalLanguage: String,
-      inputLanguage: String,
-      inputUrl: String,
-      loadingResults: Boolean,
-      rootLang: String,
-      responseData: Boolean,
-      error: Boolean,
-      rootText: Object,
-      localizedStringsPath: String,
-      expansionData: Array,
-    };
-  }
+  static properties = {
+    itemUid: { type: String },
+    rootKeys: { type: Array },
+    originalLanguage: { type: String },
+    inputLanguage: { type: String },
+    inputUrl: { type: String },
+    loadingResults: { type: Boolean },
+    rootLang: { type: String },
+    responseData: { type: Boolean },
+    error: { type: Boolean },
+    rootText: { type: Object },
+    localizedStringsPath: { type: String },
+    expansionData: { type: Array },
+  };
 
   constructor() {
     super();

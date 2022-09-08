@@ -59,22 +59,20 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     `;
   }
 
-  static get properties() {
-    return {
-      inputLanguage: { type: String },
-      infoDialogMetaArea: { type: String },
-      item: { type: Object },
-      colorsResponse: { type: Object },
-      siteLanguage: { type: String },
-      appColorTheme: { type: String },
-      localizedStringsPath: { type: String },
-      changedRoute: { type: Object },
-      displaySettingMenu: { type: Boolean },
-      toolbarTitle: { type: String },
-      linearProgressActive: { type: Boolean },
-      toolbarPosition: { type: Object },
-    };
-  }
+  static properties = {
+    inputLanguage: { type: String },
+    infoDialogMetaArea: { type: String },
+    item: { type: Object },
+    colorsResponse: { type: Object },
+    siteLanguage: { type: String },
+    appColorTheme: { type: String },
+    localizedStringsPath: { type: String },
+    changedRoute: { type: Object },
+    displaySettingMenu: { type: Boolean },
+    toolbarTitle: { type: String },
+    linearProgressActive: { type: Boolean },
+    toolbarPosition: { type: Object },
+  };
 
   constructor() {
     super();

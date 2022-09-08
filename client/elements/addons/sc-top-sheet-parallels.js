@@ -1,20 +1,16 @@
 import { html, css } from 'lit';
 import SCTopSheetCommon from './sc-top-sheet-common';
 
-class SCTopSheetParallels extends SCTopSheetCommon {
-  static get styles() {
-    return [super.styles];
-  }
+export class SCTopSheetParallels extends SCTopSheetCommon {
+  static styles = [super.styles];
 
-  static get properties() {
-    return {
-      suttaplexItem: { type: Object },
-    };
-  }
+  static properties = {
+    suttaplexItem: { type: Object },
+  };
 
   constructor() {
     super();
-    this.suttaplexItem = [];
+    this.suttaplexItem = {};
   }
 
   connectedCallback() {

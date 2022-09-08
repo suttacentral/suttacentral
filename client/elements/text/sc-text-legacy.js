@@ -15,7 +15,7 @@ import { API_ROOT } from '../../constants';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { reduxActions } from '../addons/sc-redux-actions';
 
-class SCTextLegacy extends SCTextCommon {
+export class SCTextLegacy extends SCTextCommon {
   render() {
     return html`
       <style>
@@ -38,31 +38,29 @@ class SCTextLegacy extends SCTextCommon {
     return this;
   }
 
-  static get properties() {
-    return {
-      // in simple texts, both root texts and translations are returned by the API in the translation object.
-      sutta: { type: Object },
-      // If true, shows the paragraph numbers on the right of the text.
-      showParagraphs: { type: Boolean },
-      paragraphs: { type: Array },
-      author: { type: String },
-      error: { type: Object },
-      lang: { type: String },
-      isLoading: { type: Boolean },
-      isTextViewHidden: { type: Boolean },
-      spansForWordsGenerated: { type: Boolean },
-      spansForGraphsGenerated: { type: Boolean },
-      isChineseLookupEnabled: { type: Boolean },
-      textualInfoClassTitles: { type: Object },
-      classTitles: { type: Object },
-      editionsExpansionData: { type: Object },
-      localizedStringsPath: { type: String },
-      inputElement: { type: Object },
-      showHighlighting: { type: Boolean },
-      chosenReferenceDisplayType: { type: String },
-      navItems: { type: Array },
-    };
-  }
+  static properties = {
+    // in simple texts, both root texts and translations are returned by the API in the translation object.
+    sutta: { type: Object },
+    // If true, shows the paragraph numbers on the right of the text.
+    showParagraphs: { type: Boolean },
+    paragraphs: { type: Array },
+    author: { type: String },
+    error: { type: Object },
+    lang: { type: String },
+    isLoading: { type: Boolean },
+    isTextViewHidden: { type: Boolean },
+    spansForWordsGenerated: { type: Boolean },
+    spansForGraphsGenerated: { type: Boolean },
+    isChineseLookupEnabled: { type: Boolean },
+    textualInfoClassTitles: { type: Object },
+    classTitles: { type: Object },
+    editionsExpansionData: { type: Object },
+    localizedStringsPath: { type: String },
+    inputElement: { type: Object },
+    showHighlighting: { type: Boolean },
+    chosenReferenceDisplayType: { type: String },
+    navItems: { type: Array },
+  };
 
   constructor() {
     super();

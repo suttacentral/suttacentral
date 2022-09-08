@@ -1,16 +1,30 @@
-/* eslint-disable import/prefer-default-export */
-import { LitElement, html } from 'lit';
-
+import { LitElement, html, css } from 'lit';
 import { LitLocalized } from './sc-localization-mixin';
-
 import { icon } from '../../img/sc-icon';
 
 export class SCErrorIcon extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      type: String,
-    };
-  }
+  static properties =  {
+    messages: { type: String },
+  };
+
+  static styles = css`
+    .error {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2em;
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-static-subtitle);
+      color: var(--sc-secondary-text-color);
+      text-align: center;
+    }
+
+    .icon {
+      width: var(--sc-size-xxl);
+      height: var(--sc-size-xxl);
+    }
+  `;
 
   constructor() {
     super();
@@ -52,27 +66,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
 
   render() {
     const { image, title, message } = this.messages[this.type];
-
     return html`
-      <style>
-        .error {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          gap: 2em;
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          color: var(--sc-secondary-text-color);
-          text-align: center;
-        }
-
-        .icon {
-          width: var(--sc-size-xxl);
-          height: var(--sc-size-xxl);
-        }
-      </style>
-
       <div class="error">
         ${icon[image]}
         <div>${this.localize(`interface:${message}`)}</div>

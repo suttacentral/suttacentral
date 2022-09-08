@@ -16,17 +16,15 @@ import { setNavigation } from '../navigation/sc-navigation-common';
 import '@material/mwc-button';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      localizedStringsPath: String,
-      categoryId: String,
-      suttaplexListDisplay: String,
-      suttaplexData: Array,
-      networkError: Object,
-      parallelsLite: Array,
-      expansionData: Array,
-    };
-  }
+  static properties = {
+    localizedStringsPath: { type: String },
+    categoryId: { type: String },
+    suttaplexListDisplay: { type: String },
+    suttaplexData: { type: Array },
+    networkError: { type: Object },
+    parallelsLite: { type: Array },
+    expansionData: { type: Array },
+  };
 
   get actions() {
     return {
