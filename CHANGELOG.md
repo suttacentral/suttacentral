@@ -4,6 +4,10 @@
 ## 2022.09.04
 
 - Generate Abbreviations page from data. https://github.com/suttacentral/suttacentral/issues/2485
+## 2022.09.05
+
+- Add Jataka numbers to the top level navigation #2523
+
 
 ## 2022.09.01
 
