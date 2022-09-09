@@ -5,6 +5,7 @@ import { icon } from '../../img/sc-icon';
 export class SCErrorIcon extends LitLocalized(LitElement) {
   static properties = {
     messages: { type: String },
+    type: { type: String },
   };
 
   static styles = css`
@@ -65,7 +66,7 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
   }
 
   render() {
-    const { image, title, message } = this.messages[this.type];
+    const { image, message } = this.messages[this.type];
     return html`
       <div class="error">
         ${icon[image]}
