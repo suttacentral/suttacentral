@@ -1,10 +1,8 @@
 import { LitElement, html } from 'lit';
-
 import { BrowserMicroSentryClient } from '@micro-sentry/browser';
-
 import { throttle } from 'throttle-debounce';
-import { icon } from '../img/sc-icon';
 
+import { icon } from '../img/sc-icon';
 import './sc-page-selector';
 import './navigation/sc-navigation-linden-leaves';
 import './addons/sc-linear-progress';

@@ -192,12 +192,12 @@
     </div>
 
     <script defer>
-      var isSupportedBrowser = function () {
+      const isSupportedBrowser = function () {
         return window.CSS && CSS.supports('color', 'var(--primary)');
       };
-      var showUnsupportedBrowserSplashScreen = function (shouldShow) {
-        var unsupportedBrowserSplashScreen = document.querySelector(
-          '.unsupported-browser-splash-screen'
+      const showUnsupportedBrowserSplashScreen = function (shouldShow) {
+        const unsupportedBrowserSplashScreen = document.querySelector(
+                '.unsupported-browser-splash-screen'
         );
         if (shouldShow) {
           unsupportedBrowserSplashScreen.classList.remove('hidden');
@@ -205,27 +205,27 @@
           unsupportedBrowserSplashScreen.classList.add('hidden');
         }
       };
-      var appendSiteContent = function () {
-        var mainElement = document.createElement('sc-site-layout');
-        var body = document.querySelector('body');
+      const appendSiteContent = function () {
+        const mainElement = document.createElement('sc-site-layout');
+        const body = document.querySelector('body');
         body.appendChild(mainElement);
         showUnsupportedBrowserSplashScreen(false);
       };
-      var removeSiteContent = function () {
-        var mainElement = document.querySelector('sc-site-layout');
+      const removeSiteContent = function () {
+        const mainElement = document.querySelector('sc-site-layout');
         mainElement.parentNode.removeChild(mainElement);
       };
       if (!isSupportedBrowser()) {
         showUnsupportedBrowserSplashScreen(true);
-        var logoImg = document.createElement('img');
+        const logoImg = document.createElement('img');
         logoImg.src = 'img/android-chrome-192x192.png';
         document.querySelector('.logo-image-container').appendChild(logoImg);
         removeSiteContent();
       }
       document.addEventListener('metadata', function (e) {
-        var metaData = e.detail;
+        const metaData = e.detail;
         if (metaData) {
-          var url = 'https://suttacentral.net' + window.location.pathname;
+          const url = 'https://suttacentral.net' + window.location.pathname;
           document.head.querySelector('[rel=canonical]').href = url;
           document.head.querySelector('title').innerText = metaData.pageTitle;
           document.head.querySelector("[property='og:url']").content = url;
@@ -246,7 +246,7 @@
       });
 
       document.addEventListener('keyword-metadata', function (e) {
-        var metaData = e.detail;
+        const metaData = e.detail;
         if (metaData) {
           document.head.querySelector("[name='keywords']").content = metaData.keywords;
         }

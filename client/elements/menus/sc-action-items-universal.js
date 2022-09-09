@@ -12,88 +12,84 @@ import '@material/mwc-icon-button';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
-class SCActionItemsUniversal extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: rgb(75, 74, 73);
-        --mdc-theme-surface: var(--sc-secondary-background-color);
-      }
+export class SCActionItemsUniversal extends LitLocalized(LitElement) {
+  static styles = css`
+    :host {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgb(75, 74, 73);
+      --mdc-theme-surface: var(--sc-secondary-background-color);
+    }
 
-      #close_button {
-        position: absolute;
-        right: 0px;
-        padding: 0 4px 0 4px;
-        z-index: -1;
-        color: white;
-        background-color: rgb(75, 74, 73);
-      }
+    #close_button {
+      position: absolute;
+      right: 0px;
+      padding: 0 4px 0 4px;
+      z-index: -1;
+      color: white;
+      background-color: rgb(75, 74, 73);
+    }
 
-      #search_input {
-        visibility: hidden;
-        box-sizing: border-box;
-        padding: 0 116px 0 16px;
-        outline: none;
-        border: 2px solid rgba(0, 0, 0, 0);
-        height: 48px;
-        width: 100%;
-        position: absolute;
-        left: 0;
-        transform: scaleX(0);
-        transition: transform 200ms ease;
-        z-index: 100;
-        background-color: rgb(244, 243, 242);
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        color: rgb(34, 33, 32);
-      }
+    #search_input {
+      visibility: hidden;
+      box-sizing: border-box;
+      padding: 0 116px 0 16px;
+      outline: none;
+      border: 2px solid rgba(0, 0, 0, 0);
+      height: 48px;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      transform: scaleX(0);
+      transition: transform 200ms ease;
+      z-index: 100;
+      background-color: rgb(244, 243, 242);
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-md);
+      color: rgb(34, 33, 32);
+    }
 
-      #search_input.opened {
-        visibility: visible;
-        transform: scaleX(1);
-      }
+    #search_input.opened {
+      visibility: visible;
+      transform: scaleX(1);
+    }
 
-      #search_input.opened:focus {
-        border: 2px solid rgb(67, 160, 71);
-      }
+    #search_input.opened:focus {
+      border: 2px solid rgb(67, 160, 71);
+    }
 
-      #search_glass {
-        z-index: 101;
-        background-color: rgb(75, 74, 73);
-        padding: 0 4px;
-      }
+    #search_glass {
+      z-index: 101;
+      background-color: rgb(75, 74, 73);
+      padding: 0 4px;
+    }
 
-      #sc-menu-more:focus {
-        outline: none;
-      }
+    #sc-menu-more:focus {
+      outline: none;
+    }
 
-      .more-menu-list {
-        background-color: var(--sc-secondary-background-color);
-      }
+    .more-menu-list {
+      background-color: var(--sc-secondary-background-color);
+    }
 
-      mwc-icon-button {
-        color: white;
-      }
+    mwc-icon-button {
+      color: white;
+    }
 
-      #more-menu {
-        --mdc-menu-min-width: 275px;
-        --mdc-menu-max-width: 290px;
-      }
-    `;
-  }
+    #more-menu {
+      --mdc-menu-min-width: 275px;
+      --mdc-menu-max-width: 290px;
+    }
+  `;
 
-  static get properties() {
-    return {
-      mode: { type: String },
-      localizedStringsPath: { type: String },
-      search_input: { type: Object },
-      searchKeyword: { type: String },
-      moreMenu: { type: Object },
-    };
-  }
+  static properties = {
+    mode: { type: String },
+    localizedStringsPath: { type: String },
+    search_input: { type: Object },
+    searchKeyword: { type: String },
+    moreMenu: { type: Object },
+  };
 
   constructor() {
     super();
@@ -172,9 +168,9 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
     return html`
       <mwc-icon-button
         id="search_glass"
-        title="${this.localize('search:searchTooltip')}"
+        title=${this.localize('search:searchTooltip')}
         label="search"
-        @click="${this.openSearch}"
+        @click=${this.openSearch}
         aria-label="Search"
       >
         ${icon.search}
@@ -185,8 +181,8 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
         type="search"
         style="height: 48px"
         spellcheck=true
-        placeholder="${this.localize('search:search')}"
-        @keypress="${this.keypressHandler}"
+        placeholder=${this.localize('search:search')}
+        @keypress=${this.keypressHandler}
         aria-label="Search through site content"
       ></input>
       <mwc-icon-button
@@ -194,14 +190,14 @@ class SCActionItemsUniversal extends LitLocalized(LitElement) {
       id="close_button"
       title="Close search bar"
       aria-label="Close search bar"
-      @click="${this._closeSearch}">
+      @click=${this._closeSearch}>
         ${icon.close}
       </mwc-icon-button>
       <mwc-icon-button
         label="menu"
         id="more-menu-button"
-        @click="${this.openMoreMenu}"
-        alt="menu" 
+        @click=${this.openMoreMenu}
+        alt="menu"
         aria-label="Menu"
       >
         ${icon.more_vert}

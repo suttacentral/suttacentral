@@ -1,6 +1,6 @@
 {
   "name": "suttacentral",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "private": true,
   "scripts": {
     "build": "webpack --watch --config webpack.prod.js",
@@ -58,6 +58,7 @@
   "devDependencies": {
     "@babel/core": "7.19.0",
     "@babel/eslint-parser": "7.18.9",
+    "@babel/eslint-plugin": "7.18.10",
     "@babel/plugin-proposal-async-do-expressions": "7.18.6",
     "@babel/plugin-proposal-decorators": "7.18.10",
     "@babel/plugin-proposal-do-expressions": "7.18.6",
@@ -70,7 +71,7 @@
     "browser-sync": "2.27.10",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "11.0.0",
-    "eslint": "^8.23.0",
+    "eslint": "8.22.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^8.5.0",

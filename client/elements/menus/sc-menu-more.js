@@ -14,89 +14,85 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 Basic more-vert menu on the main toolbar for choice of language and for choosing static pages
 */
 
-class SCMenuMore extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
-        font-family: var(--sc-sans-font);
-        font-weight: 550;
-        --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
-        --mdc-typography-subtitle1-font-weight: 550;
-        --mdc-list-side-padding: 0px;
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-      }
+export class SCMenuMore extends LitLocalized(LitElement) {
+  static styles = css`
+    :host {
+      font-family: var(--sc-sans-font);
+      font-weight: 550;
+      --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
+      --mdc-typography-subtitle1-font-weight: 550;
+      --mdc-list-side-padding: 0px;
+      --mdc-theme-secondary: var(--sc-primary-accent-color);
+    }
 
-      .more-menu-link {
-        text-decoration: none;
-        color: inherit;
-      }
+    .more-menu-link {
+      text-decoration: none;
+      color: inherit;
+    }
 
-      .icon {
-        margin-right: var(--sc-size-md);
-        fill: var(--sc-icon-color);
-      }
+    .icon {
+      margin-right: var(--sc-size-md);
+      fill: var(--sc-icon-color);
+    }
 
-      .more-menu-mwc-list-item {
-        color: var(--sc-primary-text-color);
-      }
+    .more-menu-mwc-list-item {
+      color: var(--sc-primary-text-color);
+    }
 
-      mwc-check-list-item {
-        --mdc-list-side-padding: 8px;
-        --mdc-list-item-graphic-margin: 8px;
-        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-      }
+    mwc-check-list-item {
+      --mdc-list-side-padding: 8px;
+      --mdc-list-item-graphic-margin: 8px;
+      --mdc-checkbox-unchecked-color: var(--sc-icon-color);
+    }
 
-      mwc-radio-list-item {
-        --mdc-list-side-padding: 4px;
-        --mdc-list-item-graphic-margin: 4px;
-        --mdc-radio-unchecked-color: var(--sc-icon-color);
-      }
+    mwc-radio-list-item {
+      --mdc-list-side-padding: 4px;
+      --mdc-list-item-graphic-margin: 4px;
+      --mdc-radio-unchecked-color: var(--sc-icon-color);
+    }
 
-      [role='separator'] {
-        background-color: var(--sc-border-color);
-        width: 100%;
-        overflow: hidden;
-        height: 1px;
-        margin-top: var(--sc-size-xxs);
-        margin-bottom: var(--sc-size-xxs);
-      }
+    [role='separator'] {
+      background-color: var(--sc-border-color);
+      width: 100%;
+      overflow: hidden;
+      height: 1px;
+      margin-top: var(--sc-size-xxs);
+      margin-bottom: var(--sc-size-xxs);
+    }
 
-      .chevron_right {
-        display: inline-flex;
-        margin-right: 0;
-      }
+    .chevron_right {
+      display: inline-flex;
+      margin-right: 0;
+    }
 
-      #language-wrapper {
-        display: inline-flex;
-        justify-content: space-between;
-        align-items: center;
-        min-width: 175px;
-        max-width: 185px;
-      }
+    #language-wrapper {
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      min-width: 175px;
+      max-width: 185px;
+    }
 
-      #language-text-wrapper {
-        max-width: 150px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+    #language-text-wrapper {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-      .menu-item-wrapper {
-        display: flex;
-        align-items: end;
-        padding: 100% 16px;
-      }
-    `;
-  }
+    .menu-item-wrapper {
+      display: flex;
+      align-items: end;
+      padding: 100% 16px;
+    }
+  `;
 
-  static get properties() {
-    return {
-      localizedStringsPath: { type: String },
-      compactViewChosen: { type: Boolean },
-      routeName: { type: String },
-      languageIsVisible: { type: Boolean },
-    };
-  }
+  static properties = {
+    localizedStringsPath: { type: String },
+    compactViewChosen: { type: Boolean },
+    routeName: { type: String },
+    languageIsVisible: { type: Boolean },
+  };
 
   constructor() {
     super();

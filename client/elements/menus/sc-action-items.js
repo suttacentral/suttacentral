@@ -9,213 +9,25 @@ Base toolbar that appears on the top right in the header of every page.
 */
 
 export class SCActionItems extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      .white-icon {
-        color: var(--sc-tertiary-text-color);
-      }
-
-      #tools_menu {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 4px;
-      }
-
-      .invisible {
-        display: none;
-      }
-
-      .toolButtons {
-        position: relative;
-        box-sizing: border-box;
-        border-bottom: 4px solid transparent;
-        height: 100%;
-      }
-
-      #btnViewCompact:after,
-      #btnViewComfy:after,
-      #btnTools:after,
-      #btnInfo:after,
-      #btnShowParallels:after,
-      #btnShowToC:after,
-      #btnShowParallelTableView:after {
-        font-size: var(--sc-skolar-font-size-xxs);
-        font-weight: 600;
-        font-stretch: condensed;
-
-        position: absolute;
-        bottom: 4px;
-
-        width: 100%;
-
-        text-align: center;
-      }
-
-      #btnViewCompact:after {
-        content: 'spacing';
-      }
-
-      #btnViewComfy:after {
-        content: 'spacing';
-      }
-
-      #btnTools:after {
-        content: 'views';
-      }
-
-      #btnInfo:after {
-        content: 'info';
-      }
-
-      #btnShowParallels,
-      #btnShowParallelTableView {
-        display: flex;
-      }
-
-      #btnShowParallels:after {
-        content: 'parallels';
-      }
-
-      #btnShowToC:after {
-        content: 'contents';
-      }
-
-      #btnShowParallelTableView:after {
-        content: 'TableView';
-      }
-
-      .active-light {
-        font-weight: 800;
-        border-bottom: 4px solid var(--sc-primary-color-light) !important;
-      }
-
-      .active-dark {
-        font-weight: 800;
-        border-bottom: 4px solid var(--sc-primary-color-dark) !important;
-      }
-
-      @media only screen and (max-width: 600px) {
-        #tools_menu.contextToolbarExpand {
-          width: 100%;
-          justify-content: space-around;
-          align-items: flex-end;
-        }
-
-        .toolButtons {
-          box-sizing: content-box;
-        }
-      }
-
-      .icon {
-        fill: var(--sc-tertiary-text-color);
-      }
-    `;
-  }
-
-  render() {
-    return html`
-      <div id="tools_menu">
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnShowToC"
-          title="View Table of Contents"
-          @click="${this._onBtnShowToCClick}"
-          slot="actionItems"
-          ?hidden="${this.tableOfContents}"
-        >
-          ${icon.toc}
-        </mwc-icon-button>
-
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnViewCompact"
-          title="Compact mode"
-          @click="${this._onBtnViewCompactClick}"
-          slot="actionItems"
-          ?hidden="${this.displayCompactButton}"
-        >
-          ${icon.view_compact}
-        </mwc-icon-button>
-
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnViewComfy"
-          title="Comfy mode"
-          @click="${this._onBtnViewCompactClick}"
-          slot="actionItems"
-          ?hidden="${this.displayComfyButton}"
-        >
-          ${icon.view_comfy}
-        </mwc-icon-button>
-
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnInfo"
-          title="Text info"
-          @click="${this._onBtnInfoClick}"
-          slot="actionItems"
-          ?hidden="${this.displayInfoButton}"
-        >
-          ${icon.info}
-        </mwc-icon-button>
-
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnTools"
-          title="View options"
-          @click="${this._onBtnToolsClick}"
-          slot="actionItems"
-          ?hidden="${this.displayToolButton}"
-        >
-          ${icon.visibility}
-        </mwc-icon-button>
-
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnShowParallels"
-          title="View parallels"
-          @click="${this._onBtnShowParallelsClick}"
-          slot="actionItems"
-          ?hidden="${this.displayToolButton}"
-        >
-          ${icon.parallels}
-        </mwc-icon-button>
-
-        <mwc-icon-button
-          class="white-icon toolButtons"
-          id="btnShowParallelTableView"
-          title="Parallels table view"
-          @click="${this._onBtnShowParallelTableViewClick}"
-          slot="actionItems"
-        >
-          ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
-        </mwc-icon-button>
-      </div>
-    `;
-  }
-
-  static get properties() {
-    return {
-      path: { type: String },
-      suttaplexDisplay: { type: Boolean },
-      suttaplexListEnabled: { type: Boolean },
-      mode: { type: String },
-      localizedStringsPath: { type: String },
-      displaySettingMenu: { type: Boolean },
-      displayToolButton: { type: Boolean },
-      displayInfoButton: { type: Boolean },
-      tableOfContents: { type: Boolean },
-      displayCompactButton: { type: Boolean },
-      displayComfyButton: { type: Boolean },
-      displayViewModeButton: { type: Boolean },
-      colorTheme: { type: String },
-      suttaMetaText: { type: String },
-      suttaPublicationInfo: { type: Object },
-      range_uid: { type: String },
-      siteLanguage: { type: String },
-    };
-  }
+  static properties = {
+    path: { type: String },
+    suttaplexDisplay: { type: Boolean },
+    suttaplexListEnabled: { type: Boolean },
+    mode: { type: String },
+    localizedStringsPath: { type: String },
+    displaySettingMenu: { type: Boolean },
+    displayToolButton: { type: Boolean },
+    displayInfoButton: { type: Boolean },
+    tableOfContents: { type: Boolean },
+    displayCompactButton: { type: Boolean },
+    displayComfyButton: { type: Boolean },
+    displayViewModeButton: { type: Boolean },
+    colorTheme: { type: String },
+    suttaMetaText: { type: String },
+    suttaPublicationInfo: { type: Object },
+    range_uid: { type: String },
+    siteLanguage: { type: String },
+  };
 
   constructor() {
     super();
@@ -240,6 +52,190 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.displayInfoButton = store.getState().displayInfoButton;
     this.displayViewModeButton = store.getState().displayViewModeButton;
     this.displayParallelTableView = store.getState().displayParallelTableView;
+  }
+
+  static styles = css`
+    .white-icon {
+      color: var(--sc-tertiary-text-color);
+    }
+
+    #tools_menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .invisible {
+      display: none;
+    }
+
+    .toolButtons {
+      position: relative;
+      box-sizing: border-box;
+      border-bottom: 4px solid transparent;
+      height: 100%;
+    }
+
+    #btnViewCompact:after,
+    #btnViewComfy:after,
+    #btnTools:after,
+    #btnInfo:after,
+    #btnShowParallels:after,
+    #btnShowToC:after,
+    #btnShowParallelTableView:after {
+      font-size: var(--sc-skolar-font-size-xxs);
+      font-weight: 600;
+      font-stretch: condensed;
+
+      position: absolute;
+      bottom: 4px;
+
+      width: 100%;
+
+      text-align: center;
+    }
+
+    #btnViewCompact:after {
+      content: 'spacing';
+    }
+
+    #btnViewComfy:after {
+      content: 'spacing';
+    }
+
+    #btnTools:after {
+      content: 'views';
+    }
+
+    #btnInfo:after {
+      content: 'info';
+    }
+
+    #btnShowParallels,
+    #btnShowParallelTableView {
+      display: flex;
+    }
+
+    #btnShowParallels:after {
+      content: 'parallels';
+    }
+
+    #btnShowToC:after {
+      content: 'contents';
+    }
+
+    #btnShowParallelTableView:after {
+      content: 'TableView';
+    }
+
+    .active-light {
+      font-weight: 800;
+      border-bottom: 4px solid var(--sc-primary-color-light) !important;
+    }
+
+    .active-dark {
+      font-weight: 800;
+      border-bottom: 4px solid var(--sc-primary-color-dark) !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+      #tools_menu.contextToolbarExpand {
+        width: 100%;
+        justify-content: space-around;
+        align-items: flex-end;
+      }
+
+      .toolButtons {
+        box-sizing: content-box;
+      }
+    }
+
+    .icon {
+      fill: var(--sc-tertiary-text-color);
+    }
+  `;
+
+  render() {
+    return html`
+      <div id="tools_menu">
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnShowToC"
+          title="View Table of Contents"
+          @click=${this._onBtnShowToCClick}
+          slot="actionItems"
+          ?hidden=${this.tableOfContents}
+        >
+          ${icon.toc}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnViewCompact"
+          title="Compact mode"
+          @click=${this._onBtnViewCompactClick}
+          slot="actionItems"
+          ?hidden=${this.displayCompactButton}
+        >
+          ${icon.view_compact}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnViewComfy"
+          title="Comfy mode"
+          @click=${this._onBtnViewCompactClick}
+          slot="actionItems"
+          ?hidden=${this.displayComfyButton}
+        >
+          ${icon.view_comfy}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnInfo"
+          title="Text info"
+          @click=${this._onBtnInfoClick}
+          slot="actionItems"
+          ?hidden=${this.displayInfoButton}
+        >
+          ${icon.info}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnTools"
+          title="View options"
+          @click=${this._onBtnToolsClick}
+          slot="actionItems"
+          ?hidden=${this.displayToolButton}
+        >
+          ${icon.visibility}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnShowParallels"
+          title="View parallels"
+          @click=${this._onBtnShowParallelsClick}
+          slot="actionItems"
+          ?hidden=${this.displayToolButton}
+        >
+          ${icon.parallels}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnShowParallelTableView"
+          title="Parallels table view"
+          @click=${this._onBtnShowParallelTableViewClick}
+          slot="actionItems"
+        >
+          ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
+        </mwc-icon-button>
+      </div>
+    `;
   }
 
   get actions() {

@@ -3,7 +3,7 @@ import { LitLocalized } from './sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
 
 export class SCErrorIcon extends LitLocalized(LitElement) {
-  static properties =  {
+  static properties = {
     messages: { type: String },
   };
 

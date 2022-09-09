@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, css } from 'lit';
 
 export const suttaplexCss = html`
   <style>
