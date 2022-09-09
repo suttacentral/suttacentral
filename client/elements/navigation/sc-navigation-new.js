@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { LitElement, html } from 'lit';
 // eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';

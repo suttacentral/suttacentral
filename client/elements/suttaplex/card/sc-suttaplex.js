@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { html, LitElement } from 'lit';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
 import { icon } from '../../../img/sc-icon';
@@ -16,7 +15,6 @@ import './sc-suttaplex-tx';
 
 let expansionDataCache;
 
-// eslint-disable-next-line import/prefer-default-export
 export class SCSuttaplex extends LitLocalized(LitElement) {
   static properties = {
     suttaplexListStyle: { type: String },

@@ -10,7 +10,6 @@ const USE_PRODUCTION_LOCALIZATION = true;
 
 const localizationCache = {};
 
-// eslint-disable-next-line import/prefer-default-export
 export const LitLocalized = base =>
   class extends connect(store)(base) {
     static get properties() {

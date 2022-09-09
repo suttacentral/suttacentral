@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable lit/no-invalid-html */
-/* eslint-disable indent */
 import { css, html, LitElement } from 'lit';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import RoutingService from '../utils/routingService';

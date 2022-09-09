@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-// eslint-disable-next-line import/prefer-default-export
 export function dictionarySimpleItemToHtml(dicItem) {
   if (!dicItem) {
     return '';

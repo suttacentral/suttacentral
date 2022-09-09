@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export function getURLParam(name) {
   try {
     const searchParams = new URLSearchParams(window.location.search);

@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { LitElement, html } from 'lit';
 
 import { store } from '../../redux-store';

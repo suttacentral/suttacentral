@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { LitElement, html, css } from 'lit';
 
 export class SCPieChart extends LitElement {

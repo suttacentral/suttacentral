@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { LitElement, html, css } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-select';

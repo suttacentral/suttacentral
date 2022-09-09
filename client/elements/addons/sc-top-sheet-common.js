@@ -39,10 +39,6 @@ export default class SCTopSheetCommon extends LitLocalized(LitElement) {
   }
 
   toggle() {
-    if (this.style.display === 'block') {
-      this.style.display = 'none';
-    } else {
-      this.style.display = 'block';
-    }
+    this.style.display = this.style.display === 'block' ? 'none' : 'block';
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { html, LitElement } from 'lit';
 import { icon } from '../../../img/sc-icon';
 import {

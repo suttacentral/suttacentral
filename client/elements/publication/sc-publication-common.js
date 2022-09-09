@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export const coverImage = new Map([
   ['dn', 'dn-book.jpg'],
   ['mn', 'mn-book.jpg'],

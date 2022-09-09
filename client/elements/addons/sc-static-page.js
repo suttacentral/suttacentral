@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';

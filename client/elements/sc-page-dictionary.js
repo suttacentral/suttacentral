@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable indent */
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../constants';
@@ -231,7 +229,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       ${this.dictionarySimilar
         ? this.dictionarySimilar.map(
             dicSimilarItem => html`
-              <li class="${this._calculateClass(dicSimilarItem.glossWord)}">
+              <li class=${this._calculateClass(dicSimilarItem.glossWord)}>
                 ${unsafeHTML(dicSimilarItem.glossText)}
               </li>
             `
@@ -245,7 +243,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       ${this.dictionaryAdjacent
         ? this.dictionaryAdjacent.map(
             dicAdjacentItem => html`
-              <li class="${this._calculateClass(dicAdjacentItem.glossWord)}">
+              <li class=${this._calculateClass(dicAdjacentItem.glossWord)}>
                 ${unsafeHTML(dicAdjacentItem.glossText)}
               </li>
             `
