@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticANIntroductionBodhi extends SCStaticPage {
+export class SCStaticANIntroductionBodhi extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/an-introduction-bodhi';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -265,11 +270,6 @@ class SCStaticANIntroductionBodhi extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/an-introduction-bodhi';
   }
 }
 

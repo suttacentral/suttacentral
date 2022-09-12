@@ -12,13 +12,11 @@ const localizationCache = {};
 
 export const LitLocalized = base =>
   class extends connect(store)(base) {
-    static get properties() {
-      return {
-        language: { type: String },
-        localizedStringsPath: { type: String },
-        _languageLoaded: { type: Boolean },
-      };
-    }
+    static properties = {
+      language: { type: String },
+      localizedStringsPath: { type: String },
+      _languageLoaded: { type: Boolean },
+    };
 
     constructor() {
       super();

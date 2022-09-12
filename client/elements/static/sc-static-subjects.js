@@ -7,6 +7,11 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
 class SCStaticSubjects extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/subjects';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -1859,11 +1864,6 @@ class SCStaticSubjects extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/subjects';
   }
 }
 

@@ -17,7 +17,7 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
   either the simple sutta text view or the segmented view.
 */
 
-class SCTextPageSelector extends LitLocalized(LitElement) {
+export class SCTextPageSelector extends LitLocalized(LitElement) {
   static properties = {
     responseData: { type: Object, state: true },
     lastError: { type: Object, state: true },
@@ -60,6 +60,10 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
     this.SuttaParallelsDisplayed = false;
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <style>
@@ -91,10 +95,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       <sc-text-image id="sc_text_image"></sc-text-image>
       ${this._createMetaData(this.responseData, this.expansionReturns)}
     `;
-  }
-
-  createRenderRoot() {
-    return this;
   }
 
   get displayStepper() {

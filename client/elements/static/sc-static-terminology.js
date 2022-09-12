@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticTerminology extends SCStaticPage {
+export class SCStaticTerminology extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/terminology';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -544,11 +549,6 @@ class SCStaticTerminology extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/terminology';
   }
 }
 

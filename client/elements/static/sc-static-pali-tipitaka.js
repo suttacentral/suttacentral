@@ -2,7 +2,7 @@ import { html } from 'lit';
 
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticPaliTipitaka extends SCStaticPage {
+export class SCStaticPaliTipitaka extends SCStaticPage {
   createRenderRoot() {
     return this;
   }

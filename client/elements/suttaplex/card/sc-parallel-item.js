@@ -41,13 +41,14 @@ export class SCParallelItem extends LitLocalized(LitElement) {
     const uidLanguage = this.parallelItem?.uid?.substring(0, 3);
     if (Object.keys(this.rootLangMappings).includes(uidLanguage)) {
       return transformId(this.parallelItem.to, this.expansionData, 1);
-    } else if (this.parallelItem.translated_title) {
-      return this.parallelItem.translated_title;
-    } else if (this.parallelItem.original_title) {
-      return this.parallelItem.original_title;
-    } else {
-      return this.acronymOrUid;
     }
+    if (this.parallelItem.translated_title) {
+      return this.parallelItem.translated_title;
+    }
+    if (this.parallelItem.original_title) {
+      return this.parallelItem.original_title;
+    }
+    return this.acronymOrUid;
   }
 
   get headingTitle() {
@@ -57,9 +58,8 @@ export class SCParallelItem extends LitLocalized(LitElement) {
       this.parallelItem.original_title
     ) {
       return '';
-    } else {
-      return this.acronymTitle;
     }
+    return this.acronymTitle;
   }
 
   get titleWithoutSuttaText() {
@@ -74,9 +74,8 @@ export class SCParallelItem extends LitLocalized(LitElement) {
         `/${this.parallelItem.uid}/${translation.lang}` +
         `/${translation.author_uid}${getParagraphRange(this.parallelItem.to, true)}`
       );
-    } else {
-      return '';
     }
+    return '';
   }
 
   get volpagesAvailable() {
@@ -90,7 +89,11 @@ export class SCParallelItem extends LitLocalized(LitElement) {
       if (altNumber) {
         let book = '';
         altNumber[0] === 'T' ? (book = 'Taishō') : (book = 'PTS');
-        scAcronymTitle += `\n${this.localize('suttaplex:alternateText', 'book', book)} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize(
+          'suttaplex:alternateText',
+          'book',
+          book
+        )} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -106,9 +109,9 @@ export class SCParallelItem extends LitLocalized(LitElement) {
         .replace('#', ': ')
         .replace(/[a-z]+/g, '');
       return `${scAcronym}${idPart}`;
-    } else {
-      scAcronym = transformId(this.parallelItem.to, this.expansionData, 0);
     }
+    scAcronym = transformId(this.parallelItem.to, this.expansionData, 0);
+
     return scAcronym;
   }
 
@@ -146,13 +149,13 @@ export class SCParallelItem extends LitLocalized(LitElement) {
 
   get volPageTemplate() {
     return html`
-      <span class="volPage-row" title="${this.localize('suttaplex:volumeAndPage')}">
+      <span class="volPage-row" title=${this.localize('suttaplex:volumeAndPage')}>
         ${icon.book}
         <span class="vol-page"> ${this.briefVolPage} </span>
       </span>
       ${this.altVolPage && this.altVolPage !== this.volPage
         ? html`
-            <span class="volPage-row" title="${this.localize('suttaplex:volumeAndPage')}">
+            <span class="volPage-row" title=${this.localize('suttaplex:volumeAndPage')}>
               ${icon.book}
               <span class="vol-page"> ${this.briefAltVolPage} </span>
             </span>
@@ -163,16 +166,16 @@ export class SCParallelItem extends LitLocalized(LitElement) {
 
   normalViewTemplate() {
     return html`
-      <a href="${this.parallelUrl}" class="${this.parallelUrl ? '' : 'disabled'}">
+      <a href=${this.parallelUrl} class=${this.parallelUrl ? '' : 'disabled'}>
         <div class="parallel-item">
           <div class="parallel-item-main-info-container">
-            <div class="parallel-item-title" title="${this.headingTitle}">${this.heading}</div>
+            <div class="parallel-item-title" title=${this.headingTitle}>${this.heading}</div>
 
             <div class="parallel-item-nerdy-row">
               ${this.parallelItem.translated_title && this.parallelItem.original_title
                 ? html`
                     <div
-                      title="${this.localize('suttaplex:originalTitle')}"
+                      title=${this.localize('suttaplex:originalTitle')}
                       class="nerdy-row-element"
                     >
                       ${this.titleWithoutSuttaText}
@@ -181,7 +184,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                 : ''}
               ${this.parallelItem.translated_title || this.parallelItem.original_title
                 ? html`
-                    <div class="nerdy-row-element" title="${this.acronymTitle}">
+                    <div class="nerdy-row-element" title=${this.acronymTitle}>
                       ${this.acronymOrUid}
                     </div>
                   `
@@ -191,8 +194,8 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                     <div
                       class="nerdy-row-element"
                       @click=${stopPropagation}
-                      @tap="${stopPropagation}"
-                      @mousedown="${stopPropagation}"
+                      @tap=${stopPropagation}
+                      @mousedown=${stopPropagation}
                     >
                       ${this.parallelItem.biblio &&
                       html`
@@ -200,7 +203,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                           <summary>${this.volPageTemplate}</summary>
                           <p
                             class="parallel-item-biblio-info"
-                            .innerHTML="${this.parallelItem.biblio}"
+                            .innerHTML=${this.parallelItem.biblio}
                           ></p>
                         </details>
                       `}
@@ -210,24 +213,24 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                 : ''}
               ${this.remark &&
               html`
-                <div "nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+                <div "nerdy-row-element" @click=${stopPropagation} @tap=${stopPropagation} @mousedown=${stopPropagation}>
                   <details>
                     <summary>
                       ${icon.info}
                     </summary>
-                    <p class="parallel-item-biblio-info" .innerHTML="${this.remark}"></p>
+                    <p class="parallel-item-biblio-info" .innerHTML=${this.remark}></p>
                   </details>
                 </div>
               `}
             </div>
             ${this.parallelItem.note &&
             html`
-              <div "nerdy-row-element" @click=${stopPropagation} @tap="${stopPropagation}" @mousedown="${stopPropagation}">
+              <div "nerdy-row-element" @click=${stopPropagation} @tap=${stopPropagation} @mousedown=${stopPropagation}>
                 <details>
                   <summary>
                     ${icon.info}
                   </summary>
-                  <p class="parallel-item-biblio-info" .innerHTML="${this.parallelItem.not}"></p>
+                  <p class="parallel-item-biblio-info" .innerHTML=${this.parallelItem.not}></p>
                 </details>
               </div>
             `}
@@ -237,8 +240,10 @@ export class SCParallelItem extends LitLocalized(LitElement) {
     `;
   }
 
+  static styles = [parallelItemCss];
+
   render() {
-    return html` ${parallelItemCss} ${this.normalViewTemplate()} `;
+    return html`${this.normalViewTemplate()}`;
   }
 }
 

@@ -8,7 +8,7 @@ import { store } from '../../../redux-store';
 import './sc-parallel-item';
 import { parallelsListCss } from './sc-suttaplex-css';
 
-class SCParallels extends LitLocalized(LitElement) {
+export class SCParallels extends LitLocalized(LitElement) {
   static properties = {
     itemUid: { type: String },
     rootKeys: { type: Array },
@@ -57,13 +57,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return icon['compare_arrows'];
+          return icon.compare_arrows;
         }
-        return icon['swap_horiz'];
+        return icon.swap_horiz;
       case 'retelling':
-        return icon['cached'];
+        return icon.cached;
       case 'mention':
-        return icon['format_quote'];
+        return icon.format_quote;
       default:
         return '';
     }
@@ -114,9 +114,10 @@ class SCParallels extends LitLocalized(LitElement) {
     };
   }
 
+  static styles = [parallelsListCss];
+
   render() {
     return html`
-      ${parallelsListCss}
       <div>
         ${this.rootKeys
           ? html`

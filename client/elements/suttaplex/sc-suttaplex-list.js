@@ -9,10 +9,8 @@ import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
-import { RefreshNavNew } from '../navigation/sc-navigation-common';
+import { RefreshNavNew, setNavigation } from '../navigation/sc-navigation-common';
 import { transformId, getParagraphRange } from '../../utils/suttaplex';
-import { setNavigation } from '../navigation/sc-navigation-common';
-
 import '@material/mwc-button';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
@@ -51,7 +49,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           type: 'SUTTPLEX_LIST_DISPLAY',
           suttaplexdisplay,
         });
-      }
+      },
     };
   }
 
@@ -109,9 +107,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   _hideTopSheets() {
-    const scActionItems = document
-      .querySelector('sc-site-layout')
-      .querySelector('#action_items');
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideItems();
   }
 
@@ -148,10 +144,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (!difficulty) return;
     if (difficulty.name) {
       return difficulty.name;
-    } else {
-      const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-      return levels[difficulty];
     }
+    const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
+    return levels[difficulty];
   }
 
   stateChanged(state) {
@@ -242,8 +237,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
-            pageTitle: `${this.suttaplexData[0].title || this.suttaplexData[0].original_title}—Suttas and Parallels`,
-            title: `${this.suttaplexData[0].title || this.suttaplexData[0].original_title}—Suttas and Parallels`,
+            pageTitle: `${
+              this.suttaplexData[0].title || this.suttaplexData[0].original_title
+            }—Suttas and Parallels`,
+            title: `${
+              this.suttaplexData[0].title || this.suttaplexData[0].original_title
+            }—Suttas and Parallels`,
             description,
             bubbles: true,
             composed: true,
@@ -289,7 +288,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               acronym: parallel.to.acronym
                 ? parallel.to.acronym
                 : transformId(parallel.to.uid, this.expansionData),
-              parallel_root: parallel.to.parallel_root
+              parallel_root: parallel.to.parallel_root,
             });
           } else {
             this.parallelsLite.push({
@@ -315,7 +314,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                   acronym: parallel.to.acronym
                     ? parallel.to.acronym
                     : transformId(parallel.to.uid, this.expansionData),
-                  parallel_root: parallel.to.parallel_root
+                  parallel_root: parallel.to.parallel_root,
                 },
               ],
             });
@@ -328,11 +327,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   suttaplexTemplate(item) {
     return html`
       <sc-suttaplex
-        .item="${item}"
-        .parallelsOpened="${this.areParallelsOpen(item)}"
-        .difficulty="${this.computeItemDifficulty(item.difficulty)}"
-        .suttaplexListStyle="${this.suttaplexListDisplay ? 'compact' : ''}"
-        .expansionData="${this.expansionData}"
+        .item=${item}
+        .parallelsOpened=${this.areParallelsOpen(item)}
+        .difficulty=${this.computeItemDifficulty(item.difficulty)}
+        .suttaplexListStyle=${this.suttaplexListDisplay ? 'compact' : ''}
+        .expansionData=${this.expansionData}
         .isPatimokkha=${this.isPatimokkha()}
         .isPatimokkhaDetails=${this.isPatimokkha() && item.uid !== this.categoryId}
         .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
@@ -413,7 +412,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   _updateURLParams() {
     const { suttaplexListDisplay, displayParallelTableView } = store.getState();
     if (!displayParallelTableView) {
-      const urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}`
+      const urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}`;
       history.replaceState(null, null, urlParams);
     } else {
       const urlParams = '?view=table';
@@ -423,13 +422,13 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   sectionTemplate(item) {
     return html`
-      <section class="${this.calculateClass(item.type)}">
+      <section class=${this.calculateClass(item.type)}>
         <sc-suttaplex-section-title
-          .inputTitle="${item.translated_title || item.original_title}"
-          .inputText="${item.blurb}"
-          .inputType="${item.type}"
-          .label="${this.localize('interface:expandSection')}"
-          .opened="${this.shouldExpandAll()}"
+          .inputTitle=${item.translated_title || item.original_title}
+          .inputText=${item.blurb}
+          .inputType=${item.type}
+          .label=${this.localize('interface:expandSection')}
+          .opened=${this.shouldExpandAll()}
           .originalTitle=${item.original_title}
           .isPatimokkhaRuleCategory=${this.isPatimokkhaRuleCategory(item.uid)}
           class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
@@ -441,16 +440,17 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   tableViewTemplate() {
     return this.parallelsLite?.length
       ? html`
-          ${suttaplexListTableViewCss}
           <table>
             <tbody>
               ${this.parallelsLite.map(
                 item => html`
                   <tr>
                     <td class="sutta_uid">
-                      <a class="uid" href=${this._getRootSuttaUrl(item.original_root, item.uid, item.from)}
+                      <a
+                        class="uid"
+                        href=${this._getRootSuttaUrl(item.original_root, item.uid, item.from)}
                         >${item.acronym || item.from}${item.fromTitle.split(':').length > 1
-                          ? ':' + item.fromTitle.split(':')[1]
+                          ? `:${item.fromTitle.split(':')[1]}`
                           : ''}</a
                       >
                     </td>
@@ -459,15 +459,29 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                       ${item.to.map(
                         (toItem, i) => html`
                           ${item.to.length !== i + 1
-                            ? html`<a class="uid" href=${this._getRootSuttaUrl(toItem.parallel_root, toItem.uid, toItem.to)}
-                                  >${toItem.acronym || toItem.uid}${toItem.toTitle.split(':').length > 1
-                                    ? ':' + toItem.toTitle.split(':')[1]
+                            ? html`<a
+                                  class="uid"
+                                  href=${this._getRootSuttaUrl(
+                                    toItem.parallel_root,
+                                    toItem.uid,
+                                    toItem.to
+                                  )}
+                                  >${toItem.acronym || toItem.uid}${toItem.toTitle.split(':')
+                                    .length > 1
+                                    ? `:${toItem.toTitle.split(':')[1]}`
                                     : ''}</a
                                 >,`
                             : html`
-                                <a class="uid" href=${this._getRootSuttaUrl(toItem.parallel_root, toItem.uid, toItem.to)}
-                                  >${toItem.acronym || toItem.uid}${toItem.toTitle.split(':').length > 1
-                                    ? ':' + toItem.toTitle.split(':')[1]
+                                <a
+                                  class="uid"
+                                  href=${this._getRootSuttaUrl(
+                                    toItem.parallel_root,
+                                    toItem.uid,
+                                    toItem.to
+                                  )}
+                                  >${toItem.acronym || toItem.uid}${toItem.toTitle.split(':')
+                                    .length > 1
+                                    ? `:${toItem.toTitle.split(':')[1]}`
                                     : ''}</a
                                 >
                               `}
@@ -493,9 +507,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     return `/${originalUid}`;
   }
 
+  static styles = [suttaplexListCss, suttaplexListTableViewCss];
+
   normalViewTemplate() {
     return html`
-      ${suttaplexListCss}
       <div class="division-content main">
         ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}
         ${this.suttaplexData &&

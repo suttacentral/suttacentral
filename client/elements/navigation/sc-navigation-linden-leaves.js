@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
-import { navigationNormalModeStyles } from './sc-navigation-styles';
 import '../menus/sc-action-items-universal';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';

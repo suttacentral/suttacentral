@@ -13,7 +13,7 @@ import(
   './sc-map.js'
 );
 
-class SCPageDictionary extends LitLocalized(LitElement) {
+export class SCPageDictionary extends LitLocalized(LitElement) {
   static properties = {
     dictionaryResults: { type: Array, state: true },
     dictionaryReturns: { type: Array, state: true },

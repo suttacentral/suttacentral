@@ -116,10 +116,10 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
     }
   }
 
+  static styles = [languageBaseMenuCss];
+
   render() {
     return html`
-      ${languageBaseMenuCss}
-
       <div class="menu-item-wrapper text-only">
         <mwc-icon-button
           title="Return to main menu"

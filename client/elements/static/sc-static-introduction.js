@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticIntroduction extends SCStaticPage {
+export class SCStaticIntroduction extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/introduction';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -31,10 +36,10 @@ class SCStaticIntroduction extends SCStaticPage {
               type="image/avif"
             />
             <img
-              alt="${this.localize('introduction:6')}"
+              alt=${this.localize('introduction:6')}
               class="image-home-full"
               src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
-              title="${this.localize('introduction:7')}"
+              title=${this.localize('introduction:7')}
               width="640px"
             />
           </picture>
@@ -47,10 +52,10 @@ class SCStaticIntroduction extends SCStaticPage {
             <picture>
               <source srcset="/img/static-pages/birchbark_w400.avif" type="image/avif" />
               <img
-                alt="${this.localize('introduction:13')}"
+                alt=${this.localize('introduction:13')}
                 class="image-home"
                 src="/img/static-pages/birchbark_w400.jpg"
-                title="${this.localize('introduction:14')}"
+                title=${this.localize('introduction:14')}
               />
             </picture>
             ${unsafeHTML(this.localize('introduction:15'))}
@@ -86,10 +91,10 @@ class SCStaticIntroduction extends SCStaticPage {
             <picture>
               <source srcset="/img/static-pages/dn20.avif" type="image/avif" />
               <img
-                alt="${this.localize('introduction:35')}"
+                alt=${this.localize('introduction:35')}
                 class="image-home"
                 src="/img/static-pages/dn20.jpg"
-                title="${this.localize('introduction:36')}"
+                title=${this.localize('introduction:36')}
                 width="640px"
               />
             </picture>
@@ -134,11 +139,6 @@ class SCStaticIntroduction extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/introduction';
   }
 }
 

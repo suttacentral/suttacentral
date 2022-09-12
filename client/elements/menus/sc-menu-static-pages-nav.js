@@ -120,11 +120,10 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     e?.classList.add('staticPageSelected');
   }
 
+  static styles = [SCMenuStaticPagesNavStyles];
+
   render() {
     return html`
-      <style>
-        ${SCMenuStaticPagesNavStyles}
-      </style>
       <div id="static_pages_nav_menu">
         <nav>
           <ul>

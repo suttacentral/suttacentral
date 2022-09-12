@@ -200,14 +200,14 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     return `${SUTTACENTRAL_VOICE_URL}scv/#/?search=${this.item.uid}&lang=${this.language}`;
   }
 
+  static styles = [suttaplexCss];
+
   render() {
     if (!this.item || !this.item.uid) {
       return '';
     }
 
     return html`
-      ${suttaplexCss}
-
       <article class="suttaplex ${this.suttaplexListStyle}" id=${this.item.uid}>
         <div>
           <div class="top-row">

@@ -16,28 +16,6 @@ import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { reduxActions } from '../addons/sc-redux-actions';
 
 export class SCTextLegacy extends SCTextCommon {
-  render() {
-    return html`
-      <style>
-        ${layoutSimpleStyles}
-        ${typographyCommonStyles}
-        ${typographyLegacyStyles}
-        ${typographyI18nStyles}
-      </style>
-
-      <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
-        ${unsafeHTML(this._extractSuttaText())}
-      </main>
-
-      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
-      <sc-bottom-sheet></sc-bottom-sheet>
-    `;
-  }
-
-  createRenderRoot() {
-    return this;
-  }
-
   static properties = {
     // in simple texts, both root texts and translations are returned by the API in the translation object.
     sutta: { type: Object },
@@ -111,6 +89,28 @@ export class SCTextLegacy extends SCTextCommon {
         this._scrollToSection(window.location.hash.substring(1));
       }, 0);
     };
+  }
+
+  createRenderRoot() {
+    return this;
+  }
+
+  render() {
+    return html`
+      <style>
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+        ${typographyLegacyStyles}
+        ${typographyI18nStyles}
+      </style>
+
+      <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
+        ${unsafeHTML(this._extractSuttaText())}
+      </main>
+
+      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <sc-bottom-sheet></sc-bottom-sheet>
+    `;
   }
 
   get actions() {

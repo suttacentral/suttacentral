@@ -246,7 +246,7 @@ const routes = {
   },
 };
 
-class SCPageSelector extends LitLocalized(LitElement) {
+export class SCPageSelector extends LitLocalized(LitElement) {
   static properties = {
     currentRoute: { type: Object },
     shouldShowSecondToolbar: { type: Object },
@@ -430,6 +430,10 @@ class SCPageSelector extends LitLocalized(LitElement) {
     }
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return this.routeDefinition
       ? html`
@@ -459,10 +463,6 @@ class SCPageSelector extends LitLocalized(LitElement) {
             <h3>${this.localize('interface:pageNotFound')}</h3>
           </div>
         `;
-  }
-
-  createRenderRoot() {
-    return this;
   }
 
   _changeRoute(location) {
