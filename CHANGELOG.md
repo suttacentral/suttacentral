@@ -1,10 +1,18 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.09.05
+
+- Generate Abbreviations page from data. https://github.com/suttacentral/suttacentral/issues/2485
+
+## 2022.09.04
+
+- Add Jataka numbers to the top level navigation #2523
+
 ## 2022.09.01
 
-- Upgrade aksharamukha and support for more script transformations.
-- Change acro to acronym. suttacentral/sc-data#145
+- Upgrade `Aksharamukha` and support for more script transformations.
+- Change `acro` to `acronym`. suttacentral/sc-data#145
 - Add enjambment support.
 
 ## 2022.08.23

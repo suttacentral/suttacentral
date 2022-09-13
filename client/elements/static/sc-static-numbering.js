@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticNumbering extends SCStaticPage {
+export class SCStaticNumbering extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/numbering';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -92,11 +97,6 @@ class SCStaticNumbering extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/numbering';
   }
 }
 

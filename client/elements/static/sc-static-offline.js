@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { queue } from 'd3-queue';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -13,82 +13,27 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 
-class SCStaticOffline extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      isCanceled: {
-        type: Boolean,
-      },
-      isPWASupport: {
-        type: Boolean,
-      },
-      isDownloadButtonDisabled: {
-        type: Boolean,
-      },
-      defaultPaliDictToLang: {
-        type: Object,
-      },
-      paliLookupLanguages: {
-        type: Array,
-      },
-      chineseLookupLanguages: {
-        type: Array,
-      },
-      cacheDownloadInProgress: {
-        type: Boolean,
-      },
-      shouldDownloadParallels: {
-        typo: Boolean,
-      },
-      shouldDownloadRootTexts: {
-        typo: Boolean,
-      },
-      isDownloadPaused: {
-        type: Boolean,
-      },
-      downloadSize: {
-        type: Number,
-      },
-      downloadSizeFromComputed: {
-        type: Number,
-      },
-      PWASizes: {
-        type: Object,
-      },
-      chosenLanguageNativeName: {
-        type: String,
-      },
-      downloadProgressPercentage: {
-        type: Number,
-      },
-      previousDownloadedUrls: {
-        type: Object,
-      },
-      downloadedUrls: {
-        type: Object,
-      },
-      currentDownloadingUrl: {
-        type: String,
-      },
-    };
-  }
-
-  get actions() {
-    return {
-      saveDownloadedUrls(downloadedUrls) {
-        return store.dispatch({
-          type: 'SAVE_DOWNLOADED_URLS',
-          downloadedUrls,
-        });
-      },
-      saveDownloadedPWASettings(downloadedPWASettings) {
-        return store.dispatch({
-          type: 'SAVE_DOWNLOADED_PWA_SETTINGS',
-          downloadedPWASettings,
-        });
-      },
-    };
-  }
+export class SCStaticOffline extends LitLocalized(LitElement) {
+  static properties = {
+    isCanceled: { type: Boolean },
+    isPWASupport: { type: Boolean },
+    isDownloadButtonDisabled: { type: Boolean },
+    defaultPaliDictToLang: { type: Object },
+    paliLookupLanguages: { type: Array },
+    chineseLookupLanguages: { type: Array },
+    cacheDownloadInProgress: { type: Boolean },
+    shouldDownloadParallels: { typo: Boolean },
+    shouldDownloadRootTexts: { typo: Boolean },
+    isDownloadPaused: { type: Boolean },
+    downloadSize: { type: Number },
+    downloadSizeFromComputed: { type: Number },
+    PWASizes: { type: Object },
+    chosenLanguageNativeName: { type: String },
+    downloadProgressPercentage: { type: Number },
+    previousDownloadedUrls: { type: Object },
+    downloadedUrls: { type: Object },
+    currentDownloadingUrl: { type: String },
+  };
 
   constructor() {
     super();
@@ -147,6 +92,23 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     this.downloadedUrls = store.getState().downloadedUrls;
     this.isCanceled = false;
     this.siteLanguage = store.getState().siteLanguage;
+  }
+
+  get actions() {
+    return {
+      saveDownloadedUrls(downloadedUrls) {
+        return store.dispatch({
+          type: 'SAVE_DOWNLOADED_URLS',
+          downloadedUrls,
+        });
+      },
+      saveDownloadedPWASettings(downloadedPWASettings) {
+        return store.dispatch({
+          type: 'SAVE_DOWNLOADED_PWA_SETTINGS',
+          downloadedPWASettings,
+        });
+      },
+    };
   }
 
   connectedCallback() {
@@ -250,10 +212,8 @@ class SCStaticOffline extends LitLocalized(LitElement) {
       if (this.shouldDownloadParallels) {
         size += this.PWASizes.root.parallels;
       }
-    } else {
-      if (this.shouldDownloadParallels) {
-        size += this.PWASizes[this.chosenLanguageIsoCode].parallels;
-      }
+    } else if (this.shouldDownloadParallels) {
+      size += this.PWASizes[this.chosenLanguageIsoCode].parallels;
     }
     return size;
   }
@@ -261,26 +221,26 @@ class SCStaticOffline extends LitLocalized(LitElement) {
   _getDownloadButtonText() {
     if (this.isDownloadPaused) {
       return this.localize('offline:downloadPaused');
-    } else if (this.cacheDownloadInProgress) {
-      return this.localize('offline:downloadInProgress');
-    } else if (this.isDownloadButtonDisabled) {
-      return this.localize('offline:alreadyDownloaded');
-    } else {
-      return `${this.localizeEx(
-        'offline:downloadButton',
-        'languageName',
-        this.chosenLanguageNativeName
-      )} ${this._showDownloadSize(this.downloadSize)}`;
     }
+    if (this.cacheDownloadInProgress) {
+      return this.localize('offline:downloadInProgress');
+    }
+    if (this.isDownloadButtonDisabled) {
+      return this.localize('offline:alreadyDownloaded');
+    }
+    return `${this.localizeEx(
+      'offline:downloadButton',
+      'languageName',
+      this.chosenLanguageNativeName
+    )} ${this._showDownloadSize(this.downloadSize)}`;
   }
 
   _showDownloadSize(size) {
     if (size) {
       const size_in_MB = size / 1024 / 1024;
       return `[~${size_in_MB.toFixed(2)} MB]`;
-    } else {
-      return '';
     }
+    return '';
   }
 
   makeOffline() {
@@ -528,102 +488,100 @@ class SCStaticOffline extends LitLocalized(LitElement) {
     );
   }
 
-  static get styles() {
-    return [
-      layoutSimpleStyles,
-      typographyCommonStyles,
-      css`
-        mwc-formfield {
-          --mdc-typography-font-family: var(--sc-sans-font);
+  static styles = [
+    layoutSimpleStyles,
+    typographyCommonStyles,
+    css`
+      mwc-formfield {
+        --mdc-typography-font-family: var(--sc-sans-font);
 
-          --mdc-typography-body2-font-size: var(--sc-skolar-font-size-md);
+        --mdc-typography-body2-font-size: var(--sc-skolar-font-size-md);
 
-          --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
-          --mdc-theme-secondary: var(--sc-primary-accent-color);
-        }
+        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
+      }
 
-        mwc-button {
-          --mdc-theme-primary: var(--sc-primary-accent-color);
-          --mdc-theme-on-primary: white;
-        }
+      mwc-button {
+        --mdc-theme-primary: var(--sc-primary-accent-color);
+        --mdc-theme-on-primary: white;
+      }
 
-        .option-multi-select {
-          display: flex;
-          flex-direction: column;
-        }
+      .option-multi-select {
+        display: flex;
+        flex-direction: column;
+      }
 
-        mwc-checkbox {
-          --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-        }
+      mwc-checkbox {
+        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
+      }
 
-        mwc-linear-progress {
-          --mdc-theme-primary: var(--sc-primary-accent-color);
-        }
+      mwc-linear-progress {
+        --mdc-theme-primary: var(--sc-primary-accent-color);
+      }
 
-        h3 + mwc-formfield {
-          margin-top: 0.75em;
-        }
+      h3 + mwc-formfield {
+        margin-top: 0.75em;
+      }
 
-        .button-row {
-          display: flex;
-          gap: 1em;
-          flex-wrap: wrap;
-          margin-bottom: 2em;
-        }
+      .button-row {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
+        margin-bottom: 2em;
+      }
 
-        #pwa-support-info {
-          display: inline-flex;
-          align-items: center;
-        }
+      #pwa-support-info {
+        display: inline-flex;
+        align-items: center;
+      }
 
+      .card {
+        font-family: var(--sc-sans-font);
+        margin-bottom: 120px;
+        background-color: var(--sc-tertiary-background-color);
+        background-clip: border-box;
+        border: 1px solid var(--sc-border-color);
+        border-radius: 0.25rem;
+      }
+
+      .card-header {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .card-header,
+      .card-body,
+      .card-footer {
+        margin: 1em;
+      }
+
+      .pointer {
+        cursor: pointer;
+      }
+
+      .check_circle_outline {
+        fill: var(--sc-primary-accent-color);
+        margin-left: 0.5em;
+      }
+
+      .highlight_off {
+        fill: var(--sc-toast-error-color);
+        margin-left: 0.5em;
+      }
+
+      .play_arrow,
+      .stop {
+        fill: var(--sc-icon-color);
+      }
+
+      @media (max-width: 680px) {
         .card {
-          font-family: var(--sc-sans-font);
-          margin-bottom: 120px;
-          background-color: var(--sc-tertiary-background-color);
-          background-clip: border-box;
-          border: 1px solid var(--sc-border-color);
-          border-radius: 0.25rem;
+          width: 300px;
         }
-
-        .card-header {
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-
-        .card-header,
-        .card-body,
-        .card-footer {
-          margin: 1em;
-        }
-
-        .pointer {
-          cursor: pointer;
-        }
-
-        .check_circle_outline {
-          fill: var(--sc-primary-accent-color);
-          margin-left: 0.5em;
-        }
-
-        .highlight_off {
-          fill: var(--sc-toast-error-color);
-          margin-left: 0.5em;
-        }
-
-        .play_arrow,
-        .stop {
-          fill: var(--sc-icon-color);
-        }
-
-        @media (max-width: 680px) {
-          .card {
-            width: 300px;
-          }
-        }
-      `,
-    ];
-  }
+      }
+    `,
+  ];
 
   _resetDownloadHistory() {
     this.actions.saveDownloadedUrls({});
@@ -691,27 +649,27 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             <h3>${this.localize('offline:language')}</h3>
             <p>${this.localize('offline:selectDifferentLang')}</p>
             <h3>${this.localize('offline:downloadParallels')}</h3>
-            <mwc-formfield label="${this.localize('offline:downloadParallelsDescription')}">
+            <mwc-formfield label=${this.localize('offline:downloadParallelsDescription')}>
               <mwc-checkbox
-                ?checked="${this.shouldDownloadParallels}"
-                ?disabled="${this.isDownloadButtonDisabled}"
-                @change="${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}"
+                ?checked=${this.shouldDownloadParallels}
+                ?disabled=${this.isDownloadButtonDisabled}
+                @change=${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}
               ></mwc-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">
             <h3>${this.localize('offline:downloadRootTexts')}</h3>
             <mwc-formfield
-              label="${this.localizeEx(
+              label=${this.localizeEx(
                 'offline:downloadRootTextsDescription',
                 'toLang',
                 this.defaultPaliDictToLang.name
-              )}"
+              )}
             >
               <mwc-checkbox
-                ?checked="${this.shouldDownloadRootTexts}"
-                ?disabled="${this.isDownloadButtonDisabled}"
-                @change="${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}"
+                ?checked=${this.shouldDownloadRootTexts}
+                ?disabled=${this.isDownloadButtonDisabled}
+                @change=${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}
               ></mwc-checkbox>
             </mwc-formfield>
           </div>
@@ -719,56 +677,56 @@ class SCStaticOffline extends LitLocalized(LitElement) {
             <h3>${this.localize('offline:paliLookups')}</h3>
             <p>${this.localize('offline:paliLookupsDescription')}</p>
             <div class="option-multi-select">
-              ${this.paliLookupLanguages.map(lang => {
-                return html`
-                  <mwc-formfield label="${lang.name}">
+              ${this.paliLookupLanguages.map(
+                lang => html`
+                  <mwc-formfield label=${lang.name}>
                     <mwc-checkbox
-                      value="${lang.isoCode}"
-                      ?checked="${lang.enabled}"
-                      ?disabled="${this.isDownloadButtonDisabled}"
-                      @change="${this._setPaliLookup}"
+                      value=${lang.isoCode}
+                      ?checked=${lang.enabled}
+                      ?disabled=${this.isDownloadButtonDisabled}
+                      @change=${this._setPaliLookup}
                     ></mwc-checkbox>
                   </mwc-formfield>
-                `;
-              })}
+                `
+              )}
             </div>
           </div>
           <div class="row">
             <h3>${this.localize('offline:chineseLookups')}</h3>
             <p>${this.localize('offline:chineseLookupsDescription')}</p>
             <div class="option-multi-select">
-              ${this.chineseLookupLanguages.map(lang => {
-                return html`
-                  <mwc-formfield label="${lang.name}">
+              ${this.chineseLookupLanguages.map(
+                lang => html`
+                  <mwc-formfield label=${lang.name}>
                     <mwc-checkbox
-                      value="${lang.isoCode}"
-                      ?checked="${lang.enabled}"
-                      ?disabled="${this.isDownloadButtonDisabled}"
-                      @change="${this._setChineseLookup}"
+                      value=${lang.isoCode}
+                      ?checked=${lang.enabled}
+                      ?disabled=${this.isDownloadButtonDisabled}
+                      @change=${this._setChineseLookup}
                     ></mwc-checkbox>
                   </mwc-formfield>
-                `;
-              })}
+                `
+              )}
             </div>
           </div>
           <hr />
           <div class="row button-row">
             <mwc-button
               raised
-              @click="${this.makeOffline}"
-              label="${this._getDownloadButtonText()}"
+              @click=${this.makeOffline}
+              label=${this._getDownloadButtonText()}
             ></mwc-button>
           </div>
           <div class="row button-row">
             <mwc-button
-              @click="${this._showAddToHomeScreenPrompt}"
+              @click=${this._showAddToHomeScreenPrompt}
               outlined
-              label="${this.localize('offline:addToHomeScreen')}"
+              label=${this.localize('offline:addToHomeScreen')}
             ></mwc-button>
             <mwc-button
-              @click="${this._resetDownloadHistory}"
+              @click=${this._resetDownloadHistory}
               outlined
-              label="${this.localize('offline:resetButton')}"
+              label=${this.localize('offline:resetButton')}
             ></mwc-button>
           </div>
           ${this.cacheDownloadInProgress
@@ -779,10 +737,10 @@ class SCStaticOffline extends LitLocalized(LitElement) {
                       ${this.localize('offline:downloading')}: ${this.currentDownloadingUrl}
                     </div>
                     <div class="card-body">
-                      <span class="pointer" @click="${this._resumeOrPauseDownload}">
+                      <span class="pointer" @click=${this._resumeOrPauseDownload}>
                         ${icon.play_arrow}
                       </span>
-                      <span class="pointer" @click="${this._stopDownload}">${icon.stop}</span>
+                      <span class="pointer" @click=${this._stopDownload}>${icon.stop}</span>
                     </div>
                     <div class="card-footer">
                       <mwc-linear-progress indeterminate></mwc-linear-progress>

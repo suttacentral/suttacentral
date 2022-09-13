@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { LitElement, html, css } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-select';
@@ -15,23 +14,13 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { loadStripe } from '@stripe/stripe-js';
 
-class SCStaticDonateNow extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      currencies: {
-        type: Array,
-      },
-      defaultCurrencyIndex: {
-        type: Number,
-      },
-      localizedStringsPath: {
-        type: String,
-      },
-      isError: {
-        type: Boolean,
-      },
-    };
-  }
+export class SCStaticDonateNow extends LitLocalized(LitElement) {
+  static properties = {
+    currencies: { type: Array },
+    defaultCurrencyIndex: { type: Number },
+    localizedStringsPath: { type: String },
+    isError: { type: Boolean },
+  };
 
   constructor() {
     super();
@@ -39,11 +28,11 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
     this.isError = false;
   }
 
-  static get styles() {
-    return css`
-      ${layoutSimpleStyles}
-      ${typographyCommonStyles}
-      /* allow mwc-select to drop below container */
+  static styles = [
+    layoutSimpleStyles,
+    typographyCommonStyles,
+    /* allow mwc-select to drop below container */
+    css`
       article {
         content-visibility: visible;
         height: 100vh;
@@ -132,8 +121,8 @@ class SCStaticDonateNow extends LitLocalized(LitElement) {
 
         fill: var(--sc-icon-color);
       }
-    `;
-  }
+    `,
+  ];
 
   connectedCallback() {
     super.connectedCallback();

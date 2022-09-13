@@ -1,5 +1,5 @@
-import { LitLocalized } from '../addons/sc-localization-mixin';
 import { css, html, LitElement } from 'lit';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 
@@ -9,20 +9,20 @@ class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
   }
 
-  static get styles() {
-    return css`
-      ${layoutSimpleStyles}
-      ${typographyCommonStyles}
-
+  static styles = [
+    layoutSimpleStyles,
+    typographyCommonStyles,
+    css`
       h1 {
         text-align: center;
       }
+
       picture {
         margin: 2em 0;
         display: block;
       }
-    `;
-  }
+    `,
+  ];
 
   render() {
     return html`

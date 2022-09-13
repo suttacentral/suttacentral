@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticMNGuideSujato extends SCStaticPage {
+export class SCStaticMNGuideSujato extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/mn-guide-sujato';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -158,11 +163,6 @@ class SCStaticMNGuideSujato extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/mn-guide-sujato';
   }
 }
 

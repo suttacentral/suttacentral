@@ -1,16 +1,13 @@
 import { LitElement, html } from 'lit';
-
 import { BrowserMicroSentryClient } from '@micro-sentry/browser';
-
 import { throttle } from 'throttle-debounce';
-import { icon } from '../img/sc-icon';
 
+import { icon } from '../img/sc-icon';
 import './sc-page-selector';
 import './navigation/sc-navigation-linden-leaves';
 import './addons/sc-linear-progress';
 import './addons/sc-site-footer';
 import './menus/sc-menu-static-pages-nav';
-
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { store } from '../redux-store';
 
@@ -22,7 +19,41 @@ const microSentryClient = new BrowserMicroSentryClient({
   dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
 });
 
-class SCSiteLayout extends LitLocalized(LitElement) {
+export class SCSiteLayout extends LitLocalized(LitElement) {
+  static properties = {
+    inputLanguage: { type: String },
+    infoDialogMetaArea: { type: String },
+    item: { type: Object },
+    colorsResponse: { type: Object },
+    siteLanguage: { type: String },
+    appColorTheme: { type: String },
+    localizedStringsPath: { type: String },
+    changedRoute: { type: Object },
+    displaySettingMenu: { type: Boolean },
+    toolbarTitle: { type: String },
+    linearProgressActive: { type: Boolean },
+    toolbarPosition: { type: Object },
+  };
+
+  constructor() {
+    super();
+    const state = store.getState();
+    this.inputLanguage = '';
+    this.infoDialogMetaArea = state.suttaMetaText;
+    this.item = {};
+    this.colorsResponse = {};
+    this.siteLanguage = state.siteLanguage;
+    this.appColorTheme = state.colorTheme;
+    this._colorThemeChanged();
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.changedRoute = state.currentRoute;
+    this.displaySettingMenu = state.displaySettingMenu;
+    this.toolbarTitle = state.toolbarOptions.title;
+    this.shouldShowFirstToolbar = true;
+    this.linearProgressActive = false;
+    this.toolbarPosition = state.toolbarPosition;
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -57,139 +88,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
       <sc-page-selector id="page_selector"></sc-page-selector>
       <sc-site-footer id="site_footer"></sc-site-footer>
     `;
-  }
-
-  static get properties() {
-    return {
-      inputLanguage: { type: String },
-      infoDialogMetaArea: { type: String },
-      item: { type: Object },
-      colorsResponse: { type: Object },
-      siteLanguage: { type: String },
-      appColorTheme: { type: String },
-      localizedStringsPath: { type: String },
-      changedRoute: { type: Object },
-      displaySettingMenu: { type: Boolean },
-      toolbarTitle: { type: String },
-      linearProgressActive: { type: Boolean },
-      toolbarPosition: { type: Object },
-    };
-  }
-
-  constructor() {
-    super();
-    const state = store.getState();
-    this.inputLanguage = '';
-    this.infoDialogMetaArea = state.suttaMetaText;
-    this.item = {};
-    this.colorsResponse = {};
-    this.siteLanguage = state.siteLanguage;
-    this.appColorTheme = state.colorTheme;
-    this._colorThemeChanged();
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.changedRoute = state.currentRoute;
-    this.displaySettingMenu = state.displaySettingMenu;
-    this.toolbarTitle = state.toolbarOptions.title;
-    this.shouldShowFirstToolbar = true;
-    this.linearProgressActive = false;
-    this.toolbarPosition = state.toolbarPosition;
-  }
-
-  get actions() {
-    return {
-      setOnlineStatus(isOnline) {
-        store.dispatch({
-          type: 'SET_ONLINE_STATUS',
-          isOnline,
-        });
-      },
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-      setNavigation(navArray) {
-        store.dispatch({
-          type: 'SET_NAVIGATION',
-          navigationArray: navArray,
-        });
-      },
-      changeDisplaySuttaParallelsState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
-          displaySuttaParallels: displayState,
-        });
-      },
-      changeDisplaySuttaToCState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
-          displaySuttaToC: displayState,
-        });
-      },
-      changeDisplaySuttaInfoState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
-          displaySuttaInfo: displayState,
-        });
-      },
-    };
-  }
-
-  stateChanged(state) {
-    super.stateChanged(state);
-    if (this.displaySettingMenu !== state.displaySettingMenu) {
-      this.displaySettingMenu = state.displaySettingMenu;
-    }
-    if (this.displayToolButton !== state.displayToolButton) {
-      this.displayToolButton = state.displayToolButton;
-    }
-    if (this.infoDialogMetaArea !== state.suttaMetaText) {
-      this.infoDialogMetaArea = state.suttaMetaText;
-    }
-    if (this.toolbarTitle !== state.toolbarOptions.title) {
-      this.toolbarTitle = state.toolbarOptions.title;
-    }
-    if (this.appColorTheme !== state.colorTheme) {
-      this.appColorTheme = state.colorTheme;
-    }
-    if (this.changedRoute !== state.currentRoute) {
-      this.changedRoute = state.currentRoute;
-    }
-    if (this.linearProgressActive !== state.linearProgressActive) {
-      this.linearProgressActive = state.linearProgressActive;
-    }
-    if (this.toolbarPosition !== state.toolbarOptions) {
-      this.toolbarPosition = state.toolbarPosition;
-    }
-    if (this.siteLanguage !== state.siteLanguage) {
-      this.siteLanguage = state.siteLanguage;
-      this._setSiteLanguage();
-    }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this._createGlobalStylesheet(SCUtilityStyles);
-    this._createGlobalStylesheet(SCFontStyles);
-    this._calculateScrollbarWidth();
-  }
-
-  _calculateScrollbarWidth() {
-    const setScrollbarWidth = () =>
-      document.body.style.setProperty(
-        '--scrollbar-width',
-        `${window.innerWidth - document.documentElement.clientWidth}px`
-      );
-
-    window.addEventListener('resize', setScrollbarWidth, { passive: true });
-    setScrollbarWidth();
-  }
-
-  _createGlobalStylesheet(rules) {
-    const style = document.createElement('style');
-    style.appendChild(document.createTextNode(rules));
-    document.head.appendChild(style);
   }
 
   firstUpdated() {
@@ -325,6 +223,116 @@ class SCSiteLayout extends LitLocalized(LitElement) {
     });
   }
 
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('appColorTheme')) {
+      this._colorThemeChanged();
+    }
+    if (changedProps.has('changedRoute')) {
+      this._routeChanged();
+    }
+    if (changedProps.has('toolbarPosition')) {
+      this._setToolbarPosition();
+    }
+  }
+
+  get actions() {
+    return {
+      setOnlineStatus(isOnline) {
+        store.dispatch({
+          type: 'SET_ONLINE_STATUS',
+          isOnline,
+        });
+      },
+      changeDisplaySettingMenuState(display) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
+          displaySettingMenu: display,
+        });
+      },
+      setNavigation(navArray) {
+        store.dispatch({
+          type: 'SET_NAVIGATION',
+          navigationArray: navArray,
+        });
+      },
+      changeDisplaySuttaParallelsState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
+          displaySuttaParallels: displayState,
+        });
+      },
+      changeDisplaySuttaToCState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
+          displaySuttaToC: displayState,
+        });
+      },
+      changeDisplaySuttaInfoState(displayState) {
+        store.dispatch({
+          type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
+          displaySuttaInfo: displayState,
+        });
+      },
+    };
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.displaySettingMenu !== state.displaySettingMenu) {
+      this.displaySettingMenu = state.displaySettingMenu;
+    }
+    if (this.displayToolButton !== state.displayToolButton) {
+      this.displayToolButton = state.displayToolButton;
+    }
+    if (this.infoDialogMetaArea !== state.suttaMetaText) {
+      this.infoDialogMetaArea = state.suttaMetaText;
+    }
+    if (this.toolbarTitle !== state.toolbarOptions.title) {
+      this.toolbarTitle = state.toolbarOptions.title;
+    }
+    if (this.appColorTheme !== state.colorTheme) {
+      this.appColorTheme = state.colorTheme;
+    }
+    if (this.changedRoute !== state.currentRoute) {
+      this.changedRoute = state.currentRoute;
+    }
+    if (this.linearProgressActive !== state.linearProgressActive) {
+      this.linearProgressActive = state.linearProgressActive;
+    }
+    if (this.toolbarPosition !== state.toolbarOptions) {
+      this.toolbarPosition = state.toolbarPosition;
+    }
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this._setSiteLanguage();
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._createGlobalStylesheet(SCUtilityStyles);
+    this._createGlobalStylesheet(SCFontStyles);
+    this._calculateScrollbarWidth();
+  }
+
+  _calculateScrollbarWidth() {
+    const setScrollbarWidth = () =>
+      document.body.style.setProperty(
+        '--scrollbar-width',
+        `${window.innerWidth - document.documentElement.clientWidth}px`
+      );
+
+    window.addEventListener('resize', setScrollbarWidth, { passive: true });
+    setScrollbarWidth();
+  }
+
+  _createGlobalStylesheet(rules) {
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(rules));
+    document.head.appendChild(style);
+  }
+
   _setUniversalToolbarTransformStyles() {
     const transitionStyle = 'transform 200ms ease-in-out';
     document.getElementById('universal_toolbar').style.transition = transitionStyle;
@@ -365,19 +373,6 @@ class SCSiteLayout extends LitLocalized(LitElement) {
         },
       ];
       this.actions.setNavigation(this.navArray);
-    }
-  }
-
-  updated(changedProps) {
-    super.updated(changedProps);
-    if (changedProps.has('appColorTheme')) {
-      this._colorThemeChanged();
-    }
-    if (changedProps.has('changedRoute')) {
-      this._routeChanged();
-    }
-    if (changedProps.has('toolbarPosition')) {
-      this._setToolbarPosition();
     }
   }
 

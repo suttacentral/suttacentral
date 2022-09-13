@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { LitElement, html } from 'lit';
 // eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -10,19 +9,17 @@ import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCNavigationNew extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      isCompactMode: { type: String, state: true },
-      compactStyles: { type: Object, state: true },
-      localizedStringsPath: { type: String, state: true },
-      routePath: { type: String, state: true },
-      siteLanguage: { type: String, state: true },
-      fullSiteLanguageName: { type: String, state: true },
-      lastSelectedItemRootLangISO: { type: String, state: true },
-      currentMenuData: { type: Array, state: true },
-      currentUid: { type: String, state: true },
-    };
-  }
+  static properties = {
+    isCompactMode: { type: String, state: true },
+    compactStyles: { type: Object, state: true },
+    localizedStringsPath: { type: String, state: true },
+    routePath: { type: String, state: true },
+    siteLanguage: { type: String, state: true },
+    fullSiteLanguageName: { type: String, state: true },
+    lastSelectedItemRootLangISO: { type: String, state: true },
+    currentMenuData: { type: Array, state: true },
+    currentUid: { type: String, state: true },
+  };
 
   constructor() {
     super();

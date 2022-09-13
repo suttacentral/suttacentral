@@ -1,185 +1,130 @@
-import { css, html, LitElement } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { API_ROOT } from '../../constants';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { store } from '../../redux-store';
 
-// eslint-disable-next-line import/prefer-default-export
 export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
-  static get properties() {
-    return {
-      translationTitle: {
-        type: String,
-      },
-      translationSubtitle: {
-        type: String,
-      },
-      translationLanguage: {
-        type: String,
-      },
-      rootTitle: {
-        type: String,
-      },
-      rootLanguage: {
-        type: String,
-      },
-      authorName: {
-        type: String,
-      },
-      collaborator: {
-        type: Object,
-      },
-      translationDescription: {
-        type: String,
-      },
-      translationProcess: {
-        type: String,
-      },
-      textUID: {
-        type: String,
-      },
-      sourceURL: {
-        type: String,
-      },
-      publicationStatus: {
-        type: String,
-      },
-      publicationNumber: {
-        type: Number,
-      },
-      editionNumber: {
-        type: Number,
-      },
-      publicationDate: {
-        type: String,
-      },
-      publisher: {
-        type: String,
-      },
-      editionURL: {
-        type: String,
-      },
-      publicationType: {
-        type: String,
-      },
-      numberOfVolumes: {
-        type: String,
-      },
-      licenseType: {
-        type: String,
-      },
-      licenseAbbreviation: {
-        type: String,
-      },
-      licenseStatement: {
-        type: String,
-      },
-      authorUID: {
-        type: String,
-      },
-      isPublished: {
-        type: Boolean,
-      },
-      publicationInfo: {
-        type: Object,
-      },
-    };
-  }
+  static properties = {
+    translationTitle: { type: String },
+    translationSubtitle: {type: String },
+    translationLanguage: { type: String },
+    rootTitle: { type: String },
+    rootLanguage: { type: String },
+    authorName: { type: String },
+    collaborator: { type: Object },
+    translationDescription: { type: String },
+    translationProcess: { type: String },
+    textUID: { type: String },
+    sourceURL: { type: String },
+    publicationStatus: { type: String },
+    publicationNumber: { type: Number },
+    editionNumber: { type: Number },
+    publicationDate: { type: String },
+    publisher: { type: String },
+    editionURL: { type: String },
+    publicationType: { type: String },
+    numberOfVolumes: { type: String },
+    licenseType: { type: String },
+    licenseAbbreviation: { type: String },
+    licenseStatement: { type: String },
+    authorUID: { type: String },
+    isPublished: { type: Boolean },
+    publicationInfo: { type: Object },
+  };
 
-  static get styles() {
-    return [
-      super.styles,
-      typographyCommonStyles,
-      css`
-        section > section {
-          font-family: var(--sc-sans-font);
+  static styles = [
+    super.styles,
+    typographyCommonStyles,
+    css`
+      section > section {
+        font-family: var(--sc-sans-font);
 
-          margin: 0;
-          padding: 0;
-        }
+        margin: 0;
+        padding: 0;
+      }
 
-        dl {
-          margin: 1em 0;
-          padding: 0 1rem 1rem 1rem;
+      dl {
+        margin: 1em 0;
+        padding: 0 1rem 1rem 1rem;
 
-          border: var(--sc-border);
-          border-radius: 8px;
-        }
+        border: var(--sc-border);
+        border-radius: 8px;
+      }
 
-        .main-details,
-        .translation-details,
-        .edition {
-          display: grid;
+      .main-details,
+      .translation-details,
+      .edition {
+        display: grid;
 
-          grid-template-columns: 1fr 3fr;
-          align-items: baseline;
-          gap: 0 1em;
-        }
+        grid-template-columns: 1fr 3fr;
+        align-items: baseline;
+        gap: 0 1em;
+      }
 
-        dt {
-          font-weight: 600;
-          font-style: italic;
+      dt {
+        font-weight: 600;
+        font-style: italic;
 
-          color: var(--sc-secondary-text-color);
-        }
+        color: var(--sc-secondary-text-color);
+      }
 
-        dd {
-          margin-left: 0;
-        }
+      dd {
+        margin-left: 0;
+      }
 
-        dd.translation-title {
-          font-weight: 800;
-        }
+      dd.translation-title {
+        font-weight: 800;
+      }
 
-        dd.translation-subtitle {
-          font-weight: 600;
-        }
+      dd.translation-subtitle {
+        font-weight: 600;
+      }
 
-        dd.author-name {
-          font-variant-caps: small-caps;
-        }
+      dd.author-name {
+        font-variant-caps: small-caps;
+      }
 
-        dd.edition-url,
-        dd.source-url,
-        dd.publication-number {
-          font-family: mono;
-          font-size: 16px;
-        }
+      dd.edition-url,
+      dd.source-url,
+      dd.publication-number {
+        font-family: mono;
+        font-size: 16px;
+      }
 
-        .number-of_volumes,
-        .text-uid {
-          display: none;
-        }
+      .number-of_volumes,
+      .text-uid {
+        display: none;
+      }
 
-        .license {
-          padding: 0 1rem 1rem 1rem;
+      .license {
+        padding: 0 1rem 1rem 1rem;
 
-          color: var(--sc-secondary-text-color);
-          border: var(--sc-border);
-          border-radius: 8px;
-          background: var(--sc-tertiary-background-color);
-        }
+        color: var(--sc-secondary-text-color);
+        border: var(--sc-border);
+        border-radius: 8px;
+        background: var(--sc-tertiary-background-color);
+      }
 
-        .license-type {
-          font-weight: 700;
-        }
+      .license-type {
+        font-weight: 700;
+      }
 
-        dd a {
-          overflow-wrap: break-word;
-        }
+      dd a {
+        overflow-wrap: break-word;
+      }
 
-        a img {
-          display: block;
+      a img {
+        display: block;
 
-          margin: 0 0 0.75em 0;
-        }
+        margin: 0 0 0.75em 0;
+      }
 
-        [property='vcard:Country'] {
-          font-weight: 700;
-        }
-      `,
-    ];
-  }
+      [property='vcard:Country'] {
+        font-weight: 700;
+      }
+    `,
+  ];
 
   constructor() {
     super();

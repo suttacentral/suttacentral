@@ -1,53 +1,29 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css } from 'lit';
 import Viewer from 'viewerjs';
 
-import { API_ROOT, IMAGES_ROOT } from '../../constants.js';
+import { API_ROOT, IMAGES_ROOT } from '../../constants';
 
 const style = document.createElement('template');
 style.innerHTML = '<link href="/node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">';
 document.head.appendChild(style.content);
 
-class SCTextImage extends LitElement {
-  render() {
-    return html`
-      <style>
-        .hide {
-          display: none;
-        }
-      </style>
+export class SCTextImage extends LitElement {
+  static properties = {
+    division: { type: String },
+    vol: { type: String },
+    pageNumber: { type: Number },
+    isLoading: { type: Boolean },
+    lastError: { type: Object },
+    imageData: { type: Array },
+    viewer: { type: Object },
+    lastDetail: { type: Object },
+  };
 
-      <ul id="images" class="hide">
-        ${this.imageData
-          ? html`
-              ${this.imageData.map(
-                image => html`
-                  <li>
-                    <img
-                      class="image"
-                      data-url="${this._getImageUrl(image.name)}"
-                      alt="${image.name}"
-                    />
-                  </li>
-                `
-              )}
-            `
-          : ''}
-      </ul>
-    `;
-  }
-
-  static get properties() {
-    return {
-      division: { type: String },
-      vol: { type: String },
-      pageNumber: { type: Number },
-      isLoading: { type: Boolean },
-      lastError: { type: Object },
-      imageData: { type: Array },
-      viewer: { type: Object },
-      lastDetail: { type: Object },
-    };
-  }
+  static styles = css`
+    .hide {
+      display: none;
+    }
+  `;
 
   constructor() {
     super();
@@ -59,6 +35,28 @@ class SCTextImage extends LitElement {
     this.imageData = [];
     this.viewer = {};
     this.lastDetail = {};
+  }
+
+  render() {
+    return html`
+      <ul id="images" class="hide">
+        ${this.imageData
+          ? html`
+              ${this.imageData.map(
+                image => html`
+                  <li>
+                    <img
+                      class="image"
+                      data-url=${this._getImageUrl(image.name)}
+                      alt=${image.name}
+                    />
+                  </li>
+                `
+              )}
+            `
+          : ''}
+      </ul>
+    `;
   }
 
   showImage(detail) {

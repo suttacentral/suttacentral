@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticAcknowledgments extends SCStaticPage {
+export class SCStaticAcknowledgments extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/acknowledgments';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -712,11 +717,6 @@ class SCStaticAcknowledgments extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/acknowledgments';
   }
 }
 

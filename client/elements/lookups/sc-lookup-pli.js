@@ -1,21 +1,18 @@
-/* eslint-disable indent */
 import { LitElement, html } from 'lit';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
-class SCPaliLookup extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      syllSpacer: { type: String },
-      dictData: { type: Object },
-      loadingDict: { type: Boolean },
-      isTi: { type: Boolean },
-      loadedLanguage: { type: String },
-      toLang: { type: String },
-    };
-  }
+export class SCPaliLookup extends LitLocalized(LitElement) {
+  static properties = {
+    syllSpacer: { type: String },
+    dictData: { type: Object },
+    loadingDict: { type: Boolean },
+    isTi: { type: Boolean },
+    loadedLanguage: { type: String },
+    toLang: { type: String },
+  };
 
   constructor() {
     super();

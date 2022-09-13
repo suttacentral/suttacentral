@@ -31,37 +31,35 @@ import {
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
 import { setNavigation } from '../navigation/sc-navigation-common';
 
-class SCTextBilara extends SCTextCommon {
-  static get properties() {
-    return {
-      rootSutta: { type: Object },
-      bilaraRootSutta: { type: Object },
-      translatedSutta: { type: Object },
-      bilaraTranslatedSutta: { type: Object },
-      suttaId: { type: String },
-      suttaReference: { type: Object },
-      suttaComment: { type: Object },
-      suttaVariant: { type: Object },
-      chosenTextView: { type: String },
-      displayedReferences: { type: Array },
-      chosenNoteDisplayType: { type: String },
-      paliScript: { type: String },
-      markup: { type: String },
-      isPaliLookupEnabled: { type: Boolean },
-      spansForWordsGenerated: { type: Boolean },
-      spansForGraphsGenerated: { type: Boolean },
-      isChineseLookupEnabled: { type: Boolean },
-      hasScriptBeenChanged: { type: Boolean },
-      localizedStringsPath: { type: String },
-      currentStyles: { type: Object },
-      referencesDisplayStyles: { type: Object },
-      notesDisplayStyles: { type: Object },
-      showHighlighting: { type: Boolean },
-      rootEdition: { type: Array },
-      isRangeSutta: { type: Boolean },
-      transformedSuttaId: { type: String },
-    };
-  }
+export class SCTextBilara extends SCTextCommon {
+  static properties = {
+    rootSutta: { type: Object },
+    bilaraRootSutta: { type: Object },
+    translatedSutta: { type: Object },
+    bilaraTranslatedSutta: { type: Object },
+    suttaId: { type: String },
+    suttaReference: { type: Object },
+    suttaComment: { type: Object },
+    suttaVariant: { type: Object },
+    chosenTextView: { type: String },
+    displayedReferences: { type: Array },
+    chosenNoteDisplayType: { type: String },
+    paliScript: { type: String },
+    markup: { type: String },
+    isPaliLookupEnabled: { type: Boolean },
+    spansForWordsGenerated: { type: Boolean },
+    spansForGraphsGenerated: { type: Boolean },
+    isChineseLookupEnabled: { type: Boolean },
+    hasScriptBeenChanged: { type: Boolean },
+    localizedStringsPath: { type: String },
+    currentStyles: { type: Object },
+    referencesDisplayStyles: { type: Object },
+    notesDisplayStyles: { type: Object },
+    showHighlighting: { type: Boolean },
+    rootEdition: { type: Array },
+    isRangeSutta: { type: Boolean },
+    transformedSuttaId: { type: String },
+  };
 
   constructor() {
     super();
@@ -108,6 +106,10 @@ class SCTextBilara extends SCTextCommon {
     ]);
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <style>
@@ -129,10 +131,6 @@ class SCTextBilara extends SCTextCommon {
       <slot></slot>
       <sc-bottom-sheet></sc-bottom-sheet>
     `;
-  }
-
-  createRenderRoot() {
-    return this;
   }
 
   firstUpdated() {

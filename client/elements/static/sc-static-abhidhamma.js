@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticAbhidhamma extends SCStaticPage {
+export class SCStaticAbhidhamma extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/abhidhamma';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -100,11 +105,6 @@ class SCStaticAbhidhamma extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/abhidhamma';
   }
 }
 

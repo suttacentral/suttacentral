@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
@@ -8,12 +7,10 @@ import { getURLParam } from './sc-functions-miscellaneous';
 import { reduxActions } from './sc-redux-actions';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      currentId: { type: String },
-      siteLanguage: { type: String },
-    };
-  }
+  static properties = {
+    currentId: { type: String },
+    siteLanguage: { type: String },
+  };
 
   constructor() {
     super();

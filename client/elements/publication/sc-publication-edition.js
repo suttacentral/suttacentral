@@ -11,25 +11,22 @@ import { API_ROOT } from '../../constants';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { coverImage } from '../publication/sc-publication-common';
 
-class SCPublicationEdition extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      ${typographyCommonStyles}
-      ${typographyStaticStyles}
-        ${SCPublicationStyles}
+export class SCPublicationEdition extends LitLocalized(LitElement) {
+  static properties = {
+    currentUid: { type: String },
+    editionDetail: { type: Object },
+    editionId: { type: String },
+  };
+
+  static styles = [
+    typographyCommonStyles,
+    typographyStaticStyles,
+    SCPublicationStyles,
+    css`
       :host {
         display: block;
-      }
-    `;
-  }
-
-  static get properties() {
-    return {
-      currentUid: { type: String },
-      editionDetail: { type: Object },
-      editionId: { type: String },
-    };
-  }
+      }`
+  ];
 
   constructor() {
     super();

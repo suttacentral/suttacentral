@@ -3,17 +3,15 @@ import { icon } from '../../../img/sc-icon';
 import '../../menus/sc-menu-suttaplex-share';
 import { suttaplexTxCss } from './sc-suttaplex-css';
 
-class SCSuttaplexTx extends LitElement {
-  static get properties() {
-    return {
-      item: Object,
-      translation: Object,
-      isCompact: Boolean,
-      isRoot: Boolean,
-      isSuttaInRangeSutta: Boolean,
-      inRangeSuttaId: String,
-    };
-  }
+export class SCSuttaplexTx extends LitElement {
+  static properties = {
+    item: { type: Object },
+    translation: { type: Object },
+    isCompact: { type: Boolean },
+    isRoot: { type: Boolean },
+    isSuttaInRangeSutta: { type: Boolean },
+    inRangeSuttaId: { type: String },
+  };
 
   get translationUrl() {
     if (this.isSuttaInRangeSutta && this.translation.segmented && this.inRangeSuttaId) {
@@ -22,10 +20,10 @@ class SCSuttaplexTx extends LitElement {
     return `/${this.item.uid}/${this.translation.lang}/${this.translation.author_uid}`;
   }
 
+  static styles = [suttaplexTxCss];
+
   render() {
     return html`
-      ${suttaplexTxCss}
-
       <a href=${this.translationUrl} class="tx ${this.isCompact ? 'compact' : ''}">
         ${icon.translation}
         <div class="tx-details">

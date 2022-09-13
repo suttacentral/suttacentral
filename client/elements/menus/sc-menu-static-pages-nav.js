@@ -4,15 +4,13 @@ import { store } from '../../redux-store';
 import { SCMenuStaticPagesNavStyles } from '../styles/sc-menu-static-pages-nav-styles';
 import { API_ROOT } from '../../constants';
 
-class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      staticPagesToolbarDisplayState: { type: Object },
-      changedRoute: { type: Object },
-      editionHome: { type: Object },
-      editionMatters: { type: Array },
-    };
-  }
+export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
+  static properties = {
+    staticPagesToolbarDisplayState: { type: Object },
+    changedRoute: { type: Object },
+    editionHome: { type: Object },
+    editionMatters: { type: Array },
+  };
 
   constructor() {
     super();
@@ -122,11 +120,10 @@ class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     e?.classList.add('staticPageSelected');
   }
 
+  static styles = [SCMenuStaticPagesNavStyles];
+
   render() {
     return html`
-      <style>
-        ${SCMenuStaticPagesNavStyles}
-      </style>
       <div id="static_pages_nav_menu">
         <nav>
           <ul>

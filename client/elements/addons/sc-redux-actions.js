@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { store } from '../../redux-store';
 
 export class reduxActions {

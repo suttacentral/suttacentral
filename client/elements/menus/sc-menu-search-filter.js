@@ -12,30 +12,26 @@ The two necessary conditions are:
 */
 
 class SCMenuSearchFilter extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
-        --mdc-theme-primary: var(--sc-primary-accent-color);
-        --mdc-select-fill-color: var(--sc-tertiary-background-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-surface: var(--sc-secondary-background-color);
-        --mdc-select-ink-color: var(--sc-primary-text-color);
-        --mdc-select-label-ink-color: var(--sc-secondary-text-color);
-        --mdc-select-dropdown-icon-color: var(--sc-icon-color);
-      }
+  static styles = css`
+    :host {
+      --mdc-theme-primary: var(--sc-primary-accent-color);
+      --mdc-select-fill-color: var(--sc-tertiary-background-color);
+      --mdc-typography-font-family: var(--sc-sans-font);
+      --mdc-theme-surface: var(--sc-secondary-background-color);
+      --mdc-select-ink-color: var(--sc-primary-text-color);
+      --mdc-select-label-ink-color: var(--sc-secondary-text-color);
+      --mdc-select-dropdown-icon-color: var(--sc-icon-color);
+    }
 
-      mwc-list-item {
-        color: var(--sc-primary-text-color);
-      }
-    `;
-  }
+    mwc-list-item {
+      color: var(--sc-primary-text-color);
+    }
+  `;
 
-  static get properties() {
-    return {
-      searchSelected: { type: String },
-      localizedStringsPath: { type: String },
-    };
-  }
+  static properties = {
+    searchSelected: { type: String },
+    localizedStringsPath: { type: String },
+  };
 
   constructor() {
     super();
@@ -70,8 +66,8 @@ class SCMenuSearchFilter extends LitLocalized(LitElement) {
     return html`
       <mwc-select
         class="filter-dropdown"
-        label="${this.localize('search:filter')}"
-        @selected="${e => this._onSelectedItemChanged(e)}"
+        label=${this.localize('search:filter')}
+        @selected=${e => this._onSelectedItemChanged(e)}
       >
         <mwc-list-item id="all" value="all" selected>${this.localize('search:all')}</mwc-list-item>
         <mwc-list-item id="root-texts" value="root-texts">

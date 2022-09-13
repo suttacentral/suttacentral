@@ -1,31 +1,29 @@
 import { LitElement, html, css } from 'lit';
 import '@material/mwc-snackbar';
 
-class SCToasts extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        position: absolute;
-        z-index: 9999;
-        --mdc-typography-body2-font-size: calc(19px * var(--sc-skolar-font-scale));
-        --mdc-typography-font-family: var(--sc-sans-font);
-      }
+export class SCToasts extends LitElement {
+  static styles = css`
+    :host {
+      display: block;
+      position: absolute;
+      z-index: 9999;
+      --mdc-typography-body2-font-size: calc(19px * var(--sc-skolar-font-scale));
+      --mdc-typography-font-family: var(--sc-sans-font);
+    }
 
-      .toast {
-        text-align: center;
-        font-family: var(--sc-serif-font);
-      }
+    .toast {
+      text-align: center;
+      font-family: var(--sc-serif-font);
+    }
 
-      .success-toast {
-        --mdc-snackbar-fill-color: var(--sc-toast-success-color);
-      }
+    .success-toast {
+      --mdc-snackbar-fill-color: var(--sc-toast-success-color);
+    }
 
-      .error-toast {
-        --mdc-snackbar-fill-color: var(--sc-toast-error-color);
-      }
-    `;
-  }
+    .error-toast {
+      --mdc-snackbar-fill-color: var(--sc-toast-error-color);
+    }
+  `;
 
   render() {
     return html`

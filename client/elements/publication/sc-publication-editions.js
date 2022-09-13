@@ -12,22 +12,19 @@ import { API_ROOT } from '../../constants';
 import { coverImage } from '../publication/sc-publication-common';
 
 class ScPublicationEditions extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      ${typographyCommonStyles}
-      ${typographyStaticStyles}
-      ${SCPublicationEditionsStyles}
+  static properties = {
+    webEditionInfo: { type: Array },
+  };
+
+  static styles = [
+    typographyCommonStyles,
+    typographyStaticStyles,
+    SCPublicationEditionsStyles,
+    css`
       :host {
         display: block;
-      }
-    `;
-  }
-
-  static get properties() {
-    return {
-      webEditionInfo: { type: Array },
-    };
-  }
+      }`
+  ];
 
   constructor() {
     super();
