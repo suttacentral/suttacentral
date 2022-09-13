@@ -4,17 +4,15 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
-class SCChineseLookup extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      loadedLanguage: { type: String },
-      toLang: { type: String },
-      dictData: { type: Object },
-      loadingDict: { type: Boolean },
-      loadingFallbackDictData: { type: Boolean },
-      fallbackDictData: { type: Object },
-    };
-  }
+export class SCChineseLookup extends LitLocalized(LitElement) {
+  static properties = {
+    loadedLanguage: { type: String },
+    toLang: { type: String },
+    dictData: { type: Object },
+    loadingDict: { type: Boolean },
+    loadingFallbackDictData: { type: Boolean },
+    fallbackDictData: { type: Object },
+  };
 
   constructor() {
     super();

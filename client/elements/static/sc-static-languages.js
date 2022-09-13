@@ -9,14 +9,12 @@ import '../addons/sc-pie-chart';
 import { store } from '../../redux-store';
 import { navIndex, setNavigation } from '../navigation/sc-navigation-common';
 
-class SCStaticLanguages extends SCStaticPage {
-  static get properties() {
-    return {
-      selectedLanguage: { type: String },
-      languageData: { type: Object },
-      languages: { type: Object },
-    };
-  }
+export class SCStaticLanguages extends SCStaticPage {
+  static properties = {
+    selectedLanguage: { type: String },
+    languageData: { type: Object },
+    languages: { type: Object },
+  };
 
   constructor() {
     super();

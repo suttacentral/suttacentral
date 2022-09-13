@@ -7,17 +7,15 @@ import { icon } from '../../img/sc-icon';
 import '@material/mwc-list/mwc-list-item';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
-class SCMenuLanguageBase extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      languageListResponse: { type: Array },
-      selectedLanguageNum: { type: Number },
-      localizedStringsPath: { type: String },
-      cloneName: { type: String }, // pass a unique name here to use in the language change event identifier.
-      noRoot: { type: Boolean }, // If true, no root languages will be displayed.
-      disabled: { type: Boolean },
-    };
-  }
+export class SCMenuLanguageBase extends LitLocalized(LitElement) {
+  static properties = {
+    languageListResponse: { type: Array },
+    selectedLanguageNum: { type: Number },
+    localizedStringsPath: { type: String },
+    cloneName: { type: String }, // pass a unique name here to use in the language change event identifier.
+    noRoot: { type: Boolean }, // If true, no root languages will be displayed.
+    disabled: { type: Boolean },
+  };
 
   get actions() {
     return {
@@ -118,10 +116,10 @@ class SCMenuLanguageBase extends LitLocalized(LitElement) {
     }
   }
 
+  static styles = [languageBaseMenuCss];
+
   render() {
     return html`
-      ${languageBaseMenuCss}
-
       <div class="menu-item-wrapper text-only">
         <mwc-icon-button
           title="Return to main menu"

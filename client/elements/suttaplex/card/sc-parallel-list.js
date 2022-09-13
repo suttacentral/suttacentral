@@ -8,23 +8,21 @@ import { store } from '../../../redux-store';
 import './sc-parallel-item';
 import { parallelsListCss } from './sc-suttaplex-css';
 
-class SCParallels extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      itemUid: String,
-      rootKeys: Array,
-      originalLanguage: String,
-      inputLanguage: String,
-      inputUrl: String,
-      loadingResults: Boolean,
-      rootLang: String,
-      responseData: Boolean,
-      error: Boolean,
-      rootText: Object,
-      localizedStringsPath: String,
-      expansionData: Array,
-    };
-  }
+export class SCParallels extends LitLocalized(LitElement) {
+  static properties = {
+    itemUid: { type: String },
+    rootKeys: { type: Array },
+    originalLanguage: { type: String },
+    inputLanguage: { type: String },
+    inputUrl: { type: String },
+    loadingResults: { type: Boolean },
+    rootLang: { type: String },
+    responseData: { type: Boolean },
+    error: { type: Boolean },
+    rootText: { type: Object },
+    localizedStringsPath: { type: String },
+    expansionData: { type: Array },
+  };
 
   constructor() {
     super();
@@ -59,13 +57,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return icon['compare_arrows'];
+          return icon.compare_arrows;
         }
-        return icon['swap_horiz'];
+        return icon.swap_horiz;
       case 'retelling':
-        return icon['cached'];
+        return icon.cached;
       case 'mention':
-        return icon['format_quote'];
+        return icon.format_quote;
       default:
         return '';
     }
@@ -116,9 +114,10 @@ class SCParallels extends LitLocalized(LitElement) {
     };
   }
 
+  static styles = [parallelsListCss];
+
   render() {
     return html`
-      ${parallelsListCss}
       <div>
         ${this.rootKeys
           ? html`

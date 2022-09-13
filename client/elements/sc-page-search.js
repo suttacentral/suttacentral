@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './menus/sc-menu-search-filter';
@@ -22,309 +22,369 @@ import(
 );
 
 class SCPageSearch extends LitLocalized(LitElement) {
+  static properties = {
+    // The query to search for
+    searchQuery: {
+      type: String,
+      hasChanged(newVal) {
+        if (newVal) {
+          return true;
+        }
+      },
+    },
+    // The actual query parameters of the search
+    searchParams: { type: Object },
+    lastSearchResults: { type: Array },
+    allSearchResults: { type: Array },
+    visibleSearchResults: { type: Array },
+    resultCount: { type: Number },
+    resultsPerLoad: { type: Number },
+    currentPage: { type: Number },
+    currentFilter: { type: String },
+    searchResultElemHeight: { type: Number },
+    localizedStringsPath: { type: String },
+    totalLoadedResults: { type: Number },
+    isOnline: { type: Boolean },
+    dictionaryTitles: { type: Object },
+    suttaplex: { type: Array },
+    expansionReturns: { type: Array },
+    waitTimeAfterNewWordExpired: { type: Boolean },
+    loadingResults: { type: Boolean },
+    lastError: { type: Object },
+  };
+
+  constructor() {
+    super();
+    this.searchQuery = store.getState().currentRoute.params.query;
+    this.searchParams = store.getState().searchParams;
+    this.lastSearchResults = [];
+    this.allSearchResults = [];
+    this.visibleSearchResults = [];
+    this.resultCount = 0;
+    this.resultsPerLoad = 50;
+    this.currentPage = 0;
+    this.currentFilter = 'all';
+    this.searchResultElemHeight = 170;
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.totalLoadedResults = 0;
+    this.isOnline = store.getState().isOnline;
+    this.dictionaryTitles = {
+      ncped: 'New Concise Pali English Dictionary',
+      cped: 'Concise Pali English Dictionary',
+      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      dppn: 'Dictionary of Pali Proper Names',
+      pts: 'PTS Pali English Dictionary',
+    };
+    this.suttaplex = [];
+    this.expansionReturns = [];
+    this.waitTimeAfterNewWordExpired = true;
+    this.loadingResults = true;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
+  }
+
+  static styles = css`
+    :host {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-md);
+      font-weight: 400;
+      line-height: 1.5;
+
+      display: block;
+
+      width: 100%;
+
+      color: var(--sc-primary-text-color);
+    }
+
+    h2 {
+      line-height: 1.25;
+    }
+
+    #search_result_list {
+      padding: var(--sc-size-xl) 0 var(--sc-size-md);
+    }
+
+    .search-results-container {
+      margin: 0 3vw var(--sc-size-xxl) 3vw;
+    }
+
+    .search-results-main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-bottom: 64px;
+    }
+
+    .search-result-head {
+      display: flex;
+
+      color: var(--sc-secondary-text-color);
+
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .search-result-header {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-h1-md);
+      font-weight: 400;
+      line-height: 1.25;
+
+      display: inline-block;
+
+      margin: 0 1rem 1rem 0;
+    }
+
+    .search-result-term {
+      font-family: var(--sc-serif-font);
+      font-weight: bold;
+    }
+
+    aside {
+      color: var(--sc-secondary-text-color);
+
+      font-size: var(--sc-skolar-font-size-s);
+
+      margin-bottom: 1em;
+    }
+
+    .search-result-item {
+      display: flex;
+      flex-direction: column;
+
+      border-bottom: var(--sc-border);
+    }
+
+    .search-result-item dl a {
+      text-decoration: underline;
+
+      color: inherit;
+
+      text-decoration-color: var(--sc-primary-color);
+    }
+
+    .search-result-item dl a:hover {
+      color: var(--sc-primary-color);
+    }
+
+    .search-result-item dl a:visited {
+      text-decoration-color: var(--sc-primary-color-dark);
+    }
+
+    .search-result-item:focus {
+      outline: 0;
+    }
+
+    .padded-container {
+      display: flex;
+      flex-direction: column;
+
+      padding: 0;
+    }
+
+    .primary {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      height: 32px;
+    }
+
+    .search-result-title {
+      font-family: var(--sc-serif-font);
+      font-size: var(--sc-skolar-font-size-static-subtitle);
+      font-weight: 400;
+
+      overflow: hidden;
+
+      margin: 0;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      color: var(--sc-primary-accent-color);
+    }
+
+    .all-dictionaries {
+      display: none;
+    }
+
+    .dictionary .all-dictionaries {
+      display: inline-flex;
+      color: var(--sc-secondary-text-color);
+      font-size: var(--sc-skolar-font-size-s);
+
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .icon {
+      fill: var(--sc-icon-color);
+      height: 20px;
+      width: 20px;
+    }
+
+    .search-result-division {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-s);
+      font-weight: 400;
+
+      overflow: hidden;
+
+      margin: 0;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      color: var(--sc-secondary-text-color);
+
+      height: 1.5rem;
+    }
+
+    .search-result-snippet {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-md);
+      font-weight: 400;
+      line-height: 1.333;
+
+      margin: 0 0 1rem 0;
+    }
+
+    .search-result-snippet dd {
+      margin-left: 0;
+    }
+
+    .search-result-snippet dfn {
+      font-weight: bold;
+      font-style: normal;
+
+      color: var(--sc-primary-color-dark);
+    }
+
+    .search-result-link {
+      text-decoration: none;
+
+      color: initial;
+
+      padding: 12px 0 8px;
+    }
+
+    .search-result-link:hover {
+      text-decoration: underline;
+
+      text-decoration-color: var(--sc-primary-accent-color);
+    }
+
+    .dictionary {
+      margin: 0 0 1em 0;
+      padding: 0 clamp(1rem, 3vw, 2rem);
+
+      border-radius: var(--sc-size-sm);
+      background-color: var(--sc-secondary-background-color);
+      box-shadow: var(--sc-shadow-elevation-1dp);
+    }
+
+    .dictionary .search-result-division {
+      display: none;
+    }
+
+    .dictionary .search-result-title {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-md);
+      font-weight: 400;
+      font-variant-caps: all-small-caps;
+      letter-spacing: var(--sc-caps-letter-spacing);
+    }
+
+    .dictionary dfn {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-static-subtitle);
+      font-weight: bold;
+
+      color: var(--sc-primary-color-dark);
+    }
+
+    .dictionary dfn,
+    .highlight,
+    .search-result-term,
+    .selected-terms-item > a {
+      background-color: var(--sc-primary-color-light-transparent);
+      color: var(--sc-primary-color-darkest);
+    }
+
+    .dictionary dd p {
+      margin: 0 0 var(--sc-size-s) 0;
+    }
+
+    .dictionary .grammar {
+      display: block;
+
+      color: var(--sc-secondary-text-color);
+
+      font-style: italic;
+    }
+
+    .dictionary .ref {
+      font-family: var(--sc-sans-font);
+      font-weight: 600;
+      font-style: normal;
+
+      padding: 0 4px;
+
+      white-space: nowrap;
+      letter-spacing: normal;
+
+      color: var(--sc-secondary-text-color);
+      border-radius: 8px;
+      background-color: rgba(159, 158, 157, 0.15);
+
+      font-variant-caps: normal;
+    }
+
+    dd ol,
+    dd ul {
+      margin: 0;
+      padding: 0 0 0 1rem;
+    }
+
+    li {
+      padding-left: clamp(0.25rem, 1vw, 1rem);
+    }
+
+    li::marker {
+      font-family: var(--sc-sans-font);
+      font-weight: bold;
+
+      color: var(--sc-secondary-text-color);
+    }
+
+    p + ol,
+    p + ul {
+      margin: 0.5em 0 1em;
+    }
+
+    .d-none {
+      display: none;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    mwc-button {
+      --mdc-theme-primary: var(--sc-primary-accent-color);
+      --mdc-theme-on-primary: white;
+    }
+
+    #load-more {
+      padding: 24px 0;
+      display: flex;
+      justify-content: center;
+    }
+  `;
+
   render() {
     return html`
-      <style>
-        :host {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          line-height: 1.5;
-
-          display: block;
-
-          width: 100%;
-
-          color: var(--sc-primary-text-color);
-        }
-
-        h2 {
-          line-height: 1.25;
-        }
-
-        #search_result_list {
-          padding: var(--sc-size-xl) 0 var(--sc-size-md);
-        }
-
-        .search-results-container {
-          margin: 0 3vw var(--sc-size-xxl) 3vw;
-        }
-
-        .search-results-main {
-          max-width: 720px;
-          margin: 0 auto;
-          padding-bottom: 64px;
-        }
-
-        .search-result-head {
-          display: flex;
-
-          color: var(--sc-secondary-text-color);
-
-          justify-content: space-between;
-          flex-wrap: wrap;
-        }
-
-        .search-result-header {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-h1-md);
-          font-weight: 400;
-          line-height: 1.25;
-
-          display: inline-block;
-
-          margin: 0 1rem 1rem 0;
-        }
-
-        .search-result-term {
-          font-family: var(--sc-serif-font);
-          font-weight: bold;
-        }
-
-        aside {
-          color: var(--sc-secondary-text-color);
-
-          font-size: var(--sc-skolar-font-size-s);
-
-          margin-bottom: 1em;
-        }
-
-        .search-result-item {
-          display: flex;
-          flex-direction: column;
-
-          border-bottom: var(--sc-border);
-        }
-
-        .search-result-item dl a {
-          text-decoration: underline;
-
-          color: inherit;
-
-          text-decoration-color: var(--sc-primary-color);
-        }
-
-        .search-result-item dl a:hover {
-          color: var(--sc-primary-color);
-        }
-
-        .search-result-item dl a:visited {
-          text-decoration-color: var(--sc-primary-color-dark);
-        }
-
-        .search-result-item:focus {
-          outline: 0;
-        }
-
-        .padded-container {
-          display: flex;
-          flex-direction: column;
-
-          padding: 0;
-        }
-
-        .primary {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          height: 32px;
-        }
-
-        .search-result-title {
-          font-family: var(--sc-serif-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: 400;
-
-          overflow: hidden;
-
-          margin: 0;
-
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-          color: var(--sc-primary-accent-color);
-        }
-
-        .all-dictionaries {
-          display: none;
-        }
-
-        .dictionary .all-dictionaries {
-          display: inline-flex;
-          color: var(--sc-secondary-text-color);
-          font-size: var(--sc-skolar-font-size-s);
-
-          flex-direction: row;
-          align-items: center;
-          gap: 0.5em;
-        }
-        .icon {
-          fill: var(--sc-icon-color);
-          height: 20px;
-          width: 20px;
-        }
-
-        .search-result-division {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-s);
-          font-weight: 400;
-
-          overflow: hidden;
-
-          margin: 0;
-
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-          color: var(--sc-secondary-text-color);
-
-          height: 1.5rem;
-        }
-
-        .search-result-snippet {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          line-height: 1.333;
-
-          margin: 0 0 1rem 0;
-        }
-
-        .search-result-snippet dd {
-          margin-left: 0;
-        }
-
-        .search-result-snippet dfn {
-          font-weight: bold;
-          font-style: normal;
-
-          color: var(--sc-primary-color-dark);
-        }
-
-        .search-result-link {
-          text-decoration: none;
-
-          color: initial;
-
-          padding: 12px 0 8px;
-        }
-
-        .search-result-link:hover {
-          text-decoration: underline;
-
-          text-decoration-color: var(--sc-primary-accent-color);
-        }
-
-        .dictionary {
-          margin: 0 0 1em 0;
-          padding: 0 clamp(1rem, 3vw, 2rem);
-
-          border-radius: var(--sc-size-sm);
-          background-color: var(--sc-secondary-background-color);
-          box-shadow: var(--sc-shadow-elevation-1dp);
-        }
-
-        .dictionary .search-result-division {
-          display: none;
-        }
-
-        .dictionary .search-result-title {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-md);
-          font-weight: 400;
-          font-variant-caps: all-small-caps;
-          letter-spacing: var(--sc-caps-letter-spacing);
-        }
-
-        .dictionary dfn {
-          font-family: var(--sc-sans-font);
-          font-size: var(--sc-skolar-font-size-static-subtitle);
-          font-weight: bold;
-
-          color: var(--sc-primary-color-dark);
-        }
-
-        .dictionary dfn,
-        .highlight,
-        .search-result-term,
-        .selected-terms-item > a {
-          background-color: var(--sc-primary-color-light-transparent);
-          color: var(--sc-primary-color-darkest);
-        }
-
-        .dictionary dd p {
-          margin: 0 0 var(--sc-size-s) 0;
-        }
-
-        .dictionary .grammar {
-          display: block;
-
-          color: var(--sc-secondary-text-color);
-
-          font-style: italic;
-        }
-
-        .dictionary .ref {
-          font-family: var(--sc-sans-font);
-          font-weight: 600;
-          font-style: normal;
-
-          padding: 0 4px;
-
-          white-space: nowrap;
-          letter-spacing: normal;
-
-          color: var(--sc-secondary-text-color);
-          border-radius: 8px;
-          background-color: rgba(159, 158, 157, 0.15);
-
-          font-variant-caps: normal;
-        }
-
-        dd ol,
-        dd ul {
-          margin: 0;
-          padding: 0 0 0 1rem;
-        }
-
-        li {
-          padding-left: clamp(0.25rem, 1vw, 1rem);
-        }
-
-        li::marker {
-          font-family: var(--sc-sans-font);
-          font-weight: bold;
-
-          color: var(--sc-secondary-text-color);
-        }
-
-        p + ol,
-        p + ul {
-          margin: 0.5em 0 1em;
-        }
-
-        .d-none {
-          display: none;
-        }
-
-        [hidden] {
-          display: none !important;
-        }
-
-        mwc-button {
-          --mdc-theme-primary: var(--sc-primary-accent-color);
-          --mdc-theme-on-primary: white;
-        }
-
-        #load-more {
-          padding: 24px 0;
-          display: flex;
-          justify-content: center;
-        }
-      </style>
-
       ${this.displayDataLoadError} ${this.onlineTemplate} ${this.offLineTemplate}
       ${this._createMetaData()}
     `;
@@ -369,9 +429,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
             <sc-suttaplex
               .item=${this.suttaplex}
               .parallels-opened=${false}
-              .difficulty="${this._computeItemDifficulty(
+              .difficulty=${this._computeItemDifficulty(
                 this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
-              )}"
+              )}
               .expansion-data=${this.expansionReturns}
             ></sc-suttaplex>
           </div>
@@ -381,9 +441,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
             ? html`
                 <div id="load-more">
                   <mwc-button
-                    @click="${this._loadMoreData}"
+                    @click=${this._loadMoreData}
                     unelevated
-                    label="${this.localize('search:loadMore')}"
+                    label=${this.localize('search:loadMore')}
                   ></mwc-button>
                 </div>
               `
@@ -398,10 +458,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
           item => html`
             <div
               class="search-result-item ${this._calculateItemCategory(item)}"
-              tabindex="${this.tabIndex}"
+              tabindex=${this.tabIndex}
             >
               <div class="padded-container">
-                <a class="search-result-link" href="${this._calculateLink(item)}">
+                <a class="search-result-link" href=${this._calculateLink(item)}>
                   <div class="primary">
                     <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
                     <div class="all-dictionaries">
@@ -425,68 +485,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           `
         )
       : '';
-  }
-
-  static get properties() {
-    return {
-      // The query to search for
-      searchQuery: {
-        type: String,
-        hasChanged(newVal) {
-          if (newVal) {
-            return true;
-          }
-        },
-      },
-      // The actual query parameters of the search
-      searchParams: { type: Object },
-      lastSearchResults: { type: Array },
-      allSearchResults: { type: Array },
-      visibleSearchResults: { type: Array },
-      resultCount: { type: Number },
-      resultsPerLoad: { type: Number },
-      currentPage: { type: Number },
-      currentFilter: { type: String },
-      searchResultElemHeight: { type: Number },
-      localizedStringsPath: { type: String },
-      totalLoadedResults: { type: Number },
-      isOnline: { type: Boolean },
-      dictionaryTitles: { type: Object },
-      suttaplex: { type: Array },
-      expansionReturns: { type: Array },
-      waitTimeAfterNewWordExpired: { type: Boolean },
-      loadingResults: { type: Boolean },
-      lastError: { type: Object },
-    };
-  }
-
-  constructor() {
-    super();
-    this.searchQuery = store.getState().currentRoute.params.query;
-    this.searchParams = store.getState().searchParams;
-    this.lastSearchResults = [];
-    this.allSearchResults = [];
-    this.visibleSearchResults = [];
-    this.resultCount = 0;
-    this.resultsPerLoad = 50;
-    this.currentPage = 0;
-    this.currentFilter = 'all';
-    this.searchResultElemHeight = 170;
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.totalLoadedResults = 0;
-    this.isOnline = store.getState().isOnline;
-    this.dictionaryTitles = {
-      ncped: 'New Concise Pali English Dictionary',
-      cped: 'Concise Pali English Dictionary',
-      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
-      dppn: 'Dictionary of Pali Proper Names',
-      pts: 'PTS Pali English Dictionary',
-    };
-    this.suttaplex = [];
-    this.expansionReturns = [];
-    this.waitTimeAfterNewWordExpired = true;
-    this.loadingResults = true;
-    this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
   connectedCallback() {
@@ -700,10 +698,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
       if (Array.isArray(value)) {
         for (let i = 0; i < value.length; i++) {
-          queryParts.push(param + '=' + window.encodeURIComponent(value[i]));
+          queryParts.push(`${param}=${window.encodeURIComponent(value[i])}`);
         }
       } else if (value !== null) {
-        queryParts.push(param + '=' + window.encodeURIComponent(value));
+        queryParts.push(`${param}=${window.encodeURIComponent(value)}`);
       } else {
         queryParts.push(param);
       }
@@ -770,7 +768,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   _convertAcronym(acronym) {
     if (acronym.match(/\/\//)) {
-      return acronym.replace(/\/\//, ' (') + ')';
+      return `${acronym.replace(/\/\//, ' (')})`;
     }
     return acronym;
   }
@@ -787,7 +785,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       uidParts.forEach(item => {
         if (!expansionData[0][item]) {
           const tailMatch = item.match(/\d+.*/g);
-          if (tailMatch) tail = tailMatch[0] + '–';
+          if (tailMatch) tail = `${tailMatch[0]}–`;
           const itemMatch = item.match(/[a-z]*/g);
           if (itemMatch) item = itemMatch[0];
         }
@@ -839,10 +837,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!difficulty) return;
     if (difficulty.name) {
       return difficulty.name;
-    } else {
-      const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
-      return levels[difficulty];
     }
+    const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
+    return levels[difficulty];
   }
 }
 

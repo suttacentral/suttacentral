@@ -9,24 +9,21 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { store } from '../../redux-store';
 
-class SCPublicationEditionMatter extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      ${typographyCommonStyles}
-      ${typographyStaticStyles}
-      ${SCPublicationStyles}
+export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
+  static properties = {
+    matter: { type: String },
+    matterContent: { type: Object },
+  };
+
+  static styles = [
+    typographyCommonStyles,
+    typographyStaticStyles,
+    SCPublicationStyles,
+    css`
       :host {
         display: block;
-      }
-    `;
-  }
-
-  static get properties() {
-    return {
-      matter: { type: String },
-      matterContent: { type: Object },
-    };
-  }
+      }`
+  ];
 
   constructor() {
     super();

@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticANewBeginning extends SCStaticPage {
+export class SCStaticANewBeginning extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/a-new-beginning';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -40,11 +45,6 @@ class SCStaticANewBeginning extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/a-new-beginning';
   }
 }
 

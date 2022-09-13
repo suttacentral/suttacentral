@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { compose, createStore } from 'redux';
 
 const initialState = {

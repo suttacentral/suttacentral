@@ -6,7 +6,12 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 
-class SCStaticDiscourses extends SCStaticPage {
+export class SCStaticDiscourses extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/discourses';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -132,11 +137,6 @@ class SCStaticDiscourses extends SCStaticPage {
         </article>
       </main>
     `;
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/discourses';
   }
 }
 

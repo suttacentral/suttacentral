@@ -10,53 +10,68 @@ import { icon } from '../../img/sc-icon';
 Menu on top of the suttaplex parallel's list for copying information from parallels to clipboard.
 */
 
-class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
-        outline: none;
-      }
+export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
+  static properties = {
+    item: { type: Object },
+    parallels: { type: Object },
+    loadingParallels: { type: Boolean },
+    areParallelsAvailable: { type: Boolean },
+    localizedStringsPath: { type: String },
+  };
 
-      .button-text {
-        color: var(--sc-primary-text-color);
-        font-weight: 500;
-      }
-
-      .button-text:hover {
-        background-color: var(--sc-tertiary-background-color);
-        transition: background-color 0.2s ease;
-        cursor: pointer;
-      }
-
-      .button-text:active {
-        background-color: var(--sc-textual-info-background-color);
-        transition: background-color 0.2s ease;
-        cursor: pointer;
-      }
-
-      .table-element {
-        white-space: nowrap;
-        height: 48px;
-        padding: 0 16px;
-        display: flex;
-        align-items: center;
-      }
-
-      .table-element[disabled] {
-        color: var(--sc-icon-color);
-      }
-
-      .icon {
-        margin-right: var(--sc-size-md);
-        fill: var(--sc-icon-color);
-      }
-
-      .disabled {
-        pointer-events: none;
-        opacity: 0.6;
-      }
-    `;
+  constructor() {
+    super();
+    this.item = [];
+    this.parallels = [];
+    this.loadingParallels = false;
+    this.areParallelsAvailable = false;
+    this.localizedStringsPath = '/localization/elements/interface';
   }
+
+  static styles = css`
+    :host {
+      outline: none;
+    }
+
+    .button-text {
+      color: var(--sc-primary-text-color);
+      font-weight: 500;
+    }
+
+    .button-text:hover {
+      background-color: var(--sc-tertiary-background-color);
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .button-text:active {
+      background-color: var(--sc-textual-info-background-color);
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .table-element {
+      white-space: nowrap;
+      height: 48px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .table-element[disabled] {
+      color: var(--sc-icon-color);
+    }
+
+    .icon {
+      margin-right: var(--sc-size-md);
+      fill: var(--sc-icon-color);
+    }
+
+    .disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+  `;
 
   render() {
     return html`
@@ -75,25 +90,6 @@ class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
         ${icon.format_quote} ${this.localize('share:cite')}
       </li>
     `;
-  }
-
-  static get properties() {
-    return {
-      item: { type: Object },
-      parallels: { type: Object },
-      loadingParallels: { type: Boolean },
-      areParallelsAvailable: { type: Boolean },
-      localizedStringsPath: { type: String },
-    };
-  }
-
-  constructor() {
-    super();
-    this.item = [];
-    this.parallels = [];
-    this.loadingParallels = false;
-    this.areParallelsAvailable = false;
-    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   async _fetchParallels() {

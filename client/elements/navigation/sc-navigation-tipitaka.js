@@ -4,20 +4,30 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { navigationNormalModeStyles } from './sc-navigation-styles';
 
-class SCNavigationTipitaka extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-      }
-    `;
-  }
+export class SCNavigationTipitaka extends LitLocalized(LitElement) {
+  static styles = css`
+    :host {
+      display: block;
+    }
+  `;
 
-  static get properties() {
-    return {
-      mainMenuData: { type: Array },
-      siteLanguage: { type: String },
-    };
+  static properties = {
+    mainMenuData: { type: Array },
+    siteLanguage: { type: String },
+  };
+
+  constructor() {
+    super();
+    this.mainMenuData = [];
+    this.navArray = store.getState().navigationArray;
+    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
+    this.siteLanguage = store.getState().siteLanguage;
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.pitakaGuide = new Map([
+      ['sutta', 'discourses-guide-sujato'],
+      ['vinaya', 'vinaya-guide-brahmali'],
+      ['abhidhamma', 'abhidhamma-guide-sujato'],
+    ]);
   }
 
   stateChanged(state) {
@@ -33,20 +43,6 @@ class SCNavigationTipitaka extends LitLocalized(LitElement) {
     if (changedProps.has('navArray')) {
       this.actions.setNavigation(this.navArray);
     }
-  }
-
-  constructor() {
-    super();
-    this.mainMenuData = [];
-    this.navArray = store.getState().navigationArray;
-    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    this.siteLanguage = store.getState().siteLanguage;
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.pitakaGuide = new Map([
-      ['sutta', 'discourses-guide-sujato'],
-      ['vinaya', 'vinaya-guide-brahmali'],
-      ['abhidhamma', 'abhidhamma-guide-sujato'],
-    ]);
   }
 
   firstUpdated() {

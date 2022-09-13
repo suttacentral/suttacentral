@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { css } from 'lit';
 
 export const SCSiteLayoutStyles = css`

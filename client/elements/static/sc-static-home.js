@@ -7,13 +7,11 @@ import '../navigation/sc-navigation-tipitaka';
 import { icon } from '../../img/sc-icon';
 import { staticHomeStyles } from '../styles/sc-static-home-styles';
 
-class SCStaticHomePage extends SCStaticPage {
-  static get properties() {
-    return {
-      randomEpigrah: { type: String },
-      whyWeRead: { type: String },
-    };
-  }
+export class SCStaticHomePage extends SCStaticPage {
+  static properties = {
+    randomEpigrah: { type: String },
+    whyWeRead: { type: String },
+  };
 
   constructor() {
     super();

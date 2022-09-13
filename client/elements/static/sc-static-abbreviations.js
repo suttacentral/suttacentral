@@ -7,24 +7,29 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
 
-class SCStaticAbbreviations extends SCStaticPage {
-  createRenderRoot() {
-    return this;
+export class SCStaticAbbreviations extends SCStaticPage {
+  static properties = {
+    abbrTexts: { type: Array },
+    abbrEditions: { type: Array },
+    abbrSchools: { type: Array },
+  };
+
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/abbreviations';
+    this.abbrTexts = [];
+    this.abbrEditions = [];
+    this.abbrSchools = [];
   }
 
-  static get properties() {
-    return {
-      abbrTexts: { type: Array },
-      abbrEditions: { type: Array },
-      abbrSchools: { type: Array },
-    };
+  createRenderRoot() {
+    return this;
   }
 
   render() {
     return html`
       <style>
-        ${layoutSimpleStyles} ${typographyCommonStyles} ${typographyStaticStyles} .abbrTable {
-        }
+        ${layoutSimpleStyles} ${typographyCommonStyles} ${typographyStaticStyles}
       </style>
       <main>
         <article>
@@ -112,14 +117,6 @@ class SCStaticAbbreviations extends SCStaticPage {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/abbreviations';
-    this.abbrTexts = [];
-    this.abbrEditions = [];
-    this.abbrSchools = [];
   }
 }
 

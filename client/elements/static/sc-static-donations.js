@@ -7,7 +7,12 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
-class SCStaticDonations extends SCStaticPage {
+export class SCStaticDonations extends SCStaticPage {
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/donations';
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -124,11 +129,6 @@ class SCStaticDonations extends SCStaticPage {
 
   _donateNow() {
     window.location.href = '/donate-now';
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/donations';
   }
 }
 

@@ -15,54 +15,30 @@ import { API_ROOT } from '../../constants';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { reduxActions } from '../addons/sc-redux-actions';
 
-class SCTextLegacy extends SCTextCommon {
-  render() {
-    return html`
-      <style>
-        ${layoutSimpleStyles}
-        ${typographyCommonStyles}
-        ${typographyLegacyStyles}
-        ${typographyI18nStyles}
-      </style>
-
-      <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
-        ${unsafeHTML(this._extractSuttaText())}
-      </main>
-
-      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
-      <sc-bottom-sheet></sc-bottom-sheet>
-    `;
-  }
-
-  createRenderRoot() {
-    return this;
-  }
-
-  static get properties() {
-    return {
-      // in simple texts, both root texts and translations are returned by the API in the translation object.
-      sutta: { type: Object },
-      // If true, shows the paragraph numbers on the right of the text.
-      showParagraphs: { type: Boolean },
-      paragraphs: { type: Array },
-      author: { type: String },
-      error: { type: Object },
-      lang: { type: String },
-      isLoading: { type: Boolean },
-      isTextViewHidden: { type: Boolean },
-      spansForWordsGenerated: { type: Boolean },
-      spansForGraphsGenerated: { type: Boolean },
-      isChineseLookupEnabled: { type: Boolean },
-      textualInfoClassTitles: { type: Object },
-      classTitles: { type: Object },
-      editionsExpansionData: { type: Object },
-      localizedStringsPath: { type: String },
-      inputElement: { type: Object },
-      showHighlighting: { type: Boolean },
-      chosenReferenceDisplayType: { type: String },
-      navItems: { type: Array },
-    };
-  }
+export class SCTextLegacy extends SCTextCommon {
+  static properties = {
+    // in simple texts, both root texts and translations are returned by the API in the translation object.
+    sutta: { type: Object },
+    // If true, shows the paragraph numbers on the right of the text.
+    showParagraphs: { type: Boolean },
+    paragraphs: { type: Array },
+    author: { type: String },
+    error: { type: Object },
+    lang: { type: String },
+    isLoading: { type: Boolean },
+    isTextViewHidden: { type: Boolean },
+    spansForWordsGenerated: { type: Boolean },
+    spansForGraphsGenerated: { type: Boolean },
+    isChineseLookupEnabled: { type: Boolean },
+    textualInfoClassTitles: { type: Object },
+    classTitles: { type: Object },
+    editionsExpansionData: { type: Object },
+    localizedStringsPath: { type: String },
+    inputElement: { type: Object },
+    showHighlighting: { type: Boolean },
+    chosenReferenceDisplayType: { type: String },
+    navItems: { type: Array },
+  };
 
   constructor() {
     super();
@@ -113,6 +89,28 @@ class SCTextLegacy extends SCTextCommon {
         this._scrollToSection(window.location.hash.substring(1));
       }, 0);
     };
+  }
+
+  createRenderRoot() {
+    return this;
+  }
+
+  render() {
+    return html`
+      <style>
+        ${layoutSimpleStyles}
+        ${typographyCommonStyles}
+        ${typographyLegacyStyles}
+        ${typographyI18nStyles}
+      </style>
+
+      <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
+        ${unsafeHTML(this._extractSuttaText())}
+      </main>
+
+      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <sc-bottom-sheet></sc-bottom-sheet>
+    `;
   }
 
   get actions() {

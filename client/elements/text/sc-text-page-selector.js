@@ -17,7 +17,53 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
   either the simple sutta text view or the segmented view.
 */
 
-class SCTextPageSelector extends LitLocalized(LitElement) {
+export class SCTextPageSelector extends LitLocalized(LitElement) {
+  static properties = {
+    responseData: { type: Object, state: true },
+    lastError: { type: Object, state: true },
+    author: { type: String, state: true },
+    suttaId: { type: String, state: true },
+    langIsoCode: { type: String, state: true },
+    isSegmentedText: { type: Boolean, state: true },
+    suttaplex: { type: Object, state: true },
+    translatedSutta: { type: Object, state: true },
+    rootSutta: { type: Object, state: true },
+    bilaraRootSutta: { type: Object, state: true },
+    bilaraTranslatedSutta: { type: Object, state: true },
+    bilaraSuttaKeysOrder: { type: Array, state: true },
+    suttaReference: { type: Object, state: true },
+    suttaComment: { type: Object, state: true },
+    suttaVariant: { type: Object, state: true },
+    suttaMarkup: { type: String, state: true },
+    markup: { type: String, state: true },
+    bilaraSuttaMarkup: { type: String, state: true },
+    localizedStringsPath: { type: String, state: true },
+    authorUid: { type: String, state: true },
+    authorShort: { type: String, state: true },
+    next: { type: Object, state: true },
+    previous: { type: Object, state: true },
+    expansionReturns: { type: Array, state: true },
+    showedLanguagePrompt: { type: Boolean, state: true },
+    isLoading: { type: Boolean, state: true },
+  };
+
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
+    this.siteLanguage = store.getState().siteLanguage;
+    this.isLoading = false;
+    this.actions.changeLinearProgressActiveState(false);
+    this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
+    this.authorUid = store.getState().currentRoute.params.authorUid;
+    this.suttaId = store.getState().currentRoute.params.suttaId;
+    this.SuttaParallelsDisplayed = false;
+  }
+
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <style>
@@ -49,10 +95,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
       <sc-text-image id="sc_text_image"></sc-text-image>
       ${this._createMetaData(this.responseData, this.expansionReturns)}
     `;
-  }
-
-  createRenderRoot() {
-    return this;
   }
 
   get displayStepper() {
@@ -110,50 +152,6 @@ class SCTextPageSelector extends LitLocalized(LitElement) {
           ></sc-text-bilara>
         `
       : '';
-  }
-
-  static get properties() {
-    return {
-      responseData: { type: Object, state: true },
-      lastError: { type: Object, state: true },
-      author: { type: String, state: true },
-      suttaId: { type: String, state: true },
-      langIsoCode: { type: String, state: true },
-      isSegmentedText: { type: Boolean, state: true },
-      suttaplex: { type: Object, state: true },
-      translatedSutta: { type: Object, state: true },
-      rootSutta: { type: Object, state: true },
-      bilaraRootSutta: { type: Object, state: true },
-      bilaraTranslatedSutta: { type: Object, state: true },
-      bilaraSuttaKeysOrder: { type: Array, state: true },
-      suttaReference: { type: Object, state: true },
-      suttaComment: { type: Object, state: true },
-      suttaVariant: { type: Object, state: true },
-      suttaMarkup: { type: String, state: true },
-      markup: { type: String, state: true },
-      bilaraSuttaMarkup: { type: String, state: true },
-      localizedStringsPath: { type: String, state: true },
-      authorUid: { type: String, state: true },
-      authorShort: { type: String, state: true },
-      next: { type: Object, state: true },
-      previous: { type: Object, state: true },
-      expansionReturns: { type: Array, state: true },
-      showedLanguagePrompt: { type: Boolean, state: true },
-      isLoading: { type: Boolean, state: true },
-    };
-  }
-
-  constructor() {
-    super();
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
-    this.siteLanguage = store.getState().siteLanguage;
-    this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(false);
-    this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
-    this.authorUid = store.getState().currentRoute.params.authorUid;
-    this.suttaId = store.getState().currentRoute.params.suttaId;
-    this.SuttaParallelsDisplayed = false;
   }
 
   firstUpdated() {

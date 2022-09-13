@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable indent */
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../constants';
@@ -15,148 +13,185 @@ import(
   './sc-map.js'
 );
 
-class SCPageDictionary extends LitLocalized(LitElement) {
-  static get styles() {
-    return css`
-      ${dictStyles}
+export class SCPageDictionary extends LitLocalized(LitElement) {
+  static properties = {
+    dictionaryResults: { type: Array, state: true },
+    dictionaryReturns: { type: Array, state: true },
+    glossaryReturns: { type: Array, state: true },
+    adjacentReturns: { type: Array, state: true },
+    similarReturns: { type: Array, state: true },
+    dictionaryWord: { type: String, state: true },
+    localizedStringsPath: { type: String, state: true },
+    dictionaryTitles: { type: Object, state: true },
+    adjacent: { type: Boolean, state: true },
+    dictionaryAdjacent: { type: Array, state: true },
+    dictionarySimilar: { type: Array, state: true },
+  };
 
-      .dictionary-results-container {
-        margin: 0 3vw var(--sc-size-xxl) 3vw;
-      }
-
-      .dictionary-results-main {
-        max-width: 720px;
-        margin: 0 auto;
-      }
-
-      .dictionary-results-head {
-        display: flex;
-
-        padding: 0;
-
-        justify-content: space-between;
-      }
-
-      h1 {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-h1-md);
-        font-weight: 400;
-        line-height: 40px;
-
-        display: inline-block;
-
-        margin: 0 0 0 -2px;
-
-        color: var(--sc-secondary-text-color);
-      }
-
-      .dictionary-results-term {
-        font-family: var(--sc-serif-font);
-        font-weight: bold;
-
-        color: var(--sc-primary-accent-color);
-      }
-
-      .related-terms ul {
-        display: block;
-
-        margin: 0;
-        padding: 0;
-
-        list-style: none;
-      }
-
-      .related-terms h3 {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: bold;
-
-        margin: 1em 0 0 0;
-
-        color: var(--sc-secondary-text-color);
-      }
-
-      .dictionary-entries {
-        margin: var(--sc-size-xl) 0 var(--sc-size-md);
-      }
-
-      .grammar {
-        display: block;
-        font-family: var(--sc-sans-font);
-
-        color: var(--sc-secondary-text-color);
-
-        font-style: italic;
-      }
-
-      .related-terms li {
-        display: inline-block;
-
-        margin: 0.5rem 1rem 0 0;
-        padding: 0;
-      }
-
-      .related-terms a {
-        display: inline-block;
-
-        text-decoration: none;
-
-        color: var(--sc-primary-accent-color);
-        border-bottom: 4px solid rgba(0, 0, 0, 0);
-        border-radius: 4px;
-
-        transition: all 200ms ease;
-      }
-
-      .related-terms a:hover {
-        text-decoration: underline;
-
-        text-decoration-thickness: 0.15em;
-        text-underline-offset: 0.06em;
-
-        color: var(--sc-primary-color);
-
-        transition: all 200ms ease;
-      }
-
-      .related-terms i {
-        color: var(--sc-secondary-text-color);
-      }
-
-      .dictionary-source {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-        font-variant-caps: all-small-caps;
-        letter-spacing: var(--sc-caps-letter-spacing);
-
-        margin: var(--sc-size-md) 0;
-
-        color: var(--sc-secondary-text-color);
-      }
-
-      .dictionary-book-entry {
-        border-bottom: var(--sc-border);
-      }
-
-      .selected-terms-item > a {
-        font-weight: bold;
-      }
-
-      .selected-terms-item > a:hover {
-        cursor: default;
-        text-decoration: none;
-      }
-
-      .dictionary-results-term,
-      .selected-terms-item > a,
-      .selected-terms-item > a:hover,
-      dfn {
-        background-color: var(--sc-primary-color-light-transparent);
-        color: var(--sc-primary-color-darkest);
-      }
-    `;
+  constructor() {
+    super();
+    this.dictionaryResults = [];
+    this.dictionaryReturns = [];
+    this.glossaryReturns = [];
+    this.adjacentReturns = [];
+    this.similarReturns = [];
+    this.dictionaryWord = store.getState().currentRoute.params.word;
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.dictionaryTitles = {
+      ncped: 'New Concise Pali English Dictionary',
+      cped: 'Concise Pali English Dictionary',
+      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
+      dppn: 'Dictionary of Pali Proper Names',
+      pts: 'PTS Pali English Dictionary',
+    };
+    this.adjacent = true;
+    this.dictionaryAdjacent = [];
+    this.dictionarySimilar = [];
+    this._fetchGlossary();
+    if (this.dictionaryWord) {
+      this._loadNewResult();
+    }
   }
+
+  static styles = css`
+    ${dictStyles}
+
+    .dictionary-results-container {
+      margin: 0 3vw var(--sc-size-xxl) 3vw;
+    }
+
+    .dictionary-results-main {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .dictionary-results-head {
+      display: flex;
+
+      padding: 0;
+
+      justify-content: space-between;
+    }
+
+    h1 {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-h1-md);
+      font-weight: 400;
+      line-height: 40px;
+
+      display: inline-block;
+
+      margin: 0 0 0 -2px;
+
+      color: var(--sc-secondary-text-color);
+    }
+
+    .dictionary-results-term {
+      font-family: var(--sc-serif-font);
+      font-weight: bold;
+
+      color: var(--sc-primary-accent-color);
+    }
+
+    .related-terms ul {
+      display: block;
+
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+    }
+
+    .related-terms h3 {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-s);
+      font-weight: bold;
+
+      margin: 1em 0 0 0;
+
+      color: var(--sc-secondary-text-color);
+    }
+
+    .dictionary-entries {
+      margin: var(--sc-size-xl) 0 var(--sc-size-md);
+    }
+
+    .grammar {
+      display: block;
+      font-family: var(--sc-sans-font);
+
+      color: var(--sc-secondary-text-color);
+
+      font-style: italic;
+    }
+
+    .related-terms li {
+      display: inline-block;
+
+      margin: 0.5rem 1rem 0 0;
+      padding: 0;
+    }
+
+    .related-terms a {
+      display: inline-block;
+
+      text-decoration: none;
+
+      color: var(--sc-primary-accent-color);
+      border-bottom: 4px solid rgba(0, 0, 0, 0);
+      border-radius: 4px;
+
+      transition: all 200ms ease;
+    }
+
+    .related-terms a:hover {
+      text-decoration: underline;
+
+      text-decoration-thickness: 0.15em;
+      text-underline-offset: 0.06em;
+
+      color: var(--sc-primary-color);
+
+      transition: all 200ms ease;
+    }
+
+    .related-terms i {
+      color: var(--sc-secondary-text-color);
+    }
+
+    .dictionary-source {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-skolar-font-size-s);
+      font-weight: 400;
+      font-variant-caps: all-small-caps;
+      letter-spacing: var(--sc-caps-letter-spacing);
+
+      margin: var(--sc-size-md) 0;
+
+      color: var(--sc-secondary-text-color);
+    }
+
+    .dictionary-book-entry {
+      border-bottom: var(--sc-border);
+    }
+
+    .selected-terms-item > a {
+      font-weight: bold;
+    }
+
+    .selected-terms-item > a:hover {
+      cursor: default;
+      text-decoration: none;
+    }
+
+    .dictionary-results-term,
+    .selected-terms-item > a,
+    .selected-terms-item > a:hover,
+    dfn {
+      background-color: var(--sc-primary-color-light-transparent);
+      color: var(--sc-primary-color-darkest);
+    }
+  `;
 
   render() {
     return html`
@@ -194,7 +229,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       ${this.dictionarySimilar
         ? this.dictionarySimilar.map(
             dicSimilarItem => html`
-              <li class="${this._calculateClass(dicSimilarItem.glossWord)}">
+              <li class=${this._calculateClass(dicSimilarItem.glossWord)}>
                 ${unsafeHTML(dicSimilarItem.glossText)}
               </li>
             `
@@ -208,7 +243,7 @@ class SCPageDictionary extends LitLocalized(LitElement) {
       ${this.dictionaryAdjacent
         ? this.dictionaryAdjacent.map(
             dicAdjacentItem => html`
-              <li class="${this._calculateClass(dicAdjacentItem.glossWord)}">
+              <li class=${this._calculateClass(dicAdjacentItem.glossWord)}>
                 ${unsafeHTML(dicAdjacentItem.glossText)}
               </li>
             `
@@ -236,47 +271,6 @@ class SCPageDictionary extends LitLocalized(LitElement) {
           )
         : ''}
     `;
-  }
-
-  static get properties() {
-    return {
-      dictionaryResults: { type: Array, state: true },
-      dictionaryReturns: { type: Array, state: true },
-      glossaryReturns: { type: Array, state: true },
-      adjacentReturns: { type: Array, state: true },
-      similarReturns: { type: Array, state: true },
-      dictionaryWord: { type: String, state: true },
-      localizedStringsPath: { type: String, state: true },
-      dictionaryTitles: { type: Object, state: true },
-      adjacent: { type: Boolean, state: true },
-      dictionaryAdjacent: { type: Array, state: true },
-      dictionarySimilar: { type: Array, state: true },
-    };
-  }
-
-  constructor() {
-    super();
-    this.dictionaryResults = [];
-    this.dictionaryReturns = [];
-    this.glossaryReturns = [];
-    this.adjacentReturns = [];
-    this.similarReturns = [];
-    this.dictionaryWord = store.getState().currentRoute.params.word;
-    this.localizedStringsPath = '/localization/elements/interface';
-    this.dictionaryTitles = {
-      ncped: 'New Concise Pali English Dictionary',
-      cped: 'Concise Pali English Dictionary',
-      dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
-      dppn: 'Dictionary of Pali Proper Names',
-      pts: 'PTS Pali English Dictionary',
-    };
-    this.adjacent = true;
-    this.dictionaryAdjacent = [];
-    this.dictionarySimilar = [];
-    this._fetchGlossary();
-    if (this.dictionaryWord) {
-      this._loadNewResult();
-    }
   }
 
   stateChanged(state) {
