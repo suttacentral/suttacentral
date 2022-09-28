@@ -436,8 +436,13 @@ export const staticHomeStyles = css`
     padding: 0 0 0 2em;
   }
 
-  .sc-related article li::marker {
+  li::marker {
     color: var(--sc-icon-color);
+    font-family: var(--sc-sans-font);
+
+    font-weight: 600;
+
+    font-feature-settings: 'tnum', 'onum';
   }
 
   .sc-related-items-wrapper {
