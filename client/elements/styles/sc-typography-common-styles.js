@@ -33,6 +33,11 @@ export const typographyCommonStyles = css`
     margin: 0.75em 0 0 0;
   }
 
+  li::marker {
+    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-sans-font);
+  }
+
   hr {
     width: 33%;
 
