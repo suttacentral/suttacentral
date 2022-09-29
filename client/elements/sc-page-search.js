@@ -352,10 +352,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
 
     li::marker {
+      color: var(--sc-icon-color);
       font-family: var(--sc-sans-font);
-      font-weight: bold;
 
-      color: var(--sc-secondary-text-color);
+      font-weight: 600;
+
+      font-feature-settings: 'tnum', 'onum';
     }
 
     p + ol,

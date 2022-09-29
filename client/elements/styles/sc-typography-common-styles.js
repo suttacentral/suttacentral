@@ -33,6 +33,15 @@ export const typographyCommonStyles = css`
     margin: 0.75em 0 0 0;
   }
 
+  li::marker {
+    color: var(--sc-icon-color);
+    font-family: var(--sc-sans-font);
+
+    font-weight: 600;
+
+    font-feature-settings: 'tnum', 'onum';
+  }
+
   hr {
     width: 33%;
 
@@ -149,13 +158,6 @@ export const typographyCommonStyles = css`
 
     margin: 0.5em 0;
     padding: 0.25em 0 0.25em clamp(0rem, 3vw, 1rem);
-  }
-
-  .contents li::marker {
-    font-family: var(--sc-sans-font);
-    font-weight: bold;
-
-    color: var(--sc-secondary-text-color);
   }
 
   .contents a {
