@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.09.26
+
+- Format acronym by rules. https://github.com/suttacentral/suttacentral/issues/2483
+
 ## 2022.09.05
 
 - Generate Abbreviations page from data. https://github.com/suttacentral/suttacentral/issues/2485
