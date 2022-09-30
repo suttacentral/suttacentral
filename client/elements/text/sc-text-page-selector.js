@@ -58,6 +58,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.authorUid = store.getState().currentRoute.params.authorUid;
     this.suttaId = store.getState().currentRoute.params.suttaId;
     this.SuttaParallelsDisplayed = false;
+    // this.#redirectWhenSuttaIsFallenLeaf();
   }
 
   createRenderRoot() {
@@ -671,6 +672,30 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
         composed: true,
       })
     );
+  }
+
+  async #fetchFallenLeaves() {
+    if (!this.fallenLeaves) {
+      this.fallenLeaves = [];
+      try {
+        const fallenLeaves = await (await fetch(`${API_ROOT}/fallen_leaves`)).json();
+        // eslint-disable-next-line no-restricted-syntax
+        for (const leaves of fallenLeaves) {
+          this.fallenLeaves = [...this.fallenLeaves, ...leaves.fallen_leaves];
+        }
+      } catch (error) {
+        this.lastError = error;
+      }
+    }
+  }
+
+  async #redirectWhenSuttaIsFallenLeaf() {
+    if (!this.fallenLeaves) {
+      await this.#fetchFallenLeaves();
+    }
+    if (this.fallenLeaves.includes(this.suttaId)) {
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.suttaId}` });
+    }
   }
 }
 

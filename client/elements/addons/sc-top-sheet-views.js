@@ -315,7 +315,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     const scSiteLayout = document.querySelector('sc-site-layout');
     const scToasts = scSiteLayout?.querySelector('sc-toasts');
     if (!scToasts) {
-      import('../addons/sc-toasts');
+      import('./sc-toasts');
       const newScToasts = document.createElement('sc-toasts');
       scSiteLayout.appendChild(newScToasts);
     }
@@ -419,13 +419,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.noteDisplayTypeArray.map(
                 ({ displayType, displayTypeLabel }) => html`
-                  <mwc-formfield label="${this.localize(`dictionary:${displayType}`)}">
+                  <mwc-formfield label=${this.localize(`dictionary:${displayType}`)}>
                     <mwc-radio
                       name="noteDisplayType"
-                      value="${displayType}"
-                      data-type="${displayTypeLabel}"
-                      ?checked="${this.selectedNoteDisplayType === displayType}"
-                      @change="${this._onNoteDisplayTypeChanged}"
+                      value=${displayType}
+                      data-type=${displayTypeLabel}
+                      ?checked=${this.selectedNoteDisplayType === displayType}
+                      @change=${this._onNoteDisplayTypeChanged}
                     ></mwc-radio>
                   </mwc-formfield>
                 `
@@ -447,13 +447,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls two-column">
               ${this.paliLookupArray.map(
                 dictLanguage => html`
-                  <mwc-formfield label="${dictLanguage.language}">
+                  <mwc-formfield label=${dictLanguage.language}>
                     <mwc-radio
                       name="paliLookup"
-                      value="${dictLanguage.dict}"
-                      data-language="${dictLanguage.language}"
-                      ?checked="${this.paliLookupLanguage === dictLanguage.language}"
-                      @change="${this._onPaliLookupChanged}"
+                      value=${dictLanguage.dict}
+                      data-language=${dictLanguage.language}
+                      ?checked=${this.paliLookupLanguage === dictLanguage.language}
+                      @change=${this._onPaliLookupChanged}
                     ></mwc-radio>
                   </mwc-formfield>
                 `
@@ -493,13 +493,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.chineseLookupArray.map(
                 dictLanguage => html`
-                  <mwc-formfield label="${dictLanguage.language}">
+                  <mwc-formfield label=${dictLanguage.language}>
                     <mwc-radio
                       name="chineseLookup"
-                      value="${dictLanguage.dict}"
-                      data-language="${dictLanguage.language}"
-                      ?checked="${this.chineseLookupLanguage === dictLanguage.language}"
-                      @change="${this._onChineseLookupChanged}"
+                      value=${dictLanguage.dict}
+                      data-language=${dictLanguage.language}
+                      ?checked=${this.chineseLookupLanguage === dictLanguage.language}
+                      @change=${this._onChineseLookupChanged}
                     ></mwc-radio>
                   </mwc-formfield>
                 `
@@ -540,7 +540,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
               <select id="selPaliScripts">
                 ${scriptIdentifiers.map(
                   script => html`
-                    <option value="${script.script}" title="${script.language}">
+                    <option value=${script.script} title=${script.language}>
                       ${script.language}
                     </option>
                   `
@@ -553,9 +553,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _onPaliScriptChanged(e) {
-    const scTopsheetViews = document
-      .querySelector('sc-site-layout')
-      .querySelector('#setting_menu');
+    const scTopsheetViews = document.querySelector('sc-site-layout').querySelector('#setting_menu');
     const selectedScript = scriptIdentifiers[e.currentTarget.selectedIndex].script;
     const selectedLanguage = scriptIdentifiers[e.currentTarget.selectedIndex].language;
     const selPaliScriptsElement = scTopsheetViews.shadowRoot.querySelector('#selPaliScripts');
@@ -581,13 +579,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls four-column">
               ${this.references.map(
                 item => html`
-                  <mwc-formfield label="${item.name}">
+                  <mwc-formfield label=${item.name}>
                     <mwc-checkbox
-                      name="${item.edition_set}"
-                      value="${item.edition_set}"
-                      data-type="${item.name}"
-                      ?checked="${item.checked}"
-                      @change="${this._onReferenceDisplayTypeChanged}"
+                      name=${item.edition_set}
+                      value=${item.edition_set}
+                      data-type=${item.name}
+                      ?checked=${item.checked}
+                      @change=${this._onReferenceDisplayTypeChanged}
                     ></mwc-checkbox>
                   </mwc-formfield>
                 `
@@ -628,8 +626,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         <div class="form-controls">
           <mwc-formfield label="Show Highlighting">
             <mwc-checkbox
-              ?checked="${this.showHighlighting}"
-              @change="${this._onShowHighlightingChanged}"
+              ?checked=${this.showHighlighting}
+              @change=${this._onShowHighlightingChanged}
             ></mwc-checkbox>
           </mwc-formfield>
         </div>
@@ -674,7 +672,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       toggleTextualInfo(enabled) {
         store.dispatch({
           type: 'TOGGLE_TEXTUAL_INFORMATION_ENABLED',
-          enabled: enabled,
+          enabled,
         });
       },
       downloadParagraphs(data) {
@@ -686,13 +684,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       chooseSegmentedSuttaTextView(view) {
         store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
-          view: view,
+          view,
         });
       },
       choosePaliTextScript(script) {
         store.dispatch({
           type: 'CHOOSE_PALI_TEXT_SCRIPT',
-          script: script,
+          script,
         });
       },
       activatePaliLookup(activated, targetLanguage, targetDictRepr) {
@@ -726,13 +724,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       setShowHighlighting(showHighlighting) {
         store.dispatch({
           type: 'SET_SHOW_HIGHLIGHTING',
-          showHighlighting: showHighlighting,
+          showHighlighting,
         });
       },
       setDisplayedReferences(displayedReferences) {
         store.dispatch({
           type: 'SET_REFERENCE_DISPLAY_TYPE_ARRAY',
-          displayedReferences: displayedReferences,
+          displayedReferences,
         });
       },
     };

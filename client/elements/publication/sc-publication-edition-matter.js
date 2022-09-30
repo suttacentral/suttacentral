@@ -22,13 +22,13 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     css`
       :host {
         display: block;
-      }`
+      }
+    `,
   ];
 
   constructor() {
     super();
     this.matter = store.getState().currentRoute.params.matter;
-    console.log(this.matter);
   }
 
   firstUpdated() {
@@ -44,7 +44,6 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         return;
       }
       this._fetchMatter();
-      //this.requestUpdate();
     }
   }
 

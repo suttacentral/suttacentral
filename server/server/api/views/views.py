@@ -1319,3 +1319,11 @@ class AbbreviationSchools(Resource):
         db = get_db()
         data = db.collection('uid_expansion_school').all()
         return list(data), 200
+
+
+class FallenLeaves(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('fallen_leaves').all()
+        return list(data), 200

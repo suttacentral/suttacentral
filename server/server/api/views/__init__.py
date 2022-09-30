@@ -41,5 +41,6 @@ from .views import (
     CreatorBio,
     AbbreviationTexts,
     AbbreviationEditions,
-    AbbreviationSchools
+    AbbreviationSchools,
+    FallenLeaves
 )

@@ -23,7 +23,8 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     css`
       :host {
         display: block;
-      }`
+      }
+    `,
   ];
 
   constructor() {
