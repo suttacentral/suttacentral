@@ -49,7 +49,8 @@ from api.views import (
     CreatorBio,
     AbbreviationTexts,
     AbbreviationEditions,
-    AbbreviationSchools
+    AbbreviationSchools,
+    FallenLeaves
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -129,6 +130,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(AbbreviationTexts, '/abbreviation_texts')
     api.add_resource(AbbreviationEditions, '/abbreviation_editions')
     api.add_resource(AbbreviationSchools, '/abbreviation_schools')
+    api.add_resource(FallenLeaves, '/fallen_leaves')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
