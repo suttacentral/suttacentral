@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import RoutingService from '../utils/routingService';
 import { store } from '../redux-store';
@@ -668,9 +668,11 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
     const contextToolbar = this.parentNode.querySelector('#context_toolbar');
     const expandClass = 'contextToolbarExpand';
-    this.currentRoute.name === 'sutta'
-      ? contextToolbar.classList.add(expandClass)
-      : contextToolbar.classList.remove(expandClass);
+    if (this.currentRoute.name === 'sutta') {
+      contextToolbar.classList.add(expandClass);
+    } else {
+      contextToolbar.classList.remove(expandClass);
+    }
 
     this.parentNode.querySelector('#static_pages_nav_menu').style.display = [
       'search',
