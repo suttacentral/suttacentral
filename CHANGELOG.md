@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.10.02
+
+- Upgrade ArangoDB version to `3.9.3`.
+
 ## 2022.09.26
 
 - Format acronym by rules. https://github.com/suttacentral/suttacentral/issues/2483
