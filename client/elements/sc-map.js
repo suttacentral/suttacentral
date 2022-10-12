@@ -2,18 +2,7 @@ import { LitElement, html, css } from 'lit';
 import 'leaflet';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
-
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [24, 36],
-  iconAnchor: [12, 36],
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
+import { icon } from '../img/sc-icon';
 
 export class SCMap extends LitLocalized(LitElement) {
   static properties = {
@@ -51,21 +40,39 @@ export class SCMap extends LitLocalized(LitElement) {
 
     map.setView([this.latitude, this.longitude], this.zoom);
 
-    map.addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+    map.addLayer(
+      L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      })
+    );
 
-    fetch('../files/map-data.json')
+    // Alternative layers:
+    // https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}
+
+    this.fetchData().then(data =>
+      L.geoJSON(data, {
+        style: feature => feature.properties.style,
+        pointToLayer: (feature, latlng) =>
+          L.marker(latlng, {
+            icon: L.divIcon({
+              html: icon.marker[feature.properties.icon].strings, // TODO: I want to use .getHTML() here as documented, but it doesn't seem to exist https://lit.dev/docs/v1/api/lit-html/templates/#SVGTemplateResult
+              className: '',
+              iconSize: [36, 36],
+              iconAnchor: [18, 18],
+            }),
+          }),
+      }).addTo(map)
+    );
+  }
+
+  async fetchData() {
+    return fetch('../files/map-data.json')
       .then(response => {
         if (!response.ok) {
           throw new Error(`'Map data fetch response is not ok: status ${response.status}`);
         }
         return response.json();
-      })
-      .then(data => {
-        L.geoJSON(data, {
-          pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, { icon: L.icon({ iconUrl: feature.properties.icon }) });
-          },
-        }).addTo(map);
       })
       .catch(error => {
         console.error('Map data fetch error:', error);
