@@ -10,8 +10,7 @@ from data_loader.util import numericsortkey, sort_and_groupby
 
 def get_uid_stem(uid):
     """ This suffices for this module """
-    if uid:
-        return regex.match(r'^[a-z]+', uid)[0]
+    return regex.match(r'^[a-z]+', uid)[0] if uid else None
 
 
 def further_split_uids(divisions):
