@@ -47,6 +47,7 @@
     "history": "^5.3.0",
     "lit": "2.4.0",
     "path-to-regexp": "^6.2.1",
+    "leaflet": "^1.8.0",
     "pwa-helpers": "^0.9.1",
     "redux": "^4.2.0",
     "throttle-debounce": "5.0.0",

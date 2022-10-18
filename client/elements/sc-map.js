@@ -1,6 +1,19 @@
 import { LitElement, html, css } from 'lit';
+import 'leaflet';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
+
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [24, 36],
+  iconAnchor: [12, 36],
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 export class SCMap extends LitLocalized(LitElement) {
   static properties = {
@@ -11,35 +24,59 @@ export class SCMap extends LitLocalized(LitElement) {
 
   constructor() {
     super();
+
     this.zoom = 13;
     this.longitude = 0;
     this.latitude = 0;
 
-    this.mapID = 'z1fKgOqM_IYc.k-W6AbJIxLu8';
+    this.mapElementID = 'map';
   }
 
-  static styles = css`
-    .google-maps {
-      height: 480px;
-      margin: var(--sc-size-md) 0;
-    }
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        margin: var(--sc-size-md) 0;
+      }
 
-    .google-maps iframe {
-      width: 100%;
-      height: 480px;
+      #map {
+        height: 480px;
+        z-index: 0;
+      }
+    `;
+  }
 
-      border: none;
-    }
-  `;
+  firstUpdated() {
+    let map = L.map(this.shadowRoot.getElementById(this.mapElementID));
+
+    map.setView([this.latitude, this.longitude], this.zoom);
+
+    map.addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+
+    fetch('../files/map-data.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`'Map data fetch response is not ok: status ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        L.geoJSON(data, {
+          pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, { icon: L.icon({ iconUrl: feature.properties.icon }) });
+          },
+        }).addTo(map);
+      })
+      .catch(error => {
+        console.error('Map data fetch error:', error);
+      });
+  }
 
   render() {
+    // TODO: how to link/import css properly?
     return html`
-      <div class="google-maps">
-        <iframe
-          src="https://www.google.com/maps/d/embed?mid=${this.mapID}&ll=${this.latitude},${this
-            .longitude}&z=${this.zoom}"
-        ></iframe>
-      </div>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+      <div id="${this.mapElementID}"></div>
     `;
   }
 }
