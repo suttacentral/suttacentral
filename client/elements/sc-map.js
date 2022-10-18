@@ -36,6 +36,8 @@ export class SCMap extends LitLocalized(LitElement) {
     this.longitude = 0;
     this.latitude = 0;
 
+    this.markerScale = 3;
+
     this.mapElementID = 'map';
   }
 
@@ -75,6 +77,15 @@ export class SCMap extends LitLocalized(LitElement) {
         let layer = this._getLayer(data, layerName);
         map.addLayer(layer);
         layersControl.addOverlay(layer, layerName);
+        map.on('zoomend', () => {
+          layer.eachLayer(l => {
+            if (l._icon) {
+              let icon = l.options.icon;
+              icon.options = Object.assign(icon.options, this._getIconZoom(map.getZoom()));
+              l.setIcon(icon);
+            }
+          });
+        });
       })
     );
 
@@ -113,14 +124,25 @@ export class SCMap extends LitLocalized(LitElement) {
       pointToLayer: (feature, latlng) =>
         L.marker(latlng, {
           alt: feature.properties.name,
-          icon: L.divIcon({
-            html: icon.marker[feature.properties.icon].strings, // TODO: I want to use .getHTML() here as documented, but it doesn't seem to exist https://lit.dev/docs/v1/api/lit-html/templates/#SVGTemplateResult
-            className: '',
-            iconSize: [36, 36],
-            iconAnchor: [18, 18],
-          }),
+          icon: L.divIcon(
+            Object.assign(
+              {
+                html: icon.marker[feature.properties.icon].strings, // TODO: I want to use .getHTML() here as documented, but it doesn't seem to exist https://lit.dev/docs/v1/api/lit-html/templates/#SVGTemplateResult
+                className: '',
+              },
+              this._getIconZoom(this.zoom)
+            )
+          ),
         }),
     });
+  }
+
+  _getIconZoom(zoom) {
+    let newIconSize = zoom * this.markerScale;
+    return {
+      iconSize: [newIconSize, newIconSize],
+      iconAnchor: [newIconSize / 2, newIconSize / 2],
+    };
   }
 
   render() {
