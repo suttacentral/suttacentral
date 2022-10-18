@@ -128,12 +128,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           return;
         }
         this.editions = [];
-        // eslint-disable-next-line no-restricted-syntax
         for (const edition of this.allEditions) {
           if (edition.edition_id.substring(0, 9) === 'pli-tv-vi') {
             edition.uid = 'pli-tv-vi';
           } else {
-            // eslint-disable-next-line prefer-destructuring
             edition.uid = edition.edition_id.split('-')[0];
           }
         }
@@ -172,7 +170,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   async _fetchCreatorBio() {
     try {
       this.creatorBio = await (await fetch(`${API_ROOT}/creator_bio`)).json();
-      // eslint-disable-next-line no-restricted-syntax
       for (const creator of this.creatorBio) {
         if (this.editionId.includes(creator.creator_uid)) {
           this.creatorInfo = creator;

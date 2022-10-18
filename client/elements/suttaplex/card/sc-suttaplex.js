@@ -484,7 +484,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     const availableVoice = fetch(voiceApi).then(r => r.json());
     const voices = await availableVoice;
     if (voices?.length > 0) {
-      // eslint-disable-next-line no-restricted-syntax
       for (const voice of Object.keys(voices[0].voices)) {
         const voiceInfo = voice.split('/');
         if (!voiceInfo.includes('root') && !voiceInfo.includes('vinaya')) {

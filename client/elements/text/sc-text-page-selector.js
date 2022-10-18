@@ -9,6 +9,7 @@ import '../addons/sc-error-icon';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { isFallenLeaf } from '../../utils/sc-structure';
 
 import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -58,7 +59,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.authorUid = store.getState().currentRoute.params.authorUid;
     this.suttaId = store.getState().currentRoute.params.suttaId;
     this.SuttaParallelsDisplayed = false;
-    // this.#redirectWhenSuttaIsFallenLeaf();
+    this.#redirectWhenSuttaIsFallenLeaf();
   }
 
   createRenderRoot() {
@@ -674,26 +675,8 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     );
   }
 
-  async #fetchFallenLeaves() {
-    if (!this.fallenLeaves) {
-      this.fallenLeaves = [];
-      try {
-        const fallenLeaves = await (await fetch(`${API_ROOT}/fallen_leaves`)).json();
-        // eslint-disable-next-line no-restricted-syntax
-        for (const leaves of fallenLeaves) {
-          this.fallenLeaves = [...this.fallenLeaves, ...leaves.fallen_leaves];
-        }
-      } catch (error) {
-        this.lastError = error;
-      }
-    }
-  }
-
-  async #redirectWhenSuttaIsFallenLeaf() {
-    if (!this.fallenLeaves) {
-      await this.#fetchFallenLeaves();
-    }
-    if (this.fallenLeaves.includes(this.suttaId)) {
+  #redirectWhenSuttaIsFallenLeaf() {
+    if (isFallenLeaf(this.suttaId)) {
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.suttaId}` });
     }
   }

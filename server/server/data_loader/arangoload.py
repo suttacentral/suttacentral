@@ -62,7 +62,7 @@ def collect_data(repo_dir: Path, repo_addr: str):
     """
     print(f'downloading {repo_addr}')
     if not (repo_dir / '.git').exists():
-        subprocess.run(['git', 'clone', '--depth', '1', '--branch', 'sujato-nav-tree', repo_addr, './'], cwd=repo_dir)
+        subprocess.run(['git', 'clone', '--depth', '1', '--branch', 'master', repo_addr, './'], cwd=repo_dir)
     else:
         subprocess.run(['git', 'pull'], cwd=repo_dir)
 
@@ -364,11 +364,14 @@ def load_shortcuts_file(db: Database, shortcuts_file: Path):
     db.collection('shortcuts').import_bulk(docs)
 
 
-def load_fallen_leaves_file(db: Database, fallen_leaves_file: Path):
-    shortcuts: Dict[str, dict] = json_load(fallen_leaves_file)
-    docs = [{'uid': key, 'fallen_leaves': value,} for key, value in shortcuts.items()]
+def load_fallen_leaves_files(db: Database, fallen_leaves_file_dir: Path):
+    fallen_leaves = []
+    for fallen_leaves_file in fallen_leaves_file_dir.glob('*.json'):
+        leaves: Dict[str, dict] = json_load(fallen_leaves_file)
+        docs = [{'uid': key, 'fallen_leaves': value,} for key, value in leaves.items()]
+        fallen_leaves.extend(docs)
     db['fallen_leaves'].truncate()
-    db.collection('fallen_leaves').import_bulk(docs)
+    db.collection('fallen_leaves').import_bulk(fallen_leaves)
 
 
 def update_text_extra_info():
@@ -563,8 +566,8 @@ def run(no_pull=False):
     print_stage('Loading shortcuts.json')
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
 
-    # print_stage('Loading fallen-leaves.json')
-    # load_fallen_leaves_file(db, structure_dir / 'tree' / 'nav-only-tree')
+    print_stage('Loading fallen-leaves files')
+    load_fallen_leaves_files(db, structure_dir / 'fallen-leaves')
 
     print_stage("Building and loading navigation from structure_dir")
     navigation.add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)

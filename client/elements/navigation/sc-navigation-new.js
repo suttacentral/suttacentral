@@ -309,11 +309,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   async _checkIfChildrenExists() {
-    // eslint-disable-next-line no-restricted-syntax
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
-    // eslint-disable-next-line no-restricted-syntax
     for (const child of this.currentMenuData[0].children) {
       const childrenData = await this._fetchMenuData(child.uid);
       if (

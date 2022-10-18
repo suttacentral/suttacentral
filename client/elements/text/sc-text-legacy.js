@@ -669,7 +669,6 @@ export class SCTextLegacy extends SCTextCommon {
         .then(r => r.json())
         .then(data => {
           const refs = reference.split('/');
-          // eslint-disable-next-line no-restricted-syntax
           for (const ref of refs) {
             if (
               ref.toLowerCase() === 'main' ||

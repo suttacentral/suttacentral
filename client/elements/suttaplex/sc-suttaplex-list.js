@@ -4,6 +4,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
+import { isFallenLeaf } from '../../utils/sc-structure';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
@@ -257,7 +258,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       await fetch(`${API_ROOT}/parallels_lite/${this.categoryId}`)
     ).json();
     this.parallelsLite = [];
-    // eslint-disable-next-line no-restricted-syntax
     for (const item of this.suttaplexItem) {
       if (item.parallels?.length === 0) {
         this.parallelsLite.push({
@@ -519,6 +519,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           item => item.key,
           item =>
             this.isSuttaplex(item) ||
+            isFallenLeaf(item.uid) ||
             (this.isPatimokkha() && !this.isPatimokkhaRuleCategory(item.uid))
               ? this.suttaplexTemplate(item)
               : this.sectionTemplate(item)
