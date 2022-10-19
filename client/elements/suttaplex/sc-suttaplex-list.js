@@ -4,7 +4,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
-import { isFallenLeaf } from '../../utils/sc-structure';
+import { isFallenLeaf, getFallenLeavesByCategoryId } from '../../utils/sc-structure';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
@@ -202,6 +202,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         15,
         100
       ).then(() => this._updateMetaData());
+      await this.#addFallenLeavesToSuttaplexList(responseData[0].uid, this.suttaplexData);
       this.initTableView();
     } catch (e) {
       this.networkError = e;
@@ -209,6 +210,29 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     this.suttaplexLoading = false;
     this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
+  }
+
+  async #addFallenLeavesToSuttaplexList(categoryId, suttaPlexList) {
+    const fallenLeavesUids = getFallenLeavesByCategoryId(categoryId);
+    if (!fallenLeavesUids) return;
+    const fetchPromises = [];
+    fallenLeavesUids.forEach(uid => {
+      fetchPromises.push(fetch(`${API_ROOT}/suttaplex/${uid}?language=${this.language}`));
+    });
+    Promise.allSettled(fetchPromises)
+      .then(responses => {
+        for (const response of responses) {
+          if (response.status === 'fulfilled') {
+            const responseData = response.value.json();
+            responseData.then(data => {
+              suttaPlexList.push(data[0]);
+            });
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   _updateMetaData() {

@@ -14,6 +14,19 @@ try {
   console.log(error);
 }
 
-export async function isFallenLeaf(uid) {
+export { allFallenLeaves };
+
+export function isFallenLeaf(uid) {
   return fallenLeaves.includes(uid);
+}
+
+export function getFallenLeavesByCategoryId(categoryId) {
+  for (const leaves of allFallenLeaves) {
+    for (const leaf of leaves.fallen_leaves) {
+      if (Object.keys(leaf).includes(categoryId)) {
+        return leaf[categoryId];
+      }
+    }
+  }
+  return null;
 }
