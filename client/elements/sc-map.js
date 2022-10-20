@@ -81,6 +81,7 @@ export class SCMap extends LitLocalized(LitElement) {
     this.sidebar = L.control.sidebar(this.shadowRoot.getElementById(this.sidebarElementID), {
       autoPan: false,
     });
+    this.map.on('click', () => this.sidebar.hide());
 
     this.map.addControl(layersControl);
     this.map.addControl(new L.Control.Fullscreen());
@@ -109,7 +110,7 @@ export class SCMap extends LitLocalized(LitElement) {
       filter: (feature, layer) => feature.properties.layer == layerName,
       style: feature => feature.properties.style,
       onEachFeature: (feature, layer) =>
-        layer.bindTooltip(feature.properties.name).on('click', () => {
+        layer.bindTooltip(feature.properties.name).on('click', event => {
           let mapWidth = this.map._container.offsetWidth;
           let mapHeight = this.map._container.offsetHeight;
           let sidebarWidth = this.sidebar._container.offsetWidth;
@@ -133,6 +134,7 @@ export class SCMap extends LitLocalized(LitElement) {
           this.sidebar
             .setContent(`<h3>${feature.properties.name}</h3>${feature.properties.description}`)
             .show();
+          L.DomEvent.stopPropagation(event);
         }),
       pointToLayer: (feature, latlng) =>
         L.marker(latlng, {
