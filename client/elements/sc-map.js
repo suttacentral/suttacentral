@@ -41,6 +41,15 @@ export class SCMap extends LitLocalized(LitElement) {
       #sidebar {
         color: #414141;
       }
+
+      .moving-leaflet-popup {
+        transition: false !important;
+        pointer-events: none;
+      }
+
+      .moving-leaflet-popup .leaflet-popup-tip {
+        pointer-events: none;
+      }
     `;
   }
 
@@ -110,32 +119,49 @@ export class SCMap extends LitLocalized(LitElement) {
       filter: (feature, layer) => feature.properties.layer == layerName,
       style: feature => feature.properties.style,
       onEachFeature: (feature, layer) =>
-        layer.bindTooltip(feature.properties.name).on('click', event => {
-          let mapWidth = this.map._container.offsetWidth;
-          let mapHeight = this.map._container.offsetHeight;
-          let sidebarWidth = this.sidebar._container.offsetWidth;
-          let sharedOptions = { duration: 0.5 };
-          if (layer.getBounds) {
-            this.map.flyToBounds(
-              layer.getBounds(),
-              Object.assign(sharedOptions, {
-                paddingTopLeft: [sidebarWidth, 0],
+        layer
+          .on('mouseover mousemove', event => {
+            this.map.openPopup(
+              L.popup({
+                autoPan: false,
+                closeButton: false,
+                closeOnEscapeKey: false,
+                closeOnClick: false,
+                className: 'moving-leaflet-popup',
               })
+                .setLatLng(event.latlng)
+                .setContent(feature.properties.name)
             );
-          } else if (layer.getLatLng) {
-            this.map.panInside(
-              layer.getLatLng(),
-              Object.assign(sharedOptions, {
-                paddingTopLeft: [(mapWidth + sidebarWidth) / 2, mapHeight / 2],
-                paddingBottomRight: [(mapWidth - sidebarWidth) / 2, mapHeight / 2],
-              })
-            );
-          }
-          this.sidebar
-            .setContent(`<h3>${feature.properties.name}</h3>${feature.properties.description}`)
-            .show();
-          L.DomEvent.stopPropagation(event);
-        }),
+          })
+          .on('mouseout', event => {
+            this.map.closePopup();
+          })
+          .on('click', event => {
+            let mapWidth = this.map._container.offsetWidth;
+            let mapHeight = this.map._container.offsetHeight;
+            let sidebarWidth = this.sidebar._container.offsetWidth;
+            let sharedOptions = { duration: 0.5 };
+            if (layer.getBounds) {
+              this.map.flyToBounds(
+                layer.getBounds(),
+                Object.assign(sharedOptions, {
+                  paddingTopLeft: [sidebarWidth, 0],
+                })
+              );
+            } else if (layer.getLatLng) {
+              this.map.panInside(
+                layer.getLatLng(),
+                Object.assign(sharedOptions, {
+                  paddingTopLeft: [(mapWidth + sidebarWidth) / 2, mapHeight / 2],
+                  paddingBottomRight: [(mapWidth - sidebarWidth) / 2, mapHeight / 2],
+                })
+              );
+            }
+            this.sidebar
+              .setContent(`<h3>${feature.properties.name}</h3>${feature.properties.description}`)
+              .show();
+            L.DomEvent.stopPropagation(event);
+          }),
       pointToLayer: (feature, latlng) =>
         L.marker(latlng, {
           alt: feature.properties.name,
