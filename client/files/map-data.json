@@ -1131,7 +1131,7 @@
         "name": "Gosiṅgasālavanadāya (Nādikā)",
         "icon": "tree",
         "id": "gosiṅgasālavanadāya1",
-        "define": "gosiṅgasālavanadāya1"
+        "define": "gosiṅgasālavanadāya"
       }
     },
     {
@@ -1142,7 +1142,7 @@
         "name": "Gosiṅgasālavanadāya (Vesāli)",
         "icon": "tree",
         "id": "gosiṅgasālavanadāya2",
-        "define": "gosiṅgasālavanadāya2"
+        "define": "gosiṅgasālavanadāya"
       }
     },
     {
@@ -1373,7 +1373,7 @@
         "name": "Mahāvana (Kapilavatthu)",
         "icon": "tree",
         "id": "mahāvana1",
-        "define": "mahāvana1"
+        "define": "mahāvana"
       }
     },
     {
@@ -1384,7 +1384,7 @@
         "name": "Mahāvana (Uruvelakappa)",
         "icon": "tree",
         "id": "mahāvana2",
-        "define": "mahāvana2"
+        "define": "mahāvana"
       }
     },
     {
@@ -1691,7 +1691,7 @@
         "name": "Siṁsapāvana (Āḷavī)",
         "icon": "tree",
         "id": "siṁsapāvana1",
-        "define": "siṁsapāvana1"
+        "define": "siṁsapāvana"
       }
     },
     {
@@ -1702,7 +1702,7 @@
         "name": "Siṁsapāvana (Kosambī)",
         "icon": "tree",
         "id": "siṁsapāvana2",
-        "define": "siṁsapāvana2"
+        "define": "siṁsapāvana"
       }
     },
     {
@@ -1812,7 +1812,7 @@
         "name": "Veḷuvana (Kajaṅgalā)",
         "icon": "tree",
         "id": "veḷuvana2",
-        "define": "veḷuvana2"
+        "define": "veḷuvana"
       }
     },
     {
@@ -1823,7 +1823,7 @@
         "name": "Veḷuvana (Rājagaha)",
         "icon": "tree",
         "id": "veḷuvana1",
-        "define": "veḷuvana1"
+        "define": "veḷuvana"
       }
     },
     {
