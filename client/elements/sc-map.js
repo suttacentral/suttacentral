@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import 'leaflet';
 import 'leaflet-fullscreen';
-import 'leaflet-sidebar';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { icon } from '../img/sc-icon';
@@ -23,7 +22,6 @@ export class SCMap extends LitLocalized(LitElement) {
     this.markerScale = 3;
 
     this.mapElementID = 'map';
-    this.sidebarElementID = 'sidebar';
   }
 
   static get styles() {
@@ -36,10 +34,6 @@ export class SCMap extends LitLocalized(LitElement) {
       #map {
         height: 480px;
         z-index: 0;
-      }
-
-      #sidebar {
-        color: #414141;
       }
 
       .moving-leaflet-popup {
@@ -87,14 +81,8 @@ export class SCMap extends LitLocalized(LitElement) {
       })
     );
 
-    this.sidebar = L.control.sidebar(this.shadowRoot.getElementById(this.sidebarElementID), {
-      autoPan: false,
-    });
-    this.map.on('click', () => this.sidebar.hide());
-
     this.map.addControl(layersControl);
     this.map.addControl(new L.Control.Fullscreen());
-    this.map.addControl(this.sidebar);
   }
 
   async _fetchData() {
@@ -118,7 +106,7 @@ export class SCMap extends LitLocalized(LitElement) {
     return L.geoJSON(data, {
       filter: (feature, layer) => feature.properties.layer == layerName,
       style: feature => feature.properties.style,
-      onEachFeature: (feature, layer) =>
+      onEachFeature: (feature, layer) => {
         layer
           .on('mouseover mousemove', event => {
             this.map.openPopup(
@@ -137,31 +125,10 @@ export class SCMap extends LitLocalized(LitElement) {
             this.map.closePopup();
           })
           .on('click', event => {
-            let mapWidth = this.map._container.offsetWidth;
-            let mapHeight = this.map._container.offsetHeight;
-            let sidebarWidth = this.sidebar._container.offsetWidth;
-            let sharedOptions = { duration: 0.5 };
-            if (layer.getBounds) {
-              this.map.flyToBounds(
-                layer.getBounds(),
-                Object.assign(sharedOptions, {
-                  paddingTopLeft: [sidebarWidth, 0],
-                })
-              );
-            } else if (layer.getLatLng) {
-              this.map.panInside(
-                layer.getLatLng(),
-                Object.assign(sharedOptions, {
-                  paddingTopLeft: [(mapWidth + sidebarWidth) / 2, mapHeight / 2],
-                  paddingBottomRight: [(mapWidth - sidebarWidth) / 2, mapHeight / 2],
-                })
-              );
-            }
-            this.sidebar
-              .setContent(`<h3>${feature.properties.name}</h3>${feature.properties.description}`)
-              .show();
-            L.DomEvent.stopPropagation(event);
-          }),
+            if (feature.properties.define)
+              window.location.href = `/define/${feature.properties.define}`;
+          });
+      },
       pointToLayer: (feature, latlng) =>
         L.marker(latlng, {
           alt: feature.properties.name,
@@ -190,11 +157,6 @@ export class SCMap extends LitLocalized(LitElement) {
     // TODO: how to link/import stylesheets properly?
     return html`
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
-      <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet-sidebar@0.2.4/src/L.Control.Sidebar.css"
-      />
-      <div id="${this.sidebarElementID}"></div>
       <div id="${this.mapElementID}"></div>
     `;
   }
