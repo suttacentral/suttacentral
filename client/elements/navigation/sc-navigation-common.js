@@ -21,11 +21,11 @@ try {
 export { pitakaGuide, shortcuts };
 
 export const navIndex = new Map([
-  [ 'home', { index: 0 } ],
-  [ 'sutta', { index: 99 } ],
-  [ 'staticPage', { index: 1 } ],
-  [ 'searchPage', { index: 1 } ],
-  [ 'languageDetail', { index: 2 } ]
+  ['home', { index: 0 }],
+  ['sutta', { index: 99 }],
+  ['staticPage', { index: 1 }],
+  ['searchPage', { index: 1 }],
+  ['languageDetail', { index: 2 }],
 ]);
 
 export function setNavigation(navArray) {
