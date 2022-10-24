@@ -35,6 +35,14 @@ export function setNavigation(navArray) {
   });
 }
 
+function isPatimokkha(uid) {
+  return uid.endsWith('-pm');
+}
+
+function sortData(a, b) {
+  return a.index - b.index;
+}
+
 function genNavDetailNew(uid, currentURL, data, navArray, navIndex) {
   data
     ?.json()
@@ -42,7 +50,7 @@ function genNavDetailNew(uid, currentURL, data, navArray, navIndex) {
       if (!menuData || !menuData[0].uid) {
         return;
       }
-      const acronym = menuData[0].acronym;
+      const { acronym } = menuData[0];
       const hasChildren =
         menuData[0] &&
         menuData[0].children &&
@@ -65,14 +73,6 @@ function genNavDetailNew(uid, currentURL, data, navArray, navIndex) {
     .catch(error => {
       console.log(error);
     });
-}
-
-function isPatimokkha(uid) {
-  return uid.endsWith('-pm');
-}
-
-function sortData(a, b) {
-  return a.index - b.index;
 }
 
 export function RefreshNavNew(uid, forceRefresh) {
