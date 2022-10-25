@@ -366,7 +366,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       this.navArray = [
         {
           uid: 'home',
-          title: 'Home',
+          title: 'home',
           url: '/',
           type: 'home',
           index: 0,
