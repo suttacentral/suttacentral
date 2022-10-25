@@ -50,7 +50,7 @@ const initialState = {
   navigationArray: [
     {
       uid: 'home',
-      title: 'home',
+      title: 'Home',
       url: '/',
       type: 'home',
       index: 0,
