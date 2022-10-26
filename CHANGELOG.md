@@ -1,6 +1,14 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.10.24
+
+- Update dependencies.
+
+## 2022.10.17
+
+- Fix: error when executing make load-data.
+
 ## 2022.10.02
 
 - Upgrade ArangoDB version to `3.9.3`.
