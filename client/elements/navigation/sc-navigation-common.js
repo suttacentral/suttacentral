@@ -1,9 +1,10 @@
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 
-let shortcuts = [];
+const shortcuts = [];
 try {
-  shortcuts = await (await fetch(`${API_ROOT}/shortcuts`)).json();
+  const allShortcuts = await (await fetch(`${API_ROOT}/shortcuts`)).json();
+  shortcuts.push(...allShortcuts);
 } catch (error) {
   console.log(error);
 }

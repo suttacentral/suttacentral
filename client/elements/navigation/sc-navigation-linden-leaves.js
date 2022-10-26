@@ -156,9 +156,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     this.requestUpdate();
     if (this.navArray !== state.navigationArray) {
       this.navArray = state.navigationArray;
-      this.navArray = this.navArray.filter(function (e) {
-        return e;
-      });
+      this.navArray = this.navArray.filter(e => e);
     }
   }
 
