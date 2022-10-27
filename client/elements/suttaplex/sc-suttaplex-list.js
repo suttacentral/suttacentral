@@ -215,9 +215,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   async #addFallenLeavesToSuttaplexList(categoryId, suttaPlexList) {
     const fallenLeavesUids = getFallenLeavesByCategoryId(categoryId);
     if (!fallenLeavesUids) return;
+    const hasFallenLeaves = true;
     const fetchPromises = [];
+    const sortingUids = [];
     fallenLeavesUids.forEach(uid => {
       fetchPromises.push(fetch(`${API_ROOT}/suttaplex/${uid}?language=${this.language}`));
+      sortingUids.push(uid);
     });
     Promise.allSettled(fetchPromises)
       .then(responses => {
@@ -229,6 +232,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             });
           }
         }
+        suttaPlexList.forEach(suttaPlex => {
+          suttaPlex.hasFallenLeaves = hasFallenLeaves;
+        });
+        suttaPlexList.sort((a, b) => sortingUids.indexOf(a.uid) - sortingUids.indexOf(b.uid));
       })
       .catch(error => {
         console.log(error);
@@ -361,6 +368,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
         .inRangeSuttaId=${this.categoryId}
         .priorityAuthorUid=${this.priorityAuthorUid}
+        .isFallenLeaf=${isFallenLeaf(item.uid)}
         class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
