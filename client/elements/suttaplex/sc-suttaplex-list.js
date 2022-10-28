@@ -215,7 +215,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   async #addFallenLeavesToSuttaplexList(categoryId, suttaPlexList) {
     const fallenLeavesUids = getFallenLeavesByCategoryId(categoryId);
     if (!fallenLeavesUids) return;
-    const hasFallenLeaves = true;
     const fetchPromises = [];
     const sortingUids = [];
     fallenLeavesUids.forEach(uid => {
@@ -233,7 +232,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           }
         }
         suttaPlexList.forEach(suttaPlex => {
-          suttaPlex.hasFallenLeaves = hasFallenLeaves;
+          suttaPlex.hasFallenLeaves = true;
         });
         suttaPlexList.sort((a, b) => sortingUids.indexOf(a.uid) - sortingUids.indexOf(b.uid));
       })
@@ -308,13 +307,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           if (parallels) {
             parallels.to.push({
               to: parallel.to.to,
-              toTitle: parallel.to.to
-                ? parallel.to.to
-                    .replaceAll('#', ':')
-                    .replaceAll('-:', '-')
-                    .replaceAll('~', '')
-                    .replaceAll('-', '–')
-                : '',
+              toTitle: parallel.to.to ? this.#formatParallelToTitle(parallel.to.to) : '',
               uid: parallel.to.uid,
               acronym: parallel.to.acronym
                 ? parallel.to.acronym
@@ -325,22 +318,14 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             this.parallelsLite.push({
               uid: item.uid,
               from: parallel.from,
-              fromTitle: parallel.from
-                ? parallel.from?.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–')
-                : '',
+              fromTitle: parallel.from ? this.#formatParallelFromTitle(parallel.from) : '',
               name: item.name,
               acronym: item.acronym,
               original_root: item.original_root,
               to: [
                 {
                   to: parallel.to.to,
-                  toTitle: parallel.to.to
-                    ? parallel.to.to
-                        .replaceAll('#', ':')
-                        .replaceAll('-:', '-')
-                        .replaceAll('~', '')
-                        .replaceAll('-', '–')
-                    : '',
+                  toTitle: parallel.to.to ? this.#formatParallelToTitle(parallel.to.to) : '',
                   uid: parallel.to.uid,
                   acronym: parallel.to.acronym
                     ? parallel.to.acronym
@@ -353,6 +338,18 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         }
       }
     }
+  }
+
+  #formatParallelFromTitle(parallelFromTitle) {
+    return parallelFromTitle?.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–');
+  }
+
+  #formatParallelToTitle(parallelToTitle) {
+    return parallelToTitle
+      .replaceAll('#', ':')
+      .replaceAll('-:', '-')
+      .replaceAll('~', '')
+      .replaceAll('-', '–');
   }
 
   suttaplexTemplate(item) {
