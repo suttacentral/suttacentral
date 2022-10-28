@@ -217,6 +217,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     if (!fallenLeavesUids) return;
     const fetchPromises = [];
     const sortingUids = [];
+    suttaPlexList.forEach(suttaPlex => {
+      sortingUids.push(suttaPlex.uid);
+    });
     fallenLeavesUids.forEach(uid => {
       fetchPromises.push(fetch(`${API_ROOT}/suttaplex/${uid}?language=${this.language}`));
       sortingUids.push(uid);
@@ -234,7 +237,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         suttaPlexList.forEach(suttaPlex => {
           suttaPlex.hasFallenLeaves = true;
         });
-        suttaPlexList.sort((a, b) => sortingUids.indexOf(a.uid) - sortingUids.indexOf(b.uid));
+        suttaPlexList.sort((a, b) => {
+          const getUidIndex = x => sortingUids.indexOf(x.uid);
+          return getUidIndex(a) - getUidIndex(b) && a.uid - b.uid;
+        });
       })
       .catch(error => {
         console.log(error);
