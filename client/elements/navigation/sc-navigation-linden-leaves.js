@@ -156,15 +156,11 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     this.requestUpdate();
     if (this.navArray !== state.navigationArray) {
       this.navArray = state.navigationArray;
-      this.navArray = this.navArray.filter(function (e) {
-        return e;
-      });
+      this.navArray = this.navArray.filter(e => e);
     }
   }
 
   render() {
-    // This is a hack to deal with acronyms from the data: like 'Sutta'
-    const lowerHack = s => s[0].toLowerCase() + s.slice(1);
     return html`
       <nav>
         <ul>
@@ -177,17 +173,18 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
                           ? html`
                               <li @click=${() => this._navClick(nav)}>
                                 <a href=${nav.url}
-                                  >${this.tryLocalize(
-                                    `interface:${lowerHack(nav.title)}`,
-                                    nav.title
-                                  )}</a
+                                  >${nav.type === 'navigation'
+                                    ? nav.title
+                                    : this.tryLocalize(`interface:${nav.title}`, nav.title)}</a
                                 >
                                 ${icon.chevron_right}
                               </li>
                             `
                           : html`
                               <li>
-                                ${this.tryLocalize(`interface:${lowerHack(nav.title)}`, nav.title)}
+                                ${nav.type === 'navigation'
+                                  ? nav.title
+                                  : this.tryLocalize(`interface:${nav.title}`, nav.title)}
                               </li>
                             `}
                       `
