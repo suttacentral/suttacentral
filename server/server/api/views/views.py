@@ -23,6 +23,7 @@ from common.queries import (
     PARALLELS_LITE,
     SUTTA_VIEW,
     SUTTAPLEX_LIST,
+    FALLEN_LEAVES_SUTTAPLEX_LIST,
     IMAGES,
     EPIGRAPHS,
     WHY_WE_READ,
@@ -526,6 +527,22 @@ class RangeSuttaplexList(Resource):
         data = flat_tree(data)
 
         return data, 200
+
+
+class FallenLeavesSuttaplexList(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
+        uid = uid.replace('/', '-').strip('-')
+
+        db = get_db()
+        results = db.aql.execute(
+            FALLEN_LEAVES_SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
+        )
+        result = list(results)
+        return result, 200
 
 
 class Parallels(Resource):

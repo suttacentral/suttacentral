@@ -1,10 +1,11 @@
 import { html, LitElement } from 'lit';
 import { cache } from 'lit/directives/cache.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
-import { isFallenLeaf, getFallenLeavesByCategoryId } from '../../utils/sc-structure';
+import { isFallenLeaf } from '../../utils/sc-structure';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
@@ -195,6 +196,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this.rangeCategoryId = responseData[0].uid;
       }
       this.priorityAuthorUid = responseData[0].priority_author_uid;
+      await this.#addFallenLeavesToSuttaplexList(responseData[0].uid, responseData);
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -202,7 +204,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         15,
         100
       ).then(() => this._updateMetaData());
-      await this.#addFallenLeavesToSuttaplexList(responseData[0].uid, this.suttaplexData);
       this.initTableView();
     } catch (e) {
       this.networkError = e;
@@ -213,38 +214,28 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   async #addFallenLeavesToSuttaplexList(categoryId, suttaPlexList) {
-    const fallenLeavesUids = getFallenLeavesByCategoryId(categoryId);
-    if (!fallenLeavesUids) return;
-    const fetchPromises = [];
-    const sortingUids = [];
-    suttaPlexList.forEach(suttaPlex => {
-      sortingUids.push(suttaPlex.uid);
-    });
-    fallenLeavesUids.forEach(uid => {
-      fetchPromises.push(fetch(`${API_ROOT}/suttaplex/${uid}?language=${this.language}`));
-      sortingUids.push(uid);
-    });
-    Promise.allSettled(fetchPromises)
-      .then(responses => {
-        for (const response of responses) {
-          if (response.status === 'fulfilled') {
-            const responseData = response.value.json();
-            responseData.then(data => {
-              suttaPlexList.push(data[0]);
-            });
-          }
-        }
-        suttaPlexList.forEach(suttaPlex => {
-          suttaPlex.hasFallenLeaves = true;
-        });
-        suttaPlexList.sort((a, b) => {
-          const getUidIndex = x => sortingUids.indexOf(x.uid);
-          return getUidIndex(a) - getUidIndex(b) && a.uid - b.uid;
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const firstAcronym = this.#getFirstAcronymFromSuttaPlexList(suttaPlexList);
+    const parentAcronym = firstAcronym.slice(0, firstAcronym.lastIndexOf(' ')) || this.categoryId;
+    try {
+      const responseData = await fetch(`${API_ROOT}/fallen_leaves_suttaplex/${this.categoryId}?language=${this.language}`).then(r => r.json());
+      suttaPlexList.push(...responseData);
+      for (const suttaPlex of suttaPlexList) {
+        suttaPlex.hasFallenLeaves = true;
+        suttaPlex.index = parseInt(suttaPlex.uid?.replaceAll(this.categoryId, ''), 10);
+        suttaPlex.acronym = `${parentAcronym} ${suttaPlex.uid?.replaceAll(this.categoryId, '')}`;
+      }
+      suttaPlexList.sort((a, b) => a.index - b.index);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  #getFirstAcronymFromSuttaPlexList(suttaPlexList) {
+    if (!suttaPlexList) return '';
+    for (const suttaPlex of suttaPlexList) {
+      if (suttaPlex.acronym) return suttaPlex.acronym;
+    }
+    return '';
   }
 
   _updateMetaData() {
@@ -372,7 +363,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .inRangeSuttaId=${this.categoryId}
         .priorityAuthorUid=${this.priorityAuthorUid}
         .isFallenLeaf=${isFallenLeaf(item.uid)}
-        class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
+        class=${ifDefined(
+          this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : undefined
+        )}
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
         ? html`

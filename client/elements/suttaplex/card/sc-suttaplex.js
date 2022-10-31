@@ -248,6 +248,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               ${this.#shouldHideParallels() ? '' : this.parallelsTemplate}
             `
           : ''}
+        ${this.isCompact && this.isFallenLeaf ? this.parallelsTemplate : ''}
       </article>
     `;
   }

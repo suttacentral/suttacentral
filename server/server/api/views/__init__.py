@@ -42,5 +42,6 @@ from .views import (
     AbbreviationTexts,
     AbbreviationEditions,
     AbbreviationSchools,
-    FallenLeaves
+    FallenLeaves,
+    FallenLeavesSuttaplexList
 )

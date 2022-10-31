@@ -50,7 +50,8 @@ from api.views import (
     AbbreviationTexts,
     AbbreviationEditions,
     AbbreviationSchools,
-    FallenLeaves
+    FallenLeaves,
+    FallenLeavesSuttaplexList
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -84,6 +85,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(TipitakaMenu, '/tipitaka_menu')
     api.add_resource(SuttaplexList, '/suttaplex/<path:uid>')
     api.add_resource(RangeSuttaplexList, '/range_suttaplex/<path:uid>')
+    api.add_resource(FallenLeavesSuttaplexList, '/fallen_leaves_suttaplex/<path:uid>')
     api.add_resource(Parallels, '/parallels/<path:uid>')
     api.add_resource(ParallelsLite, '/parallels_lite/<path:uid>')
     api.add_resource(
