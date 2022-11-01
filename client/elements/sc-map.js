@@ -1,26 +1,10 @@
 import { LitElement, html, css } from 'lit';
 import 'leaflet';
+import 'leaflet-fullscreen';
+import 'leaflet-sidebar';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { icon } from '../img/sc-icon';
-
-class SCMapPopup extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      name: String,
-      description: String,
-    };
-  }
-
-  render() {
-    return html`
-      <h3>${this.name}</h3>
-      ${this.description}
-    `;
-  }
-}
-
-customElements.define('sc-map-popup', SCMapPopup);
 
 export class SCMap extends LitLocalized(LitElement) {
   static properties = {
@@ -39,6 +23,7 @@ export class SCMap extends LitLocalized(LitElement) {
     this.markerScale = 3;
 
     this.mapElementID = 'map';
+    this.sidebarElementID = 'sidebar';
   }
 
   static get styles() {
@@ -52,15 +37,19 @@ export class SCMap extends LitLocalized(LitElement) {
         height: 480px;
         z-index: 0;
       }
+
+      #sidebar {
+        color: #414141;
+      }
     `;
   }
 
   firstUpdated() {
-    let map = L.map(this.shadowRoot.getElementById(this.mapElementID));
+    this.map = L.map(this.shadowRoot.getElementById(this.mapElementID));
 
-    map.setView([this.latitude, this.longitude], this.zoom);
+    this.map.setView([this.latitude, this.longitude], this.zoom);
 
-    map.addLayer(
+    this.map.addLayer(
       L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -75,13 +64,13 @@ export class SCMap extends LitLocalized(LitElement) {
     this._fetchData().then(data =>
       this._getLayerNames(data).map(layerName => {
         let layer = this._getLayer(data, layerName);
-        map.addLayer(layer);
+        this.map.addLayer(layer);
         layersControl.addOverlay(layer, layerName);
-        map.on('zoomend', () => {
+        this.map.on('zoomend', () => {
           layer.eachLayer(l => {
             if (l._icon) {
               let icon = l.options.icon;
-              icon.options = Object.assign(icon.options, this._getIconZoom(map.getZoom()));
+              icon.options = Object.assign(icon.options, this._getIconZoom(this.map.getZoom()));
               l.setIcon(icon);
             }
           });
@@ -89,7 +78,13 @@ export class SCMap extends LitLocalized(LitElement) {
       })
     );
 
-    layersControl.addTo(map);
+    this.sidebar = L.control.sidebar(this.shadowRoot.getElementById(this.sidebarElementID), {
+      autoPan: false,
+    });
+
+    this.map.addControl(layersControl);
+    this.map.addControl(new L.Control.Fullscreen());
+    this.map.addControl(this.sidebar);
   }
 
   async _fetchData() {
@@ -114,13 +109,31 @@ export class SCMap extends LitLocalized(LitElement) {
       filter: (feature, layer) => feature.properties.layer == layerName,
       style: feature => feature.properties.style,
       onEachFeature: (feature, layer) =>
-        layer
-          .bindTooltip(feature.properties.name)
-          .bindPopup(`<h3>${feature.properties.name}</h3>${feature.properties.description}`),
-      // TODO: I want to use lit element for the popup, but this breaks with complex content (like images)
-      // .bindPopup(
-      //   `<sc-map-popup name="${feature.properties.name}" description="${feature.properties.description}"></sc-map-popup>`
-      // ),
+        layer.bindTooltip(feature.properties.name).on('click', () => {
+          let mapWidth = this.map._container.offsetWidth;
+          let mapHeight = this.map._container.offsetHeight;
+          let sidebarWidth = this.sidebar._container.offsetWidth;
+          let sharedOptions = { duration: 0.5 };
+          if (layer.getBounds) {
+            this.map.flyToBounds(
+              layer.getBounds(),
+              Object.assign(sharedOptions, {
+                paddingTopLeft: [sidebarWidth, 0],
+              })
+            );
+          } else if (layer.getLatLng) {
+            this.map.panInside(
+              layer.getLatLng(),
+              Object.assign(sharedOptions, {
+                paddingTopLeft: [(mapWidth + sidebarWidth) / 2, mapHeight / 2],
+                paddingBottomRight: [(mapWidth - sidebarWidth) / 2, mapHeight / 2],
+              })
+            );
+          }
+          this.sidebar
+            .setContent(`<h3>${feature.properties.name}</h3>${feature.properties.description}`)
+            .show();
+        }),
       pointToLayer: (feature, latlng) =>
         L.marker(latlng, {
           alt: feature.properties.name,
@@ -146,9 +159,14 @@ export class SCMap extends LitLocalized(LitElement) {
   }
 
   render() {
-    // TODO: how to link/import css properly?
+    // TODO: how to link/import stylesheets properly?
     return html`
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet-sidebar@0.2.4/src/L.Control.Sidebar.css"
+      />
+      <div id="${this.sidebarElementID}"></div>
       <div id="${this.mapElementID}"></div>
     `;
   }
