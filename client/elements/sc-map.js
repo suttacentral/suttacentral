@@ -1,5 +1,6 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import 'leaflet';
+import leafletStyles from 'leaflet/dist/leaflet.css';
 import 'leaflet-fullscreen';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
@@ -23,8 +24,9 @@ export class SCMap extends LitLocalized(LitElement) {
     this.idToLayer = {};
   }
 
-  static get styles() {
-    return css`
+  static styles = [
+    unsafeCSS(leafletStyles),
+    css`
       :host {
         display: block;
         margin: var(--sc-size-md) 0;
@@ -49,8 +51,8 @@ export class SCMap extends LitLocalized(LitElement) {
       .moving-leaflet-popup .leaflet-popup-tip {
         pointer-events: none;
       }
-    `;
-  }
+    `,
+  ];
 
   firstUpdated() {
     this.map = L.map(this.shadowRoot.getElementById(this.mapElementID));
@@ -194,11 +196,7 @@ export class SCMap extends LitLocalized(LitElement) {
   }
 
   render() {
-    // TODO: how to link/import stylesheets properly?
-    return html`
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
-      <div id="${this.mapElementID}"></div>
-    `;
+    return html`<div id="${this.mapElementID}"></div>`;
   }
 }
 
