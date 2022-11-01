@@ -140,7 +140,7 @@ export class SCMap extends LitLocalized(LitElement) {
           icon: L.divIcon(
             Object.assign(
               {
-                html: icon.marker[feature.properties.icon].strings, // TODO: I want to use .getHTML() here as documented, but it doesn't seem to exist https://lit.dev/docs/v1/api/lit-html/templates/#SVGTemplateResult
+                html: icon.marker[feature.properties.icon].strings, // hack to get string from html template result https://lit.dev/docs/api/templates/#html
                 className: this.view == feature.properties.id ? 'marker-active' : '',
               },
               this._getIconZoom(this.zoom)
