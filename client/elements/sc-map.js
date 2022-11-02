@@ -82,8 +82,8 @@ export class SCMap extends LitLocalized(LitElement) {
         )
       );
 
-      this._makeIconsZoom();
       this._setView();
+      this._makeIconsZoom();
     });
   }
 
@@ -162,6 +162,7 @@ export class SCMap extends LitLocalized(LitElement) {
         }
       })
     );
+    this.map.fire('zoomend');
   }
 
   _getIconZoom(zoom) {
@@ -191,7 +192,7 @@ export class SCMap extends LitLocalized(LitElement) {
         console.error(`sc-map: longitude or latitude is missing.`);
       }
     } else {
-      this.map.fitBounds(L.featureGroup(layers).getBounds());
+      this.map.fitBounds(L.featureGroup(Object.values(this.idToLayer)).getBounds());
     }
   }
 
