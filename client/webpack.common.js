@@ -40,6 +40,11 @@ module.exports = {
         {
           urlPattern: new RegExp('/api/((?!ebook).*)'),
           handler: 'StaleWhileRevalidate',
+          options: {
+            expiration: {
+              maxAgeSeconds: 7 * 24 * 60 * 60,
+            },
+          },
         },
         {
           urlPattern: /\.(?:js|css|html|map|json|ico)$/,

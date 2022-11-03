@@ -134,7 +134,7 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
       <dl>
         <dt>
           <dfn class="entry" lang="pi" translate="no">
-            <a href="${href}" target="_blank" rel="noopener" class="lookup-link"> ${graph} </a>
+            <a href=${href} target="_blank" rel="noopener" class="lookup-link"> ${graph} </a>
           </dfn>
         </dt>
 
@@ -163,7 +163,7 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
       <dl>
         <dt>
           <dfn class="entry" lang="pi" translate="no">
-            <a href="${href}" target="_blank" rel="noopener" class="lookup-link"> ${graph} </a>
+            <a href=${href} target="_blank" rel="noopener" class="lookup-link"> ${graph} </a>
           </dfn>
         </dt>
 
