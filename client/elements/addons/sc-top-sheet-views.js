@@ -379,13 +379,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.textViewArray.map(
                 item => html`
-                  <mwc-formfield label="${this.localize(`dictionary:${item.textViewLabel}`)}">
+                  <mwc-formfield label=${this.localize(`dictionary:${item.textViewLabel}`)}>
                     <mwc-radio
                       name="textView"
-                      value="${item.textView}"
-                      data-type="${item.textViewLabel}"
-                      ?checked="${this.selectedTextView === item.textView}"
-                      @change="${this._onTextViewChanged}"
+                      value=${item.textView}
+                      data-type=${item.textViewLabel}
+                      ?checked=${this.selectedTextView === item.textView}
+                      @change=${this._onTextViewChanged}
                     ></mwc-radio>
                   </mwc-formfield>
                 `
@@ -745,7 +745,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
   #setPaliScriptSelected() {
     const paliScriptSelect = this.shadowRoot.querySelector('#selPaliScripts');
-    for (const option of paliScriptSelect?.options) {
+    if (!paliScriptSelect) {
+      return;
+    }
+    for (const option of paliScriptSelect.options) {
       if (option.value === this.paliScript) {
         option.selected = true;
         break;

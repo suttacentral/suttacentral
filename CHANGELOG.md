@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.10.29
+
+- Get breadcrumbs translation titles only from the API. https://github.com/suttacentral/suttacentral/issues/2299
+
 ## 2022.10.24
 
 - Update dependencies.

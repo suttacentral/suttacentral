@@ -15,4 +15,3 @@ export async function partitionAsync(inputData, progressCallback, size = 20, int
     }, interval);
   });
 }
-
