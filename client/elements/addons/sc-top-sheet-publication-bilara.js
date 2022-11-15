@@ -7,7 +7,7 @@ import { store } from '../../redux-store';
 export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
   static properties = {
     translationTitle: { type: String },
-    translationSubtitle: {type: String },
+    translationSubtitle: { type: String },
     translationLanguage: { type: String },
     rootTitle: { type: String },
     rootLanguage: { type: String },
@@ -208,7 +208,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
         <section>
           <h2>Publication details</h2>
 
-          <section class="text-metadata" about="${this.sourceURL}">
+          <section class="text-metadata" about=${this.sourceURL}>
             <p>This text is included in the following publication.</p>
             <dl class="main-details">
               <dt class="translation-title">Translation title</dt>
@@ -267,11 +267,11 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
               <dd class="text-uid" property="dc:identifier">${this.textUID}</dd>
               <dt class="edition-url">URL</dt>
               <dd class="edition-url">
-                <a href="${this.editionURL}" target="_blank" rel="noopener">${this.editionURL}</a>
+                <a href=${this.editionURL} target="_blank" rel="noopener">${this.editionURL}</a>
               </dd>
               <dt class="source-url">Source</dt>
               <dd class="source-url">
-                <a href="${this.sourceURL}" target="_blank" rel="noopener">${this.sourceURL}</a>
+                <a href=${this.sourceURL} target="_blank" rel="noopener">${this.sourceURL}</a>
               </dd>
               <dt class="publication-number">SuttaCentral publication number</dt>
               <dd class="publication-number" property="dc:identifier">${this.publicationNumber}</dd>
