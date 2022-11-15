@@ -148,6 +148,9 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
               <a href="/donations">${this.localize('interface:donations')}</a>
             </li>
             <li>
+              <a href="/map">${this.localize('interface:map')}</a>
+            </li>
+            <li>
               <a href="/offline">${this.localize('interface:useOffline')}</a>
             </li>
             <li>

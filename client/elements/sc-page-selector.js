@@ -32,6 +32,7 @@ const staticPages = [
   'introduction',
   'languages',
   'licensing',
+  'map',
   'methodology',
   'mnGuideSujato',
   'names',
