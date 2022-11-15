@@ -5,6 +5,7 @@ import 'leaflet-fullscreen';
 import leafletFullscreenStyles from 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
+import mapData from '../utils/mapData';
 import { icon } from '../img/sc-icon';
 
 export class SCMap extends LitLocalized(LitElement) {
@@ -85,14 +86,14 @@ export class SCMap extends LitLocalized(LitElement) {
       })
     );
 
-    this._fetchData().then(data => {
+    mapData.then(({ geoJSON, layerNames }) => {
       this.map.addControl(
         L.control.layers(
           [],
           Object.fromEntries(
-            this._getLayerNames(data).map(layerName => [
+            layerNames.map(layerName => [
               layerName,
-              this._getLayer(data, layerName).addTo(this.map),
+              this._buildLayer(geoJSON, layerName).addTo(this.map),
             ])
           )
         )
@@ -101,27 +102,18 @@ export class SCMap extends LitLocalized(LitElement) {
       this._setView();
       this._makeIconsZoom();
     });
+
+    this.getRootNode().addEventListener('keydown', e => this._keydownHandler(e));
   }
 
-  async _fetchData() {
-    return fetch('../files/map-data.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Map data fetch response is not ok: status ${response.status}`);
-        }
-        return response.json();
-      })
-      .catch(error => {
-        console.error('Map data fetch error:', error);
-      });
+  _keydownHandler(e) {
+    if (e.code === 'Escape' && this.map.isFullscreen()) {
+      this.map.toggleFullscreen({ pseudoFullscreen: true });
+    }
   }
 
-  _getLayerNames(data) {
-    return Array.from(new Set(data.features.map(feature => feature.properties.layer)));
-  }
-
-  _getLayer(data, layerName) {
-    return L.geoJSON(data, {
+  _buildLayer(geoJSON, layerName) {
+    return L.geoJSON(geoJSON, {
       filter: feature => feature.properties.layer == layerName,
       style: feature =>
         Object.assign(

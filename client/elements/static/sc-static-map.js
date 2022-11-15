@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, css, unsafeCSS } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { SCStaticPage } from '../addons/sc-static-page';
@@ -6,110 +6,87 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import '../sc-map';
+import mapData from '../../utils/mapData';
 import { icon } from '../../img/sc-icon';
 
 export class SCStaticMap extends SCStaticPage {
+  static properties = {
+    features: Array,
+    layerNames: Array,
+  };
+
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/static-map';
 
     this.features = [];
-    this._fetchData().then(
-      data => (this.features = this._sortObjectsByStringKey(data.features, o => o.properties.name))
-    );
+    this.layerNames = [];
+    mapData.then(({ features, layerNames }) => {
+      this.features = features;
+      this.layerNames = layerNames;
+    });
   }
 
-  // TODO: Using `static styles` instead of <style> causes all these styles to break?
-  // static styles = [
-  //   unsafeCSS(layoutSimpleStyles),
-  //   unsafeCSS(typographyCommonStyles),
-  //   unsafeCSS(typographyStaticStyles),
-  //   css`
-  //     .map {
-  //       min-width: 720px;
-  //     }
-  //   `,
-  // ];
+  static styles = [
+    unsafeCSS(layoutSimpleStyles),
+    unsafeCSS(typographyCommonStyles),
+    unsafeCSS(typographyStaticStyles),
+    css`
+      .columns {
+        columns: 2;
+      }
 
-  // TODO: share this with sc-map.js
-  async _fetchData() {
-    return fetch('../../files/map-data.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Map data fetch response is not ok: status ${response.status}`);
-        }
-        return response.json();
-      })
-      .catch(error => {
-        console.error('Map data fetch error:', error);
-      });
+      .features-section {
+        break-inside: avoid;
+        display: inline-block;
+      }
+
+      .marker-item {
+        list-style-image: var(--marker-icon);
+      }
+    `,
+  ];
+
+  _featuresList() {
+    return this.layerNames.map(layerName => {
+      let listItems = this._sortObjectsByStringKey(
+        this.features.filter(feature => feature.properties.layer == layerName),
+        feature => feature.properties.name
+      ).map(this._featureItem);
+      return html`<div class="features-section">
+        <h3>${layerName}</h3>
+        <ul>
+          ${listItems}
+        </ul>
+      </div>`;
+    });
   }
 
   _sortObjectsByStringKey(objectList, keyFn) {
     return objectList.sort((a, b) => keyFn(a).localeCompare(keyFn(b)));
   }
 
-  _geometryTypeList(geometryType, labelFn) {
-    let listItems = this.features
-      .filter(feature => feature.geometry.type == geometryType)
-      .map(feature => html`<li>${labelFn(feature)}</li>`);
-    return html`<ul>
-      ${listItems}
-    </ul>`;
-  }
-
-  _pointLabelFn(feature) {
-    return html`<span class="marker">${icon.marker[feature.properties.icon]}</span>
-      <a href="/define/${feature.properties.id}">${feature.properties.name}</a>`;
-  }
-
-  _polygonLabelFn(feature) {
-    return html`<a href="/define/${feature.properties.id}">${feature.properties.name}</a>`;
+  _featureItem(feature) {
+    let name = feature.properties.name;
+    let linkedName = feature.properties.define
+      ? html`<a href="/define/${feature.properties.define}">${name}</a>`
+      : name;
+    if (feature.geometry.type == 'Point') {
+      return html`<li
+        class="marker-item"
+        style="--marker-icon: url('data:image/svg+xml;utf8,${encodeURIComponent(
+          icon.marker[feature.properties.icon].strings
+        )}')"
+      >
+        ${linkedName}
+      </li>`;
+    } else {
+      return html`<li>${linkedName}</li>`;
+    }
   }
 
   render() {
     return html`
-      <style>
-        ${layoutSimpleStyles}
-        ${typographyCommonStyles}
-        ${typographyStaticStyles}
-        /* comment to prevent ugly autoformatting. TODO: other solution? */
-
-        #map {
-          min-width: 720px; /* is there a better solutions for making map fill the main/article width set by layoutSimpleStyles? */
-        }
-
-        .columns {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          width: 100%;
-        }
-
-        .column {
-          display: flex;
-          flex-direction: column;
-          flex-basis: 100%;
-          flex: 1;
-        }
-
-        .feature-list {
-          list-style: none;
-        }
-
-        .feature-list li {
-          padding: 0;
-          margin: 0;
-        }
-
-        .marker {
-          vertical-align: middle;
-        }
-
-        .marker svg {
-          max-height: 1em; /* is this the correct way? */
-        }
-      </style>
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('static-map:1'))}</h1>
