@@ -156,6 +156,7 @@ export class SCMap extends LitLocalized(LitElement) {
               this._getIconZoom(this.zoom)
             )
           ),
+          riseOnHover: true,
         }),
     });
   }

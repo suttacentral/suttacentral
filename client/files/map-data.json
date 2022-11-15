@@ -608,17 +608,6 @@
     },
     {
       "type": "Feature",
-      "geometry": { "type": "Point", "coordinates": [82.691345, 25.180088] },
-      "properties": {
-        "layer": "Towns & villages",
-        "name": "Payāga / Payāgatiṭṭha / Payāgapatiṭṭhāna",
-        "icon": "question",
-        "id": "payāga",
-        "define": "payāga"
-      }
-    },
-    {
-      "type": "Feature",
       "geometry": { "type": "Point", "coordinates": [84.09827, 26.146795] },
       "properties": {
         "layer": "Towns & villages",
