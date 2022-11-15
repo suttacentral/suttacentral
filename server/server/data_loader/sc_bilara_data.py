@@ -8,6 +8,7 @@ from data_loader.languages import process_languages
 from data_loader.util import json_load
 import shutil
 
+
 def load_publications(db: Database, sc_bilara_data_dir: Path) -> None:
     publication_file = sc_bilara_data_dir / '_publication.json'
     publications: Dict[str, dict] = json_load(publication_file)
@@ -17,6 +18,7 @@ def load_publications(db: Database, sc_bilara_data_dir: Path) -> None:
     print(f'{len(docs)} publications added or updated')
     db['publications'].truncate()
     db['publications'].import_bulk(docs)
+
 
 def load_publication_editions(db: Database, sc_bilara_data_dir: Path) -> None:
     publications_file = sc_bilara_data_dir / '_publication-v2.json'
@@ -44,6 +46,7 @@ def load_publication_editions(db: Database, sc_bilara_data_dir: Path) -> None:
     db['publication_editions'].truncate()
     db['publication_editions'].import_bulk(docs)
 
+
 def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
     blurbs = []
     pattern = r'^.*?:(.*?)$'
@@ -61,18 +64,18 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
                 'blurb': blurb
             })
 
-    check_val  = set()
-    res = []
-    for i in blurbs:
-        if i["_key"] not in check_val:
-            res.append(i)
-            check_val.add(i["_key"])
+    unique_keys = set()
+    valid_blurbs = []
+    for blurb_item in blurbs:
+        if blurb_item["_key"] not in unique_keys:
+            valid_blurbs.append(blurb_item)
+            unique_keys.add(blurb_item["_key"])
         else:
-            print(f'Duplicate key value：{i["_key"]}')
+            print(f'Duplicate key value：{blurb_item["_key"]}')
 
-    print(f'{len(res)} blurbs added or updated')
+    print(f'{len(valid_blurbs)} blurbs added or updated')
     db['blurbs'].truncate()
-    db['blurbs'].import_bulk_logged(res)
+    db['blurbs'].import_bulk_logged(valid_blurbs)
 
 
 def parse_name_file_content(
@@ -113,31 +116,30 @@ def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> 
         file_content: Dict[str, str] = json_load(name_file)
         names.extend(parse_name_file_content(file_content, is_root, lang, languages))
 
-    check_val  = set()
-    res = []
-    for i in names:
-        if i["_key"] not in check_val:
-            res.append(i)
-            check_val.add(i["_key"])
+    unique_keys = set()
+    valid_names = []
+    for name_item in names:
+        if name_item["_key"] not in unique_keys:
+            valid_names.append(name_item)
+            unique_keys.add(name_item["_key"])
         else:
-            print(f'Duplicate key value：{i["_key"]}')
+            print(f'Duplicate key value：{name_item["_key"]}')
 
-    print(f'{len(res)} names added or updated')
+    print(f'{len(valid_names)} names added or updated')
     db['names'].truncate()
-    db['names'].import_bulk_logged(res)
+    db['names'].import_bulk_logged(valid_names)
 
 
 def load_super_names_root_misc_site(db: Database, sc_bilara_data_dir: Path):
     file_content = json_load(sc_bilara_data_dir / 'root/misc/site/name/super-name_root-misc-site.json')
-    names = []
-    for name in file_content.items():
-        names.append({
-            'uid': name[0].replace('super-name:', '').split('.')[1],
-            'type': 'misc',
-            'name': name[1],
-        })
+    names = [{
+        'uid': name[0].replace('super-name:', '').split('.')[1],
+        'type': 'misc',
+        'name': name[1]
+    } for name in file_content.items()]
     db['super_name'].truncate()
     db['super_name'].import_bulk_logged(names)
+
 
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
@@ -145,7 +147,7 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
 
     folders: List[Path] = {folder for folder in sc_bilara_data_dir.glob('*') 
                            if not folder.name.startswith(('_', '.')) and not folder.name in {'name', 'blurb'}}
-    
+
     files: List[Path] = []
     for folder in folders:
         files.extend(file for file in folder.glob('**/*.json') if not file.name.startswith(('_', '.')))
@@ -161,18 +163,18 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
             'file_path': str(file.resolve())
         })
 
-    check_val  = set()
-    res = []
-    for i in docs:
-        if i["_key"] not in check_val:
-            res.append(i)
-            check_val.add(i["_key"])
+    unique_keys = set()
+    valid_texts = []
+    for text_item in docs:
+        if text_item["_key"] not in unique_keys:
+            valid_texts.append(text_item)
+            unique_keys.add(text_item["_key"])
         else:
-            print(f'Duplicate key value：{i["_key"]}')
+            print(f'Duplicate key value：{text_item["_key"]}')
 
-    print(f'{len(res)} texts added or updated')
+    print(f'{len(valid_texts)} texts added or updated')
     db['sc_bilara_texts'].truncate()
-    db['sc_bilara_texts'].import_bulk(res)
+    db['sc_bilara_texts'].import_bulk(valid_texts)
 
 
 def load_bilara_author_edition(db: Database, sc_bilara_data_dir: Path) -> None:
@@ -182,35 +184,25 @@ def load_bilara_author_edition(db: Database, sc_bilara_data_dir: Path) -> None:
     db.collection('bilara_author_edition').import_bulk_logged(docs, wipe=True)
 
 
-def load_bilara_author(db: Database, sc_bilara_data_dir: Path) -> None:
+def load_bilara_author(db: Database, sc_bilara_data_dir: Path) -> List[dict]:
     author_file = sc_bilara_data_dir / '_author.json'
     authors: Dict[str, dict] = json_load(author_file)
 
-    docs = []
-    for key, value in authors.items():
-        docs.append({
-            'type': 'author',
-            'uid': key,
-            'short_name': key,
-            'long_name': value['name']
-        })
-
-    return docs
+    return [{
+        'type': 'author',
+        'uid': key,
+        'short_name': key,
+        'long_name': value['name']
+    } for key, value in authors.items()]
 
 
-def load_bilara_edition(db: Database, sc_bilara_data_dir: Path) -> None:
+def load_bilara_edition(db: Database, sc_bilara_data_dir: Path) -> List[dict]:
     edition_file = sc_bilara_data_dir / '_edition.json'
     editions: Dict[str, dict] = json_load(edition_file)
 
-    docs = []
-    for key, value in editions.items():
-        docs.append({
-            'type': 'edition',
-            'uid': key,
-            'language': value['language'],
-            'is_root': value['is_root']
-        })
-
-    return docs
-
-
+    return [{
+        'type': 'edition',
+        'uid': key,
+        'language': value['language'],
+        'is_root': value['is_root']
+    } for key, value in editions.items()]

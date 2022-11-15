@@ -180,7 +180,7 @@ class TranslationCountByLanguage(Resource):
 
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
-        '''
+        """
         responses:
             200:
                 description: Summary of translation counts by language
@@ -205,7 +205,7 @@ class TranslationCountByLanguage(Resource):
                         type: string
                     total:
                         type: number
-        '''
+        """
 
         db = get_db()
 
@@ -269,11 +269,9 @@ class Menu(Resource):
 
         if submenu_id:
             bind_vars['submenu_id'] = submenu_id
-            data = list(db.aql.execute(SUBMENU, bind_vars=bind_vars))
+            return list(db.aql.execute(SUBMENU, bind_vars=bind_vars))
         else:
-            data = list(db.aql.execute(MENU, bind_vars=bind_vars))
-
-        return data
+            return list(db.aql.execute(MENU, bind_vars=bind_vars))
 
 
 class TipitakaMenu(Resource):
@@ -381,7 +379,7 @@ class SuttaplexList(Resource):
                 except KeyError:
                     parent['children'] = [result]
 
-            if  result['translated_title'] == '':
+            if result['translated_title'] == '':
                 translation_text_file = db.aql.execute(
                     SEGMENTED_TRANSLATION_TEXT,
                     bind_vars={'uid': result['uid'], 'language': language}
@@ -456,40 +454,7 @@ class RangeSuttaplexList(Resource):
         )
         uid = uid.replace('/', '-').strip('-')
         db = get_db()
-        if uid[0:3].lower() == 'dhp' and uid.count('-') == 0:
-            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
-            for child in vaggaChildren:
-                if child.count('-'):
-                    secondPart = uid.strip('dhp')
-                    childRange = child.strip('dhp')
-                    range_begin = childRange[:childRange.find('-')]
-                    range_end = childRange[childRange.find('-')+1:]
-                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
-                        # range_uid = child
-                        results = db.aql.execute(
-                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child}
-                        )
-        elif uid.count('.') == 1 and uid.count('-') == 0:
-            firstPart = uid[:uid.find('.')]
-            secondPart = uid[uid.find('.') + 1:]
-            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': firstPart}))
-            for child in vaggaChildren:
-                if child.count('-'):
-                    childRange = child[child.find('.')+1:]
-                    range_begin = childRange[:childRange.find('-')]
-                    range_end = childRange[childRange.find('-')+1:]
-                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
-                        results = db.aql.execute(
-                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child}
-                        )
-        elif uid != 'pli-tv-bi-vb-sk1-75' and uid[0:15] == 'pli-tv-bi-vb-sk':
-            results = db.aql.execute(
-                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': 'pli-tv-bi-vb-sk1-75'}
-            )
-        else:
-            results = db.aql.execute(
-                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
-            )
+        results = self.get_suttaplex_list_by_uid(db, language, uid)
 
         difficulties = {3: 'advanced', 2: 'intermediate', 1: 'beginner'}
 
@@ -512,7 +477,7 @@ class RangeSuttaplexList(Resource):
             result['translations'] = sorted(
                 result['translations'], key=language_sort(result['root_lang'])
             )
-            if uid[0:3].lower() == 'dhp':
+            if uid[:3].lower() == 'dhp':
                 result['title'] = uid.replace('dhp', 'Dhammapada ')
             else:
                 result['title'] = uid
@@ -526,6 +491,42 @@ class RangeSuttaplexList(Resource):
         data = flat_tree(data)
 
         return data, 200
+
+    def get_suttaplex_list_by_uid(self, db, language, uid):
+        if uid[:3].lower() == 'dhp' and uid.count('-') == 0:
+            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
+            for child_uid in vagga_children_uids:
+                if child_uid.count('-'):
+                    sutta_number = uid.strip('dhp')
+                    child_range = child_uid.strip('dhp')
+                    range_begin = child_range[:child_range.find('-')]
+                    range_end = child_range[child_range.find('-') + 1:]
+                    if int(range_begin) <= int(sutta_number) <= int(range_end):
+                        results = db.aql.execute(
+                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child_uid}
+                        )
+        elif uid.count('.') == 1 and uid.count('-') == 0:
+            vagga_uid = uid[:uid.find('.')]
+            sutta_number = uid[uid.find('.') + 1:]
+            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': vagga_uid}))
+            for child_uid in vagga_children_uids:
+                if child_uid.count('-'):
+                    child_range = child_uid[child_uid.find('.') + 1:]
+                    range_begin = child_range[:child_range.find('-')]
+                    range_end = child_range[child_range.find('-') + 1:]
+                    if int(range_begin) <= int(sutta_number) <= int(range_end):
+                        results = db.aql.execute(
+                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child_uid}
+                        )
+        elif uid != 'pli-tv-bi-vb-sk1-75' and uid[:15] == 'pli-tv-bi-vb-sk':
+            results = db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': 'pli-tv-bi-vb-sk1-75'}
+            )
+        else:
+            results = db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
+            )
+        return results
 
 
 class Parallels(Resource):
@@ -619,6 +620,7 @@ class ParallelsLite(Resource):
         data = db.aql.execute(PARALLELS_LITE, bind_vars={'uid': uid})
         return list(data), 200
 
+
 class Sutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
@@ -698,7 +700,7 @@ class Sutta(Resource):
 
         """
         lang = request.args.get('lang', 'en')
-        siteLang = request.args.get('siteLanguage', 'en')
+        site_lang = request.args.get('siteLanguage', 'en')
 
         db = get_db()
 
@@ -710,51 +712,46 @@ class Sutta(Resource):
         result = results.next()
 
         if result['root_text'] is None and result['translation'] is None and uid.count('.') == 1:
-            firstPart = uid[:uid.find('.')]
-            secondPart = uid[uid.find('.') + 1:]
-            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': firstPart}))
-            for child in vaggaChildren:
-                if child.count('-'):
-                    childRange = child[child.find('.')+1:]
-                    range_begin = childRange[:childRange.find('-')]
-                    range_end = childRange[childRange.find('-')+1:]
-                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
-                        results = db.aql.execute(
-                            SUTTA_VIEW,
-                            bind_vars={'uid': child, 'language': lang, 'author_uid': author_uid},
-                        )
-                        result = results.next()
-                        result['range_uid'] = child
-                        result['vaggaBegin'] = vaggaChildren[0]
-                        result['vaggaEnd'] = vaggaChildren[-1]
+            vagga_uid = uid[:uid.find('.')]
+            sutta_number = uid[uid.find('.') + 1:]
+            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': vagga_uid}))
+            for child_uid in vagga_children_uids:
+                if child_uid.count('-'):
+                    child_range = child_uid[child_uid.find('.')+1:]
+                    result = self.get_sutta_view(author_uid, child_range, child_uid, db, lang, result, sutta_number,
+                                                 vagga_children_uids)
 
-        if result['root_text'] is None and result['translation'] is None and uid[0:3].lower() == 'dhp':
-            vaggaChildren = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
-            for child in vaggaChildren:
-                if child.count('-'):
-                    secondPart = uid.strip('dhp')
-                    childRange = child.strip('dhp')
-                    range_begin = childRange[:childRange.find('-')]
-                    range_end = childRange[childRange.find('-')+1:]
-                    if int(secondPart) >= int(range_begin) and int(secondPart) <= int(range_end):
-                        results = db.aql.execute(
-                            SUTTA_VIEW,
-                            bind_vars={'uid': child, 'language': lang, 'author_uid': author_uid},
-                        )
-                        result = results.next()
-                        result['range_uid'] = child
-                        result['vaggaBegin'] = vaggaChildren[0]
-                        result['vaggaEnd'] = vaggaChildren[-1]
+        if result['root_text'] is None and result['translation'] is None and uid[:3].lower() == 'dhp':
+            sutta_number = uid.strip('dhp')
+            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
+            for child_uid in vagga_children_uids:
+                if child_uid.count('-'):
+                    child_range = child_uid.strip('dhp')
+                    result = self.get_sutta_view(author_uid, child_range, child_uid, db, lang, result, sutta_number,
+                                                 vagga_children_uids)
 
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):
-            doc = result[k]
-            if doc:
+            if doc := result[k]:
                 self.convert_paths_to_content(doc)
-                self.calculate_sutta_neighbors(uid, doc, k, siteLang)
+                self.calculate_sutta_neighbors(uid, doc, k, site_lang)
 
-        self.get_candidate_authors(uid, author_uid, siteLang, result)
+        self.get_candidate_authors(uid, author_uid, site_lang, result)
         return result, 200
+
+    def get_sutta_view(self, author_uid, child_range, child_uid, db, lang, result, sutta_number, vagga_children_uids):
+        range_begin = child_range[:child_range.find('-')]
+        range_end = child_range[child_range.find('-') + 1:]
+        if int(range_begin) <= int(sutta_number) <= int(range_end):
+            results = db.aql.execute(
+                SUTTA_VIEW,
+                bind_vars={'uid': child_uid, 'language': lang, 'author_uid': author_uid},
+            )
+            result = results.next()
+            result['range_uid'] = child_uid
+            result['vaggaBegin'] = vagga_children_uids[0]
+            result['vaggaEnd'] = vagga_children_uids[-1]
+        return result
 
     @staticmethod
     def convert_paths_to_content(doc):
@@ -774,7 +771,7 @@ class Sutta(Resource):
                         doc[to_prop] = load_func(f)
 
     @staticmethod
-    def calculate_sutta_neighbors(uid, doc, textType, siteLang):
+    def calculate_sutta_neighbors(uid, doc, text_type, site_lang):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
 
@@ -792,7 +789,7 @@ class Sutta(Resource):
             doc['next']['uid'] = sutta_prev_next.get('next_uid', '')
 
         for k, v in sutta_prev_next.items():
-            name_result = list(db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': siteLang}))
+            name_result = list(db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': site_lang}))
             if k == 'next_uid' and doc['next']:
                 doc['next']['name'] = name_result[0]
             elif k == 'prev_uid' and doc['previous']:
@@ -821,9 +818,7 @@ class SegmentedSutta(Resource):
             return {'msg': 'Not Found'}, 200
 
         data = {k: json_load(v) for k, v in result.items()}
-        data.update({
-            'keys_order': list(data['html_text'].keys())
-        })
+        data['keys_order'] = list(data['html_text'].keys())
 
         return data, 200
 
@@ -1242,23 +1237,20 @@ class PaliReferenceEdition(Resource):
     def get(self):
         db = get_db()
         pali_references = list(db.aql.execute(SUTTA_PALI_REFERENCE))
-        if not pali_references:
-            return {'error': 'Not Found'}, 404
-        return pali_references
+        return pali_references or ({'error': 'Not Found'}, 404)
 
 
 class PublicationInfo(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self, uid, lang, authorUid):
+    def get(self, uid, lang, author_uid):
         db = get_db()
         publication_info = None
         if lang == 'pli':
             publication_info = list(db.aql.execute(PLI_SUTTA_PUBLICATION_INFO))
         else:
-            publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang, 'authorUid': authorUid}))
-        if not publication_info:
-            return {'error': 'Not Found'}, 404
-        return publication_info
+            publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang, 'authorUid': author_uid}))
+        return publication_info or ({'error': 'Not Found'}, 404)
+
 
 class AvailableVoices(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
@@ -1267,6 +1259,7 @@ class AvailableVoices(Resource):
         data = list(db.aql.execute(AVAILABLE_VOICES, bind_vars={'uid': uid}))
         return data, 200
 
+
 class RootEdition(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
@@ -1274,12 +1267,14 @@ class RootEdition(Resource):
         data = db.collection('root_edition').all()
         return list(data), 200
 
+
 class Guides(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
         data = db.collection('guides').all()
         return list(data), 200
+
 
 class Shortcuts(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
