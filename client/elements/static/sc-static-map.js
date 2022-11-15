@@ -8,12 +8,11 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import '../sc-map';
 import { icon } from '../../img/sc-icon';
 
-// TODO: page seems to display wrong breadcrumbs when viewed
-
 export class SCStaticMap extends SCStaticPage {
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/map';
+    this.localizedStringsPath = '/localization/elements/static-map';
+
     this.features = [];
     this._fetchData().then(
       data => (this.features = this._sortObjectsByStringKey(data.features, o => o.properties.name))
@@ -113,18 +112,10 @@ export class SCStaticMap extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>SuttaCentral Map</h1>
+          <h1>${unsafeHTML(this.localize('static-map:1'))}</h1>
           <sc-map id="map"></sc-map>
-          <div class="columns">
-            <div class="column">
-              <h2>${unsafeHTML(this.localize('map:1'))}</h2>
-              ${this._geometryTypeList('Point', this._pointLabelFn)}
-            </div>
-            <div class="column">
-              <h2>${unsafeHTML(this.localize('map:2'))}</h2>
-              ${this._geometryTypeList('Polygon', this._polygonLabelFn)}
-            </div>
-          </div>
+          <h2>${unsafeHTML(this.localize('static-map:2'))}</h2>
+          <div class="columns">${this._featuresList()}</div>
         </article>
       </main>
     `;

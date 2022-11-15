@@ -2,6 +2,7 @@ import { LitElement, html, css, unsafeCSS } from 'lit';
 import 'leaflet';
 import leafletStyles from 'leaflet/dist/leaflet.css';
 import 'leaflet-fullscreen';
+import leafletFullscreenStyles from 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { icon } from '../img/sc-icon';
@@ -22,10 +23,13 @@ export class SCMap extends LitLocalized(LitElement) {
 
     this.mapElementID = 'map';
     this.idToLayer = {};
+
+    this.localizedStringsPath = '/localization/elements/map';
   }
 
   static styles = [
     unsafeCSS(leafletStyles),
+    unsafeCSS(leafletFullscreenStyles),
     css`
       :host {
         display: block;
@@ -35,6 +39,10 @@ export class SCMap extends LitLocalized(LitElement) {
       #map {
         height: 480px;
         z-index: 0;
+      }
+
+      #map.leaflet-pseudo-fullscreen {
+        z-index: 1000 !important;
       }
 
       .marker-active svg path {
@@ -67,7 +75,15 @@ export class SCMap extends LitLocalized(LitElement) {
     // Alternative layers:
     // https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}
 
-    this.map.addControl(new L.Control.Fullscreen());
+    this.map.addControl(
+      new L.Control.Fullscreen({
+        pseudoFullscreen: true,
+        title: {
+          false: this.localize('map:1'),
+          true: this.localize('map:2'),
+        },
+      })
+    );
 
     this._fetchData().then(data => {
       this.map.addControl(
