@@ -11,16 +11,16 @@ import { icon } from '../img/sc-icon';
 
 L.Control.StaticMapButton = L.Control.extend({
   options: {
+    title: undefined,
     position: 'topright',
   },
-  onAdd: function (map) {
+  onAdd: function () {
     let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control static-map-button');
 
     this.link = L.DomUtil.create('a', 'leaflet-bar-part static-map-button-link', container);
     this.link.href = '#';
     this.link.setAttribute('role', 'button');
-    this.link.title = 'Go to map page';
-    // this.link.title = this.localize('map:3'); // TODO: how to get this.localize?
+    this.link.title = this.options.title;
 
     this.icon = L.DomUtil.create('span', 'static-map-button-icon', this.link);
     render(icon.map, this.icon);
@@ -141,7 +141,7 @@ export class SCMap extends LitLocalized(LitElement) {
     );
 
     if (!this.hideStaticMapButton) {
-      this.map.addControl(new L.Control.StaticMapButton());
+      this.map.addControl(new L.Control.StaticMapButton({ title: this.localize('map:3') }));
     }
 
     mapData.then(({ geoJSON, layerNames }) => {
