@@ -90,7 +90,7 @@ export class SCStaticMap extends SCStaticPage {
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('static-map:1'))}</h1>
-          <sc-map id="map"></sc-map>
+          <sc-map id="map" hide-static-map-button></sc-map>
           <h2>${unsafeHTML(this.localize('static-map:2'))}</h2>
           <div class="columns">${this._featuresList()}</div>
         </article>

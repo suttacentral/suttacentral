@@ -1,12 +1,43 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, css, unsafeCSS, render } from 'lit';
 import 'leaflet';
 import leafletStyles from 'leaflet/dist/leaflet.css';
 import 'leaflet-fullscreen';
 import leafletFullscreenStyles from 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
+import { dispatchCustomEvent } from '../utils/customEvent';
 import mapData from '../utils/mapData';
 import { icon } from '../img/sc-icon';
+
+L.Control.StaticMapButton = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control static-map-button');
+
+    this.link = L.DomUtil.create('a', 'leaflet-bar-part static-map-button-link', container);
+    this.link.href = '#';
+    this.link.setAttribute('role', 'button');
+    this.link.title = 'Go to map page';
+    // this.link.title = this.localize('map:3'); // TODO: how to get this.localize?
+
+    this.icon = L.DomUtil.create('span', 'static-map-button-icon', this.link);
+    render(icon.map, this.icon);
+
+    L.DomEvent.on(
+      this.link,
+      'click',
+      e =>
+        dispatchCustomEvent(e.target, 'sc-navigate', {
+          pathname: `/map`,
+        }),
+      this
+    );
+
+    return container;
+  },
+});
 
 export class SCMap extends LitLocalized(LitElement) {
   static properties = {
@@ -14,12 +45,14 @@ export class SCMap extends LitLocalized(LitElement) {
     longitude: { type: Number },
     latitude: { type: Number },
     zoom: { type: Number },
+    hideStaticMapButton: { type: Boolean, attribute: 'hide-static-map-button' },
   };
 
   constructor() {
     super();
 
     this.zoom = 13;
+    this.hideStaticMapButton = false;
     this.markerScale = 3;
 
     this.mapElementID = 'map';
@@ -60,6 +93,27 @@ export class SCMap extends LitLocalized(LitElement) {
       .moving-leaflet-popup .leaflet-popup-tip {
         pointer-events: none;
       }
+
+      .static-map-button {
+        width: 44px;
+        height: 44px;
+      }
+
+      .static-map-button-link {
+        width: 44px !important;
+        height: 44px !important;
+      }
+
+      .static-map-button svg {
+        width: 28px;
+        height: 28px;
+        margin: 8px;
+        filter: invert() brightness(50%);
+      }
+
+      .static-map-button:hover svg {
+        filter: none;
+      }
     `,
   ];
 
@@ -85,6 +139,10 @@ export class SCMap extends LitLocalized(LitElement) {
         },
       })
     );
+
+    if (!this.hideStaticMapButton) {
+      this.map.addControl(new L.Control.StaticMapButton());
+    }
 
     mapData.then(({ geoJSON, layerNames }) => {
       this.map.addControl(
