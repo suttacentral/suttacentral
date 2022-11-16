@@ -199,7 +199,9 @@ export class SCMap extends LitLocalized(LitElement) {
           })
           .on('click', () => {
             if (feature.properties.define)
-              window.location.href = `/define/${feature.properties.define}`;
+              dispatchCustomEvent(this, 'sc-navigate', {
+                pathname: `/define/${feature.properties.define}`,
+              });
           });
       },
       pointToLayer: (feature, latlng) =>
