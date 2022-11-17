@@ -1525,9 +1525,7 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
 ACRONYM_IS_NULL_UIDS = '''
 FOR doc IN super_nav_details
     FILTER doc.type == 'leaf' AND doc.acronym == null
-    RETURN {
-        uid: doc.uid
-    }
+    RETURN doc.uid
 '''
 
 SINGLE_ROOT_TEXT = '''
