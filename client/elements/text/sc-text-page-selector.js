@@ -9,6 +9,7 @@ import '../addons/sc-error-icon';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { isFallenLeaf } from '../../utils/sc-structure';
 
 import { RefreshNavNew } from '../navigation/sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -58,6 +59,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.authorUid = store.getState().currentRoute.params.authorUid;
     this.suttaId = store.getState().currentRoute.params.suttaId;
     this.SuttaParallelsDisplayed = false;
+    this.#redirectWhenSuttaIsFallenLeaf();
   }
 
   createRenderRoot() {
@@ -671,6 +673,12 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
         composed: true,
       })
     );
+  }
+
+  #redirectWhenSuttaIsFallenLeaf() {
+    if (isFallenLeaf(this.suttaId)) {
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.suttaId}` });
+    }
   }
 }
 

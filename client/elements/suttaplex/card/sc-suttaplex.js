@@ -32,6 +32,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     isSuttaInRangeSutta: { type: Boolean },
     inRangeSuttaId: { type: String },
     priorityAuthorUid: { type: String },
+    isFallenLeaf: { type: Boolean },
   };
 
   constructor() {
@@ -237,18 +238,52 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               `}
             `
           : ''}
-        ${!this.isPatimokkhaDetails ? this.userLanguageTranslationsTemplate : ''}
+        ${this.#shouldShowUserLangTranslations() ? this.userLanguageTranslationsTemplate : ''}
         ${!this.isCompact
           ? html`
-              ${!this.isPatimokkhaDetails ? this.rootTextsTemplate : ''}
-              ${!this.isPatimokkhaDetails ? this.modernLanguageTranslationsTemplate : ''}
-              ${(this.isPatimokkha && !this.isPatimokkhaDetails) || this.isSuttaInRangeSutta
-                ? ''
-                : this.parallelsTemplate}
+              ${this.#shouldShowRootTexts() ? this.rootTextsTemplate : ''}
+              ${this.#shouldShowModernLangTranslations()
+                ? this.modernLanguageTranslationsTemplate
+                : ''}
+              ${this.#shouldHideParallels() ? '' : this.parallelsTemplate}
             `
           : ''}
+        ${this.isCompact && this.isFallenLeaf ? this.parallelsTemplate : ''}
       </article>
     `;
+  }
+
+  #isFallenLeafRangeSutta(uid, hasFallenLeaves) {
+    const lastDash = uid.lastIndexOf('-');
+    if (lastDash !== -1) {
+      const lastDashLeft = uid.substring(lastDash - 1, lastDash);
+      const lastDashRight = uid.substring(lastDash + 1, lastDash + 2);
+      const isLastDashDigits = !isNaN(lastDashLeft) && !isNaN(lastDashRight);
+      if (hasFallenLeaves && isLastDashDigits) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  #shouldShowUserLangTranslations() {
+    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+  }
+
+  #shouldShowRootTexts() {
+    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+  }
+
+  #shouldShowModernLangTranslations() {
+    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+  }
+
+  #shouldHideParallels() {
+    return (
+      (this.isPatimokkha && !this.isPatimokkhaDetails) ||
+      this.isSuttaInRangeSutta ||
+      this.#isFallenLeafRangeSutta(this.item.uid, this.item.hasFallenLeaves)
+    );
   }
 
   get topRowIconsTemplate() {
@@ -484,7 +519,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     const availableVoice = fetch(voiceApi).then(r => r.json());
     const voices = await availableVoice;
     if (voices?.length > 0) {
-      // eslint-disable-next-line no-restricted-syntax
       for (const voice of Object.keys(voices[0].voices)) {
         const voiceInfo = voice.split('/');
         if (!voiceInfo.includes('root') && !voiceInfo.includes('vinaya')) {

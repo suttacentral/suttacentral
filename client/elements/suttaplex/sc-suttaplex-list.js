@@ -1,9 +1,11 @@
 import { html, LitElement } from 'lit';
 import { cache } from 'lit/directives/cache.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
+import { isFallenLeaf } from '../../utils/sc-structure';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
@@ -194,6 +196,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this.rangeCategoryId = responseData[0].uid;
       }
       this.priorityAuthorUid = responseData[0].priority_author_uid;
+      await this.#addFallenLeavesToSuttaplexList(responseData[0].uid, responseData);
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -208,6 +211,31 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
     this.suttaplexLoading = false;
     this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
+  }
+
+  async #addFallenLeavesToSuttaplexList(categoryId, suttaPlexList) {
+    const firstAcronym = this.#getFirstAcronymFromSuttaPlexList(suttaPlexList);
+    const parentAcronym = firstAcronym.slice(0, firstAcronym.lastIndexOf(' ')) || this.categoryId;
+    try {
+      const responseData = await fetch(`${API_ROOT}/fallen_leaves_suttaplex/${this.categoryId}?language=${this.language}`).then(r => r.json());
+      suttaPlexList.push(...responseData);
+      for (const suttaPlex of suttaPlexList) {
+        suttaPlex.hasFallenLeaves = true;
+        suttaPlex.index = parseInt(suttaPlex.uid?.replaceAll(this.categoryId, ''), 10);
+        suttaPlex.acronym = `${parentAcronym} ${suttaPlex.uid?.replaceAll(this.categoryId, '')}`;
+      }
+      suttaPlexList.sort((a, b) => a.index - b.index);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  #getFirstAcronymFromSuttaPlexList(suttaPlexList) {
+    if (!suttaPlexList) return '';
+    for (const suttaPlex of suttaPlexList) {
+      if (suttaPlex.acronym) return suttaPlex.acronym;
+    }
+    return '';
   }
 
   _updateMetaData() {
@@ -257,7 +285,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       await fetch(`${API_ROOT}/parallels_lite/${this.categoryId}`)
     ).json();
     this.parallelsLite = [];
-    // eslint-disable-next-line no-restricted-syntax
     for (const item of this.suttaplexItem) {
       if (item.parallels?.length === 0) {
         this.parallelsLite.push({
@@ -277,13 +304,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           if (parallels) {
             parallels.to.push({
               to: parallel.to.to,
-              toTitle: parallel.to.to
-                ? parallel.to.to
-                    .replaceAll('#', ':')
-                    .replaceAll('-:', '-')
-                    .replaceAll('~', '')
-                    .replaceAll('-', '–')
-                : '',
+              toTitle: parallel.to.to ? this.#formatParallelToTitle(parallel.to.to) : '',
               uid: parallel.to.uid,
               acronym: parallel.to.acronym
                 ? parallel.to.acronym
@@ -294,22 +315,14 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
             this.parallelsLite.push({
               uid: item.uid,
               from: parallel.from,
-              fromTitle: parallel.from
-                ? parallel.from?.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–')
-                : '',
+              fromTitle: parallel.from ? this.#formatParallelFromTitle(parallel.from) : '',
               name: item.name,
               acronym: item.acronym,
               original_root: item.original_root,
               to: [
                 {
                   to: parallel.to.to,
-                  toTitle: parallel.to.to
-                    ? parallel.to.to
-                        .replaceAll('#', ':')
-                        .replaceAll('-:', '-')
-                        .replaceAll('~', '')
-                        .replaceAll('-', '–')
-                    : '',
+                  toTitle: parallel.to.to ? this.#formatParallelToTitle(parallel.to.to) : '',
                   uid: parallel.to.uid,
                   acronym: parallel.to.acronym
                     ? parallel.to.acronym
@@ -322,6 +335,18 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         }
       }
     }
+  }
+
+  #formatParallelFromTitle(parallelFromTitle) {
+    return parallelFromTitle?.replaceAll('#', ':').replaceAll('-:', '-').replaceAll('-', '–');
+  }
+
+  #formatParallelToTitle(parallelToTitle) {
+    return parallelToTitle
+      .replaceAll('#', ':')
+      .replaceAll('-:', '-')
+      .replaceAll('~', '')
+      .replaceAll('-', '–');
   }
 
   suttaplexTemplate(item) {
@@ -337,7 +362,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
         .inRangeSuttaId=${this.categoryId}
         .priorityAuthorUid=${this.priorityAuthorUid}
-        class=${this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : ''}
+        .isFallenLeaf=${isFallenLeaf(item.uid)}
+        class=${ifDefined(
+          this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : undefined
+        )}
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
         ? html`
@@ -519,6 +547,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           item => item.key,
           item =>
             this.isSuttaplex(item) ||
+            isFallenLeaf(item.uid) ||
             (this.isPatimokkha() && !this.isPatimokkhaRuleCategory(item.uid))
               ? this.suttaplexTemplate(item)
               : this.sectionTemplate(item)

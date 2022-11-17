@@ -191,13 +191,11 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   _computeCopyTable() {
     const head = `<!DOCTYPE>\n<html>\n<head>\n  <title>${this.item.uid} ${this.item.original_title}</title>\n</head>\n`;
     let body = `<body>\n<table>\n  <caption>${this.item.original_title}</caption>\n`;
-    // eslint-disable-next-line no-restricted-syntax
     for (const section of Object.keys(this.parallels)) {
       let tbody = '<tbody>\n';
       const size = this.parallels[section].length;
       let first = true;
       let tr = '';
-      // eslint-disable-next-line no-restricted-syntax
       for (const parallel of this.parallels[section]) {
         tr = '  <tr>\n';
         if (first) {
@@ -218,7 +216,6 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
 
   _computeCiteData() {
     let result = '';
-    // eslint-disable-next-line no-restricted-syntax
     for (const section of Object.keys(this.parallels)) {
       const acronymUid = this._generateAcronymUid(this.item.acronym, section);
       result += `Parallels for ${acronymUid} ${this.item.original_title} `;
@@ -226,7 +223,6 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
       result += volpages ? `(${volpages})` : '';
       result = this._strip(result, ' ');
       result += ': ';
-      // eslint-disable-next-line no-restricted-syntax
       for (const parallel of this.parallels[section]) {
         result += this._generateAcronymUid(parallel.to.acronym, parallel.to.to);
         result += ' ';
