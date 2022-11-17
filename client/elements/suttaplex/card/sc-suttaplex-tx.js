@@ -17,28 +17,30 @@ export class SCSuttaplexTx extends LitElement {
     if (this.isSuttaInRangeSutta && this.translation.segmented && this.inRangeSuttaId) {
       return `/${this.inRangeSuttaId}/${this.translation.lang}/${this.translation.author_uid}`;
     }
-    return `/${this.item.uid}/${this.translation.lang}/${this.translation.author_uid}`;
+    return `/${this.item.uid}/${this.translation?.lang || 'en'}/${this.translation?.author_uid}`;
   }
 
   static styles = [suttaplexTxCss];
 
   render() {
-    return html`
-      <a href=${this.translationUrl} class="tx ${this.isCompact ? 'compact' : ''}">
-        ${icon.translation}
-        <div class="tx-details">
-          <span class="tx-creator">${this.translation.author}</span>
-          <span class="tx-publication">
-            ${this.isRoot ? this.item.root_lang_name : ''}
-            ${!this.isRoot && this.translation.segmented
-              ? `${this.translation.lang_name} & ${this.item.root_lang_name}`
-              : ''}
-            ${!this.isRoot && !this.translation.segmented ? this.translation.lang_name : ''}
-            ${this.translation.publication_date ? this.translation.publication_date : ''}
-          </span>
-        </div>
-      </a>
-    `;
+    return this.translation
+      ? html`
+          <a href=${this.translationUrl} class="tx ${this.isCompact ? 'compact' : ''}">
+            ${icon.translation}
+            <div class="tx-details">
+              <span class="tx-creator">${this.translation?.author}</span>
+              <span class="tx-publication">
+                ${this.isRoot ? this.item.root_lang_name : ''}
+                ${!this.isRoot && this.translation?.segmented
+                  ? `${this.translation?.lang_name} & ${this.item.root_lang_name}`
+                  : ''}
+                ${!this.isRoot && !this.translation?.segmented ? this.translation?.lang_name : ''}
+                ${this.translation?.publication_date ? this.translation?.publication_date : ''}
+              </span>
+            </div>
+          </a>
+        `
+      : '';
   }
 }
 

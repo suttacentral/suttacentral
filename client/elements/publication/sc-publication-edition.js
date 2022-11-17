@@ -25,7 +25,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     css`
       :host {
         display: block;
-      }`
+      }
+    `,
   ];
 
   constructor() {
@@ -127,12 +128,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           return;
         }
         this.editions = [];
-        // eslint-disable-next-line no-restricted-syntax
         for (const edition of this.allEditions) {
           if (edition.edition_id.substring(0, 9) === 'pli-tv-vi') {
             edition.uid = 'pli-tv-vi';
           } else {
-            // eslint-disable-next-line prefer-destructuring
             edition.uid = edition.edition_id.split('-')[0];
           }
         }
@@ -171,7 +170,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   async _fetchCreatorBio() {
     try {
       this.creatorBio = await (await fetch(`${API_ROOT}/creator_bio`)).json();
-      // eslint-disable-next-line no-restricted-syntax
       for (const creator of this.creatorBio) {
         if (this.editionId.includes(creator.creator_uid)) {
           this.creatorInfo = creator;
@@ -262,9 +260,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               </tr>
                             <tr>
                 <td>${icon.web} Web</td>
-                <td><a href=${this.collectionURL.get(this.editionUid)} class='internal'>${
-      icon.translation
-    } Read on SuttaCentral</a></td>
+                <td>
+                  <a href=${this.collectionURL.get(this.editionUid)} class='internal'>${icon.translation} Read on SuttaCentral</a>
+                </td>
               </tr>
               </tbody>
               <tfoot>
@@ -301,17 +299,19 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               <dt class="license">License</dt>
               <dd>
                 <p>${this.editionInfo.publication.license_statement}</p>
-                <a rel="license" href="${this.editionInfo.publication.license_url}">
-                  <p
-                    xmlns:dct="https://purl.org/dc/terms/" xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#"
-                      <img src='/img/publication-pages/cc-zero.svg' alt='CC0' /><span><strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.
-                      </strong><br>To the extent possible under law, <span property='dct:title'>${
-                        this.editionInfo.publication.creator_name
-                      }</span> has
-                      waived all copyright and related or neighboring rights to <span property='dct:title'>Numbered
-                        Discourses</span>. This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
+                <a rel="license" href=${this.editionInfo.publication.license_url}>
+                  <p xmlns:dct="https://purl.org/dc/terms/" xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#">
+                      <img src='/img/publication-pages/cc-zero.svg' alt='CC0' />
+                      <span>
+                        <strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.</strong>
+                        <br>To the extent possible under law,
+                        <span property='dct:title'>${
+                          this.editionInfo.publication.creator_name
+                        }</span> has waived all copyright and related or neighboring rights to <span property='dct:title'>${this.editionDetail[0].translated_name.replace('Collection','')}</span>. 
+                        This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
                           this.editionUid
-                        }'> Australia</span>.</span>
+                        }'> Australia</span>.
+                      </span>
                   </p>
                 </a>
                 </a>

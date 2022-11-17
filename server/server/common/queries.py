@@ -528,6 +528,118 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
     }
 '''
 
+FALLEN_LEAVES_SUTTAPLEX_LIST = '''
+FOR doc IN fallen_leaves
+    FOR leaves IN doc.fallen_leaves
+        FILTER HAS(leaves, @uid)
+            FOR leaf_uid in leaves[@uid]
+                LET nav_detail = DOCUMENT('super_nav_details', leaf_uid)
+                LET legacy_translations = (
+                        FOR text IN html_text
+                            FILTER text.uid == leaf_uid
+                            LET lang_doc = DOCUMENT('language', text.lang)
+                            LET res = {
+                                lang: text.lang,
+                                lang_name: lang_doc.name,
+                                is_root: lang_doc.is_root,
+                                author: text.author,
+                                author_short: text.author_short,
+                                author_uid: text.author_uid,
+                                publication_date: text.publication_date,
+                                id: text._key,
+                                segmented: false,
+                                volpage: text.volpage
+                                }
+                            RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
+                        )
+
+                    LET bilara_translations = (
+                        FOR text IN sc_bilara_texts
+                            FILTER text.uid == leaf_uid AND ('root' IN text.muids OR 'translation' IN text.muids)
+                            SORT text.lang
+                            LET lang_doc = DOCUMENT('language', text.lang)
+                            LET author_doc = (
+                                FOR author IN bilara_author_edition
+                                    FILTER author.uid IN text.muids
+                                    LIMIT 1
+                                    RETURN author
+                            )[0]
+                            LET name_doc = (
+                                FOR name IN names
+                                    FILTER name.uid == leaf_uid AND name.lang == text.lang
+                                    LIMIT 1
+                                    RETURN name
+                            )[0]
+                            RETURN {
+                                lang: text.lang,
+                                lang_name: lang_doc.name,
+                                is_root: lang_doc.is_root,
+                                author: author_doc.long_name,
+                                author_short: author_doc.short_name,
+                                author_uid: text.muids[2],
+                                publication_date: null,
+                                id: text._key,
+                                segmented: true,
+                                title: name_doc.name,
+                                volpage: null
+                            }
+                    )
+
+                LET translations = FLATTEN([bilara_translations, legacy_translations])
+
+                LET is_segmented_original = (
+                    FOR translation IN translations
+                        FILTER translation.lang == nav_detail.root_lang AND translation.segmented == true
+                        LIMIT 1
+                        RETURN true
+                )[0]
+
+                LET filtered_translations = (
+                    FOR translation IN translations
+                        FILTER translation.lang != nav_detail.root_lang OR translation.segmented == true OR is_segmented_original == null
+                        RETURN translation
+                )
+
+                LET name_title = (
+                    FOR name IN names
+                        FILTER name.uid == leaf_uid AND name.lang == @language
+                        LIMIT 1
+                        RETURN name.name
+                )[0]
+
+                LET original_titles = (
+                    FOR nav_item IN super_nav_details
+                        FILTER nav_item.uid == leaf_uid
+                        LIMIT 1
+                        RETURN nav_item.name
+                )[0]
+
+                LET parallel_count = LENGTH(
+                        FOR rel IN relationship
+                            FILTER rel._from == nav_detail._id
+                            RETURN rel
+                )
+
+                RETURN {
+                    acronym: null,
+                    volpages: null,
+                    alt_volpages: null,
+                    uid: leaf_uid,
+                    blurb: null,
+                    difficulty: null,
+                    original_title: original_titles,
+                    root_lang: nav_detail.root_lang,
+                    root_lang_name: DOCUMENT('language', nav_detail.root_lang.root_lang).name,
+                    type: nav_detail.type,
+                    from: null,
+                    translated_title: name_title,
+                    translations: filtered_translations,
+                    parallel_count: parallel_count,
+                    biblio: null,
+                    priority_author_uid: null,
+                }
+'''
+
 PARALLELS = '''
 FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
     LET target = DOCUMENT(e._to)

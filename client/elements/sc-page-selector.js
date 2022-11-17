@@ -366,7 +366,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       ]);
       let needToLoadTopSheets = false;
       const scSiteLayout = document.querySelector('sc-site-layout');
-      // eslint-disable-next-line no-restricted-syntax
       for (const key of topSheets.keys()) {
         const topSheet = scSiteLayout?.querySelector(`#${key}`);
         if (!topSheet) {
@@ -380,7 +379,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-parallels');
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-legacy');
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-bilara');
-        // eslint-disable-next-line no-restricted-syntax
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);
         }
