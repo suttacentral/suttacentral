@@ -42,6 +42,7 @@ module.exports = {
           handler: 'StaleWhileRevalidate',
           options: {
             expiration: {
+              cacheName: 'apiCache',
               maxAgeSeconds: 7 * 24 * 60 * 60,
             },
           },
