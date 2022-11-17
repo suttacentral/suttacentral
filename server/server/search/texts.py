@@ -83,16 +83,8 @@ class TextIndexer(ElasticIndexer):
         others = header[1:-1]
         header.drop_tree()
         content = self.fix_text(text.text_content())
-
-        if title is not None:
-            title = self.fix_text(title.text_content())
-        else:
-            title = ''
-
-        if division is not None:
-            division = self.fix_text(division.text_content())
-        else:
-            division = ''
+        title = self.fix_text(title.text_content()) if title is not None else ''
+        division = '' if division is None else self.fix_text(division.text_content())
 
         return {
             'content': content,
