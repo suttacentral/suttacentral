@@ -271,21 +271,23 @@ export const typographyCommonStyles = css`
         font-weight: 600!important;
         font-style: normal!important;
 
-        padding: 0 .2em;
+        padding: .1em .2em;
 
         font-variant-position: super;
 
         display: inline-block;
 
-        height: .8em;
+        height: .55em;
 
-        line-height: initial;
+        line-height: 1;
 
         text-decoration: none;
 
         border-radius: 50%;
 
         border: .15em solid var(--sc-primary-color-light);
+
+        margin-top: -.15em;
 
         color: var(--sc-secondary-text-color)
     }
@@ -303,6 +305,8 @@ export const typographyCommonStyles = css`
         padding: 0 .2em;
 
         vertical-align: super;
+
+        lline-height: 1;
 
         text-decoration: none;
 
