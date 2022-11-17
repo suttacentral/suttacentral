@@ -273,9 +273,7 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       this.editionFiles = await (
         await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
       ).json();
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
       this.editionMatters.length = 0;
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
       for (const key in this.editionFiles) {
         if (!key.toLowerCase().includes('test')) {
           this.editionMatters.push(key.replace('./matter/', '').replace('.html', ''));

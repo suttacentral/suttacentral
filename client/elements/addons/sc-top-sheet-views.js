@@ -419,7 +419,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.noteDisplayTypeArray.map(
                 ({ displayType, displayTypeLabel }) => html`
-                  <mwc-formfield label="${this.localize(`dictionary:${displayType}`)}">
+                  <mwc-formfield label=${this.localize(`dictionary:${displayType}`)}>
                     <mwc-radio
                       name="noteDisplayType"
                       value=${displayType}

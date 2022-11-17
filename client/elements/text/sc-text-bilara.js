@@ -199,7 +199,6 @@ export class SCTextBilara extends SCTextCommon {
 
       if (this.suttaId.indexOf('dhp') !== -1) {
         const dhpVerses = this.querySelectorAll('article span.segment');
-        // eslint-disable-next-line no-restricted-syntax
         for (const verse of dhpVerses) {
           if (verse.id.split(':')[0].toLowerCase() !== this.suttaId.toLowerCase()) {
             const blockquote = this.querySelector(`#${CSS.escape(verse.id)} + blockquote`);
@@ -210,7 +209,6 @@ export class SCTextBilara extends SCTextCommon {
           }
         }
         const titles = this.querySelectorAll('header h1 span.segment');
-        // eslint-disable-next-line no-restricted-syntax
         for (const dhp of titles) {
           dhp.style.display = '';
         }
@@ -220,7 +218,6 @@ export class SCTextBilara extends SCTextCommon {
       if (sutta) {
         sutta.style.display = 'block';
       } else {
-        // eslint-disable-next-line no-restricted-syntax
         for (const uid of UIDS) {
           if (this.rootSutta.uid.indexOf('.') > -1 && uid.indexOf('-') > -1) {
             const suttaNo = this.suttaId.split('.')[1];
@@ -571,7 +568,6 @@ export class SCTextBilara extends SCTextCommon {
         .then(r => r.json())
         .then(data => {
           const refs = reference.split('/');
-          // eslint-disable-next-line no-restricted-syntax
           for (const ref of refs) {
             if (
               ref.toLowerCase() === 'main' ||
@@ -581,7 +577,6 @@ export class SCTextBilara extends SCTextCommon {
               paramReference.push(ref);
             }
           }
-          // eslint-disable-next-line promise/always-return
           if (paramReference.length > 0) {
             this.displayedReferences = paramReference;
             reduxActions.setReferenceDisplayType(paramReference);
@@ -1082,7 +1077,6 @@ export class SCTextBilara extends SCTextCommon {
         if (unit === 'word') {
           str += `%spfrnt%${strArr[i]}%spback% `;
         } else if (unit === 'graph') {
-          // eslint-disable-next-line no-restricted-syntax
           for (let graph of strArr[i]) {
             str += `%spfrnt%${graph}%spback%`;
           }
@@ -1103,7 +1097,6 @@ export class SCTextBilara extends SCTextCommon {
   _addPaliLookupEvent(selector) {
     const allWordSpans = this.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
-    // eslint-disable-next-line no-restricted-syntax
     for (const word of spans) {
       word.addEventListener('click', this.onPaliWordClick);
     }
@@ -1132,7 +1125,6 @@ export class SCTextBilara extends SCTextCommon {
   _addChineseLookupEvent(selector) {
     const allWordSpans = this.querySelectorAll(selector);
     const spans = Array.from(allWordSpans);
-    // eslint-disable-next-line no-restricted-syntax
     for (const word of spans) {
       word.addEventListener('click', this.onChineseWordClick);
     }

@@ -398,7 +398,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _colorsResponseReceived() {
     // set the css color variables:
-    // eslint-disable-next-line no-restricted-syntax
     for (const key in this.colorsResponse) {
       if (!this.colorsResponse.hasOwnProperty(key)) continue;
       document.body.style.setProperty(key, this.colorsResponse[key]);

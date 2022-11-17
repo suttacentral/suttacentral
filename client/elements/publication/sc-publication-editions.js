@@ -23,7 +23,8 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     css`
       :host {
         display: block;
-      }`
+      }
+    `,
   ];
 
   constructor() {
@@ -52,13 +53,11 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       }
       this.webEditionIds = [];
       this.webEditionInfo = [];
-      // eslint-disable-next-line no-restricted-syntax
       for (const edition of this.allEditions) {
         if (edition.edition_id.includes('-web_')) {
           this.webEditionIds.push(edition.edition_id);
         }
       }
-      // eslint-disable-next-line no-restricted-syntax
       for (const editionId of this.webEditionIds) {
         this._fetchEditionInfo(editionId);
       }
