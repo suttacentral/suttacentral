@@ -327,6 +327,8 @@ a[role='doc-backlink']
         font-size: 0em;
 }
 
+/* use this pseudoelement together with the size 0 font hack because Skolar does not have the backlink character, but it does have a bunch of arrows in the PUA, so use one of them instead */
+
 a[role='doc-backlink']::after{
   content: '󰈀';
 
