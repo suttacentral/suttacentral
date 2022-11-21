@@ -1,6 +1,6 @@
 {
   "name": "suttacentral",
-  "version": "2.2.9",
+  "version": "2.3.0",
   "private": true,
   "scripts": {
     "build": "webpack --watch --config webpack.prod.js",
@@ -100,6 +100,9 @@
     "webpack-cli": "4.10.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.8.0",
-    "workbox-webpack-plugin": "6.5.4"
+    "workbox-webpack-plugin": "6.5.4",
+    "style-loader": "3.3.1",
+    "css-loader": "6.7.2",
+    "file-loader": "6.2.0"
   }
 }
