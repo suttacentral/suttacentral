@@ -1,0 +1,3689 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [87.132568, 25.465594] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Āpaṇa",
+        "icon": "building",
+        "id": "āpaṇa",
+        "define": "āpaṇa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.671875, 25.614286] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Ayujjhā / Ayojjhā",
+        "icon": "building",
+        "id": "ayujjhā",
+        "define": "ayujjhā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.0044556, 25.2993376] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Bārānasī / Benares",
+        "icon": "building",
+        "id": "bārānasī",
+        "define": "bārānasī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [87.0049786, 25.249845] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Campā",
+        "icon": "building",
+        "id": "campā",
+        "define": "campā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.1041107, 28.7038384] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Indapatta",
+        "icon": "building",
+        "id": "indapatta",
+        "define": "indapatta"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.062961, 27.5498798] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Kapilavatthu",
+        "icon": "building",
+        "id": "kapilavatthu",
+        "define": "kapilavatthu"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.392899, 25.338984] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Kosambī",
+        "icon": "building",
+        "id": "kosambī",
+        "define": "kosambī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.8835179, 26.7371164] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Kusinārā",
+        "icon": "building",
+        "id": "kusinārā",
+        "define": "kusinārā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.673611, 27.4925] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Madhurā / Mathurā",
+        "icon": "building",
+        "id": "madhurā",
+        "define": "madhurā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.921667, 26.712222] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Mithilā",
+        "icon": "building",
+        "id": "mithilā",
+        "define": "mithilā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.3904721, 19.4860116] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Patiṭṭhāna",
+        "icon": "building",
+        "id": "patiṭṭhāna",
+        "define": "patiṭṭhāna"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.42, 25.03] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Rājagaha",
+        "icon": "building",
+        "id": "rājagaha",
+        "define": "rājagaha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.062976, 27.519508] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Sāvatthī",
+        "icon": "building",
+        "id": "sāvatthī",
+        "define": "sāvatthī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [72.913842, 33.725288] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Takkasilā",
+        "icon": "building",
+        "id": "takkasilā",
+        "define": "takkasilā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.777222, 23.195398] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Ujjenī",
+        "icon": "building",
+        "id": "ujjenī",
+        "define": "ujjenī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.10951, 26.014521] },
+      "properties": {
+        "layer": "Capital cities",
+        "name": "Vesāli",
+        "icon": "building",
+        "id": "vesāli",
+        "define": "vesāli"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.611204, 26.40171] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ambagāma",
+        "icon": "question",
+        "id": "ambagāma",
+        "define": "ambagāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.5041885, 25.0044169] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ambasaṇḍā",
+        "icon": "circle",
+        "id": "ambasaṇḍā",
+        "define": "ambasaṇḍā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.2716074, 25.3986163] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ambatittha / Ambatitthā / Ambatiṭṭha",
+        "icon": "question",
+        "id": "ambatittha",
+        "define": "ambatittha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.43188, 26.101153] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Āḷavī",
+        "icon": "question",
+        "id": "āḷavī",
+        "define": "āḷavī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.963257, 27.024878] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ātumā",
+        "icon": "question",
+        "id": "ātumā",
+        "define": "ātumā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.4773609, 25.3521726] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Bālakaloṇakāra / Bākalonakārāgama / Bālakalonakārāma",
+        "icon": "question",
+        "id": "bālakaloṇakāra",
+        "define": "bālakaloṇakāra"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.23864, 25.29933] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Bhaddavatikā",
+        "icon": "question",
+        "id": "bhaddavatikā",
+        "define": "bhaddavatikā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [86.798401, 25.933347] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Bhaddiya",
+        "icon": "circle",
+        "id": "bhaddiya",
+        "define": "bhaddiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.004654, 26.114136] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Bhaṇḍagāma",
+        "icon": "circle",
+        "id": "bhaṇḍagāma",
+        "define": "bhaṇḍagāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [73.002434, 21.724548] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Bharukaccha",
+        "icon": "circle",
+        "id": "bharukaccha",
+        "define": "bharukaccha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.298782, 26.573175] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Bhoganagara / Bhoga / Bhogagāmanagara",
+        "icon": "circle",
+        "id": "bhoganagara",
+        "define": "bhoganagara"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.88076, 25.690508] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Cālikā",
+        "icon": "circle",
+        "id": "cālikā",
+        "define": "cālikā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.104503, 27.590056] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Cātuma",
+        "icon": "question",
+        "id": "cātuma",
+        "define": "cātuma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.511372, 27.523572] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Devadaha",
+        "icon": "question",
+        "id": "devadaha",
+        "define": "devadaha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.4299316, 23.4834007] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ekanāḷā",
+        "icon": "question",
+        "id": "ekanāḷā",
+        "define": "ekanāḷā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [87.83803, 25.0489] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Kajangala / Kajangalā",
+        "icon": "circle",
+        "id": "kajangala",
+        "define": "kajangala"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.01, 24.75] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Gayā",
+        "icon": "circle",
+        "id": "gayā",
+        "define": "gayā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.07248, 23.415453] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Gonaddha",
+        "icon": "question",
+        "id": "gonaddha",
+        "define": "gonaddha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.7117037, 27.4290775] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Haliddavasana",
+        "icon": "question",
+        "id": "haliddavasana",
+        "define": "haliddavasana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.795227, 26.373416] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Hatthigāmaka",
+        "icon": "circle",
+        "id": "hatthigāmaka",
+        "define": "hatthigāmaka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.706451, 27.630007] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Iccānaṅgala / Icchānaṅkala",
+        "icon": "circle",
+        "id": "iccānaṅgala",
+        "define": "iccānaṅgala"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.449844, 26.461967] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Jambugāma",
+        "icon": "circle",
+        "id": "jambugāma",
+        "define": "jambugāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.944275, 25.733814] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Jantugāma",
+        "icon": "circle",
+        "id": "jantugāma",
+        "define": "jantugāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.7734985, 27.5155794] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Kakkarapatta",
+        "icon": "question",
+        "id": "kakkarapatta",
+        "define": "kakkarapatta"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.267639, 26.008658] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Kalandagāma / Kalanda / Kalaṇḍaka",
+        "icon": "question",
+        "id": "kalandagāma",
+        "define": "kalandagāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [78.02, 29.17] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Kammāsadhamma / Kammāsadamma / Kammasadamma / Kammasadhamma",
+        "icon": "circle",
+        "id": "kammāsadhamma",
+        "define": "kammāsadhamma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.20407, 26.0223878] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Kaṇṇakujja / Kaṇṇagocchaka / Kaṇṇagotta",
+        "icon": "question",
+        "id": "kaṇṇakujja",
+        "define": "kaṇṇakujja"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.2159322, 27.366887] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Khomadussa",
+        "icon": "question",
+        "id": "khomadussa",
+        "define": "khomadussa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.956724, 25.881474] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Kīṭāgiri",
+        "icon": "question",
+        "id": "kīṭāgiri",
+        "define": "kīṭāgiri"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.203094, 25.655498] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Koṭigāma",
+        "icon": "circle",
+        "id": "koṭigāma",
+        "define": "koṭigāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.5932612, 22.1518001] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Mahesā / Māhissati",
+        "icon": "circle",
+        "id": "mahesā",
+        "define": "mahesā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.233795, 27.626357] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Medāḷupa / Medatalumpa",
+        "icon": "question",
+        "id": "medāḷupa",
+        "define": "medāḷupa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.256652, 25.743004] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Nādikā",
+        "icon": "question",
+        "id": "nādikā",
+        "define": "nādikā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.934418, 27.606888] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Nagaraka / Naṅgaraka",
+        "icon": "question",
+        "id": "nagaraka",
+        "define": "nagaraka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.443521, 25.136951] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Nāḷandā / Nāla / Nālaka / Nālika / Upatissagāma",
+        "icon": "circle",
+        "id": "nāḷandā",
+        "define": "nāḷandā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.7130737, 27.3083331] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Pajjanika / Sajjanela",
+        "icon": "question",
+        "id": "pajjanika",
+        "define": "pajjanika"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.622925, 25.413509] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Pālileyya / Pārileyya / Pārileyyaka",
+        "icon": "question",
+        "id": "pālileyya",
+        "define": "pālileyya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.159149, 25.576511] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Pātaligāma",
+        "icon": "circle",
+        "id": "pātaligāma",
+        "define": "pātaligāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.055193, 26.683878] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Pāvā",
+        "icon": "circle",
+        "id": "pāvā",
+        "define": "pāvā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.09827, 26.146795] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Rāmagāmaka / Rāmagāma",
+        "icon": "question",
+        "id": "rāmagāmaka",
+        "define": "rāmagāmaka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.9962141, 27.6920394] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Sāmagāma",
+        "icon": "question",
+        "id": "sāmagāma",
+        "define": "sāmagāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [79.8659083, 26.2134711] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Sankassa",
+        "icon": "question",
+        "id": "sankassa",
+        "define": "sankassa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.2, 26.8] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Sāketa",
+        "icon": "circle",
+        "id": "sāketa",
+        "define": "sāketa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.4576434, 27.3278568] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Sāmuga / Sāpūga",
+        "icon": "question",
+        "id": "sāmuga",
+        "define": "sāmuga"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.9682617, 24.722509] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Senānigama / Senānīnigama",
+        "icon": "question",
+        "id": "senānigama",
+        "define": "senānigama"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.548065, 27.668934] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Setabyā / Setavyā",
+        "icon": "circle",
+        "id": "setabyā",
+        "define": "setabyā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.1253052, 27.6835281] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Silāvatī",
+        "icon": "question",
+        "id": "silāvatī",
+        "define": "silāvatī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [79.3010218, 26.5338917] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Soreyya",
+        "icon": "question",
+        "id": "soreyya",
+        "define": "soreyya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.0781286, 24.7380974] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ṭaṅkitamañca / Taṅkitamañca",
+        "icon": "question",
+        "id": "ṭaṅkitamañca",
+        "define": "ṭaṅkitamañca"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [76.8197522, 29.9696148] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Thūṇa",
+        "icon": "question",
+        "id": "thūṇa",
+        "define": "thūṇa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.125549, 27.145923] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Toraṇavatthu",
+        "icon": "question",
+        "id": "toraṇavatthu",
+        "define": "toraṇavatthu"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.81723, 27.593501] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ukkaṭṭha",
+        "icon": "circle",
+        "id": "ukkaṭṭha",
+        "define": "ukkaṭṭha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.039666, 25.723207] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Ukkaceḷā / Ukkacelā / Ukkavelā / Ukkaveḷā",
+        "icon": "question",
+        "id": "ukkacelā",
+        "define": "ukkacelā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.991275, 24.695102] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Uruvelā / Senānigama / Uruvelapattana",
+        "icon": "circle",
+        "id": "uruvelā",
+        "define": "uruvelā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.0509033, 26.9857238] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Uruvelakappa",
+        "icon": "question",
+        "id": "uruvelakappa",
+        "define": "uruvelakappa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.5812369, 27.3790824] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Uttara / Uttaraka",
+        "icon": "question",
+        "id": "uttara",
+        "define": "uttara"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.1557617, 22.8537964] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Veḷukaṇḍa / Veḷukaṇṭa",
+        "icon": "question",
+        "id": "veḷukaṇḍa",
+        "define": "veḷukaṇḍa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.172729, 24.698962] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Vanasa / Vanasāvhaya / Tumbavanagara / Pavana / Vanasāvatthī",
+        "icon": "circle",
+        "id": "vanasavhaya",
+        "define": "vanasavhaya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.812744, 23.535478] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Vedisa / Vedisagiri",
+        "icon": "circle",
+        "id": "vedisa",
+        "define": "vedisa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [78.8572753, 26.8165158] },
+      "properties": {
+        "layer": "Towns & villages",
+        "name": "Verañjā",
+        "icon": "question",
+        "id": "verañjā",
+        "define": "verañjā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.757507, 27.931327] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Aciravatī",
+        "icon": "water",
+        "id": "aciravatī",
+        "define": "aciravatī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.380734, 26.06173] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Aggāḷave Cetiya",
+        "icon": "pray",
+        "id": "aggāḷave cetiye",
+        "define": "aggāḷave cetiye"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.428143, 25.083111] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Ambalaṭṭhikā",
+        "icon": "tree",
+        "id": "ambalaṭṭhikā",
+        "define": "ambalaṭṭhikā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.1316548, 26.0422853] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Ambapālivana",
+        "icon": "dhammacakka",
+        "id": "ambapālivana",
+        "define": "ambapālivana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.11034, 27.582449] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Amalakīvana",
+        "icon": "tree",
+        "id": "amalakīvana",
+        "define": "amalakīvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.309769, 26.584229] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Ānanda Cetiya",
+        "icon": "pray",
+        "id": "ānandacetiya",
+        "define": "ānandacetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.055512, 27.432728] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Andhavana",
+        "icon": "tree",
+        "id": "andhavana",
+        "define": "andhavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.196738, 26.798927] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Añjanavana / Añcanavana",
+        "icon": "tree",
+        "id": "añjanavana",
+        "define": "añjanavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.059313, 26.679583] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Ajakalāpakacetiya",
+        "icon": "pray",
+        "id": "ajakalāpakacetiya",
+        "define": "ajakalāpakacetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.009128, 24.70134] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Ajapālanigrodha",
+        "icon": "tree",
+        "id": "ajapālanigrodha",
+        "define": "ajapālanigrodha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.437927, 25.038327] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Araññakuṭikā",
+        "icon": "dhammacakka",
+        "id": "araññakuṭikā",
+        "define": "araññakuṭikā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.396332, 25.389939] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Badarikārāma",
+        "icon": "tree",
+        "id": "badarikārāma",
+        "define": "badarikārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.115204, 26.081807] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Bahuputta / Bahuputta Cetiya/ Bahuputtaka Cetiya / Bahuputtaka",
+        "icon": "pray",
+        "id": "bahuputta cetiya",
+        "define": "bahuputta cetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.4267696, 25.0810898] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Bahuputtakanigrodha",
+        "icon": "tree",
+        "id": "bahuputtakanigrodha",
+        "define": "bahuputtakanigrodha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.895721, 26.751742] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Baliharana / Baliharaṇa",
+        "icon": "tree",
+        "id": "baliharaṇa",
+        "define": "baliharaṇa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.1440428, 25.9629831] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Cāpāla Cetiya",
+        "icon": "pray",
+        "id": "cāpāla cetiya",
+        "define": "cāpāla cetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.318054, 25.321684] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Devakatasobbha",
+        "icon": "water",
+        "id": "devakatasobbha",
+        "define": "devakatasobbha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.086365, 25.990761] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Ekapuṇḍarīka",
+        "icon": "temple",
+        "id": "ekapuṇḍarīka",
+        "define": "ekapuṇḍarīka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.9898481, 24.7726686] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gayāsīsa",
+        "icon": "mountain",
+        "id": "gayāsīsa",
+        "define": "gayāsīsa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.446707, 25.001967] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gijjhakūṭa (Vulture’s Peak)",
+        "icon": "mountain",
+        "id": "gijjhakūṭa",
+        "define": "gijjhakūṭa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.2827454, 25.7157875] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Giñjakāvasatha",
+        "icon": "dhammacakka",
+        "id": "giñjakāvasatha",
+        "define": "giñjakāvasatha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.644501, 18.912782] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Godhāvarī / Godhāvari",
+        "icon": "water",
+        "id": "godhāvarī",
+        "define": "godhāvarī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.529054, 26.028411] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gomagga",
+        "icon": "grave",
+        "id": "gomagga",
+        "define": "gomagga"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.3663445, 24.987614] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gomatakakandarā / Gomatakandarā / Gomatakaṇḍarā",
+        "icon": "mountain",
+        "id": "gomatakakandarā",
+        "define": "gomatakakandarā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.1069636, 25.9337428] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gotamaka Cetiya",
+        "icon": "pray",
+        "id": "gotamakacetiya",
+        "define": "gotamakacetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.2717612, 25.783821] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gosiṅgasālavanadāya (Nādikā)",
+        "icon": "tree",
+        "id": "gosiṅgasālavanadāya1",
+        "define": "gosiṅgasālavanadāya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.1907349, 25.9815025] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gosiṅgasālavanadāya (Vesāli)",
+        "icon": "tree",
+        "id": "gosiṅgasālavanadāya2",
+        "define": "gosiṅgasālavanadāya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.186615, 25.621716] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gotamatittha",
+        "icon": "water",
+        "id": "gotamatittha",
+        "define": "gotamatittha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.1060791, 25.2173659] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Goyogapilakkha",
+        "icon": "tree",
+        "id": "goyogapilakkha",
+        "define": "goyogapilakkha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.65686, 27.454665] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Gundāvana / Kundāvana / Guṇḍāvana / Kuṇḍāvana",
+        "icon": "tree",
+        "id": "gundāvana",
+        "define": "gundāvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.462647, 25.020906] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Indakūṭa",
+        "icon": "mountain",
+        "id": "indakūṭa",
+        "define": "indakūṭa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.517768, 25.024766] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Indasālaguhā",
+        "icon": "mountain",
+        "id": "indasālaguhā",
+        "define": "indasālaguhā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.418859, 24.985047] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Isigili / Isigilapassa",
+        "icon": "mountain",
+        "id": "isigili",
+        "define": "isigili"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.034238, 25.397519] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Isipatana / Migadaya",
+        "icon": "tree",
+        "id": "isipatana",
+        "define": "isipatana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [86.793366, 25.897527] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Jātiyāvana",
+        "icon": "tree",
+        "id": "jātiyāvana",
+        "define": "jātiyāvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.43541, 24.995316] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Jīvakambavana",
+        "icon": "dhammacakka",
+        "id": "jīvakambavana",
+        "define": "jīvakambavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.040073, 27.509466] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Jetavana (Anāthapiṇḍikassa ārāma)",
+        "icon": "dhammacakka",
+        "id": "jetavana",
+        "define": "jetavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.416756, 24.995666] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kāḷasilā",
+        "icon": "mountain",
+        "id": "kāḷasilā",
+        "define": "kāḷasilā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.214813, 26.797413] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kantakīvana / Kaṇḍakīvana / Tikantakī",
+        "icon": "tree",
+        "id": "kaṇḍakīvana",
+        "define": "kaṇḍakīvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.4859924, 25.0265062] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kapotakandara",
+        "icon": "mountain",
+        "id": "kapotakandara",
+        "define": "kapotakandara"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.93805, 24.693188] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kappāsika / Kappāsiya Vanasaṇḍa",
+        "icon": "tree",
+        "id": "kappāsika vanasaṇḍa",
+        "define": "kappāsika vanasaṇḍa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.391407, 25.0128176] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kassapakārāma / Kassapārāma",
+        "icon": "dhammacakka",
+        "id": "kassapakārāma",
+        "define": "kassapakārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.861637, 25.2682911] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Khemiyambavana",
+        "icon": "tree",
+        "id": "khemiyambavana",
+        "define": "khemiyambavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.200348, 25.535007] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kukkuṭārāma",
+        "icon": "tree",
+        "id": "kukkuṭārāma",
+        "define": "kukkuṭārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.111084, 25.98644] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Kūṭāgārasālā",
+        "icon": "dhammacakka",
+        "id": "kūṭāgārasālā",
+        "define": "kūṭāgārasālā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.27491, 27.46716] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Lumbinī / Lumbineyya",
+        "icon": "dhammacakka",
+        "id": "lumbineyya",
+        "define": "lumbineyya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.4636766, 25.0097377] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Maddakucchi",
+        "icon": "tree",
+        "id": "maddakucchi",
+        "define": "maddakucchi"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.0209351, 27.5703735] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Mahāvana (Kapilavatthu)",
+        "icon": "tree",
+        "id": "mahāvana1",
+        "define": "mahāvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.9850023, 27.073797] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Mahāvana (Uruvelakappa)",
+        "icon": "tree",
+        "id": "mahāvana2",
+        "define": "mahāvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.944671, 26.719854] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Makhādevaambavana / Maghadevaambavana",
+        "icon": "tree",
+        "id": "maghadevaambavana",
+        "define": "maghadevaambavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.93074, 26.733959] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Makuṭabandhana",
+        "icon": "pray",
+        "id": "makuṭabandhana",
+        "define": "makuṭabandhana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.074738, 27.507358] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Mallikārāma / Mallikāya ārāma",
+        "icon": "tree",
+        "id": "mallikāya ārāma",
+        "define": "mallikāya ārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.178955, 28.692997] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Migacīra",
+        "icon": "tree",
+        "id": "migacīra",
+        "define": "migacīra"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.085381, 27.516797] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Migāramātupāsāda",
+        "icon": "dhammacakka",
+        "id": "migāramātupāsāda",
+        "define": "migāramātupāsāda"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [87.8320597, 25.0115731] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Mukheluvana",
+        "icon": "tree",
+        "id": "mukheluvana",
+        "define": "mukheluvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.840546, 26.382028] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Nāgavana",
+        "icon": "tree",
+        "id": "nāgavana",
+        "define": "nāgavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [78.813713, 26.8829432] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Naḷerupucimanda / Naḷerupucimanda / Nalerupucimaṇḍa",
+        "icon": "tree",
+        "id": "naḷerupucimanda",
+        "define": "naḷerupucimanda"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.005684, 24.721573] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Nerañjarā / Nerañjarāya",
+        "icon": "water",
+        "id": "nerañjarāya",
+        "define": "nerañjarāya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.0916593, 27.5326291] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Nigrodhārāma",
+        "icon": "dhammacakka",
+        "id": "nigrodhārāma",
+        "define": "nigrodhārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.5473918, 25.3812582] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pācīnavaṁsadāya",
+        "icon": "tree",
+        "id": "pācīnavaṁsa",
+        "define": "pācīnavaṁsa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.411148, 25.046414] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pāsāṇakacetiya",
+        "icon": "pray",
+        "id": "pāsāṇakacetiya",
+        "define": "pāsāṇakacetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.85, 25.45] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Payāga / Payāgatiṭṭha / Payāgapatiṭṭhāna",
+        "icon": "water",
+        "id": "payāga",
+        "define": "payāga"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.366119, 25.291887] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pilakkhaguhā",
+        "icon": "mountain",
+        "id": "pilakkhaguhā",
+        "define": "pilakkhaguhā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.430245, 25.01897] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pipphaligūhā / Pippaliguhā",
+        "icon": "mountain",
+        "id": "pippaliguhā",
+        "define": "pippaliguhā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.1283951, 27.4478576] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Piprahwa Stupa",
+        "icon": "pray",
+        "id": "piprahwa stupa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.091217, 27.510098] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pubbakoṭṭhakā",
+        "icon": "water",
+        "id": "pubbakoṭṭhakā",
+        "define": "pubbakoṭṭhakā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.089844, 27.525322] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pubbārāma",
+        "icon": "dhammacakka",
+        "id": "pubbārāma",
+        "define": "pubbārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.7919312, 22.4338789] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Papāte Pabbate / Papātapabbata",
+        "icon": "mountain",
+        "id": "papāte pabbate",
+        "define": "papāte pabbate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.4598999, 25.1577155] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Pāvārikambavana (Nāḷandā)",
+        "icon": "tree",
+        "id": "pāvārikambavana",
+        "define": "pāvārikambavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.9819946, 24.6638664] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Rājāyatana",
+        "icon": "tree",
+        "id": "rājāyatana",
+        "define": "rājāyatana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.627388, 25.407927] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Rakkhitavanasaṇḍa / Rakkhita",
+        "icon": "tree",
+        "id": "rakkhita",
+        "define": "rakkhita"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.541412, 27.649168] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Rohīnī",
+        "icon": "water",
+        "id": "rohīnī",
+        "define": "rohīnī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.3404236, 24.9754771] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Sappasoṇḍikapabbhāra / Sappasoṇḍika",
+        "icon": "mountain",
+        "id": "sappasoṇḍikapabbhāra",
+        "define": "sappasoṇḍikapabbhāra"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.0836181, 26.0444452] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Sārandadacetiya",
+        "icon": "pray",
+        "id": "sārandadacetiya",
+        "define": "sārandadacetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.0523764, 26.0194575] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Sattamba / Sattambaka",
+        "icon": "pray",
+        "id": "sattamba",
+        "define": "sattamba"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.410788, 25.00705] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Sattapaṇṇiguhā",
+        "icon": "mountain",
+        "id": "sattapaṇṇiguhā",
+        "define": "sattapaṇṇiguhā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.3413066, 26.1209848] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Siṁsapāvana (Āḷavī)",
+        "icon": "tree",
+        "id": "siṁsapāvana1",
+        "define": "siṁsapāvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.3448209, 25.3713134] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Siṁsapāvana (Kosambī)",
+        "icon": "tree",
+        "id": "siṁsapāvana2",
+        "define": "siṁsapāvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.5531941, 27.6995324] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Siṁsapāvana (Setavyā)",
+        "icon": "tree",
+        "id": "siṁsapāvana3",
+        "define": "siṁsapāvana3"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.3862572, 25.0313282] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Sītavana",
+        "icon": "tree",
+        "id": "sītavana",
+        "define": "sītavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.825241, 27.608105] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Subhagavana",
+        "icon": "tree",
+        "id": "subhagavana",
+        "define": "subhagavana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.3606796, 25.0177954] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Sumāgadhā / Sumāgavā",
+        "icon": "water",
+        "id": "sumāgadhā",
+        "define": "sumāgadhā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.418256, 25.012806] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Tapodā",
+        "icon": "water",
+        "id": "tapodā",
+        "define": "tapodā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.424194, 25.009395] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Tapodārāma",
+        "icon": "tree",
+        "id": "tapodārāma",
+        "define": "tapodārāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.161209, 26.014521] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Udena Cetiya",
+        "icon": "pray",
+        "id": "udena cetiya",
+        "define": "udena cetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.8986393, 26.7301265] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Upavatta / Upavattana",
+        "icon": "dhammacakka",
+        "id": "upavatta",
+        "define": "upavatta"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.3889696, 24.99642] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Vebhāra",
+        "icon": "mountain",
+        "id": "vebhāra",
+        "define": "vebhāra"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [87.8686521, 25.0918176] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Veḷuvana (Kajaṅgalā)",
+        "icon": "tree",
+        "id": "veḷuvana2",
+        "define": "veḷuvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.404854, 25.018262] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Veḷuvana (Rājagaha)",
+        "icon": "tree",
+        "id": "veḷuvana1",
+        "define": "veḷuvana"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.386858, 24.967362] },
+      "properties": {
+        "layer": "Temples & features",
+        "name": "Vepulla / Vipula / Vaṅkaka / Pācīnavaṁsa / Supassa",
+        "icon": "mountain",
+        "id": "vepulla",
+        "define": "vepulla"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [74.9639251, 20.442968],
+            [73.7745847, 20.6177852],
+            [73.554416, 20.576461],
+            [73.3012492, 20.4835468],
+            [72.7730237, 20.1218913],
+            [72.6851353, 19.8321447],
+            [72.7183614, 19.5108211],
+            [72.9167575, 19.0953658],
+            [73.1150692, 18.7935436],
+            [74.4691743, 18.3141428],
+            [75.3388705, 17.8226421],
+            [76.1533444, 17.7599709],
+            [76.6926231, 17.8858067],
+            [77.881312, 17.7182603],
+            [78.827839, 17.7601883],
+            [78.9819424, 17.9906282],
+            [79.1250724, 18.5132647],
+            [79.125108, 18.9094337],
+            [78.9930355, 19.1487845],
+            [78.2995409, 19.6679355],
+            [77.6390045, 20.0510101],
+            [77.3857855, 20.1750421],
+            [76.2738132, 20.412374],
+            [76.1857354, 20.4226728],
+            [75.602229, 20.4534822],
+            [75.2169099, 20.4224226],
+            [74.9639251, 20.442968]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Regions",
+        "name": "Dakkhiṇāpatha",
+        "style": {
+          "color": "#f9f7a6",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#f9f7a6",
+          "fillOpacity": 0.3
+        },
+        "id": "dakkhiṇāpatha",
+        "define": "dakkhiṇāpatha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [86.340188, 25.94581],
+            [86.2866211, 25.7801071],
+            [86.3635254, 25.403585],
+            [86.517334, 25.1950004],
+            [86.7480469, 24.9661402],
+            [87.0227051, 24.8166536],
+            [87.3083496, 24.7568083],
+            [87.5170898, 24.7767599],
+            [87.7807617, 24.8465653],
+            [88.0114746, 24.95618],
+            [87.989502, 25.2745035],
+            [87.956543, 25.4234314],
+            [87.8356934, 25.6514303],
+            [87.6928711, 25.7504248],
+            [87.4621582, 25.8888786],
+            [87.220459, 25.9975499],
+            [86.8359375, 26.0074242],
+            [86.6162109, 26.0172976],
+            [86.340188, 25.94581]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Aṅga",
+        "style": {
+          "color": "#3f5ba9",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#3f5ba9",
+          "fillOpacity": 0.18823529411764706
+        },
+        "id": "aṅga",
+        "define": "aṅga"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [75.2525579, 19.608395],
+            [75.1206079, 19.1100064],
+            [75.2307087, 18.8498744],
+            [75.4508345, 18.6415047],
+            [75.7149585, 18.4850744],
+            [75.9350506, 18.391154],
+            [76.2211579, 18.3285258],
+            [76.3642135, 18.2658557],
+            [76.7273352, 18.2763331],
+            [76.9804203, 18.2867948],
+            [77.2995276, 18.3494809],
+            [77.4975959, 18.401696],
+            [77.6846644, 18.5478098],
+            [77.7837108, 18.9125569],
+            [77.805729, 19.2245768],
+            [77.7176986, 19.5463883],
+            [77.5636303, 19.8468672],
+            [77.3105035, 20.0847783],
+            [77.068375, 20.2190875],
+            [76.6941782, 20.2397223],
+            [76.3419893, 20.2809932],
+            [76.0008182, 20.2190025],
+            [75.6816679, 20.1259833],
+            [75.3955604, 19.9294767],
+            [75.2525579, 19.608395]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Assaka",
+        "style": {
+          "color": "#7c3592",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#7c3592",
+          "fillOpacity": 0.18823529411764706
+        },
+        "id": "assaka",
+        "define": "assaka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [74.5715981, 22.4662177],
+            [74.6592951, 22.319225],
+            [74.7469971, 22.217757],
+            [74.8840398, 22.121292],
+            [75.0101222, 22.0400071],
+            [75.1416889, 21.9688444],
+            [75.2951872, 21.9383328],
+            [75.4157927, 21.9129045],
+            [75.6021848, 21.9332468],
+            [75.8433956, 21.9790118],
+            [76.0681571, 22.0501749],
+            [76.2216488, 22.1162217],
+            [76.342248, 22.17716],
+            [76.5834416, 22.2938885],
+            [76.6382385, 22.4865008],
+            [76.6162894, 22.6737746],
+            [76.5066437, 22.7900494],
+            [76.473737, 22.9567145],
+            [76.380541, 23.0626599],
+            [76.3037892, 23.1987562],
+            [76.1557825, 23.3196077],
+            [75.9584525, 23.3799869],
+            [75.6460192, 23.2994533],
+            [75.3390638, 23.2692442],
+            [75.1307675, 23.1382598],
+            [74.9060252, 23.0828119],
+            [74.7635013, 23.002114],
+            [74.6374119, 22.8355116],
+            [74.5990275, 22.6889275],
+            [74.5716094, 22.5877416],
+            [74.5715981, 22.4662177]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Avanti",
+        "style": {
+          "color": "#4186f0",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#4186f0",
+          "fillOpacity": 0.1568627450980392
+        },
+        "id": "avanti",
+        "define": "avanti"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [79.2445443, 25.2597779],
+            [79.1016933, 25.3789747],
+            [78.8379673, 25.5079723],
+            [78.6072065, 25.5872866],
+            [78.3654566, 25.6566432],
+            [78.0357978, 25.6269232],
+            [77.805037, 25.5575485],
+            [77.4973563, 25.4881326],
+            [77.2446212, 25.2200163],
+            [77.12375, 24.9612721],
+            [77.1237545, 24.6021145],
+            [77.2116653, 24.3721122],
+            [77.5742859, 24.3571005],
+            [77.8050439, 24.442162],
+            [77.98086, 24.4521661],
+            [78.063274, 24.3971383],
+            [78.3161121, 24.4572541],
+            [78.5083083, 24.4421419],
+            [78.7390671, 24.4671702],
+            [78.898401, 24.5921293],
+            [78.9890327, 24.6146266],
+            [79.0302735, 24.6570554],
+            [79.0797319, 24.7019835],
+            [79.1401964, 24.761856],
+            [79.15667, 24.846643],
+            [79.2775085, 25.0509033],
+            [79.2445443, 25.2597779]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Cetiya / Ceti / Cetī / Cedi",
+        "style": {
+          "color": "#db4436",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#db4436",
+          "fillOpacity": 0.18823529411764706
+        },
+        "id": "cetiya",
+        "define": "cetiya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [71.3232422, 33.1099483],
+            [71.4880371, 33.0086635],
+            [71.7297364, 32.9164854],
+            [72.0592969, 32.7968291],
+            [72.3669433, 32.8242111],
+            [72.7185058, 32.9072622],
+            [73.2568359, 32.8703602],
+            [73.5974121, 32.9257074],
+            [73.8061523, 32.9072622],
+            [73.9762831, 32.935004],
+            [74.2126465, 32.8888132],
+            [74.3444824, 33.0270875],
+            [74.2785644, 33.4314413],
+            [74.3774414, 33.6877818],
+            [74.4213867, 33.806538],
+            [74.1577148, 33.9798088],
+            [74.0917969, 34.1709084],
+            [73.6413574, 34.3615762],
+            [73.4106446, 34.4793919],
+            [73.1799317, 34.5156095],
+            [72.7185059, 34.5427624],
+            [72.3120117, 34.6241677],
+            [71.6638184, 34.4612773],
+            [71.5100098, 34.3887793],
+            [71.3012696, 34.370645],
+            [71.1145019, 34.270836],
+            [70.9387207, 34.0435565],
+            [70.982666, 33.8430453],
+            [70.9936523, 33.6786399],
+            [71.048584, 33.4131022],
+            [71.1584473, 33.1835367],
+            [71.3232422, 33.1099483]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Gandhāra",
+        "style": {
+          "color": "#f8971b",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#f8971b",
+          "fillOpacity": 0.20784313725490197
+        },
+        "id": "gandhāra",
+        "define": "gandhāra"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [26.6643691, 34.846484],
+            [19.4794381, 30.4058734],
+            [24.3149061, 29.7390139],
+            [28.0966132, 25.5450021],
+            [35.173523, 24.0081926],
+            [37.6920285, 30.137369],
+            [39.4620134, 31.7322235],
+            [43.8722788, 31.3206777],
+            [47.9981785, 29.2622934],
+            [54.699887, 25.6471003],
+            [58.2432143, 24.3335308],
+            [66.8414178, 24.7387607],
+            [67.8780272, 28.8068715],
+            [69.1372651, 35.5710812],
+            [71.612639, 37.9829403],
+            [70.5778575, 40.436768],
+            [68.7793266, 41.3804502],
+            [66.4115311, 41.7579573],
+            [60.427327, 44.524248],
+            [59.0886336, 43.9689004],
+            [57.8427175, 44.9307418],
+            [55.9523542, 41.4660505],
+            [49.285232, 40.7970812],
+            [39.5713664, 43.3974007],
+            [36.9753215, 44.715655],
+            [29.9527029, 46.9652518],
+            [26.7751872, 42.2934433],
+            [24.4026435, 41.934233],
+            [22.7323032, 41.2681783],
+            [22.9730663, 40.2689148],
+            [26.6643691, 34.846484]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Kamboja / Kambojaka / Kambuja",
+        "style": {
+          "color": "#c6a4cf",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#c6a4cf",
+          "fillOpacity": 0.30980392156862746
+        },
+        "id": "kamboja",
+        "define": "kamboja"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [82.034912, 25.903704],
+            [81.858359, 25.9259799],
+            [81.7588804, 25.757846],
+            [81.7314152, 25.5907554],
+            [81.7053332, 25.4394959],
+            [81.6723631, 25.3440265],
+            [81.639404, 25.185059],
+            [81.507568, 24.906367],
+            [81.485596, 24.726875],
+            [81.551514, 24.557116],
+            [81.97998, 24.567108],
+            [82.30957, 24.5771],
+            [82.33429, 24.5945824],
+            [82.3590091, 24.5870902],
+            [82.3919682, 24.5970803],
+            [82.4826046, 24.5945823],
+            [82.5210572, 24.6095668],
+            [82.5457762, 24.6045716],
+            [82.5759887, 24.6245479],
+            [82.5979614, 24.6195543],
+            [82.611694, 24.6382777],
+            [82.6419071, 24.6495141],
+            [82.6831051, 24.6420241],
+            [82.8753659, 24.7094106],
+            [83.0895996, 24.8440731],
+            [83.2434083, 25.0059726],
+            [83.2708741, 25.2123965],
+            [83.3038332, 25.3316146],
+            [83.2434079, 25.6489543],
+            [83.0539041, 25.9506858],
+            [82.817688, 26.0345739],
+            [82.7243044, 26.0691194],
+            [82.540283, 26.046913],
+            [82.364502, 25.918526],
+            [82.034912, 25.903704]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Kāsi / Kāsika / Kāsigāma / Kāsinigama",
+        "style": {
+          "color": "#9fc3ff",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#9fc3ff",
+          "fillOpacity": 0.38823529411764707
+        },
+        "id": "kāsi",
+        "define": "kāsi"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [80.116425, 26.975933],
+            [80.292206, 26.652368],
+            [80.572357, 26.332807],
+            [80.934906, 26.111054],
+            [81.259003, 25.958045],
+            [81.401825, 25.923467],
+            [81.478729, 25.948166],
+            [81.665497, 25.943227],
+            [81.808319, 25.923467],
+            [81.901703, 25.928407],
+            [82.033538, 25.903704],
+            [82.176361, 25.992612],
+            [82.418061, 26.007424],
+            [82.632294, 26.101188],
+            [82.775116, 26.199806],
+            [82.720185, 26.372185],
+            [82.65976, 26.519735],
+            [82.624054, 26.7075866],
+            [82.6460167, 26.821586],
+            [82.666626, 26.928192],
+            [83.0566412, 27.2631752],
+            [83.8271779, 27.2464624],
+            [83.8675374, 27.4332014],
+            [83.8744357, 27.5825469],
+            [82.8739932, 27.8463619],
+            [82.3109435, 27.9458858],
+            [81.9291688, 28.0622858],
+            [81.5583803, 28.2318101],
+            [81.3496407, 28.2947072],
+            [81.1134343, 28.3793186],
+            [80.8854682, 28.4686917],
+            [80.48996, 28.560401],
+            [80.242221, 28.1924958],
+            [80.0889592, 27.8123572],
+            [79.9982453, 27.5859841],
+            [80.0560005, 27.36201],
+            [80.116425, 26.975933]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Kosala",
+        "style": {
+          "color": "#7c3592",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#7c3592",
+          "fillOpacity": 0.22745098039215686
+        },
+        "id": "kosala",
+        "define": "kosala"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [77.8161621, 30.0405664],
+            [77.6568603, 30.0786013],
+            [77.4810791, 30.0833547],
+            [77.2558594, 30.1261243],
+            [76.7669678, 30.035811],
+            [76.7646781, 29.5508492],
+            [76.7999267, 29.0513678],
+            [76.9152832, 28.7098608],
+            [76.9921875, 28.3720688],
+            [77.0471191, 28.22697],
+            [77.1899414, 28.101058],
+            [77.4316406, 28.062286],
+            [77.5415039, 28.0525908],
+            [77.7172852, 28.0525908],
+            [78.0029297, 28.062286],
+            [78.1787109, 28.0913663],
+            [78.3325195, 28.1688752],
+            [78.4863281, 28.2850333],
+            [78.6181641, 28.5266224],
+            [78.75, 28.6616712],
+            [78.8928223, 28.7869181],
+            [78.9587402, 29.0753752],
+            [78.9257813, 29.3342982],
+            [78.848877, 29.5543451],
+            [78.6181641, 29.7071393],
+            [78.5192871, 29.8406439],
+            [78.1896973, 29.9834867],
+            [77.8161621, 30.0405664]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Kuru",
+        "style": {
+          "color": "#c6a4cf",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#c6a4cf",
+          "fillOpacity": 0.3
+        },
+        "id": "kuru",
+        "define": "kuru"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [75.4893267, 27.0382056],
+            [75.3799593, 26.8188674],
+            [75.4455496, 26.6528435],
+            [75.5439558, 26.5501718],
+            [75.7790601, 26.4718767],
+            [76.0797846, 26.4229201],
+            [76.2930272, 26.4180311],
+            [76.5281359, 26.4621103],
+            [76.7522909, 26.5942181],
+            [76.8342786, 26.7408057],
+            [76.8779952, 26.8628116],
+            [76.828764, 27.0090267],
+            [76.7248717, 27.1209852],
+            [76.5553836, 27.2182405],
+            [76.3421685, 27.3105536],
+            [76.0852297, 27.3445397],
+            [75.8228244, 27.2619588],
+            [75.6314785, 27.155003],
+            [75.4893267, 27.0382056]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Macchā",
+        "style": {
+          "color": "#a7b5d7",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#a7b5d7",
+          "fillOpacity": 0.3
+        },
+        "id": "macchā",
+        "define": "macchā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [84.6488561, 25.8826299],
+            [84.2071112, 26.1053195],
+            [83.7912415, 26.0311415],
+            [83.427658, 25.6226234],
+            [83.447163, 25.2223325],
+            [83.4899152, 24.6274247],
+            [83.4250072, 24.1780118],
+            [83.5247829, 23.8305153],
+            [83.6526707, 23.210822],
+            [84.1084348, 23.0546483],
+            [85.4053166, 23.2208259],
+            [86.5256071, 23.4600556],
+            [86.7931456, 24.4980228],
+            [86.3299298, 25.3947755],
+            [85.7219491, 25.5835199],
+            [85.5276911, 25.6291774],
+            [85.2701976, 25.6873414],
+            [85.0591099, 25.7530387],
+            [84.6488561, 25.8826299]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Māgadha",
+        "style": {
+          "color": "#f8971b",
+          "opacity": 1,
+          "weight": 2,
+          "fillColor": "#f8971b",
+          "fillOpacity": 0.0784313725490196
+        },
+        "id": "māgadha",
+        "define": "māgadha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [83.067627, 27.2350946],
+            [83.0126953, 27.0689091],
+            [83.001709, 26.8240708],
+            [82.9907227, 26.6474587],
+            [83.0895996, 26.3918697],
+            [83.3422852, 26.3131126],
+            [83.671875, 26.3131126],
+            [83.9135742, 26.3918697],
+            [84.3859863, 26.4213897],
+            [84.5288086, 26.6867295],
+            [84.5178223, 26.873081],
+            [84.3859863, 27.1373684],
+            [84.1003418, 27.1764691],
+            [83.7927246, 27.1960144],
+            [83.572998, 27.2253258],
+            [83.4411621, 27.2350946],
+            [83.067627, 27.2350946]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Mallā",
+        "style": {
+          "color": "#0ba9cc",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#0ba9cc",
+          "fillOpacity": 0.3
+        },
+        "id": "mallā",
+        "define": "mallā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [78.4752436, 27.8487625],
+            [78.5301811, 27.6348269],
+            [78.6018267, 27.5765226],
+            [78.7279531, 27.4594774],
+            [78.9586865, 27.3424227],
+            [79.2223815, 27.2545505],
+            [79.5080509, 27.4399779],
+            [79.7827333, 27.6056229],
+            [79.9695177, 27.8001791],
+            [80.1563023, 27.9846857],
+            [80.2222266, 28.1301263],
+            [80.0903791, 28.3140685],
+            [80.1123541, 28.4880364],
+            [79.9805064, 28.6809988],
+            [79.8156963, 28.8062343],
+            [79.6069366, 28.8832277],
+            [79.431139, 28.9409351],
+            [79.123493, 28.9697766],
+            [78.9806577, 28.8158612],
+            [78.7389368, 28.5652631],
+            [78.6510391, 28.3043943],
+            [78.4642551, 28.1591896],
+            [78.4752436, 27.8487625]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Pañcāla / Pañcālajanapada / Pañcālaraṭṭha / Pañcālā",
+        "style": {
+          "color": "#ffdd5e",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#ffdd5e",
+          "fillOpacity": 0.3
+        },
+        "id": "pañcāla",
+        "define": "pañcāla"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.5452693, 27.5816345],
+            [76.5535276, 27.4668746],
+            [76.5562934, 27.3960859],
+            [76.6058407, 27.2836324],
+            [76.7269414, 27.17107],
+            [76.8701192, 27.100131],
+            [77.0406849, 27.0289879],
+            [77.2388332, 26.9995717],
+            [77.4920214, 26.9946699],
+            [77.6791616, 27.0731124],
+            [77.8359813, 27.1564137],
+            [77.943364, 27.1955662],
+            [78.0204273, 27.3032177],
+            [78.091992, 27.493802],
+            [78.0534701, 27.6743153],
+            [77.9709081, 27.7815096],
+            [77.8277962, 27.9275152],
+            [77.6406428, 27.9907249],
+            [77.3599093, 28.0441788],
+            [77.1232129, 28.0150209],
+            [76.9140417, 27.9664071],
+            [76.7709262, 27.9226361],
+            [76.6608414, 27.8447832],
+            [76.5672751, 27.723031],
+            [76.5452693, 27.5816345]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Sūrasena",
+        "style": {
+          "color": "#62af44",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#62af44",
+          "fillOpacity": 0.3
+        },
+        "id": "sūrasena",
+        "define": "sūrasena"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [80.8811258, 26.0469702],
+            [80.6723939, 26.1653563],
+            [80.4307198, 26.303321],
+            [80.1890452, 26.5000936],
+            [79.5518869, 26.971008],
+            [79.0238829, 27.1625011],
+            [78.4643351, 27.1764191],
+            [77.9919453, 26.9808235],
+            [77.8101236, 26.6275965],
+            [77.7832409, 26.04696],
+            [78.3104593, 25.8099039],
+            [79.1125488, 25.3539546],
+            [79.6288159, 25.085755],
+            [79.8265549, 25.0260504],
+            [80.1011836, 24.9414163],
+            [80.5023193, 24.7168955],
+            [80.958049, 24.607256],
+            [81.2656307, 24.6471928],
+            [81.5292785, 24.8965601],
+            [81.5842037, 25.095691],
+            [81.639129, 25.2448268],
+            [81.6940535, 25.463228],
+            [81.6061664, 25.7604076],
+            [81.423532, 25.913659],
+            [81.1447762, 25.9976137],
+            [80.8811258, 26.0469702]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Vaṁsa",
+        "style": {
+          "color": "#795046",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#795046",
+          "fillOpacity": 0.18823529411764706
+        },
+        "id": "vaṁsa",
+        "define": "vaṁsa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [84.4747778, 26.2245227],
+            [84.5790667, 25.9385529],
+            [84.8645141, 25.7211391],
+            [85.1293819, 25.6568238],
+            [85.4354233, 25.6320759],
+            [85.7099001, 25.6320744],
+            [86.0282924, 25.7409099],
+            [86.2574867, 25.8670498],
+            [86.3220192, 26.0594142],
+            [86.4429175, 26.3032469],
+            [86.377141, 26.6375128],
+            [85.9983396, 26.9977273],
+            [85.5480983, 27.051509],
+            [85.2813721, 26.9661418],
+            [84.9880077, 26.7576255],
+            [84.86454, 26.6472347],
+            [84.5351721, 26.4999589],
+            [84.4747778, 26.2245227]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Mahajanapadas",
+        "name": "Vajjī",
+        "style": {
+          "color": "#a61b4a",
+          "opacity": 1,
+          "weight": 1.2,
+          "fillColor": "#a61b4a",
+          "fillOpacity": 0.19607843137254902
+        },
+        "id": "vajjī",
+        "define": "vajjī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [73.524154, 19.892823],
+            [73.520508, 19.68397],
+            [73.498535, 19.539084],
+            [73.586426, 19.373341],
+            [73.707275, 19.23855],
+            [73.894043, 19.103648],
+            [74.08081, 19.030963],
+            [74.399414, 18.979026],
+            [74.783936, 18.947856],
+            [75.135498, 18.947856],
+            [75.454102, 18.999803],
+            [75.673828, 19.248922],
+            [75.72876, 19.435514],
+            [75.662842, 19.81839],
+            [75.38269, 20.024968],
+            [75.058594, 20.07657],
+            [74.73999, 20.159098],
+            [74.498291, 20.25189],
+            [74.157715, 20.313721],
+            [73.87207, 20.313721],
+            [73.550764, 20.07783],
+            [73.524154, 19.892823]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Aḷaka / Mūḷaka",
+        "style": {
+          "color": "#3f5ba9",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#3f5ba9",
+          "fillOpacity": 0.2784313725490196
+        },
+        "id": "aḷaka",
+        "define": "aḷaka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [86.616211, 26.017298],
+            [86.33606, 25.750425],
+            [86.42395, 25.428392],
+            [86.550293, 25.428392],
+            [86.671143, 25.274504],
+            [86.824951, 25.334097],
+            [86.934814, 25.334097],
+            [87.110596, 25.329132],
+            [87.231445, 25.334097],
+            [87.280884, 25.477992],
+            [87.451172, 25.492868],
+            [87.786255, 25.438314],
+            [87.835693, 25.65143],
+            [87.610474, 25.79],
+            [87.352295, 25.908644],
+            [87.121582, 25.977799],
+            [86.616211, 26.017298]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Aṅguttarāpa",
+        "style": {
+          "color": "#0ba9cc",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#0ba9cc",
+          "fillOpacity": 0.23921568627450981
+        },
+        "id": "aṅguttarāpa",
+        "define": "aṅguttarāpa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [85.542297, 20.61479],
+            [85.534058, 20.488773],
+            [85.610962, 20.390974],
+            [85.715332, 20.293113],
+            [85.783997, 20.228698],
+            [85.882874, 20.179724],
+            [86.044922, 20.112682],
+            [86.163025, 20.07399],
+            [86.270142, 20.068831],
+            [86.385498, 20.089468],
+            [86.495361, 20.153942],
+            [86.588745, 20.223543],
+            [86.704102, 20.308569],
+            [86.73706, 20.416717],
+            [86.772766, 20.491346],
+            [86.775513, 20.601936],
+            [86.726074, 20.712446],
+            [86.616211, 20.810039],
+            [86.437683, 20.871644],
+            [86.292114, 20.935789],
+            [86.143799, 20.948615],
+            [85.957031, 20.938354],
+            [85.836182, 20.892174],
+            [85.663147, 20.843412],
+            [85.591736, 20.730428],
+            [85.542297, 20.61479]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Kāliṅga",
+        "style": {
+          "color": "#7c3592",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#7c3592",
+          "fillOpacity": 0.3
+        },
+        "id": "kāliṅga",
+        "define": "kāliṅga"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [83.502274, 27.522887],
+            [83.501244, 27.499441],
+            [83.489227, 27.476292],
+            [83.486137, 27.444611],
+            [83.479958, 27.408043],
+            [83.479957, 27.397375],
+            [83.4804217, 27.3809873],
+            [83.4507748, 27.3632299],
+            [83.4363538, 27.3549963],
+            [83.4274297, 27.3284651],
+            [83.4185049, 27.3086906],
+            [83.4071648, 27.2908731],
+            [83.534693, 27.2862393],
+            [83.6814883, 27.2863665],
+            [83.763528, 27.2921743],
+            [83.804397, 27.337005],
+            [83.862076, 27.434556],
+            [83.857955, 27.533847],
+            [83.746033, 27.57646],
+            [83.655052, 27.585285],
+            [83.63102, 27.591067],
+            [83.592224, 27.601411],
+            [83.554116, 27.611451],
+            [83.550682, 27.605062],
+            [83.547249, 27.587111],
+            [83.533516, 27.571895],
+            [83.52047, 27.556982],
+            [83.502274, 27.522887]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Koḷiyā",
+        "style": {
+          "color": "#009d57",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#009d57",
+          "fillOpacity": 0.3
+        },
+        "id": "koḷiyā",
+        "define": "koḷiyā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [85.160522, 26.502531],
+            [85.080872, 26.53448],
+            [84.984741, 26.563963],
+            [84.885864, 26.576246],
+            [84.781494, 26.568876],
+            [84.644165, 26.529565],
+            [84.58374, 26.492699],
+            [84.523315, 26.40171],
+            [84.509583, 26.28849],
+            [84.517822, 26.204734],
+            [84.545288, 26.096255],
+            [84.58374, 25.992612],
+            [84.668884, 25.89382],
+            [84.770508, 25.824617],
+            [84.902344, 25.755372],
+            [85.039666, 25.723207],
+            [85.082257, 25.685473],
+            [85.149536, 25.656382],
+            [85.304031, 25.644002],
+            [85.415955, 25.661334],
+            [85.542297, 25.673711],
+            [85.663147, 25.676187],
+            [85.816956, 25.691038],
+            [85.935059, 25.733107],
+            [86.083374, 25.812254],
+            [86.132812, 25.896291],
+            [86.160278, 25.980268],
+            [86.184998, 26.101188],
+            [86.105347, 26.162834],
+            [85.935059, 26.219519],
+            [85.792236, 26.24662],
+            [85.663147, 26.281102],
+            [85.462646, 26.32296],
+            [85.308838, 26.384489],
+            [85.209961, 26.460738],
+            [85.160522, 26.502531]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Licchavī",
+        "style": {
+          "color": "#cddc39",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#cddc39",
+          "fillOpacity": 0.3
+        },
+        "id": "licchavī",
+        "define": "licchavī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [82.8945919, 27.4887811],
+            [82.9206879, 27.4430902],
+            [82.9666899, 27.4010329],
+            [83.0051428, 27.3607906],
+            [83.1438449, 27.3248052],
+            [83.3917237, 27.2900279],
+            [83.4123228, 27.3126036],
+            [83.4291339, 27.3544982],
+            [83.4734086, 27.3884035],
+            [83.478928, 27.458017],
+            [83.494191, 27.521351],
+            [83.532143, 27.576765],
+            [83.547098, 27.611937],
+            [83.39859, 27.66194],
+            [83.287354, 27.688392],
+            [83.188477, 27.746746],
+            [83.062134, 27.766191],
+            [82.974243, 27.756469],
+            [82.913818, 27.71271],
+            [82.902832, 27.634874],
+            [82.897339, 27.556982],
+            [82.8945919, 27.4887811]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Sākya",
+        "style": {
+          "color": "#f8971b",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#f8971b",
+          "fillOpacity": 0.3
+        },
+        "id": "sākya",
+        "define": "sākya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [71.070557, 22.892623],
+            [71.010132, 22.806567],
+            [70.988159, 22.52778],
+            [71.202393, 22.304344],
+            [71.477051, 22.21792],
+            [71.92749, 22.258597],
+            [72.235107, 22.416107],
+            [72.366943, 22.684984],
+            [72.394409, 22.948277],
+            [72.235107, 23.115102],
+            [71.998901, 23.211058],
+            [71.685791, 23.256487],
+            [71.460571, 23.200961],
+            [71.207886, 23.110049],
+            [71.070557, 22.892623]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Sunāparanta",
+        "style": {
+          "color": "#ee9c96",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#ee9c96",
+          "fillOpacity": 0.3
+        },
+        "id": "sunāparanta",
+        "define": "sunāparanta"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [85.108337, 26.797106],
+            [85.100098, 26.703906],
+            [85.113831, 26.615541],
+            [85.144043, 26.527108],
+            [85.267639, 26.431228],
+            [85.440674, 26.359881],
+            [85.608215, 26.313113],
+            [85.814209, 26.28849],
+            [85.929565, 26.273714],
+            [86.105347, 26.25401],
+            [86.234436, 26.25401],
+            [86.308594, 26.293415],
+            [86.325073, 26.364803],
+            [86.363525, 26.45582],
+            [86.377258, 26.53448],
+            [86.352539, 26.625363],
+            [86.303101, 26.718627],
+            [86.250916, 26.809364],
+            [86.165772, 26.900028],
+            [86.091614, 26.936763],
+            [85.98175, 26.988171],
+            [85.918579, 27.000408],
+            [85.783997, 27.044449],
+            [85.687866, 27.064018],
+            [85.58075, 27.049342],
+            [85.457153, 27.027324],
+            [85.352783, 26.995514],
+            [85.281372, 26.966142],
+            [85.168762, 26.880431],
+            [85.108337, 26.797106]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Videha",
+        "style": {
+          "color": "#009d57",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#009d57",
+          "fillOpacity": 0.3
+        },
+        "id": "videha",
+        "define": "videha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [25.7189945, 37.422526],
+            [24.8785402, 37.094621],
+            [24.903534, 36.8220492],
+            [25.0378418, 36.5670124],
+            [25.8188517, 36.6772431],
+            [26.5539554, 36.8928018],
+            [26.7407227, 37.2215808],
+            [27.9656979, 37.2390752],
+            [27.6990134, 37.8004795],
+            [27.484869, 37.9789454],
+            [27.533258, 38.1364088],
+            [27.3394779, 38.4492865],
+            [26.9604495, 38.7497992],
+            [26.7791854, 38.784195],
+            [26.6088866, 38.7583672],
+            [26.2792971, 38.7112329],
+            [25.3729244, 38.6168703],
+            [25.7189945, 37.422526]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Republics / countries",
+        "name": "Yona / Yavāna / Yonakā",
+        "style": {
+          "color": "#db4436",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#db4436",
+          "fillOpacity": 0.3
+        },
+        "id": "yona",
+        "define": "yona"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.9592285, 23.6596194],
+            [76.7724609, 23.6042618],
+            [76.6568439, 23.4226289],
+            [76.6971265, 23.2113881],
+            [76.6955565, 22.9482769],
+            [76.7724608, 22.6241519],
+            [76.8164058, 22.1467076],
+            [77.0141598, 21.7492962],
+            [77.365723, 21.6165788],
+            [78.057861, 21.626793],
+            [78.189697, 21.575719],
+            [78.760986, 21.42239],
+            [79.057617, 21.350781],
+            [79.376221, 21.299611],
+            [79.914551, 21.381475],
+            [80.233154, 21.381475],
+            [80.804443, 21.514407],
+            [81.221924, 21.667639],
+            [81.452637, 21.749296],
+            [81.7602544, 21.7492963],
+            [82.0019534, 21.7901072],
+            [82.1667477, 21.8716949],
+            [82.331543, 21.912471],
+            [82.6831059, 22.0347297],
+            [83.1115726, 22.0958194],
+            [83.8853652, 22.4048967],
+            [84.7265621, 22.8470709],
+            [84.5418556, 23.5945358],
+            [83.6947647, 23.6749966],
+            [82.6171871, 23.785345],
+            [81.936035, 23.7451257],
+            [81.463623, 23.795398],
+            [80.936279, 23.704895],
+            [80.36499, 23.714954],
+            [79.980469, 23.735069],
+            [79.552002, 23.765237],
+            [79.178467, 23.785345],
+            [78.662109, 23.855698],
+            [77.9589847, 23.8054499],
+            [77.244873, 23.775291],
+            [77.080078, 23.760209],
+            [76.9592285, 23.6596194]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "Regions",
+        "name": "Dakkhiṇāgiri",
+        "style": {
+          "color": "#f9f7a6",
+          "opacity": 1,
+          "weight": 1,
+          "fillColor": "#f9f7a6",
+          "fillOpacity": 0.3
+        },
+        "id": "dakkhiṇāgiri",
+        "define": "dakkhiṇāgiri"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.415955, 25.020906] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "1) Rājagaha",
+        "icon": "walk",
+        "id": "1) rājagaha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.4653924, 25.1483956] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "2) Nāḷandā",
+        "icon": "walk",
+        "id": "2) nāḷandā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.193481, 25.584563] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "3) Pataligama",
+        "icon": "walk",
+        "id": "3) pataligama"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.233307, 25.656382] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "4) Koṭigāma",
+        "icon": "walk",
+        "id": "4) koṭigāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.211334, 25.735581] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "5) Nādika",
+        "icon": "walk",
+        "id": "5) nādika"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.1505657, 25.8638602] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "6) Beluva",
+        "icon": "walk",
+        "id": "6) beluva"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.063019, 25.996316] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "7) Vesālī",
+        "icon": "walk",
+        "id": "7) vesālī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.0321196, 26.1190666] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "8) Bhaṇḍagāma",
+        "icon": "walk",
+        "id": "8) bhaṇḍagāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.8117065, 26.3918697] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "9) Hatthigāmaka",
+        "icon": "walk",
+        "id": "9) hatthigāmaka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.6194463, 26.4336855] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "10) Ambagāma",
+        "icon": "walk",
+        "id": "10) ambagāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.4573975, 26.4926987] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "11) Jambugāma",
+        "icon": "walk",
+        "id": "11) jambugāma"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.3145761, 26.5958976] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "12) Bhoganagara",
+        "icon": "walk",
+        "id": "12) bhoganagara"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.094849, 26.694091] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "13) Pāvā",
+        "icon": "walk",
+        "id": "13) pāvā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.915634, 26.740092] },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "14) Kusinārā, Mallā",
+        "icon": "walk",
+        "id": "14) kusinārā, mallā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [85.415955, 25.020906],
+          [85.4695126, 25.150257],
+          [85.193481, 25.584563],
+          [85.233307, 25.656382],
+          [85.211334, 25.735581],
+          [85.120697, 25.927172],
+          [85.063019, 25.996316],
+          [85.004654, 26.114136],
+          [84.795227, 26.373416],
+          [84.449844, 26.461967],
+          [84.094849, 26.694091],
+          [83.915634, 26.740092]
+        ]
+      },
+      "properties": {
+        "layer": "Mahaparinibbana journey",
+        "name": "Mahaparinibbana trek",
+        "style": { "color": "#a7b5d7", "opacity": 1, "weight": 4 },
+        "id": "mahaparinibbana trek"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [73.5377617, 19.7373649] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "1) Mūḷaka",
+        "icon": "walk",
+        "id": "1) mūḷaka"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.380859, 19.482129] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "2) Patiṭṭhāna",
+        "icon": "walk",
+        "id": "2) patiṭṭhāna"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.357056, 22.019453] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "3) Māhissati",
+        "icon": "walk",
+        "id": "3) māhissati"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [75.777222, 23.182778] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "4) Ujjenī",
+        "icon": "walk",
+        "id": "4) ujjenī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.0800781, 23.7602094] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "5) Gonaddha",
+        "icon": "walk",
+        "id": "5) gonaddha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [78.4588623, 24.141741] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "6) Vedisa",
+        "icon": "walk",
+        "id": "6) vedisa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [80.2166748, 24.6819612] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "7) Vanasa",
+        "icon": "walk",
+        "id": "7) vanasa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [81.392899, 25.338984] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "8) Kosambī",
+        "icon": "walk",
+        "id": "8) kosambī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.2, 26.8] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "9) Sāketa",
+        "icon": "walk",
+        "id": "9) sāketa"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.0953369, 27.4985267] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "10) Sāvatthī",
+        "icon": "walk",
+        "id": "10) sāvatthī"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [82.548065, 27.668934] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "11) Setabyā",
+        "icon": "walk",
+        "id": "11) setabyā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.034668, 27.5484591] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "12) Kapilavatthu",
+        "icon": "walk",
+        "id": "12) kapilavatthu"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [83.8922882, 26.761552] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "13) Kusinārā",
+        "icon": "walk",
+        "id": "13) kusinārā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.0558795, 26.6777435] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "14) Pāvā",
+        "icon": "walk",
+        "id": "14) pāvā"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [84.298782, 26.573175] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "15) Bhoganagara",
+        "icon": "walk",
+        "id": "15) bhoganagara"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.1007843, 26.0154464] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "16) Vesāli",
+        "icon": "walk",
+        "id": "16) vesāli"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [85.4393005, 25.0215287] },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "17) Rājagaha",
+        "icon": "walk",
+        "id": "17) rājagaha"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [73.5486602, 19.7337446],
+          [73.8123321, 19.6690995],
+          [74.010086, 19.6387074],
+          [74.2105865, 19.5804934],
+          [74.4207001, 19.5352014],
+          [74.6246338, 19.4769502],
+          [74.8168945, 19.4355143],
+          [74.9816895, 19.4251537],
+          [75.1574707, 19.4251537],
+          [75.3442383, 19.4147924],
+          [75.3991699, 19.5804935],
+          [75.4101563, 19.740854],
+          [75.3607178, 19.83906],
+          [75.3826904, 20.0249679],
+          [75.3607178, 20.0920475],
+          [75.3662109, 20.2209658],
+          [75.3497314, 20.3137209],
+          [75.3277588, 20.421865],
+          [75.3112793, 20.4733355],
+          [75.2783203, 20.5350773],
+          [75.2893066, 20.6739053],
+          [75.2893066, 20.7766591],
+          [75.2563477, 20.8382778],
+          [75.2453613, 20.9819567],
+          [75.2453613, 21.0845001],
+          [75.2398682, 21.1716063],
+          [75.2453613, 21.2996106],
+          [75.2398682, 21.4070481],
+          [75.234375, 21.565502],
+          [75.2124023, 21.6880573],
+          [75.2398682, 21.7492958],
+          [75.2453613, 21.8716946],
+          [75.300293, 21.9328547],
+          [75.4046631, 21.9888951],
+          [75.5529785, 22.0703688],
+          [75.5969238, 22.1517956],
+          [75.6463623, 22.2636805],
+          [75.6518555, 22.3602364],
+          [75.668335, 22.5074823],
+          [75.6628418, 22.6140109],
+          [75.6848145, 22.7255238],
+          [75.6738281, 22.867318],
+          [75.6793213, 22.9482769],
+          [75.7287598, 23.0544619],
+          [75.8001709, 23.1454111],
+          [75.9155273, 23.2161067],
+          [76.0144043, 23.2665807],
+          [76.1682129, 23.32208],
+          [76.2890625, 23.4128471],
+          [76.4263916, 23.4430889],
+          [76.574707, 23.4884388],
+          [76.6680908, 23.5438451],
+          [76.7724609, 23.6042618],
+          [76.9592285, 23.6596194],
+          [77.1240234, 23.6998647],
+          [77.244873, 23.7752912],
+          [77.4481201, 23.855698],
+          [77.5854492, 23.8607218],
+          [77.7062988, 23.9009049],
+          [77.8710938, 23.9410756],
+          [78.0029297, 23.9711953],
+          [78.1567383, 23.9812337],
+          [78.2501221, 24.0063262],
+          [78.3709717, 24.0414475],
+          [78.5192871, 24.101633],
+          [78.6456299, 24.1668021],
+          [78.7774658, 24.1968689],
+          [78.9257813, 24.251973],
+          [79.0411377, 24.2820198],
+          [79.1729736, 24.3320819],
+          [79.3157959, 24.3571055],
+          [79.4036865, 24.397133],
+          [79.5135498, 24.4221438],
+          [79.6398926, 24.4671507],
+          [79.7717285, 24.4871486],
+          [79.9365234, 24.5021449],
+          [80.057373, 24.5421264],
+          [80.1837158, 24.5920853],
+          [80.2935791, 24.6520098],
+          [80.5023193, 24.7168955],
+          [80.6396484, 24.8066814],
+          [80.7714844, 24.9013849],
+          [80.892334, 24.9810789],
+          [80.9967041, 25.0507688],
+          [81.12854, 25.1154454],
+          [81.260376, 25.2198507],
+          [81.3812256, 25.2645685],
+          [81.5075684, 25.3192011],
+          [81.6229248, 25.4135086],
+          [81.7602539, 25.5176574],
+          [81.7877197, 25.6316216],
+          [81.8481445, 25.7899996],
+          [81.9689941, 25.9333472],
+          [82.0513916, 26.0765206],
+          [82.0349121, 26.1948767],
+          [82.0788574, 26.3278837],
+          [82.1118164, 26.426309],
+          [82.1502686, 26.5197353],
+          [82.166748, 26.6179967],
+          [82.2, 26.8],
+          [82.1118164, 26.8485785],
+          [82.0788574, 26.9808286],
+          [82.0623779, 27.0835825],
+          [82.0294189, 27.2009002],
+          [82.0184326, 27.303452],
+          [82.0349121, 27.4205382],
+          [82.0953369, 27.4985267],
+          [82.2161865, 27.5472415],
+          [82.3260498, 27.6056708],
+          [82.4249268, 27.6446064],
+          [82.548065, 27.668934],
+          [82.666626, 27.6251403],
+          [82.7819824, 27.6056708],
+          [82.9467773, 27.5472415],
+          [83.034668, 27.5484591],
+          [83.1445313, 27.4790348],
+          [83.1994629, 27.3522529],
+          [83.237915, 27.2741611],
+          [83.3203125, 27.1764691],
+          [83.3917236, 27.0444492],
+          [83.5015869, 26.9220699],
+          [83.5839844, 26.8338745],
+          [83.6444092, 26.7995577],
+          [83.704834, 26.7554209],
+          [83.770752, 26.7161738],
+          [83.8879805, 26.7081398],
+          [83.9300537, 26.6376389],
+          [83.973999, 26.6425489],
+          [84.0509033, 26.6229076],
+          [84.1223145, 26.5787023],
+          [84.2102051, 26.5393943],
+          [84.3035889, 26.4804072],
+          [84.3859863, 26.4213897],
+          [84.4793701, 26.3426528],
+          [84.5562744, 26.3032642],
+          [84.6606445, 26.2244469],
+          [84.7595215, 26.1505072],
+          [84.8309326, 26.1061208],
+          [84.9462891, 26.012361],
+          [85.0286865, 25.9432268],
+          [85.0891113, 25.8542803],
+          [85.1275635, 25.7801071],
+          [85.1550293, 25.6415264],
+          [85.1385498, 25.5473977],
+          [85.1605225, 25.5027845],
+          [85.2044678, 25.4631145],
+          [85.2539063, 25.3986228],
+          [85.3088379, 25.3241665],
+          [85.3637695, 25.2099112],
+          [85.3967285, 25.1253926],
+          [85.418256, 25.012806]
+        ]
+      },
+      "properties": {
+        "layer": "Parayanavagga journey",
+        "name": "Line 18",
+        "style": { "color": "#777777", "opacity": 1, "weight": 3.713 },
+        "id": "line 18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [58.43941, 40.25264] },
+      "properties": {
+        "layer": "Fanciful Places",
+        "name": "Nirabbuda",
+        "icon": "death",
+        "id": "nirabbuda",
+        "define": "nirabbuda"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [58.43941, 40.25264] },
+      "properties": {
+        "layer": "Fanciful Places",
+        "name": "Niraya",
+        "icon": "death",
+        "id": "niraya",
+        "define": "niraya"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [115.8487701, -31.9579882] },
+      "properties": {
+        "layer": "Fanciful Places",
+        "name": "Sagga/Heaven",
+        "icon": "circle",
+        "id": "sagga"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [5.70236111111114, 50.1245] },
+      "properties": {
+        "layer": "Fanciful Places",
+        "name": "Tāvatiṃsā",
+        "icon": "dhammacakka",
+        "id": "tāvatiṃsā"
+      }
+    }
+  ]
+}
