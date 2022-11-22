@@ -1339,3 +1339,11 @@ class FallenLeaves(Resource):
         db = get_db()
         data = db.collection('fallen_leaves').all()
         return list(data), 200
+
+
+class MapData(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('map_data').all()
+        return list(data), 200

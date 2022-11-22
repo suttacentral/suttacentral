@@ -253,6 +253,16 @@ def load_available_voices(change_tracker, additional_info_dir, db):
     db.collection('available_voices').import_bulk_logged(docs, wipe=True)
 
 
+def load_map_data(additional_info_dir, db):
+    map_file = additional_info_dir / 'map_data.json'
+    map_data = json_load(map_file)
+    map_doc = [
+        {'type': map_data['type'], 'features': map_data['features']}
+    ]
+    db['map_data'].truncate()
+    db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
+
+
 def load_html_texts(change_tracker, data_dir, db, html_dir):
     print('Loading HTML texts')
 
@@ -541,6 +551,9 @@ def run(no_pull=False):
 
     print_stage("Loading available_voices.json")
     load_available_voices(change_tracker, additional_info_dir, db)
+
+    print_stage("Loading map_data.json")
+    load_map_data(additional_info_dir, db)
 
     print_stage('Loading guides.json')
     load_guides_file(db, structure_dir / 'guides.json')

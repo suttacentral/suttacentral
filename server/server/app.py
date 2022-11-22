@@ -51,7 +51,8 @@ from api.views import (
     AbbreviationEditions,
     AbbreviationSchools,
     FallenLeaves,
-    FallenLeavesSuttaplexList
+    FallenLeavesSuttaplexList,
+    MapData
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -133,6 +134,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(AbbreviationEditions, '/abbreviation_editions')
     api.add_resource(AbbreviationSchools, '/abbreviation_schools')
     api.add_resource(FallenLeaves, '/fallen_leaves')
+    api.add_resource(MapData, '/map_data')
 
     app.register_blueprint(api_bp)
     register_extensions(app)

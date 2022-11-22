@@ -1,5 +1,7 @@
+import { API_ROOT } from '../constants';
+
 export default (async function () {
-  let geoJSON = await fetch('../files/map-data.json')
+  const geoJSON = await fetch(`${API_ROOT}/map_data`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`Map data fetch response is not ok: status ${response.status}`);
@@ -10,9 +12,9 @@ export default (async function () {
       console.error('Map data fetch error:', error);
     });
 
-  let features = geoJSON.features;
+  const { features } = geoJSON[0];
 
-  let layerNames = Array.from(new Set(features.map(feature => feature.properties.layer)));
+  const layerNames = Array.from(new Set(features.map(feature => feature.properties.layer)));
 
   return {
     geoJSON,
