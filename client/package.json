@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "private": true,
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 webpack --watch --config webpack.prod.js",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 webpack --config webpack.prod.js",
     "dev": "vite"
   },
   "husky": {
