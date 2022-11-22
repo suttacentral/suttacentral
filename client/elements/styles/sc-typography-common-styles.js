@@ -19,7 +19,7 @@ export const typographyCommonStyles = css`
   main > article,
   div > article,
   .range {
-    margin: 0 3vw;
+    margin: 0 1em;
   }
 
   /* text block elements */
@@ -260,6 +260,105 @@ export const typographyCommonStyles = css`
   h6 a {
     text-decoration: none;
   }
+
+  /* static endnotes */
+
+@supports (font-variant-position: super)
+{
+    a[role='doc-noteref']
+    {
+        font-family: var(--sc-sans-font);
+        font-weight: 600!important;
+        font-style: normal!important;
+
+        padding: .1em .2em;
+
+        font-variant-position: super;
+
+        display: inline-block;
+
+        height: .55em;
+
+        line-height: 1;
+
+        text-decoration: none;
+
+        border-radius: 50%;
+
+        border: .15em solid var(--sc-primary-color-light);
+
+        margin-top: -.15em;
+
+        color: var(--sc-secondary-text-color)
+    }
+}
+
+@supports not (font-variant-position: super)
+{
+    a[role='doc-noteref']
+    {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-xs);
+        font-weight: 600!important;
+        font-style: normal!important;
+
+        padding: 0 .2em;
+
+        vertical-align: super;
+
+        lline-height: 1;
+
+        text-decoration: none;
+
+        border-radius: 50%;
+
+        border: .15em solid var(--sc-primary-color-light);
+
+        color: var(--sc-secondary-text-color)
+    }
+}
+
+a[role='doc-backlink']
+{
+
+        font-family: var(--sc-sans-font);
+        padding: 0 .2em;
+
+        text-decoration: none;
+
+        color: var(--sc-secondary-text-color);
+
+        font-size: 0em;
+}
+
+/* use this pseudoelement together with the size 0 font hack because Skolar does not have the backlink character, but it does have a bunch of arrows in the PUA, so use one of them instead */
+
+a[role='doc-backlink']::after{
+  content: '󰈀';
+
+  font-size: 1.2rem
+}
+
+section[role='doc-endnotes']
+{
+  margin-top: 3em;
+
+  padding-top: 1em;
+
+  position: relative
+}
+
+section[role='doc-endnotes']::before
+{
+    content: " ";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 1px;
+    width: 50%;
+    border-top: 1px solid var(--sc-icon-color);
+}
+
 
   /* descriptive classes used in bilara and legacy texts */
 

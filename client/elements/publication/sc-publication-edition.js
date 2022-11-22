@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, svg } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
@@ -224,29 +224,12 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               <li>free of copyright.</li>
             </ul>
             <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
-            <h2>The ${this.editionDetail[0].root_name}</h2>
-            <p class="blurb">${unsafeHTML(this.editionDetail[0].blurb)}</p>
-            <h2>The Author</h2>
-            <figure class="author-pic">
-              <img
-                src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
-                alt=${this.creatorInfo.creator_uid}>
-              <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption> 
-            </figure>
-            ${unsafeHTML(this.creatorInfo.creator_biography)}
-          </section>
-          <section>
+            <section>
             <table>
-              <caption>Available editions</caption>
+              <caption>Available formats</caption>
               <tbody>
               <tr>
                 <td>${icon.paperback} Book, paperback</td>
-                <td><a href='https://github.com/suttacentral/editions' class='external'>${
-                  icon.external
-                } Print on demand</a></td>
-              </tr>
-              <tr>
-                <td>${icon.hardcover} Book, hardcover</td>
                 <td><a href='https://github.com/suttacentral/editions' class='external'>${
                   icon.external
                 } Print on demand</a></td>
@@ -287,6 +270,20 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               </tfoot>
             </table>
           </section>
+            <h2>The ${this.editionDetail[0].root_name}</h2>
+            <p class="blurb">${unsafeHTML(this.editionDetail[0].blurb)}</p>
+
+
+            <h2>The Author</h2>
+            <figure class="author-pic">
+              <img
+                src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
+                alt=${this.creatorInfo.creator_uid}>
+              <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption> 
+            </figure>
+            ${unsafeHTML(this.creatorInfo.creator_biography)}
+          </section>
+          
 
           <section>
             <h2>Publication details</h2>
