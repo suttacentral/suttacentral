@@ -41,6 +41,6 @@ def render_html_to_png(html_data, filename):
         try:
             asyncio.run(render_html_async(html_data, filename, ws_url=ws_url))
             return
-        except:
+        except Exception:
             if i > 0:
                 raise

@@ -1,3 +1,4 @@
+import contextlib
 import logging
 
 import regex
@@ -11,10 +12,8 @@ logger = logging.getLogger(__name__)
 def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
     key = tuple(indexes)
 
-    try:
+    with contextlib.suppress(KeyError):
         return _cache[key]
-    except KeyError:
-        pass
 
     available = []
     for index in indexes:
@@ -25,11 +24,7 @@ def get_available_indexes(indexes, _cache=util.TimedCache(lifetime=30)):
             }:
                 available.append(index)
         except Exception:
-            logger.debug(
-                'An exception occurred while checking cluster health for index: {}'.format(
-                    index
-                )
-            )
+            logger.debug(f'An exception occurred while checking cluster health for index: {index}')
             logger.exception(index)
             pass
     _cache[key] = available

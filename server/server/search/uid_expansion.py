@@ -13,8 +13,7 @@ for row in csv_loader.table_reader('uid_expansion'):
 def _expand_uid(uid, mapping):
     components = regex.findall(r'\p{alpha}+|\d+(?:\.\d+)?(?:-\d+)?', uid)
     out = ' '.join(mapping.get(c) or c.upper() for c in components)
-    out = regex.sub(r'(?<=\d+)-(?=\d+)', r'–', out)
-    return out
+    return regex.sub(r'(?<=\d+)-(?=\d+)', r'–', out)
 
 
 def uid_to_acro(uid):
