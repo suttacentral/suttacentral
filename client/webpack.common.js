@@ -41,6 +41,7 @@ module.exports = {
           urlPattern: new RegExp('/api/((?!ebook).*)'),
           handler: 'StaleWhileRevalidate',
           options: {
+            cacheName: 'apiCache',
             expiration: {
               maxAgeSeconds: 7 * 24 * 60 * 60,
             },

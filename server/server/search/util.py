@@ -1,3 +1,4 @@
+import contextlib
 import time
 from collections import deque
 from functools import lru_cache
@@ -29,7 +30,7 @@ class TimedCache:
 
     def __getitem__(self, key):
         now = time.time()
-        try:
+        with contextlib.suppress(IndexError):
             while True:
                 append_time, doomed_key = self._added.popleft()
                 if (
@@ -41,9 +42,6 @@ class TimedCache:
                     # pop and put back is for thread safety
                     self._added.appendleft([append_time, doomed_key])
                     break
-        except IndexError:
-            pass
-
         return self._values.__getitem__(key)
 
     def __setitem__(self, key, value):

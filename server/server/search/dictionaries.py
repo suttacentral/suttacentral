@@ -6,10 +6,7 @@ def cleanly_truncate_html(html_string, length):
     # TODO: The function name is aspirational, at the moment it crudely
     # butchers the HTML. Need to discuss further before choosing implementation.
     content = html_string
-    if len(content) >= length:
-        return content[:length] + '…'
-    else:
-        return content
+    return f'{content[:length]}…' if len(content) >= length else content
 
 
 def search(word, language, truncate_length=1000):
@@ -22,8 +19,7 @@ def search(word, language, truncate_length=1000):
     if not results:
         return
 
-    exact_results = [r for r in results if r['word'] == word]
-    if exact_results:
+    if exact_results := [r for r in results if r['word'] == word]:
         # simply discard inexact results if exact results exist
         results = exact_results
     else:

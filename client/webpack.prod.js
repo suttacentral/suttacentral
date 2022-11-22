@@ -18,6 +18,7 @@ module.exports = merge(require('./webpack.common'), {
       patterns: [
         'manifest.json',
         'img/**',
+        'files/map-data.json',
         'files/fonts/**',
         {
           context: 'localization/elements/build/',

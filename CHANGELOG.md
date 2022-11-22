@@ -1,6 +1,14 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.11.07
+
+- Add separate fallen-leaves data and apply to frontend. https://github.com/suttacentral/suttacentral/issues/2525
+
+## 2022.11.03
+
+- Clean and optimize frontend code. 
+
 ## 2022.10.29
 
 - Get breadcrumbs translation titles only from the API. https://github.com/suttacentral/suttacentral/issues/2299

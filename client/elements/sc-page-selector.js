@@ -32,6 +32,7 @@ const staticPages = [
   'introduction',
   'languages',
   'licensing',
+  'map',
   'methodology',
   'mnGuideSujato',
   'names',
@@ -158,6 +159,11 @@ const routes = {
     path: '/licensing',
     content: html`<sc-static-licensing />`,
     loader: () => import('./static/sc-static-licensing.js'),
+  },
+  'map': {
+    path: '/map',
+    content: html`<sc-static-map />`,
+    loader: () => import('./static/sc-static-map.js'),
   },
   'methodology': {
     path: '/methodology',

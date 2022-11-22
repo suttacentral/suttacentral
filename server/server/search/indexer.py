@@ -1,3 +1,4 @@
+import contextlib
 import hashlib
 import json
 import logging
@@ -58,7 +59,7 @@ class ElasticIndexer:
         if index_alias is None:
             index_alias = config_name
         if index_prefix is None:
-            index_prefix = index_alias + '_'
+            index_prefix = f'{index_alias}_'
         self.index_alias = index_alias
         self.index_prefix = index_prefix
         self.config_name = config_name
@@ -115,23 +116,16 @@ class ElasticIndexer:
         return self.es.indices.exists(self.index_name)
 
     def delete_index(self):
-        try:
+        with contextlib.suppress(Exception):
             self.es.indices.delete(self.index_name)
-        except:
-            pass
 
     def create_index(self):
-        logger.info(
-            'Creating index named {}, alias {}'.format(
-                self.index_name, self.index_alias
-            )
-        )
+        logger.info(f'Creating index named {self.index_name}, alias {self.index_alias}')
+
         try:
             self.es.indices.create(self.index_name, self.index_config)
         except RequestError as e:
-            msg = 'Failure to create index "{}" from config "{}"'.format(
-                self.index_alias, self.config_name
-            )
+            msg = f'Failure to create index "{self.index_alias}" from config "{self.config_name}"'
             msg += '\n' + json.dumps(e.info, indent=2)
 
     def update_aliases(self):
@@ -191,31 +185,23 @@ class ElasticIndexer:
                 return False
 
     def update(self, force=False):
-        logging.info(
-            'Updating index {} with config {}'.format(
-                self.index_alias, self.config_name
-            )
-        )
+        logging.info(f'Updating index {self.index_alias} with config {self.config_name}')
         update_needed = False
         if force:
             self.delete_index()
         if not self.index_exists():
-            logger.info(
-                'Creating index {} because index does not exists'.format(
-                    self.index_name
-                )
-            )
+            logger.info(f'Creating index {self.index_name} because index does not exists')
             self.create_index()
             # Update is always needed when index is freshly created.
             update_needed = True
         else:
-            logger.info('Index {} exists'.format(self.index_name))
+            logger.info(f'Index {self.index_name} exists')
 
         if update_needed or self.is_update_needed():
             if self.wait_for_index():
                 self.update_data()
             else:
-                logger.error('Failed to update index "{}"'.format(self.index_name))
+                logger.error(f'Failed to update index "{self.index_name}"')
 
         self.update_aliases()
         self.delete_obsolete_indices()
@@ -224,7 +210,7 @@ class ElasticIndexer:
         for chunk in chunks:
             if not chunk:
                 continue
-            try:
+            with contextlib.suppress(elasticsearch.helpers.BulkIndexError):
                 res = bulk(
                     self.es,
                     index=self.index_name,
@@ -232,15 +218,9 @@ class ElasticIndexer:
                     actions=(t for t in chunk if t is not None),
                     raise_on_exception=not self.suppress_elasticsearch_errors,
                 )
-            except elasticsearch.helpers.BulkIndexError:
-                pass
 
     def length_boost(self, length, midpoint=250):
-        if length < midpoint:
-            boost = length / midpoint
-        else:
-            boost = 0.5 + 1 / (1 + abs(log(length / (10 * midpoint), 10)))
-        return boost
+        return length / midpoint if length < midpoint else 0.5 + 1 / (1 + abs(log(length / (10 * midpoint), 10)))
 
     @staticmethod
     def load_index_config(name, _seen=None, _first_run=None):
@@ -256,7 +236,7 @@ class ElasticIndexer:
             _seen = set()
 
         if name in _seen:
-            logger.Error("Inherited file {} already encountered, skipping".format(name))
+            logger.Error(f"Inherited file {name} already encountered, skipping")
             return out
         _seen.add(name)
 

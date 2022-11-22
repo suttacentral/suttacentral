@@ -25,15 +25,10 @@ class TextInfoModel:
     def is_bold(self, lang, element):
         if element.tag in {'b', 'strong'}:
             return True
-        if lang in {'lzh', 'ko', 'jp', 'tw'}:
-            if element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}:
-                return True
-        return False
+        return lang in {'lzh', 'ko', 'jp', 'tw'} and element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
 
     def is_italic(self, element):
-        if element.tag in {'i', 'em'}:
-            return True
-        return False
+        return element.tag in {'i', 'em'}
 
     def process_lang_dir(
             self, lang_dir, data_dir=None, files_to_process=None, force=False
@@ -388,13 +383,13 @@ class PaliPageNumbinator:
                     ptsbook = self.msbook_to_ptsbook(msbook)
                     refs[edition] = self.format_book(ptsbook, book, num)
                     break
-        return refs if refs else None
+        return refs or None
 
     def format_book(self, ptsbook, book, num):
         if not book:
-            return '{} {}'.format(ptsbook, num)
+            return f'{ptsbook} {num}'
 
         book = {'1': 'i', '2': 'ii', '3': 'iii', '4': 'iv', '5': 'v', '6': 'vi'}.get(
             book, book
         )
-        return '{} {} {}'.format(ptsbook, book, num)
+        return f'{ptsbook} {book} {num}'

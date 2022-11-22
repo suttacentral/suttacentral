@@ -314,6 +314,13 @@ export class SCMenuMore extends LitLocalized(LitElement) {
             </div>
           </mwc-list-item>
         </a>
+        <a class="more-menu-link" href="/map">
+          <mwc-list-item class="more-menu-mwc-list-item">
+            <div class="menu-item-wrapper">
+              ${icon.map} ${this.localize('interface:map')}
+            </div>
+          </mwc-list-item>
+        </a>
         <a class="more-menu-link" href="/methodology">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">
