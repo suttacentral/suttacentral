@@ -62,8 +62,6 @@ export class SCMap extends LitLocalized(LitElement) {
   }
 
   static styles = [
-    unsafeCSS(leafletStyles),
-    unsafeCSS(leafletFullscreenStyles),
     css`
       :host {
         display: block;
@@ -266,7 +264,13 @@ export class SCMap extends LitLocalized(LitElement) {
   }
 
   render() {
-    return html`<div id="${this.mapElementID}"></div>`;
+    return html`
+      <style>
+        ${leafletStyles}
+        ${leafletFullscreenStyles}
+      </style>
+      <div id=${this.mapElementID}></div>
+    `;
   }
 }
 
