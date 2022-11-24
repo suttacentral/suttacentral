@@ -1,8 +1,7 @@
 import { LitElement, html, css, unsafeCSS, render } from 'lit';
 import 'leaflet';
-import { leafletStyles } from './styles/sc-map-styles';
+import { leafletStyles, leafletFullscreenStyles } from './styles/sc-map-styles';
 import 'leaflet-fullscreen';
-import { leafletFullscreenStyles } from './styles/sc-map-styles';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { dispatchCustomEvent } from '../utils/customEvent';
