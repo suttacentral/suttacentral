@@ -98,7 +98,9 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
 
   async _fetchEditionBlurbs(lang) {
     try {
-      this.editionBlurbs = await (await fetch(`${API_ROOT}/publication/edition/blurbs/${lang}`)).json();
+      this.editionBlurbs = await (
+        await fetch(`${API_ROOT}/publication/edition/blurbs/${lang}`)
+      ).json();
     } catch (error) {
       console.log(error);
     }

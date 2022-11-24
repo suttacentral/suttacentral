@@ -29,10 +29,32 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.matter = store.getState().currentRoute.params.matter;
+
+    console.log(this.matter);
+
+    this._hashChangeHandler = () => {
+      setTimeout(() => {
+        this._scrollToSection(window.location.hash.substr(1));
+      }, 0);
+    };
   }
 
   firstUpdated() {
     this._fetchMatter();
+    window.addEventListener('hashchange', this._hashChangeHandler);
+  }
+
+  _scrollToSection(sectionId, margin = 120) {
+    if (!sectionId) return;
+    try {
+      const targetElement = this.shadowRoot.querySelector(`#${CSS.escape(sectionId)}`);
+      if (targetElement) {
+        targetElement.scrollIntoView();
+        window.scrollTo(0, window.scrollY - margin);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   stateChanged(state) {

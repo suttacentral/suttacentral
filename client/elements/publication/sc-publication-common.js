@@ -11,3 +11,5 @@ export const coverImage = new Map([
   ['thig', 'snp-book.jpg'],
   ['pli-tv-vi', 'snp-book.jpg'],
 ]);
+
+export const publicationLastGeneratedDate = '2022-11-22';
