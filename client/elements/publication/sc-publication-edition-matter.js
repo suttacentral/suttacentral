@@ -87,7 +87,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
       ).json();
       for (const key in this.editionFiles) {
-        if (this.editionFiles.hasOwnProperty(key) && key.includes(this.matter.toLowerCase())) {
+        if (Object.hasOwn(this.editionFiles, key) && key.includes(this.matter.toLowerCase())) {
           this.matterContent = this.editionFiles[key];
         }
       }
