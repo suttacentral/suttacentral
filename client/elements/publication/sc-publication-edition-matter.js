@@ -30,11 +30,9 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     super();
     this.matter = store.getState().currentRoute.params.matter;
 
-    console.log(this.matter);
-
     this._hashChangeHandler = () => {
       setTimeout(() => {
-        this._scrollToSection(window.location.hash.substr(1));
+        this._scrollToSection(window.location.hash.slice(1));
       }, 0);
     };
   }
