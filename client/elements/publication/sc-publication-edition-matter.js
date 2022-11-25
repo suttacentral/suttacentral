@@ -16,9 +16,6 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   };
 
   static styles = [
-    typographyCommonStyles,
-    typographyStaticStyles,
-    SCPublicationStyles,
     css`
       :host {
         display: block;
@@ -29,30 +26,10 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.matter = store.getState().currentRoute.params.matter;
-
-    this._hashChangeHandler = () => {
-      setTimeout(() => {
-        this._scrollToSection(window.location.hash.slice(1));
-      }, 0);
-    };
   }
 
   firstUpdated() {
     this._fetchMatter();
-    window.addEventListener('hashchange', this._hashChangeHandler);
-  }
-
-  _scrollToSection(sectionId, margin = 120) {
-    if (!sectionId) return;
-    try {
-      const targetElement = this.shadowRoot.querySelector(`#${CSS.escape(sectionId)}`);
-      if (targetElement) {
-        targetElement.scrollIntoView();
-        window.scrollTo(0, window.scrollY - margin);
-      }
-    } catch (e) {
-      console.error(e);
-    }
   }
 
   stateChanged(state) {
@@ -95,11 +72,22 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     }
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     if (!this.matterContent) {
       return html``;
     }
-    return html` <main>${unsafeHTML(this.matterContent)}</main> `;
+    return html`
+      <style>
+        ${typographyCommonStyles}
+        ${typographyStaticStyles}
+        ${SCPublicationStyles}
+      </style>
+      <main>${unsafeHTML(this.matterContent)}</main>
+    `;
   }
 }
 

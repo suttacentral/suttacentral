@@ -17,9 +17,6 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
   };
 
   static styles = [
-    typographyCommonStyles,
-    typographyStaticStyles,
-    SCPublicationEditionsStyles,
     css`
       :host {
         display: block;
@@ -118,9 +115,18 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     this._sortWebEditionInfoByUid();
     return html`
+      <style>
+        ${typographyCommonStyles}
+        ${typographyStaticStyles}
+        ${SCPublicationEditionsStyles}
+      </style>
       <main>
         <article>
           <hgroup class="page-header">

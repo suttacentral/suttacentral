@@ -19,9 +19,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   };
 
   static styles = [
-    typographyCommonStyles,
-    typographyStaticStyles,
-    SCPublicationStyles,
     css`
       :host {
         display: block;
@@ -181,6 +178,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     if (
       !this.editionDetail ||
@@ -191,6 +192,11 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       return html``;
     }
     return html`
+      <style>
+        ${typographyCommonStyles}
+        ${typographyStaticStyles}
+        ${SCPublicationStyles}
+      </style>
       <header></header>
       <main>
         <article>
