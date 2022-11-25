@@ -32,17 +32,37 @@ export class SCStaticMap extends SCStaticPage {
     unsafeCSS(typographyCommonStyles),
     unsafeCSS(typographyStaticStyles),
     css`
+
+  article{
+    max-width: 100%
+  }
       .columns {
-        columns: 2;
+        columns: 3 480px;
       }
 
       .features-section {
         break-inside: avoid;
-        display: inline-block;
+      }
+
+      ul{
+
+
+      }
+      li{
+        margin: .5em 0
       }
 
       .marker-item {
         list-style-image: var(--marker-icon);
+      }
+
+     a{
+        text-decoration: none;
+        border: 1px solid var(--sc-border-color);
+        border-radius: 1.5em;
+        padding: .2em 1em .1em 1.5em;
+        margin-left: -2em;
+        font-family: var(--sc-sans-font)
       }
     `,
   ];
