@@ -21,14 +21,16 @@ def copy_localization(sc_bilara_data_dir: Path, localized_elements_dir: Path) ->
             if lang != 'en' and stem != 'interface':
                 with lang_mapping['en'].open() as f:
                     en_count = len(json.load(f))
-                
+
                 with file.open() as f:
                     lang_count = len(json.load(f))
-                
+
                 completion = lang_count / en_count
                 if completion < 0.90:
                     print(f'Skipping {file.name} because completion is only {completion}')
                     continue
-            
-            new_file = build_dir / f'{stem}_{lang}.json'
-            shutil.copy(file, new_file)
+
+            new_file_for_build_dir = build_dir / f'{stem}_{lang}.json'
+            new_file_for_localization_dir = localized_elements_dir / f'{stem}_{lang}.json'
+            shutil.copy(file, new_file_for_build_dir)
+            shutil.copy(file, new_file_for_localization_dir)
