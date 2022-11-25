@@ -77,7 +77,7 @@ export class SCTextBilara extends SCTextCommon {
 
     this._hashChangeHandler = () => {
       setTimeout(() => {
-        this._scrollToSection(window.location.hash.substr(1));
+        this._scrollToSection(window.location.hash.slice(1));
       }, 0);
     };
 
