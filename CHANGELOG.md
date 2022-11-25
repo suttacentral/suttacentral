@@ -1,6 +1,30 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.11.25
+
+- Use slice instead of possibly deprecated substr.
+- Upgrade nodejs version to 18.12.1
+
+## 2022.11.24
+
+- Optimize code.
+
+## 2022.11.23
+
+- Introducing leaflet styles. https://github.com/suttacentral/suttacentral/pull/2554
+- Fix sc-map.js styles problem. https://github.com/suttacentral/suttacentral/pull/2552
+
+## 2022.11.22
+
+- Update editions page. https://github.com/suttacentral/suttacentral/pull/2546
+- Add Map data to arangoDB and add related map API. https://github.com/suttacentral/suttacentral/pull/2551
+- Refactoring backend code and upgrade python version. https://github.com/suttacentral/suttacentral/pull/2544
+
+## 2022.11.21
+
+- Custom map https://github.com/suttacentral/suttacentral/pull/2505
+
 ## 2022.11.07
 
 - Add separate fallen-leaves data and apply to frontend. https://github.com/suttacentral/suttacentral/issues/2525
