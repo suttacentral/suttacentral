@@ -66,7 +66,7 @@ export default class RoutingService {
 
     const [route, { params }] = hit;
 
-    const searchEntries = new URLSearchParams(this.location.search.substr(1)).entries();
+    const searchEntries = new URLSearchParams(this.location.search.slice(1)).entries();
     Array.from(searchEntries).forEach(([key, value]) => {
       if (!this.routes[route].tokens.includes(key)) {
         params[key] = value;
