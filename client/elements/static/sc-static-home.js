@@ -156,7 +156,7 @@ export class SCStaticHomePage extends SCStaticPage {
         <section class="sc-related">
           <div class="related-projects-heading">
             <h2>${unsafeHTML(this.localize('home:15'))}</h2>
-            <a href="https://github.com/suttacentral/awesome">
+            <a href="https://suttacentral.github.io/awesome/">
               <span>More awesome SuttaCentral things</span>
               ${icon.arrow_right}
             </a>
