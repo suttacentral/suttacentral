@@ -1,4 +1,4 @@
-import { LitElement, html, css, unsafeCSS, render } from 'lit';
+import { LitElement, html, css, render } from 'lit';
 import 'leaflet';
 import { leafletStyles, leafletFullscreenStyles } from './styles/sc-map-styles';
 import 'leaflet-fullscreen';
@@ -74,8 +74,12 @@ export class SCMap extends LitLocalized(LitElement) {
         z-index: 0;
       }
 
-      #map.leaflet-pseudo-fullscreen {
+      .leaflet-pseudo-fullscreen {
         z-index: 1000 !important;
+      }
+
+      .leaflet-control-layers-toggle {
+        background-image: url('img/layers.png');
       }
 
       .marker-active svg path {
