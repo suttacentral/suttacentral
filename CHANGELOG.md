@@ -1,6 +1,18 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.11.30
+
+- Copy localization files to localization dir.
+
+## 2022.11.29
+
+- Fix map layers icon. https://github.com/suttacentral/suttacentral/pull/2563
+
+## 2022.11.28
+
+- style up the maps
+
 ## 2022.11.25
 
 - Use slice instead of possibly deprecated substr.
