@@ -8,6 +8,7 @@ import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { store } from '../../redux-store';
+import { editionId } from './sc-publication-common';
 
 export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   static properties = {
@@ -29,7 +30,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this._fetchMatter();
+    this.#fetchMatter();
   }
 
   stateChanged(state) {
@@ -40,11 +41,11 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
       if (!this.matter) {
         return;
       }
-      this._fetchMatter();
+      this.#fetchMatter();
     }
   }
 
-  _updateNav() {
+  #updateNav() {
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 3;
@@ -56,10 +57,10 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
-  async _fetchMatter() {
+  async #fetchMatter() {
     try {
       this.editionFiles = await (
-        await fetch(`${API_ROOT}/publication/edition/${store.getState().currentEditionId}/files`)
+        await fetch(`${API_ROOT}/publication/edition/${editionId}/files`)
       ).json();
       for (const key in this.editionFiles) {
         if (Object.hasOwn(this.editionFiles, key) && key.includes(this.matter.toLowerCase())) {

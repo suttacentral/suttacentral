@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
 import { SCPublicationStyles } from '../styles/sc-publication-styles';
@@ -9,13 +10,26 @@ import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { setNavigation } from '../navigation/sc-navigation-common';
-import { coverImage } from '../publication/sc-publication-common';
+import {
+  editionId,
+  coverImage,
+  creatorBio,
+  allEditions,
+  editionInfo,
+  collectionURL,
+  editionDetail,
+  editionsGithubUrl,
+  editionsGithubRawUrl,
+  publicationLastGeneratedDate,
+  publicationLastGeneratedFormattedDate,
+} from './sc-publication-common';
 
 export class SCPublicationEdition extends LitLocalized(LitElement) {
   static properties = {
     currentUid: { type: String },
     editionDetail: { type: Object },
     editionId: { type: String },
+    coverImage: { type: String },
   };
 
   static styles = [
@@ -30,21 +44,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     super();
     this.currentRoute = store.getState().currentRoute;
     this.editionUid = store.getState().currentRoute.params.editionUid;
-    this.collectionURL = new Map([
-      ['dn', '/pitaka/sutta/long/dn'],
-      ['mn', '/pitaka/sutta/middle/mn'],
-      ['sn', '/pitaka/sutta/linked/sn'],
-      ['an', '/pitaka/sutta/numbered/an'],
-      ['dhp', '/dhp'],
-      ['ud', '/pitaka/sutta/minor/kn/ud'],
-      ['iti', '/pitaka/sutta/minor/kn/iti'],
-      ['snp', '/pitaka/sutta/minor/kn/snp'],
-      ['thag', '/pitaka/sutta/minor/kn/thag'],
-      ['thig', '/pitaka/sutta/minor/kn/thig'],
-      ['pli-tv-vi', '/pitaka/vinaya/pli-tv-vi'],
-    ]);
-    this._fetchAllEditions();
-    this.currentDate = new Date();
+    this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
+    this.#fetchAllEditions();
   }
 
   firstUpdated() {
@@ -53,10 +54,19 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
   updated(changedProps) {
     super.updated(changedProps);
+
+    this.volumesMenu = this.querySelector('#volumes-menu');
+    if (this.volumesMenu) {
+      this.volumesMenu.anchor = this.querySelector('#volumes-menu-button');
+    }
+
     if (changedProps.has('editionId')) {
       if (this.editionId) {
         this._loadNewResult();
       }
+    }
+    if (changedProps.has('volumesInfoForDownloadMenu')) {
+      this.requestUpdate();
     }
     this._updateNav();
   }
@@ -73,9 +83,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   }
 
   async _loadNewResult() {
-    await this._fetchEditionDetails();
-    await this._fetchEditionInfo();
-    await this._fetchCreatorBio();
+    this.#fetchEditionDetails();
+    this.#fetchEditionInfo();
+    this.#fetchCreatorDetail();
     this.requestUpdate();
   }
 
@@ -99,55 +109,31 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
-  async _fetchEditionDetails() {
+  #fetchEditionDetails() {
     try {
-      this.editionDetail = await (
-        await fetch(this._computePublicationEditionDetailsApiUrl())
-      ).json();
+      this.editionDetail = editionDetail;
     } catch (error) {
       console.log(error);
     }
   }
 
-  _computePublicationEditionDetailsApiUrl() {
-    return `${API_ROOT}/menu/${this.editionUid}`;
+  #fetchAllEditions() {
+    setTimeout(() => {
+      this.allEditions = allEditions;
+      this.editionId = editionId;
+      if (this.editionId) {
+        reduxActions.changeCurrentEditionId(this.editionId);
+        this.requestUpdate();
+      }
+    }, 100);
   }
 
-  _computePublicationEditionInfoApiUrl() {
-    return `${API_ROOT}/publication/edition/${this.editionId}`;
-  }
-
-  async _fetchAllEditions() {
+  #fetchEditionInfo() {
     try {
-      this.allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
-      setTimeout(() => {
-        if (!this.allEditions) {
-          return;
-        }
-        this.editions = [];
-        for (const edition of this.allEditions) {
-          if (edition.edition_id.substring(0, 9) === 'pli-tv-vi') {
-            edition.uid = 'pli-tv-vi';
-          } else {
-            edition.uid = edition.edition_id.split('-')[0];
-          }
-        }
-        this.editionId = this.allEditions.find(
-          x => x.uid === this.editionUid && x.edition_id.includes('web')
-        ).edition_id;
-        if (this.editionId) {
-          reduxActions.changeCurrentEditionId(this.editionId);
-          this.requestUpdate();
-        }
-      }, 100);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async _fetchEditionInfo() {
-    try {
-      this.editionInfo = await (await fetch(this._computePublicationEditionInfoApiUrl())).json();
+      // this.editionInfo = await (
+      //   await fetch(`${API_ROOT}/publication/edition/${this.editionId}`)
+      // ).json();
+      this.editionInfo = editionInfo;
       if (this.editionDetail && this.editionDetail.length !== 0) {
         reduxActions.changeToolbarTitle(
           `${this.editionDetail[0].root_name} — ${this.editionInfo.publication.creator_name}`
@@ -164,10 +150,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
-  async _fetchCreatorBio() {
+  #fetchCreatorDetail() {
     try {
-      this.creatorBio = await (await fetch(`${API_ROOT}/creator_bio`)).json();
-      for (const creator of this.creatorBio) {
+      for (const creator of creatorBio) {
         if (this.editionId.includes(creator.creator_uid)) {
           this.creatorInfo = creator;
           break;
@@ -178,8 +163,196 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
+  #computeFileUrlByType(publicationType) {
+    const discoursesName = this.editionDetail[0].translated_name
+      .replace('Collection', '')
+      .replace(' ', '-')
+      .trim();
+    const { authorUid, langIsoCode } = this.currentRoute.params;
+
+    if (publicationType === 'TeX') {
+      return `${editionsGithubRawUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.${publicationType}`;
+    }
+
+    return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.${publicationType}`;
+  }
+
   createRenderRoot() {
     return this;
+  }
+
+  #publicationDetailTemplate() {
+    return html`
+      <h2>Publication details</h2>
+        <dl class="publication">
+          <dt class="publication_number">SuttaCentral publication number</dt>
+          <dd>${this.editionInfo.publication.publication_number}</dd>
+          <dt class="source_url">Source</dt>
+          <dd>${this.editionInfo.publication.source_url}</dd>
+          <dt class="text_uid">Text ID</dt>
+          <dd>${this.editionInfo.publication.text_uid.toUpperCase()}</dd>
+          <dt class="publication_status">Publication Status</dt>
+          <dd>${this.editionInfo.publication.publication_status}</dd>
+          <dt class="license">License</dt>
+          <dd>
+            <p>${this.editionInfo.publication.license_statement}</p>
+            <a rel="license" href=${this.editionInfo.publication.license_url}>
+              <p xmlns:dct="https://purl.org/dc/terms/" xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#">
+                  <img src='/img/publication-pages/cc-zero.svg' alt='CC0' />
+                  <span>
+                    <strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.</strong>
+                    <br>To the extent possible under law,
+                    <span property='dct:title'>${
+                      this.editionInfo.publication.creator_name
+                    }</span> has waived all copyright and related or neighboring rights to <span property='dct:title'>${this.editionDetail[0].translated_name.replace('Collection','')}</span>. 
+                    This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
+                      this.editionUid
+                    }'> Australia</span>.
+                  </span>
+              </p>
+            </a>
+            </a>
+          </dd>
+        </dl>
+    `;
+  }
+
+  #hgroupTemplate() {
+    return html`
+      <hgroup class="page-header">
+        <h1 class="translation_title">
+          ${this.editionDetail[0].translated_name.replace('Collection', '')}
+        </h1>
+        <p class="translation_subtitle">${this.editionInfo.publication.translation_subtitle}</p>
+        <p class="creator_name">${this.editionInfo.publication.creator_name}</p>
+      </hgroup>
+    `;
+  }
+
+  #bookCoverPictureTemplate() {
+    return html`
+      <figure class="book-pic">
+        <img
+          src="/img/publication-pages/${coverImage.get(this.editionInfo.publication.text_uid)}"
+          alt="Cover art for Long Discourses"
+        />
+        <figcaption>Paperback edition of Long Discourses</figcaption>
+      </figure>
+    `;
+  }
+
+  #bookIntroductionTemplate() {
+    return html`
+      <h2>This translation</h2>
+      <p>
+        This translation was part of a project to translate the four Pali Nikāyas with the following
+        aims:
+      </p>
+      <ul>
+        <li>plain, approachable English;</li>
+        <li>consistent terminology;</li>
+        <li>accurate rendition of the Pali;</li>
+        <li>free of copyright.</li>
+      </ul>
+      <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
+      <h2>The ${this.editionDetail[0].root_name}</h2>
+      <p class="blurb">${unsafeHTML(this.editionDetail[0].blurb)}</p>
+      <h2>The Author</h2>
+      <figure class="author-pic">
+        <img
+          src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
+          alt=${this.creatorInfo.creator_uid}
+        />
+        <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption>
+      </figure>
+      ${unsafeHTML(this.creatorInfo.creator_biography)}
+    `;
+  }
+
+  #printOnDemandTemplate() {
+    return html`
+      <tr>
+        <td>${icon.paperback} Book, paperback</td>
+        <td>
+          <a href="https://github.com/suttacentral/editions" class="external"
+            >${icon.external} Print on demand</a
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>${icon.hardcover} Book, hardcover</td>
+        <td>
+          <a href="https://github.com/suttacentral/editions" class="external"
+            >${icon.external} Print on demand</a
+          >
+        </td>
+      </tr>
+    `;
+  }
+
+  #epubDownloadTemplate() {
+    return html`
+      <tr>
+        <td>${icon.epub} Epub</td>
+        <td>
+          <a href=${this.#computeFileUrlByType('epub')} class="download">
+            ${icon.file_download} Download
+          </a>
+        </td>
+      </tr>
+    `;
+  }
+
+  #pdfDownloadTemplate() {
+    return html`
+      <tr>
+        <td>${icon.pdf} Pdf</td>
+        <td>
+          <a href=${this.#computeFileUrlByType('pdf')} class="download">
+            ${icon.file_download} Download
+          </a>
+        </td>
+      </tr>
+    `;
+  }
+
+  #rawHtmlDownloadTemplate() {
+    return html`
+      <tr>
+        <td>${icon.html} Raw HTML file</td>
+        <td>
+          <a href=${this.#computeFileUrlByType('html')} class="download">
+            ${icon.file_download} Download
+          </a>
+        </td>
+      </tr>
+    `;
+  }
+
+  #rawTexDownloadTemplate() {
+    return html`
+      <tr>
+        <td>${icon.latex} Raw TeX file</td>
+        <td>
+          <a href=${this.#computeFileUrlByType('tex')} class="download">
+            ${icon.file_download} Download
+          </a>
+        </td>
+      </tr>
+    `;
+  }
+
+  readOnSuttaCentralTemplate() {
+    return html`
+      <tr>
+        <td>${icon.web} Web</td>
+        <td>
+          <a href=${ifDefined(collectionURL.get(this.editionUid))} class="internal">
+            ${icon.translation} Read on SuttaCentral
+          </a>
+        </td>
+      </tr>
+    `;
   }
 
   render() {
@@ -193,6 +366,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
     return html`
       <style>
+        mwc-button {
+          --mdc-theme-primary: var(--sc-primary-accent-color);
+          --mdc-theme-on-primary: white;
+        }
         ${typographyCommonStyles}
         ${typographyStaticStyles}
         ${SCPublicationStyles}
@@ -200,139 +377,28 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <header></header>
       <main>
         <article>
-          <hgroup class="page-header">
-            <h1 class="translation_title">${this.editionDetail[0].translated_name.replace(
-              'Collection',
-              ''
-            )}</h1> 
-            <p class="translation_subtitle">${this.editionInfo.publication.translation_subtitle}</p>
-            <p class="creator_name">${this.editionInfo.publication.creator_name}</p>
-          </hgroup>
-
-
-          <section>
-            <figure class="book-pic">
-            <img src="/img/publication-pages/${coverImage.get(
-              this.editionInfo.publication.text_uid
-            )}" alt="Cover art for Long Discourses">
-            <figcaption>Paperback edition of Long Discourses</figcaption>
-          </figure>
-            <h2>This translation</h2>
-
-            <p>
-              This translation was part of a project to translate the four Pali Nikāyas with the
-              following aims:
-            </p>
-            <ul>
-              <li>plain, approachable English;</li>
-              <li>consistent terminology;</li>
-              <li>accurate rendition of the Pali;</li>
-              <li>free of copyright.</li>
-            </ul>
-            <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
-            <h2>The ${this.editionDetail[0].root_name}</h2>
-            <p class="blurb">${unsafeHTML(this.editionDetail[0].blurb)}</p>
-            <h2>The Author</h2>
-            <figure class="author-pic">
-              <img
-                src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
-                alt=${this.creatorInfo.creator_uid}>
-              <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption> 
-            </figure>
-            ${unsafeHTML(this.creatorInfo.creator_biography)}
-          </section>
+          ${this.#hgroupTemplate()}
+          <section>${this.#bookCoverPictureTemplate()} ${this.#bookIntroductionTemplate()}</section>
           <section>
             <table>
-              <caption>Available editions</caption>
+              <caption>
+                Available editions
+              </caption>
               <tbody>
-              <tr>
-                <td>${icon.paperback} Book, paperback</td>
-                <td><a href='https://github.com/suttacentral/editions' class='external'>${
-                  icon.external
-                } Print on demand</a></td>
-              </tr>
-              <tr>
-                <td>${icon.hardcover} Book, hardcover</td>
-                <td><a href='https://github.com/suttacentral/editions' class='external'>${
-                  icon.external
-                } Print on demand</a></td>
-              </tr>
-              <tr>
-                <td>${icon.epub} Epub</td>
-                <td><a href='https://github.com/suttacentral/editions' class='download'>${
-                  icon.file_download
-                } Download</a></td>
-              </tr>
-              <tr>
-                <td>${icon.pdf} Pdf</td>
-                <td><a href='https://github.com/suttacentral/editions' class='download'>${
-                  icon.file_download
-                } Download</a></td>
-              </tr>
-                            <tr>
-                <td>${icon.html} Raw HTML file</td>
-                <td><a href='https://github.com/suttacentral/editions' class='download'>${
-                  icon.file_download
-                } Download</a></td>
-              </tr>
-                            <tr>
-                <td>${icon.latex} Raw TeX file</td>
-                <td><a href='https://github.com/suttacentral/editions' class='download'>${
-                  icon.file_download
-                } Download</a></td>
-              </tr>
-                            <tr>
-                <td>${icon.web} Web</td>
-                <td>
-                  <a href=${this.collectionURL.get(this.editionUid)} class='internal'>${icon.translation} Read on SuttaCentral</a>
-                </td>
-              </tr>
+                ${this.#printOnDemandTemplate()} ${this.#epubDownloadTemplate()}
+                ${this.#pdfDownloadTemplate()} ${this.#rawHtmlDownloadTemplate()}
+                ${this.#rawTexDownloadTemplate()} ${this.readOnSuttaCentralTemplate()}
               </tbody>
               <tfoot>
-              <tr><td>Updated ${this.currentDate.toLocaleString()}</td></tr>
+                <tr>
+                  <td>Updated ${publicationLastGeneratedDate}</td>
+                </tr>
               </tfoot>
             </table>
           </section>
-
-          <section>
-            <h2>Publication details</h2>
-            <dl class="publication">
-              <dt class="publication_number">SuttaCentral publication number</dt>
-              <dd>${this.editionInfo.publication.publication_number}</dd>
-              <dt class="source_url">Source</dt>
-              <dd>${this.editionInfo.publication.source_url}</dd>
-              <dt class="text_uid">Text ID</dt>
-              <dd>${this.editionInfo.publication.text_uid.toUpperCase()}</dd>
-              <dt class="publication_status">Publication Status</dt>
-              <dd>${this.editionInfo.publication.publication_status}</dd>
-              <dt class="license">License</dt>
-              <dd>
-                <p>${this.editionInfo.publication.license_statement}</p>
-                <a rel="license" href=${this.editionInfo.publication.license_url}>
-                  <p xmlns:dct="https://purl.org/dc/terms/" xmlns:vcard="https://www.w3.org/2001/vcard-rdf/3.0#">
-                      <img src='/img/publication-pages/cc-zero.svg' alt='CC0' />
-                      <span>
-                        <strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.</strong>
-                        <br>To the extent possible under law,
-                        <span property='dct:title'>${
-                          this.editionInfo.publication.creator_name
-                        }</span> has waived all copyright and related or neighboring rights to <span property='dct:title'>${this.editionDetail[0].translated_name.replace('Collection','')}</span>. 
-                        This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
-                          this.editionUid
-                        }'> Australia</span>.
-                      </span>
-                  </p>
-                </a>
-                </a>
-              </dd>
-            </dl>
-          </section>
+          <section>${this.#publicationDetailTemplate()}</section>
         </article>
       </main>
-      <!-- <footer>
-        <a class='prev'></a>
-        <a class='next' href='preface.html'>Preface</a>
-      </footer> -->
     `;
   }
 }

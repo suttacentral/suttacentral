@@ -9,7 +9,7 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
-import { coverImage } from '../publication/sc-publication-common';
+// import { getCoverPictures } from '../publication/sc-publication-common';
 
 class ScPublicationEditions extends LitLocalized(LitElement) {
   static properties = {
@@ -29,10 +29,23 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     this.currentRoute = store.getState().currentRoute;
     this.webEditionInfo = [];
     this.editionBlurbs = [];
+    this.coverImage = new Map([
+      ['dn', 'dn-book.jpg'],
+      ['mn', 'mn-book.jpg'],
+      ['sn', 'sn-book.jpg'],
+      ['an', 'an-book.jpg'],
+      ['dhp', 'snp-book.jpg'],
+      ['ud', 'snp-book.jpg'],
+      ['iti', 'snp-book.jpg'],
+      ['snp', 'snp-book.jpg'],
+      ['thag', 'snp-book.jpg'],
+      ['thig', 'snp-book.jpg'],
+      ['pli-tv-vi', 'snp-book.jpg'],
+    ]);
   }
 
   firstUpdated() {
-    this._updateNav();
+    this.#updateNav();
     reduxActions.changeToolbarTitle('Editions');
     document.querySelector('sc-site-layout')?.hideATB();
     this._loadData();
@@ -65,7 +78,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     }
   }
 
-  _sortWebEditionInfoByUid() {
+  #sortWebEditionInfoByUid() {
     this.webEditionInfo.sort((start, next) => {
       const order = [
         'dn',
@@ -103,7 +116,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     }
   }
 
-  _updateNav() {
+  #updateNav() {
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
@@ -119,8 +132,41 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     return this;
   }
 
+  #allEditionsTemplate() {
+    return html`
+      ${this.webEditionInfo?.map(
+        edition => html`
+          <section class="project">
+            <a
+              class="header-link"
+              href="/edition/${edition.publication.text_uid}/${edition.publication
+                .translation_lang_iso}/${edition.publication.creator_uid}"
+            >
+              <hgroup>
+                <h2 class="translation_title">${edition.publication.translation_title}</h2>
+                <span class="translation_subtitle"
+                  >${edition.publication.translation_subtitle}</span
+                >
+              </hgroup>
+            </a>
+            <p class="creator_name">${edition.publication.creator_name}</p>
+            <p class="publication_blurb">
+              <img
+                src="/img/publication-pages/${this.coverImage.get(edition.publication.text_uid)}"
+                alt="Cover art for ${edition.publication.translation_title}"
+              />
+              ${unsafeHTML(
+                this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb
+              )}
+            </p>
+          </section>
+        `
+      )}
+    `;
+  }
+
   render() {
-    this._sortWebEditionInfoByUid();
+    this.#sortWebEditionInfoByUid();
     return html`
       <style>
         ${typographyCommonStyles}
@@ -165,34 +211,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </li>
             </ul>
           </section>
-          ${this.webEditionInfo.map(
-            edition => html`
-              <section class="project">
-                <a
-                  class="header-link"
-                  href="/edition/${edition.publication.text_uid}/${edition.publication
-                    .translation_lang_iso}/${edition.publication.creator_uid}"
-                >
-                  <hgroup>
-                    <h2 class="translation_title">${edition.publication.translation_title}</h2>
-                    <span class="translation_subtitle"
-                      >${edition.publication.translation_subtitle}</span
-                    >
-                  </hgroup>
-                </a>
-                <p class="creator_name">${edition.publication.creator_name}</p>
-                <p class="publication_blurb">
-                  <img
-                    src="/img/publication-pages/${coverImage.get(edition.publication.text_uid)}"
-                    alt="Cover art for ${edition.publication.translation_title}"
-                  />
-                  ${unsafeHTML(
-                    this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb
-                  )}
-                </p>
-              </section>
-            `
-          )}
+          ${this.#allEditionsTemplate()}
         </article>
       </main>
     `;
