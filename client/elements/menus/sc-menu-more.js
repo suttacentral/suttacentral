@@ -248,13 +248,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
             </div>
           </mwc-list-item>
         </a>
-        <a class="more-menu-link" href="/downloads">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.file_download} ${this.localize('interface:downloads')}
-            </div>
-          </mwc-list-item>
-        </a>
         <mwc-check-list-item
           class="more-menu-mwc-list-item"
           id="theme_toggler"
