@@ -40,6 +40,7 @@ article
 .columns
 {
     columns: 3 480px;
+    margin-top: 2rem
 }
 
 .features-section
@@ -47,9 +48,15 @@ article
     break-inside: avoid;
 }
 
+ul
+{
+  padding-left: 0
+}
+
 li
 {
     margin: .5em 0;
+    padding: 0;
     list-style: none;
 }
 
@@ -76,6 +83,14 @@ a svg
     margin-top: -0.2em;
     margin-left: -0.6em;
     margin-right: 0.2em;
+}
+
+h3{
+  margin-top: 0
+}
+
+.features-section  {
+  margin-bottom: 2rem
 }
     `,
   ];
