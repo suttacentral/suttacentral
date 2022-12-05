@@ -29,6 +29,7 @@ LET sources = edition.sources
 LET lang = publication.translation_lang_iso
 
 FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {bfs: False}
+    FILTER doc.uid
     LET uid = doc.uid
     LET name = FIRST(FOR name_doc IN names FILTER name_doc.uid == doc.uid AND name_doc.lang == lang RETURN name_doc.name)
 
