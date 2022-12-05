@@ -32,8 +32,7 @@ export class SCStaticMap extends SCStaticPage {
     unsafeCSS(typographyCommonStyles),
     unsafeCSS(typographyStaticStyles),
     css`
-
-  article
+article
 {
     max-width: 100%;
 }
@@ -41,6 +40,7 @@ export class SCStaticMap extends SCStaticPage {
 .columns
 {
     columns: 3 480px;
+    margin-top: 2rem
 }
 
 .features-section
@@ -48,24 +48,26 @@ export class SCStaticMap extends SCStaticPage {
     break-inside: avoid;
 }
 
+ul
+{
+  padding-left: 0
+}
+
 li
 {
     margin: .5em 0;
-}
-
-.marker-item
-{
-    list-style-image: var(--marker-icon);
+    padding: 0;
+    list-style: none;
 }
 
 a
 {
     font-family: var(--sc-sans-font);
+    
+    display: flex;
+    max-width: max-content;
 
-    display: inline-block;
-
-    margin-left: -2em;
-    padding: .2em 1em .1em 1.5em;
+    padding: 0.2em 1em 0.2em 1em;
 
     text-decoration: none;
 
@@ -73,6 +75,23 @@ a
     border-radius: 1.5em;
 }
 
+a svg
+{
+    width: 1.5em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -0.2em;
+    margin-left: -0.6em;
+    margin-right: 0.2em;
+}
+
+h3{
+  margin-top: 0
+}
+
+.features-section  {
+  margin-bottom: 2rem
+}
     `,
   ];
 
@@ -98,20 +117,11 @@ a
   _featureItem(feature) {
     let name = feature.properties.name;
     let linkedName = feature.properties.define
-      ? html`<a href="/define/${feature.properties.define}">${name}</a>`
+      ? html`<a href="/define/${feature.properties.define}"
+          >${icon.marker[feature.properties.icon]}${name}</a
+        >`
       : name;
-    if (feature.geometry.type == 'Point') {
-      return html`<li
-        class="marker-item"
-        style="--marker-icon: url('data:image/svg+xml;utf8,${encodeURIComponent(
-          icon.marker[feature.properties.icon].strings
-        )}')"
-      >
-        ${linkedName}
-      </li>`;
-    } else {
-      return html`<li>${linkedName}</li>`;
-    }
+    return html`<li>${linkedName}</li>`;
   }
 
   render() {
