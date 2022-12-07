@@ -1,5 +1,6 @@
 from flask.cli import FlaskGroup
 from common import arangodb
+import click
 from migrations.runner import run_migrations
 
 from app import app
@@ -7,6 +8,7 @@ cli = FlaskGroup(app)
 
 
 @app.cli.command('load_data')
+@click.option('--no_pull')
 def load_data(no_pull=False):
     """
     Loads data from the data repo to database.
