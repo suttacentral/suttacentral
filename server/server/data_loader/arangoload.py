@@ -678,11 +678,3 @@ def hyphenate_pali_and_san():
     db = arangodb.get_db()
     print(f'\nHyphenate Pali and Sanskrit texts:')
     hyphenation.hyphenate_texts(db)
-
-
-def bilara_run():
-    print("Loading bilara data")
-    data_dir = current_app.config.get('BASE_DIR') / 'sc-data' / 'bilara-data'
-    if not os.path.exists(data_dir):
-        print("Bilara data directory does not exist.")
-        return

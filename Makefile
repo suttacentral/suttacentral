@@ -90,7 +90,8 @@ index-elasticsearch:
 hyphenate:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py hyphenate"
 
-
+list_routes:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py list_routes"
 
 rebuild-frontend:
 	docker-compose run sc-frontend npm run build
