@@ -1,6 +1,14 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.12.5
+
+- Improve display of markers icons in list on static map page.
+- Exclude null items in publication EditionMainmatter API.
+- Fix sc-chrome-headless build error.
+- Upgrade frontend dependencies.
+- Remove downloads page.
+
 ## 2022.11.30
 
 - Copy localization files to localization dir.
