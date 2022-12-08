@@ -53,4 +53,8 @@ export const typographyLegacyStyles = css`
     color: rgb(34, 33, 32);
     background-color: var(--sc-primary-color-light);
   }
+
+  .verse-line{
+    display: block
+  }
 `;
