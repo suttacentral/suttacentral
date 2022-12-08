@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.12.7
+
+- Upgrade python version to 3.11 and upgrade packages. #2574
+
 ## 2022.12.5
 
 - Improve display of markers icons in list on static map page.
