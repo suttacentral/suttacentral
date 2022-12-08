@@ -1,20 +1,34 @@
-from flask_script import Manager
-
-from app import app
+from flask.cli import FlaskGroup
 from common import arangodb
+import click
 from migrations.runner import run_migrations
 
-manager = Manager(app)
+from app import app
+cli = FlaskGroup(app)
 
 
-@manager.command
+@app.cli.command('load_data')
+@click.option('--no_pull')
+def load_data(no_pull=False):
+    """
+    Loads data from the data repo to database.
+    """
+    from data_loader.arangoload import run
+
+    run(no_pull=no_pull)
+
+
+@app.cli.command('migrate')
 def migrate():
+    """
+    Initialize the database structure.
+    """
     print('Running migrations')
     run_migrations()
     print('DONE')
 
 
-@manager.command
+@app.cli.command('list_routes')
 def list_routes():
     """
     Lists all available routes/URLs.
@@ -25,37 +39,18 @@ def list_routes():
     for rule in app.url_map.iter_rules():
         options = {arg: "[{0}]".format(arg) for arg in rule.arguments}
         methods = ','.join(rule.methods)
-        line = urllib.parse.unquote(
-            "{:50s} {:20s} {}".format(rule.endpoint, methods, rule)
-        )
+        line = urllib.parse.unquote("{:50s} {:20s} {}".format(rule.endpoint, methods, rule))
         output.append(line)
 
     for line in sorted(output):
         print(line)
 
 
-@manager.command
-def load_data(no_pull=False):
-    """
-    Loads data from the data repo to database.
-    """
-    from data_loader.arangoload import run
-
-    run(no_pull=no_pull)
-
-
-@manager.command
-def load_bilara_data(no_pull=False):
-    """
-    Loads data from the bilara data repo to database.
-    """
-    from data_loader.arangoload import bilara_run
-
-    bilara_run()
-
-
-@manager.command
+@app.cli.command('delete_db')
 def delete_db():
+    """
+    Clear database data.
+    """
     arangodb.delete_db(arangodb.get_db())
     from flask import current_app
 
@@ -64,26 +59,35 @@ def delete_db():
         file_path.unlink()
 
 
-@manager.command
+@app.cli.command('index_elasticsearch')
 def index_elasticsearch():
+    """
+    Create Elasticsearch index.
+    """
     from search.texts import update
 
     update()
 
 
-@manager.command
+@app.cli.command('calculate_download_sizes')
 def calculate_download_sizes():
+    """
+    Calculate download sizes.
+    """
     from tools.calculate_download_size import run
 
     run()
 
 
-@manager.command
+@app.cli.command('hyphenate')
 def hyphenate():
+    """
+    Hyphenate pali and san
+    """
     from data_loader.arangoload import hyphenate_pali_and_san
 
     hyphenate_pali_and_san()
 
 
 if __name__ == '__main__':
-    manager.run()
+    cli()
