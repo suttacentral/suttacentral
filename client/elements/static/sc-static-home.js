@@ -47,13 +47,13 @@ export class SCStaticHomePage extends SCStaticPage {
         <sc-navigation-tipitaka></sc-navigation-tipitaka>
 
         <section class="plain editions">
+        <a href="/editions">
           <h2>SuttaCentral Editions</h2>
-          <a href="/editions">
             <figure>
               <picture>
-                <source srcset="/img/home-page/editions.png" type="image/avif" />
+                <source srcset="/img/home-page/editions.avif" type="image/avif" />
                 <img
-                  src="/img/home-page/editions.png"
+                  src="/img/home-page/editions.jpg"
                   alt="SuttaCentral editions covers"
                   style="width:100%"
                 />
