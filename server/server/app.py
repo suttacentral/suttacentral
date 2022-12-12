@@ -51,7 +51,8 @@ from api.views import (
     AbbreviationEditions,
     AbbreviationSchools,
     FallenLeaves,
-    FallenLeavesSuttaplexList
+    FallenLeavesSuttaplexList,
+    MapData
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -118,7 +119,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Publication, '/publication')
     api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')
     api.add_resource(PaliReferenceEdition, '/pali_reference_edition')
-    api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>/<string:authorUid>')
+    api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>/<string:author_uid>')
     api.add_resource(AvailableVoices, '/available_voices/<string:uid>')
     api.add_resource(RootEdition, '/root_edition')
     api.add_resource(Guides, '/guides')
@@ -133,6 +134,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(AbbreviationEditions, '/abbreviation_editions')
     api.add_resource(AbbreviationSchools, '/abbreviation_schools')
     api.add_resource(FallenLeaves, '/fallen_leaves')
+    api.add_resource(MapData, '/map_data')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
@@ -149,11 +151,13 @@ arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
 
+
 @app.after_request
 def apply_etag(response):
     if response.status_code == 200 and request.method == 'GET':
         response.set_etag(blake2b(response.data, digest_size=16).hexdigest(), weak=True)
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

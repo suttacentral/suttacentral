@@ -49,17 +49,13 @@ class ChangeTracker:
         print(f'{len(self.deleted)} files to be deleted')
 
     def is_file_new_or_changed(self, path, check_calling_function=True):
-        if check_calling_function:
-            if self.is_function_changed(who_is_calling()):
-                return True
-        if str(path.relative_to(self.base_dir)) in self.changed_or_new:
+        if check_calling_function and self.is_function_changed(who_is_calling()):
             return True
-        return False
+        return str(path.relative_to(self.base_dir)) in self.changed_or_new
 
     def is_any_file_new_or_changed(self, files, check_calling_function=True):
-        if check_calling_function:
-            if self.is_function_changed(who_is_calling()):
-                return True
+        if check_calling_function and self.is_function_changed(who_is_calling()):
+            return True
         return any(self.is_file_new_or_changed(file, False) for file in files)
 
     def is_any_function_changed(self, functions):
@@ -73,9 +69,7 @@ class ChangeTracker:
         function_hash = hashlib.md5(function_source(thing).encode()).hexdigest()
 
         self.new_function_hashes[key] = function_hash
-        if self.old_function_hashes.get(key) == function_hash:
-            return False
-        return True
+        return self.old_function_hashes.get(key) != function_hash
 
     def update_mtimes(self):
         # Update mtimes in arangodb
@@ -115,12 +109,10 @@ def who_is_calling(depth=2):
     functype = type(lambda: 0)
     funcs = []
     for func in gc.get_referrers(code):
-        if type(func) is functype:
-            if getattr(func, "__code__", None) is code:
-                if getattr(func, "__globals__", None) is globs:
-                    funcs.append(func)
-                    if len(funcs) > 1:
-                        return None
+        if type(func) is functype and getattr(func, "__code__", None) is code and getattr(func, "__globals__", None) is globs:
+            funcs.append(func)
+            if len(funcs) > 1:
+                return None
     return funcs[0] if funcs else None
 
 

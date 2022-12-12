@@ -15,7 +15,9 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
     footer {
       padding: 4em 4vw;
 
-      background-color: var(--sc-tertiary-background-color);
+      background-color: var(--sc-secondary-text-color);
+
+      color: var(--sc-tertiary-text-color);
     }
 
     .footer-top {
@@ -125,7 +127,7 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
               <li><a href="/numbering">Sutta numbering systems</a></li>
               <li><a href="/methodology">Methodology for parallels</a></li>
               <li>
-                <a href="https://github.com/suttacentral/suttacentral">Source code on Github</a>
+                <a href="https://github.com/suttacentral">Source code on Github</a>
               </li>
             </ul>
           </div>
@@ -152,7 +154,7 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
                 >
               </li>
               <li>
-                <a href="https://github.com/suttacentral/awesome"
+                <a href="https://suttacentral.github.io/awesome/"
                   >Awesome SuttaCentral—Awesome stuff built on top of SuttaCentral’s awesomeness</a
                 >
               </li>

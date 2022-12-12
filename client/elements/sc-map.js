@@ -1,8 +1,7 @@
-import { LitElement, html, css, unsafeCSS, render } from 'lit';
+import { LitElement, html, css, render } from 'lit';
 import 'leaflet';
-import leafletStyles from 'leaflet/dist/leaflet.css';
+import { leafletStyles, leafletFullscreenStyles } from './styles/sc-map-styles';
 import 'leaflet-fullscreen';
-import leafletFullscreenStyles from 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { dispatchCustomEvent } from '../utils/customEvent';
@@ -62,8 +61,8 @@ export class SCMap extends LitLocalized(LitElement) {
   }
 
   static styles = [
-    unsafeCSS(leafletStyles),
-    unsafeCSS(leafletFullscreenStyles),
+    leafletStyles,
+    leafletFullscreenStyles,
     css`
       :host {
         display: block;
@@ -75,8 +74,12 @@ export class SCMap extends LitLocalized(LitElement) {
         z-index: 0;
       }
 
-      #map.leaflet-pseudo-fullscreen {
+      .leaflet-pseudo-fullscreen {
         z-index: 1000 !important;
+      }
+
+      .leaflet-control-layers-toggle {
+        background-image: url('img/layers.png');
       }
 
       .marker-active svg path {
@@ -172,11 +175,11 @@ export class SCMap extends LitLocalized(LitElement) {
 
   _buildLayer(geoJSON, layerName) {
     return L.geoJSON(geoJSON, {
-      filter: feature => feature.properties.layer == layerName,
+      filter: feature => feature.properties.layer === layerName,
       style: feature =>
         Object.assign(
           feature.properties.style,
-          this.view == feature.properties.id ? { color: '#b30309', weight: '3' } : {}
+          this.view === feature.properties.id ? { color: '#b30309', weight: '3' } : {}
         ),
       onEachFeature: (feature, layer) => {
         this.idToLayer[feature.properties.id] = layer;
@@ -266,7 +269,7 @@ export class SCMap extends LitLocalized(LitElement) {
   }
 
   render() {
-    return html`<div id="${this.mapElementID}"></div>`;
+    return html`<div id=${this.mapElementID}></div>`;
   }
 }
 

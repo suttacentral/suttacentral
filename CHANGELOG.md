@@ -1,6 +1,54 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.12.7
+
+- Upgrade python version to 3.11 and upgrade packages. #2574
+
+## 2022.12.5
+
+- Improve display of markers icons in list on static map page.
+- Exclude null items in publication EditionMainmatter API.
+- Fix sc-chrome-headless build error.
+- Upgrade frontend dependencies.
+- Remove downloads page.
+
+## 2022.11.30
+
+- Copy localization files to localization dir.
+
+## 2022.11.29
+
+- Fix map layers icon. https://github.com/suttacentral/suttacentral/pull/2563
+
+## 2022.11.28
+
+- style up the maps
+
+## 2022.11.25
+
+- Use slice instead of possibly deprecated substr.
+- Upgrade nodejs version to 18.12.1
+
+## 2022.11.24
+
+- Optimize code.
+
+## 2022.11.23
+
+- Introducing leaflet styles. https://github.com/suttacentral/suttacentral/pull/2554
+- Fix sc-map.js styles problem. https://github.com/suttacentral/suttacentral/pull/2552
+
+## 2022.11.22
+
+- Update editions page. https://github.com/suttacentral/suttacentral/pull/2546
+- Add Map data to arangoDB and add related map API. https://github.com/suttacentral/suttacentral/pull/2551
+- Refactoring backend code and upgrade python version. https://github.com/suttacentral/suttacentral/pull/2544
+
+## 2022.11.21
+
+- Custom map https://github.com/suttacentral/suttacentral/pull/2505
+
 ## 2022.11.07
 
 - Add separate fallen-leaves data and apply to frontend. https://github.com/suttacentral/suttacentral/issues/2525

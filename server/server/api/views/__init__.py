@@ -43,5 +43,6 @@ from .views import (
     AbbreviationEditions,
     AbbreviationSchools,
     FallenLeaves,
-    FallenLeavesSuttaplexList
+    FallenLeavesSuttaplexList,
+    MapData,
 )

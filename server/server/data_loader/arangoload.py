@@ -244,16 +244,24 @@ def load_author_edition(change_tracker, additional_info_dir, db):
             authors = json.load(authorf)
         db['author_edition'].import_bulk_logged(authors, wipe=True)
 
+
 def load_available_voices(change_tracker, additional_info_dir, db):
     voices_file = additional_info_dir / 'available_voices.json'
     voices_info = json_load(voices_file)
-
-    docs = []
-    for key, value in voices_info.items():
-        docs.append({'uid': key, 'voices': value})
-
+    docs = [{'uid': key, 'voices': value} for key, value in voices_info.items()]
     db['available_voices'].truncate()
     db.collection('available_voices').import_bulk_logged(docs, wipe=True)
+
+
+def load_map_data(additional_info_dir, db):
+    map_file = additional_info_dir / 'map_data.json'
+    map_data = json_load(map_file)
+    map_doc = [
+        {'type': map_data['type'], 'features': map_data['features']}
+    ]
+    db['map_data'].truncate()
+    db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
+
 
 def load_html_texts(change_tracker, data_dir, db, html_dir):
     print('Loading HTML texts')
@@ -306,6 +314,7 @@ def process_difficulty(db, additional_info_dir):
 
     db.collection('difficulties').import_bulk_logged(docs, wipe=True)
 
+
 def process_prioritize(db, additional_info_dir):
     print('Loading prioritize')
     prioritize_file = additional_info_dir / 'prioritize.json'
@@ -313,12 +322,14 @@ def process_prioritize(db, additional_info_dir):
     db['prioritize'].truncate()
     db.collection('prioritize').import_bulk_logged(prioritize_info, wipe=True)
 
+
 def process_creator_bio(db, additional_info_dir):
     print('Loading creator bio')
     creator_bio_file = additional_info_dir / 'creator_bio.json'
     creator_bio_info = json_load(creator_bio_file)
     db['creator_bio'].truncate()
     db.collection('creator_bio').import_bulk_logged(creator_bio_info, wipe=True)
+
 
 def make_yellow_brick_road(db: Database):
     db.collection('yellow_brick_road').truncate()
@@ -352,15 +363,7 @@ def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
 
 def load_shortcuts_file(db: Database, shortcuts_file: Path):
     shortcuts: Dict[str, dict] = json_load(shortcuts_file)
-
-    docs = []
-    for key, value in shortcuts.items():
-        docs.append({
-            'uid': key,
-            'shortcuts': value,
-        })
-
-    db['shortcuts'].truncate()
+    docs = [{'uid': key, 'shortcuts': value,} for key, value in shortcuts.items()]
     db.collection('shortcuts').import_bulk(docs)
 
 
@@ -375,31 +378,33 @@ def load_fallen_leaves_files(db: Database, fallen_leaves_file_dir: Path):
 
 
 def update_text_extra_info():
+    """Format volpage and alt_volpage and upsert to ArangoDB
+    """
     db = arangodb.get_db()
     bilara_references = list(db.aql.execute(BILARA_REFERENCES))
     for reference in tqdm(bilara_references):
         refs = json_load(reference['file_path'])
-        ptsRefs1st = []
-        ptsRefs2nd = []
+        pts_refs_1st = []
+        pts_refs_2nd = []
         for uid, ref in refs.items():
             refs = get_pts_ref(ref)
-            for ptsRef in refs:
-                if ptsRef.find('pts-vp-pli2ed') != -1:
-                    ptsRefs2nd.append(ptsRef.replace('pts-vp-pli2ed', 'PTS (2nd ed) '))
+            for pts_ref in refs:
+                if pts_ref.find('pts-vp-pli2ed') != -1:
+                    pts_refs_2nd.append(pts_ref.replace('pts-vp-pli2ed', 'PTS (2nd ed) '))
                     continue
-                elif ptsRef.find('pts-vp-pli1ed') != -1:
-                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli1ed', 'PTS (1st ed) '))
+                elif pts_ref.find('pts-vp-pli1ed') != -1:
+                    pts_refs_1st.append(pts_ref.replace('pts-vp-pli1ed', 'PTS (1st ed) '))
                     continue
-                elif ptsRef.find('pts-vp-pli') != -1:
-                    ptsRefs1st.append(ptsRef.replace('pts-vp-pli', 'PTS '))
-        if len(ptsRefs1st) != 0:
-            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs1st)})
-        if len(ptsRefs2nd) != 0:
-            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(ptsRefs2nd)})
+                elif pts_ref.find('pts-vp-pli') != -1:
+                    pts_refs_1st.append(pts_ref.replace('pts-vp-pli', 'PTS '))
+        if pts_refs_1st:
+            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(pts_refs_1st)})
+        if pts_refs_2nd:
+            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(pts_refs_2nd)})
 
 
-def update_text_acronym(structure_dir):
-    """Generate acronym from super_extra_info and add to ArangoDB
+def upsert_text_acronym(structure_dir):
+    """Generate acronym from super_extra_info and upsert to ArangoDB
 
     Args:
         structure_dir: Path to structure data directory.
@@ -408,52 +413,48 @@ def update_text_acronym(structure_dir):
     uids = list(db.aql.execute(ACRONYM_IS_NULL_UIDS))
     super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
     for uid in tqdm(uids):
-        sutta_full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid['uid']}).next()
+        sutta_full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
         for path in reversed(sutta_full_path['full_path'].split('/')):
             sutta_superior_path = super_extra_info.get(path)
-            if (sutta_superior_path is not None):
-                last_index_of_en_dash = uid['uid'].rfind('-')
+            if sutta_superior_path is not None:
                 acronym = ''
-                # Determine whether it is a range sutta， e.g. an1.1-10
-                if (last_index_of_en_dash != -1 and uid['uid'][last_index_of_en_dash + 1:].isdigit()):
-                    acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ').replace('-', '–')
+                if re.match(r'.*-\d+$', uid):
+                    acronym = uid.replace(path, sutta_superior_path['acronym'] + ' ').replace('-', '–')
                     if acronym.find(sutta_superior_path['acronym'] + ' –') != -1:
                         acronym = acronym.replace(sutta_superior_path['acronym'] + ' –', sutta_superior_path['acronym'] + ' ')
-                        #  Add space between Numbers and Alphabets in String
-                        acronym = re.sub("[A-Za-z]+", lambda ele: " " + ele[0] + " ", acronym)
+                        # Add space between Numbers and Alphabets in String
+                        acronym = re.sub("[A-Za-z]+", lambda ele: f" {ele[0]} ", acronym)
                         acronym = str(acronym).title().replace("   ", " ")
                 else:
-                    first_part_index = uid['uid'].find(path + '-')
+                    first_part_index = uid.find(f'{path}-')
                     if first_part_index != -1:
-                        second_part = uid['uid'].replace(path + '-', '').capitalize()
+                        sutta_name_subsection = uid.replace(f'{path}-', '').capitalize()
                         # Add spaces before numbers
-                        second_part = re.sub(r"([0-9]+(\.[0-9]+)?)",r" \1 ", second_part).strip()
-                        acronym = sutta_superior_path['acronym'] + ' ' + second_part
+                        sutta_name_subsection = re.sub(r"([0-9]+(\.[0-9]+)?)", r" \1 ", sutta_name_subsection).strip()
+                        acronym = sutta_superior_path['acronym'] + ' ' + sutta_name_subsection
                     else:
-                        acronym = uid['uid'].replace(path, sutta_superior_path['acronym'] + ' ')
-                if (acronym != ''):
-                    db.aql.execute(UPSERT_TEXT_EXTRA_ACRONYM_INFO, bind_vars={'uid': uid['uid'], 'acronym': acronym})
-                    db.aql.execute(UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO, bind_vars={'uid': uid['uid'], 'acronym': acronym})
+                        acronym = uid.replace(path, sutta_superior_path['acronym'] + ' ')
+                if acronym != '':
+                    db.aql.execute(UPSERT_TEXT_EXTRA_ACRONYM_INFO, bind_vars={'uid': uid, 'acronym': acronym})
+                    db.aql.execute(UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO, bind_vars={'uid': uid, 'acronym': acronym})
                 break
 
 
 def get_pts_ref(ref):
     arr = ref.split(',')
-    ptsRefs = []
-    for ref in arr:
-        if ref.find('pts-vp-pli') != -1:
-            ptsRefs.append(ref)
-    return ptsRefs
+    return [ref for ref in arr if ref.find('pts-vp-pli') != -1]
 
 
 def update_translated_title():
+    """Format translated title and upsert to ArangoDB
+    """
     db = arangodb.get_db()
     translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' IN trans.muids RETURN trans"))
+    title_index = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     for translation in tqdm(translations):
         trans = json_load(translation['file_path'])
         title = ''
-        titleIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        for i in reversed(titleIndex):
+        for i in reversed(title_index):
             title = trans.get(translation['uid'] + ':0.' + str(i))
             if title is None and translation['uid'].find('-') != -1:
                 title = trans.get(translation['uid'].split('-')[0] + ':0.' + str(i))
@@ -465,18 +466,20 @@ def update_translated_title():
 
 
 def update_root_title():
+    """Format root title and upsert to ArangoDB
+    """
     db = arangodb.get_db()
     root_title_is_null_uids = list(db.aql.execute("FOR u IN super_nav_details FILTER u.root_lang == 'pli' AND u.name == '' RETURN u.uid"))
     for uid in tqdm(root_title_is_null_uids):
         root = db.aql.execute(SINGLE_ROOT_TEXT, bind_vars={'uid': uid}).next()
         if root is not None:
-            rootText = json_load(root['file_path'])
+            root_text = json_load(root['file_path'])
             title = ''
-            titleIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            for i in reversed(titleIndex):
-                title = rootText.get(uid + ':0.' + str(i))
+            title_index = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            for i in reversed(title_index):
+                title = root_text.get(f'{uid}:0.{str(i)}')
                 if title is None and uid.find('-') != -1:
-                    title = rootText.get(uid.split('-')[0] + ':0.' + str(i))
+                    title = root_text.get(uid.split('-')[0] + ':0.' + str(i))
                 if title is not None:
                     break
             db.aql.execute(UPSERT_ROOT_NAMES, bind_vars={'uid': uid, 'name': title})
@@ -488,7 +491,7 @@ def run(no_pull=False):
     It will take data from sc-data repository and populate the database with it.
 
     Args:
-        no_pull: Whether or not force clean db setup.
+        no_pull: Whether force clean db setup.
     """
 
     data_dir = current_app.config.get('BASE_DIR') / 'sc-data'
@@ -501,8 +504,6 @@ def run(no_pull=False):
     sizes_dir = current_app.config.get('BASE_DIR') / 'server' / 'tools'
     sc_bilara_data_dir = data_dir / 'sc_bilara_data'
     localized_elements_dir = current_app.config.get('ASSETS_DIR') / 'localization/elements'
-
-
     languages_file = structure_dir / 'language.json'
 
     storage_dir = current_app.config.get('STORAGE_DIR')
@@ -551,6 +552,9 @@ def run(no_pull=False):
     print_stage("Loading available_voices.json")
     load_available_voices(change_tracker, additional_info_dir, db)
 
+    print_stage("Loading map_data.json")
+    load_map_data(additional_info_dir, db)
+
     print_stage('Loading guides.json')
     load_guides_file(db, structure_dir / 'guides.json')
 
@@ -589,7 +593,6 @@ def run(no_pull=False):
 
     print_stage('Load publication editions from sc_bilara_data')
     sc_bilara_data.load_publication_editions(db, sc_bilara_data_dir)
-
 
     print_stage('Load texts from sc_bilara_data')
     sc_bilara_data.load_texts(db, sc_bilara_data_dir)
@@ -651,7 +654,7 @@ def run(no_pull=False):
     update_text_extra_info()
 
     print_stage("Update Acronym")
-    update_text_acronym(structure_dir)
+    upsert_text_acronym(structure_dir)
 
     print_stage("Generating sitemap")
     sitemap = generate_sitemap(db)
@@ -675,11 +678,3 @@ def hyphenate_pali_and_san():
     db = arangodb.get_db()
     print(f'\nHyphenate Pali and Sanskrit texts:')
     hyphenation.hyphenate_texts(db)
-
-
-def bilara_run():
-    print("Loading bilara data")
-    data_dir = current_app.config.get('BASE_DIR') / 'sc-data' / 'bilara-data'
-    if not os.path.exists(data_dir):
-        print("Bilara data directory does not exist.")
-        return

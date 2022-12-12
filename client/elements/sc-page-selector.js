@@ -130,11 +130,6 @@ const routes = {
     content: html`<sc-static-donation-success/>`,
     loader: () => import('./static/sc-static-donation-success.js')
   },
-  'downloads': {
-    path: '/downloads',
-    content: html`<sc-static-downloads />`,
-    loader: () => import('./static/sc-static-downloads.js'),
-  },
   'generalGuideSujato': {
     path: '/general-guide-sujato',
     content: html`<sc-static-general-guide-sujato />`,

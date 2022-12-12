@@ -47,13 +47,13 @@ export class SCStaticHomePage extends SCStaticPage {
         <sc-navigation-tipitaka></sc-navigation-tipitaka>
 
         <section class="plain editions">
+        <a href="/editions">
           <h2>SuttaCentral Editions</h2>
-          <a href="/editions">
             <figure>
               <picture>
-                <source srcset="/img/home-page/editions.png" type="image/avif" />
+                <source srcset="/img/home-page/editions.avif" type="image/avif" />
                 <img
-                  src="/img/home-page/editions.png"
+                  src="/img/home-page/editions.jpg"
                   alt="SuttaCentral editions covers"
                   style="width:100%"
                 />
@@ -156,7 +156,7 @@ export class SCStaticHomePage extends SCStaticPage {
         <section class="sc-related">
           <div class="related-projects-heading">
             <h2>${unsafeHTML(this.localize('home:15'))}</h2>
-            <a href="https://github.com/suttacentral/awesome">
+            <a href="https://suttacentral.github.io/awesome/">
               <span>More awesome SuttaCentral things</span>
               ${icon.arrow_right}
             </a>

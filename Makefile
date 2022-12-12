@@ -79,7 +79,7 @@ load-data:
 
 load-data-no-pull:
 	@make migrate
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --no_pull"
+	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --no_pull=true"
 
 delete-database:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py delete_db"
@@ -90,7 +90,8 @@ index-elasticsearch:
 hyphenate:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py hyphenate"
 
-
+list_routes:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py list_routes"
 
 rebuild-frontend:
 	docker-compose run sc-frontend npm run build

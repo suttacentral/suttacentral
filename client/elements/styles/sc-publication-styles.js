@@ -63,8 +63,10 @@ export const SCPublicationStyles = css`
   }
 
   caption {
-    font-size: 1.5em;
+    font-size: var(--sc-skolar-font-size-xxl);
     font-weight: normal;
+
+    font-style: italic;
 
     margin-bottom: 0;
   }
@@ -79,18 +81,19 @@ export const SCPublicationStyles = css`
     vertical-align: middle;
   }
 
-  table .paperback {
-    width: 36px;
-    height: 36px;
-    margin: -8px 4px 0 -8px;
+  table svg{
+    fill: var(--sc-icon-color);
+    margin-right: 1rem;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   table a .icon {
-    fill: white;
+    fill: var(--sc-secondary-background-color);
   }
 
   table a {
-    font-weight: 500;
+    font-weight: 600;
 
     display: inline-block;
 
@@ -99,7 +102,7 @@ export const SCPublicationStyles = css`
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
 
-    color: white;
+    color: var(--sc-primary-background-color);
     border-radius: 5px;
     background-color: var(--sc-primary-accent-color);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -113,6 +116,17 @@ export const SCPublicationStyles = css`
   tfoot td:first-child {
     font-size: 0.8em;
     font-weight: normal;
+
+  }
+
+  tbody td{
+    height: 52px
+  }
+
+  tbody td:first-child{
+
+    font-variant-caps: all-small-caps;
+    font-size: var(--sc-skolar-font-size-xl);
   }
 
   figure {
@@ -131,16 +145,16 @@ export const SCPublicationStyles = css`
 
   figcaption {
     font-family: var(--sc-sans-font);
-    font-size: 0.8em;
+    font-size: var(--sc-skolar-font-size-s);
 
     text-align: center;
 
-    color: #757575;
+    color: var(--sc-secondary-text-color);
   }
 
   dl.publication {
     font-family: var(--sc-sans-font);
-    font-size: 0.8em;
+    font-size: var(--sc-skolar-font-size-s);
   }
 
   dt {
