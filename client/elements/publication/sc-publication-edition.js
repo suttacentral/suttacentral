@@ -167,9 +167,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
   #computeFileUrlByType(publicationType) {
     const discoursesName = this.editionDetail[0].translated_name
-      .replace('Collection', '')
-      .replace(' ', '-')
-      .trim();
+      ?.replace('Collection', '')
+      .trim()
+      .replace(/\s+/g, '-');
     const { authorUid, langIsoCode } = this.currentRoute.params;
 
     if (publicationType === 'tex') {
