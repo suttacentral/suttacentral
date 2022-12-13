@@ -11,15 +11,11 @@ import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import {
-  editionId,
   coverImage,
   creatorBio,
   allEditions,
-  editionInfo,
   collectionURL,
-  editionDetail,
   editionsGithubUrl,
-  editionsGithubRawUrl,
   publicationLastGeneratedDate,
   publicationLastGeneratedFormattedDate,
 } from './sc-publication-common';
@@ -46,6 +42,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     this.editionUid = store.getState().currentRoute.params.editionUid;
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.#fetchAllEditions();
+    this.#loadNewResult();
   }
 
   firstUpdated() {
@@ -62,13 +59,13 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
     if (changedProps.has('editionId')) {
       if (this.editionId) {
-        this._loadNewResult();
+        this.#loadNewResult();
       }
     }
     if (changedProps.has('volumesInfoForDownloadMenu')) {
       this.requestUpdate();
     }
-    this._updateNav();
+    this.#updateNav();
   }
 
   stateChanged(state) {
@@ -76,20 +73,20 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
       if (this.currentRoute.path.includes('/edition/') && this.editionId) {
-        this._loadNewResult();
-        this._updateNav();
+        this.#loadNewResult();
+        this.#updateNav();
       }
     }
   }
 
-  async _loadNewResult() {
-    this.#fetchEditionDetails();
-    this.#fetchEditionInfo();
+  async #loadNewResult() {
+    await this.#fetchEditionDetails();
+    await this.#fetchEditionInfo();
     this.#fetchCreatorDetail();
     this.requestUpdate();
   }
 
-  _updateNav() {
+  #updateNav() {
     if (!this.editionDetail || !this.editionDetail[0]) {
       return;
     }
@@ -109,9 +106,13 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
-  #fetchEditionDetails() {
+  async #fetchEditionDetails() {
     try {
-      this.editionDetail = editionDetail;
+      try {
+        this.editionDetail = await (await fetch(`${API_ROOT}/menu/${this.editionUid}`)).json();
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +121,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #fetchAllEditions() {
     setTimeout(() => {
       this.allEditions = allEditions;
-      this.editionId = editionId;
+      this.editionId = allEditions.find(
+        x => x.uid === this.editionUid && x.edition_id?.includes('web')
+      )?.edition_id;
       if (this.editionId) {
         reduxActions.changeCurrentEditionId(this.editionId);
         this.requestUpdate();
@@ -128,15 +131,14 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }, 100);
   }
 
-  #fetchEditionInfo() {
+  async #fetchEditionInfo() {
     try {
-      // this.editionInfo = await (
-      //   await fetch(`${API_ROOT}/publication/edition/${this.editionId}`)
-      // ).json();
-      this.editionInfo = editionInfo;
+      this.editionInfo = await (
+        await fetch(`${API_ROOT}/publication/edition/${this.editionId}`)
+      ).json();
       if (this.editionDetail && this.editionDetail.length !== 0) {
         reduxActions.changeToolbarTitle(
-          `${this.editionDetail[0].root_name} — ${this.editionInfo.publication.creator_name}`
+          `${this.editionDetail[0].root_name} — ${this.editionInfo.publication?.creator_name}`
         );
 
         reduxActions.changeCurrentEditionHomeInfo({
@@ -153,7 +155,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #fetchCreatorDetail() {
     try {
       for (const creator of creatorBio) {
-        if (this.editionId.includes(creator.creator_uid)) {
+        if (this.editionId?.includes(creator.creator_uid)) {
           this.creatorInfo = creator;
           break;
         }
@@ -170,8 +172,12 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       .trim();
     const { authorUid, langIsoCode } = this.currentRoute.params;
 
-    if (publicationType === 'TeX') {
-      return `${editionsGithubRawUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.${publicationType}`;
+    if (publicationType === 'tex') {
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}-${publicationType}.zip`;
+    }
+
+    if (publicationType === 'pdf') {
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.zip`;
     }
 
     return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.${publicationType}`;
@@ -182,7 +188,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   }
 
   #publicationDetailTemplate() {
-    return html`
+    return this.editionInfo && this.editionInfo.publication
+      ? html`
       <h2>Publication details</h2>
         <dl class="publication">
           <dt class="publication_number">SuttaCentral publication number</dt>
@@ -214,7 +221,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
             </a>
           </dd>
         </dl>
-    `;
+    `
+      : '';
   }
 
   #hgroupTemplate() {
@@ -223,8 +231,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         <h1 class="translation_title">
           ${this.editionDetail[0].translated_name.replace('Collection', '')}
         </h1>
-        <p class="translation_subtitle">${this.editionInfo.publication.translation_subtitle}</p>
-        <p class="creator_name">${this.editionInfo.publication.creator_name}</p>
+        <p class="translation_subtitle">${this.editionInfo?.publication?.translation_subtitle}</p>
+        <p class="creator_name">${this.editionInfo?.publication?.creator_name}</p>
       </hgroup>
     `;
   }
@@ -233,7 +241,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     return html`
       <figure class="book-pic">
         <img
-          src="/img/publication-pages/${coverImage.get(this.editionInfo.publication.text_uid)}"
+          src="/img/publication-pages/${coverImage.get(this.editionInfo?.publication?.text_uid)}"
           alt="Cover art for Long Discourses"
         />
         <figcaption>Paperback edition of Long Discourses</figcaption>

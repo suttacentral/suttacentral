@@ -42,13 +42,12 @@ function formatDate(date) {
   return [year, month, day].join('-');
 }
 
-export const publicationLastGeneratedDate = '2022-11-22T09:00:00Z';
+export const publicationLastGeneratedDate = '2022-12-12T01:15:52Z';
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
 export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacentral/editions/main';
 
 let allEditions = [];
-let editionId = '';
 const { editionUid } = store.getState().currentRoute.params;
 if (editionUid) {
   try {
@@ -61,18 +60,12 @@ if (editionUid) {
           edition.uid = edition.edition_id?.split('-')[0];
         }
       }
-      editionId = allEditions.find(
-        x => x.uid === editionUid && x.edition_id?.includes('web')
-      )?.edition_id;
-      if (editionId) {
-        reduxActions.changeCurrentEditionId(editionId);
-      }
     }
   } catch (error) {
     console.log(error);
   }
 }
-export { allEditions, editionId };
+export { allEditions };
 
 let creatorBio = [];
 try {
@@ -81,33 +74,3 @@ try {
   console.log(error);
 }
 export { creatorBio };
-
-let editionDetail = [];
-try {
-  editionDetail = await (await fetch(`${API_ROOT}/menu/${editionUid}`)).json();
-} catch (error) {
-  console.log(error);
-}
-export { editionDetail };
-
-let editionInfo = {};
-if (editionId) {
-  try {
-    editionInfo = await (await fetch(`${API_ROOT}/publication/edition/${editionId}`)).json();
-    if (editionDetail && editionDetail.length !== 0) {
-      reduxActions.changeToolbarTitle(
-        `${editionDetail[0].root_name} — ${editionInfo.publication.creator_name}`
-      );
-      reduxActions.changeCurrentEditionHomeInfo({
-        title: editionDetail[0]?.translated_name?.replace('Collection', ''),
-        url: `/edition/${editionUid}/${store.getState().currentRoute.params.langIsoCode}/${
-          store.getState().currentRoute.params.authorUid
-        }`,
-        root_title: editionDetail[0].root_name,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-export { editionInfo };
