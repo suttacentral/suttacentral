@@ -320,13 +320,13 @@ FOR doc IN super_nav_details
 BUILD_YELLOW_BRICK_ROAD = '''
 FOR lang IN language
     LET lang_code = lang.iso_code
-    
+
     LET translated_uids = (
         FOR doc IN v_text
             SEARCH doc.lang == lang_code
             RETURN DISTINCT doc.uid
     )
-    
+
     FOR t_uid IN translated_uids
         LET nav_doc = DOCUMENT('super_nav_details', t_uid)
         FILTER nav_doc
@@ -340,6 +340,7 @@ FOR lang IN language
                 _key: CONCAT_SEPARATOR('_', doc.uid, lang_code),
                 uid: doc.uid,
                 lang: lang_code,
+                type: doc.type,
                 count: translations_count,
             }
             INSERT yellow_brick_doc INTO yellow_brick_road OPTIONS { overwriteMode: 'ignore' }
@@ -347,6 +348,7 @@ FOR lang IN language
 
 COUNT_YELLOW_BRICK_ROAD = '''
 FOR yb_doc IN yellow_brick_road
+    FILTER yb_doc.type == 'branch'
     LET translated_leaf_count = SUM(
         FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges
             FILTER child.type == 'leaf'
