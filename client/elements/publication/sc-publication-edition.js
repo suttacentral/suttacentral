@@ -242,9 +242,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <figure class="book-pic">
         <img
           src="/img/publication-pages/${coverImage.get(this.editionInfo?.publication?.text_uid)}"
-          alt="Cover art for Long Discourses"
+          alt="Cover art for ${this.editionDetail[0].translated_name.replace('Collection', '')}"
         />
-        <figcaption>Paperback edition of Long Discourses</figcaption>
+        <figcaption>Paperback edition of ${this.editionDetail[0].translated_name.replace('Collection', '')}</figcaption>
       </figure>
     `;
   }
