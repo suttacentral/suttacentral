@@ -7,13 +7,12 @@ export const coverImage = new Map([
   ['mn', 'mn-book.jpg'],
   ['sn', 'sn-book.jpg'],
   ['an', 'an-book.jpg'],
-  ['dhp', 'snp-book.jpg'],
-  ['ud', 'snp-book.jpg'],
-  ['iti', 'snp-book.jpg'],
+  ['dhp', 'dhp-book.jpg'],
+  ['ud', 'ud-book.jpg'],
+  ['iti', 'iti-book.jpg'],
   ['snp', 'snp-book.jpg'],
-  ['thag', 'snp-book.jpg'],
-  ['thig', 'snp-book.jpg'],
-  ['pli-tv-vi', 'snp-book.jpg'],
+  ['thag', 'thag-book.jpg'],
+  ['thig', 'thig-book.jpg'],
 ]);
 
 export const collectionURL = new Map([

@@ -71,10 +71,6 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     }
   }
 
-  firstUpdated() {
-//    this.#loadNewResult();
-  }
-
   async #loadNewResult() {
     await this.#fetchMatter();
     await this.#fetchEditionDetails();
