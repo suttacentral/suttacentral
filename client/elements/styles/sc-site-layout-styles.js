@@ -122,14 +122,6 @@ export const SCSiteLayoutStyles = css`
     height: 1.25em;
   }
 
-  svg.external {
-    width: 15px;
-    height: 15px;
-    fill: white;
-    margin: 6px 0 0 6px;
-    visibility: hidden;
-  }
-
   @media only screen and (max-width: 600px) {
     #context_toolbar.contextToolbarExpand {
       flex-direction: column;
