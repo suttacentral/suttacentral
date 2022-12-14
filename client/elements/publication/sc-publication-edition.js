@@ -287,14 +287,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           >
         </td>
       </tr>
-      <tr>
-        <td>${icon.hardcover} Book, hardcover</td>
-        <td>
-          <a href="https://github.com/suttacentral/editions" class="external"
-            >${icon.external} Print on demand</a
-          >
-        </td>
-      </tr>
     `;
   }
 
