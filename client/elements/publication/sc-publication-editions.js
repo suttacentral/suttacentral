@@ -9,7 +9,6 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
-// import { getCoverPictures } from '../publication/sc-publication-common';
 
 class ScPublicationEditions extends LitLocalized(LitElement) {
   static properties = {
