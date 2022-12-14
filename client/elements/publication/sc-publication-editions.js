@@ -33,13 +33,12 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       ['mn', 'mn-book.jpg'],
       ['sn', 'sn-book.jpg'],
       ['an', 'an-book.jpg'],
-      ['dhp', 'snp-book.jpg'],
-      ['ud', 'snp-book.jpg'],
-      ['iti', 'snp-book.jpg'],
+      ['dhp', 'dhp-book.jpg'],
+      ['ud', 'ud-book.jpg'],
+      ['iti', 'iti-book.jpg'],
       ['snp', 'snp-book.jpg'],
-      ['thag', 'snp-book.jpg'],
-      ['thig', 'snp-book.jpg'],
-      ['pli-tv-vi', 'snp-book.jpg'],
+      ['thag', 'thag-book.jpg'],
+      ['thig', 'thig-book.jpg'],
     ]);
   }
 
@@ -63,7 +62,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       this.webEditionIds = [];
       this.webEditionInfo = [];
       for (const edition of this.allEditions) {
-        if (edition.edition_id.includes('-web_')) {
+        if (edition.edition_id.includes('-web_') && !edition.edition_id.includes('brahmali')) {
           this.webEditionIds.push(edition.edition_id);
         }
       }
