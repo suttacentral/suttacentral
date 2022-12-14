@@ -46,14 +46,14 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     this.#updateNav();
     reduxActions.changeToolbarTitle('Editions');
     document.querySelector('sc-site-layout')?.hideATB();
-    this._loadData();
+    this.#loadData();
   }
 
-  async _loadData() {
-    await this._getWebEditionIds();
+  async #loadData() {
+    await this.#getWebEditionIds();
   }
 
-  async _getWebEditionIds() {
+  async #getWebEditionIds() {
     try {
       this.allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
       if (!this.allEditions) {
@@ -67,9 +67,9 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
         }
       }
       for (const editionId of this.webEditionIds) {
-        this._fetchEditionInfo(editionId);
+        this.#fetchEditionInfo(editionId);
       }
-      await this._fetchEditionBlurbs('en');
+      await this.#fetchEditionBlurbs('en');
       this.requestUpdate();
     } catch (error) {
       console.log(error);
@@ -95,7 +95,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     });
   }
 
-  async _fetchEditionInfo(editionId) {
+  async #fetchEditionInfo(editionId) {
     try {
       this.editionInfo = await (await fetch(`${API_ROOT}/publication/edition/${editionId}`)).json();
       this.webEditionInfo.push(this.editionInfo);
@@ -104,7 +104,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     }
   }
 
-  async _fetchEditionBlurbs(lang) {
+  async #fetchEditionBlurbs(lang) {
     try {
       this.editionBlurbs = await (
         await fetch(`${API_ROOT}/publication/edition/blurbs/${lang}`)
@@ -167,17 +167,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     this.#sortWebEditionInfoByUid();
     return html`
       <style>
-        ${typographyCommonStyles}
-        ${typographyStaticStyles}
-        ${SCPublicationEditionsStyles}
-
-    h1 {
-    font-family: var(--sc-sans-font);
-    letter-spacing: var(--sc-caps-letter-spacing);
-    font-variant-caps: small-caps;
-    font-weight: 500;
-    font-stretch: expanded;
-      }
+        ${typographyCommonStyles} ${typographyStaticStyles} ${SCPublicationEditionsStyles}
       </style>
       <main>
         <article>
@@ -186,8 +176,8 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
           <p>
-            The “Editions” series makes selected translations
-            available as books in various formats, including print, PDF, and EPUB.
+            The “Editions” series makes selected translations available as books in various formats,
+            including print, PDF, and EPUB.
           </p>
           <p>
             Editions are selected from our most complete, well-crafted, and reliable translations.
