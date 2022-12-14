@@ -263,15 +263,25 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         <li>free of copyright.</li>
       </ul>
       <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
+    `;
+  }
+
+  #editionDetailTemplate() {
+    return html`
       <h2>The ${this.editionDetail[0].root_name}</h2>
       <p class="blurb">${unsafeHTML(this.editionDetail[0].blurb)}</p>
+    `;
+  }
+
+  #bookAuthorBiographyTemplate() {
+    return html`
       <h2>The Author</h2>
       <figure class="author-pic">
         <img
           src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
           alt=${this.creatorInfo.creator_uid}
         />
-        <figcaption>Bhikkhu Sujato at Lokanta Vihara, 2019</figcaption>
+        <figcaption>${this.creatorInfo.creator_uid}</figcaption>
       </figure>
       ${unsafeHTML(this.creatorInfo.creator_biography)}
     `;
@@ -396,6 +406,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               </tfoot>
             </table>
           </section>
+          ${this.#editionDetailTemplate()} ${this.#bookAuthorBiographyTemplate()}
           <section>${this.#publicationDetailTemplate()}</section>
         </article>
       </main>
