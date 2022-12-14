@@ -172,6 +172,14 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
         ${typographyCommonStyles}
         ${typographyStaticStyles}
         ${SCPublicationEditionsStyles}
+
+    h1 {
+    font-family: var(--sc-sans-font);
+    letter-spacing: var(--sc-caps-letter-spacing);
+    font-variant-caps: small-caps;
+    font-weight: 500;
+    font-stretch: expanded;
+      }
       </style>
       <main>
         <article>
@@ -180,9 +188,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
           <p>
-            Since 2005 SuttaCentral has provided access to the texts, translations, and parallels of
-            early Buddhist texts. In 2018 we started creating and publishing our own translations of
-            these seminal spiritual classics. The “Editions” series now makes selected translations
+            The “Editions” series makes selected translations
             available as books in various formats, including print, PDF, and EPUB.
           </p>
           <p>
@@ -190,7 +196,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             They aim to bring these texts to a wider audience in forms that reward mindful reading.
             Care is taken with every detail of the production, and we aim to meet or exceed
             professional best standards in every way. These are the core scriptures underlying the
-            entire Buddhist tradition, and we believe that they deserve to be preserved and made
+            entire Buddhist tradition and we believe that they deserve to be preserved and made
             available in highest quality without compromise.
           </p>
 
