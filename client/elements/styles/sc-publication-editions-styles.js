@@ -136,4 +136,12 @@ export const SCPublicationEditionsStyles = css`
   .down-all {
     margin-bottom: 4em;
   }
+
+  h1 {
+    font-family: var(--sc-sans-font);
+    letter-spacing: var(--sc-caps-letter-spacing);
+    font-variant-caps: small-caps;
+    font-weight: 500;
+    font-stretch: expanded;
+  }
 `;

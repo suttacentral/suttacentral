@@ -399,8 +399,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   _colorsResponseReceived() {
     // set the css color variables:
     for (const key in this.colorsResponse) {
-      if (!this.colorsResponse.hasOwnProperty(key)) continue;
-      document.body.style.setProperty(key, this.colorsResponse[key]);
+      if (Object.hasOwn(this.colorsResponse, key)) {
+        document.body.style.setProperty(key, this.colorsResponse[key]);
+      }
     }
   }
 

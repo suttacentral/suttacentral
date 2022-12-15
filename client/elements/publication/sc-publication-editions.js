@@ -9,7 +9,6 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
-import { coverImage } from '../publication/sc-publication-common';
 
 class ScPublicationEditions extends LitLocalized(LitElement) {
   static properties = {
@@ -17,9 +16,6 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
   };
 
   static styles = [
-    typographyCommonStyles,
-    typographyStaticStyles,
-    SCPublicationEditionsStyles,
     css`
       :host {
         display: block;
@@ -32,20 +28,32 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     this.currentRoute = store.getState().currentRoute;
     this.webEditionInfo = [];
     this.editionBlurbs = [];
+    this.coverImage = new Map([
+      ['dn', 'dn-book.jpg'],
+      ['mn', 'mn-book.jpg'],
+      ['sn', 'sn-book.jpg'],
+      ['an', 'an-book.jpg'],
+      ['dhp', 'dhp-book.jpg'],
+      ['ud', 'ud-book.jpg'],
+      ['iti', 'iti-book.jpg'],
+      ['snp', 'snp-book.jpg'],
+      ['thag', 'thag-book.jpg'],
+      ['thig', 'thig-book.jpg'],
+    ]);
   }
 
   firstUpdated() {
-    this._updateNav();
+    this.#updateNav();
     reduxActions.changeToolbarTitle('Editions');
     document.querySelector('sc-site-layout')?.hideATB();
-    this._loadData();
+    this.#loadData();
   }
 
-  async _loadData() {
-    await this._getWebEditionIds();
+  async #loadData() {
+    await this.#getWebEditionIds();
   }
 
-  async _getWebEditionIds() {
+  async #getWebEditionIds() {
     try {
       this.allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
       if (!this.allEditions) {
@@ -54,21 +62,21 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       this.webEditionIds = [];
       this.webEditionInfo = [];
       for (const edition of this.allEditions) {
-        if (edition.edition_id.includes('-web_')) {
+        if (edition.edition_id.includes('-web_') && !edition.edition_id.includes('brahmali')) {
           this.webEditionIds.push(edition.edition_id);
         }
       }
       for (const editionId of this.webEditionIds) {
-        this._fetchEditionInfo(editionId);
+        this.#fetchEditionInfo(editionId);
       }
-      await this._fetchEditionBlurbs('en');
+      await this.#fetchEditionBlurbs('en');
       this.requestUpdate();
     } catch (error) {
       console.log(error);
     }
   }
 
-  _sortWebEditionInfoByUid() {
+  #sortWebEditionInfoByUid() {
     this.webEditionInfo.sort((start, next) => {
       const order = [
         'dn',
@@ -87,7 +95,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     });
   }
 
-  async _fetchEditionInfo(editionId) {
+  async #fetchEditionInfo(editionId) {
     try {
       this.editionInfo = await (await fetch(`${API_ROOT}/publication/edition/${editionId}`)).json();
       this.webEditionInfo.push(this.editionInfo);
@@ -96,15 +104,17 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     }
   }
 
-  async _fetchEditionBlurbs(lang) {
+  async #fetchEditionBlurbs(lang) {
     try {
-      this.editionBlurbs = await (await fetch(`${API_ROOT}/publication/edition/blurbs/${lang}`)).json();
+      this.editionBlurbs = await (
+        await fetch(`${API_ROOT}/publication/edition/blurbs/${lang}`)
+      ).json();
     } catch (error) {
       console.log(error);
     }
   }
 
-  _updateNav() {
+  #updateNav() {
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
@@ -116,9 +126,49 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     setNavigation(navArray);
   }
 
-  render() {
-    this._sortWebEditionInfoByUid();
+  createRenderRoot() {
+    return this;
+  }
+
+  #allEditionsTemplate() {
     return html`
+      ${this.webEditionInfo?.map(
+        edition => html`
+          <section class="project">
+            <a
+              class="header-link"
+              href="/edition/${edition.publication.text_uid}/${edition.publication
+                .translation_lang_iso}/${edition.publication.creator_uid}"
+            >
+              <hgroup>
+                <h2 class="translation_title">${edition.publication.translation_title}</h2>
+                <span class="translation_subtitle"
+                  >${edition.publication.translation_subtitle}</span
+                >
+              </hgroup>
+            </a>
+            <p class="creator_name">${edition.publication.creator_name}</p>
+            <p class="publication_blurb">
+              <img
+                src="/img/publication-pages/${this.coverImage.get(edition.publication.text_uid)}"
+                alt="Cover art for ${edition.publication.translation_title}"
+              />
+              ${unsafeHTML(
+                this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb
+              )}
+            </p>
+          </section>
+        `
+      )}
+    `;
+  }
+
+  render() {
+    this.#sortWebEditionInfoByUid();
+    return html`
+      <style>
+        ${typographyCommonStyles} ${typographyStaticStyles} ${SCPublicationEditionsStyles}
+      </style>
       <main>
         <article>
           <hgroup class="page-header">
@@ -126,17 +176,15 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
           <p>
-            Since 2005 SuttaCentral has provided access to the texts, translations, and parallels of
-            early Buddhist texts. In 2018 we started creating and publishing our own translations of
-            these seminal spiritual classics. The “Editions” series now makes selected translations
-            available as books in various formats, including print, PDF, and EPUB.
+            The “Editions” series makes selected translations available as books in various formats,
+            including print, PDF, and EPUB.
           </p>
           <p>
             Editions are selected from our most complete, well-crafted, and reliable translations.
             They aim to bring these texts to a wider audience in forms that reward mindful reading.
             Care is taken with every detail of the production, and we aim to meet or exceed
             professional best standards in every way. These are the core scriptures underlying the
-            entire Buddhist tradition, and we believe that they deserve to be preserved and made
+            entire Buddhist tradition and we believe that they deserve to be preserved and made
             available in highest quality without compromise.
           </p>
 
@@ -157,34 +205,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </li>
             </ul>
           </section>
-          ${this.webEditionInfo.map(
-            edition => html`
-              <section class="project">
-                <a
-                  class="header-link"
-                  href="/edition/${edition.publication.text_uid}/${edition.publication
-                    .translation_lang_iso}/${edition.publication.creator_uid}"
-                >
-                  <hgroup>
-                    <h2 class="translation_title">${edition.publication.translation_title}</h2>
-                    <span class="translation_subtitle"
-                      >${edition.publication.translation_subtitle}</span
-                    >
-                  </hgroup>
-                </a>
-                <p class="creator_name">${edition.publication.creator_name}</p>
-                <p class="publication_blurb">
-                  <img
-                    src="/img/publication-pages/${coverImage.get(edition.publication.text_uid)}"
-                    alt="Cover art for ${edition.publication.translation_title}"
-                  />
-                  ${unsafeHTML(
-                    this.editionBlurbs.find(x => x.uid === edition.publication.text_uid)?.blurb
-                  )}
-                </p>
-              </section>
-            `
-          )}
+          ${this.#allEditionsTemplate()}
         </article>
       </main>
     `;
