@@ -348,7 +348,7 @@ FOR lang IN language
 
 COUNT_YELLOW_BRICK_ROAD = '''
 FOR yb_doc IN yellow_brick_road
-    FILTER yb_doc.type == 'branch'
+    FILTER yb_doc.type == 'branch' OR yb_doc.type == 'root'
     LET translated_leaf_count = SUM(
         FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges
             FILTER child.type == 'leaf'
