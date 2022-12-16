@@ -337,3 +337,66 @@ export const navigationCompactModeStyles = html`
     }
   </style>
 `;
+
+export const navigationPublicationInfoStyles = html`
+  <style>
+    .editions-nav-notice {
+      display: flex;
+
+      height: 160px;
+    }
+
+    .editions-nav-notice-text {
+      padding: 1em;
+    }
+
+    .editions-nav-notice-text li {
+      font-size: small;
+
+      margin-left: 0.4em;
+
+      column-break-inside: avoid;
+    }
+
+    .editions-nav-notice-text li::marker {
+      color: var(--sc-primary-color);
+    }
+
+    .editions-nav-notice-text ul {
+      padding-left: 0.5em;
+
+      column-count: 2;
+    }
+
+    a.editions-nav-notice-link {
+      display: block;
+      overflow: hidden;
+
+      margin: 1em 1em 1em 1em;
+
+      text-decoration: none;
+
+      color: inherit;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    a.editions-nav-notice-link:hover {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
+
+    .editions-nav-notice img {
+      object-fit: cover;
+    }
+
+    @media screen and (max-width: 360px) {
+      img {
+        display: none;
+      }
+
+      .editions-nav-notice {
+        height: auto;
+      }
+    }
+  </style>
+`;

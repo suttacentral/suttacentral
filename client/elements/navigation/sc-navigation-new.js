@@ -1,12 +1,16 @@
 import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
-import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
+import {
+  navigationNormalModeStyles,
+  navigationCompactModeStyles,
+  navigationPublicationInfoStyles,
+} from './sc-navigation-styles';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+import { allEditions, coverImage } from '../publication/sc-publication-common';
 
 export class SCNavigationNew extends LitLocalized(LitElement) {
   static properties = {
@@ -33,6 +37,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentMenuData = [];
     this.currentUid = this._getRoutePathLastItem();
 
+    this.#extractAllUidFromAllEditions();
     this._verifyURL();
     this._viewModeChanged();
     this._parseURL();
@@ -159,6 +164,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                       </a>
                     `
                   : ''}
+                ${this.#checkIfRelatedPublicationExists(child.uid)
+                  ? this.#publicationInfoTemplate(child)
+                  : ''}
                 ${shortcuts?.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -257,6 +265,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
       this._parseURL();
+      this.#checkIfRelatedPublicationExists();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
@@ -334,6 +343,53 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         element.classList.toggle('blurbShrink');
       };
     });
+  }
+
+  #checkIfRelatedPublicationExists(uid) {
+    return this.allPublicationUid.includes(uid);
+  }
+
+  #extractAllUidFromAllEditions() {
+    this.allPublicationUid = [];
+    allEditions.forEach(edition => {
+      this.allPublicationUid.push(edition.uid);
+    });
+    this.allPublicationUid = [...new Set(this.allPublicationUid)];
+  }
+
+  #publicationInfoTemplate(leaf) {
+    return html`
+      <style>
+        ${navigationPublicationInfoStyles}
+      </style>
+      <a
+        href="https://staging.suttacentral.net/edition/${leaf.uid}/en/sujato"
+        class="editions-nav-notice-link"
+      >
+        <section class="editions-nav-notice">
+          <img
+            src="/img/publication-pages/${coverImage.get(leaf.uid)}"
+            height="160px"
+            width="120px"
+          />
+          <div class="editions-nav-notice-text">
+            <div class="editions-nav-notice-lead">
+              <cite class="edition-title">${leaf.translated_name.replace('Collection', '')}</cite>
+              by
+              <span class="creator">Bhikkhu Sujato</span>
+            </div>
+            <ul>
+              <li class="checkmark">Book, Paperback</li>
+              <li>EPUB</li>
+              <li>PDF</li>
+              <li>HTML</li>
+              <li>TeX</li>
+              <li>Web</li>
+            </ul>
+          </div>
+        </section>
+      </a>
+    `;
   }
 }
 
