@@ -30,15 +30,7 @@ export const collectionURL = new Map([
 ]);
 
 function formatDate(date) {
-  const d = new Date(date);
-  let month = `${d.getMonth() + 1}`;
-  let day = `${d.getDate()}`;
-  const year = d.getFullYear();
-
-  if (month.length < 2) month = `0${month}`;
-  if (day.length < 2) day = `0${day}`;
-
-  return [year, month, day].join('-');
+  return date.split('T')[0];
 }
 
 export const publicationLastGeneratedDate = '2022-12-15T16:51:21Z';
