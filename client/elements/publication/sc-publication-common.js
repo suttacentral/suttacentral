@@ -41,7 +41,7 @@ function formatDate(date) {
   return [year, month, day].join('-');
 }
 
-export const publicationLastGeneratedDate = '2022-12-12T01:15:52Z';
+export const publicationLastGeneratedDate = '2022-12-15T16:51:21Z';
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
 export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacentral/editions/main';
