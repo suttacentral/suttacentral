@@ -375,17 +375,17 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
           <div class="editions-nav-notice-text">
             <div class="editions-nav-notice-lead">
               <cite class="edition-title">${leaf.translated_name.replace('Collection', '')}</cite>
-              by
+              <span class='editions-nav-notice-by'>by</span>
               <span class="creator">Bhikkhu Sujato</span>
             </div>
-            <ul>
-              <li class="checkmark">Book, Paperback</li>
-              <li>EPUB</li>
-              <li>PDF</li>
-              <li>HTML</li>
-              <li>TeX</li>
-              <li>Web</li>
-            </ul>
+                        <div class='editions-nav-notice-banner'>
+            A SuttaCentral Edition
+            </div>
+            <div class='editions-nav-notice-description'>
+            <span class='translation_subtitle'>A faithful translation of the Dīghanikāya.</span> 
+            <span class='availability'>Available in print and multiple digital formats for offline reading.</span>
+            </div>
+
           </div>
         </section>
       </a>

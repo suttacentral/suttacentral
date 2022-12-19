@@ -340,63 +340,122 @@ export const navigationCompactModeStyles = html`
 
 export const navigationPublicationInfoStyles = html`
   <style>
-    .editions-nav-notice {
-      display: flex;
+    .editions-nav-notice
+{
+    display: flex;
 
-      height: 160px;
-    }
+    height: 160px;
+}
 
-    .editions-nav-notice-text {
-      padding: 1em;
-    }
+.editions-nav-notice-text
+{
+    display: flex;
+    flex-direction: column;
 
-    .editions-nav-notice-text li {
-      font-size: small;
+    width: 100%;
+    padding: 1em;
+}
 
-      margin-left: 0.4em;
+.editions-nav-notice-lead
+{
+    font-size: var(--sc-skolar-font-size-xxs);
+    font-weight: 600;
 
-      column-break-inside: avoid;
-    }
+    display: flex;
+    flex-direction: row;
 
-    .editions-nav-notice-text li::marker {
-      color: var(--sc-primary-color);
-    }
+    width: 100%;
+    padding-bottom: .5em;
 
-    .editions-nav-notice-text ul {
-      padding-left: 0.5em;
+    text-align: center;
 
-      column-count: 2;
-    }
+    border-bottom: 2px solid var(--sc-primary-color-light);
 
-    a.editions-nav-notice-link {
-      display: block;
-      overflow: hidden;
+    gap: .8em;
+    justify-content: center;
+}
 
-      margin: 1em 1em 1em 1em;
+.edition-title
+{
+    font-size: var(--sc-skolar-font-size-md);
+}
 
-      text-decoration: none;
+.editions-nav-notice-by
+{
+    align-self: center;
+}
 
-      color: inherit;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
+.creator
+{
+    font-size: var(--sc-skolar-font-size-md);
 
-    a.editions-nav-notice-link:hover {
-      background-color: var(--sc-primary-color-light-transparent);
-    }
+    letter-spacing: var(--sc-caps-letter-spacing);
 
-    .editions-nav-notice img {
-      object-fit: cover;
-    }
+    font-variant-caps: small-caps;
+}
 
-    @media screen and (max-width: 360px) {
-      img {
+.editions-nav-notice-description
+{
+    padding: 1em 0;
+}
+
+a.editions-nav-notice-link
+{
+    display: block;
+    overflow: hidden;
+
+    margin: 1em 1em 1em 1em;
+
+    text-decoration: none;
+
+    color: inherit;
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+}
+
+a.editions-nav-notice-link:hover
+{
+    background-color: var(--sc-primary-color-light-transparent);
+}
+
+.editions-nav-notice img
+{
+    object-fit: cover;
+}
+
+.editions-nav-notice-banner
+{
+    font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 500;
+    font-stretch: expanded;
+
+    padding: .2em 0;
+
+    letter-spacing: var(--sc-caps-letter-spacing);
+
+    color: var(--sc-primary-color-medium);
+
+    align-self: flex-end;
+    font-variant-caps: small-caps;
+}
+
+@media screen and (max-width: 500px)
+{
+    img
+    {
         display: none;
-      }
-
-      .editions-nav-notice {
-        height: auto;
-      }
     }
+
+    .editions-nav-notice
+    {
+        height: auto;
+    }
+
+    .editions-nav-notice-banner
+    {
+        margin-top: 0;
+    }
+}
+
   </style>
 `;
