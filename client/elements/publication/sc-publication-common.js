@@ -30,18 +30,10 @@ export const collectionURL = new Map([
 ]);
 
 function formatDate(date) {
-  const d = new Date(date);
-  let month = `${d.getMonth() + 1}`;
-  let day = `${d.getDate()}`;
-  const year = d.getFullYear();
-
-  if (month.length < 2) month = `0${month}`;
-  if (day.length < 2) day = `0${day}`;
-
-  return [year, month, day].join('-');
+  return date.split('T')[0];
 }
 
-export const publicationLastGeneratedDate = '2022-12-12T01:15:52Z';
+export const publicationLastGeneratedDate = '2022-12-15T16:51:21Z';
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
 export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacentral/editions/main';

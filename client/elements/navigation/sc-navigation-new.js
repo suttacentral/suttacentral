@@ -37,7 +37,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentMenuData = [];
     this.currentUid = this._getRoutePathLastItem();
 
-    this.#extractAllUidFromAllEditions();
+    this.#extractUidsFromEditions();
     this._verifyURL();
     this._viewModeChanged();
     this._parseURL();
@@ -51,7 +51,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
-      this._checkIfChildrenExists();
+      this.#childrenExists();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
         return;
@@ -164,7 +164,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                       </a>
                     `
                   : ''}
-                ${this.#checkIfRelatedPublicationExists(child.uid)
+                ${this.#relatedPublicationExists(child.uid)
                   ? this.#publicationInfoTemplate(child)
                   : ''}
                 ${shortcuts?.includes(child.uid)
@@ -188,7 +188,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
-        this._checkIfChildrenExists();
+        this.#childrenExists();
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
@@ -265,7 +265,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
       this._parseURL();
-      this.#checkIfRelatedPublicationExists();
+      this.#relatedPublicationExists();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
@@ -314,10 +314,10 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   updated() {
-    this._addBlurbsClickEvent();
+    this.#addBlurbsClickEvent();
   }
 
-  async _checkIfChildrenExists() {
+  async #childrenExists() {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
@@ -336,7 +336,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     }
   }
 
-  _addBlurbsClickEvent() {
+  #addBlurbsClickEvent() {
     this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
       // eslint-disable-next-line no-param-reassign
       element.onclick = () => {
@@ -345,11 +345,11 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     });
   }
 
-  #checkIfRelatedPublicationExists(uid) {
+  #relatedPublicationExists(uid) {
     return this.allPublicationUid.includes(uid);
   }
 
-  #extractAllUidFromAllEditions() {
+  #extractUidsFromEditions() {
     this.allPublicationUid = [];
     allEditions.forEach(edition => {
       this.allPublicationUid.push(edition.uid);
