@@ -16,8 +16,8 @@ import {
   allEditions,
   collectionURL,
   editionsGithubUrl,
+  lastUpdatedDateOfCollections,
   publicationLastGeneratedDate,
-  publicationLastGeneratedFormattedDate,
 } from './sc-publication-common';
 
 export class SCPublicationEdition extends LitLocalized(LitElement) {
@@ -41,6 +41,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     this.currentRoute = store.getState().currentRoute;
     this.editionUid = store.getState().currentRoute.params.editionUid;
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
+    this.lastUpdatedDateOfCollection = lastUpdatedDateOfCollections.get(this.editionUid);
     this.#fetchAllEditions();
     this.#loadNewResult();
   }
@@ -173,14 +174,14 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     const { authorUid, langIsoCode } = this.currentRoute.params;
 
     if (publicationType === 'tex') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}-${publicationType}.zip`;
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${this.lastUpdatedDateOfCollection}-${publicationType}.zip`;
     }
 
     if (publicationType === 'pdf') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.zip`;
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${this.lastUpdatedDateOfCollection}.zip`;
     }
 
-    return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publicationLastGeneratedFormattedDate}.${publicationType}`;
+    return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${this.lastUpdatedDateOfCollection}.${publicationType}`;
   }
 
   createRenderRoot() {

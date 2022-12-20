@@ -33,8 +33,26 @@ function formatDate(date) {
   return date.split('T')[0];
 }
 
-export const publicationLastGeneratedDate = '2022-12-15T16:51:21Z';
+const lastActionRunDateUrl =
+  'https://raw.githubusercontent.com/suttacentral/editions/main/last_run_date';
+const response = await fetch(lastActionRunDateUrl);
+const lastRunDateText = await response.text();
+export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
+
+export const lastUpdatedDateOfCollections = new Map([
+  ['dn', '2022-12-15'],
+  ['mn', '2022-12-15'],
+  ['sn', publicationLastGeneratedFormattedDate],
+  ['an', '2022-12-15'],
+  ['dhp', '2022-12-15'],
+  ['ud', '2022-12-15'],
+  ['iti', '2022-12-15'],
+  ['snp', '2022-12-15'],
+  ['thag', '2022-12-15'],
+  ['thig', '2022-12-15'],
+]);
+
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
 export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacentral/editions/main';
 
