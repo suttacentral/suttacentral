@@ -10,7 +10,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
-import { allEditions, coverImage } from '../publication/sc-publication-common';
+import { allEditions, coverImage, creatorBio } from '../publication/sc-publication-common';
 
 export class SCNavigationNew extends LitLocalized(LitElement) {
   static properties = {
@@ -23,6 +23,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     lastSelectedItemRootLangISO: { type: String, state: true },
     currentMenuData: { type: Array, state: true },
     currentUid: { type: String, state: true },
+    creatorOfPublications: { type: Object, state: true },
   };
 
   constructor() {
@@ -36,6 +37,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.lastSelectedItemRootLangISO = '';
     this.currentMenuData = [];
     this.currentUid = this._getRoutePathLastItem();
+    this.creatorOfPublications = new Map();
 
     this.#extractUidsFromEditions();
     this._verifyURL();
@@ -346,7 +348,40 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   #relatedPublicationExists(uid) {
-    return this.allPublicationUid.includes(uid);
+    const isExists = this.allPublicationUid.includes(uid);
+    let relatedLanguagePublicationExists = false;
+    if (isExists) {
+      this.#fetchCreatorInfo(uid);
+      relatedLanguagePublicationExists = this.#relatedLanguagePublicationExists(uid);
+    }
+    return isExists && relatedLanguagePublicationExists;
+  }
+
+  #relatedLanguagePublicationExists(uid) {
+    const editionId = this.#fetchEditionId(uid);
+    return editionId.includes(`-${this.siteLanguage}-`);
+  }
+
+  #fetchEditionId(uid) {
+    return allEditions.find(edition => edition.uid === uid && edition.edition_id.includes('web'))
+      ?.edition_id;
+  }
+
+  #fetchCreatorInfo(uid) {
+    const editionId = this.#fetchEditionId(uid);
+    if (editionId) {
+      const creator = editionId.split('-')[2].split('_')[0];
+      const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
+      const creatorFullName = this.#parseCreatorFullName(creatorInfo);
+      this.creatorOfPublications.set(uid, creatorFullName);
+    }
+  }
+
+  #parseCreatorFullName(creatorInfo) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(creatorInfo.creator_biography, 'text/html');
+    const span = doc.querySelector('span[property="dc:creator"]');
+    return span.textContent;
   }
 
   #extractUidsFromEditions() {
@@ -358,6 +393,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   #publicationInfoTemplate(leaf) {
+    if (this.isCompactMode) {
+      return ``;
+    }
     return html`
       <style>
         ${navigationPublicationInfoStyles}
@@ -374,18 +412,17 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
           />
           <div class="editions-nav-notice-text">
             <div class="editions-nav-notice-lead">
-              <cite class="edition-title">${leaf.translated_name.replace('Collection', '')}</cite>
-              <span class='editions-nav-notice-by'>by</span>
-              <span class="creator">Bhikkhu Sujato</span>
+              <cite class="edition-title">${leaf.translated_name?.replace('Collection', '')}</cite>
+              <span class="editions-nav-notice-by">by</span>
+              <span class="creator">${this.creatorOfPublications.get(leaf.uid)}</span>
             </div>
-                        <div class='editions-nav-notice-banner'>
-            A SuttaCentral Edition
+            <div class="editions-nav-notice-banner">A SuttaCentral Edition</div>
+            <div class="editions-nav-notice-description">
+              <span class="translation_subtitle">A faithful translation of the Dīghanikāya.</span>
+              <span class="availability"
+                >Available in print and multiple digital formats for offline reading.</span
+              >
             </div>
-            <div class='editions-nav-notice-description'>
-            <span class='translation_subtitle'>A faithful translation of the Dīghanikāya.</span> 
-            <span class='availability'>Available in print and multiple digital formats for offline reading.</span>
-            </div>
-
           </div>
         </section>
       </a>

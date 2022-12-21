@@ -303,7 +303,8 @@ export const navigationNormalModeStyles = html`
 export const navigationCompactModeStyles = html`
   <style>
     .blurb,
-    .essay-link {
+    .essay-link,
+    .editions-nav-notice-link {
       display: none;
     }
 
@@ -340,122 +341,106 @@ export const navigationCompactModeStyles = html`
 
 export const navigationPublicationInfoStyles = html`
   <style>
-    .editions-nav-notice
-{
-    display: flex;
+    .editions-nav-notice {
+      display: flex;
 
-    height: 160px;
-}
+      height: 160px;
+    }
 
-.editions-nav-notice-text
-{
-    display: flex;
-    flex-direction: column;
+    .editions-nav-notice-text {
+      display: flex;
+      flex-direction: column;
 
-    width: 100%;
-    padding: 1em;
-}
+      width: 100%;
+      padding: 1em;
+    }
 
-.editions-nav-notice-lead
-{
-    font-size: var(--sc-skolar-font-size-xxs);
-    font-weight: 600;
+    .editions-nav-notice-lead {
+      font-size: var(--sc-skolar-font-size-xxs);
+      font-weight: 600;
 
-    display: flex;
-    flex-direction: row;
+      display: flex;
+      flex-direction: row;
 
-    width: 100%;
-    padding-bottom: .5em;
+      width: 100%;
+      padding-bottom: 0.5em;
 
-    text-align: center;
+      text-align: center;
 
-    border-bottom: 2px solid var(--sc-primary-color-light);
+      border-bottom: 2px solid var(--sc-primary-color-light);
 
-    gap: .8em;
-    justify-content: center;
-}
+      gap: 0.8em;
+      justify-content: center;
+    }
 
-.edition-title
-{
-    font-size: var(--sc-skolar-font-size-md);
-}
+    .edition-title {
+      font-size: var(--sc-skolar-font-size-md);
+    }
 
-.editions-nav-notice-by
-{
-    align-self: center;
-}
+    .editions-nav-notice-by {
+      align-self: center;
+    }
 
-.creator
-{
-    font-size: var(--sc-skolar-font-size-md);
+    .creator {
+      font-size: var(--sc-skolar-font-size-md);
 
-    letter-spacing: var(--sc-caps-letter-spacing);
+      letter-spacing: var(--sc-caps-letter-spacing);
 
-    font-variant-caps: small-caps;
-}
+      font-variant-caps: small-caps;
+    }
 
-.editions-nav-notice-description
-{
-    padding: 1em 0;
-}
+    .editions-nav-notice-description {
+      padding: 1em 0;
+    }
 
-a.editions-nav-notice-link
-{
-    display: block;
-    overflow: hidden;
+    a.editions-nav-notice-link {
+      display: block;
+      overflow: hidden;
 
-    margin: 1em 1em 1em 1em;
+      margin: 1em 1em 1em 1em;
 
-    text-decoration: none;
+      text-decoration: none;
 
-    color: inherit;
-    border: 1px solid var(--sc-border-color);
-    border-radius: 8px;
-}
+      color: inherit;
+      border: 1px solid var(--sc-border-color);
+      border-radius: 8px;
+    }
 
-a.editions-nav-notice-link:hover
-{
-    background-color: var(--sc-primary-color-light-transparent);
-}
+    a.editions-nav-notice-link:hover {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
 
-.editions-nav-notice img
-{
-    object-fit: cover;
-}
+    .editions-nav-notice img {
+      object-fit: cover;
+    }
 
-.editions-nav-notice-banner
-{
-    font-size: var(--sc-skolar-font-size-xs);
-    font-weight: 500;
-    font-stretch: expanded;
+    .editions-nav-notice-banner {
+      font-size: var(--sc-skolar-font-size-xs);
+      font-weight: 500;
+      font-stretch: expanded;
 
-    padding: .2em 0;
+      padding: 0.2em 0;
 
-    letter-spacing: var(--sc-caps-letter-spacing);
+      letter-spacing: var(--sc-caps-letter-spacing);
 
-    color: var(--sc-primary-color-medium);
+      color: var(--sc-primary-color-medium);
 
-    align-self: flex-end;
-    font-variant-caps: small-caps;
-}
+      align-self: flex-end;
+      font-variant-caps: small-caps;
+    }
 
-@media screen and (max-width: 500px)
-{
-    img
-    {
+    @media screen and (max-width: 500px) {
+      img {
         display: none;
-    }
+      }
 
-    .editions-nav-notice
-    {
+      .editions-nav-notice {
         height: auto;
-    }
+      }
 
-    .editions-nav-notice-banner
-    {
+      .editions-nav-notice-banner {
         margin-top: 0;
+      }
     }
-}
-
   </style>
 `;
