@@ -418,7 +418,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
             </div>
             <div class="editions-nav-notice-banner">A SuttaCentral Edition</div>
             <div class="editions-nav-notice-description">
-              <span class="translation_subtitle">A faithful translation of the Dīghanikāya.</span>
+              <span class="translation_subtitle"
+                >A faithful translation of the ${leaf.root_name}.</span
+              >
               <span class="availability"
                 >Available in print and multiple digital formats for offline reading.</span
               >
