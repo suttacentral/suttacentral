@@ -303,7 +303,8 @@ export const navigationNormalModeStyles = html`
 export const navigationCompactModeStyles = html`
   <style>
     .blurb,
-    .essay-link {
+    .essay-link,
+    .editions-nav-notice-link {
       display: none;
     }
 
@@ -334,6 +335,112 @@ export const navigationCompactModeStyles = html`
       margin-top: 0;
       margin-bottom: 0.5rem;
       border: none;
+    }
+  </style>
+`;
+
+export const navigationPublicationInfoStyles = html`
+  <style>
+    .editions-nav-notice {
+      display: flex;
+
+      height: 160px;
+    }
+
+    .editions-nav-notice-text {
+      display: flex;
+      flex-direction: column;
+
+      width: 100%;
+      padding: 1em;
+    }
+
+    .editions-nav-notice-lead {
+      font-size: var(--sc-skolar-font-size-xxs);
+      font-weight: 600;
+
+      display: flex;
+      flex-direction: row;
+
+      width: 100%;
+      padding-bottom: 0.5em;
+
+      text-align: center;
+
+      border-bottom: 2px solid var(--sc-primary-color-light);
+
+      gap: 0.8em;
+      justify-content: center;
+    }
+
+    .edition-title {
+      font-size: var(--sc-skolar-font-size-md);
+    }
+
+    .editions-nav-notice-by {
+      align-self: center;
+    }
+
+    .creator {
+      font-size: var(--sc-skolar-font-size-md);
+
+      letter-spacing: var(--sc-caps-letter-spacing);
+
+      font-variant-caps: small-caps;
+    }
+
+    .editions-nav-notice-description {
+      padding: 1em 0;
+    }
+
+    a.editions-nav-notice-link {
+      display: block;
+      overflow: hidden;
+
+      margin: 1em 1em 1em 1em;
+
+      text-decoration: none;
+
+      color: inherit;
+      border: 1px solid var(--sc-border-color);
+      border-radius: 8px;
+    }
+
+    a.editions-nav-notice-link:hover {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
+
+    .editions-nav-notice img {
+      object-fit: cover;
+    }
+
+    .editions-nav-notice-banner {
+      font-size: var(--sc-skolar-font-size-xs);
+      font-weight: 500;
+      font-stretch: expanded;
+
+      padding: 0.2em 0;
+
+      letter-spacing: var(--sc-caps-letter-spacing);
+
+      color: var(--sc-primary-color-medium);
+
+      align-self: flex-end;
+      font-variant-caps: small-caps;
+    }
+
+    @media screen and (max-width: 500px) {
+      img {
+        display: none;
+      }
+
+      .editions-nav-notice {
+        height: auto;
+      }
+
+      .editions-nav-notice-banner {
+        margin-top: 0;
+      }
     }
   </style>
 `;

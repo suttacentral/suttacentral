@@ -1,12 +1,16 @@
 import { LitElement, html } from 'lit';
-// eslint-disable-next-line import/extensions
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
-import { navigationNormalModeStyles, navigationCompactModeStyles } from './sc-navigation-styles';
+import {
+  navigationNormalModeStyles,
+  navigationCompactModeStyles,
+  navigationPublicationInfoStyles,
+} from './sc-navigation-styles';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+import { allEditions, coverImage, creatorBio } from '../publication/sc-publication-common';
 
 export class SCNavigationNew extends LitLocalized(LitElement) {
   static properties = {
@@ -19,6 +23,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     lastSelectedItemRootLangISO: { type: String, state: true },
     currentMenuData: { type: Array, state: true },
     currentUid: { type: String, state: true },
+    creatorOfPublications: { type: Object, state: true },
   };
 
   constructor() {
@@ -32,7 +37,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.lastSelectedItemRootLangISO = '';
     this.currentMenuData = [];
     this.currentUid = this._getRoutePathLastItem();
+    this.creatorOfPublications = new Map();
 
+    this.#extractUidsFromEditions();
     this._verifyURL();
     this._viewModeChanged();
     this._parseURL();
@@ -46,7 +53,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
-      this._checkIfChildrenExists();
+      this.#childrenExists();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
         return;
@@ -159,6 +166,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                       </a>
                     `
                   : ''}
+                ${this.#relatedPublicationExists(child.uid)
+                  ? this.#publicationInfoTemplate(child)
+                  : ''}
                 ${shortcuts?.includes(child.uid)
                   ? html`
                       <div class="shortcut">
@@ -180,7 +190,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
-        this._checkIfChildrenExists();
+        this.#childrenExists();
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
@@ -257,6 +267,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
       this._parseURL();
+      this.#relatedPublicationExists();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
@@ -305,10 +316,10 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   updated() {
-    this._addBlurbsClickEvent();
+    this.#addBlurbsClickEvent();
   }
 
-  async _checkIfChildrenExists() {
+  async #childrenExists() {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
@@ -327,13 +338,95 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     }
   }
 
-  _addBlurbsClickEvent() {
+  #addBlurbsClickEvent() {
     this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
       // eslint-disable-next-line no-param-reassign
       element.onclick = () => {
         element.classList.toggle('blurbShrink');
       };
     });
+  }
+
+  #relatedPublicationExists(uid) {
+    const isExists = this.allPublicationUid.includes(uid);
+    let relatedLanguagePublicationExists = false;
+    if (isExists) {
+      this.#fetchCreatorInfo(uid);
+      relatedLanguagePublicationExists = this.#relatedLanguagePublicationExists(uid);
+    }
+    return isExists && relatedLanguagePublicationExists;
+  }
+
+  #relatedLanguagePublicationExists(uid) {
+    const editionId = this.#fetchEditionId(uid);
+    return editionId.includes(`-${this.siteLanguage}-`);
+  }
+
+  #fetchEditionId(uid) {
+    return allEditions.find(edition => edition.uid === uid && edition.edition_id.includes('web'))
+      ?.edition_id;
+  }
+
+  #fetchCreatorInfo(uid) {
+    const editionId = this.#fetchEditionId(uid);
+    if (editionId) {
+      const creator = editionId.split('-')[2].split('_')[0];
+      const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
+      const creatorFullName = this.#parseCreatorFullName(creatorInfo);
+      this.creatorOfPublications.set(uid, creatorFullName);
+    }
+  }
+
+  #parseCreatorFullName(creatorInfo) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(creatorInfo.creator_biography, 'text/html');
+    const span = doc.querySelector('span[property="dc:creator"]');
+    return span.textContent;
+  }
+
+  #extractUidsFromEditions() {
+    this.allPublicationUid = [];
+    allEditions.forEach(edition => {
+      this.allPublicationUid.push(edition.uid);
+    });
+    this.allPublicationUid = [...new Set(this.allPublicationUid)];
+  }
+
+  #publicationInfoTemplate(leaf) {
+    if (this.isCompactMode) {
+      return ``;
+    }
+    return html`
+      <style>
+        ${navigationPublicationInfoStyles}
+      </style>
+      <a
+        href="https://staging.suttacentral.net/edition/${leaf.uid}/en/sujato"
+        class="editions-nav-notice-link"
+      >
+        <section class="editions-nav-notice">
+          <img
+            src="/img/publication-pages/${coverImage.get(leaf.uid)}"
+            height="160px"
+            width="120px"
+          />
+          <div class="editions-nav-notice-text">
+            <div class="editions-nav-notice-lead">
+              <cite class="edition-title">${leaf.translated_name?.replace('Collection', '')}</cite>
+              <span class="editions-nav-notice-by">by</span>
+              <span class="creator">${this.creatorOfPublications.get(leaf.uid)}</span>
+            </div>
+            <div class="editions-nav-notice-banner">A SuttaCentral Edition</div>
+            <div class="editions-nav-notice-description">
+              <span class="translation_subtitle">A faithful translation of the Dīghanikāya.</span>
+              <span class="availability"
+                >Available in print and multiple digital formats for offline reading.</span
+              >
+            </div>
+          </div>
+        </section>
+      </a>
+    `;
   }
 }
 

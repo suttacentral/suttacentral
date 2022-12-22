@@ -39,22 +39,19 @@ export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/m
 export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacentral/editions/main';
 
 let allEditions = [];
-const { editionUid } = store.getState().currentRoute.params;
-if (editionUid) {
-  try {
-    allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
-    if (allEditions && allEditions.length > 0) {
-      for (const edition of allEditions) {
-        if (edition.edition_id?.substring(0, 9) === 'pli-tv-vi') {
-          edition.uid = 'pli-tv-vi';
-        } else {
-          edition.uid = edition.edition_id?.split('-')[0];
-        }
+try {
+  allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
+  if (allEditions && allEditions.length > 0) {
+    for (const edition of allEditions) {
+      if (edition.edition_id?.substring(0, 9) === 'pli-tv-vi') {
+        edition.uid = 'pli-tv-vi';
+      } else {
+        edition.uid = edition.edition_id?.split('-')[0];
       }
     }
-  } catch (error) {
-    console.log(error);
   }
+} catch (error) {
+  console.log(error);
 }
 export { allEditions };
 
