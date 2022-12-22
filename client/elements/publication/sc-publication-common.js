@@ -48,7 +48,7 @@ export const lastUpdatedDateOfCollections = new Map([
   ['dhp', '2022-12-15'],
   ['ud', '2022-12-15'],
   ['iti', '2022-12-15'],
-  ['snp', '2022-12-15'],
+  ['snp', '2022-12-21'],
   ['thag', '2022-12-15'],
   ['thig', '2022-12-15'],
 ]);
