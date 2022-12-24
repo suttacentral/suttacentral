@@ -59,6 +59,7 @@ export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacent
 let allEditions = [];
 try {
   allEditions = await (await fetch(`${API_ROOT}/publication/editions`)).json();
+  allEditions = allEditions.filter(edition => edition.edition_id?.substring(0, 9) !== 'pli-tv-vi');
   if (allEditions && allEditions.length > 0) {
     for (const edition of allEditions) {
       if (edition.edition_id?.substring(0, 9) === 'pli-tv-vi') {
