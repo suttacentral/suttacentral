@@ -378,10 +378,13 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   #parseCreatorFullName(creatorInfo) {
+    if (!creatorInfo) {
+      return '';
+    }
     const parser = new DOMParser();
-    const doc = parser.parseFromString(creatorInfo.creator_biography, 'text/html');
-    const span = doc.querySelector('span[property="dc:creator"]');
-    return span.textContent;
+    const doc = parser.parseFromString(creatorInfo?.creator_biography, 'text/html');
+    const span = doc?.querySelector('span[property="dc:creator"]');
+    return span?.textContent;
   }
 
   #extractUidsFromEditions() {
