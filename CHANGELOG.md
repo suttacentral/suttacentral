@@ -1,6 +1,27 @@
 
 # SuttaCentral ChangeLog
 
+## 2022.12.23
+
+- Auto obtain publication action last run date.
+- Fix blurbs display error in publication info card.
+
+## 2022.12.22
+
+- Add publication info to eligible nav cards.
+
+## 2022.12.15
+
+- Fix publication pages bugs.
+
+## 2022.12.13
+
+- Fix yellow brick road stat error.
+
+## 2022.12.9
+
+- Upgrade nginx to latest version and adjusted conf.
+
 ## 2022.12.7
 
 - Upgrade python version to 3.11 and upgrade packages. #2574
