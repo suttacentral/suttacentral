@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+332022.12.24
+
+- Do not display vinaya's publication info.
+
 ## 2022.12.23
 
 - Auto obtain publication action last run date.
