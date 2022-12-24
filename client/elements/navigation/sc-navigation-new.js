@@ -330,15 +330,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         childrenData[0].children &&
         childrenData[0].children.some(item => ['branch'].includes(item.node_type))
       ) {
-        const menuNode = this.currentMenuData[0].children.find(x => x.uid === child.uid);
-        if (menuNode) {
-          menuNode.has_children = true;
-        }
+        this.currentMenuData[0].children.find(x => x.uid === child.uid).has_children = true;
       } else {
-        const menuNode = this.currentMenuData[0].children.find(x => x.uid === child.uid);
-        if (menuNode) {
-          menuNode.has_children = false;
-        }
+        this.currentMenuData[0].children.find(x => x.uid === child.uid).has_children = false;
         this.requestUpdate();
       }
     }
