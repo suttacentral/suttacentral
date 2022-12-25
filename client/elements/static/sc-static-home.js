@@ -35,6 +35,29 @@ export class SCStaticHomePage extends SCStaticPage {
     return this;
   }
 
+  #publicationEditionsTemplate() {
+    return html``;
+    return html`
+      <section class="plain editions">
+        <a href="/editions">
+          <h2>SuttaCentral Editions</h2>
+          <figure>
+            <picture>
+              <source srcset="/img/home-page/editions.avif" type="image/avif" />
+              <img
+                src="/img/home-page/editions.jpg"
+                alt="SuttaCentral editions covers"
+                style="width:100%"
+              />
+            </picture>
+          </figure>
+
+          <div class="call-to-action">Read selected SuttaCentral translations as books</div>
+        </a>
+      </section>
+    `;
+  }
+
   render() {
     return html`
       <style>
@@ -46,23 +69,7 @@ export class SCStaticHomePage extends SCStaticPage {
         </section>
         <sc-navigation-tipitaka></sc-navigation-tipitaka>
 
-        <section class="plain editions">
-        <a href="/editions">
-          <h2>SuttaCentral Editions</h2>
-            <figure>
-              <picture>
-                <source srcset="/img/home-page/editions.avif" type="image/avif" />
-                <img
-                  src="/img/home-page/editions.jpg"
-                  alt="SuttaCentral editions covers"
-                  style="width:100%"
-                />
-              </picture>
-            </figure>
-
-            <div class="call-to-action">Read selected SuttaCentral translations as books</div>
-          </a>
-        </section>
+        ${this.#publicationEditionsTemplate()}
 
         <section class="top-two">
           <section class="video">
