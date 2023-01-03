@@ -33,6 +33,7 @@ export class SCStaticSNGuideSujato extends SCStaticPage {
               <li>${unsafeHTML(this.localize('sn-guide-sujato:4'))}</li>
               <li>${unsafeHTML(this.localize('sn-guide-sujato:5'))}</li>
               <li>${unsafeHTML(this.localize('sn-guide-sujato:6'))}</li>
+              <li>${unsafeHTML(this.localize('sn-guide-sujato:6.1'))}</li>
               <li>${unsafeHTML(this.localize('sn-guide-sujato:7'))}</li>
               <li>${unsafeHTML(this.localize('sn-guide-sujato:8'))}</li>
             </ol>
