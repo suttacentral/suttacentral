@@ -396,7 +396,6 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   #publicationInfoTemplate(leaf) {
-    return ``;
     if (this.isCompactMode) {
       return ``;
     }
