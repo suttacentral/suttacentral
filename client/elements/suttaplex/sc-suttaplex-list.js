@@ -218,13 +218,23 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     const parentAcronym = firstAcronym.slice(0, firstAcronym.lastIndexOf(' ')) || this.categoryId;
     try {
       const responseData = await fetch(`${API_ROOT}/fallen_leaves_suttaplex/${this.categoryId}?language=${this.language}`).then(r => r.json());
-      suttaPlexList.push(...responseData);
-      for (const suttaPlex of suttaPlexList) {
-        suttaPlex.hasFallenLeaves = true;
-        suttaPlex.index = parseInt(suttaPlex.uid?.replaceAll(this.categoryId, ''), 10);
-        suttaPlex.acronym = `${parentAcronym} ${suttaPlex.uid?.replaceAll(this.categoryId, '')}`;
+      if (responseData?.length > 0) {
+        for (const suttaPlex of responseData) {
+          suttaPlex.isFallenLeaf = true;
+        }
+        suttaPlexList.push(...responseData);
+        for (const suttaPlex of suttaPlexList) {
+          suttaPlex.hasFallenLeaves = true;
+          suttaPlex.index = parseInt(suttaPlex.uid?.replaceAll(this.categoryId, ''), 10);
+          if (Object.hasOwn(suttaPlex, 'isFallenLeaf') && suttaPlex.isFallenLeaf) {
+            suttaPlex.acronym = `${parentAcronym} ${suttaPlex.uid?.replaceAll(
+              this.categoryId,
+              ''
+            )}`;
+          }
+        }
+        suttaPlexList.sort((a, b) => a.index - b.index);
       }
-      suttaPlexList.sort((a, b) => a.index - b.index);
     } catch (error) {
       console.log(error);
     }
