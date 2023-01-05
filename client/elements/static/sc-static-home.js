@@ -36,6 +36,7 @@ export class SCStaticHomePage extends SCStaticPage {
   }
 
   #publicationEditionsTemplate() {
+    return ``;
     return html`
       <section class="plain editions">
         <a href="/editions">
