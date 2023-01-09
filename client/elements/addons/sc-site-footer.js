@@ -101,6 +101,10 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
   }
 
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <footer>
