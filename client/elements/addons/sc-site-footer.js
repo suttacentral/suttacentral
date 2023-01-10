@@ -19,8 +19,6 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
           display: block;
 
           margin-top: auto;
-
-          justify-self: flex-end;
         }
 
         footer {
