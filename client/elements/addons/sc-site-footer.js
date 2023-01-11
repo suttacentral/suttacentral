@@ -15,7 +15,7 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        :host {
+        sc-site-footer {
           display: block;
 
           margin-top: auto;
