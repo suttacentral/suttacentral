@@ -69,6 +69,16 @@ def index_elasticsearch():
     update()
 
 
+@app.cli.command('index_arangosearch')
+def index_arangosearch():
+    """
+    Create ArangoSearch index.
+    """
+    from arango_search.texts import update
+
+    update()
+
+
 @app.cli.command('calculate_download_sizes')
 def calculate_download_sizes():
     """

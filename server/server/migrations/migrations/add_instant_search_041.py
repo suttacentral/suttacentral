@@ -3,7 +3,12 @@ from migrations.base import Migration
 
 class SecondMigration(Migration):
     migration_id = 'add_instant_search_041'
-    tasks = ['create_analyzers', 'create_view']
+    tasks = ['create_collections', 'create_analyzers', 'create_view']
+
+    def create_collections(self):
+        db = get_db()
+
+        db.create_collection('text_contents', False)
 
     def create_analyzers(self):
         db = get_db()
@@ -27,7 +32,7 @@ class SecondMigration(Migration):
                 "locale": "en.utf8-",
                 "case": "lower",
                 "accent": False,
-                "stemming": False,   
+                "stemming": False,
                 "stopwords": []
             },
             ["frequency", "norm", "position"]
@@ -37,7 +42,7 @@ class SecondMigration(Migration):
             "common_ngram",
             "ngram",
             {
-                "min": 4, 
+                "min": 4,
                 "max": 4,
                 "preserveOriginal": True,
                 "streamType": "utf8"
@@ -49,8 +54,8 @@ class SecondMigration(Migration):
             "cjk_ngram",
             "ngram",
             {
-                "min": 1, 
-                "max": 5, 
+                "min": 1,
+                "max": 5,
                 "preserveOriginal": True,
                 "streamType": "utf8"
             },
@@ -58,7 +63,7 @@ class SecondMigration(Migration):
         )
 
         db.create_analyzer("splitter", "delimiter", {"delimiter": "-"})
-    
+
     def create_view(self):
         common_fields = {
             "fields": {
@@ -70,13 +75,31 @@ class SecondMigration(Migration):
                 },
                 "name": {
                     "analyzers": ["normalize", "common_ngram", "common_text"]
-                }                
+                },
+                "content": {
+                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                }
+
+            }
+        }
+        text_content_fields = {
+            "fields": {
+                "uid": {
+                    "analyzers": ["identity"]
+                },
+                "lang": {
+                    "analyzers": ["identity"]
+                },
+                "content": {
+                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                },
             }
         }
         view = {
             "links": {
                 "names": common_fields,
-                "super_nav_details": common_fields
+                "super_nav_details": common_fields,
+                "text_contents": common_fields
             }
         }
 

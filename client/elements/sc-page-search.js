@@ -479,7 +479,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                 </a>
                 <div class="secondary">
                   <p class="search-result-snippet">
-                    ${unsafeHTML(this._calculateSnippetContent(item.highlight.content))}
+                    ${unsafeHTML(this._calculateSnippetContent(item.highlight?.content))}
                   </p>
                 </div>
               </div>
@@ -635,7 +635,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // Formats the search result description snippet
   _calculateSnippetContent(description) {
-    return description.join(' ... ');
+    return description?.join(' ... ');
   }
 
   // Calls the input results when page is loaded
@@ -756,12 +756,18 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (item.category === 'dictionary') {
       return this.dictionaryTitles[item.heading.division];
     }
-    return item.heading.title ? item.heading.title : this._getDivision(item);
+    return item.heading?.title ? item.heading.title : this._getDivision(item);
   }
 
   // If there is a title, the division is the subtitle
   _calculateDivision(item) {
-    return `${this._getDivision(item)} — ${item.author}`;
+    if (!this._getDivision(item) && !item.author) {
+      return ``;
+    }
+    if (item.author) {
+      return `${this._getDivision(item)} — ${item.author}`;
+    }
+    return `${this._getDivision(item)} — ${item.name}`;
   }
 
   _getDivision(item) {
@@ -809,7 +815,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   _getUrl() {
-    return `${API_ROOT}/search`;
+    return `${API_ROOT}/search/instant`;
   }
 
   _getExpansionUrl() {

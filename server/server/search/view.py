@@ -18,7 +18,7 @@ class InstantSearch(Resource):
     Search for the given query in arangodb, very fast
     """
     query = request.args.get('query')
-    lang = request.args.get('lang')
+    lang = request.args.get('language')
     return instant_search_query(query, lang)
 
 class Search(Resource):
