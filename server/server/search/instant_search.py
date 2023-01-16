@@ -2,6 +2,7 @@ from common.arangodb import get_db
 import re
 
 from common.queries import SUTTAPLEX_LIST
+from search import dictionaries
 
 INSTANT_SEARCH_QUERY = '''
 FOR doc IN instant_search
@@ -76,32 +77,34 @@ return {
 '''
 
 
-def instant_search_query(query, lang):
+def instant_search_query(query, lang, restrict):
     db = get_db()
-    cursor = db.aql.execute(INSTANT_SEARCH_QUERY2, bind_vars={'query': query, 'lang': lang})
+    hits = []
     results = {'total': 0, 'hits': []}
-    hits = list(cursor)
-    for hit in hits:
-        if 'content' in hit and hit['content'] is not None:
-            if 'author_uid' in hit and hit['author_uid'] is not None:
-                hit['url'] = f'/{hit["uid"]}/{hit["lang"]}/{hit["author_uid"]}'
+    if restrict != 'dictionaries':
+        cursor = db.aql.execute(INSTANT_SEARCH_QUERY2, bind_vars={'query': query, 'lang': lang})
+        hits = list(cursor)
+        for hit in hits:
+            if 'content' in hit and hit['content'] is not None:
+                if 'author_uid' in hit and hit['author_uid'] is not None:
+                    hit['url'] = f'/{hit["uid"]}/{hit["lang"]}/{hit["author_uid"]}'
+                else:
+                    hit['url'] = f'/{hit["uid"]}'
+                content = hit['content']
+                if content is not None and query in content:
+                    highlight = content[content.index(query) - 50:content.index(query) + 50]
+                    highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
+                    hit['highlight'] = {'content': []}
+                    hit['highlight']['content'].append(highlight)
             else:
-                hit['url'] = f'/{hit["uid"]}'
-            content = hit['content']
-            if content is not None and query in content:
-                highlight = content[content.index(query) - 50:content.index(query) + 50]
-                highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
+                hit['da'] = 'bd'
                 hit['highlight'] = {'content': []}
+                highlight = hit['name']
+                # 在query前面插入<strong class="highlight">, 在query后面插入</strong>, 不区分大小写
+                highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+                # highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
                 hit['highlight']['content'].append(highlight)
-        else:
-            hit['da'] = 'bd'
-            hit['highlight'] = {'content': []}
-            highlight = hit['name']
-            # 在query前面插入<strong class="highlight">, 在query后面插入</strong>, 不区分大小写
-            highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
-            # highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
-            hit['highlight']['content'].append(highlight)
-        del hit['content']
+            del hit['content']
 
     query_lower = query.lower()
     possible_uids = [
@@ -121,6 +124,10 @@ def instant_search_query(query, lang):
                 SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}
             )
         )[0]
+
+    if not restrict or restrict == 'dictionaries':
+        if dictionary_result := dictionaries.search(query, lang):
+            hits.insert(0, dictionary_result)
 
     return {'total': len(hits), 'hits': hits, 'suttaplex': suttaplex}
     # return list(cursor)
