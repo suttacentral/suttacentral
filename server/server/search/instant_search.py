@@ -1,7 +1,7 @@
 from common.arangodb import get_db
-# import nltk
-# nltk.download()
-# import jieba
+import re
+
+from common.queries import SUTTAPLEX_LIST
 
 INSTANT_SEARCH_QUERY = '''
 FOR doc IN instant_search
@@ -59,6 +59,7 @@ INSTANT_SEARCH_QUERY2 = '''
 FOR d IN instant_search
 SEARCH (PHRASE(d.content, @query, "common_text")
 OR PHRASE(d.name, @query, "common_text"))
+OR d.uid == @query
 AND (d.lang == @lang OR d.lang != '')
 return {
     acronym: d.acronym,
@@ -76,11 +77,12 @@ return {
 
 
 def instant_search_query(query, lang):
-    cursor = get_db().aql.execute(INSTANT_SEARCH_QUERY2, bind_vars={'query': query, 'lang': lang})
+    db = get_db()
+    cursor = db.aql.execute(INSTANT_SEARCH_QUERY2, bind_vars={'query': query, 'lang': lang})
     results = {'total': 0, 'hits': []}
     hits = list(cursor)
     for hit in hits:
-        if 'content' in hit:
+        if 'content' in hit and hit['content'] is not None:
             if 'author_uid' in hit and hit['author_uid'] is not None:
                 hit['url'] = f'/{hit["uid"]}/{hit["lang"]}/{hit["author_uid"]}'
             else:
@@ -92,8 +94,33 @@ def instant_search_query(query, lang):
                 hit['highlight'] = {'content': []}
                 hit['highlight']['content'].append(highlight)
         else:
+            hit['da'] = 'bd'
             hit['highlight'] = {'content': []}
-            hit['highlight']['content'].append(hit['name'])
+            highlight = hit['name']
+            # 在query前面插入<strong class="highlight">, 在query后面插入</strong>, 不区分大小写
+            highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+            # highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
+            hit['highlight']['content'].append(highlight)
         del hit['content']
-    return {'total': len(hits), 'hits': hits}
+
+    query_lower = query.lower()
+    possible_uids = [
+        query_lower,
+        query_lower.replace(' ', '.'),
+        query_lower.replace('.', '.'),
+    ]
+    suttaplex = None
+    if found := list(
+        db.aql.execute(
+            'FOR r IN super_nav_details FILTER r.uid IN @uids AND r.type == "leaf" LIMIT 1 RETURN r.uid',
+            bind_vars={'uids': possible_uids},
+        )
+    ):
+        suttaplex = list(
+            db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}
+            )
+        )[0]
+
+    return {'total': len(hits), 'hits': hits, 'suttaplex': suttaplex}
     # return list(cursor)
