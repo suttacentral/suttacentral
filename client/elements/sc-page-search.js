@@ -9,6 +9,9 @@ import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 
+import '@material/mwc-select';
+import '@material/mwc-list/mwc-list-item';
+
 import(
   /* webpackMode: "lazy" */
   /* webpackPrefetch: true */
@@ -35,6 +38,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     // The actual query parameters of the search
     searchParams: { type: Object },
     lastSearchResults: { type: Array },
+    originLastSearchResults: { type: Array },
     allSearchResults: { type: Array },
     visibleSearchResults: { type: Array },
     resultCount: { type: Number },
@@ -58,6 +62,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.searchQuery = store.getState().currentRoute.params.query;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
+    this.originLastSearchResults = [];
     this.allSearchResults = [];
     this.visibleSearchResults = [];
     this.resultCount = 0;
@@ -421,12 +426,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
               <span class="search-result-description">${this.localize('search:resultsFor')}</span>
               <span class="search-result-term">${this.searchQuery}</span>
             </h1>
-            <sc-menu-search-filter
-              class="search-result-filter-menu"
-              id="filter_menu"
-            ></sc-menu-search-filter>
+            <aside>${this.localize('search:hint')}</aside>
+            <div id="" style="display: block">
+              <sc-menu-search-filter
+                class="search-result-filter-menu"
+                id="filter_menu"
+              ></sc-menu-search-filter>
+              ${this.#langFilterTemplate()}
+            </div>
           </div>
-          <aside>${this.localize('search:hint')}</aside>
           <div class="dictionary-snippet-card">
             <sc-suttaplex
               .item=${this.suttaplex}
@@ -671,6 +679,40 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
+  #langFilterTemplate() {
+    const langArray = this.originLastSearchResults
+      .map(item => item.lang)
+      .filter((item, index, array) => array.indexOf(item) === index);
+    return html`
+      <mwc-select label="Languages" @selected=${e => this.#onLangFilterChanged(e)}>
+        <mwc-list-item value="all">All</mwc-list-item>
+        ${langArray.map(lang =>
+          lang ? html`<mwc-list-item value=${lang}>${lang}</mwc-list-item>` : ''
+        )}
+      </mwc-select>
+    `;
+  }
+
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('lastSearchResults')) {
+      this.requestUpdate();
+    }
+  }
+
+  #onLangFilterChanged(e) {
+    const selectedItem = e.currentTarget.value;
+    if (selectedItem) {
+      if (selectedItem === 'all') {
+        this.visibleSearchResults = this.originLastSearchResults;
+      } else {
+        this.visibleSearchResults = this.originLastSearchResults.filter(
+          item => item.lang === selectedItem
+        );
+      }
+    }
+  }
+
   _didRespond(searchResult) {
     const dicResult = searchResult.hits.find(item => item.category === 'dictionary');
     if (dicResult && dicResult.highlight.content[0] === '' && dicResult.highlight.detail) {
@@ -681,6 +723,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   _setProperties(searchResult) {
     this.suttaplex = searchResult.suttaplex;
     this.lastSearchResults = searchResult.hits;
+    this.originLastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
     this.waitTimeAfterNewWordExpired = true;
     this.updateComplete.then(() => {
