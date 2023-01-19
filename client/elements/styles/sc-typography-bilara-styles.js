@@ -130,7 +130,7 @@ export const typographyBilaraStyles = css`
     text-align: left;
 
     box-sizing: border-box;
-    padding: 0.1em 0.5em;
+    padding: 0 0.5em;
 
     margin-right: 0.5em;
 

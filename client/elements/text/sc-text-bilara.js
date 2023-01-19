@@ -610,7 +610,7 @@ export class SCTextBilara extends SCTextCommon {
       this.referencesDisplayStyles = html`
         <style>
           .reference {
-            display: inline;
+            display: inline-block;
           }
 
           .reference a {
@@ -621,17 +621,17 @@ export class SCTextBilara extends SCTextCommon {
             ? `
             .reference a.sc,
             .reference a.vns {
-              display: inline;
+              display: inline-block;
             }
           `
             : ''}
 
           ${this.displayedReferences.map(
-            referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline; } `
+            referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline-block; } `
           )}
 
           ${this.displayedReferences.includes('pts')
-            ? html`.reference a.vnp { display: inline; }`
+            ? html`.reference a.vnp { display: inline-block; }`
             : ''}
         </style>
       `;
