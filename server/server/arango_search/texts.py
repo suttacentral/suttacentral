@@ -192,5 +192,6 @@ def update(force=False):
 
     languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
     for lang in tqdm(languages):
+        print(lang)
         loader = TextLoader(lang)
         loader.add_to_DB()

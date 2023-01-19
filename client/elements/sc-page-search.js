@@ -683,6 +683,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const langArray = this.originLastSearchResults
       .map(item => item.lang)
       .filter((item, index, array) => array.indexOf(item) === index);
+    const rootItem = this.originLastSearchResults.find(item => item.is_root);
+    if (rootItem) {
+      langArray.unshift('root');
+    }
     return html`
       <mwc-select label="Languages" @selected=${e => this.#onLangFilterChanged(e)}>
         <mwc-list-item value="all">All</mwc-list-item>
@@ -705,6 +709,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (selectedItem) {
       if (selectedItem === 'all') {
         this.visibleSearchResults = this.originLastSearchResults;
+      } else if (selectedItem === 'root') {
+        this.visibleSearchResults = this.originLastSearchResults.filter(
+          item => item.is_root === true
+        );
       } else {
         this.visibleSearchResults = this.originLastSearchResults.filter(
           item => item.lang === selectedItem
@@ -891,6 +899,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
     const levels = { 1: 'beginner', 2: 'intermediate', 3: 'advanced' };
     return levels[difficulty];
+  }
+
+  #isSearchByAuthor() {
+    return this.searchQuery.includes('author:');
   }
 }
 

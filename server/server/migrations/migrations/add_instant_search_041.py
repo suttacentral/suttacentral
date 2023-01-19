@@ -76,23 +76,15 @@ class SecondMigration(Migration):
                 "name": {
                     "analyzers": ["normalize", "common_ngram", "common_text"]
                 },
-                "content": {
+                "author": {
                     "analyzers": ["normalize", "common_ngram", "common_text"]
+                },
+                "volpage": {
+                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                },
+                "content": {
+                    "analyzers": ["normalize", "common_ngram", "common_text", "cjk_ngram"]
                 }
-
-            }
-        }
-        text_content_fields = {
-            "fields": {
-                "uid": {
-                    "analyzers": ["identity"]
-                },
-                "lang": {
-                    "analyzers": ["identity"]
-                },
-                "content": {
-                    "analyzers": ["normalize", "common_ngram", "common_text"]
-                },
             }
         }
         view = {

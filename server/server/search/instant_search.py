@@ -61,6 +61,13 @@ FOR d IN instant_search
 SEARCH (PHRASE(d.content, @query, "common_text")
 OR PHRASE(d.name, @query, "common_text"))
 OR d.uid == @query
+OR (
+  PHRASE(d.volpage, @query, "common_text")
+  OR PHRASE(d.volpage, REGEX_REPLACE(@query, 's ', 'SN '), "common_text")
+  OR PHRASE(d.volpage, REGEX_REPLACE(@query, 'm ', 'MN '), "common_text")
+  OR PHRASE(d.volpage, REGEX_REPLACE(@query, 'a ', 'AN '), "common_text")
+  OR PHRASE(d.volpage, REGEX_REPLACE(@query, 'd ', 'DN '), "common_text")
+)
 AND (d.lang == @lang OR d.lang != '')
 return {
     acronym: d.acronym,
@@ -76,13 +83,35 @@ return {
 }
 '''
 
+INSTANT_SEARCH_QUERY_BY_AUTHOR = '''
+FOR d IN instant_search
+SEARCH PHRASE(d.author, @query, "common_text")
+AND (d.lang == @lang OR d.lang != '')
+return {
+    acronym: d.acronym,
+    uid: d.uid,
+    lang: d.lang,
+    name: d.name,
+    author: d.author,
+    author_uid: d.author_uid,
+    author_short: d.author_short,
+    is_root: d.is_root,
+    heading: 'heading',
+    content: 'content',
+}
+'''
+
 
 def instant_search_query(query, lang, restrict):
     db = get_db()
     hits = []
     results = {'total': 0, 'hits': []}
     if restrict != 'dictionaries':
-        cursor = db.aql.execute(INSTANT_SEARCH_QUERY2, bind_vars={'query': query, 'lang': lang})
+        AQL = INSTANT_SEARCH_QUERY2
+        if query.startswith('author:'):
+            AQL = INSTANT_SEARCH_QUERY_BY_AUTHOR
+            query = query[7:]
+        cursor = db.aql.execute(AQL, bind_vars={'query': query, 'lang': lang})
         hits = list(cursor)
         for hit in hits:
             if 'content' in hit and hit['content'] is not None:
@@ -92,17 +121,19 @@ def instant_search_query(query, lang, restrict):
                     hit['url'] = f'/{hit["uid"]}'
                 content = hit['content']
                 if content is not None and query in content:
-                    highlight = content[content.index(query) - 50:content.index(query) + 50]
-                    highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
+                    # 查找query在content中的所有位置
+                    positions = [m.start() for m in re.finditer(query, content)]
                     hit['highlight'] = {'content': []}
-                    hit['highlight']['content'].append(highlight)
+                    for position in positions[:3]:
+                        start = position - 50 if position > 50 else 0
+                        end = min(position + 50, len(content))
+                        highlight = content[start:end]
+                        highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+                        hit['highlight']['content'].append(highlight)
             else:
-                hit['da'] = 'bd'
                 hit['highlight'] = {'content': []}
                 highlight = hit['name']
-                # 在query前面插入<strong class="highlight">, 在query后面插入</strong>, 不区分大小写
                 highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
-                # highlight = highlight.replace(query, f'<strong class="highlight">{query}</strong>')
                 hit['highlight']['content'].append(highlight)
             del hit['content']
 
@@ -130,4 +161,3 @@ def instant_search_query(query, lang, restrict):
             hits.insert(0, dictionary_result)
 
     return {'total': len(hits), 'hits': hits, 'suttaplex': suttaplex}
-    # return list(cursor)

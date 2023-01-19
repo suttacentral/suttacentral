@@ -13,13 +13,20 @@ from search.instant_search import instant_search_query
 
 
 class InstantSearch(Resource):
-  def get(self):
-    """
-    Search for the given query in arangodb, very fast
-    """
-    query = request.args.get('query')
-    lang = request.args.get('language')
-    return instant_search_query(query, lang)
+    @cache.cached(timeout=600, key_prefix=make_cache_key)
+    def get(self):
+        """
+        Search for the given query in arangodb, very fast
+        """
+        query = request.args.get('query')
+        lang = request.args.get('language')
+        limit = request.args.get('limit', 10)
+        offset = request.args.get('offset', 0)
+        query = request.args.get('query', None)
+        restrict = request.args.get('restrict', None)
+        if restrict == 'all':
+            restrict = None
+        return instant_search_query(query, lang, restrict)
 
 class Search(Resource):
     @cache.cached(timeout=600, key_prefix=make_cache_key)
