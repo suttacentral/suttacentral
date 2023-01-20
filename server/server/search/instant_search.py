@@ -4,7 +4,7 @@ import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries
 
-INSTANT_SEARCH_QUERY = '''
+INSTANT_SEARCH_QUERY_OLD = '''
 FOR doc IN instant_search
   SEARCH PHRASE(doc.name, @query, "common_text")
   OR PHRASE(doc.content, @query, "common_text")
@@ -56,7 +56,7 @@ FOR doc IN instant_search
 
 '''
 
-INSTANT_SEARCH_QUERY2 = '''
+INSTANT_SEARCH_QUERY = '''
 FOR d IN instant_search
 SEARCH (PHRASE(d.content, @query, "common_text")
 OR PHRASE(d.name, @query, "common_text"))
@@ -87,6 +87,8 @@ INSTANT_SEARCH_QUERY_BY_AUTHOR = '''
 FOR d IN instant_search
 SEARCH PHRASE(d.author, @query, "common_text")
 AND (d.lang == @lang OR d.lang != '')
+AND d.uid NOT LIKE '%-name%'
+SORT d.uid
 return {
     acronym: d.acronym,
     uid: d.uid,
@@ -96,47 +98,79 @@ return {
     author_uid: d.author_uid,
     author_short: d.author_short,
     is_root: d.is_root,
-    heading: 'heading',
+    heading: d.heading,
     content: 'content',
 }
+'''
+
+POSSIBLE_UIDS = '''
+FOR r IN super_nav_details
+FILTER r.uid IN @uids AND r.type == "leaf"
+LIMIT 1
+RETURN r.uid
 '''
 
 
 def instant_search_query(query, lang, restrict):
     db = get_db()
     hits = []
-    results = {'total': 0, 'hits': []}
     if restrict != 'dictionaries':
-        AQL = INSTANT_SEARCH_QUERY2
+        search_aql = INSTANT_SEARCH_QUERY
+
         if query.startswith('author:'):
-            AQL = INSTANT_SEARCH_QUERY_BY_AUTHOR
+            search_aql = INSTANT_SEARCH_QUERY_BY_AUTHOR
             query = query[7:]
-        cursor = db.aql.execute(AQL, bind_vars={'query': query, 'lang': lang})
+
+        cursor = db.aql.execute(search_aql, bind_vars={'query': query, 'lang': lang})
         hits = list(cursor)
         for hit in hits:
             if 'content' in hit and hit['content'] is not None:
-                if 'author_uid' in hit and hit['author_uid'] is not None:
-                    hit['url'] = f'/{hit["uid"]}/{hit["lang"]}/{hit["author_uid"]}'
-                else:
-                    hit['url'] = f'/{hit["uid"]}'
+                compute_url(hit)
                 content = hit['content']
-                if content is not None and query in content:
-                    # 查找query在content中的所有位置
-                    positions = [m.start() for m in re.finditer(query, content)]
-                    hit['highlight'] = {'content': []}
-                    for position in positions[:3]:
-                        start = position - 50 if position > 50 else 0
-                        end = min(position + 50, len(content))
-                        highlight = content[start:end]
-                        highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
-                        hit['highlight']['content'].append(highlight)
+                cut_highlights(content, hit, query)
             else:
-                hit['highlight'] = {'content': []}
-                highlight = hit['name']
-                highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
-                hit['highlight']['content'].append(highlight)
+                cut_highlights_when_content_is_none(hit, query)
             del hit['content']
 
+    suttaplex = fetch_suttaplex(db, lang, query)
+    lookup_dictionary(hits, lang, query, restrict)
+
+    return {'total': len(hits), 'hits': hits, 'suttaplex': suttaplex}
+
+
+def cut_highlights_when_content_is_none(hit, query):
+    hit['highlight'] = {'content': []}
+    highlight = hit['name']
+    highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+    hit['highlight']['content'].append(highlight)
+
+
+def cut_highlights(content, hit, query):
+    if content is not None and query in content:
+        positions = [m.start() for m in re.finditer(query, content)]
+        hit['highlight'] = {'content': []}
+        for position in positions[:3]:
+            start = position - 50 if position > 50 else 0
+            end = min(position + 50, len(content))
+            highlight = content[start:end]
+            highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+            hit['highlight']['content'].append(highlight)
+
+
+def compute_url(hit):
+    if 'author_uid' in hit and hit['author_uid'] is not None:
+        hit['url'] = f'/{hit["uid"]}/{hit["lang"]}/{hit["author_uid"]}'
+    else:
+        hit['url'] = f'/{hit["uid"]}'
+
+
+def lookup_dictionary(hits, lang, query, restrict):
+    if not restrict or restrict == 'dictionaries':
+        if dictionary_result := dictionaries.search(query, lang):
+            hits.insert(0, dictionary_result)
+
+
+def fetch_suttaplex(db, lang, query):
     query_lower = query.lower()
     possible_uids = [
         query_lower,
@@ -144,20 +178,6 @@ def instant_search_query(query, lang, restrict):
         query_lower.replace('.', '.'),
     ]
     suttaplex = None
-    if found := list(
-        db.aql.execute(
-            'FOR r IN super_nav_details FILTER r.uid IN @uids AND r.type == "leaf" LIMIT 1 RETURN r.uid',
-            bind_vars={'uids': possible_uids},
-        )
-    ):
-        suttaplex = list(
-            db.aql.execute(
-                SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}
-            )
-        )[0]
-
-    if not restrict or restrict == 'dictionaries':
-        if dictionary_result := dictionaries.search(query, lang):
-            hits.insert(0, dictionary_result)
-
-    return {'total': len(hits), 'hits': hits, 'suttaplex': suttaplex}
+    if found := list(db.aql.execute(POSSIBLE_UIDS, bind_vars={'uids': possible_uids}, )):
+        suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}))[0]
+    return suttaplex

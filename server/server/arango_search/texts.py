@@ -1,5 +1,4 @@
 import logging
-import time
 import json
 
 import lxml.html
@@ -8,13 +7,11 @@ from tqdm import tqdm
 
 from common.arangodb import get_db
 from common.queries import CURRENT_MTIMES, CURRENT_BILARA_MTIMES, TEXTS_BY_LANG, BILARA_TEXT_BY_LANG
-from data_loader import change_tracker
-from itertools import chain
 from math import log
 
 logger = logging.getLogger('arango_search.texts')
 
-class TextLoader(object):
+class TextLoader:
     doc_type = 'text'
     version = '1'
     htmlparser = lxml.html.HTMLParser(encoding='utf8')
@@ -22,20 +19,19 @@ class TextLoader(object):
 
     def __init__(self, lang):
         self.lang = lang
+        super().__init__()
 
-    def truncateTextContentCollection(self):
+    def truncate_text_contents(self):
         get_db().collection('text_contents').truncate()
 
-    def add_to_DB(self):
-        self.load_bilara_texts(self)
+    def load_all_text_to_db(self):
+        self.load_bilara_texts()
         self.load_html_texts()
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
-
         A newline  in the output indicates a paragraph break.
         """
-
         string = regex.sub(r'(?<!\n)\n(?!\n)', ' ', string)
         string = regex.sub(r'  +', ' ', string)
         string = regex.sub(r'\n\n+', r'\n', string)
@@ -43,22 +39,18 @@ class TextLoader(object):
         string = string.replace('\xad', '')
         return string.strip()
 
-    @staticmethod
     def load_bilara_texts(self):
         bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG, bind_vars={'lang': self.lang}))
         if not bilara_texts:
             return
 
-        chunk = []
-
-        # print(len(bilara_texts))
-
+        segmented_texts = []
         for text in bilara_texts:
             uid = text['uid']
             with open(text['strings_path']) as f:
                 strings = json.load(f)
 
-            action = {
+            text_info = {
                 'acronym': text['acronym'],
                 'uid': uid,
                 'lang': self.lang,
@@ -73,11 +65,11 @@ class TextLoader(object):
                 'content': '\n\n'.join(strings.values())
             }
 
-            chunk.append(action)
+            segmented_texts.append(text_info)
 
-        if chunk:
-            print(len(chunk))
-            get_db().collection('text_contents').import_bulk(chunk)
+        if segmented_texts:
+            print(f'Import {len(segmented_texts)} {self.lang} segmented texts to arangoDB')
+            get_db().collection('text_contents').import_bulk(segmented_texts)
 
 
     def load_html_texts(self):
@@ -85,8 +77,8 @@ class TextLoader(object):
         if not html_texts:
             return
 
-        chunk = []
-        chunk_size = 0
+        legacy_texts = []
+        text_content_size = 0
 
         for i, text in enumerate(html_texts):
             uid = text['uid']
@@ -94,11 +86,11 @@ class TextLoader(object):
             try:
                 with open(text['file_path'], 'rb') as f:
                     html_bytes = f.read()
-                chunk_size += len(html_bytes) + 512
+                text_content_size += len(html_bytes) + 512
 
                 root_lang = text['root_lang']
 
-                action = {
+                text_info = {
                     'acronym': text['acronym'],
                     'uid': uid,
                     'lang': self.lang,
@@ -109,14 +101,14 @@ class TextLoader(object):
                     'is_root': self.lang == root_lang,
                     'mtime': int(text['mtime']),
                 }
-
-                action.update(self.extract_fields_from_html(html_bytes))
-                chunk.append(action)
+                text_info.update(self.extract_fields_from_html(html_bytes))
+                legacy_texts.append(text_info)
             except (ValueError, IndexError) as e:
                 logger.exception(f'{text["uid"]}, {e}')
 
-        if chunk:
-            get_db().collection('text_contents').import_bulk(chunk)
+        if legacy_texts:
+            print(f'Import {len(legacy_texts)} {self.lang} legacy texts to arangoDB')
+            get_db().collection('text_contents').import_bulk(legacy_texts)
 
 
     def extract_fields_from_html(self, data):
@@ -188,10 +180,9 @@ def update(force=False):
 
     db = get_db()
     loader = TextLoader('en')
-    loader.truncateTextContentCollection()
+    loader.truncate_text_contents()
 
     languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
     for lang in tqdm(languages):
-        print(lang)
         loader = TextLoader(lang)
-        loader.add_to_DB()
+        loader.load_all_text_to_db()

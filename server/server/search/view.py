@@ -18,10 +18,8 @@ class InstantSearch(Resource):
         """
         Search for the given query in arangodb, very fast
         """
-        query = request.args.get('query')
         lang = request.args.get('language')
         limit = request.args.get('limit', 10)
-        offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
         if restrict == 'all':

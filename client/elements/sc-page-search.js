@@ -8,6 +8,7 @@ import { store } from '../redux-store';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
+import { suttaplexListTableViewCss } from '../elements/suttaplex/sc-suttaplex-list.css';
 
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -87,312 +88,316 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
-  static styles = css`
-    :host {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-md);
-      font-weight: 400;
-      line-height: 1.5;
+  static styles = [
+    suttaplexListTableViewCss,
+    css`
+      :host {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
+        font-weight: 400;
+        line-height: 1.5;
 
-      display: block;
+        display: block;
 
-      width: 100%;
+        width: 100%;
 
-      color: var(--sc-primary-text-color);
-    }
+        color: var(--sc-primary-text-color);
+      }
 
-    h2 {
-      line-height: 1.25;
-    }
+      h2 {
+        line-height: 1.25;
+      }
 
-    #search_result_list {
-      padding: var(--sc-size-xl) 0 var(--sc-size-md);
-    }
+      #search_result_list {
+        padding: var(--sc-size-xl) 0 var(--sc-size-md);
+      }
 
-    .search-results-container {
-      margin: 0 3vw var(--sc-size-xxl) 3vw;
-    }
+      .search-results-container {
+        margin: 0 3vw var(--sc-size-xxl) 3vw;
+      }
 
-    .search-results-main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding-bottom: 64px;
-    }
+      .search-results-main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding-bottom: 64px;
+      }
 
-    .search-result-head {
-      display: flex;
+      .search-result-head {
+        display: flex;
 
-      color: var(--sc-secondary-text-color);
+        color: var(--sc-secondary-text-color);
 
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
 
-    .search-result-header {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-h1-md);
-      font-weight: 400;
-      line-height: 1.25;
+      .search-result-header {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-h1-md);
+        font-weight: 400;
+        line-height: 1.25;
 
-      display: inline-block;
+        display: inline-block;
 
-      margin: 0 1rem 1rem 0;
-    }
+        margin: 0 1rem 1rem 0;
+      }
 
-    .search-result-term {
-      font-family: var(--sc-serif-font);
-      font-weight: bold;
-    }
+      .search-result-term {
+        font-family: var(--sc-serif-font);
+        font-weight: bold;
+      }
 
-    aside {
-      color: var(--sc-secondary-text-color);
+      aside {
+        color: var(--sc-secondary-text-color);
 
-      font-size: var(--sc-skolar-font-size-s);
+        font-size: var(--sc-skolar-font-size-s);
 
-      margin-bottom: 1em;
-    }
+        margin-bottom: 1em;
+      }
 
-    .search-result-item {
-      display: flex;
-      flex-direction: column;
+      .search-result-item {
+        display: flex;
+        flex-direction: column;
 
-      border-bottom: var(--sc-border);
-    }
+        border-bottom: var(--sc-border);
+      }
 
-    .search-result-item dl a {
-      text-decoration: underline;
+      .search-result-item dl a {
+        text-decoration: underline;
 
-      color: inherit;
+        color: inherit;
 
-      text-decoration-color: var(--sc-primary-color);
-    }
+        text-decoration-color: var(--sc-primary-color);
+      }
 
-    .search-result-item dl a:hover {
-      color: var(--sc-primary-color);
-    }
+      .search-result-item dl a:hover {
+        color: var(--sc-primary-color);
+      }
 
-    .search-result-item dl a:visited {
-      text-decoration-color: var(--sc-primary-color-dark);
-    }
+      .search-result-item dl a:visited {
+        text-decoration-color: var(--sc-primary-color-dark);
+      }
 
-    .search-result-item:focus {
-      outline: 0;
-    }
+      .search-result-item:focus {
+        outline: 0;
+      }
 
-    .padded-container {
-      display: flex;
-      flex-direction: column;
+      .padded-container {
+        display: flex;
+        flex-direction: column;
 
-      padding: 0;
-    }
+        padding: 0;
+      }
 
-    .primary {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      height: 32px;
-    }
+      .primary {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        height: 32px;
+      }
 
-    .search-result-title {
-      font-family: var(--sc-serif-font);
-      font-size: var(--sc-skolar-font-size-static-subtitle);
-      font-weight: 400;
+      .search-result-title {
+        font-family: var(--sc-serif-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: 400;
 
-      overflow: hidden;
+        overflow: hidden;
 
-      margin: 0;
+        margin: 0;
 
-      white-space: nowrap;
-      text-overflow: ellipsis;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 
-      color: var(--sc-primary-accent-color);
-    }
+        color: var(--sc-primary-accent-color);
+      }
 
-    .all-dictionaries {
-      display: none;
-    }
-
-    .dictionary .all-dictionaries {
-      display: inline-flex;
-      color: var(--sc-secondary-text-color);
-      font-size: var(--sc-skolar-font-size-s);
-
-      flex-direction: row;
-      align-items: center;
-      gap: 0.5em;
-    }
-    .icon {
-      fill: var(--sc-icon-color);
-      height: 20px;
-      width: 20px;
-    }
-
-    .search-result-division {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-s);
-      font-weight: 400;
-
-      overflow: hidden;
+      .all-dictionaries {
+        display: none;
+      }
 
-      margin: 0;
+      .dictionary .all-dictionaries {
+        display: inline-flex;
+        color: var(--sc-secondary-text-color);
+        font-size: var(--sc-skolar-font-size-s);
+
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5em;
+      }
+      .icon {
+        fill: var(--sc-icon-color);
+        height: 20px;
+        width: 20px;
+      }
 
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      .search-result-division {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-s);
+        font-weight: 400;
 
-      color: var(--sc-secondary-text-color);
+        overflow: hidden;
 
-      height: 1.5rem;
-    }
+        margin: 0;
 
-    .search-result-snippet {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-md);
-      font-weight: 400;
-      line-height: 1.333;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 
-      margin: 0 0 1rem 0;
-    }
+        color: var(--sc-secondary-text-color);
 
-    .search-result-snippet dd {
-      margin-left: 0;
-    }
+        height: 1.5rem;
+      }
 
-    .search-result-snippet dfn {
-      font-weight: bold;
-      font-style: normal;
+      .search-result-snippet {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
+        font-weight: 400;
+        line-height: 1.333;
 
-      color: var(--sc-primary-color-dark);
-    }
+        margin: 0 0 1rem 0;
+      }
 
-    .search-result-link {
-      text-decoration: none;
+      .search-result-snippet dd {
+        margin-left: 0;
+      }
 
-      color: initial;
+      .search-result-snippet dfn {
+        font-weight: bold;
+        font-style: normal;
 
-      padding: 12px 0 8px;
-    }
+        color: var(--sc-primary-color-dark);
+      }
 
-    .search-result-link:hover {
-      text-decoration: underline;
+      .search-result-link {
+        text-decoration: none;
 
-      text-decoration-color: var(--sc-primary-accent-color);
-    }
+        color: initial;
 
-    .dictionary {
-      margin: 0 0 1em 0;
-      padding: 0 clamp(1rem, 3vw, 2rem);
+        padding: 12px 0 8px;
+      }
 
-      border-radius: var(--sc-size-sm);
-      background-color: var(--sc-secondary-background-color);
-      box-shadow: var(--sc-shadow-elevation-1dp);
-    }
-
-    .dictionary .search-result-division {
-      display: none;
-    }
-
-    .dictionary .search-result-title {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-md);
-      font-weight: 400;
-      font-variant-caps: all-small-caps;
-      letter-spacing: var(--sc-caps-letter-spacing);
-    }
-
-    .dictionary dfn {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-static-subtitle);
-      font-weight: bold;
-
-      color: var(--sc-primary-color-dark);
-    }
-
-    .dictionary dfn,
-    .highlight,
-    .search-result-term,
-    .selected-terms-item > a {
-      background-color: var(--sc-primary-color-light-transparent);
-      color: var(--sc-primary-color-darkest);
-    }
-
-    .dictionary dd p {
-      margin: 0 0 var(--sc-size-s) 0;
-    }
-
-    .dictionary .grammar {
-      display: block;
-
-      color: var(--sc-secondary-text-color);
-
-      font-style: italic;
-    }
-
-    .dictionary .ref {
-      font-family: var(--sc-sans-font);
-      font-weight: 600;
-      font-style: normal;
-
-      padding: 0 4px;
-
-      white-space: nowrap;
-      letter-spacing: normal;
-
-      color: var(--sc-secondary-text-color);
-      border-radius: 8px;
-      background-color: rgba(159, 158, 157, 0.15);
-
-      font-variant-caps: normal;
-    }
-
-    dd ol,
-    dd ul {
-      margin: 0;
-      padding: 0 0 0 1rem;
-    }
-
-    li {
-      padding-left: clamp(0.25rem, 1vw, 1rem);
-    }
-
-    li::marker {
-      color: var(--sc-icon-color);
-      font-family: var(--sc-sans-font);
-
-      font-weight: 600;
-
-      font-feature-settings: 'tnum', 'onum';
-    }
-
-    p + ol,
-    p + ul {
-      margin: 0.5em 0 1em;
-    }
-
-    .d-none {
-      display: none;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
-
-    mwc-button {
-      --mdc-theme-primary: var(--sc-primary-accent-color);
-      --mdc-theme-on-primary: white;
-    }
-
-    #load-more {
-      padding: 24px 0;
-      display: flex;
-      justify-content: center;
-    }
-  `;
+      .search-result-link:hover {
+        text-decoration: underline;
+
+        text-decoration-color: var(--sc-primary-accent-color);
+      }
+
+      .dictionary {
+        margin: 0 0 1em 0;
+        padding: 0 clamp(1rem, 3vw, 2rem);
+
+        border-radius: var(--sc-size-sm);
+        background-color: var(--sc-secondary-background-color);
+        box-shadow: var(--sc-shadow-elevation-1dp);
+      }
+
+      .dictionary .search-result-division {
+        display: none;
+      }
+
+      .dictionary .search-result-title {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-md);
+        font-weight: 400;
+        font-variant-caps: all-small-caps;
+        letter-spacing: var(--sc-caps-letter-spacing);
+      }
+
+      .dictionary dfn {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-skolar-font-size-static-subtitle);
+        font-weight: bold;
+
+        color: var(--sc-primary-color-dark);
+      }
+
+      .dictionary dfn,
+      .highlight,
+      .search-result-term,
+      .selected-terms-item > a {
+        background-color: var(--sc-primary-color-light-transparent);
+        color: var(--sc-primary-color-darkest);
+      }
+
+      .dictionary dd p {
+        margin: 0 0 var(--sc-size-s) 0;
+      }
+
+      .dictionary .grammar {
+        display: block;
+
+        color: var(--sc-secondary-text-color);
+
+        font-style: italic;
+      }
+
+      .dictionary .ref {
+        font-family: var(--sc-sans-font);
+        font-weight: 600;
+        font-style: normal;
+
+        padding: 0 4px;
+
+        white-space: nowrap;
+        letter-spacing: normal;
+
+        color: var(--sc-secondary-text-color);
+        border-radius: 8px;
+        background-color: rgba(159, 158, 157, 0.15);
+
+        font-variant-caps: normal;
+      }
+
+      dd ol,
+      dd ul {
+        margin: 0;
+        padding: 0 0 0 1rem;
+      }
+
+      li {
+        padding-left: clamp(0.25rem, 1vw, 1rem);
+      }
+
+      li::marker {
+        color: var(--sc-icon-color);
+        font-family: var(--sc-sans-font);
+
+        font-weight: 600;
+
+        font-feature-settings: 'tnum', 'onum';
+      }
+
+      p + ol,
+      p + ul {
+        margin: 0.5em 0 1em;
+      }
+
+      .d-none {
+        display: none;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      mwc-button {
+        --mdc-theme-primary: var(--sc-primary-accent-color);
+        --mdc-theme-on-primary: white;
+      }
+
+      #load-more {
+        padding: 24px 0;
+        display: flex;
+        justify-content: center;
+      }
+    `,
+  ];
 
   render() {
     return html`
-      ${this.displayDataLoadError} ${this.onlineTemplate} ${this.offLineTemplate}
+      ${this.displayDataLoadError} ${this.offLineTemplate}
+      ${this.#isSearchByAuthor() ? this.#searchResultByAuthorTemplate() : this.onlineTemplate}
       ${this._createMetaData()}
     `;
   }
@@ -494,6 +499,36 @@ class SCPageSearch extends LitLocalized(LitElement) {
             </div>
           `
         )
+      : '';
+  }
+
+  #searchResultByAuthorTemplate() {
+    if (
+      !this.visibleSearchResults ||
+      this.visibleSearchResults.length === 0 ||
+      !this.#isSearchByAuthor()
+    ) {
+      return ``;
+    }
+    const searchResultByAuthor = this.visibleSearchResults;
+    return searchResultByAuthor
+      ? html`
+          <table>
+            <tbody>
+              ${searchResultByAuthor.map(
+                item => html`
+                  <tr>
+                    <td class="sutta_uid">
+                      <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                    </td>
+                    <td class="sutta_title">${item.heading.title}</td>
+                    <td class="parallels">${item.author}</td>
+                  </tr>
+                `
+              )}
+            </tbody>
+          </table>
+        `
       : '';
   }
 
