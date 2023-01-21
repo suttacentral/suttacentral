@@ -1,9 +1,26 @@
 
 # SuttaCentral ChangeLog
 
-332022.12.24
+## 2023.01.14
+
+- Update dependencies.
+
+## 2023.01.11
+
+- Fix footer display bug.
+
+## 2023.01.09
+
+- Do not print footer.
+
+## 2023.01.04
+
+- Fix acronym display error in suttaplex list.
+
+## 2022.12.24
 
 - Do not display vinaya's publication info.
+- Fix nav bug.
 
 ## 2022.12.23
 
