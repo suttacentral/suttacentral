@@ -297,6 +297,10 @@ def cut_highlights(content, hit, query):
         keyword_list = query.split(' ')
         for keyword in keyword_list:
             cut_highlight(content, hit, keyword)
+    elif not is_chinese(query):
+        keyword_list = [f' {query} ']
+        for keyword in keyword_list:
+            cut_highlight(content, hit, keyword)
     else:
         cut_highlight(content, hit, query)
 
