@@ -8,7 +8,8 @@ import { store } from '../redux-store';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
-import { suttaplexListTableViewCss } from '../elements/suttaplex/sc-suttaplex-list.css';
+import { suttaplexListTableViewCss } from './suttaplex/sc-suttaplex-list.css';
+import { SCPageSearchStyles } from './styles/sc-page-search-styles';
 
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -88,316 +89,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
-  static styles = [
-    suttaplexListTableViewCss,
-    css`
-      :host {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        font-weight: 400;
-        line-height: 1.5;
-
-        display: block;
-
-        width: 100%;
-
-        color: var(--sc-primary-text-color);
-      }
-
-      h2 {
-        line-height: 1.25;
-      }
-
-      #search_result_list {
-        padding: var(--sc-size-xl) 0 var(--sc-size-md);
-      }
-
-      .search-results-container {
-        margin: 0 3vw var(--sc-size-xxl) 3vw;
-      }
-
-      .search-results-main {
-        max-width: 720px;
-        margin: 0 auto;
-        padding-bottom: 64px;
-      }
-
-      .search-result-head {
-        display: flex;
-
-        color: var(--sc-secondary-text-color);
-
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-
-      .search-result-header {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-h1-md);
-        font-weight: 400;
-        line-height: 1.25;
-
-        display: inline-block;
-
-        margin: 0 1rem 1rem 0;
-      }
-
-      .search-result-term {
-        font-family: var(--sc-serif-font);
-        font-weight: bold;
-      }
-
-      aside {
-        color: var(--sc-secondary-text-color);
-
-        font-size: var(--sc-skolar-font-size-s);
-
-        margin-bottom: 1em;
-      }
-
-      .search-result-item {
-        display: flex;
-        flex-direction: column;
-
-        border-bottom: var(--sc-border);
-      }
-
-      .search-result-item dl a {
-        text-decoration: underline;
-
-        color: inherit;
-
-        text-decoration-color: var(--sc-primary-color);
-      }
-
-      .search-result-item dl a:hover {
-        color: var(--sc-primary-color);
-      }
-
-      .search-result-item dl a:visited {
-        text-decoration-color: var(--sc-primary-color-dark);
-      }
-
-      .search-result-item:focus {
-        outline: 0;
-      }
-
-      .padded-container {
-        display: flex;
-        flex-direction: column;
-
-        padding: 0;
-      }
-
-      .primary {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        height: 32px;
-      }
-
-      .search-result-title {
-        font-family: var(--sc-serif-font);
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        font-weight: 400;
-
-        overflow: hidden;
-
-        margin: 0;
-
-        white-space: nowrap;
-        text-overflow: ellipsis;
-
-        color: var(--sc-primary-accent-color);
-      }
-
-      .all-dictionaries {
-        display: none;
-      }
-
-      .dictionary .all-dictionaries {
-        display: inline-flex;
-        color: var(--sc-secondary-text-color);
-        font-size: var(--sc-skolar-font-size-s);
-
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5em;
-      }
-      .icon {
-        fill: var(--sc-icon-color);
-        height: 20px;
-        width: 20px;
-      }
-
-      .search-result-division {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-s);
-        font-weight: 400;
-
-        overflow: hidden;
-
-        margin: 0;
-
-        white-space: nowrap;
-        text-overflow: ellipsis;
-
-        color: var(--sc-secondary-text-color);
-
-        height: 1.5rem;
-      }
-
-      .search-result-snippet {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        font-weight: 400;
-        line-height: 1.333;
-
-        margin: 0 0 1rem 0;
-      }
-
-      .search-result-snippet dd {
-        margin-left: 0;
-      }
-
-      .search-result-snippet dfn {
-        font-weight: bold;
-        font-style: normal;
-
-        color: var(--sc-primary-color-dark);
-      }
-
-      .search-result-link {
-        text-decoration: none;
-
-        color: initial;
-
-        padding: 12px 0 8px;
-      }
-
-      .search-result-link:hover {
-        text-decoration: underline;
-
-        text-decoration-color: var(--sc-primary-accent-color);
-      }
-
-      .dictionary {
-        margin: 0 0 1em 0;
-        padding: 0 clamp(1rem, 3vw, 2rem);
-
-        border-radius: var(--sc-size-sm);
-        background-color: var(--sc-secondary-background-color);
-        box-shadow: var(--sc-shadow-elevation-1dp);
-      }
-
-      .dictionary .search-result-division {
-        display: none;
-      }
-
-      .dictionary .search-result-title {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-md);
-        font-weight: 400;
-        font-variant-caps: all-small-caps;
-        letter-spacing: var(--sc-caps-letter-spacing);
-      }
-
-      .dictionary dfn {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-static-subtitle);
-        font-weight: bold;
-
-        color: var(--sc-primary-color-dark);
-      }
-
-      .dictionary dfn,
-      .highlight,
-      .search-result-term,
-      .selected-terms-item > a {
-        background-color: var(--sc-primary-color-light-transparent);
-        color: var(--sc-primary-color-darkest);
-      }
-
-      .dictionary dd p {
-        margin: 0 0 var(--sc-size-s) 0;
-      }
-
-      .dictionary .grammar {
-        display: block;
-
-        color: var(--sc-secondary-text-color);
-
-        font-style: italic;
-      }
-
-      .dictionary .ref {
-        font-family: var(--sc-sans-font);
-        font-weight: 600;
-        font-style: normal;
-
-        padding: 0 4px;
-
-        white-space: nowrap;
-        letter-spacing: normal;
-
-        color: var(--sc-secondary-text-color);
-        border-radius: 8px;
-        background-color: rgba(159, 158, 157, 0.15);
-
-        font-variant-caps: normal;
-      }
-
-      dd ol,
-      dd ul {
-        margin: 0;
-        padding: 0 0 0 1rem;
-      }
-
-      li {
-        padding-left: clamp(0.25rem, 1vw, 1rem);
-      }
-
-      li::marker {
-        color: var(--sc-icon-color);
-        font-family: var(--sc-sans-font);
-
-        font-weight: 600;
-
-        font-feature-settings: 'tnum', 'onum';
-      }
-
-      p + ol,
-      p + ul {
-        margin: 0.5em 0 1em;
-      }
-
-      .d-none {
-        display: none;
-      }
-
-      [hidden] {
-        display: none !important;
-      }
-
-      mwc-button {
-        --mdc-theme-primary: var(--sc-primary-accent-color);
-        --mdc-theme-on-primary: white;
-      }
-
-      #load-more {
-        padding: 24px 0;
-        display: flex;
-        justify-content: center;
-      }
-    `,
-  ];
+  static styles = [suttaplexListTableViewCss, SCPageSearchStyles];
 
   render() {
     return html`
-      ${this.displayDataLoadError} ${this.offLineTemplate}
-      ${this.#isSearchByAuthor() ? this.#searchResultByAuthorTemplate() : this.onlineTemplate}
+      ${this.displayDataLoadError} ${this.offLineTemplate} ${this.#searchResultByAuthorTemplate()}
+      ${this.#searchResultByVolpageTemplate()} ${this.generalSearchResultTemplate}
       ${this._createMetaData()}
     `;
   }
@@ -410,8 +107,56 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.lastError ? html` <sc-error-icon type="data-load-error"></sc-error-icon> ` : '';
   }
 
-  get onlineTemplate() {
-    return this.isOnline && !this.lastError
+  get searchResultHeadTemplate() {
+    return html`
+      <div class="search-result-head">
+        <h1 class="search-result-header">
+          <span class="search-result-number">
+            ${this._calculateResultCount(this.resultCount)}
+          </span>
+          <span class="search-result-description">${this.localize('search:resultsFor')}</span>
+          <span class="search-result-term">${this.searchQuery}</span>
+        </h1>
+        <div>${this.#langFilterTemplate()}</div>
+      </div>
+      <aside>${this.localize('search:hint')}</aside>
+    `;
+  }
+
+  get loadMoreButtonTemplate() {
+    return !this._areAllItemsLoaded()
+      ? html`
+          <div id="load-more">
+            <mwc-button
+              @click=${this._loadMoreData}
+              unelevated
+              label=${this.localize('search:loadMore')}
+            ></mwc-button>
+          </div>
+        `
+      : '';
+  }
+
+  get suttaplexTemplate() {
+    return html`
+      <div class="dictionary-snippet-card">
+        <sc-suttaplex
+          .item=${this.suttaplex}
+          .parallels-opened=${false}
+          .difficulty=${this._computeItemDifficulty(
+            this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
+          )}
+          .expansion-data=${this.expansionReturns}
+        ></sc-suttaplex>
+      </div>
+    `;
+  }
+
+  get generalSearchResultTemplate() {
+    return this.isOnline &&
+      !this.lastError &&
+      !this.#isSearchByAuthor() &&
+      !this.#isSearchByVolpage()
       ? html`
           <div class="search-results-container">
             <main class="search-results-main">${this.searchResultTemplate}</main>
@@ -423,46 +168,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get searchResultTemplate() {
     return !this.loadingResults
       ? html`
-          <div class="search-result-head">
-            <h1 class="search-result-header">
-              <span class="search-result-number">
-                ${this._calculateResultCount(this.resultCount)}
-              </span>
-              <span class="search-result-description">${this.localize('search:resultsFor')}</span>
-              <span class="search-result-term">${this.searchQuery}</span>
-            </h1>
-            <aside>${this.localize('search:hint')}</aside>
-            <div id="" style="display: block">
-              <sc-menu-search-filter
-                class="search-result-filter-menu"
-                id="filter_menu"
-              ></sc-menu-search-filter>
-              ${this.#langFilterTemplate()}
-            </div>
-          </div>
-          <div class="dictionary-snippet-card">
-            <sc-suttaplex
-              .item=${this.suttaplex}
-              .parallels-opened=${false}
-              .difficulty=${this._computeItemDifficulty(
-                this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
-              )}
-              .expansion-data=${this.expansionReturns}
-            ></sc-suttaplex>
-          </div>
-
+          ${this.searchResultHeadTemplate}
+          ${this.suttaplexTemplate}
           ${this.searchResultListTemplate}
-          ${!this._areAllItemsLoaded()
-            ? html`
-                <div id="load-more">
-                  <mwc-button
-                    @click=${this._loadMoreData}
-                    unelevated
-                    label=${this.localize('search:loadMore')}
-                  ></mwc-button>
-                </div>
-              `
-            : ''}
+          ${this.loadMoreButtonTemplate}
         `
       : '';
   }
@@ -513,21 +222,63 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultByAuthor = this.visibleSearchResults;
     return searchResultByAuthor
       ? html`
-          <table>
-            <tbody>
-              ${searchResultByAuthor.map(
-                item => html`
-                  <tr>
-                    <td class="sutta_uid">
-                      <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                    </td>
-                    <td class="sutta_title">${item.heading.title}</td>
-                    <td class="parallels">${item.author}</td>
-                  </tr>
-                `
-              )}
-            </tbody>
-          </table>
+          <div class="search-results-container">
+            <main class="search-results-main">
+              ${this.searchResultHeadTemplate}
+              <table>
+                <tbody>
+                  ${searchResultByAuthor.map(
+                    item => html`
+                      <tr>
+                        <td class="sutta_uid">
+                          <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                        </td>
+                        <td class="sutta_title">${item.heading.title}</td>
+                        <td class="parallels">${item.author}</td>
+                      </tr>
+                    `
+                  )}
+                </tbody>
+              </table>
+              ${this.loadMoreButtonTemplate}
+            </main>
+          </div>
+        `
+      : '';
+  }
+
+  #searchResultByVolpageTemplate() {
+    if (
+      !this.visibleSearchResults ||
+      this.visibleSearchResults.length === 0 ||
+      !this.#isSearchByVolpage()
+    ) {
+      return ``;
+    }
+    const searchResultByVolpage = this.visibleSearchResults;
+    return searchResultByVolpage
+      ? html`
+          <div class="search-results-container">
+            <main class="search-results-main">
+              ${this.searchResultHeadTemplate}
+              <table>
+                <tbody>
+                  ${searchResultByVolpage.map(
+                    item => html`
+                      <tr>
+                        <td class="sutta_uid">
+                          <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                        </td>
+                        <td class="sutta_title">${item.name}</td>
+                        <td class="parallels">${this.#addHighlighting(item.volpage)}</td>
+                      </tr>
+                    `
+                  )}
+                </tbody>
+              </table>
+              ${this.loadMoreButtonTemplate}
+            </main>
+          </div>
         `
       : '';
   }
@@ -716,14 +467,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #langFilterTemplate() {
     const langArray = this.originLastSearchResults
-      .map(item => item.lang)
+      .map(item => item.full_lang)
       .filter((item, index, array) => array.indexOf(item) === index);
     const rootItem = this.originLastSearchResults.find(item => item.is_root);
     if (rootItem) {
       langArray.unshift('root');
     }
     return html`
-      <mwc-select label="Languages" @selected=${e => this.#onLangFilterChanged(e)}>
+      <mwc-select id="langFilter" label="Languages" @selected=${e => this.#onLangFilterChanged(e)}>
         <mwc-list-item value="all">All</mwc-list-item>
         ${langArray.map(lang =>
           lang ? html`<mwc-list-item value=${lang}>${lang}</mwc-list-item>` : ''
@@ -750,7 +501,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         );
       } else {
         this.visibleSearchResults = this.originLastSearchResults.filter(
-          item => item.lang === selectedItem
+          item => item.full_lang === selectedItem
         );
       }
     }
@@ -779,7 +530,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const queryParts = [];
     let param;
     let value;
-
     for (param in this.searchParams) {
       value = this.searchParams[param];
       param = window.encodeURIComponent(param);
@@ -847,13 +597,23 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // If there is a title, the division is the subtitle
   _calculateDivision(item) {
+    if (this.searchQuery.includes('volpage:')) {
+      return `${this._getDivision(item)} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
+    }
     if (!this._getDivision(item) && !item.author) {
       return ``;
     }
     if (item.author) {
       return `${this._getDivision(item)} — ${item.author}`;
     }
-    return `${this._getDivision(item)} — ${item.name}`;
+    if (item.name) {
+      return `${this._getDivision(item)} — ${item.name}`;
+    }
+    return `${this._getDivision(item)}`;
+  }
+
+  #addHighlighting(text) {
+    return html`<strong class="highlight">${text}</strong>`;
   }
 
   _getDivision(item) {
@@ -938,6 +698,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByAuthor() {
     return this.searchQuery.includes('author:');
+  }
+
+  #isSearchByVolpage() {
+    return this.searchQuery.includes('volpage:');
   }
 }
 

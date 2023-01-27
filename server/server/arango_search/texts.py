@@ -21,7 +21,8 @@ class TextLoader:
         self.lang = lang
         super().__init__()
 
-    def truncate_text_contents(self):
+    @staticmethod
+    def truncate_text_contents():
         get_db().collection('text_contents').truncate()
 
     def load_all_text_to_db(self):
@@ -81,6 +82,8 @@ class TextLoader:
         text_content_size = 0
 
         for i, text in enumerate(html_texts):
+            # if text['uid'] != 'sa57':
+            #     continue
             uid = text['uid']
             author_uid = text['author_uid']
             try:
@@ -89,7 +92,6 @@ class TextLoader:
                 text_content_size += len(html_bytes) + 512
 
                 root_lang = text['root_lang']
-
                 text_info = {
                     'acronym': text['acronym'],
                     'uid': uid,
@@ -116,7 +118,6 @@ class TextLoader:
         text = root.find('body/article')
         if text is None:
             text = root.find('body/section')
-
         if text is None:
             raise ValueError("Structure of html is not body > article or not body > section")
 
@@ -144,7 +145,14 @@ class TextLoader:
             division = None
         others = header[1:-1]
         header.drop_tree()
-        content = self.fix_text(text.text_content())
+
+        for a in text.cssselect('a'):
+            a.drop_tree()
+
+        for e in text.cssselect('footer'):
+            e.drop_tree()
+
+        content = text.text_content()
         title = self.fix_text(title.text_content()) if title is not None else ''
         division = '' if division is None else self.fix_text(division.text_content())
 
@@ -179,8 +187,7 @@ def update(force=False):
         return 10
 
     db = get_db()
-    loader = TextLoader('en')
-    loader.truncate_text_contents()
+    TextLoader.truncate_text_contents()
 
     languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
     for lang in tqdm(languages):

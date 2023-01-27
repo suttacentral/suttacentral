@@ -1,4 +1,5 @@
 from common.arangodb import get_db
+from zhconv import convert as zhconv_convert
 import re
 
 from common.queries import SUTTAPLEX_LIST
@@ -69,11 +70,20 @@ OR (
   OR PHRASE(d.volpage, REGEX_REPLACE(@query, 'd ', 'DN '), "common_text")
 )
 AND (d.lang == @lang OR d.lang != '')
+
+LET full_lang = (
+    FOR lang IN language
+    FILTER lang.uid == d.lang
+    RETURN lang.name
+)[0]
+
 return {
     acronym: d.acronym,
     uid: d.uid,
     lang: d.lang,
+    full_lang: full_lang,
     name: d.name,
+    volpage: d.volpage,
     author: d.author,
     author_uid: d.author_uid,
     author_short: d.author_short,
@@ -89,11 +99,20 @@ SEARCH PHRASE(d.author, @query, "common_text")
 AND (d.lang == @lang OR d.lang != '')
 AND d.uid NOT LIKE '%-name%'
 SORT d.uid
+
+LET full_lang = (
+    FOR lang IN language
+    FILTER lang.uid == d.lang
+    RETURN lang.name
+)[0]
+
 return {
     acronym: d.acronym,
     uid: d.uid,
     lang: d.lang,
+    full_lang: full_lang,
     name: d.name,
+    volpage: d.volpage,
     author: d.author,
     author_uid: d.author_uid,
     author_short: d.author_short,
@@ -111,21 +130,101 @@ RETURN r.uid
 '''
 
 
-def instant_search_query(query, lang, restrict):
+def generate_volpage_query_aql(possible_volpages):
+    aql = '''
+    FOR d IN instant_search
+    SEARCH (
+    '''
+    for volpage in possible_volpages:
+        aql += f'PHRASE(d.volpage, "{volpage}", "common_text") OR '
+    aql = aql[:-4]
+    aql += '''
+    )
+    AND (d.lang == @lang OR d.lang != ''  OR d.lang == 'pli' OR d.lang == @query)
+    SORT d.uid
+    
+    LET full_lang = (
+        FOR lang IN language
+        FILTER lang.uid == d.lang
+        RETURN lang.name
+    )[0]
+    
+    return {
+        acronym: d.acronym,
+        uid: d.uid,
+        lang: d.lang,
+        full_lang: full_lang,
+        name: d.name,
+        volpage: d.volpage,
+        author: d.author,
+        author_uid: d.author_uid,
+        author_short: d.author_short,
+        is_root: d.is_root,
+        heading: d.heading,
+        content: 'content',
+        }
+    '''
+    return aql
+
+
+def generate_multi_keyword_query_aql(keywords):
+    aql = '''
+    FOR d IN instant_search
+    SEARCH (
+    '''
+    for keyword in keywords:
+        aql += f'PHRASE(d.content, "{keyword}", "common_text") AND '
+    aql = aql[:-4]
+    aql += '''
+    )
+    AND (d.lang == @lang OR d.lang != ''  OR d.lang == 'pli' OR d.lang == @query)
+    SORT d.uid
+
+    LET full_lang = (
+        FOR lang IN language
+        FILTER lang.uid == d.lang
+        RETURN lang.name
+    )[0]
+
+    return {
+        acronym: d.acronym,
+        uid: d.uid,
+        lang: d.lang,
+        full_lang: full_lang,
+        name: d.name,
+        volpage: d.volpage,
+        author: d.author,
+        author_uid: d.author_uid,
+        author_short: d.author_short,
+        is_root: d.is_root,
+        heading: d.heading,
+        content: d.content,
+        }
+    '''
+    return aql
+
+
+def instant_search_query(query, lang, restrict, limit, offset):
     db = get_db()
     hits = []
     if restrict != 'dictionaries':
         search_aql = INSTANT_SEARCH_QUERY
-
-        if query.startswith('author:'):
-            search_aql = INSTANT_SEARCH_QUERY_BY_AUTHOR
-            query = query[7:]
+        query = convert_query_to_traditional_chinese(query)
+        query, search_aql = generate_search_by_author_aql(query, search_aql)
+        query, search_aql = generate_search_by_volpage_aql(query, search_aql)
+        query, search_aql = generate_search_by_multi_keyword_aql(query, search_aql)
+        query, search_aql = generate_search_by_multi_or_keyword_aql(query, search_aql)
 
         cursor = db.aql.execute(search_aql, bind_vars={'query': query, 'lang': lang})
+
         hits = list(cursor)
+        total = len(hits)
+        if (not query.startswith('volpage:')) and (not query.startswith('author:')):
+            hits = hits[int(offset):int(offset) + int(limit)]
+
         for hit in hits:
+            compute_url(hit)
             if 'content' in hit and hit['content'] is not None:
-                compute_url(hit)
                 content = hit['content']
                 cut_highlights(content, hit, query)
             else:
@@ -135,7 +234,54 @@ def instant_search_query(query, lang, restrict):
     suttaplex = fetch_suttaplex(db, lang, query)
     lookup_dictionary(hits, lang, query, restrict)
 
-    return {'total': len(hits), 'hits': hits, 'suttaplex': suttaplex}
+    return {'total': total, 'hits': hits, 'suttaplex': suttaplex}
+
+
+def convert_query_to_traditional_chinese(query):
+    if is_chinese(query):
+        query = zhconv_convert(query, 'zh-hant')
+    return query
+
+
+def generate_search_by_multi_keyword_aql(query, search_aql):
+    if is_chinese(query) and ' ' in query:
+        query_list = query.split(' ')
+        search_aql = generate_multi_keyword_query_aql(query_list)
+    return query, search_aql
+
+
+def generate_search_by_multi_or_keyword_aql(query, search_aql):
+    if ' or ' in query:
+        query_list = query.split(' or ')
+        search_aql = generate_multi_keyword_query_aql(query_list)
+    return query, search_aql
+
+
+def generate_search_by_author_aql(query, search_aql):
+    if query.startswith('author:'):
+        search_aql = INSTANT_SEARCH_QUERY_BY_AUTHOR
+        query = query[7:]
+    return query, search_aql
+
+
+def generate_search_by_volpage_aql(query, search_aql):
+    vol_page_number = re.search(r'\d+', query)
+    if query.startswith('volpage:'):
+        query = query[8:]
+        if re.search(r'[asmd] \w+ \d+', query):
+            query = re.sub(r'[asmd] \w+ \d+',
+                           lambda x: x.group().replace('a', 'AN').replace('s', 'SN').replace('m', 'MN').replace(
+                               'd', 'DN'), query)
+        possible_volpages = []
+        if vol_page_number is not None:
+            vol_page_no = re.search(r'\d+', query).group()
+            for i in range(int(vol_page_no) - 5, int(vol_page_no) + 4):
+                if i > 0:
+                    possible_volpages.append(query.split(vol_page_no)[0] + str(i))
+            search_aql = generate_volpage_query_aql(possible_volpages)
+        possible_volpages.append(query)
+        # search_aql = generate_volpage_query_aql(possible_volpages)
+    return query, search_aql
 
 
 def cut_highlights_when_content_is_none(hit, query):
@@ -146,9 +292,18 @@ def cut_highlights_when_content_is_none(hit, query):
 
 
 def cut_highlights(content, hit, query):
+    hit['highlight'] = {'content': []}
+    if is_chinese(query) or ' or ' in query:
+        keyword_list = query.split(' ')
+        for keyword in keyword_list:
+            cut_highlight(content, hit, keyword)
+    else:
+        cut_highlight(content, hit, query)
+
+
+def cut_highlight(content, hit, query):
     if content is not None and query in content:
         positions = [m.start() for m in re.finditer(query, content)]
-        hit['highlight'] = {'content': []}
         for position in positions[:3]:
             start = position - 50 if position > 50 else 0
             end = min(position + 50, len(content))
@@ -181,3 +336,7 @@ def fetch_suttaplex(db, lang, query):
     if found := list(db.aql.execute(POSSIBLE_UIDS, bind_vars={'uids': possible_uids}, )):
         suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}))[0]
     return suttaplex
+
+
+def is_chinese(uchar):
+    return u'\u4e00' <= uchar <= u'\u9fa5'

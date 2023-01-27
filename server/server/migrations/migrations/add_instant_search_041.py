@@ -83,7 +83,7 @@ class SecondMigration(Migration):
                     "analyzers": ["normalize", "common_ngram", "common_text"]
                 },
                 "content": {
-                    "analyzers": ["normalize", "common_ngram", "common_text", "cjk_ngram"]
+                    "analyzers": ["common_text", "text_zh"]
                 }
             }
         }
