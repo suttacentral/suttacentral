@@ -302,6 +302,10 @@ def instant_search_query(query, lang, restrict, limit, offset):
             query, search_aql = generate_aql_by_multi_chinese_keywords(query, search_aql)
             query, search_aql = generate_aql_by_or_operators(query, search_aql)
             query, search_aql = generate_aql_by_collection(query, search_aql)
+            bind_param = {
+                'query': query,
+                'lang': lang,
+            }
 
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
