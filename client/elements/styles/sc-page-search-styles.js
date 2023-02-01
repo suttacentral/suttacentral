@@ -314,3 +314,49 @@ export const SCPageSearchStyles = css`
     justify-content: center;
   }
 `;
+
+export const searchResultTableViewStyles = css`
+  table {
+    margin: 3vw;
+    display: flex;
+    justify-content: center;
+    border-collapse: collapse;
+  }
+
+  tr {
+    vertical-align: baseline;
+    border-bottom: 1px solid var(--sc-border-color);
+  }
+  tr:first-of-type {
+    border-top: 1px solid var(--sc-border-color);
+  }
+
+  td,
+  th {
+    padding: 0.5em;
+  }
+
+  .uid {
+    white-space: nowrap;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .uid:hover {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.06em;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .uid:active {
+    background-color: var(--sc-primary-color-light);
+  }
+
+  .uid:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+`;

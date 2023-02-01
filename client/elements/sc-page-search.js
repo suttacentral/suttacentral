@@ -8,8 +8,7 @@ import { store } from '../redux-store';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
-import { suttaplexListTableViewCss } from './suttaplex/sc-suttaplex-list.css';
-import { SCPageSearchStyles } from './styles/sc-page-search-styles';
+import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
 
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -89,13 +88,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
-  static styles = [suttaplexListTableViewCss, SCPageSearchStyles];
+  static styles = [searchResultTableViewStyles, SCPageSearchStyles];
 
   render() {
     return html`
       ${this.displayDataLoadError} ${this.offLineTemplate} ${this.#searchResultByAuthorTemplate()}
-      ${this.#searchResultByVolpageTemplate()} ${this.generalSearchResultTemplate}
-      ${this._createMetaData()}
+      ${this.#searchResultByVolpageTemplate()} ${this.#searchResultByCollectionTemplate()}
+      ${this.generalSearchResultTemplate} ${this._createMetaData()}
     `;
   }
 
@@ -156,7 +155,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.isOnline &&
       !this.lastError &&
       !this.#isSearchByAuthor() &&
-      !this.#isSearchByVolpage()
+      !this.#isSearchByVolpage() &&
+      !this.#isSearchByCollection()
       ? html`
           <div class="search-results-container">
             <main class="search-results-main">${this.searchResultTemplate}</main>
@@ -230,11 +230,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
                   ${searchResultByAuthor.map(
                     item => html`
                       <tr>
-                        <td class="sutta_uid">
-                          <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                        </td>
-                        <td class="sutta_title">${item.heading.title}</td>
-                        <td class="parallels">${item.author}</td>
+                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
+                        <td>${item.heading.title}</td>
+                        <td>${item.author}</td>
                       </tr>
                     `
                   )}
@@ -266,11 +264,48 @@ class SCPageSearch extends LitLocalized(LitElement) {
                   ${searchResultByVolpage.map(
                     item => html`
                       <tr>
-                        <td class="sutta_uid">
-                          <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                        </td>
-                        <td class="sutta_title">${item.name}</td>
-                        <td class="parallels">${this.#addHighlighting(item.volpage)}</td>
+                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
+                        <td>${item.name}</td>
+                        <td>${this.#addHighlighting(item.volpage)}</td>
+                      </tr>
+                    `
+                  )}
+                </tbody>
+              </table>
+              ${this.loadMoreButtonTemplate}
+            </main>
+          </div>
+        `
+      : '';
+  }
+
+  #searchResultByCollectionTemplate() {
+    if (
+      !this.visibleSearchResults ||
+      this.visibleSearchResults.length === 0 ||
+      !this.#isSearchByCollection()
+    ) {
+      return ``;
+    }
+    const searchResultByCollection = this.visibleSearchResults;
+    // delete dictionary result
+    if (searchResultByCollection[0].category) {
+      searchResultByCollection.shift();
+    }
+    return searchResultByCollection
+      ? html`
+          <div class="search-results-container">
+            <main class="search-results-main">
+              ${this.searchResultHeadTemplate}
+              <table>
+                <tbody>
+                  ${searchResultByCollection.map(
+                    item => html`
+                      <tr>
+                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
+                        <td>${item.name || item.heading?.title}</td>
+                        <td>${item.author || item.author_uid}</td>
+                        <td>${this.#addHighlighting(item.full_lang)}</td>
                       </tr>
                     `
                   )}
@@ -697,11 +732,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #isSearchByAuthor() {
-    return this.searchQuery.includes('author:');
+    return this.searchQuery.includes('author:') && !this.searchQuery.includes('collection:');
   }
 
   #isSearchByVolpage() {
     return this.searchQuery.includes('volpage:');
+  }
+
+  #isSearchByCollection() {
+    return this.searchQuery.includes('collection:') && !this.searchQuery.includes('author:');
   }
 }
 

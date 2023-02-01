@@ -79,6 +79,9 @@ class SecondMigration(Migration):
                 "author": {
                     "analyzers": ["normalize", "common_ngram", "common_text"]
                 },
+                "author_uid": {
+                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                },
                 "volpage": {
                     "analyzers": ["normalize", "common_ngram", "common_text"]
                 },
