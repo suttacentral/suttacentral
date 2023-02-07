@@ -9,6 +9,7 @@ import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
+import { dispatchCustomEvent } from '../utils/customEvent';
 
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -94,7 +95,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return html`
       ${this.displayDataLoadError} ${this.offLineTemplate} ${this.#searchResultByAuthorTemplate()}
       ${this.#searchResultByVolpageTemplate()} ${this.#searchResultByCollectionTemplate()}
-      ${this.generalSearchResultTemplate} ${this._createMetaData()}
+      ${this.#searchResultByListAuthorsTemplate()} ${this.generalSearchResultTemplate}
+      ${this._createMetaData()}
     `;
   }
 
@@ -156,7 +158,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       !this.lastError &&
       !this.#isSearchByAuthor() &&
       !this.#isSearchByVolpage() &&
-      !this.#isSearchByCollection()
+      !this.#isSearchByCollection() &&
+      !this.#isSearchByListAuthors()
       ? html`
           <div class="search-results-container">
             <main class="search-results-main">${this.searchResultTemplate}</main>
@@ -220,6 +223,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return ``;
     }
     const searchResultByAuthor = this.visibleSearchResults;
+    // delete dictionary result
+    if (searchResultByAuthor[0].category) {
+      searchResultByAuthor.shift();
+    }
     return searchResultByAuthor
       ? html`
           <div class="search-results-container">
@@ -316,6 +323,50 @@ class SCPageSearch extends LitLocalized(LitElement) {
           </div>
         `
       : '';
+  }
+
+  #searchResultByListAuthorsTemplate() {
+    if (
+      !this.visibleSearchResults ||
+      this.visibleSearchResults.length === 0 ||
+      !this.#isSearchByListAuthors()
+    ) {
+      return ``;
+    }
+    const searchResultByListAuthors = this.visibleSearchResults;
+    return searchResultByListAuthors
+      ? html`
+          <div class="search-results-container">
+            <main class="search-results-main">
+              ${this.searchResultHeadTemplate}
+              <table>
+                <tbody>
+                  ${searchResultByListAuthors.map(
+                    item => html`
+                      <tr>
+                        <td>
+                          <a
+                            class="uid"
+                            href="/search?query=author:${item.author_uid}"
+                            @click=${() => this.#onAuthorNameClick(item.author_uid)}
+                            >${item.author_short}</a
+                          >
+                        </td>
+                        <td>${item.author}</td>
+                      </tr>
+                    `
+                  )}
+                </tbody>
+              </table>
+              ${this.loadMoreButtonTemplate}
+            </main>
+          </div>
+        `
+      : '';
+  }
+
+  #onAuthorNameClick(authorUid) {
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=author:${authorUid}` });
   }
 
   connectedCallback() {
@@ -741,6 +792,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByCollection() {
     return this.searchQuery.includes('collection:') && !this.searchQuery.includes('author:');
+  }
+
+  #isSearchByListAuthors() {
+    return this.searchQuery === 'list authors';
   }
 }
 

@@ -72,12 +72,10 @@ def generate_general_query_aql():
           OR PHRASE(d.volpage, REGEX_REPLACE(@query, 'd ', 'DN '), "common_text")
         )
         AND (d.lang == @lang OR d.lang != '')
-        '''
-        + aql_return_part(True)
-        + '''
+        ''' + add_excluded_condition_to_query_aql() + '''
+        ''' + aql_return_part(True) + '''
     '''
     )
-
 
 
 def generate_author_query_aql():
@@ -124,6 +122,26 @@ RETURN r.uid
 '''
 
 
+LIST_AUTHORS = '''
+FOR a IN author_edition
+SORT a.uid
+RETURN {
+    acronym: '',
+    uid: @query,
+    lang: @lang,
+    full_lang: '',
+    name: '',
+    volpage: '',
+    author: a.long_name,
+    author_uid: a.uid,
+    author_short: a.short_name,
+    is_root: '',
+    heading: '',
+    content: 'content',    
+}
+'''
+
+
 def generate_volpage_query_aql(possible_volpages):
     aql = '''
     FOR d IN instant_search
@@ -161,6 +179,7 @@ def generate_multi_keyword_query_aql(keywords):
     aql += '''
     )
     ''' + add_lang_condition_to_query_aql() + '''
+    ''' + add_excluded_condition_to_query_aql() + '''
     SORT d.uid
     ''' + aql_return_part(True) + '''
     '''
@@ -226,6 +245,9 @@ def add_author_condition_to_query_aql(aql, author):
     aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) SORT d.uid ')
     return aql
 
+def add_volpage_condition_to_query_aql(aql, volpage):
+    aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.volpage, "{volpage}", "common_text")) SORT d.uid ')
+    return aql
 
 def add_collection_condition_to_query_aql(aql, collection):
     aql = aql.replace('SORT d.uid', f'AND STARTS_WITH(d.uid, "{collection}") SORT d.uid ')
@@ -279,6 +301,7 @@ def generate_chinese_keyword_query_aql(keywords):
 
 def instant_search_query(query, lang, restrict, limit, offset):
     db = get_db()
+    query = query.strip()
     hits = []
     if restrict != 'dictionaries':
         search_aql = generate_general_query_aql()
@@ -287,30 +310,13 @@ def instant_search_query(query, lang, restrict, limit, offset):
             'lang': lang,
         }
         condition_combination = extract_param(query)
-        if 'author' in condition_combination and 'collection' in condition_combination and 'or' in condition_combination:
-            search_aql = generate_condition_combination_query_aql(condition_combination)
-            bind_param = {
-                'query': query,
-                'lang': lang,
-                'collection': condition_combination['collection'],
-                'author': condition_combination['author']
-            }
+        if is_complex_query(condition_combination):
+            bind_param, search_aql = compute_complex_query_aql(bind_param, condition_combination, lang, query, search_aql)
         else:
-            query, search_aql = generate_aql_by_zhhant_and_zhhans_keywords(query, search_aql)
-            query, search_aql = generate_aql_by_author(query, search_aql)
-            query, search_aql = generate_aql_by_volpage(query, search_aql)
-            query, search_aql = generate_aql_by_multi_chinese_keywords(query, search_aql)
-            query, search_aql = generate_aql_by_or_operators(query, search_aql)
-            query, search_aql = generate_aql_by_collection(query, search_aql)
-            bind_param = {
-                'query': query,
-                'lang': lang,
-            }
+            bind_param, query, search_aql = compute_query_aql(bind_param, lang, query, search_aql)
 
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
-        # if 'author' not in condition_combination and 'collection' not in condition_combination and 'or' not in condition_combination:
-        #     hits = sort_hits(hits, query)
         hits = sort_hits(hits, query)
         total = len(hits)
 
@@ -323,6 +329,47 @@ def instant_search_query(query, lang, restrict, limit, offset):
     lookup_dictionary(hits, lang, query, restrict)
 
     return {'total': total, 'hits': hits, 'suttaplex': suttaplex}
+
+
+def is_complex_query(condition_combination):
+    return 'author' in condition_combination and 'collection' in condition_combination and 'or' in condition_combination
+
+
+def general_aql_based_on_query(condition_combination):
+    aql = general_query_aql_template()
+    if 'author' in condition_combination:
+        aql = add_author_condition_to_query_aql(aql, condition_combination['author'])
+    if 'volpage' in condition_combination:
+        aql = add_volpage_condition_to_query_aql(aql, condition_combination['volpage'])
+    if 'collection' in condition_combination:
+        aql = add_collection_condition_to_query_aql(aql, condition_combination['collection'])
+
+    return aql
+
+def compute_complex_query_aql(bind_param, condition_combination, lang, query, search_aql):
+    search_aql = generate_condition_combination_query_aql(condition_combination)
+    bind_param = {
+        'query': query,
+        'lang': lang,
+        'collection': condition_combination['collection'],
+        'author': condition_combination['author']
+    }
+    return bind_param, search_aql
+
+
+def compute_query_aql(bind_param, lang, query, search_aql):
+    query, search_aql = generate_aql_by_zhhant_and_zhhans_keywords(query, search_aql)
+    query, search_aql = generate_aql_by_author(query, search_aql)
+    query, search_aql = generate_aql_by_volpage(query, search_aql)
+    query, search_aql = generate_aql_by_multi_chinese_keywords(query, search_aql)
+    query, search_aql = generate_aql_by_or_operators(query, search_aql)
+    query, search_aql = generate_aql_by_collection(query, search_aql)
+    query, search_aql = generate_aql_by_list_authors(query, search_aql)
+    bind_param = {
+        'query': query,
+        'lang': lang,
+    }
+    return bind_param, query, search_aql
 
 
 def highlight_keyword(hits, query):
@@ -339,6 +386,8 @@ def highlight_keyword(hits, query):
 def sort_hits(hits, query):
     if query.startswith('collection:') or query.startswith('author:') or query.startswith('volpage:'):
         hits = sorted(hits, key=lambda x: int(re.search(r'\d+', x['uid']).group()))
+        # 以hits中项目的uid先按字母排序，再按数字排序
+        hits = sorted(hits, key=lambda x: x['uid'])
     return hits
 
 
@@ -357,6 +406,13 @@ def generate_aql_by_collection(query, search_aql):
     return query, search_aql
 
 
+def generate_aql_by_list_authors(query, search_aql):
+    if query == 'list authors':
+        search_aql = LIST_AUTHORS
+        query = ''
+    return query, search_aql
+
+
 def generate_aql_by_multi_chinese_keywords(query, search_aql):
     if is_chinese(query) and ' ' in query:
         query_list = query.split(' ')
@@ -370,8 +426,8 @@ def generate_aql_by_multi_chinese_keywords(query, search_aql):
 
 
 def generate_aql_by_or_operators(query, search_aql):
-    if ' or ' in query:
-        query_list = query.split(' or ')
+    if ' OR ' in query:
+        query_list = query.split(' OR ')
         search_aql = generate_multi_keyword_query_aql(query_list)
     return query, search_aql
 
@@ -391,15 +447,21 @@ def generate_aql_by_volpage(query, search_aql):
             query = re.sub(r'[asmd] \w+ \d+',
                            lambda x: x.group().replace('a', 'AN').replace('s', 'SN').replace('m', 'MN').replace(
                                'd', 'DN'), query)
+        elif re.search(r'[ASMD] \w+ \d+', query):
+            query = re.sub(r'[ASMD] \w+ \d+',
+                           lambda x: x.group().replace('A', 'AN').replace('S', 'SN').replace('M', 'MN').replace(
+                               'D', 'DN'), query)
         possible_volpages = []
         if vol_page_number is not None:
             vol_page_no = re.search(r'\d+', query).group()
-            for i in range(int(vol_page_no) - 5, int(vol_page_no) + 4):
-                if i > 0:
-                    possible_volpages.append(query.split(vol_page_no)[0] + str(i))
+            possible_volpages.extend(
+                query.split(vol_page_no)[0] + str(i)
+                for i in range(int(vol_page_no) - 5, int(vol_page_no) + 4)
+                if i > 0
+            )
             search_aql = generate_volpage_query_aql(possible_volpages)
         possible_volpages.append(query)
-        # search_aql = generate_volpage_query_aql(possible_volpages)
+            # search_aql = generate_volpage_query_aql(possible_volpages)
     return query, search_aql
 
 
@@ -419,13 +481,12 @@ def cut_highlights(content, hit, query):
             chinese_character_list = [zhconv_convert(keyword, 'zh-hant'), zhconv_convert(keyword, 'zh-hans')]
             for cc in chinese_character_list:
                 cut_highlight(content, hit, cc)
-            # cut_highlight(content, hit, keyword)
     elif 'author' in condition_combination and 'collection' in condition_combination and 'or' in condition_combination:
         keyword_list = condition_combination['or']
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword)
-    elif not is_chinese(query) and (' or ' in query):
-        keyword_list = query.split(' or ')
+    elif not is_chinese(query) and (' OR ' in query):
+        keyword_list = query.split(' OR ')
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword)
     else:
@@ -440,8 +501,10 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword):
 
 
 def cut_highlight(content, hit, query):
-    if content is not None and query in content:
-        positions = [m.start() for m in re.finditer(query, content)]
+    positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
+    # if content is not None and query in content:
+    if content is not None and len(positions) > 0:
+        # positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
         for position in positions[:3]:
             start = position - 50 if position > 50 else 0
             end = min(position + 50, len(content))
@@ -470,10 +533,22 @@ def fetch_suttaplex(db, lang, query):
         query_lower.replace(' ', '.'),
         query_lower.replace('.', '.'),
     ]
-    suttaplex = None
-    if found := list(db.aql.execute(POSSIBLE_UIDS, bind_vars={'uids': possible_uids}, )):
-        suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}))[0]
-    return suttaplex
+    return (
+        list(
+            db.aql.execute(
+                SUTTAPLEX_LIST, bind_vars={'uid': found[0], 'language': lang}
+            )
+        )[0]
+        if (
+            found := list(
+                db.aql.execute(
+                    POSSIBLE_UIDS,
+                    bind_vars={'uids': possible_uids},
+                )
+            )
+        )
+        else None
+    )
 
 
 def is_chinese(uchar):
@@ -484,10 +559,13 @@ def extract_param(param):
     result = {}
     author = re.search("author:(\w+)", param)
     if author:
-        result["author"] = author.group(1)
+        result["author"] = author[1]
     collection = re.search("collection:(\w+)", param)
     if collection:
-        result["collection"] = collection.group(1)
+        result["collection"] = collection[1]
+    # volpage = re.search("volpage:(\w+)", param)
+    # if volpage:
+    #     result["volpage"] = volpage[1]
 
     if author and collection:
         extract_or_keywords(result, param)
@@ -497,13 +575,11 @@ def extract_param(param):
 def extract_or_keywords(result, param):
     author_param = 'author:' + result["author"]
     collection_param = 'collection:' + result["collection"]
-    or_param = ''
-    #超找author_param和collection_param的位置, 返回位置大的那个
     or_param = (
         param[param.find(author_param) + len(author_param) :]
         if param.find(author_param) > param.find(collection_param)
         else param[param.find(collection_param) + len(collection_param) :]
     )
-    or_param_list = or_param.split(' or ')
+    or_param_list = or_param.split(' OR ')
     or_param_list = [x.strip() for x in or_param_list]
     result["or"] = or_param_list

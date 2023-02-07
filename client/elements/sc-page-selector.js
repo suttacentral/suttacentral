@@ -482,7 +482,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       params.word = params?.word.toLowerCase();
     }
     if (params.query) {
-      params.query = params?.query.toLowerCase();
+      // params.query = params?.query.toLowerCase();
     }
     this.actions.changeRoute(route, params, location.pathname);
   }
