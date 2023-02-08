@@ -320,7 +320,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
         hits = sort_hits(hits, query)
         total = len(hits)
 
-        if (not query.startswith('volpage:')) and (not query.startswith('author:') and (not query.startswith('collection:'))):
+        if (not query.startswith('volpage:')) and (not query.startswith('author:') and (not query.startswith('in:'))):
             hits = hits[int(offset):int(offset) + int(limit)]
 
         highlight_keyword(hits, query)
@@ -384,7 +384,7 @@ def highlight_keyword(hits, query):
 
 
 def sort_hits(hits, query):
-    if query.startswith('collection:') or query.startswith('author:') or query.startswith('volpage:'):
+    if query.startswith('in:') or query.startswith('author:') or query.startswith('volpage:'):
         hits = sorted(hits, key=lambda x: int(re.search(r'\d+', x['uid']).group()))
         # 以hits中项目的uid先按字母排序，再按数字排序
         hits = sorted(hits, key=lambda x: x['uid'])
@@ -399,10 +399,10 @@ def generate_aql_by_zhhant_and_zhhans_keywords(query, search_aql):
 
 
 def generate_aql_by_collection(query, search_aql):
-    if query.startswith('collection:'):
+    if query.startswith('in:'):
         # search_aql = INSTANT_SEARCH_QUERY_BY_COLLECTION
         search_aql = generate_collection_query_aql()
-        query = query[11:]
+        query = query[3:]
     return query, search_aql
 
 
@@ -478,10 +478,16 @@ def cut_highlights(content, hit, query):
     if is_chinese(query):
         keyword_list = query.split(' ')
         for keyword in keyword_list:
-            chinese_character_list = [zhconv_convert(keyword, 'zh-hant'), zhconv_convert(keyword, 'zh-hans')]
+            zhhant_keyword = zhconv_convert(keyword, 'zh-hant')
+            zhhans_keyword = zhconv_convert(keyword, 'zh-hans')
+            if zhhant_keyword != zhhans_keyword:
+                chinese_character_list = [zhhant_keyword, zhhans_keyword]
+            else:
+                chinese_character_list = [zhhant_keyword]
             for cc in chinese_character_list:
                 cut_highlight(content, hit, cc)
     elif 'author' in condition_combination and 'collection' in condition_combination and 'or' in condition_combination:
+        # print(condition_combination)
         keyword_list = condition_combination['or']
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword)
@@ -494,22 +500,30 @@ def cut_highlights(content, hit, query):
 
 
 def highlight_by_multiple_possible_keyword(content, hit, keyword):
-    possible_word_list = [f'{keyword} ', f' {keyword} ', f' {keyword}.', f' {keyword},', f' {keyword}?', f' {keyword}!',
-                 f' {keyword}：', ]
+    # if is_chinese(keyword):
+    #     possible_word_list = [f'{keyword} ', f' {keyword} ', f' {keyword}.', f' {keyword},', f' {keyword}?', f' {keyword}!',
+    #                  f' {keyword}：', ]
+    # else:
+    possible_word_list = [f'{keyword}']
+
     for word in possible_word_list:
         cut_highlight(content, hit, word)
 
 
 def cut_highlight(content, hit, query):
-    positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
+    positions = []
+    if is_chinese(query):
+        positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
+    else:
+        positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.IGNORECASE)]
     # if content is not None and query in content:
-    if content is not None and len(positions) > 0:
+    if content is not None and positions:
         # positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
         for position in positions[:3]:
             start = position - 50 if position > 50 else 0
             end = min(position + 50, len(content))
             highlight = content[start:end]
-            highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+            highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
             hit['highlight']['content'].append(highlight)
 
 
@@ -560,7 +574,7 @@ def extract_param(param):
     author = re.search("author:(\w+)", param)
     if author:
         result["author"] = author[1]
-    collection = re.search("collection:(\w+)", param)
+    collection = re.search("in:(\w+)", param)
     if collection:
         result["collection"] = collection[1]
     # volpage = re.search("volpage:(\w+)", param)
@@ -574,7 +588,7 @@ def extract_param(param):
 
 def extract_or_keywords(result, param):
     author_param = 'author:' + result["author"]
-    collection_param = 'collection:' + result["collection"]
+    collection_param = 'in:' + result["collection"]
     or_param = (
         param[param.find(author_param) + len(author_param) :]
         if param.find(author_param) > param.find(collection_param)
