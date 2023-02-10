@@ -205,8 +205,8 @@ def generate_condition_combination_query_aql(condition_combination):
 
     aql += '''
     )
-    AND STARTS_WITH(d.uid, @collection)
-    AND (PHRASE(d.author, @author, "common_text") OR PHRASE(d.author_uid, @author, "common_text"))
+    ''' + add_collection_condition_to_query_aql(condition_combination) + '''
+    ''' + add_author_condition_to_query_aql(condition_combination) + '''
     ''' + add_lang_condition_to_query_aql() + '''
     ''' + add_excluded_condition_to_query_aql() + '''
     SORT d.uid
@@ -241,18 +241,28 @@ def add_excluded_condition_to_query_aql():
     '''
 
 
-def add_author_condition_to_query_aql(aql, author):
-    aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) SORT d.uid ')
-    return aql
+def add_author_condition_to_query_aql(condition_combination):
+    # aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) SORT d.uid ')
+    # return aql
+    if 'author' in condition_combination:
+        author = condition_combination['author']
+        return f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) '
+    else:
+        return ''
 
-def add_volpage_condition_to_query_aql(aql, volpage):
-    aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.volpage, "{volpage}", "common_text")) SORT d.uid ')
-    return aql
+def add_volpage_condition_to_query_aql(volpage):
+    # aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.volpage, "{volpage}", "common_text")) SORT d.uid ')
+    # return aql
+    return f'AND (PHRASE(d.volpage, "{volpage}", "common_text"))'
 
-def add_collection_condition_to_query_aql(aql, collection):
-    aql = aql.replace('SORT d.uid', f'AND STARTS_WITH(d.uid, "{collection}") SORT d.uid ')
-    return aql
-
+def add_collection_condition_to_query_aql(condition_combination):
+    # aql = aql.replace('SORT d.uid', f'AND STARTS_WITH(d.uid, "{collection}") SORT d.uid ')
+    # return aql
+    if 'collection' in condition_combination:
+        collection = condition_combination['collection']
+        return f'AND STARTS_WITH(d.uid, "{collection}")'
+    else:
+        return ''
 
 def aql_return_part(include_content=True):
     aql = '''
@@ -332,7 +342,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
 
 
 def is_complex_query(condition_combination):
-    return 'author' in condition_combination and 'collection' in condition_combination and 'or' in condition_combination
+    return ('author' in condition_combination or 'collection' in condition_combination) and 'or' in condition_combination
 
 
 def general_aql_based_on_query(condition_combination):
@@ -351,9 +361,13 @@ def compute_complex_query_aql(bind_param, condition_combination, lang, query, se
     bind_param = {
         'query': query,
         'lang': lang,
-        'collection': condition_combination['collection'],
-        'author': condition_combination['author']
+        # 'collection': condition_combination['collection'],
+        # 'author': condition_combination['author']
     }
+    # if 'author' in condition_combination:
+    #     bind_param['author'] = condition_combination['author']
+    # if 'collection' in condition_combination:
+    #     bind_param['collection'] = condition_combination['collection']
     return bind_param, search_aql
 
 
@@ -486,8 +500,7 @@ def cut_highlights(content, hit, query):
                 chinese_character_list = [zhhant_keyword]
             for cc in chinese_character_list:
                 cut_highlight(content, hit, cc)
-    elif 'author' in condition_combination and 'collection' in condition_combination and 'or' in condition_combination:
-        # print(condition_combination)
+    elif ('author' in condition_combination or 'collection' in condition_combination) and 'or' in condition_combination:
         keyword_list = condition_combination['or']
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword)
@@ -523,8 +536,23 @@ def cut_highlight(content, hit, query):
             start = position - 50 if position > 50 else 0
             end = min(position + 50, len(content))
             highlight = content[start:end]
+            # 只保留highlight中的完整的句子部分， 以. ! ? ...为分隔符，其余的去掉
+            # if not is_chinese(query):
+            #     # highlight = re.sub(r'(?<=\.)\s*\w+', '', highlight)
+            #     highlight = extract_sentence(highlight, query)
+            #     print(highlight)
+
+            # # 如果highlight的最前和最后的英文单词不是完整的，就把它们去掉
+            # if not is_chinese(query):
+            #     highlight = re.sub(r'^\w+\s', '', highlight)
+            #     highlight = re.sub(r'\s\w+$', '', highlight)
             highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
             hit['highlight']['content'].append(highlight)
+
+
+def extract_sentence(text, word):
+    pattern = r'([^.]*\b' + word + r'\b.*?[.!?])'
+    return '\n'.join(re.findall(pattern, text, re.IGNORECASE))
 
 
 def compute_url(hit):
@@ -577,23 +605,37 @@ def extract_param(param):
     collection = re.search("in:(\w+)", param)
     if collection:
         result["collection"] = collection[1]
-    # volpage = re.search("volpage:(\w+)", param)
-    # if volpage:
-    #     result["volpage"] = volpage[1]
 
-    if author and collection:
+    if author or collection:
         extract_or_keywords(result, param)
+
+    if 'or' in result and len(result['or']) == 1 and result['or'][0] == '':
+        del result['or']
+
     return result
 
 
 def extract_or_keywords(result, param):
-    author_param = 'author:' + result["author"]
-    collection_param = 'in:' + result["collection"]
-    or_param = (
-        param[param.find(author_param) + len(author_param) :]
-        if param.find(author_param) > param.find(collection_param)
-        else param[param.find(collection_param) + len(collection_param) :]
-    )
-    or_param_list = or_param.split(' OR ')
-    or_param_list = [x.strip() for x in or_param_list]
+    if 'author' in result and 'collection' not in result:
+        author_param = 'author:' + result["author"]
+        or_param = param[param.find(author_param) + len(author_param) :]
+
+    if 'author' not in result and 'collection' in result:
+        collection_param = 'in:' + result["collection"]
+        or_param = param[param.find(collection_param) + len(collection_param) :]
+
+    if 'author' in result and 'collection' in result:
+        author_param = 'author:' + result["author"]
+        collection_param = 'in:' + result["collection"]
+        or_param = (
+            param[param.find(author_param) + len(author_param) :]
+            if param.find(author_param) > param.find(collection_param)
+            else param[param.find(collection_param) + len(collection_param) :]
+        )
+
+    if 'OR' in or_param:
+        or_param_list = or_param.split(' OR ')
+        or_param_list = [x.strip() for x in or_param_list]
+    else:
+        or_param_list = [or_param.strip()]
     result["or"] = or_param_list

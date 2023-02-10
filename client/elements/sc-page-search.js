@@ -783,7 +783,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #isSearchByAuthor() {
-    return this.searchQuery.includes('author:') && !this.searchQuery.includes('in:');
+    return (
+      this.searchQuery.includes('author:') &&
+      !this.searchQuery.includes('in:') &&
+      !this.searchQuery.includes(' ')
+    );
   }
 
   #isSearchByVolpage() {
@@ -791,7 +795,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #isSearchByCollection() {
-    return this.searchQuery.includes('in:') && !this.searchQuery.includes('author:');
+    return (
+      this.searchQuery.includes('in:') &&
+      !this.searchQuery.includes('author:') &&
+      !this.searchQuery.includes(' ')
+    );
   }
 
   #isSearchByListAuthors() {
