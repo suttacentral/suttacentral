@@ -242,8 +242,6 @@ def add_excluded_condition_to_query_aql():
 
 
 def add_author_condition_to_query_aql(condition_combination):
-    # aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) SORT d.uid ')
-    # return aql
     if 'author' in condition_combination:
         author = condition_combination['author']
         return f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) '
@@ -251,13 +249,9 @@ def add_author_condition_to_query_aql(condition_combination):
         return ''
 
 def add_volpage_condition_to_query_aql(volpage):
-    # aql = aql.replace('SORT d.uid', f'AND (PHRASE(d.volpage, "{volpage}", "common_text")) SORT d.uid ')
-    # return aql
     return f'AND (PHRASE(d.volpage, "{volpage}", "common_text"))'
 
 def add_collection_condition_to_query_aql(condition_combination):
-    # aql = aql.replace('SORT d.uid', f'AND STARTS_WITH(d.uid, "{collection}") SORT d.uid ')
-    # return aql
     if 'collection' in condition_combination:
         collection = condition_combination['collection']
         return f'AND STARTS_WITH(d.uid, "{collection}")'
@@ -361,13 +355,7 @@ def compute_complex_query_aql(bind_param, condition_combination, lang, query, se
     bind_param = {
         'query': query,
         'lang': lang,
-        # 'collection': condition_combination['collection'],
-        # 'author': condition_combination['author']
     }
-    # if 'author' in condition_combination:
-    #     bind_param['author'] = condition_combination['author']
-    # if 'collection' in condition_combination:
-    #     bind_param['collection'] = condition_combination['collection']
     return bind_param, search_aql
 
 
@@ -430,11 +418,6 @@ def generate_aql_by_list_authors(query, search_aql):
 def generate_aql_by_multi_chinese_keywords(query, search_aql):
     if is_chinese(query) and ' ' in query:
         query_list = query.split(' ')
-        # chinese_keywords = []
-        # for q in query_list:
-        #     chinese_keywords.append(zhconv_convert(q, 'zh-hant'))
-        #     chinese_keywords.append(zhconv_convert(q, 'zh-hans'))
-        # query_list = query_list + chinese_keywords
         search_aql = generate_multi_keyword_query_aql(query_list)
     return query, search_aql
 
@@ -513,10 +496,6 @@ def cut_highlights(content, hit, query):
 
 
 def highlight_by_multiple_possible_keyword(content, hit, keyword):
-    # if is_chinese(keyword):
-    #     possible_word_list = [f'{keyword} ', f' {keyword} ', f' {keyword}.', f' {keyword},', f' {keyword}?', f' {keyword}!',
-    #                  f' {keyword}：', ]
-    # else:
     possible_word_list = [f'{keyword}']
 
     for word in possible_word_list:
@@ -536,16 +515,6 @@ def cut_highlight(content, hit, query):
             start = position - 50 if position > 50 else 0
             end = min(position + 50, len(content))
             highlight = content[start:end]
-            # 只保留highlight中的完整的句子部分， 以. ! ? ...为分隔符，其余的去掉
-            # if not is_chinese(query):
-            #     # highlight = re.sub(r'(?<=\.)\s*\w+', '', highlight)
-            #     highlight = extract_sentence(highlight, query)
-            #     print(highlight)
-
-            # # 如果highlight的最前和最后的英文单词不是完整的，就把它们去掉
-            # if not is_chinese(query):
-            #     highlight = re.sub(r'^\w+\s', '', highlight)
-            #     highlight = re.sub(r'\s\w+$', '', highlight)
             highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
             hit['highlight']['content'].append(highlight)
 
