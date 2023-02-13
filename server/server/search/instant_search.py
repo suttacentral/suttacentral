@@ -512,16 +512,17 @@ def cut_highlight(content, hit, query):
     if content is not None and positions:
         # positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
         for position in positions[:3]:
-            start = position - 50 if position > 50 else 0
-            end = min(position + 50, len(content))
+            start = position - 100 if position > 100 else 0
+            end = min(position + 100, len(content))
             highlight = content[start:end]
+            highlight = re.sub(r'^.*?[\.\?!…“]', '', highlight)
+
+            last_punctuation = re.search(r'[\.\?!…,”]', highlight[::-1])
+            if last_punctuation:
+                highlight = highlight[:len(highlight) - last_punctuation.start()]
+
             highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
             hit['highlight']['content'].append(highlight)
-
-
-def extract_sentence(text, word):
-    pattern = r'([^.]*\b' + word + r'\b.*?[.!?])'
-    return '\n'.join(re.findall(pattern, text, re.IGNORECASE))
 
 
 def compute_url(hit):
