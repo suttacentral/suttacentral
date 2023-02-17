@@ -89,12 +89,11 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
 
   async #fetchLanguageList() {
     this.languageList = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
-    // 循环this.languageList，添加checked属性
     this.languageList.forEach(item => {
       item.checked = item.uid === store.getState().siteLanguage ? true : false;
     });
-    this.rootLanguageList = this.languageList.filter(item => item.is_root);
-    this.translationLanguageList = this.languageList.filter(item => item.is_root === false);
+    // this.rootLanguageList = this.languageList.filter(item => item.is_root);
+    // this.translationLanguageList = this.languageList.filter(item => item.is_root === false);
     reduxActions.setSearchDisplayLanguage(this.languageList);
   }
 
