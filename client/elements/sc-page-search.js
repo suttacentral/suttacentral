@@ -10,6 +10,7 @@ import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
+import { reduxActions } from './addons/sc-redux-actions';
 
 import '@material/mwc-select';
 import '@material/mwc-list/mwc-list-item';
@@ -57,6 +58,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     waitTimeAfterNewWordExpired: { type: Boolean },
     loadingResults: { type: Boolean },
     lastError: { type: Object },
+    displayedLanguages: { type: Array },
   };
 
   constructor() {
@@ -86,6 +88,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.expansionReturns = [];
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
+    this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+
+    this.addEventListener('click', (e) => {
+      const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+      scActionItems?.hideItems();
+    });
+
     this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
@@ -115,10 +124,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
           <span class="search-result-number">
             ${this._calculateResultCount(this.resultCount)}
           </span>
-          <span class="search-result-description">${this.localize('search:resultsFor')}</span>
-          <span class="search-result-term">${this.searchQuery}</span>
+          <span class="search-result-description">${this.localize('search:resultsFor')} </span>
+          <span class="search-result-term">${this.searchQuery} </span> <span>in all languages</span>
         </h1>
-        <div>${this.#langFilterTemplate()}</div>
+        <!-- <div>${this.#langFilterTemplate()}</div> -->
       </div>
       <aside>${this.localize('search:hint')}</aside>
     `;
@@ -392,6 +401,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (this.searchParams !== state.searchParams) {
       this.searchParams = state.searchParams;
     }
+    if (this.displayedLanguages !== state.displayedLanguages) {
+      this.displayedLanguages = state.searchOptions.displayedLanguages;
+      this.#filterSearchResultByLanguages();
+    }
   }
 
   get actions() {
@@ -440,6 +453,28 @@ class SCPageSearch extends LitLocalized(LitElement) {
         this.visibleSearchResults.push(items[i]);
       }
     }
+  }
+
+  #filterSearchResultByLanguages() {
+    let searchResult = this.originLastSearchResults;
+    // console.log(searchResult);
+    this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+    if (
+      this.displayedLanguages &&
+      this.displayedLanguages.length > 0 &&
+      searchResult &&
+      searchResult.length > 0
+    ) {
+      const checkedLanguages = this.displayedLanguages.filter(item => item.checked);
+      searchResult = searchResult.filter(item => {
+        if (item.lang) {
+          return checkedLanguages.some(checkedLanguage => checkedLanguage.uid === item.lang);
+        }
+        return true;
+      });
+    }
+    // console.log(searchResult);
+    this.visibleSearchResults = searchResult;
   }
 
   _loadMoreData() {
@@ -683,7 +718,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // If there is a title, the division is the subtitle
   _calculateDivision(item) {
-    if (this.searchQuery.includes('volpage:')) {
+    if (this.searchQuery?.includes('volpage:')) {
       return `${this._getDivision(item)} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
     }
     if (!this._getDivision(item) && !item.author) {
@@ -784,21 +819,21 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByAuthor() {
     return (
-      this.searchQuery.includes('author:') &&
-      !this.searchQuery.includes('in:') &&
-      !this.searchQuery.includes(' ')
+      this.searchQuery?.includes('author:') &&
+      !this.searchQuery?.includes('in:') &&
+      !this.searchQuery?.includes(' ')
     );
   }
 
   #isSearchByVolpage() {
-    return this.searchQuery.includes('volpage:');
+    return this.searchQuery?.includes('volpage:');
   }
 
   #isSearchByCollection() {
     return (
-      this.searchQuery.includes('in:') &&
-      !this.searchQuery.includes('author:') &&
-      !this.searchQuery.includes(' ')
+      this.searchQuery?.includes('in:') &&
+      !this.searchQuery?.includes('author:') &&
+      !this.searchQuery?.includes(' ')
     );
   }
 

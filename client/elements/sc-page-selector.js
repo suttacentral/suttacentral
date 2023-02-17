@@ -3,6 +3,7 @@ import { LitLocalized } from './addons/sc-localization-mixin';
 import RoutingService from '../utils/routingService';
 import { store } from '../redux-store';
 import { dispatchCustomEvent } from '../utils/customEvent';
+import { reduxActions } from './addons/sc-redux-actions';
 
 // prettier-ignore
 const isoCodes = [
@@ -364,6 +365,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         ['sutta_toc', 'sc-top-sheet-toc'],
         ['sutta-info', 'sc-top-sheet-publication-legacy'],
         ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
+        ['search-options', 'sc-top-sheet-search-options'],
       ]);
       let needToLoadTopSheets = false;
       const scSiteLayout = document.querySelector('sc-site-layout');
@@ -380,6 +382,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-parallels');
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-legacy');
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-bilara');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-options');
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);
         }
@@ -683,6 +686,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       : 'block';
 
     this._setViewModeButtonDisplayState();
+    this.#setSearchOptionsButtonDisplayState();
     this._setActionItemsDisplayState();
     this._setTitleState();
   }
@@ -715,6 +719,10 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     this.actions.changeDisplayViewModeButtonState(
       ['home', 'suttaplex', 'navigation'].includes(this.currentRoute.name)
     );
+  }
+
+  #setSearchOptionsButtonDisplayState() {
+    reduxActions.changeDisplaySearchOptionsButtonState(['search'].includes(this.currentRoute.name));
   }
 }
 

@@ -350,6 +350,7 @@ def general_aql_based_on_query(condition_combination):
 
     return aql
 
+
 def compute_complex_query_aql(bind_param, condition_combination, lang, query, search_aql):
     search_aql = generate_condition_combination_query_aql(condition_combination)
     bind_param = {
