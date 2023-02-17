@@ -65,10 +65,17 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
   constructor() {
     super();
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+    this.initDisplayedLanguages();
     this.rootLanguageList = this.displayedLanguages.filter(item => item.is_root);
     this.translationLanguageList = this.displayedLanguages.filter(item => item.is_root === false);
+  }
+
+  async initDisplayedLanguages() {
     if (!this.displayedLanguages || this.displayedLanguages.length === 0) {
-      this.#fetchLanguageList();
+      await this.#fetchLanguageList();
+      this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+      this.rootLanguageList = this.displayedLanguages.filter(item => item.is_root);
+      this.translationLanguageList = this.displayedLanguages.filter(item => item.is_root === false);
     }
   }
 
@@ -86,6 +93,8 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
     this.languageList.forEach(item => {
       item.checked = item.uid === store.getState().siteLanguage ? true : false;
     });
+    this.rootLanguageList = this.languageList.filter(item => item.is_root);
+    this.translationLanguageList = this.languageList.filter(item => item.is_root === false);
     reduxActions.setSearchDisplayLanguage(this.languageList);
   }
 
