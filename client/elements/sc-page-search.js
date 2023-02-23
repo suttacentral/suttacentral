@@ -150,14 +150,18 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get suttaplexTemplate() {
     return html`
       <div class="dictionary-snippet-card">
-        <sc-suttaplex
-          .item=${this.suttaplex}
-          .parallels-opened=${false}
-          .difficulty=${this._computeItemDifficulty(
-            this.suttaplex && this.suttaplex.difficulty ? this.suttaplex.difficulty : ''
-          )}
-          .expansion-data=${this.expansionReturns}
-        ></sc-suttaplex>
+        ${this.suttaplex?.map(
+          item => html`
+            <sc-suttaplex
+              .item=${item}
+              .parallels-opened=${false}
+              .difficulty=${this._computeItemDifficulty(
+                item && item.difficulty ? item.difficulty : ''
+              )}
+              .expansion-data=${this.expansionReturns}
+            ></sc-suttaplex>
+          `
+        )}
       </div>
     `;
   }
@@ -189,6 +193,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get searchResultListTemplate() {
+    if (this.#isSearchByInTitle()) {
+      return '';
+    }
     return this.visibleSearchResults
       ? this.visibleSearchResults.map(
           item => html`
@@ -839,6 +846,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByListAuthors() {
     return this.searchQuery === 'list authors';
+  }
+
+  #isSearchByInTitle() {
+    return this.searchQuery?.includes('title:');
   }
 }
 

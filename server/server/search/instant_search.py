@@ -96,6 +96,23 @@ def generate_author_query_aql():
     )
 
 
+def generate_title_query_aql():
+    return (
+        '''
+        FOR d IN instant_search
+        SEARCH PHRASE(d.name, @query, "common_text")
+        AND (d.lang == @lang OR d.lang != '')
+        '''
+        + add_excluded_condition_to_query_aql()
+        + '''
+        SORT d.uid
+        '''
+        + aql_return_part(False)
+        + '''
+    '''
+    )
+
+
 def generate_collection_query_aql():
     return (
         '''
@@ -307,6 +324,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
     db = get_db()
     query = query.strip()
     hits = []
+    original_query = query
     if restrict != 'dictionaries':
         search_aql = generate_general_query_aql()
         bind_param = {
@@ -330,9 +348,13 @@ def instant_search_query(query, lang, restrict, limit, offset):
         highlight_keyword(hits, query)
 
     suttaplex = fetch_suttaplex(db, lang, query)
+    suttaplexs = [suttaplex]
+    if original_query.startswith('title:'):
+        suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
+
     lookup_dictionary(hits, lang, query, restrict)
 
-    return {'total': total, 'hits': hits, 'suttaplex': suttaplex}
+    return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
 
 
 def is_complex_query(condition_combination):
@@ -368,6 +390,7 @@ def compute_query_aql(bind_param, lang, query, search_aql):
     query, search_aql = generate_aql_by_or_operators(query, search_aql)
     query, search_aql = generate_aql_by_collection(query, search_aql)
     query, search_aql = generate_aql_by_list_authors(query, search_aql)
+    query, search_aql = generate_aql_by_title(query, search_aql)
     bind_param = {
         'query': query,
         'lang': lang,
@@ -434,6 +457,13 @@ def generate_aql_by_author(query, search_aql):
     if query.startswith('author:'):
         search_aql = generate_author_query_aql()
         query = query[7:]
+    return query, search_aql
+
+
+def generate_aql_by_title(query, search_aql):
+    if query.startswith('title:'):
+        search_aql = generate_title_query_aql()
+        query = query[6:]
     return query, search_aql
 
 
@@ -562,6 +592,15 @@ def fetch_suttaplex(db, lang, query):
         )
         else None
     )
+
+
+def fetch_suttaplexs(db, lang, hits):
+    uids = list(set([item['uid'] for item in hits]))
+    suttaplexs = []
+    for uid in uids:
+        suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
+        suttaplexs.append(suttaplex)
+    return suttaplexs
 
 
 def is_chinese(uchar):
