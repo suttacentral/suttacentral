@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/mwc-button';
-import './menus/sc-menu-search-filter';
 import './addons/sc-error-icon';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
@@ -11,9 +10,6 @@ import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
 import { reduxActions } from './addons/sc-redux-actions';
-
-import '@material/mwc-select';
-import '@material/mwc-list/mwc-list-item';
 
 import(
   /* webpackMode: "lazy" */
@@ -127,7 +123,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           <span class="search-result-description">${this.localize('search:resultsFor')} </span>
           <span class="search-result-term">${this.searchQuery} </span> <span>in all languages</span>
         </h1>
-        <!-- <div>${this.#langFilterTemplate()}</div> -->
       </div>
       <aside>${this.localize('search:hint')}</aside>
     `;
@@ -464,7 +459,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #filterSearchResultByLanguages() {
     let searchResult = this.originLastSearchResults;
-    // console.log(searchResult);
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
     if (
       this.displayedLanguages &&
@@ -480,7 +474,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
         return true;
       });
     }
-    // console.log(searchResult);
     this.visibleSearchResults = searchResult;
   }
 
@@ -593,45 +586,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  #langFilterTemplate() {
-    const langArray = this.originLastSearchResults
-      .map(item => item.full_lang)
-      .filter((item, index, array) => array.indexOf(item) === index);
-    const rootItem = this.originLastSearchResults.find(item => item.is_root);
-    if (rootItem) {
-      langArray.unshift('root');
-    }
-    return html`
-      <mwc-select id="langFilter" label="Languages" @selected=${e => this.#onLangFilterChanged(e)}>
-        <mwc-list-item value="all">All</mwc-list-item>
-        ${langArray.map(lang =>
-          lang ? html`<mwc-list-item value=${lang}>${lang}</mwc-list-item>` : ''
-        )}
-      </mwc-select>
-    `;
-  }
-
   updated(changedProps) {
     super.updated(changedProps);
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
-    }
-  }
-
-  #onLangFilterChanged(e) {
-    const selectedItem = e.currentTarget.value;
-    if (selectedItem) {
-      if (selectedItem === 'all') {
-        this.visibleSearchResults = this.originLastSearchResults;
-      } else if (selectedItem === 'root') {
-        this.visibleSearchResults = this.originLastSearchResults.filter(
-          item => item.is_root === true
-        );
-      } else {
-        this.visibleSearchResults = this.originLastSearchResults.filter(
-          item => item.full_lang === selectedItem
-        );
-      }
     }
   }
 
