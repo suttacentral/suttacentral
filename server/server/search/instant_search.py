@@ -259,21 +259,26 @@ def add_excluded_condition_to_query_aql():
 
 
 def add_author_condition_to_query_aql(condition_combination):
-    if 'author' in condition_combination:
-        author = condition_combination['author']
-        return f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) '
-    else:
+    if 'author' not in condition_combination:
         return ''
+    author = condition_combination['author']
+    return f'AND (PHRASE(d.author, "{author}", "common_text") OR PHRASE(d.author_uid, "{author}", "common_text")) '
+
 
 def add_volpage_condition_to_query_aql(volpage):
     return f'AND (PHRASE(d.volpage, "{volpage}", "common_text"))'
 
+
 def add_collection_condition_to_query_aql(condition_combination):
     if 'collection' in condition_combination:
         collection = condition_combination['collection']
-        return f'AND STARTS_WITH(d.uid, "{collection}")'
-    else:
-        return ''
+        if collection != 'ebt':
+            return f'AND STARTS_WITH(d.uid, "{collection}")'
+        else:
+            ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
+                               "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+                               "lzh-upp", "san-mg", "san-lo"]
+            return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
 
 def aql_return_part(include_content=True):
     aql = '''
@@ -411,7 +416,7 @@ def highlight_keyword(hits, query):
 
 def sort_hits(hits, query):
     if query.startswith('in:') or query.startswith('author:') or query.startswith('volpage:'):
-        hits = sorted(hits, key=lambda x: int(re.search(r'\d+', x['uid']).group()))
+        # hits = sorted(hits, key=lambda x: int(re.search(r'\d+', x['uid']).group()))
         # 以hits中项目的uid先按字母排序，再按数字排序
         hits = sorted(hits, key=lambda x: x['uid'])
     return hits
@@ -548,8 +553,7 @@ def cut_highlight(content, hit, query):
             highlight = content[start:end]
             highlight = re.sub(r'^.*?[\.\?!…“]', '', highlight)
 
-            last_punctuation = re.search(r'[\.\?!…,”]', highlight[::-1])
-            if last_punctuation:
+            if last_punctuation := re.search(r'[\.\?!…,”]', highlight[::-1]):
                 highlight = highlight[:len(highlight) - last_punctuation.start()]
 
             highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
