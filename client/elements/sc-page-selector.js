@@ -366,6 +366,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         ['sutta-info', 'sc-top-sheet-publication-legacy'],
         ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
         ['search-options', 'sc-top-sheet-search-options'],
+        ['search-filter', 'sc-top-sheet-search-filter'],
       ]);
       let needToLoadTopSheets = false;
       const scSiteLayout = document.querySelector('sc-site-layout');
@@ -383,6 +384,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-legacy');
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-bilara');
         import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-options');
+        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-filter');
         for (const [key, value] of topSheets) {
           this._appendTopSheet(key, value, scSiteLayout);
         }

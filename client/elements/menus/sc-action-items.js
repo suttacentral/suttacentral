@@ -47,7 +47,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.actions.changeDisplaySuttaParallelsState(false);
     this.actions.changeDisplaySuttaToCState(false);
     this.actions.changeDisplaySuttaInfoState(false);
-    // reduxActions.changeDisplaySearchOptionsButtonState(false);
 
     this.tableOfContents = !!store.getState().tableOfContents.items.length;
     this.displaySettingMenu = store.getState().displaySettingMenu;
@@ -81,6 +80,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
       height: 100%;
     }
 
+    #btnSearchFilter:after,
     #btnSearchOptions:after,
     #btnViewCompact:after,
     #btnViewComfy:after,
@@ -117,6 +117,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
       content: 'info';
     }
 
+    #btnSearchFilter,
     #btnSearchOptions,
     #btnShowParallels,
     #btnShowParallelTableView {
@@ -136,7 +137,11 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
 
     #btnSearchOptions:after {
-      content: 'Filter';
+      content: 'languages';
+    }
+
+    #btnSearchFilter:after {
+      content: 'filter';
     }
 
     .active-light {
@@ -232,7 +237,18 @@ export class SCActionItems extends LitLocalized(LitElement) {
           slot="actionItems"
           ?hidden=${this.displaySearchOptionsButton}
         >
-          ${icon.visibility}
+          ${icon.language}
+        </mwc-icon-button>
+
+        <mwc-icon-button
+          class="white-icon toolButtons"
+          id="btnSearchFilter"
+          title="Search filter"
+          @click=${this.#onBtnSearchFilterClick}
+          slot="actionItems"
+          ?hidden=${this.displaySearchOptionsButton}
+        >
+          ${icon.filter}
         </mwc-icon-button>
 
         <mwc-icon-button
@@ -334,6 +350,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this._hideSettingMenu();
     this._hideSuttaToC();
     this.#hideSearchOptions();
+    this.#hideSearchFilter();
   }
 
   _onBtnInfoClick() {
@@ -442,6 +459,12 @@ export class SCActionItems extends LitLocalized(LitElement) {
     searchOptionsTopSheet.toggle();
   }
 
+  #onBtnSearchFilterClick(e) {
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    const searchFilterTopSheet = scSiteLayout.querySelector('#search-filter');
+    searchFilterTopSheet.toggle();
+  }
+
   _hideSettingMenu() {
     this.dispatchEvent(
       new CustomEvent('hide-sc-top-sheet', {
@@ -496,6 +519,12 @@ export class SCActionItems extends LitLocalized(LitElement) {
     const scSiteLayout = document.querySelector('sc-site-layout');
     const searchOptionsTopSheet = scSiteLayout.querySelector('#search-options');
     searchOptionsTopSheet.hide();
+  }
+
+  #hideSearchFilter() {
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    const searchFilterTopSheet = scSiteLayout.querySelector('#search-filter');
+    searchFilterTopSheet.hide();
   }
 
   _showSuttaParallels() {
@@ -606,6 +635,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this._hideSuttaParallels();
     this._hideSuttaToC();
     this.#hideSearchOptions();
+    this.#hideSearchFilter();
   }
 
   stateChanged(state) {
@@ -690,8 +720,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
   #displaySearchOptionsButtonStateChange() {
     if (this.displaySearchOptionsButton) {
       this.shadowRoot.querySelector('#btnSearchOptions').style.display = 'inherit';
+      this.shadowRoot.querySelector('#btnSearchFilter').style.display = 'inherit';
     } else {
       this.shadowRoot.querySelector('#btnSearchOptions').style.display = 'none';
+      this.shadowRoot.querySelector('#btnSearchFilter').style.display = 'none';
     }
   }
 
