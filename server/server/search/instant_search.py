@@ -226,7 +226,7 @@ def add_collection_condition_to_query_aql(condition_combination):
                            "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                            "lzh-upp", "san-mg", "san-lo"]
         return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
-
+    return ''
 
 def aql_return_part(include_content=True):
     aql = '''
