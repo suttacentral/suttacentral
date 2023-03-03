@@ -48,6 +48,21 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <td>Filter results by author.</td>
             <td>author:brahmali cat<br />author:sabbamitta Katze</td>
           </tr>
+
+          <tr>
+            <td>List all author</td>
+            <td>list authors</td>
+          </tr>
+
+          <tr>
+            <th colspan="2">suttaplex search</th>
+          </tr>
+
+          <tr>
+            <td>List all related suttaplex</td>
+            <td>title:the prime net</td>
+          </tr>
+
           <tr>
             <th colspan="2">collection search</th>
           </tr>
