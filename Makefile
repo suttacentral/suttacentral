@@ -87,6 +87,9 @@ delete-database:
 index-elasticsearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
+index-arangosearch:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py index_arangosearch"
+
 hyphenate:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py hyphenate"
 
@@ -98,6 +101,7 @@ rebuild-frontend:
 
 bundle-analyzer:
 	docker-compose run sc-frontend npm run build --report
+	
 
 rebuild-static-pages:
 	cd client && npm run extract-static-strings

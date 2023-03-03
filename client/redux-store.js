@@ -13,6 +13,9 @@ const initialState = {
     title: '',
   },
   searchParams: {},
+  searchOptions: {
+    displayedLanguages: [],
+  },
   suttaText: {},
   suttaMetaText: '',
   suttaPublicationInfo: {},
@@ -63,6 +66,7 @@ const initialState = {
   displaySuttaParallels: false,
   displaySuttaInfo: false,
   displayParallelTableView: false,
+  displaySearchOptionsButton: false,
   tableOfContents: {
     items: [],
     disableToCListStyle: false,
@@ -112,6 +116,8 @@ const reducer = (state, action) => {
     case 'SAVE_TOOLBAR_TITLE':
       return { ...state, toolbarTitle: action.toolbarTitle };
     case 'INITIATE_SEARCH':
+      return { ...state, searchParams: action.params };
+    case 'CHANGE_SEARCH_':
       return { ...state, searchParams: action.params };
     case 'DOWNLOAD_SUTTA_TEXT':
       return { ...state, suttaText: action.text };
@@ -223,6 +229,13 @@ const reducer = (state, action) => {
       return { ...state, languageMenuVisibility: action.languageMenuVisibility };
     case 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE':
       return { ...state, linearProgressActive: action.linearProgressActive };
+    case 'CHANGE_DISPLAY_SEARCH_OPTIONS_BUTTON_STATE':
+      return { ...state, displaySearchOptionsButton: action.displaySearchOptionsButton };
+    case 'SET_SEARCH_DISPLAY_LANGUAGES_ARRAY':
+      return {
+        ...state,
+        searchOptions: { ...state.searchOptions, displayedLanguages: action.displayedLanguages },
+      };
     default:
       return state;
   }
