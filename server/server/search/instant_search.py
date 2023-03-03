@@ -4,58 +4,6 @@ import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries
 
-INSTANT_SEARCH_QUERY_OLD = '''
-FOR doc IN instant_search
-  SEARCH PHRASE(doc.name, @query, "common_text")
-  OR PHRASE(doc.content, @query, "common_text")
-  OR ANALYZER(STARTS_WITH(doc.name, @query), "normalize")
-  OR NGRAM_MATCH(
-        doc.name,
-        @query,
-        0.4,
-        'common_ngram'
-    )
-  FILTER doc.root_lang OR @lang == NULL or doc.lang == @lang
-  LET uid = doc.uid
-  LET nav_doc = DOCUMENT('super_nav_details', doc.uid)
-  LET lang_uid = doc.lang ? doc.lang : doc.root_lang
-  FILTER nav_doc.type == 'leaf'
-
-  COLLECT name = doc.name, lang = lang_uid INTO group KEEP uid
-
-  LET score_division_boost_factor = {
-    dn: 1.2,
-    mn: 1.2,
-    sn: 1.2,
-    an: 1.15
-  }
-
-  LET score_map = (
-    FOR uid IN group[*].uid
-        LET div_uid = REGEX_REPLACE(uid, '[0-9.-]', '')
-        LET subscore = MAX([1, score_division_boost_factor[div_uid]])
-        SORT subscore DESC
-        RETURN {uid, subscore}
-  )
-
-  LET norm_name = FIRST(TOKENS(name, "normalize"))
-  LET norm_query = FIRST(TOKENS(@query, "normalize"))
-  LET contains_score = CONTAINS(norm_name, norm_query) ? 1 : 0
-  LET nps_score = NGRAM_POSITIONAL_SIMILARITY(name, @query, 3)
-  LET starts_score = (STARTS_WITH(norm_name, norm_query) ? 2 : 0.5) * (STARTS_WITH(name, @query) ? 1 : 0.5)
-
-  LET score = (starts_score + contains_score + nps_score) * MAX(score_map[*].subscore)
-
-  SORT score DESC
-  LIMIT 10
-  RETURN {
-    name: name,
-    lang: lang,
-    uid: FIRST(score_map).uid
-  }
-
-'''
-
 
 def generate_general_query_aql():
     return (
@@ -274,11 +222,11 @@ def add_collection_condition_to_query_aql(condition_combination):
         collection = condition_combination['collection']
         if collection != 'ebt':
             return f'AND STARTS_WITH(d.uid, "{collection}")'
-        else:
-            ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
-                               "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                               "lzh-upp", "san-mg", "san-lo"]
-            return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
+        ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
+                           "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+                           "lzh-upp", "san-mg", "san-lo"]
+        return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
+
 
 def aql_return_part(include_content=True):
     aql = '''
@@ -416,8 +364,6 @@ def highlight_keyword(hits, query):
 
 def sort_hits(hits, query):
     if query.startswith('in:') or query.startswith('author:') or query.startswith('volpage:'):
-        # hits = sorted(hits, key=lambda x: int(re.search(r'\d+', x['uid']).group()))
-        # 以hits中项目的uid先按字母排序，再按数字排序
         hits = sorted(hits, key=lambda x: x['uid'])
     return hits
 
@@ -494,7 +440,6 @@ def generate_aql_by_volpage(query, search_aql):
             )
             search_aql = generate_volpage_query_aql(possible_volpages)
         possible_volpages.append(query)
-            # search_aql = generate_volpage_query_aql(possible_volpages)
     return query, search_aql
 
 
@@ -533,7 +478,6 @@ def cut_highlights(content, hit, query):
 
 def highlight_by_multiple_possible_keyword(content, hit, keyword):
     possible_word_list = [f'{keyword}']
-
     for word in possible_word_list:
         cut_highlight(content, hit, word)
 

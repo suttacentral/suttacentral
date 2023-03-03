@@ -1,4 +1,4 @@
-import { html,css } from 'lit';
+import { html, css } from 'lit';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 

@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/mwc-button';
 import './addons/sc-error-icon';
@@ -9,7 +9,6 @@ import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
-import { reduxActions } from './addons/sc-redux-actions';
 
 import(
   /* webpackMode: "lazy" */
@@ -234,7 +233,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return ``;
     }
     const searchResultByAuthor = this.visibleSearchResults;
-    // delete dictionary result
     if (searchResultByAuthor[0].category) {
       searchResultByAuthor.shift();
     }

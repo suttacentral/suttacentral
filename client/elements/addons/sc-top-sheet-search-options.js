@@ -1,10 +1,9 @@
 import { html, css } from 'lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
-import { reduxActions } from '../addons/sc-redux-actions';
+import { reduxActions } from './sc-redux-actions';
 
 import '@material/mwc-formfield';
 import '@material/mwc-checkbox';
@@ -81,10 +80,6 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
 
   stateChanged(state) {
     super.stateChanged(state);
-  }
-
-  firstUpdated() {
-    //this.#fetchLanguageList();
   }
 
   async #fetchLanguageList() {

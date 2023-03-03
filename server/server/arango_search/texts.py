@@ -11,6 +11,7 @@ from math import log
 
 logger = logging.getLogger('arango_search.texts')
 
+
 class TextLoader:
     doc_type = 'text'
     version = '1'
@@ -72,7 +73,6 @@ class TextLoader:
             print(f'Import {len(segmented_texts)} {self.lang} segmented texts to arangoDB')
             get_db().collection('text_contents').import_bulk(segmented_texts)
 
-
     def load_html_texts(self):
         html_texts = list(get_db().aql.execute(TEXTS_BY_LANG, bind_vars={'lang': self.lang}))
         if not html_texts:
@@ -81,9 +81,7 @@ class TextLoader:
         legacy_texts = []
         text_content_size = 0
 
-        for i, text in enumerate(html_texts):
-            # if text['uid'] != 'sa57':
-            #     continue
+        for text in html_texts:
             uid = text['uid']
             author_uid = text['author_uid']
             try:
@@ -103,7 +101,7 @@ class TextLoader:
                     'is_root': self.lang == root_lang,
                     'mtime': int(text['mtime']),
                 }
-                text_info.update(self.extract_fields_from_html(html_bytes))
+                text_info |= self.extract_fields_from_html(html_bytes)
                 legacy_texts.append(text_info)
             except (ValueError, IndexError) as e:
                 logger.exception(f'{text["uid"]}, {e}')
@@ -111,7 +109,6 @@ class TextLoader:
         if legacy_texts:
             print(f'Import {len(legacy_texts)} {self.lang} legacy texts to arangoDB')
             get_db().collection('text_contents').import_bulk(legacy_texts)
-
 
     def extract_fields_from_html(self, data):
         root = lxml.html.fromstring(data, parser=self.htmlparser)
@@ -182,9 +179,7 @@ def update(force=False):
     def sort_key(lang):
         if lang == 'en':
             return 0
-        if lang == 'pli':
-            return 1
-        return 10
+        return 1 if lang == 'pli' else 10
 
     db = get_db()
     TextLoader.truncate_text_contents()
