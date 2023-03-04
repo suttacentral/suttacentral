@@ -95,9 +95,11 @@ export const SCPublicationStyles = css`
   table a {
     font-weight: 600;
 
-    display: inline-block;
+    display: block;
 
     padding: 0.5em 1em 0.5em 0.75em;
+
+    margin-bottom: 1em;
 
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
