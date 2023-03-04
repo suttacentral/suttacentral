@@ -1,21 +1,21 @@
 import { css } from 'lit';
 
-export const SCPublicationEditionsStyles = css`
-  main {
+export const SCPublicationEditionsStyles = css `
+ main {
     max-width: 720px;
     margin: 2em auto 4em;
-  }
+}
 
-  hgroup {
+hgroup {
     text-align: center;
-  }
+}
 
-  .page-header {
+.page-header {
     border-bottom: 2px solid var(--sc-primary-color-light);
     margin-bottom: 4em;
-  }
+}
 
-  h1 {
+h1 {
     font-family: var(--sc-serif-font);
     font-size: 3rem;
     font-weight: 300;
@@ -23,21 +23,21 @@ export const SCPublicationEditionsStyles = css`
     margin: 0;
 
     font-variant-caps: small-caps;
-  }
+}
 
-  .subtitle {
+.subtitle {
     font-family: var(--sc-serif-font);
     font-style: italic;
 
     margin: 0;
     margin-bottom: 1rem;
-  }
+}
 
-  .down-all ul {
+.down-all ul {
     list-style-type: none;
-  }
+}
 
-  .icon {
+.icon {
     width: 24px;
     height: 24px;
     margin-right: 8px;
@@ -45,33 +45,33 @@ export const SCPublicationEditionsStyles = css`
     vertical-align: middle;
 
     fill: var(--sc-icon-color);
-  }
+}
 
-  .project hgroup {
+.project hgroup {
     margin-bottom: 1rem;
     padding: 1rem;
-  }
+}
 
-  .translation_title {
+.translation_title {
     font-size: var(--sc-skolar-font-size-static-subtitle);
 
     color: var(--sc-primary-text-color);
-  }
+}
 
-  .translation_subtitle {
+.translation_subtitle {
     font-size: var(--sc-skolar-font-size-md);
     font-style: italic;
-  }
+}
 
-  .creator_name {
+.creator_name {
     font-size: var(--sc-skolar-font-size-l);
 
     text-align: center;
 
     font-variant-caps: all-small-caps;
-  }
+}
 
-  .project a {
+.project a {
     display: block;
 
     text-decoration: none;
@@ -79,38 +79,38 @@ export const SCPublicationEditionsStyles = css`
 
     color: inherit;
     border-radius: 4px;
-  }
+}
 
-  .project a:hover {
+.project a:hover {
     background-color: var(sc-primary-color);
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 0.15em;
     text-underline-offset: 0.06em;
     transition: all 200ms ease;
-  }
+}
 
-  .publication_blurb {
+.publication_blurb {
     font-family: var(--sc-sans-font);
 
     min-height: 20em;
     padding: 1em;
-  }
+}
 
-  h2 {
+h2 {
     margin-top: 0;
-  }
+}
 
-  article {
+article {
     margin-bottom: 8em;
-  }
+}
 
-  .project {
+.project {
     margin: 0;
     padding: 0;
-  }
+}
 
-  .project:before {
+.project:before {
     display: block;
 
     width: 50%;
@@ -120,9 +120,9 @@ export const SCPublicationEditionsStyles = css`
     content: '';
 
     border-bottom: 1px solid var(--sc-border-color);
-  }
+}
 
-  img {
+img {
     display: block;
     float: left;
 
@@ -131,17 +131,48 @@ export const SCPublicationEditionsStyles = css`
     margin: 0.5em 1em 1em 0;
 
     box-shadow: var(--sc-shadow-elevation-8dp);
-  }
+}
 
-  .down-all {
-    margin-bottom: 4em;
-  }
+.main-image {
+    float: right;
 
-  h1 {
+    width: 50%;
+    height: auto;
+    margin: 0 0 1em 1em;
+}
+
+.down-all {
+    margin: 4em 0 4em 0;
+}
+
+.down-all ul {
+    margin-left: 0;
+    padding-left: 0
+}
+
+.down-all li {
+    margin-left: 0;
+    padding-left: 0
+}
+
+.down-all aside {
+    background-color: var(--sc-tertiary-background-color);
+    margin-top: 1rem;
+    padding: 1em;
+
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-skolar-font-size-s);
+
+    color: var(--sc-secondary-text-color);
+    
+    border-radius: var(--sc-size-sm);
+}
+
+h1 {
     font-family: var(--sc-sans-font);
     letter-spacing: var(--sc-caps-letter-spacing);
     font-variant-caps: small-caps;
     font-weight: 500;
     font-stretch: expanded;
-  }
+}
 `;

@@ -175,6 +175,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
+          <img class='main-image' src='/img/publication-pages/editions-kn-wet.jpg'>
           <p>
             The “Editions” series makes selected translations available as books in various formats,
             including print, PDF, and EPUB.
@@ -191,12 +192,12 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
           <section class="down-all">
             <ul>
               <li>
-                ${icon.translation} Order a printed copy from the individual edition pages below.
+                ${icon.translation} Order a printed copy or select files from the individual edition pages below.
               </li>
               <li>
                 ${icon.file_download}
                 <a href="https://github.com/suttacentral/editions/archive/refs/heads/main.zip"
-                  >Download digital editions in all file types (zip).
+                  >Download digital editions in all file types (about 150 MB zip).
                 </a>
               </li>
               <li>
@@ -204,6 +205,12 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
                 <a href="https://github.com/suttacentral/editions">Go to the source on Github.</a>
               </li>
             </ul>
+            <aside>
+            <b>About the printed editions</b>
+            <p>SuttaCentral produces PDF files and relies on third-parties for printing and distribution. </p>
+            <p>Initial publishing is through Lulu, an online print-on-demand service. When you order a book, Lulu will print it and post it to you. Lulu has fixed charges for printing and postage. SuttaCentral receives a portion of the final price, which we use to pay our developers. </p>
+            <p>We intend to make other printing options avilable in the future.</p>
+            </aside>
           </section>
           ${this.#allEditionsTemplate()}
         </article>
