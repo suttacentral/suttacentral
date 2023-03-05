@@ -1,6 +1,13 @@
 
 # SuttaCentral ChangeLog
 
+## 2023.03.03
+
+- adjust to support multiple volumes
+- Apply new search.
+- Sujato publication volumes style
+- fix:"share this sutta" is broken.
+
 ## 2023.01.14
 
 - Update dependencies.
