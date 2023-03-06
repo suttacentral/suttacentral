@@ -1,4 +1,4 @@
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -25,6 +25,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     currentUid: { type: String },
     editionDetail: { type: Object },
     editionId: { type: String },
+    editionPaperbackId: { type: String },
     coverImage: { type: String },
   };
 
@@ -125,6 +126,11 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       this.editionId = allEditions.find(
         x => x.uid === this.editionUid && x.edition_id?.includes('web')
       )?.edition_id;
+
+      this.editionPaperbackId = allEditions.find(
+        x => x.uid === this.editionUid && x.edition_id?.includes('paperback')
+      )?.edition_id;
+
       if (this.editionId) {
         reduxActions.changeCurrentEditionId(this.editionId);
         this.requestUpdate();
@@ -137,6 +143,11 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       this.editionInfo = await (
         await fetch(`${API_ROOT}/publication/edition/${this.editionId}`)
       ).json();
+
+      this.editionPaperbackInfo = await (
+        await fetch(`${API_ROOT}/publication/edition/${this.editionPaperbackId}`)
+      ).json();
+
       if (this.editionDetail && this.editionDetail.length !== 0) {
         reduxActions.changeToolbarTitle(
           `${this.editionDetail[0].root_name} — ${this.editionInfo.publication?.creator_name}`
@@ -212,7 +223,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
                     <br>To the extent possible under law,
                     <span property='dct:title'>${
                       this.editionInfo.publication.creator_name
-                    }</span> has waived all copyright and related or neighboring rights to <span property='dct:title'>${this.editionDetail[0].translated_name.replace('Collection','')}</span>. 
+                    }</span> has waived all copyright and related or neighboring rights to <span property='dct:title'>${this.editionDetail[0].translated_name.replace(
+          'Collection',
+          ''
+        )}</span>. 
                     This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
                       this.editionUid
                     }'> Australia</span>.
@@ -245,7 +259,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           src="/img/publication-pages/${coverImage.get(this.editionInfo?.publication?.text_uid)}"
           alt="Cover art for ${this.editionDetail[0].translated_name.replace('Collection', '')}"
         />
-        <figcaption>Paperback edition of ${this.editionDetail[0].translated_name.replace('Collection', '')}</figcaption>
+        <figcaption>
+          Paperback edition of ${this.editionDetail[0].translated_name.replace('Collection', '')}
+        </figcaption>
       </figure>
     `;
   }
@@ -293,9 +309,17 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.paperback} Book, paperback</td>
         <td>
-          <a href="https://github.com/suttacentral/editions" class="external"
-            >${icon.external} Print on demand</a
-          >
+          ${this.editionPaperbackInfo?.edition?.volumes
+            ? html` ${this.editionPaperbackInfo.edition.volumes.map(
+                vol =>
+                  html` <a href=${vol.volume_lulu_url} class="external"
+                    >${icon.external}
+                    ${vol.volume_number
+                      ? `Volume ${vol.volume_number.slice(3)}: Print on demand`
+                      : 'Print on demand'}</a
+                  >`
+              )}`
+            : ''}
         </td>
       </tr>
     `;
