@@ -11,70 +11,61 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
     super.styles,
     typographyCommonStyles,
     css`
+      fieldset {
+        font-family: var(--sc-sans-font);
 
-fieldset
-{
-    font-family: var(--sc-sans-font);
+        width: 848px;
+        margin: 0 1em;
+        margin-top: 24px;
+        padding: 0;
 
-    width: 848px;
-    margin: 0 1em;
-    margin-top: 24px;
-    padding: 0;
+        border-color: var(--sc-border-color);
+      }
 
-    border-color: var(--sc-border-color);
-}
+      legend {
+        margin-left: 18px;
+        padding: 0 1em;
 
-legend
-{
-    margin-left: 18px;
-    padding: 0 1em;
+        color: var(--sc-secondary-text-color);
+        border-radius: 0.8em;
+        background-color: var(--sc-border-color);
 
-    color: var(--sc-secondary-text-color);
-    border-radius: .8em;;
-    background-color: var(--sc-border-color);
+        font-variant-caps: all-small-caps;
+      }
 
-    font-variant-caps: all-small-caps;
-}
+      table {
+        width: 100%;
+        margin: 24px 0 0 0;
 
-table
-{
-    width: 100%;
-    margin: 24px 0 0 0;;
+        table-layout: fixed;
+        border-collapse: collapse;
 
-    table-layout: fixed;
-    border-collapse: collapse;
+        border: none;
+      }
 
-    border: none;
-}
+      th {
+        width: 100%;
+        padding: 10px;
 
-th
-{
-    width: 100%;;
-    padding: 10px;
+        text-align: left;
 
-    text-align: left;
+        background-color: var(--sc-tertiary-background-color);
+      }
 
-    background-color: var(--sc-tertiary-background-color);
-}
+      td {
+        padding: 0.5em;
 
-td
-{
-    padding: .5em;
+        text-align: left;
+      }
 
-    text-align: left;
-}
+      td:first-child {
+        font-family: var(--sc-sans-font);
+        font-weight: 400;
+      }
 
-td:first-child
-{
-    font-family: var(--sc-sans-font);
-    font-weight: 400;
-}
-
-td
-{
-    font-family: monospace;
-}
-
+      td {
+        font-family: monospace;
+      }
     `,
   ];
 

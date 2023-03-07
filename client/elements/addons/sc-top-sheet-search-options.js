@@ -17,87 +17,75 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
     super.styles,
     typographyCommonStyles,
     css`
-
-    :host
-{
+      :host {
         --mdc-theme-secondary: var(--sc-primary-accent-color);
         --mdc-typography-font-family: var(--sc-sans-font);
         --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
         --mdc-typography-body2-font-weight: 550;
         --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-    }
+      }
 
-      fieldset
-{
-    font-family: var(--sc-sans-font);
+      fieldset {
+        font-family: var(--sc-sans-font);
 
-    display: flex;
-    flex-direction: row;
+        display: flex;
+        flex-direction: row;
 
-    margin-top: 24px;
-    padding: 1em;
+        margin-top: 24px;
+        padding: 1em;
 
-    color: var(--sc-primary-text-color);;
-    border-color: var(--sc-border-color);
+        color: var(--sc-primary-text-color);
+        border-color: var(--sc-border-color);
 
-    gap: 2em;
-}
+        gap: 2em;
+      }
 
-legend
-{
-    padding: 0 1em;
+      legend {
+        padding: 0 1em;
 
-    color: var(--sc-secondary-text-color);
-    border-radius: .8em;;
-    background-color: var(--sc-border-color);
+        color: var(--sc-secondary-text-color);
+        border-radius: 0.8em;
+        background-color: var(--sc-border-color);
 
-    font-variant-caps: all-small-caps;
-}
+        font-variant-caps: all-small-caps;
+      }
 
-section
-{
-    margin-top: 12px;
-    padding: 0;
-}
+      section {
+        margin-top: 12px;
+        padding: 0;
+      }
 
-.single-column
-{
-    display: grid;
+      .single-column {
+        display: grid;
 
-    margin: 1em 1em 1em 0;
+        margin: 1em 1em 1em 0;
 
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1em;
-    grid-auto-rows: minmax(auto);
-}
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1em;
+        grid-auto-rows: minmax(auto);
+      }
 
-.five-column
-{
-    display: grid;
+      .five-column {
+        display: grid;
 
-    margin: 1em 1em 1em 0;
+        margin: 1em 1em 1em 0;
 
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1em;
-    grid-auto-rows: minmax(auto);
-}
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1em;
+        grid-auto-rows: minmax(auto);
+      }
 
+      section b {
+        display: block;
 
+        padding-left: 14px;
+      }
 
-section b
-{
-    display: block;
-
-    padding-left: 14px;
-}
-
-fieldset div,
-input,
-label
-{
-    cursor: pointer;
-}
-
+      fieldset div,
+      input,
+      label {
+        cursor: pointer;
+      }
     `,
   ];
 
