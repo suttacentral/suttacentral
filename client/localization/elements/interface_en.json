@@ -214,7 +214,7 @@
   "offline:downloadPaused": "Download paused.",
   "offline:downloadRootTexts": "Include root texts",
   "offline:downloadRootTextsDescription": "Select to download texts in root languages as well. This includes a Pali > {toLang} lookup dictionary. To change your lookup, click ",
-  "offline:downloadStarted": "Your download has commenced. You can keep using the site and we will let you know when it’s complete.",
+  "offline:downloadStarted": "Your download has now started. You can keep using the site and we will let you know when it’s complete.",
   "offline:downloading": "Downloading",
   "offline:extraFeatures": "If you want extra features, let us know.",
   "offline:language": "Language",
