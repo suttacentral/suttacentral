@@ -17,29 +17,68 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
     super.styles,
     typographyCommonStyles,
     css`
+      :host {
+        --mdc-theme-secondary: var(--sc-primary-accent-color);
+        --mdc-typography-font-family: var(--sc-sans-font);
+        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-typography-body2-font-weight: 550;
+        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
+      }
+
       fieldset {
+        font-family: var(--sc-sans-font);
+
         display: flex;
         flex-direction: row;
+
+        margin-top: 24px;
+        padding: 1em;
+
+        color: var(--sc-primary-text-color);
+        border-color: var(--sc-border-color);
+
+        gap: 2em;
+      }
+
+      legend {
+        padding: 0 1em;
+
+        color: var(--sc-secondary-text-color);
+        border-radius: 0.8em;
+        background-color: var(--sc-border-color);
+
+        font-variant-caps: all-small-caps;
+      }
+
+      section {
+        margin-top: 12px;
+        padding: 0;
       }
 
       .single-column {
         display: grid;
+
+        margin: 1em 1em 1em 0;
+
         grid-template-columns: repeat(1, 1fr);
         gap: 1em;
         grid-auto-rows: minmax(auto);
-        margin: 1em 1em 1em 0;
       }
 
       .five-column {
         display: grid;
+
+        margin: 1em 1em 1em 0;
+
         grid-template-columns: repeat(4, 1fr);
         gap: 1em;
         grid-auto-rows: minmax(auto);
-        margin: 1em 1em 1em 0;
       }
 
       section b {
         display: block;
+
+        padding-left: 14px;
       }
 
       fieldset div,
@@ -154,7 +193,7 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
     return html`
       <main>
         <fieldset>
-          <legend>Language options</legend>
+          <legend>Language options for search</legend>
           ${this.#rootLanguagesListTemplate()} ${this.#translationLanguagesListTemplate()}
         </fieldset>
       </main>
