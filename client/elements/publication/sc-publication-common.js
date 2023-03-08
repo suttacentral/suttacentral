@@ -41,16 +41,16 @@ export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-03-06'],
+  ['dn', '2023-03-08'],
   ['mn', '2023-03-06'],
-  ['sn', '2023-03-06'],
+  ['sn', '2023-03-08'],
   ['an', '2023-03-06'],
-  ['dhp', '2023-03-06'],
-  ['ud', '2023-03-06'],
-  ['iti', '2023-03-06'],
-  ['snp', '2023-03-06'],
-  ['thag', '2023-03-06'],
-  ['thig', '2023-03-06'],
+  ['dhp', '2023-03-07'],
+  ['ud', '2023-03-07'],
+  ['iti', '2023-03-07'],
+  ['snp', '2023-03-07'],
+  ['thag', '2023-03-07'],
+  ['thig', '2023-03-07'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
