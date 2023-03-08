@@ -209,7 +209,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <b>About the printed editions</b>
             <p>SuttaCentral produces PDF files and relies on third-parties for printing and distribution. </p>
             <p>Initial publishing is through Lulu, an online print-on-demand service. When you order a book, Lulu will print it and post it to you. Lulu has fixed charges for printing and postage. SuttaCentral receives a portion of the final price, which we use to pay our developers. </p>
-            <p>We intend to make other printing options avilable in the future.</p>
+            <p><a href='https://discourse.suttacentral.net/t/launching-suttacentral-editions/28456'>More details here.</a></p>
             </aside>
           </section>
           ${this.#allEditionsTemplate()}
