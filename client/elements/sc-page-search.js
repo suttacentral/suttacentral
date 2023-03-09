@@ -85,12 +85,16 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.loadingResults = true;
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
 
-    this.addEventListener('click', (e) => {
-      const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-      scActionItems?.hideItems();
+    this.addEventListener('click', e => {
+      this.#hideRelatedTopSheets();
     });
 
     this.actions.changeLinearProgressActiveState(this.loadingResults);
+  }
+
+  #hideRelatedTopSheets() {
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+    scActionItems?.hideItems();
   }
 
   static styles = [searchResultTableViewStyles, SCPageSearchStyles];
@@ -178,10 +182,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get searchResultTemplate() {
     return !this.loadingResults
       ? html`
-          ${this.searchResultHeadTemplate}
-          ${this.suttaplexTemplate}
-          ${this.searchResultListTemplate}
-          ${this.loadMoreButtonTemplate}
+          ${this.searchResultHeadTemplate} ${this.suttaplexTemplate}
+          ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
         `
       : '';
   }

@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
 import './sc-menu-more';
-import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 
 import '@material/mwc-list/mwc-list-item';
@@ -117,9 +116,13 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     });
 
     this.moreMenu.anchor.addEventListener('click', () => {
-      const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-      scActionItems?.hideTopSheets();
+      this.#hideTopSheets();
     });
+  }
+
+  #hideTopSheets() {
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+    scActionItems?.hideTopSheets();
   }
 
   openMoreMenu() {
@@ -127,6 +130,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   }
 
   openSearch() {
+    this.#hideTopSheets();
     const searchInputElement = this.shadowRoot.getElementById('search_input');
     if (searchInputElement.classList.contains('opened')) {
       this._startSearch();
@@ -160,6 +164,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   keypressHandler({ key }) {
     if (key === 'Enter') {
+      this.#hideTopSheets();
       this._startSearch();
     }
   }

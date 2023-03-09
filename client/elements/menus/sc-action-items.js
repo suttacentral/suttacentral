@@ -4,7 +4,6 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
-import { reduxActions } from '../addons/sc-redux-actions';
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
@@ -454,12 +453,14 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #onBtnSearchOptionsClick(e) {
+    this.#hideSearchFilter();
     const scSiteLayout = document.querySelector('sc-site-layout');
     const searchOptionsTopSheet = scSiteLayout.querySelector('#search-options');
     searchOptionsTopSheet.toggle();
   }
 
   #onBtnSearchFilterClick(e) {
+    this.#hideSearchOptions();
     const scSiteLayout = document.querySelector('sc-site-layout');
     const searchFilterTopSheet = scSiteLayout.querySelector('#search-filter');
     searchFilterTopSheet.toggle();
