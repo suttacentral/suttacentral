@@ -404,7 +404,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         ${navigationPublicationInfoStyles}
       </style>
       <a
-        href="https://staging.suttacentral.net/edition/${leaf.uid}/en/sujato"
+        href="https://suttacentral.net/edition/${leaf.uid}/en/sujato"
         class="editions-nav-notice-link"
       >
         <section class="editions-nav-notice">
