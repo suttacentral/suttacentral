@@ -490,17 +490,21 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword):
 def cut_highlight(content, hit, query):
     positions = []
     if is_chinese(query):
-        positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
+        positions = [m.start() for m in re.finditer(query, content, re.I)]
     else:
-        positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.IGNORECASE)]
-    # if content is not None and query in content:
+        positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.I)]
+        if not positions and is_pali(content):
+            content = convert_to_standard_roman(content)
+            positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.I)]
+
     if content is not None and positions:
-        # positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
         for position in positions[:3]:
             if not is_chinese(query):
                 paragraph = find_paragraph(content, position)
                 sentences = find_sentences_with_keyword(paragraph, query)
                 highlight = '...'.join(sentences)
+                if not highlight:
+                    highlight = paragraph
             else:
                 start = position - 100 if position > 100 else 0
                 end = min(position + 100, len(content))
@@ -511,6 +515,20 @@ def cut_highlight(content, hit, query):
 
             highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
             hit['highlight']['content'].append(highlight)
+
+
+def is_pali(content):
+    return any(vowel in content for vowel in ['ṁ', 'ā', 'ī', 'ū'])
+
+
+def convert_to_standard_roman(content):
+    converted_content = content
+    converted_content = converted_content.replace('ṁ', 'm')
+    converted_content = converted_content.replace('ā', 'a')
+    converted_content = converted_content.replace('ī', 'i')
+    converted_content = converted_content.replace('ū', 'u')
+    converted_content = converted_content.lower()
+    return converted_content
 
 
 def find_paragraph(text, position):
@@ -535,7 +553,7 @@ def find_sentences_with_keyword(input_string, keyword):
          A list of strings consisting of natural sentences containing the given keywords.
     """
     result = []
-    sentence_list = re.split(r'[.!?]+', input_string)
+    sentence_list = re.split(r'[.!?...]+', input_string)
     for sentence in sentence_list:
         if keyword in sentence:
             result.append(sentence.strip())
