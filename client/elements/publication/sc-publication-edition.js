@@ -357,7 +357,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         <td>${icon.html} Raw HTML file</td>
         <td>
           <a href=${this.#computeFileUrlByType('html')} class="download">
-            ${icon.file_download} Download
+            ${icon.file_download} Download <small>(right click → save)</small>
           </a>
         </td>
       </tr>
