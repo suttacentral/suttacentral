@@ -90,7 +90,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -204,7 +204,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         return true;
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -303,7 +303,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       const childrenData = await (await fetch(this._computeMenuApiUrl(childId))).json();
       return childrenData;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return {};
     }
   }

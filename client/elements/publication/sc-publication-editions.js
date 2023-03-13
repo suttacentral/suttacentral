@@ -72,7 +72,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       await this.#fetchEditionBlurbs('en');
       this.requestUpdate();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -100,7 +100,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       this.editionInfo = await (await fetch(`${API_ROOT}/publication/edition/${editionId}`)).json();
       this.webEditionInfo.push(this.editionInfo);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -110,7 +110,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
         await fetch(`${API_ROOT}/publication/edition/blurbs/${lang}`)
       ).json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -175,7 +175,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
-          <img class='main-image' src='/img/publication-pages/editions-kn-wet.jpg'>
+          <img class="main-image" src="/img/publication-pages/editions-kn-wet.jpg" />
           <p>
             The “Editions” series makes selected translations available as books in various formats,
             including print, PDF, and EPUB.
@@ -192,7 +192,8 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
           <section class="down-all">
             <ul>
               <li>
-                ${icon.translation} Order a printed copy or select files from the individual edition pages below.
+                ${icon.translation} Order a printed copy or select files from the individual edition
+                pages below.
               </li>
               <li>
                 ${icon.file_download}
@@ -206,10 +207,18 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               </li>
             </ul>
             <aside>
-            <b>About the printed editions</b>
-            <p>SuttaCentral produces PDF files and relies on third-parties for printing and distribution. </p>
-            <p>Initial publishing is through Lulu, an online print-on-demand service. When you order a book, Lulu will print it and post it to you. Lulu has fixed charges for printing and postage. SuttaCentral receives a portion of the final price, which we use to pay our developers. </p>
-            <p>We intend to make other printing options avilable in the future.</p>
+              <b>About the printed editions</b>
+              <p>
+                SuttaCentral produces PDF files and relies on third-parties for printing and
+                distribution.
+              </p>
+              <p>
+                Initial publishing is through Lulu, an online print-on-demand service. When you
+                order a book, Lulu will print it and post it to you. Lulu has fixed charges for
+                printing and postage. SuttaCentral receives a portion of the final price, which we
+                use to pay our developers.
+              </p>
+              <p>We intend to make other printing options avilable in the future.</p>
             </aside>
           </section>
           ${this.#allEditionsTemplate()}

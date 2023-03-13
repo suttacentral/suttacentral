@@ -99,7 +99,7 @@ export class SCStaticAbbreviations extends SCStaticPage {
     try {
       this.abbrTexts = await (await fetch(`${API_ROOT}/abbreviation_texts`)).json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -107,7 +107,7 @@ export class SCStaticAbbreviations extends SCStaticPage {
     try {
       this.abbrEditions = await (await fetch(`${API_ROOT}/abbreviation_editions`)).json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -115,7 +115,7 @@ export class SCStaticAbbreviations extends SCStaticPage {
     try {
       this.abbrSchools = await (await fetch(`${API_ROOT}/abbreviation_schools`)).json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

@@ -54,6 +54,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
     loadingResults: { type: Boolean },
     lastError: { type: Object },
     displayedLanguages: { type: Array },
+    displayHintOfNoResultInSelectedLanguages: { type: Boolean },
+    languagesOfFoundResult: { type: String },
   };
 
   constructor() {
@@ -84,6 +86,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.waitTimeAfterNewWordExpired = true;
     this.loadingResults = true;
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+    this.displayHintOfNoResultInSelectedLanguages = false;
 
     this.addEventListener('click', e => {
       this.#hideRelatedTopSheets();
@@ -104,7 +107,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       ${this.displayDataLoadError} ${this.offLineTemplate} ${this.#searchResultByAuthorTemplate()}
       ${this.#searchResultByVolpageTemplate()} ${this.#searchResultByCollectionTemplate()}
       ${this.#searchResultByListAuthorsTemplate()} ${this.generalSearchResultTemplate}
-      ${this._createMetaData()}
     `;
   }
 
@@ -121,22 +123,36 @@ class SCPageSearch extends LitLocalized(LitElement) {
       <div class="search-result-head">
         <h1 class="search-result-header">
           <span class="search-result-number">
-            ${this._calculateResultCount(this.resultCount)}
+            ${this.#calculateResultCount(this.resultCount)}
           </span>
           <span class="search-result-description">${this.localize('search:resultsFor')} </span>
           <span class="search-result-term">${this.searchQuery} </span> <span>in all languages</span>
         </h1>
       </div>
       <aside>${this.localize('search:hint')}</aside>
+      ${this.#notSearchResultFoundForSelectedLanguagesTemplate()}
     `;
   }
 
+  #notSearchResultFoundForSelectedLanguagesTemplate() {
+    if (this.displayHintOfNoResultInSelectedLanguages) {
+      return html`
+        <aside>
+          We found no results in the languages in your search language settings. But we did find
+          results in ${this.languagesOfFoundResult}, so here they are. If you want to search in
+          these languages, add them via the “languages” icon in the toolbar.
+        </aside>
+      `;
+    }
+    return '';
+  }
+
   get loadMoreButtonTemplate() {
-    return !this._areAllItemsLoaded()
+    return !this.#areAllItemsLoaded()
       ? html`
           <div id="load-more">
             <mwc-button
-              @click=${this._loadMoreData}
+              @click=${this.#loadMoreData}
               unelevated
               label=${this.localize('search:loadMore')}
             ></mwc-button>
@@ -153,7 +169,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
             <sc-suttaplex
               .item=${item}
               .parallels-opened=${false}
-              .difficulty=${this._computeItemDifficulty(
+              .difficulty=${this.#computeItemDifficulty(
                 item && item.difficulty ? item.difficulty : ''
               )}
               .expansion-data=${this.expansionReturns}
@@ -196,13 +212,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
       ? this.visibleSearchResults.map(
           item => html`
             <div
-              class="search-result-item ${this._calculateItemCategory(item)}"
+              class="search-result-item ${this.#calculateItemCategory(item)}"
               tabindex=${this.tabIndex}
             >
               <div class="padded-container">
-                <a class="search-result-link" href=${this._calculateLink(item)}>
+                <a class="search-result-link" href=${this.#calculateLink(item)}>
                   <div class="primary">
-                    <h2 class="search-result-title">${this._calculateTitle(item)}</h2>
+                    <h2 class="search-result-title">${this.#calculateTitle(item)}</h2>
                     <div class="all-dictionaries">
                       <span>All dictionaries</span>
                       ${icon.arrow_right}
@@ -210,13 +226,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
                   </div>
                   <div class="secondary">
                     <p class="search-result-division">
-                      ${unsafeHTML(this._calculateDivision(item))}
+                      ${unsafeHTML(this.#calculateDivision(item))}
                     </p>
                   </div>
                 </a>
                 <div class="secondary">
                   <p class="search-result-snippet">
-                    ${unsafeHTML(this._calculateSnippetContent(item.highlight?.content))}
+                    ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
                   </p>
                 </div>
               </div>
@@ -382,15 +398,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('search-filter-changed', this._calculateCurrentFilter);
+    this.addEventListener('search-filter-changed', this.#calculateCurrentFilter);
   }
 
   shouldUpdate(prevProps) {
     if (prevProps.has('searchQuery')) {
-      this._startNewSearchWithNewWord();
+      this.#startNewSearchWithNewWord();
     }
     if (prevProps.has('lastSearchResults')) {
-      this._populateList();
+      this.#populateList();
     }
     return true;
   }
@@ -439,7 +455,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   // Saves the fetched search results to be displayed in the list.
-  _populateList() {
+  #populateList() {
     const items = this.lastSearchResults;
     if (items.length === 0) {
       return;
@@ -451,7 +467,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.totalLoadedResults++;
       this.allSearchResults.push(items[i]);
       // If the filter fits, add to visible items
-      if (this._belongsToFilterScope(items[i])) {
+      if (this.#belongsToFilterScope(items[i])) {
         this.visibleSearchResults.push(items[i]);
       }
     }
@@ -474,14 +490,36 @@ class SCPageSearch extends LitLocalized(LitElement) {
         return true;
       });
     }
-    this.visibleSearchResults = searchResult;
+
+    if (
+      this.originLastSearchResults.length > 0 &&
+      (!searchResult ||
+        searchResult.length === 0 ||
+        (searchResult.length === 1 && searchResult[0].category === 'dictionary'))
+    ) {
+      this.displayHintOfNoResultInSelectedLanguages = true;
+      const languages = this.originLastSearchResults
+        .reduce((acc, item) => {
+          const lang = item.full_lang;
+          if (acc.indexOf(lang) === -1) {
+            acc.push(lang);
+          }
+          return acc;
+        }, [])
+        .join(', ');
+      this.languagesOfFoundResult = languages;
+      this.visibleSearchResults = this.originLastSearchResults;
+    } else {
+      this.displayHintOfNoResultInSelectedLanguages = false;
+      this.visibleSearchResults = searchResult;
+    }
   }
 
-  _loadMoreData() {
-    this._loadNextPage();
+  #loadMoreData() {
+    this.#loadNextPage();
   }
 
-  _loadNextPage() {
+  #loadNextPage() {
     this.currentPage++;
     this.actions.initiateSearch({
       limit: this.resultsPerLoad,
@@ -490,11 +528,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
       language: this.language,
       restrict: this.currentFilter,
     });
-    this._generateRequest();
+    this.#generateRequest();
   }
 
   // generates a new search request after a new search-word was typed.
-  _startNewSearchWithNewWord() {
+  #startNewSearchWithNewWord() {
     if (!this.isOnline || !this.searchQuery) {
       return;
     }
@@ -505,11 +543,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (filterMenu) {
       filterMenu.resetFilter();
     }
-    this._startNewSearch();
+    this.#startNewSearch();
   }
 
   // generates a new search request.
-  _startNewSearch() {
+  #startNewSearch() {
     if (!this.isOnline || !this.searchQuery) {
       return;
     }
@@ -520,10 +558,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
       language: this.language,
       restrict: this.currentFilter,
     });
-    this._generateRequest();
+    this.#generateRequest();
   }
 
-  _updateNav() {
+  #updateNav() {
     const navArray = store.getState().navigationArray;
     const currentPath = store.getState().currentRoute.path;
     navArray.length = 1;
@@ -544,42 +582,42 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   // Checks if the item's category fits in the current filter.
-  _belongsToFilterScope(item) {
-    return this._calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
+  #belongsToFilterScope(item) {
+    return this.#calculateItemCategory(item) === this.currentFilter || this.currentFilter === 'all';
   }
 
   // Formats the search result description snippet
-  _calculateSnippetContent(description) {
+  #calculateSnippetContent(description) {
     return description?.join(' ... ');
   }
 
   // Calls the input results when page is loaded
-  _generateRequest() {
-    if (!this.searchParams || !this.searchQuery || this._areAllItemsLoaded()) {
+  #generateRequest() {
+    if (!this.searchParams || !this.searchQuery || this.#areAllItemsLoaded()) {
       return;
     }
-    this._fetchExpansion();
-    this._fetchSearchResult();
-    this._updateNav();
+    this.#fetchExpansion();
+    this.#fetchSearchResult();
+    this.#updateNav();
   }
 
-  async _fetchExpansion() {
+  async #fetchExpansion() {
     try {
-      this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
+      this.expansionReturns = await (await fetch(this.#getExpansionUrl())).json();
     } catch (error) {
       this.lastError = error;
       console.error(error);
     }
   }
 
-  async _fetchSearchResult() {
-    let requestUrl = this._getUrl() || '';
+  async #fetchSearchResult() {
+    let requestUrl = this.#getUrl() || '';
     const bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
-    requestUrl = requestUrl + bindingChar + this._getQueryString();
+    requestUrl = requestUrl + bindingChar + this.#getQueryString();
     try {
       const searchResult = await (await fetch(requestUrl)).json();
-      this._didRespond(searchResult);
-      this._setProperties(searchResult);
+      this.#didRespond(searchResult);
+      this.#setProperties(searchResult);
     } catch (error) {
       this.lastError = error;
       console.error(error);
@@ -590,17 +628,18 @@ class SCPageSearch extends LitLocalized(LitElement) {
     super.updated(changedProps);
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
+      this.#createMetaData();
     }
   }
 
-  _didRespond(searchResult) {
+  #didRespond(searchResult) {
     const dicResult = searchResult.hits.find(item => item.category === 'dictionary');
     if (dicResult && dicResult.highlight.content[0] === '' && dicResult.highlight.detail) {
       dicResult.highlight.content[0] = dictionarySimpleItemToHtml(dicResult.highlight.detail[0]);
     }
   }
 
-  _setProperties(searchResult) {
+  #setProperties(searchResult) {
     this.suttaplex = searchResult.suttaplex;
     this.lastSearchResults = searchResult.hits;
     this.originLastSearchResults = searchResult.hits;
@@ -612,7 +651,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     });
   }
 
-  _getQueryString() {
+  #getQueryString() {
     const queryParts = [];
     let param;
     let value;
@@ -635,30 +674,30 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // listens to the search-menu and changes the items to be displayed accordingly to "all", "root texts",
   // "translations" or "dictionaries"
-  _calculateCurrentFilter(event) {
+  #calculateCurrentFilter(event) {
     if (!this.waitTimeAfterNewWordExpired) {
       return;
     }
     this.currentFilter = event.detail.searchView;
-    this._startNewSearch();
+    this.#startNewSearch();
   }
 
   // The endless scroll is dependant on a scroll event, but if there's less then 1 item
   // on a search result page, it won't trigger loading more, hence this function:
-  _loadMoreIfMinimumNotReached() {
-    if (this.visibleSearchResults.length < 1 && !this._areAllItemsLoaded()) {
-      this._loadNextPage();
+  #loadMoreIfMinimumNotReached() {
+    if (this.visibleSearchResults.length < 1 && !this.#areAllItemsLoaded()) {
+      this.#loadNextPage();
     }
   }
 
-  _areAllItemsLoaded() {
+  #areAllItemsLoaded() {
     return (
       (this.resultCount === 0 && this.currentPage > 0) ||
       (this.totalLoadedResults !== 0 && this.totalLoadedResults >= this.resultCount)
     );
   }
 
-  _calculateItemCategory(item) {
+  #calculateItemCategory(item) {
     if (item.category === 'dictionary') {
       return item.category;
     }
@@ -669,51 +708,51 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   // Determines the number of search results that have been found.
-  _calculateResultCount(data) {
+  #calculateResultCount(data) {
     return data || 0;
   }
 
   // If there is no title in the database, the division is the title
-  _calculateTitle(item) {
+  #calculateTitle(item) {
     if (item.category === 'dictionary') {
       return this.dictionaryTitles[item.heading.division];
     }
-    return item.heading?.title ? item.heading.title : this._getDivision(item);
+    return item.heading?.title ? item.heading.title : this.#getDivision(item);
   }
 
   // If there is a title, the division is the subtitle
-  _calculateDivision(item) {
+  #calculateDivision(item) {
     if (this.searchQuery?.includes('volpage:')) {
-      return `${this._getDivision(item)} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
+      return `${this.#getDivision(item)} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
     }
-    if (!this._getDivision(item) && !item.author) {
+    if (!this.#getDivision(item) && !item.author) {
       return ``;
     }
     if (item.author) {
-      return `${this._getDivision(item)} — ${item.author}`;
+      return `${this.#getDivision(item)} — ${item.author}`;
     }
     if (item.name) {
-      return `${this._getDivision(item)} — ${item.name}`;
+      return `${this.#getDivision(item)} — ${item.name}`;
     }
-    return `${this._getDivision(item)}`;
+    return `${this.#getDivision(item)}`;
   }
 
   #addHighlighting(text) {
     return html`<strong class="highlight">${text}</strong>`;
   }
 
-  _getDivision(item) {
-    return item.acronym ? this._convertAcronym(item.acronym) : this._transformId(item.uid);
+  #getDivision(item) {
+    return item.acronym ? this.#convertAcronym(item.acronym) : this.#transformId(item.uid);
   }
 
-  _convertAcronym(acronym) {
+  #convertAcronym(acronym) {
     if (acronym.match(/\/\//)) {
       return `${acronym.replace(/\/\//, ' (')})`;
     }
     return acronym;
   }
 
-  _transformId(rootId) {
+  #transformId(rootId) {
     if (!rootId || !this.expansionReturns || !this.expansionReturns[0]) {
       return '';
     }
@@ -742,19 +781,19 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  _calculateLink(item) {
+  #calculateLink(item) {
     return item.url;
   }
 
-  _getUrl() {
+  #getUrl() {
     return `${API_ROOT}/search/instant`;
   }
 
-  _getExpansionUrl() {
+  #getExpansionUrl() {
     return `${API_ROOT}/expansion`;
   }
 
-  _createMetaData() {
+  #createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
     const toolbarTitle = `${this.localize('search:search')}: ${this.searchQuery}`;
@@ -770,10 +809,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
       })
     );
     this.actions.changeToolbarTitle(toolbarTitle);
-    this._updateNav();
+    this.#updateNav();
   }
 
-  _computeItemDifficulty(difficulty) {
+  #computeItemDifficulty(difficulty) {
     if (!difficulty) return;
     if (difficulty.name) {
       return difficulty.name;

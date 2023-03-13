@@ -284,7 +284,7 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       }
       this.requestUpdate();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

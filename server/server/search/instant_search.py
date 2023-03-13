@@ -169,6 +169,19 @@ def generate_condition_combination_query_aql(condition_combination):
     aql = aql[:-4]
     aql += ''')'''
 
+    plurals = []
+    for keyword in condition_combination['or']:
+        plural = inflect.engine().plural(keyword)
+        if plural != keyword:
+            plurals.append(plural)
+
+    if plurals:
+        aql += ''' OR ('''
+        for plural in plurals:
+            aql += f'PHRASE(d.content, "{plural}", "common_text") OR '
+        aql = aql[:-4]
+        aql += ''')'''
+
     aql += '''
     )
     ''' + add_collection_condition_to_query_aql(condition_combination) + '''
@@ -613,13 +626,14 @@ def is_chinese(uchar):
 
 
 def extract_param(param):
+    param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
     author = re.search("author:(\w+)", param)
     if author:
-        result["author"] = author[1]
+        result["author"] = author[1].strip()
     collection = re.search("in:(\w+)", param)
     if collection:
-        result["collection"] = collection[1]
+        result["collection"] = collection[1].strip()
 
     if author or collection:
         extract_or_keywords(result, param)

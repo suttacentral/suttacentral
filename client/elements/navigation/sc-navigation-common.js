@@ -6,7 +6,7 @@ try {
   const allShortcuts = await (await fetch(`${API_ROOT}/shortcuts`)).json();
   shortcuts.push(...allShortcuts);
 } catch (error) {
-  console.log(error);
+  console.error(error);
 }
 
 const pitakaGuide = new Map();
@@ -16,7 +16,7 @@ try {
     pitakaGuide.set(guide.text_uid, guide.guide_uid);
   }
 } catch (error) {
-  console.log(error);
+  console.error(error);
 }
 
 export { pitakaGuide, shortcuts };
@@ -72,7 +72,7 @@ function genNavDetailNew(uid, currentURL, data, navArray, navigationIndex) {
       }
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
     });
 }
 
@@ -118,10 +118,10 @@ export function RefreshNavNew(uid, forceRefresh) {
           }
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
     });
 }

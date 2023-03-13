@@ -113,10 +113,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       try {
         this.editionDetail = await (await fetch(`${API_ROOT}/menu/${this.editionUid}`)).json();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -160,7 +160,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -173,7 +173,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
