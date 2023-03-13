@@ -239,8 +239,27 @@ def add_collection_condition_to_query_aql(condition_combination):
         ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
                            "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                            "lzh-upp", "san-mg", "san-lo"]
+        ebt_collections += fetch_children_by_uid("da-ot")
+        ebt_collections += fetch_children_by_uid("ma-ot")
+        ebt_collections += fetch_children_by_uid("sa-2")
+        ebt_collections += fetch_children_by_uid("sa-3")
+        ebt_collections += fetch_children_by_uid("sa-ot")
+        ebt_collections += fetch_children_by_uid("ea-ot")
+        ebt_collections += fetch_children_by_uid("up")
+        ebt_collections += fetch_children_by_uid("d")
         return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
     return ''
+
+
+def fetch_children_by_uid(uid):
+    db = get_db()
+    return list(
+        db.aql.execute(
+            "FOR doc IN 1..1 OUTBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges RETURN doc.uid",
+            bind_vars={'uid': uid},
+        )
+    )
+
 
 def aql_return_part(include_content=True):
     aql = '''
