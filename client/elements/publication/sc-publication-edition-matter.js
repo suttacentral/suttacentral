@@ -46,7 +46,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         this.#updateNav();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -67,7 +67,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -122,7 +122,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
       }
       this.requestUpdate();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

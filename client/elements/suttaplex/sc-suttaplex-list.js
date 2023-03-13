@@ -89,7 +89,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       /* webpackPrefetch: true */
       './card/sc-suttaplex.js'
     ).catch(err => {
-      console.log(err);
+      console.error(err);
     });
   }
 
@@ -217,7 +217,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     const firstAcronym = this.#getFirstAcronymFromSuttaPlexList(suttaPlexList);
     const parentAcronym = firstAcronym.slice(0, firstAcronym.lastIndexOf(' ')) || this.categoryId;
     try {
-      const responseData = await fetch(`${API_ROOT}/fallen_leaves_suttaplex/${this.categoryId}?language=${this.language}`).then(r => r.json());
+      const responseData = await fetch(
+        `${API_ROOT}/fallen_leaves_suttaplex/${this.categoryId}?language=${this.language}`
+      ).then(r => r.json());
       if (responseData?.length > 0) {
         for (const suttaPlex of responseData) {
           suttaPlex.isFallenLeaf = true;
@@ -236,7 +238,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         suttaPlexList.sort((a, b) => a.index - b.index);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

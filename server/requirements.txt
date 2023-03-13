@@ -26,6 +26,7 @@ idna==3.4
 imagesize==1.4.1
 importlib-metadata==5.1.0
 importlib-resources==5.10.0
+inflect==6.0.2
 iniconfig==1.1.1
 itsdangerous==2.1.2
 jaconv==0.3

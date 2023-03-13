@@ -11,7 +11,7 @@ try {
   }
   fallenLeaves = fallenLeaves.flat(Infinity);
 } catch (error) {
-  console.log(error);
+  console.error(error);
 }
 
 export { allFallenLeaves };

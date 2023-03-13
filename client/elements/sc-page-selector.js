@@ -351,7 +351,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
             this._setActionItemsDisplayState();
           })
           .catch(err => {
-            console.log(err);
+            console.error(err);
           });
       }
     }

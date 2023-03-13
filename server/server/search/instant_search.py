@@ -3,6 +3,7 @@ from zhconv import convert as zhconv_convert
 import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries
+import inflect
 
 
 def generate_general_query_aql():
@@ -167,6 +168,19 @@ def generate_condition_combination_query_aql(condition_combination):
         aql += f'PHRASE(d.content, "{keyword}", "common_text") OR '
     aql = aql[:-4]
     aql += ''')'''
+
+    plurals = []
+    for keyword in condition_combination['or']:
+        plural = inflect.engine().plural(keyword)
+        if plural != keyword:
+            plurals.append(plural)
+
+    if plurals:
+        aql += ''' OR ('''
+        for plural in plurals:
+            aql += f'PHRASE(d.content, "{plural}", "common_text") OR '
+        aql = aql[:-4]
+        aql += ''')'''
 
     aql += '''
     )
@@ -478,6 +492,10 @@ def cut_highlights(content, hit, query):
 
 def highlight_by_multiple_possible_keyword(content, hit, keyword):
     possible_word_list = [f'{keyword}']
+    plural = inflect.engine().plural(keyword)
+    if plural != keyword:
+        possible_word_list.append(plural)
+
     for word in possible_word_list:
         cut_highlight(content, hit, word)
 
@@ -485,23 +503,75 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword):
 def cut_highlight(content, hit, query):
     positions = []
     if is_chinese(query):
-        positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
+        positions = [m.start() for m in re.finditer(query, content, re.I)]
     else:
-        positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.IGNORECASE)]
-    # if content is not None and query in content:
-    if content is not None and positions:
-        # positions = [m.start() for m in re.finditer(query, content, re.IGNORECASE)]
-        for position in positions[:3]:
-            start = position - 100 if position > 100 else 0
-            end = min(position + 100, len(content))
-            highlight = content[start:end]
-            highlight = re.sub(r'^.*?[\.\?!…“]', '', highlight)
+        positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.I)]
+        if not positions and is_pali(content):
+            content = convert_to_standard_roman(content)
+            positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.I)]
 
-            if last_punctuation := re.search(r'[\.\?!…,”]', highlight[::-1]):
-                highlight = highlight[:len(highlight) - last_punctuation.start()]
+    if content is not None and positions:
+        for position in positions[:3]:
+            if not is_chinese(query):
+                paragraph = find_paragraph(content, position)
+                sentences = find_sentences_with_keyword(paragraph, query)
+                highlight = '...'.join(sentences)
+                if not highlight:
+                    highlight = paragraph
+            else:
+                start = position - 100 if position > 100 else 0
+                end = min(position + 100, len(content))
+                highlight = content[start:end]
+                highlight = re.sub(r'^.*?[\.\?!…“]', '', highlight)
+                if last_punctuation := re.search(r'[\.\?!…,”]', highlight[::-1]):
+                    highlight = highlight[:len(highlight) - last_punctuation.start()]
 
             highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
             hit['highlight']['content'].append(highlight)
+
+
+def is_pali(content):
+    return any(vowel in content for vowel in ['ṁ', 'ā', 'ī', 'ū'])
+
+
+def convert_to_standard_roman(content):
+    converted_content = content
+    converted_content = converted_content.replace('ṁ', 'm')
+    converted_content = converted_content.replace('ā', 'a')
+    converted_content = converted_content.replace('ī', 'i')
+    converted_content = converted_content.replace('ū', 'u')
+    converted_content = converted_content.lower()
+    return converted_content
+
+
+def find_paragraph(text, position):
+    paragraphs = text.split("\n\n")
+    for p in paragraphs:
+        start = text.find(p)
+        end = start + len(p)
+        if start <= position < end:
+            return p
+    return ""
+
+
+def find_sentences_with_keyword(input_string, keyword):
+    """
+         Find natural sentences containing the given keyword from a string.
+
+         parameter:
+         input_string: string, the sentence to find
+         keyword: string, the keyword to find
+
+         return value:
+         A list of strings consisting of natural sentences containing the given keywords.
+    """
+    result = []
+    sentence_list = re.split(r'[.!?...]+', input_string)
+    for sentence in sentence_list:
+        if keyword in sentence:
+            result.append(sentence.strip())
+
+    return result
 
 
 def compute_url(hit):
@@ -556,13 +626,14 @@ def is_chinese(uchar):
 
 
 def extract_param(param):
+    param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
     author = re.search("author:(\w+)", param)
     if author:
-        result["author"] = author[1]
+        result["author"] = author[1].strip()
     collection = re.search("in:(\w+)", param)
     if collection:
-        result["collection"] = collection[1]
+        result["collection"] = collection[1].strip()
 
     if author or collection:
         extract_or_keywords(result, param)
