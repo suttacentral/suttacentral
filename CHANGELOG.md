@@ -1,6 +1,10 @@
 
 # SuttaCentral ChangeLog
 
+## 2023.10.13
+
+- Enhance search and fix bugs
+
 ## 2023.03.03
 
 - Adjust to support multiple volumes
