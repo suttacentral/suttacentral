@@ -236,16 +236,13 @@ def add_collection_condition_to_query_aql(condition_combination):
         collection = condition_combination['collection']
         if collection != 'ebt':
             return f'AND STARTS_WITH(d.uid, "{collection}")'
-        ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
-                           "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+        ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
+                           "thig", "thag", "up", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                            "lzh-upp", "san-mg", "san-lo"]
         ebt_collections += fetch_children_by_uid("da-ot")
         ebt_collections += fetch_children_by_uid("ma-ot")
-        ebt_collections += fetch_children_by_uid("sa-2")
-        ebt_collections += fetch_children_by_uid("sa-3")
         ebt_collections += fetch_children_by_uid("sa-ot")
         ebt_collections += fetch_children_by_uid("ea-ot")
-        ebt_collections += fetch_children_by_uid("up")
         ebt_collections += fetch_children_by_uid("d")
         return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
     return ''
@@ -331,7 +328,8 @@ def instant_search_query(query, lang, restrict, limit, offset):
         if (not query.startswith('volpage:')) and (not query.startswith('author:') and (not query.startswith('in:'))):
             hits = hits[int(offset):int(offset) + int(limit)]
 
-        highlight_keyword(hits, query)
+        if original_query != 'list authors':
+            highlight_keyword(hits, query)
 
     suttaplex = fetch_suttaplex(db, lang, query)
     suttaplexs = [suttaplex]
