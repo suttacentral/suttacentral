@@ -306,7 +306,7 @@ export const typographyCommonStyles = css`
 
         vertical-align: super;
 
-        lline-height: 1;
+        line-height: 1;
 
         text-decoration: none;
 
