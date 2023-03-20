@@ -1,6 +1,5 @@
 import { LitElement, html } from 'lit';
 import { BrowserMicroSentryClient } from '@micro-sentry/browser';
-import { throttle } from 'throttle-debounce';
 
 import { icon } from '../img/sc-icon';
 import './sc-page-selector';
@@ -14,6 +13,7 @@ import { store } from '../redux-store';
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
+import rafThrottle from '../utils/rafThrottle';
 
 const microSentryClient = new BrowserMicroSentryClient({
   dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
@@ -147,25 +147,16 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       this.actions.changeDisplaySuttaInfoState(false);
     });
 
-    let scrollDistance = 0;
+    // handles scroll-based universal toolbar animation on home page
     document.addEventListener(
       'scroll',
-      throttle(500, () => {
-        if (!this.toolbarPosition.scrollForToolbar) {
+      rafThrottle(() => {
+        if (!this.toolbarPosition.scrollForToolbar || this.changedRoute.path !== '/') {
           return;
         }
-        const syntheticEvent = new WheelEvent('syntheticWheel', { deltaY: 4, deltaMode: 0 });
-        scrollDistance += syntheticEvent.deltaY;
-        if (this.changedRoute.path !== '/' && scrollDistance !== 20) {
-          return;
-        }
-        scrollDistance = 0;
         this._setUniversalToolbarTransformStyles();
 
-        if (
-          this.changedRoute.path === '/' &&
-          (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)
-        ) {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
           this._universalToolbarTransform();
         } else {
           this._resetUniversalToolbar();
@@ -174,40 +165,50 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     );
 
     let lastScrollTop = 0;
+    // handles scroll-based universal toolbar animation on pages other than the homepage
     document.addEventListener(
       'scroll',
-      throttle(500, () => {
-        if (!this.toolbarPosition.scrollForToolbar) {
+      rafThrottle(() => {
+        // if settings specify that scrolling is not the basis for toolbar visibility
+        // or if the current route is the home page return
+        if (!this.toolbarPosition.scrollForToolbar || this.changedRoute.path === '/') {
           return;
         }
-        const { alwaysShowUniversalToolbar } = store.getState();
+
+        const {
+          displaySettingMenu,
+          displaySuttaParallels,
+          displaySuttaToC,
+          displaySuttaInfo,
+          alwaysShowUniversalToolbar,
+        } = store.getState();
+
+        if (displaySettingMenu || displaySuttaParallels || displaySuttaInfo || displaySuttaToC)
+          return;
+
         if (alwaysShowUniversalToolbar) {
           return;
         }
-        const { displaySettingMenu, displaySuttaParallels, displaySuttaToC, displaySuttaInfo } =
-          store.getState();
-        if (
-          this.changedRoute.path !== '/' &&
-          !displaySettingMenu &&
-          !displaySuttaParallels &&
-          !displaySuttaInfo &&
-          !displaySuttaToC
-        ) {
-          const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          if (currentScrollTop > lastScrollTop) {
-            const universalToolbarHeight = 156;
-            document.getElementById(
-              'universal_toolbar'
-            ).style.transform = `translateY(-${universalToolbarHeight}px)`;
-          }
-          if (currentScrollTop < 10) {
-            this._resetUniversalToolbar();
-          }
-          lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+
+        const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const universalToolbarEl = document.getElementById('universal_toolbar');
+
+        const isScrollingDown = currentScrollTop > lastScrollTop;
+        if (isScrollingDown) {
+          universalToolbarEl.style.transition =
+            'transform 300ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, opacity 0s ease 300ms';
+          universalToolbarEl.style.transform = `translateY(-100%)`;
+        } else if (currentScrollTop < 10) {
+          this._resetUniversalToolbar();
+        } else {
+          document.getElementById('universal_toolbar').style.transition =
+            'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, opacity 0ms ease 300ms, background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms';
+          universalToolbarEl.style.transform = `translateY(0)`;
         }
+
+        lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
       })
     );
-
     window.addEventListener('resize', () => {
       document.getElementById('universal_toolbar').style.transition = '';
       document.getElementById('breadCrumb').style.transition = '';
@@ -334,11 +335,11 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _setUniversalToolbarTransformStyles() {
-    const transitionStyle = 'transform 200ms ease-in-out';
+    const transitionStyle = 'transform 300ms cubic-bezier(0.4, 0, 0.6, 1) 0ms';
     document.getElementById('universal_toolbar').style.transition = transitionStyle;
     document.getElementById('breadCrumb').style.transition = transitionStyle;
     document.getElementById('mainTitle').style.transition = transitionStyle;
-    document.getElementById('subTitle').style.transition = 'transform 300ms ease-in-out';
+    document.getElementById('subTitle').style.transition = transitionStyle;
   }
 
   _universalToolbarTransform() {
