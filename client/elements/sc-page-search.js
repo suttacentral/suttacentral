@@ -231,7 +231,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                   </div>
                 </a>
                 <div class="secondary">
-                  <p class="search-result-snippet">
+                  <p class="search-result-snippet highlightShrink">
                     ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
                   </p>
                 </div>
@@ -265,7 +265,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                     item => html`
                       <tr>
                         <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
-                        <td>${item.heading.title}</td>
+                        <td>${item.heading?.title ? item.heading.title : ''}</td>
                         <td>${item.author}</td>
                       </tr>
                     `
@@ -491,31 +491,34 @@ class SCPageSearch extends LitLocalized(LitElement) {
       });
     }
 
-    if (
-      this.originLastSearchResults.length > 0 &&
-      (!searchResult ||
-        searchResult.length === 0 ||
-        (searchResult.length === 1 && searchResult[0].category === 'dictionary'))
-    ) {
-      this.displayHintOfNoResultInSelectedLanguages = true;
-      const languages = this.originLastSearchResults
-        .reduce((acc, item) => {
-          const lang = item.full_lang;
-          if (acc.indexOf(lang) === -1) {
-            acc.push(lang);
-          }
-          return acc;
-        }, [])
-        .join(', ');
-      this.languagesOfFoundResult = languages;
-      this.visibleSearchResults = this.originLastSearchResults;
-    } else {
-      this.displayHintOfNoResultInSelectedLanguages = false;
-      this.visibleSearchResults = searchResult;
+    if (!this.loadMoreButtonClicked) {
+      if (
+        this.originLastSearchResults.length > 0 &&
+        (!searchResult ||
+          searchResult.length === 0 ||
+          (searchResult.length === 1 && searchResult[0].category === 'dictionary'))
+      ) {
+        this.displayHintOfNoResultInSelectedLanguages = true;
+        const languages = this.originLastSearchResults
+          .reduce((acc, item) => {
+            const lang = item.full_lang;
+            if (acc.indexOf(lang) === -1) {
+              acc.push(lang);
+            }
+            return acc;
+          }, [])
+          .join(', ');
+        this.languagesOfFoundResult = languages;
+        this.visibleSearchResults = this.originLastSearchResults;
+      } else {
+        this.displayHintOfNoResultInSelectedLanguages = false;
+        this.visibleSearchResults = searchResult;
+      }
     }
   }
 
   #loadMoreData() {
+    this.loadMoreButtonClicked = true;
     this.#loadNextPage();
   }
 
@@ -616,6 +619,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     requestUrl = requestUrl + bindingChar + this.#getQueryString();
     try {
       const searchResult = await (await fetch(requestUrl)).json();
+      // console.log('searchResult', searchResult);
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
@@ -630,6 +634,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.requestUpdate();
       this.#createMetaData();
     }
+    this.#addHighlightClickEvent();
   }
 
   #didRespond(searchResult) {
@@ -847,6 +852,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByInTitle() {
     return this.searchQuery?.includes('title:');
+  }
+
+  #addHighlightClickEvent() {
+    this.shadowRoot.querySelectorAll('.search-result-snippet').forEach(element => {
+      // eslint-disable-next-line no-param-reassign
+      element.onclick = () => {
+        element.classList.toggle('highlightShrink');
+      };
+    });
   }
 }
 

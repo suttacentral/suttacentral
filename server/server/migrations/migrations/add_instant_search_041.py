@@ -9,6 +9,7 @@ class SecondMigration(Migration):
         db = get_db()
 
         db.create_collection('text_contents', False)
+        db.create_collection('segmented_text_contents', False)
 
     def create_analyzers(self):
         db = get_db()
@@ -62,6 +63,18 @@ class SecondMigration(Migration):
             ["frequency", "norm", "position"],
         )
 
+        db.create_analyzer(
+            "text_pali",
+            "text",
+            {
+                "locale": "pali",
+                "case": "lower",
+                "accent": False,
+                "stemming": False,
+            },
+            ["frequency", "norm"],
+        )
+
         db.create_analyzer("splitter", "delimiter", {"delimiter": "-"})
 
     def create_view(self):
@@ -73,20 +86,26 @@ class SecondMigration(Migration):
                 "lang": {
                     "analyzers": ["identity"]
                 },
+                "segmented_text": {
+                    "analyzers": ["identity"]
+                },
                 "name": {
-                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                },
+                "heading": {
+                    "fields": {"title": {"analyzers": ["normalize", "common_ngram", "common_text", "identity"]}}
                 },
                 "author": {
-                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                    "analyzers": ["identity"]
                 },
                 "author_uid": {
-                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                    "analyzers": ["identity"]
                 },
                 "volpage": {
-                    "analyzers": ["normalize", "common_ngram", "common_text"]
+                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
                 },
                 "content": {
-                    "analyzers": ["common_text", "text_zh"]
+                    "analyzers": ["common_text", "text_zh", "text_pali"]
                 }
             }
         }
@@ -94,8 +113,16 @@ class SecondMigration(Migration):
             "links": {
                 "names": common_fields,
                 "super_nav_details": common_fields,
-                "text_contents": common_fields
+                "text_contents": common_fields,
+                "segmented_text_contents": common_fields
+            }
+        }
+
+        segmented_view = {
+            "links": {
+                "segmented_text_contents": common_fields
             }
         }
 
         get_db().create_arangosearch_view("instant_search", view)
+        get_db().create_arangosearch_view("instant_segmented_search", segmented_view)
