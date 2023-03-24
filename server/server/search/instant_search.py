@@ -1,5 +1,3 @@
-from typing import List, Any
-
 from common.arangodb import get_db
 from zhconv import convert as zhconv_convert
 import re
@@ -16,7 +14,6 @@ def generate_general_query_aql(query):
         OR PHRASE(d.name, @query, "common_text") OR PHRASE(d.heading.title, @query, "common_text")
         OR d.uid == @query  
     '''
-
     aql += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
 
     possible_pali_words = []
@@ -33,9 +30,8 @@ def generate_general_query_aql(query):
         aql = aql[:-4]
         aql += ''')'''
 
-    aql += ''')
-        
-        ''' + aql_return_part(True) + '''
+    aql += ''')    
+    ''' + aql_return_part(True) + '''
     '''
     return aql
 
@@ -49,7 +45,6 @@ def generate_author_query_aql():
         + exclude_segmented_text_aql(True)
         + '''
         FILTER d.author_uid != null
-        SORT d.uid
         '''
         + aql_return_part(False)
         + '''
@@ -62,7 +57,6 @@ def generate_title_query_aql():
         '''
         FOR d IN instant_search
         SEARCH PHRASE(d.name, @query, "common_text")
-        SORT d.uid
         '''
         + aql_return_part(False)
         + '''
@@ -79,7 +73,6 @@ def generate_collection_query_aql():
         + exclude_segmented_text_aql(True)
         + '''
         FILTER d.author_uid != null
-        SORT d.uid
         '''
         + aql_return_part(False)
         + '''
@@ -131,7 +124,6 @@ def generate_volpage_query_aql(possible_volpages):
     aql = aql[:-4]
     aql += '''
     )
-    SORT d.uid
     ''' + aql_return_part(False) + '''
     '''
     return aql
@@ -140,7 +132,7 @@ def generate_volpage_query_aql(possible_volpages):
 def generate_multi_keyword_query_aql(keywords):
     aql = '''
     FOR d IN instant_search
-    SEARCH (
+    SEARCH (PHRASE(d.content, @query, "common_text") OR 
     '''
     aql += '''('''
     for keyword in keywords:
@@ -150,7 +142,7 @@ def generate_multi_keyword_query_aql(keywords):
 
     aql += ''' OR ('''
     for keyword in keywords:
-        aql += f'PHRASE(d.content, "{keyword}", "common_text") OR '
+        aql += f'PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%") OR '
     aql = aql[:-4]
     aql += ''')'''
 
@@ -172,8 +164,7 @@ def generate_multi_keyword_query_aql(keywords):
 
     aql += '''
     )
-    ''' + exclude_segmented_text_aql(True) + '''
-    SORT d.uid
+
     ''' + aql_return_part(True) + '''
     '''
     return aql
@@ -197,7 +188,7 @@ def generate_condition_combination_query_aql(condition_combination):
 
     aql += '''('''
     for keyword in keywords:
-        aql += f'(PHRASE(d.content, "{keyword}", "common_text") OR  LIKE(d.segmented_text, "%{keyword}%")) OR '
+        aql += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) OR '
     aql = aql[:-4]
     aql += ''')'''
 
@@ -206,7 +197,6 @@ def generate_condition_combination_query_aql(condition_combination):
     ''' + add_collection_condition_to_query_aql(condition_combination) + '''
     ''' + add_author_condition_to_query_aql(condition_combination) + '''
     )
-    SORT d.uid
 
     ''' + aql_return_part(True) + '''
     '''
@@ -218,7 +208,6 @@ def general_query_aql_template():
         '''
         FOR d IN instant_search
         SEARCH (PHRASE(d.content, @query, "common_text") OR PHRASE(d.name, @query, "common_text") OR d.uid == @query)
-        SORT d.uid
         ''' + aql_return_part(True) + '''
     '''
     )
@@ -301,14 +290,12 @@ def aql_return_part(include_content=True):
 def generate_chinese_keyword_query_aql(keywords):
     aql = '''
     FOR d IN instant_search
-    SEARCH
+    SEARCH PHRASE(d.content, @query, "common_text") OR 
     '''
     for keyword in keywords:
         aql += f'PHRASE(d.content, "{keyword}", "common_text") OR '
     aql = aql[:-4]
     aql += '''
-    FILTER d.is_segmented == False
-    SORT d.uid
     ''' + aql_return_part(True) + '''
     '''
     return aql
@@ -321,8 +308,6 @@ def instant_search_query(query, lang, restrict, limit, offset):
     hits = []
     original_query = query
     if restrict != 'dictionaries':
-        suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
-
         search_aql = generate_general_query_aql(query)
         bind_param = {
             'query': query,
@@ -333,7 +318,6 @@ def instant_search_query(query, lang, restrict, limit, offset):
         else:
             bind_param, query, search_aql = compute_query_aql(bind_param, lang, query, search_aql)
 
-        print(search_aql)
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
         total = len(hits)
@@ -349,6 +333,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
     # if original_query.startswith('title:'):
     #     suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     # suttaplexs.extend(fetch_suttaplex_by_name(db, lang, query))
+    suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
 
     lookup_dictionary(hits, lang, query, restrict)
     if original_query != 'list authors':
@@ -360,11 +345,9 @@ def instant_search_query(query, lang, restrict, limit, offset):
 
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
-    global exclude_segmented_text
     suttaplex = fetch_suttaplex(db, lang, query)
     if not suttaplex:
         suttaplex = fetch_suttaplex_by_name(db, lang, f'{query}sutta')
-    exclude_segmented_text = bool(suttaplex)
     suttaplexs = [suttaplex]
     if original_query.startswith('title:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
@@ -418,10 +401,8 @@ def compute_complex_query_aql(bind_param, condition_combination, lang, query, se
 
 
 def compute_query_aql(bind_param, lang, query, search_aql):
-
     query, search_aql = generate_aql_by_zhhant_and_zhhans_keywords(query, search_aql)
     query, search_aql = generate_aql_by_author(query, search_aql)
-    print(query)
     query, search_aql = generate_aql_by_volpage(query, search_aql)
     query, search_aql = generate_aql_by_multi_chinese_keywords(query, search_aql)
     query, search_aql = generate_aql_by_or_operators(query, search_aql)
@@ -474,7 +455,6 @@ def sort_hits(hits, query):
     # Prioritize items that contain both numbers and characters
     sorted_lst = sorted(sorted_lst, key=lambda x: uid_key(x['uid']))
 
-    #把sorted_lst 分为两个列表，一个存放uid中包含数字的，一个存放uid中不包含数字的
     sorted_lst1 = []
     sorted_lst2 = []
     for item in sorted_lst:
@@ -499,16 +479,14 @@ def uid_key(uid):
 
 
 def get_uid(dic):
-    # 提取uid中的字母和数字
     uid = dic['uid']
     letter_part = ''.join([c for c in uid if c.isalpha()])
     number_part = uid[len(letter_part):]
 
-    # 将数字字符串转换为可以比较的数字类型
-    if '-' in number_part:  # 处理"1-10"这样的数字字符串
+    if '-' in number_part:
         start, end = number_part.split('-')
-        num = float(start)  # 以开始数字作为代表
-    elif number_part.count('.') > 1:  # 处理"1.2.3"这样的数字字符串
+        num = float(start)
+    elif number_part.count('.') > 1:
         num = number_part.split('.')[0]
     else:
         num = float(number_part) if number_part else 0
@@ -568,15 +546,11 @@ def generate_aql_by_title(query, search_aql):
 def generate_aql_by_volpage(query, search_aql):
     vol_page_number = re.search(r'\d+', query)
     if query.startswith('volpage:'):
-        query = query[8:]
-        if re.search(r'[asmd] \w+ \d+', query):
-            query = re.sub(r'[asmd] \w+ \d+',
-                           lambda x: x.group().replace('a', 'AN').replace('s', 'SN').replace('m', 'MN').replace(
-                               'd', 'DN'), query)
-        elif re.search(r'[ASMD] \w+ \d+', query):
-            query = re.sub(r'[ASMD] \w+ \d+',
-                           lambda x: x.group().replace('A', 'AN').replace('S', 'SN').replace('M', 'MN').replace(
-                               'D', 'DN'), query)
+        query = query[8:].strip()
+        pattern = r"^([asmdASMD])\s"
+        replacement = r"\1n "
+        query = re.sub(pattern, replacement, query)
+
         possible_volpages = []
         if vol_page_number is not None:
             vol_page_no = re.search(r'\d+', query).group()
