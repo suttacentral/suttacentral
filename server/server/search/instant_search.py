@@ -16,13 +16,12 @@ def generate_general_query_aql(query):
     '''
     aql += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
 
-    possible_pali_words = []
-    possible_pali_words.append(query)
-    # vowel_combine = vowel_combinations(query)
-    # possible_pali_words.extend(vowel_combine)
-    # if len(possible_pali_words) > 15:
-    #     possible_pali_words = possible_pali_words[:15]
-    #     possible_pali_words.append(query)
+    possible_pali_words = [query]
+    vowel_combine = vowel_combinations(query)
+    possible_pali_words.extend(vowel_combine)
+    if len(possible_pali_words) > 15:
+        possible_pali_words = possible_pali_words[:15]
+        possible_pali_words.append(query)
     if possible_pali_words and len(possible_pali_words) > 0:
         aql += ''' OR ('''
         for pali_word in possible_pali_words:
@@ -562,10 +561,9 @@ def generate_aql_by_volpage(query, search_aql):
                 for i in range(int(vol_page_no) - 5, int(vol_page_no) + 4)
                 if i > 0
             )
-            search_aql = generate_volpage_query_aql(possible_volpages)
         else:
             possible_volpages.append(query)
-            search_aql = generate_volpage_query_aql(possible_volpages)
+        search_aql = generate_volpage_query_aql(possible_volpages)
     return query, search_aql
 
 
