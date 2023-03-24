@@ -73,6 +73,7 @@ def generate_collection_query_aql():
         + exclude_segmented_text_aql(True)
         + '''
         FILTER d.author_uid != null
+        SORT d.uid
         '''
         + aql_return_part(False)
         + '''
@@ -124,6 +125,7 @@ def generate_volpage_query_aql(possible_volpages):
     aql = aql[:-4]
     aql += '''
     )
+    SORT d.uid
     ''' + aql_return_part(False) + '''
     '''
     return aql
@@ -164,6 +166,7 @@ def generate_multi_keyword_query_aql(keywords):
 
     aql += '''
     )
+    SORT d.uid
 
     ''' + aql_return_part(True) + '''
     '''
@@ -197,7 +200,7 @@ def generate_condition_combination_query_aql(condition_combination):
     ''' + add_collection_condition_to_query_aql(condition_combination) + '''
     ''' + add_author_condition_to_query_aql(condition_combination) + '''
     )
-
+    SORT d.uid
     ''' + aql_return_part(True) + '''
     '''
     return aql
