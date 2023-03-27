@@ -29,6 +29,32 @@ FOR text IN html_text
         }
 '''
 
+TEXTS_BY_LANG_FOR_SEARCH = '''
+FOR text IN html_text
+    FILTER text.lang == @lang
+    LET nav_doc = (
+        RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
+    )[0]
+    
+    LET full_lang = (
+        FOR lang IN language
+        FILTER lang.uid == text.lang
+        RETURN lang.name
+    )[0]
+    
+    RETURN {
+        file_path: text.file_path,
+        uid: text.uid,
+        author: text.author,
+        author_uid: text.author_uid,
+        author_short: text.author_short,
+        root_lang: nav_doc.root_lang,
+        lang: text.lang,
+        full_lang: full_lang,
+        acronym: nav_doc.acronym
+    }
+'''
+
 BILARA_TEXT_BY_LANG = '''
 FOR text IN sc_bilara_texts
     FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids)
@@ -74,7 +100,7 @@ FOR text IN sc_bilara_texts
     }
 '''
 
-BILARA_TEXT_BY_LANG_EXCLUDE_SITE = '''
+BILARA_TEXT_BY_LANG_FOR_SEARCH = '''
 FOR text IN sc_bilara_texts
     FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids) AND ('site' NOT IN text.muids)
     AND NOT CONTAINS(text.file_path, 'blurb')
@@ -106,6 +132,12 @@ FOR text IN sc_bilara_texts
     LET mtime_doc = (
         RETURN DOCUMENT(CONCAT('mtimes/', REGEX_REPLACE(SUBSTRING(text.file_path, FIND_FIRST(text.file_path, 'sc_bilara_data')), '/', '_')))
     )[0]
+    
+    LET full_lang = (
+        FOR lang IN language
+        FILTER lang.uid == text.lang
+        RETURN lang.name
+    )[0]
 
     RETURN {
         uid: text.uid,
@@ -114,9 +146,10 @@ FOR text IN sc_bilara_texts
         author: author_doc.long_name,
         author_uid: author_doc.uid,
         author_short: author_doc.short_name,
+        lang: text.lang,
+        full_lang: full_lang,
         root_lang: nav_doc.root_lang,
-        acronym: nav_doc.acronym,
-        mtime: mtime_doc.mtime  / 1000000000
+        acronym: nav_doc.acronym
     }
 '''
 

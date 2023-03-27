@@ -10,11 +10,16 @@ import copy
 def generate_general_query_aql(query):
     aql = '''
         FOR d IN instant_search
-        SEARCH (PHRASE(d.content, @query, "common_text") 
+        SEARCH (d.uid NOT LIKE '%-name%' AND PHRASE(d.content, @query, "common_text") 
         OR PHRASE(d.name, @query, "common_text") OR PHRASE(d.heading.title, @query, "common_text")
         OR d.uid == @query  
     '''
     aql += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
+
+    if re.search(r'[\s-]', query) and  not is_chinese(query):
+        new_word = re.sub(r'[\s-]', '', query)
+        aql += f'OR LIKE(d.volpage, "%{new_word}%") OR ' \
+               f'PHRASE(d.name,"%{new_word}%", "common_text") '
 
     possible_pali_words = [query]
     vowel_combine = vowel_combinations(query)
@@ -31,6 +36,7 @@ def generate_general_query_aql(query):
 
     aql += ''')    
     ''' + aql_return_part(True) + '''
+    
     '''
     return aql
 
@@ -184,6 +190,10 @@ def generate_condition_combination_query_aql(condition_combination):
         keywords.append(keyword)
         keywords.extend(vowel_combine)
 
+        if re.search(r'[\s-]', keyword) and not is_chinese(keyword):
+            keywords.append(re.sub(r'[\s-]', '', keyword))
+            keywords.append(re.sub(r'[\s-]', '-', keyword))
+
     keywords = list(set(keywords))
     if len(keywords) > 15:
         keywords = keywords[:15]
@@ -260,17 +270,11 @@ def fetch_children_by_uid(uid):
 def aql_return_part(include_content=True):
     aql = '''
 
-    LET full_lang = (
-        FOR lang IN language
-        FILTER lang.uid == d.lang
-        RETURN lang.name
-    )[0]
-
     return {
         acronym: d.acronym,
         uid: d.uid,
         lang: d.lang,
-        full_lang: full_lang,
+        full_lang: d.full_lang,
         name: d.name,
         volpage: d.volpage,
         author: d.author,
@@ -331,10 +335,6 @@ def instant_search_query(query, lang, restrict, limit, offset):
         if original_query != 'list authors':
             highlight_keyword(hits, query)
 
-    # suttaplexs = [suttaplex]
-    # if original_query.startswith('title:'):
-    #     suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
-    # suttaplexs.extend(fetch_suttaplex_by_name(db, lang, query))
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
 
     lookup_dictionary(hits, lang, query, restrict)
@@ -358,18 +358,13 @@ def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
 
 
 def merge_duplicate_hits(hits):
-    # 创建一个空字典用于存储合并后的结果
     merged = {}
-    # 遍历hits列表中的每个item
     other_type_hits = []
     for item in hits:
         if 'uid' in item and 'author_uid' in item and 'highlight' in item and 'content' in item['highlight']:
-            # 获取uid和author_uid作为字典的键
             key = (item['uid'], item['author_uid'])
-            # 如果键已经在字典中，就把content添加到对应的值中
             if key in merged:
                 merged[key]['highlight']['content'].extend(item['highlight']['content'])
-            # 否则就把item作为新的值添加到字典中
             else:
                 merged[key] = item
         else:
@@ -606,6 +601,10 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_t
         possible_word_list.extend(vowel_combine)
     possible_word_list.append(keyword.capitalize())
 
+    if re.search(r'[\s-]', keyword) and not is_chinese(keyword):
+        possible_word_list.append(re.sub(r'[\s-]', '', keyword))
+        possible_word_list.append(re.sub(r'[\s-]', '-', keyword))
+
     for word in possible_word_list:
         cut_highlight(content, hit, word, is_segmented_text)
         if hit['highlight']['content']:
@@ -826,4 +825,3 @@ def vowel_combinations(string):
     helper(string, 0)
 
     return result
-
