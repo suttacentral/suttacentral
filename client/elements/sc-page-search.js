@@ -599,6 +599,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!this.searchParams || !this.searchQuery || this.#areAllItemsLoaded()) {
       return;
     }
+    this.actions.changeLinearProgressActiveState(true);
     this.#fetchExpansion();
     this.#fetchSearchResult();
     this.#updateNav();
@@ -619,7 +620,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     requestUrl = requestUrl + bindingChar + this.#getQueryString();
     try {
       const searchResult = await (await fetch(requestUrl)).json();
-      // console.log('searchResult', searchResult);
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
