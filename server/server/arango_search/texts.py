@@ -6,7 +6,7 @@ import regex
 from tqdm import tqdm
 
 from common.arangodb import get_db
-from common.queries import CURRENT_MTIMES, CURRENT_BILARA_MTIMES, TEXTS_BY_LANG, BILARA_TEXT_BY_LANG
+from common.queries import CURRENT_MTIMES, CURRENT_BILARA_MTIMES, TEXTS_BY_LANG_FOR_SEARCH, BILARA_TEXT_BY_LANG_FOR_SEARCH
 from math import log
 
 logger = logging.getLogger('arango_search.texts')
@@ -25,10 +25,12 @@ class TextLoader:
     @staticmethod
     def truncate_text_contents():
         get_db().collection('text_contents').truncate()
+        get_db().collection('segmented_text_contents').truncate()
 
-    def load_all_text_to_db(self):
-        self.load_bilara_texts()
-        self.load_html_texts()
+    def import_all_text_to_db(self):
+        self.import_bilara_texts()
+        self.import_html_texts()
+        self.import_segmented_texts()
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
@@ -41,8 +43,8 @@ class TextLoader:
         string = string.replace('\xad', '')
         return string.strip()
 
-    def load_bilara_texts(self):
-        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG, bind_vars={'lang': self.lang}))
+    def import_bilara_texts(self):
+        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
         if not bilara_texts:
             return
 
@@ -55,16 +57,17 @@ class TextLoader:
             text_info = {
                 'acronym': text['acronym'],
                 'uid': uid,
-                'lang': self.lang,
+                'lang': text['lang'],
+                'full_lang': text['full_lang'],
                 'author': text['author'],
                 'author_uid': text['author_uid'],
                 'author_short': text['author_short'],
                 'is_root': self.lang == text['root_lang'],
-                'mtime': int(text['mtime']),
                 'heading': {
                     'title': self.fix_text(text['title']) if text['title'] else text['uid']
                 },
-                'content': '\n\n'.join(strings.values())
+                'content': '\n\n'.join(strings.values()),
+                'is_segmented': False,
             }
 
             segmented_texts.append(text_info)
@@ -73,8 +76,40 @@ class TextLoader:
             print(f'Import {len(segmented_texts)} {self.lang} segmented texts to arangoDB')
             get_db().collection('text_contents').import_bulk(segmented_texts)
 
-    def load_html_texts(self):
-        html_texts = list(get_db().aql.execute(TEXTS_BY_LANG, bind_vars={'lang': self.lang}))
+    def import_segmented_texts(self):
+        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        if not bilara_texts:
+            return
+
+        segmented_texts = []
+        for text in bilara_texts:
+            uid = text['uid']
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+            for key, value in strings.items():
+                segmented_text_info = {
+                    'acronym': text['acronym'],
+                    'uid': uid,
+                    'lang': text['lang'],
+                    'full_lang': text['full_lang'],
+                    'author': text['author'],
+                    'author_uid': text['author_uid'],
+                    'author_short': text['author_short'],
+                    'is_root': self.lang == text['root_lang'],
+                    'heading': {
+                        'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                    },
+                    'segmented_uid': key,
+                    'segmented_text': value,
+                    'content': '',
+                    'is_segmented': True
+                }
+                segmented_texts.append(segmented_text_info)
+            get_db().collection('segmented_text_contents').import_bulk(segmented_texts)
+            segmented_texts = []
+
+    def import_html_texts(self):
+        html_texts = list(get_db().aql.execute(TEXTS_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
         if not html_texts:
             return
 
@@ -93,13 +128,14 @@ class TextLoader:
                 text_info = {
                     'acronym': text['acronym'],
                     'uid': uid,
-                    'lang': self.lang,
+                    'lang': text['lang'],
+                    'full_lang': text['full_lang'],
                     'root_lang': root_lang,
                     'author': text['author'],
                     'author_uid': author_uid,
                     'author_short': text['author_short'],
                     'is_root': self.lang == root_lang,
-                    'mtime': int(text['mtime']),
+                    'is_segmented': False,
                 }
                 text_info |= self.extract_fields_from_html(html_bytes)
                 legacy_texts.append(text_info)
@@ -187,4 +223,4 @@ def update(force=False):
     languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
     for lang in tqdm(languages):
         loader = TextLoader(lang)
-        loader.load_all_text_to_db()
+        loader.import_all_text_to_db()

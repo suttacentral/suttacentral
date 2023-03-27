@@ -359,4 +359,12 @@ export const searchResultTableViewStyles = css`
   .uid:visited {
     text-decoration-color: var(--sc-primary-color-dark);
   }
+
+  .highlightShrink {
+    display: -webkit-box;
+    overflow: hidden;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
 `;
