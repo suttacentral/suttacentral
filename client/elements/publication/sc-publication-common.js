@@ -42,7 +42,7 @@ export const publicationLastGeneratedFormattedDate = formatDate(publicationLastG
 
 export const lastUpdatedDateOfCollections = new Map([
   ['dn', '2023-03-20'],
-  ['mn', '2023-03-20'],
+  ['mn', '2023-03-27'],
   ['sn', '2023-03-20'],
   ['an', '2023-03-13'],
   ['dhp', '2023-03-13'],
