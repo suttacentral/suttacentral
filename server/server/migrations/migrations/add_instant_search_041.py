@@ -93,6 +93,9 @@ class SecondMigration(Migration):
                 "name": {
                     "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
                 },
+                "acronym": {
+                    "analyzers": ["identity"]
+                },
                 "heading": {
                     "fields": {"title": {"analyzers": ["normalize", "common_ngram", "common_text", "identity"]}}
                 },
