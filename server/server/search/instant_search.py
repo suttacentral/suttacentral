@@ -69,12 +69,13 @@ def generate_title_query_aql():
     )
 
 
-def generate_collection_query_aql():
+def generate_collection_query_aql(query):
+    condition = f'SEARCH (STARTS_WITH(d.uid, @query) AND STARTS_WITH(d.acronym, "{query.upper()} ")) '
     return (
         '''
         FOR d IN instant_search
-        SEARCH STARTS_WITH(d.uid, @query)
         '''
+        + condition
         + exclude_segmented_text_aql(True)
         + '''
         FILTER d.author_uid != null
@@ -243,9 +244,9 @@ def add_volpage_condition_to_query_aql(volpage):
 def add_collection_condition_to_query_aql(condition_combination):
     if 'collection' not in condition_combination:
         return ''
-    collection = condition_combination['collection']
+    collection = condition_combination['collection'].lower()
     if collection != 'ebt':
-        return f'AND STARTS_WITH(d.uid, "{collection}")'
+        return f'AND (STARTS_WITH(d.uid, "{collection}")  AND STARTS_WITH(d.acronym, "{collection.upper()} "))'
     ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
                        "thig", "thag", "up", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                        "lzh-upp", "san-mg", "san-lo"]
@@ -340,7 +341,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
     lookup_dictionary(hits, lang, query, restrict)
     if original_query != 'list authors':
         hits = merge_duplicate_hits(hits)
-        if int(offset) > 0 and 'category' in hits[0] and hits[0]['category'] and hits[0]['category'] == 'dictionary':
+        if int(offset) > 0 and len(hits) > 0 and 'category' in hits[0] and hits[0]['category'] and hits[0]['category'] == 'dictionary':
             hits = hits[1:]
         total = len(hits) if total < int(limit) else total - int(limit) + len(hits)
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
@@ -500,8 +501,8 @@ def generate_aql_by_zhhant_and_zhhans_keywords(query, search_aql):
 def generate_aql_by_collection(query, search_aql):
     if query.startswith('in:'):
         # search_aql = INSTANT_SEARCH_QUERY_BY_COLLECTION
-        search_aql = generate_collection_query_aql()
-        query = query[3:]
+        query = query[3:].lower()
+        search_aql = generate_collection_query_aql(query)
     return query, search_aql
 
 
@@ -649,7 +650,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
 
 
 def is_pali(content):
-    return any(vowel in content for vowel in ['ṁ', 'ā', 'ī', 'ū'])
+    return any(vowel in content for vowel in ['ṁ', 'ā', 'ī', 'ū', 'ṅ', 'ḷ', 'ṭ', 'ň', 'ñ'])
 
 
 def convert_to_standard_roman(content):
