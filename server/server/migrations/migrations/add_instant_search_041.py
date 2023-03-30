@@ -119,7 +119,16 @@ class SecondMigration(Migration):
                 "super_nav_details": common_fields,
                 "text_contents": common_fields,
                 "segmented_text_contents": common_fields
-            }
+            },
+            "primarySort": [
+                {"field": "uid", "direction": "asc"},
+                {"field": "lang", "direction": "asc"}
+            ],
+            "storedValues": [
+                {"fields": ["uid", "lang", 'acronym', 'volpage'], "compression": "lz4"}
+            ],
+            "conditionOptimization": "auto",
+            "countApproximate": "cost"
         }
 
         segmented_view = {

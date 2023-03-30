@@ -16,7 +16,7 @@ def generate_general_query_aql(query):
     '''
     aql += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
 
-    if re.search(r'[\s-]', query) and  not is_chinese(query):
+    if re.search(r'[\s-]', query) and not is_chinese(query):
         new_word = re.sub(r'[\s-]', '', query)
         aql += f'OR LIKE(d.volpage, "%{new_word}%") OR ' \
                f'PHRASE(d.name,"%{new_word}%", "common_text") '
@@ -34,11 +34,23 @@ def generate_general_query_aql(query):
         aql = aql[:-4]
         aql += ''')'''
 
-    aql += ''')    
+    aql += ''') 
+    SORT d.uid
+            
     ''' + aql_return_part(True) + '''
     
     '''
     return aql
+
+
+def fetch_record_count(condition):
+    aql = f'''
+        FOR d IN instant_search
+        {condition}
+        COLLECT WITH COUNT INTO length
+        RETURN length
+    '''
+    return list(get_db().aql.execute(aql))
 
 
 def generate_author_query_aql():
