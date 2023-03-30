@@ -1,6 +1,25 @@
 
 # SuttaCentral ChangeLog
 
+## 2023.03.30
+
+- Improve search speed.
+
+## 2023.03.29
+
+- Fix: In:MN returns nothing AND in:mn returns suttas both in MN and mnd.
+
+## 2023.03.27
+
+- Add an index of segmented text to search so that partial word matches can be done.
+- In the search, make changes to the ranges that `EBT` includes.
+- Searching for "firefly" "fire-fly" and "fire fly" should return the same results.
+- Optimize Search UI.
+
+## 2023.03.20
+
+- fix: fixes bugs with scroll-based toolbar animation improves anim.
+
 ## 2023.03.13
 
 - Enhance search and fix bugs
