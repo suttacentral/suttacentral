@@ -1,5 +1,6 @@
 import logging
 import json
+import time
 
 import lxml.html
 import regex
@@ -7,7 +8,7 @@ from tqdm import tqdm
 
 from common.arangodb import get_db
 from common.queries import CURRENT_MTIMES, CURRENT_BILARA_MTIMES, TEXTS_BY_LANG_FOR_SEARCH, BILARA_TEXT_BY_LANG_FOR_SEARCH
-from math import log
+
 
 logger = logging.getLogger('arango_search.texts')
 
@@ -19,13 +20,15 @@ class TextLoader:
     numstriprex = regex.compile(r'(?=\S*\d)\S+')
 
     def __init__(self, lang):
-        self.lang = lang
+        self.lang = lang['uid']
+        self.full_lang = lang['name']
         super().__init__()
 
     @staticmethod
     def truncate_text_contents():
         get_db().collection('text_contents').truncate()
         get_db().collection('segmented_text_contents').truncate()
+
 
     def import_all_text_to_db(self):
         self.import_bilara_texts()
@@ -73,7 +76,7 @@ class TextLoader:
             segmented_texts.append(text_info)
 
         if segmented_texts:
-            print(f'Import {len(segmented_texts)} {self.lang} segmented texts to arangoDB')
+            print(f'Import {len(segmented_texts)} {self.full_lang} segmented texts to arangoDB')
             get_db().collection('text_contents').import_bulk(segmented_texts)
 
     def import_segmented_texts(self):
@@ -143,7 +146,7 @@ class TextLoader:
                 logger.exception(f'{text["uid"]}, {e}')
 
         if legacy_texts:
-            print(f'Import {len(legacy_texts)} {self.lang} legacy texts to arangoDB')
+            print(f'Import {len(legacy_texts)} {self.full_lang} legacy texts to arangoDB')
             get_db().collection('text_contents').import_bulk(legacy_texts)
 
     def extract_fields_from_html(self, data):
@@ -196,31 +199,14 @@ class TextLoader:
                 'division': division,
                 'subhead': [e.text_content().strip() for e in others],
             },
-            'boost': self.boost_factor(content),
         }
-
-    def boost_factor(self, content):
-        boost = self.length_boost(len(content))
-        if len(content) < 500:
-            content = content.casefold()
-            if 'preceding' in content or 'identical' in content:
-                boost = boost * 0.4
-        return boost
-
-    def length_boost(self, length, midpoint=250):
-        return length / midpoint if length < midpoint else 0.5 + 1 / (1 + abs(log(length / (10 * midpoint), 10)))
 
 
 def update(force=False):
-    def sort_key(lang):
-        if lang == 'en':
-            return 0
-        return 1 if lang == 'pli' else 10
-
     db = get_db()
     TextLoader.truncate_text_contents()
-
-    languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
+    time.sleep(5)
+    languages = list(db.aql.execute('FOR l IN language SORT l.uid RETURN {uid: l.uid, name: l.name}'))
     for lang in tqdm(languages):
         loader = TextLoader(lang)
         loader.import_all_text_to_db()
