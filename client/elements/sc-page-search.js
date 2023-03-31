@@ -216,20 +216,29 @@ class SCPageSearch extends LitLocalized(LitElement) {
               tabindex=${this.tabIndex}
             >
               <div class="padded-container">
-                <a class="search-result-link" href=${this.#calculateLink(item)}>
-                  <div class="primary">
-                    <h2 class="search-result-title">${this.#calculateTitle(item)}</h2>
-                    <div class="all-dictionaries">
-                      <span>All dictionaries</span>
-                      ${icon.arrow_right}
+                <div class="item-head">
+                  <a class="search-result-link" href=${this.#calculateLink(item)}>
+                    <div class="primary">
+                      <h2 class="search-result-title">${this.#calculateTitle(item)}</h2>
+
+                      <div class="all-dictionaries">
+                        <span>All dictionaries</span>
+                        ${icon.arrow_right}
+                      </div>
                     </div>
-                  </div>
-                  <div class="secondary">
-                    <p class="search-result-division">
-                      ${unsafeHTML(this.#calculateDivision(item))}
-                    </p>
-                  </div>
-                </a>
+                    <div class="secondary">
+                      <p class="search-result-division">
+                        ${unsafeHTML(this.#calculateDivision(item))}
+                      </p>
+                    </div>
+                  </a>
+                  <a class="parallels-link" href=${this.#calculateParallelsLink(item)}>
+                    <div class="container">
+                      ${icon.parallels}
+                      <span class="parallels-label">Parallels</span>
+                    </div>
+                  </a>
+                </div>
                 <div class="secondary">
                   <p class="search-result-snippet highlightShrink">
                     ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
@@ -788,6 +797,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #calculateLink(item) {
     return item.url;
+  }
+
+  #calculateParallelsLink(item) {
+    return item.uid;
   }
 
   #getUrl() {

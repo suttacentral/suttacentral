@@ -367,4 +367,27 @@ export const searchResultTableViewStyles = css`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  .parallels-label {
+    display: block;
+    text-align: center;
+    margin-top: 4px;
+    font-size: 2px;
+  }
+
+  .parallels-link {
+    text-decoration: none; !important;
+    color: var(--sc-secondary-text-color);
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .item-head {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
