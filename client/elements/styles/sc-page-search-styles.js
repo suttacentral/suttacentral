@@ -380,7 +380,7 @@ export const searchResultTableViewStyles = css`
     color: var(--sc-secondary-text-color);
   }
 
-  .container {
+  .parallels-btn-container {
     display: flex;
     flex-direction: column;
     align-items: center;
