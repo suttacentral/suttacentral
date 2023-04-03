@@ -3,7 +3,6 @@ from zhconv import convert as zhconv_convert
 import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries
-import inflect
 import copy
 
 
@@ -18,8 +17,10 @@ def generate_general_query_aql(query):
 
     if re.search(r'[\s-]', query) and not is_chinese(query):
         new_word = re.sub(r'[\s-]', '', query)
-        aql += f'OR LIKE(d.volpage, "%{new_word}%") OR ' \
-               f'PHRASE(d.name,"%{new_word}%", "common_text") '
+        aql += f'OR LIKE(d.volpage, "%{new_word}%") ' \
+               f'OR PHRASE(d.name,"%{new_word}%", "common_text") ' \
+               f'OR PHRASE(d.content, "%{new_word}%", "common_text") ' \
+               f'OR LIKE(d.segmented_text, "%{new_word}%") '
 
     possible_pali_words = [query]
     vowel_combine = vowel_combinations(query)
@@ -36,7 +37,7 @@ def generate_general_query_aql(query):
 
     aql += ''') 
     SORT d.uid
-            
+
     ''' + aql_return_part(True) + '''
     
     '''
@@ -446,7 +447,7 @@ def highlight_keyword(hits, query):
 def sort_hits(hits, query):
     ebt_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
                     "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "san-mg", "san-lo","up" "t25", "t24", "t23", "t22", "t21", "t20", "t19", "t18", "t17",
+                    "lzh-upp", "san-mg", "san-lo", "up" "t25", "t24", "t23", "t22", "t21", "t20", "t19", "t18", "t17",
                     "t16", "t15", "t14", "t13", "t12", "t11", "t10", "t9", "t8", "t7", "t6", "t5", "t4", "t3", "t2",
                     "t98", "t97", "t96", "t95", "t94", "t93", "t92", "t91", "t90", "t89", "t88", "t87", "t86", "t85",
                     "t84", "t83", "t82", "t81", "t80", "t79", "t78", "t77", "t76", "t75", "t74", "t73", "t72", "t71",
@@ -656,7 +657,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     if last_punctuation := re.search(r'[\.\?!…,”]', highlight[::-1]):
                         highlight = highlight[:len(highlight) - last_punctuation.start()]
 
-                highlight = re.sub(query, f' <strong class="highlight">{query}</strong> ', highlight, flags=re.I)
+                highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
                 hit['highlight']['content'].append(highlight)
                 hit['highlight']['content'] = list(set(hit['highlight']['content']))
 
