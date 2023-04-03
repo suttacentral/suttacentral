@@ -125,7 +125,7 @@ class SecondMigration(Migration):
                 {"field": "lang", "direction": "asc"}
             ],
             "storedValues": [
-                {"fields": ["uid", "lang", 'acronym', 'volpage'], "compression": "lz4"}
+                {"fields": ["uid", "lang", 'acronym', 'volpage', 'author_uid'], "compression": "lz4"}
             ],
             "conditionOptimization": "auto",
             "countApproximate": "cost"
