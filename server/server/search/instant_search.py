@@ -630,12 +630,12 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_t
         possible_word_list.extend(vowel_combine)
 
     if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
-        possible_word_list.extend(en_dict.suggest(keyword))
+        if ' ' in keyword:
+            possible_word_list.extend(en_dict.suggest(keyword.replace(" ", "")))
+        else:
+            possible_word_list.extend(en_dict.suggest(keyword))
 
     possible_word_list.append(keyword.capitalize())
-
-    if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
-        possible_word_list.extend(en_dict.suggest(keyword))
 
     for word in possible_word_list:
         cut_highlight(content, hit, word, is_segmented_text)
