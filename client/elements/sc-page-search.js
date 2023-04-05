@@ -800,7 +800,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #calculateParallelsLink(item) {
-    return item.uid;
+    return `${item.uid}?view=normal`;
   }
 
   #getUrl() {

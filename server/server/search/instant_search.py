@@ -2,25 +2,33 @@ from common.arangodb import get_db
 from zhconv import convert as zhconv_convert
 import re
 from common.queries import SUTTAPLEX_LIST
-from search import dictionaries
-import copy
+from search import dictionaries, constant
+
+import enchant
+en_dict = enchant.Dict("en_US")
 
 
 def generate_general_query_aql(query):
     aql = '''
         FOR d IN instant_search
-        SEARCH (d.uid NOT LIKE '%-name%' AND PHRASE(d.content, @query, "common_text") 
+        SEARCH (PHRASE(d.content, @query, "common_text") 
         OR PHRASE(d.name, @query, "common_text") OR PHRASE(d.heading.title, @query, "common_text")
         OR d.uid == @query  
     '''
     aql += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
 
-    if re.search(r'[\s-]', query) and not is_chinese(query):
-        new_word = re.sub(r'[\s-]', '', query)
-        aql += f'OR LIKE(d.volpage, "%{new_word}%") ' \
-               f'OR PHRASE(d.name,"%{new_word}%", "common_text") ' \
-               f'OR PHRASE(d.content, "%{new_word}%", "common_text") ' \
-               f'OR LIKE(d.segmented_text, "%{new_word}%") '
+    if en_dict.check(query) or en_dict.check(query.replace(" ", "")):
+        possible_synonyms = en_dict.suggest(query)
+        possible_synonyms.append(query)
+        if len(possible_synonyms) > 0:
+            aql += ''' OR ('''
+            for synonym in possible_synonyms:
+                aql += f'LIKE(d.volpage, "%{synonym}%") ' \
+                       f'OR PHRASE(d.name,"%{synonym}%", "common_text") ' \
+                       f'OR PHRASE(d.content, "%{synonym}%", "common_text") ' \
+                       f'OR LIKE(d.segmented_text, "%{synonym}%") OR '
+            aql = aql[:-4]
+            aql += ''')'''
 
     possible_pali_words = [query]
     vowel_combine = vowel_combinations(query)
@@ -35,7 +43,8 @@ def generate_general_query_aql(query):
         aql = aql[:-4]
         aql += ''')'''
 
-    aql += ''') 
+    aql += ''' AND !LIKE(d.uid, '%-name%')) 
+    
     SORT d.uid
 
     ''' + aql_return_part(True) + '''
@@ -204,9 +213,8 @@ def generate_condition_combination_query_aql(condition_combination):
         keywords.append(keyword)
         keywords.extend(vowel_combine)
 
-        if re.search(r'[\s-]', keyword) and not is_chinese(keyword):
-            keywords.append(re.sub(r'[\s-]', '', keyword))
-            keywords.append(re.sub(r'[\s-]', '-', keyword))
+        if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
+            keywords.extend(en_dict.suggest(keyword))
 
     keywords = list(set(keywords))
     if len(keywords) > 15:
@@ -343,22 +351,29 @@ def instant_search_query(query, lang, restrict, limit, offset):
         total = len(hits)
 
         hits = hits[int(offset):int(offset) + int(limit)]
-
+        
+        hits = filter_search_result(hits)
         hits = sort_hits(hits, original_query)
 
-        if original_query != 'list authors':
+        if original_query != constant.CMD_LIST_AUTHORS:
             highlight_keyword(hits, query)
 
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
 
     lookup_dictionary(hits, lang, query, restrict)
-    if original_query != 'list authors':
+    if original_query != constant.CMD_LIST_AUTHORS:
         hits = merge_duplicate_hits(hits)
         if int(offset) > 0 and len(hits) > 0 and 'category' in hits[0] and hits[0]['category'] and hits[0]['category'] == 'dictionary':
             hits = hits[1:]
         total = len(hits) if total < int(limit) else total - int(limit) + len(hits)
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
 
+
+def filter_search_result(hits):
+    for hit in hits:
+        if 'uid' in hit and '-name' in hit['uid']:
+            hits.remove(hit)
+    return hits
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     suttaplex = fetch_suttaplex(db, lang, query)
@@ -512,7 +527,7 @@ def generate_aql_by_zhhant_and_zhhans_keywords(query, search_aql):
 
 
 def generate_aql_by_collection(query, search_aql):
-    if query.startswith('in:'):
+    if query.startswith(constant.CMD_IN):
         # search_aql = INSTANT_SEARCH_QUERY_BY_COLLECTION
         query = query[3:].lower()
         search_aql = generate_collection_query_aql(query)
@@ -520,7 +535,7 @@ def generate_aql_by_collection(query, search_aql):
 
 
 def generate_aql_by_list_authors(query, search_aql):
-    if query == 'list authors':
+    if query == constant.CMD_LIST_AUTHORS:
         search_aql = LIST_AUTHORS
         query = ''
     return query, search_aql
@@ -541,7 +556,7 @@ def generate_aql_by_or_operators(query, search_aql):
 
 
 def generate_aql_by_author(query, search_aql):
-    if query.startswith('author:'):
+    if query.startswith(constant.CMD_AUTHOR):
         search_aql = generate_author_query_aql()
         query = query[7:]
     return query, search_aql
@@ -556,7 +571,7 @@ def generate_aql_by_title(query, search_aql):
 
 def generate_aql_by_volpage(query, search_aql):
     vol_page_number = re.search(r'\d+', query)
-    if query.startswith('volpage:'):
+    if query.startswith(constant.CMD_VOLPAGE):
         query = query[8:].strip()
         pattern = r"^([asmdASMD])\s"
         replacement = r"\1n "
@@ -613,11 +628,14 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_t
     possible_word_list = [f'{keyword}']
     if vowel_combine := vowel_combinations(keyword):
         possible_word_list.extend(vowel_combine)
+
+    if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
+        possible_word_list.extend(en_dict.suggest(keyword))
+
     possible_word_list.append(keyword.capitalize())
 
-    if re.search(r'[\s-]', keyword) and not is_chinese(keyword):
-        possible_word_list.append(re.sub(r'[\s-]', '', keyword))
-        possible_word_list.append(re.sub(r'[\s-]', '-', keyword))
+    if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
+        possible_word_list.extend(en_dict.suggest(keyword))
 
     for word in possible_word_list:
         cut_highlight(content, hit, word, is_segmented_text)
