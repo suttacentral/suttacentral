@@ -44,7 +44,8 @@ from common.queries import (
     AVAILABLE_VOICES,
     CANDIDATE_AUTHORS,
     VAGGA_CHILDREN,
-    ABBREVIATION_SUPER_NAME_ACRONYM
+    ABBREVIATION_SUPER_NAME_ACRONYM,
+    POSSIBLE_UIDS,
 )
 
 from common.utils import (
@@ -274,6 +275,14 @@ class Menu(Resource):
         else:
             return list(db.aql.execute(MENU, bind_vars=bind_vars))
 
+        # if not submenu_id:
+        #     return list(db.aql.execute(MENU, bind_vars=bind_vars))
+        # bind_vars['submenu_id'] = submenu_id
+        # result = list(db.aql.execute(SUBMENU, bind_vars=bind_vars))
+        # if result[0]['children']:
+        #     result[0]['children'].reverse()
+        # return result
+
 
 class TipitakaMenu(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
@@ -391,6 +400,9 @@ class SuttaplexList(Resource):
                         result['translated_title'] = json_load(file_result['translation_text'])[result['uid']+':0.3']
 
         data = flat_tree(data)
+
+        # if len(data) > 1:
+        #     data[1:] = data[1:][::-1]
 
         return data, 200
 
@@ -1347,3 +1359,11 @@ class MapData(Resource):
         db = get_db()
         data = db.collection('map_data').all()
         return list(data), 200
+
+
+class PossibleUids(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        db = get_db()
+        data = list(db.aql.execute(POSSIBLE_UIDS, bind_vars={'uid': uid}))
+        return data, 200

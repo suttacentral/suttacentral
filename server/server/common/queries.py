@@ -1629,3 +1629,10 @@ FOR name_doc IN super_name
         acronym: acronym
     }
 '''
+
+POSSIBLE_UIDS = '''
+FOR doc IN 1..100 OUTBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+        SORT doc.uid
+        LIMIT 10
+        RETURN doc.uid
+'''

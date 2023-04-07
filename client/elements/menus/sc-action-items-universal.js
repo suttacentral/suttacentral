@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 
 import './sc-menu-more';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { API_ROOT } from '../../constants';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
@@ -80,6 +81,10 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       --mdc-menu-min-width: 275px;
       --mdc-menu-max-width: 290px;
     }
+
+    option::before {
+      content: 'Jump To ';
+    }
   `;
 
   static properties = {
@@ -88,6 +93,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     search_input: { type: Object },
     searchKeyword: { type: String },
     moreMenu: { type: Object },
+    possible_jump_to_list: { type: Array },
   };
 
   constructor() {
@@ -169,6 +175,36 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
   }
 
+  keyupHandler({ key }) {
+    const searchQuery = this.shadowRoot.getElementById('search_input').value;
+    if (searchQuery.length >= 2) {
+      this.#fetchPossibleUids(searchQuery);
+    }
+  }
+
+  changeHandler() {
+    const searchQuery = this.shadowRoot.getElementById('search_input').value;
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${searchQuery}` });
+  }
+
+  async #fetchPossibleUids(searchQuery) {
+    try {
+      this.possible_jump_to_list = await (
+        await fetch(`${API_ROOT}/possible_uids/${searchQuery}`)
+      ).json();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  #jumpToPageTemplate() {
+    return html`
+      <datalist id="possible_jump_to_list" @click=${this.possibleItemClickHandler}>
+        ${this.possible_jump_to_list?.map(item => html`<option value=${item}>Jump To ...</option>`)}
+      </datalist>
+    `;
+  }
+
   render() {
     return html`
       <mwc-icon-button
@@ -185,17 +221,22 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         name="q"
         type="search"
         style="height: 48px"
-        spellcheck=true
+        spellcheck="true"
         placeholder=${this.localize('search:search')}
         @keypress=${this.keypressHandler}
+        @keyup=${this.keyupHandler}
+        @change=${this.changeHandler}
         aria-label="Search through site content"
-      ></input>
+        list="possible_jump_to_list"
+      />
+      ${this.#jumpToPageTemplate()}
       <mwc-icon-button
-      label="close"
-      id="close_button"
-      title="Close search bar"
-      aria-label="Close search bar"
-      @click=${this._closeSearch}>
+        label="close"
+        id="close_button"
+        title="Close search bar"
+        aria-label="Close search bar"
+        @click=${this._closeSearch}
+      >
         ${icon.close}
       </mwc-icon-button>
       <mwc-icon-button
