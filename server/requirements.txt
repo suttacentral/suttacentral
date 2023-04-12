@@ -12,7 +12,6 @@ cssselect==1.2.0
 decorator==5.1.1
 Deprecated==1.2.13
 docutils==0.19
-elasticsearch==6.3.1
 Faker==15.3.4
 flasgger==0.9.5
 Flask==2.2.2

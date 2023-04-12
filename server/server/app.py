@@ -57,7 +57,7 @@ from api.views import (
 from common.arangodb import ArangoDB
 from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
-from search.view import Search, InstantSearch
+from search.view import InstantSearch
 from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
 
 
@@ -79,7 +79,6 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Languages, '/languages')
     api.add_resource(TranslationCountByDivision, '/translation_count/<string:iso_code>')
     api.add_resource(TranslationCountByLanguage, '/translation_count')
-    api.add_resource(Search, '/search')
     api.add_resource(InstantSearch, '/search/instant')
     api.add_resource(DictionaryFull, '/dictionary_full/<string:word>')
     api.add_resource(Menu, '/menu', '/menu/<path:submenu_id>')

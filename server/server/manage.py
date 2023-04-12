@@ -59,24 +59,14 @@ def delete_db():
         file_path.unlink()
 
 
-@app.cli.command('index_elasticsearch')
-def index_elasticsearch():
-    """
-    Create Elasticsearch index.
-    """
-    from search.texts import update
-
-    update()
-
-
 @app.cli.command('index_arangosearch')
 def index_arangosearch():
     """
     Create ArangoSearch index.
     """
-    from arango_search.texts import update
+    from search.texts import import_texts_to_arangodb
 
-    update()
+    import_texts_to_arangodb()
 
 
 @app.cli.command('calculate_download_sizes')

@@ -1,47 +1,47 @@
 import logging
-import time
 import json
-
+import time
 import lxml.html
 import regex
-from elasticsearch.helpers import scan
 from tqdm import tqdm
 
 from common.arangodb import get_db
-from common.queries import CURRENT_MTIMES, CURRENT_BILARA_MTIMES, TEXTS_BY_LANG, BILARA_TEXT_BY_LANG
-from data_loader import change_tracker
-from search.indexer import ElasticIndexer
+from common.queries import (
+    CURRENT_MTIMES,
+    CURRENT_BILARA_MTIMES,
+    TEXTS_BY_LANG_FOR_SEARCH,
+    BILARA_TEXT_BY_LANG_FOR_SEARCH
+)
 
-from itertools import chain
-
-logger = logging.getLogger('search.texts')
+logger = logging.getLogger('arango_search.texts')
 
 
-class TextIndexer(ElasticIndexer):
+class TextLoader:
     doc_type = 'text'
-    version = '1'
-
+    version = '2'
     htmlparser = lxml.html.HTMLParser(encoding='utf8')
     numstriprex = regex.compile(r'(?=\S*\d)\S+')
 
     def __init__(self, lang):
-        self.lang = lang
-        super().__init__(lang)
+        self.lang = lang['uid']
+        self.full_lang = lang['name']
+        super().__init__()
 
-    def get_extra_state(self):
-        # If this class has changed not much choice but to
-        # re-index all texts.
-        return change_tracker.function_source(TextIndexer)
+    @staticmethod
+    def truncate_text_contents():
+        print('The original index is being deleted...')
+        get_db().collection('text_contents').truncate()
+        get_db().collection('segmented_text_contents').truncate()
 
-    def make_id(self, uid, author_uid):
-        return f'{uid}_{author_uid}'
+    def import_all_text_to_db(self):
+        self.import_bilara_texts()
+        self.import_html_texts()
+        self.import_segmented_texts()
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
-
         A newline  in the output indicates a paragraph break.
         """
-
         string = regex.sub(r'(?<!\n)\n(?!\n)', ' ', string)
         string = regex.sub(r'  +', ' ', string)
         string = regex.sub(r'\n\n+', r'\n', string)
@@ -49,18 +49,116 @@ class TextIndexer(ElasticIndexer):
         string = string.replace('\xad', '')
         return string.strip()
 
+    def import_bilara_texts(self):
+        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        if not bilara_texts:
+            return
+
+        segmented_texts = []
+        for text in bilara_texts:
+            uid = text['uid']
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+
+            text_info = {
+                'acronym': text['acronym'],
+                'uid': uid,
+                'lang': text['lang'],
+                'full_lang': text['full_lang'],
+                'author': text['author'],
+                'author_uid': text['author_uid'],
+                'author_short': text['author_short'],
+                'is_root': self.lang == text['root_lang'],
+                'heading': {
+                    'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                },
+                'content': '\n\n'.join(strings.values()),
+                'is_segmented': False,
+            }
+
+            segmented_texts.append(text_info)
+
+        if segmented_texts:
+            print(f'Import {len(segmented_texts)} {self.full_lang} segmented texts to arangoDB')
+            get_db().collection('text_contents').import_bulk(segmented_texts)
+
+    def import_segmented_texts(self):
+        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        if not bilara_texts:
+            return
+
+        segmented_texts = []
+        for text in bilara_texts:
+            uid = text['uid']
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+            for key, value in strings.items():
+                segmented_text_info = {
+                    'acronym': text['acronym'],
+                    'uid': uid,
+                    'lang': text['lang'],
+                    'full_lang': text['full_lang'],
+                    'author': text['author'],
+                    'author_uid': text['author_uid'],
+                    'author_short': text['author_short'],
+                    'is_root': self.lang == text['root_lang'],
+                    'heading': {
+                        'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                    },
+                    'segmented_uid': key,
+                    'segmented_text': value,
+                    'content': '',
+                    'is_segmented': True
+                }
+                segmented_texts.append(segmented_text_info)
+            get_db().collection('segmented_text_contents').import_bulk(segmented_texts)
+            segmented_texts = []
+
+    def import_html_texts(self):
+        html_texts = list(get_db().aql.execute(TEXTS_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        if not html_texts:
+            return
+
+        legacy_texts = []
+
+        for text in html_texts:
+            uid = text['uid']
+            author_uid = text['author_uid']
+            try:
+                with open(text['file_path'], 'rb') as f:
+                    html_bytes = f.read()
+
+                root_lang = text['root_lang']
+                text_info = {
+                    'acronym': text['acronym'],
+                    'uid': uid,
+                    'lang': text['lang'],
+                    'full_lang': text['full_lang'],
+                    'root_lang': root_lang,
+                    'author': text['author'],
+                    'author_uid': author_uid,
+                    'author_short': text['author_short'],
+                    'is_root': self.lang == root_lang,
+                    'is_segmented': False,
+                }
+                text_info |= self.extract_fields_from_html(html_bytes)
+                legacy_texts.append(text_info)
+            except (ValueError, IndexError) as e:
+                logger.exception(f'{text["uid"]}, {e}')
+
+        if legacy_texts:
+            print(f'Import {len(legacy_texts)} {self.full_lang} legacy texts to arangoDB')
+            get_db().collection('text_contents').import_bulk(legacy_texts)
+
     def extract_fields_from_html(self, data):
         root = lxml.html.fromstring(data, parser=self.htmlparser)
         text = root.find('body/article')
         if text is None:
             text = root.find('body/section')
-
         if text is None:
             raise ValueError("Structure of html is not body > article or not body > section")
 
-        metaarea = root.cssselect('#metaarea')
-        author = []
-        if metaarea:
+        if metaarea := root.cssselect('#metaarea'):
             metaarea[0].drop_tree()
 
         for section in root.iter('section'):
@@ -82,7 +180,14 @@ class TextIndexer(ElasticIndexer):
             division = None
         others = header[1:-1]
         header.drop_tree()
-        content = self.fix_text(text.text_content())
+
+        for a in text.cssselect('a'):
+            a.drop_tree()
+
+        for e in text.cssselect('footer'):
+            e.drop_tree()
+
+        content = text.text_content()
         title = self.fix_text(title.text_content()) if title is not None else ''
         division = '' if division is None else self.fix_text(division.text_content())
 
@@ -93,195 +198,14 @@ class TextIndexer(ElasticIndexer):
                 'division': division,
                 'subhead': [e.text_content().strip() for e in others],
             },
-            'boost': self.boost_factor(content),
         }
 
-    def boost_factor(self, content):
-        boost = self.length_boost(len(content))
-        if len(content) < 500:
-            content = content.casefold()
-            if 'preceding' in content or 'identical' in content:
-                boost = boost * 0.4
-        return boost
 
-    def yield_html_texts(self, lang, size, to_add):
-        html_texts = list(get_db().aql.execute(TEXTS_BY_LANG, bind_vars={'lang': lang}))
-
-        if not html_texts:
-            return
-
-        chunk = []
-        chunk_size = 0
-
-        for i, text in enumerate(html_texts):
-            uid = text['uid']
-            author_uid = text['author_uid']
-            _id = self.make_id(uid, author_uid)
-            if _id not in to_add:
-                continue
-            try:
-
-                with open(text['file_path'], 'rb') as f:
-                    html_bytes = f.read()
-                chunk_size += len(html_bytes) + 512
-
-                root_lang = text['root_lang']
-
-                action = {
-                    'acronym': text['acronym'],
-                    '_id': _id,
-                    'uid': uid,
-                    'lang': lang,
-                    'root_lang': root_lang,
-                    'author': text['author'],
-                    'author_uid': author_uid,
-                    'author_short': text['author_short'],
-                    'is_root': lang == root_lang,
-                    'mtime': int(text['mtime']),
-                }
-
-                action.update(self.extract_fields_from_html(html_bytes))
-                chunk.append(action)
-            except (ValueError, IndexError) as e:
-                logger.exception(f'{text["uid"]}, {e}')
-
-            if chunk_size > size:
-                yield chunk
-                chunk = []
-                chunk_size = 0
-                time.sleep(0.25)
-        if chunk:
-            yield chunk
-
-
-    def yield_bilara_texts(self, lang, size, to_add):
-        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG, bind_vars={'lang': lang}))
-
-        if not bilara_texts:
-            return
-
-        chunk = []
-        chunk_size = 0
-
-        for text in bilara_texts:
-            uid = text['uid']
-            author_uid = text['author_uid']
-            _id = self.make_id(uid, author_uid)
-            if _id not in to_add:
-                continue
-
-            with open(text['strings_path']) as f:
-                strings = json.load(f)
-
-            action = {
-                'acronym': text['acronym'],
-                '_id': _id,
-                'uid': uid,
-                'lang': lang,
-                'author': text['author'],
-                'author_uid': text['author_uid'],
-                'author_short': text['author_short'],
-                'is_root': lang == text['root_lang'],
-                'mtime': int(text['mtime']),
-                'heading': {
-                    'title': self.fix_text(text['title']) if text['title'] else text['uid']
-                },
-                'content': '\n\n'.join(strings.values())
-            }
-
-            chunk_size += len(action['content'].encode('utf-8'))
-            chunk.append(action)
-            if chunk_size > size:
-                yield chunk
-                chunk = []
-                chunk_size = 0
-                time.sleep(0.25)
-        if chunk:
-            yield chunk
-
-
-    def yield_actions_for_lang(self, lang, size):
-        stored_mtimes = {
-            hit["_id"]: hit["_source"]["mtime"]
-            for hit in scan(
-                self.es,
-                index=self.index_name,
-                doc_type="text",
-                _source_include=["mtime"],
-                query=None,
-                size=500,
-            )
-        }
-        current_html_mtimes = list(
-            get_db().aql.execute(
-                CURRENT_MTIMES,
-                bind_vars={'lang': self.lang, '@collection': 'html_text'},
-            )
-        )
-
-        current_bilara_mtimes = list(
-            get_db().aql.execute(
-                CURRENT_BILARA_MTIMES,
-                bind_vars={'lang': self.lang, '@collection': 'sc_bilara_texts'}
-            )
-        )
-
-        to_add = set()
-        to_delete = set(stored_mtimes)
-
-        for doc in chain(current_html_mtimes, current_bilara_mtimes):
-            _id = self.make_id(doc['uid'], doc['author_uid'])
-            if _id in to_delete:
-                to_delete.remove(_id)
-            if _id not in stored_mtimes or stored_mtimes[_id] != int(doc['mtime']):
-                to_add.add(_id)
-
-        delete_actions = []
-        for _id in to_delete:
-            delete_actions.append({'_id': _id, '_op_type': 'delete'})
-        if delete_actions:
-            print(f'Deleting {len(delete_actions)} documents from {lang} index')
-            yield delete_actions
-
-        if to_add:
-            print(f'Indexing {len(to_add)} new or modified texts to {lang} index')
-
-            yield from self.yield_html_texts(lang, size, to_add=to_add)
-            yield from self.yield_bilara_texts(lang, size, to_add=to_add)
-
-    @staticmethod
-    def load_index_config(config_name):
-        try:
-            return ElasticIndexer.load_index_config(config_name)
-        except Exception as e:
-            logger.warning(
-                'No indexer settings or invalid settings for language "{}" ({}), using "default"'.format(
-                    config_name, type(e)
-                )
-            )
-            try:
-                return ElasticIndexer.load_index_config('default')
-            except:
-                logger.error('could not find default config')
-                raise
-
-    def update_data(self, force=False):
-        # This delivers lists of actions in digestble chunks
-        chunks = self.yield_actions_for_lang(self.lang, size=500000)
-        self.process_chunks(chunks)
-
-
-def update(force=False):
-    def sort_key(d):
-        if d == 'en':
-            return 0
-        if d == 'pli':
-            return 1
-        return 10
-
+def import_texts_to_arangodb():
     db = get_db()
-    languages = sorted(db.aql.execute('FOR l IN language RETURN l.uid'), key=sort_key)
-
+    TextLoader.truncate_text_contents()
+    time.sleep(5)
+    languages = list(db.aql.execute('FOR l IN language SORT l.uid RETURN {uid: l.uid, name: l.name}'))
     for lang in tqdm(languages):
-        indexer = TextIndexer(lang)
-        indexer.update()
+        loader = TextLoader(lang)
+        loader.import_all_text_to_db()

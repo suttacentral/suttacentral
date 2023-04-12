@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   sc-flask:
@@ -23,7 +23,7 @@ services:
       - sc-arangodb
 
   sc-arangodb:
-    image: arangodb/arangodb:3.8.0
+    image: arangodb/arangodb:3.10.5
     container_name: 'sc-arangodb'
     env_file:
       - server/env/.base.env
@@ -54,22 +54,6 @@ services:
       - '2052:2052'
     depends_on:
       - sc-flask
-
-  sc-elasticsearch:
-    build:
-      context: ./elasticsearch/
-      dockerfile: Dockerfile-elasticsearch
-    container_name: 'sc-elasticsearch'
-    labels:
-      application: 'sc-elasticsearch'
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    mem_limit: 2g
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    expose:
-      - '9200'
-      - '9300'
 
   sc-swagger:
     image: swaggerapi/swagger-ui:latest
@@ -126,6 +110,5 @@ volumes:
   sc-data-volume:
   working-storage-volume:
   socket-volume:
-  elasticsearch-data:
   l10n-ter:
   nginx-cache:

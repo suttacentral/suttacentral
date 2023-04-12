@@ -8,4 +8,5 @@ class SecondMigration(Migration):
 
     def create_collections(self):
         db = get_db()
-        db.create_collection('available_voices', edge=False)
+        available_voices = db.create_collection('available_voices', edge=False)
+        available_voices.add_hash_index(fields=['uid'], unique=True)

@@ -23,7 +23,7 @@ class Builder(Thread):
             'make rebuild-frontend',
             'make run-prod-no-logs',
             'make load-data',
-            'make index-elasticsearch',
+            'make index-arangosearch',
             'make reload-uwsgi'
         ]
 
