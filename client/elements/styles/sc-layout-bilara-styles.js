@@ -68,7 +68,8 @@ export const plainStyles = html`
 
       width: 1ex;
       height: 1em;
-      padding: 0 6px 0 0;
+      padding: 0 10px 0 0;
+      margin-left: -4px;
 
       white-space: nowrap;
 
@@ -154,8 +155,6 @@ export const plainPlusStyles = html`
     }
 
     .translation {
-      position: relative;
-
       display: grid;
 
       grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
@@ -167,11 +166,9 @@ export const plainPlusStyles = html`
     }
 
     .comment {
-      position: absolute;
+      margin-bottom:  var(--sc-size-sm);
 
-      padding: var(--sc-size-sm) var(--sc-size-md);
-
-      box-shadow: var(--sc-shadow-elevation-1dp);
+      height: fit-content;
 
       grid-column: 2;
       grid-row: 1;
@@ -192,8 +189,6 @@ export const plainPlusStyles = html`
 
       .variant,
       .comment {
-        position: relative;
-
         display: table;
 
         margin-top: var(--sc-size-sm);
@@ -222,7 +217,6 @@ export const rootPlainPlusStyles = html`
     }
 
     .root {
-      position: relative;
       display: grid;
       grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
       grid-column-gap: var(--sc-size-lg);
@@ -233,9 +227,6 @@ export const rootPlainPlusStyles = html`
     }
 
     .variant {
-      position: absolute;
-      padding: var(--sc-size-sm) var(--sc-size-md);
-      box-shadow: var(--sc-shadow-elevation-1dp);
       grid-column: 2;
       grid-row: 1;
     }
@@ -253,7 +244,6 @@ export const rootPlainPlusStyles = html`
 
       .variant,
       .comment {
-        position: relative;
         display: table;
         margin-top: var(--sc-size-sm);
       }
@@ -341,8 +331,6 @@ export const sideBySideStyles = html`
 export const sideBySidePlusStyles = html`
   <style>
     .segment {
-      position: relative;
-
       display: grid;
 
       grid-template-columns: 60px 1fr 1fr;
@@ -375,8 +363,6 @@ export const sideBySidePlusStyles = html`
 
     .translation,
     .root {
-      position: relative;
-
       display: grid;
 
       grid-template-columns: minmax(240px, 720px) minmax(120px, 300px);
@@ -389,14 +375,12 @@ export const sideBySidePlusStyles = html`
 
     .comment,
     .variant {
-      position: absolute;
-
-      padding: var(--sc-size-sm) var(--sc-size-md);
-
-      box-shadow: var(--sc-shadow-elevation-1dp);
-
       grid-column: 2;
       grid-row: 1;
+
+      height: fit-content;
+
+     margin-bottom:  var(--sc-size-sm);
     }
 
     br {
@@ -412,9 +396,7 @@ export const sideBySidePlusStyles = html`
       .root,
       .variant,
       .comment {
-        position: relative;
-
-        display: table;
+       display: table;
 
         margin-top: var(--sc-size-sm);
       }
@@ -446,8 +428,6 @@ export const sideBySidePlusStyles = html`
 
       .variant,
       .comment {
-        position: relative;
-
         display: table;
 
         margin-top: var(--sc-size-sm);
@@ -549,8 +529,6 @@ export const lineByLinePlusStyles = html`
 
     .translation,
     .root {
-      position: relative;
-
       display: grid;
 
       grid-template-columns: minmax(240px, 720px) minmax(120px, 480px);
@@ -563,8 +541,6 @@ export const lineByLinePlusStyles = html`
 
     .comment,
     .variant {
-      position: absolute;
-
       padding: var(--sc-size-sm) var(--sc-size-md);
 
       box-shadow: var(--sc-shadow-elevation-1dp);
@@ -595,8 +571,6 @@ export const lineByLinePlusStyles = html`
 
       .variant,
       .comment {
-        position: relative;
-
         display: table;
 
         margin-top: var(--sc-size-sm);
@@ -633,8 +607,10 @@ export const showAsterisk = html`
     .variant::before {
       line-height: 1;
 
-      content: '*';
+      content: '* ';
       vertical-align: super;
+
+      font-weight: 800;
     }
 
     .comment::before {
