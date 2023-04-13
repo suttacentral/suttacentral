@@ -17,18 +17,18 @@ def generate_general_query_aql(query):
     '''
     aql += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
 
-    if en_dict.check(query) or en_dict.check(query.replace(" ", "")):
-        possible_synonyms = en_dict.suggest(query)
-        possible_synonyms.append(query)
-        if len(possible_synonyms) > 0:
-            aql += ''' OR ('''
-            for synonym in possible_synonyms:
-                aql += f'LIKE(d.volpage, "%{synonym}%") ' \
-                       f'OR PHRASE(d.name,"%{synonym}%", "common_text") ' \
-                       f'OR PHRASE(d.content, "%{synonym}%", "common_text") ' \
-                       f'OR LIKE(d.segmented_text, "%{synonym}%") OR '
-            aql = aql[:-4]
-            aql += ''')'''
+    # if en_dict.check(query) or en_dict.check(query.replace(" ", "")):
+    #     possible_synonyms = en_dict.suggest(query)
+    #     possible_synonyms.append(query)
+    #     if len(possible_synonyms) > 0:
+    #         aql += ''' OR ('''
+    #         for synonym in possible_synonyms:
+    #             aql += f'LIKE(d.volpage, "%{synonym}%") ' \
+    #                    f'OR PHRASE(d.name,"%{synonym}%", "common_text") ' \
+    #                    f'OR PHRASE(d.content, "%{synonym}%", "common_text") ' \
+    #                    f'OR LIKE(d.segmented_text, "%{synonym}%") OR '
+    #         aql = aql[:-4]
+    #         aql += ''')'''
 
     possible_pali_words = [query]
     vowel_combine = vowel_combinations(query)
@@ -213,8 +213,8 @@ def generate_condition_combination_query_aql(condition_combination):
         keywords.append(keyword)
         keywords.extend(vowel_combine)
 
-        if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
-            keywords.extend(en_dict.suggest(keyword))
+        # if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
+        #     keywords.extend(en_dict.suggest(keyword))
 
     keywords = list(set(keywords))
     if len(keywords) > 15:
@@ -629,11 +629,11 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_t
     if vowel_combine := vowel_combinations(keyword):
         possible_word_list.extend(vowel_combine)
 
-    if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
-        if ' ' in keyword:
-            possible_word_list.extend(en_dict.suggest(keyword.replace(" ", "")))
-        else:
-            possible_word_list.extend(en_dict.suggest(keyword))
+    # if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
+    #     if ' ' in keyword:
+    #         possible_word_list.extend(en_dict.suggest(keyword.replace(" ", "")))
+    #     else:
+    #         possible_word_list.extend(en_dict.suggest(keyword))
 
     possible_word_list.append(keyword.capitalize())
 
