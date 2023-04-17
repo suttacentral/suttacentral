@@ -4,11 +4,6 @@ COMPOSETEST := $(COMPOSE) -f docker-compose.test.yml
 COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
 
 prepare-host:
-	@echo "Since ElasticSearch 5.0 you have to change 'vm.max_map_count' to at least 262144 on the host machine, even when using Docker."
-	@echo "In order to do that I'm going to ask you for your sudo password"
-	sudo sysctl -w vm.max_map_count=262144
-	sudo bash -c 'echo "vm.max_map_count=262144" >> /etc/sysctl.conf'
-	@echo "\033[1;32mSuccess!"
 	@echo "Setting up client/ git-hook"
 	@cd client && npm install
 	@echo "\033[1;32mSuccess!"
@@ -21,7 +16,7 @@ generate-cert:
 
 
 
-SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend sc-elasticsearch sc-chrome-headless
+SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend sc-chrome-headless
 
 run-dev:
 	@$(COMPOSEDEV) up $(SERVICES)
@@ -37,9 +32,6 @@ run-prod:
 
 run-prod-no-logs:
 	@$(COMPOSEPROD) up -d $(SERVICES)
-
-migrate:
-	@docker exec -t sc-flask python server/manage.py migrate
 
 
 clean-all:
@@ -73,6 +65,9 @@ test-server:
 test-api:
 	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
+migrate:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py migrate"
+
 load-data:
 	@make migrate
 	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
@@ -83,9 +78,6 @@ load-data-no-pull:
 
 delete-database:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py delete_db"
-
-index-elasticsearch:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py index_elasticsearch"
 
 index-arangosearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_arangosearch"
@@ -101,7 +93,6 @@ rebuild-frontend:
 
 bundle-analyzer:
 	docker-compose run sc-frontend npm run build --report
-	
 
 rebuild-static-pages:
 	cd client && npm run extract-static-strings
@@ -113,7 +104,7 @@ run-preview-env:
 	@make run-dev-no-logs
 	@bash wait_for_flask.sh
 	@make load-data
-	@make index-elasticsearch
+	@make index-arangosearch
 	@make hyphenate
 	@echo "\033[1;32mDONE!"
 
@@ -129,11 +120,10 @@ run-preview-env-no-search:
 
 run-production-env:
 	@make generate-env-variables
-	@make rebuild-all
 	@make run-prod-no-logs
 	@bash wait_for_flask.sh
 	@make load-data
-	@make index-elasticsearch
+	@make index-arangosearch
 	@make hyphenate
 	@echo "\033[1;32mDONE!"
 	@make run-prod

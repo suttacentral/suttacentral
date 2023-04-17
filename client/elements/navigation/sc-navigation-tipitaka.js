@@ -28,6 +28,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
       ['vinaya', 'vinaya-guide-brahmali'],
       ['abhidhamma', 'abhidhamma-guide-sujato'],
     ]);
+    this._fetchMainMenu();
   }
 
   stateChanged(state) {
@@ -46,7 +47,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this._fetchMainMenu();
+    // this._fetchMainMenu();
   }
 
   async _fetchMainMenu() {
@@ -54,6 +55,8 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
       this.mainMenuData = await (
         await fetch(`${API_ROOT}/tipitaka_menu?language=${this.siteLanguage || 'en'}`)
       ).json();
+      const sortedUids = ['sutta', 'vinaya', 'abhidhamma'];
+      this.mainMenuData.sort((a, b) => sortedUids.indexOf(a.uid) - sortedUids.indexOf(b.uid));
     } catch (err) {
       this.mainMenuError = err;
     }

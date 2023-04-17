@@ -31,18 +31,18 @@ export const typographyBilaraStyles = css`
     font-style: normal;
     line-height: 1.3333;
 
+    padding: var(--sc-size-sm) var(--sc-size-md);
+
     z-index: 10;
 
     display: inline-block;
 
     box-sizing: border-box;
-    padding: var(--sc-size-sm) var(--sc-size-md);
 
     color: var(--sc-secondary-text-color);
-    border-width: 1px 0 0 8px;
-    border-style: solid;
-    border-color: transparent;
-    border-radius: var(--sc-size-sm);
+    border: 1px solid var(--sc-border-color);
+
+    border-radius: 8px;
     background-color: var(--sc-secondary-background-color);
 
     letter-spacing: normal;
@@ -53,26 +53,16 @@ export const typographyBilaraStyles = css`
 
     text-indent: 0;
   }
-  .comment {
-    border-color: var(--sc-primary-accent-color);
-  }
-  .variant {
-    border-color: var(--sc-secondary-accent-color);
-  }
-
-  /* click on notes to raise obscured note when they overlap. this should be replaced by JS  */
-
-  .comment:active,
-  .variant:active {
-    z-index: 1000;
-
-    box-shadow: var(--sc-shadow-elevation-8dp);
-  }
 
   .comment:hover,
   .variant:hover {
     cursor: help;
   }
+
+    .comment:empty,
+    .variant:empty{
+      display: none
+    }
 
   /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
 

@@ -35,13 +35,13 @@ FOR text IN html_text
     LET nav_doc = (
         RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
     )[0]
-    
+
     LET full_lang = (
         FOR lang IN language
         FILTER lang.uid == text.lang
         RETURN lang.name
     )[0]
-    
+
     RETURN {
         file_path: text.file_path,
         uid: text.uid,
@@ -132,7 +132,7 @@ FOR text IN sc_bilara_texts
     LET mtime_doc = (
         RETURN DOCUMENT(CONCAT('mtimes/', REGEX_REPLACE(SUBSTRING(text.file_path, FIND_FIRST(text.file_path, 'sc_bilara_data')), '/', '_')))
     )[0]
-    
+
     LET full_lang = (
         FOR lang IN language
         FILTER lang.uid == text.lang
@@ -158,7 +158,7 @@ UIDS_IN_ORDER_BY_DIVISION = '''
 FOR division IN super_nav_details
     FILTER division.type == 'branch'
     LET division_uids = (
-        FOR doc, edge, path IN 0..10 OUTBOUND division super_nav_details_edges OPTIONS {bfs: False}
+        FOR doc, edge, path IN 0..10 OUTBOUND division super_nav_details_edges OPTIONS {order: 'bfs'}
             RETURN doc.uid
     )
     RETURN {'division': division.uid, 'uids': division_uids}
@@ -192,13 +192,13 @@ FOR navigation_doc IN super_nav_details
     FILTER navigation_doc.type == 'root'
     // Node children
     LET descendants = (
-        FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
+        FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges OPTIONS {order: 'bfs'}
             // Search info about doc language from language collection
             LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
             LET child_range = DOCUMENT('child_range', descendant.uid)['range']
-            
+
             LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
-            
+
             // Trying to get 2 blurbs with english and  user-defined-language  translations
             LET en_and_language_blurbs = (
                 FOR blurb IN blurbs
@@ -209,12 +209,12 @@ FOR navigation_doc IN super_nav_details
             // Trying to get blurb with user-defined-language translation, take english if not exist
             LET blurb = (
                  RETURN LENGTH(en_and_language_blurbs) == 2 ? 
-                     (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+                     (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
                      en_and_language_blurbs[0]
             )[0].blurb
-            
+
             LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
-            
+
             RETURN {
                 uid: descendant.uid,
                 root_name: descendant.name,
@@ -229,7 +229,7 @@ FOR navigation_doc IN super_nav_details
                 yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
             }
         )
-        
+
     LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
     LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
     LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
@@ -241,13 +241,13 @@ FOR navigation_doc IN super_nav_details
                 RETURN blurb
     )
     LET blurb = (
-         RETURN LENGTH(en_and_language_blurbs) == 2 ? 
-             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+         RETURN LENGTH(en_and_language_blurbs) == 2 ?
+             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
              en_and_language_blurbs[0]
     )[0].blurb
-    
+
     LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))
-    
+
     RETURN {
         uid: navigation_doc.uid,
         root_name: navigation_doc.name,
@@ -268,11 +268,11 @@ SUBMENU = '''
 LET navigation_doc = DOCUMENT('super_nav_details', @submenu_id)
 
 LET descendants = (
-    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges
+    FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges OPTIONS {order: 'bfs'}
         LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
         LET child_range = DOCUMENT('child_range', descendant.uid)['range']
         LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
-        
+
         LET en_and_language_blurbs = (
             FOR blurb IN blurbs
                 FILTER blurb.uid == descendant.uid AND (blurb.lang == @language OR blurb.lang == 'en')
@@ -284,9 +284,9 @@ LET descendants = (
                  (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
                  en_and_language_blurbs[0]
         )[0].blurb
-        
+
         LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
-        
+
         RETURN {
             uid: descendant.uid,
             root_name: descendant.name,
@@ -338,8 +338,7 @@ RETURN {
 
 TIPITAKA_MENU = '''
 FOR navigation_doc IN super_nav_details
-    FILTER navigation_doc.type == 'root'
-        LIMIT 3
+    FILTER navigation_doc.type == 'root' AND navigation_doc.uid in ['sutta', 'vinaya', 'abhidhamma']
 
     LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
     LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
@@ -374,7 +373,7 @@ FOR navigation_doc IN super_nav_details
 SET_SUPER_NAV_DETAILS_ROOT_LANGUAGES = '''
 FOR doc IN super_nav_details
     FILTER doc.root_lang
-    FOR child IN 1..100 OUTBOUND doc super_nav_details_edges
+    FOR child IN 1..100 OUTBOUND doc super_nav_details_edges OPTIONS {order: 'bfs'}
         FILTER child
         UPDATE child WITH { root_lang: doc.root_lang } IN super_nav_details
 '''
@@ -382,12 +381,12 @@ FOR doc IN super_nav_details
 SET_SUPER_NAV_DETAILS_NODES_TYPES = '''
 FOR doc IN super_nav_details
     LET child = (
-        FOR child IN OUTBOUND doc super_nav_details_edges 
+        FOR child IN OUTBOUND doc super_nav_details_edges OPTIONS {order: 'bfs'}
             LIMIT 1
             RETURN child
     )[0]
     LET parent = (
-        FOR parent IN INBOUND doc super_nav_details_edges
+        FOR parent IN INBOUND doc super_nav_details_edges OPTIONS {order: 'bfs'}
             LIMIT 1
             RETURN parent
     )[0]
@@ -414,7 +413,7 @@ FOR lang IN language
                 SEARCH doc.lang == lang_code AND doc.uid == t_uid
                 RETURN doc
         )
-        FOR doc IN 0..100 INBOUND nav_doc super_nav_details_edges
+        FOR doc IN 0..100 INBOUND nav_doc super_nav_details_edges OPTIONS {order: 'bfs'}
             LET yellow_brick_doc = {
                 _key: CONCAT_SEPARATOR('_', doc.uid, lang_code),
                 uid: doc.uid,
@@ -429,7 +428,7 @@ COUNT_YELLOW_BRICK_ROAD = '''
 FOR yb_doc IN yellow_brick_road
     FILTER yb_doc.type == 'branch' OR yb_doc.type == 'root'
     LET translated_leaf_count = SUM(
-        FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges
+        FOR child IN 1..100 OUTBOUND DOCUMENT('super_nav_details', yb_doc.uid) super_nav_details_edges OPTIONS {order: 'bfs'}
             FILTER child.type == 'leaf'
             LET key = CONCAT_SEPARATOR('_', child.uid, yb_doc.lang)
             LET yb_child = DOCUMENT('yellow_brick_road', key)
@@ -441,7 +440,7 @@ FOR yb_doc IN yellow_brick_road
 
 # Takes 2 bind_vars: `language` and `uid` of root element
 SUTTAPLEX_LIST = '''
-FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
+FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {order: 'bfs'}
     LET legacy_translations = (
         FOR text IN html_text
             FILTER text.uid == v.uid
@@ -577,7 +576,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
     )[0]
 
     LET path_docs = (
-        FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+        FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges OPTIONS {order: 'bfs'}
             RETURN doc.uid
     )
 
@@ -1185,9 +1184,9 @@ LET langs = UNION(@languages ? @languages : [], @include_root ? (
     ) : [])
 
 LET menu = (
-    FOR div IN 1..6 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
+    FOR div IN 1..6 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges OPTIONS {order: 'bfs'}
         LET has_subdivisions = LENGTH(
-            FOR d, d_edge, d_path IN 1..1 OUTBOUND div super_nav_details_edges
+            FOR d, d_edge, d_path IN 1..1 OUTBOUND div super_nav_details_edges OPTIONS {order: 'bfs'}
                 FILTER d_edge.type != 'leaf'
                 LIMIT 1
                 RETURN 1
@@ -1197,7 +1196,7 @@ LET menu = (
     )
 
 LET grouped_children = MERGE(
-    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges
+    FOR d, d_edge, d_path IN 1..20 OUTBOUND DOCUMENT('super_nav_details', 'sutta') super_nav_details_edges OPTIONS {order: 'bfs'}
         COLLECT is_div = d.type != 'leaf' INTO uids = d.uid
         RETURN {[is_div ? 'branch' : 'leaf']: uids}
 )
@@ -1299,7 +1298,7 @@ FOR key IN keys
     FILTER doc
     /* Determine the highest division level */
     LET highest_div = LAST(
-        FOR v, e, p IN 0..10 INBOUND doc super_nav_details_edges
+        FOR v, e, p IN 0..10 INBOUND doc super_nav_details_edges OPTIONS {order: 'bfs'}
         FILTER v.type == 'branch'
         RETURN {
             uid: v.uid,
@@ -1360,7 +1359,7 @@ FOR doc IN sc_bilara_texts
 
 SUTTA_PATH = '''
 LET path_docs = (
-    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges OPTIONS {order: 'bfs'}
         RETURN doc.uid
 )
 RETURN {
@@ -1370,12 +1369,12 @@ RETURN {
 
 ALL_DOC_UID_BY_ROOT_UID = '''
 LET root_uid = REVERSE(POP(
-FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges OPTIONS {order: 'bfs'}
     FILTER doc.type == 'branch'
     RETURN doc.uid
 ))[0]
 
-FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_uid) super_nav_details_edges
+FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_uid) super_nav_details_edges OPTIONS {order: 'bfs'}
     FILTER docs.type == 'leaf'
     RETURN docs.uid
 '''
@@ -1417,7 +1416,7 @@ FOR doc IN v_text
 
 SUTTA_PUBLICATION_INFO = '''
 LET path_docs = (
-    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges
+    FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges OPTIONS {order: 'bfs'}
         RETURN doc.uid
 )
 FOR pub_doc IN publications
@@ -1496,7 +1495,7 @@ UPDATE {
 '''
 
 PARALLELS_LITE = '''
-FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges
+FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {order: 'bfs'}
     FILTER v.type == 'leaf'
     LET parallels = (
         FOR k, e IN OUTBOUND CONCAT('super_nav_details/', v.uid) relationship

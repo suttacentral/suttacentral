@@ -9,7 +9,7 @@ class SecondMigration(Migration):
     def create_collections(self):
         db = get_db()
 
-        collections = ['po_markup', 'po_strings', 'uid_expansion']
+        collections = ['uid_expansion']
 
         for name in collections:
             db.create_collection(name=name)

@@ -197,6 +197,8 @@ export const SCPageSearchStyles = css`
     color: initial;
 
     padding: 12px 0 8px;
+
+    width: 100%
   }
 
   .search-result-link:hover {
@@ -368,16 +370,18 @@ export const searchResultTableViewStyles = css`
     -webkit-line-clamp: 3;
   }
 
-  .parallels-label {
-    display: block;
-    text-align: center;
-    margin-top: 4px;
-    font-size: 2px;
-  }
-
   .parallels-link {
     text-decoration: none; !important;
     color: var(--sc-secondary-text-color);
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+  }
+
+  .parallels-link:hover{
+    background-color: var(--sc-tertiary-background-color);
   }
 
   .parallels-btn-container {

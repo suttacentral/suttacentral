@@ -232,10 +232,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
                       </p>
                     </div>
                   </a>
-                  <a class="parallels-link" href=${this.#calculateParallelsLink(item)}>
+                  <a class="parallels-link" href=${this.#calculateParallelsLink(item)} title="parallels">
                     <div class="parallels-btn-container">
                       ${icon.parallels}
-                      <span class="parallels-label">Parallels</span>
                     </div>
                   </a>
                 </div>

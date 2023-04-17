@@ -19,7 +19,7 @@ Remember them! You will use some of them to access admin services.
 5. `make delete-database` -> OPTIONAL: Skip this if data hasn't seriously changed (do it, if texts have been deleted or renamed)
 6. `make migrate` -> only needed for delete-database, but harmless to run anyway
 7. `make load-data` -> load data into arangodb
-8. `make index-elasticsearch` -> load data into elasticsearch
+8. `make index-arangosearch` -> index arangosearch
 9. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
 
 ### Minimally disruptive update
@@ -28,10 +28,10 @@ If no containers need to be rebuilt then this is all that needs to be run:
 
 1. `cd /opt/suttacentral`
 2. `git pull`
-3. `run frontend-builder`
-4. `make load-data`
-5. `make reload-uwsgi`
-6. `make index-elasticsearch`
+3. `make load-data`
+4. `make reload-uwsgi`
+5. `make index-arangosearch`
+6. `make rebuild-frontend`
 
 ### Changing the branch(s) the server, or staging server, uses
 
@@ -39,8 +39,6 @@ If no containers need to be rebuilt then this is all that needs to be run:
 2. `git checkout <code-branch>`
 3. `cd server/sc-data`
 4. `git checkout <data-branch>`
-5. `cd po_text`
-6. `git checkout <po-branch>`
 
 Then run the commands for updating, probably including the `make delete-database` step.
 
@@ -48,16 +46,16 @@ Then run the commands for updating, probably including the `make delete-database
 ## 1. Server
 
 ### 1.1 Running the project
-0. Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
+0. Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
 2. Cd into the repo `cd suttacentral`.
-3. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run ElasticSearch.
-4.  * 1st time run: run `make run-preview-env` - Build images, load data, index-elasticsearch and more.
+3. run `make prepare-host` in order to make some small adjustment on the host machine.
+4.  * 1st time run: run `make run-preview-env` - Build images, load data, index-arangosearch and more.
 	* normal run: run `make run-dev`.
 
 ### 1.2 Loading the data
 0. ensure server is up and run `make load-data`.
-1. To index elasticsearch run `make index-elasticsearch`.
+1. To index arangosearch run `make index-arangosearch`.
 
 ### 1.3 Docs
 API documentation is available at `/api/docs`.
@@ -69,11 +67,11 @@ This yaml docstring will be interpreted as OpenAPI's Operation Object.
 #### Development
 In this mode server, nignx, client dirs are mounted in Docker's containers so that any local changes take place in the container as well.
 
-In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529` and elasticsearch ports `9200` and `9300`.
+In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529`.
 
 ### 1.4 Makefile
 There is a Makefile with following commands:
-* `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work. And setup client git-hooks.
+* `prepare-host` - Setup client git-hooks.
 * `run-dev` - Run containers in development mode.
 * `run-dev-no-logs` - Run containers in development mode without output to the console.
 * `run-prod` - Run containers in production mode.
@@ -88,9 +86,9 @@ There is a Makefile with following commands:
 * `test-server` - Run only server test.
 * `load-data` - Pulls most recent data from github and loads it from `server/sc-data` folder to the db.
 * `delete-database` - Delete database from ArangoDB.
-* `index-elasticsearch` - Index ElasticSearch with data from the db.
+* `index-arangosearch` - Index ArangoSearch with data from the db.
 * `run-preview-env` - Fully rebuild and run most recent development version.
-* `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ElasticSearch.
+* `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ArangoSearch.
 * `run-production-env` - Fully rebuild and run most recent production version. You will be prompted with questions regarding env variables.
 * `generate-env-vairables` - Runs env_variables_setup.py script and generate env variables for production version.
 
@@ -111,10 +109,7 @@ In order to change password you have to change `ARANGO_ROOT_PASSWORD` in env's `
 ### 1.6 Nginx proxy
 Our project is using nginx as a HTTP reverse proxy. It is responsible for serving static files and passing `/api/*` endpoints to the uwsgi+flask server.
 
-### 1.7 Working with elasticsearch
-Expose ports `9200` and `9300`.
-
-### 1.8 Flask + uWSGI
+### 1.7 Flask + uWSGI
 Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The socket file (`uwsgi.sock`) is in `socket-volume` shared beetwen `nginx` and `flask+uwsgi`
 
 #### Creating db migrations
