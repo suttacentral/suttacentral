@@ -9,4 +9,5 @@ class SecondMigration(Migration):
     def create_collections(self):
         db = get_db()
 
-        db.create_collection('uid_expansion_school', False)
+        uid_expansion_school = db.create_collection('uid_expansion_school', False)
+        uid_expansion_school.add_hash_index(fields=['uid'], unique=True)

@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -35,12 +35,6 @@ services:
     environment:
       - "API_URL=https://suttacentral.net/api/swagger.json"
 
-  sc-elasticsearch:
-    restart: always
-    ports:
-    - '9200:9200'
-    - '9300:9300'
-    
   sc-chrome-headless:
     restart: always
     ports:

@@ -19,12 +19,6 @@ class SecondMigration(Migration):
                             'lang': {'analyzers': ['identity']},
                         }
                     },
-                    'po_strings': {
-                        'fields': {
-                            'uid': {'analyzers': ['identity']},
-                            'lang': {'analyzers': ['identity']},
-                        }
-                    },
                 }
             },
         )

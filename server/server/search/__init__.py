@@ -2,16 +2,6 @@ import logging
 import os
 from pathlib import Path
 
-import elasticsearch
-
-es = elasticsearch.Elasticsearch(
-    [{'host': os.getenv("ES_HOST"), 'port': int(os.getenv("ES_PORT"))}]
-)
-
-# Make elasticsearch STFU
-logging.getLogger('elasticsearch').setLevel('ERROR')
-logging.getLogger('elasticsearch.trace').setLevel('ERROR')
-
 
 def set_constants():
     """Set runtime constants."""
@@ -20,12 +10,10 @@ def set_constants():
     db_dir = base_dir / 'db'
     static_dir = base_dir / 'static'
     text_dir = base_dir.parent.parent / 'sc-data' / 'html_text'
-
     dict_db_path = db_dir / 'dictionaries.sqlite'
     dict_sources_dir = base_dir / 'dicts'
     exports_dir = static_dir / 'exports'
-    table_dir = base_dir / 'table'
-    tmp_dir = base_dir / 'tmp'
+
     webassets_manifest_path = db_dir / 'webassets' / 'manifest'
     webassets_cache_dir = db_dir / 'webassets' / 'cache'
     indexer_dir = base_dir / 'indexers'
