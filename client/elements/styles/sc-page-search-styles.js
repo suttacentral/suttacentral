@@ -197,8 +197,6 @@ export const SCPageSearchStyles = css`
     color: initial;
 
     padding: 12px 0 8px;
-
-    width: 100%
   }
 
   .search-result-link:hover {
@@ -315,6 +313,11 @@ export const SCPageSearchStyles = css`
     display: flex;
     justify-content: center;
   }
+
+  // table td {
+  //   text-align: center;
+  //   vertical-align: middle;
+  // }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -362,6 +365,30 @@ export const searchResultTableViewStyles = css`
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
+  .pts_reference {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pts_reference:hover {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.06em;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .pts_reference:active {
+    background-color: var(--sc-primary-color-light);
+  }
+
+  .pts_reference:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+
+
   .highlightShrink {
     display: -webkit-box;
     overflow: hidden;
@@ -370,18 +397,16 @@ export const searchResultTableViewStyles = css`
     -webkit-line-clamp: 3;
   }
 
+  .parallels-label {
+    display: block;
+    text-align: center;
+    margin-top: 4px;
+    font-size: 2px;
+  }
+
   .parallels-link {
     text-decoration: none; !important;
     color: var(--sc-secondary-text-color);
-    margin-top: 8px;
-    padding: 12px;
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
-  }
-
-  .parallels-link:hover{
-    background-color: var(--sc-tertiary-background-color);
   }
 
   .parallels-btn-container {
@@ -393,5 +418,9 @@ export const searchResultTableViewStyles = css`
   .item-head {
     display: flex;
     justify-content: space-between;
+  }
+  
+  .volpage {
+    white-space: nowrap;
   }
 `;

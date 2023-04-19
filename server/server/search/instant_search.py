@@ -159,6 +159,56 @@ def generate_volpage_query_aql(possible_volpages):
     return aql
 
 
+def generate_volpage_query_aql_new(possible_volpages):
+    aql = '''
+    FOR d IN instant_volpage_search
+    SEARCH (PHRASE(d.volpage, @query, "common_text") OR PHRASE(d.alt_volpage, @query, "common_text") OR
+    '''
+
+    for volpage in possible_volpages:
+        aql += f'PHRASE(d.volpage, "{volpage}", "common_text") OR PHRASE(d.alt_volpage, "{volpage}", "common_text") OR '
+    aql = aql[:-4]
+    aql += '''
+
+    )
+    SORT d.uid
+
+    LET translation_title = (
+        FOR name IN names
+            FILTER name.uid == d.uid AND name.lang == @lang
+            LIMIT 1
+            RETURN name.name
+    )[0]
+
+    LET root_title = (
+        FOR name IN names
+            FILTER name.uid == d.uid AND name.is_root == True
+            LIMIT 1
+            RETURN name.name
+    )[0]
+
+    LET all_reference = (
+        FOR tr IN text_references
+        FILTER tr.uid == d.uid
+        RETURN tr.volpage
+    )[0]
+
+    RETURN {
+        acronym: d.acronym,
+        uid: d.uid,
+        lang: d.lang,
+        name: translation_title ? translation_title : root_title,
+        volpage: d.volpage,
+        alt_volpage: d.alt_volpage,
+        all_reference: all_reference,
+        content: '',
+        segmented_text: '',
+    }
+    '''
+
+    return aql
+
+
 def generate_multi_keyword_query_aql(keywords):
     aql = '''
     FOR d IN instant_search
@@ -308,6 +358,7 @@ def aql_return_part(include_content=True):
         segmented_id: d.segmented_id,
         segmented_text: d.segmented_text,
         is_segmented: d.is_segmented,
+        param_lang: @lang
     }
     '''
     if include_content:
@@ -330,10 +381,10 @@ def generate_chinese_keyword_query_aql(keywords):
 
 
 def instant_search_query(query, lang, restrict, limit, offset):
-    global exclude_segmented_text
     db = get_db()
     query = query.strip()
     hits = []
+    total = 0
     original_query = query
     if restrict != 'dictionaries':
         search_aql = generate_general_query_aql(query)
@@ -349,9 +400,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
         total = len(hits)
-
         hits = hits[int(offset):int(offset) + int(limit)]
-        
         hits = filter_search_result(hits)
         hits = sort_hits(hits, original_query)
 
@@ -436,7 +485,8 @@ def compute_query_aql(bind_param, lang, query, search_aql):
     query, search_aql = generate_aql_by_list_authors(query, search_aql)
     query, search_aql = generate_aql_by_title(query, search_aql)
     bind_param = {
-        'query': query
+        'query': query,
+        'lang': lang
     }
     return bind_param, query, search_aql
 
@@ -462,7 +512,7 @@ def highlight_keyword(hits, query):
 def sort_hits(hits, query):
     ebt_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
                     "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "san-mg", "san-lo", "up" "t25", "t24", "t23", "t22", "t21", "t20", "t19", "t18", "t17",
+                    "lzh-upp", "san-mg", "san-lo", "up", "t25", "t24", "t23", "t22", "t21", "t20", "t19", "t18", "t17",
                     "t16", "t15", "t14", "t13", "t12", "t11", "t10", "t9", "t8", "t7", "t6", "t5", "t4", "t3", "t2",
                     "t98", "t97", "t96", "t95", "t94", "t93", "t92", "t91", "t90", "t89", "t88", "t87", "t86", "t85",
                     "t84", "t83", "t82", "t81", "t80", "t79", "t78", "t77", "t76", "t75", "t74", "t73", "t72", "t71",
@@ -573,6 +623,7 @@ def generate_aql_by_volpage(query, search_aql):
     vol_page_number = re.search(r'\d+', query)
     if query.startswith(constant.CMD_VOLPAGE):
         query = query[8:].strip()
+        query = format_volpage(query)
         pattern = r"^([asmdASMD])\s"
         replacement = r"\1n "
         query = re.sub(pattern, replacement, query)
@@ -587,7 +638,11 @@ def generate_aql_by_volpage(query, search_aql):
             )
         else:
             possible_volpages.append(query)
-        search_aql = generate_volpage_query_aql(possible_volpages)
+
+        standardized_volpages = standardization_volpage(query)
+        possible_volpages.append(standardized_volpages)
+        # search_aql = generate_volpage_query_aql(possible_volpages)
+        search_aql = generate_volpage_query_aql_new(possible_volpages)
     return query, search_aql
 
 
@@ -857,3 +912,28 @@ def vowel_combinations(string):
     helper(string, 0)
 
     return result
+
+
+def format_volpage(volpage):
+    return re.sub(r'[^a-zA-Z0-9]', ' ', volpage)
+
+
+def roman_to_int(roman):
+    roman_dict = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    result = 0
+    for i in range(len(roman)):
+        if i == len(roman) - 1 or roman_dict[roman[i].upper()] >= roman_dict[roman[i + 1].upper()]:
+            result += roman_dict[roman[i].upper()]
+        else:
+            result -= roman_dict[roman[i].upper()]
+    return result
+
+
+def standardization_volpage(volpage):
+    parts = volpage.split()
+    if len(parts) < 3:
+        return volpage
+    parts[0] = "PTS"
+    parts[1] = roman_to_int(parts[1])
+    parts[2] = f".{parts[2]}"
+    return "{} {}{}".format(*parts)

@@ -1,0 +1,49 @@
+from search.instant_search import format_volpage, standardization_volpage, roman_to_int
+
+def test_format_volpage():
+    assert format_volpage('S.II,236') == 'S II 236'
+    assert format_volpage('A.BC,123') == 'A BC 123'
+    assert format_volpage('X.YZ,789') == 'X YZ 789'
+
+def test_standardization_volpage():
+    assert standardization_volpage('D II 236') == 'PTS 2.236'
+    assert standardization_volpage('VIN IV 4') == 'PTS 4.4'
+    assert standardization_volpage('S III 789') == 'PTS 3.789'
+
+def test_roman_to_int():
+    assert roman_to_int('I') == 1
+    assert roman_to_int('II') == 2
+    assert roman_to_int('III') == 3
+    assert roman_to_int('IV') == 4
+    assert roman_to_int('V') == 5
+    assert roman_to_int('VI') == 6
+    assert roman_to_int('VII') == 7
+    assert roman_to_int('VIII') == 8
+    assert roman_to_int('IX') == 9
+    assert roman_to_int('X') == 10
+    assert roman_to_int('XI') == 11
+    assert roman_to_int('XII') == 12
+    assert roman_to_int('XIII') == 13
+    assert roman_to_int('XIV') == 14
+    assert roman_to_int('XV') == 15
+    assert roman_to_int('XVI') == 16
+    assert roman_to_int('XVII') == 17
+    assert roman_to_int('XVIII') == 18
+    assert roman_to_int('XIX') == 19
+    assert roman_to_int('XX') == 20
+    assert roman_to_int('XXI') == 21
+    assert roman_to_int('XXII') == 22
+    assert roman_to_int('XXIII') == 23
+    assert roman_to_int('XXIV') == 24
+    assert roman_to_int('XXV') == 25
+    assert roman_to_int('i') == 1
+    assert roman_to_int('ii') == 2
+    assert roman_to_int('iii') == 3
+    assert roman_to_int('iv') == 4
+    assert roman_to_int('v') == 5
+    assert roman_to_int('vi') == 6
+    assert roman_to_int('vii') == 7
+    assert roman_to_int('viii') == 8
+    assert roman_to_int('ix') == 9
+    assert roman_to_int('x') == 10
+    assert roman_to_int('xi') == 11

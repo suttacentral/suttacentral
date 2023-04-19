@@ -44,7 +44,7 @@ from common.queries import (
     AVAILABLE_VOICES,
     CANDIDATE_AUTHORS,
     VAGGA_CHILDREN,
-    ABBREVIATION_SUPER_NAME_ACRONYM
+    ABBREVIATION_SUPER_NAME_ACRONYM,
 )
 
 from common.utils import (
@@ -1297,8 +1297,9 @@ class Shortcuts(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
-        data = list(db.aql.execute('FOR s IN shortcuts RETURN s.shortcuts'))[0]
-        return data, 200
+        # data = list(db.aql.execute('FOR s IN shortcuts RETURN s.shortcuts'))[0]
+        data = db.collection('shortcuts').all()
+        return list(data), 200
 
 
 class CreatorBio(Resource):

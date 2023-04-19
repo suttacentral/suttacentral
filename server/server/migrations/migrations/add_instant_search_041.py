@@ -10,6 +10,7 @@ class SecondMigration(Migration):
         db = get_db()
 
         db.create_collection('text_contents', False)
+        db.create_collection('text_references', False)
         db.create_collection('segmented_text_contents', False)
 
     def create_analyzers(self):
@@ -111,8 +112,23 @@ class SecondMigration(Migration):
                 "content": {
                     "analyzers": ["common_text", "text_zh", "text_pali"]
                 }
-            }
+            },
         }
+
+        volpage_fields = {
+            "fields": {
+                "uid": {
+                    "analyzers": ["identity"]
+                },
+                "volpage": {
+                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                },
+                "alt_volpage": {
+                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                },
+            },
+        }
+
         view = {
             "links": {
                 "names": common_fields,
@@ -131,11 +147,21 @@ class SecondMigration(Migration):
             "countApproximate": "cost"
         }
 
-        segmented_view = {
+        volpage_view = {
             "links": {
-                "segmented_text_contents": common_fields
-            }
+                "super_nav_details": volpage_fields,
+                "text_extra_info": volpage_fields,
+                "text_references": volpage_fields
+            },
+            "primarySort": [
+                {"field": "uid", "direction": "asc"},
+            ],
+            "storedValues": [
+                {"fields": ["uid", 'volpage', 'alt_volpage'], "compression": "lz4"}
+            ],
+            "conditionOptimization": "auto",
+            "countApproximate": "cost"
         }
 
         get_db().create_arangosearch_view("instant_search", view)
-        get_db().create_arangosearch_view("instant_segmented_search", segmented_view)
+        get_db().create_arangosearch_view("instant_volpage_search", volpage_view)
