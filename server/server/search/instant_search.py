@@ -116,6 +116,7 @@ LIMIT 1
 RETURN r.uid
 '''
 
+
 POSSIBLE_SUTTA_BY_NAME = '''
 FOR doc IN super_nav_details
 FILTER doc.type == 'leaf' AND (doc.name == @name OR doc.name == @name + 'sutta')
@@ -412,11 +413,11 @@ def instant_search_query(query, lang, restrict, limit, offset):
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
 
     lookup_dictionary(hits, lang, query, restrict)
-    if original_query != constant.CMD_LIST_AUTHORS:
-        hits = merge_duplicate_hits(hits)
-        if int(offset) > 0 and len(hits) > 0 and 'category' in hits[0] and hits[0]['category'] and hits[0]['category'] == 'dictionary':
-            hits = hits[1:]
-        total = len(hits) if total < int(limit) else total - int(limit) + len(hits)
+    # if original_query != constant.CMD_LIST_AUTHORS:
+    #     hits = merge_duplicate_hits(hits)
+    #     if int(offset) > 0 and len(hits) > 0 and 'category' in hits[0] and hits[0]['category'] and hits[0]['category'] == 'dictionary':
+    #         hits = hits[1:]
+    #     total = len(hits) if total < int(limit) else total - int(limit) + len(hits)
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
 
 
