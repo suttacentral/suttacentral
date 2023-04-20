@@ -138,7 +138,8 @@ RETURN {
     author_short: a.short_name,
     is_root: '',
     heading: '',
-    content: 'content',    
+    content: 'content',
+    param_lang: @lang
 }
 '''
 
