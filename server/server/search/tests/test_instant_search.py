@@ -1,4 +1,10 @@
-from search.instant_search import format_volpage, standardization_volpage, roman_to_int
+from search.instant_search import (
+    format_volpage,
+    standardization_volpage,
+    roman_to_int,
+    extract_param,
+    is_chinese,
+)
 
 def test_format_volpage():
     assert format_volpage('S.II,236') == 'S II 236'
@@ -47,3 +53,20 @@ def test_roman_to_int():
     assert roman_to_int('ix') == 9
     assert roman_to_int('x') == 10
     assert roman_to_int('xi') == 11
+
+def test_extract_param():
+    assert extract_param('in:sn author:sujato cat') == {"collection": "sn", "author": "sujato", "or": ["cat"]}
+    assert extract_param('in:an author:sujato dog') == {"collection": "an", "author": "sujato", "or": ["dog"]}
+    assert extract_param('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
+    assert extract_param('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato", "or": ["cat", "dog"]}
+
+def test_is_chinese():
+    assert is_chinese('四念处') == True
+    assert is_chinese('四正勤') == True
+    assert is_chinese('四神足') == True
+    assert is_chinese('五根') == True
+    assert is_chinese('五力') == True
+    assert is_chinese('七觉支') == True
+    assert is_chinese('八正道') == True
+    assert is_chinese('Buddha') == False
+    assert is_chinese('Metta') == False

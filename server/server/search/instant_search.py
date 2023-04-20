@@ -390,6 +390,7 @@ def instant_search_query(query, lang, restrict, limit, offset):
         search_aql = generate_general_query_aql(query)
         bind_param = {
             'query': query,
+            'lang': lang
         }
         condition_combination = extract_param(query)
         if is_complex_query(condition_combination):
@@ -423,6 +424,7 @@ def filter_search_result(hits):
         if 'uid' in hit and '-name' in hit['uid']:
             hits.remove(hit)
     return hits
+
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     suttaplex = fetch_suttaplex(db, lang, query)
@@ -470,7 +472,8 @@ def general_aql_based_on_query(condition_combination):
 def compute_complex_query_aql(bind_param, condition_combination, lang, query, search_aql):
     search_aql = generate_condition_combination_query_aql(condition_combination)
     bind_param = {
-        'query': query
+        'query': query,
+        'lang': lang
     }
     return bind_param, search_aql
 
