@@ -232,9 +232,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
                       </p>
                     </div>
                   </a>
-                  <a class="parallels-link" href=${this.#calculateParallelsLink(item)} title="parallels">
+                  <a class="parallels-link" href=${this.#calculateParallelsLink(item)}>
                     <div class="parallels-btn-container">
                       ${icon.parallels}
+                      <span class="parallels-label">Parallels</span>
                     </div>
                   </a>
                 </div>
@@ -296,26 +297,67 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return ``;
     }
     const searchResultByVolpage = this.visibleSearchResults;
+
+    for (const element of searchResultByVolpage) {
+      const item = element;
+      const { all_reference, volpage } = item;
+      if (all_reference && typeof all_reference === 'string') {
+        const references = all_reference?.split(',');
+        const filteredReferences = [];
+        if (references) {
+          for (const ref of references) {
+            if (ref.includes('pts-vp-pli')) {
+              filteredReferences.push(ref);
+            }
+          }
+          item.filteredReferences = filteredReferences;
+        }
+      } else {
+        item.filteredReferences = [];
+      }
+
+      const volpages = volpage?.split(',');
+      if (volpages && volpages.length > 1) {
+        item.volpage = `${volpages[0]}–${volpages[volpages.length - 1].split('.')[1]}`;
+      }
+    }
+
+    const linkTemplate =
+      '/pli/ms?layout=plain&reference=main/pts&notes=asterisk&highlight=false&script=latin#';
+
     return searchResultByVolpage
       ? html`
           <div class="search-results-container">
-            <main class="search-results-main">
-              ${this.searchResultHeadTemplate}
-              <table>
-                <tbody>
-                  ${searchResultByVolpage.map(
-                    item => html`
-                      <tr>
-                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
-                        <td>${item.name}</td>
-                        <td>${this.#addHighlighting(item.volpage)}</td>
-                      </tr>
-                    `
-                  )}
-                </tbody>
-              </table>
-              ${this.loadMoreButtonTemplate}
-            </main>
+            ${this.searchResultHeadTemplate}
+            <table>
+              <tbody>
+                ${searchResultByVolpage.map(
+                  item => html`
+                    <tr>
+                      <td class="sutta_uid">
+                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                      </td>
+                      <td class="sutta_title">${item.name}</td>
+                      <td class="volpage">${item.volpage}</td>
+                      <td class="references">
+                        ${item.filteredReferences && Array.isArray(item.filteredReferences)
+                          ? item.filteredReferences?.map(
+                              ref =>
+                                html`<a
+                                    class="pts_reference"
+                                    href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
+                                    target="_blank"
+                                    >${ref.replace(/(^\s*)/g, '')}</a
+                                  >, `
+                            )
+                          : ''}
+                      </td>
+                    </tr>
+                  `
+                )}
+              </tbody>
+            </table>
+            ${this.loadMoreButtonTemplate}
           </div>
         `
       : '';

@@ -942,30 +942,36 @@ export class SCTextBilara extends SCTextCommon {
         this._addReferenceAnchor(value, refElement);
       }
     });
+
+    this._hashChangeHandler();
   }
 
   _addReferenceAnchor(ref, refElement) {
     const refs = ref.replace(/\s*/g, '').split(',');
-    if (refs.length === 0) return;
+    if (refs.length === 0) {
+      return;
+    }
     refs.forEach(item => {
-      let className = item;
-      const anchor = document.createElement('a');
-      const editionInfo = this._getReferenceInfo(item);
-      if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'pts') {
-        className = 'pts';
-      } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'sya') {
-        className = 'sya';
-      } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'csp') {
-        className = 'csp';
-      } else if (item.length >= 2 && item.substring(0, 2) === 'sc') {
-        className = 'sc';
-      } else {
-        className = editionInfo?.uid;
+      if (!this.querySelector(`#${CSS.escape(item)}`)) {
+        let className = item;
+        const anchor = document.createElement('a');
+        const editionInfo = this._getReferenceInfo(item);
+        if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'pts') {
+          className = 'pts';
+        } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'sya') {
+          className = 'sya';
+        } else if (editionInfo?.uid?.length >= 3 && editionInfo?.uid?.substring(0, 3) === 'csp') {
+          className = 'csp';
+        } else if (item.length >= 2 && item.substring(0, 2) === 'sc') {
+          className = 'sc';
+        } else {
+          className = editionInfo?.uid;
+        }
+        anchor.className = className || item;
+        anchor.title = editionInfo?.long_name || item;
+        this._initPtsReferenceAnchor(anchor, item);
+        refElement.appendChild(anchor);
       }
-      anchor.className = className || item;
-      anchor.title = editionInfo?.long_name || item;
-      this._initPtsReferenceAnchor(anchor, item);
-      refElement.appendChild(anchor);
     });
   }
 
@@ -1069,15 +1075,15 @@ export class SCTextBilara extends SCTextCommon {
   _addSpanToNode(node, unit) {
     const NODE_TYPE_TEXT = 3;
     if (node.nodeType !== NODE_TYPE_TEXT) return;
-    let tt = node.data;
-    let strArr = tt.split(/\s+/g);
+    const tt = node.data;
+    const strArr = tt.split(/\s+/g);
     let str = '';
     for (let i = 0; i < strArr.length; i++)
       if (strArr[i]) {
         if (unit === 'word') {
           str += `%spfrnt%${strArr[i]}%spback% `;
         } else if (unit === 'graph') {
-          for (let graph of strArr[i]) {
+          for (const graph of strArr[i]) {
             str += `%spfrnt%${graph}%spback%`;
           }
           str += ' ';

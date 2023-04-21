@@ -11,6 +11,7 @@ class InitialMigration(Migration):
 
         text_content_collection = 'text_contents'
         segmented_text_contents_collection = 'segmented_text_contents'
+        text_references_collection = 'text_references'
 
         indexes = (
             ('uid',),
@@ -31,3 +32,6 @@ class InitialMigration(Migration):
                 fields=index,
                 unique=False
             )
+
+        text_references = db.collection(text_references_collection)
+        text_references.add_hash_index(fields=['uid'], unique=True)

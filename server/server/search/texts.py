@@ -10,7 +10,8 @@ from common.queries import (
     CURRENT_MTIMES,
     CURRENT_BILARA_MTIMES,
     TEXTS_BY_LANG_FOR_SEARCH,
-    BILARA_TEXT_BY_LANG_FOR_SEARCH
+    BILARA_TEXT_BY_LANG_FOR_SEARCH,
+    TEXT_REFERENCES
 )
 
 logger = logging.getLogger('arango_search.texts')
@@ -32,11 +33,13 @@ class TextLoader:
         print('The original index is being deleted...')
         get_db().collection('text_contents').truncate()
         get_db().collection('segmented_text_contents').truncate()
+        get_db().collection('text_references').truncate()
 
     def import_all_text_to_db(self):
         self.import_bilara_texts()
         self.import_html_texts()
         self.import_segmented_texts()
+        self.import_text_references()
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
@@ -113,6 +116,28 @@ class TextLoader:
                 segmented_texts.append(segmented_text_info)
             get_db().collection('segmented_text_contents').import_bulk(segmented_texts)
             segmented_texts = []
+
+    def import_text_references(self):
+        bilara_text_references = list(get_db().aql.execute(TEXT_REFERENCES, bind_vars={'lang': self.lang}))
+        if not bilara_text_references:
+            return
+        print(f'Import {len(bilara_text_references)} {self.full_lang} text references to arangoDB')
+        text_references = []
+        for text in bilara_text_references:
+            uid = text['uid']
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+
+            text_reference_info = {
+                'acronym': text['acronym'],
+                'uid': uid,
+                'lang': text['lang'],
+                'full_lang': text['full_lang'],
+                'volpage': ','.join(strings.values()),
+            }
+            text_references.append(text_reference_info)
+            get_db().collection('text_references').import_bulk(text_references)
+            text_references = []
 
     def import_html_texts(self):
         html_texts = list(get_db().aql.execute(TEXTS_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
