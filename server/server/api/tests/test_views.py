@@ -42,7 +42,7 @@ def test_menu(client):
 
     assert res.status_code == 200
     assert isinstance(data, list)
-    assert all([isinstance(x, dict) for x in data])
+    assert all(isinstance(x, dict) for x in data)
 
 
 def test_suttaplex_list(client):
@@ -99,49 +99,61 @@ def test_lookup_dictionaries(client):
 
     assert res.status_code == 200
 
+
 def test_mapdata(client):
     res = client.get(api.url_for(MapData))
     assert res.status_code == 200
+
 
 def test_fallen_Leaves(client):
     res = client.get(api.url_for(FallenLeaves))
     assert res.status_code == 200
 
+
 def test_abbreviation_schools(client):
     res = client.get(api.url_for(AbbreviationSchools))
     assert res.status_code == 200
+
 
 def test_abbreviation_editions(client):
     res = client.get(api.url_for(AbbreviationEditions))
     assert res.status_code == 200
 
+
 def test_abbreviation_texts(client):
     res = client.get(api.url_for(AbbreviationTexts))
     assert res.status_code == 200
+
 
 def test_creator_bio(client):
     res = client.get(api.url_for(CreatorBio))
     assert res.status_code == 200
 
+
 def test_shortcuts(client):
     res = client.get(api.url_for(Shortcuts))
     assert res.status_code == 200
+
 
 def test_editions(client):
     res = client.get(api.url_for(Editions))
     assert res.status_code == 200
 
+
 def test_edition(client):
     res = client.get(api.url_for(Edition, edition_id='dn-en-sujato_scpub2-ed6-html_2022-02-10'))
     assert res.status_code == 200
+
 
 def test_guides(client):
     res = client.get(api.url_for(Guides))
     assert res.status_code == 200
 
+
 def test_root_edition(client):
     res = client.get(api.url_for(RootEdition))
     assert res.status_code == 200
+
 
 def test_available_voices(client):
     res = client.get(api.url_for(AvailableVoices, uid='dn1'))

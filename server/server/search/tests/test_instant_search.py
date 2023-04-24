@@ -2,19 +2,22 @@ from search.instant_search import (
     format_volpage,
     standardization_volpage,
     roman_to_int,
-    extract_param,
+    extract_params,
     is_chinese,
 )
+
 
 def test_format_volpage():
     assert format_volpage('S.II,236') == 'S II 236'
     assert format_volpage('A.BC,123') == 'A BC 123'
     assert format_volpage('X.YZ,789') == 'X YZ 789'
 
+
 def test_standardization_volpage():
     assert standardization_volpage('D II 236') == 'PTS 2.236'
     assert standardization_volpage('VIN IV 4') == 'PTS 4.4'
     assert standardization_volpage('S III 789') == 'PTS 3.789'
+
 
 def test_roman_to_int():
     assert roman_to_int('I') == 1
@@ -54,11 +57,17 @@ def test_roman_to_int():
     assert roman_to_int('x') == 10
     assert roman_to_int('xi') == 11
 
+
 def test_extract_param():
-    assert extract_param('in:sn author:sujato cat') == {"collection": "sn", "author": "sujato", "or": ["cat"]}
-    assert extract_param('in:an author:sujato dog') == {"collection": "an", "author": "sujato", "or": ["dog"]}
-    assert extract_param('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
-    assert extract_param('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato", "or": ["cat", "dog"]}
+    assert extract_params('in:sn author:sujato cat') == {"collection": "sn", "author": "sujato", "or": ["cat"]}
+    assert extract_params('in:an author:sujato dog') == {"collection": "an", "author": "sujato", "or": ["dog"]}
+    assert extract_params('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato",
+                                                                      "or": ["root of suffering"]}
+    assert extract_params('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato",
+                                                               "or": ["cat", "dog"]}
+    assert extract_params('in:sn cat') == {"collection": "sn", "or": ["cat"]}
+    assert extract_params('author:sujato cat') == {"author": "sujato", "or": ["cat"]}
+
 
 def test_is_chinese():
     assert is_chinese('四念处') == True

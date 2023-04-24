@@ -96,24 +96,25 @@ class TextLoader:
             with open(text['strings_path']) as f:
                 strings = json.load(f)
             for key, value in strings.items():
-                segmented_text_info = {
-                    'acronym': text['acronym'],
-                    'uid': uid,
-                    'lang': text['lang'],
-                    'full_lang': text['full_lang'],
-                    'author': text['author'],
-                    'author_uid': text['author_uid'],
-                    'author_short': text['author_short'],
-                    'is_root': self.lang == text['root_lang'],
-                    'heading': {
-                        'title': self.fix_text(text['title']) if text['title'] else text['uid']
-                    },
-                    'segmented_uid': key,
-                    'segmented_text': value,
-                    'content': '',
-                    'is_segmented': True
-                }
-                segmented_texts.append(segmented_text_info)
+                if value:
+                    segmented_text_info = {
+                        'acronym': text['acronym'],
+                        'uid': uid,
+                        'lang': text['lang'],
+                        'full_lang': text['full_lang'],
+                        'author': text['author'],
+                        'author_uid': text['author_uid'],
+                        'author_short': text['author_short'],
+                        'is_root': self.lang == text['root_lang'],
+                        'heading': {
+                            'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                        },
+                        'segmented_uid': key,
+                        'segmented_text': value,
+                        'content': '',
+                        'is_segmented': True
+                    }
+                    segmented_texts.append(segmented_text_info)
             get_db().collection('segmented_text_contents').import_bulk(segmented_texts)
             segmented_texts = []
 
