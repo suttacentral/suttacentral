@@ -1,10 +1,12 @@
 from app import api
 from search.view import InstantSearch
 
+
 def test_search(client):
     data = {'query': 'test'}
     res = client.get(api.url_for(InstantSearch, **data))
     assert res.status_code == 200
+
 
 def test_volpage_search(client):
     data = {'query': 'volpage:s ii 1', 'lang': 'en'}
@@ -22,6 +24,7 @@ def test_volpage_search(client):
     data = {'query': 'volpage:S.II,236 '}
     res = client.get(api.url_for(InstantSearch, **data))
     assert res.status_code == 200
+
 
 def test_no_query(client):
     res = client.get(api.url_for(InstantSearch))
