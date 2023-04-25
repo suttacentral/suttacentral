@@ -232,6 +232,13 @@ def import_texts_to_arangodb():
     TextLoader.truncate_text_contents()
     time.sleep(5)
     languages = list(db.aql.execute('FOR l IN language SORT l.uid RETURN {uid: l.uid, name: l.name}'))
+
+    order = ["en", "pli", "lzh", "san", "pra", "xct", "pgd", "de", "zh", "af", "ar", "au", "bn", "ca", "cs", "es", "ev",
+             "fa", "fi", "fr", "gu", "haw", "he", "hi", "hr", "hu", "id", "it", "jpn", "kan", "kho", "kln", "ko", "la",
+             "lt", "mr", "my", "nl", "no", "pl", "pt", "ro", "ru", "si", "sk", "sl", "sld", "sr", "sv", "ta", "th",
+             "uig", "vi", "vu", "xto"]
+    languages = sorted(languages, key=lambda x: order.index(x["uid"]))
+
     for lang in tqdm(languages):
         loader = TextLoader(lang)
         loader.import_all_text_to_db()
