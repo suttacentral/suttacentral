@@ -2,7 +2,7 @@ from search.instant_search import (
     format_volpage,
     standardization_volpage,
     roman_to_int,
-    extract_params,
+    extract_query_conditions,
     is_chinese,
 )
 
@@ -59,14 +59,17 @@ def test_roman_to_int():
 
 
 def test_extract_param():
-    assert extract_params('in:sn author:sujato cat') == {"collection": "sn", "author": "sujato", "or": ["cat"]}
-    assert extract_params('in:an author:sujato dog') == {"collection": "an", "author": "sujato", "or": ["dog"]}
-    assert extract_params('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato",
+    assert extract_query_conditions('in:sn author:sujato cat') == {"collection": "sn", "author": "sujato", "or": ["cat"]}
+    assert extract_query_conditions('in:an author:sujato dog') == {"collection": "an", "author": "sujato", "or": ["dog"]}
+    assert extract_query_conditions('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato",
                                                                       "or": ["root of suffering"]}
-    assert extract_params('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato",
+    assert extract_query_conditions('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato",
                                                                "or": ["cat", "dog"]}
-    assert extract_params('in:sn cat') == {"collection": "sn", "or": ["cat"]}
-    assert extract_params('author:sujato cat') == {"author": "sujato", "or": ["cat"]}
+    assert extract_query_conditions('in:sn cat') == {"collection": "sn", "or": ["cat"]}
+    assert extract_query_conditions('author:sujato cat') == {"author": "sujato", "or": ["cat"]}
+    assert extract_query_conditions('author:sujato cat AND dog') == {"author": "sujato", "and": ["cat", "dog"]}
+    assert extract_query_conditions('in:mn author:sujato cat AND dog') == {"collection": "mn", "author": "sujato",
+                                                               "and": ["cat", "dog"]}
 
 
 def test_is_chinese():
@@ -79,3 +82,4 @@ def test_is_chinese():
     assert is_chinese('八正道') == True
     assert is_chinese('Buddha') == False
     assert is_chinese('Metta') == False
+    assert is_chinese('八正道 AND 四圣谛') == True
