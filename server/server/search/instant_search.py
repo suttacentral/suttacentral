@@ -51,9 +51,9 @@ def instant_search_query(query, lang, restrict, limit, offset):
     if restrict != 'dictionaries':
         search_aql, aql_condition_part = generate_general_query_aql(query, limit, offset)
 
-        query_params = extract_params(query)
-        if is_complex_query(query_params):
-            bind_param, search_aql, aql_condition_part = compute_complex_query_aql(query_params, query_param)
+        query_conditions = extract_query_conditions(query)
+        if is_complex_query(query_conditions):
+            bind_param, search_aql, aql_condition_part = compute_complex_query_aql(query_conditions, query_param)
         else:
             bind_param, search_aql, aql_condition_part = compute_query_aql(search_aql, aql_condition_part, query_param)
 
@@ -83,29 +83,7 @@ def generate_general_query_aql(query, limit, offset):
     '''
     aql_condition_part += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
 
-    # if en_dict.check(query) or en_dict.check(query.replace(" ", "")):
-    #     possible_synonyms = en_dict.suggest(query)
-    #     if len(possible_synonyms) > 2:
-    #         possible_synonyms = [possible_synonyms[:2]]
-    #     possible_synonyms.append(query)
-    #     # possible_synonyms = list(set(possible_synonyms))
-    #     if len(possible_synonyms) > 0:
-    #         aql_condition_part += ''' OR ('''
-    #         for synonym in possible_synonyms:
-    #             aql_condition_part += f'LIKE(d.volpage, "%{synonym}%") ' \
-    #                    f'OR PHRASE(d.name,"%{synonym}%", "common_text") ' \
-    #                    f'OR PHRASE(d.content, "%{synonym}%", "common_text") ' \
-    #                    f'OR LIKE(d.segmented_text, "%{synonym}%") OR '
-    #         aql_condition_part = aql_condition_part[:-4]
-    #         aql_condition_part += ''')'''
-
-    possible_pali_words = [query]
-    vowel_combine = vowel_combinations(query)
-    possible_pali_words.extend(vowel_combine)
-    if len(possible_pali_words) > 15:
-        possible_pali_words = possible_pali_words[:15]
-        possible_pali_words.append(query)
-    if possible_pali_words and len(possible_pali_words) > 0:
+    if possible_pali_words := [query]:
         aql_condition_part += ''' OR ('''
         for pali_word in possible_pali_words:
             aql_condition_part += f'LIKE(d.segmented_text, "%{pali_word}%") OR '
@@ -240,22 +218,6 @@ def generate_multi_keyword_query_aql(keywords, query_param):
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
-    possible_pali_words = []
-    for keyword in keywords:
-        vowel_combine = vowel_combinations(keyword)
-        possible_pali_words.extend(vowel_combine)
-
-    possible_pali_words = list(set(possible_pali_words))
-    if len(possible_pali_words) > 15:
-        possible_pali_words = possible_pali_words[:15]
-
-    if possible_pali_words:
-        aql_condition_part += ''' OR ('''
-        for pali_word in possible_pali_words:
-            aql_condition_part += f'PHRASE(d.content, "{pali_word}", "text_pali") OR '
-        aql_condition_part = aql_condition_part[:-4]
-        aql_condition_part += ''')'''
-
     aql_condition_part += ''')'''
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
@@ -265,38 +227,41 @@ def generate_multi_keyword_query_aql(keywords, query_param):
     return full_aql, aql_condition_part
 
 
-def generate_condition_combination_query_aql(condition_combination, query_param):
+def generate_and_query_aql(keywords, query_param):
+    aql_condition_part = '''
+    SEARCH PHRASE(d.content, @query, "common_text") OR  
+    '''
+
+    for keyword in keywords:
+        aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) AND '
+    aql_condition_part = aql_condition_part[:-5]
+
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
+    ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
+    ''' + aql_return_part(True) + '''
+    '''
+
+    return full_aql, aql_condition_part
+
+
+def generate_query_aql_by_conditions(query_conditions, query_param):
     aql_condition_part = '''
     SEARCH ((PHRASE(d.content, @query, "common_text") OR 
     '''
-    keywords = []
-    keywords.extend(condition_combination['or'])
-    for keyword in condition_combination['or']:
-        vowel_combine = vowel_combinations(keyword)
-        keywords.append(keyword)
-        keywords.extend(vowel_combine)
+    if 'or' in query_conditions:
+        for keyword in query_conditions['or']:
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) OR '
+        aql_condition_part = aql_condition_part[:-4]
 
-        # if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
-        #     possible_synonyms = en_dict.suggest(keyword)
-        #     if len(possible_synonyms) > 0:
-        #         possible_synonyms = [possible_synonyms[:2]]
-        #     # possible_synonyms = list(set(possible_synonyms))
-        #     keywords.extend(possible_synonyms)
-
-    keywords = list(set(keywords))
-    if len(keywords) > 15:
-        keywords = keywords[:15]
-
-    aql_condition_part += '''('''
-    for keyword in keywords:
-        aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) OR '
-    aql_condition_part = aql_condition_part[:-4]
-    aql_condition_part += ''')'''
+    if 'and' in query_conditions:
+        for keyword in query_conditions['and']:
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) AND '
+        aql_condition_part = aql_condition_part[:-5]
 
     aql_condition_part += '''
     )
-    ''' + add_collection_condition_to_query_aql(condition_combination) + '''
-    ''' + add_author_condition_to_query_aql(condition_combination) + '''
+    ''' + add_collection_condition_to_query_aql(query_conditions) + '''
+    ''' + add_author_condition_to_query_aql(query_conditions) + '''
     )
     '''
 
@@ -422,12 +387,13 @@ def merge_duplicate_hits(hits):
     return other_type_hits + list(merged.values())
 
 
-def is_complex_query(condition_combination):
-    return ('author' in condition_combination or 'collection' in condition_combination) and 'or' in condition_combination
+def is_complex_query(query_conditions):
+    return ('author' in query_conditions or 'collection' in query_conditions) \
+        and ('or' in query_conditions or 'and' in query_conditions)
 
 
-def compute_complex_query_aql(condition_combination, query_param):
-    search_aql, aql_condition_part = generate_condition_combination_query_aql(condition_combination, query_param)
+def compute_complex_query_aql(query_conditions, query_param):
+    search_aql, aql_condition_part = generate_query_aql_by_conditions(query_conditions, query_param)
     bind_param = {
         'query': query_param['query'],
         'lang': query_param['lang']
@@ -436,6 +402,9 @@ def compute_complex_query_aql(condition_combination, query_param):
 
 
 def compute_query_aql(search_aql, aql_condition_part, query_param):
+    search_aql, aql_condition_part = \
+        generate_aql_by_and_operator(search_aql, aql_condition_part, query_param)
+
     search_aql, aql_condition_part = \
         generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param)
 
@@ -449,7 +418,7 @@ def compute_query_aql(search_aql, aql_condition_part, query_param):
         generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part, query_param)
 
     search_aql, aql_condition_part = \
-        generate_aql_by_or_operators(search_aql, aql_condition_part, query_param)
+        generate_aql_by_or_operator(search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
         generate_aql_by_collection(search_aql, aql_condition_part, query_param)
@@ -570,15 +539,26 @@ def generate_aql_by_list_authors(search_aql, aql_condition_part, query_param):
 
 def generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part, query_param):
     if is_chinese(query_param['query']) and ' ' in query_param['query']:
-        query_list = query_param['query'].split(' ')
+        if ' AND ' not in query_param['query']:
+            query_list = query_param['query'].split(' ')
+            search_aql, aql_condition_part = generate_multi_keyword_query_aql(query_list, query_param)
+        else:
+            query_list = query_param['query'].split(' AND ')
+            search_aql, aql_condition_part = generate_and_query_aql(query_list, query_param)
+    return search_aql, aql_condition_part
+
+
+def generate_aql_by_or_operator(search_aql, aql_condition_part, query_param):
+    if ' OR ' in query_param['query']:
+        query_list = query_param['query'].split(' OR ')
         search_aql, aql_condition_part = generate_multi_keyword_query_aql(query_list, query_param)
     return search_aql, aql_condition_part
 
 
-def generate_aql_by_or_operators(search_aql, aql_condition_part, query_param):
-    if ' OR ' in query_param['query']:
-        query_list = query_param['query'].split(' OR ')
-        search_aql, aql_condition_part = generate_multi_keyword_query_aql(query_list, query_param)
+def generate_aql_by_and_operator(search_aql, aql_condition_part, query_param):
+    if ' AND ' in query_param['query']:
+        query_list = query_param['query'].split(' AND ')
+        search_aql, aql_condition_part = generate_and_query_aql(query_list, query_param)
     return search_aql, aql_condition_part
 
 
@@ -632,9 +612,9 @@ def cut_highlights_when_content_is_none(hit, query):
 
 def cut_highlights(content, hit, query, is_segmented_text):
     hit['highlight'] = {'content': []}
-    condition_combination = extract_params(query)
+    query_conditions = extract_query_conditions(query)
     if is_chinese(query):
-        keyword_list = query.split(' ')
+        keyword_list = query.split(' AND ') if ' AND ' in query else query.split(' ')
         for keyword in keyword_list:
             zhhant_keyword = zhconv_convert(keyword, 'zh-hant')
             zhhans_keyword = zhconv_convert(keyword, 'zh-hans')
@@ -644,12 +624,20 @@ def cut_highlights(content, hit, query, is_segmented_text):
                 chinese_character_list = [zhhant_keyword]
             for cc in chinese_character_list:
                 cut_highlight(content, hit, cc, is_segmented_text)
-    elif ('author' in condition_combination or 'collection' in condition_combination) and 'or' in condition_combination:
-        keyword_list = condition_combination['or']
+    elif ('author' in query_conditions or 'collection' in query_conditions) and 'or' in query_conditions:
+        keyword_list = query_conditions['or']
+        for keyword in keyword_list:
+            highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+    elif ('author' in query_conditions or 'collection' in query_conditions) and 'and' in query_conditions:
+        keyword_list = query_conditions['and']
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
     elif not is_chinese(query) and (' OR ' in query):
         keyword_list = query.split(' OR ')
+        for keyword in keyword_list:
+            highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+    elif not is_chinese(query) and (' AND ' in query):
+        keyword_list = query.split(' AND ')
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
     else:
@@ -657,23 +645,7 @@ def cut_highlights(content, hit, query, is_segmented_text):
 
 
 def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text):
-    possible_word_list = [f'{keyword}']
-    if vowel_combine := vowel_combinations(keyword):
-        possible_word_list.extend(vowel_combine)
-
-    # if en_dict.check(keyword) or en_dict.check(keyword.replace(" ", "")):
-    #     if ' ' in keyword:
-    #         possible_synonyms = en_dict.suggest(keyword.replace(" ", ""))
-    #     else:
-    #         possible_synonyms = en_dict.suggest(keyword)
-    #
-    #     if len(possible_synonyms) > 2:
-    #         possible_synonyms = [possible_synonyms[:2]]
-    #         # possible_synonyms = list(set(possible_synonyms))
-    #         possible_word_list.extend(possible_synonyms)
-
-    possible_word_list.append(keyword.capitalize())
-
+    possible_word_list = [f'{keyword}', keyword.capitalize()]
     for word in possible_word_list:
         cut_highlight(content, hit, word, is_segmented_text)
         if hit['highlight']['content']:
@@ -727,7 +699,11 @@ def convert_to_standard_roman(content):
     converted_content = converted_content.replace('ā', 'a')
     converted_content = converted_content.replace('ī', 'i')
     converted_content = converted_content.replace('ū', 'u')
-    # converted_content = converted_content.lower()
+    converted_content = converted_content.replace('ṅ', 'n')
+    converted_content = converted_content.replace('ḷ', 'l')
+    converted_content = converted_content.replace('ṭ', 't')
+    converted_content = converted_content.replace('ň', 'n')
+    converted_content = converted_content.replace('ñ', 'n')
     return converted_content
 
 
@@ -817,11 +793,12 @@ def fetch_suttaplex_by_name(db, lang, name):
         suttaplexs.append(suttaplex)
     return suttaplexs
 
+
 def is_chinese(uchar):
     return u'\u4e00' <= uchar <= u'\u9fa5'
 
 
-def extract_params(param):
+def extract_query_conditions(param):
     param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
     author = re.search("author:(\w+)", param)
@@ -832,67 +809,49 @@ def extract_params(param):
         result["collection"] = collection[1].strip()
 
     if author or collection:
-        extract_or_keywords(result, param)
+        extract_rest_keywords(result, param)
 
     if 'or' in result and len(result['or']) == 1 and result['or'][0] == '':
         del result['or']
 
+    if 'and' in result and len(result['and']) == 1 and result['and'][0] == '':
+        del result['and']
+
     return result
 
 
-def extract_or_keywords(result, param):
+def extract_rest_keywords(result, param):
+    rest_param = ''
     if 'author' in result and 'collection' not in result:
         author_param = 'author:' + result["author"]
-        or_param = param[param.find(author_param) + len(author_param) :]
+        rest_param = param[param.find(author_param) + len(author_param) :]
 
     if 'author' not in result and 'collection' in result:
         collection_param = 'in:' + result["collection"]
-        or_param = param[param.find(collection_param) + len(collection_param) :]
+        rest_param = param[param.find(collection_param) + len(collection_param) :]
 
     if 'author' in result and 'collection' in result:
         author_param = 'author:' + result["author"]
         collection_param = 'in:' + result["collection"]
-        or_param = (
+        rest_param = (
             param[param.find(author_param) + len(author_param) :]
             if param.find(author_param) > param.find(collection_param)
             else param[param.find(collection_param) + len(collection_param) :]
         )
 
-    if 'OR' in or_param:
-        or_param_list = or_param.split(' OR ')
-        or_param_list = [x.strip() for x in or_param_list]
+    if 'OR' in rest_param:
+        _extract_params_by_operator(rest_param, ' OR ', result, "or")
+    elif 'AND' in rest_param:
+        _extract_params_by_operator(rest_param, ' AND ', result, "and")
     else:
-        or_param_list = [or_param.strip()]
-    result["or"] = or_param_list
+        or_param_list = [rest_param.strip()]
+        result["or"] = or_param_list
 
 
-def vowel_combinations(string):
-    vowel_dict = {
-        "a": "ā",
-        "i": "ī",
-        "u": "ū",
-        "n": "ṅ",
-        "l": "ḷ",
-        "t": "ṭ",
-        "n": "ň",
-        "n": "ñ"
-    }
-    result = []
-
-    def helper(s, i):
-        if i == len(s):
-            result.append(s)
-            return
-
-        if s[i] in vowel_dict:
-            helper(s[:i] + vowel_dict[s[i]] + s[i + 1:], i + 1)  # Replace it
-            helper(s, i + 1)
-        else:
-            helper(s, i + 1)
-
-    helper(string, 0)
-
-    return result
+def _extract_params_by_operator(rest_param, operator, result, key):
+    param_list = rest_param.split(operator)
+    param_list = [x.strip() for x in param_list]
+    result[key] = param_list
 
 
 def format_volpage(volpage):
