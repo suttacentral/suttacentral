@@ -85,10 +85,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <td>Find texts using legacy PTS volume/page references.</td>
             <td>
               volpage:SN ii 4<br>
-              volpage:M II 246
+              volpage:M II 246<br>
+              volpage:S.II,236
             </td>
           </tr>
-                    <tr>
+          <tr>
             <th colspan="2">PTS volume search</th>
           </tr>
           <tr>
@@ -104,7 +105,10 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
           <tr>
             <td>Filter results by <code>author</code>.</td>
             <td>author:brahmali cat<br>
-            author:sabbamitta Katze</td>
+                author:sabbamitta Katze<br>
+                author:sabbamitta Buddha OR Sāvatthī<br>
+                author:sabbamitta Buddha AND Sāvatthī
+            </td>
           </tr>
 
           <tr>
@@ -127,7 +131,10 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
           <tr>
             <td>Search <code>in</code> a specific collection with SuttaCentral IDs.</td>
             <td>in:dn cat<br>
-            in:an dog</td>
+                in:an dog<br>
+                in:an Buddha OR Sāvatthī<br>
+                in:an Buddha AND Sāvatthī
+            </td>
           </tr>
 
           <tr>
@@ -160,7 +167,10 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
 
           <tr>
           <td>Use multiple filters.</td>
-            <td colspan="2">in:mn author:sujato cat OR dog</td>
+            <td colspan="2">
+              in:mn author:sujato Buddha OR Monastery<br>
+              in:mn author:sujato Buddha AND Monastery
+            </td>
           </tr>
 
           <tr>
@@ -169,7 +179,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
 
           <tr>
             <td>Use space-separated keywords.</td>
-            <td>八正道 涅槃， 四神足 三摩地</td>
+            <td>
+              八正道 涅槃<br>
+              四神足 三摩地<br>
+              八正道 AND 涅槃
+            </td>
           </tr>
 
           <tr>
