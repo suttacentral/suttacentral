@@ -15,8 +15,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
         font-family: var(--sc-sans-font);
 
         width: 848px;
-        margin: 0 1em;
-        margin-top: 24px;
+        margin: 1.5em 1em;
         padding: 0;
 
         border-color: var(--sc-border-color);
