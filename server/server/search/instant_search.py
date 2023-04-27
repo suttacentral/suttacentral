@@ -78,10 +78,10 @@ def instant_search_query(query, lang, restrict, limit, offset):
 def generate_general_query_aql(query, limit, offset):
     aql_condition_part = '''        
         SEARCH (PHRASE(d.content, @query, "common_text") 
-        OR PHRASE(d.name, @query, "common_text") OR PHRASE(d.heading.title, @query, "common_text")
+        OR PHRASE(d.name, @query, "common_text") 
         OR d.uid == @query  
     '''
-    aql_condition_part += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") OR LIKE(d.heading.title, "%{query}%") '
+    aql_condition_part += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") '
 
     if possible_pali_words := [query]:
         aql_condition_part += ''' OR ('''
@@ -127,6 +127,7 @@ def generate_author_query_aql(query_param):
 def generate_title_query_aql(query_param):
     aql_condition_part = '''
         SEARCH PHRASE(d.name, @query, "common_text")
+        FILTER d.is_segmented == False
         '''
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
@@ -690,7 +691,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
 
 
 def is_pali(content):
-    return any(vowel in content for vowel in ['ṁ', 'ā', 'ī', 'ū', 'ṅ', 'ḷ', 'ṭ', 'ň', 'ñ'])
+    return any(vowel in content for vowel in ['ṁ', 'ā', 'ī', 'ū', 'ṅ', 'ḷ', 'ṭ', 'ň', 'ñ', 'ṣ'])
 
 
 def convert_to_standard_roman(content):
@@ -704,6 +705,7 @@ def convert_to_standard_roman(content):
     converted_content = converted_content.replace('ṭ', 't')
     converted_content = converted_content.replace('ň', 'n')
     converted_content = converted_content.replace('ñ', 'n')
+    converted_content = converted_content.replace('ṣ', 's')
     return converted_content
 
 

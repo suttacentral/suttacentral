@@ -131,7 +131,7 @@ class SecondMigration(Migration):
 
         view = {
             "links": {
-                "names": common_fields,
+                # "names": common_fields,
                 "super_nav_details": common_fields,
                 "text_contents": common_fields,
                 "segmented_text_contents": common_fields

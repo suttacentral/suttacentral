@@ -66,6 +66,7 @@ class TextLoader:
             text_info = {
                 'acronym': text['acronym'],
                 'uid': uid,
+                'name': self.fix_text(text['title']) if text['title'] else text['uid'],
                 'lang': text['lang'],
                 'full_lang': text['full_lang'],
                 'author': text['author'],
@@ -100,6 +101,7 @@ class TextLoader:
                     segmented_text_info = {
                         'acronym': text['acronym'],
                         'uid': uid,
+                        'name': self.fix_text(text['title']) if text['title'] else text['uid'],
                         'lang': text['lang'],
                         'full_lang': text['full_lang'],
                         'author': text['author'],
@@ -218,6 +220,7 @@ class TextLoader:
         division = '' if division is None else self.fix_text(division.text_content())
 
         return {
+            'name': title,
             'content': content,
             'heading': {
                 'title': title,
