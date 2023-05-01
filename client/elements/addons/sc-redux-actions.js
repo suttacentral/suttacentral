@@ -85,4 +85,11 @@ export class reduxActions {
       displayedLanguages,
     });
   }
+
+  static setSearchMatchType(matchPartial) {
+    store.dispatch({
+      type: 'SET_SEARCH_MATCH_TYPE',
+      matchPartial,
+    });
+  }
 }

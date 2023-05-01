@@ -56,6 +56,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     displayedLanguages: { type: Array },
     displayHintOfNoResultInSelectedLanguages: { type: Boolean },
     languagesOfFoundResult: { type: String },
+    matchPartial: { type: Boolean },
   };
 
   constructor() {
@@ -87,6 +88,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.loadingResults = true;
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
     this.displayHintOfNoResultInSelectedLanguages = false;
+    this.matchPartial = store.getState().searchOptions.matchPartial;
 
     this.addEventListener('click', e => {
       this.#hideRelatedTopSheets();
@@ -219,7 +221,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
                 <div class="item-head">
                   <a class="search-result-link" href=${this.#calculateLink(item)}>
                     <div class="primary">
-                      <h2 class="search-result-title">${this.#calculateTitle(item)}</h2>
+                      <h2 class="search-result-title">
+                        ${unsafeHTML(
+                          // this.#highlightKeyword(this.searchQuery, this.#calculateTitle(item))
+                          this.#calculateTitle(item)
+                        )}
+                      </h2>
 
                       <div class="all-dictionaries">
                         <span>All dictionaries</span>
@@ -525,6 +532,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #filterSearchResultByLanguages() {
+    if (this.originLastSearchResults.length < 15 || this.searchQuery.includes('lang:')) {
+      return;
+    }
     let searchResult = this.originLastSearchResults;
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
     if (
@@ -546,7 +556,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       if (
         this.originLastSearchResults.length > 0 &&
         (!searchResult ||
-          searchResult.length === 0 ||
+          searchResult.length < 10 ||
           (searchResult.length === 1 && searchResult[0].category === 'dictionary'))
       ) {
         this.displayHintOfNoResultInSelectedLanguages = true;
@@ -581,6 +591,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       query: this.searchQuery,
       language: this.language,
       restrict: this.currentFilter,
+      matchpartial: this.matchPartial,
     });
     this.#generateRequest();
   }
@@ -611,6 +622,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       query: this.searchQuery,
       language: this.language,
       restrict: this.currentFilter,
+      matchpartial: this.matchPartial,
     });
     this.#generateRequest();
   }
@@ -795,6 +807,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #addHighlighting(text) {
     return html`<strong class="highlight">${text}</strong>`;
+  }
+
+  #highlightKeyword(word, text) {
+    return text.replace(new RegExp(word, 'g'), `<strong class="highlight">${word}</strong>`);
   }
 
   #getDivision(item) {

@@ -15,6 +15,7 @@ const initialState = {
   searchParams: {},
   searchOptions: {
     displayedLanguages: [],
+    matchPartial: false,
   },
   suttaText: {},
   suttaMetaText: '',
@@ -235,6 +236,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         searchOptions: { ...state.searchOptions, displayedLanguages: action.displayedLanguages },
+      };
+    case 'SET_SEARCH_MATCH_TYPE':
+      return {
+        ...state,
+        searchOptions: { ...state.searchOptions, matchPartial: action.matchPartial },
       };
     default:
       return state;
