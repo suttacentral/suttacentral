@@ -74,8 +74,14 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial):
 
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
     lookup_dictionary(hits, lang, query, restrict)
-
+    hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
+
+
+def remove_hits_if_uid_in_suttaplexs(hits, suttaplexs):
+    uids = [suttaplex['uid'] for suttaplex in suttaplexs]
+    hits = [hit for hit in hits if 'category' not in hit and hit['uid'] not in uids]
+    return hits
 
 
 def generate_general_query_aql(query, limit, offset, matchpartial):
@@ -417,7 +423,8 @@ def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     suttaplex = fetch_suttaplex(db, lang, query)
     if not suttaplex:
         suttaplex = fetch_suttaplex_by_name(db, lang, f'{query}sutta')
-    suttaplexs = [suttaplex]
+    suttaplexs = []
+    suttaplexs.extend(suttaplex)
     if original_query.startswith('title:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     suttaplexs.extend(fetch_suttaplex_by_name(db, lang, query))
@@ -895,7 +902,6 @@ def fetch_suttaplexs(db, lang, hits):
 
 def fetch_suttaplex_by_name(db, lang, name):
     possible_uids = list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name}))
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name}sutta'})))
     suttaplexs = []
     for uid in possible_uids:
         suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]

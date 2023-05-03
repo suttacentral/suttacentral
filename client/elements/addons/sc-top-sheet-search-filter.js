@@ -13,7 +13,6 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
   constructor() {
     super();
     this.matchPartial = store.getState().searchOptions.matchPartial;
-    console.log(store.getState().searchOptions);
   }
 
   static styles = [
