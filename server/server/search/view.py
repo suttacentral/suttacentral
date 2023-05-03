@@ -6,6 +6,7 @@ from search.instant_search import instant_search_query
 
 import json
 
+
 class InstantSearch(Resource):
     @cache.cached(timeout=600, key_prefix=make_cache_key)
     def get(self):
@@ -17,10 +18,11 @@ class InstantSearch(Resource):
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
+        matchpartial = request.args.get('matchpartial', 'false')
         if restrict == 'all':
             restrict = None
 
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
-        return instant_search_query(query, lang, restrict, limit, offset)
+        return instant_search_query(query, lang, restrict, limit, offset, matchpartial)

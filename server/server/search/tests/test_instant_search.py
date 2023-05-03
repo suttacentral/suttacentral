@@ -4,6 +4,7 @@ from search.instant_search import (
     roman_to_int,
     extract_query_conditions,
     is_chinese,
+    extract_lang_param
 )
 
 
@@ -83,3 +84,11 @@ def test_is_chinese():
     assert is_chinese('Buddha') == False
     assert is_chinese('Metta') == False
     assert is_chinese('八正道 AND 四圣谛') == True
+    assert is_chinese('in:sa 如实知见') == False
+
+
+def test_extract_lang_param():
+    assert extract_lang_param('lang:en cat') == ['en', 'cat']
+    assert extract_lang_param('lang:pli cat OR dog') == ['pli', 'cat OR dog']
+    assert extract_lang_param('lang:zh 如是') == ['zh', '如是']
+    assert extract_lang_param('lang:zh 如是 AND 八正道') == ['zh', '如是 AND 八正道']

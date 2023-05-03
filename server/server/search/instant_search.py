@@ -36,7 +36,7 @@ RETURN {
 '''
 
 
-def instant_search_query(query, lang, restrict, limit, offset):
+def instant_search_query(query, lang, restrict, limit, offset, matchpartial):
     db = get_db()
     query = query.strip()
     hits = []
@@ -47,9 +47,10 @@ def instant_search_query(query, lang, restrict, limit, offset):
         'lang': lang,
         'limit': limit,
         'offset': offset,
+        'matchpartial': matchpartial
     }
     if restrict != 'dictionaries':
-        search_aql, aql_condition_part = generate_general_query_aql(query, limit, offset)
+        search_aql, aql_condition_part = generate_general_query_aql(query, limit, offset, matchpartial)
 
         query_conditions = extract_query_conditions(query)
         if is_complex_query(query_conditions):
@@ -59,38 +60,52 @@ def instant_search_query(query, lang, restrict, limit, offset):
 
         query = bind_param['query']
         total = fetch_record_count(INSTANT_SEARCH_VIEW, aql_condition_part, query)
+
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
-        if total[0] == 0:
+        if total == 0:
             total = len(hits)
-
-        hits = sort_hits(hits)
 
         if original_query != constant.CMD_LIST_AUTHORS:
             highlight_keyword(hits, query)
 
+    if matchpartial == 'true':
+        hits = merge_duplicate_hits(hits)
+
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
     lookup_dictionary(hits, lang, query, restrict)
-
+    hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
 
 
-def generate_general_query_aql(query, limit, offset):
+def remove_hits_if_uid_in_suttaplexs(hits, suttaplexs):
+    uids = [suttaplex['uid'] for suttaplex in suttaplexs]
+    hits = [hit for hit in hits if 'category' not in hit and hit['uid'] not in uids]
+    return hits
+
+
+def generate_general_query_aql(query, limit, offset, matchpartial):
     aql_condition_part = '''        
-        SEARCH (PHRASE(d.content, @query, "common_text") 
+    SEARCH (PHRASE(d.content, @query, "common_text") 
         OR PHRASE(d.name, @query, "common_text") 
         OR d.uid == @query  
     '''
-    aql_condition_part += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") '
 
-    if possible_pali_words := [query]:
-        aql_condition_part += ''' OR ('''
-        for pali_word in possible_pali_words:
-            aql_condition_part += f'LIKE(d.segmented_text, "%{pali_word}%") OR '
-        aql_condition_part = aql_condition_part[:-4]
-        aql_condition_part += '''))'''
+    if matchpartial == 'true':
+        aql_condition_part += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") '
+        if possible_pali_words := [query]:
+            aql_condition_part += ''' OR ('''
+            for pali_word in possible_pali_words:
+                aql_condition_part += f'LIKE(d.segmented_text, "%{pali_word}%") OR '
+            aql_condition_part = aql_condition_part[:-4]
+            aql_condition_part += '''))'''
+    else:
+        aql_condition_part += ''')'''
+
+    aql_condition_part += aql_filter_part(matchpartial)
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
+    ''' + aql_sort_part() + '''
     ''' + aql_limit_part(limit, offset) + '''
     ''' + aql_return_part(True) + '''
     '''
@@ -107,7 +122,7 @@ def fetch_record_count(collection, condition, query):
 
         RETURN record_count
     '''
-    return list(get_db().aql.execute(aql, bind_vars={"query": query}))
+    return list(get_db().aql.execute(aql, bind_vars={"query": query}))[0]
 
 
 def generate_author_query_aql(query_param):
@@ -117,6 +132,7 @@ def generate_author_query_aql(query_param):
     '''
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
+    ''' + aql_sort_part() + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
     '''
@@ -149,6 +165,31 @@ def generate_collection_query_aql(query_param):
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
     '''
+
+    return full_aql, aql_condition_part
+
+
+def generate_lang_query_aql(lang, keyword_list, operator, query_param):
+    aql_condition_part = f'SEARCH (d.lang == "{lang}" OR d.name==@query) AND '
+    if operator == 'OR':
+        for keyword in keyword_list:
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR ' \
+                                  f'LIKE(d.segmented_text, "%{keyword}%") OR ' \
+                                  f'LIKE(d.name, "%{keyword}%")) OR '
+        aql_condition_part = aql_condition_part[:-4]
+
+    if operator == 'AND':
+        for keyword in keyword_list:
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR ' \
+                                  f'LIKE(d.segmented_text, "%{keyword}%") OR ' \
+                                  f'LIKE(d.name, "%{keyword}%")) AND '
+        aql_condition_part = aql_condition_part[:-5]
+
+    aql_condition_part += aql_filter_part(query_param['matchpartial'])
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
+        ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
+        ''' + aql_return_part(True) + '''
+        '''
 
     return full_aql, aql_condition_part
 
@@ -221,6 +262,8 @@ def generate_multi_keyword_query_aql(keywords, query_param):
 
     aql_condition_part += ''')'''
 
+    aql_condition_part += aql_filter_part(query_param['matchpartial'])
+
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
@@ -237,6 +280,8 @@ def generate_and_query_aql(keywords, query_param):
         aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) AND '
     aql_condition_part = aql_condition_part[:-5]
 
+    aql_condition_part += aql_filter_part(query_param['matchpartial'])
+
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
@@ -250,7 +295,9 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
     SEARCH ((PHRASE(d.content, @query, "common_text") OR 
     '''
     if 'or' in query_conditions:
-        for keyword in query_conditions['or']:
+        keyword_list = query_conditions['or']
+        keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
+        for keyword in keyword_list:
             aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) OR '
         aql_condition_part = aql_condition_part[:-4]
 
@@ -265,6 +312,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
     ''' + add_author_condition_to_query_aql(query_conditions) + '''
     )
     '''
+    aql_condition_part += aql_filter_part(query_param['matchpartial'])
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
@@ -279,10 +327,6 @@ def add_author_condition_to_query_aql(condition_combination):
         return ''
     author = condition_combination['author']
     return f'AND (d.author_uid == "{author}") '
-
-
-def add_volpage_condition_to_query_aql(volpage):
-    return f'AND (PHRASE(d.volpage, "{volpage}", "common_text"))'
 
 
 def add_collection_condition_to_query_aql(condition_combination):
@@ -342,7 +386,19 @@ def aql_limit_part(limit, offset):
     return f'LIMIT {offset}, {limit}'
 
 
-def generate_chinese_keyword_query_aql(keywords, limit, offset):
+def aql_filter_part(matchpartial):
+    return '' if matchpartial == 'true' else ' FILTER d.is_segmented != True  '
+
+
+def aql_sort_part():
+    return 'SORT d.lang == @lang ? -1 : 1,' \
+           'd.is_ebt == true ? -1: d.is_ebt == false ? 1: 0, ' \
+           'd.is_bilara == true ? -1 : 1,' \
+           'd.is_segmented == false ? -1 : 1,' \
+           'd.uid'
+
+
+def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartila):
     aql_condition_part = '''
     SEARCH PHRASE(d.content, @query, "common_text") OR 
     '''
@@ -352,6 +408,8 @@ def generate_chinese_keyword_query_aql(keywords, limit, offset):
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += '''
     '''
+
+    aql_condition_part += aql_filter_part(matchpartila)
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(limit, offset) + '''
@@ -365,7 +423,8 @@ def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     suttaplex = fetch_suttaplex(db, lang, query)
     if not suttaplex:
         suttaplex = fetch_suttaplex_by_name(db, lang, f'{query}sutta')
-    suttaplexs = [suttaplex]
+    suttaplexs = []
+    suttaplexs.extend(suttaplex)
     if original_query.startswith('title:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     suttaplexs.extend(fetch_suttaplex_by_name(db, lang, query))
@@ -430,6 +489,9 @@ def compute_query_aql(search_aql, aql_condition_part, query_param):
     query_param, search_aql, aql_condition_part = \
         generate_aql_by_title(search_aql, aql_condition_part, query_param)
 
+    query_param, search_aql, aql_condition_part = \
+        generate_aql_by_lang(search_aql, aql_condition_part, query_param)
+
     bind_param = {
         'query': query_param['query'],
         'lang': query_param['lang']
@@ -492,6 +554,11 @@ def sort_hits(hits):
     return sorted_lst
 
 
+def sort_search_result(search_result):
+    search_result = sorted(search_result, key=lambda x: len(x['highlight']['content']), reverse=True)
+    return search_result
+
+
 def uid_key(uid):
     if re.match(".*[a-zA-Z].*[0-9].*", uid):
         return 0
@@ -520,7 +587,9 @@ def get_uid(dic):
 def generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param):
     if is_chinese(query_param['query']) and ' ' not in query_param['query']:
         query_list = [zhconv_convert(query_param['query'], 'zh-hant'), zhconv_convert(query_param['query'], 'zh-hans')]
-        search_aql, aql_condition_part = generate_chinese_keyword_query_aql(query_list, query_param['limit'], query_param['offset'])
+        search_aql, aql_condition_part = generate_chinese_keyword_query_aql(query_list, query_param['limit'],
+                                                                            query_param['offset'],
+                                                                            query_param['matchpartila'])
     return search_aql, aql_condition_part
 
 
@@ -528,6 +597,27 @@ def generate_aql_by_collection(search_aql, aql_condition_part, query_param):
     if query_param['query'].startswith(constant.CMD_IN):
         query_param['query'] = query_param['query'][3:].lower()
         search_aql, aql_condition_part = generate_collection_query_aql(query_param)
+    return query_param, search_aql, aql_condition_part
+
+
+def generate_aql_by_lang(search_aql, aql_condition_part, query_param):
+    if query_param['query'].startswith(constant.CMD_LANG):
+        lang_param = extract_lang_param(query_param['query'])
+        if len(lang_param) < 2:
+            return query_param, search_aql, aql_condition_part
+        lang = lang_param[0]
+        keyword = lang_param[1]
+        operator = 'OR'
+        keyword_list = []
+        if ' OR ' in keyword:
+            keyword_list = keyword.split(' OR ')
+        elif ' AND ' in keyword:
+            keyword_list = keyword.split(' AND ')
+            operator = 'AND'
+        else:
+            keyword_list.append(keyword)
+
+        search_aql, aql_condition_part = generate_lang_query_aql(lang, keyword_list, operator, query_param)
     return query_param, search_aql, aql_condition_part
 
 
@@ -627,26 +717,50 @@ def cut_highlights(content, hit, query, is_segmented_text):
                 cut_highlight(content, hit, cc, is_segmented_text)
     elif ('author' in query_conditions or 'collection' in query_conditions) and 'or' in query_conditions:
         keyword_list = query_conditions['or']
+        keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
     elif ('author' in query_conditions or 'collection' in query_conditions) and 'and' in query_conditions:
         keyword_list = query_conditions['and']
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
-    elif not is_chinese(query) and (' OR ' in query):
+    elif not is_chinese(query) and (' OR ' in query) and constant.CMD_LANG not in query:
         keyword_list = query.split(' OR ')
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
-    elif not is_chinese(query) and (' AND ' in query):
+    elif not is_chinese(query) and (' AND ' in query) and constant.CMD_LANG not in query:
         keyword_list = query.split(' AND ')
         for keyword in keyword_list:
             highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+    elif constant.CMD_LANG in query:
+        lang_param = extract_lang_param(query)
+        if len(lang_param) == 2:
+            keyword_list = []
+            keyword = lang_param[1]
+            if ' OR ' in keyword:
+                keyword_list = keyword.split(' OR ')
+            elif ' AND ' in keyword:
+                keyword_list = keyword.split(' AND ')
+            else:
+                keyword_list.append(keyword)
+            for keyword in keyword_list:
+                highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
     else:
         highlight_by_multiple_possible_keyword(content, hit, query, is_segmented_text)
 
 
+def extend_chinese_keywords(keyword_list, query_conditions):
+    keywords = []
+    for keyword in query_conditions['or']:
+        if is_chinese(keyword):
+            keywords.extend([zhconv_convert(keyword, 'zh-hant'), zhconv_convert(keyword, 'zh-hans')])
+    keyword_list.extend(keywords)
+    keyword_list = list(set(keyword_list))
+    return keyword_list
+
+
 def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text):
-    possible_word_list = [f'{keyword}', keyword.capitalize()]
+    possible_word_list = [f'{keyword}']
     for word in possible_word_list:
         cut_highlight(content, hit, word, is_segmented_text)
         if hit['highlight']['content']:
@@ -788,7 +902,6 @@ def fetch_suttaplexs(db, lang, hits):
 
 def fetch_suttaplex_by_name(db, lang, name):
     possible_uids = list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name}))
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name}sutta'})))
     suttaplexs = []
     for uid in possible_uids:
         suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
@@ -879,3 +992,9 @@ def standardization_volpage(volpage):
     parts[1] = roman_to_int(parts[1])
     parts[2] = f".{parts[2]}"
     return "{} {}{}".format(*parts)
+
+
+def extract_lang_param(query_string):
+    chunks = re.split("(lang:[a-z]+)\\s+", query_string)
+    chunks = [c for c in chunks if c]
+    return [c[5:] if c.startswith("lang:") else c for c in chunks]
