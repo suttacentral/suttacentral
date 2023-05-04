@@ -73,8 +73,13 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial):
         hits = merge_duplicate_hits(hits)
 
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
-    lookup_dictionary(hits, lang, query, restrict)
+    current_page_total = len(hits)
     hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
+    total = total - (current_page_total - len(hits))
+    if total == 0:
+        total = len(suttaplexs)
+    lookup_dictionary(hits, lang, query, restrict)
+
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
 
 
@@ -420,14 +425,14 @@ def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartila):
 
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
-    suttaplex = fetch_suttaplex(db, lang, query)
-    if not suttaplex:
-        suttaplex = fetch_suttaplex_by_name(db, lang, f'{query}sutta')
     suttaplexs = []
-    suttaplexs.extend(suttaplex)
     if original_query.startswith('title:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
-    suttaplexs.extend(fetch_suttaplex_by_name(db, lang, query))
+    elif suttaplex := fetch_suttaplex(db, lang, query):
+        suttaplexs = [suttaplex]
+    else:
+        suttaplexs.extend(fetch_suttaplexs_by_name(db, lang, query))
+
     return suttaplexs
 
 
@@ -892,7 +897,7 @@ def fetch_suttaplex(db, lang, query):
 
 
 def fetch_suttaplexs(db, lang, hits):
-    uids = list(set([item['uid'] for item in hits]))
+    uids = list({item['uid'] for item in hits})
     suttaplexs = []
     for uid in uids:
         suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
@@ -900,7 +905,7 @@ def fetch_suttaplexs(db, lang, hits):
     return suttaplexs
 
 
-def fetch_suttaplex_by_name(db, lang, name):
+def fetch_suttaplexs_by_name(db, lang, name):
     possible_uids = list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name}))
     suttaplexs = []
     for uid in possible_uids:
