@@ -1,5 +1,51 @@
-
 # SuttaCentral ChangeLog
+
+## 2023.05.04
+
+- Fix the bug about searching uid.
+
+## 2023.05.01
+
+- Tweaked search results, adding partial match options.
+
+## 2023.04.27
+
+- Adjust instant_search view.
+- Adjust search page styles.
+
+## 2023.04.26
+
+- Support AND operator for search.
+- Update search filter.
+
+## 2023.04.24
+
+- Adjust search index.
+
+## 2023.04.24
+
+- Refactor search code, improve search speed.
+
+## 2023.04.19
+
+- Improve volpage search.
+
+## 2023.04.13
+
+- Fix search bug.
+
+## 2023.04.12
+
+- Remove ElasticSearch related code and other.
+
+## 2023.04.06
+
+- Use pyenchant to solve the problem of English synonyms search.
+
+## 2023.04.03
+
+- Enhance: Search results should include suttaplex.
+- Optimize arangosearch index.
 
 ## 2023.03.30
 
