@@ -41,7 +41,7 @@ export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-05-01'],
+  ['dn', '2023-05-08'],
   ['mn', '2023-04-17'],
   ['sn', '2023-04-24'],
   ['an', '2023-04-17'],
