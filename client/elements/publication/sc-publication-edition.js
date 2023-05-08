@@ -256,7 +256,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     return html`
       <figure class="book-pic">
         <img
-          src="/img/publication-pages/${coverImage.get(this.editionInfo?.publication?.text_uid)}"
+          src="/img/publication-pages/${this.editionUid}-book.jpg"
           alt="Cover art for ${this.editionDetail[0].translated_name.replace('Collection', '')}"
         />
         <figcaption>
