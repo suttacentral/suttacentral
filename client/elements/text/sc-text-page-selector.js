@@ -169,12 +169,6 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
 
   get actions() {
     return {
-      downloadSuttaText(text) {
-        store.dispatch({
-          type: 'DOWNLOAD_SUTTA_TEXT',
-          text,
-        });
-      },
       changeToolbarTitle(title) {
         store.dispatch({
           type: 'CHANGE_TOOLBAR_TITLE',
@@ -303,7 +297,6 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       return;
     }
     this.setProperties();
-    this.actions.downloadSuttaText(this.responseData);
   }
 
   setProperties() {
