@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { render } from 'lit-html';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
@@ -71,6 +72,10 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
       pointer-events: none;
       opacity: 0.6;
     }
+
+    #parallelsTable {
+      display: none;
+    }
   `;
 
   render() {
@@ -89,6 +94,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
       <li id="btnCopyCite" class="table-element button-text" @click=${this.#copyCite}>
         ${icon.format_quote} ${this.localize('share:cite')}
       </li>
+      <div id="parallelsTable"></div>
     `;
   }
 
@@ -122,8 +128,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   // copy the parallels-table in html-string
   async #copyContent() {
     try {
-      await this.#fetchParallels();
-      const table = this.#computeCopyTable();
+      const table = await this.#computeCopyTable();
       copyToClipboard(table);
       this.#notifyCopy(this.localize('share:tableCopied'), true);
     } catch (err) {
@@ -185,29 +190,22 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   }
 
   // creates a parallels-table in html-string
-  #computeCopyTable() {
-    let body = `<table>\n  <caption>${this.item.original_title}</caption>\n`;
-    for (const section of Object.keys(this.parallels)) {
-      let tbody = '<tbody>\n';
-      const size = this.parallels[section].length;
-      let first = true;
-      let tr = '';
-      for (const parallel of this.parallels[section]) {
-        tr = '  <tr>\n';
-        if (first) {
-          tr += `    <td rowspan=${size}>${section}</td>\n`;
-          first = false;
+  async #computeCopyTable() {
+    const suttaplexList = document.querySelector('sc-suttaplex-list');
+    if (suttaplexList) {
+      await suttaplexList.initTableView();
+      const parallelsLite = [...suttaplexList.parallelsLite];
+      for (let i = parallelsLite.length - 1; i >= 0; i--) {
+        if (parallelsLite[i].uid !== this.item.uid) {
+          parallelsLite.splice(i, 1);
         }
-        tr += `    <td>${this.#computeIcon(parallel)}</td>\n`;
-        tr += `    <td>${parallel.to.to}</td>\n`;
-        tr += `    <td>${parallel.to.original_title}</td>\n`;
-        tbody += `${tr}  </tr>\n`;
       }
-
-      body += `${tbody}</tbody>\n`;
+      const parallelsTable = suttaplexList.tableViewTemplate(parallelsLite);
+      render(parallelsTable, this.shadowRoot.querySelector('#parallelsTable'));
+      const table = this.shadowRoot.querySelector('#parallelsTable').innerHTML;
+      return table.replace(/<!--[\s\S]*?-->/g, '');
     }
-    body += '</table>\n';
-    return body;
+    return '';
   }
 
   #computeCiteData() {
