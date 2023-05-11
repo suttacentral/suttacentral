@@ -383,6 +383,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       <div class="section-details main-translations">
         ${!this.isCompact
           ? html`
+          <details>
+              <summary>
               <h3>
                 <b>
                   ${this.localize(`suttaplex:${translationKey}`, {
@@ -390,7 +392,15 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                   })}
                 </b>
                 ${this.localize('suttaplex:inYourLanguage')}
+              </summary>
+              <ul>
+              <li><b>Aligned</b> translations are matched segment by segment with the root text. These are produced by SuttaCentral with our Bilara translation application. <br><small><i>Click through to the translation, then click the “Views” button on the toolbar to see text and translation line-by-line or side-by-side.</i></small></li>
+              <li><b>Annotated</b> translations have notes on the text and translation. <br><small><i>Click through to the translation, then click the “Views” button on the toolbar to select options for reading notes.</i></small> </li>
+              <li><b>Legacy</b> translations have been adapted for SuttaCentral from various sources. They lack features such as alignment and annotations. </li>
+              </ul>
+              </details>
               </h3>
+
             `
           : ''}
         <div>
