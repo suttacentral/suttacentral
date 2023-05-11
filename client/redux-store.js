@@ -17,7 +17,6 @@ const initialState = {
     displayedLanguages: [],
     matchPartial: false,
   },
-  suttaText: {},
   suttaMetaText: '',
   suttaPublicationInfo: {},
   textOptions: {
@@ -120,8 +119,6 @@ const reducer = (state, action) => {
       return { ...state, searchParams: action.params };
     case 'CHANGE_SEARCH_':
       return { ...state, searchParams: action.params };
-    case 'DOWNLOAD_SUTTA_TEXT':
-      return { ...state, suttaText: action.text };
     case 'CHANGE_SUTTA_META_TEXT':
       return { ...state, suttaMetaText: action.metaText };
     case 'CHANGE_SUTTA_PUBLICATION_INFO':
