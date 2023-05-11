@@ -9,17 +9,14 @@ export class SCBadge extends LitElement {
 
   static styles = css`
     :host {
-      display: inline-block;
-      padding: 0.25em 0.4em;
-      font-size: 75%;
-      font-weight: 700;
+      padding: 0.25em 0.75em;
+      font-size: var(--sc-skolar-font-size-xxs);
+      font-weight: 500;
+      font-stretch: condensed;
       line-height: 1;
       color: #fff;
-      text-align: center;
       white-space: nowrap;
-      vertical-align: baseline;
-      border-radius: 0.25rem;
-      margin-left: 0.2em;
+      border-radius: 0.6rem;
     }
 
     :host([color='primary']) {

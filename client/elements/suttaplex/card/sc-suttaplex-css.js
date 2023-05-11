@@ -55,7 +55,12 @@ export const suttaplexCss = css`
 
   details ul {
     right: 0px;
-    padding: 0px;
+    padding: 8px 12px 8px 24px;
+    font-size: var(--sc-skolar-font-size-xs);
+  }
+
+  .suttaplex-share-menu-list{
+    padding: 0
   }
 
   summary {
@@ -103,12 +108,6 @@ export const suttaplexCss = css`
     padding: var(--sc-size-sm) var(--sc-size-md);
     border-radius: 2px;
     margin-bottom: 1px;
-  }
-
-  .section-details.main-translations {
-    border-top: 1px solid var(--sc-border-color);
-    margin-top: var(--sc-size-md);
-    padding-top: var(--sc-size-sm);
   }
 
   .compact .section-details.main-translations {
@@ -289,8 +288,8 @@ export const suttaplexTxCss = css`
     align-items: center;
     flex-wrap: nowrap;
     cursor: pointer;
-    padding: 0 var(--sc-size-sm);
-    margin: 0;
+    padding: 0 8px;
+    margin: 0 -8px;
     border-radius: var(--sc-size-sm);
   }
 
@@ -314,6 +313,7 @@ export const suttaplexTxCss = css`
     padding: 4px;
     border-radius: 50%;
     display: flex;
+    flex: 0 0 auto;
     justify-content: center;
     align-items: center;
     fill: var(--sc-primary-color);
@@ -326,10 +326,10 @@ export const suttaplexTxCss = css`
     flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
+    gap: var(--sc-size-xs) var(--sc-size-md);
   }
 
   .tx-creator {
-    margin-right: var(--sc-size-md);
     font-family: var(--sc-serif-font);
     font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
@@ -343,8 +343,9 @@ export const suttaplexTxCss = css`
   }
 
   .badges {
-    margin-left: 0.4em;
     display: flex;
+    gap: var(--sc-size-xs);
+    align-self: center;
   }
 `;
 
