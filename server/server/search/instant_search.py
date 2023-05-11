@@ -403,7 +403,7 @@ def aql_sort_part():
            'd.uid'
 
 
-def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartila):
+def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial):
     aql_condition_part = '''
     SEARCH PHRASE(d.content, @query, "common_text") OR 
     '''
@@ -414,7 +414,7 @@ def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartila):
     aql_condition_part += '''
     '''
 
-    aql_condition_part += aql_filter_part(matchpartila)
+    aql_condition_part += aql_filter_part(matchpartial)
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(limit, offset) + '''
@@ -594,7 +594,7 @@ def generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param
         query_list = [zhconv_convert(query_param['query'], 'zh-hant'), zhconv_convert(query_param['query'], 'zh-hans')]
         search_aql, aql_condition_part = generate_chinese_keyword_query_aql(query_list, query_param['limit'],
                                                                             query_param['offset'],
-                                                                            query_param['matchpartila'])
+                                                                            query_param['matchpartial'])
     return search_aql, aql_condition_part
 
 
