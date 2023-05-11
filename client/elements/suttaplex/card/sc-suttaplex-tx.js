@@ -2,6 +2,7 @@ import { html, LitElement } from 'lit';
 import { icon } from '../../../img/sc-icon';
 import '../../menus/sc-menu-suttaplex-share';
 import { suttaplexTxCss } from './sc-suttaplex-css';
+import '../../addons/sc-badge';
 
 export class SCSuttaplexTx extends LitElement {
   static properties = {
@@ -37,10 +38,22 @@ export class SCSuttaplexTx extends LitElement {
                 ${!this.isRoot && !this.translation?.segmented ? this.translation?.lang_name : ''}
                 ${this.translation?.publication_date ? this.translation?.publication_date : ''}
               </span>
+              <span class="badges">
+                ${!this.isRoot && this.translation?.segmented ? this.alignedBadgeTemplate() : ''}
+                ${!this.isRoot && this.translation?.segmented ? this.annotatedBadgeTemplate() : ''}
+              </span>
             </div>
           </a>
         `
       : '';
+  }
+
+  alignedBadgeTemplate() {
+    return html`<sc-badge text="aligned" color="gray"></sc-badge>`;
+  }
+
+  annotatedBadgeTemplate() {
+    return html`<sc-badge text="annotated" color="gray"></sc-badge>`;
   }
 }
 

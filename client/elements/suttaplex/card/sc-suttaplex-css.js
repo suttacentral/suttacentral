@@ -341,6 +341,11 @@ export const suttaplexTxCss = css`
     font-size: var(--sc-skolar-font-size-s);
     font-weight: 400;
   }
+
+  .badges {
+    margin-left: 0.4em;
+    display: flex;
+  }
 `;
 
 export const parallelsListCss = css`
