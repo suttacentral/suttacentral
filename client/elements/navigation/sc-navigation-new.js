@@ -53,7 +53,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
-      this.#childrenExists();
+      await this.#childrenExists();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
         return;
