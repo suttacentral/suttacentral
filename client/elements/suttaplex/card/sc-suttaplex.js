@@ -223,7 +223,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             ${this.topRowIconsTemplate}
           </div>
 
-          ${!this.isSuttaInRangeSutta ? this.nerdyRowTemplate : ''}
+          ${this.isSuttaInRangeSutta ? '' : this.nerdyRowTemplate}
         </div>
 
         ${!this.isCompact
@@ -267,15 +267,21 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   #shouldShowUserLangTranslations() {
-    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+    return (
+      !this.isPatimokkhaDetails && !this.isFallenLeaf && this.translationsInUserLanguage.length > 0
+    );
   }
 
   #shouldShowRootTexts() {
-    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+    return !this.isPatimokkhaDetails && !this.isFallenLeaf && this.rootTexts.length > 0;
   }
 
   #shouldShowModernLangTranslations() {
-    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+    return (
+      !this.isPatimokkhaDetails &&
+      !this.isFallenLeaf &&
+      this.translationsInModernLanguages.length > 0
+    );
   }
 
   #shouldHideParallels() {
@@ -363,7 +369,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         `}
         ${this.item.volpages &&
         html`
-          ${!this.item.biblio ? this.volPageTemplate : ''}
+          ${this.item.biblio ? '' : this.volPageTemplate}
           ${this.item.biblio &&
           html`
             <details class="suttaplex-details">
@@ -502,9 +508,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               ></sc-parallel-list>
             `
           : ''}
-        ${!this.item.parallel_count
-          ? html` <h3>${this.localize('suttaplex:hasNoParallels')}</h3> `
-          : ''}
+        ${this.item.parallel_count
+          ? ''
+          : html` <h3>${this.localize('suttaplex:hasNoParallels')}</h3> `}
       </details>
     `;
   }
