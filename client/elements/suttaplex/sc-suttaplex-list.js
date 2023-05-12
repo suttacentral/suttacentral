@@ -477,12 +477,16 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     `;
   }
 
-  tableViewTemplate() {
-    return this.parallelsLite?.length
+  get parallels_lite() {
+    return this.parallelsLite;
+  }
+
+  tableViewTemplate(parallelsLite) {
+    return parallelsLite?.length
       ? html`
           <table>
             <tbody>
-              ${this.parallelsLite.map(
+              ${parallelsLite.map(
                 item => html`
                   <tr>
                     <td class="sutta_uid">
@@ -570,7 +574,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      ${cache(this.displayParallelTableView ? this.tableViewTemplate() : this.normalViewTemplate())}
+      ${cache(
+        this.displayParallelTableView
+          ? this.tableViewTemplate(this.parallelsLite)
+          : this.normalViewTemplate()
+      )}
     `;
   }
 }

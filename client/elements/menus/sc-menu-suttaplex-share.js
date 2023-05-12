@@ -1,9 +1,9 @@
-import { LitElement, html, css } from 'lit';
+import { css, html, LitElement, render } from 'lit';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 import copyToClipboard from '../../utils/copy';
-import { volPagesToString } from '../../utils/suttaplex';
+import { formatVolPages } from '../../utils/suttaplex';
 import { icon } from '../../img/sc-icon';
 
 /*
@@ -71,6 +71,10 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
       pointer-events: none;
       opacity: 0.6;
     }
+
+    #parallelsTable {
+      display: none;
+    }
   `;
 
   render() {
@@ -89,6 +93,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
       <li id="btnCopyCite" class="table-element button-text" @click=${this.#copyCite}>
         ${icon.format_quote} ${this.localize('share:cite')}
       </li>
+      <div id="parallelsTable"></div>
     `;
   }
 
@@ -122,8 +127,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   // copy the parallels-table in html-string
   async #copyContent() {
     try {
-      await this.#fetchParallels();
-      const table = this.#computeCopyTable();
+      const table = await this.#computeCopyTable();
       copyToClipboard(table);
       this.#notifyCopy(this.localize('share:tableCopied'), true);
     } catch (err) {
@@ -185,29 +189,22 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   }
 
   // creates a parallels-table in html-string
-  #computeCopyTable() {
-    let body = `<table>\n  <caption>${this.item.original_title}</caption>\n`;
-    for (const section of Object.keys(this.parallels)) {
-      let tbody = '<tbody>\n';
-      const size = this.parallels[section].length;
-      let first = true;
-      let tr = '';
-      for (const parallel of this.parallels[section]) {
-        tr = '  <tr>\n';
-        if (first) {
-          tr += `    <td rowspan=${size}>${section}</td>\n`;
-          first = false;
+  async #computeCopyTable() {
+    const suttaplexList = document.querySelector('sc-suttaplex-list');
+    if (suttaplexList) {
+      await suttaplexList.initTableView();
+      const parallelsLite = [...suttaplexList.parallelsLite];
+      for (let i = parallelsLite.length - 1; i >= 0; i--) {
+        if (parallelsLite[i].uid !== this.item.uid) {
+          parallelsLite.splice(i, 1);
         }
-        tr += `    <td>${this.#computeIcon(parallel)}</td>\n`;
-        tr += `    <td>${parallel.to.to}</td>\n`;
-        tr += `    <td>${parallel.to.original_title}</td>\n`;
-        tbody += `${tr}  </tr>\n`;
       }
-
-      body += `${tbody}</tbody>\n`;
+      const parallelsTable = suttaplexList.tableViewTemplate(parallelsLite);
+      render(parallelsTable, this.shadowRoot.querySelector('#parallelsTable'));
+      const table = this.shadowRoot.querySelector('#parallelsTable').innerHTML;
+      return table.replace(/<!--[\s\S]*?-->/g, '');
     }
-    body += '</table>\n';
-    return body;
+    return '';
   }
 
   #computeCiteData() {
@@ -215,15 +212,14 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     for (const section of Object.keys(this.parallels)) {
       const acronymUid = this.#generateAcronymUid(this.item.acronym, section);
       result += `Parallels for ${acronymUid} ${this.item.translated_title} `;
-      const volpages = volPagesToString(this.item.volpages);
+      const volpages = this.#ltrim(this.#briefVolPage(this.item.volpages));
       result += volpages ? `(${volpages})` : '';
       result = this.#strip(result, ' ');
       result += ': ';
       for (const parallel of this.parallels[section]) {
         result += this.#generateAcronymUid(parallel.to.acronym, parallel.to.to);
         result += ' ';
-        const parallelVolpages = volPagesToString(parallel.to.volpages);
-        result += parallelVolpages ? `(${parallelVolpages}) ` : '';
+        result += parallel.to.volpages ? `(${this.#ltrim(this.#briefVolPage(parallel.to.volpages))}) ` : '';
         if (parallel.to.biblio) {
           result += this.#getTextFromHtml(parallel.to.biblio);
         }
@@ -236,6 +232,19 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     }
     result += `Retrieved from ${window.location.href} on ${new Date()}.`;
     return result;
+  }
+
+  #briefVolPage(volpageList) {
+    const volpages = volpageList.split(',');
+    if (volpageList && volpages.length > 1) {
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
+    }
+    return volpageList;
+  }
+
+  #ltrim(volpages) {
+    return volpages.replace(/^\s+|\s+$/g, '');
   }
 
   #strip(s, toStrip) {
