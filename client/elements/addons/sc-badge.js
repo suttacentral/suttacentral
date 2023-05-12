@@ -11,7 +11,7 @@ export class SCBadge extends LitElement {
     :host {
       padding: 0.25em 0.75em;
       font-size: var(--sc-skolar-font-size-xxs);
-      font-weight: 500;
+      font-weight: 550;
       font-stretch: condensed;
       line-height: 1;
       color: #fff;
@@ -53,8 +53,15 @@ export class SCBadge extends LitElement {
     }
 
     :host([color='gray']) {
-      background-color: rgb(159, 158, 157);
+     color: var(--sc-secondary-text-color);
+    border: 1px solid var(--sc-border-color)
     }
+
+        :host([color='gray']):before {
+        content: "✓ ";
+        color: var(--sc-primary-accent-color);
+    }
+
   `;
 
   constructor() {

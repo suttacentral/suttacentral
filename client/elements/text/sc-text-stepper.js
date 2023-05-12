@@ -22,7 +22,8 @@ export class SCTextStepper extends LitElement {
       height: 100px;
       margin: 0 0 -64px 0;
 
-      background-color: var(--sc-secondary-text-color);
+    border-top: 1px solid var(--sc-border-color);;
+    background-color: var(--sc-secondary-background-color);
     }
 
     .button {
@@ -47,7 +48,7 @@ export class SCTextStepper extends LitElement {
       font-size: var(--sc-skolar-font-size-md);
 
       opacity: 0.55;
-      color: var(--sc-tertiary-text-color);
+      color: var(--sc-secondary-text-color);
     }
 
     .text-title {
@@ -59,7 +60,7 @@ export class SCTextStepper extends LitElement {
       white-space: nowrap;
       text-overflow: ellipsis;
 
-      color: var(--sc-tertiary-text-color);
+      color: var(--sc-primary-text-color);
     }
 
     .link {
@@ -127,7 +128,7 @@ export class SCTextStepper extends LitElement {
       margin-right: 0.5em;
       margin-left: 0.5em;
 
-      fill: var(--sc-tertiary-text-color);
+      fill: var(--sc-icon-color);
     }
 
     .separator {
