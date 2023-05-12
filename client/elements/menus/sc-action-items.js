@@ -176,7 +176,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
-          title="View Table of Contents"
           @click=${this._onBtnShowToCClick}
           slot="actionItems"
           ?hidden=${this.tableOfContents}
@@ -187,7 +186,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnViewCompact"
-          title="Compact mode"
           @click=${this._onBtnViewCompactClick}
           slot="actionItems"
           ?hidden=${this.displayCompactButton}
@@ -198,7 +196,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnViewComfy"
-          title="Comfy mode"
           @click=${this._onBtnViewCompactClick}
           slot="actionItems"
           ?hidden=${this.displayComfyButton}
@@ -209,7 +206,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnInfo"
-          title="Text info"
           @click=${this._onBtnInfoClick}
           slot="actionItems"
           ?hidden=${this.displayInfoButton}
@@ -220,7 +216,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnTools"
-          title="View options"
           @click=${this._onBtnToolsClick}
           slot="actionItems"
           ?hidden=${this.displayToolButton}
@@ -231,7 +226,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnSearchOptions"
-          title="Search options"
           @click=${this.#onBtnSearchOptionsClick}
           slot="actionItems"
           ?hidden=${this.displaySearchOptionsButton}
@@ -242,7 +236,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnSearchFilter"
-          title="Search filter"
           @click=${this.#onBtnSearchFilterClick}
           slot="actionItems"
           ?hidden=${this.displaySearchOptionsButton}
@@ -253,7 +246,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnShowParallels"
-          title="View parallels"
           @click=${this._onBtnShowParallelsClick}
           slot="actionItems"
           ?hidden=${this.displayToolButton}
@@ -264,7 +256,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <mwc-icon-button
           class="white-icon toolButtons"
           id="btnShowParallelTableView"
-          title="Parallels table view"
           @click=${this._onBtnShowParallelTableViewClick}
           slot="actionItems"
         >
