@@ -53,7 +53,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
-      await this.#childrenExists();
+      this.#childrenExists();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
         return;
@@ -330,9 +330,15 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         childrenData[0].children &&
         childrenData[0].children.some(item => ['branch'].includes(item.node_type))
       ) {
-        this.currentMenuData[0].children.find(x => x.uid === child.uid).has_children = true;
+        const foundChild = this.currentMenuData[0].children.find(x => x.uid === child.uid);
+        if (foundChild) {
+          foundChild.has_children = true;
+        }
       } else {
-        this.currentMenuData[0].children.find(x => x.uid === child.uid).has_children = false;
+        const foundChild = this.currentMenuData[0].children.find(x => x.uid === child.uid);
+        if (foundChild) {
+          foundChild.has_children = false;
+        }
         this.requestUpdate();
       }
     }
