@@ -1,10 +1,9 @@
-import { LitElement, html, css } from 'lit';
-import { render } from 'lit-html';
+import { css, html, LitElement, render } from 'lit';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 import copyToClipboard from '../../utils/copy';
-import { volPagesToString } from '../../utils/suttaplex';
+import { formatVolPages } from '../../utils/suttaplex';
 import { icon } from '../../img/sc-icon';
 
 /*
@@ -213,15 +212,14 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     for (const section of Object.keys(this.parallels)) {
       const acronymUid = this.#generateAcronymUid(this.item.acronym, section);
       result += `Parallels for ${acronymUid} ${this.item.translated_title} `;
-      const volpages = volPagesToString(this.item.volpages);
+      const volpages = this.#ltrim(this.#briefVolPage(this.item.volpages));
       result += volpages ? `(${volpages})` : '';
       result = this.#strip(result, ' ');
       result += ': ';
       for (const parallel of this.parallels[section]) {
         result += this.#generateAcronymUid(parallel.to.acronym, parallel.to.to);
         result += ' ';
-        const parallelVolpages = volPagesToString(parallel.to.volpages);
-        result += parallelVolpages ? `(${parallelVolpages}) ` : '';
+        result += parallel.to.volpages ? `(${this.#ltrim(this.#briefVolPage(parallel.to.volpages))}) ` : '';
         if (parallel.to.biblio) {
           result += this.#getTextFromHtml(parallel.to.biblio);
         }
@@ -234,6 +232,19 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     }
     result += `Retrieved from ${window.location.href} on ${new Date()}.`;
     return result;
+  }
+
+  #briefVolPage(volpageList) {
+    const volpages = volpageList.split(',');
+    if (volpageList && volpages.length > 1) {
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
+    }
+    return volpageList;
+  }
+
+  #ltrim(volpages) {
+    return volpages.replace(/^\s+|\s+$/g, '');
   }
 
   #strip(s, toStrip) {
