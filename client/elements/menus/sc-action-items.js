@@ -132,7 +132,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
 
     #btnShowParallelTableView:after {
-      content: 'TableView';
+      content: 'table';
     }
 
     #btnSearchOptions:after {
