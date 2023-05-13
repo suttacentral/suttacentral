@@ -39,6 +39,13 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     this.creatorOfPublications = new Map();
 
+    // this.#extractUidsFromEditions();
+    // this._verifyURL();
+    // this._viewModeChanged();
+    // this._parseURL();
+  }
+
+  firstUpdated() {
     this.#extractUidsFromEditions();
     this._verifyURL();
     this._viewModeChanged();
