@@ -6,10 +6,11 @@ import { API_ROOT } from '../../constants';
 import '../navigation/sc-navigation-tipitaka';
 import { icon } from '../../img/sc-icon';
 import { staticHomeStyles } from '../styles/sc-static-home-styles';
+import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
 
 export class SCStaticHomePage extends SCStaticPage {
   static properties = {
-    randomEpigrah: { type: String },
+    randomEpigraph: { type: String },
     whyWeRead: { type: String },
   };
 
@@ -26,7 +27,7 @@ export class SCStaticHomePage extends SCStaticPage {
     const getRandomEl = arr => arr[Math.floor(Math.random() * arr.length)];
 
     const epigraphResponse = await (await fetch(`${API_ROOT}/epigraphs`)).json();
-    this.randomEpigrah = getRandomEl(epigraphResponse);
+    this.randomEpigraph = getRandomEl(epigraphResponse);
     const whyReadResponse = await (await fetch(`${API_ROOT}/whyweread`)).json();
     this.whyWeRead = getRandomEl(whyReadResponse);
   }
@@ -40,6 +41,17 @@ export class SCStaticHomePage extends SCStaticPage {
       <section class="plain editions">
         <a href="/editions">
           <h2>SuttaCentral Editions</h2>
+          ${this.#publicationEditionsPictureTemplate()}
+          <div class="call-to-action">Read selected SuttaCentral translations as books</div>
+        </a>
+      </section>
+    `;
+  }
+
+  #publicationEditionsPictureTemplate() {
+    return isMobileBrowser()
+      ? ''
+      : html`
           <figure>
             <picture>
               <source srcset="/img/home-page/editions.avif" type="image/avif" />
@@ -50,11 +62,7 @@ export class SCStaticHomePage extends SCStaticPage {
               />
             </picture>
           </figure>
-
-          <div class="call-to-action">Read selected SuttaCentral translations as books</div>
-        </a>
-      </section>
-    `;
+        `;
   }
 
   render() {
@@ -103,11 +111,11 @@ export class SCStaticHomePage extends SCStaticPage {
         <section class="plain quotation">
           <h2>${unsafeHTML(this.localize('home:5'))}</h2>
           <blockquote>
-            <span>${this.randomEpigrah ? this.randomEpigrah.epigraph : ''}</span>
+            <span>${this.randomEpigraph ? this.randomEpigraph.epigraph : ''}</span>
           </blockquote>
           <a
             class="link-button quote-button ripple"
-            href=${this.randomEpigrah ? `/${this.randomEpigrah.uid}` : ''}
+            href=${this.randomEpigraph ? `/${this.randomEpigraph.uid}` : ''}
           >
             ${unsafeHTML(this.localize('home:6'))}
           </a>

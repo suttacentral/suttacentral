@@ -3,6 +3,7 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { navigationNormalModeStyles } from './sc-navigation-styles';
+import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
 
 export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   static styles = css`
@@ -46,10 +47,6 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
     }
   }
 
-  firstUpdated() {
-    // this._fetchMainMenu();
-  }
-
   async _fetchMainMenu() {
     try {
       this.mainMenuData = await (
@@ -83,20 +80,11 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
                           <span class="subTitle" lang="pi" translate="no">${item.root_name}</span>
                         </div>
                       </span>
-                      ${item.yellow_brick_road
-                        ? html`
-                            <span class="header-right">
-                              <span class="number-translated">
-                                <span class="number">${item.yellow_brick_road_count}</span>
-                                ${this.fullSiteLanguageName}
-                              </span>
-                            </span>
-                          `
-                        : ''}
+                      ${this.yellowBrickRoadInfoTemplate(item)}
                     </header>
                   </a>
                   <div class="nav-card-content">
-                    <div class="blurb" id="${item.root_name}_blurb">${item.blurb}</div>
+                    ${this.blurbTemplate(item)}
                     <a class="essay-link" href=${this.pitakaGuide.get(item.uid)}>
                       <div class="essay">${this.localize(`interface:${item.uid}EssayTitle`)}</div>
                     </a>
@@ -107,6 +95,25 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
           </div>
         `
       : '';
+  }
+
+  yellowBrickRoadInfoTemplate(menuItem) {
+    return menuItem.yellow_brick_road
+      ? html`
+          <span class="header-right">
+            <span class="number-translated">
+              <span class="number">${menuItem.yellow_brick_road_count}</span>
+              ${this.fullSiteLanguageName}
+            </span>
+          </span>
+        `
+      : '';
+  }
+
+  blurbTemplate(menuItem) {
+    return isMobileBrowser()
+      ? ''
+      : html` <div class="blurb" id="${menuItem.root_name}_blurb">${menuItem.blurb}</div> `;
   }
 
   render() {
