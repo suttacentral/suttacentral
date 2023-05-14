@@ -499,7 +499,8 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 publication_date: text.publication_date,
                 id: text._key,
                 segmented: false,
-                volpage: text.volpage
+                volpage: text.volpage,
+                has_comment: false
                 }
             // Add title if it is in desired language
             RETURN (text.lang == @language) ? MERGE(res, {title: text.name}) : res
@@ -522,6 +523,11 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                     LIMIT 1
                     RETURN name
             )[0]
+            LET text_comment = (
+                FOR doc IN sc_bilara_texts
+                FILTER doc.uid == v.uid AND 'comment' IN doc.muids
+                RETURN doc.muids
+            )
             RETURN {
                 lang: text.lang,
                 lang_name: lang_doc.name,
@@ -533,7 +539,8 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 id: text._key,
                 segmented: true,
                 title: name_doc.name,
-                volpage: null
+                volpage: null,
+                has_comment: LENGTH(text_comment) > 0 AND text.muids[2] IN text_comment[0]
             }
     )
 

@@ -20,23 +20,23 @@ export class SCBadge extends LitElement {
     }
 
     :host([color='primary']) {
-      background-color: #007bff;
+      background-color: var(--sc-primary-color);
     }
 
     :host([color='secondary']) {
-      background-color: #6c757d;
+      background-color: var(--sc-primary-accent-color);
     }
 
     :host([color='success']) {
-      background-color: #28a745;
+      background-color: var(--sc-toast-success-color);
     }
 
     :host([color='danger']) {
-      background-color: #dc3545;
+      background-color: var(--sc-toast-error-color);
     }
 
     :host([color='warning']) {
-      background-color: #ffc107;
+      background-color: var(--sc-primary-color-medium);
     }
 
     :host([color='info']) {
@@ -53,13 +53,13 @@ export class SCBadge extends LitElement {
     }
 
     :host([color='gray']) {
-     color: var(--sc-secondary-text-color);
-    border: 1px solid var(--sc-border-color)
+      color: var(--sc-secondary-text-color);
+      border: 1px solid var(--sc-border-color)
     }
 
-        :host([color='gray']):before {
-        content: "✓ ";
-        color: var(--sc-primary-accent-color);
+    :host([color='gray']):before {
+      content: "✓ ";
+      color: var(--sc-primary-accent-color);
     }
 
   `;

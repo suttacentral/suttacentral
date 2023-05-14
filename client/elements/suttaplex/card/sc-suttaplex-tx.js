@@ -30,22 +30,33 @@ export class SCSuttaplexTx extends LitElement {
             ${icon.translation}
             <div class="tx-details">
               <span class="tx-creator">${this.translation?.author}</span>
-              <span class="tx-publication">
-                ${this.isRoot ? this.item.root_lang_name : ''}
-                ${!this.isRoot && this.translation?.segmented
-                  ? `${this.translation?.lang_name} & ${this.item.root_lang_name}`
-                  : ''}
-                ${!this.isRoot && !this.translation?.segmented ? this.translation?.lang_name : ''}
-                ${this.translation?.publication_date ? this.translation?.publication_date : ''}
-              </span>
-              <span class="badges">
-                ${!this.isRoot && this.translation?.segmented ? this.alignedBadgeTemplate() : ''}
-                ${!this.isRoot && this.translation?.segmented ? this.annotatedBadgeTemplate() : ''}
-              </span>
+              <span class="tx-publication"> ${this.publicationInfoTemplate()} </span>
+              <span class="badges"> ${this.badgeTemplate()} </span>
             </div>
           </a>
         `
       : '';
+  }
+
+  publicationInfoTemplate() {
+    return html`
+      ${this.isRoot ? this.item.root_lang_name : ''}
+      ${!this.isRoot && this.translation?.segmented
+        ? `${this.translation?.lang_name} & ${this.item.root_lang_name}`
+        : ''}
+      ${!this.isRoot && !this.translation?.segmented ? this.translation?.lang_name : ''}
+      ${this.translation?.publication_date || ''}
+    `;
+  }
+
+  badgeTemplate() {
+    return html`
+      ${!this.isRoot && this.translation?.segmented ? this.alignedBadgeTemplate() : ''}
+      ${!this.isRoot && this.translation?.segmented && this.translation?.has_comment
+        ? this.annotatedBadgeTemplate()
+        : ''}
+      ${!this.isRoot && !this.translation?.segmented ? this.legacyBadgeTemplate() : ''}
+    `;
   }
 
   alignedBadgeTemplate() {
@@ -54,6 +65,10 @@ export class SCSuttaplexTx extends LitElement {
 
   annotatedBadgeTemplate() {
     return html`<sc-badge text="annotated" color="gray"></sc-badge>`;
+  }
+
+  legacyBadgeTemplate() {
+    return html`<sc-badge text="legacy" color="gray"></sc-badge>`;
   }
 }
 

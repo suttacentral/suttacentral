@@ -223,7 +223,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             ${this.topRowIconsTemplate}
           </div>
 
-          ${!this.isSuttaInRangeSutta ? this.nerdyRowTemplate : ''}
+          ${this.isSuttaInRangeSutta ? '' : this.nerdyRowTemplate}
         </div>
 
         ${!this.isCompact
@@ -267,15 +267,24 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   #shouldShowUserLangTranslations() {
-    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+    return (
+      !this.isPatimokkhaDetails &&
+      !this.isFallenLeaf &&
+      this.translationsInUserLanguage.length > 0 &&
+      this.translationsInUserLanguage[0] !== undefined
+    );
   }
 
   #shouldShowRootTexts() {
-    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+    return !this.isPatimokkhaDetails && !this.isFallenLeaf && this.rootTexts.length > 0;
   }
 
   #shouldShowModernLangTranslations() {
-    return !this.isPatimokkhaDetails && !this.isFallenLeaf;
+    return (
+      !this.isPatimokkhaDetails &&
+      !this.isFallenLeaf &&
+      this.translationsInModernLanguages.length > 0
+    );
   }
 
   #shouldHideParallels() {
@@ -363,7 +372,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         `}
         ${this.item.volpages &&
         html`
-          ${!this.item.biblio ? this.volPageTemplate : ''}
+          ${this.item.biblio ? '' : this.volPageTemplate}
           ${this.item.biblio &&
           html`
             <details class="suttaplex-details">
@@ -383,24 +392,43 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       <div class="section-details main-translations">
         ${!this.isCompact
           ? html`
-          <details>
-              <summary>
-              <h3>
-                <b>
-                  ${this.localize(`suttaplex:${translationKey}`, {
-                    lang: this.fullSiteLanguageName,
-                  })}
-                </b>
-                ${this.localize('suttaplex:inYourLanguage')}
-              </summary>
-              <ul>
-              <li><b>Aligned</b> translations are matched segment by segment with the root text. These are produced by SuttaCentral with our Bilara translation application. <br><small><i>Click through to the translation, then click the “Views” button on the toolbar to see text and translation line-by-line or side-by-side.</i></small></li>
-              <li><b>Annotated</b> translations have notes on the text and translation. <br><small><i>Click through to the translation, then click the “Views” button on the toolbar to select options for reading notes.</i></small> </li>
-              <li><b>Legacy</b> translations have been adapted for SuttaCentral from various sources. They lack features such as alignment and annotations. </li>
-              </ul>
+              <details>
+                <summary>
+                  <h3>
+                    <b>
+                      ${this.localize(`suttaplex:${translationKey}`, {
+                        lang: this.fullSiteLanguageName,
+                      })}
+                    </b>
+                    ${this.localize('suttaplex:inYourLanguage')}
+                  </h3>
+                </summary>
+                <ul>
+                  <li>
+                    <b>Aligned</b> translations are matched segment by segment with the root text.
+                    These are produced by SuttaCentral with our Bilara translation application.
+                    <br /><small
+                      ><i
+                        >Click through to the translation, then click the “Views” button on the
+                        toolbar to see text and translation line-by-line or side-by-side.</i
+                      ></small
+                    >
+                  </li>
+                  <li>
+                    <b>Annotated</b> translations have notes on the text and translation.
+                    <br /><small
+                      ><i
+                        >Click through to the translation, then click the “Views” button on the
+                        toolbar to select options for reading notes.</i
+                      ></small
+                    >
+                  </li>
+                  <li>
+                    <b>Legacy</b> translations have been adapted for SuttaCentral from various
+                    sources. They lack features such as alignment and annotations.
+                  </li>
+                </ul>
               </details>
-              </h3>
-
             `
           : ''}
         <div>
@@ -502,9 +530,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
               ></sc-parallel-list>
             `
           : ''}
-        ${!this.item.parallel_count
-          ? html` <h3>${this.localize('suttaplex:hasNoParallels')}</h3> `
-          : ''}
+        ${this.item.parallel_count
+          ? ''
+          : html` <h3>${this.localize('suttaplex:hasNoParallels')}</h3> `}
       </details>
     `;
   }
