@@ -15,94 +15,107 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        sc-site-footer {
-          display: block;
+        sc-site-footer
+{
+    display: block;
 
-          margin-top: auto;
-        }
+    margin-top: auto;
+}
 
-        footer {
-          padding: 4em 4vw;
+footer
+{
+    padding: 4em 4vw;
 
-          background-color: var(--sc-secondary-text-color);
+    color: var(--sc-secondary-text-color);
+    border-top: 1px solid var(--sc-border-color);;
+    background-color: var(--sc-secondary-background-color);
+}
 
-          color: var(--sc-tertiary-text-color);
-        }
+.footer-top
+{
+    display: flex;
+    flex-direction: row;
 
-        .footer-top {
-          display: flex;
-          flex-direction: row;
+    width: 100%;
 
-          width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: left;
+    align-items: stretch;
+    gap: 2em;
+}
 
-          flex-wrap: wrap;
-          justify-content: space-around;
-          align-items: left;
-          align-items: stretch;
-          gap: 2em;
-        }
+.footer-top div
+{
+    min-width: 16em;
 
-        .footer-top div {
-          min-width: 16em;
+    flex: 1;
+}
 
-          flex: 1;
-        }
+footer ul
+{
+    padding: 0;
+}
 
-        footer ul {
-          padding: 0;
-        }
+footer li
+{
+    line-height: 1.5;
 
-        footer li {
-          line-height: 1.5;
+    padding: 1em 0 0 0;
 
-          padding: 1em 0 0 0;
+    list-style-type: none;
+}
 
-          list-style-type: none;
-        }
+.footer-bottom
+{
+    display: flex;
+    flex-direction: row;
 
-        .footer-bottom {
-          display: flex;
-          flex-direction: row;
+    text-align: center;
 
-          text-align: center;
+    justify-content: space-around;
+}
 
-          justify-content: space-around;
-        }
+.footer-bottom li
+{
+    display: inline-block;
 
-        .footer-bottom li {
-          display: inline-block;
+    padding: 1em 2em 0 2em;
+}
 
-          padding: 1em 2em 0 2em;
-        }
+li a
+{
+    transition: all 200ms ease;
+    text-decoration: none;
 
-        a {
-          transition: all 200ms ease;
-          text-decoration: none;
+    color: inherit;
 
-          color: inherit;
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: .15em;
+    text-underline-offset: .15em;
+}
 
-          text-decoration-color: var(--sc-primary-color-light);
-          text-decoration-thickness: 0.15em;
-          text-underline-offset: 0.06em;
-        }
+li a:hover
+{
+    text-decoration: underline;
 
-        a:hover {
-          text-decoration: underline;
+    color: inherit;
 
-          background-color: var(--sc-primary-color-light-transparent);
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: .15em;
+    text-underline-offset: .15em;
+}
 
-          text-decoration-color: var(--sc-primary-color);
-          text-decoration-thickness: 0.15em;
-          text-underline-offset: 0.06em;
-        }
+li a:active
+{
+    background-color: var(--sc-primary-color-light);
+}
 
-        a:active {
-          background-color: var(--sc-primary-color-light);
-        }
+li a:visited:hover
+{
+    text-decoration-color: var(--sc-primary-color-dark);
+}
 
-        a:visited {
-          text-decoration-color: var(--sc-primary-color-dark);
-        }
       </style>
       <footer>
         <section class="footer-top">
