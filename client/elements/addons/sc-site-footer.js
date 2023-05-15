@@ -15,107 +15,80 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
   render() {
     return html`
       <style>
-        sc-site-footer
-{
-    display: block;
+        sc-site-footer {
+          display: block;
+          margin-top: auto;
+        }
 
-    margin-top: auto;
-}
+        footer {
+          padding: 4em 4vw;
+          color: var(--sc-secondary-text-color);
+          border-top: 1px solid var(--sc-border-color);;
+          background-color: var(--sc-secondary-background-color);
+        }
 
-footer
-{
-    padding: 4em 4vw;
+        .footer-top {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          align-items: left;
+          align-items: stretch;
+          gap: 2em;
+        }
 
-    color: var(--sc-secondary-text-color);
-    border-top: 1px solid var(--sc-border-color);;
-    background-color: var(--sc-secondary-background-color);
-}
+        .footer-top div {
+          min-width: 16em;
+          flex: 1;
+        }
 
-.footer-top
-{
-    display: flex;
-    flex-direction: row;
+        footer ul {
+          padding: 0;
+        }
 
-    width: 100%;
+        footer li {
+          line-height: 1.5;
+          padding: 1em 0 0 0;
+          list-style-type: none;
+        }
 
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: left;
-    align-items: stretch;
-    gap: 2em;
-}
+        .footer-bottom {
+          display: flex;
+          flex-direction: row;
+          text-align: center;
+          justify-content: space-around;
+        }
 
-.footer-top div
-{
-    min-width: 16em;
+        .footer-bottom li {
+          display: inline-block;
+          padding: 1em 2em 0 2em;
+        }
 
-    flex: 1;
-}
+        li a {
+          transition: all 200ms ease;
+          text-decoration: none;
+          color: inherit;
+          text-decoration-color: var(--sc-primary-color-light);
+          text-decoration-thickness: .15em;
+          text-underline-offset: .15em;
+        }
 
-footer ul
-{
-    padding: 0;
-}
+        li a:hover {
+          text-decoration: underline;
+          color: inherit;
+          text-decoration-color: var(--sc-primary-color-light);
+          text-decoration-thickness: .15em;
+          text-underline-offset: .15em;
+        }
 
-footer li
-{
-    line-height: 1.5;
+        li a:active {
+          background-color: var(--sc-primary-color-light);
+        }
 
-    padding: 1em 0 0 0;
-
-    list-style-type: none;
-}
-
-.footer-bottom
-{
-    display: flex;
-    flex-direction: row;
-
-    text-align: center;
-
-    justify-content: space-around;
-}
-
-.footer-bottom li
-{
-    display: inline-block;
-
-    padding: 1em 2em 0 2em;
-}
-
-li a
-{
-    transition: all 200ms ease;
-    text-decoration: none;
-
-    color: inherit;
-
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: .15em;
-    text-underline-offset: .15em;
-}
-
-li a:hover
-{
-    text-decoration: underline;
-
-    color: inherit;
-
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: .15em;
-    text-underline-offset: .15em;
-}
-
-li a:active
-{
-    background-color: var(--sc-primary-color-light);
-}
-
-li a:visited:hover
-{
-    text-decoration-color: var(--sc-primary-color-dark);
-}
-
+        li a:visited:hover {
+          text-decoration-color: var(--sc-primary-color-dark);
+        }
       </style>
       <footer>
         <section class="footer-top">
