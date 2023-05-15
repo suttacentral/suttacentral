@@ -1,5 +1,23 @@
 # SuttaCentral ChangeLog
 
+## 2023.05.15
+
+- Refactor sc-navigation-new.js and other.
+- Try to speed up the home page loading speed on mobile.
+
+## 2023.05.12
+
+- Enhance badge and other.
+- Adjust menu of share this sutta.
+
+## 2023.05.11
+
+- Fix: pages do not display under certain conditions
+
+## 2023.05.10
+
+- Ehance :add badges on suttaplex for "aligned" and "annotated"
+
 ## 2023.05.04
 
 - Fix the bug about searching uid.
