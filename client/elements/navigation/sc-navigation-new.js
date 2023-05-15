@@ -55,7 +55,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     if (this.currentUid) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
-      this.#childrenExists();
+      this.#tagForMenuItemsHasChildren();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
         dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
         return;
@@ -125,64 +125,84 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                     })}
                 >
                   <header>
-                    <span class="header-left">
-                      <span class="title">
-                        ${child.translated_name || child.root_name || child.uid}
-                      </span>
-                      <div class="navigation-nerdy-row">
-                        <span
-                          class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
-                          lang=${child.root_lang_iso || this.lastSelectedItemRootLangISO}
-                          translate="no"
-                        >
-                          ${child.root_name}
-                        </span>
-                        <span class="acronym">${child.child_range}</span>
-                      </div>
-                    </span>
-                    ${child.yellow_brick_road
-                      ? html`
-                          <span class="header-right">
-                            <span class="number-translated">
-                              <span class="number">${child.yellow_brick_road_count}</span>
-                              ${this.fullSiteLanguageName}
-                            </span>
-                          </span>
-                        `
-                      : ''}
+                    ${this.#headerTemplate(child)}
                   </header>
                 </a>
-                ${child.blurb
-                  ? html`
-                      <div class="blurb blurbShrink" id="${child.uid}_blurb">
-                        ${unsafeHTML(child.blurb)}
-                      </div>
-                    `
-                  : ''}
-                ${pitakaGuide.get(child.uid)
-                  ? html`
-                      <a href="/${pitakaGuide.get(child.uid)}" class="essay-link">
-                        <div class="essay" id="${child.uid}_essay">
-                          ${this.localize(`interface:${child.uid}EssayTitle`)}
-                        </div>
-                      </a>
-                    `
-                  : ''}
-                ${this.#relatedPublicationExists(child.uid)
-                  ? this.#publicationInfoTemplate(child)
-                  : ''}
-                ${shortcuts?.includes(child.uid)
-                  ? html`
-                      <div class="shortcut">
-                        <a href="/${child.uid}" class="shortcut-link">
-                          ${this.localize('interface:shortcutToFullList')}
-                        </a>
-                      </div>
-                    `
-                  : ''}
+                ${this.#blurbTemplate(child)}
+                ${this.#pitakaGuideTemplate(child)}
+                ${this.#hasRelevantPublication(child.uid) ? this.#publicationInfoTemplate(child) : ''}
+                ${this.#shortcutsTemplate(child)}
               </section>
             `
           )}
+        `
+      : '';
+  }
+
+  #headerTemplate(child) {
+    return html`
+      <span class="header-left">
+        <span class="title">
+          ${child.translated_name || child.root_name || child.uid}
+        </span>
+        <div class="navigation-nerdy-row">
+          <span
+            class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
+            lang=${child.root_lang_iso || this.lastSelectedItemRootLangISO}
+            translate="no"
+          >
+            ${child.root_name}
+          </span>
+          <span class="acronym">${child.child_range}</span>
+        </div>
+      </span>
+      ${this.#yellowBrickRoadCountTemplate(child)}
+    `;
+  }
+
+  #yellowBrickRoadCountTemplate(child) {
+    return child.yellow_brick_road
+      ? html`
+          <span class="header-right">
+            <span class="number-translated">
+              <span class="number">${child.yellow_brick_road_count}</span>
+              ${this.fullSiteLanguageName}
+            </span>
+          </span>
+        `
+      : '';
+  }
+
+  #blurbTemplate(child) {
+    return child.blurb
+      ? html`
+          <div class="blurb blurbShrink" id="${child.uid}_blurb">
+            ${unsafeHTML(child.blurb)}
+          </div>
+        `
+      : '';
+  }
+
+  #pitakaGuideTemplate(child) {
+    return pitakaGuide.get(child.uid)
+      ? html`
+          <a href="/${pitakaGuide.get(child.uid)}" class="essay-link">
+            <div class="essay" id="${child.uid}_essay">
+              ${this.localize(`interface:${child.uid}EssayTitle`)}
+            </div>
+          </a>
+        `
+      : '';
+  }
+
+  #shortcutsTemplate(child) {
+    return shortcuts?.includes(child.uid)
+      ? html`
+          <div class="shortcut">
+            <a href="/${child.uid}" class="shortcut-link">
+              ${this.localize('interface:shortcutToFullList')}
+            </a>
+          </div>
         `
       : '';
   }
@@ -192,7 +212,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
-        this.#childrenExists();
+        this.#tagForMenuItemsHasChildren();
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
@@ -269,7 +289,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
       this._parseURL();
-      this.#relatedPublicationExists();
+      this.#hasRelevantPublication();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
@@ -321,7 +341,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.#addBlurbsClickEvent();
   }
 
-  async #childrenExists() {
+  async #tagForMenuItemsHasChildren() {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
@@ -355,7 +375,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     });
   }
 
-  #relatedPublicationExists(uid) {
+  #hasRelevantPublication(uid) {
     const isExists = this.allPublicationUid.includes(uid);
     let relatedLanguagePublicationExists = false;
     if (isExists) {
