@@ -639,6 +639,12 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         return priority.creator
     )[0]
 
+    LET references = (
+        FOR volpage IN text_references
+            FILTER volpage.uid == v.uid
+        RETURN volpage.volpage
+    )[0]
+
     RETURN {
         acronym: v.acronym,
         volpages: volpages,
@@ -656,6 +662,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         parallel_count: parallel_count,
         biblio: biblio,
         priority_author_uid: priority_author,
+        verseNo: references,
     }
 '''
 

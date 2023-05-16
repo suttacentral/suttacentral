@@ -390,9 +390,21 @@ class SuttaplexList(Resource):
                     if file_result is not None and 'translation_text' in file_result:
                         result['translated_title'] = json_load(file_result['translation_text'])[result['uid']+':0.3']
 
+            result['verseNo'] = self.compute_verse_no(result['uid'], result['verseNo'])
+
         data = flat_tree(data)
 
         return data, 200
+
+    def compute_verse_no(self, uid, verses):
+        if verses is not None and verses != '' and 'dhp' not in uid:
+            all_verse = verses.split(',')
+            all_verse = list(filter(lambda x: 'vns' in x, all_verse))
+            return (
+                f'Verse {all_verse[0].replace("vns", "")}–{all_verse[-1].replace("vns", "").strip()}'
+                if len(all_verse) > 1
+                else ' '.join(all_verse).replace('vns', 'Verse ')
+            )
 
 
 class RangeSuttaplexList(Resource):
