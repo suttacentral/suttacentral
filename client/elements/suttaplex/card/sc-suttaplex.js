@@ -226,18 +226,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           ${this.isSuttaInRangeSutta ? '' : this.nerdyRowTemplate}
         </div>
 
-        ${!this.isCompact
-          ? html`
-              ${this.item.blurb &&
-              html`
-                <div
-                  class="blurb"
-                  title=${this.localize('suttaplex:blurb')}
-                  .innerHTML=${this.item.blurb}
-                ></div>
-              `}
-            `
-          : ''}
+        ${this.#blurbTemplate()}
         ${this.#shouldShowUserLangTranslations() ? this.userLanguageTranslationsTemplate : ''}
         ${!this.isCompact
           ? html`
@@ -251,6 +240,21 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         ${this.isCompact && this.isFallenLeaf ? this.parallelsTemplate : ''}
       </article>
     `;
+  }
+
+  #blurbTemplate() {
+    return !this.isCompact
+      ? html`
+          ${this.item.blurb &&
+          html`
+            <div
+              class="blurb"
+              title=${this.localize('suttaplex:blurb')}
+              .innerHTML=${this.item.blurb}
+            ></div>
+          `}
+        `
+      : '';
   }
 
   #isFallenLeafRangeSutta(uid, hasFallenLeaves) {
@@ -356,32 +360,50 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   get nerdyRowTemplate() {
     return html`
       <div class="suttaplex-nerdy-row">
-        ${this.item.translated_title &&
-        this.item.original_title &&
-        html`
-          <span
-            title=${this.localize('suttaplex:originalTitle')}
-            class="nerdy-row-element subTitle"
-          >
-            ${this.item.original_title}
-          </span>
-        `}
-        ${(this.item.translated_title || this.item.original_title) &&
-        html`
-          <span title=${this.acronymTitle} class="nerdy-row-element">${this.acronymOrUid}</span>
-        `}
-        ${this.item.volpages &&
-        html`
-          ${this.item.biblio ? '' : this.volPageTemplate}
-          ${this.item.biblio &&
-          html`
-            <details class="suttaplex-details">
-              <summary>${this.volPageTemplate}</summary>
-              <p class="volpage-biblio-info" .innerHTML=${this.item.biblio}></p>
-            </details>
-          `}
-        `}
+        ${this.#nerdyRowOriginalTitleTemplate()} ${this.#nerdyRowAcronymTemplate()}
+        ${this.#nerdyRowVolpageTemplate()} ${this.#nerdyRowVerseTemplate()}
       </div>
+    `;
+  }
+
+  #nerdyRowOriginalTitleTemplate() {
+    return (
+      this.item.translated_title &&
+      this.item.original_title &&
+      html`
+        <span title=${this.localize('suttaplex:originalTitle')} class="nerdy-row-element subTitle">
+          ${this.item.original_title}
+        </span>
+      `
+    );
+  }
+
+  #nerdyRowAcronymTemplate() {
+    return (
+      (this.item.translated_title || this.item.original_title) &&
+      html`<span title=${this.acronymTitle} class="nerdy-row-element">${this.acronymOrUid}</span>`
+    );
+  }
+
+  #nerdyRowVolpageTemplate() {
+    return (
+      this.item.volpages &&
+      html`
+        ${this.item.biblio ? '' : this.volPageTemplate}
+        ${this.item.biblio &&
+        html`
+          <details class="suttaplex-details">
+            <summary>${this.volPageTemplate}</summary>
+            <p class="volpage-biblio-info" .innerHTML=${this.item.biblio}></p>
+          </details>
+        `}
+      `
+    );
+  }
+
+  #nerdyRowVerseTemplate() {
+    return html`
+      <span title=${this.item.verseNo} class="nerdy-row-element">${this.item.verseNo}</span>
     `;
   }
 
