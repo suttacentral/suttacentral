@@ -50,17 +50,19 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial):
         'matchpartial': matchpartial
     }
     if restrict != 'dictionaries':
-        search_aql, aql_condition_part = generate_general_query_aql(query, limit, offset, matchpartial)
+        search_aql, aql_condition_part = \
+            generate_general_query_aql(query, limit, offset, matchpartial)
 
         query_conditions = extract_query_conditions(query)
         if is_complex_query(query_conditions):
-            bind_param, search_aql, aql_condition_part = compute_complex_query_aql(query_conditions, query_param)
+            bind_param, search_aql, aql_condition_part = \
+                compute_complex_query_aql(query_conditions, query_param)
         else:
-            bind_param, search_aql, aql_condition_part = compute_query_aql(search_aql, aql_condition_part, query_param)
+            bind_param, search_aql, aql_condition_part = \
+                compute_query_aql(search_aql, aql_condition_part, query_param)
 
         query = bind_param['query']
         total = fetch_record_count(INSTANT_SEARCH_VIEW, aql_condition_part, query)
-
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
         if total == 0:
@@ -255,17 +257,30 @@ def generate_multi_keyword_query_aql(keywords, query_param):
     '''
     aql_condition_part += '''('''
     for keyword in keywords:
-        aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") AND '
+        if ' NOT ' not in keyword:
+            aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") AND '
+        else:
+            normal_keyword = keyword.split(' NOT ')[0]
+            aql_condition_part += f'PHRASE(d.content, "{normal_keyword}", "common_text") AND '
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
     aql_condition_part += ''' OR ('''
     for keyword in keywords:
-        aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%") OR '
+        if ' NOT ' not in keyword:
+            aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") OR ' \
+                                  f'LIKE(d.segmented_text, "%{keyword}%") OR '
+        else:
+            normal_keyword = keyword.split(' NOT ')[0]
+            aql_condition_part += f'PHRASE(d.content, "{normal_keyword}", "common_text") OR ' \
+                                  f'LIKE(d.segmented_text, "%{normal_keyword}%") OR '
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
     aql_condition_part += ''')'''
+
+    if not_keywords := extract_not_param(query_param['query']):
+        aql_condition_part += aql_not_part(not_keywords)
 
     aql_condition_part += aql_filter_part(query_param['matchpartial'])
 
@@ -282,8 +297,18 @@ def generate_and_query_aql(keywords, query_param):
     '''
 
     for keyword in keywords:
-        aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) AND '
+        if ' NOT ' not in keyword:
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR' \
+                                  f' LIKE(d.segmented_text, "%{keyword}%")) AND '
+        else:
+            normal_keyword = keyword.split(' NOT ')[0]
+            aql_condition_part += f'(PHRASE(d.content, "{normal_keyword}", "common_text") OR' \
+                                  f' LIKE(d.segmented_text, "%{normal_keyword}%")) AND '
+
     aql_condition_part = aql_condition_part[:-5]
+
+    if not_keywords := extract_not_param(query_param['query']):
+        aql_condition_part += aql_not_part(not_keywords)
 
     aql_condition_part += aql_filter_part(query_param['matchpartial'])
 
@@ -401,6 +426,13 @@ def aql_sort_part():
            'd.is_bilara == true ? -1 : 1,' \
            'd.is_segmented == false ? -1 : 1,' \
            'd.uid'
+
+
+def aql_not_part(keyword):
+    return f' AND NOT (PHRASE(d.content, "{keyword}", "common_text") OR ' \
+           f'PHRASE(d.name,  "{keyword}", "common_text") OR ' \
+           f'd.uid ==  "{keyword}" OR ' \
+           f'LIKE(d.segmented_text, "%{keyword}%")) '
 
 
 def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial):
@@ -708,6 +740,8 @@ def cut_highlights_when_content_is_none(hit, query):
 
 def cut_highlights(content, hit, query, is_segmented_text):
     hit['highlight'] = {'content': []}
+    if ' NOT ' in query:
+        query = query.split(' NOT ')[0]
     query_conditions = extract_query_conditions(query)
     if is_chinese(query):
         keyword_list = query.split(' AND ') if ' AND ' in query else query.split(' ')
@@ -1003,3 +1037,11 @@ def extract_lang_param(query_string):
     chunks = re.split("(lang:[a-z]+)\\s+", query_string)
     chunks = [c for c in chunks if c]
     return [c[5:] if c.startswith("lang:") else c for c in chunks]
+
+def extract_not_param(query_string):
+    not_match = re.search(r'NOT\s(\w+)', query_string)
+    if not_match:
+        not_keyword = not_match.group(1)
+        return not_keyword
+    else:
+        return None
