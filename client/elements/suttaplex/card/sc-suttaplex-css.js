@@ -510,6 +510,10 @@ export const parallelItemCss = css`
     width: 16px;
     height: 16px;
   }
+  
+  .vol-page { 
+    font-stretch: condensed; 
+  }
 
   @media only screen and (max-width: 600px) {
     .book {
