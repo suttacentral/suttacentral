@@ -479,6 +479,7 @@ FOR yb_doc IN yellow_brick_road
             FILTER yb_child
             RETURN yb_child.count
     )
+    FILTER translated_leaf_count != 0
     UPDATE yb_doc WITH { count: translated_leaf_count } IN yellow_brick_road
 '''
 
