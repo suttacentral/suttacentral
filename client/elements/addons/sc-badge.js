@@ -54,14 +54,18 @@ export class SCBadge extends LitElement {
 
     :host([color='gray']) {
       color: var(--sc-secondary-text-color);
-      border: 1px solid var(--sc-border-color)
+      border: 1px solid var(--sc-border-color);
     }
 
-    :host([color='gray']):before {
-      content: "✓ ";
+    :host([text='aligned']):before {
+      content: '✓ ';
       color: var(--sc-primary-accent-color);
     }
 
+    :host([text='annotated']):before {
+      content: '✓ ';
+      color: var(--sc-primary-accent-color);
+    }
   `;
 
   constructor() {
