@@ -194,12 +194,22 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <td>Return one <code>OR</code> the other.</td>
               <td>greed OR desire</td>
             </tr>
-  
+
+            <tr>
+              <td>Return one <code>OR</code> the other, exclude anicca</td>
+              <td>greed OR desire NOT anicca</td>
+            </tr>
+
             <tr>
               <td>Return one <code>AND</code> the other.</td>
               <td>greed AND desire</td>
             </tr>
-  
+
+            <tr>
+              <td>Return one <code>AND</code> the other, exclude anicca </td>
+              <td>greed AND desire NOT anicca</td>
+            </tr>
+
             <tr>
               <th colspan="2">combine filters</th>
             </tr>
