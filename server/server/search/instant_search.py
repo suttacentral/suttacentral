@@ -260,8 +260,8 @@ def generate_multi_keyword_query_aql(keywords, query_param):
         if ' NOT ' not in keyword:
             aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") AND '
         else:
-            normal_keyword = keyword.split(' NOT ')[0]
-            aql_condition_part += f'PHRASE(d.content, "{normal_keyword}", "common_text") AND '
+            keyword_exclude_not = keyword.split(' NOT ')[0]
+            aql_condition_part += f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") AND '
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
@@ -271,9 +271,9 @@ def generate_multi_keyword_query_aql(keywords, query_param):
             aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") OR ' \
                                   f'LIKE(d.segmented_text, "%{keyword}%") OR '
         else:
-            normal_keyword = keyword.split(' NOT ')[0]
-            aql_condition_part += f'PHRASE(d.content, "{normal_keyword}", "common_text") OR ' \
-                                  f'LIKE(d.segmented_text, "%{normal_keyword}%") OR '
+            keyword_exclude_not = keyword.split(' NOT ')[0]
+            aql_condition_part += f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR ' \
+                                  f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
@@ -301,9 +301,9 @@ def generate_and_query_aql(keywords, query_param):
             aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR' \
                                   f' LIKE(d.segmented_text, "%{keyword}%")) AND '
         else:
-            normal_keyword = keyword.split(' NOT ')[0]
-            aql_condition_part += f'(PHRASE(d.content, "{normal_keyword}", "common_text") OR' \
-                                  f' LIKE(d.segmented_text, "%{normal_keyword}%")) AND '
+            keyword_exclude_not = keyword.split(' NOT ')[0]
+            aql_condition_part += f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR' \
+                                  f' LIKE(d.segmented_text, "%{keyword_exclude_not}%")) AND '
 
     aql_condition_part = aql_condition_part[:-5]
 
