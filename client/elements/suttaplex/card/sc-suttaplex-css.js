@@ -212,6 +212,71 @@ export const suttaplexCss = css`
     line-height: 1.333;
   }
 
+  .pills{
+    padding: 12px 0
+  }
+
+  .pills a{
+    border-radius: 0.6rem;
+    font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    color: var(--sc-secondary-text-color);
+    padding: 12px 8px 2px;
+    font-stretch: condensed;
+    white-space: nowrap;
+  }
+
+  [data-speaker]{
+      border: 2px solid var(--sc-primary-accent-color);
+       color: var(--sc-primary-accent-color)
+  }
+
+  [data-speaker]:hover{
+    background-color: var(--sc-primary-accent-color);
+    color: var(--sc-tertiary-text-color)
+  }
+
+    [data-speaker]::before,
+    [data-place]::before{
+    position: absolute;
+    font-size: var(--sc-skolar-font-size-xxs);
+        font-stretch: expanded;
+        font-weight: 400;
+    margin-top: -10px;
+    padding: 0;
+
+    letter-spacing: var(--sc-caps-letter-spacing);
+
+    font-variant-caps: all-small-caps;
+    border-radius: 4px;
+
+  }
+
+  [data-speaker]:hover::before,
+    [data-place]:hover::before{
+      
+    background: transparent;
+    }
+
+  [data-speaker]::before{
+    content: 'speaker';
+
+  }
+
+    [data-place]::before{
+    content: 'place';
+  }
+
+    [data-place]{
+      border: 2px solid var(--sc-secondary-accent-color);
+      color: var(--sc-secondary-accent-color)
+  }
+
+    [data-place]:hover{
+    background-color: var(--sc-secondary-accent-color);
+    color: var(--sc-tertiary-text-color)
+  }
+
   .primary-accent-icon {
     color: var(--sc-primary-accent-color);
     stroke: var(--sc-primary-accent-color);

@@ -227,6 +227,12 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
         </div>
 
         ${this.#blurbTemplate()}
+        <div class='pills'>
+        <a data-speaker='buddha'>the Buddha (304 words)</a>
+        <a data-speaker='bhikkhu'>the mendicants (14 words)</a>
+        <a data-speaker='ananda'>Ānanda (28 words)</a>
+        <a data-place='ambalatthika'>Ambalaṭṭhikā</a>
+        </div>
         ${this.#shouldShowUserLangTranslations() ? this.userLanguageTranslationsTemplate : ''}
         ${!this.isCompact
           ? html`
