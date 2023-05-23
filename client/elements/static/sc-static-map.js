@@ -145,7 +145,6 @@ figcaption{
                 alt='Hand-drawn map of Jambudipa')}
                 class="image-home"
                 src="/img/static-pages/jambudipa_map.jpg"
-                title=${this.localize('introduction:36')}
                 width="1476px"
               />
             </picture>
