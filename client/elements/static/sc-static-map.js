@@ -92,6 +92,14 @@ h3{
 .features-section  {
   margin-bottom: 2rem
 }
+
+img{
+  margin-bottom: 8px
+}
+
+figcaption{
+  font-family: var(--sc-sans-font);
+}
     `,
   ];
 
@@ -129,8 +137,23 @@ h3{
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('static-map:1'))}</h1>
+          <h2>Poster map</h2>
+          <figure>
+          <picture>
+              <source srcset="/img/static-pages/jambudipa_map.avif" type="image/avif" />
+              <img
+                alt='Hand-drawn map of Jambudipa')}
+                class="image-home"
+                src="/img/static-pages/jambudipa_map.jpg"
+                title=${this.localize('introduction:36')}
+                width="1476px"
+              />
+            </picture>
+            <figcaption>Jambudīpa: India in the time of the Buddha. Hand-drawn by Jonas for SuttaCentral, CC0.</figcaption>
+            </figure>
+            <h2>Interactive map</h2>
           <sc-map id="map" hide-static-map-button></sc-map>
-          <h2>${unsafeHTML(this.localize('static-map:2'))}</h2>
+          
           <div class="columns">${this._featuresList()}</div>
         </article>
       </main>
