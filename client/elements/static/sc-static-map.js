@@ -95,7 +95,7 @@ export class SCStaticMap extends SCStaticPage {
        font-size: var(--sc-skolar-font-size-s);
        color: var(--sc-secondary-text-color);
 
-       text-align: right
+       text-align: right;
       }
     `,
   ];
