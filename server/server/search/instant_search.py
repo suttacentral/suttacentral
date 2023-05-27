@@ -3,8 +3,6 @@ from zhconv import convert as zhconv_convert
 import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries, constant
-import enchant
-en_dict = enchant.Dict("en_US")
 
 INSTANT_SEARCH_VIEW = 'instant_search'
 AQL_INSTANT_SEARCH_FIRST_PART = 'FOR d IN instant_search '
@@ -17,9 +15,10 @@ RETURN r.uid
 '''
 
 POSSIBLE_SUTTA_BY_NAME = '''
-FOR doc IN super_nav_details
-FILTER doc.type == 'leaf' AND (doc.name == @name OR doc.name == @name + 'sutta')
-RETURN doc.uid
+FOR d IN instant_search
+    SEARCH PHRASE(d.name, @name, "common_text")
+    FILTER d.is_segmented != True
+RETURN d.uid
 '''
 
 LIST_AUTHORS = '''
@@ -465,7 +464,21 @@ def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     else:
         suttaplexs.extend(fetch_suttaplexs_by_name(db, lang, query))
 
+    for suttaplex in suttaplexs:
+        suttaplex['verseNo'] = compute_verse_no(suttaplex['uid'], suttaplex['verseNo'])
+
     return suttaplexs
+
+
+def compute_verse_no(uid, verses):
+    if verses is not None and verses != '' and 'dhp' not in uid:
+        all_verse = verses.split(',')
+        all_verse = list(filter(lambda x: 'vns' in x, all_verse))
+        return (
+            f'Verse {all_verse[0].replace("vns", "")}–{all_verse[-1].replace("vns", "").strip()}'
+            if len(all_verse) > 1
+            else ' '.join(all_verse).replace('vns', 'Verse ')
+        )
 
 
 def merge_duplicate_hits(hits):
@@ -726,6 +739,7 @@ def generate_aql_by_volpage(search_aql, aql_condition_part, query_param):
 
         standardized_volpages = standardization_volpage(query)
         possible_volpages.append(standardized_volpages)
+        possible_volpages = list(set(possible_volpages))
         search_aql = generate_volpage_query_aql(possible_volpages)
         query_param['query'] = query
     return query_param, search_aql, aql_condition_part
@@ -940,11 +954,20 @@ def fetch_suttaplexs(db, lang, hits):
 
 
 def fetch_suttaplexs_by_name(db, lang, name):
-    possible_uids = list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name}))
+    possible_uids = []
+    name_exclude_sutta = name
+    if 'sutta' in name:
+        name_exclude_sutta = name.replace('sutta', '').strip()
+
+    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name})))
+    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name}sutta'})))
+    possible_uids = list(set(possible_uids))
+
     suttaplexs = []
     for uid in possible_uids:
         suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
         suttaplexs.append(suttaplex)
+
     return suttaplexs
 
 
@@ -1017,20 +1040,23 @@ def roman_to_int(roman):
     result = 0
     for i in range(len(roman)):
         if i == len(roman) - 1 or roman_dict[roman[i].upper()] >= roman_dict[roman[i + 1].upper()]:
-            result += roman_dict[roman[i].upper()]
-        else:
+            if roman[i].upper() in roman_dict:
+                result += roman_dict[roman[i].upper()]
+        elif roman[i].upper() in roman_dict:
             result -= roman_dict[roman[i].upper()]
     return result
 
 
 def standardization_volpage(volpage):
+    if 'Vin' not in volpage:
+        return volpage
     parts = volpage.split()
     if len(parts) < 3:
         return volpage
-    parts[0] = "PTS"
+    parts[0] = "pts-vp-pli"
     parts[1] = roman_to_int(parts[1])
     parts[2] = f".{parts[2]}"
-    return "{} {}{}".format(*parts)
+    return "{}{}{}".format(*parts)
 
 
 def extract_lang_param(query_string):
@@ -1039,9 +1065,7 @@ def extract_lang_param(query_string):
     return [c[5:] if c.startswith("lang:") else c for c in chunks]
 
 def extract_not_param(query_string):
-    not_match = re.search(r'NOT\s(\w+)', query_string)
-    if not_match:
-        not_keyword = not_match.group(1)
-        return not_keyword
+    if not_match := re.search(r'NOT\s(\w+)', query_string):
+        return not_match[1]
     else:
         return None
