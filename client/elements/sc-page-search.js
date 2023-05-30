@@ -326,7 +326,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
       const volpages = volpage?.split(',');
       if (volpages && volpages.length > 1) {
-        item.volpage = `${volpages[0]}–${volpages[volpages.length - 1].split('.')[1]}`;
+        const lastVolpage = volpages[volpages.length - 1].split('.')[1] || volpages[volpages.length - 1];
+        item.volpage = `${volpages[0]}...${lastVolpage}`;
       }
     }
 

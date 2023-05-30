@@ -1048,8 +1048,6 @@ def roman_to_int(roman):
 
 
 def standardization_volpage(volpage):
-    if 'Vin' not in volpage:
-        return volpage
     parts = volpage.split()
     if len(parts) < 3:
         return volpage
@@ -1063,6 +1061,7 @@ def extract_lang_param(query_string):
     chunks = re.split("(lang:[a-z]+)\\s+", query_string)
     chunks = [c for c in chunks if c]
     return [c[5:] if c.startswith("lang:") else c for c in chunks]
+
 
 def extract_not_param(query_string):
     if not_match := re.search(r'NOT\s(\w+)', query_string):
