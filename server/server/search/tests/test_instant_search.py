@@ -15,9 +15,9 @@ def test_format_volpage():
 
 
 def test_standardization_volpage():
-    assert standardization_volpage('D II 236') == 'PTS 2.236'
-    assert standardization_volpage('VIN IV 4') == 'PTS 4.4'
-    assert standardization_volpage('S III 789') == 'PTS 3.789'
+    assert standardization_volpage('Vin IV 4') == 'pts-vp-pli4.4'
+    assert standardization_volpage('Vin I 4') == 'pts-vp-pli1.4'
+    assert standardization_volpage('pts I 4') == 'pts-vp-pli1.4'
 
 
 def test_roman_to_int():
