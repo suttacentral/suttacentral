@@ -57,6 +57,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     displayHintOfNoResultInSelectedLanguages: { type: Boolean },
     languagesOfFoundResult: { type: String },
     matchPartial: { type: Boolean },
+    priorityAuthors: { type: Object },
   };
 
   constructor() {
@@ -95,6 +96,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     });
 
     this.actions.changeLinearProgressActiveState(this.loadingResults);
+    this.priorityAuthors = new Map([['en', 'sujato']]);
   }
 
   #hideRelatedTopSheets() {
@@ -109,6 +111,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       ${this.displayDataLoadError} ${this.offLineTemplate} ${this.#searchResultByAuthorTemplate()}
       ${this.#searchResultByVolpageTemplate()} ${this.#searchResultByCollectionTemplate()}
       ${this.#searchResultByListAuthorsTemplate()} ${this.generalSearchResultTemplate}
+      ${this.#searchResultByReferenceTemplate()}
     `;
   }
 
@@ -188,7 +191,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
       !this.#isSearchByAuthor() &&
       !this.#isSearchByVolpage() &&
       !this.#isSearchByCollection() &&
-      !this.#isSearchByListAuthors()
+      !this.#isSearchByListAuthors() &&
+      !this.#isSearchByReference()
       ? html`
           <div class="search-results-container">
             <main class="search-results-main">${this.searchResultTemplate}</main>
@@ -306,33 +310,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
     const searchResultByVolpage = this.visibleSearchResults;
 
-    for (const element of searchResultByVolpage) {
-      const item = element;
-      const { all_reference, volpage } = item;
-      if (all_reference && typeof all_reference === 'string') {
-        const references = all_reference?.split(',');
-        const filteredReferences = [];
-        if (references) {
-          for (const ref of references) {
-            if (ref.includes('pts-vp-pli')) {
-              filteredReferences.push(ref);
-            }
-          }
-          item.filteredReferences = filteredReferences;
-        }
-      } else {
-        item.filteredReferences = [];
-      }
+    this.#processVolpageData(searchResultByVolpage);
 
-      const volpages = volpage?.split(',');
-      if (volpages && volpages.length > 1) {
-        const lastVolpage = volpages[volpages.length - 1].split('.')[1] || volpages[volpages.length - 1];
-        item.volpage = `${volpages[0]}...${lastVolpage}`;
-      }
-    }
-
-    const linkTemplate =
-      '/pli/ms?layout=plain&reference=main/pts&notes=asterisk&highlight=false&script=latin#';
+    const priorityAuthor = this.priorityAuthors.get(this.language);
+    const linkParamPart =
+      'layout=plain&reference=main/pts&notes=asterisk&highlight=false&script=latin#';
+    const linkTemplate = `/${priorityAuthor ? this.language : 'pli'}/${
+      priorityAuthor || 'ms'
+    }?${linkParamPart}`;
 
     return searchResultByVolpage
       ? html`
@@ -370,6 +355,112 @@ class SCPageSearch extends LitLocalized(LitElement) {
           </div>
         `
       : '';
+  }
+
+  #processVolpageData(searchResultByVolpage) {
+    for (const element of searchResultByVolpage) {
+      const item = element;
+      const { all_reference: allReference, volpage } = item;
+      if (allReference && typeof allReference === 'string') {
+        const references = allReference?.split(',');
+        const filteredReferences = [];
+        if (references) {
+          for (const ref of references) {
+            if (ref.includes('pts-vp-pli')) {
+              filteredReferences.push(ref);
+            }
+          }
+          item.filteredReferences = filteredReferences;
+        }
+      } else {
+        item.filteredReferences = [];
+      }
+
+      const volpages = volpage?.split(',');
+      if (volpages && volpages.length > 1) {
+        const lastVolpage = volpages[volpages.length - 1].split('.')[1] || volpages[volpages.length - 1];
+        item.volpage = `${volpages[0]}...${lastVolpage}`;
+      }
+    }
+  }
+
+  #searchResultByReferenceTemplate() {
+    if (
+      !this.visibleSearchResults ||
+      this.visibleSearchResults.length === 0 ||
+      !this.#isSearchByReference()
+    ) {
+      return ``;
+    }
+    const searchResultByReference = this.visibleSearchResults;
+    const query = this.searchQuery.split(':')[1].trim();
+    this.#processReferenceData(searchResultByReference);
+
+    const priorityAuthor = this.priorityAuthors.get(this.language);
+    const linkParamPart =
+      'layout=plain&reference=main/pts&notes=asterisk&highlight=false&script=latin#';
+    const linkTemplate = `/${priorityAuthor ? this.language : 'pli'}/${
+      priorityAuthor || 'ms'
+    }?${linkParamPart}`;
+
+    return searchResultByReference
+      ? html`
+          <div class="search-results-container">
+            ${this.searchResultHeadTemplate}
+            <table>
+              <tbody>
+                ${searchResultByReference.map(
+                  item => html`
+                    <tr>
+                      <td class="sutta_uid">
+                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                      </td>
+                      <td class="sutta_title">${item.name}</td>
+                      <td class="references">
+                        ${item.filteredReferences && Array.isArray(item.filteredReferences)
+                          ? item.filteredReferences?.map(
+                              ref =>
+                                html`<a
+                                    class="pts_reference"
+                                    href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
+                                    target="_blank"
+                                    >${ref.replace(/(^\s*)/g, '') === query
+                                      ? this.#addHighlighting(ref.replace(/(^\s*)/g, ''))
+                                      : ref.replace(/(^\s*)/g, '')}</a
+                                  >, `
+                            )
+                          : ''}
+                      </td>
+                    </tr>
+                  `
+                )}
+              </tbody>
+            </table>
+            ${this.loadMoreButtonTemplate}
+          </div>
+        `
+      : '';
+  }
+
+  #processReferenceData(searchResultByReference) {
+    for (const element of searchResultByReference) {
+      const item = element;
+      const { all_reference: allReference } = item;
+      if (allReference && typeof allReference === 'string') {
+        const references = allReference?.split(',');
+        const filteredReferences = [];
+        if (references) {
+          for (const ref of references) {
+            if (ref.includes('vns')) {
+              filteredReferences.push(ref);
+            }
+          }
+          item.filteredReferences = filteredReferences;
+        }
+      } else {
+        item.filteredReferences = [];
+      }
+    }
   }
 
   #searchResultByCollectionTemplate() {
@@ -924,6 +1015,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByInTitle() {
     return this.searchQuery?.includes('title:');
+  }
+
+  #isSearchByReference() {
+    return this.searchQuery?.includes('ref:');
   }
 
   #addHighlightClickEvent() {

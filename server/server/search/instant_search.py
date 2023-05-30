@@ -250,6 +250,44 @@ def generate_volpage_query_aql(possible_volpages):
     return aql
 
 
+def generate_reference_query_aql(query):
+    return '''
+        FOR d IN instant_volpage_search
+        SEARCH (PHRASE(d.volpage, @query, "common_text") OR PHRASE(d.alt_volpage, @query, "common_text"))
+        
+        SORT d.uid
+
+        LET translation_title = (
+            FOR name IN names
+                FILTER name.uid == d.uid AND name.lang == @lang
+                LIMIT 1
+                RETURN name.name
+        )[0]
+
+        LET root_title = (
+            FOR name IN names
+                FILTER name.uid == d.uid AND name.is_root == True
+                LIMIT 1
+                RETURN name.name
+        )[0]
+
+        LET all_reference = (
+            FOR tr IN text_references
+            FILTER tr.uid == d.uid
+            RETURN tr.volpage
+        )[0]
+
+        RETURN {
+            acronym: d.acronym,
+            uid: d.uid,
+            lang: d.lang,
+            name: translation_title ? translation_title : root_title,
+            all_reference: all_reference,
+            content: '',
+            segmented_text: '',
+        }
+        '''
+
 def generate_multi_keyword_query_aql(keywords, query_param):
     aql_condition_part = '''
     SEARCH (PHRASE(d.content, @query, "common_text") OR 
@@ -524,6 +562,9 @@ def compute_query_aql(search_aql, aql_condition_part, query_param):
     query_param, search_aql, aql_condition_part = \
         generate_aql_by_volpage(search_aql, aql_condition_part, query_param)
 
+    query_param, search_aql, aql_condition_part = \
+        generate_aql_by_reference(search_aql, aql_condition_part, query_param)
+
     search_aql, aql_condition_part = \
         generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part, query_param)
 
@@ -741,6 +782,14 @@ def generate_aql_by_volpage(search_aql, aql_condition_part, query_param):
         possible_volpages.append(standardized_volpages)
         possible_volpages = list(set(possible_volpages))
         search_aql = generate_volpage_query_aql(possible_volpages)
+        query_param['query'] = query
+    return query_param, search_aql, aql_condition_part
+
+
+def generate_aql_by_reference(search_aql, aql_condition_part, query_param):
+    if query_param['query'].startswith(constant.CMD_REFERENCE):
+        query = query_param['query'][4:].strip()
+        search_aql = generate_reference_query_aql(query)
         query_param['query'] = query
     return query_param, search_aql, aql_condition_part
 

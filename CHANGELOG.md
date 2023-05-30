@@ -1,5 +1,29 @@
 # SuttaCentral ChangeLog
 
+## 2023.05.25
+
+- Enhance: filter to search by reference number.
+
+## 2023.05.24
+
+- Add map.
+
+## 2023.05.22
+
+- Fix: make load-data refuses to update local data because of "changed …files.
+
+## 2023.05.19
+
+- Enhance: add NOT operator for search.
+
+## 2023.05.18
+
+- Enhance sc-badge.js
+
+## 2023.05.17
+
+- Enhance: show verse number in suttaplex nerdy row.
+
 ## 2023.05.15
 
 - Refactor sc-navigation-new.js and other.
@@ -16,7 +40,7 @@
 
 ## 2023.05.10
 
-- Ehance :add badges on suttaplex for "aligned" and "annotated"
+- Ehance: add badges on suttaplex for "aligned" and "annotated"
 
 ## 2023.05.04
 
