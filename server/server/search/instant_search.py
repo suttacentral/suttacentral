@@ -1020,8 +1020,8 @@ def fetch_suttaplexs_by_name(db, lang, name):
     if 'sutta' in name:
         name_exclude_sutta = name.replace('sutta', '').strip()
 
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name})))
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name}sutta'})))
+    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name_exclude_sutta})))
+    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name_exclude_sutta}sutta'})))
     possible_uids = list(set(possible_uids))
 
     suttaplexs = []
