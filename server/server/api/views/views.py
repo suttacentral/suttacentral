@@ -388,7 +388,9 @@ class SuttaplexList(Resource):
                 if translation_text_file is not None:
                     file_result = next(translation_text_file)
                     if file_result is not None and 'translation_text' in file_result:
-                        result['translated_title'] = json_load(file_result['translation_text'])[result['uid']+':0.3']
+                        translation_text = json_load(file_result['translation_text'])
+                        if translation_text and result['uid']+':0.3' in translation_text:
+                            result['translated_title'] = translation_text[result['uid']+':0.3']
 
             result['verseNo'] = self.compute_verse_no(result['uid'], result['verseNo'])
 
