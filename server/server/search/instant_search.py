@@ -161,7 +161,12 @@ def generate_title_query_aql(query_param):
 
 
 def generate_collection_query_aql(query_param):
-    aql_condition_part = f'SEARCH (STARTS_WITH(d.uid, @query) AND STARTS_WITH(d.acronym, "{query_param["query"].upper()} ")) '
+    collection = query_param["query"].lower()
+    if collection in ['sutta', 'vinaya', 'abhidhamma']:
+        aql_condition_part = f' SEARCH d.uid IN (FOR doc IN 0..10 OUTBOUND CONCAT("super_nav_details/", "{collection}") ' \
+                             f'super_nav_details_edges RETURN doc.uid) OR STARTS_WITH(d.uid, @query) '
+    else:
+        aql_condition_part = f'SEARCH (STARTS_WITH(d.uid, @query) AND STARTS_WITH(d.acronym, "{query_param["query"].upper()} ")) '
     aql_condition_part += '''
         FILTER d.is_segmented == False
         FILTER d.author_uid != null
@@ -400,8 +405,15 @@ def add_collection_condition_to_query_aql(condition_combination):
     if 'collection' not in condition_combination:
         return ''
     collection = condition_combination['collection'].lower()
-    if collection != 'ebt':
-        return f'AND (STARTS_WITH(d.uid, "{collection}")  AND STARTS_WITH(d.acronym, "{collection.upper()} "))'
+    if collection in ['sutta', 'vinaya', 'abhidhamma']:
+        return f' AND d.uid IN (FOR doc IN 0..10 OUTBOUND CONCAT("super_nav_details/", "{collection}") ' \
+                             f'super_nav_details_edges RETURN doc.uid) '
+    if collection == 'ebt':
+        return add_in_ebt_aql()
+    return f'AND (STARTS_WITH(d.uid, "{collection}")  AND STARTS_WITH(d.acronym, "{collection.upper()} "))'
+
+
+def add_in_ebt_aql():
     ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
                        "thig", "thag", "up", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                        "lzh-upp", "san-mg", "san-lo"]
@@ -1008,8 +1020,8 @@ def fetch_suttaplexs_by_name(db, lang, name):
     if 'sutta' in name:
         name_exclude_sutta = name.replace('sutta', '').strip()
 
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name})))
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name}sutta'})))
+    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name_exclude_sutta})))
+    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name_exclude_sutta}sutta'})))
     possible_uids = list(set(possible_uids))
 
     suttaplexs = []

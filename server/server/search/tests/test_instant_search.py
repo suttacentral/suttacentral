@@ -4,7 +4,8 @@ from search.instant_search import (
     roman_to_int,
     extract_query_conditions,
     is_chinese,
-    extract_lang_param
+    extract_lang_param,
+    extract_not_param
 )
 
 
@@ -71,6 +72,9 @@ def test_extract_param():
     assert extract_query_conditions('author:sujato cat AND dog') == {"author": "sujato", "and": ["cat", "dog"]}
     assert extract_query_conditions('in:mn author:sujato cat AND dog') == {"collection": "mn", "author": "sujato",
                                                                "and": ["cat", "dog"]}
+    assert extract_query_conditions('in:vinaya cat') == {"collection": "vinaya", "or": ["cat"]}
+    assert extract_query_conditions('in:sutta cat') == {"collection": "sutta", "or": ["cat"]}
+    assert extract_query_conditions('in:abhidhamma cat') == {"collection": "abhidhamma", "or": ["cat"]}
 
 
 def test_is_chinese():
@@ -92,3 +96,7 @@ def test_extract_lang_param():
     assert extract_lang_param('lang:pli cat OR dog') == ['pli', 'cat OR dog']
     assert extract_lang_param('lang:zh 如是') == ['zh', '如是']
     assert extract_lang_param('lang:zh 如是 AND 八正道') == ['zh', '如是 AND 八正道']
+
+
+def test_extract_not_param():
+    assert extract_not_param('NOT cat') == 'cat'

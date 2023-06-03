@@ -25,6 +25,18 @@ def test_volpage_search(client):
     res = client.get(api.url_for(InstantSearch, **data))
     assert res.status_code == 200
 
+    data = {'query': 'in:sutta dana '}
+    res = client.get(api.url_for(InstantSearch, **data))
+    assert res.status_code == 200
+
+    data = {'query': 'in:vinaya dana '}
+    res = client.get(api.url_for(InstantSearch, **data))
+    assert res.status_code == 200
+
+    data = {'query': 'in:abhidhamma dana '}
+    res = client.get(api.url_for(InstantSearch, **data))
+    assert res.status_code == 200
+
 
 def test_no_query(client):
     res = client.get(api.url_for(InstantSearch))
