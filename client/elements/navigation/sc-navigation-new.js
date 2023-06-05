@@ -42,7 +42,9 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this.#extractUidsFromEditions();
-    this._verifyURL();
+    if (document.referrer === '') {
+      this._verifyURL();
+    }
     this._viewModeChanged();
     this._parseURL();
   }
@@ -124,13 +126,12 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                       dispatchState: true,
                     })}
                 >
-                  <header>
-                    ${this.#headerTemplate(child)}
-                  </header>
+                  <header>${this.#headerTemplate(child)}</header>
                 </a>
-                ${this.#blurbTemplate(child)}
-                ${this.#pitakaGuideTemplate(child)}
-                ${this.#hasRelevantPublication(child.uid) ? this.#publicationInfoTemplate(child) : ''}
+                ${this.#blurbTemplate(child)} ${this.#pitakaGuideTemplate(child)}
+                ${this.#hasRelevantPublication(child.uid)
+                  ? this.#publicationInfoTemplate(child)
+                  : ''}
                 ${this.#shortcutsTemplate(child)}
               </section>
             `
@@ -142,9 +143,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   #headerTemplate(child) {
     return html`
       <span class="header-left">
-        <span class="title">
-          ${child.translated_name || child.root_name || child.uid}
-        </span>
+        <span class="title"> ${child.translated_name || child.root_name || child.uid} </span>
         <div class="navigation-nerdy-row">
           <span
             class="subTitle ${child.root_lang_iso ? 'show-root-language' : ''}"
@@ -176,9 +175,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   #blurbTemplate(child) {
     return child.blurb
       ? html`
-          <div class="blurb blurbShrink" id="${child.uid}_blurb">
-            ${unsafeHTML(child.blurb)}
-          </div>
+          <div class="blurb blurbShrink" id="${child.uid}_blurb">${unsafeHTML(child.blurb)}</div>
         `
       : '';
   }

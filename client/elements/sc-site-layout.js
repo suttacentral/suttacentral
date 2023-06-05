@@ -44,7 +44,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.colorsResponse = {};
     this.siteLanguage = state.siteLanguage;
     this.appColorTheme = state.colorTheme;
-    this._colorThemeChanged();
     this.localizedStringsPath = '/localization/elements/interface';
     this.changedRoute = state.currentRoute;
     this.displaySettingMenu = state.displaySettingMenu;
@@ -52,6 +51,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.shouldShowFirstToolbar = true;
     this.linearProgressActive = false;
     this.toolbarPosition = state.toolbarPosition;
+    this.pageLoaded = false;
   }
 
   createRenderRoot() {
@@ -91,6 +91,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
+    this._colorThemeChanged();
     this.removeAttribute('unresolved');
 
     ['load', 'online', 'offline'].forEach(eventName => {
@@ -99,58 +100,13 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       });
     });
 
-    this.addEventListener('hide-sc-top-sheet', () => {
-      this.querySelector('#setting_menu')?.hide();
-      this.actions.changeDisplaySettingMenuState(false);
-    });
-
-    this.addEventListener('show-sc-top-sheet', () => {
-      this.querySelector('#setting_menu')?.show();
-    });
-
-    this.addEventListener('hide-sc-sutta-parallels', () => {
-      this.querySelector('#sutta_parallels')?.hide();
-      this.actions.changeDisplaySuttaParallelsState(false);
-    });
-
-    this.addEventListener('show-sc-sutta-parallels', () => {
-      this.querySelector('#sutta_parallels')?.show();
-    });
-
-    this.addEventListener('bind-data-to-sc-sutta-parallels', e => {
-      this.querySelector('#sutta_parallels').suttaplexItem = e.detail.suttaplexItem;
-    });
-
-    this.addEventListener('hide-sc-sutta-toc', () => {
-      this.querySelector('#sutta_toc')?.hide();
-      this.actions.changeDisplaySuttaToCState(false);
-    });
-
-    this.addEventListener('show-sc-sutta-toc', () => {
-      this.querySelector('#sutta_toc')?.show();
-    });
-
-    this.addEventListener('show-sc-sutta-info', e => {
-      if (e.detail.isSegmentedText) {
-        this.querySelector('#bilara-sutta-info')?.show();
-      } else {
-        this.querySelector('#sutta-info')?.show();
-      }
-    });
-
-    this.addEventListener('hide-sc-sutta-info', () => {
-      this.querySelector('#sutta-info')?.hide();
-      const pubInfo = this.querySelector('#bilara-sutta-info');
-      if (pubInfo && pubInfo.hide) {
-        pubInfo.hide();
-      }
-      this.actions.changeDisplaySuttaInfoState(false);
-    });
-
     // handles scroll-based universal toolbar animation on home page
     document.addEventListener(
       'scroll',
       rafThrottle(() => {
+        if (!this.pageLoaded) {
+          return;
+        }
         if (!this.toolbarPosition.scrollForToolbar || this.changedRoute.path !== '/') {
           return;
         }
@@ -174,7 +130,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
         if (!this.toolbarPosition.scrollForToolbar || this.changedRoute.path === '/') {
           return;
         }
-
+        if (!this.pageLoaded) {
+          return;
+        }
         const {
           displaySettingMenu,
           displaySuttaParallels,
@@ -183,8 +141,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
           alwaysShowUniversalToolbar,
         } = store.getState();
 
-        if (displaySettingMenu || displaySuttaParallels || displaySuttaInfo || displaySuttaToC)
+        if (displaySettingMenu || displaySuttaParallels || displaySuttaInfo || displaySuttaToC) {
           return;
+        }
 
         if (alwaysShowUniversalToolbar) {
           return;
@@ -210,6 +169,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       })
     );
     window.addEventListener('resize', () => {
+      if (!this.pageLoaded) {
+        return;
+      }
       document.getElementById('universal_toolbar').style.transition = '';
       document.getElementById('breadCrumb').style.transition = '';
       document.getElementById('mainTitle').style.transition = '';
@@ -312,9 +274,12 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    this._createGlobalStylesheet(SCUtilityStyles);
-    this._createGlobalStylesheet(SCFontStyles);
-    this._calculateScrollbarWidth();
+    window.addEventListener('load', () => {
+      this.pageLoaded = true;
+      this._createGlobalStylesheet(SCUtilityStyles);
+      this._createGlobalStylesheet(SCFontStyles);
+      this._calculateScrollbarWidth();
+    });
   }
 
   _calculateScrollbarWidth() {

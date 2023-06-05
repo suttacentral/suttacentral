@@ -332,6 +332,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.#setBtnShowParallelTableViewDisplayState();
     this.#setBtnShowParallelTableViewIcon();
     this.#displaySearchOptionsButtonStateChange();
+    this.scSiteLayout = document.querySelector('sc-site-layout');
   }
 
   hideItems() {
@@ -368,15 +369,12 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _showSuttaInfo() {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-sutta-info', {
-        detail: {
-          isSegmentedText: !this.suttaMetaText,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    const isSegmentedText = !this.suttaMetaText;
+    if (isSegmentedText) {
+      this.scSiteLayout.querySelector('#bilara-sutta-info').show();
+    } else {
+      this.scSiteLayout.querySelector('#sutta-info').show();
+    }
     this.shadowRoot.querySelector('#btnInfo')?.classList.add(this.activeClass);
   }
 
@@ -445,97 +443,61 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   #onBtnSearchOptionsClick(e) {
     this.#hideSearchFilter();
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const searchOptionsTopSheet = scSiteLayout.querySelector('#search-options');
+    const searchOptionsTopSheet = this.scSiteLayout.querySelector('#search-options');
     searchOptionsTopSheet.toggle();
   }
 
   #onBtnSearchFilterClick(e) {
     this.#hideSearchOptions();
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const searchFilterTopSheet = scSiteLayout.querySelector('#search-filter');
+    const searchFilterTopSheet = this.scSiteLayout.querySelector('#search-filter');
     searchFilterTopSheet.toggle();
   }
 
   _hideSettingMenu() {
-    this.dispatchEvent(
-      new CustomEvent('hide-sc-top-sheet', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#setting_menu')?.hide();
+    this.actions.changeDisplaySettingMenuState(false);
     this.shadowRoot.querySelector('#btnTools')?.classList.remove(this.activeClass);
   }
 
   _showSettingMenu() {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-top-sheet', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#setting_menu')?.show();
     this.shadowRoot.querySelector('#btnTools')?.classList.add(this.activeClass);
   }
 
   _hideSuttaParallels() {
-    this.dispatchEvent(
-      new CustomEvent('hide-sc-sutta-parallels', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#sutta_parallels')?.hide();
+    this.actions.changeDisplaySuttaParallelsState(false);
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.remove(this.activeClass);
   }
 
   _hideSuttaToC() {
-    this.dispatchEvent(
-      new CustomEvent('hide-sc-sutta-toc', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#sutta_toc')?.hide();
+    this.actions.changeDisplaySuttaToCState(false);
     this.shadowRoot.querySelector('#btnShowToC')?.classList.remove(this.activeClass);
   }
 
   _hideSuttaInfo() {
-    this.dispatchEvent(
-      new CustomEvent('hide-sc-sutta-info', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#sutta-info')?.hide();
+    this.scSiteLayout.querySelector('#bilara-sutta-info')?.hide();
+    this.actions.changeDisplaySuttaInfoState(false);
     this.shadowRoot.querySelector('#btnInfo')?.classList.remove(this.activeClass);
   }
 
   #hideSearchOptions() {
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const searchOptionsTopSheet = scSiteLayout.querySelector('#search-options');
-    searchOptionsTopSheet.hide();
+    this.scSiteLayout.querySelector('#search-options')?.hide();
   }
 
   #hideSearchFilter() {
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const searchFilterTopSheet = scSiteLayout.querySelector('#search-filter');
-    searchFilterTopSheet.hide();
+    this.scSiteLayout.querySelector('#search-filter')?.hide();
   }
 
   _showSuttaParallels() {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-sutta-parallels', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#sutta_parallels')?.show();
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.add(this.activeClass);
   }
 
   _showSuttaToC() {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-sutta-toc', {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.scSiteLayout.querySelector('#sutta_toc')?.show();
     this.shadowRoot.querySelector('#btnShowToC')?.classList.add(this.activeClass);
   }
 
@@ -572,15 +534,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     fetch(url)
       .then(r => r.json())
       .then(suttaplex => {
-        this.dispatchEvent(
-          new CustomEvent('bind-data-to-sc-sutta-parallels', {
-            detail: {
-              suttaplexItem: suttaplex[0],
-            },
-            bubbles: true,
-            composed: true,
-          })
-        );
+        this.scSiteLayout.querySelector('#sutta_parallels').suttaplexItem = suttaplex[0];
       })
       .catch(e => console.error(e));
   }
@@ -727,13 +681,11 @@ export class SCActionItems extends LitLocalized(LitElement) {
       this._suttaMetaTextChanged();
       this._displayToCButtonStateChange();
       this.shadowRoot.querySelector('#tools_menu').classList.add('contextToolbarExpand');
-      // this.shadowRoot.querySelector('#btnSearchOptions').style.display = 'inherit';
     } else {
       this.shadowRoot.querySelector('#btnTools').style.display = 'none';
       this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
       this.shadowRoot.querySelector('#btnShowParallels').style.display = 'none';
       this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
-      // this.shadowRoot.querySelector('#btnSearchOptions').style.display = 'none';
       this.shadowRoot.querySelector('#tools_menu').classList.remove('contextToolbarExpand');
     }
   }
