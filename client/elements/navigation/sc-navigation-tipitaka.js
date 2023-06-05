@@ -20,15 +20,17 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.mainMenuData = [];
-    this.navArray = store.getState().navigationArray;
-    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
-    this.siteLanguage = store.getState().siteLanguage;
+    // this.navArray = store.getState().navigationArray;
     this.localizedStringsPath = '/localization/elements/interface';
     this.pitakaGuide = new Map([
       ['sutta', 'discourses-guide-sujato'],
       ['vinaya', 'vinaya-guide-brahmali'],
       ['abhidhamma', 'abhidhamma-guide-sujato'],
     ]);
+    this.siteLanguage = store.getState().siteLanguage;
+  }
+
+  firstUpdated() {
     this._fetchMainMenu();
   }
 
@@ -42,9 +44,9 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
 
   updated(changedProps) {
     super.updated(changedProps);
-    if (changedProps.has('navArray')) {
-      this.actions.setNavigation(this.navArray);
-    }
+    // if (changedProps.has('navArray')) {
+    //   this.actions.setNavigation(this.navArray);
+    // }
   }
 
   async _fetchMainMenu() {
@@ -55,7 +57,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
       const sortedUids = ['sutta', 'vinaya', 'abhidhamma'];
       this.mainMenuData.sort((a, b) => sortedUids.indexOf(a.uid) - sortedUids.indexOf(b.uid));
     } catch (err) {
-      this.mainMenuError = err;
+      console.error(err);
     }
   }
 
