@@ -50,15 +50,12 @@ export const plainStyles = html`
     .verse-line .translation {
       display: block;
       hyphens: none;
-      margin-left: 4em;
-    }
-
-    .verse-line .text {
-      margin-left: -2em;
+      margin-left: 2em;
     }
 
     j {
       display: block;
+      margin-left: 2em;
     }
 
     /* Set styles for tooltip marker. First we hide the actual content. These settings ensure the beginning, i.e. the :before content, is visible and the rest is hidden. Height is important to maintain even line-height. */
