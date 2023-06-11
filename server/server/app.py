@@ -52,13 +52,14 @@ from api.views import (
     AbbreviationSchools,
     FallenLeaves,
     FallenLeavesSuttaplexList,
-    MapData
+    MapData,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
-from search.view import InstantSearch
+from search.view import InstantSearch, FetchPossibleNames
 from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
+
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -134,6 +135,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(AbbreviationSchools, '/abbreviation_schools')
     api.add_resource(FallenLeaves, '/fallen_leaves')
     api.add_resource(MapData, '/map_data')
+    api.add_resource(FetchPossibleNames, '/possible_names/<string:name>')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
