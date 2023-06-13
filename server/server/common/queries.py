@@ -526,7 +526,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             )[0]
             LET text_comment = (
                 FOR doc IN sc_bilara_texts
-                FILTER doc.uid == v.uid AND 'comment' IN doc.muids
+                FILTER doc.uid == v.uid AND 'comment' IN doc.muids AND text.muids[2] in doc.muids
                 RETURN doc.muids
             )
             RETURN {
@@ -541,7 +541,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 segmented: true,
                 title: name_doc.name,
                 volpage: null,
-                has_comment: LENGTH(text_comment) > 0 AND text.muids[2] IN text_comment[0]
+                has_comment: LENGTH(text_comment) > 0
             }
     )
 
