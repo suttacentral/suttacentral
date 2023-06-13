@@ -526,7 +526,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             )[0]
             LET text_comment = (
                 FOR doc IN sc_bilara_texts
-                FILTER doc.uid == v.uid AND 'comment' IN doc.muids AND text.muids[2] in doc.muids
+                FILTER doc.uid == v.uid AND 'comment' IN doc.muids AND author_doc.uid in doc.muids
                 RETURN doc.muids
             )
             RETURN {
@@ -535,7 +535,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 is_root: lang_doc.is_root,
                 author: author_doc.long_name,
                 author_short: author_doc.short_name,
-                author_uid: text.muids[2],
+                author_uid: author_doc.uid,
                 publication_date: null,
                 id: text._key,
                 segmented: true,
@@ -715,7 +715,7 @@ FOR doc IN fallen_leaves
                                 is_root: lang_doc.is_root,
                                 author: author_doc.long_name,
                                 author_short: author_doc.short_name,
-                                author_uid: text.muids[2],
+                                author_uid: author_doc.uid,
                                 publication_date: null,
                                 id: text._key,
                                 segmented: true,
