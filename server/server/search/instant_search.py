@@ -91,10 +91,10 @@ def remove_hits_if_uid_in_suttaplexs(hits, suttaplexs):
 
 
 def generate_general_query_aql(query, limit, offset, matchpartial):
-    aql_condition_part = '''        
+    aql_condition_part = '''
     SEARCH (PHRASE(d.content, @query, "common_text") 
         OR PHRASE(d.name, @query, "common_text") 
-        OR d.uid == @query  
+        OR d.uid == @query 
     '''
 
     if matchpartial == 'true':
@@ -362,6 +362,29 @@ def generate_and_query_aql(keywords, query_param):
     return full_aql, aql_condition_part
 
 
+
+def generate_not_query_aql(keywords, query_param):
+    aql_condition_part = '''
+    SEARCH 1==@query OR  
+    '''
+
+    keyword_exclude_not = keywords.split(' NOT ')[0]
+    aql_condition_part += f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR' \
+                          f' LIKE(d.segmented_text, "%{keyword_exclude_not}%")) '
+
+    if not_keywords := extract_not_param(query_param['query']):
+        aql_condition_part += aql_not_part(not_keywords)
+
+    aql_condition_part += aql_filter_part(query_param['matchpartial'])
+
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
+    ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
+    ''' + aql_return_part(True) + '''
+    '''
+
+    return full_aql, aql_condition_part
+
+
 def generate_query_aql_by_conditions(query_conditions, query_param):
     aql_condition_part = '''
     SEARCH ((PHRASE(d.content, @query, "common_text") OR 
@@ -563,6 +586,9 @@ def compute_complex_query_aql(query_conditions, query_param):
 
 def compute_query_aql(search_aql, aql_condition_part, query_param):
     search_aql, aql_condition_part = \
+        generate_aql_by_not_operator(search_aql, aql_condition_part, query_param)
+
+    search_aql, aql_condition_part = \
         generate_aql_by_and_operator(search_aql, aql_condition_part, query_param)
 
     search_aql, aql_condition_part = \
@@ -753,6 +779,16 @@ def generate_aql_by_and_operator(search_aql, aql_condition_part, query_param):
     if ' AND ' in query_param['query']:
         query_list = query_param['query'].split(' AND ')
         search_aql, aql_condition_part = generate_and_query_aql(query_list, query_param)
+    return search_aql, aql_condition_part
+
+
+def generate_aql_by_not_operator(search_aql, aql_condition_part, query_param):
+    if (
+        ' NOT ' in query_param['query']
+        and 'AND' not in query_param['query']
+        and 'OR' not in query_param['query']
+    ):
+        search_aql, aql_condition_part = generate_not_query_aql(query_param['query'], query_param)
     return search_aql, aql_condition_part
 
 
