@@ -11,6 +11,7 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import { allEditions, coverImage, creatorBio } from '../publication/sc-publication-common';
+import { reduxActions } from '../addons/sc-redux-actions';
 
 export class SCNavigationNew extends LitLocalized(LitElement) {
   static properties = {
@@ -205,6 +206,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   async _onCardClick(params) {
+    reduxActions.changeLinearProgressActiveState(true);
     fetch(this._computeMenuApiUrl(params.childId))
       .then(r => r.json())
       .then(menuData => {
@@ -225,6 +227,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .catch(error => {
         console.error(error);
       });
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   _setToolbarTitle() {
