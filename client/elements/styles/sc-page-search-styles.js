@@ -305,9 +305,11 @@ export const SCPageSearchStyles = css`
     display: none !important;
   }
 
-  mwc-button {
-    --mdc-theme-primary: var(--sc-primary-accent-color);
-    --mdc-theme-on-primary: white;
+  md-filled-button {
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+    --md-sys-color-on-primary: white;
+    --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
+    width: 100%;
   }
 
   #load-more {
@@ -315,11 +317,6 @@ export const SCPageSearchStyles = css`
     display: flex;
     justify-content: center;
   }
-
-  // table td {
-  //   text-align: center;
-  //   vertical-align: middle;
-  // }
 `;
 
 export const searchResultTableViewStyles = css`

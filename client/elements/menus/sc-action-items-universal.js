@@ -5,8 +5,7 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
-import '@material/mwc-button';
-import '@material/mwc-icon-button';
+import '@material/web/iconbutton/standard-icon-button';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -72,11 +71,12 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
     }
 
-    mwc-icon-button {
-      color: white;
+    .icon {
+      fill: var(--sc-tertiary-text-color);
     }
 
     #more-menu {
+      z-index: 102;
       --mdc-menu-min-width: 275px;
       --mdc-menu-max-width: 290px;
     }
@@ -171,7 +171,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <mwc-icon-button
+      <md-standard-icon-button
         id="search_glass"
         title=${this.localize('search:searchTooltip')}
         label="search"
@@ -179,7 +179,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         aria-label="Search"
       >
         ${icon.search}
-      </mwc-icon-button>
+      </md-standard-icon-button>
       <input
         id="search_input"
         name="q"
@@ -190,15 +190,15 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         @keypress=${this.keypressHandler}
         aria-label="Search through site content"
       ></input>
-      <mwc-icon-button
+      <md-standard-icon-button
       label="close"
       id="close_button"
       title="Close search bar"
       aria-label="Close search bar"
       @click=${this._closeSearch}>
         ${icon.close}
-      </mwc-icon-button>
-      <mwc-icon-button
+      </md-standard-icon-button>
+      <md-standard-icon-button
         label="menu"
         id="more-menu-button"
         @click=${this.openMoreMenu}
@@ -206,7 +206,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         aria-label="Menu"
       >
         ${icon.more_vert}
-      </mwc-icon-button>
+      </md-standard-icon-button>
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
         <sc-menu-more id="sc-menu-more"></sc-menu-more>
       </mwc-menu>

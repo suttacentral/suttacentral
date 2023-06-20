@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import '@material/mwc-button';
+import '@material/web/button/filled-button';
 import './addons/sc-error-icon';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
@@ -156,11 +156,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return !this.#areAllItemsLoaded()
       ? html`
           <div id="load-more">
-            <mwc-button
-              @click=${this.#loadMoreData}
-              unelevated
-              label=${this.localize('search:loadMore')}
-            ></mwc-button>
+            <md-filled-button @click=${this.#loadMoreData}>
+              ${this.localize('search:loadMore')}
+            </md-filled-button>
           </div>
         `
       : '';

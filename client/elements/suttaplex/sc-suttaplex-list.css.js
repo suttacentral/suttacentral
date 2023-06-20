@@ -5,6 +5,13 @@ export const suttaplexListCss = css`
     display: block;
   }
 
+  md-filled-button {
+    --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+    --md-sys-color-on-primary: #FFFFFF;
+    width: 100%;
+  }
+
   .division-content {
     color: var(--sc-primary-text-color);
     position: relative;
@@ -47,12 +54,6 @@ export const suttaplexListCss = css`
 
   .hidden {
     display: none;
-  }
-
-  mwc-button {
-    --mdc-theme-primary: var(--sc-primary-accent-color);
-    --mdc-theme-on-primary: white;
-    margin-bottom: 1em;
   }
 
   .compact {

@@ -65,22 +65,15 @@ export class SCStaticDonations extends SCStaticPage {
         .account-data td {
           padding-right: var(--sc-size-md);
         }
-
-        mwc-button {
-          --mdc-theme-primary: var(--sc-primary-accent-color);
-
-          --mdc-typography-button-font-family: var(--sc-sans-font);
-          --mdc-typography-button-font-weight: 600;
-        }
       </style>
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('donations:1'))}</h1>
           <p>${unsafeHTML(this.localize('donations:2'))}</p>
 
-          <mwc-button class="donate-link" raised @click=${this._donateNow}
-            >${unsafeHTML(this.localize('donations:3'))}</mwc-button
-          >
+          <md-filled-button class="donate-link" @click=${this._donateNow}>
+            ${unsafeHTML(this.localize('donations:3'))}
+          </md-filled-button>
 
           <h2>${unsafeHTML(this.localize('donations:4'))}</h2>
           <ul>

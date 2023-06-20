@@ -3,6 +3,7 @@ import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 import { reduxActions } from './sc-redux-actions';
+import '@material/web/checkbox/checkbox';
 
 export class SCTopSheetSearchFilter extends SCTopSheetCommon {
   static properties = {
@@ -81,6 +82,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
       td {
         font-family: monospace;
       }
+
+      md-checkbox {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-sys-color-on-primary: white;
+      }
     `,
   ];
 
@@ -109,11 +115,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <tr>
               <td>
                 <mwc-formfield label="Match partial">
-                  <mwc-checkbox
+                  <md-checkbox
                     ?checked=${this.matchPartial}
                     @change=${this.#onMatchTypeChanged}
                   >
-                  </mwc-checkbox>
+                  </md-checkbox>
                 </mwc-formfield>
               </td>
             </tr>
