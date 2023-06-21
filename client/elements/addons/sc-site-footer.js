@@ -8,10 +8,6 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
   }
 
-  createRenderRoot() {
-    return this;
-  }
-
   render() {
     return html`
       <style>
@@ -88,6 +84,12 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
 
         li a:visited:hover {
           text-decoration-color: var(--sc-primary-color-dark);
+        }
+
+        @media print {
+          footer {
+            display: none;
+          }
         }
       </style>
       <footer>
