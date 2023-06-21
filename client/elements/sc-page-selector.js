@@ -410,7 +410,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     this._changeToolbarTitle();
     this._loadScActionItems();
     this._loadTopSheets();
-    document.querySelector('sc-site-layout')?.showSiteFooter();
   }
 
   disconnectedCallback() {
@@ -429,7 +428,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         this._setVisibleToolbar();
         this._recalculateView();
         document.querySelector('sc-site-layout')?.showATB();
-        document.querySelector('sc-site-layout')?.hideSiteFooter();
       }
     }
   }
