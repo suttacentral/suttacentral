@@ -92,7 +92,6 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
         if (
           !suttaFullPath ||
           !suttaFullPath.full_path ||
-          suttaFullPath.full_path === '/pitaka' ||
           `${suttaFullPath.full_path}/${this.currentUid}` !== this.routePath
         ) {
           dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
