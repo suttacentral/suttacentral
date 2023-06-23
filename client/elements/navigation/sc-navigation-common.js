@@ -42,9 +42,10 @@ export function RefreshNavNew(uid) {
   if (!uid) {
     return;
   }
+  const { siteLanguage } = store.getState();
   const currentNav = store.getState().navigationArray;
   currentNav.length = 1;
-  fetch(`${API_ROOT}/navigation_data/${uid}`)
+  fetch(`${API_ROOT}/navigation_data/${uid}?language=${siteLanguage || 'en'}`)
     .then(r => r.json())
     .then(navigationData => {
       if (!navigationData) {
