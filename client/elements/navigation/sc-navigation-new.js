@@ -60,12 +60,16 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       this.currentMenuData = await this._fetchMenuData(this.currentUid);
       this.#tagForMenuItemsHasChildren();
       if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
-        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
+        if (['sutta', 'vinaya', 'abhidhamma'].includes(this.currentUid)) {
+          dispatchCustomEvent(this, 'sc-navigate', { pathname: `/pitaka/${this.currentUid}` });
+        } else {
+          dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
+        }
         return;
       }
       this._setToolbarTitle();
       this._createMetaData();
-      RefreshNavNew(this.currentUid, true);
+      RefreshNavNew(this.currentUid);
     }
   }
 
@@ -85,14 +89,16 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     fetch(`${API_ROOT}/suttafullpath/${this.currentUid}`)
       .then(r => r.json())
       .then(suttaFullPath => {
-        if (!suttaFullPath || !suttaFullPath.full_path) {
+        if (
+          !suttaFullPath ||
+          !suttaFullPath.full_path ||
+          suttaFullPath.full_path === '/pitaka' ||
+          `${suttaFullPath.full_path}/${this.currentUid}` !== this.routePath
+        ) {
           dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
+          return false;
         }
-        if (`${suttaFullPath.full_path}/${this.currentUid}` !== this.routePath) {
-          dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
-        } else {
-          return true;
-        }
+        return true;
       })
       .catch(error => {
         console.error(error);

@@ -163,7 +163,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   _refreshData(forceRefresh) {
     this._paramChanged();
     this.refreshing = true;
-    RefreshNavNew(this.suttaId, forceRefresh);
+    RefreshNavNew(this.suttaId);
     this.refreshing = false;
   }
 
@@ -380,7 +380,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _serveRangeSuttasPerSutta() {
-    RefreshNavNew(this.range_uid, true);
+    RefreshNavNew(this.range_uid);
     if (
       this.range_uid.split('.').length > 1 &&
       this.range_uid.split('.')[1].split('-').length > 1
