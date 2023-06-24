@@ -1691,55 +1691,26 @@ FOR name_doc IN super_name
 NAVIGATION_QUERY = '''
 FOR uid IN @uids
     LET navigation_doc = DOCUMENT('super_nav_details', uid)
-    
+
     LET descendants = (
         FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges OPTIONS {order: 'dfs'}
             LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
-    
-            LET en_and_language_blurbs = (
-                FOR blurb IN blurbs
-                    FILTER blurb.uid == descendant.uid AND (blurb.lang == @language OR blurb.lang == 'en')
-                        LIMIT 2
-                        RETURN blurb
-            )
-            LET blurb = (
-                 RETURN LENGTH(en_and_language_blurbs) == 2 ? 
-                     (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
-                     en_and_language_blurbs[0]
-            )[0].blurb
-
-            LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
-
             RETURN {
                 uid: descendant.uid,
                 root_name: descendant.name,
                 translated_name: translated_name,
                 acronym: descendant.acronym,
-                blurb: blurb,
                 node_type: descendant.type,
             }
         )
 
     LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
 
-    LET en_and_language_blurbs = (
-        FOR blurb IN blurbs
-            FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
-                LIMIT 2
-                RETURN blurb
-    )
-    LET blurb = (
-         RETURN LENGTH(en_and_language_blurbs) == 2 ? 
-             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
-             en_and_language_blurbs[0]
-    )[0].blurb
-
     RETURN {
         uid: navigation_doc.uid,
         root_name: navigation_doc.name,
         translated_name: translated_name,
         node_type: navigation_doc.type,
-        blurb: blurb,
         acronym: navigation_doc.acronym,
         children: descendants,
     }
