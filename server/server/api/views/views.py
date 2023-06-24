@@ -45,6 +45,7 @@ from common.queries import (
     CANDIDATE_AUTHORS,
     VAGGA_CHILDREN,
     ABBREVIATION_SUPER_NAME_ACRONYM,
+    NAVIGATION_QUERY
 )
 
 from common.utils import (
@@ -1382,41 +1383,40 @@ class NavigationData(Resource):
         language = request.args.get(
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
-        bind_vars = {'language': language}
+        bind_vars = {'language': language, 'uids': full_path_list}
+
+        menu_data_list = list(db.aql.execute(NAVIGATION_QUERY, bind_vars=bind_vars))
+        menu_data_dict = {data['uid']: data for data in menu_data_list}
 
         navigation_data = []
         current_url = '/pitaka'
-        navigation_index = 1
-        for uid in full_path_list:
-            if uid in ['', 'pitaka']:
-                continue
-
+        full_path_list = [item for item in full_path_list if item not in ['', 'pitaka']]
+        for navigation_index, uid in enumerate(full_path_list, start=1):
             bind_vars['submenu_id'] = uid
-            if menu_data := list(db.aql.execute(SUBMENU, bind_vars=bind_vars)):
+            if menu_data := menu_data_dict.get(uid):
                 has_children = (
                         len(menu_data) > 0 and
-                        isinstance(menu_data[0].get('children'), list) and
-                        any(child.get('node_type') == 'branch' for child in menu_data[0]['children'])
+                        isinstance(menu_data.get('children'), list) and
+                        any(child.get('node_type') == 'branch' for child in menu_data['children'])
                 )
 
                 current_url += f'/{uid}'
-                if not has_children or self.is_patimokkha(menu_data[0]['uid']):
+                if not has_children or self.is_patimokkha(menu_data['uid']):
                     current_url = f'/{uid}'
 
-                if menu_data[0]['node_type'] != 'leaf' and all(
+                if menu_data['node_type'] != 'leaf' and all(
                     item['uid'] != uid for item in navigation_data
                 ):
                     navigation_item = {
                         'uid': uid,
-                        'title': menu_data[0]['translated_name']
-                                or menu_data[0]['acronym']
-                                or menu_data[0]['root_name'],
+                        'title': menu_data['translated_name']
+                                or menu_data['acronym']
+                                or menu_data['root_name'],
                         'url': current_url,
                         'type': 'navigation',
                         'index': navigation_index,
                     }
                     navigation_data.append(navigation_item)
-                    navigation_index += 1
 
         return navigation_data, 200
 

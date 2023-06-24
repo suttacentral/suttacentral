@@ -1687,3 +1687,76 @@ FOR name_doc IN super_name
         acronym: acronym
     }
 '''
+
+NAVIGATION_QUERY = '''
+FOR uid IN @uids
+    LET navigation_doc = DOCUMENT('super_nav_details', uid)
+    
+    LET descendants = (
+        FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges OPTIONS {order: 'dfs'}
+            LET lang_name = DOCUMENT('language', descendant.root_lang)['name']
+            LET child_range = DOCUMENT('child_range', descendant.uid)['range']
+            LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
+    
+            LET en_and_language_blurbs = (
+                FOR blurb IN blurbs
+                    FILTER blurb.uid == descendant.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                        LIMIT 2
+                        RETURN blurb
+            )
+            LET blurb = (
+                 RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+                     (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+                     en_and_language_blurbs[0]
+            )[0].blurb
+    
+            LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
+    
+            RETURN {
+                uid: descendant.uid,
+                root_name: descendant.name,
+                translated_name: translated_name,
+                acronym: descendant.acronym,
+                blurb: blurb,
+                node_type: descendant.type,
+                root_lang_iso: descendant.root_lang,
+                root_lang_name: lang_name,
+                child_range: child_range,
+                yellow_brick_road: !!yellow_brick_road,
+                yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
+            }
+        )
+    
+    LET lang_name = DOCUMENT('language', navigation_doc.root_lang)['name']
+    LET child_range = DOCUMENT('child_range', navigation_doc.uid)['range']
+    LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
+    
+    LET en_and_language_blurbs = (
+        FOR blurb IN blurbs
+            FILTER blurb.uid == navigation_doc.uid AND (blurb.lang == @language OR blurb.lang == 'en')
+                LIMIT 2
+                RETURN blurb
+    )
+    LET blurb = (
+         RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+             (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+             en_and_language_blurbs[0]
+    )[0].blurb
+    
+    LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))
+    
+    RETURN {
+        uid: navigation_doc.uid,
+        root_name: navigation_doc.name,
+        translated_name: translated_name,
+        node_type: navigation_doc.type,
+        blurb: blurb,
+        acronym: navigation_doc.acronym,
+        root_lang_iso: navigation_doc.root_lang,
+        root_lang_name: lang_name,
+        child_range: child_range,
+        yellow_brick_road: !!yellow_brick_road,
+        yellow_brick_road_count: yellow_brick_road ? yellow_brick_road.count : 0,
+        children: descendants,
+    }
+'''
