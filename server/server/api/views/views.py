@@ -1383,8 +1383,8 @@ class NavigationData(Resource):
         language = request.args.get(
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
-        bind_vars = {'language': language, 'uids': full_path_list}
 
+        bind_vars = {'language': language, 'uids': full_path_list}
         menu_data_list = list(db.aql.execute(NAVIGATION_QUERY, bind_vars=bind_vars))
         menu_data_dict = {data['uid']: data for data in menu_data_list}
 
