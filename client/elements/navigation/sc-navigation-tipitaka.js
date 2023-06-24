@@ -46,6 +46,8 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
       this.mainMenuData = await (
         await fetch(`${API_ROOT}/tipitaka_menu?language=${this.siteLanguage || 'en'}`)
       ).json();
+      const sortedUids = ['sutta', 'vinaya', 'abhidhamma'];
+      this.mainMenuData.sort((a, b) => sortedUids.indexOf(a.uid) - sortedUids.indexOf(b.uid));
     } catch (err) {
       console.error(err);
     }
