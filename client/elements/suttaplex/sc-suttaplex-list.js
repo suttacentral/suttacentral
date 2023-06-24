@@ -171,7 +171,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         forceRefresh = true;
       }
 
-      RefreshNavNew(this.categoryId, true);
+      RefreshNavNew(this.categoryId);
     }
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
@@ -260,10 +260,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       }
 
       if (!this.isSuttaInRangeSutta) {
-        RefreshNavNew(this.categoryId, true);
+        RefreshNavNew(this.categoryId);
         this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
       } else {
-        RefreshNavNew(this.rangeCategoryId, true);
+        RefreshNavNew(this.rangeCategoryId);
         this.actions.changeToolbarTitle(this.suttaplexData[0].title);
 
         setTimeout(() => {

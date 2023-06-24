@@ -45,6 +45,7 @@ from common.queries import (
     CANDIDATE_AUTHORS,
     VAGGA_CHILDREN,
     ABBREVIATION_SUPER_NAME_ACRONYM,
+    NAVIGATION_QUERY
 )
 
 from common.utils import (
@@ -285,7 +286,13 @@ class TipitakaMenu(Resource):
         data = db.aql.execute(
             TIPITAKA_MENU, bind_vars={'language': language}
         )
-        return list(data), 200
+        tipitaka_menu = list(data)
+        sorted_menu = sorted(tipitaka_menu, key=self.custom_sort)
+        return sorted_menu, 200
+
+    def custom_sort(self, item):
+        order = ['sutta', 'vinaya', 'abhidhamma']
+        return order.index(item['uid'])
 
 
 class SuttaplexList(Resource):
@@ -1362,3 +1369,66 @@ class MapData(Resource):
         db = get_db()
         data = db.collection('map_data').all()
         return list(data), 200
+
+
+class NavigationData(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid):
+        db = get_db()
+
+        full_path = self.fetch_full_path_by_uid(db, uid)
+        full_path_list = full_path['full_path'].split('/')
+        full_path_list.append(uid)
+
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
+
+        bind_vars = {'language': language, 'uids': full_path_list}
+        menu_data_list = list(db.aql.execute(NAVIGATION_QUERY, bind_vars=bind_vars))
+        menu_data_dict = {data['uid']: data for data in menu_data_list}
+
+        navigation_data = []
+        current_url = '/pitaka'
+        full_path_list = [item for item in full_path_list if item not in ['', 'pitaka']]
+        for navigation_index, uid in enumerate(full_path_list, start=1):
+            bind_vars['submenu_id'] = uid
+            if menu_data := menu_data_dict.get(uid):
+                has_children = (
+                        len(menu_data) > 0 and
+                        isinstance(menu_data.get('children'), list) and
+                        any(child.get('node_type') == 'branch' for child in menu_data['children'])
+                )
+
+                current_url += f'/{uid}'
+                if not has_children or self.is_patimokkha(menu_data['uid']):
+                    current_url = f'/{uid}'
+
+                if menu_data['node_type'] != 'leaf' and all(
+                    item['uid'] != uid for item in navigation_data
+                ):
+                    navigation_item = {
+                        'uid': uid,
+                        'title': menu_data['translated_name']
+                                or menu_data['acronym']
+                                or menu_data['root_name'],
+                        'url': current_url,
+                        'type': 'navigation',
+                        'index': navigation_index,
+                    }
+                    navigation_data.append(navigation_item)
+
+        return navigation_data, 200
+
+    def fetch_full_path_by_uid(self, db, uid):
+        full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
+        if full_path['full_path'].count('/sutta/minor') > 1:
+            if full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count('kn/dhp') > 0:
+                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
+            if uid == 'dhp' and full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count(
+                    '/kn') > 0:
+                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
+        return full_path
+
+    def is_patimokkha(self, uid):
+        return uid.find('-pm') > -1

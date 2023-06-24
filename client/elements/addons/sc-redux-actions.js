@@ -92,4 +92,11 @@ export class reduxActions {
       matchPartial,
     });
   }
+
+  static changeLinearProgressActiveState(active) {
+    store.dispatch({
+      type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
+      linearProgressActive: active,
+    });
+  }
 }

@@ -146,6 +146,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _updateView() {
+    reduxActions.changeLinearProgressActiveState(true);
     setTimeout(() => {
       this._addTranslationText();
       if (this.paliScript === 'latin' || this.rootSutta.lang !== 'pli') {
@@ -184,6 +185,7 @@ export class SCTextBilara extends SCTextCommon {
       });
     }
     this._serveRangeSuttasPerSutta();
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   _serveRangeSuttasPerSutta() {

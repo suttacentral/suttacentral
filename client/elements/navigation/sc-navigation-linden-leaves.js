@@ -9,11 +9,8 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       display: block;
-
       height: 48px;
-
       background-color: rgb(75, 74, 73);
-
       position: relative;
       z-index: 200;
     }
@@ -35,7 +32,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
     ul {
       display: flex;
-
       margin: 0 12px 0 0;
       padding: 0;
     }
@@ -124,8 +120,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
   static properties = {
     localizedStringsPath: { type: String },
-    isCompactMode: { type: Boolean },
-    currentStyles: { type: Object },
     navArray: { type: Array },
   };
 
@@ -156,45 +150,50 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     this.requestUpdate();
     if (this.navArray !== state.navigationArray) {
       this.navArray = state.navigationArray;
-      this.navArray = this.navArray.filter(e => e);
     }
   }
 
   render() {
     return html`
       <nav>
-        <ul>
-          ${this.navArray
-            ? this.navArray.map(
-                (nav, i) => html`
-                  ${nav && nav.title
-                    ? html`
-                        ${this.navArray.length !== i + 1
-                          ? html`
-                              <li @click=${() => this._navClick(nav)}>
-                                <a href=${nav.url}
-                                  >${nav.type === 'navigation'
-                                    ? nav.title
-                                    : this.tryLocalize(`interface:${nav.title}`, nav.title)}</a
-                                >
-                                ${icon.chevron_right}
-                              </li>
-                            `
-                          : html`
-                              <li>
-                                ${nav.type === 'navigation'
-                                  ? nav.title
-                                  : this.tryLocalize(`interface:${nav.title}`, nav.title)}
-                              </li>
-                            `}
-                      `
-                    : ''}
-                `
-              )
-            : ''}
-        </ul>
+        ${this.#lindenLeavesTemplate()}
         <sc-action-items-universal></sc-action-items-universal>
       </nav>
+    `;
+  }
+
+  #lindenLeavesTemplate() {
+    return html`
+      <ul>
+        ${this.navArray
+          ? this.navArray.map(
+              (nav, i) => html`
+                ${nav && nav.title
+                  ? html`
+                      ${this.navArray.length !== i + 1
+                        ? html`
+                            <li @click=${() => this._navClick(nav)}>
+                              <a href=${nav.url}
+                                >${nav.type === 'navigation'
+                                  ? nav.title
+                                  : this.tryLocalize(`interface:${nav.title}`, nav.title)}</a
+                              >
+                              ${icon.chevron_right}
+                            </li>
+                          `
+                        : html`
+                            <li>
+                              ${nav.type === 'navigation'
+                                ? nav.title
+                                : this.tryLocalize(`interface:${nav.title}`, nav.title)}
+                            </li>
+                          `}
+                    `
+                  : ''}
+              `
+            )
+          : ''}
+      </ul>
     `;
   }
 

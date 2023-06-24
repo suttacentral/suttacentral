@@ -38,90 +38,25 @@ export function setNavigation(navArray) {
   });
 }
 
-function isPatimokkha(uid) {
-  return uid.endsWith('-pm');
-}
-
-function sortData(a, b) {
-  return a.index - b.index;
-}
-
-function genNavDetailNew(uid, currentURL, data, navArray, navigationIndex) {
-  data
-    ?.json()
-    .then(menuData => {
-      if (!menuData || !menuData[0].uid) {
-        return;
-      }
-      const { acronym } = menuData[0];
-      const hasChildren =
-        menuData[0] &&
-        menuData[0].children &&
-        menuData[0].children.some(child => ['branch'].includes(child.node_type));
-      if (!hasChildren || isPatimokkha(menuData[0].uid)) {
-        currentURL = `/${uid}`;
-      }
-      if (!navArray.find(x => x.uid === uid) && menuData[0].node_type !== 'leaf') {
-        navArray.push({
-          uid,
-          title: acronym || menuData[0].translated_name || menuData[0].root_name,
-          url: currentURL,
-          index: navigationIndex,
-          type: 'navigation',
-        });
-        navArray.sort(sortData);
-        setNavigation(navArray);
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
-
-export function RefreshNavNew(uid, forceRefresh) {
+export function RefreshNavNew(uid) {
   if (!uid) {
     return;
   }
-  fetch(`${API_ROOT}/suttafullpath/${uid}`)
+  const { siteLanguage } = store.getState();
+  const currentNav = store.getState().navigationArray;
+  currentNav.length = 1;
+  fetch(`${API_ROOT}/navigation_data/${uid}?language=${siteLanguage || 'en'}`)
     .then(r => r.json())
-    .then(suttaFullPath => {
-      if (!suttaFullPath || !suttaFullPath.full_path) {
+    .then(navigationData => {
+      if (!navigationData) {
         return;
       }
-      const URLs = `${suttaFullPath.full_path}/${uid}`.split('/');
-      const currentNav = store.getState().navigationArray;
-      currentNav.length = 1;
-      const fetchPromises = [];
-      for (const [index, value] of URLs.entries()) {
-        if (index > 1) {
-          const url = `${API_ROOT}/menu/${value}?language=${store.getState().siteLanguage || 'en'}`;
-          fetchPromises.push(fetch(url));
+      for (const nav of navigationData) {
+        if (!currentNav.find(x => x.uid === nav.uid)) {
+          currentNav.push(nav);
         }
       }
-
-      let currentURL = '/pitaka';
-      let fetchPromiseIndex = 0;
-      let navigationIndex = 1;
-      Promise.all(fetchPromises)
-        .then(values => {
-          for (const [index, value] of URLs.entries()) {
-            if (index > 1) {
-              currentURL = `${currentURL}/${value}`;
-              genNavDetailNew(
-                value,
-                currentURL,
-                values[fetchPromiseIndex],
-                currentNav,
-                navigationIndex
-              );
-              fetchPromiseIndex += 1;
-              navigationIndex += 1;
-            }
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      setNavigation(currentNav);
     })
     .catch(error => {
       console.error(error);

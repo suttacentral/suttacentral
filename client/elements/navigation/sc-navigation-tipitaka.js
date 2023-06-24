@@ -20,7 +20,6 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.mainMenuData = [];
-    // this.navArray = store.getState().navigationArray;
     this.localizedStringsPath = '/localization/elements/interface';
     this.pitakaGuide = new Map([
       ['sutta', 'discourses-guide-sujato'],
@@ -40,13 +39,6 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
       this.siteLanguage = state.siteLanguage;
       this._fetchMainMenu();
     }
-  }
-
-  updated(changedProps) {
-    super.updated(changedProps);
-    // if (changedProps.has('navArray')) {
-    //   this.actions.setNavigation(this.navArray);
-    // }
   }
 
   async _fetchMainMenu() {

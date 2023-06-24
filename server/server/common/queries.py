@@ -526,7 +526,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             )[0]
             LET text_comment = (
                 FOR doc IN sc_bilara_texts
-                FILTER doc.uid == v.uid AND 'comment' IN doc.muids
+                FILTER doc.uid == v.uid AND 'comment' IN doc.muids AND author_doc.uid in doc.muids
                 RETURN doc.muids
             )
             RETURN {
@@ -535,13 +535,13 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 is_root: lang_doc.is_root,
                 author: author_doc.long_name,
                 author_short: author_doc.short_name,
-                author_uid: text.muids[2],
+                author_uid: author_doc.uid,
                 publication_date: null,
                 id: text._key,
                 segmented: true,
                 title: name_doc.name,
                 volpage: null,
-                has_comment: LENGTH(text_comment) > 0 AND text.muids[2] IN text_comment[0]
+                has_comment: LENGTH(text_comment) > 0
             }
     )
 
@@ -715,7 +715,7 @@ FOR doc IN fallen_leaves
                                 is_root: lang_doc.is_root,
                                 author: author_doc.long_name,
                                 author_short: author_doc.short_name,
-                                author_uid: text.muids[2],
+                                author_uid: author_doc.uid,
                                 publication_date: null,
                                 id: text._key,
                                 segmented: true,
@@ -1685,5 +1685,33 @@ FOR name_doc IN super_name
     RETURN {
         name: name_doc.name,
         acronym: acronym
+    }
+'''
+
+NAVIGATION_QUERY = '''
+FOR uid IN @uids
+    LET navigation_doc = DOCUMENT('super_nav_details', uid)
+
+    LET descendants = (
+        FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges OPTIONS {order: 'dfs'}
+            LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
+            RETURN {
+                uid: descendant.uid,
+                root_name: descendant.name,
+                translated_name: translated_name,
+                acronym: descendant.acronym,
+                node_type: descendant.type,
+            }
+        )
+
+    LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
+
+    RETURN {
+        uid: navigation_doc.uid,
+        root_name: navigation_doc.name,
+        translated_name: translated_name,
+        node_type: navigation_doc.type,
+        acronym: navigation_doc.acronym,
+        children: descendants,
     }
 '''

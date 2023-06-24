@@ -179,8 +179,7 @@ export const plainPlusStyles = html`
     @media only screen and (max-width: 600px) {
       .segment,
       .reference,
-      .translation,
-      .root {
+      .translation {
         display: block;
       }
 
