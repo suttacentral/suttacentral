@@ -1687,3 +1687,31 @@ FOR name_doc IN super_name
         acronym: acronym
     }
 '''
+
+NAVIGATION_QUERY = '''
+FOR uid IN @uids
+    LET navigation_doc = DOCUMENT('super_nav_details', uid)
+
+    LET descendants = (
+        FOR descendant IN OUTBOUND navigation_doc super_nav_details_edges OPTIONS {order: 'dfs'}
+            LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', descendant.uid, @language))['name']
+            RETURN {
+                uid: descendant.uid,
+                root_name: descendant.name,
+                translated_name: translated_name,
+                acronym: descendant.acronym,
+                node_type: descendant.type,
+            }
+        )
+
+    LET translated_name = DOCUMENT('names', CONCAT_SEPARATOR('_', navigation_doc.uid, @language))['name']
+
+    RETURN {
+        uid: navigation_doc.uid,
+        root_name: navigation_doc.name,
+        translated_name: translated_name,
+        node_type: navigation_doc.type,
+        acronym: navigation_doc.acronym,
+        children: descendants,
+    }
+'''

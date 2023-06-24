@@ -45,4 +45,5 @@ from .views import (
     FallenLeaves,
     FallenLeavesSuttaplexList,
     MapData,
+    NavigationData,
 )

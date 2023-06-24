@@ -20,7 +20,6 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.mainMenuData = [];
-    // this.navArray = store.getState().navigationArray;
     this.localizedStringsPath = '/localization/elements/interface';
     this.pitakaGuide = new Map([
       ['sutta', 'discourses-guide-sujato'],
@@ -42,20 +41,11 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
     }
   }
 
-  updated(changedProps) {
-    super.updated(changedProps);
-    // if (changedProps.has('navArray')) {
-    //   this.actions.setNavigation(this.navArray);
-    // }
-  }
-
   async _fetchMainMenu() {
     try {
       this.mainMenuData = await (
         await fetch(`${API_ROOT}/tipitaka_menu?language=${this.siteLanguage || 'en'}`)
       ).json();
-      const sortedUids = ['sutta', 'vinaya', 'abhidhamma'];
-      this.mainMenuData.sort((a, b) => sortedUids.indexOf(a.uid) - sortedUids.indexOf(b.uid));
     } catch (err) {
       console.error(err);
     }
