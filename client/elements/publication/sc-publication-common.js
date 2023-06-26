@@ -46,12 +46,12 @@ export const lastUpdatedDateOfCollections = new Map([
   ['mn', '2023-06-26'],
   ['sn', '2023-06-26'],
   ['an', '2023-06-26'],
-  ['dhp', '2023-06-26'],
+  ['dhp', '2023-06-12'],
   ['ud', '2023-06-26'],
   ['iti', '2023-06-26'],
   ['snp', '2023-06-26'],
   ['thag', '2023-06-26'],
-  ['thig', '2023-06-26'],
+  ['thig', '2023-06-12'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
