@@ -50,7 +50,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   get tipitakaCardTemplate() {
-    return this.mainMenuData.length
+    return this.mainMenuData && this.mainMenuData.length
       ? html`
           <div class="main-nav">
             ${this.mainMenuData.map(
