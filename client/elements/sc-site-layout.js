@@ -400,7 +400,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   showATB() {
     this.querySelector('#static_pages_nav_menu')?.classList.remove('hidden');
   }
-
 }
 
 customElements.define('sc-site-layout', SCSiteLayout);

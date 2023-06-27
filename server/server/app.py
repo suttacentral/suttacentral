@@ -53,7 +53,8 @@ from api.views import (
     FallenLeaves,
     FallenLeavesSuttaplexList,
     MapData,
-    NavigationData
+    NavigationData,
+    DataForHomepage,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -136,6 +137,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(FallenLeaves, '/fallen_leaves')
     api.add_resource(MapData, '/map_data')
     api.add_resource(NavigationData, '/navigation_data/<string:uid>')
+    api.add_resource(DataForHomepage, '/homepage_data')
 
     app.register_blueprint(api_bp)
     register_extensions(app)

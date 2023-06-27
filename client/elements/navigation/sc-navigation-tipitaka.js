@@ -29,10 +29,6 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
   }
 
-  firstUpdated() {
-    this._fetchMainMenu();
-  }
-
   stateChanged(state) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {

@@ -46,4 +46,5 @@ from .views import (
     FallenLeavesSuttaplexList,
     MapData,
     NavigationData,
+    DataForHomepage,
 )
