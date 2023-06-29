@@ -13,6 +13,7 @@ export class SCStaticHomePage extends SCStaticPage {
   static properties = {
     randomEpigraph: { type: String },
     whyWeRead: { type: String },
+    tipitaka: { type: Array },
   };
 
   constructor() {
