@@ -1,5 +1,45 @@
 # SuttaCentral ChangeLog
 
+## 2023.06.27
+
+- Optimize home page load speed.
+
+## 2023.06.24
+
+- Refactoring navigation code.
+
+## 2023.06.23
+
+- Fix the problem that the small screen always displays the root text in plain mode.
+
+## 2023.06.22
+
+- Fix footer bugs.
+
+## 2023.06.16
+
+- Extended the NOT operator search feature.
+
+## 2023.06.05
+
+- Optimize the home page code to improve loading speed.
+
+## 2023.06.03
+
+- Support `in:sutta`, `in:vinaya`, `in:abhidhamma` for search.
+
+## 2023.05.31
+
+- Upgrade nginx, nodejs, python, python packages.
+
+## 2023.05.30
+
+- Enhance: adding sutta after a word should prioritize whole sutta responses.
+
+## 2023.05.29
+
+- Adjust the code to adapt to the new ArangoDB version.
+
 ## 2023.05.25
 
 - Enhance: filter to search by reference number.
