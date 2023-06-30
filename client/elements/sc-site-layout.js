@@ -90,6 +90,10 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     }
   }
 
+  _updateUrlParams() {
+    window.history.replaceState(null, null, `?lang=${store.getState().siteLanguage}`);
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -295,6 +299,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
+      this._updateUrlParams();
     }
     if (this.linearProgressActive !== state.linearProgressActive) {
       this.linearProgressActive = state.linearProgressActive;
@@ -305,6 +310,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
       this._setSiteLanguage();
+      this._updateUrlParams();
     }
   }
 

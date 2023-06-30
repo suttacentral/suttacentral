@@ -2,7 +2,6 @@ import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { store } from '../../redux-store';
-import { getURLParam } from './sc-functions-miscellaneous';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
   static properties = {
@@ -13,14 +12,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.siteLanguage = store.getState().siteLanguage;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    const { currentRoute } = store.getState();
-    if (!this.getUrlLangParam && currentRoute.path !== '/') {
-      this._updateUrlParams();
-    }
   }
 
   firstUpdated() {
@@ -47,7 +38,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
-      this._updateUrlParams();
     }
   }
 
@@ -64,13 +54,5 @@ export class SCStaticPage extends LitLocalized(LitElement) {
       });
     }
     return sectionId;
-  }
-
-  _updateUrlParams() {
-    window.history.replaceState(null, null, `?lang=${store.getState().siteLanguage}`);
-  }
-
-  get getUrlLangParam() {
-    return getURLParam('lang');
   }
 }
