@@ -644,7 +644,9 @@ export class SCTextLegacy extends SCTextCommon {
       return;
     }
     const { displayedReferences, showHighlighting } = store.getState().textOptions;
-    const urlParams = `?reference=${displayedReferences.join('/')}&highlight=${showHighlighting}${
+    const { siteLanguage } = store.getState();
+    const langParam = `lang=${siteLanguage}`;
+    const urlParams = `?${langParam}&reference=${displayedReferences.join('/')}&highlight=${showHighlighting}${
       window.location.hash
     }`;
     // eslint-disable-next-line no-restricted-globals
