@@ -519,7 +519,9 @@ export class SCTextBilara extends SCTextCommon {
       showHighlighting,
       script,
     } = store.getState().textOptions;
-    const urlParams = `?layout=${segmentedSuttaTextView}&reference=${displayedReferences.join(
+    const { siteLanguage } = store.getState();
+    const langParam = `lang=${siteLanguage}`;
+    const urlParams = `?${langParam}&layout=${segmentedSuttaTextView}&reference=${displayedReferences.join(
       '/'
     )}&notes=${noteDisplayType}&highlight=${showHighlighting}&script=${script}${
       window.location.hash

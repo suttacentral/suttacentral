@@ -157,10 +157,10 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this._refreshData(true);
+    this._refreshData();
   }
 
-  _refreshData(forceRefresh) {
+  _refreshData() {
     this._paramChanged();
     this.refreshing = true;
     RefreshNavNew(this.suttaId);

@@ -14,6 +14,9 @@ import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { SCFontStyles } from './styles/sc-font-styles';
 import rafThrottle from '../utils/rafThrottle';
+import { getURLParam } from './addons/sc-functions-miscellaneous';
+import { reduxActions } from './addons/sc-redux-actions';
+import { API_ROOT } from '../constants';
 
 const microSentryClient = new BrowserMicroSentryClient({
   dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
@@ -52,6 +55,43 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.linearProgressActive = false;
     this.toolbarPosition = state.toolbarPosition;
     this.pageLoaded = false;
+    if (this.getUrlLangParam !== store.getState().siteLanguage) {
+      this.changeSiteLanguage(this.getUrlLangParam);
+    }
+  }
+
+  async changeSiteLanguage(lang) {
+    await this._fetchLanguageList();
+    if (!this.languageListResponse || this.languageListResponse.length === 0) {
+      return;
+    }
+    try {
+      const chosenLanguage = this.languageListResponse.find(x => x.iso_code === lang);
+      if (chosenLanguage) {
+        reduxActions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  get getUrlLangParam() {
+    return getURLParam('lang');
+  }
+
+  async _fetchLanguageList() {
+    try {
+      this.languageListResponse = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
+      this.languageListResponse = this.languageListResponse.filter(
+        lang => !lang.is_root && lang.localized
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  _updateUrlParams() {
+    window.history.replaceState(null, null, `?lang=${store.getState().siteLanguage}`);
   }
 
   createRenderRoot() {
@@ -259,6 +299,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
+      this._updateUrlParams();
     }
     if (this.linearProgressActive !== state.linearProgressActive) {
       this.linearProgressActive = state.linearProgressActive;
@@ -269,6 +310,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
       this._setSiteLanguage();
+      this._updateUrlParams();
     }
   }
 

@@ -143,7 +143,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   computeItemDifficulty(difficulty) {
-    if (!difficulty) return;
+    if (!difficulty) {
+      return;
+    }
     if (difficulty.name) {
       return difficulty.name;
     }
@@ -163,10 +165,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this._fetchCategory();
       }
 
-      let forceRefresh = false;
       if (this.siteLanguage !== state.siteLanguage) {
         this.siteLanguage = state.siteLanguage;
-        forceRefresh = true;
       }
 
       RefreshNavNew(this.categoryId);
@@ -243,26 +243,32 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   #getFirstAcronymFromSuttaPlexList(suttaPlexList) {
-    if (!suttaPlexList) return '';
+    if (!suttaPlexList) {
+      return '';
+    }
     for (const suttaPlex of suttaPlexList) {
-      if (suttaPlex.acronym) return suttaPlex.acronym;
+      if (suttaPlex.acronym) {
+        return suttaPlex.acronym;
+      }
     }
     return '';
   }
 
   _updateMetaData() {
+    const { suttaplexData, isSuttaInRangeSutta, categoryId, rangeCategoryId } = this;
     if (this.suttaplexData && this.suttaplexData.length) {
+      const { title, original_title, blurb } = suttaplexData[0];
       let description = this.localize('interface:metaDescriptionText');
-      if (this.suttaplexData[0].blurb) {
-        description = this.suttaplexData[0].blurb;
+      if (blurb) {
+        description = blurb;
       }
 
-      if (!this.isSuttaInRangeSutta) {
-        RefreshNavNew(this.categoryId);
-        this.actions.changeToolbarTitle(this.suttaplexData[0].original_title);
+      if (!isSuttaInRangeSutta) {
+        RefreshNavNew(categoryId);
+        this.actions.changeToolbarTitle(original_title);
       } else {
-        RefreshNavNew(this.rangeCategoryId);
-        this.actions.changeToolbarTitle(this.suttaplexData[0].title);
+        RefreshNavNew(rangeCategoryId);
+        this.actions.changeToolbarTitle(title);
 
         setTimeout(() => {
           const currentNav = store.getState().navigationArray;
@@ -274,15 +280,12 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         }, 100);
       }
 
+      const pageTitle = `${title || original_title}—Suttas and Parallels`;
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
-            pageTitle: `${
-              this.suttaplexData[0].title || this.suttaplexData[0].original_title
-            }—Suttas and Parallels`,
-            title: `${
-              this.suttaplexData[0].title || this.suttaplexData[0].original_title
-            }—Suttas and Parallels`,
+            pageTitle,
+            title: pageTitle,
             description,
             bubbles: true,
             composed: true,
@@ -450,14 +453,15 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   _updateURLParams() {
-    const { suttaplexListDisplay, displayParallelTableView } = store.getState();
+    const { suttaplexListDisplay, displayParallelTableView, siteLanguage } = store.getState();
+    const langParam = `lang=${siteLanguage}`;
+    let urlParams;
     if (!displayParallelTableView) {
-      const urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}`;
-      history.replaceState(null, null, urlParams);
+      urlParams = `?view=${suttaplexListDisplay ? 'dense' : 'normal'}&${langParam}`;
     } else {
-      const urlParams = '?view=table';
-      history.replaceState(null, null, urlParams);
+      urlParams = `?view=table&${langParam}`;
     }
+    history.replaceState(null, null, urlParams);
   }
 
   sectionTemplate(item) {
@@ -542,13 +546,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   _getRootSuttaUrl(rootDetail, originalUid, uidAndHash) {
-    if (rootDetail && rootDetail[0]?.uid && rootDetail[0]?.lang && rootDetail[0]?.author_uid) {
-      return (
-        `/${rootDetail[0].uid}/${rootDetail[0].lang}` +
-        `/${rootDetail[0].author_uid}${getParagraphRange(uidAndHash, true)}`
-      );
-    }
-    return `/${originalUid}`;
+    const { uid, lang, author_uid } = rootDetail[0] || {};
+    const paragraphRange = getParagraphRange(uidAndHash, true);
+    return uid && lang && author_uid
+      ? `/${uid}/${lang}/${author_uid}${paragraphRange}`
+      : `/${originalUid}`;
   }
 
   static styles = [suttaplexListCss, suttaplexListTableViewCss];
