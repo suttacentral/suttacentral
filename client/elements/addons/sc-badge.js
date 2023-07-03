@@ -1,11 +1,21 @@
 import { LitElement, html, css } from 'lit';
 
-export class SCBadge extends LitElement {
+import { LitLocalized } from './sc-localization-mixin';
+
+export class SCBadge extends LitLocalized(LitElement) {
   static properties = {
     text: { type: String },
     color: { type: String },
     background: { type: String },
   };
+
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.text = '';
+    this.color = 'primary';
+    this.background = '';
+  }
 
   static styles = css`
     :host {
@@ -68,15 +78,9 @@ export class SCBadge extends LitElement {
     }
   `;
 
-  constructor() {
-    super();
-    this.text = '';
-    this.color = 'primary';
-    this.background = '';
-  }
-
   render() {
-    return html` ${this.text} `;
+    const localizeString = `badge:${this.text.toLowerCase()}`;
+    return html` ${this.localize(localizeString)} `;
   }
 }
 
