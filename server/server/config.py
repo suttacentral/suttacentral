@@ -35,12 +35,6 @@ class Config:
 
     SERVER_ADDRESS = os.environ['SERVER_ADDRESS']
 
-    MAILGUN_DOMAIN = os.environ['MAILGUN_DOMAIN']
-    MAILGUN_API_KEY = os.environ['MAILGUN_API_KEY']
-    MAIL_DONATIONS_SENDER = os.environ['MAIL_DONATIONS_SENDER']
-    MAIL_DEFAULT_SENDER = os.environ['MAIL_DEFAULT_SENDER']
-
-
 class DevelopmentConfig(Config):
     """Configuration for Development"""
 
