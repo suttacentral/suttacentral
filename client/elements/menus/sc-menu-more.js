@@ -265,7 +265,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.toolbarPosition.scrollForToolbar}
           id="radioScrollForToolbar"
           @request-selected=${this._onToolbarPositionChanged}
-          >Scroll for toolbar</mwc-radio-list-item
+          >${this.localize('interface:scrollForToolbar')}</mwc-radio-list-item
         >
         <mwc-radio-list-item
           class="more-menu-mwc-list-item"
@@ -274,7 +274,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.toolbarPosition.fixedToolbar}
           @request-selected=${this._onToolbarPositionChanged}
           id="radioFixedToolbar"
-          >Fixed toolbar</mwc-radio-list-item
+          >${this.localize('interface:fixedToolbar')}</mwc-radio-list-item
         >
         <mwc-radio-list-item
           class="more-menu-mwc-list-item"
@@ -283,7 +283,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.toolbarPosition.toolbarAtTop}
           @request-selected=${this._onToolbarPositionChanged}
           id="radioToolbarAtTop"
-          >Toolbar at top</mwc-radio-list-item
+          >${this.localize('interface:toolbarAtTop')}</mwc-radio-list-item
         >
         <li divider role="separator"></li>
         <a class="more-menu-link" href="/languages">
