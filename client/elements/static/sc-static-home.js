@@ -46,9 +46,9 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <section class="plain editions">
         <a href="/editions">
-          <h2>SuttaCentral Editions</h2>
+          <h2>${unsafeHTML(this.localize('home:43'))}</h2>
           ${this.#publicationEditionsPictureTemplate()}
-          <div class="call-to-action">Read selected SuttaCentral translations as books</div>
+          <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>
         </a>
       </section>
     `;
