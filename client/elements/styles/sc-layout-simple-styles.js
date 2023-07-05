@@ -38,4 +38,11 @@ export const layoutSimpleStyles = css`
   li {
     hanging-punctuation: first last;
   }
+
+  @media (max-width: 428px) {
+    section,
+    article {
+      max-width: 320px;
+    }
+  }
 `;
