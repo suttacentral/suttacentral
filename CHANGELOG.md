@@ -1,5 +1,22 @@
 # SuttaCentral ChangeLog
 
+## 2023.07.05
+
+- FIx: Start and end of lines are not visible in legacy text in mobile phone browser.
+
+## 2023.07.04
+
+- Localization additions to some pages.
+
+## 2023.07.03
+
+- purge all references to mailgun as no longer used.
+- Localize`sc-badge.js` and footer.
+
+## 2023.07.02
+
+- Enhance: site language should be shareable via URL on every page.
+
 ## 2023.06.27
 
 - Optimize home page load speed.
