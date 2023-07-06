@@ -91,6 +91,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _updateUrlParams() {
+    if (getURLParam('view') || getURLParam('layout') || getURLParam('reference')) {
+      return;
+    }
     window.history.replaceState(null, null, `?lang=${store.getState().siteLanguage}`);
   }
 
