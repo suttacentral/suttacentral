@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from common.extensions import cache, make_cache_key
 from search.instant_search import instant_search_query
-
+from search.immediate_search import fetch_possible_result
 import json
 
 
@@ -26,3 +26,9 @@ class InstantSearch(Resource):
             return json.dumps({'error': '\'query\' param is required'}), 422
 
         return instant_search_query(query, lang, restrict, limit, offset, matchpartial)
+
+
+class FetchPossibleNames(Resource):
+    @cache.cached(timeout=600, key_prefix=make_cache_key)
+    def get(self, name):
+        return fetch_possible_result(name)
