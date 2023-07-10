@@ -393,7 +393,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return ``;
     }
     const searchResultByReference = this.visibleSearchResults;
-    const query = this.searchQuery.split(':')[1].trim();
+    const query = this.searchQuery?.split(':')[1].trim();
     this.#processReferenceData(searchResultByReference);
 
     const priorityAuthor = this.priorityAuthors.get(this.language);
