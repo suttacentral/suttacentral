@@ -583,7 +583,9 @@ export class SCBottomSheet extends LitElement {
   updated(changedProps) {
     super.updated(changedProps);
     if (changedProps.has('currentDefineDetail')) {
-      if (this.currentDefineDetail === '') return;
+      if (this.currentDefineDetail === '') {
+        return;
+      }
       const template = this.currentDefineDetail;
       const newDiv = document.createElement('div');
       newDiv.innerHTML = template;

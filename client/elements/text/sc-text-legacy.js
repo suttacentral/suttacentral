@@ -311,8 +311,12 @@ export class SCTextLegacy extends SCTextCommon {
       return;
     }
     let divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
-    if (divisionId === 'pli') divisionId = 'vi';
-    if (divisionId === 'iti') divisionId = 'it';
+    if (divisionId === 'pli') {
+      divisionId = 'vi';
+    }
+    if (divisionId === 'iti') {
+      divisionId = 'it';
+    }
     if (this.paragraphs && this.showParagraphs) {
       this.paragraphs.forEach(paragraph => {
         const refs = this.querySelector('#simple_text_content').querySelectorAll(
@@ -469,11 +473,9 @@ export class SCTextLegacy extends SCTextCommon {
 
   _conditionallyPutIntoSpans(lang) {
     const suttaLang = this.sutta?.lang;
-    if (suttaLang === lang) {
-      if (this.querySelector('article')) {
-        this._putIntoSpans('article', lang);
-        this._addWordSpanId();
-      }
+    if (suttaLang === lang && this.querySelector('article')) {
+      this._putIntoSpans('article', lang);
+      this._addWordSpanId();
     }
   }
 

@@ -49,7 +49,9 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
   }
 
   async getNewDict() {
-    if (!this.toLang) return;
+    if (!this.toLang) {
+      return;
+    }
     this.loadingDict = true;
     this.loadedLanguage = this.toLang;
     if (this.toLang === 'en') {
