@@ -397,7 +397,9 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
   }
 
   _createMetaData() {
-    if (!this.localize) return;
+    if (!this.localize) {
+      return;
+    }
     const description = this.localize('interface:metaDescriptionText');
     const dictionaryResultsText = this.localize('dictionary:dictionaryResultsText');
     const defineFor = this.localize('dictionary:definitionsFor');

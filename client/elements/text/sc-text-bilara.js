@@ -122,7 +122,7 @@ export class SCTextBilara extends SCTextCommon {
 
       <main>
         <div id="segmented_text_content" class="html-text-content">
-          ${unsafeHTML(this.markup ? this.markup : ' ')}
+          ${unsafeHTML(this.markup || ' ')}
         </div>
       </main>
 
@@ -296,7 +296,9 @@ export class SCTextBilara extends SCTextCommon {
 
   // Scrolls to the chosen section
   _scrollToSection(sectionId, margin = 120) {
-    if (!sectionId) return;
+    if (!sectionId) {
+      return;
+    }
     try {
       const targetElement = this.querySelector(`#${CSS.escape(sectionId)}`);
       if (targetElement) {
@@ -488,10 +490,8 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _conditionallyPutIntoSpans(lang) {
-    if (this.rootSutta.lang === lang) {
-      if (this.querySelector('.root')) {
-        this._putIntoSpans('.root', lang);
-      }
+    if (this.rootSutta.lang === lang && this.querySelector('.root')) {
+      this._putIntoSpans('.root', lang);
     }
   }
 
@@ -601,44 +601,45 @@ export class SCTextBilara extends SCTextCommon {
         viewCompose = 'pali';
       }
     }
-    this.currentStyles = this.mapStyles.get(viewCompose)
-      ? this.mapStyles.get(viewCompose)
-      : plainStyles;
+    this.currentStyles = this.mapStyles.get(viewCompose) || plainStyles;
 
-    const isNone = this.displayedReferences.includes('none') && !window.location.href.includes('#');
-    if (isNone) {
-      this.referencesDisplayStyles = hideReferenceStyles;
-    } else {
-      const isMain =
-        this.displayedReferences.includes('main') || window.location.href.includes('#');
-      this.referencesDisplayStyles = html`
-        <style>
-          .reference {
-            display: inline;
-          }
-
-          .reference a {
-            display: none;
-          }
-
-          ${isMain
-            ? `
-            .reference a.sc,
-            .reference a.vns {
+    if (this.displayedReferences) {
+      const isNone =
+        this.displayedReferences.includes('none') && !window.location.href.includes('#');
+      if (isNone) {
+        this.referencesDisplayStyles = hideReferenceStyles;
+      } else {
+        const isMain =
+          this.displayedReferences.includes('main') || window.location.href.includes('#');
+        this.referencesDisplayStyles = html`
+          <style>
+            .reference {
               display: inline;
             }
-          `
-            : ''}
 
-          ${this.displayedReferences.map(
-            referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline; } `
-          )}
+            .reference a {
+              display: none;
+            }
 
-          ${this.displayedReferences.includes('pts')
-            ? html`.reference a.vnp { display: inline; }`
-            : ''}
-        </style>
-      `;
+            ${isMain
+              ? `
+              .reference a.sc,
+              .reference a.vns {
+                display: inline;
+              }
+            `
+              : ''}
+
+            ${this.displayedReferences.map(
+              referenceSet => html` ${` .reference a.${referenceSet}`} { display: inline; } `
+            )}
+
+            ${this.displayedReferences.includes('pts')
+              ? html`.reference a.vnp { display: inline; }`
+              : ''}
+          </style>
+        `;
+      }
     }
 
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
@@ -679,7 +680,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _prepareNavigation() {
-    const sutta = this.bilaraTranslatedSutta ? this.bilaraTranslatedSutta : this.bilaraRootSutta;
+    const sutta = this.bilaraTranslatedSutta || this.bilaraRootSutta;
     if (!sutta) {
       this.actions.showToc([]);
       return;

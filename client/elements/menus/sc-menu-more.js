@@ -101,7 +101,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     this.routeName = store.getState().currentRoute.name;
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
     this.languageIsVisible = store.getState().languageMenuVisibility;
-    this.suttaId = store.getState().currentRoute.params.suttaId;
+    this.suttaId = store.getState().currentRoute.params?.suttaId;
     this.toolbarPosition = store.getState().toolbarPosition;
   }
 

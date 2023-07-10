@@ -45,13 +45,18 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     if (!sectionId || currentId === sectionId) {
       return currentId;
     }
-    const firstSection = this.querySelector(sectionId) || this.shadowRoot.querySelector(sectionId);
-    if (firstSection) {
-      firstSection.scrollIntoView({
-        behavior: 'instant',
-        block: 'start',
-        inline: 'nearest',
-      });
+    try {
+      const firstSection =
+        this.querySelector(sectionId) || this.shadowRoot?.querySelector(sectionId);
+      if (firstSection) {
+        firstSection.scrollIntoView({
+          behavior: 'instant',
+          block: 'start',
+          inline: 'nearest',
+        });
+      }
+    } catch (err) {
+      console.error(err);
     }
     return sectionId;
   }

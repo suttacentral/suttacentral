@@ -391,7 +391,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #setBtnShowParallelTableViewDisplayState() {
-    const displayStyle = this.currentRoute.name.toUpperCase() === 'SUTTAPLEX' ? 'inherit' : 'none';
+    const displayStyle = this.currentRoute.name?.toUpperCase() === 'SUTTAPLEX' ? 'inherit' : 'none';
     const btnShowParallelTableView = this.shadowRoot.querySelector('#btnShowParallelTableView');
     if (btnShowParallelTableView) {
       btnShowParallelTableView.style.display = displayStyle;
@@ -484,11 +484,17 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #hideSearchOptions() {
-    this.scSiteLayout.querySelector('#search-options')?.hide();
+    const searchOptions = this.scSiteLayout.querySelector('#search-options');
+    if (searchOptions) {
+      searchOptions.hide();
+    }
   }
 
   #hideSearchFilter() {
-    this.scSiteLayout.querySelector('#search-filter')?.hide();
+    const searchFilter = this.scSiteLayout.querySelector('#search-filter');
+    if (searchFilter) {
+      searchFilter.hide();
+    }
   }
 
   _showSuttaParallels() {

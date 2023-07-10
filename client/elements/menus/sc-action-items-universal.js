@@ -179,6 +179,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   }
 
   keyupHandler({ key }) {
+    return;
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
       this.#fetchPossibleNames(searchQuery);
@@ -186,6 +187,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   }
 
   changeHandler() {
+    return;
     const datalist = this.shadowRoot.querySelector('#possible_jump_to_list');
     const input = this.shadowRoot.querySelector('#search_input');
     const { value } = input;

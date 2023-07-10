@@ -624,7 +624,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #filterSearchResultByLanguages() {
-    if (this.originLastSearchResults.length < 15 || this.searchQuery.includes('lang:')) {
+    if (this.originLastSearchResults.length < 15 || this.searchQuery?.includes('lang:')) {
       return;
     }
     let searchResult = this.originLastSearchResults;
