@@ -45,6 +45,10 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     if (!sectionId || currentId === sectionId) {
       return currentId;
     }
+    const { currentRoute } = store.getState();
+    if (currentRoute && currentRoute.params && currentRoute.params.suttaId) {
+      return currentId;
+    }
     try {
       const firstSection =
         this.querySelector(sectionId) || this.shadowRoot?.querySelector(sectionId);
