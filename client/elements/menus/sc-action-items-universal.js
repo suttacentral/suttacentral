@@ -241,7 +241,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         autocomplete="on"
       />
       ${this.#jumpToListTemplate()}
-      <mwc-icon-button
+      <md-standard-icon-button
         label="close"
         id="close_button"
         title="Close search bar"
