@@ -57,7 +57,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(false);
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.authorUid = store.getState().currentRoute.params.authorUid;
-    this.suttaId = store.getState().currentRoute.params.suttaId;
+    this.suttaId = store.getState().currentRoute.params?.suttaId;
     this.SuttaParallelsDisplayed = false;
     this.#redirectWhenSuttaIsFallenLeaf();
   }
@@ -157,10 +157,10 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this._refreshData(true);
+    this._refreshData();
   }
 
-  _refreshData(forceRefresh) {
+  _refreshData() {
     this._paramChanged();
     this.refreshing = true;
     RefreshNavNew(this.suttaId);
@@ -308,7 +308,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       if (!this.responseData.root_text && !this.responseData.translation) {
         if (this.responseData.candidate_authors.length > 0) {
           dispatchCustomEvent(this, 'sc-navigate', {
-            pathname: `/${this.suttaId}/${this.langIsoCode}/${this.responseData.candidate_authors[0]}`,
+            pathname: `/${this.suttaId}/${this.siteLanguage}/${this.responseData.candidate_authors[0]}`,
           });
           return;
         }
@@ -597,7 +597,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
 
     const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
     const author = responseData.translation ? responseData.translation.author : rootTextAuthor;
-    let acronym = responseData.suttaplex.acronym
+    const acronym = responseData.suttaplex.acronym
       ? responseData.suttaplex.acronym.split(/\/\//)[0]
       : this._transformId(responseData.suttaplex.uid, expansionReturns);
 
@@ -638,9 +638,13 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       uidParts.forEach(item => {
         if (!expansionReturns[0][item]) {
           const tailMatch = item.match(/\d+.*/g);
-          if (tailMatch) tail = `${tailMatch[0]}–`;
+          if (tailMatch) {
+            tail = `${tailMatch[0]}–`;
+          }
           const itemMatch = item.match(/[a-z]*/g);
-          if (itemMatch) item = itemMatch[0];
+          if (itemMatch) {
+            item = itemMatch[0];
+          }
         }
         if (item && expansionReturns[0][item]) {
           scAcronym += `${expansionReturns[0][item][0]} ${tail}`;

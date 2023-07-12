@@ -30,10 +30,8 @@ export const LitLocalized = base =>
     localize(key, params, tryLocalize) {
       const string = this.__resources && this.__resources[key] ? this.__resources[key] : '';
 
-      if (!string && this._languageLoaded) {
-        if (!tryLocalize) {
-          console.warn('missing translation key', key);
-        }
+      if (!string && this._languageLoaded && !tryLocalize) {
+        console.warn('missing translation key', key);
       }
 
       if (params) {
@@ -68,7 +66,9 @@ export const LitLocalized = base =>
          if it hasn't been localized */
 
       const result = this.localize(key, null, true);
-      if (result === key) return fallback;
+      if (result === key) {
+        return fallback;
+      }
       return result;
     }
 
@@ -94,13 +94,11 @@ export const LitLocalized = base =>
         if (!this.localizedStringsPath) {
           return;
         }
-        if (!USE_PRODUCTION_LOCALIZATION) {
-          if (!this.localizedStringsPath.includes('build')) {
-            this.localizedStringsPath = this.localizedStringsPath.replace(
-              '/localization/elements',
-              '/localization/elements/build'
-            );
-          }
+        if (!USE_PRODUCTION_LOCALIZATION && !this.localizedStringsPath.includes('build')) {
+          this.localizedStringsPath = this.localizedStringsPath.replace(
+            '/localization/elements',
+            '/localization/elements/build'
+          );
         }
         const path = `${this.localizedStringsPath}_${lang}.json`;
 

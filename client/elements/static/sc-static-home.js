@@ -7,29 +7,35 @@ import '../navigation/sc-navigation-tipitaka';
 import { icon } from '../../img/sc-icon';
 import { staticHomeStyles } from '../styles/sc-static-home-styles';
 import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
+import { store } from '../../redux-store';
 
 export class SCStaticHomePage extends SCStaticPage {
   static properties = {
     randomEpigraph: { type: String },
     whyWeRead: { type: String },
+    tipitaka: { type: Array },
   };
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/home';
+    this.siteLanguage = store.getState().siteLanguage;
+    this.#fetchDataForHomePage();
   }
 
-  firstUpdated() {
-    this._getRandomQuote();
-  }
-
-  async _getRandomQuote() {
-    const getRandomEl = arr => arr[Math.floor(Math.random() * arr.length)];
-
-    const epigraphResponse = await (await fetch(`${API_ROOT}/epigraphs`)).json();
-    this.randomEpigraph = getRandomEl(epigraphResponse);
-    const whyReadResponse = await (await fetch(`${API_ROOT}/whyweread`)).json();
-    this.whyWeRead = getRandomEl(whyReadResponse);
+  async #fetchDataForHomePage() {
+    try {
+      const response = await fetch(`${API_ROOT}/homepage_data?language=${this.siteLanguage || 'en'}`);
+      const dataForHomepage = await response.json();
+      const getRandomEl = arr => arr[Math.floor(Math.random() * arr.length)];
+      this.randomEpigraph = getRandomEl(dataForHomepage.epigraphs);
+      this.whyWeRead = getRandomEl(dataForHomepage.whyweread);
+      this.tipitaka = dataForHomepage.tipitaka;
+      const sortedUids = ['sutta', 'vinaya', 'abhidhamma'];
+      this.tipitaka.sort((a, b) => sortedUids.indexOf(a.uid) - sortedUids.indexOf(b.uid));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   createRenderRoot() {
@@ -40,9 +46,9 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <section class="plain editions">
         <a href="/editions">
-          <h2>SuttaCentral Editions</h2>
+          <h2>${unsafeHTML(this.localize('home:43'))}</h2>
           ${this.#publicationEditionsPictureTemplate()}
-          <div class="call-to-action">Read selected SuttaCentral translations as books</div>
+          <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>
         </a>
       </section>
     `;
@@ -361,7 +367,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <main>
         ${this.#tipitakaSectionTemplate()}
 
-        <sc-navigation-tipitaka></sc-navigation-tipitaka>
+        <sc-navigation-tipitaka .mainMenuData=${this.tipitaka}></sc-navigation-tipitaka>
 
         ${this.#publicationEditionsTemplate()}
 

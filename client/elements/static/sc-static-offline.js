@@ -270,10 +270,12 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
     let failed = 0;
     let passed = 0;
     let interval = 0;
-    const progressBar = this.shadowRoot.querySelector('md-linear-progress');
+    const progressBar = this.shadowRoot.querySelector('mwc-linear-progress');
+    if (progressBar) {
+      progressBar.progress = this._calculateCurrentProgress();
+      progressBar.buffer = 0;
+    }
     this.isDownloadPaused = false;
-    progressBar.progress = this._calculateCurrentProgress();
-    progressBar.buffer = 0;
     this.D3queue = queue(20);
     const filteredUrls = this.allURLs.filter(v => !this.downloadedUrls[v.url]);
     filteredUrls.forEach(input => {
@@ -597,7 +599,9 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
   }
 
   _showAddToHomeScreenPrompt() {
-    window.deferredPWAInstallPrompt.prompt();
+    if (window.deferredPWAInstallPrompt) {
+      window.deferredPWAInstallPrompt.prompt();
+    }
   }
 
   _resumeOrPauseDownload() {

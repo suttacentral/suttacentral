@@ -402,7 +402,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   updated() {
-    if (this.currentRoute.name.toUpperCase() !== 'SUTTA') {
+    if (this.currentRoute.name?.toUpperCase() !== 'SUTTA') {
       this._createMetaData();
     }
     this._updateNav();
@@ -469,23 +469,22 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _changeRoute(location) {
     const [route, params] = this.router.match(location.pathname);
-    if (params.categoryId) {
-      params.categoryId = params?.categoryId.toLowerCase();
-    }
-    if (params.langIsoCode) {
-      params.langIsoCode = params?.langIsoCode.toLowerCase();
-    }
-    if (params.authorUid) {
-      params.authorUid = params?.authorUid.toLowerCase();
-    }
-    if (params.suttaId) {
-      params.suttaId = params?.suttaId.toLowerCase();
-    }
-    if (params.word) {
-      params.word = params?.word.toLowerCase();
-    }
-    if (params.query) {
-      // params.query = params?.query.toLowerCase();
+    if (params) {
+      if (params.categoryId) {
+        params.categoryId = params?.categoryId.toLowerCase();
+      }
+      if (params.langIsoCode) {
+        params.langIsoCode = params?.langIsoCode.toLowerCase();
+      }
+      if (params.authorUid) {
+        params.authorUid = params?.authorUid.toLowerCase();
+      }
+      if (params.suttaId) {
+        params.suttaId = params?.suttaId.toLowerCase();
+      }
+      if (params.word) {
+        params.word = params?.word.toLowerCase();
+      }
     }
     this.actions.changeRoute(route, params, location.pathname);
   }
@@ -534,18 +533,21 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
+
     let pageName = this.tryLocalize(
       `interface:${this.currentRoute.name || 'NOT-FOUND'}`,
       this.currentRoute.name
     );
-    if (pageName === 'palitipitaka') {
-      pageName = 'Three Baskets of the Pāḷi Canon';
+    if (pageName) {
+      if (pageName === 'palitipitaka') {
+        pageName = 'Three Baskets of the Pāḷi Canon';
+      }
+      dispatchCustomEvent(document, 'metadata', {
+        pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
+        title: `SuttaCentral—${pageName.toLowerCase()}`,
+        description,
+      });
     }
-    dispatchCustomEvent(document, 'metadata', {
-      pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
-      title: `SuttaCentral—${pageName.toLowerCase()}`,
-      description,
-    });
 
     dispatchCustomEvent(document, 'keyword-metadata', {
       keywords: this.localize('interface:metaKeywords'),

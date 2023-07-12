@@ -29,10 +29,6 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
   }
 
-  firstUpdated() {
-    this._fetchMainMenu();
-  }
-
   stateChanged(state) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
@@ -54,7 +50,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   get tipitakaCardTemplate() {
-    return this.mainMenuData.length
+    return this.mainMenuData && this.mainMenuData.length
       ? html`
           <div class="main-nav">
             ${this.mainMenuData.map(

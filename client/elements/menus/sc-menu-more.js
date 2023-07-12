@@ -105,7 +105,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     this.routeName = store.getState().currentRoute.name;
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
     this.languageIsVisible = store.getState().languageMenuVisibility;
-    this.suttaId = store.getState().currentRoute.params.suttaId;
+    this.suttaId = store.getState().currentRoute.params?.suttaId;
     this.toolbarPosition = store.getState().toolbarPosition;
   }
 
@@ -269,7 +269,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.toolbarPosition.scrollForToolbar}
           id="radioScrollForToolbar"
           @request-selected=${this._onToolbarPositionChanged}
-          >Scroll for toolbar</mwc-radio-list-item
+          >${this.localize('interface:scrollForToolbar')}</mwc-radio-list-item
         >
         <mwc-radio-list-item
           class="more-menu-mwc-list-item"
@@ -278,7 +278,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.toolbarPosition.fixedToolbar}
           @request-selected=${this._onToolbarPositionChanged}
           id="radioFixedToolbar"
-          >Fixed toolbar</mwc-radio-list-item
+          >${this.localize('interface:fixedToolbar')}</mwc-radio-list-item
         >
         <mwc-radio-list-item
           class="more-menu-mwc-list-item"
@@ -287,7 +287,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           ?selected=${this.toolbarPosition.toolbarAtTop}
           @request-selected=${this._onToolbarPositionChanged}
           id="radioToolbarAtTop"
-          >Toolbar at top</mwc-radio-list-item
+          >${this.localize('interface:toolbarAtTop')}</mwc-radio-list-item
         >
         <md-divider></md-divider>
         <a class="more-menu-link" href="/languages">

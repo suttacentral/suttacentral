@@ -1087,6 +1087,29 @@ class WhyWeRead(Resource):
         return list(data), 200
 
 
+class DataForHomepage(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
+    def get(self):
+        db = get_db()
+
+        try:
+            limit = int(request.args.get('limit', '10'))
+        except ValueError:
+            limit = 10
+
+        epigraphs_data = list(db.aql.execute(EPIGRAPHS, bind_vars={'number': limit}))
+        why_we_read_data = list(db.aql.execute(WHY_WE_READ, bind_vars={'number': limit}))
+
+        language = request.args.get(
+            'language', current_app.config.get('DEFAULT_LANGUAGE')
+        )
+        tipitaka_menu_data = list(db.aql.execute(
+            TIPITAKA_MENU, bind_vars={'language': language})
+        )
+
+        return {'epigraphs': epigraphs_data, 'whyweread': why_we_read_data, 'tipitaka': tipitaka_menu_data}, 200
+
+
 class Expansion(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=long_cache_timeout)
     def get(self):

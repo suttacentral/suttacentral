@@ -44,7 +44,9 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   async getNewDict() {
-    if (!this.toLang) return;
+    if (!this.toLang) {
+      return;
+    }
     this.loadingDict = true;
     this.loadedLanguage = this.toLang;
     this.dictData = await (await fetch(this._computeUrl())).json();
@@ -82,7 +84,9 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     if (allMatches.length === 0) {
       allMatches.push({ base: original, meaning: '?', grammar: '', xr: '' });
     }
-    if (this.isTi) allMatches.push({ base: 'iti', meaning: 'endquote', grammar: '', xr: '' });
+    if (this.isTi) {
+      allMatches.push({ base: 'iti', meaning: 'endquote', grammar: '', xr: '' });
+    }
     return html`
       ${allMatches.map(
         match => html`

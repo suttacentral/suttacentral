@@ -2,9 +2,6 @@ import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { store } from '../../redux-store';
-import { API_ROOT } from '../../constants';
-import { getURLParam } from './sc-functions-miscellaneous';
-import { reduxActions } from './sc-redux-actions';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
   static properties = {
@@ -15,17 +12,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.siteLanguage = store.getState().siteLanguage;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    const { currentRoute } = store.getState();
-    if (!this.getUrlLangParam && currentRoute.path !== '/') {
-      this._updateUrlParams();
-    }
-    if (this.getUrlLangParam !== store.getState().siteLanguage && currentRoute.path !== '/') {
-      this.changeSiteLanguage(this.getUrlLangParam);
-    }
   }
 
   firstUpdated() {
@@ -52,7 +38,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
-      this._updateUrlParams();
     }
   }
 
@@ -60,48 +45,23 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     if (!sectionId || currentId === sectionId) {
       return currentId;
     }
-    const firstSection = this.querySelector(sectionId) || this.shadowRoot.querySelector(sectionId);
-    if (firstSection) {
-      firstSection.scrollIntoView({
-        behavior: 'instant',
-        block: 'start',
-        inline: 'nearest',
-      });
+    const { currentRoute } = store.getState();
+    if (currentRoute && currentRoute.params && currentRoute.params.suttaId) {
+      return currentId;
+    }
+    try {
+      const firstSection =
+        this.querySelector(sectionId) || this.shadowRoot?.querySelector(sectionId);
+      if (firstSection) {
+        firstSection.scrollIntoView({
+          behavior: 'instant',
+          block: 'start',
+          inline: 'nearest',
+        });
+      }
+    } catch (err) {
+      console.error(err);
     }
     return sectionId;
-  }
-
-  _updateUrlParams() {
-    window.history.replaceState(null, null, `?lang=${store.getState().siteLanguage}`);
-  }
-
-  get getUrlLangParam() {
-    return getURLParam('lang');
-  }
-
-  async changeSiteLanguage(lang) {
-    await this._fetchLanguageList();
-    if (!this.languageListResponse || this.languageListResponse.length === 0) {
-      return;
-    }
-    try {
-      const chosenLanguage = this.languageListResponse.find(x => x.iso_code === lang);
-      if (chosenLanguage) {
-        reduxActions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  async _fetchLanguageList() {
-    try {
-      this.languageListResponse = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
-      this.languageListResponse = this.languageListResponse.filter(
-        lang => !lang.is_root && lang.localized
-      );
-    } catch (e) {
-      console.error(e);
-    }
   }
 }
