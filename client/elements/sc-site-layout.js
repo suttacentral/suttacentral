@@ -232,6 +232,13 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     window.addEventListener('error', e => {
       microSentryClient.report(e);
     });
+
+    document.addEventListener('click', () => {
+      document
+        .querySelector('sc-navigation-linden-leaves')
+        .shadowRoot.querySelector('sc-action-items-universal')
+        .shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
+    });
   }
 
   updated(changedProps) {

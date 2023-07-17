@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
 import './sc-menu-more';
+import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
@@ -129,6 +130,13 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     });
   }
 
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('possible_jump_to_list')) {
+      this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'inherit';
+    }
+  }
+
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
@@ -179,21 +187,9 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   }
 
   keyupHandler({ key }) {
-    return;
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
       this.#fetchPossibleNames(searchQuery);
-    }
-  }
-
-  changeHandler() {
-    return;
-    const datalist = this.shadowRoot.querySelector('#possible_jump_to_list');
-    const input = this.shadowRoot.querySelector('#search_input');
-    const { value } = input;
-    const option = Array.from(datalist.options).find(o => o.value === value);
-    if (option) {
-      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${value}` });
     }
   }
 
@@ -235,12 +231,10 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         placeholder=${this.localize('search:search')}
         @keypress=${this.keypressHandler}
         @keyup=${this.keyupHandler}
-        @change=${this.changeHandler}
         aria-label="Search through site content"
-        list="possible_jump_to_list"
         autocomplete="on"
       />
-      ${this.#jumpToListTemplate()}
+      <sc-auto-complete-list .items=${this.possible_jump_to_list}></sc-auto-complete-list>
       <mwc-icon-button
         label="close"
         id="close_button"
