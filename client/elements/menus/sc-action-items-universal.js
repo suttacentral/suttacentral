@@ -190,6 +190,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
       this.#fetchPossibleNames(searchQuery);
+    } else {
+      this.possible_jump_to_list = [];
     }
   }
 

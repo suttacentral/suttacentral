@@ -18,7 +18,8 @@ class SCAutoCompleteList extends LitElement {
       list-style: none;
       padding: 0;
       margin: 0;
-      border: 1px solid #ccc;
+      border: 2px solid rgb(67, 160, 71);
+      border-top: 0;
       overflow-y: auto;
       width: 100%;
     }
