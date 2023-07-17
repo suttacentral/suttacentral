@@ -52,7 +52,8 @@ class SCAutoCompleteList extends LitElement {
     return html`
       <ul>
         ${this.items.map(
-          item => html`<li @click=${() => this.selectItem(item.uid)}>${item.uid} – ${item.title}</li>`
+          item =>
+            html`<li @click=${() => this.selectItem(item.uid)}>${item.uid} – ${item.title}</li>`
         )}
       </ul>
     `;
