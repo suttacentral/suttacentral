@@ -143,7 +143,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   }
 
   openMoreMenu() {
-    (this.moreMenu || {}).show();
+    (this.moreMenu || {}).show?.();
   }
 
   openSearch() {
@@ -163,7 +163,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   // Closes the searchbox and resets original values.
   _closeSearch() {
     const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement && searchInputElement.classList.contains('opened')) {
+    if (searchInputElement?.classList.contains('opened')) {
       searchInputElement.value = '';
 
       searchInputElement.classList.remove('opened');
@@ -183,6 +183,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     if (key === 'Enter') {
       this.#hideTopSheets();
       this._startSearch();
+      this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
     }
   }
 

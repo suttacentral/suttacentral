@@ -95,6 +95,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       getURLParam('view') ||
       getURLParam('layout') ||
       getURLParam('reference') ||
+      getURLParam('query') ||
       window.location.hash
     ) {
       return;
@@ -400,7 +401,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _routeChanged() {
-    this.querySelector('#sutta-info')?.hide();
+    this.querySelector('#sutta-info')?.hide?.();
   }
 
   _colorThemeChanged(newVal, oldVal) {
