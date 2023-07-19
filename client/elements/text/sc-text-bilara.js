@@ -484,7 +484,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _disableLookup() {
-    this.querySelector('sc-bottom-sheet')?.hide();
+    this.querySelector('sc-bottom-sheet')?.hide?.();
     this._removeDefineFocusedClass();
     this._removeLookupEvent('.root .text .word');
   }

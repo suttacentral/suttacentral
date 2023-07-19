@@ -371,9 +371,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
   _showSuttaInfo() {
     const isSegmentedText = !this.suttaMetaText;
     if (isSegmentedText) {
-      this.scSiteLayout.querySelector('#bilara-sutta-info').show();
+      this.scSiteLayout.querySelector('#bilara-sutta-info').show?.();
     } else {
-      this.scSiteLayout.querySelector('#sutta-info').show();
+      this.scSiteLayout.querySelector('#sutta-info').show?.();
     }
     this.shadowRoot.querySelector('#btnInfo')?.classList.add(this.activeClass);
   }
@@ -454,31 +454,31 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _hideSettingMenu() {
-    this.scSiteLayout.querySelector('#setting_menu')?.hide();
+    this.scSiteLayout.querySelector('#setting_menu')?.hide?.();
     this.actions.changeDisplaySettingMenuState(false);
     this.shadowRoot.querySelector('#btnTools')?.classList.remove(this.activeClass);
   }
 
   _showSettingMenu() {
-    this.scSiteLayout.querySelector('#setting_menu')?.show();
+    this.scSiteLayout.querySelector('#setting_menu')?.show?.();
     this.shadowRoot.querySelector('#btnTools')?.classList.add(this.activeClass);
   }
 
   _hideSuttaParallels() {
-    this.scSiteLayout.querySelector('#sutta_parallels')?.hide();
+    this.scSiteLayout.querySelector('#sutta_parallels')?.hide?.();
     this.actions.changeDisplaySuttaParallelsState(false);
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.remove(this.activeClass);
   }
 
   _hideSuttaToC() {
-    this.scSiteLayout.querySelector('#sutta_toc')?.hide();
+    this.scSiteLayout.querySelector('#sutta_toc')?.hide?.();
     this.actions.changeDisplaySuttaToCState(false);
     this.shadowRoot.querySelector('#btnShowToC')?.classList.remove(this.activeClass);
   }
 
   _hideSuttaInfo() {
-    this.scSiteLayout.querySelector('#sutta-info')?.hide();
-    this.scSiteLayout.querySelector('#bilara-sutta-info')?.hide();
+    this.scSiteLayout.querySelector('#sutta-info')?.hide?.();
+    this.scSiteLayout.querySelector('#bilara-sutta-info')?.hide?.();
     this.actions.changeDisplaySuttaInfoState(false);
     this.shadowRoot.querySelector('#btnInfo')?.classList.remove(this.activeClass);
   }
@@ -486,24 +486,24 @@ export class SCActionItems extends LitLocalized(LitElement) {
   #hideSearchOptions() {
     const searchOptions = this.scSiteLayout.querySelector('#search-options');
     if (searchOptions) {
-      searchOptions.hide();
+      searchOptions.hide?.();
     }
   }
 
   #hideSearchFilter() {
     const searchFilter = this.scSiteLayout.querySelector('#search-filter');
     if (searchFilter) {
-      searchFilter.hide();
+      searchFilter.hide?.();
     }
   }
 
   _showSuttaParallels() {
-    this.scSiteLayout.querySelector('#sutta_parallels')?.show();
+    this.scSiteLayout.querySelector('#sutta_parallels')?.show?.();
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.add(this.activeClass);
   }
 
   _showSuttaToC() {
-    this.scSiteLayout.querySelector('#sutta_toc')?.show();
+    this.scSiteLayout.querySelector('#sutta_toc')?.show?.();
     this.shadowRoot.querySelector('#btnShowToC')?.classList.add(this.activeClass);
   }
 

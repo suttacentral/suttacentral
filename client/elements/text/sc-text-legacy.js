@@ -465,7 +465,7 @@ export class SCTextLegacy extends SCTextCommon {
   _disableLookup() {
     const scBottomSheet = this.querySelector('sc-bottom-sheet');
     if (scBottomSheet) {
-      scBottomSheet.hide();
+      scBottomSheet.hide?.();
     }
     this._removeDefineFocusedClass();
     this._removeLookupEvent('article p .word');

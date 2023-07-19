@@ -116,7 +116,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get offLineTemplate() {
-    return !this.isOnline ? html` <sc-error-icon type="connect-to-internet"></sc-error-icon> ` : '';
+    return this.isOnline ? '' : html` <sc-error-icon type="connect-to-internet"></sc-error-icon> `;
   }
 
   get displayDataLoadError() {
@@ -153,8 +153,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get loadMoreButtonTemplate() {
-    return !this.#areAllItemsLoaded()
-      ? html`
+    return this.#areAllItemsLoaded()
+      ? ''
+      : html`
           <div id="load-more">
             <mwc-button
               @click=${this.#loadMoreData}
@@ -162,8 +163,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
               label=${this.localize('search:loadMore')}
             ></mwc-button>
           </div>
-        `
-      : '';
+        `;
   }
 
   get suttaplexTemplate() {
@@ -202,12 +202,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get searchResultTemplate() {
-    return !this.loadingResults
-      ? html`
+    return this.loadingResults
+      ? ''
+      : html`
           ${this.searchResultHeadTemplate} ${this.suttaplexTemplate}
           ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
-        `
-      : '';
+        `;
   }
 
   get searchResultListTemplate() {
@@ -225,13 +225,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                 <div class="item-head">
                   <a class="search-result-link" href=${this.#calculateLink(item)}>
                     <div class="primary">
-                      <h2 class="search-result-title">
-                        ${unsafeHTML(
-                          // this.#highlightKeyword(this.searchQuery, this.#calculateTitle(item))
-                          this.#calculateTitle(item)
-                        )}
-                      </h2>
-
+                      <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
                       <div class="all-dictionaries">
                         <span>All dictionaries</span>
                         ${icon.arrow_right}
@@ -794,6 +788,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #didRespond(searchResult) {
     const dicResult = searchResult.hits.find(item => item.category === 'dictionary');
+    if (this.loadMoreButtonClicked && dicResult) {
+      searchResult.hits.splice(searchResult.hits.indexOf(dicResult), 1);
+    }
     if (dicResult && dicResult.highlight.content[0] === '' && dicResult.highlight.detail) {
       dicResult.highlight.content[0] = dictionarySimpleItemToHtml(dicResult.highlight.detail[0]);
     }
@@ -928,9 +925,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
       uidParts.forEach(item => {
         if (!expansionData[0][item]) {
           const tailMatch = item.match(/\d+.*/g);
-          if (tailMatch) tail = `${tailMatch[0]}–`;
+          if (tailMatch) {
+            tail = `${tailMatch[0]}–`;
+          }
           const itemMatch = item.match(/[a-z]*/g);
-          if (itemMatch) item = itemMatch[0];
+          if (itemMatch) {
+            item = itemMatch[0];
+          }
         }
         if (item && expansionData[0][item]) {
           scAcronym += `${expansionData[0][item][0]} ${tail}`;
@@ -981,7 +982,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #computeItemDifficulty(difficulty) {
-    if (!difficulty) return;
+    if (!difficulty) {
+      return;
+    }
     if (difficulty.name) {
       return difficulty.name;
     }
@@ -1023,7 +1026,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #addHighlightClickEvent() {
     this.shadowRoot.querySelectorAll('.search-result-snippet').forEach(element => {
-      // eslint-disable-next-line no-param-reassign
       element.onclick = () => {
         element.classList.toggle('highlightShrink');
       };
