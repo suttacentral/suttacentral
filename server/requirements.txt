@@ -43,7 +43,7 @@ pluggy==1.0.0
 py==1.11.0
 pyee==8.2.2
 pyenchant==3.2.2
-Pygments==2.13.0
+Pygments==2.15.0
 PyJWT==2.6.0
 pykakasi==2.2.1
 pyparsing==3.0.9
