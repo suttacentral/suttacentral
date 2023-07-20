@@ -68,8 +68,8 @@ const routes = {
   },
   'navigation': {
     path: '/pitaka/:ids(.+)',
-    content: html`<sc-navigation-new />`,
-    loader: () => import('./navigation/sc-navigation-new.js'),
+    content: html`<sc-navigation />`,
+    loader: () => import('./navigation/sc-navigation.js'),
   },
   'abbreviations': {
     path: '/abbreviations',

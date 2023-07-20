@@ -13,7 +13,7 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 import { allEditions, coverImage, creatorBio } from '../publication/sc-publication-common';
 import { reduxActions } from '../addons/sc-redux-actions';
 
-export class SCNavigationNew extends LitLocalized(LitElement) {
+export class SCNavigation extends LitLocalized(LitElement) {
   static properties = {
     isCompactMode: { type: String, state: true },
     compactStyles: { type: Object, state: true },
@@ -42,7 +42,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this.#extractUidsFromEditions();
+    this.#extractUidsFromEditionsInfo();
     if (document.referrer === '') {
       this._verifyURL();
     }
@@ -56,31 +56,26 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   async _parseURL() {
     this.currentUid = this._getRoutePathLastItem();
-    if (this.currentUid) {
-      this.currentMenuData = await this._fetchMenuData(this.currentUid);
-      this.#tagForMenuItemsHasChildren();
-      if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
-        if (['sutta', 'vinaya', 'abhidhamma'].includes(this.currentUid)) {
-          dispatchCustomEvent(this, 'sc-navigate', { pathname: `/pitaka/${this.currentUid}` });
-        } else {
-          dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.currentUid}` });
-        }
-        return;
-      }
-      this._setToolbarTitle();
-      this._createMetaData();
-      RefreshNavNew(this.currentUid);
+    if (!this.currentUid) {
+      return;
     }
+    this.currentMenuData = await this._fetchMenuData(this.currentUid);
+    this.#markMenuItemsWithChildren();
+    if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
+      const pathname = ['sutta', 'vinaya', 'abhidhamma'].includes(this.currentUid)
+        ? `/pitaka/${this.currentUid}`
+        : `/${this.currentUid}`;
+      dispatchCustomEvent(this, 'sc-navigate', { pathname });
+      return;
+    }
+    this._setToolbarTitle();
+    this._createMetaData();
+    RefreshNavNew(this.currentUid);
   }
 
   _menuHasChildren() {
-    if (!this.currentMenuData || this.currentMenuData.length === 0) {
-      return false;
-    }
     return (
-      this.currentMenuData[0] &&
-      this.currentMenuData[0].children &&
-      this.currentMenuData[0].children.some(child => ['branch'].includes(child.node_type))
+      this.currentMenuData?.[0]?.children?.some(child => child.node_type === 'branch') || false
     );
   }
 
@@ -135,7 +130,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
                   <header>${this.#headerTemplate(child)}</header>
                 </a>
                 ${this.#blurbTemplate(child)} ${this.#pitakaGuideTemplate(child)}
-                ${this.#hasRelevantPublication(child.uid)
+                ${this.#checkForPublication(child.uid)
                   ? this.#publicationInfoTemplate(child)
                   : ''}
                 ${this.#shortcutsTemplate(child)}
@@ -216,7 +211,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
-        this.#tagForMenuItemsHasChildren();
+        this.#markMenuItemsWithChildren();
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
@@ -294,7 +289,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
       this._parseURL();
-      this.#hasRelevantPublication();
+      this.#checkForPublication();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
@@ -327,8 +322,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   async _fetchMenuData(childId) {
     try {
-      const childrenData = await (await fetch(this._computeMenuApiUrl(childId))).json();
-      return childrenData;
+      return await (await fetch(this._computeMenuApiUrl(childId))).json();
     } catch (error) {
       console.error(error);
       return {};
@@ -346,23 +340,20 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     this.#addBlurbsClickEvent();
   }
 
-  async #tagForMenuItemsHasChildren() {
+  async #markMenuItemsWithChildren() {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
     for (const child of this.currentMenuData[0].children) {
       const childrenData = await this._fetchMenuData(child.uid);
-      if (
-        childrenData[0] &&
-        childrenData[0].children &&
-        childrenData[0].children.some(item => ['branch'].includes(item.node_type))
-      ) {
+      const hasChildren = childrenData[0]?.children?.some(item => item.node_type === 'branch');
+      if (hasChildren) {
         const foundChild = this.currentMenuData[0].children.find(x => x.uid === child.uid);
         if (foundChild) {
           foundChild.has_children = true;
         }
       } else {
-        const foundChild = this.currentMenuData[0].children.find(x => x.uid === child.uid);
+        const foundChild = this.currentMenuData[0]?.children?.find(x => x.uid === child.uid);
         if (foundChild) {
           foundChild.has_children = false;
         }
@@ -373,14 +364,13 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
 
   #addBlurbsClickEvent() {
     this.shadowRoot.querySelectorAll('.blurb').forEach(element => {
-      // eslint-disable-next-line no-param-reassign
       element.onclick = () => {
         element.classList.toggle('blurbShrink');
       };
     });
   }
 
-  #hasRelevantPublication(uid) {
+  #checkForPublication(uid) {
     const isExists = this.allPublicationUid.includes(uid);
     let relatedLanguagePublicationExists = false;
     if (isExists) {
@@ -420,7 +410,7 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
     return span?.textContent;
   }
 
-  #extractUidsFromEditions() {
+  #extractUidsFromEditionsInfo() {
     this.allPublicationUid = [];
     allEditions.forEach(edition => {
       this.allPublicationUid.push(edition.uid);
@@ -468,4 +458,4 @@ export class SCNavigationNew extends LitLocalized(LitElement) {
   }
 }
 
-customElements.define('sc-navigation-new', SCNavigationNew);
+customElements.define('sc-navigation', SCNavigation);
