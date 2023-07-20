@@ -246,7 +246,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                   </a>
                 </div>
                 <div class="secondary">
-                  <p class="search-result-snippet highlightShrink">
+                  <p class="search-result-snippet">
                     ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
                   </p>
                 </div>
@@ -783,7 +783,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.requestUpdate();
       this.#createMetaData();
     }
-    this.#addHighlightClickEvent();
   }
 
   #didRespond(searchResult) {
@@ -1022,14 +1021,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByReference() {
     return this.searchQuery?.includes('ref:');
-  }
-
-  #addHighlightClickEvent() {
-    this.shadowRoot.querySelectorAll('.search-result-snippet').forEach(element => {
-      element.onclick = () => {
-        element.classList.toggle('highlightShrink');
-      };
-    });
   }
 }
 
