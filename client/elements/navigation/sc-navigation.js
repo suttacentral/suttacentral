@@ -47,7 +47,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
       this._verifyURL();
     }
     this._viewModeChanged();
-    console.log('SCNavigation: firstUpdated');
     this._parseURL();
   }
 
@@ -289,7 +288,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
-      console.log('routePath', this.routePath);
       this._parseURL();
       this.#checkForPublication();
     }
@@ -362,7 +360,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
         this.requestUpdate();
       }
     }
-    console.log(this.currentMenuData);
   }
 
   #addBlurbsClickEvent() {
