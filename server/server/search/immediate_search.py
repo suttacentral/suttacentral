@@ -45,7 +45,7 @@ AQL_POSSIBLE_RESULTS_BY_LANG = '''
                 "d211", "d42", "d41", "d38", "d34", "d33", "d31", "d6", "d3", "d1"]
 
     FOR d IN names
-        FILTER (d.lang == @lang OR d.is_root == true) AND starts_with(d.uid, ebt_prefixes) AND NOT CONTAINS(d.name, '-name')
+        FILTER (d.lang == @lang OR d.is_root == true) AND starts_with(d.uid, ebt_prefixes) AND NOT CONTAINS(d.uid, '-name')
     RETURN {
         uid:d.uid,
         title:d.name
