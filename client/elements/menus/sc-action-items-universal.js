@@ -1,9 +1,11 @@
 import { css, html, LitElement } from 'lit';
+import Document from 'flexsearch/dist/module/document';
 
 import './sc-menu-more';
 import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { store } from '../../redux-store';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
@@ -14,6 +16,15 @@ import '@material/mwc-icon-button';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+
+const fsDocument = new Document({
+  document: {
+    id: 'id',
+    index: ['uid', 'title'],
+    store: true,
+    context: true,
+  },
+});
 
 export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   static styles = css`
@@ -97,6 +108,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     searchKeyword: { type: String },
     moreMenu: { type: Object },
     possible_jump_to_list: { type: Array },
+    instant_search_data: { type: Array },
+    siteLanguage: { type: String },
   };
 
   constructor() {
@@ -104,12 +117,17 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
     this.search_input = this.shadowRoot?.getElementById('search_input');
     this.possible_jump_to_list = [];
+    this.siteLanguage = store.getState().siteLanguage;
   }
 
   stateChanged(state) {
     super.stateChanged(state);
     this.searchKeyword = state.searchQuery || '';
     this.mode = state.toolbarOptions.mode;
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this.#initInstantSearchData();
+    }
   }
 
   firstUpdated() {
@@ -128,6 +146,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.moreMenu.anchor.addEventListener('click', () => {
       this.#hideTopSheets();
     });
+    this.#initInstantSearchData();
   }
 
   updated(changedProps) {
@@ -190,28 +209,44 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   keyupHandler({ key }) {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
-      this.#fetchPossibleNames(searchQuery);
+      const ids = fsDocument.search(searchQuery, 20)[0]?.result;
+      if (ids?.length > 0) {
+        this.possible_jump_to_list = this.instant_search_data.filter(item => ids.includes(item.id));
+      }
     } else {
       this.possible_jump_to_list = [];
     }
   }
 
-  async #fetchPossibleNames(searchQuery) {
+  async #initInstantSearchData() {
     try {
-      this.possible_jump_to_list = await (await fetch(`${API_ROOT}/possible_names/${searchQuery}`)).json();
+      const { siteLanguage } = store.getState();
+      this.instant_search_data = await (
+        await fetch(`${API_ROOT}/possible_names/abc/${siteLanguage}`)
+      ).json();
+      if (this.instant_search_data?.length < 1) {
+        return;
+      }
+      let counter = 0;
+      this.instant_search_data.forEach(doc => {
+        doc.id = counter++;
+        fsDocument.add(doc);
+      });
+      console.log(this.instant_search_data);
     } catch (error) {
       console.error(error);
     }
   }
 
-  #jumpToListTemplate() {
-    return html`
-      <datalist id="possible_jump_to_list">
-        ${this.possible_jump_to_list?.map(
-          item => html`<option value=${item.uid}>Jump To ${item.title}</option>`
-        )}
-      </datalist>
-    `;
+  async #fetchPossibleNames(searchQuery) {
+    try {
+      const { siteLanguage } = store.getState();
+      this.possible_jump_to_list = await (
+        await fetch(`${API_ROOT}/possible_names/${searchQuery}/${siteLanguage}`)
+      ).json();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render() {

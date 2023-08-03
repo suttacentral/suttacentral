@@ -139,7 +139,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(MapData, '/map_data')
     api.add_resource(NavigationData, '/navigation_data/<string:uid>')
     api.add_resource(DataForHomepage, '/homepage_data')
-    api.add_resource(FetchPossibleNames, '/possible_names/<string:name>')
+    api.add_resource(FetchPossibleNames, '/possible_names/<string:name>/<string:lang>')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
