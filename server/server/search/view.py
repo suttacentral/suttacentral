@@ -30,5 +30,5 @@ class InstantSearch(Resource):
 
 class FetchPossibleNames(Resource):
     @cache.cached(timeout=600, key_prefix=make_cache_key)
-    def get(self, name, lang):
-        return fetch_possible_result(name, lang)
+    def get(self, lang):
+        return fetch_possible_result(lang)

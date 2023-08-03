@@ -53,9 +53,7 @@ AQL_POSSIBLE_RESULTS_BY_LANG = '''
 '''
 
 
-def fetch_possible_result(keyword, lang):
+def fetch_possible_result(lang):
     db = get_db()
-    uid =f'%{keyword}%'
-    # data = list(db.aql.execute(AQL_POSSIBLE_RESULTS, bind_vars={'uid': uid, 'name': keyword, 'lang': lang}))[0]
     data = list(db.aql.execute(AQL_POSSIBLE_RESULTS_BY_LANG, bind_vars={'lang': lang}))
     return data, 200

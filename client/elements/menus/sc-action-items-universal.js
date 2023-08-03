@@ -139,14 +139,32 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.moreMenu = this.shadowRoot.querySelector('#more-menu');
     this.moreMenu.anchor = this.shadowRoot.querySelector('#more-menu-button');
 
-    this.moreMenu.addEventListener('item-selected', () => {
+    this.moreMenu?.addEventListener('item-selected', () => {
       this.moreMenu.close();
     });
 
-    this.moreMenu.anchor.addEventListener('click', () => {
+    this.moreMenu?.anchor.addEventListener('click', () => {
       this.#hideTopSheets();
     });
+
     this.#initInstantSearchData();
+
+    const searchInput = this.shadowRoot?.getElementById('search_input');
+    document.addEventListener('keydown', event => {
+      const currentSelectedItem = document
+        .querySelector('sc-navigation-linden-leaves')
+        .shadowRoot.querySelector('sc-action-items-universal')
+        .shadowRoot.querySelector('sc-auto-complete-list')
+        .shadowRoot.querySelector('.selected');
+
+      if (!currentSelectedItem) {
+        return;
+      }
+
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter') {
+        searchInput?.focus();
+      }
+    });
   }
 
   updated(changedProps) {
@@ -222,7 +240,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     try {
       const { siteLanguage } = store.getState();
       this.instant_search_data = await (
-        await fetch(`${API_ROOT}/possible_names/abc/${siteLanguage}`)
+        await fetch(`${API_ROOT}/possible_names/${siteLanguage}`)
       ).json();
       if (this.instant_search_data?.length < 1) {
         return;
@@ -232,18 +250,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         doc.id = counter++;
         fsDocument.add(doc);
       });
-      console.log(this.instant_search_data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async #fetchPossibleNames(searchQuery) {
-    try {
-      const { siteLanguage } = store.getState();
-      this.possible_jump_to_list = await (
-        await fetch(`${API_ROOT}/possible_names/${searchQuery}/${siteLanguage}`)
-      ).json();
     } catch (error) {
       console.error(error);
     }
