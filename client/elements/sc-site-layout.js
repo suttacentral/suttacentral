@@ -169,7 +169,69 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       })
     );
 
+    // * VELOCITY THRESHOLD
+    // let lastScrollTop = 0;
+    // let lastScrollTimestamp = 0;
+    // const velocityThreshold = 10; // * velocity threshold (pixels/ms), adjust to desired value
+
+    // // handles scroll-based universal toolbar animation on pages other than the homepage
+    // document.addEventListener(
+    //   'scroll',
+    //   rafThrottle(() => {
+    //     // if settings specify that scrolling is not the basis for toolbar visibility
+    //     // or if the current route is the home page return
+    //     if (!this.toolbarPosition.scrollForToolbar || this.changedRoute.path === '/') {
+    //       return;
+    //     }
+
+    //     const {
+    //       displaySettingMenu,
+    //       displaySuttaParallels,
+    //       displaySuttaToC,
+    //       displaySuttaInfo,
+    //       alwaysShowUniversalToolbar,
+    //     } = store.getState();
+
+    //     if (displaySettingMenu || displaySuttaParallels || displaySuttaInfo || displaySuttaToC)
+    //       return;
+
+    //     if (alwaysShowUniversalToolbar) {
+    //       return;
+    //     }
+
+    //     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    //     const universalToolbarEl = document.getElementById('universal_toolbar');
+
+    //     const currentScrollTimestamp = performance.now();
+    //     const deltaTime = currentScrollTimestamp - lastScrollTimestamp;
+    //     const deltaScroll = lastScrollTop - currentScrollTop;
+    //     const scrollVelocity = deltaScroll / deltaTime; // * (pixels/ms)
+
+    //     const isScrollingDown = currentScrollTop > lastScrollTop;
+    //     if (isScrollingDown) {
+    //       universalToolbarEl.style.transition =
+    //         'transform 300ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, opacity 0s ease 300ms';
+    //       universalToolbarEl.style.transform = `translateY(-100%)`;
+    //     } else if (currentScrollTop < 10) {
+    //       this._resetUniversalToolbar();
+    //     } else {
+    //       // user is scrolling up
+    //       if (scrollVelocity >= velocityThreshold) {
+    //         // * Check if the scroll velocity is greater than or equal to the threshold
+    //         document.getElementById('universal_toolbar').style.transition =
+    //           'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, opacity 0ms ease 300ms, background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms';
+    //         universalToolbarEl.style.transform = `translateY(0)`;
+    //       }
+    //     }
+
+    //     lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+    //     lastScrollTimestamp = currentScrollTimestamp;
+    //   })
+    // );
+
+    // * SCROLL THRESHOLD
     let lastScrollTop = 0;
+    const scrollUpThreshold = 45; // * scroll threshold (pixels), adjust to desired value
     // handles scroll-based universal toolbar animation on pages other than the homepage
     document.addEventListener(
       'scroll',
@@ -209,9 +271,11 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
         } else if (currentScrollTop < 10) {
           this._resetUniversalToolbar();
         } else {
-          document.getElementById('universal_toolbar').style.transition =
-            'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, opacity 0ms ease 300ms, background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms';
-          universalToolbarEl.style.transform = `translateY(0)`;
+          if (lastScrollTop - currentScrollTop >= scrollUpThreshold) {
+            document.getElementById('universal_toolbar').style.transition =
+              'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, opacity 0ms ease 300ms, background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms';
+            universalToolbarEl.style.transform = `translateY(0)`;
+          }
         }
 
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
