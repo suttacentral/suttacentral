@@ -423,6 +423,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                       })}
                     </b>
                     ${this.localize('suttaplex:inYourLanguage')}
+                    <b>(${this.translationsInUserLanguage.length})</b>
                   </h3>
                 </summary>
                 <ul>

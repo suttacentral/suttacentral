@@ -1,0 +1,3003 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/7.2.1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@3.10.9
+3 info using node@v7.2.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData @material/mwc-button
+20 silly mapToRegistry name @material/mwc-button
+21 silly mapToRegistry scope (from package name) @material
+22 verbose mapToRegistry no registry URL found in name for scope @material
+23 silly mapToRegistry using default registry
+24 silly mapToRegistry registry https://registry.npmjs.org/
+25 silly mapToRegistry data Result {
+25 silly mapToRegistry   raw: '@material/mwc-button',
+25 silly mapToRegistry   scope: '@material',
+25 silly mapToRegistry   escapedName: '@material%2fmwc-button',
+25 silly mapToRegistry   name: '@material/mwc-button',
+25 silly mapToRegistry   rawSpec: '',
+25 silly mapToRegistry   spec: 'latest',
+25 silly mapToRegistry   type: 'tag' }
+26 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-button
+27 silly fetchNamedPackageData @material/mwc-checkbox
+28 silly mapToRegistry name @material/mwc-checkbox
+29 silly mapToRegistry scope (from package name) @material
+30 verbose mapToRegistry no registry URL found in name for scope @material
+31 silly mapToRegistry using default registry
+32 silly mapToRegistry registry https://registry.npmjs.org/
+33 silly mapToRegistry data Result {
+33 silly mapToRegistry   raw: '@material/mwc-checkbox',
+33 silly mapToRegistry   scope: '@material',
+33 silly mapToRegistry   escapedName: '@material%2fmwc-checkbox',
+33 silly mapToRegistry   name: '@material/mwc-checkbox',
+33 silly mapToRegistry   rawSpec: '',
+33 silly mapToRegistry   spec: 'latest',
+33 silly mapToRegistry   type: 'tag' }
+34 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-checkbox
+35 silly fetchNamedPackageData @material/mwc-formfield
+36 silly mapToRegistry name @material/mwc-formfield
+37 silly mapToRegistry scope (from package name) @material
+38 verbose mapToRegistry no registry URL found in name for scope @material
+39 silly mapToRegistry using default registry
+40 silly mapToRegistry registry https://registry.npmjs.org/
+41 silly mapToRegistry data Result {
+41 silly mapToRegistry   raw: '@material/mwc-formfield',
+41 silly mapToRegistry   scope: '@material',
+41 silly mapToRegistry   escapedName: '@material%2fmwc-formfield',
+41 silly mapToRegistry   name: '@material/mwc-formfield',
+41 silly mapToRegistry   rawSpec: '',
+41 silly mapToRegistry   spec: 'latest',
+41 silly mapToRegistry   type: 'tag' }
+42 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-formfield
+43 silly fetchNamedPackageData @material/mwc-icon
+44 silly mapToRegistry name @material/mwc-icon
+45 silly mapToRegistry scope (from package name) @material
+46 verbose mapToRegistry no registry URL found in name for scope @material
+47 silly mapToRegistry using default registry
+48 silly mapToRegistry registry https://registry.npmjs.org/
+49 silly mapToRegistry data Result {
+49 silly mapToRegistry   raw: '@material/mwc-icon',
+49 silly mapToRegistry   scope: '@material',
+49 silly mapToRegistry   escapedName: '@material%2fmwc-icon',
+49 silly mapToRegistry   name: '@material/mwc-icon',
+49 silly mapToRegistry   rawSpec: '',
+49 silly mapToRegistry   spec: 'latest',
+49 silly mapToRegistry   type: 'tag' }
+50 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-icon
+51 silly fetchNamedPackageData @material/mwc-icon-button
+52 silly mapToRegistry name @material/mwc-icon-button
+53 silly mapToRegistry scope (from package name) @material
+54 verbose mapToRegistry no registry URL found in name for scope @material
+55 silly mapToRegistry using default registry
+56 silly mapToRegistry registry https://registry.npmjs.org/
+57 silly mapToRegistry data Result {
+57 silly mapToRegistry   raw: '@material/mwc-icon-button',
+57 silly mapToRegistry   scope: '@material',
+57 silly mapToRegistry   escapedName: '@material%2fmwc-icon-button',
+57 silly mapToRegistry   name: '@material/mwc-icon-button',
+57 silly mapToRegistry   rawSpec: '',
+57 silly mapToRegistry   spec: 'latest',
+57 silly mapToRegistry   type: 'tag' }
+58 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-icon-button
+59 silly fetchNamedPackageData @material/mwc-linear-progress
+60 silly mapToRegistry name @material/mwc-linear-progress
+61 silly mapToRegistry scope (from package name) @material
+62 verbose mapToRegistry no registry URL found in name for scope @material
+63 silly mapToRegistry using default registry
+64 silly mapToRegistry registry https://registry.npmjs.org/
+65 silly mapToRegistry data Result {
+65 silly mapToRegistry   raw: '@material/mwc-linear-progress',
+65 silly mapToRegistry   scope: '@material',
+65 silly mapToRegistry   escapedName: '@material%2fmwc-linear-progress',
+65 silly mapToRegistry   name: '@material/mwc-linear-progress',
+65 silly mapToRegistry   rawSpec: '',
+65 silly mapToRegistry   spec: 'latest',
+65 silly mapToRegistry   type: 'tag' }
+66 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-linear-progress
+67 silly fetchNamedPackageData @material/mwc-list
+68 silly mapToRegistry name @material/mwc-list
+69 silly mapToRegistry scope (from package name) @material
+70 verbose mapToRegistry no registry URL found in name for scope @material
+71 silly mapToRegistry using default registry
+72 silly mapToRegistry registry https://registry.npmjs.org/
+73 silly mapToRegistry data Result {
+73 silly mapToRegistry   raw: '@material/mwc-list',
+73 silly mapToRegistry   scope: '@material',
+73 silly mapToRegistry   escapedName: '@material%2fmwc-list',
+73 silly mapToRegistry   name: '@material/mwc-list',
+73 silly mapToRegistry   rawSpec: '',
+73 silly mapToRegistry   spec: 'latest',
+73 silly mapToRegistry   type: 'tag' }
+74 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-list
+75 silly fetchNamedPackageData @material/mwc-menu
+76 silly mapToRegistry name @material/mwc-menu
+77 silly mapToRegistry scope (from package name) @material
+78 verbose mapToRegistry no registry URL found in name for scope @material
+79 silly mapToRegistry using default registry
+80 silly mapToRegistry registry https://registry.npmjs.org/
+81 silly mapToRegistry data Result {
+81 silly mapToRegistry   raw: '@material/mwc-menu',
+81 silly mapToRegistry   scope: '@material',
+81 silly mapToRegistry   escapedName: '@material%2fmwc-menu',
+81 silly mapToRegistry   name: '@material/mwc-menu',
+81 silly mapToRegistry   rawSpec: '',
+81 silly mapToRegistry   spec: 'latest',
+81 silly mapToRegistry   type: 'tag' }
+82 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-menu
+83 silly fetchNamedPackageData @material/mwc-radio
+84 silly mapToRegistry name @material/mwc-radio
+85 silly mapToRegistry scope (from package name) @material
+86 verbose mapToRegistry no registry URL found in name for scope @material
+87 silly mapToRegistry using default registry
+88 silly mapToRegistry registry https://registry.npmjs.org/
+89 silly mapToRegistry data Result {
+89 silly mapToRegistry   raw: '@material/mwc-radio',
+89 silly mapToRegistry   scope: '@material',
+89 silly mapToRegistry   escapedName: '@material%2fmwc-radio',
+89 silly mapToRegistry   name: '@material/mwc-radio',
+89 silly mapToRegistry   rawSpec: '',
+89 silly mapToRegistry   spec: 'latest',
+89 silly mapToRegistry   type: 'tag' }
+90 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-radio
+91 silly fetchNamedPackageData @material/mwc-select
+92 silly mapToRegistry name @material/mwc-select
+93 silly mapToRegistry scope (from package name) @material
+94 verbose mapToRegistry no registry URL found in name for scope @material
+95 silly mapToRegistry using default registry
+96 silly mapToRegistry registry https://registry.npmjs.org/
+97 silly mapToRegistry data Result {
+97 silly mapToRegistry   raw: '@material/mwc-select',
+97 silly mapToRegistry   scope: '@material',
+97 silly mapToRegistry   escapedName: '@material%2fmwc-select',
+97 silly mapToRegistry   name: '@material/mwc-select',
+97 silly mapToRegistry   rawSpec: '',
+97 silly mapToRegistry   spec: 'latest',
+97 silly mapToRegistry   type: 'tag' }
+98 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-select
+99 silly fetchNamedPackageData @material/mwc-snackbar
+100 silly mapToRegistry name @material/mwc-snackbar
+101 silly mapToRegistry scope (from package name) @material
+102 verbose mapToRegistry no registry URL found in name for scope @material
+103 silly mapToRegistry using default registry
+104 silly mapToRegistry registry https://registry.npmjs.org/
+105 silly mapToRegistry data Result {
+105 silly mapToRegistry   raw: '@material/mwc-snackbar',
+105 silly mapToRegistry   scope: '@material',
+105 silly mapToRegistry   escapedName: '@material%2fmwc-snackbar',
+105 silly mapToRegistry   name: '@material/mwc-snackbar',
+105 silly mapToRegistry   rawSpec: '',
+105 silly mapToRegistry   spec: 'latest',
+105 silly mapToRegistry   type: 'tag' }
+106 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-snackbar
+107 silly fetchNamedPackageData @material/mwc-textarea
+108 silly mapToRegistry name @material/mwc-textarea
+109 silly mapToRegistry scope (from package name) @material
+110 verbose mapToRegistry no registry URL found in name for scope @material
+111 silly mapToRegistry using default registry
+112 silly mapToRegistry registry https://registry.npmjs.org/
+113 silly mapToRegistry data Result {
+113 silly mapToRegistry   raw: '@material/mwc-textarea',
+113 silly mapToRegistry   scope: '@material',
+113 silly mapToRegistry   escapedName: '@material%2fmwc-textarea',
+113 silly mapToRegistry   name: '@material/mwc-textarea',
+113 silly mapToRegistry   rawSpec: '',
+113 silly mapToRegistry   spec: 'latest',
+113 silly mapToRegistry   type: 'tag' }
+114 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-textarea
+115 silly fetchNamedPackageData @material/mwc-textfield
+116 silly mapToRegistry name @material/mwc-textfield
+117 silly mapToRegistry scope (from package name) @material
+118 verbose mapToRegistry no registry URL found in name for scope @material
+119 silly mapToRegistry using default registry
+120 silly mapToRegistry registry https://registry.npmjs.org/
+121 silly mapToRegistry data Result {
+121 silly mapToRegistry   raw: '@material/mwc-textfield',
+121 silly mapToRegistry   scope: '@material',
+121 silly mapToRegistry   escapedName: '@material%2fmwc-textfield',
+121 silly mapToRegistry   name: '@material/mwc-textfield',
+121 silly mapToRegistry   rawSpec: '',
+121 silly mapToRegistry   spec: 'latest',
+121 silly mapToRegistry   type: 'tag' }
+122 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-textfield
+123 silly fetchNamedPackageData @micro-sentry/browser
+124 silly mapToRegistry name @micro-sentry/browser
+125 silly mapToRegistry scope (from package name) @micro-sentry
+126 verbose mapToRegistry no registry URL found in name for scope @micro-sentry
+127 silly mapToRegistry using default registry
+128 silly mapToRegistry registry https://registry.npmjs.org/
+129 silly mapToRegistry data Result {
+129 silly mapToRegistry   raw: '@micro-sentry/browser',
+129 silly mapToRegistry   scope: '@micro-sentry',
+129 silly mapToRegistry   escapedName: '@micro-sentry%2fbrowser',
+129 silly mapToRegistry   name: '@micro-sentry/browser',
+129 silly mapToRegistry   rawSpec: '',
+129 silly mapToRegistry   spec: 'latest',
+129 silly mapToRegistry   type: 'tag' }
+130 silly mapToRegistry uri https://registry.npmjs.org/@micro-sentry%2fbrowser
+131 silly fetchNamedPackageData @stripe/stripe-js
+132 silly mapToRegistry name @stripe/stripe-js
+133 silly mapToRegistry scope (from package name) @stripe
+134 verbose mapToRegistry no registry URL found in name for scope @stripe
+135 silly mapToRegistry using default registry
+136 silly mapToRegistry registry https://registry.npmjs.org/
+137 silly mapToRegistry data Result {
+137 silly mapToRegistry   raw: '@stripe/stripe-js',
+137 silly mapToRegistry   scope: '@stripe',
+137 silly mapToRegistry   escapedName: '@stripe%2fstripe-js',
+137 silly mapToRegistry   name: '@stripe/stripe-js',
+137 silly mapToRegistry   rawSpec: '',
+137 silly mapToRegistry   spec: 'latest',
+137 silly mapToRegistry   type: 'tag' }
+138 silly mapToRegistry uri https://registry.npmjs.org/@stripe%2fstripe-js
+139 silly fetchNamedPackageData @webcomponents/webcomponentsjs
+140 silly mapToRegistry name @webcomponents/webcomponentsjs
+141 silly mapToRegistry scope (from package name) @webcomponents
+142 verbose mapToRegistry no registry URL found in name for scope @webcomponents
+143 silly mapToRegistry using default registry
+144 silly mapToRegistry registry https://registry.npmjs.org/
+145 silly mapToRegistry data Result {
+145 silly mapToRegistry   raw: '@webcomponents/webcomponentsjs',
+145 silly mapToRegistry   scope: '@webcomponents',
+145 silly mapToRegistry   escapedName: '@webcomponents%2fwebcomponentsjs',
+145 silly mapToRegistry   name: '@webcomponents/webcomponentsjs',
+145 silly mapToRegistry   rawSpec: '',
+145 silly mapToRegistry   spec: 'latest',
+145 silly mapToRegistry   type: 'tag' }
+146 silly mapToRegistry uri https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs
+147 silly fetchNamedPackageData d3-queue
+148 silly mapToRegistry name d3-queue
+149 silly mapToRegistry using default registry
+150 silly mapToRegistry registry https://registry.npmjs.org/
+151 silly mapToRegistry data Result {
+151 silly mapToRegistry   raw: 'd3-queue',
+151 silly mapToRegistry   scope: null,
+151 silly mapToRegistry   escapedName: 'd3-queue',
+151 silly mapToRegistry   name: 'd3-queue',
+151 silly mapToRegistry   rawSpec: '',
+151 silly mapToRegistry   spec: 'latest',
+151 silly mapToRegistry   type: 'tag' }
+152 silly mapToRegistry uri https://registry.npmjs.org/d3-queue
+153 silly fetchNamedPackageData history
+154 silly mapToRegistry name history
+155 silly mapToRegistry using default registry
+156 silly mapToRegistry registry https://registry.npmjs.org/
+157 silly mapToRegistry data Result {
+157 silly mapToRegistry   raw: 'history',
+157 silly mapToRegistry   scope: null,
+157 silly mapToRegistry   escapedName: 'history',
+157 silly mapToRegistry   name: 'history',
+157 silly mapToRegistry   rawSpec: '',
+157 silly mapToRegistry   spec: 'latest',
+157 silly mapToRegistry   type: 'tag' }
+158 silly mapToRegistry uri https://registry.npmjs.org/history
+159 silly fetchNamedPackageData leaflet
+160 silly mapToRegistry name leaflet
+161 silly mapToRegistry using default registry
+162 silly mapToRegistry registry https://registry.npmjs.org/
+163 silly mapToRegistry data Result {
+163 silly mapToRegistry   raw: 'leaflet',
+163 silly mapToRegistry   scope: null,
+163 silly mapToRegistry   escapedName: 'leaflet',
+163 silly mapToRegistry   name: 'leaflet',
+163 silly mapToRegistry   rawSpec: '',
+163 silly mapToRegistry   spec: 'latest',
+163 silly mapToRegistry   type: 'tag' }
+164 silly mapToRegistry uri https://registry.npmjs.org/leaflet
+165 silly fetchOtherPackageData leaflet-fullscreen@git://github.com/runette/Leaflet.fullscreen.git
+166 silly cache add args [ 'leaflet-fullscreen@git://github.com/runette/Leaflet.fullscreen.git',
+166 silly cache add   null ]
+167 verbose cache add spec leaflet-fullscreen@git://github.com/runette/Leaflet.fullscreen.git
+168 silly fetchNamedPackageData lit
+169 silly mapToRegistry name lit
+170 silly mapToRegistry using default registry
+171 silly mapToRegistry registry https://registry.npmjs.org/
+172 silly mapToRegistry data Result {
+172 silly mapToRegistry   raw: 'lit',
+172 silly mapToRegistry   scope: null,
+172 silly mapToRegistry   escapedName: 'lit',
+172 silly mapToRegistry   name: 'lit',
+172 silly mapToRegistry   rawSpec: '',
+172 silly mapToRegistry   spec: 'latest',
+172 silly mapToRegistry   type: 'tag' }
+173 silly mapToRegistry uri https://registry.npmjs.org/lit
+174 silly fetchNamedPackageData path-to-regexp
+175 silly mapToRegistry name path-to-regexp
+176 silly mapToRegistry using default registry
+177 silly mapToRegistry registry https://registry.npmjs.org/
+178 silly mapToRegistry data Result {
+178 silly mapToRegistry   raw: 'path-to-regexp',
+178 silly mapToRegistry   scope: null,
+178 silly mapToRegistry   escapedName: 'path-to-regexp',
+178 silly mapToRegistry   name: 'path-to-regexp',
+178 silly mapToRegistry   rawSpec: '',
+178 silly mapToRegistry   spec: 'latest',
+178 silly mapToRegistry   type: 'tag' }
+179 silly mapToRegistry uri https://registry.npmjs.org/path-to-regexp
+180 silly fetchNamedPackageData pwa-helpers
+181 silly mapToRegistry name pwa-helpers
+182 silly mapToRegistry using default registry
+183 silly mapToRegistry registry https://registry.npmjs.org/
+184 silly mapToRegistry data Result {
+184 silly mapToRegistry   raw: 'pwa-helpers',
+184 silly mapToRegistry   scope: null,
+184 silly mapToRegistry   escapedName: 'pwa-helpers',
+184 silly mapToRegistry   name: 'pwa-helpers',
+184 silly mapToRegistry   rawSpec: '',
+184 silly mapToRegistry   spec: 'latest',
+184 silly mapToRegistry   type: 'tag' }
+185 silly mapToRegistry uri https://registry.npmjs.org/pwa-helpers
+186 silly fetchNamedPackageData redux
+187 silly mapToRegistry name redux
+188 silly mapToRegistry using default registry
+189 silly mapToRegistry registry https://registry.npmjs.org/
+190 silly mapToRegistry data Result {
+190 silly mapToRegistry   raw: 'redux',
+190 silly mapToRegistry   scope: null,
+190 silly mapToRegistry   escapedName: 'redux',
+190 silly mapToRegistry   name: 'redux',
+190 silly mapToRegistry   rawSpec: '',
+190 silly mapToRegistry   spec: 'latest',
+190 silly mapToRegistry   type: 'tag' }
+191 silly mapToRegistry uri https://registry.npmjs.org/redux
+192 silly fetchNamedPackageData throttle-debounce
+193 silly mapToRegistry name throttle-debounce
+194 silly mapToRegistry using default registry
+195 silly mapToRegistry registry https://registry.npmjs.org/
+196 silly mapToRegistry data Result {
+196 silly mapToRegistry   raw: 'throttle-debounce',
+196 silly mapToRegistry   scope: null,
+196 silly mapToRegistry   escapedName: 'throttle-debounce',
+196 silly mapToRegistry   name: 'throttle-debounce',
+196 silly mapToRegistry   rawSpec: '',
+196 silly mapToRegistry   spec: 'latest',
+196 silly mapToRegistry   type: 'tag' }
+197 silly mapToRegistry uri https://registry.npmjs.org/throttle-debounce
+198 silly fetchNamedPackageData turbolinks
+199 silly mapToRegistry name turbolinks
+200 silly mapToRegistry using default registry
+201 silly mapToRegistry registry https://registry.npmjs.org/
+202 silly mapToRegistry data Result {
+202 silly mapToRegistry   raw: 'turbolinks',
+202 silly mapToRegistry   scope: null,
+202 silly mapToRegistry   escapedName: 'turbolinks',
+202 silly mapToRegistry   name: 'turbolinks',
+202 silly mapToRegistry   rawSpec: '',
+202 silly mapToRegistry   spec: 'latest',
+202 silly mapToRegistry   type: 'tag' }
+203 silly mapToRegistry uri https://registry.npmjs.org/turbolinks
+204 silly fetchNamedPackageData viewerjs
+205 silly mapToRegistry name viewerjs
+206 silly mapToRegistry using default registry
+207 silly mapToRegistry registry https://registry.npmjs.org/
+208 silly mapToRegistry data Result {
+208 silly mapToRegistry   raw: 'viewerjs',
+208 silly mapToRegistry   scope: null,
+208 silly mapToRegistry   escapedName: 'viewerjs',
+208 silly mapToRegistry   name: 'viewerjs',
+208 silly mapToRegistry   rawSpec: '',
+208 silly mapToRegistry   spec: 'latest',
+208 silly mapToRegistry   type: 'tag' }
+209 silly mapToRegistry uri https://registry.npmjs.org/viewerjs
+210 silly fetchNamedPackageData web-animations-js
+211 silly mapToRegistry name web-animations-js
+212 silly mapToRegistry using default registry
+213 silly mapToRegistry registry https://registry.npmjs.org/
+214 silly mapToRegistry data Result {
+214 silly mapToRegistry   raw: 'web-animations-js',
+214 silly mapToRegistry   scope: null,
+214 silly mapToRegistry   escapedName: 'web-animations-js',
+214 silly mapToRegistry   name: 'web-animations-js',
+214 silly mapToRegistry   rawSpec: '',
+214 silly mapToRegistry   spec: 'latest',
+214 silly mapToRegistry   type: 'tag' }
+215 silly mapToRegistry uri https://registry.npmjs.org/web-animations-js
+216 silly fetchNamedPackageData workbox-sw
+217 silly mapToRegistry name workbox-sw
+218 silly mapToRegistry using default registry
+219 silly mapToRegistry registry https://registry.npmjs.org/
+220 silly mapToRegistry data Result {
+220 silly mapToRegistry   raw: 'workbox-sw',
+220 silly mapToRegistry   scope: null,
+220 silly mapToRegistry   escapedName: 'workbox-sw',
+220 silly mapToRegistry   name: 'workbox-sw',
+220 silly mapToRegistry   rawSpec: '',
+220 silly mapToRegistry   spec: 'latest',
+220 silly mapToRegistry   type: 'tag' }
+221 silly mapToRegistry uri https://registry.npmjs.org/workbox-sw
+222 silly cache add parsed spec Result {
+222 silly cache add   raw: 'leaflet-fullscreen@git://github.com/runette/Leaflet.fullscreen.git',
+222 silly cache add   scope: null,
+222 silly cache add   escapedName: 'leaflet-fullscreen',
+222 silly cache add   name: 'leaflet-fullscreen',
+222 silly cache add   rawSpec: 'git://github.com/runette/Leaflet.fullscreen.git',
+222 silly cache add   spec: 'git://github.com/runette/Leaflet.fullscreen.git',
+222 silly cache add   type: 'hosted',
+222 silly cache add   hosted:
+222 silly cache add    { type: 'github',
+222 silly cache add      ssh: 'git@github.com:runette/Leaflet.fullscreen.git',
+222 silly cache add      sshUrl: 'git+ssh://git@github.com/runette/Leaflet.fullscreen.git',
+222 silly cache add      httpsUrl: 'git+https://github.com/runette/Leaflet.fullscreen.git',
+222 silly cache add      gitUrl: 'git://github.com/runette/Leaflet.fullscreen.git',
+222 silly cache add      shortcut: 'github:runette/Leaflet.fullscreen',
+222 silly cache add      directUrl: 'https://raw.githubusercontent.com/runette/Leaflet.fullscreen/master/package.json' } }
+223 verbose addRemoteGit caching git://github.com/runette/Leaflet.fullscreen.git
+224 verbose addRemoteGit git://github.com/runette/Leaflet.fullscreen.git is a repository hosted by github
+225 silly tryClone cloning git://github.com/runette/Leaflet.fullscreen.git via git://github.com/runette/Leaflet.fullscreen.git
+226 verbose tryClone git-github-com-runette-Leaflet-fullscreen-git-447d700f not in flight; caching
+227 verbose correctMkdir /Users/dudemaster4/.npm/_git-remotes correctMkdir not in flight; initializing
+228 verbose request uri https://registry.npmjs.org/@material%2fmwc-icon
+229 verbose request no auth needed
+230 info attempt registry request try #1 at 12:06:16 PM
+231 verbose request id daf481aa84cd38a1
+232 verbose etag W/"1258405a9d067cfbea324b1d56b3a939"
+233 verbose lastModified Fri, 23 Dec 2022 07:27:53 GMT
+234 http request GET https://registry.npmjs.org/@material%2fmwc-icon
+235 verbose request uri https://registry.npmjs.org/@material%2fmwc-checkbox
+236 verbose request no auth needed
+237 info attempt registry request try #1 at 12:06:16 PM
+238 verbose etag W/"98e5bb1e5aa7a361d9625c2593bcc863"
+239 verbose lastModified Fri, 23 Dec 2022 07:25:55 GMT
+240 http request GET https://registry.npmjs.org/@material%2fmwc-checkbox
+241 verbose request uri https://registry.npmjs.org/@material%2fmwc-formfield
+242 verbose request no auth needed
+243 info attempt registry request try #1 at 12:06:16 PM
+244 verbose etag W/"aee17302aba6394eda59e1553190c3f0"
+245 verbose lastModified Fri, 23 Dec 2022 07:27:50 GMT
+246 http request GET https://registry.npmjs.org/@material%2fmwc-formfield
+247 verbose request uri https://registry.npmjs.org/@material%2fmwc-button
+248 verbose request no auth needed
+249 info attempt registry request try #1 at 12:06:16 PM
+250 verbose etag W/"e5c4146a09ed647cf89e01ce3802bb83"
+251 verbose lastModified Fri, 23 Dec 2022 07:27:31 GMT
+252 http request GET https://registry.npmjs.org/@material%2fmwc-button
+253 verbose request uri https://registry.npmjs.org/@material%2fmwc-radio
+254 verbose request no auth needed
+255 info attempt registry request try #1 at 12:06:16 PM
+256 verbose etag W/"c717f3a6f6b7fb63a12df2cca4af1c7b"
+257 verbose lastModified Fri, 23 Dec 2022 07:26:19 GMT
+258 http request GET https://registry.npmjs.org/@material%2fmwc-radio
+259 verbose request uri https://registry.npmjs.org/@material%2fmwc-menu
+260 verbose request no auth needed
+261 info attempt registry request try #1 at 12:06:16 PM
+262 verbose etag W/"91d7676062e63f7484b67083da46cca9"
+263 verbose lastModified Fri, 23 Dec 2022 07:26:15 GMT
+264 http request GET https://registry.npmjs.org/@material%2fmwc-menu
+265 verbose request uri https://registry.npmjs.org/@material%2fmwc-snackbar
+266 verbose request no auth needed
+267 info attempt registry request try #1 at 12:06:16 PM
+268 verbose etag W/"fda3e7a5e186516f70bcd878c4a6050c"
+269 verbose lastModified Fri, 23 Dec 2022 07:26:31 GMT
+270 http request GET https://registry.npmjs.org/@material%2fmwc-snackbar
+271 verbose request uri https://registry.npmjs.org/@material%2fmwc-list
+272 verbose request no auth needed
+273 info attempt registry request try #1 at 12:06:17 PM
+274 verbose etag W/"dbc8a4266a5510e7ae4d945fdc7d0bfc"
+275 verbose lastModified Fri, 23 Dec 2022 07:26:11 GMT
+276 http request GET https://registry.npmjs.org/@material%2fmwc-list
+277 verbose request uri https://registry.npmjs.org/@material%2fmwc-linear-progress
+278 verbose request no auth needed
+279 info attempt registry request try #1 at 12:06:17 PM
+280 verbose etag W/"20f8b3ca238468fccf3af6a0cd07f1a5"
+281 verbose lastModified Fri, 23 Dec 2022 07:27:59 GMT
+282 http request GET https://registry.npmjs.org/@material%2fmwc-linear-progress
+283 verbose request uri https://registry.npmjs.org/@material%2fmwc-select
+284 verbose request no auth needed
+285 info attempt registry request try #1 at 12:06:17 PM
+286 verbose etag W/"9a2747607972a23b2b2c3ffad9a2cd23"
+287 verbose lastModified Fri, 23 Dec 2022 07:26:24 GMT
+288 http request GET https://registry.npmjs.org/@material%2fmwc-select
+289 verbose request uri https://registry.npmjs.org/@micro-sentry%2fbrowser
+290 verbose request no auth needed
+291 info attempt registry request try #1 at 12:06:17 PM
+292 verbose etag W/"7ff4bdd034d232d9637f5742c46731b9"
+293 verbose lastModified Thu, 09 Feb 2023 11:39:09 GMT
+294 http request GET https://registry.npmjs.org/@micro-sentry%2fbrowser
+295 verbose request uri https://registry.npmjs.org/@stripe%2fstripe-js
+296 verbose request no auth needed
+297 info attempt registry request try #1 at 12:06:17 PM
+298 verbose etag W/"e3ddfc5b936a063417c7f8338afe165a"
+299 verbose lastModified Mon, 31 Jul 2023 19:04:40 GMT
+300 http request GET https://registry.npmjs.org/@stripe%2fstripe-js
+301 verbose request uri https://registry.npmjs.org/history
+302 verbose request no auth needed
+303 info attempt registry request try #1 at 12:06:17 PM
+304 verbose etag W/"2909a12c9a15c84108da527798392814"
+305 verbose lastModified Sat, 18 Jun 2022 20:50:45 GMT
+306 http request GET https://registry.npmjs.org/history
+307 verbose request uri https://registry.npmjs.org/d3-queue
+308 verbose request no auth needed
+309 info attempt registry request try #1 at 12:06:17 PM
+310 verbose etag W/"14ceea8592d435f3f3f903adcbbfba7e"
+311 verbose lastModified Tue, 14 Jun 2022 07:50:23 GMT
+312 http request GET https://registry.npmjs.org/d3-queue
+313 verbose request uri https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs
+314 verbose request no auth needed
+315 info attempt registry request try #1 at 12:06:17 PM
+316 verbose etag W/"eb293cb264eb0a911a33ce0395ef7ccf"
+317 verbose lastModified Thu, 30 Mar 2023 21:35:06 GMT
+318 http request GET https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs
+319 verbose request uri https://registry.npmjs.org/leaflet
+320 verbose request no auth needed
+321 info attempt registry request try #1 at 12:06:17 PM
+322 verbose etag W/"06b2e679b2e786595e835fd980679518"
+323 verbose lastModified Thu, 25 May 2023 14:34:35 GMT
+324 http request GET https://registry.npmjs.org/leaflet
+325 verbose request uri https://registry.npmjs.org/lit
+326 verbose request no auth needed
+327 info attempt registry request try #1 at 12:06:17 PM
+328 verbose etag W/"f21e4d5144da33dff08bc068a4bad876"
+329 verbose lastModified Wed, 02 Aug 2023 20:13:00 GMT
+330 http request GET https://registry.npmjs.org/lit
+331 verbose request uri https://registry.npmjs.org/path-to-regexp
+332 verbose request no auth needed
+333 info attempt registry request try #1 at 12:06:17 PM
+334 verbose etag W/"f88ffd19b53a681c3f8f19ca0e3fb989"
+335 verbose lastModified Thu, 18 May 2023 02:36:10 GMT
+336 http request GET https://registry.npmjs.org/path-to-regexp
+337 verbose request uri https://registry.npmjs.org/throttle-debounce
+338 verbose request no auth needed
+339 info attempt registry request try #1 at 12:06:17 PM
+340 verbose etag W/"4c9061529e8ce0ab7bf224ebb10d12c4"
+341 verbose lastModified Fri, 21 Jul 2023 15:50:58 GMT
+342 http request GET https://registry.npmjs.org/throttle-debounce
+343 verbose request uri https://registry.npmjs.org/turbolinks
+344 verbose request no auth needed
+345 info attempt registry request try #1 at 12:06:17 PM
+346 verbose etag W/"7d8d50937befc9e81d500c7f204bd4f9"
+347 verbose lastModified Mon, 27 Jun 2022 23:25:59 GMT
+348 http request GET https://registry.npmjs.org/turbolinks
+349 verbose request uri https://registry.npmjs.org/@material%2fmwc-icon-button
+350 verbose request no auth needed
+351 info attempt registry request try #1 at 12:06:17 PM
+352 verbose etag W/"eb143ec2e13ef544107dec71688ba9ec"
+353 verbose lastModified Fri, 23 Dec 2022 07:27:56 GMT
+354 http request GET https://registry.npmjs.org/@material%2fmwc-icon-button
+355 verbose request uri https://registry.npmjs.org/pwa-helpers
+356 verbose request no auth needed
+357 info attempt registry request try #1 at 12:06:17 PM
+358 verbose etag W/"29e421688f148774fc32c1cdde54f67a"
+359 verbose lastModified Fri, 13 May 2022 17:45:13 GMT
+360 http request GET https://registry.npmjs.org/pwa-helpers
+361 verbose request uri https://registry.npmjs.org/viewerjs
+362 verbose request no auth needed
+363 info attempt registry request try #1 at 12:06:17 PM
+364 verbose etag W/"4b6e23d93b623635f6084924dc9dd5bc"
+365 verbose lastModified Sun, 23 Jul 2023 08:15:14 GMT
+366 http request GET https://registry.npmjs.org/viewerjs
+367 verbose request uri https://registry.npmjs.org/web-animations-js
+368 verbose request no auth needed
+369 info attempt registry request try #1 at 12:06:17 PM
+370 verbose etag W/"e8e9f30c63c42315652fb942b86dc5ca"
+371 verbose lastModified Tue, 28 Jun 2022 22:45:32 GMT
+372 http request GET https://registry.npmjs.org/web-animations-js
+373 verbose request uri https://registry.npmjs.org/redux
+374 verbose request no auth needed
+375 info attempt registry request try #1 at 12:06:17 PM
+376 verbose etag W/"cc9552716a81a8efe097d38cb0a59afd"
+377 verbose lastModified Wed, 26 Jul 2023 19:02:09 GMT
+378 http request GET https://registry.npmjs.org/redux
+379 verbose request uri https://registry.npmjs.org/workbox-sw
+380 verbose request no auth needed
+381 info attempt registry request try #1 at 12:06:17 PM
+382 verbose etag W/"2f03c99705f16c81b080af5adc05d1ca"
+383 verbose lastModified Wed, 31 May 2023 17:19:52 GMT
+384 http request GET https://registry.npmjs.org/workbox-sw
+385 verbose request uri https://registry.npmjs.org/@material%2fmwc-textfield
+386 verbose request no auth needed
+387 info attempt registry request try #1 at 12:06:17 PM
+388 verbose etag W/"c1c1d70a6c99ec4d7239082bc5e80b89"
+389 verbose lastModified Fri, 23 Dec 2022 07:26:38 GMT
+390 http request GET https://registry.npmjs.org/@material%2fmwc-textfield
+391 verbose request uri https://registry.npmjs.org/@material%2fmwc-textarea
+392 verbose request no auth needed
+393 info attempt registry request try #1 at 12:06:17 PM
+394 verbose etag W/"2aae1b25af9390ba85a8e295a9312c63"
+395 verbose lastModified Fri, 23 Dec 2022 07:28:19 GMT
+396 http request GET https://registry.npmjs.org/@material%2fmwc-textarea
+397 info git [ 'config', '--get', 'remote.origin.url' ]
+398 silly validateExistingRemote git://github.com/runette/Leaflet.fullscreen.git remote.origin.url: git://github.com/runette/Leaflet.fullscreen.git
+399 verbose validateExistingRemote git://github.com/runette/Leaflet.fullscreen.git is updating existing cached remote /Users/dudemaster4/.npm/_git-remotes/git-github-com-runette-Leaflet-fullscreen-git-447d700f
+400 info git [ 'fetch', '-a', 'origin' ]
+401 http 304 https://registry.npmjs.org/path-to-regexp
+402 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+402 verbose headers   connection: 'keep-alive',
+402 verbose headers   'cf-ray': '7f23b8405ef05ab4-MEL',
+402 verbose headers   'cf-cache-status': 'HIT',
+402 verbose headers   age: '110',
+402 verbose headers   'cache-control': 'public, max-age=300',
+402 verbose headers   etag: '"f88ffd19b53a681c3f8f19ca0e3fb989"',
+402 verbose headers   'last-modified': 'Thu, 18 May 2023 02:36:10 GMT',
+402 verbose headers   vary: 'Accept-Encoding',
+402 verbose headers   'x-amz-replication-status': 'COMPLETED',
+402 verbose headers   'x-amz-server-side-encryption': 'AES256',
+402 verbose headers   server: 'cloudflare' }
+403 silly get cb [ 304,
+403 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+403 silly get     connection: 'keep-alive',
+403 silly get     'cf-ray': '7f23b8405ef05ab4-MEL',
+403 silly get     'cf-cache-status': 'HIT',
+403 silly get     age: '110',
+403 silly get     'cache-control': 'public, max-age=300',
+403 silly get     etag: '"f88ffd19b53a681c3f8f19ca0e3fb989"',
+403 silly get     'last-modified': 'Thu, 18 May 2023 02:36:10 GMT',
+403 silly get     vary: 'Accept-Encoding',
+403 silly get     'x-amz-replication-status': 'COMPLETED',
+403 silly get     'x-amz-server-side-encryption': 'AES256',
+403 silly get     server: 'cloudflare' } ]
+404 verbose etag https://registry.npmjs.org/path-to-regexp from cache
+405 verbose get saving path-to-regexp to /Users/dudemaster4/.npm/registry.npmjs.org/path-to-regexp/.cache.json
+406 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+407 http 304 https://registry.npmjs.org/history
+408 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+408 verbose headers   connection: 'keep-alive',
+408 verbose headers   'cf-ray': '7f23b84059455a7f-MEL',
+408 verbose headers   'cf-cache-status': 'HIT',
+408 verbose headers   age: '110',
+408 verbose headers   'cache-control': 'public, max-age=300',
+408 verbose headers   etag: '"2909a12c9a15c84108da527798392814"',
+408 verbose headers   'last-modified': 'Sat, 18 Jun 2022 20:50:45 GMT',
+408 verbose headers   vary: 'Accept-Encoding',
+408 verbose headers   'x-amz-replication-status': 'COMPLETED',
+408 verbose headers   server: 'cloudflare' }
+409 silly get cb [ 304,
+409 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+409 silly get     connection: 'keep-alive',
+409 silly get     'cf-ray': '7f23b84059455a7f-MEL',
+409 silly get     'cf-cache-status': 'HIT',
+409 silly get     age: '110',
+409 silly get     'cache-control': 'public, max-age=300',
+409 silly get     etag: '"2909a12c9a15c84108da527798392814"',
+409 silly get     'last-modified': 'Sat, 18 Jun 2022 20:50:45 GMT',
+409 silly get     vary: 'Accept-Encoding',
+409 silly get     'x-amz-replication-status': 'COMPLETED',
+409 silly get     server: 'cloudflare' } ]
+410 verbose etag https://registry.npmjs.org/history from cache
+411 verbose get saving history to /Users/dudemaster4/.npm/registry.npmjs.org/history/.cache.json
+412 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+413 http 304 https://registry.npmjs.org/turbolinks
+414 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+414 verbose headers   connection: 'keep-alive',
+414 verbose headers   'cf-ray': '7f23b8405c565ac8-MEL',
+414 verbose headers   'cf-cache-status': 'HIT',
+414 verbose headers   age: '110',
+414 verbose headers   'cache-control': 'public, max-age=300',
+414 verbose headers   etag: '"7d8d50937befc9e81d500c7f204bd4f9"',
+414 verbose headers   'last-modified': 'Mon, 27 Jun 2022 23:25:59 GMT',
+414 verbose headers   vary: 'Accept-Encoding',
+414 verbose headers   'x-amz-replication-status': 'COMPLETED',
+414 verbose headers   server: 'cloudflare' }
+415 silly get cb [ 304,
+415 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+415 silly get     connection: 'keep-alive',
+415 silly get     'cf-ray': '7f23b8405c565ac8-MEL',
+415 silly get     'cf-cache-status': 'HIT',
+415 silly get     age: '110',
+415 silly get     'cache-control': 'public, max-age=300',
+415 silly get     etag: '"7d8d50937befc9e81d500c7f204bd4f9"',
+415 silly get     'last-modified': 'Mon, 27 Jun 2022 23:25:59 GMT',
+415 silly get     vary: 'Accept-Encoding',
+415 silly get     'x-amz-replication-status': 'COMPLETED',
+415 silly get     server: 'cloudflare' } ]
+416 verbose etag https://registry.npmjs.org/turbolinks from cache
+417 verbose get saving turbolinks to /Users/dudemaster4/.npm/registry.npmjs.org/turbolinks/.cache.json
+418 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+419 http 304 https://registry.npmjs.org/throttle-debounce
+420 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+420 verbose headers   connection: 'keep-alive',
+420 verbose headers   'cf-ray': '7f23b8405aec17cc-MEL',
+420 verbose headers   'cf-cache-status': 'HIT',
+420 verbose headers   age: '111',
+420 verbose headers   'cache-control': 'public, max-age=300',
+420 verbose headers   etag: '"4c9061529e8ce0ab7bf224ebb10d12c4"',
+420 verbose headers   'last-modified': 'Fri, 21 Jul 2023 15:50:58 GMT',
+420 verbose headers   vary: 'Accept-Encoding',
+420 verbose headers   'x-amz-replication-status': 'FAILED',
+420 verbose headers   'x-amz-server-side-encryption': 'AES256',
+420 verbose headers   server: 'cloudflare' }
+421 silly get cb [ 304,
+421 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+421 silly get     connection: 'keep-alive',
+421 silly get     'cf-ray': '7f23b8405aec17cc-MEL',
+421 silly get     'cf-cache-status': 'HIT',
+421 silly get     age: '111',
+421 silly get     'cache-control': 'public, max-age=300',
+421 silly get     etag: '"4c9061529e8ce0ab7bf224ebb10d12c4"',
+421 silly get     'last-modified': 'Fri, 21 Jul 2023 15:50:58 GMT',
+421 silly get     vary: 'Accept-Encoding',
+421 silly get     'x-amz-replication-status': 'FAILED',
+421 silly get     'x-amz-server-side-encryption': 'AES256',
+421 silly get     server: 'cloudflare' } ]
+422 verbose etag https://registry.npmjs.org/throttle-debounce from cache
+423 verbose get saving throttle-debounce to /Users/dudemaster4/.npm/registry.npmjs.org/throttle-debounce/.cache.json
+424 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+425 http 304 https://registry.npmjs.org/leaflet
+426 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+426 verbose headers   connection: 'keep-alive',
+426 verbose headers   'cf-ray': '7f23b8405cc32995-MEL',
+426 verbose headers   'cf-cache-status': 'HIT',
+426 verbose headers   age: '110',
+426 verbose headers   'cache-control': 'public, max-age=300',
+426 verbose headers   etag: '"06b2e679b2e786595e835fd980679518"',
+426 verbose headers   'last-modified': 'Thu, 25 May 2023 14:34:35 GMT',
+426 verbose headers   vary: 'Accept-Encoding',
+426 verbose headers   'x-amz-replication-status': 'COMPLETED',
+426 verbose headers   'x-amz-server-side-encryption': 'AES256',
+426 verbose headers   server: 'cloudflare' }
+427 silly get cb [ 304,
+427 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+427 silly get     connection: 'keep-alive',
+427 silly get     'cf-ray': '7f23b8405cc32995-MEL',
+427 silly get     'cf-cache-status': 'HIT',
+427 silly get     age: '110',
+427 silly get     'cache-control': 'public, max-age=300',
+427 silly get     etag: '"06b2e679b2e786595e835fd980679518"',
+427 silly get     'last-modified': 'Thu, 25 May 2023 14:34:35 GMT',
+427 silly get     vary: 'Accept-Encoding',
+427 silly get     'x-amz-replication-status': 'COMPLETED',
+427 silly get     'x-amz-server-side-encryption': 'AES256',
+427 silly get     server: 'cloudflare' } ]
+428 verbose etag https://registry.npmjs.org/leaflet from cache
+429 verbose get saving leaflet to /Users/dudemaster4/.npm/registry.npmjs.org/leaflet/.cache.json
+430 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+431 http 304 https://registry.npmjs.org/workbox-sw
+432 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+432 verbose headers   connection: 'keep-alive',
+432 verbose headers   'cf-ray': '7f23b8406dbd2ecf-MEL',
+432 verbose headers   'cf-cache-status': 'HIT',
+432 verbose headers   age: '110',
+432 verbose headers   'cache-control': 'public, max-age=300',
+432 verbose headers   etag: '"2f03c99705f16c81b080af5adc05d1ca"',
+432 verbose headers   'last-modified': 'Wed, 31 May 2023 17:19:52 GMT',
+432 verbose headers   vary: 'Accept-Encoding',
+432 verbose headers   'x-amz-replication-status': 'COMPLETED',
+432 verbose headers   'x-amz-server-side-encryption': 'AES256',
+432 verbose headers   server: 'cloudflare' }
+433 silly get cb [ 304,
+433 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+433 silly get     connection: 'keep-alive',
+433 silly get     'cf-ray': '7f23b8406dbd2ecf-MEL',
+433 silly get     'cf-cache-status': 'HIT',
+433 silly get     age: '110',
+433 silly get     'cache-control': 'public, max-age=300',
+433 silly get     etag: '"2f03c99705f16c81b080af5adc05d1ca"',
+433 silly get     'last-modified': 'Wed, 31 May 2023 17:19:52 GMT',
+433 silly get     vary: 'Accept-Encoding',
+433 silly get     'x-amz-replication-status': 'COMPLETED',
+433 silly get     'x-amz-server-side-encryption': 'AES256',
+433 silly get     server: 'cloudflare' } ]
+434 verbose etag https://registry.npmjs.org/workbox-sw from cache
+435 verbose get saving workbox-sw to /Users/dudemaster4/.npm/registry.npmjs.org/workbox-sw/.cache.json
+436 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+437 http 304 https://registry.npmjs.org/d3-queue
+438 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+438 verbose headers   connection: 'keep-alive',
+438 verbose headers   'cf-ray': '7f23b8405dce29a7-MEL',
+438 verbose headers   'cf-cache-status': 'HIT',
+438 verbose headers   age: '110',
+438 verbose headers   'cache-control': 'public, max-age=300',
+438 verbose headers   etag: '"14ceea8592d435f3f3f903adcbbfba7e"',
+438 verbose headers   'last-modified': 'Tue, 14 Jun 2022 07:50:23 GMT',
+438 verbose headers   vary: 'Accept-Encoding',
+438 verbose headers   'x-amz-replication-status': 'COMPLETED',
+438 verbose headers   server: 'cloudflare' }
+439 silly get cb [ 304,
+439 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+439 silly get     connection: 'keep-alive',
+439 silly get     'cf-ray': '7f23b8405dce29a7-MEL',
+439 silly get     'cf-cache-status': 'HIT',
+439 silly get     age: '110',
+439 silly get     'cache-control': 'public, max-age=300',
+439 silly get     etag: '"14ceea8592d435f3f3f903adcbbfba7e"',
+439 silly get     'last-modified': 'Tue, 14 Jun 2022 07:50:23 GMT',
+439 silly get     vary: 'Accept-Encoding',
+439 silly get     'x-amz-replication-status': 'COMPLETED',
+439 silly get     server: 'cloudflare' } ]
+440 verbose etag https://registry.npmjs.org/d3-queue from cache
+441 verbose get saving d3-queue to /Users/dudemaster4/.npm/registry.npmjs.org/d3-queue/.cache.json
+442 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+443 http 304 https://registry.npmjs.org/pwa-helpers
+444 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+444 verbose headers   connection: 'keep-alive',
+444 verbose headers   'cf-ray': '7f23b84059db2ee2-MEL',
+444 verbose headers   'cf-cache-status': 'HIT',
+444 verbose headers   age: '110',
+444 verbose headers   'cache-control': 'public, max-age=300',
+444 verbose headers   etag: '"29e421688f148774fc32c1cdde54f67a"',
+444 verbose headers   'last-modified': 'Fri, 13 May 2022 17:45:13 GMT',
+444 verbose headers   vary: 'Accept-Encoding',
+444 verbose headers   'x-amz-replication-status': 'COMPLETED',
+444 verbose headers   server: 'cloudflare' }
+445 silly get cb [ 304,
+445 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+445 silly get     connection: 'keep-alive',
+445 silly get     'cf-ray': '7f23b84059db2ee2-MEL',
+445 silly get     'cf-cache-status': 'HIT',
+445 silly get     age: '110',
+445 silly get     'cache-control': 'public, max-age=300',
+445 silly get     etag: '"29e421688f148774fc32c1cdde54f67a"',
+445 silly get     'last-modified': 'Fri, 13 May 2022 17:45:13 GMT',
+445 silly get     vary: 'Accept-Encoding',
+445 silly get     'x-amz-replication-status': 'COMPLETED',
+445 silly get     server: 'cloudflare' } ]
+446 verbose etag https://registry.npmjs.org/pwa-helpers from cache
+447 verbose get saving pwa-helpers to /Users/dudemaster4/.npm/registry.npmjs.org/pwa-helpers/.cache.json
+448 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+449 http 304 https://registry.npmjs.org/lit
+450 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+450 verbose headers   connection: 'keep-alive',
+450 verbose headers   'cf-ray': '7f23b8405c9d2ea0-MEL',
+450 verbose headers   'cf-cache-status': 'HIT',
+450 verbose headers   age: '110',
+450 verbose headers   'cache-control': 'public, max-age=300',
+450 verbose headers   etag: '"f21e4d5144da33dff08bc068a4bad876"',
+450 verbose headers   'last-modified': 'Wed, 02 Aug 2023 20:13:00 GMT',
+450 verbose headers   vary: 'Accept-Encoding',
+450 verbose headers   'x-amz-replication-status': 'COMPLETED',
+450 verbose headers   'x-amz-server-side-encryption': 'AES256',
+450 verbose headers   server: 'cloudflare' }
+451 silly get cb [ 304,
+451 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+451 silly get     connection: 'keep-alive',
+451 silly get     'cf-ray': '7f23b8405c9d2ea0-MEL',
+451 silly get     'cf-cache-status': 'HIT',
+451 silly get     age: '110',
+451 silly get     'cache-control': 'public, max-age=300',
+451 silly get     etag: '"f21e4d5144da33dff08bc068a4bad876"',
+451 silly get     'last-modified': 'Wed, 02 Aug 2023 20:13:00 GMT',
+451 silly get     vary: 'Accept-Encoding',
+451 silly get     'x-amz-replication-status': 'COMPLETED',
+451 silly get     'x-amz-server-side-encryption': 'AES256',
+451 silly get     server: 'cloudflare' } ]
+452 verbose etag https://registry.npmjs.org/lit from cache
+453 verbose get saving lit to /Users/dudemaster4/.npm/registry.npmjs.org/lit/.cache.json
+454 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir already in flight; waiting
+455 http 304 https://registry.npmjs.org/viewerjs
+456 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+456 verbose headers   connection: 'keep-alive',
+456 verbose headers   'cf-ray': '7f23b84059a61f64-MEL',
+456 verbose headers   'cf-cache-status': 'HIT',
+456 verbose headers   age: '110',
+456 verbose headers   'cache-control': 'public, max-age=300',
+456 verbose headers   etag: '"4b6e23d93b623635f6084924dc9dd5bc"',
+456 verbose headers   'last-modified': 'Sun, 23 Jul 2023 08:15:14 GMT',
+456 verbose headers   vary: 'Accept-Encoding',
+456 verbose headers   'x-amz-replication-status': 'FAILED',
+456 verbose headers   'x-amz-server-side-encryption': 'AES256',
+456 verbose headers   server: 'cloudflare' }
+457 silly get cb [ 304,
+457 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+457 silly get     connection: 'keep-alive',
+457 silly get     'cf-ray': '7f23b84059a61f64-MEL',
+457 silly get     'cf-cache-status': 'HIT',
+457 silly get     age: '110',
+457 silly get     'cache-control': 'public, max-age=300',
+457 silly get     etag: '"4b6e23d93b623635f6084924dc9dd5bc"',
+457 silly get     'last-modified': 'Sun, 23 Jul 2023 08:15:14 GMT',
+457 silly get     vary: 'Accept-Encoding',
+457 silly get     'x-amz-replication-status': 'FAILED',
+457 silly get     'x-amz-server-side-encryption': 'AES256',
+457 silly get     server: 'cloudflare' } ]
+458 verbose etag https://registry.npmjs.org/viewerjs from cache
+459 verbose get saving viewerjs to /Users/dudemaster4/.npm/registry.npmjs.org/viewerjs/.cache.json
+460 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+461 http 304 https://registry.npmjs.org/redux
+462 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+462 verbose headers   connection: 'keep-alive',
+462 verbose headers   'cf-ray': '7f23b8405a262b2c-MEL',
+462 verbose headers   'cf-cache-status': 'HIT',
+462 verbose headers   age: '110',
+462 verbose headers   'cache-control': 'public, max-age=300',
+462 verbose headers   etag: '"cc9552716a81a8efe097d38cb0a59afd"',
+462 verbose headers   'last-modified': 'Wed, 26 Jul 2023 19:02:09 GMT',
+462 verbose headers   vary: 'Accept-Encoding',
+462 verbose headers   'x-amz-replication-status': 'FAILED',
+462 verbose headers   'x-amz-server-side-encryption': 'AES256',
+462 verbose headers   server: 'cloudflare' }
+463 silly get cb [ 304,
+463 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+463 silly get     connection: 'keep-alive',
+463 silly get     'cf-ray': '7f23b8405a262b2c-MEL',
+463 silly get     'cf-cache-status': 'HIT',
+463 silly get     age: '110',
+463 silly get     'cache-control': 'public, max-age=300',
+463 silly get     etag: '"cc9552716a81a8efe097d38cb0a59afd"',
+463 silly get     'last-modified': 'Wed, 26 Jul 2023 19:02:09 GMT',
+463 silly get     vary: 'Accept-Encoding',
+463 silly get     'x-amz-replication-status': 'FAILED',
+463 silly get     'x-amz-server-side-encryption': 'AES256',
+463 silly get     server: 'cloudflare' } ]
+464 verbose etag https://registry.npmjs.org/redux from cache
+465 verbose get saving redux to /Users/dudemaster4/.npm/registry.npmjs.org/redux/.cache.json
+466 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+467 http 304 https://registry.npmjs.org/web-animations-js
+468 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+468 verbose headers   connection: 'keep-alive',
+468 verbose headers   'cf-ray': '7f23b8405aed4f3c-MEL',
+468 verbose headers   'cf-cache-status': 'HIT',
+468 verbose headers   age: '111',
+468 verbose headers   'cache-control': 'public, max-age=300',
+468 verbose headers   etag: '"e8e9f30c63c42315652fb942b86dc5ca"',
+468 verbose headers   'last-modified': 'Tue, 28 Jun 2022 22:45:32 GMT',
+468 verbose headers   vary: 'Accept-Encoding',
+468 verbose headers   'x-amz-replication-status': 'COMPLETED',
+468 verbose headers   server: 'cloudflare' }
+469 silly get cb [ 304,
+469 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+469 silly get     connection: 'keep-alive',
+469 silly get     'cf-ray': '7f23b8405aed4f3c-MEL',
+469 silly get     'cf-cache-status': 'HIT',
+469 silly get     age: '111',
+469 silly get     'cache-control': 'public, max-age=300',
+469 silly get     etag: '"e8e9f30c63c42315652fb942b86dc5ca"',
+469 silly get     'last-modified': 'Tue, 28 Jun 2022 22:45:32 GMT',
+469 silly get     vary: 'Accept-Encoding',
+469 silly get     'x-amz-replication-status': 'COMPLETED',
+469 silly get     server: 'cloudflare' } ]
+470 verbose etag https://registry.npmjs.org/web-animations-js from cache
+471 verbose get saving web-animations-js to /Users/dudemaster4/.npm/registry.npmjs.org/web-animations-js/.cache.json
+472 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+473 silly resolveWithNewModule path-to-regexp@6.2.1 checking installable status
+474 silly cache add args [ 'path-to-regexp@^6.2.1', null ]
+475 verbose cache add spec path-to-regexp@^6.2.1
+476 silly cache add parsed spec Result {
+476 silly cache add   raw: 'path-to-regexp@^6.2.1',
+476 silly cache add   scope: null,
+476 silly cache add   escapedName: 'path-to-regexp',
+476 silly cache add   name: 'path-to-regexp',
+476 silly cache add   rawSpec: '^6.2.1',
+476 silly cache add   spec: '>=6.2.1 <7.0.0',
+476 silly cache add   type: 'range' }
+477 silly addNamed path-to-regexp@>=6.2.1 <7.0.0
+478 verbose addNamed ">=6.2.1 <7.0.0" is a valid semver range for path-to-regexp
+479 silly addNameRange { name: 'path-to-regexp',
+479 silly addNameRange   range: '>=6.2.1 <7.0.0',
+479 silly addNameRange   hasData: false }
+480 silly mapToRegistry name path-to-regexp
+481 silly mapToRegistry using default registry
+482 silly mapToRegistry registry https://registry.npmjs.org/
+483 silly mapToRegistry data Result {
+483 silly mapToRegistry   raw: 'path-to-regexp',
+483 silly mapToRegistry   scope: null,
+483 silly mapToRegistry   escapedName: 'path-to-regexp',
+483 silly mapToRegistry   name: 'path-to-regexp',
+483 silly mapToRegistry   rawSpec: '',
+483 silly mapToRegistry   spec: 'latest',
+483 silly mapToRegistry   type: 'tag' }
+484 silly mapToRegistry uri https://registry.npmjs.org/path-to-regexp
+485 verbose addNameRange registry:https://registry.npmjs.org/path-to-regexp not in flight; fetching
+486 silly resolveWithNewModule turbolinks@5.2.0 checking installable status
+487 silly cache add args [ 'turbolinks@^5.2.0', null ]
+488 verbose cache add spec turbolinks@^5.2.0
+489 silly cache add parsed spec Result {
+489 silly cache add   raw: 'turbolinks@^5.2.0',
+489 silly cache add   scope: null,
+489 silly cache add   escapedName: 'turbolinks',
+489 silly cache add   name: 'turbolinks',
+489 silly cache add   rawSpec: '^5.2.0',
+489 silly cache add   spec: '>=5.2.0 <6.0.0',
+489 silly cache add   type: 'range' }
+490 silly addNamed turbolinks@>=5.2.0 <6.0.0
+491 verbose addNamed ">=5.2.0 <6.0.0" is a valid semver range for turbolinks
+492 silly addNameRange { name: 'turbolinks', range: '>=5.2.0 <6.0.0', hasData: false }
+493 silly mapToRegistry name turbolinks
+494 silly mapToRegistry using default registry
+495 silly mapToRegistry registry https://registry.npmjs.org/
+496 silly mapToRegistry data Result {
+496 silly mapToRegistry   raw: 'turbolinks',
+496 silly mapToRegistry   scope: null,
+496 silly mapToRegistry   escapedName: 'turbolinks',
+496 silly mapToRegistry   name: 'turbolinks',
+496 silly mapToRegistry   rawSpec: '',
+496 silly mapToRegistry   spec: 'latest',
+496 silly mapToRegistry   type: 'tag' }
+497 silly mapToRegistry uri https://registry.npmjs.org/turbolinks
+498 verbose addNameRange registry:https://registry.npmjs.org/turbolinks not in flight; fetching
+499 silly resolveWithNewModule throttle-debounce@5.0.0 checking installable status
+500 silly cache add args [ 'throttle-debounce@5.0.0', null ]
+501 verbose cache add spec throttle-debounce@5.0.0
+502 silly cache add parsed spec Result {
+502 silly cache add   raw: 'throttle-debounce@5.0.0',
+502 silly cache add   scope: null,
+502 silly cache add   escapedName: 'throttle-debounce',
+502 silly cache add   name: 'throttle-debounce',
+502 silly cache add   rawSpec: '5.0.0',
+502 silly cache add   spec: '5.0.0',
+502 silly cache add   type: 'version' }
+503 silly addNamed throttle-debounce@5.0.0
+504 verbose addNamed "5.0.0" is a plain semver version for throttle-debounce
+505 silly mapToRegistry name throttle-debounce
+506 silly mapToRegistry using default registry
+507 silly mapToRegistry registry https://registry.npmjs.org/
+508 silly mapToRegistry data Result {
+508 silly mapToRegistry   raw: 'throttle-debounce',
+508 silly mapToRegistry   scope: null,
+508 silly mapToRegistry   escapedName: 'throttle-debounce',
+508 silly mapToRegistry   name: 'throttle-debounce',
+508 silly mapToRegistry   rawSpec: '',
+508 silly mapToRegistry   spec: 'latest',
+508 silly mapToRegistry   type: 'tag' }
+509 silly mapToRegistry uri https://registry.npmjs.org/throttle-debounce
+510 verbose addNameVersion registry:https://registry.npmjs.org/throttle-debounce not in flight; fetching
+511 silly resolveWithNewModule d3-queue@3.0.7 checking installable status
+512 silly cache add args [ 'd3-queue@^3.0.7', null ]
+513 verbose cache add spec d3-queue@^3.0.7
+514 silly cache add parsed spec Result {
+514 silly cache add   raw: 'd3-queue@^3.0.7',
+514 silly cache add   scope: null,
+514 silly cache add   escapedName: 'd3-queue',
+514 silly cache add   name: 'd3-queue',
+514 silly cache add   rawSpec: '^3.0.7',
+514 silly cache add   spec: '>=3.0.7 <4.0.0',
+514 silly cache add   type: 'range' }
+515 silly addNamed d3-queue@>=3.0.7 <4.0.0
+516 verbose addNamed ">=3.0.7 <4.0.0" is a valid semver range for d3-queue
+517 silly addNameRange { name: 'd3-queue', range: '>=3.0.7 <4.0.0', hasData: false }
+518 silly mapToRegistry name d3-queue
+519 silly mapToRegistry using default registry
+520 silly mapToRegistry registry https://registry.npmjs.org/
+521 silly mapToRegistry data Result {
+521 silly mapToRegistry   raw: 'd3-queue',
+521 silly mapToRegistry   scope: null,
+521 silly mapToRegistry   escapedName: 'd3-queue',
+521 silly mapToRegistry   name: 'd3-queue',
+521 silly mapToRegistry   rawSpec: '',
+521 silly mapToRegistry   spec: 'latest',
+521 silly mapToRegistry   type: 'tag' }
+522 silly mapToRegistry uri https://registry.npmjs.org/d3-queue
+523 verbose addNameRange registry:https://registry.npmjs.org/d3-queue not in flight; fetching
+524 silly resolveWithNewModule workbox-sw@6.5.4 checking installable status
+525 silly cache add args [ 'workbox-sw@6.5.4', null ]
+526 verbose cache add spec workbox-sw@6.5.4
+527 silly cache add parsed spec Result {
+527 silly cache add   raw: 'workbox-sw@6.5.4',
+527 silly cache add   scope: null,
+527 silly cache add   escapedName: 'workbox-sw',
+527 silly cache add   name: 'workbox-sw',
+527 silly cache add   rawSpec: '6.5.4',
+527 silly cache add   spec: '6.5.4',
+527 silly cache add   type: 'version' }
+528 silly addNamed workbox-sw@6.5.4
+529 verbose addNamed "6.5.4" is a plain semver version for workbox-sw
+530 silly mapToRegistry name workbox-sw
+531 silly mapToRegistry using default registry
+532 silly mapToRegistry registry https://registry.npmjs.org/
+533 silly mapToRegistry data Result {
+533 silly mapToRegistry   raw: 'workbox-sw',
+533 silly mapToRegistry   scope: null,
+533 silly mapToRegistry   escapedName: 'workbox-sw',
+533 silly mapToRegistry   name: 'workbox-sw',
+533 silly mapToRegistry   rawSpec: '',
+533 silly mapToRegistry   spec: 'latest',
+533 silly mapToRegistry   type: 'tag' }
+534 silly mapToRegistry uri https://registry.npmjs.org/workbox-sw
+535 verbose addNameVersion registry:https://registry.npmjs.org/workbox-sw not in flight; fetching
+536 silly resolveWithNewModule history@5.3.0 checking installable status
+537 silly cache add args [ 'history@^5.3.0', null ]
+538 verbose cache add spec history@^5.3.0
+539 silly cache add parsed spec Result {
+539 silly cache add   raw: 'history@^5.3.0',
+539 silly cache add   scope: null,
+539 silly cache add   escapedName: 'history',
+539 silly cache add   name: 'history',
+539 silly cache add   rawSpec: '^5.3.0',
+539 silly cache add   spec: '>=5.3.0 <6.0.0',
+539 silly cache add   type: 'range' }
+540 silly addNamed history@>=5.3.0 <6.0.0
+541 verbose addNamed ">=5.3.0 <6.0.0" is a valid semver range for history
+542 silly addNameRange { name: 'history', range: '>=5.3.0 <6.0.0', hasData: false }
+543 silly mapToRegistry name history
+544 silly mapToRegistry using default registry
+545 silly mapToRegistry registry https://registry.npmjs.org/
+546 silly mapToRegistry data Result {
+546 silly mapToRegistry   raw: 'history',
+546 silly mapToRegistry   scope: null,
+546 silly mapToRegistry   escapedName: 'history',
+546 silly mapToRegistry   name: 'history',
+546 silly mapToRegistry   rawSpec: '',
+546 silly mapToRegistry   spec: 'latest',
+546 silly mapToRegistry   type: 'tag' }
+547 silly mapToRegistry uri https://registry.npmjs.org/history
+548 verbose addNameRange registry:https://registry.npmjs.org/history not in flight; fetching
+549 silly resolveWithNewModule pwa-helpers@0.9.1 checking installable status
+550 silly cache add args [ 'pwa-helpers@^0.9.1', null ]
+551 verbose cache add spec pwa-helpers@^0.9.1
+552 silly cache add parsed spec Result {
+552 silly cache add   raw: 'pwa-helpers@^0.9.1',
+552 silly cache add   scope: null,
+552 silly cache add   escapedName: 'pwa-helpers',
+552 silly cache add   name: 'pwa-helpers',
+552 silly cache add   rawSpec: '^0.9.1',
+552 silly cache add   spec: '>=0.9.1 <0.10.0',
+552 silly cache add   type: 'range' }
+553 silly addNamed pwa-helpers@>=0.9.1 <0.10.0
+554 verbose addNamed ">=0.9.1 <0.10.0" is a valid semver range for pwa-helpers
+555 silly addNameRange { name: 'pwa-helpers', range: '>=0.9.1 <0.10.0', hasData: false }
+556 silly mapToRegistry name pwa-helpers
+557 silly mapToRegistry using default registry
+558 silly mapToRegistry registry https://registry.npmjs.org/
+559 silly mapToRegistry data Result {
+559 silly mapToRegistry   raw: 'pwa-helpers',
+559 silly mapToRegistry   scope: null,
+559 silly mapToRegistry   escapedName: 'pwa-helpers',
+559 silly mapToRegistry   name: 'pwa-helpers',
+559 silly mapToRegistry   rawSpec: '',
+559 silly mapToRegistry   spec: 'latest',
+559 silly mapToRegistry   type: 'tag' }
+560 silly mapToRegistry uri https://registry.npmjs.org/pwa-helpers
+561 verbose addNameRange registry:https://registry.npmjs.org/pwa-helpers not in flight; fetching
+562 silly resolveWithNewModule leaflet@1.9.4 checking installable status
+563 silly cache add args [ 'leaflet@^1.9.3', null ]
+564 verbose cache add spec leaflet@^1.9.3
+565 silly cache add parsed spec Result {
+565 silly cache add   raw: 'leaflet@^1.9.3',
+565 silly cache add   scope: null,
+565 silly cache add   escapedName: 'leaflet',
+565 silly cache add   name: 'leaflet',
+565 silly cache add   rawSpec: '^1.9.3',
+565 silly cache add   spec: '>=1.9.3 <2.0.0',
+565 silly cache add   type: 'range' }
+566 silly addNamed leaflet@>=1.9.3 <2.0.0
+567 verbose addNamed ">=1.9.3 <2.0.0" is a valid semver range for leaflet
+568 silly addNameRange { name: 'leaflet', range: '>=1.9.3 <2.0.0', hasData: false }
+569 silly mapToRegistry name leaflet
+570 silly mapToRegistry using default registry
+571 silly mapToRegistry registry https://registry.npmjs.org/
+572 silly mapToRegistry data Result {
+572 silly mapToRegistry   raw: 'leaflet',
+572 silly mapToRegistry   scope: null,
+572 silly mapToRegistry   escapedName: 'leaflet',
+572 silly mapToRegistry   name: 'leaflet',
+572 silly mapToRegistry   rawSpec: '',
+572 silly mapToRegistry   spec: 'latest',
+572 silly mapToRegistry   type: 'tag' }
+573 silly mapToRegistry uri https://registry.npmjs.org/leaflet
+574 verbose addNameRange registry:https://registry.npmjs.org/leaflet not in flight; fetching
+575 silly resolveWithNewModule lit@2.6.1 checking installable status
+576 silly cache add args [ 'lit@2.6.1', null ]
+577 verbose cache add spec lit@2.6.1
+578 silly cache add parsed spec Result {
+578 silly cache add   raw: 'lit@2.6.1',
+578 silly cache add   scope: null,
+578 silly cache add   escapedName: 'lit',
+578 silly cache add   name: 'lit',
+578 silly cache add   rawSpec: '2.6.1',
+578 silly cache add   spec: '2.6.1',
+578 silly cache add   type: 'version' }
+579 silly addNamed lit@2.6.1
+580 verbose addNamed "2.6.1" is a plain semver version for lit
+581 silly mapToRegistry name lit
+582 silly mapToRegistry using default registry
+583 silly mapToRegistry registry https://registry.npmjs.org/
+584 silly mapToRegistry data Result {
+584 silly mapToRegistry   raw: 'lit',
+584 silly mapToRegistry   scope: null,
+584 silly mapToRegistry   escapedName: 'lit',
+584 silly mapToRegistry   name: 'lit',
+584 silly mapToRegistry   rawSpec: '',
+584 silly mapToRegistry   spec: 'latest',
+584 silly mapToRegistry   type: 'tag' }
+585 silly mapToRegistry uri https://registry.npmjs.org/lit
+586 verbose addNameVersion registry:https://registry.npmjs.org/lit not in flight; fetching
+587 silly resolveWithNewModule viewerjs@1.11.4 checking installable status
+588 silly cache add args [ 'viewerjs@^1.11.2', null ]
+589 verbose cache add spec viewerjs@^1.11.2
+590 silly cache add parsed spec Result {
+590 silly cache add   raw: 'viewerjs@^1.11.2',
+590 silly cache add   scope: null,
+590 silly cache add   escapedName: 'viewerjs',
+590 silly cache add   name: 'viewerjs',
+590 silly cache add   rawSpec: '^1.11.2',
+590 silly cache add   spec: '>=1.11.2 <2.0.0',
+590 silly cache add   type: 'range' }
+591 silly addNamed viewerjs@>=1.11.2 <2.0.0
+592 verbose addNamed ">=1.11.2 <2.0.0" is a valid semver range for viewerjs
+593 silly addNameRange { name: 'viewerjs', range: '>=1.11.2 <2.0.0', hasData: false }
+594 silly mapToRegistry name viewerjs
+595 silly mapToRegistry using default registry
+596 silly mapToRegistry registry https://registry.npmjs.org/
+597 silly mapToRegistry data Result {
+597 silly mapToRegistry   raw: 'viewerjs',
+597 silly mapToRegistry   scope: null,
+597 silly mapToRegistry   escapedName: 'viewerjs',
+597 silly mapToRegistry   name: 'viewerjs',
+597 silly mapToRegistry   rawSpec: '',
+597 silly mapToRegistry   spec: 'latest',
+597 silly mapToRegistry   type: 'tag' }
+598 silly mapToRegistry uri https://registry.npmjs.org/viewerjs
+599 verbose addNameRange registry:https://registry.npmjs.org/viewerjs not in flight; fetching
+600 silly resolveWithNewModule web-animations-js@2.3.2 checking installable status
+601 silly cache add args [ 'web-animations-js@^2.3.2', null ]
+602 verbose cache add spec web-animations-js@^2.3.2
+603 silly cache add parsed spec Result {
+603 silly cache add   raw: 'web-animations-js@^2.3.2',
+603 silly cache add   scope: null,
+603 silly cache add   escapedName: 'web-animations-js',
+603 silly cache add   name: 'web-animations-js',
+603 silly cache add   rawSpec: '^2.3.2',
+603 silly cache add   spec: '>=2.3.2 <3.0.0',
+603 silly cache add   type: 'range' }
+604 silly addNamed web-animations-js@>=2.3.2 <3.0.0
+605 verbose addNamed ">=2.3.2 <3.0.0" is a valid semver range for web-animations-js
+606 silly addNameRange { name: 'web-animations-js',
+606 silly addNameRange   range: '>=2.3.2 <3.0.0',
+606 silly addNameRange   hasData: false }
+607 silly mapToRegistry name web-animations-js
+608 silly mapToRegistry using default registry
+609 silly mapToRegistry registry https://registry.npmjs.org/
+610 silly mapToRegistry data Result {
+610 silly mapToRegistry   raw: 'web-animations-js',
+610 silly mapToRegistry   scope: null,
+610 silly mapToRegistry   escapedName: 'web-animations-js',
+610 silly mapToRegistry   name: 'web-animations-js',
+610 silly mapToRegistry   rawSpec: '',
+610 silly mapToRegistry   spec: 'latest',
+610 silly mapToRegistry   type: 'tag' }
+611 silly mapToRegistry uri https://registry.npmjs.org/web-animations-js
+612 verbose addNameRange registry:https://registry.npmjs.org/web-animations-js not in flight; fetching
+613 verbose get https://registry.npmjs.org/d3-queue not expired, no request
+614 silly addNameRange number 2 { name: 'd3-queue', range: '>=3.0.7 <4.0.0', hasData: true }
+615 silly addNameRange versions [ 'd3-queue',
+615 silly addNameRange   [ '1.2.0',
+615 silly addNameRange     '1.2.1',
+615 silly addNameRange     '1.2.2',
+615 silly addNameRange     '2.0.0',
+615 silly addNameRange     '1.2.3',
+615 silly addNameRange     '2.0.1',
+615 silly addNameRange     '2.0.2',
+615 silly addNameRange     '2.0.3',
+615 silly addNameRange     '3.0.0',
+615 silly addNameRange     '3.0.1',
+615 silly addNameRange     '3.0.2',
+615 silly addNameRange     '3.0.3',
+615 silly addNameRange     '3.0.4',
+615 silly addNameRange     '3.0.5',
+615 silly addNameRange     '3.0.6',
+615 silly addNameRange     '3.0.7' ] ]
+616 silly addNamed d3-queue@3.0.7
+617 verbose addNamed "3.0.7" is a plain semver version for d3-queue
+618 verbose get https://registry.npmjs.org/throttle-debounce not expired, no request
+619 silly resolveWithNewModule redux@4.2.1 checking installable status
+620 silly cache add args [ 'redux@^4.2.0', null ]
+621 verbose cache add spec redux@^4.2.0
+622 silly cache add parsed spec Result {
+622 silly cache add   raw: 'redux@^4.2.0',
+622 silly cache add   scope: null,
+622 silly cache add   escapedName: 'redux',
+622 silly cache add   name: 'redux',
+622 silly cache add   rawSpec: '^4.2.0',
+622 silly cache add   spec: '>=4.2.0 <5.0.0',
+622 silly cache add   type: 'range' }
+623 silly addNamed redux@>=4.2.0 <5.0.0
+624 verbose addNamed ">=4.2.0 <5.0.0" is a valid semver range for redux
+625 silly addNameRange { name: 'redux', range: '>=4.2.0 <5.0.0', hasData: false }
+626 silly mapToRegistry name redux
+627 silly mapToRegistry using default registry
+628 silly mapToRegistry registry https://registry.npmjs.org/
+629 silly mapToRegistry data Result {
+629 silly mapToRegistry   raw: 'redux',
+629 silly mapToRegistry   scope: null,
+629 silly mapToRegistry   escapedName: 'redux',
+629 silly mapToRegistry   name: 'redux',
+629 silly mapToRegistry   rawSpec: '',
+629 silly mapToRegistry   spec: 'latest',
+629 silly mapToRegistry   type: 'tag' }
+630 silly mapToRegistry uri https://registry.npmjs.org/redux
+631 verbose addNameRange registry:https://registry.npmjs.org/redux not in flight; fetching
+632 verbose get https://registry.npmjs.org/turbolinks not expired, no request
+633 silly addNameRange number 2 { name: 'turbolinks', range: '>=5.2.0 <6.0.0', hasData: true }
+634 silly addNameRange versions [ 'turbolinks',
+634 silly addNameRange   [ '5.0.0-beta3',
+634 silly addNameRange     '5.0.0-beta4',
+634 silly addNameRange     '5.0.0-beta5',
+634 silly addNameRange     '5.0.0',
+634 silly addNameRange     '5.0.1',
+634 silly addNameRange     '5.0.2',
+634 silly addNameRange     '5.0.3',
+634 silly addNameRange     '5.1.0',
+634 silly addNameRange     '5.1.1',
+634 silly addNameRange     '5.2.0-beta.1',
+634 silly addNameRange     '5.2.0',
+634 silly addNameRange     '5.3.0-beta.0',
+634 silly addNameRange     '5.3.0-beta.1' ] ]
+635 silly addNamed turbolinks@5.2.0
+636 verbose addNamed "5.2.0" is a plain semver version for turbolinks
+637 verbose get https://registry.npmjs.org/workbox-sw not expired, no request
+638 verbose get https://registry.npmjs.org/path-to-regexp not expired, no request
+639 silly addNameRange number 2 { name: 'path-to-regexp',
+639 silly addNameRange   range: '>=6.2.1 <7.0.0',
+639 silly addNameRange   hasData: true }
+640 silly addNameRange versions [ 'path-to-regexp',
+640 silly addNameRange   [ '0.0.1',
+640 silly addNameRange     '0.0.2',
+640 silly addNameRange     '0.1.0',
+640 silly addNameRange     '0.1.1',
+640 silly addNameRange     '0.1.2',
+640 silly addNameRange     '0.2.0',
+640 silly addNameRange     '0.2.1',
+640 silly addNameRange     '0.1.3',
+640 silly addNameRange     '0.2.2',
+640 silly addNameRange     '0.2.3',
+640 silly addNameRange     '0.2.4',
+640 silly addNameRange     '0.2.5',
+640 silly addNameRange     '1.0.0',
+640 silly addNameRange     '1.0.1',
+640 silly addNameRange     '1.0.2',
+640 silly addNameRange     '1.0.3',
+640 silly addNameRange     '0.1.4',
+640 silly addNameRange     '0.1.5',
+640 silly addNameRange     '1.1.0',
+640 silly addNameRange     '1.1.1',
+640 silly addNameRange     '1.2.0',
+640 silly addNameRange     '0.1.6',
+640 silly addNameRange     '0.1.7',
+640 silly addNameRange     '1.2.1',
+640 silly addNameRange     '1.3.0',
+640 silly addNameRange     '1.4.0',
+640 silly addNameRange     '1.5.0',
+640 silly addNameRange     '1.5.1',
+640 silly addNameRange     '1.5.2',
+640 silly addNameRange     '1.5.3',
+640 silly addNameRange     '1.6.0',
+640 silly addNameRange     '1.7.0',
+640 silly addNameRange     '2.0.0',
+640 silly addNameRange     '2.1.0',
+640 silly addNameRange     '2.2.0',
+640 silly addNameRange     '2.2.1',
+640 silly addNameRange     '2.3.0',
+640 silly addNameRange     '2.4.0',
+640 silly addNameRange     '3.0.0',
+640 silly addNameRange     '3.1.0',
+640 silly addNameRange     '1.8.0',
+640 silly addNameRange     '3.2.0',
+640 silly addNameRange     '4.0.0',
+640 silly addNameRange     '4.0.1',
+640 silly addNameRange     '4.0.2',
+640 silly addNameRange     '4.0.3',
+640 silly addNameRange     '4.0.4',
+640 silly addNameRange     '4.0.5',
+640 silly addNameRange     '5.0.0',
+640 silly addNameRange     '6.0.0',
+640 silly addNameRange     '6.1.0',
+640 silly addNameRange     '6.2.0',
+640 silly addNameRange     '6.2.1' ] ]
+641 silly addNamed path-to-regexp@6.2.1
+642 verbose addNamed "6.2.1" is a plain semver version for path-to-regexp
+643 verbose get https://registry.npmjs.org/pwa-helpers not expired, no request
+644 silly addNameRange number 2 { name: 'pwa-helpers', range: '>=0.9.1 <0.10.0', hasData: true }
+645 silly addNameRange versions [ 'pwa-helpers',
+645 silly addNameRange   [ '0.8.0',
+645 silly addNameRange     '0.8.2',
+645 silly addNameRange     '0.8.3',
+645 silly addNameRange     '0.8.4-pre.1',
+645 silly addNameRange     '0.8.4',
+645 silly addNameRange     '0.9.0-pre.1',
+645 silly addNameRange     '0.9.0-pre.2',
+645 silly addNameRange     '0.9.0-pre.3',
+645 silly addNameRange     '0.9.0-pre.4',
+645 silly addNameRange     '0.9.0',
+645 silly addNameRange     '0.9.1' ] ]
+646 silly addNamed pwa-helpers@0.9.1
+647 verbose addNamed "0.9.1" is a plain semver version for pwa-helpers
+648 verbose get https://registry.npmjs.org/history not expired, no request
+649 silly addNameRange number 2 { name: 'history', range: '>=5.3.0 <6.0.0', hasData: true }
+650 silly addNameRange versions [ 'history',
+650 silly addNameRange   [ '0.1.0',
+650 silly addNameRange     '1.0.0',
+650 silly addNameRange     '1.1.0',
+650 silly addNameRange     '1.2.0',
+650 silly addNameRange     '1.2.1',
+650 silly addNameRange     '1.2.2',
+650 silly addNameRange     '1.3.0',
+650 silly addNameRange     '1.3.1',
+650 silly addNameRange     '1.3.2',
+650 silly addNameRange     '1.3.3',
+650 silly addNameRange     '1.4.0',
+650 silly addNameRange     '1.4.1',
+650 silly addNameRange     '1.5.0',
+650 silly addNameRange     '1.6.0',
+650 silly addNameRange     '1.7.0',
+650 silly addNameRange     '1.8.0',
+650 silly addNameRange     '1.8.1',
+650 silly addNameRange     '1.8.2',
+650 silly addNameRange     '1.8.3',
+650 silly addNameRange     '1.8.4',
+650 silly addNameRange     '1.8.5',
+650 silly addNameRange     '1.9.0',
+650 silly addNameRange     '1.9.1',
+650 silly addNameRange     '1.10.0',
+650 silly addNameRange     '1.10.1',
+650 silly addNameRange     '1.10.2',
+650 silly addNameRange     '1.11.0',
+650 silly addNameRange     '1.11.1',
+650 silly addNameRange     '1.12.0',
+650 silly addNameRange     '1.12.1',
+650 silly addNameRange     '1.12.2',
+650 silly addNameRange     '1.12.3',
+650 silly addNameRange     '1.12.4',
+650 silly addNameRange     '1.12.5',
+650 silly addNameRange     '1.12.6',
+650 silly addNameRange     '1.13.0',
+650 silly addNameRange     '1.13.1',
+650 silly addNameRange     '1.14.0',
+650 silly addNameRange     '1.15.0',
+650 silly addNameRange     '1.16.0',
+650 silly addNameRange     '1.17.0',
+650 silly addNameRange     '2.0.0-rc1',
+650 silly addNameRange     '2.0.0-rc2',
+650 silly addNameRange     '2.0.0-rc3',
+650 silly addNameRange     '2.0.0',
+650 silly addNameRange     '2.0.1',
+650 silly addNameRange     '3.0.0-0',
+650 silly addNameRange     '2.0.2',
+650 silly addNameRange     '2.1.0',
+650 silly addNameRange     '3.0.0-1',
+650 silly addNameRange     '3.0.0-2',
+650 silly addNameRange     '2.1.1',
+650 silly addNameRange     '2.1.2',
+650 silly addNameRange     '3.0.0',
+650 silly addNameRange     '3.1.0',
+650 silly addNameRange     '3.2.0',
+650 silly addNameRange     '3.2.1',
+650 silly addNameRange     '4.0.0-0',
+650 silly addNameRange     '4.0.0-1',
+650 silly addNameRange     '4.0.0-2',
+650 silly addNameRange     '4.0.0',
+650 silly addNameRange     '4.0.1',
+650 silly addNameRange     '4.1.0',
+650 silly addNameRange     '4.2.0',
+650 silly addNameRange     '4.2.1',
+650 silly addNameRange     '4.3.0',
+650 silly addNameRange     '4.4.0',
+650 silly addNameRange     '4.4.1',
+650 silly addNameRange     '4.5.0',
+650 silly addNameRange     '4.5.1',
+650 silly addNameRange     '3.3.0',
+650 silly addNameRange     '4.6.0',
+650 silly addNameRange     '4.6.1',
+650 silly addNameRange     '4.6.2',
+650 silly addNameRange     '4.6.3',
+650 silly addNameRange     '4.7.0',
+650 silly addNameRange     '4.7.1',
+650 silly addNameRange     '4.7.2',
+650 silly addNameRange     '4.8.0-beta.0',
+650 silly addNameRange     '4.9.0-beta.2',
+650 silly addNameRange     '4.9.0',
+650 silly addNameRange     '4.10.0',
+650 silly addNameRange     '4.10.1',
+650 silly addNameRange     '5.0.0-beta.0',
+650 silly addNameRange     '5.0.0-beta.1',
+650 silly addNameRange     '5.0.0-beta.2',
+650 silly addNameRange     '5.0.0-beta.3',
+650 silly addNameRange     '5.0.0-beta.4',
+650 silly addNameRange     '5.0.0-beta.5',
+650 silly addNameRange     '5.0.0-beta.6',
+650 silly addNameRange     '5.0.0-beta.7',
+650 silly addNameRange     '5.0.0-beta.8',
+650 silly addNameRange     '5.0.0-beta.9',
+650 silly addNameRange     '5.0.0',
+650 silly addNameRange     '5.0.1',
+650 silly addNameRange     '5.0.2',
+650 silly addNameRange     '5.0.3',
+650 silly addNameRange     '5.1.0',
+650 silly addNameRange     '5.2.0',
+650 silly addNameRange     '5.3.0-pre.0',
+650 silly addNameRange     ... 1 more item ] ]
+651 silly addNamed history@5.3.0
+652 verbose addNamed "5.3.0" is a plain semver version for history
+653 verbose get https://registry.npmjs.org/leaflet not expired, no request
+654 silly addNameRange number 2 { name: 'leaflet', range: '>=1.9.3 <2.0.0', hasData: true }
+655 silly addNameRange versions [ 'leaflet',
+655 silly addNameRange   [ '0.5.1',
+655 silly addNameRange     '0.6.0',
+655 silly addNameRange     '0.6.1',
+655 silly addNameRange     '0.6.2',
+655 silly addNameRange     '0.6.3',
+655 silly addNameRange     '0.6.4',
+655 silly addNameRange     '0.7.0',
+655 silly addNameRange     '0.7.1',
+655 silly addNameRange     '0.7.2',
+655 silly addNameRange     '0.7.3',
+655 silly addNameRange     '1.0.0-beta.1',
+655 silly addNameRange     '0.7.4',
+655 silly addNameRange     '0.7.5',
+655 silly addNameRange     '1.0.0-beta.2',
+655 silly addNameRange     '0.7.7',
+655 silly addNameRange     '1.0.0-rc.1',
+655 silly addNameRange     '1.0.0-rc.2',
+655 silly addNameRange     '1.0.0-rc.3',
+655 silly addNameRange     '1.0.0',
+655 silly addNameRange     '1.0.1',
+655 silly addNameRange     '1.0.2',
+655 silly addNameRange     '1.0.3',
+655 silly addNameRange     '1.1.0',
+655 silly addNameRange     '1.2.0',
+655 silly addNameRange     '1.3.0',
+655 silly addNameRange     '1.3.1',
+655 silly addNameRange     '1.3.2',
+655 silly addNameRange     '1.3.3',
+655 silly addNameRange     '1.3.4',
+655 silly addNameRange     '1.4.0',
+655 silly addNameRange     '1.5.0',
+655 silly addNameRange     '1.5.1',
+655 silly addNameRange     '1.6.0',
+655 silly addNameRange     '1.7.0',
+655 silly addNameRange     '1.7.1',
+655 silly addNameRange     '1.8.0-alpha.0',
+655 silly addNameRange     '1.8.0-beta.0',
+655 silly addNameRange     '1.8.0-beta.1',
+655 silly addNameRange     '1.8.0-beta.2',
+655 silly addNameRange     '1.8.0-beta.3',
+655 silly addNameRange     '1.8.0',
+655 silly addNameRange     '1.9.0',
+655 silly addNameRange     '1.9.1',
+655 silly addNameRange     '1.9.2',
+655 silly addNameRange     '1.9.3',
+655 silly addNameRange     '1.9.4' ] ]
+656 silly addNamed leaflet@1.9.4
+657 verbose addNamed "1.9.4" is a plain semver version for leaflet
+658 verbose get https://registry.npmjs.org/lit not expired, no request
+659 verbose get https://registry.npmjs.org/viewerjs not expired, no request
+660 silly addNameRange number 2 { name: 'viewerjs', range: '>=1.11.2 <2.0.0', hasData: true }
+661 silly addNameRange versions [ 'viewerjs',
+661 silly addNameRange   [ '0.1.0',
+661 silly addNameRange     '0.1.1',
+661 silly addNameRange     '0.2.0',
+661 silly addNameRange     '0.3.0',
+661 silly addNameRange     '0.3.1',
+661 silly addNameRange     '0.3.2',
+661 silly addNameRange     '0.3.3',
+661 silly addNameRange     '0.4.0',
+661 silly addNameRange     '0.5.0',
+661 silly addNameRange     '0.5.1',
+661 silly addNameRange     '0.6.0',
+661 silly addNameRange     '0.6.1',
+661 silly addNameRange     '0.6.2',
+661 silly addNameRange     '0.7.0',
+661 silly addNameRange     '0.7.1',
+661 silly addNameRange     '0.7.2',
+661 silly addNameRange     '0.8.0',
+661 silly addNameRange     '0.9.0',
+661 silly addNameRange     '0.10.0',
+661 silly addNameRange     '1.0.0-beta',
+661 silly addNameRange     '1.0.0-beta.1',
+661 silly addNameRange     '1.0.0-beta.2',
+661 silly addNameRange     '1.0.0-rc',
+661 silly addNameRange     '1.0.0-rc.1',
+661 silly addNameRange     '1.0.0',
+661 silly addNameRange     '1.0.1',
+661 silly addNameRange     '1.1.0',
+661 silly addNameRange     '1.2.0',
+661 silly addNameRange     '1.2.1',
+661 silly addNameRange     '1.3.0',
+661 silly addNameRange     '1.3.1',
+661 silly addNameRange     '1.3.2',
+661 silly addNameRange     '1.3.3',
+661 silly addNameRange     '1.3.4',
+661 silly addNameRange     '1.3.5',
+661 silly addNameRange     '1.3.6',
+661 silly addNameRange     '1.3.7',
+661 silly addNameRange     '1.4.0',
+661 silly addNameRange     '1.5.0',
+661 silly addNameRange     '1.6.0',
+661 silly addNameRange     '1.6.1',
+661 silly addNameRange     '1.6.2',
+661 silly addNameRange     '1.7.0',
+661 silly addNameRange     '1.7.1',
+661 silly addNameRange     '1.8.0',
+661 silly addNameRange     '1.9.0',
+661 silly addNameRange     '1.9.1',
+661 silly addNameRange     '1.9.2',
+661 silly addNameRange     '1.10.0',
+661 silly addNameRange     '1.10.1',
+661 silly addNameRange     '1.10.2',
+661 silly addNameRange     '1.10.3',
+661 silly addNameRange     '1.10.4',
+661 silly addNameRange     '1.10.5',
+661 silly addNameRange     '1.11.0',
+661 silly addNameRange     '1.11.1',
+661 silly addNameRange     '1.11.2',
+661 silly addNameRange     '1.11.3',
+661 silly addNameRange     '1.11.4' ] ]
+662 silly addNamed viewerjs@1.11.4
+663 verbose addNamed "1.11.4" is a plain semver version for viewerjs
+664 http 304 https://registry.npmjs.org/@stripe%2fstripe-js
+665 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+665 verbose headers   connection: 'keep-alive',
+665 verbose headers   'cf-ray': '7f23b84008ea29a4-MEL',
+665 verbose headers   'cf-cache-status': 'HIT',
+665 verbose headers   age: '109',
+665 verbose headers   'cache-control': 'public, max-age=300',
+665 verbose headers   etag: '"e3ddfc5b936a063417c7f8338afe165a"',
+665 verbose headers   'last-modified': 'Mon, 31 Jul 2023 19:04:40 GMT',
+665 verbose headers   vary: 'Accept-Encoding',
+665 verbose headers   'x-amz-replication-status': 'COMPLETED',
+665 verbose headers   'x-amz-server-side-encryption': 'AES256',
+665 verbose headers   server: 'cloudflare' }
+666 silly get cb [ 304,
+666 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+666 silly get     connection: 'keep-alive',
+666 silly get     'cf-ray': '7f23b84008ea29a4-MEL',
+666 silly get     'cf-cache-status': 'HIT',
+666 silly get     age: '109',
+666 silly get     'cache-control': 'public, max-age=300',
+666 silly get     etag: '"e3ddfc5b936a063417c7f8338afe165a"',
+666 silly get     'last-modified': 'Mon, 31 Jul 2023 19:04:40 GMT',
+666 silly get     vary: 'Accept-Encoding',
+666 silly get     'x-amz-replication-status': 'COMPLETED',
+666 silly get     'x-amz-server-side-encryption': 'AES256',
+666 silly get     server: 'cloudflare' } ]
+667 verbose etag https://registry.npmjs.org/@stripe%2fstripe-js from cache
+668 verbose get saving @stripe/stripe-js to /Users/dudemaster4/.npm/registry.npmjs.org/_40stripe_252fstripe-js/.cache.json
+669 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+670 verbose get https://registry.npmjs.org/web-animations-js not expired, no request
+671 silly addNameRange number 2 { name: 'web-animations-js',
+671 silly addNameRange   range: '>=2.3.2 <3.0.0',
+671 silly addNameRange   hasData: true }
+672 silly addNameRange versions [ 'web-animations-js',
+672 silly addNameRange   [ '2.1.3',
+672 silly addNameRange     '2.1.4',
+672 silly addNameRange     '2.2.0',
+672 silly addNameRange     '2.1.5',
+672 silly addNameRange     '2.2.1',
+672 silly addNameRange     '2.2.2',
+672 silly addNameRange     '2.2.3',
+672 silly addNameRange     '2.2.4',
+672 silly addNameRange     '2.2.5',
+672 silly addNameRange     '2.3.0',
+672 silly addNameRange     '2.3.1',
+672 silly addNameRange     '2.3.2' ] ]
+673 silly addNamed web-animations-js@2.3.2
+674 verbose addNamed "2.3.2" is a plain semver version for web-animations-js
+675 verbose get https://registry.npmjs.org/redux not expired, no request
+676 silly addNameRange number 2 { name: 'redux', range: '>=4.2.0 <5.0.0', hasData: true }
+677 silly addNameRange versions [ 'redux',
+677 silly addNameRange   [ '0.0.1',
+677 silly addNameRange     '0.0.2',
+677 silly addNameRange     '0.0.3',
+677 silly addNameRange     '0.0.4',
+677 silly addNameRange     '0.1.0',
+677 silly addNameRange     '0.2.0',
+677 silly addNameRange     '0.2.1',
+677 silly addNameRange     '0.2.2',
+677 silly addNameRange     '0.3.0',
+677 silly addNameRange     '0.3.1',
+677 silly addNameRange     '0.4.0',
+677 silly addNameRange     '0.5.0',
+677 silly addNameRange     '0.5.1',
+677 silly addNameRange     '0.6.0',
+677 silly addNameRange     '0.6.1',
+677 silly addNameRange     '0.6.2',
+677 silly addNameRange     '0.7.0',
+677 silly addNameRange     '0.8.0',
+677 silly addNameRange     '0.8.1',
+677 silly addNameRange     '0.9.0',
+677 silly addNameRange     '0.10.0',
+677 silly addNameRange     '0.10.1',
+677 silly addNameRange     '0.11.0',
+677 silly addNameRange     '0.11.1',
+677 silly addNameRange     '0.12.0',
+677 silly addNameRange     '1.0.0-alpha',
+677 silly addNameRange     '1.0.0-rc',
+677 silly addNameRange     '1.0.0',
+677 silly addNameRange     '1.0.1',
+677 silly addNameRange     '2.0.0',
+677 silly addNameRange     '3.0.0',
+677 silly addNameRange     '3.0.1',
+677 silly addNameRange     '3.0.2',
+677 silly addNameRange     '3.0.3',
+677 silly addNameRange     '3.0.4',
+677 silly addNameRange     '3.0.5',
+677 silly addNameRange     '3.0.6',
+677 silly addNameRange     '3.1.0',
+677 silly addNameRange     '3.1.1',
+677 silly addNameRange     '3.1.2',
+677 silly addNameRange     '3.1.3',
+677 silly addNameRange     '3.1.4',
+677 silly addNameRange     '3.1.5',
+677 silly addNameRange     '3.1.6',
+677 silly addNameRange     '3.1.7',
+677 silly addNameRange     '3.2.0',
+677 silly addNameRange     '3.2.1',
+677 silly addNameRange     '3.3.0',
+677 silly addNameRange     '3.3.1',
+677 silly addNameRange     '3.4.0',
+677 silly addNameRange     '3.5.0',
+677 silly addNameRange     '3.5.1',
+677 silly addNameRange     '3.5.2',
+677 silly addNameRange     '3.6.0',
+677 silly addNameRange     '3.7.0',
+677 silly addNameRange     '3.7.1',
+677 silly addNameRange     '3.7.2',
+677 silly addNameRange     '4.0.0-beta.1',
+677 silly addNameRange     '4.0.0-beta.2',
+677 silly addNameRange     '4.0.0-rc.1',
+677 silly addNameRange     '4.0.0',
+677 silly addNameRange     '4.0.1',
+677 silly addNameRange     '4.0.2',
+677 silly addNameRange     '4.0.3',
+677 silly addNameRange     '4.0.4',
+677 silly addNameRange     '4.0.5',
+677 silly addNameRange     '4.1.0-alpha.0',
+677 silly addNameRange     '4.1.0',
+677 silly addNameRange     '4.1.1',
+677 silly addNameRange     '4.1.2',
+677 silly addNameRange     '4.2.0-alpha.0',
+677 silly addNameRange     '5.0.0-alpha.0',
+677 silly addNameRange     '4.2.0',
+677 silly addNameRange     '4.2.1',
+677 silly addNameRange     '5.0.0-alpha.1',
+677 silly addNameRange     '5.0.0-alpha.2',
+677 silly addNameRange     '5.0.0-alpha.3',
+677 silly addNameRange     '5.0.0-alpha.4',
+677 silly addNameRange     '5.0.0-alpha.5',
+677 silly addNameRange     '5.0.0-alpha.6',
+677 silly addNameRange     '5.0.0-beta.0' ] ]
+678 silly addNamed redux@4.2.1
+679 verbose addNamed "4.2.1" is a plain semver version for redux
+680 silly cache afterAdd d3-queue@3.0.7
+681 verbose afterAdd /Users/dudemaster4/.npm/d3-queue/3.0.7/package/package.json not in flight; writing
+682 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+683 silly cache afterAdd throttle-debounce@5.0.0
+684 verbose afterAdd /Users/dudemaster4/.npm/throttle-debounce/5.0.0/package/package.json not in flight; writing
+685 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+686 silly cache afterAdd path-to-regexp@6.2.1
+687 verbose afterAdd /Users/dudemaster4/.npm/path-to-regexp/6.2.1/package/package.json not in flight; writing
+688 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+689 silly cache afterAdd pwa-helpers@0.9.1
+690 verbose afterAdd /Users/dudemaster4/.npm/pwa-helpers/0.9.1/package/package.json not in flight; writing
+691 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+692 silly cache afterAdd workbox-sw@6.5.4
+693 verbose afterAdd /Users/dudemaster4/.npm/workbox-sw/6.5.4/package/package.json not in flight; writing
+694 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+695 http 304 https://registry.npmjs.org/@material%2fmwc-linear-progress
+696 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+696 verbose headers   connection: 'keep-alive',
+696 verbose headers   'cf-ray': '7f23b8400eab5ab4-MEL',
+696 verbose headers   'cf-cache-status': 'HIT',
+696 verbose headers   age: '110',
+696 verbose headers   'cache-control': 'public, max-age=300',
+696 verbose headers   etag: '"20f8b3ca238468fccf3af6a0cd07f1a5"',
+696 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:27:59 GMT',
+696 verbose headers   vary: 'Accept-Encoding',
+696 verbose headers   'x-amz-replication-status': 'COMPLETED',
+696 verbose headers   'x-amz-server-side-encryption': 'AES256',
+696 verbose headers   server: 'cloudflare' }
+697 silly get cb [ 304,
+697 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+697 silly get     connection: 'keep-alive',
+697 silly get     'cf-ray': '7f23b8400eab5ab4-MEL',
+697 silly get     'cf-cache-status': 'HIT',
+697 silly get     age: '110',
+697 silly get     'cache-control': 'public, max-age=300',
+697 silly get     etag: '"20f8b3ca238468fccf3af6a0cd07f1a5"',
+697 silly get     'last-modified': 'Fri, 23 Dec 2022 07:27:59 GMT',
+697 silly get     vary: 'Accept-Encoding',
+697 silly get     'x-amz-replication-status': 'COMPLETED',
+697 silly get     'x-amz-server-side-encryption': 'AES256',
+697 silly get     server: 'cloudflare' } ]
+698 verbose etag https://registry.npmjs.org/@material%2fmwc-linear-progress from cache
+699 verbose get saving @material/mwc-linear-progress to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-linear-progress/.cache.json
+700 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+701 silly cache afterAdd history@5.3.0
+702 verbose afterAdd /Users/dudemaster4/.npm/history/5.3.0/package/package.json not in flight; writing
+703 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+704 silly cache afterAdd turbolinks@5.2.0
+705 verbose afterAdd /Users/dudemaster4/.npm/turbolinks/5.2.0/package/package.json not in flight; writing
+706 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+707 http 304 https://registry.npmjs.org/@material%2fmwc-select
+708 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+708 verbose headers   connection: 'keep-alive',
+708 verbose headers   'cf-ray': '7f23b8400a9a2996-MEL',
+708 verbose headers   'cf-cache-status': 'HIT',
+708 verbose headers   age: '109',
+708 verbose headers   'cache-control': 'public, max-age=300',
+708 verbose headers   etag: '"9a2747607972a23b2b2c3ffad9a2cd23"',
+708 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:26:24 GMT',
+708 verbose headers   vary: 'Accept-Encoding',
+708 verbose headers   'x-amz-replication-status': 'COMPLETED',
+708 verbose headers   'x-amz-server-side-encryption': 'AES256',
+708 verbose headers   server: 'cloudflare' }
+709 silly get cb [ 304,
+709 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+709 silly get     connection: 'keep-alive',
+709 silly get     'cf-ray': '7f23b8400a9a2996-MEL',
+709 silly get     'cf-cache-status': 'HIT',
+709 silly get     age: '109',
+709 silly get     'cache-control': 'public, max-age=300',
+709 silly get     etag: '"9a2747607972a23b2b2c3ffad9a2cd23"',
+709 silly get     'last-modified': 'Fri, 23 Dec 2022 07:26:24 GMT',
+709 silly get     vary: 'Accept-Encoding',
+709 silly get     'x-amz-replication-status': 'COMPLETED',
+709 silly get     'x-amz-server-side-encryption': 'AES256',
+709 silly get     server: 'cloudflare' } ]
+710 verbose etag https://registry.npmjs.org/@material%2fmwc-select from cache
+711 verbose get saving @material/mwc-select to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-select/.cache.json
+712 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+713 silly cache afterAdd leaflet@1.9.4
+714 verbose afterAdd /Users/dudemaster4/.npm/leaflet/1.9.4/package/package.json not in flight; writing
+715 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+716 silly cache afterAdd lit@2.6.1
+717 verbose afterAdd /Users/dudemaster4/.npm/lit/2.6.1/package/package.json not in flight; writing
+718 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+719 silly cache afterAdd viewerjs@1.11.4
+720 verbose afterAdd /Users/dudemaster4/.npm/viewerjs/1.11.4/package/package.json not in flight; writing
+721 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+722 http 304 https://registry.npmjs.org/@material%2fmwc-textarea
+723 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+723 verbose headers   connection: 'keep-alive',
+723 verbose headers   'cf-ray': '7f23b8405d422b37-MEL',
+723 verbose headers   'cf-cache-status': 'HIT',
+723 verbose headers   age: '109',
+723 verbose headers   'cache-control': 'public, max-age=300',
+723 verbose headers   etag: '"2aae1b25af9390ba85a8e295a9312c63"',
+723 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:28:19 GMT',
+723 verbose headers   vary: 'Accept-Encoding',
+723 verbose headers   'x-amz-replication-status': 'COMPLETED',
+723 verbose headers   'x-amz-server-side-encryption': 'AES256',
+723 verbose headers   server: 'cloudflare' }
+724 silly get cb [ 304,
+724 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+724 silly get     connection: 'keep-alive',
+724 silly get     'cf-ray': '7f23b8405d422b37-MEL',
+724 silly get     'cf-cache-status': 'HIT',
+724 silly get     age: '109',
+724 silly get     'cache-control': 'public, max-age=300',
+724 silly get     etag: '"2aae1b25af9390ba85a8e295a9312c63"',
+724 silly get     'last-modified': 'Fri, 23 Dec 2022 07:28:19 GMT',
+724 silly get     vary: 'Accept-Encoding',
+724 silly get     'x-amz-replication-status': 'COMPLETED',
+724 silly get     'x-amz-server-side-encryption': 'AES256',
+724 silly get     server: 'cloudflare' } ]
+725 verbose etag https://registry.npmjs.org/@material%2fmwc-textarea from cache
+726 verbose get saving @material/mwc-textarea to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-textarea/.cache.json
+727 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+728 http 304 https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs
+729 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+729 verbose headers   connection: 'keep-alive',
+729 verbose headers   'cf-ray': '7f23b8405aeb4f3c-MEL',
+729 verbose headers   'cf-cache-status': 'HIT',
+729 verbose headers   age: '109',
+729 verbose headers   'cache-control': 'public, max-age=300',
+729 verbose headers   etag: '"eb293cb264eb0a911a33ce0395ef7ccf"',
+729 verbose headers   'last-modified': 'Thu, 30 Mar 2023 21:35:06 GMT',
+729 verbose headers   vary: 'Accept-Encoding',
+729 verbose headers   'x-amz-replication-status': 'COMPLETED',
+729 verbose headers   'x-amz-server-side-encryption': 'AES256',
+729 verbose headers   server: 'cloudflare' }
+730 silly get cb [ 304,
+730 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+730 silly get     connection: 'keep-alive',
+730 silly get     'cf-ray': '7f23b8405aeb4f3c-MEL',
+730 silly get     'cf-cache-status': 'HIT',
+730 silly get     age: '109',
+730 silly get     'cache-control': 'public, max-age=300',
+730 silly get     etag: '"eb293cb264eb0a911a33ce0395ef7ccf"',
+730 silly get     'last-modified': 'Thu, 30 Mar 2023 21:35:06 GMT',
+730 silly get     vary: 'Accept-Encoding',
+730 silly get     'x-amz-replication-status': 'COMPLETED',
+730 silly get     'x-amz-server-side-encryption': 'AES256',
+730 silly get     server: 'cloudflare' } ]
+731 verbose etag https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs from cache
+732 verbose get saving @webcomponents/webcomponentsjs to /Users/dudemaster4/.npm/registry.npmjs.org/_40webcomponents_252fwebcomponentsjs/.cache.json
+733 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+734 http 304 https://registry.npmjs.org/@material%2fmwc-icon-button
+735 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+735 verbose headers   connection: 'keep-alive',
+735 verbose headers   'cf-ray': '7f23b8405dcc29a7-MEL',
+735 verbose headers   'cf-cache-status': 'HIT',
+735 verbose headers   age: '109',
+735 verbose headers   'cache-control': 'public, max-age=300',
+735 verbose headers   etag: '"eb143ec2e13ef544107dec71688ba9ec"',
+735 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:27:56 GMT',
+735 verbose headers   vary: 'Accept-Encoding',
+735 verbose headers   'x-amz-replication-status': 'COMPLETED',
+735 verbose headers   'x-amz-server-side-encryption': 'AES256',
+735 verbose headers   server: 'cloudflare' }
+736 silly get cb [ 304,
+736 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+736 silly get     connection: 'keep-alive',
+736 silly get     'cf-ray': '7f23b8405dcc29a7-MEL',
+736 silly get     'cf-cache-status': 'HIT',
+736 silly get     age: '109',
+736 silly get     'cache-control': 'public, max-age=300',
+736 silly get     etag: '"eb143ec2e13ef544107dec71688ba9ec"',
+736 silly get     'last-modified': 'Fri, 23 Dec 2022 07:27:56 GMT',
+736 silly get     vary: 'Accept-Encoding',
+736 silly get     'x-amz-replication-status': 'COMPLETED',
+736 silly get     'x-amz-server-side-encryption': 'AES256',
+736 silly get     server: 'cloudflare' } ]
+737 verbose etag https://registry.npmjs.org/@material%2fmwc-icon-button from cache
+738 verbose get saving @material/mwc-icon-button to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-icon-button/.cache.json
+739 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+740 http 304 https://registry.npmjs.org/@material%2fmwc-button
+741 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+741 verbose headers   connection: 'keep-alive',
+741 verbose headers   'cf-ray': '7f23b8405b0d1f5c-MEL',
+741 verbose headers   'cf-cache-status': 'HIT',
+741 verbose headers   age: '109',
+741 verbose headers   'cache-control': 'public, max-age=300',
+741 verbose headers   etag: '"e5c4146a09ed647cf89e01ce3802bb83"',
+741 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:27:31 GMT',
+741 verbose headers   vary: 'Accept-Encoding',
+741 verbose headers   'x-amz-replication-status': 'COMPLETED',
+741 verbose headers   'x-amz-server-side-encryption': 'AES256',
+741 verbose headers   server: 'cloudflare' }
+742 silly get cb [ 304,
+742 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+742 silly get     connection: 'keep-alive',
+742 silly get     'cf-ray': '7f23b8405b0d1f5c-MEL',
+742 silly get     'cf-cache-status': 'HIT',
+742 silly get     age: '109',
+742 silly get     'cache-control': 'public, max-age=300',
+742 silly get     etag: '"e5c4146a09ed647cf89e01ce3802bb83"',
+742 silly get     'last-modified': 'Fri, 23 Dec 2022 07:27:31 GMT',
+742 silly get     vary: 'Accept-Encoding',
+742 silly get     'x-amz-replication-status': 'COMPLETED',
+742 silly get     'x-amz-server-side-encryption': 'AES256',
+742 silly get     server: 'cloudflare' } ]
+743 verbose etag https://registry.npmjs.org/@material%2fmwc-button from cache
+744 verbose get saving @material/mwc-button to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-button/.cache.json
+745 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+746 http 304 https://registry.npmjs.org/@material%2fmwc-checkbox
+747 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+747 verbose headers   connection: 'keep-alive',
+747 verbose headers   'cf-ray': '7f23b84058772eac-MEL',
+747 verbose headers   'cf-cache-status': 'HIT',
+747 verbose headers   age: '109',
+747 verbose headers   'cache-control': 'public, max-age=300',
+747 verbose headers   etag: '"98e5bb1e5aa7a361d9625c2593bcc863"',
+747 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:25:55 GMT',
+747 verbose headers   vary: 'Accept-Encoding',
+747 verbose headers   'x-amz-replication-status': 'COMPLETED',
+747 verbose headers   'x-amz-server-side-encryption': 'AES256',
+747 verbose headers   server: 'cloudflare' }
+748 silly get cb [ 304,
+748 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+748 silly get     connection: 'keep-alive',
+748 silly get     'cf-ray': '7f23b84058772eac-MEL',
+748 silly get     'cf-cache-status': 'HIT',
+748 silly get     age: '109',
+748 silly get     'cache-control': 'public, max-age=300',
+748 silly get     etag: '"98e5bb1e5aa7a361d9625c2593bcc863"',
+748 silly get     'last-modified': 'Fri, 23 Dec 2022 07:25:55 GMT',
+748 silly get     vary: 'Accept-Encoding',
+748 silly get     'x-amz-replication-status': 'COMPLETED',
+748 silly get     'x-amz-server-side-encryption': 'AES256',
+748 silly get     server: 'cloudflare' } ]
+749 verbose etag https://registry.npmjs.org/@material%2fmwc-checkbox from cache
+750 verbose get saving @material/mwc-checkbox to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-checkbox/.cache.json
+751 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+752 http 304 https://registry.npmjs.org/@material%2fmwc-icon
+753 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+753 verbose headers   connection: 'keep-alive',
+753 verbose headers   'cf-ray': '7f23b8405a2b2ef5-MEL',
+753 verbose headers   'cf-cache-status': 'HIT',
+753 verbose headers   age: '109',
+753 verbose headers   'cache-control': 'public, max-age=300',
+753 verbose headers   etag: '"1258405a9d067cfbea324b1d56b3a939"',
+753 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:27:53 GMT',
+753 verbose headers   vary: 'Accept-Encoding',
+753 verbose headers   'x-amz-replication-status': 'COMPLETED',
+753 verbose headers   'x-amz-server-side-encryption': 'AES256',
+753 verbose headers   server: 'cloudflare' }
+754 silly get cb [ 304,
+754 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+754 silly get     connection: 'keep-alive',
+754 silly get     'cf-ray': '7f23b8405a2b2ef5-MEL',
+754 silly get     'cf-cache-status': 'HIT',
+754 silly get     age: '109',
+754 silly get     'cache-control': 'public, max-age=300',
+754 silly get     etag: '"1258405a9d067cfbea324b1d56b3a939"',
+754 silly get     'last-modified': 'Fri, 23 Dec 2022 07:27:53 GMT',
+754 silly get     vary: 'Accept-Encoding',
+754 silly get     'x-amz-replication-status': 'COMPLETED',
+754 silly get     'x-amz-server-side-encryption': 'AES256',
+754 silly get     server: 'cloudflare' } ]
+755 verbose etag https://registry.npmjs.org/@material%2fmwc-icon from cache
+756 verbose get saving @material/mwc-icon to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-icon/.cache.json
+757 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+758 http 304 https://registry.npmjs.org/@material%2fmwc-menu
+759 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+759 verbose headers   connection: 'keep-alive',
+759 verbose headers   'cf-ray': '7f23b8400bb72edd-MEL',
+759 verbose headers   'cf-cache-status': 'HIT',
+759 verbose headers   age: '109',
+759 verbose headers   'cache-control': 'public, max-age=300',
+759 verbose headers   etag: '"91d7676062e63f7484b67083da46cca9"',
+759 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:26:15 GMT',
+759 verbose headers   vary: 'Accept-Encoding',
+759 verbose headers   'x-amz-replication-status': 'COMPLETED',
+759 verbose headers   'x-amz-server-side-encryption': 'AES256',
+759 verbose headers   server: 'cloudflare' }
+760 silly get cb [ 304,
+760 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+760 silly get     connection: 'keep-alive',
+760 silly get     'cf-ray': '7f23b8400bb72edd-MEL',
+760 silly get     'cf-cache-status': 'HIT',
+760 silly get     age: '109',
+760 silly get     'cache-control': 'public, max-age=300',
+760 silly get     etag: '"91d7676062e63f7484b67083da46cca9"',
+760 silly get     'last-modified': 'Fri, 23 Dec 2022 07:26:15 GMT',
+760 silly get     vary: 'Accept-Encoding',
+760 silly get     'x-amz-replication-status': 'COMPLETED',
+760 silly get     'x-amz-server-side-encryption': 'AES256',
+760 silly get     server: 'cloudflare' } ]
+761 verbose etag https://registry.npmjs.org/@material%2fmwc-menu from cache
+762 verbose get saving @material/mwc-menu to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-menu/.cache.json
+763 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+764 http 304 https://registry.npmjs.org/@material%2fmwc-list
+765 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+765 verbose headers   connection: 'keep-alive',
+765 verbose headers   'cf-ray': '7f23b8405c535ac8-MEL',
+765 verbose headers   'cf-cache-status': 'HIT',
+765 verbose headers   age: '109',
+765 verbose headers   'cache-control': 'public, max-age=300',
+765 verbose headers   etag: '"dbc8a4266a5510e7ae4d945fdc7d0bfc"',
+765 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:26:11 GMT',
+765 verbose headers   vary: 'Accept-Encoding',
+765 verbose headers   'x-amz-replication-status': 'COMPLETED',
+765 verbose headers   'x-amz-server-side-encryption': 'AES256',
+765 verbose headers   server: 'cloudflare' }
+766 silly get cb [ 304,
+766 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+766 silly get     connection: 'keep-alive',
+766 silly get     'cf-ray': '7f23b8405c535ac8-MEL',
+766 silly get     'cf-cache-status': 'HIT',
+766 silly get     age: '109',
+766 silly get     'cache-control': 'public, max-age=300',
+766 silly get     etag: '"dbc8a4266a5510e7ae4d945fdc7d0bfc"',
+766 silly get     'last-modified': 'Fri, 23 Dec 2022 07:26:11 GMT',
+766 silly get     vary: 'Accept-Encoding',
+766 silly get     'x-amz-replication-status': 'COMPLETED',
+766 silly get     'x-amz-server-side-encryption': 'AES256',
+766 silly get     server: 'cloudflare' } ]
+767 verbose etag https://registry.npmjs.org/@material%2fmwc-list from cache
+768 verbose get saving @material/mwc-list to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-list/.cache.json
+769 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+770 http 304 https://registry.npmjs.org/@material%2fmwc-textfield
+771 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+771 verbose headers   connection: 'keep-alive',
+771 verbose headers   'cf-ray': '7f23b8406a692ed6-MEL',
+771 verbose headers   'cf-cache-status': 'HIT',
+771 verbose headers   age: '109',
+771 verbose headers   'cache-control': 'public, max-age=300',
+771 verbose headers   etag: '"c1c1d70a6c99ec4d7239082bc5e80b89"',
+771 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:26:38 GMT',
+771 verbose headers   vary: 'Accept-Encoding',
+771 verbose headers   'x-amz-replication-status': 'COMPLETED',
+771 verbose headers   'x-amz-server-side-encryption': 'AES256',
+771 verbose headers   server: 'cloudflare' }
+772 silly get cb [ 304,
+772 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+772 silly get     connection: 'keep-alive',
+772 silly get     'cf-ray': '7f23b8406a692ed6-MEL',
+772 silly get     'cf-cache-status': 'HIT',
+772 silly get     age: '109',
+772 silly get     'cache-control': 'public, max-age=300',
+772 silly get     etag: '"c1c1d70a6c99ec4d7239082bc5e80b89"',
+772 silly get     'last-modified': 'Fri, 23 Dec 2022 07:26:38 GMT',
+772 silly get     vary: 'Accept-Encoding',
+772 silly get     'x-amz-replication-status': 'COMPLETED',
+772 silly get     'x-amz-server-side-encryption': 'AES256',
+772 silly get     server: 'cloudflare' } ]
+773 verbose etag https://registry.npmjs.org/@material%2fmwc-textfield from cache
+774 verbose get saving @material/mwc-textfield to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-textfield/.cache.json
+775 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+776 http 304 https://registry.npmjs.org/@material%2fmwc-snackbar
+777 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+777 verbose headers   connection: 'keep-alive',
+777 verbose headers   'cf-ray': '7f23b8405fb15ab0-MEL',
+777 verbose headers   'cf-cache-status': 'HIT',
+777 verbose headers   age: '109',
+777 verbose headers   'cache-control': 'public, max-age=300',
+777 verbose headers   etag: '"fda3e7a5e186516f70bcd878c4a6050c"',
+777 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:26:31 GMT',
+777 verbose headers   vary: 'Accept-Encoding',
+777 verbose headers   'x-amz-replication-status': 'COMPLETED',
+777 verbose headers   'x-amz-server-side-encryption': 'AES256',
+777 verbose headers   server: 'cloudflare' }
+778 silly get cb [ 304,
+778 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+778 silly get     connection: 'keep-alive',
+778 silly get     'cf-ray': '7f23b8405fb15ab0-MEL',
+778 silly get     'cf-cache-status': 'HIT',
+778 silly get     age: '109',
+778 silly get     'cache-control': 'public, max-age=300',
+778 silly get     etag: '"fda3e7a5e186516f70bcd878c4a6050c"',
+778 silly get     'last-modified': 'Fri, 23 Dec 2022 07:26:31 GMT',
+778 silly get     vary: 'Accept-Encoding',
+778 silly get     'x-amz-replication-status': 'COMPLETED',
+778 silly get     'x-amz-server-side-encryption': 'AES256',
+778 silly get     server: 'cloudflare' } ]
+779 verbose etag https://registry.npmjs.org/@material%2fmwc-snackbar from cache
+780 verbose get saving @material/mwc-snackbar to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-snackbar/.cache.json
+781 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+782 http 304 https://registry.npmjs.org/@micro-sentry%2fbrowser
+783 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+783 verbose headers   connection: 'keep-alive',
+783 verbose headers   'cf-ray': '7f23b8405fac29a1-MEL',
+783 verbose headers   'cf-cache-status': 'HIT',
+783 verbose headers   age: '109',
+783 verbose headers   'cache-control': 'public, max-age=300',
+783 verbose headers   etag: '"7ff4bdd034d232d9637f5742c46731b9"',
+783 verbose headers   'last-modified': 'Thu, 09 Feb 2023 11:39:09 GMT',
+783 verbose headers   vary: 'Accept-Encoding',
+783 verbose headers   'x-amz-replication-status': 'COMPLETED',
+783 verbose headers   'x-amz-server-side-encryption': 'AES256',
+783 verbose headers   server: 'cloudflare' }
+784 silly get cb [ 304,
+784 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+784 silly get     connection: 'keep-alive',
+784 silly get     'cf-ray': '7f23b8405fac29a1-MEL',
+784 silly get     'cf-cache-status': 'HIT',
+784 silly get     age: '109',
+784 silly get     'cache-control': 'public, max-age=300',
+784 silly get     etag: '"7ff4bdd034d232d9637f5742c46731b9"',
+784 silly get     'last-modified': 'Thu, 09 Feb 2023 11:39:09 GMT',
+784 silly get     vary: 'Accept-Encoding',
+784 silly get     'x-amz-replication-status': 'COMPLETED',
+784 silly get     'x-amz-server-side-encryption': 'AES256',
+784 silly get     server: 'cloudflare' } ]
+785 verbose etag https://registry.npmjs.org/@micro-sentry%2fbrowser from cache
+786 verbose get saving @micro-sentry/browser to /Users/dudemaster4/.npm/registry.npmjs.org/_40micro-sentry_252fbrowser/.cache.json
+787 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+788 http 304 https://registry.npmjs.org/@material%2fmwc-formfield
+789 verbose headers { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+789 verbose headers   connection: 'keep-alive',
+789 verbose headers   'cf-ray': '7f23b84009b62999-MEL',
+789 verbose headers   'cf-cache-status': 'HIT',
+789 verbose headers   age: '109',
+789 verbose headers   'cache-control': 'public, max-age=300',
+789 verbose headers   etag: '"aee17302aba6394eda59e1553190c3f0"',
+789 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:27:50 GMT',
+789 verbose headers   vary: 'Accept-Encoding',
+789 verbose headers   'x-amz-replication-status': 'COMPLETED',
+789 verbose headers   'x-amz-server-side-encryption': 'AES256',
+789 verbose headers   server: 'cloudflare' }
+790 silly get cb [ 304,
+790 silly get   { date: 'Sun, 06 Aug 2023 02:06:17 GMT',
+790 silly get     connection: 'keep-alive',
+790 silly get     'cf-ray': '7f23b84009b62999-MEL',
+790 silly get     'cf-cache-status': 'HIT',
+790 silly get     age: '109',
+790 silly get     'cache-control': 'public, max-age=300',
+790 silly get     etag: '"aee17302aba6394eda59e1553190c3f0"',
+790 silly get     'last-modified': 'Fri, 23 Dec 2022 07:27:50 GMT',
+790 silly get     vary: 'Accept-Encoding',
+790 silly get     'x-amz-replication-status': 'COMPLETED',
+790 silly get     'x-amz-server-side-encryption': 'AES256',
+790 silly get     server: 'cloudflare' } ]
+791 verbose etag https://registry.npmjs.org/@material%2fmwc-formfield from cache
+792 verbose get saving @material/mwc-formfield to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-formfield/.cache.json
+793 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+794 silly cache afterAdd web-animations-js@2.3.2
+795 verbose afterAdd /Users/dudemaster4/.npm/web-animations-js/2.3.2/package/package.json not in flight; writing
+796 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+797 silly cache afterAdd redux@4.2.1
+798 verbose afterAdd /Users/dudemaster4/.npm/redux/4.2.1/package/package.json not in flight; writing
+799 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+800 verbose afterAdd /Users/dudemaster4/.npm/throttle-debounce/5.0.0/package/package.json written
+801 verbose afterAdd /Users/dudemaster4/.npm/d3-queue/3.0.7/package/package.json written
+802 verbose afterAdd /Users/dudemaster4/.npm/path-to-regexp/6.2.1/package/package.json written
+803 verbose afterAdd /Users/dudemaster4/.npm/pwa-helpers/0.9.1/package/package.json written
+804 http 304 https://registry.npmjs.org/@material%2fmwc-radio
+805 verbose headers { date: 'Sun, 06 Aug 2023 02:06:18 GMT',
+805 verbose headers   connection: 'keep-alive',
+805 verbose headers   'cf-ray': '7f23b8405b1429a2-MEL',
+805 verbose headers   'cf-cache-status': 'HIT',
+805 verbose headers   age: '110',
+805 verbose headers   'cache-control': 'public, max-age=300',
+805 verbose headers   etag: '"c717f3a6f6b7fb63a12df2cca4af1c7b"',
+805 verbose headers   'last-modified': 'Fri, 23 Dec 2022 07:26:19 GMT',
+805 verbose headers   vary: 'Accept-Encoding',
+805 verbose headers   'x-amz-replication-status': 'COMPLETED',
+805 verbose headers   'x-amz-server-side-encryption': 'AES256',
+805 verbose headers   server: 'cloudflare' }
+806 silly get cb [ 304,
+806 silly get   { date: 'Sun, 06 Aug 2023 02:06:18 GMT',
+806 silly get     connection: 'keep-alive',
+806 silly get     'cf-ray': '7f23b8405b1429a2-MEL',
+806 silly get     'cf-cache-status': 'HIT',
+806 silly get     age: '110',
+806 silly get     'cache-control': 'public, max-age=300',
+806 silly get     etag: '"c717f3a6f6b7fb63a12df2cca4af1c7b"',
+806 silly get     'last-modified': 'Fri, 23 Dec 2022 07:26:19 GMT',
+806 silly get     vary: 'Accept-Encoding',
+806 silly get     'x-amz-replication-status': 'COMPLETED',
+806 silly get     'x-amz-server-side-encryption': 'AES256',
+806 silly get     server: 'cloudflare' } ]
+807 verbose etag https://registry.npmjs.org/@material%2fmwc-radio from cache
+808 verbose get saving @material/mwc-radio to /Users/dudemaster4/.npm/registry.npmjs.org/_40material_252fmwc-radio/.cache.json
+809 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+810 verbose updateRemote git fetch -a origin (git://github.com/runette/Leaflet.fullscreen.git)
+811 verbose correctMkdir /Users/dudemaster4/.npm/_git-remotes correctMkdir not in flight; initializing
+812 verbose afterAdd /Users/dudemaster4/.npm/workbox-sw/6.5.4/package/package.json written
+813 verbose afterAdd /Users/dudemaster4/.npm/turbolinks/5.2.0/package/package.json written
+814 verbose afterAdd /Users/dudemaster4/.npm/history/5.3.0/package/package.json written
+815 verbose afterAdd /Users/dudemaster4/.npm/leaflet/1.9.4/package/package.json written
+816 verbose afterAdd /Users/dudemaster4/.npm/lit/2.6.1/package/package.json written
+817 silly resolveWithNewModule @stripe/stripe-js@1.54.2 checking installable status
+818 silly cache add args [ '@stripe/stripe-js@^1.46.0', null ]
+819 verbose cache add spec @stripe/stripe-js@^1.46.0
+820 silly cache add parsed spec Result {
+820 silly cache add   raw: '@stripe/stripe-js@^1.46.0',
+820 silly cache add   scope: '@stripe',
+820 silly cache add   escapedName: '@stripe%2fstripe-js',
+820 silly cache add   name: '@stripe/stripe-js',
+820 silly cache add   rawSpec: '^1.46.0',
+820 silly cache add   spec: '>=1.46.0 <2.0.0',
+820 silly cache add   type: 'range' }
+821 silly addNamed @stripe/stripe-js@>=1.46.0 <2.0.0
+822 verbose addNamed ">=1.46.0 <2.0.0" is a valid semver range for @stripe/stripe-js
+823 silly addNameRange { name: '@stripe/stripe-js',
+823 silly addNameRange   range: '>=1.46.0 <2.0.0',
+823 silly addNameRange   hasData: false }
+824 silly mapToRegistry name @stripe/stripe-js
+825 silly mapToRegistry scope (from package name) @stripe
+826 verbose mapToRegistry no registry URL found in name for scope @stripe
+827 silly mapToRegistry using default registry
+828 silly mapToRegistry registry https://registry.npmjs.org/
+829 silly mapToRegistry data Result {
+829 silly mapToRegistry   raw: '@stripe/stripe-js',
+829 silly mapToRegistry   scope: '@stripe',
+829 silly mapToRegistry   escapedName: '@stripe%2fstripe-js',
+829 silly mapToRegistry   name: '@stripe/stripe-js',
+829 silly mapToRegistry   rawSpec: '',
+829 silly mapToRegistry   spec: 'latest',
+829 silly mapToRegistry   type: 'tag' }
+830 silly mapToRegistry uri https://registry.npmjs.org/@stripe%2fstripe-js
+831 verbose addNameRange registry:https://registry.npmjs.org/@stripe%2fstripe-js not in flight; fetching
+832 verbose afterAdd /Users/dudemaster4/.npm/viewerjs/1.11.4/package/package.json written
+833 silly resolveWithNewModule @material/mwc-linear-progress@0.27.0 checking installable status
+834 silly cache add args [ '@material/mwc-linear-progress@0.27.0', null ]
+835 verbose cache add spec @material/mwc-linear-progress@0.27.0
+836 silly cache add parsed spec Result {
+836 silly cache add   raw: '@material/mwc-linear-progress@0.27.0',
+836 silly cache add   scope: '@material',
+836 silly cache add   escapedName: '@material%2fmwc-linear-progress',
+836 silly cache add   name: '@material/mwc-linear-progress',
+836 silly cache add   rawSpec: '0.27.0',
+836 silly cache add   spec: '0.27.0',
+836 silly cache add   type: 'version' }
+837 silly addNamed @material/mwc-linear-progress@0.27.0
+838 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-linear-progress
+839 silly mapToRegistry name @material/mwc-linear-progress
+840 silly mapToRegistry scope (from package name) @material
+841 verbose mapToRegistry no registry URL found in name for scope @material
+842 silly mapToRegistry using default registry
+843 silly mapToRegistry registry https://registry.npmjs.org/
+844 silly mapToRegistry data Result {
+844 silly mapToRegistry   raw: '@material/mwc-linear-progress',
+844 silly mapToRegistry   scope: '@material',
+844 silly mapToRegistry   escapedName: '@material%2fmwc-linear-progress',
+844 silly mapToRegistry   name: '@material/mwc-linear-progress',
+844 silly mapToRegistry   rawSpec: '',
+844 silly mapToRegistry   spec: 'latest',
+844 silly mapToRegistry   type: 'tag' }
+845 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-linear-progress
+846 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-linear-progress not in flight; fetching
+847 verbose afterAdd /Users/dudemaster4/.npm/redux/4.2.1/package/package.json written
+848 verbose afterAdd /Users/dudemaster4/.npm/web-animations-js/2.3.2/package/package.json written
+849 silly resolveWithNewModule @material/mwc-select@0.27.0 checking installable status
+850 silly cache add args [ '@material/mwc-select@0.27.0', null ]
+851 verbose cache add spec @material/mwc-select@0.27.0
+852 silly cache add parsed spec Result {
+852 silly cache add   raw: '@material/mwc-select@0.27.0',
+852 silly cache add   scope: '@material',
+852 silly cache add   escapedName: '@material%2fmwc-select',
+852 silly cache add   name: '@material/mwc-select',
+852 silly cache add   rawSpec: '0.27.0',
+852 silly cache add   spec: '0.27.0',
+852 silly cache add   type: 'version' }
+853 silly addNamed @material/mwc-select@0.27.0
+854 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-select
+855 silly mapToRegistry name @material/mwc-select
+856 silly mapToRegistry scope (from package name) @material
+857 verbose mapToRegistry no registry URL found in name for scope @material
+858 silly mapToRegistry using default registry
+859 silly mapToRegistry registry https://registry.npmjs.org/
+860 silly mapToRegistry data Result {
+860 silly mapToRegistry   raw: '@material/mwc-select',
+860 silly mapToRegistry   scope: '@material',
+860 silly mapToRegistry   escapedName: '@material%2fmwc-select',
+860 silly mapToRegistry   name: '@material/mwc-select',
+860 silly mapToRegistry   rawSpec: '',
+860 silly mapToRegistry   spec: 'latest',
+860 silly mapToRegistry   type: 'tag' }
+861 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-select
+862 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-select not in flight; fetching
+863 silly resolveWithNewModule @webcomponents/webcomponentsjs@2.8.0 checking installable status
+864 silly cache add args [ '@webcomponents/webcomponentsjs@^2.7.0', null ]
+865 verbose cache add spec @webcomponents/webcomponentsjs@^2.7.0
+866 silly cache add parsed spec Result {
+866 silly cache add   raw: '@webcomponents/webcomponentsjs@^2.7.0',
+866 silly cache add   scope: '@webcomponents',
+866 silly cache add   escapedName: '@webcomponents%2fwebcomponentsjs',
+866 silly cache add   name: '@webcomponents/webcomponentsjs',
+866 silly cache add   rawSpec: '^2.7.0',
+866 silly cache add   spec: '>=2.7.0 <3.0.0',
+866 silly cache add   type: 'range' }
+867 silly addNamed @webcomponents/webcomponentsjs@>=2.7.0 <3.0.0
+868 verbose addNamed ">=2.7.0 <3.0.0" is a valid semver range for @webcomponents/webcomponentsjs
+869 silly addNameRange { name: '@webcomponents/webcomponentsjs',
+869 silly addNameRange   range: '>=2.7.0 <3.0.0',
+869 silly addNameRange   hasData: false }
+870 silly mapToRegistry name @webcomponents/webcomponentsjs
+871 silly mapToRegistry scope (from package name) @webcomponents
+872 verbose mapToRegistry no registry URL found in name for scope @webcomponents
+873 silly mapToRegistry using default registry
+874 silly mapToRegistry registry https://registry.npmjs.org/
+875 silly mapToRegistry data Result {
+875 silly mapToRegistry   raw: '@webcomponents/webcomponentsjs',
+875 silly mapToRegistry   scope: '@webcomponents',
+875 silly mapToRegistry   escapedName: '@webcomponents%2fwebcomponentsjs',
+875 silly mapToRegistry   name: '@webcomponents/webcomponentsjs',
+875 silly mapToRegistry   rawSpec: '',
+875 silly mapToRegistry   spec: 'latest',
+875 silly mapToRegistry   type: 'tag' }
+876 silly mapToRegistry uri https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs
+877 verbose addNameRange registry:https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs not in flight; fetching
+878 silly resolveWithNewModule @material/mwc-checkbox@0.27.0 checking installable status
+879 silly cache add args [ '@material/mwc-checkbox@0.27.0', null ]
+880 verbose cache add spec @material/mwc-checkbox@0.27.0
+881 silly cache add parsed spec Result {
+881 silly cache add   raw: '@material/mwc-checkbox@0.27.0',
+881 silly cache add   scope: '@material',
+881 silly cache add   escapedName: '@material%2fmwc-checkbox',
+881 silly cache add   name: '@material/mwc-checkbox',
+881 silly cache add   rawSpec: '0.27.0',
+881 silly cache add   spec: '0.27.0',
+881 silly cache add   type: 'version' }
+882 silly addNamed @material/mwc-checkbox@0.27.0
+883 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-checkbox
+884 silly mapToRegistry name @material/mwc-checkbox
+885 silly mapToRegistry scope (from package name) @material
+886 verbose mapToRegistry no registry URL found in name for scope @material
+887 silly mapToRegistry using default registry
+888 silly mapToRegistry registry https://registry.npmjs.org/
+889 silly mapToRegistry data Result {
+889 silly mapToRegistry   raw: '@material/mwc-checkbox',
+889 silly mapToRegistry   scope: '@material',
+889 silly mapToRegistry   escapedName: '@material%2fmwc-checkbox',
+889 silly mapToRegistry   name: '@material/mwc-checkbox',
+889 silly mapToRegistry   rawSpec: '',
+889 silly mapToRegistry   spec: 'latest',
+889 silly mapToRegistry   type: 'tag' }
+890 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-checkbox
+891 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-checkbox not in flight; fetching
+892 silly resolveWithNewModule @material/mwc-icon-button@0.27.0 checking installable status
+893 silly cache add args [ '@material/mwc-icon-button@0.27.0', null ]
+894 verbose cache add spec @material/mwc-icon-button@0.27.0
+895 silly cache add parsed spec Result {
+895 silly cache add   raw: '@material/mwc-icon-button@0.27.0',
+895 silly cache add   scope: '@material',
+895 silly cache add   escapedName: '@material%2fmwc-icon-button',
+895 silly cache add   name: '@material/mwc-icon-button',
+895 silly cache add   rawSpec: '0.27.0',
+895 silly cache add   spec: '0.27.0',
+895 silly cache add   type: 'version' }
+896 silly addNamed @material/mwc-icon-button@0.27.0
+897 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-icon-button
+898 silly mapToRegistry name @material/mwc-icon-button
+899 silly mapToRegistry scope (from package name) @material
+900 verbose mapToRegistry no registry URL found in name for scope @material
+901 silly mapToRegistry using default registry
+902 silly mapToRegistry registry https://registry.npmjs.org/
+903 silly mapToRegistry data Result {
+903 silly mapToRegistry   raw: '@material/mwc-icon-button',
+903 silly mapToRegistry   scope: '@material',
+903 silly mapToRegistry   escapedName: '@material%2fmwc-icon-button',
+903 silly mapToRegistry   name: '@material/mwc-icon-button',
+903 silly mapToRegistry   rawSpec: '',
+903 silly mapToRegistry   spec: 'latest',
+903 silly mapToRegistry   type: 'tag' }
+904 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-icon-button
+905 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-icon-button not in flight; fetching
+906 silly resolveWithNewModule @material/mwc-textarea@0.27.0 checking installable status
+907 silly cache add args [ '@material/mwc-textarea@0.27.0', null ]
+908 verbose cache add spec @material/mwc-textarea@0.27.0
+909 silly cache add parsed spec Result {
+909 silly cache add   raw: '@material/mwc-textarea@0.27.0',
+909 silly cache add   scope: '@material',
+909 silly cache add   escapedName: '@material%2fmwc-textarea',
+909 silly cache add   name: '@material/mwc-textarea',
+909 silly cache add   rawSpec: '0.27.0',
+909 silly cache add   spec: '0.27.0',
+909 silly cache add   type: 'version' }
+910 silly addNamed @material/mwc-textarea@0.27.0
+911 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-textarea
+912 silly mapToRegistry name @material/mwc-textarea
+913 silly mapToRegistry scope (from package name) @material
+914 verbose mapToRegistry no registry URL found in name for scope @material
+915 silly mapToRegistry using default registry
+916 silly mapToRegistry registry https://registry.npmjs.org/
+917 silly mapToRegistry data Result {
+917 silly mapToRegistry   raw: '@material/mwc-textarea',
+917 silly mapToRegistry   scope: '@material',
+917 silly mapToRegistry   escapedName: '@material%2fmwc-textarea',
+917 silly mapToRegistry   name: '@material/mwc-textarea',
+917 silly mapToRegistry   rawSpec: '',
+917 silly mapToRegistry   spec: 'latest',
+917 silly mapToRegistry   type: 'tag' }
+918 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-textarea
+919 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-textarea not in flight; fetching
+920 silly resolveWithNewModule @material/mwc-button@0.27.0 checking installable status
+921 silly cache add args [ '@material/mwc-button@0.27.0', null ]
+922 verbose cache add spec @material/mwc-button@0.27.0
+923 silly cache add parsed spec Result {
+923 silly cache add   raw: '@material/mwc-button@0.27.0',
+923 silly cache add   scope: '@material',
+923 silly cache add   escapedName: '@material%2fmwc-button',
+923 silly cache add   name: '@material/mwc-button',
+923 silly cache add   rawSpec: '0.27.0',
+923 silly cache add   spec: '0.27.0',
+923 silly cache add   type: 'version' }
+924 silly addNamed @material/mwc-button@0.27.0
+925 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-button
+926 silly mapToRegistry name @material/mwc-button
+927 silly mapToRegistry scope (from package name) @material
+928 verbose mapToRegistry no registry URL found in name for scope @material
+929 silly mapToRegistry using default registry
+930 silly mapToRegistry registry https://registry.npmjs.org/
+931 silly mapToRegistry data Result {
+931 silly mapToRegistry   raw: '@material/mwc-button',
+931 silly mapToRegistry   scope: '@material',
+931 silly mapToRegistry   escapedName: '@material%2fmwc-button',
+931 silly mapToRegistry   name: '@material/mwc-button',
+931 silly mapToRegistry   rawSpec: '',
+931 silly mapToRegistry   spec: 'latest',
+931 silly mapToRegistry   type: 'tag' }
+932 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-button
+933 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-button not in flight; fetching
+934 silly resolveWithNewModule @material/mwc-icon@0.27.0 checking installable status
+935 silly cache add args [ '@material/mwc-icon@0.27.0', null ]
+936 verbose cache add spec @material/mwc-icon@0.27.0
+937 silly cache add parsed spec Result {
+937 silly cache add   raw: '@material/mwc-icon@0.27.0',
+937 silly cache add   scope: '@material',
+937 silly cache add   escapedName: '@material%2fmwc-icon',
+937 silly cache add   name: '@material/mwc-icon',
+937 silly cache add   rawSpec: '0.27.0',
+937 silly cache add   spec: '0.27.0',
+937 silly cache add   type: 'version' }
+938 silly addNamed @material/mwc-icon@0.27.0
+939 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-icon
+940 silly mapToRegistry name @material/mwc-icon
+941 silly mapToRegistry scope (from package name) @material
+942 verbose mapToRegistry no registry URL found in name for scope @material
+943 silly mapToRegistry using default registry
+944 silly mapToRegistry registry https://registry.npmjs.org/
+945 silly mapToRegistry data Result {
+945 silly mapToRegistry   raw: '@material/mwc-icon',
+945 silly mapToRegistry   scope: '@material',
+945 silly mapToRegistry   escapedName: '@material%2fmwc-icon',
+945 silly mapToRegistry   name: '@material/mwc-icon',
+945 silly mapToRegistry   rawSpec: '',
+945 silly mapToRegistry   spec: 'latest',
+945 silly mapToRegistry   type: 'tag' }
+946 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-icon
+947 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-icon not in flight; fetching
+948 silly resolveWithNewModule @micro-sentry/browser@6.0.1 checking installable status
+949 silly cache add args [ '@micro-sentry/browser@6.0.1', null ]
+950 verbose cache add spec @micro-sentry/browser@6.0.1
+951 silly cache add parsed spec Result {
+951 silly cache add   raw: '@micro-sentry/browser@6.0.1',
+951 silly cache add   scope: '@micro-sentry',
+951 silly cache add   escapedName: '@micro-sentry%2fbrowser',
+951 silly cache add   name: '@micro-sentry/browser',
+951 silly cache add   rawSpec: '6.0.1',
+951 silly cache add   spec: '6.0.1',
+951 silly cache add   type: 'version' }
+952 silly addNamed @micro-sentry/browser@6.0.1
+953 verbose addNamed "6.0.1" is a plain semver version for @micro-sentry/browser
+954 silly mapToRegistry name @micro-sentry/browser
+955 silly mapToRegistry scope (from package name) @micro-sentry
+956 verbose mapToRegistry no registry URL found in name for scope @micro-sentry
+957 silly mapToRegistry using default registry
+958 silly mapToRegistry registry https://registry.npmjs.org/
+959 silly mapToRegistry data Result {
+959 silly mapToRegistry   raw: '@micro-sentry/browser',
+959 silly mapToRegistry   scope: '@micro-sentry',
+959 silly mapToRegistry   escapedName: '@micro-sentry%2fbrowser',
+959 silly mapToRegistry   name: '@micro-sentry/browser',
+959 silly mapToRegistry   rawSpec: '',
+959 silly mapToRegistry   spec: 'latest',
+959 silly mapToRegistry   type: 'tag' }
+960 silly mapToRegistry uri https://registry.npmjs.org/@micro-sentry%2fbrowser
+961 verbose addNameVersion registry:https://registry.npmjs.org/@micro-sentry%2fbrowser not in flight; fetching
+962 silly resolveWithNewModule @material/mwc-menu@0.27.0 checking installable status
+963 silly cache add args [ '@material/mwc-menu@0.27.0', null ]
+964 verbose cache add spec @material/mwc-menu@0.27.0
+965 silly cache add parsed spec Result {
+965 silly cache add   raw: '@material/mwc-menu@0.27.0',
+965 silly cache add   scope: '@material',
+965 silly cache add   escapedName: '@material%2fmwc-menu',
+965 silly cache add   name: '@material/mwc-menu',
+965 silly cache add   rawSpec: '0.27.0',
+965 silly cache add   spec: '0.27.0',
+965 silly cache add   type: 'version' }
+966 silly addNamed @material/mwc-menu@0.27.0
+967 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-menu
+968 silly mapToRegistry name @material/mwc-menu
+969 silly mapToRegistry scope (from package name) @material
+970 verbose mapToRegistry no registry URL found in name for scope @material
+971 silly mapToRegistry using default registry
+972 silly mapToRegistry registry https://registry.npmjs.org/
+973 silly mapToRegistry data Result {
+973 silly mapToRegistry   raw: '@material/mwc-menu',
+973 silly mapToRegistry   scope: '@material',
+973 silly mapToRegistry   escapedName: '@material%2fmwc-menu',
+973 silly mapToRegistry   name: '@material/mwc-menu',
+973 silly mapToRegistry   rawSpec: '',
+973 silly mapToRegistry   spec: 'latest',
+973 silly mapToRegistry   type: 'tag' }
+974 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-menu
+975 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-menu not in flight; fetching
+976 verbose get https://registry.npmjs.org/@stripe%2fstripe-js not expired, no request
+977 silly addNameRange number 2 { name: '@stripe/stripe-js',
+977 silly addNameRange   range: '>=1.46.0 <2.0.0',
+977 silly addNameRange   hasData: true }
+978 silly addNameRange versions [ '@stripe/stripe-js',
+978 silly addNameRange   [ '1.0.0-beta.0',
+978 silly addNameRange     '1.0.0-beta.1',
+978 silly addNameRange     '1.0.0-beta.2',
+978 silly addNameRange     '1.0.0-beta.3',
+978 silly addNameRange     '1.0.0-beta.4',
+978 silly addNameRange     '1.0.0-beta.5',
+978 silly addNameRange     '1.0.0-beta.6',
+978 silly addNameRange     '1.0.0-beta.7',
+978 silly addNameRange     '1.0.0-beta.8',
+978 silly addNameRange     '1.0.0-beta.9',
+978 silly addNameRange     '1.0.0',
+978 silly addNameRange     '1.0.1',
+978 silly addNameRange     '1.0.2',
+978 silly addNameRange     '1.0.3',
+978 silly addNameRange     '1.1.0',
+978 silly addNameRange     '1.2.0',
+978 silly addNameRange     '1.3.0',
+978 silly addNameRange     '1.3.1',
+978 silly addNameRange     '1.3.2',
+978 silly addNameRange     '1.4.0',
+978 silly addNameRange     '1.5.0',
+978 silly addNameRange     '1.6.0',
+978 silly addNameRange     '1.7.0',
+978 silly addNameRange     '1.8.0',
+978 silly addNameRange     '1.9.0',
+978 silly addNameRange     '1.10.0',
+978 silly addNameRange     '1.11.0',
+978 silly addNameRange     '1.12.0',
+978 silly addNameRange     '1.12.1',
+978 silly addNameRange     '1.13.0',
+978 silly addNameRange     '1.13.1',
+978 silly addNameRange     '1.13.2',
+978 silly addNameRange     '1.14.0',
+978 silly addNameRange     '1.15.0',
+978 silly addNameRange     '1.15.1',
+978 silly addNameRange     '1.16.0',
+978 silly addNameRange     '1.17.0',
+978 silly addNameRange     '1.17.1',
+978 silly addNameRange     '1.18.0',
+978 silly addNameRange     '1.19.0',
+978 silly addNameRange     '1.19.1',
+978 silly addNameRange     '1.20.1',
+978 silly addNameRange     '1.20.2',
+978 silly addNameRange     '1.20.3',
+978 silly addNameRange     '1.21.0',
+978 silly addNameRange     '1.21.1',
+978 silly addNameRange     '1.21.2',
+978 silly addNameRange     '1.22.0',
+978 silly addNameRange     '1.23.0',
+978 silly addNameRange     '1.24.0',
+978 silly addNameRange     '1.25.0',
+978 silly addNameRange     '1.26.0',
+978 silly addNameRange     '1.27.0',
+978 silly addNameRange     '1.28.0',
+978 silly addNameRange     '1.29.0',
+978 silly addNameRange     '1.30.0',
+978 silly addNameRange     '1.31.0',
+978 silly addNameRange     '1.32.0',
+978 silly addNameRange     '1.33.0',
+978 silly addNameRange     '1.34.0',
+978 silly addNameRange     '1.35.0',
+978 silly addNameRange     '1.36.0',
+978 silly addNameRange     '1.37.0',
+978 silly addNameRange     '1.38.0',
+978 silly addNameRange     '1.38.1',
+978 silly addNameRange     '1.39.0',
+978 silly addNameRange     '1.40.0',
+978 silly addNameRange     '1.41.0',
+978 silly addNameRange     '1.42.0',
+978 silly addNameRange     '1.42.1',
+978 silly addNameRange     '1.43.0',
+978 silly addNameRange     '1.44.0',
+978 silly addNameRange     '1.44.1',
+978 silly addNameRange     '1.45.0',
+978 silly addNameRange     '1.46.0',
+978 silly addNameRange     '1.47.0',
+978 silly addNameRange     '1.48.0',
+978 silly addNameRange     '1.49.0',
+978 silly addNameRange     '1.50.0',
+978 silly addNameRange     '1.51.0',
+978 silly addNameRange     '1.52.0',
+978 silly addNameRange     '1.52.1',
+978 silly addNameRange     '1.53.0',
+978 silly addNameRange     '1.54.0',
+978 silly addNameRange     '1.54.1',
+978 silly addNameRange     '1.54.2' ] ]
+979 silly addNamed @stripe/stripe-js@1.54.2
+980 verbose addNamed "1.54.2" is a plain semver version for @stripe/stripe-js
+981 silly resolveWithNewModule @material/mwc-snackbar@0.27.0 checking installable status
+982 silly cache add args [ '@material/mwc-snackbar@0.27.0', null ]
+983 verbose cache add spec @material/mwc-snackbar@0.27.0
+984 silly cache add parsed spec Result {
+984 silly cache add   raw: '@material/mwc-snackbar@0.27.0',
+984 silly cache add   scope: '@material',
+984 silly cache add   escapedName: '@material%2fmwc-snackbar',
+984 silly cache add   name: '@material/mwc-snackbar',
+984 silly cache add   rawSpec: '0.27.0',
+984 silly cache add   spec: '0.27.0',
+984 silly cache add   type: 'version' }
+985 silly addNamed @material/mwc-snackbar@0.27.0
+986 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-snackbar
+987 silly mapToRegistry name @material/mwc-snackbar
+988 silly mapToRegistry scope (from package name) @material
+989 verbose mapToRegistry no registry URL found in name for scope @material
+990 silly mapToRegistry using default registry
+991 silly mapToRegistry registry https://registry.npmjs.org/
+992 silly mapToRegistry data Result {
+992 silly mapToRegistry   raw: '@material/mwc-snackbar',
+992 silly mapToRegistry   scope: '@material',
+992 silly mapToRegistry   escapedName: '@material%2fmwc-snackbar',
+992 silly mapToRegistry   name: '@material/mwc-snackbar',
+992 silly mapToRegistry   rawSpec: '',
+992 silly mapToRegistry   spec: 'latest',
+992 silly mapToRegistry   type: 'tag' }
+993 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-snackbar
+994 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-snackbar not in flight; fetching
+995 silly resolveWithNewModule @material/mwc-textfield@0.27.0 checking installable status
+996 silly cache add args [ '@material/mwc-textfield@0.27.0', null ]
+997 verbose cache add spec @material/mwc-textfield@0.27.0
+998 silly cache add parsed spec Result {
+998 silly cache add   raw: '@material/mwc-textfield@0.27.0',
+998 silly cache add   scope: '@material',
+998 silly cache add   escapedName: '@material%2fmwc-textfield',
+998 silly cache add   name: '@material/mwc-textfield',
+998 silly cache add   rawSpec: '0.27.0',
+998 silly cache add   spec: '0.27.0',
+998 silly cache add   type: 'version' }
+999 silly addNamed @material/mwc-textfield@0.27.0
+1000 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-textfield
+1001 silly mapToRegistry name @material/mwc-textfield
+1002 silly mapToRegistry scope (from package name) @material
+1003 verbose mapToRegistry no registry URL found in name for scope @material
+1004 silly mapToRegistry using default registry
+1005 silly mapToRegistry registry https://registry.npmjs.org/
+1006 silly mapToRegistry data Result {
+1006 silly mapToRegistry   raw: '@material/mwc-textfield',
+1006 silly mapToRegistry   scope: '@material',
+1006 silly mapToRegistry   escapedName: '@material%2fmwc-textfield',
+1006 silly mapToRegistry   name: '@material/mwc-textfield',
+1006 silly mapToRegistry   rawSpec: '',
+1006 silly mapToRegistry   spec: 'latest',
+1006 silly mapToRegistry   type: 'tag' }
+1007 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-textfield
+1008 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-textfield not in flight; fetching
+1009 silly resolveWithNewModule @material/mwc-list@0.27.0 checking installable status
+1010 silly cache add args [ '@material/mwc-list@0.27.0', null ]
+1011 verbose cache add spec @material/mwc-list@0.27.0
+1012 silly cache add parsed spec Result {
+1012 silly cache add   raw: '@material/mwc-list@0.27.0',
+1012 silly cache add   scope: '@material',
+1012 silly cache add   escapedName: '@material%2fmwc-list',
+1012 silly cache add   name: '@material/mwc-list',
+1012 silly cache add   rawSpec: '0.27.0',
+1012 silly cache add   spec: '0.27.0',
+1012 silly cache add   type: 'version' }
+1013 silly addNamed @material/mwc-list@0.27.0
+1014 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-list
+1015 silly mapToRegistry name @material/mwc-list
+1016 silly mapToRegistry scope (from package name) @material
+1017 verbose mapToRegistry no registry URL found in name for scope @material
+1018 silly mapToRegistry using default registry
+1019 silly mapToRegistry registry https://registry.npmjs.org/
+1020 silly mapToRegistry data Result {
+1020 silly mapToRegistry   raw: '@material/mwc-list',
+1020 silly mapToRegistry   scope: '@material',
+1020 silly mapToRegistry   escapedName: '@material%2fmwc-list',
+1020 silly mapToRegistry   name: '@material/mwc-list',
+1020 silly mapToRegistry   rawSpec: '',
+1020 silly mapToRegistry   spec: 'latest',
+1020 silly mapToRegistry   type: 'tag' }
+1021 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-list
+1022 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-list not in flight; fetching
+1023 silly resolveWithNewModule @material/mwc-formfield@0.27.0 checking installable status
+1024 silly cache add args [ '@material/mwc-formfield@0.27.0', null ]
+1025 verbose cache add spec @material/mwc-formfield@0.27.0
+1026 silly cache add parsed spec Result {
+1026 silly cache add   raw: '@material/mwc-formfield@0.27.0',
+1026 silly cache add   scope: '@material',
+1026 silly cache add   escapedName: '@material%2fmwc-formfield',
+1026 silly cache add   name: '@material/mwc-formfield',
+1026 silly cache add   rawSpec: '0.27.0',
+1026 silly cache add   spec: '0.27.0',
+1026 silly cache add   type: 'version' }
+1027 silly addNamed @material/mwc-formfield@0.27.0
+1028 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-formfield
+1029 silly mapToRegistry name @material/mwc-formfield
+1030 silly mapToRegistry scope (from package name) @material
+1031 verbose mapToRegistry no registry URL found in name for scope @material
+1032 silly mapToRegistry using default registry
+1033 silly mapToRegistry registry https://registry.npmjs.org/
+1034 silly mapToRegistry data Result {
+1034 silly mapToRegistry   raw: '@material/mwc-formfield',
+1034 silly mapToRegistry   scope: '@material',
+1034 silly mapToRegistry   escapedName: '@material%2fmwc-formfield',
+1034 silly mapToRegistry   name: '@material/mwc-formfield',
+1034 silly mapToRegistry   rawSpec: '',
+1034 silly mapToRegistry   spec: 'latest',
+1034 silly mapToRegistry   type: 'tag' }
+1035 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-formfield
+1036 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-formfield not in flight; fetching
+1037 verbose get https://registry.npmjs.org/@material%2fmwc-linear-progress not expired, no request
+1038 silly resolveWithNewModule @material/mwc-radio@0.27.0 checking installable status
+1039 silly cache add args [ '@material/mwc-radio@0.27.0', null ]
+1040 verbose cache add spec @material/mwc-radio@0.27.0
+1041 silly cache add parsed spec Result {
+1041 silly cache add   raw: '@material/mwc-radio@0.27.0',
+1041 silly cache add   scope: '@material',
+1041 silly cache add   escapedName: '@material%2fmwc-radio',
+1041 silly cache add   name: '@material/mwc-radio',
+1041 silly cache add   rawSpec: '0.27.0',
+1041 silly cache add   spec: '0.27.0',
+1041 silly cache add   type: 'version' }
+1042 silly addNamed @material/mwc-radio@0.27.0
+1043 verbose addNamed "0.27.0" is a plain semver version for @material/mwc-radio
+1044 silly mapToRegistry name @material/mwc-radio
+1045 silly mapToRegistry scope (from package name) @material
+1046 verbose mapToRegistry no registry URL found in name for scope @material
+1047 silly mapToRegistry using default registry
+1048 silly mapToRegistry registry https://registry.npmjs.org/
+1049 silly mapToRegistry data Result {
+1049 silly mapToRegistry   raw: '@material/mwc-radio',
+1049 silly mapToRegistry   scope: '@material',
+1049 silly mapToRegistry   escapedName: '@material%2fmwc-radio',
+1049 silly mapToRegistry   name: '@material/mwc-radio',
+1049 silly mapToRegistry   rawSpec: '',
+1049 silly mapToRegistry   spec: 'latest',
+1049 silly mapToRegistry   type: 'tag' }
+1050 silly mapToRegistry uri https://registry.npmjs.org/@material%2fmwc-radio
+1051 verbose addNameVersion registry:https://registry.npmjs.org/@material%2fmwc-radio not in flight; fetching
+1052 verbose get https://registry.npmjs.org/@material%2fmwc-icon-button not expired, no request
+1053 verbose get https://registry.npmjs.org/@webcomponents%2fwebcomponentsjs not expired, no request
+1054 silly addNameRange number 2 { name: '@webcomponents/webcomponentsjs',
+1054 silly addNameRange   range: '>=2.7.0 <3.0.0',
+1054 silly addNameRange   hasData: true }
+1055 silly addNameRange versions [ '@webcomponents/webcomponentsjs',
+1055 silly addNameRange   [ '1.0.0-rc.12',
+1055 silly addNameRange     '1.0.0',
+1055 silly addNameRange     '1.0.1',
+1055 silly addNameRange     '1.0.2',
+1055 silly addNameRange     '1.0.3',
+1055 silly addNameRange     '1.0.5',
+1055 silly addNameRange     '1.0.6',
+1055 silly addNameRange     '1.0.7',
+1055 silly addNameRange     '1.0.8',
+1055 silly addNameRange     '1.0.9',
+1055 silly addNameRange     '1.0.10',
+1055 silly addNameRange     '1.0.11',
+1055 silly addNameRange     '1.0.12',
+1055 silly addNameRange     '1.0.13',
+1055 silly addNameRange     '1.0.14',
+1055 silly addNameRange     '1.0.15',
+1055 silly addNameRange     '1.0.16',
+1055 silly addNameRange     '1.0.17',
+1055 silly addNameRange     '1.0.18',
+1055 silly addNameRange     '1.0.19',
+1055 silly addNameRange     '1.0.20',
+1055 silly addNameRange     '1.0.21',
+1055 silly addNameRange     '1.0.22',
+1055 silly addNameRange     '1.1.0',
+1055 silly addNameRange     '1.1.1',
+1055 silly addNameRange     '1.2.0',
+1055 silly addNameRange     '2.0.0-0',
+1055 silly addNameRange     '2.0.0-beta.2',
+1055 silly addNameRange     '2.0.0-beta.3',
+1055 silly addNameRange     '2.0.0',
+1055 silly addNameRange     '1.2.2',
+1055 silly addNameRange     '2.0.1',
+1055 silly addNameRange     '2.0.2',
+1055 silly addNameRange     '1.2.3',
+1055 silly addNameRange     '2.0.3',
+1055 silly addNameRange     '1.2.4',
+1055 silly addNameRange     '2.0.4',
+1055 silly addNameRange     '2.1.0',
+1055 silly addNameRange     '1.2.5',
+1055 silly addNameRange     '1.2.6',
+1055 silly addNameRange     '2.1.1',
+1055 silly addNameRange     '2.1.2',
+1055 silly addNameRange     '2.1.3',
+1055 silly addNameRange     '1.2.7',
+1055 silly addNameRange     '2.2.0',
+1055 silly addNameRange     '1.3.0',
+1055 silly addNameRange     '2.2.1',
+1055 silly addNameRange     '2.2.2',
+1055 silly addNameRange     '2.2.3',
+1055 silly addNameRange     '2.2.4',
+1055 silly addNameRange     '2.2.5',
+1055 silly addNameRange     '2.2.6',
+1055 silly addNameRange     '1.3.1',
+1055 silly addNameRange     '1.3.2',
+1055 silly addNameRange     '2.2.7',
+1055 silly addNameRange     '1.3.3',
+1055 silly addNameRange     '2.2.8',
+1055 silly addNameRange     '2.2.9',
+1055 silly addNameRange     '2.2.10',
+1055 silly addNameRange     '2.3.0',
+1055 silly addNameRange     '2.4.0',
+1055 silly addNameRange     '2.4.1',
+1055 silly addNameRange     '2.4.2',
+1055 silly addNameRange     '2.4.3',
+1055 silly addNameRange     '2.4.4',
+1055 silly addNameRange     '2.5.0',
+1055 silly addNameRange     '2.6.0',
+1055 silly addNameRange     '2.7.0',
+1055 silly addNameRange     '2.8.0' ] ]
+1056 silly addNamed @webcomponents/webcomponentsjs@2.8.0
+1057 verbose addNamed "2.8.0" is a plain semver version for @webcomponents/webcomponentsjs
+1058 verbose get https://registry.npmjs.org/@material%2fmwc-checkbox not expired, no request
+1059 verbose get https://registry.npmjs.org/@material%2fmwc-button not expired, no request
+1060 verbose get https://registry.npmjs.org/@micro-sentry%2fbrowser not expired, no request
+1061 verbose get https://registry.npmjs.org/@material%2fmwc-select not expired, no request
+1062 verbose get https://registry.npmjs.org/@material%2fmwc-icon not expired, no request
+1063 verbose get https://registry.npmjs.org/@material%2fmwc-textarea not expired, no request
+1064 verbose get https://registry.npmjs.org/@material%2fmwc-snackbar not expired, no request
+1065 verbose setPermissions git://github.com/runette/Leaflet.fullscreen.git set permissions on /Users/dudemaster4/.npm/_git-remotes/git-github-com-runette-Leaflet-fullscreen-git-447d700f
+1066 verbose resolveHead git://github.com/runette/Leaflet.fullscreen.git original treeish: master
+1067 silly cache afterAdd @stripe/stripe-js@1.54.2
+1068 verbose afterAdd /Users/dudemaster4/.npm/@stripe/stripe-js/1.54.2/package/package.json not in flight; writing
+1069 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1070 verbose get https://registry.npmjs.org/@material%2fmwc-menu not expired, no request
+1071 verbose get https://registry.npmjs.org/@material%2fmwc-formfield not expired, no request
+1072 verbose get https://registry.npmjs.org/@material%2fmwc-list not expired, no request
+1073 verbose get https://registry.npmjs.org/@material%2fmwc-textfield not expired, no request
+1074 silly cache afterAdd @material/mwc-linear-progress@0.27.0
+1075 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-linear-progress/0.27.0/package/package.json not in flight; writing
+1076 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1077 silly cache afterAdd @webcomponents/webcomponentsjs@2.8.0
+1078 verbose afterAdd /Users/dudemaster4/.npm/@webcomponents/webcomponentsjs/2.8.0/package/package.json not in flight; writing
+1079 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1080 silly cache afterAdd @material/mwc-checkbox@0.27.0
+1081 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-checkbox/0.27.0/package/package.json not in flight; writing
+1082 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1083 silly cache afterAdd @material/mwc-icon-button@0.27.0
+1084 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-icon-button/0.27.0/package/package.json not in flight; writing
+1085 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1086 silly cache afterAdd @micro-sentry/browser@6.0.1
+1087 verbose afterAdd /Users/dudemaster4/.npm/@micro-sentry/browser/6.0.1/package/package.json not in flight; writing
+1088 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1089 silly cache afterAdd @material/mwc-button@0.27.0
+1090 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-button/0.27.0/package/package.json not in flight; writing
+1091 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1092 silly cache afterAdd @material/mwc-select@0.27.0
+1093 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-select/0.27.0/package/package.json not in flight; writing
+1094 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1095 silly cache afterAdd @material/mwc-icon@0.27.0
+1096 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-icon/0.27.0/package/package.json not in flight; writing
+1097 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1098 verbose get https://registry.npmjs.org/@material%2fmwc-radio not expired, no request
+1099 silly cache afterAdd @material/mwc-textarea@0.27.0
+1100 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-textarea/0.27.0/package/package.json not in flight; writing
+1101 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1102 silly cache afterAdd @material/mwc-snackbar@0.27.0
+1103 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-snackbar/0.27.0/package/package.json not in flight; writing
+1104 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1105 silly cache afterAdd @material/mwc-menu@0.27.0
+1106 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-menu/0.27.0/package/package.json not in flight; writing
+1107 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1108 silly cache afterAdd @material/mwc-formfield@0.27.0
+1109 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-formfield/0.27.0/package/package.json not in flight; writing
+1110 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1111 silly cache afterAdd @material/mwc-textfield@0.27.0
+1112 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-textfield/0.27.0/package/package.json not in flight; writing
+1113 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1114 silly cache afterAdd @material/mwc-list@0.27.0
+1115 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-list/0.27.0/package/package.json not in flight; writing
+1116 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1117 verbose afterAdd /Users/dudemaster4/.npm/@stripe/stripe-js/1.54.2/package/package.json written
+1118 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-linear-progress/0.27.0/package/package.json written
+1119 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-icon-button/0.27.0/package/package.json written
+1120 verbose afterAdd /Users/dudemaster4/.npm/@micro-sentry/browser/6.0.1/package/package.json written
+1121 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-checkbox/0.27.0/package/package.json written
+1122 verbose afterAdd /Users/dudemaster4/.npm/@webcomponents/webcomponentsjs/2.8.0/package/package.json written
+1123 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-button/0.27.0/package/package.json written
+1124 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-select/0.27.0/package/package.json written
+1125 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-icon/0.27.0/package/package.json written
+1126 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-textarea/0.27.0/package/package.json written
+1127 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-snackbar/0.27.0/package/package.json written
+1128 silly cache afterAdd @material/mwc-radio@0.27.0
+1129 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-radio/0.27.0/package/package.json not in flight; writing
+1130 verbose correctMkdir /Users/dudemaster4/.npm correctMkdir not in flight; initializing
+1131 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-menu/0.27.0/package/package.json written
+1132 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-formfield/0.27.0/package/package.json written
+1133 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-textfield/0.27.0/package/package.json written
+1134 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-list/0.27.0/package/package.json written
+1135 info git [ 'rev-list', '-n1', 'master' ]
+1136 error git rev-list -n1 master: fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+1136 error git rev-list -n1 master: Use '--' to separate paths from revisions, like this:
+1136 error git rev-list -n1 master: 'git <command> [<revision>...] -- [<file>...]'
+1137 silly fetchPackageMetaData Error: Command failed: git rev-list -n1 master
+1137 silly fetchPackageMetaData fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+1137 silly fetchPackageMetaData Use '--' to separate paths from revisions, like this:
+1137 silly fetchPackageMetaData 'git <command> [<revision>...] -- [<file>...]'
+1137 silly fetchPackageMetaData
+1137 silly fetchPackageMetaData     at ChildProcess.exithandler (child_process.js:211:12)
+1137 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
+1137 silly fetchPackageMetaData     at ChildProcess.emit (events.js:191:7)
+1137 silly fetchPackageMetaData     at maybeClose (internal/child_process.js:885:16)
+1137 silly fetchPackageMetaData     at Socket.<anonymous> (internal/child_process.js:334:11)
+1137 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+1137 silly fetchPackageMetaData     at Socket.emit (events.js:188:7)
+1137 silly fetchPackageMetaData     at Pipe._handle.close [as _onclose] (net.js:501:12)
+1137 silly fetchPackageMetaData  error for leaflet-fullscreen@git://github.com/runette/Leaflet.fullscreen.git { Error: Command failed: git rev-list -n1 master
+1137 silly fetchPackageMetaData fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+1137 silly fetchPackageMetaData Use '--' to separate paths from revisions, like this:
+1137 silly fetchPackageMetaData 'git <command> [<revision>...] -- [<file>...]'
+1137 silly fetchPackageMetaData
+1137 silly fetchPackageMetaData     at ChildProcess.exithandler (child_process.js:211:12)
+1137 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
+1137 silly fetchPackageMetaData     at ChildProcess.emit (events.js:191:7)
+1137 silly fetchPackageMetaData     at maybeClose (internal/child_process.js:885:16)
+1137 silly fetchPackageMetaData     at Socket.<anonymous> (internal/child_process.js:334:11)
+1137 silly fetchPackageMetaData     at emitOne (events.js:96:13)
+1137 silly fetchPackageMetaData     at Socket.emit (events.js:188:7)
+1137 silly fetchPackageMetaData     at Pipe._handle.close [as _onclose] (net.js:501:12)
+1137 silly fetchPackageMetaData   killed: false,
+1137 silly fetchPackageMetaData   code: 128,
+1137 silly fetchPackageMetaData   signal: null,
+1137 silly fetchPackageMetaData   cmd: 'git rev-list -n1 master' }
+1138 verbose afterAdd /Users/dudemaster4/.npm/@material/mwc-radio/0.27.0/package/package.json written
+1139 silly rollbackFailedOptional Starting
+1140 silly rollbackFailedOptional Finishing
+1141 silly runTopLevelLifecycles Finishing
+1142 silly install printInstalled
+1143 verbose stack Error: Command failed: git rev-list -n1 master
+1143 verbose stack fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+1143 verbose stack Use '--' to separate paths from revisions, like this:
+1143 verbose stack 'git <command> [<revision>...] -- [<file>...]'
+1143 verbose stack
+1143 verbose stack     at ChildProcess.exithandler (child_process.js:211:12)
+1143 verbose stack     at emitTwo (events.js:106:13)
+1143 verbose stack     at ChildProcess.emit (events.js:191:7)
+1143 verbose stack     at maybeClose (internal/child_process.js:885:16)
+1143 verbose stack     at Socket.<anonymous> (internal/child_process.js:334:11)
+1143 verbose stack     at emitOne (events.js:96:13)
+1143 verbose stack     at Socket.emit (events.js:188:7)
+1143 verbose stack     at Pipe._handle.close [as _onclose] (net.js:501:12)
+1144 verbose cwd /Users/dudemaster4/Development/suttacentral/client
+1145 error Darwin 21.6.0
+1146 error argv "/usr/local/Cellar/node/7.2.1/bin/node" "/usr/local/bin/npm" "install"
+1147 error node v7.2.1
+1148 error npm  v3.10.9
+1149 error code 128
+1150 error Command failed: git rev-list -n1 master
+1150 error fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+1150 error Use '--' to separate paths from revisions, like this:
+1150 error 'git <command> [<revision>...] -- [<file>...]'
+1151 error If you need help, you may report this error at:
+1151 error     <https://github.com/npm/npm/issues>
+1152 verbose exit [ 1, true ]
