@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import Document from 'flexsearch/dist/module/document';
+import { create, search, insert, insertMultiple } from '@orama/orama';
 
 import './sc-menu-more';
 import '../addons/sc-auto-complete-list';
@@ -12,17 +12,13 @@ import '@material/mwc-menu';
 import '@material/mwc-button';
 import '@material/mwc-icon-button';
 
-// import '@material/web/menu/menu'
-
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
-const fsDocument = new Document({
-  document: {
-    id: 'id',
-    index: ['uid', 'title'],
-    store: true,
-    context: true,
+const suttaDB = await create({
+  schema: {
+    uid: 'string',
+    title: 'string',
   },
 });
 
@@ -224,16 +220,43 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
   }
 
-  keyupHandler({ key }) {
+  async keyupHandler({ key }) {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
-      const ids = fsDocument.search(searchQuery, 20)[0]?.result;
-      if (ids?.length > 0) {
-        this.possible_jump_to_list = this.instant_search_data.filter(item => ids.includes(item.id));
+      const searchResult = await search(suttaDB, {
+        term: searchQuery,
+        properties: '*',
+        limit: 20,
+      });
+
+      const { hits } = searchResult;
+      const copiedHits = JSON.parse(JSON.stringify(hits));
+
+      this.possible_jump_to_list = [];
+      for (const hit of copiedHits) {
+        this.possible_jump_to_list.push(hit.document);
       }
+      this.#mergedResultByUid();
     } else {
       this.possible_jump_to_list = [];
     }
+  }
+
+  #mergedResultByUid() {
+    const result = Object.values(
+      this.possible_jump_to_list.reduce((acc, curr) => {
+        if (acc[curr.uid]) {
+          if (acc[curr.uid].isRoot !== curr.isRoot) {
+            acc[curr.uid].title += ` – ${curr.title}`;
+          }
+        } else {
+          acc[curr.uid] = curr;
+        }
+        return acc;
+      }, {})
+    );
+
+    this.possible_jump_to_list = result;
   }
 
   async #initInstantSearchData() {
@@ -245,11 +268,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       if (this.instant_search_data?.length < 1) {
         return;
       }
-      let counter = 0;
-      this.instant_search_data.forEach(doc => {
-        doc.id = counter++;
-        fsDocument.add(doc);
-      });
+      await insertMultiple(suttaDB, this.instant_search_data);
     } catch (error) {
       console.error(error);
     }

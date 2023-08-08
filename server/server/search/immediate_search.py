@@ -48,7 +48,8 @@ AQL_POSSIBLE_RESULTS_BY_LANG = '''
         FILTER (d.lang == @lang OR d.is_root == true) AND starts_with(d.uid, ebt_prefixes) AND NOT CONTAINS(d.uid, '-name')
     RETURN {
         uid:d.uid,
-        title:d.name
+        title:d.name,
+        isRoot: d.is_root
     }
 '''
 

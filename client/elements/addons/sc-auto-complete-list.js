@@ -1,5 +1,6 @@
 import { html, css, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+import { store } from '../../redux-store';
 
 class SCAutoCompleteList extends LitElement {
   static styles = css`
@@ -51,6 +52,7 @@ class SCAutoCompleteList extends LitElement {
   constructor() {
     super();
     this.items = [];
+    this.priorityAuthors = new Map([['en', 'sujato']]);
   }
 
   firstUpdated() {
@@ -151,7 +153,12 @@ class SCAutoCompleteList extends LitElement {
   }
 
   selectItem(item) {
-    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${item}` });
+    const siteLang = store.getState().siteLanguage;
+    let link = `/${item}`;
+    if (this.priorityAuthors.get(siteLang)) {
+      link = `/${item}/${siteLang}/${this.priorityAuthors.get(siteLang)}`;
+    }
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
     document
       .querySelector('sc-navigation-linden-leaves')
       .shadowRoot.querySelector('sc-action-items-universal')
