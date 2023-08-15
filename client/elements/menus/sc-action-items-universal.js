@@ -71,7 +71,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     #search_glass {
       z-index: 101;
-      background-color: rgb(75, 74, 73);
       padding: 0 4px;
     }
 

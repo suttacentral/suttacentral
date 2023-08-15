@@ -10,39 +10,65 @@ class SCAutoCompleteList extends LitElement {
       left: 0;
       width: 100%;
       z-index: 9999;
-      background-color: white;
-      color: black;
+      background-color: var(--sc-primary-background-color);
+      color: var(--sc-primary-text-color);
       display: none;
     }
 
     ul {
       list-style: none;
-      padding: 0;
+      padding: .5rem .5rem .25rem;
       margin: 0;
-      border: 2px solid rgb(67, 160, 71);
-      border-top: 0;
       overflow-y: auto;
       width: 100%;
+      box-shadow: var(--sc-shadow-elevation-4dp);
+
+    }
+
+      ul:before{
+    content: "search";
+    position: absolute;
+    top: -16px;
+    right: 72px;
+    font-size: var(--sc-skolar-font-size-xxs);
+    font-weight: 600;
+    font-stretch: condensed;
+    color: var(--sc-tertiary-text-color);
     }
 
     li {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 10px;
-      background-color: #f0f0f0;
-      border-radius: 5px;
-      margin-bottom: 5px;
+      background-color: var(--sc-tertiary-background-color);
+      border-radius: .25rem;
+      margin-bottom: .25rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
+
+    }
+
+    li:focus:after{
+      content: "go to ⏎";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    font-stretch: condensed;
     }
 
     li:hover {
-      background-color: var(--sc-primary-color);
+      background-color: var(--sc-primary-accent-color-light-transparent);
     }
 
-    li.selected {
-      background-color: var(--sc-primary-color);
+    li:active {
+      background-color: var(--sc-primary-accent-color-light);
     }
+
+    li:focus {
+      background-color: var(--sc-primary-accent-color-light-transparent);
+    }
+
   `;
 
   static properties = {
@@ -145,7 +171,7 @@ class SCAutoCompleteList extends LitElement {
               @mouseover=${e => this.handleMouseOver(e, i)}
               class=${i === 0 ? 'selected' : ''}
             >
-              ${item.uid} – ${item.title}
+              ${item.uid} — ${item.title}
             </li>`
         )}
       </ul>
