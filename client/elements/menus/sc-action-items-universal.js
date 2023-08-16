@@ -44,7 +44,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     #search_input {
       visibility: hidden;
       box-sizing: border-box;
-      padding: 0 116px 0 16px;
+      padding: 0 116px 0 76px;
       outline: none;
       border: 2px solid rgba(0, 0, 0, 0);
       height: 48px;

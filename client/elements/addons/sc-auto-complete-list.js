@@ -6,7 +6,7 @@ class SCAutoCompleteList extends LitElement {
   static styles = css`
     :host {
       position: absolute;
-      top: 48px;
+      top: 0px;
       left: 0;
       width: 100%;
       z-index: 9999;
@@ -20,54 +20,184 @@ class SCAutoCompleteList extends LitElement {
       padding: .5rem .5rem .25rem;
       margin: 0;
       overflow-y: auto;
-      width: 100%;
-      box-shadow: var(--sc-shadow-elevation-4dp);
-
+      border-bottom: 1px solid var(--sc-border-color)
     }
 
-      ul:before{
-    content: "search";
-    position: absolute;
-    top: -16px;
-    right: 72px;
-    font-size: var(--sc-skolar-font-size-xxs);
+      .orama-findings:before{
+      content: "in:all";
+      color: var(--sc-secondary-text-color);
+      position:absolute;
+      top: -32px;
+      left:26px;
+      font-family: monospace;
+    }
+
+          .orama-findings:after{
+      content: "search all";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
     font-weight: 600;
     font-stretch: condensed;
-    color: var(--sc-tertiary-text-color);
+      position:absolute;
+      top: -34px;
+      right:120px
     }
 
     li {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px;
-      background-color: var(--sc-tertiary-background-color);
-      border-radius: .25rem;
-      margin-bottom: .25rem;
+
+      
+  
+      margin-bottom: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-
     }
 
-    li:focus:after{
-      content: "go to ⏎";
+    li:not(.in-all){
+      padding: 8px 16px;
+      height: 20px;
+      border-radius: 18px;
+      border: none
+    }
+
+    li.in-all{
+      padding: 0px 0px;
+    }
+
+    .jumpto li:after{
+      content: "jump to ⏎";
       color: var(--sc-primary-accent-color);
         font-size: var(--sc-skolar-font-size-xs);
     font-weight: 600;
     font-stretch: condensed;
     }
 
-    li:hover {
+          .in-all:after{
+      content: "search all 🔍";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    font-stretch: condensed;
+    position: absolute;
+    right: 36px
+    }
+
+      .in-mn:after{
+      content: "search Majjhima Nikāya 🔍";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    font-stretch: condensed;
+    }
+
+      .in-ebt:after{
+      content: "search early texts 🔍";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    font-stretch: condensed;
+    }
+
+  li:not(.in-all):hover {
       background-color: var(--sc-primary-accent-color-light-transparent);
     }
 
-    li:active {
+    li:not(.in-all):active {
       background-color: var(--sc-primary-accent-color-light);
     }
 
-    li:focus {
+    li:not(.in-all):focus {
       background-color: var(--sc-primary-accent-color-light-transparent);
     }
+
+    .orama-findings{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin: 0 8px;
+      box-shadow: var(--sc-shadow-elevation-4dp);
+    }
+
+    .in-foo{
+        color: white;
+  font-family: monospace;
+  border: 1px solid var(--sc-border-color);
+  width: fit-content;
+  padding: 2px 4px;
+  background-color: var(--sc-icon-color);
+  border-radius: 8px;
+  font-size: var(--sc-skolar-font-size-xxs);
+
+    }
+
+   div{
+      padding: 1rem 2rem 0;
+
+    }
+
+    .caption{
+      font-variant-caps: all-small-caps;
+      font-stretch: expanded;
+      text-align: center
+
+    }
+
+    .search-tips a{
+      font-size: var(--sc-skolar-font-size-xs);
+      text-decoration: none;
+      color: var(--sc-primary-color)
+    }
+
+    .search-tips a:after{
+      content: "🔗"
+    }
+        .search-tips a:hover{
+      text-decoration: underline
+    }
+
+    .search-tips{
+    margin-bottom: 1rem
+  }
+
+
+    .section-tip {
+      font-size: var(--sc-skolar-font-size-xs);
+      color: var(--sc-secondary-text-color);
+    }
+
+    #orama_search_input{
+width: 100%;
+padding:  8px 8px 8px 16px;
+border-radius: 24px;
+border: 2px solid var(--sc-primary-accent-color);
+
+    }
+
+    ::placeholder {
+  color: white;
+  font-family: monospace;
+  border: 1px solid var(--sc-border-color);
+  width: fit-content;
+  padding: 2px 4px;
+  background-color: var(--sc-icon-color);
+  border-radius: 8px;
+  font-size: var(--sc-skolar-font-size-xxs);
+}
+
+.jumpto-item-divider{
+  color: var(--sc-icon-color)
+}
+.jumpto-item-type{
+  margin-right: 4px;
+  border: 2px solid var(--sc-primary-color);
+  border-radius: 50%;
+  height: 24px;
+  width:24px;
+  padding: 4px
+}
+
 
   `;
 
@@ -161,7 +291,38 @@ class SCAutoCompleteList extends LitElement {
 
   render() {
     return html`
-      <ul>
+    <section class='orama-findings'>
+    <div class='caption'><span class='section-tip'>full text search</span></div>
+    <ul class='search-options'>
+        <li class='in-all'>
+
+          <input
+        id="orama_search_input"
+        name="q"
+        type="search"
+        style="height: 48px"
+        spellcheck="true"
+        placeholder="in:all"
+        aria-label="Search through site content"
+        autocomplete="on"
+      />
+
+    </li>
+    <li class='in-ebt'>
+    <span>
+    <span class='in-foo'>in:ebt</span>
+    <span class='search-term'>satipatthana</span>
+    </span>
+    </li>
+    <li class='in-mn'>
+    <span>
+    <span class='in-foo'>in:mn</span>
+    <span class='search-term'>satipatthana</span>
+    </span>
+    </li>
+    </ul>
+    <div class='caption'><span class='section-tip'>jump directly to text or collection</span></div>
+      <ul class='jumpto'>
         ${this.items.map(
           (item, i) =>
             html`<li
@@ -171,10 +332,17 @@ class SCAutoCompleteList extends LitElement {
               @mouseover=${e => this.handleMouseOver(e, i)}
               class=${i === 0 ? 'selected' : ''}
             >
-              ${item.uid} — ${item.title}
+            <span class='jumpto-item'>
+            <span class='jumpto-item-type'>📚</span>
+              <span class='jumpto-item-uid'>${item.uid}</span>
+             <span class='jumpto-item-divider'> — </span>
+             <span class='jumpto-item-title'>${item.title}</span>
+             </span>
             </li>`
         )}
       </ul>
+      <div class='search-tips'><a href=''>search syntax tips</a></div>
+      </section>
     `;
   }
 
