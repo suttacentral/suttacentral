@@ -64,10 +64,27 @@ class SCAutoCompleteList extends LitElement {
 
     li.in-all{
       padding: 0px 0px;
+      flex-direction: column;
     }
 
-    .jumpto li:after{
+        jumpto li:after{
       content: "jump to ⏎";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    font-stretch: condensed;
+    }
+
+    .jumpto .text:after{
+      content: "jump to text ⏎";
+      color: var(--sc-primary-accent-color);
+        font-size: var(--sc-skolar-font-size-xs);
+    font-weight: 600;
+    font-stretch: condensed;
+    }
+
+        .jumpto .collection:after{
+      content: "jump to collection ⏎";
       color: var(--sc-primary-accent-color);
         font-size: var(--sc-skolar-font-size-xs);
     font-weight: 600;
@@ -81,7 +98,8 @@ class SCAutoCompleteList extends LitElement {
     font-weight: 600;
     font-stretch: condensed;
     position: absolute;
-    right: 36px
+    right: 36px;
+    top: 72px;
     }
 
       .in-mn:after{
@@ -143,6 +161,17 @@ class SCAutoCompleteList extends LitElement {
       text-align: center
 
     }
+ 
+    label{
+      font-variant-caps: all-small-caps;
+      font-stretch: expanded;
+      text-align: center;
+      font-size: var(--sc-skolar-font-size-xs);
+    color: var(--sc-secondary-text-color);
+    margin-bottom: 1rem;
+    margin-top: 1rem
+    }
+
 
     .search-tips a{
       font-size: var(--sc-skolar-font-size-xs);
@@ -151,7 +180,7 @@ class SCAutoCompleteList extends LitElement {
     }
 
     .search-tips a:after{
-      content: "🔗"
+      content: " 🔗"
     }
         .search-tips a:hover{
       text-decoration: underline
@@ -196,6 +225,12 @@ border: 2px solid var(--sc-primary-accent-color);
   height: 24px;
   width:24px;
   padding: 4px
+}
+
+#input-dummy-delete-this{
+  position: absolute;
+top: 55px;
+    left: 56px;
 }
 
 
@@ -292,10 +327,10 @@ border: 2px solid var(--sc-primary-accent-color);
   render() {
     return html`
     <section class='orama-findings'>
-    <div class='caption'><span class='section-tip'>full text search</span></div>
     <ul class='search-options'>
         <li class='in-all'>
-
+<div id='input-dummy-delete-this''>satipa<mark>ṭṭhāna</mark></div>
+          <label for="orama_search_input">Full text search </label>
           <input
         id="orama_search_input"
         name="q"
@@ -311,13 +346,13 @@ border: 2px solid var(--sc-primary-accent-color);
     <li class='in-ebt'>
     <span>
     <span class='in-foo'>in:ebt</span>
-    <span class='search-term'>satipatthana</span>
+    <span class='search-term'><b>satipa</b>ṭṭhāna</span>
     </span>
     </li>
     <li class='in-mn'>
     <span>
     <span class='in-foo'>in:mn</span>
-    <span class='search-term'>satipatthana</span>
+    <span class='search-term'><b>satipa</b>ṭṭhāna</span>
     </span>
     </li>
     </ul>
@@ -341,7 +376,7 @@ border: 2px solid var(--sc-primary-accent-color);
             </li>`
         )}
       </ul>
-      <div class='search-tips'><a href=''>search syntax tips</a></div>
+      <div class='search-tips'><a href=''>search tips</a></div>
       </section>
     `;
   }
