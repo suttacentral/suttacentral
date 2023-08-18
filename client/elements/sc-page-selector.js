@@ -700,6 +700,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       this.parentNode.querySelector('#title').classList.add('homeTitle');
       this.parentNode.querySelector('#title').classList.remove('generalTitle');
       this.parentNode.querySelector('#subTitle').style.display = 'initial';
+      this.parentNode.querySelector('#subTitle').style.opacity = '1';
     } else {
       this.parentNode.querySelector('#context_toolbar').style.height = '60px';
       this.parentNode.querySelector('.sc_logo').style.display = 'none';
@@ -707,6 +708,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       this.parentNode.querySelector('#title').classList.add('generalTitle');
       this.parentNode.querySelector('#title').style.height = '';
       this.parentNode.querySelector('#subTitle').style.display = 'none';
+      this.parentNode.querySelector('#subTitle').style.opacity = '0';
     }
   }
 

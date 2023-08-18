@@ -32,9 +32,9 @@ export const navigationNormalModeStyles = html`
 
       margin-bottom: 0.6667rem;
 
-      border-radius: var(--sc-size-sm);
+      border-radius: var(--sc-card-border-radius);
       background-color: var(--sc-secondary-background-color);
-      box-shadow: var(--sc-shadow-elevation-1dp);
+      box-shadow: var(--sc-shadow-elevation-4dp);
 
       flex: 1;
       justify-content: center;
@@ -191,7 +191,7 @@ export const navigationNormalModeStyles = html`
 
       height: 24px;
       min-width: 72px;
-      padding: 0 4px;
+      padding: 0 8px 0 4px;
       box-sizing: border-box;
 
       color: white;

@@ -68,6 +68,8 @@ export const SCSiteLayoutStyles = css`
   #subTitle {
     font-size: 0.5em;
     font-style: italic;
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
   }
 
   #universal_toolbar {
@@ -77,7 +79,7 @@ export const SCSiteLayoutStyles = css`
 
     color: var(--sc-tertiary-text-color);
     background-color: var(--sc-primary-color);
-    box-shadow: var(--sc-shadow-elevation-2dp);
+    box-shadow: none;
   }
 
   #context_toolbar {

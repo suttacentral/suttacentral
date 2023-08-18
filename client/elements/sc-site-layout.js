@@ -366,7 +366,8 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _universalToolbarTransform() {
-    document.getElementById('universal_toolbar').style.transform = 'translateY(-120px)';
+    document.getElementById('universal_toolbar').style.transform = 'translateY(-120px) ';
+    document.getElementById('universal_toolbar').style.boxShadow = 'var(--sc-shadow-elevation-16dp)';
     document.getElementById('breadCrumb').style.transform = 'translateY(120px)';
     document.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
     document.getElementById('subTitle').style.opacity = '0';
@@ -378,6 +379,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _resetUniversalToolbar() {
     document.getElementById('universal_toolbar').style.transform = 'none';
+    document.getElementById('universal_toolbar').style.boxShadow = 'none';
     document.getElementById('breadCrumb').style.transform = 'none';
     document.getElementById('mainTitle').style.transform = 'scale(1)';
     document.getElementById('subTitle').style.opacity = '1';

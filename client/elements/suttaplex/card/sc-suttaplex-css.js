@@ -101,7 +101,7 @@ export const suttaplexCss = css`
     padding: var(--sc-suttaplex-padding);
     margin-bottom: var(--sc-size-md);
     box-shadow: var(--sc-suttaplex-shadow);
-    border-radius: var(--sc-size-sm);
+    border-radius: var(--sc-card-border-radius);
   }
 
   .suttaplex.compact {

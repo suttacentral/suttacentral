@@ -170,8 +170,7 @@ export const staticHomeStyles = css`
 
     margin-bottom: 16px;
 
-    border-radius: 8px;
-    box-shadow: var(--sc-shadow-elevation-1dp);
+    border-radius: 24px;
   }
 
   .two-cards {
@@ -225,8 +224,6 @@ export const staticHomeStyles = css`
     display: flex;
     flex-direction: column;
 
-    background: var(--sc-secondary-background-color);
-
     justify-content: space-between;
     flex: 1;
   }
@@ -238,11 +235,10 @@ export const staticHomeStyles = css`
   .card-actions {
     display: flex;
 
-    min-height: 52px;
-    padding: 4%;
-
     align-items: flex-end;
     justify-content: flex-end;
+
+    margin: 8px 0;
   }
 
   .link-button {
@@ -259,8 +255,8 @@ export const staticHomeStyles = css`
     letter-spacing: var(--sc-caps-letter-spacing);
 
     color: var(--sc-primary-accent-color-dark);
-    border: 1px solid var(--sc-primary-accent-color);
-    border-radius: 4px;
+    border: 2px solid var(--sc-primary-accent-color);
+    border-radius: 18px;
 
     align-items: center;
     justify-content: center;
@@ -293,7 +289,7 @@ export const staticHomeStyles = css`
     font-size: var(--sc-skolar-font-size-md);
     line-height: 1.5;
 
-    margin: 0.75em 0 0 0;
+    margin: 0.5em 0 0 0;
   }
 
   a {
@@ -371,7 +367,6 @@ export const staticHomeStyles = css`
 
   .sc-related article {
     color: var(--sc-primary-text-color);
-    background-color: var(--sc-secondary-background-color);
 
     flex: 1;
   }
@@ -458,16 +453,32 @@ export const staticHomeStyles = css`
     background-color: var(--sc-secondary-accent-color);
   }
 
+  .secondary-accent {
+    outline: 2px solid var(--sc-secondary-accent-color);
+  }
+
   .dark-accent header {
     background-color: rgb(75, 74, 73);
+  }
+
+    .dark-accent {
+    outline: 2px solid rgb(75, 74, 73);
   }
 
   .primary-accent header {
     background-color: rgb(59, 118, 59);
   }
 
+    .primary-accent {
+    outline: 2px solid rgb(59, 118, 59);
+  }
+
   .primary-color header {
     background-color: rgb(161, 108, 0);
+  }
+
+    .primary-color {
+    outline: 2px solid rgb(161, 108, 0);
   }
 
   .related-projects-heading {

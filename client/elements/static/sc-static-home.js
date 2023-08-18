@@ -134,12 +134,10 @@ export class SCStaticHomePage extends SCStaticPage {
         </figure>
         <div class="card-content">
           <div class="card-text">
-            <h2>${unsafeHTML(this.localize('home:8'))}</h2>
+            <a href="/introduction"><h2>${unsafeHTML(this.localize('home:8'))}</h2></a>
             <p>${unsafeHTML(this.localize('home:9'))}</p>
           </div>
-          <div class="card-actions">
-            <a href="/introduction" class="link-button">${unsafeHTML(this.localize('home:10'))}</a>
-          </div>
+          
         </div>
       </article>
     `;
@@ -161,11 +159,8 @@ export class SCStaticHomePage extends SCStaticPage {
         </figure>
         <div class="card-content">
           <div class="card-text">
-            <h2>${unsafeHTML(this.localize('home:12'))}</h2>
+            <a href="/start"><h2>${unsafeHTML(this.localize('home:12'))}</h2></a>
             <p>${unsafeHTML(this.localize('home:13'))}</p>
-          </div>
-          <div class="card-actions">
-            <a href="/start" class="link-button">${unsafeHTML(this.localize('home:14'))}</a>
           </div>
         </div>
       </article>
@@ -323,13 +318,8 @@ export class SCStaticHomePage extends SCStaticPage {
         </figure>
         <div class="card-content">
           <div class="card-text">
-            <h2>${unsafeHTML(this.localize('home:36'))}</h2>
+            <a href="/general-guide-sujato"><h2>${unsafeHTML(this.localize('home:36'))}</h2></a>
             <p>${unsafeHTML(this.localize('home:37'))}</p>
-          </div>
-          <div class="card-actions">
-            <a href="/general-guide-sujato" class="link-button"
-              >${unsafeHTML(this.localize('home:38'))}</a
-            >
           </div>
         </div>
       </article>
@@ -348,11 +338,8 @@ export class SCStaticHomePage extends SCStaticPage {
         </figure>
         <div class="card-content">
           <div class="card-text">
-            <h2>${unsafeHTML(this.localize('home:40'))}</h2>
+            <a href="/subjects"><h2>${unsafeHTML(this.localize('home:40'))}</h2></a>
             <p>${unsafeHTML(this.localize('home:41'))}</p>
-          </div>
-          <div class="card-actions">
-            <a href="/subjects" class="link-button">${unsafeHTML(this.localize('home:42'))}</a>
           </div>
         </div>
       </article>
