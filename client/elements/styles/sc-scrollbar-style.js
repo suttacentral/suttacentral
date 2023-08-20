@@ -63,7 +63,7 @@ export const scrollbarStyle = css`
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:active {
-    background-color: var(--sc-secondary-text-color);
+    background-color: var(--sc-on-primary-secondary-text-color);
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:vertical {

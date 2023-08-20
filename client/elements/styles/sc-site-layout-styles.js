@@ -28,7 +28,7 @@ export const SCSiteLayoutStyles = css`
 
   /* apply font size here to avoid resizing title when returning to Home */
   #title {
-    font-size: clamp(2rem, 8vw, 3em);
+    font-size: var(--sc-font-size-xxxxl);
   }
 
   .homeTitle {
@@ -66,7 +66,7 @@ export const SCSiteLayoutStyles = css`
   }
 
   #subTitle {
-    font-size: 0.5em;
+    font-size: var(--sc-font-size-l);
     font-style: italic;
     opacity: 1;
     transition: opacity 0.5s ease-in;
@@ -104,9 +104,14 @@ export const SCSiteLayoutStyles = css`
     text-overflow: ellipsis;
   }
 
+/* make footer stick to the bottom */
+  #site_footer{
+    margin-top: auto
+  }
+
   /* apply font size here to avoid resizing title when returning to Home */
   .generalTitle span {
-    font-size: calc(20px * var(--sc-skolar-font-scale));
+    font-size: var(--sc-font-size-xl);
     font-stretch: condensed;
     font-weight: 600;
   }

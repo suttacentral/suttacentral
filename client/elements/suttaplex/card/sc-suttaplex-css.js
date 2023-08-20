@@ -21,7 +21,7 @@ export const suttaplexCss = css`
     margin: 4px 0 0 0;
     padding: 8px 12px;
 
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-secondary-primary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-tertiary-background-color);
@@ -56,7 +56,7 @@ export const suttaplexCss = css`
   details ul {
     right: 0px;
     padding: 8px 12px 8px 24px;
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
   }
 
   .suttaplex-share-menu-list{
@@ -83,13 +83,13 @@ export const suttaplexCss = css`
 
   h1 {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-size: var(--sc-font-size-xl);
     font-weight: 500;
     margin: 0;
   }
 
   h1.compact {
-    font-size: var(--sc-skolar-font-size-xl);
+    font-size: var(--sc-font-size-xl);
   }
 
   .hide-element {
@@ -147,9 +147,9 @@ export const suttaplexCss = css`
     display: flex;
     flex-wrap: wrap;
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
     text-overflow: ellipsis;
     overflow: hidden;
   }
@@ -192,9 +192,9 @@ export const suttaplexCss = css`
     margin: 4px 0 0 0;
     padding: 8px 12px;
 
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
 
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-secondary-primary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-tertiary-background-color);
@@ -219,14 +219,14 @@ export const suttaplexCss = css`
 
   .section-details h3 {
     margin: var(--sc-size-sm) 0;
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
     display: inline-block;
   }
 
   .blurb,
   .section-details h3 {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
   }
 
@@ -331,14 +331,14 @@ export const suttaplexTxCss = css`
 
   .tx-creator {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
   }
 
   .tx-publication {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
   }
 
@@ -408,7 +408,7 @@ export const parallelsListCss = css`
 
   .parallels-root-id {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
   }
 
@@ -443,7 +443,7 @@ export const parallelItemCss = css`
 
   .parallel-item-title {
     font-family: 'Skolar Sans PE Md', var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 500;
     word-wrap: normal;
     margin-bottom: var(--sc-size-xs);
@@ -451,7 +451,7 @@ export const parallelItemCss = css`
 
   .parallel-item-biblio-info {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     box-shadow: var(--sc-shadow-elevation-4dp);
     border-top: var(--sc-border);
@@ -468,7 +468,7 @@ export const parallelItemCss = css`
   }
 
   .parallel-item-nerdy-row {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
     display: flex;
   }
 

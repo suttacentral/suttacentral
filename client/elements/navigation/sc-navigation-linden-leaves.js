@@ -10,7 +10,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     :host {
       display: block;
       height: 48px;
-      background-color: rgb(75, 74, 73);
+      background-color: var(--sc-dark-fixed-background-color);
       position: relative;
       z-index: 200;
     }
@@ -25,7 +25,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       height: 48px;
       padding: 0 8px 0 16px;
 
-      background-color: rgb(75, 74, 73);
+      background-color: var(--sc-dark-fixed-background-color);
 
       justify-content: space-between;
     }
@@ -38,7 +38,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
     li {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
       font-weight: 500;
       font-stretch: condensed;
 

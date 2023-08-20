@@ -1384,27 +1384,25 @@ export const SCFontStyles = css`
 
     --sc-simple-chinese-font: 'Noto Sans CJK SC', 'Noto Sans', sans-serif;
 
-    --sc-skolar-font-size-xxs: calc(10px * var(--sc-skolar-font-scale));
+    /* use type scale at 1.2 (per LaTeX) */
 
-    --sc-skolar-font-size-xs: calc(12px * var(--sc-skolar-font-scale));
+    --sc-font-size-xxs: 0.579rem;
 
-    --sc-skolar-font-size-s: calc(14px * var(--sc-skolar-font-scale));
+    --sc-font-size-xs: 0.694rem;
 
-    --sc-skolar-font-size-md: calc(16px * var(--sc-skolar-font-scale));
+    --sc-font-size-s: 0.833rem;
 
-    --sc-skolar-font-size-l: calc(18px * var(--sc-skolar-font-scale));
+    --sc-font-size-md: 1rem;
 
-    --sc-skolar-font-size-xl: calc(19px * var(--sc-skolar-font-scale));
+    --sc-font-size-l: 1.2rem;
 
-    --sc-skolar-font-size-static-subtitle: calc(24px * var(--sc-skolar-font-scale));
+    --sc-font-size-xl: 1.44rem;
 
-    --sc-skolar-font-size-dialog-header: calc(26px * var(--sc-skolar-font-scale));
+    --sc-font-size-xxl: 1.728rem;
 
-    --sc-skolar-font-size-xxl: calc(32px * var(--sc-skolar-font-scale));
+    --sc-font-size-xxxl: 2.074rem;
 
-    --sc-skolar-font-size-h1-md: calc(34px * var(--sc-skolar-font-scale));
-
-    --sc-skolar-font-size-static-main-title: calc(50px * var(--sc-skolar-font-scale));
+    --sc-font-size-xxxxl: 2.488rem;
 
     --sc-tall-font-size-xs: calc(13px * var(--sc-tall-font-scale));
 

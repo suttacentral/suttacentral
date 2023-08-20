@@ -1,23 +1,38 @@
 {
-  "--sc-primary-text-color": "rgb(34,33,32)",
-  "--sc-secondary-text-color": "rgb(116,115,114)",
-  "--sc-tertiary-text-color": "rgb(255, 255, 255)",
-  "--sc-icon-color": "rgb(159,158,157)",
+  
+  
+  "--sc-tertiary-text-color": "#ffffff",
+
+  "--sc-icon-color": "#827568",
   "--sc-icon-color-opaque": "rgba(159, 158, 157, .3)",
-  "--sc-primary-color": "rgba(206, 132, 0, 1)",
-  "--sc-primary-color-light": "#ffcb61",
-  "--sc-primary-color-light-transparent": "rgba(255, 203, 97, 0.2)",
-  "--sc-primary-color-medium": "#f6b735",
-  "--sc-primary-color-dark": "rgb(161,108,0)",
-  "--sc-primary-color-darkest": "rgb(138, 93, 0)",
-  "--sc-primary-accent-color": "#43a047",
-  "--sc-primary-accent-color-light": "#52c756",
+
+  "--sc-primary-color": "#c98100",
+  "--sc-primary-color-light": "#ffb95d",
+  "--sc-primary-color-light-transparent": "rgba(255, 185, 93, 0.5)",
+  "--sc-primary-color-dark": "#a66a00",
+  "--sc-primary-color-darker": "#855400",
+
+  "--sc-primary-accent-color": "#715a41",
+  "--sc-primary-accent-color-light": "#8b7357",
   "--sc-primary-accent-color-light-transparent": "rgba(67,160,71,0.1)",
-  "--sc-primary-accent-color-dark": "#3b763b",
-  "--sc-secondary-accent-color": "#9c27b0",
-  "--sc-primary-background-color": "rgb(250, 249, 248)",
-  "--sc-secondary-background-color": "rgb(255, 255, 255)",
-  "--sc-tertiary-background-color": "rgb(244, 243, 242)",
+  "--sc-primary-accent-color-dark": "#281805",
+
+  "--sc-secondary-accent-color": "#54643d",
+
+  "--sc-primary-background-color": "#fffbff",
+  "--sc-on-primary-primary-text-color": "#1f1b16",
+  "--sc-on-primary-secondary-text-color": "#827568",
+
+  "--sc-secondary-background-color": "#fff8f4",
+  "--sc-on-secondary-primary-text-color": "#000000",
+  "--sc-on-secondary-secondary-text-color": "#5c5144",
+
+  "--sc-tertiary-background-color": "#f9efe7",
+  "--sc-on-tertiary-primary-text-color": "#1f1b16",
+  "--sc-on-tertiary-secondary-text-color": "#827568",
+
+"--sc-dark-fixed-background-color": "#4c4640",
+
   "--sc-border-color": "rgba(0, 0, 0, 0.12)",
   "--sc-textual-info-background-color": "rgb(227,226,225)",
   "--sc-toast-error-color": "#f44336",

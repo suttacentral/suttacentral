@@ -125,6 +125,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #introductionTemplate() {
     return html`
       <article>
+      <a href="/introduction">
         <figure>
           <picture>
             <source srcset="/img/home-page/pali2.avif" type="image/avif" />
@@ -132,13 +133,15 @@ export class SCStaticHomePage extends SCStaticPage {
           </picture>
           <figcaption>${unsafeHTML(this.localize('home:7'))}</figcaption>
         </figure>
+        
         <div class="card-content">
           <div class="card-text">
-            <a href="/introduction"><h2>${unsafeHTML(this.localize('home:8'))}</h2></a>
+            <h2>${unsafeHTML(this.localize('home:8'))}</h2>
             <p>${unsafeHTML(this.localize('home:9'))}</p>
           </div>
           
         </div>
+        </a>
       </article>
     `;
   }
@@ -146,6 +149,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #getStartedTemplate() {
     return html`
       <article>
+        <a href="/start">
         <figure>
           <picture>
             <source srcset="/img/home-page/koreana2.avif" type="image/avif" />
@@ -157,12 +161,14 @@ export class SCStaticHomePage extends SCStaticPage {
           </picture>
           <figcaption>${unsafeHTML(this.localize('home:11'))}</figcaption>
         </figure>
+
         <div class="card-content">
           <div class="card-text">
-            <a href="/start"><h2>${unsafeHTML(this.localize('home:12'))}</h2></a>
+            <h2>${unsafeHTML(this.localize('home:12'))}</h2>
             <p>${unsafeHTML(this.localize('home:13'))}</p>
           </div>
         </div>
+        </a>
       </article>
     `;
   }
@@ -193,7 +199,7 @@ export class SCStaticHomePage extends SCStaticPage {
               <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:17'))}</span>
             </h3>
           </header>
-        </a>
+        
         <div class="related-projects-content">
           <p>${unsafeHTML(this.localize('home:18'))}</p>
           <ul>
@@ -201,6 +207,7 @@ export class SCStaticHomePage extends SCStaticPage {
             <li>${unsafeHTML(this.localize('home:20'))}.</li>
           </ul>
         </div>
+        </a>
       </article>
     `;
   }
@@ -226,10 +233,11 @@ export class SCStaticHomePage extends SCStaticPage {
               <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:22'))}</span>
             </h3>
           </header>
-        </a>
+        
         <div class="related-projects-content">
           <p>${unsafeHTML(this.localize('home:23'))}</p>
         </div>
+        </a>
       </article>
     `;
   }
@@ -250,7 +258,7 @@ export class SCStaticHomePage extends SCStaticPage {
               <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:25'))}</span>
             </h3>
           </header>
-        </a>
+        
         <div class="related-projects-content">
           <p>${unsafeHTML(this.localize('home:26'))}</p>
           <ul>
@@ -259,6 +267,7 @@ export class SCStaticHomePage extends SCStaticPage {
             <li>${unsafeHTML(this.localize('home:29'))}</li>
           </ul>
         </div>
+        </a>
       </article>
     `;
   }
@@ -279,10 +288,11 @@ export class SCStaticHomePage extends SCStaticPage {
               <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:31'))}</span>
             </h3>
           </header>
-        </a>
+        
         <div class="related-projects-content">
           <p>${unsafeHTML(this.localize('home:32'))}</p>
         </div>
+        </a>
       </article>
     `;
   }
@@ -305,6 +315,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #guidesTemplate() {
     return html`
       <article>
+      <a href="/general-guide-sujato">
         <figure>
           <picture>
             <source srcset="/img/home-page/pali7.avif" type="image/avif" />
@@ -316,12 +327,14 @@ export class SCStaticHomePage extends SCStaticPage {
           </picture>
           <figcaption>${unsafeHTML(this.localize('home:35'))}</figcaption>
         </figure>
+        
         <div class="card-content">
           <div class="card-text">
-            <a href="/general-guide-sujato"><h2>${unsafeHTML(this.localize('home:36'))}</h2></a>
+            <h2>${unsafeHTML(this.localize('home:36'))}</h2>
             <p>${unsafeHTML(this.localize('home:37'))}</p>
           </div>
         </div>
+        </a>
       </article>
     `;
   }
@@ -329,6 +342,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #indexesTemplate() {
     return html`
       <article>
+      <a href="/subjects">
         <figure>
           <picture>
             <source srcset="/img/home-page/bhikkhuni3.avif" type="image/avif" />
@@ -336,12 +350,14 @@ export class SCStaticHomePage extends SCStaticPage {
           </picture>
           <figcaption>${unsafeHTML(this.localize('home:39'))}</figcaption>
         </figure>
+        
         <div class="card-content">
           <div class="card-text">
-            <a href="/subjects"><h2>${unsafeHTML(this.localize('home:40'))}</h2></a>
+            <h2>${unsafeHTML(this.localize('home:40'))}</h2>
             <p>${unsafeHTML(this.localize('home:41'))}</p>
           </div>
         </div>
+        </a>
       </article>
     `;
   }

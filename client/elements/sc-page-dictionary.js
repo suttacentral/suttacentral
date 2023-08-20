@@ -75,15 +75,14 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
 
     h1 {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-h1-md);
+
       font-weight: 400;
-      line-height: 40px;
 
       display: inline-block;
 
       margin: 0 0 0 -2px;
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
     }
 
     .dictionary-results-term {
@@ -104,12 +103,12 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
 
     .related-terms h3 {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
       font-weight: bold;
 
       margin: 1em 0 0 0;
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
     }
 
     .dictionary-entries {
@@ -120,7 +119,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       display: block;
       font-family: var(--sc-sans-font);
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
 
       font-style: italic;
     }
@@ -156,19 +155,19 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
     }
 
     .related-terms i {
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
     }
 
     .dictionary-source {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
       font-weight: 400;
       font-variant-caps: all-small-caps;
       letter-spacing: var(--sc-caps-letter-spacing);
 
       margin: var(--sc-size-md) 0;
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
     }
 
     .dictionary-book-entry {
@@ -189,7 +188,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
     .selected-terms-item > a:hover,
     dfn {
       background-color: var(--sc-primary-color-light-transparent);
-      color: var(--sc-primary-color-darkest);
+      color: var(--sc-primary-color-dark);
     }
   `;
 

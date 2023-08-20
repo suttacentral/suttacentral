@@ -7,7 +7,7 @@ export const dictStyles = css`
 
   dd {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
     line-height: 1.5;
 
@@ -24,7 +24,7 @@ export const dictStyles = css`
 
   dfn {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-size: var(--sc-font-size-xxxl);
     font-weight: 400;
     font-style: normal;
     line-height: 32px;
@@ -40,7 +40,7 @@ export const dictStyles = css`
 
   .case {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     line-height: 24px;
 
@@ -50,7 +50,7 @@ export const dictStyles = css`
     white-space: nowrap;
     letter-spacing: var(--sc-caps-letter-spacing);
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     font-variant-caps: all-small-caps;
   }
@@ -65,7 +65,7 @@ export const dictStyles = css`
     white-space: nowrap;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border-radius: 8px;
     background-color: rgba(159, 158, 157, 0.15);
 
@@ -80,9 +80,9 @@ export const dictStyles = css`
 
   dd .eti {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   dd .term {
@@ -91,7 +91,7 @@ export const dictStyles = css`
 
   dd .abbr {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: bold;
 
     padding: var(--sc-size-xs) var(--sc-size-sm);
@@ -107,7 +107,7 @@ export const dictStyles = css`
 
     padding: 0 8px;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   dd .square {

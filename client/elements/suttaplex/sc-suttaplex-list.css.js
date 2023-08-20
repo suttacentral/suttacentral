@@ -6,7 +6,7 @@ export const suttaplexListCss = css`
   }
 
   .division-content {
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-secondary-primary-text-color);
     position: relative;
     padding: 0;
   }
@@ -24,12 +24,12 @@ export const suttaplexListCss = css`
 
   .node {
     padding: var(--sc-size-md) var(--sc-size-md) 0;
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
   }
 
   .vagga-node {
     padding: var(--sc-size-md) var(--sc-size-md) var(--sc-size-sm) var(--sc-size-md);
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
   }
 
   .vagga-node + .vagga-node {

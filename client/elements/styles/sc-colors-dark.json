@@ -1,6 +1,6 @@
 {
-  "--sc-primary-text-color": "#ffffff",
-  "--sc-secondary-text-color": "#E2E2E2",
+  "--sc-on-primary-primary-text-color": "#ffffff",
+  "--sc-on-primary-secondary-text-color": "#E2E2E2",
   "--sc-tertiary-text-color": "#212121",
   "--sc-icon-color": "#9a9a9a",
   "--sc-icon-color-opaque": "rgba(158, 158, 158, .3)",

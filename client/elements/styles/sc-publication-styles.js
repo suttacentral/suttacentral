@@ -19,12 +19,12 @@ export const SCPublicationStyles = css`
   }
 
   .translation_subtitle {
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-style: italic;
   }
 
   .creator_name {
-    font-size: var(--sc-skolar-font-size-l);
+    font-size: var(--sc-font-size-l);
 
     text-align: center;
 
@@ -63,7 +63,7 @@ export const SCPublicationStyles = css`
   }
 
   caption {
-    font-size: var(--sc-skolar-font-size-xxl);
+    font-size: var(--sc-font-size-xxl);
     font-weight: normal;
 
     font-style: italic;
@@ -130,7 +130,7 @@ export const SCPublicationStyles = css`
   tbody td:first-child{
 
     font-variant-caps: all-small-caps;
-    font-size: var(--sc-skolar-font-size-xl);
+    font-size: var(--sc-font-size-xl);
   }
 
   figure {
@@ -149,16 +149,16 @@ export const SCPublicationStyles = css`
 
   figcaption {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   dl.publication {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
   }
 
   dt {

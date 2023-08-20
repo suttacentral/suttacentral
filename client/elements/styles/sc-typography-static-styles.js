@@ -56,7 +56,7 @@ export const typographyStaticStyles = css`
 
     margin-top: 0.5em;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
   .term-translation {
     font-family: var(--sc-serif-font);
@@ -91,7 +91,7 @@ export const typographyStaticStyles = css`
   .subject {
     font-style: italic;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
   .subject:before {
     content: '(';
@@ -103,7 +103,7 @@ export const typographyStaticStyles = css`
     margin-top: 64px;
     padding: 1em 2em;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: 2px;
     background: var(--sc-tertiary-background-color);
@@ -112,16 +112,16 @@ export const typographyStaticStyles = css`
     margin-top: 64px;
     padding: 1em 2em;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: 2px;
   }
 
   sc-page-selector {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
     line-height: 1.5;
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
   }
 `;

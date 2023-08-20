@@ -4,7 +4,7 @@ export const languageBaseMenuCss = css`
   :host {
     overflow-y: scroll;
     --mdc-menu-min-width: 500px;
-    --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+    --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
     --mdc-list-side-padding: 16px;
   }
 
@@ -34,7 +34,7 @@ export const languageBaseMenuCss = css`
     line-height: 16px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
     --notchSize: 4px;
     clip-path: polygon(
       0% var(--notchSize),
@@ -54,7 +54,7 @@ export const languageBaseMenuCss = css`
   #kan::before,
   #haw::before {
     letter-spacing: 0;
-    font-size: 10px;
+    font-size: var(--sc-font-size-xxs);
   }
 
   .arrow_left {
@@ -72,13 +72,13 @@ export const languageBaseMenuCss = css`
 
   .language-base-menu-head-main {
     font-weight: 700;
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
     padding-left: 8px;
   }
 
   .language-base-menu-head-secondary {
-    font-size: var(--sc-skolar-font-size-xs);
-    color: var(--sc-secondary-text-color);
+    font-size: var(--sc-font-size-xs);
+    color: var(--sc-on-primary-secondary-text-color);
     padding: 0 16px 0 56px;
     line-height: 1.5;
     font-stretch: condensed;

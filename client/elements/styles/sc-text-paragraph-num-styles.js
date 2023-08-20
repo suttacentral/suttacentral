@@ -549,10 +549,10 @@ export const textParagraphNumStyles = css`
 
   .textual-info-paragraph {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
     margin-right: var(--sc-size-sm);
     padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     background: var(--sc-textual-info-background-color);
     text-decoration: none;
     transition: 250ms;

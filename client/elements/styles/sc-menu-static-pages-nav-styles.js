@@ -49,7 +49,7 @@ export const SCMenuStaticPagesNavStyles = css`
   }
 
   li {
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 500;
 
     margin-right: 8px;
@@ -69,14 +69,14 @@ export const SCMenuStaticPagesNavStyles = css`
 
     box-sizing: border-box;
     height: 100%;
-    padding: 4px 8px 0;
+    padding: 0 16px;
 
     text-decoration: none;
 
     color: white;
     text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
 
-    border-bottom: 4px solid rgba(0, 0, 0, 0);
+    border-radius: 24px;
 
     align-items: center;
 
@@ -87,8 +87,8 @@ export const SCMenuStaticPagesNavStyles = css`
     cursor: pointer;
 
     color: white;
-    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1);
-    border-bottom: 4px solid var(--sc-primary-color-light);
+
+    background-color: var(--sc-primary-color-darker);
 
     transition: all 200ms ease;
   }

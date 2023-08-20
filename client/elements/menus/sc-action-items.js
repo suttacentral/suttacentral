@@ -88,7 +88,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     #btnShowParallels:after,
     #btnShowToC:after,
     #btnShowParallelTableView:after {
-      font-size: var(--sc-skolar-font-size-xxs);
+      font-size: var(--sc-font-size-xxs);
       font-weight: 600;
       font-stretch: condensed;
 

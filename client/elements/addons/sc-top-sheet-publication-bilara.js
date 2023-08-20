@@ -66,7 +66,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
         font-weight: 600;
         font-style: italic;
 
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
       }
 
       dd {
@@ -89,7 +89,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
       dd.source-url,
       dd.publication-number {
         font-family: mono;
-        font-size: 16px;
+        font-size: var(--sc-font-size-s);
       }
 
       .number-of_volumes,
@@ -100,9 +100,9 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
       .license {
         padding: 0 1rem 1rem 1rem;
 
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
         border: var(--sc-border);
-        border-radius: 8px;
+        border-radius: 16px;
         background: var(--sc-tertiary-background-color);
       }
 

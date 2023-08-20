@@ -497,9 +497,9 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
       mwc-formfield {
         --mdc-typography-font-family: var(--sc-sans-font);
 
-        --mdc-typography-body2-font-size: var(--sc-skolar-font-size-md);
+        --mdc-typography-body2-font-size: var(--sc-font-size-md);
 
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
         --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
 

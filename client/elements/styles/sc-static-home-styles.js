@@ -3,10 +3,14 @@ import { css } from 'lit';
 export const staticHomeStyles = css`
   sc-static-home {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
 
     content-visibility: auto;
+  }
+
+  a, a:hover, a:active{
+    text-decoration: none
   }
 
   main {
@@ -19,7 +23,7 @@ export const staticHomeStyles = css`
   }
 
   .plain {
-    font-size: 1.125rem;
+    font-size: var(--sc-font-size-l);
 
     display: flex;
     flex-direction: column;
@@ -42,7 +46,7 @@ export const staticHomeStyles = css`
   .quotation h2 {
     font-family: var(--sc-sans-font);
     letter-spacing: var(--sc-caps-letter-spacing);
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     font-variant-caps: all-small-caps;
     margin-bottom: 1em;
@@ -61,21 +65,21 @@ export const staticHomeStyles = css`
   .editions h2 {
     font-family: var(--sc-sans-font);
     letter-spacing: var(--sc-caps-letter-spacing);
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     font-variant-caps: small-caps;
     margin: 0 0 1rem 0;
     font-weight: 600;
     font-stretch: expanded;
-    font-size: 2rem;
+    font-size: var(--sc-font-size-xxxl);
   }
 
   .editions .call-to-action {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: var(--sc-font-size-xl);
     padding: 1rem 0 0 0;
     font-style: italic;
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   .editions figure {
@@ -83,7 +87,7 @@ export const staticHomeStyles = css`
   }
 
   .tipitaka-section {
-    font-size: 1.125rem;
+    font-size: var(--sc-font-size-l);
 
     display: flex;
     flex-direction: column;
@@ -112,6 +116,8 @@ export const staticHomeStyles = css`
     border-bottom: 1px solid var(--sc-primary-color-light);
 
     font-variant-caps: all-small-caps;
+
+    font-size: var(--sc-font-size-xxl)
   }
 
   .tipitaka-section h2 em {
@@ -131,8 +137,7 @@ export const staticHomeStyles = css`
 
   blockquote {
     font-family: var(--sc-serif-font);
-    font-size: 1.5rem;
-    font-size: clamp(1.125em, 3.75vw, 1.5em);
+    font-size: var(--sc-font-size-xl);
     font-weight: 300;
     font-style: italic;
     line-height: 1.5;
@@ -200,7 +205,7 @@ export const staticHomeStyles = css`
   }
 
   figcaption {
-    font-size: 0.8em;
+    font-size: var(--sc-font-size-s);
     font-weight: 600;
 
     position: absolute;
@@ -224,12 +229,23 @@ export const staticHomeStyles = css`
     display: flex;
     flex-direction: column;
 
+    height: 100%;
+
     justify-content: space-between;
     flex: 1;
+
+    background-color: var(--sc-tertiary-background-color);
+    color: var(--sc-on-secondary-primary-text-color);
+    transition: background-color 0.2s ease;
+  }
+
+  a:hover .card-content{
+background-color: var(--sc-primary-color-light-transparent);
+transition: background-color 0.2s ease;
   }
 
   .card-text {
-    padding: 6% 4% 0;
+    padding: 1.5em;
   }
 
   .card-actions {
@@ -254,8 +270,8 @@ export const staticHomeStyles = css`
     text-decoration: none;
     letter-spacing: var(--sc-caps-letter-spacing);
 
-    color: var(--sc-primary-accent-color-dark);
-    border: 2px solid var(--sc-primary-accent-color);
+    color: var(--sc-primary-color-dark);
+    border: 2px solid var(--sc-primary-color-light);
     border-radius: 18px;
 
     align-items: center;
@@ -266,27 +282,26 @@ export const staticHomeStyles = css`
   }
 
   .link-button:hover {
-    background-color: var(--sc-primary-accent-color-light-transparent);
+    background-color: var(--sc-primary-color-light-transparent);
     transition: background-color 0.2s ease;
   }
 
   .link-button:active {
     color: white;
-    background-color: var(--sc-primary-accent-color);
+    background-color: var(--sc-primary-color);
     transition: background-color 0.2s ease;
   }
 
   h2 {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-static-subtitle);
-    font-weight: 400;
-    line-height: 1.3333;
+    font-size: var(--sc-font-size-xl);
+    font-weight: 500;
 
     margin: 0 0 0 0;
   }
 
   p {
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     line-height: 1.5;
 
     margin: 0.5em 0 0 0;
@@ -305,8 +320,8 @@ export const staticHomeStyles = css`
   }
 
   video {
-    border-radius: 8px;
-    box-shadow: var(--sc-shadow-elevation-1dp);
+    border-radius: 16px;
+    box-shadow: var(--sc-shadow-elevation-2dp);
   }
 
   @media (max-width: 680px) {
@@ -366,7 +381,7 @@ export const staticHomeStyles = css`
   }
 
   .sc-related article {
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
 
     flex: 1;
   }
@@ -383,17 +398,14 @@ export const staticHomeStyles = css`
   }
 
   .sc-related a {
-    text-decoration: underline;
-
-    text-decoration-color: rgba(255, 255, 255, 0);
 
     transition: text-decoration-color 0.2s ease;
   }
 
   .sc-related a:hover {
-    transition: text-decoration-color 0.2s ease;
+    transition: background-color 0.2s ease;
 
-    text-decoration-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--sc-primary-color-transparent)
   }
 
   .sc-related article img {
@@ -401,7 +413,7 @@ export const staticHomeStyles = css`
   }
 
   .sc-related article header h3 {
-    font-size: var(--sc-skolar-font-size-l);
+    font-size: var(--sc-font-size-l);
     font-family: var(--sc-sans-font);
     font-weight: 600;
 
@@ -419,11 +431,12 @@ export const staticHomeStyles = css`
   }
 
   .related-projects-content {
-    margin: 0.5em 0 1.5em 0;
+    margin: 1em 1em 1.5em;
+    color: var(--sc-on-secondary-primary-text-color);
   }
 
   .sc-related article p {
-    padding: 0 1em 0 1em;
+    margin-top: 0
   }
 
   .sc-related article ul {
@@ -458,27 +471,27 @@ export const staticHomeStyles = css`
   }
 
   .dark-accent header {
-    background-color: rgb(75, 74, 73);
+    background-color: var(--sc-on-primary-secondary-text-color);
   }
 
     .dark-accent {
-    outline: 2px solid rgb(75, 74, 73);
+    outline: 2px solid var(--sc-on-primary-secondary-text-color);
   }
 
   .primary-accent header {
-    background-color: rgb(59, 118, 59);
+    background-color: var(--sc-primary-accent-color);
   }
 
     .primary-accent {
-    outline: 2px solid rgb(59, 118, 59);
+    outline: 2px solid var(--sc-primary-accent-color);
   }
 
   .primary-color header {
-    background-color: rgb(161, 108, 0);
+    background-color: var(--sc-primary-color);
   }
 
     .primary-color {
-    outline: 2px solid rgb(161, 108, 0);
+    outline: 2px solid var(--sc-primary-color);
   }
 
   .related-projects-heading {
@@ -501,7 +514,7 @@ export const staticHomeStyles = css`
 
     font-variant-caps: all-small-caps;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .related-projects-heading a {
@@ -510,33 +523,36 @@ export const staticHomeStyles = css`
     gap: 1em;
     align-items: center;
 
-    padding-left: 1em;
+    padding: 0 1em;
 
-    color: var(--sc-secondary-text-color);
-    transition: all 200ms ease;
-    text-decoration: none;
+    color: var(--sc-on-primary-secondary-text-color);
+    transition: background-color 200ms ease;
 
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    border-radius: 18px
   }
 
-  .related-projects-heading a:hover {
-    text-decoration: underline;
-
+  .related-projects-heading a:hover{
     background-color: var(--sc-primary-color-light-transparent);
 
-    text-decoration-color: var(--sc-primary-color);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+  }
+
+  .sc-related-items-wrapper a {
+background-color: var(--sc-secondary-background-color);
+color: var(--sc-on-secondary-primary-text-color);
+    transition: background-color 0.2s ease;
+        height: 100%
+
+
+  }
+
+  .sc-related-items-wrapper a:hover {
+    background-color: var(--sc-primary-color-light-transparent);
+    transition: background-color 0.2s ease;
+
   }
 
   .related-projects-heading a:active {
     background-color: var(--sc-primary-color-light);
-  }
-
-  .related-projects-heading a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
   }
 
   .related-projects-heading .icon {

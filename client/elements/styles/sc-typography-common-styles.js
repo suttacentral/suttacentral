@@ -4,11 +4,10 @@ export const typographyCommonStyles = css`
   /* includes all text styles found in one or more of static, legacy, or bilara */
   :host {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
     line-height: 1.5;
 
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   main {
@@ -47,7 +46,7 @@ export const typographyCommonStyles = css`
 
     border: 0;
     height: 0;
-    border-bottom: 1px solid var(--sc-secondary-text-color);
+    border-bottom: 1px solid var(--sc-on-primary-secondary-text-color);
 
     margin: 1.5em auto;
   }
@@ -64,40 +63,40 @@ export const typographyCommonStyles = css`
 
     margin: 1em 0 0 0;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   h1 {
-    font-size: 2em;
-    font-size: clamp(1.5em, 5vw, 2em);
+    font-size: var(--sc-font-size-xxxxl);
+    
     font-weight: 400;
   }
 
   h2 {
-    font-size: 1.5em;
-    font-size: clamp(1.333em, 3.75vw, 1.5em);
+    font-size: var(--sc-font-size-xxxl);
+    
     font-weight: 400;
   }
 
   h3 {
-    font-size: 1.333em;
-    font-size: clamp(1em, 3.333vw, 1.333em);
+    font-size: var(--sc-font-size-xxl);
+    
     font-weight: 400;
   }
 
   h4 {
-    font-size: 1.25em;
-    font-size: clamp(1em, 5vw, 1.25em);
+    font-size: var(--sc-font-size-xl);
+    
     font-weight: 400;
   }
 
   h5 {
-    font-size: 1em;
+    font-size: var(--sc-font-size-l);
     font-weight: 600;
   }
 
   h6 {
-    font-size: 1em;
+    font-size: var(--sc-font-size-md);
     font-style: italic;
   }
 
@@ -108,7 +107,7 @@ export const typographyCommonStyles = css`
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   header ul {
@@ -153,7 +152,7 @@ export const typographyCommonStyles = css`
 
   .contents li {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
 
     margin: 0.5em 0;
@@ -289,7 +288,7 @@ export const typographyCommonStyles = css`
 
         margin-top: -.15em;
 
-        color: var(--sc-secondary-text-color)
+        color: var(--sc-on-primary-secondary-text-color)
     }
 }
 
@@ -298,7 +297,7 @@ export const typographyCommonStyles = css`
     a[role='doc-noteref']
     {
         font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-xs);
+        font-size: var(--sc-font-size-xs);
         font-weight: 600!important;
         font-style: normal!important;
 
@@ -314,7 +313,7 @@ export const typographyCommonStyles = css`
 
         border: .15em solid var(--sc-primary-color-light);
 
-        color: var(--sc-secondary-text-color)
+        color: var(--sc-on-primary-secondary-text-color)
     }
 }
 
@@ -326,7 +325,7 @@ a[role='doc-backlink']
 
         text-decoration: none;
 
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
 
         font-size: 0em;
 }
@@ -336,7 +335,7 @@ a[role='doc-backlink']
 a[role='doc-backlink']::after{
   content: '󰈀';
 
-  font-size: 1.2rem
+  font-size: var(--sc-font-size-l)
 }
 
 section[role='doc-endnotes']
@@ -391,17 +390,17 @@ section[role='doc-endnotes']::before
   .pe {
     font-style: italic;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .expansion-instructions {
     font-style: italic;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .add {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   /* end of section */
@@ -413,7 +412,7 @@ section[role='doc-endnotes']::before
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .endsutta {
@@ -421,7 +420,7 @@ section[role='doc-endnotes']::before
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .endbook,
@@ -431,7 +430,7 @@ section[role='doc-endnotes']::before
     letter-spacing: var(--sc-caps-letter-spacing);
     text-transform: uppercase;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   [lang='si'] .endbook,
@@ -451,25 +450,25 @@ section[role='doc-endnotes']::before
 
   .uddana {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .uddana-intro {
     font-weight: bold;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .uddanagatha {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     font-style: inherit;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   /* descriptive classes for metadata*/
@@ -488,7 +487,7 @@ section[role='doc-endnotes']::before
     white-space: nowrap;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     font-variant-caps: normal;
   }
@@ -566,7 +565,7 @@ section[role='doc-endnotes']::before
   .highlight .suttanta::before,
   .highlight .jataka::before {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     font-style: normal;
     line-height: 1.3333;
@@ -578,7 +577,7 @@ section[role='doc-endnotes']::before
     box-sizing: border-box;
     padding: var(--sc-size-sm) var(--sc-size-md);
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     letter-spacing: normal;
 
@@ -599,7 +598,7 @@ section[role='doc-endnotes']::before
 
     white-space: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border-width: 0 0 0 8px;
     border-style: solid;
     border-radius: var(--sc-size-sm);
@@ -656,7 +655,7 @@ section[role='doc-endnotes']::before
     padding: 1rem;
     margin-bottom: 4rem;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
@@ -668,30 +667,30 @@ section[role='doc-endnotes']::before
     padding: 1rem;
     margin-bottom: 2rem;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
   }
 
   .suppliedmetre {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .gap {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .describe {
     text-decoration: line-through;
 
-    text-decoration-color: var(--sc-secondary-text-color);
+    text-decoration-color: var(--sc-on-primary-secondary-text-color);
   }
 
   .del {
     text-decoration: line-through;
 
-    text-decoration-color: var(--sc-secondary-text-color);
+    text-decoration-color: var(--sc-on-primary-secondary-text-color);
   }
 
   .scribe {
@@ -715,7 +714,7 @@ section[role='doc-endnotes']::before
   }
 
   .rule-number {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .allowance {
@@ -723,18 +722,18 @@ section[role='doc-endnotes']::before
   }
 
   .t-note {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .vagga-number {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .counter {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-dense-font-size-s);
     font-weight: 400;
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .term {
@@ -768,7 +767,7 @@ section[role='doc-endnotes']::before
   }
 
   .highlight .expanded {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .highlight .var {
@@ -781,11 +780,11 @@ section[role='doc-endnotes']::before
   }
 
   .highlight .unclear {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .highlight .metre {
-    font-size: var(--sc-skolar-font-size-xxs);
+    font-size: var(--sc-font-size-xxs);
 
     position: absolute;
 
@@ -804,7 +803,7 @@ section[role='doc-endnotes']::before
 
   #simple_text_content .legacy-reference .ref {
     font-family: var(--sc-sans-font);
-    font-size: 0.8em;
+    font-size: var(-sc-font-size-s);
     font-weight: 400;
     font-style: normal;
     text-align: left;
@@ -819,7 +818,7 @@ section[role='doc-endnotes']::before
     text-decoration: none;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-secondary-background-color);
@@ -836,7 +835,7 @@ section[role='doc-endnotes']::before
     color: white;
     font-weight: 600;
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
     border-radius: 4px;
   }
 
@@ -848,7 +847,7 @@ section[role='doc-endnotes']::before
     margin: 0 0.5rem 0 0;
     font-weight: 600;
     font-family: sans-serif;
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
   }
 
   .highlight [data-doxy='orthodox']::before {
@@ -863,7 +862,7 @@ section[role='doc-endnotes']::before
     margin: 0 0.5rem 0 0;
     font-weight: 600;
     font-family: sans-serif;
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
   }
 
   .highlight [data-direction='forward']::before {

@@ -92,8 +92,8 @@ export class SCStaticMap extends SCStaticPage {
 
       figcaption {
         font-family: var(--sc-sans-font);
-       font-size: var(--sc-skolar-font-size-s);
-       color: var(--sc-secondary-text-color);
+       font-size: var(--sc-font-size-s);
+       color: var(--sc-on-primary-secondary-text-color);
 
        text-align: right;
       }

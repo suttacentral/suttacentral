@@ -20,7 +20,7 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
       :host {
         --mdc-theme-secondary: var(--sc-primary-accent-color);
         --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
         --mdc-typography-body2-font-weight: 550;
         --mdc-checkbox-unchecked-color: var(--sc-icon-color);
       }
@@ -34,7 +34,7 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
         margin-top: 24px;
         padding: 1em;
 
-        color: var(--sc-primary-text-color);
+        color: var(--sc-on-primary-primary-text-color);
         border-color: var(--sc-border-color);
 
         gap: 2em;
@@ -43,7 +43,7 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
       legend {
         padding: 0 1em;
 
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
         border-radius: 0.8em;
         background-color: var(--sc-border-color);
 

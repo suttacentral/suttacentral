@@ -13,7 +13,7 @@ export default class SCTopSheetCommon extends LitLocalized(LitElement) {
       width: 100%;
       max-height: 65vh;
 
-      color: var(--sc-primary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
       border-bottom: 1px solid var(--sc-border-color);
       background-color: var(--sc-secondary-background-color);
       box-shadow: var(--sc-shadow-elevation-4dp);

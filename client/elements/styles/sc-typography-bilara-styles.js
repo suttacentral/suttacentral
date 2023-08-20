@@ -26,7 +26,7 @@ export const typographyBilaraStyles = css`
   .comment,
   .variant {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     font-style: normal;
     line-height: 1.3333;
@@ -39,7 +39,7 @@ export const typographyBilaraStyles = css`
 
     box-sizing: border-box;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
     border: 1px solid var(--sc-border-color);
 
     border-radius: 8px;
@@ -82,7 +82,7 @@ export const typographyBilaraStyles = css`
     content: attr(data-tooltip);
     white-space: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border-width: 0 0 0 8px;
     border-style: solid;
     border-radius: var(--sc-size-sm);
@@ -113,7 +113,7 @@ export const typographyBilaraStyles = css`
 
     font-family: var(--sc-sans-font);
 
-    font-size: var(--sc-skolar-font-size-xxs);
+    font-size: var(--sc-font-size-xxs);
 
     font-weight: 400;
     font-style: normal;
@@ -128,7 +128,7 @@ export const typographyBilaraStyles = css`
     text-decoration: none;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-secondary-background-color);

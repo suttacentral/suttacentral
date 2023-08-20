@@ -71,10 +71,9 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       <style>
         sc-text-page-selector {
           font-family: var(--sc-serif-font);
-          font-size: var(--sc-skolar-font-size-md);
           font-weight: 400;
           line-height: 1.5;
-          color: var(--sc-primary-text-color);
+          color: var(--sc-on-primary-primary-text-color);
 
           display: flex;
           flex-direction: column;

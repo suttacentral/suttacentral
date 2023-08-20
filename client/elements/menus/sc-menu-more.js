@@ -36,7 +36,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     }
 
     .more-menu-mwc-list-item {
-      color: var(--sc-primary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
     }
 
     mwc-check-list-item {

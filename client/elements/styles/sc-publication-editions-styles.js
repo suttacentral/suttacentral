@@ -17,7 +17,7 @@ hgroup {
 
 h1 {
     font-family: var(--sc-serif-font);
-    font-size: 3rem;
+    font-size: var(--sc-font-size-xxxxl);
     font-weight: 300;
 
     margin: 0;
@@ -53,18 +53,18 @@ h1 {
 }
 
 .translation_title {
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-size: var(--sc-font-size-xxxl);
 
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
 }
 
 .translation_subtitle {
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-style: italic;
 }
 
 .creator_name {
-    font-size: var(--sc-skolar-font-size-l);
+    font-size: var(--sc-font-size-l);
 
     text-align: center;
 
@@ -161,9 +161,9 @@ img {
     padding: 1em;
 
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     
     border-radius: var(--sc-size-sm);
 }

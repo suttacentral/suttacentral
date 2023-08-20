@@ -52,7 +52,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
         --mdc-theme-secondary: var(--sc-primary-accent-color);
         --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
         --mdc-typography-body2-font-weight: 500;
       }
 
@@ -104,7 +104,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         margin: 4px 0 0 0;
         padding: 8px 12px;
 
-        color: var(--sc-primary-text-color);
+        color: var(--sc-on-primary-primary-text-color);
         border: 1px solid var(--sc-border-color);
         border-radius: 8px;
         background-color: var(--sc-tertiary-background-color);
@@ -118,7 +118,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
         cursor: pointer;
 
-        color: var(--sc-primary-text-color);
+        color: var(--sc-on-primary-primary-text-color);
         outline-color: var(--sc-border-color);
 
         align-items: baseline;
@@ -171,8 +171,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
       select {
         font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-sm);
-        color: var(--sc-primary-text-color);
+        font-size: var(--sc-font-size-sm);
+        color: var(--sc-on-primary-primary-text-color);
         padding: 8px;
         width: 100%;
         margin: 4px 0 0 0;
