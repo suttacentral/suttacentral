@@ -8,21 +8,37 @@ export const SCSiteLayoutStyles = css`
   }
 
   p a,
-  li a {
+  li a,
+  dl a {
     text-decoration: underline;
 
     color: inherit;
 
-    text-decoration-color: var(--sc-primary-color);
+    text-decoration-color: var(--sc-primary-color-light);
+
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.15em;
+
+    transition: all 200ms ease;
   }
 
   p a:hover,
-  li a:hover {
-    color: var(--sc-primary-color);
+  li a:hover,
+  dl a:hover {
+
+    text-decoration-color: var(--sc-primary-color);
+        text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.15em;
+    color: var(--sc-on-primary-primary-text-color);
+
+    background-color: var(--sc-primary-color-light-transparent);
+
+    border-radius: 4px;
   }
 
   p a:visited,
-  li a:visited {
+  li a:visited,
+  dl a:visited {
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
@@ -40,7 +56,6 @@ export const SCSiteLayoutStyles = css`
     height: 180px;
     margin: auto;
 
-    transition: all 0.1s;
     white-space: nowrap;
     text-overflow: ellipsis;
 
@@ -111,7 +126,7 @@ export const SCSiteLayoutStyles = css`
 
   /* apply font size here to avoid resizing title when returning to Home */
   .generalTitle span {
-    font-size: var(--sc-font-size-xl);
+    font-size: var(--sc-font-size-l);
     font-stretch: condensed;
     font-weight: 600;
   }

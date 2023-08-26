@@ -55,5 +55,7 @@ export const SCUtilityStyles = css`
     --sc-suttaplex-shadow: var(--sc-shadow-elevation-4dp);
 
     --sc-suttaplex-padding: var(--sc-size-md);
+
+    --sc-link-transition: background-color 900ms ease;
   }
 `;

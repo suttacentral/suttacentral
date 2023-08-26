@@ -224,32 +224,6 @@ export const typographyCommonStyles = css`
 
   /* links */
 
-  a {
-    color: inherit;
-
-    text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
-
-    transition: all 200ms ease;
-  }
-
-  a:hover {
-    text-decoration-color: var(--sc-primary-color);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
-
-    background-color: var(--sc-primary-color-light-transparent);
-  }
-
-  a:active {
-    background-color: var(--sc-primary-color-light);
-  }
-
-  a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
-  }
 
   h1 a,
   h2 a,
@@ -640,7 +614,7 @@ section[role='doc-endnotes']::before
   }
 
   .highlight .vinaya-vinita {
-    color: var(--sc-primary-accent-color-dark);
+    color: var(--sc-primary-accent-color);
   }
 
   .help-heading {

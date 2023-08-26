@@ -23,6 +23,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       align-items: center;
       background-color: var(--sc-dark-fixed-background-color);
       --mdc-theme-surface: var(--sc-secondary-background-color);
+
+      
     }
 
     #close_button {

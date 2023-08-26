@@ -15,22 +15,18 @@ export class SCTextStepper extends LitElement {
       }
     }
 
-    .bar {
-      display: flex;
-      overflow: hidden;
 
-      height: 6rem;
-      margin: 0 1.5rem;
-      padding: 0;
-
-      gap: 2rem;
-
-      justify-content: space-around;
-
-
-      border-radius: 48px;
+.bar {
+    display: flex;
+    overflow: hidden;
+    height: 6rem;
+    margin: 0px 2%;
+    padding: 0px;
+    gap: 4%;
+    justify-content: space-around;
+    border-radius: 48px;
+}
       
-    }
 
         .button-container {
       position: relative;
@@ -42,7 +38,7 @@ export class SCTextStepper extends LitElement {
 
     .button {
       width: 100%;
-      background-color: var(--sc-secondary-background-color);
+      background-color: var(--sc-tertiary-background-color);
 
       
     }
@@ -73,7 +69,7 @@ export class SCTextStepper extends LitElement {
       font-size: var(--sc-font-size-md);
 
       opacity: 0.55;
-      color: var(--sc-on-secondary-secondary-text-color);
+      color: var(--sc-on-tertiary-secondary-text-color);
     }
 
     .text-title {
@@ -85,7 +81,7 @@ export class SCTextStepper extends LitElement {
       white-space: nowrap;
       text-overflow: ellipsis;
 
-      color: var(--sc-on-secondary-primary-text-color);
+      color: var(--sc-on-tertiary-primary-text-color);
     }
 
     .link {
@@ -133,15 +129,6 @@ export class SCTextStepper extends LitElement {
     }
 
     @media (min-width: 1280px) {
-      .button-right {
-        width: 80%;
-        margin-right: 20%;
-      }
-
-      .button-left {
-        width: 80%;
-        margin-left: 20%;
-      }
 
       .arrow_right {
         margin-left: 1em;

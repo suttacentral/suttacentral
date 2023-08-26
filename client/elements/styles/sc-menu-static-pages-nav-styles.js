@@ -20,46 +20,64 @@ export const SCMenuStaticPagesNavStyles = css`
   }
 
   #static_pages_nav_menu {
-    height: 48px;
+    
 
     background-color: var(--sc-primary-color-dark);
+
+    display: flex;
+    align-items: center;
+
+
+
   }
 
   nav {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
+
     flex-direction: row;
 
     box-sizing: border-box;
+
+    margin: 0 8px;
+
+    padding: 8px 0px;
+
     height: 48px;
-    padding: 0 8px;
+
+    
 
     white-space: nowrap;
 
-    background-color: var(--sc-primary-color-dark);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable both-edges;
+
+
   }
 
   ul {
     display: flex;
 
+    padding: 0;
+
+
+
     width: 100%;
     margin: 0;
-    padding: 0;
+    
+
+  
   }
 
   li {
     font-size: var(--sc-font-size-md);
     font-weight: 500;
 
-    margin-right: 8px;
-
     list-style-type: none;
 
     letter-spacing: var(--sc-caps-letter-spacing);
     font-variant-caps: all-small-caps;
-
-    align-items: center;
   }
 
   li a {
@@ -68,19 +86,26 @@ export const SCMenuStaticPagesNavStyles = css`
     display: flex;
 
     box-sizing: border-box;
-    height: 100%;
-    padding: 0 16px;
+
+    padding: 4px 16px 4px;
+
+
 
     text-decoration: none;
 
     color: white;
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
 
-    border-radius: 24px;
+     opacity: .8;
+
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
 
     align-items: center;
 
     transition: all 200ms ease;
+
+    border-radius: 24px;
+
+
   }
 
   li a:hover {
@@ -88,9 +113,12 @@ export const SCMenuStaticPagesNavStyles = css`
 
     color: white;
 
-    background-color: var(--sc-primary-color-darker);
+    opacity: 1;
 
     transition: all 200ms ease;
+
+    background-color: var(--sc-primary-color-light-transparent);
+
   }
 
   li a:active {
@@ -105,6 +133,5 @@ export const SCMenuStaticPagesNavStyles = css`
 
   .staticPageSelected {
     opacity: 1;
-    border-bottom: 4px solid var(--sc-primary-color-light);
   }
 `;

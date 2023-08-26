@@ -39,11 +39,10 @@ export const typographyBilaraStyles = css`
 
     box-sizing: border-box;
 
-    color: var(--sc-on-secondary-secondary-text-color);
-    border: 1px solid var(--sc-border-color);
+    color: var(--sc-on-tertiary-secondary-text-color);
 
-    border-radius: 8px;
-    background-color: var(--sc-secondary-background-color);
+    border-radius: var(--sc-card-border-radius);
+    background-color: var(--sc-tertiary-background-color);
 
     letter-spacing: normal;
 
@@ -82,11 +81,12 @@ export const typographyBilaraStyles = css`
     content: attr(data-tooltip);
     white-space: normal;
 
-    color: var(--sc-on-primary-secondary-text-color);
+    
     border-width: 0 0 0 8px;
     border-style: solid;
     border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
+    color: var(--sc-on-primary-secondary-text-color);
     box-shadow: var(--sc-shadow-elevation-8dp);
   }
 

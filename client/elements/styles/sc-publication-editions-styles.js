@@ -86,7 +86,7 @@ h1 {
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    text-underline-offset: 0.15em;
     transition: all 200ms ease;
 }
 

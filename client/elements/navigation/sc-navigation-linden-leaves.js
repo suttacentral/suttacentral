@@ -17,28 +17,39 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
     nav {
       display: flex;
-      overflow-x: auto;
-      overflow-y: hidden;
+
+      overflow: hidden;
       flex-direction: row;
 
       box-sizing: border-box;
-      height: 48px;
-      padding: 0 8px 0 16px;
+
+      padding: 0px 8px;
 
       background-color: var(--sc-dark-fixed-background-color);
 
       justify-content: space-between;
+
+
     }
 
     ul {
       display: flex;
-      margin: 0 12px 0 0;
+
+      margin: 0;
+
       padding: 0;
+
+     justify-content: flex-end;
+    flex-direction: row;
+
+    max-width: calc(100vw - 144px);
+
+      position: relative;
     }
 
     li {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-xs);
+      font-size: var(--sc-font-size-s);
       font-weight: 500;
       font-stretch: condensed;
 
@@ -110,7 +121,41 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     }
 
     li:first-of-type {
-      margin-left: 0;
+      margin: 0px;
+
+      padding-left: 14px;
+
+
+      position: fixed;
+
+      left: 0px;
+      top: 0px;
+
+      width: fit-content;
+      height: 48px;
+
+      background-color: var(--sc-dark-fixed-background-color);
+
+      z-index: 1000;
+      box-shadow: 8px -8px 8px 0px var(--sc-dark-fixed-background-color);
+    }
+
+ li:first-of-type:before{
+  position: absolute;
+      content: "";
+      background-color: var(--sc-dark-fixed-background-color);
+    width: 12px;
+    height: 48px;
+    left: 0;
+    top: 0
+    }
+
+    li:first-of-type .icon{
+      margin: 0 -10px 0 0
+    }
+
+    li:first-of-type+li {
+      margin-left: 68px;
     }
 
     .icon {

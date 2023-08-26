@@ -84,8 +84,8 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
         }
 
         .wrapper {
-          min-height: calc(100vh - 336px);
-          margin-bottom: 64px;
+          min-height: 100vh;
+          padding-bottom: 64px;
         }
       </style>
       <div class="wrapper">

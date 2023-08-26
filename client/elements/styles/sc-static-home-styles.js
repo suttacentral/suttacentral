@@ -120,14 +120,14 @@ export const staticHomeStyles = css`
     font-size: var(--sc-font-size-xxl)
   }
 
-  .tipitaka-section h2 em {
+  .tipitaka-section h2 i {
     font-size: 0.6667em;
     font-style: italic;
     font-weight: 500;
 
     display: inline-block;
 
-    height: 17px;
+    height: .9em;
 
     vertical-align: middle;
     letter-spacing: normal;
@@ -234,14 +234,22 @@ export const staticHomeStyles = css`
     justify-content: space-between;
     flex: 1;
 
+    
+  }
+
+  a .card-content{
+
     background-color: var(--sc-tertiary-background-color);
     color: var(--sc-on-secondary-primary-text-color);
-    transition: background-color 0.2s ease;
+    transition: var(--sc-link-transition);
+    
   }
+
+
 
   a:hover .card-content{
 background-color: var(--sc-primary-color-light-transparent);
-transition: background-color 0.2s ease;
+transition: var(--sc-link-transition);
   }
 
   .card-text {
@@ -258,7 +266,7 @@ transition: background-color 0.2s ease;
   }
 
   .link-button {
-    font-weight: 600;
+    font-weight: 500;
 
     display: inline-flex;
 
@@ -270,26 +278,26 @@ transition: background-color 0.2s ease;
     text-decoration: none;
     letter-spacing: var(--sc-caps-letter-spacing);
 
-    color: var(--sc-primary-color-dark);
-    border: 2px solid var(--sc-primary-color-light);
+    color: var(--sc-on-tertiary-primary-text-color);
+    border: 2px solid var(--sc-border-color);
     border-radius: 18px;
 
     align-items: center;
     justify-content: center;
     font-variant-caps: all-small-caps;
     background-color: inherit;
-    transition: background-color 0.2s ease;
+    transition: var(--sc-link-transition);
   }
 
   .link-button:hover {
     background-color: var(--sc-primary-color-light-transparent);
-    transition: background-color 0.2s ease;
+    transition: var(--sc-link-transition);
   }
 
   .link-button:active {
     color: white;
     background-color: var(--sc-primary-color);
-    transition: background-color 0.2s ease;
+    transition: var(--sc-link-transition);
   }
 
   h2 {
@@ -320,7 +328,7 @@ transition: background-color 0.2s ease;
   }
 
   video {
-    border-radius: 16px;
+    border-radius: var(--sc-card-border-radius);
     box-shadow: var(--sc-shadow-elevation-2dp);
   }
 
@@ -395,17 +403,6 @@ transition: background-color 0.2s ease;
     color: white;
 
     justify-content: space-between;
-  }
-
-  .sc-related a {
-
-    transition: text-decoration-color 0.2s ease;
-  }
-
-  .sc-related a:hover {
-    transition: background-color 0.2s ease;
-
-    background-color: var(--sc-primary-color-transparent)
   }
 
   .sc-related article img {
@@ -526,7 +523,6 @@ transition: background-color 0.2s ease;
     padding: 0 1em;
 
     color: var(--sc-on-primary-secondary-text-color);
-    transition: background-color 200ms ease;
 
     border-radius: 18px
   }
@@ -534,12 +530,14 @@ transition: background-color 0.2s ease;
   .related-projects-heading a:hover{
     background-color: var(--sc-primary-color-light-transparent);
 
+
+
   }
 
   .sc-related-items-wrapper a {
 background-color: var(--sc-secondary-background-color);
 color: var(--sc-on-secondary-primary-text-color);
-    transition: background-color 0.2s ease;
+        transition: var(--sc-link-transition);
         height: 100%
 
 
@@ -547,7 +545,7 @@ color: var(--sc-on-secondary-primary-text-color);
 
   .sc-related-items-wrapper a:hover {
     background-color: var(--sc-primary-color-light-transparent);
-    transition: background-color 0.2s ease;
+        transition: var(--sc-link-transition);
 
   }
 

@@ -454,6 +454,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
             sc-page-selector {
               display: block;
               box-sizing: border-box;
+              min-height: 100vh;
               height: 100%;
             }
           </style>

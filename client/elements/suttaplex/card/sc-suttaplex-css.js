@@ -290,7 +290,7 @@ export const suttaplexTxCss = css`
     cursor: pointer;
     padding: 0 8px;
     margin: 0 -8px;
-    border-radius: var(--sc-size-sm);
+    border-radius: 20px;
   }
 
   .tx,

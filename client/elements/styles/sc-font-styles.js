@@ -1384,63 +1384,25 @@ export const SCFontStyles = css`
 
     --sc-simple-chinese-font: 'Noto Sans CJK SC', 'Noto Sans', sans-serif;
 
-    /* use type scale at 1.2 (per LaTeX) */
+    /* use type scale at 1.2 (per LaTeX) with root size at 1.125 (= 18px) */
 
-    --sc-font-size-xxs: 0.579rem;
+    --sc-font-size-xxs: 0.65rem;
 
-    --sc-font-size-xs: 0.694rem;
+    --sc-font-size-xs: 0.78rem;
 
-    --sc-font-size-s: 0.833rem;
+    --sc-font-size-s: 0.94rem;
 
-    --sc-font-size-md: 1rem;
+    --sc-font-size-md: 1.125rem;
 
-    --sc-font-size-l: 1.2rem;
+    --sc-font-size-l: 1.35rem;
 
-    --sc-font-size-xl: 1.44rem;
+    --sc-font-size-xl: 1.62rem;
 
-    --sc-font-size-xxl: 1.728rem;
+    --sc-font-size-xxl: 1.944rem;
 
-    --sc-font-size-xxxl: 2.074rem;
+    --sc-font-size-xxxl: 2.33rem;
 
-    --sc-font-size-xxxxl: 2.488rem;
-
-    --sc-tall-font-size-xs: calc(13px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-s: calc(15px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-md: calc(17px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-l: calc(19px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-xl: calc(20px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-static-subtitle: calc(24px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-dialog-header: calc(26px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-xxl: calc(32px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-h1-md: calc(34px * var(--sc-tall-font-scale));
-
-    --sc-tall-font-size-static-main-title: calc(50px * var(--sc-tall-font-scale));
-
-    --sc-dense-font-size-xs: calc(13px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-s: calc(15px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-md: calc(17px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-l: calc(19px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-xl: calc(20px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-static-subtitle: calc(24px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-dialog-header: calc(26px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-xxl: calc(32px * var(--sc-dense-font-scale));
-
-    --sc-dense-font-size-h1-md: calc(34px * var(--sc-dense-font-scale));
+    --sc-font-size-xxxxl: 2.8rem;
 
     --sc-caps-letter-spacing: 0.02em;
   }

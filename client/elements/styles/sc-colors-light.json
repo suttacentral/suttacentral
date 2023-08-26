@@ -1,39 +1,35 @@
 {
-  
-  
+  "--sc-primary-color": "#c68b05",
+  "--sc-primary-color-light": "#fdbb40",
+  "--sc-primary-color-light-transparent": "rgba(253,187,64, 0.5)",
+  "--sc-primary-color-dark": "#9e6e00",
+
+  "--sc-primary-accent-color": "#009966",
+  "--sc-primary-accent-color-light": "#8b7357",
+  "--sc-primary-accent-color-light-transparent": "rgba(67,160,71,0.1)",
+
+  "--sc-secondary-accent-color": "#9e5e6f",
+
+  "--sc-primary-background-color": "#fff8f3",
+  "--sc-on-primary-primary-text-color": "#201b17",
+  "--sc-on-primary-secondary-text-color": "#7e7570",
+
+  "--sc-secondary-background-color": "#fffbff",
+  "--sc-on-secondary-primary-text-color": "#000000",
+  "--sc-on-secondary-secondary-text-color": "#7e4300",
+
+  "--sc-tertiary-background-color": "#ffeed9",
+  "--sc-on-tertiary-primary-text-color": "#000000",
+  "--sc-on-tertiary-secondary-text-color": "#5c5144",
+
+"--sc-dark-fixed-background-color": "#4c4640",
+
   "--sc-tertiary-text-color": "#ffffff",
 
   "--sc-icon-color": "#827568",
   "--sc-icon-color-opaque": "rgba(159, 158, 157, .3)",
 
-  "--sc-primary-color": "#c98100",
-  "--sc-primary-color-light": "#ffb95d",
-  "--sc-primary-color-light-transparent": "rgba(255, 185, 93, 0.5)",
-  "--sc-primary-color-dark": "#a66a00",
-  "--sc-primary-color-darker": "#855400",
-
-  "--sc-primary-accent-color": "#715a41",
-  "--sc-primary-accent-color-light": "#8b7357",
-  "--sc-primary-accent-color-light-transparent": "rgba(67,160,71,0.1)",
-  "--sc-primary-accent-color-dark": "#281805",
-
-  "--sc-secondary-accent-color": "#54643d",
-
-  "--sc-primary-background-color": "#fffbff",
-  "--sc-on-primary-primary-text-color": "#1f1b16",
-  "--sc-on-primary-secondary-text-color": "#827568",
-
-  "--sc-secondary-background-color": "#fff8f4",
-  "--sc-on-secondary-primary-text-color": "#000000",
-  "--sc-on-secondary-secondary-text-color": "#5c5144",
-
-  "--sc-tertiary-background-color": "#f9efe7",
-  "--sc-on-tertiary-primary-text-color": "#1f1b16",
-  "--sc-on-tertiary-secondary-text-color": "#827568",
-
-"--sc-dark-fixed-background-color": "#4c4640",
-
-  "--sc-border-color": "rgba(0, 0, 0, 0.12)",
+  "--sc-border-color": "#baa89c",
   "--sc-textual-info-background-color": "rgb(227,226,225)",
   "--sc-toast-error-color": "#f44336",
   "--sc-toast-success-color": "#43a047",

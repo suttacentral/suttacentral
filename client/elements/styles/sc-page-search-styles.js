@@ -353,7 +353,7 @@ export const searchResultTableViewStyles = css`
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
   }
@@ -376,7 +376,7 @@ export const searchResultTableViewStyles = css`
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
   }

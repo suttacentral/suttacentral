@@ -102,7 +102,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
 
         color: var(--sc-on-primary-secondary-text-color);
         border: var(--sc-border);
-        border-radius: 16px;
+        border-radius: var(--sc-card-border-radius);
         background: var(--sc-tertiary-background-color);
       }
 
