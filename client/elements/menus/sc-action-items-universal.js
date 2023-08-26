@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit';
 
 import './sc-menu-more';
-import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
@@ -20,10 +19,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: rgb(75, 74, 73);
       --mdc-theme-surface: var(--sc-secondary-background-color);
-
-      
     }
 
     #close_button {
@@ -32,7 +29,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       padding: 0 4px 0 4px;
       z-index: -1;
       color: white;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: rgb(75, 74, 73);
     }
 
     #search_input {
@@ -50,7 +47,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       z-index: 100;
       background-color: rgb(244, 243, 242);
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-md);
+      font-size: var(--sc-skolar-font-size-md);
       color: rgb(34, 33, 32);
     }
 
@@ -65,7 +62,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     #search_glass {
       z-index: 101;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: rgb(75, 74, 73);
       padding: 0 4px;
     }
 
@@ -132,20 +129,13 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     });
   }
 
-  updated(changedProps) {
-    super.updated(changedProps);
-    if (changedProps.has('possible_jump_to_list')) {
-      this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'inherit';
-    }
-  }
-
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
   }
 
   openMoreMenu() {
-    (this.moreMenu || {}).show?.();
+    (this.moreMenu || {}).show();
   }
 
   openSearch() {
@@ -165,7 +155,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   // Closes the searchbox and resets original values.
   _closeSearch() {
     const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement?.classList.contains('opened')) {
+    if (searchInputElement && searchInputElement.classList.contains('opened')) {
       searchInputElement.value = '';
 
       searchInputElement.classList.remove('opened');
@@ -185,7 +175,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     if (key === 'Enter') {
       this.#hideTopSheets();
       this._startSearch();
-      this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
     }
   }
 
@@ -194,8 +183,17 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
       this.#fetchPossibleNames(searchQuery);
-    } else {
-      this.possible_jump_to_list = [];
+    }
+  }
+
+  changeHandler() {
+    return;
+    const datalist = this.shadowRoot.querySelector('#possible_jump_to_list');
+    const input = this.shadowRoot.querySelector('#search_input');
+    const { value } = input;
+    const option = Array.from(datalist.options).find(o => o.value === value);
+    if (option) {
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${value}` });
     }
   }
 
@@ -234,18 +232,25 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         type="search"
         style="height: 48px"
         spellcheck="true"
-        spellcheck=true
         placeholder=${this.localize('search:search')}
         @keypress=${this.keypressHandler}
+        @keyup=${this.keyupHandler}
+        @change=${this.changeHandler}
         aria-label="Search through site content"
-      ></input>
+        list="possible_jump_to_list"
+        autocomplete="on"
+      />
+      ${this.#jumpToListTemplate()}
       <md-standard-icon-button
-      label="close"
-      id="close_button"
-      title="Close search bar"
-      aria-label="Close search bar"
-      @click=${this._closeSearch}>
+        label="close"
+        id="close_button"
+        title="Close search bar"
+        aria-label="Close search bar"
+        @click=${this._closeSearch}
+      >
         ${icon.close}
+      </md-standard-icon-button>
+      <md-standard-icon-button
         label="menu"
         id="more-menu-button"
         @click=${this.openMoreMenu}
