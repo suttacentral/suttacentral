@@ -13,7 +13,7 @@ import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
 import { RefreshNavNew, setNavigation } from '../navigation/sc-navigation-common';
 import { transformId, getParagraphRange } from '../../utils/suttaplex';
-import '@material/mwc-button';
+import '@material/web/button/filled-button';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static properties = {
@@ -384,14 +384,13 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       ></sc-suttaplex>
       ${this.isPatimokkha && item.uid === this.categoryId
         ? html`
-            <mwc-button
+            <md-filled-button
               id="btnShowParallelsAndDetails"
-              raised
-              fullwidth
               @click=${this.onShowParallelsClick}
-              label=${this.localize('interface:showParallelsAndDetails')}
               class=${this._calculateButtonClass()}
-            ></mwc-button>
+            >
+              ${this.localize('interface:showParallelsAndDetails')}
+            </md-filled-button>
           `
         : ''}
     `;

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import '@material/mwc-icon-button';
+import '@material/web/iconbutton/standard-icon-button';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
@@ -173,7 +173,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   render() {
     return html`
       <div id="tools_menu">
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
           @click=${this._onBtnShowToCClick}
@@ -181,9 +181,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.tableOfContents}
         >
           ${icon.toc}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnViewCompact"
           @click=${this._onBtnViewCompactClick}
@@ -191,9 +191,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayCompactButton}
         >
           ${icon.view_compact}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnViewComfy"
           @click=${this._onBtnViewCompactClick}
@@ -201,9 +201,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayComfyButton}
         >
           ${icon.view_comfy}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnInfo"
           @click=${this._onBtnInfoClick}
@@ -211,9 +211,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayInfoButton}
         >
           ${icon.info}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnTools"
           @click=${this._onBtnToolsClick}
@@ -221,9 +221,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayToolButton}
         >
           ${icon.visibility}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnSearchOptions"
           @click=${this.#onBtnSearchOptionsClick}
@@ -231,9 +231,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displaySearchOptionsButton}
         >
           ${icon.language}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnSearchFilter"
           @click=${this.#onBtnSearchFilterClick}
@@ -241,9 +241,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displaySearchOptionsButton}
         >
           ${icon.filter}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnShowParallels"
           @click=${this._onBtnShowParallelsClick}
@@ -251,16 +251,16 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayToolButton}
         >
           ${icon.parallels}
-        </mwc-icon-button>
+        </md-standard-icon-button>
 
-        <mwc-icon-button
+        <md-standard-icon-button
           class="white-icon toolButtons"
           id="btnShowParallelTableView"
           @click=${this._onBtnShowParallelTableViewClick}
           slot="actionItems"
         >
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
-        </mwc-icon-button>
+        </md-standard-icon-button>
       </div>
     `;
   }

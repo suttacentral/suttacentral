@@ -5,6 +5,7 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import { languageBaseMenuCss } from './sc-menu-language-base-css';
 import { icon } from '../../img/sc-icon';
 import '@material/mwc-list/mwc-list-item';
+import '@material/web/iconbutton/standard-icon-button';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCMenuLanguageBase extends LitLocalized(LitElement) {
@@ -121,13 +122,13 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
   render() {
     return html`
       <div class="menu-item-wrapper text-only">
-        <mwc-icon-button
+        <md-standard-icon-button
           title="Return to main menu"
           class="more-menu-return-arrow"
           @click=${this._showMoreMenu}
         >
           ${icon.arrow_left}
-        </mwc-icon-button>
+        </md-standard-icon-button>
         <span class="language-base-menu-head-main">Choose your language</span>
       </div>
 

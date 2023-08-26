@@ -7,6 +7,10 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-list/mwc-check-list-item';
 import '@material/mwc-list/mwc-radio-list-item';
+import '@material/web/divider/divider';
+import '@material/web/list/list-item';
+import '@material/web/menu/menu-item-link';
+
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
@@ -51,14 +55,14 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --mdc-radio-unchecked-color: var(--sc-icon-color);
     }
 
-    [role='separator'] {
+    /* [role='separator'] {
       background-color: var(--sc-border-color);
       width: 100%;
       overflow: hidden;
       height: 1px;
       margin-top: var(--sc-size-xxs);
       margin-bottom: var(--sc-size-xxs);
-    }
+    } */
 
     .chevron_right {
       display: inline-flex;
@@ -180,12 +184,12 @@ export class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   _onThemeChanged(e) {
-    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+    const chk = e.currentTarget.shadowRoot.querySelector('md-checkbox');
     this.actions.changeAppTheme(chk.checked ? 'dark' : 'light');
   }
 
   _onToolbarDisplayModeChanged(e) {
-    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+    const chk = e.currentTarget.shadowRoot.querySelector('md-checkbox');
     this.actions.changeAlwaysShowToolbarState(chk.checked);
   }
 
@@ -257,7 +261,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
         >
           ${this.localize('interface:darkTheme')}
         </mwc-check-list-item>
-        <li divider role="separator"></li>
+        <md-divider></md-divider>
         <mwc-radio-list-item
           class="more-menu-mwc-list-item"
           left
@@ -285,7 +289,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           id="radioToolbarAtTop"
           >${this.localize('interface:toolbarAtTop')}</mwc-radio-list-item
         >
-        <li divider role="separator"></li>
+        <md-divider></md-divider>
         <a class="more-menu-link" href="/languages">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">
@@ -309,9 +313,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
         </a>
         <a class="more-menu-link" href="/map">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.map} ${this.localize('interface:map')}
-            </div>
+            <div class="menu-item-wrapper">${icon.map} ${this.localize('interface:map')}</div>
           </mwc-list-item>
         </a>
         <a class="more-menu-link" href="/methodology">
@@ -342,7 +344,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
             </div>
           </mwc-list-item>
         </a>
-        <li divider role="separator"></li>
+        <md-divider></md-divider>
         <a
           class="more-menu-link"
           href=${this.getDiscourseUrl(this.routeName)}
@@ -374,7 +376,9 @@ export class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   render() {
-    if (this.languageIsVisible) return this._renderLanguageBaseMenu();
+    if (this.languageIsVisible) {
+      return this._renderLanguageBaseMenu();
+    }
     return this._renderMoreMenu();
   }
 }

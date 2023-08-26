@@ -1,9 +1,12 @@
 import { LitElement, html, css } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import '@material/mwc-select';
+import '@material/web/select/filled-select';
+import '@material/web/list/list';
+import '@material/web/menu/menu-item';
 import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-textfield';
-import '@material/mwc-radio';
+import '@material/web/textfield/filled-text-field';
+import '@material/web/radio/radio';
 import '@material/mwc-formfield';
 
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -59,28 +62,18 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         margin: 64px 0 18px;
       }
 
-      mwc-textfield,
-      mwc-select {
-        --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
-        --mdc-theme-primary: var(--sc-primary-color);
-        --mdc-theme-primary: var(--sc-primary-accent-color);
-      }
-
       mwc-formfield {
         --mdc-typography-body2-font-family: var(--sc-sans-font);
         --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
       }
 
-      mwc-radio {
-        --mdc-theme-secondary: var(--sc-primary-color);
-        --mdc-radio-unchecked-color: var(--sc-icon-color);
+      md-radio {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-sys-color-on-primary: white;
       }
 
-      mwc-textfield {
-        flex-grow: 1;
-        --mdc-text-field-fill-color: var(--sc-tertiary-background-color);
-        --mdc-text-field-ink-color: var(--sc-on-primary-primary-text-color);
-        --mdc-text-field-label-ink-color: var(--sc-on-primary-secondary-text-color);
+      md-filled-text-field {
+        --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
       }
 
       mwc-select {
@@ -99,15 +92,15 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         color: var(--sc-on-primary-primary-text-color);
       }
 
-      mwc-select + mwc-textfield {
+      mwc-select + md-filled-text-field {
         max-width: 240px;
       }
 
-      mwc-button {
-        --mdc-theme-primary: var(--sc-primary-accent-color);
-
-        --mdc-typography-button-font-family: var(--sc-sans-font);
-        --mdc-typography-button-font-weight: 600;
+      md-filled-button,
+      md-filled-text-field {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-sys-color-on-primary: white;
+        --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
       }
 
       aside {
@@ -137,7 +130,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
 
   onSubmit(e) {
     e.preventDefault();
-    const isValid = this.shadowRoot.querySelector('mwc-textfield').reportValidity();
+    const isValid = this.shadowRoot.querySelector('md-filled-text-field').reportValidity();
     if (isValid) {
       this.processPayment().catch(() => (this.isError = true));
     }
@@ -146,9 +139,9 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
   async processPayment() {
     const currency = this.shadowRoot.querySelector('mwc-select').value;
     // API takes values for instance in cents but we want to to have dollars
-    const selectedAmount = this.shadowRoot.querySelector('mwc-textfield').value * 100;
+    const selectedAmount = this.shadowRoot.querySelector('md-filled-text-field').value * 100;
     const amount = Number.isNaN(selectedAmount) ? 0 : selectedAmount;
-    const frequency = Array.from(this.shadowRoot.querySelectorAll('#frequency-checkbox mwc-radio'))
+    const frequency = Array.from(this.shadowRoot.querySelectorAll('#frequency-checkbox md-radio'))
       .filter(el => el.checked)
       .map(el => el.value)[0];
     const config = await fetch(`${API_ROOT}/stripe_public_key`);
@@ -194,7 +187,22 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
                   `
                 )}
               </mwc-select>
-              <mwc-textfield
+
+              <!-- <md-filled-select label="${this.localize('donate:currency')}">
+                ${this.currencies &&
+                this.currencies.map(
+                  ({ symbol }, index) => html`
+                    <md-menu-item
+                      ?selected="${index === this.defaultCurrencyIndex}"
+                      value="${symbol}"
+                    >
+                      ${symbol}
+                    </md-menu-item>
+                  `
+                )}
+              </md-filled-select> -->
+
+              <md-filled-text-field
                 pattern="^[+]?(\\d+[.,]?\\d{0,2})$"
                 type="number"
                 label="${this.localize('donate:amount')}"
@@ -202,23 +210,21 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
                 required
                 validationMessage="${this.localize('donate:invalidValue')}"
                 maxlength="20"
-              ></mwc-textfield>
+              ></md-filled-text-field>
             </div>
             <div class="row">
               <p>${this.localize('donate:chooseFrequency')}</p>
             </div>
             <div id="frequency-checkbox" class="row">
               <mwc-formfield label="${this.localize('donate:oneTime')}">
-                <mwc-radio name="frequency" checked value="oneTime"></mwc-radio>
+                <md-radio name="frequency" checked value="oneTime"></md-radio>
               </mwc-formfield>
               <mwc-formfield label="${this.localize('donate:monthly')}">
-                <mwc-radio name="frequency" value="monthly"></mwc-radio>
+                <md-radio name="frequency" value="monthly"></md-radio>
               </mwc-formfield>
             </div>
             <div id="submit-row" class="row margin-top">
-              <mwc-button
-                raised
-                label="${this.localize('donate:payWithCard')}"
+              <md-filled-button
                 @click="${({ target }) => {
                   const form = target.closest('form');
                   if (form.requestSubmit) {
@@ -231,7 +237,8 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
                     button.remove();
                   }
                 }}"
-              ></mwc-button>
+                >${this.localize('donate:payWithCard')}</md-filled-button
+              >
             </div>
           </form>
           <aside>

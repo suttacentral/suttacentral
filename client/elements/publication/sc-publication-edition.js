@@ -401,10 +401,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
     return html`
       <style>
-        mwc-button {
-          --mdc-theme-primary: var(--sc-primary-accent-color);
-          --mdc-theme-on-primary: white;
-        }
         ${typographyCommonStyles}
         ${typographyStaticStyles}
         ${SCPublicationStyles}

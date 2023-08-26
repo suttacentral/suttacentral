@@ -169,4 +169,9 @@ export const SCSiteLayoutStyles = css`
   .hidden {
     display: none !important;
   }
+
+  md-filled-button {
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+    --md-sys-color-on-primary: white;
+  }
 `;
