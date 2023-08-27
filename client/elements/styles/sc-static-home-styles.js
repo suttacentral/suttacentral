@@ -324,45 +324,7 @@ a:hover .card-content
     justify-content: flex-end;
 }
 
-.link-button
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
-    font-weight: 550;
-    line-height: 1;
 
-    display: inline-flex;
-
-    box-sizing: border-box;
-    min-width: 64px;
-    height: 40px;
-    padding: 0 24px;
-
-    transition: var(--sc-link-transition);
-    text-decoration: none;
-
-    color: var(--sc-primary-accent-color);
-    border: 1px solid var(--sc-border-color);
-    border-radius: 24px;
-    background-color: inherit;
-
-    align-items: center;
-    justify-content: center;
-}
-
-.link-button:hover
-{
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
-}
-
-.link-button:active
-{
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light);
-}
 
 h2
 {

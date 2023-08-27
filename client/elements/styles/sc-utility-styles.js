@@ -56,6 +56,6 @@ export const SCUtilityStyles = css`
 
     --sc-suttaplex-padding: var(--sc-size-md);
 
-    --sc-link-transition: background-color 300ms ease, border-bottom 300ms ease, opacity 300ms ease, text-decoration-color 300ms ease;
+    --sc-link-transition: background-color 300ms ease, border-bottom 300ms ease, opacity 300ms ease, text-decoration-thickness 300ms ease;
   }
 `;
