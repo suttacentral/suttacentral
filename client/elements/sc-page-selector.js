@@ -641,6 +641,9 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       case 'palitipitaka':
         this.actions.changeToolbarTitle('Pāḷi Tipiṭaka');
         break;
+      case 'searchFilter':
+        this.actions.changeToolbarTitle('Search Filter');
+        break;
       default:
         const key = `interface:${this.currentRoute.name}Title`;
         if (this.__resources[key]) {
