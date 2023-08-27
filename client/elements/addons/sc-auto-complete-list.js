@@ -1,39 +1,68 @@
 import { html, css, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import { store } from '../../redux-store';
+import { icon } from '../../img/sc-icon';
+import { API_ROOT } from '../../constants';
 
 class SCAutoCompleteList extends LitElement {
   static styles = css`
     :host {
       position: absolute;
-      top: 48px;
-      left: 0;
-      width: 100%;
+      top: 49px;
+      left: 28px;
+      width: 90%;
       z-index: 9999;
       background-color: var(--sc-primary-background-color);
       color: var(--sc-primary-text-color);
       display: none;
     }
 
-    ul {
-      list-style: none;
-      padding: .5rem .5rem .25rem;
-      margin: 0;
-      overflow-y: auto;
+    .search-suggestions {
       width: 100%;
-      box-shadow: var(--sc-shadow-elevation-4dp);
-
+      border-radius: 8px;
+      box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
     }
 
-      ul:before{
-    content: "search";
-    position: absolute;
-    top: -16px;
-    right: 72px;
-    font-size: var(--sc-skolar-font-size-xxs);
-    font-weight: 600;
-    font-stretch: condensed;
-    color: var(--sc-tertiary-text-color);
+    .suggestion-item {
+      display: grid;
+      grid-template-columns: max-content minmax(0, auto) max-content;
+      grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
+      user-select: unset;
+      font-size: 18px;
+    }
+
+    .ss-item-uid {
+      color: var(--sc-primary-text-color);
+      font-size: 18px;
+    }
+
+    .ss-item-title {
+      color: var(--sc-secondary-text-color);
+    }
+
+    .suggestion-item-description {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      grid-area: label;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0.5rem 0.5rem 0.25rem;
+      margin: 0;
+      overflow-y: auto;
+    }
+
+    ul:before {
+      content: 'search';
+      position: absolute;
+      top: -16px;
+      right: 72px;
+      font-size: var(--sc-skolar-font-size-xxs);
+      font-weight: 600;
+      font-stretch: condensed;
+      color: var(--sc-tertiary-text-color);
     }
 
     li {
@@ -42,19 +71,18 @@ class SCAutoCompleteList extends LitElement {
       justify-content: space-between;
       padding: 10px;
       background-color: var(--sc-tertiary-background-color);
-      border-radius: .25rem;
-      margin-bottom: .25rem;
+      border-radius: 0.25rem;
+      margin-bottom: 0.25rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
-
     }
 
-    li:focus:after{
-      content: "go to ⏎";
+    li:focus:after {
+      content: 'go to ⏎';
       color: var(--sc-primary-accent-color);
-        font-size: var(--sc-skolar-font-size-xs);
-    font-weight: 600;
-    font-stretch: condensed;
+      font-size: var(--sc-skolar-font-size-xs);
+      font-weight: 600;
+      font-stretch: condensed;
     }
 
     li:hover {
@@ -69,6 +97,18 @@ class SCAutoCompleteList extends LitElement {
       background-color: var(--sc-primary-accent-color-light-transparent);
     }
 
+    .ss-footer {
+      border-top: 1px solid var(--sc-border-color);
+    }
+
+    .ss-item-bottom {
+      border-bottom: 1px solid var(--sc-border-color);
+    }
+
+    li a {
+      text-decoration: none;
+      color: var(--sc-primary-accent-color);
+    }
   `;
 
   static properties = {
@@ -79,6 +119,7 @@ class SCAutoCompleteList extends LitElement {
     super();
     this.items = [];
     this.priorityAuthors = new Map([['en', 'sujato']]);
+    this.searchQuery = store.getState().searchQuery || '';
   }
 
   firstUpdated() {
@@ -160,28 +201,46 @@ class SCAutoCompleteList extends LitElement {
   }
 
   render() {
-    return html`
-      <ul>
-        ${this.items.map(
-          (item, i) =>
-            html`<li
-              tabindex=${i === this.selectedIndex ? '0' : '-1'}
-              @click=${() => this.selectItem(item.uid)}
-              @keydown=${e => this.handleKeyDown(e, i, item.uid)}
-              @mouseover=${e => this.handleMouseOver(e, i)}
-              class=${i === 0 ? 'selected' : ''}
-            >
-              ${item.uid} — ${item.title}
-            </li>`
-        )}
-      </ul>
-    `;
+    return html`${this.#suggestionsTemplate()}`;
   }
 
-  selectItem(item) {
+  openSearchTip() {
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: '/search-filter' });
+  }
+
+  gotoSearch(event, uid, searchQuery) {
+    if (event.type === 'click' || event.key === 'Enter') {
+      this.style.display = 'none';
+      const link = `/search?query=in:${uid} ${searchQuery}`;
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
+    }
+  }
+
+  #menuHasChildren() {
+    return (
+      this.currentMenuData?.[0]?.children?.some(child => child.node_type === 'branch') || false
+    );
+  }
+
+  async #fetchMenuData(uid) {
+    try {
+      return await (await fetch(this.#computeMenuApiUrl(uid))).json();
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
+  }
+
+  #computeMenuApiUrl(uid) {
+    return `${API_ROOT}/menu/${uid}?language=${store.getState().siteLanguage || 'en'}`;
+  }
+
+  async selectItem(item) {
     const siteLang = store.getState().siteLanguage;
+    this.currentMenuData = await this.#fetchMenuData(item);
+
     let link = `/${item}`;
-    if (this.priorityAuthors.get(siteLang)) {
+    if (!this.#menuHasChildren() && this.priorityAuthors.get(siteLang)) {
       link = `/${item}/${siteLang}/${this.priorityAuthors.get(siteLang)}`;
     }
     dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
@@ -221,6 +280,65 @@ class SCAutoCompleteList extends LitElement {
     event.target.classList.toggle('selected');
     event.target.tabIndex = 0;
     event.target.focus();
+  }
+
+  #suggestionsTemplate() {
+    const searchQuery = document
+      .querySelector('sc-navigation-linden-leaves')
+      .shadowRoot.querySelector('sc-action-items-universal')
+      .shadowRoot.querySelector('#search_input').value;
+
+    const tipitakas = [
+      { uid: 'ebt', title: 'Early Buddhist texts' },
+      { uid: 'dn', title: 'Dīgha Nikāya' },
+      { uid: 'mn', title: 'Majjhima Nikāya' },
+      { uid: 'sn', title: 'Saṁyutta Nikāya' },
+      { uid: 'an', title: 'Aṅguttara Nikāya' },
+    ];
+
+    return html`
+      <div class="search-suggestions">
+        <div class="ss-list">
+          <ul id="ss-items">
+            ${searchQuery &&
+            tipitakas.map(
+              (item, i) => html`
+                <li
+                  class=${i === tipitakas.length - 1 ? 'ss-item-bottom' : ''}
+                  @click=${(e) => this.gotoSearch(e, item.uid, searchQuery)}
+                  @keydown=${(e) => this.gotoSearch(e, item.uid, searchQuery)}
+                >
+                  <span class="suggestion-item">
+                    <span>${icon.search_gray}</span>
+                    <span>in:${item.uid} ${searchQuery}</span>
+                  </span>
+                  <span>Search in ${item.title}</span>
+                </li>
+              `
+            )}
+            ${this.items.map(
+              (item, i) =>
+                html`<li
+                  tabindex=${i === this.selectedIndex ? '0' : '-1'}
+                  @click=${() => this.selectItem(item.uid)}
+                  @keydown=${e => this.handleKeyDown(e, i, item.uid)}
+                  @mouseover=${e => this.handleMouseOver(e, i)}
+                  class=${i === 0 ? 'selected' : ''}
+                >
+                  <span class="suggestion-item-description">
+                    <span class="ss-item-uid"><span>${icon.leaves}</span>${item.uid}</span>
+                    <span class="ss-item-title">${item.title}</span>
+                  </span>
+                </li>`
+            )}
+
+            <li @click=${() => this.openSearchTip()} class="ss-footer">
+              <span>${icon.tip}</span><span>Search syntax tips</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    `;
   }
 }
 

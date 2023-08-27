@@ -47,6 +47,7 @@ const staticPages = [
   'vinaya',
   'palitipitaka',
   'publicationAn',
+  'searchFilter',
 ];
 
 // prettier-ignore
@@ -60,6 +61,11 @@ const routes = {
     path: '/search',
     content: html`<sc-page-search />`,
     loader: () => import('./sc-page-search.js'),
+  },
+  'searchFilter': {
+    path: '/search-filter',
+    content: html`<sc-static-search-filter />`,
+    loader: () => import('./static/sc-static-search-filter.js')
   },
   'define': {
     path: '/define/:word',
@@ -653,6 +659,9 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       let pageName = this.currentRoute.name;
       if (pageName === 'palitipitaka') {
         pageName = 'Three Baskets of the Pāḷi Canon';
+      }
+      if (pageName === 'searchFilter') {
+        pageName = 'Search Filter';
       }
       navArray.length = 1;
       if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {

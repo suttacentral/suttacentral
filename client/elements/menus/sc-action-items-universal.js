@@ -192,6 +192,10 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
   }
 
+  #hideAutoCompleteList() {
+    this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
+  }
+
   // Closes the searchbox and resets original values.
   _closeSearch() {
     const searchInputElement = this.shadowRoot.getElementById('search_input');
@@ -214,18 +218,24 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   keypressHandler({ key }) {
     if (key === 'Enter') {
       this.#hideTopSheets();
+      this.#hideAutoCompleteList();
       this._startSearch();
       this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
     }
   }
 
-  async keyupHandler({ key }) {
+  async keyupHandler(e) {
+    if (e.key === 'Enter') {
+      return;
+    }
+
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
       const searchResult = await search(suttaDB, {
         term: searchQuery,
         properties: '*',
-        limit: 20,
+        tolerance: 1,
+        limit: 7,
       });
 
       const { hits } = searchResult;
@@ -292,7 +302,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         spellcheck="true"
         placeholder=${this.localize('search:search')}
         @keypress=${this.keypressHandler}
-        @keyup=${this.keyupHandler}
+        @keyup=${e => this.keyupHandler(e)}
         aria-label="Search through site content"
         autocomplete="on"
       />
