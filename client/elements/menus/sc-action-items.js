@@ -58,7 +58,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   static styles = css`
     .white-icon {
-      color: var(--sc-tertiary-text-color);
+      color: var(--sc-inverted-text-color);
     }
 
     #tools_menu {
@@ -166,7 +166,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
 
     .icon {
-      fill: var(--sc-tertiary-text-color);
+      fill: var(--sc-inverted-text-color);
     }
   `;
 

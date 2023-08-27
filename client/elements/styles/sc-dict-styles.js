@@ -96,9 +96,9 @@ export const dictStyles = css`
 
     padding: var(--sc-size-xs) var(--sc-size-sm);
 
-    color: var(--sc-tertiary-text-color);
+    color: var(--sc-inverted-text-color);
     border-radius: var(--sc-size-xxs);
-    background-color: var(--sc-tertiary-text-color);
+    background-color: var(--sc-inverted-text-color);
   }
 
   dd .inline-li {

@@ -75,12 +75,12 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
 
     .icon {
-      fill: var(--sc-tertiary-text-color);
+      fill: var(--sc-inverted-text-color);
     }
 
     #more-menu {
       z-index: 102;
-      --mdc-menu-min-width: 275px;
+      --mdc-menu-min-width: 290px;
       --mdc-menu-max-width: 290px;
     }
 

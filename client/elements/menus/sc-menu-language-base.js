@@ -121,6 +121,7 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
 
   render() {
     return html`
+    <div class='language-chooser-header-wrapper'>
       <div class="menu-item-wrapper text-only">
         <md-standard-icon-button
           title="Return to main menu"
@@ -139,6 +140,7 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
       </div>
 
       <li divider role="separator"></li>
+      </div>
       <mwc-list>
         ${this.languageListResponse.map(language => this.languageTemplate(language))}
       </mwc-list>

@@ -6,32 +6,32 @@
 
   "--sc-primary-accent-color": "#009966",
   "--sc-primary-accent-color-light": "#00c080",
+  "--sc-primary-accent-color-lighter": "#00f3a2",
 
   "--sc-secondary-accent-color": "#9e5e6f",
 
   "--sc-primary-background-color": "#fff8f3",
-  "--sc-on-primary-primary-text-color": "#201b17",
-  "--sc-on-primary-secondary-text-color": "#7e7570",
+  "--sc-on-primary-primary-text-color": "#1f1b16",
+  "--sc-on-primary-secondary-text-color": "#7c766f",
 
   "--sc-secondary-background-color": "#fffbff",
-  "--sc-on-secondary-primary-text-color": "#000000",
-  "--sc-on-secondary-secondary-text-color": "#7e4300",
+  "--sc-on-secondary-primary-text-color": "#211b10",
+  "--sc-on-secondary-secondary-text-color": "#807567",
 
   "--sc-tertiary-background-color": "#ffeed9",
   "--sc-on-tertiary-primary-text-color": "#000000",
-  "--sc-on-tertiary-secondary-text-color": "#5c5144",
+  "--sc-on-tertiary-secondary-text-color": "#675d4f",
 
 "--sc-dark-fixed-background-color": "#4c4640",
 
-  "--sc-tertiary-text-color": "#ffffff",
+  "--sc-inverted-text-color": "#ffffff",
 
-  "--sc-icon-color": "#827568",
-  "--sc-icon-color-opaque": "rgba(159, 158, 157, .3)",
+  "--sc-icon-color": "#969088",
 
-  "--sc-border-color": "#baa89c",
-  "--sc-textual-info-background-color": "rgb(227,226,225)",
-  "--sc-toast-error-color": "#f44336",
-  "--sc-toast-success-color": "#43a047",
-  "--sc-pie-chart-bg-color": "#e1f7d0",
-  "--sc-pie-chart-fill-color": "#c1eda1"
+  "--sc-border-color": "#cdc5bd",
+  "--sc-dark-fixed-background-color": "#4b4640",
+  "--sc-toast-error-color": "#ba1a1a",
+  "--sc-toast-success-color": "var(--sc-primary-accent-color-light)",
+  "--sc-pie-chart-bg-color": "var(--sc-primary-accent-color-lighter)",
+  "--sc-pie-chart-fill-color": "var(--sc-primary-accent-color-light)"
 }

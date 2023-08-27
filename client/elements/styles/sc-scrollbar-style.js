@@ -59,7 +59,7 @@ export const scrollbarStyle = css`
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: var(--sc-tertiary-text-color);
+    background-color: var(--sc-inverted-text-color);
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:active {

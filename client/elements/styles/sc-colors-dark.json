@@ -1,7 +1,7 @@
 {
   "--sc-on-primary-primary-text-color": "#ffffff",
   "--sc-on-primary-secondary-text-color": "#E2E2E2",
-  "--sc-tertiary-text-color": "#212121",
+  "--sc-inverted-text-color": "#212121",
   "--sc-icon-color": "#9a9a9a",
   "--sc-icon-color-opaque": "rgba(158, 158, 158, .3)",
   "--sc-primary-color": "#ffcb61",
@@ -19,7 +19,7 @@
   "--sc-secondary-background-color": "#515151",
   "--sc-tertiary-background-color": "rgb(113, 113, 113)",
   "--sc-border-color": "rgba(255, 255, 255, 0.12)",
-  "--sc-textual-info-background-color": "#515151",
+  "--sc-dark-fixed-background-color": "#515151",
   "--sc-toast-error-color": "#f44336",
   "--sc-toast-success-color": "#43a047",
   "--sc-pie-chart-bg-color": "#e1f7d0",

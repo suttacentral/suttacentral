@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const languageBaseMenuCss = css`
   :host {
-    overflow-y: scroll;
     --mdc-menu-min-width: 500px;
     --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
     --mdc-list-side-padding: 16px;
@@ -19,6 +18,7 @@ export const languageBaseMenuCss = css`
 
   .mdc-list-item__text {
     margin-left: 1.5em;
+    overflow-y: scroll;
   }
 
   .language-name::before {

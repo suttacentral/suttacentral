@@ -68,7 +68,7 @@ export const SCSiteLayoutStyles = css`
     z-index: 100;
     top: 0;
 
-    color: var(--sc-tertiary-text-color);
+    color: var(--sc-inverted-text-color);
     background-color: var(--sc-primary-color);
     box-shadow: none;
 }
