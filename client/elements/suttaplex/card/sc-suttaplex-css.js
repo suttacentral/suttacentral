@@ -296,7 +296,7 @@ export const suttaplexTxCss = css`
   .tx,
   .tx:hover,
   .tx:active {
-    transition: background-color 0.2s ease;
+    transition: var(--sc-link-transition);
   }
 
   .tx:hover {

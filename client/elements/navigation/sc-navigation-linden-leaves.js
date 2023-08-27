@@ -9,13 +9,15 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       display: block;
-      height: 48px;
       background-color: var(--sc-dark-fixed-background-color);
       position: relative;
       z-index: 200;
     }
 
     nav {
+
+       height: 48px;
+
       display: flex;
 
       overflow: hidden;
@@ -64,6 +66,8 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       white-space: nowrap;
     }
 
+
+
     li a {
       position: relative;
 
@@ -81,7 +85,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
       align-items: center;
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     li a:hover {
@@ -90,13 +94,11 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       opacity: 1;
       border-bottom: 4px solid var(--sc-primary-color-light);
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     li a:active {
       background-color: var(--sc-primary-color-light-transparent);
-
-      transition: background-color 200ms ease;
     }
 
     li:last-child {
@@ -121,8 +123,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     }
 
     li:first-of-type {
-      margin: 0px;
-
       padding-left: 14px;
 
 

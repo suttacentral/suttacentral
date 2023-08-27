@@ -80,7 +80,7 @@ export class SCBottomSheet extends LitElement {
       text-decoration-thickness: 0.15em;
       text-underline-offset: 0.15em;
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     details a:hover {
@@ -225,7 +225,7 @@ export class SCBottomSheet extends LitElement {
       text-decoration-thickness: 0.15em;
       text-underline-offset: 0.15em;
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     .entry a:hover {
@@ -327,19 +327,19 @@ export class SCBottomSheet extends LitElement {
 
       text-align: center;
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     footer div:hover {
       background-color: var(--sc-tertiary-background-color);
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     footer div:active {
       background-color: var(--sc-border-color);
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     #next {

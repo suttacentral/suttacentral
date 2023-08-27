@@ -21,6 +21,45 @@ export const typographyCommonStyles = css`
     margin: 0 1em;
   }
 
+  /* links */
+
+    p a,
+  li a,
+  dl a {
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.2em;
+
+    transition: var(--sc-link-transition);
+
+    border-radius: 4px;
+  }
+
+  p a:hover,
+  li a:hover,
+  dl a:hover {
+
+    text-decoration-color: var(--sc-primary-color);
+        text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.2em;
+    color: var(--sc-on-primary-primary-text-color);
+
+    background-color: var(--sc-primary-color-light-transparent);
+
+    
+  }
+
+  p a:visited,
+  li a:visited,
+  dl a:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+
   /* text block elements */
 
   ul,
@@ -820,7 +859,7 @@ section[role='doc-endnotes']::before
   .highlight [data-doxy]::before {
     margin: 0 0.5rem 0 0;
     font-weight: 600;
-    font-family: sans-serif;
+    font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-xs);
   }
 
@@ -835,7 +874,7 @@ section[role='doc-endnotes']::before
   .highlight [data-direction]::before {
     margin: 0 0.5rem 0 0;
     font-weight: 600;
-    font-family: sans-serif;
+    font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-xs);
   }
 
@@ -847,5 +886,41 @@ section[role='doc-endnotes']::before
   .highlight [data-direction='reverse']::before {
     content: '👈🏼';
     color: var(--sc-icon-color);
+  }
+
+.link-button
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 550;
+    line-height: 1;
+
+    display: inline-flex;
+
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 40px;
+    padding: 0 24px;
+
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    color: var(--sc-primary-accent-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 24px;
+    background-color: inherit;
+
+    align-items: center;
+    justify-content: center;
+}
+
+  .link-button:hover {
+    background-color: var(--sc-primary-color-light-transparent);
+    transition: var(--sc-link-transition);
+  }
+
+  .link-button:active {
+    background-color: var(--sc-primary-color-light);
+    transition: var(--sc-link-transition);
   }
 `;

@@ -38,7 +38,7 @@ export const SCMenuStaticPagesNavStyles = css`
 
     box-sizing: border-box;
 
-    margin: 0 8px;
+    margin: 0 4px;
 
     padding: 8px 0px;
 
@@ -51,13 +51,15 @@ export const SCMenuStaticPagesNavStyles = css`
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
-    scrollbar-gutter: stable both-edges;
+    scrollbar-gutter: stable;
 
 
   }
 
   ul {
     display: flex;
+
+    gap: 8px;
 
     padding: 0;
 
@@ -87,7 +89,7 @@ export const SCMenuStaticPagesNavStyles = css`
 
     box-sizing: border-box;
 
-    padding: 4px 16px 4px;
+    padding: 4px 12px;
 
 
 
@@ -101,7 +103,7 @@ export const SCMenuStaticPagesNavStyles = css`
 
     align-items: center;
 
-    transition: all 200ms ease;
+    transition: var(--sc-link-transition);
 
     border-radius: 24px;
 
@@ -115,7 +117,7 @@ export const SCMenuStaticPagesNavStyles = css`
 
     opacity: 1;
 
-    transition: all 200ms ease;
+    transition: var(--sc-link-transition);
 
     background-color: var(--sc-primary-color-light-transparent);
 
@@ -124,7 +126,7 @@ export const SCMenuStaticPagesNavStyles = css`
   li a:active {
     background-color: var(--sc-primary-color-light-transparent);
 
-    transition: background-color 200ms ease;
+    transition: var(--sc-link-transition);
   }
 
   li a:hover .external {

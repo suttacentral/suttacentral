@@ -13,27 +13,7 @@ export const typographyStaticStyles = css`
   .byline {
     font-style: italic;
   }
-  .link-button {
-    display: inline-flex;
 
-    box-sizing: border-box;
-    min-width: 64px;
-    height: 36px;
-    padding: 0 15px;
-
-    letter-spacing: var(--sc-caps-letter-spacing);
-
-    color: var(--sc-primary-accent-color);
-    border: 2px solid var(--sc-primary-accent-color);
-    background-color: inherit;
-
-    align-items: center;
-    justify-content: center;
-    font-variant-caps: all-small-caps;
-  }
-  .link-button:hover {
-    background-color: var(--sc-primary-accent-color-light-transparent);
-  }
   /* images */
   img {
     display: block;
@@ -83,7 +63,7 @@ export const typographyStaticStyles = css`
   }
   .entry-list a:hover {
     background-color: var(--sc-primary-color-light-transparent);
-    transition: background-color 200ms ease;
+    transition: var(--sc-link-transition);
   }
   .entry-list a:active {
     background-color: var(--sc-primary-color-light);

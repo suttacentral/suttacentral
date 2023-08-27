@@ -32,71 +32,115 @@ export class SCStaticMap extends SCStaticPage {
     unsafeCSS(typographyCommonStyles),
     unsafeCSS(typographyStaticStyles),
     css`
-      article {
-        max-width: 100%;
-      }
+      article
+{
+    max-width: 100%;
+}
 
-      .columns {
-        columns: 3 480px;
-        margin-top: 2rem;
-      }
+.columns
+{
+    margin-top: 2rem;
 
-      .features-section {
-        break-inside: avoid;
-      }
+    columns: 3 480px;
+}
 
-      ul {
-        padding-left: 0;
-      }
+.features-section
+{
+    break-inside: avoid;
+}
 
-      li {
-        margin: 0.5em 0;
-        padding: 0;
-        list-style: none;
-      }
+ul
+{
+    padding-left: 0;
+}
 
-      a {
-        font-family: var(--sc-sans-font);
+li
+{
+    margin: .5em 0;
+    padding: 0;
 
-        display: flex;
-        max-width: max-content;
+    list-style: none;
+}
+li a
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 550;
+    line-height: 1;
 
-        padding: 0.2em 1em 0.2em 1em;
+    display: inline-flex;
 
-        text-decoration: none;
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 40px;
+    padding: 0 24px;
 
-        border: 1px solid var(--sc-border-color);
-        border-radius: 1.5em;
-      }
+    transition: var(--sc-link-transition);
+    text-decoration: none;
 
-      a svg {
-        width: 1.5em;
-        display: inline-block;
-        vertical-align: middle;
-        margin-top: -0.2em;
-        margin-left: -0.6em;
-        margin-right: 0.2em;
-      }
+    color: var(--sc-on-tertiary-primary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 24px;
+    background-color: inherit;
 
-      h3 {
-        margin-top: 0;
-      }
+    align-items: center;
+    justify-content: center;
+}
 
-      .features-section {
-        margin-bottom: 2rem;
-      }
+li a:hover
+{
+    transition: var(--sc-link-transition);
 
-      img {
-        margin-bottom: 8px;
-      }
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-      figcaption {
-        font-family: var(--sc-sans-font);
-       font-size: var(--sc-font-size-s);
-       color: var(--sc-on-primary-secondary-text-color);
+li a:active
+{
+    transition: var(--sc-link-transition);
 
-       text-align: right;
-      }
+    background-color: var(--sc-primary-color-light);
+}
+
+a svg
+{
+    display: inline-block;
+
+    width: 1.5em;
+    margin-top: -.2em;
+    margin-right: .2em;
+    margin-left: -.6em;
+
+    vertical-align: middle;
+}
+
+h3
+{
+    margin-top: 0;
+}
+
+.features-section
+{
+    margin-bottom: 2rem;
+}
+
+img
+{
+    margin-bottom: 8px;
+
+    border-radius: 24px;
+    box-shadow: var(--sc-shadow-elevation-2dp);
+}
+
+figcaption
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+
+    text-align: right;
+
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
     `,
   ];
 

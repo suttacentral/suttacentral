@@ -37,7 +37,7 @@ export const SCPublicationStyles = css`
     margin: 1em 0;
     padding: 1em 2em;
 
-    transition: all 200ms ease;
+    transition: var(--sc-link-transition);
     text-decoration: none;
 
     background-color: var(--sc-tertiary-background-color);

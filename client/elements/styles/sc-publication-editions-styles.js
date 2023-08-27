@@ -87,7 +87,7 @@ h1 {
     text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 0.15em;
     text-underline-offset: 0.15em;
-    transition: all 200ms ease;
+    transition: var(--sc-link-transition);
 }
 
 .publication_blurb {

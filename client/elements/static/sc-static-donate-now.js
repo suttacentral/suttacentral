@@ -34,13 +34,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
   static styles = [
     layoutSimpleStyles,
     typographyCommonStyles,
-    /* allow mwc-select to drop below container */
     css`
-      article {
-        content-visibility: visible;
-        height: 100vh;
-      }
-
       #error-message {
         text-align: center;
       }

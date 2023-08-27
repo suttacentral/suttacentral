@@ -140,7 +140,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       border-bottom: 4px solid rgba(0, 0, 0, 0);
       border-radius: 4px;
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     .related-terms a:hover {
@@ -151,7 +151,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
 
       color: var(--sc-primary-color);
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     .related-terms i {

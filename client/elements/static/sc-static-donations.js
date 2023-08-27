@@ -25,55 +25,38 @@ export class SCStaticDonations extends SCStaticPage {
         ${typographyStaticStyles}
       </style>
       <style>
-        .donate-link {
-          display: table;
-          margin: 2em auto;
-        }
+  .donate-button-container
+{
+    display: flex;
 
-        a.donate-link,
-        a.donate-link:hover {
-          text-decoration: none;
-        }
+    margin: 2em auto;
 
-        .link-button {
-          background-color: var(--sc-primary-accent-color);
-          border-radius: 4px;
-          border: none;
-          font-weight: 600;
-          font-family: var(--sc-sans-font);
+    justify-content: center;
+}
+.link-button
+{
+    color: var(--sc-primary-accent-color);
+    border: 2px solid var(--sc-primary-accent-color-light);
+}
 
-          text-decoration: none;
+.account-data td
+{
+    padding-right: var(--sc-size-md);
+}
 
-          color: white;
-          box-shadow: var(--sc-shadow-elevation-2dp);
-          transition: all 0.2s ease;
-        }
-
-        .link-button:hover {
-          background-color: var(--sc-primary-accent-color);
-          opacity: 0.9;
-          box-shadow: var(--sc-shadow-elevation-4dp);
-          transition: all 0.2s ease;
-        }
-
-        .link-button:active {
-          opacity: 1;
-          background-color: var(--sc-primary-accent-color-light);
-          transition: all 0.2s ease;
-        }
-
-        .account-data td {
-          padding-right: var(--sc-size-md);
-        }
       </style>
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('donations:1'))}</h1>
           <p>${unsafeHTML(this.localize('donations:2'))}</p>
 
-          <md-filled-button class="donate-link" @click=${this._donateNow}>
+          <div class='donate-button-container'>
+
+          <a class='link-button' href='/donate-now'>
             ${unsafeHTML(this.localize('donations:3'))}
-          </md-filled-button>
+          </a>
+
+          </div>
 
           <h2>${unsafeHTML(this.localize('donations:4'))}</h2>
           <ul>

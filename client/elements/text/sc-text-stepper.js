@@ -45,7 +45,7 @@ export class SCTextStepper extends LitElement {
 
         .button:hover {
       background-color: var(--sc-primary-color-light-transparent);
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
 
@@ -94,7 +94,7 @@ export class SCTextStepper extends LitElement {
 
       box-sizing: border-box;
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
 
     }
 

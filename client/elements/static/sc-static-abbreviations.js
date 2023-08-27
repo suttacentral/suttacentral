@@ -29,7 +29,9 @@ export class SCStaticAbbreviations extends SCStaticPage {
   render() {
     return html`
       <style>
-        ${layoutSimpleStyles} ${typographyCommonStyles} ${typographyStaticStyles}
+        ${layoutSimpleStyles} 
+        ${typographyCommonStyles} 
+        ${typographyStaticStyles}
       </style>
       <main>
         <article>

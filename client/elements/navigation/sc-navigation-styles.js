@@ -220,16 +220,18 @@ export const navigationNormalModeStyles = html`
       align-self: flex-start;
     }
 
-    .header-link .title,
+    .header-link,
     .essay-link,
     .shortcut-link {
-      text-decoration-color: transparent;
+    transition: var(--sc-link-transition);
+
+      background-color: inherit;
     }
 
     .header-link:hover,
     .essay-link:hover,
     .shortcut-link:hover {
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
 
       background-color: var(--sc-primary-color-light-transparent);
     }
@@ -237,7 +239,7 @@ export const navigationNormalModeStyles = html`
     .header-link:active,
     .essay-link:active,
     .shortcut-link:active {
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
 
       background-color: var(--sc-primary-color-light);
     }
@@ -400,10 +402,13 @@ export const navigationPublicationInfoStyles = html`
       color: inherit;
       border: 1px solid var(--sc-border-color);
       border-radius: 8px;
+
+      transition: var(--sc-link-transition);
     }
 
     a.editions-nav-notice-link:hover {
       background-color: var(--sc-primary-color-light-transparent);
+      transition: var(--sc-link-transition);
     }
 
     .editions-nav-notice img {
