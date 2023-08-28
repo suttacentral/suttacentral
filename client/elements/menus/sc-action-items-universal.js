@@ -144,7 +144,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     this.#initInstantSearchData();
 
-    const searchInput = this.shadowRoot?.getElementById('search_input');
     document.addEventListener('keydown', event => {
       const currentSelectedItem = document
         .querySelector('sc-navigation-linden-leaves')
@@ -157,15 +156,26 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       }
 
       if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter') {
-        searchInput?.focus();
+        searchInputElement?.focus();
       }
+    });
+
+    const autoCompleteList = this.shadowRoot.querySelector('sc-auto-complete-list');
+    searchInputElement.addEventListener('focus', (event) => {
+      autoCompleteList.style.display = 'block';
+      event.stopPropagation();
+    });
+
+    searchInputElement.addEventListener('click', (event) => {
+      autoCompleteList.style.display = 'block';
+      event.stopPropagation();
     });
   }
 
   updated(changedProps) {
     super.updated(changedProps);
     if (changedProps.has('possible_jump_to_list')) {
-      this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'inherit';
+      this.#showAutoCompleteList();
     }
   }
 
@@ -189,11 +199,16 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       this.shadowRoot.getElementById('search_glass').style.backgroundColor = 'rgb(67, 160, 71)';
       searchInputElement.focus();
       searchInputElement.value = '';
+      this.#showAutoCompleteList();
     }
   }
 
   #hideAutoCompleteList() {
     this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
+  }
+
+  #showAutoCompleteList() {
+    this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'block';
   }
 
   // Closes the searchbox and resets original values.
@@ -207,6 +222,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
       this.shadowRoot.getElementById('close_button').style.zIndex = '-1';
       this.shadowRoot.getElementById('search_glass').style.backgroundColor = 'inherit';
+      this.#hideAutoCompleteList();
     }
   }
 
@@ -220,7 +236,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       this.#hideTopSheets();
       this.#hideAutoCompleteList();
       this._startSearch();
-      this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
     }
   }
 
