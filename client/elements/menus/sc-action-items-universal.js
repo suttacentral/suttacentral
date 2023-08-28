@@ -1,17 +1,24 @@
 import { css, html, LitElement } from 'lit';
+import { create, search, insert, insertMultiple } from '@orama/orama';
 
 import './sc-menu-more';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { store } from '../../redux-store';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
 import '@material/web/iconbutton/standard-icon-button';
 
-// import '@material/web/menu/menu'
-
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+
+const suttaDB = await create({
+  schema: {
+    uid: 'string',
+    title: 'string',
+  },
+});
 
 export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   static styles = css`
@@ -62,7 +69,10 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     #search_glass {
       z-index: 101;
+<<<<<<< HEAD
       background-color: var(--sc-dark-fixed-background-color);
+=======
+>>>>>>> master
       padding: 0 4px;
     }
 
@@ -96,6 +106,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     searchKeyword: { type: String },
     moreMenu: { type: Object },
     possible_jump_to_list: { type: Array },
+    instant_search_data: { type: Array },
+    siteLanguage: { type: String },
   };
 
   constructor() {
@@ -103,12 +115,17 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
     this.search_input = this.shadowRoot?.getElementById('search_input');
     this.possible_jump_to_list = [];
+    this.siteLanguage = store.getState().siteLanguage;
   }
 
   stateChanged(state) {
     super.stateChanged(state);
     this.searchKeyword = state.searchQuery || '';
     this.mode = state.toolbarOptions.mode;
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this.#initInstantSearchData();
+    }
   }
 
   firstUpdated() {
@@ -120,15 +137,54 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.moreMenu = this.shadowRoot.querySelector('#more-menu');
     this.moreMenu.anchor = this.shadowRoot.querySelector('#more-menu-button');
 
-    this.moreMenu.addEventListener('item-selected', () => {
+    this.moreMenu?.addEventListener('item-selected', () => {
       this.moreMenu.close();
     });
 
-    this.moreMenu.anchor.addEventListener('click', () => {
+    this.moreMenu?.anchor.addEventListener('click', () => {
       this.#hideTopSheets();
+    });
+
+    this.#initInstantSearchData();
+
+    document.addEventListener('keydown', event => {
+      const currentSelectedItem = document
+        .querySelector('sc-navigation-linden-leaves')
+        .shadowRoot.querySelector('sc-action-items-universal')
+        .shadowRoot.querySelector('sc-auto-complete-list')
+        .shadowRoot.querySelector('.selected');
+
+      if (!currentSelectedItem) {
+        return;
+      }
+
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter') {
+        searchInputElement?.focus();
+      }
+    });
+
+    const autoCompleteList = this.shadowRoot.querySelector('sc-auto-complete-list');
+    searchInputElement.addEventListener('focus', (event) => {
+      autoCompleteList.style.display = 'block';
+      event.stopPropagation();
+    });
+
+    searchInputElement.addEventListener('click', (event) => {
+      autoCompleteList.style.display = 'block';
+      event.stopPropagation();
     });
   }
 
+<<<<<<< HEAD
+=======
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('possible_jump_to_list')) {
+      this.#showAutoCompleteList();
+    }
+  }
+
+>>>>>>> master
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
@@ -149,7 +205,16 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       this.shadowRoot.getElementById('search_glass').style.backgroundColor = 'rgb(67, 160, 71)';
       searchInputElement.focus();
       searchInputElement.value = '';
+      this.#showAutoCompleteList();
     }
+  }
+
+  #hideAutoCompleteList() {
+    this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
+  }
+
+  #showAutoCompleteList() {
+    this.shadowRoot.querySelector('sc-auto-complete-list').style.display = 'block';
   }
 
   // Closes the searchbox and resets original values.
@@ -163,6 +228,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
       this.shadowRoot.getElementById('close_button').style.zIndex = '-1';
       this.shadowRoot.getElementById('search_glass').style.backgroundColor = 'inherit';
+      this.#hideAutoCompleteList();
     }
   }
 
@@ -174,14 +240,19 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   keypressHandler({ key }) {
     if (key === 'Enter') {
       this.#hideTopSheets();
+      this.#hideAutoCompleteList();
       this._startSearch();
     }
   }
 
-  keyupHandler({ key }) {
-    return;
+  async keyupHandler(e) {
+    if (e.key === 'Enter') {
+      return;
+    }
+
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
+<<<<<<< HEAD
       this.#fetchPossibleNames(searchQuery);
     }
   }
@@ -194,25 +265,58 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     const option = Array.from(datalist.options).find(o => o.value === value);
     if (option) {
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${value}` });
+=======
+      const searchResult = await search(suttaDB, {
+        term: searchQuery,
+        properties: '*',
+        tolerance: 1,
+        limit: 7,
+      });
+
+      const { hits } = searchResult;
+      const copiedHits = JSON.parse(JSON.stringify(hits));
+
+      this.possible_jump_to_list = [];
+      for (const hit of copiedHits) {
+        this.possible_jump_to_list.push(hit.document);
+      }
+      this.#mergedResultByUid();
+    } else {
+      this.possible_jump_to_list = [];
+>>>>>>> master
     }
   }
 
-  async #fetchPossibleNames(searchQuery) {
+  #mergedResultByUid() {
+    const result = Object.values(
+      this.possible_jump_to_list.reduce((acc, curr) => {
+        if (acc[curr.uid]) {
+          if (acc[curr.uid].isRoot !== curr.isRoot) {
+            acc[curr.uid].title += ` – ${curr.title}`;
+          }
+        } else {
+          acc[curr.uid] = curr;
+        }
+        return acc;
+      }, {})
+    );
+
+    this.possible_jump_to_list = result;
+  }
+
+  async #initInstantSearchData() {
     try {
-      this.possible_jump_to_list = await (await fetch(`${API_ROOT}/possible_names/${searchQuery}`)).json();
+      const { siteLanguage } = store.getState();
+      this.instant_search_data = await (
+        await fetch(`${API_ROOT}/possible_names/${siteLanguage}`)
+      ).json();
+      if (this.instant_search_data?.length < 1) {
+        return;
+      }
+      await insertMultiple(suttaDB, this.instant_search_data);
     } catch (error) {
       console.error(error);
     }
-  }
-
-  #jumpToListTemplate() {
-    return html`
-      <datalist id="possible_jump_to_list">
-        ${this.possible_jump_to_list?.map(
-          item => html`<option value=${item.uid}>Jump To ${item.title}</option>`
-        )}
-      </datalist>
-    `;
   }
 
   render() {
@@ -234,8 +338,12 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         spellcheck="true"
         placeholder=${this.localize('search:search')}
         @keypress=${this.keypressHandler}
+<<<<<<< HEAD
         @keyup=${this.keyupHandler}
         @change=${this.changeHandler}
+=======
+        @keyup=${e => this.keyupHandler(e)}
+>>>>>>> master
         aria-label="Search through site content"
         list="possible_jump_to_list"
         autocomplete="on"

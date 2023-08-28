@@ -234,7 +234,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       microSentryClient.report(e);
     });
 
-    document.addEventListener('click', () => {
+    document.querySelector('#page_selector').addEventListener('click', () => {
       document
         .querySelector('sc-navigation-linden-leaves')
         .shadowRoot.querySelector('sc-action-items-universal')

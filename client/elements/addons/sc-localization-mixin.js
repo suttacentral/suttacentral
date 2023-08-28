@@ -5,7 +5,7 @@ const FALLBACK_LANGUAGE = 'en';
 
 // I don't want to make call for /api/languages
 // because it would block the rendering
-const SUPPORTED_TRANSLATIONS = ['en', 'de', 'pl', 'pt', 'zh', 'fr', 'vi'];
+const SUPPORTED_TRANSLATIONS = ['en', 'de', 'pl', 'pt', 'zh', 'fr', 'vi', 'es', 'it', 'si', 'ru'];
 const USE_PRODUCTION_LOCALIZATION = true;
 
 const localizationCache = {};
