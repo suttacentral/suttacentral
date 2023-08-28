@@ -9,17 +9,25 @@ export class SCTopSheetToC extends SCTopSheetCommon {
     super.styles,
     typographyCommonStyles,
     css`
-      .contents {
-        margin: 1em 0 2em;
-      }
+.contents
+{
+    margin: 1em 0 2em;
+}
 
-      h2{
-        font-size: var(--sc-font-size-l)
-      }
+figcaption
+{
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-font-size-l);
 
-      .unordered-ol {
-        list-style-type: none;
-      }`
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
+.unordered-ol
+{
+    list-style-type: none;
+}
+
+      `
   ];
 
   static properties = {
@@ -59,7 +67,8 @@ export class SCTopSheetToC extends SCTopSheetCommon {
   render() {
     return html`
       <section>
-        <h2>Table of Contents</h2>
+      <figure>
+      <figcaption>Table of Contents</figcaption>
         <nav class="contents">
           <ol class=${this.disableToCListStyle ? 'unordered-ol' : ''}>
             ${this.items
@@ -76,6 +85,7 @@ export class SCTopSheetToC extends SCTopSheetCommon {
               : ''}
           </ol>
         </nav>
+        </figure>
       </section>
     `;
   }
