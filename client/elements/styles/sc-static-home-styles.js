@@ -84,7 +84,9 @@ section + section
 {
     display: block;
 
-    padding: 1em 2em;
+    padding: 1em 1em;
+
+    margin: 0 1em;
 
     transition: var(--sc-link-transition);
 
