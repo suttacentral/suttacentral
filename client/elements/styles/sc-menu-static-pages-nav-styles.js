@@ -1,139 +1,124 @@
 import { css } from 'lit';
 
 export const SCMenuStaticPagesNavStyles = css`
-  :host {
+  :host
+{
     display: block;
-  }
+}
 
-  li a {
+li a
+{
     text-decoration: underline;
+
     color: inherit;
+
     text-decoration-color: var(--sc-primary-color);
-  }
+}
 
-  li a:hover {
+li a:hover
+{
     color: var(--sc-primary-color);
-  }
+}
 
-  li a:visited {
+li a:visited
+{
     text-decoration-color: var(--sc-primary-color-dark);
-  }
+}
 
-  #static_pages_nav_menu {
-    
+#static_pages_nav_menu
+{
+    display: flex;
 
     background-color: var(--sc-primary-color-dark);
 
-    display: flex;
     align-items: center;
+}
 
-
-
-  }
-
-  nav {
+nav
+{
     display: flex;
-
+    overflow-x: auto;
+    overflow-y: hidden;
     flex-direction: row;
 
     box-sizing: border-box;
-
-    margin: 0 4px;
-
-    padding: 8px 0px;
-
     height: 48px;
-
-    
+    margin: 0 4px;
+    padding: 8px 0;
 
     white-space: nowrap;
 
-    overflow-x: auto;
-    overflow-y: hidden;
     scrollbar-width: thin;
     scrollbar-gutter: stable;
+}
 
-
-  }
-
-  ul {
+ul
+{
     display: flex;
-
-    gap: 8px;
-
-    padding: 0;
-
-
 
     width: 100%;
     margin: 0;
-    
+    padding: 0;
+}
 
-  
-  }
-
-  li {
+li
+{
     font-size: var(--sc-font-size-md);
-    font-weight: 500;
+    font-weight: 600;
+    font-stretch: condensed;
 
     list-style-type: none;
 
     letter-spacing: var(--sc-caps-letter-spacing);
-    font-variant-caps: all-small-caps;
-  }
 
-  li a {
+    font-variant-caps: all-small-caps;
+}
+
+li a
+{
     position: relative;
 
     display: flex;
 
     box-sizing: border-box;
-
     padding: 4px 12px;
 
-
-
+    transition: var(--sc-link-transition);
     text-decoration: none;
 
+    opacity: .8;
     color: white;
-
-     opacity: .8;
-
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
+    text-shadow: 0 0 1px rgba(0, 0, 0, .1);
 
     align-items: center;
+}
 
-    transition: var(--sc-link-transition);
-
-    border-radius: 24px;
-
-
-  }
-
-  li a:hover {
+li a:hover
+{
     cursor: pointer;
+    transition: var(--sc-link-transition);
 
+    opacity: 1;
     color: white;
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-    opacity: 1;
-
+li a:active
+{
     transition: var(--sc-link-transition);
 
     background-color: var(--sc-primary-color-light-transparent);
+}
 
-  }
-
-  li a:active {
-    background-color: var(--sc-primary-color-light-transparent);
-
-    transition: var(--sc-link-transition);
-  }
-
-  li a:hover .external {
+li a:hover .external
+{
     visibility: visible;
-  }
+}
 
-  .staticPageSelected {
+.staticPageSelected
+{
     opacity: 1;
-  }
+}
+
 `;

@@ -13,6 +13,10 @@ export class SCTopSheetToC extends SCTopSheetCommon {
         margin: 1em 0 2em;
       }
 
+      h2{
+        font-size: var(--sc-font-size-l)
+      }
+
       .unordered-ol {
         list-style-type: none;
       }`
