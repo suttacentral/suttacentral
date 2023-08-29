@@ -2,13 +2,15 @@ import { css, html, LitElement } from 'lit';
 import { create, search, insert, insertMultiple } from '@orama/orama';
 
 import './sc-menu-more';
+import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-menu';
-import '@material/web/iconbutton/standard-icon-button';
+import '@material/mwc-button';
+import '@material/mwc-icon-button';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -26,7 +28,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: rgb(75, 74, 73);
       --mdc-theme-surface: var(--sc-secondary-background-color);
     }
 
@@ -36,7 +38,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       padding: 0 4px 0 4px;
       z-index: -1;
       color: white;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: rgb(75, 74, 73);
     }
 
     #search_input {
@@ -69,10 +71,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     #search_glass {
       z-index: 101;
-<<<<<<< HEAD
-      background-color: var(--sc-dark-fixed-background-color);
-=======
->>>>>>> master
       padding: 0 4px;
     }
 
@@ -84,13 +82,12 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
     }
 
-    .icon {
-      fill: var(--sc-inverted-text-color);
+    mwc-icon-button {
+      color: white;
     }
 
     #more-menu {
-      z-index: 102;
-      --mdc-menu-min-width: 290px;
+      --mdc-menu-min-width: 275px;
       --mdc-menu-max-width: 290px;
     }
 
@@ -175,8 +172,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     });
   }
 
-<<<<<<< HEAD
-=======
   updated(changedProps) {
     super.updated(changedProps);
     if (changedProps.has('possible_jump_to_list')) {
@@ -184,14 +179,13 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
   }
 
->>>>>>> master
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
   }
 
   openMoreMenu() {
-    (this.moreMenu || {}).show();
+    (this.moreMenu || {}).show?.();
   }
 
   openSearch() {
@@ -220,7 +214,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   // Closes the searchbox and resets original values.
   _closeSearch() {
     const searchInputElement = this.shadowRoot.getElementById('search_input');
-    if (searchInputElement && searchInputElement.classList.contains('opened')) {
+    if (searchInputElement?.classList.contains('opened')) {
       searchInputElement.value = '';
 
       searchInputElement.classList.remove('opened');
@@ -252,20 +246,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery.length >= 2) {
-<<<<<<< HEAD
-      this.#fetchPossibleNames(searchQuery);
-    }
-  }
-
-  changeHandler() {
-    return;
-    const datalist = this.shadowRoot.querySelector('#possible_jump_to_list');
-    const input = this.shadowRoot.querySelector('#search_input');
-    const { value } = input;
-    const option = Array.from(datalist.options).find(o => o.value === value);
-    if (option) {
-      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${value}` });
-=======
       const searchResult = await search(suttaDB, {
         term: searchQuery,
         properties: '*',
@@ -283,7 +263,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       this.#mergedResultByUid();
     } else {
       this.possible_jump_to_list = [];
->>>>>>> master
     }
   }
 
@@ -321,7 +300,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <md-standard-icon-button
+      <mwc-icon-button
         id="search_glass"
         title=${this.localize('search:searchTooltip')}
         label="search"
@@ -329,7 +308,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         aria-label="Search"
       >
         ${icon.search}
-      </md-standard-icon-button>
+      </mwc-icon-button>
       <input
         id="search_input"
         name="q"
@@ -338,18 +317,12 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         spellcheck="true"
         placeholder=${this.localize('search:search')}
         @keypress=${this.keypressHandler}
-<<<<<<< HEAD
-        @keyup=${this.keyupHandler}
-        @change=${this.changeHandler}
-=======
         @keyup=${e => this.keyupHandler(e)}
->>>>>>> master
         aria-label="Search through site content"
-        list="possible_jump_to_list"
         autocomplete="on"
       />
-      ${this.#jumpToListTemplate()}
-      <md-standard-icon-button
+      <sc-auto-complete-list .items=${this.possible_jump_to_list}></sc-auto-complete-list>
+      <mwc-icon-button
         label="close"
         id="close_button"
         title="Close search bar"
@@ -357,8 +330,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         @click=${this._closeSearch}
       >
         ${icon.close}
-      </md-standard-icon-button>
-      <md-standard-icon-button
+      </mwc-icon-button>
+      <mwc-icon-button
         label="menu"
         id="more-menu-button"
         @click=${this.openMoreMenu}
@@ -366,7 +339,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         aria-label="Menu"
       >
         ${icon.more_vert}
-      </md-standard-icon-button>
+      </mwc-icon-button>
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
         <sc-menu-more id="sc-menu-more"></sc-menu-more>
       </mwc-menu>
