@@ -2,117 +2,174 @@ import { css } from 'lit';
 
 export const typographyCommonStyles = css`
   /* includes all text styles found in one or more of static, legacy, or bilara */
-  :host {
+  :host
+{
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
     font-weight: 400;
     line-height: 1.5;
 
-    color: var(--sc-primary-text-color);
-  }
+    color: var(--sc-on-primary-primary-text-color);
+}
 
-  main {
+main
+{
     display: flex;
+
     justify-content: center;
-  }
+}
 
-  main > article,
-  div > article,
-  .range {
+main > article,
+div > article,
+.range
+{
     margin: 0 1em;
-  }
+}
 
-  /* text block elements */
+/* inline links */
 
-  ul,
-  ol,
-  dt,
-  p,
-  figure,
-  pre {
-    margin: 0.75em 0 0 0;
-  }
+p a,
+li a,
+dl a
+{
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
 
-  li::marker {
-    color: var(--sc-icon-color);
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 2px;
+    text-underline-offset: .1em;
+}
+
+p a:hover,
+li a:hover,
+dl a:hover
+{
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
+    text-underline-offset: .1em;
+}
+
+p a:active,
+li a:active,
+dl a:active
+{
+    text-decoration-color: var(--sc-primary-color);
+}
+
+p a:visited,
+li a:visited,
+dl a:visited
+{
+    text-decoration-color: var(--sc-primary-color-dark);
+}
+
+/* text block elements */
+
+ul,
+ol,
+dt,
+p,
+figure,
+pre
+{
+    margin: .75em 0 0 0;
+}
+
+li::marker
+{
     font-family: var(--sc-sans-font);
-
     font-weight: 600;
 
-    font-feature-settings: 'tnum', 'onum';
-  }
+    color: var(--sc-icon-color);
 
-  hr {
+    font-feature-settings: 'tnum', 'onum';
+}
+
+hr
+{
     width: 33%;
+    height: 0;
+    margin: 1.5em auto;
 
     border: 0;
-    height: 0;
-    border-bottom: 1px solid var(--sc-secondary-text-color);
+    border-bottom: 1px solid var(--sc-on-primary-secondary-text-color);
+}
 
-    margin: 1.5em auto;
-  }
+/* headings */
 
-  /* headings */
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
     line-height: 1.3333;
 
     margin: 1em 0 0 0;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  h1 {
-    font-size: 2em;
-    font-size: clamp(1.5em, 5vw, 2em);
+h1
+{
+    font-size: var(--sc-font-size-xxxxl);
     font-weight: 400;
-  }
+}
 
-  h2 {
-    font-size: 1.5em;
-    font-size: clamp(1.333em, 3.75vw, 1.5em);
+h2
+{
+    font-size: var(--sc-font-size-xxxl);
     font-weight: 400;
-  }
+}
 
-  h3 {
-    font-size: 1.333em;
-    font-size: clamp(1em, 3.333vw, 1.333em);
+h3
+{
+    font-size: var(--sc-font-size-xxl);
     font-weight: 400;
-  }
+}
 
-  h4 {
-    font-size: 1.25em;
-    font-size: clamp(1em, 5vw, 1.25em);
+h4
+{
+    font-size: var(--sc-font-size-xl);
     font-weight: 400;
-  }
+}
 
-  h5 {
-    font-size: 1em;
+h5
+{
+    font-size: var(--sc-font-size-l);
     font-weight: 600;
-  }
+}
 
-  h6 {
-    font-size: 1em;
+h6
+{
+    font-size: var(--sc-font-size-md);
     font-style: italic;
-  }
+}
 
-  /*sutta title */
+/*sutta title */
 
-  header {
+header
+{
     margin-bottom: 4rem;
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  header ul {
+header ul
+{
+    font-weight: 500;
+
     display: block;
+
     margin: 0;
     padding: 0;
 
@@ -121,147 +178,137 @@ export const typographyCommonStyles = css`
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: all-small-caps;
-    font-weight: 500;
-  }
+}
 
-  header h1 {
-    margin-top: 0.5rem;
+header h1
+{
+    margin-top: .5rem;
 
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: small-caps;
-  }
+}
 
-  /* table of contents */
+/* table of contents */
 
-  .contents {
+.contents
+{
     margin: 4em 0;
 
     border-left: 4px solid var(--sc-primary-color-light);
-
     border-radius: 4px;
-  }
+}
 
-  .contents ul {
+.contents ul
+{
     list-style-type: none;
-  }
+}
 
-  .contents ol {
+.contents ol
+{
     margin: 0 0 0 2rem;
     padding: 0 0 0 1rem;
-  }
+}
 
-  .contents li {
+.contents li
+{
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
 
-    margin: 0.5em 0;
-    padding: 0.25em 0 0.25em clamp(0rem, 3vw, 1rem);
-  }
+    margin: .5em 0;
+    padding: .25em 0 .25em clamp(0rem, 3vw, 1rem);
+}
 
-  .contents a {
+.contents a
+{
     text-decoration: none;
+
     color: inherit;
-  }
+}
 
-  /* tables */
+/* tables */
 
-  table {
+table
+{
     margin: 2em auto 1em;
 
     border-collapse: collapse;
-  }
+}
 
-  caption {
+caption
+{
     font-weight: 600;
 
     padding: 1em;
-  }
+}
 
-  td {
-    padding: 0.6667em;
+td
+{
+    padding: .6667em;
 
     vertical-align: text-top;
 
     border-top: var(--sc-border);
     border-bottom: var(--sc-border);
-  }
+}
 
-  td:first-child {
+td:first-child
+{
     font-weight: bold;
-  }
+}
 
-  /* lists */
+/* lists */
 
-  ol,
-  ul {
+ol,
+ul
+{
     padding-left: 1em;
-  }
+}
 
-  ol ul,
-  ul ol,
-  ul ul,
-  ol ol {
-    margin: 0.5em 0 0;
-  }
+ol ul,
+ul ol,
+ul ul,
+ol ol
+{
+    margin: .5em 0 0;
+}
 
-  li {
+li
+{
     padding: 0;
-  }
+}
 
-  dt {
+dt
+{
     font-weight: bold;
-  }
+}
 
-  dd {
+dd
+{
     margin-left: 1em;
-  }
+}
 
-  dd ol,
-  dd ul {
+dd ol,
+dd ul
+{
     padding-left: 0;
-  }
+}
 
-  /* links */
+/* links */
 
-  a {
-    color: inherit;
 
-    text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
-
-    transition: all 200ms ease;
-  }
-
-  a:hover {
-    text-decoration-color: var(--sc-primary-color);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
-
-    background-color: var(--sc-primary-color-light-transparent);
-  }
-
-  a:active {
-    background-color: var(--sc-primary-color-light);
-  }
-
-  a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
-  }
-
-  h1 a,
-  h2 a,
-  h3 a,
-  h4 a,
-  h5 a,
-  h6 a {
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a
+{
     text-decoration: none;
-  }
+}
 
-  /* static endnotes */
+/* static endnotes */
 
 @supports (font-variant-position: super)
 {
@@ -270,26 +317,21 @@ export const typographyCommonStyles = css`
         font-family: var(--sc-sans-font);
         font-weight: 600!important;
         font-style: normal!important;
-
-        padding: .1em .2em;
-
-        font-variant-position: super;
+        line-height: 1;
 
         display: inline-block;
 
         height: .55em;
-
-        line-height: 1;
+        margin-top: -.15em;
+        padding: .1em .2em;
 
         text-decoration: none;
 
+        color: var(--sc-on-primary-secondary-text-color);;
+        border: .15em solid var(--sc-primary-color-light);
         border-radius: 50%;
 
-        border: .15em solid var(--sc-primary-color-light);
-
-        margin-top: -.15em;
-
-        color: var(--sc-secondary-text-color)
+        font-variant-position: super;
     }
 }
 
@@ -298,189 +340,207 @@ export const typographyCommonStyles = css`
     a[role='doc-noteref']
     {
         font-family: var(--sc-sans-font);
-        font-size: var(--sc-skolar-font-size-xs);
+        font-size: var(--sc-font-size-xs);
         font-weight: 600!important;
         font-style: normal!important;
+        line-height: 1;
 
         padding: 0 .2em;
 
         vertical-align: super;
-
-        line-height: 1;
-
         text-decoration: none;
 
-        border-radius: 50%;
-
+        color: var(--sc-on-primary-secondary-text-color);;
         border: .15em solid var(--sc-primary-color-light);
-
-        color: var(--sc-secondary-text-color)
+        border-radius: 50%;
     }
 }
 
 a[role='doc-backlink']
 {
+    font-family: var(--sc-sans-font);
+    font-size: 0;
 
-        font-family: var(--sc-sans-font);
-        padding: 0 .2em;
+    padding: 0 .2em;
 
-        text-decoration: none;
+    text-decoration: none;
 
-        color: var(--sc-secondary-text-color);
-
-        font-size: 0em;
+    color: var(--sc-on-primary-secondary-text-color);
 }
 
 /* use this pseudoelement together with the size 0 font hack because Skolar does not have the backlink character, but it does have a bunch of arrows in the PUA, so use one of them instead */
 
-a[role='doc-backlink']::after{
-  content: '󰈀';
+a[role='doc-backlink']::after
+{
+    font-size: var(--sc-font-size-l);;
 
-  font-size: 1.2rem
+    content: '󰈀';
 }
 
 section[role='doc-endnotes']
 {
-  margin-top: 3em;
+    position: relative;;
 
-  padding-top: 1em;
-
-  position: relative
+    margin-top: 3em;
+    padding-top: 1em;
 }
 
 section[role='doc-endnotes']::before
 {
-    content: " ";
     position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 1px;
+    top: 0;
+    left: 0;
+
     width: 50%;
+    height: 1px;
+
+    content: ' ';
+
     border-top: 1px solid var(--sc-icon-color);
 }
 
 
-  /* descriptive classes used in bilara and legacy texts */
+/* descriptive classes used in bilara and legacy texts */
 
-  .evam {
+.evam
+{
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: all-small-caps;
-  }
+}
 
-  .namo {
+.namo
+{
     font-style: italic;
 
     text-align: center;
-  }
+}
 
-  .roman-numerals {
-    text-transform: uppercase;
-    letter-spacing: var(--sc-caps-letter-spacing);
+.roman-numerals
+{
     text-decoration: underline overline;
-    text-decoration-thickness: 0.05em;
-    text-underline-offset: 0.2em;
-  }
+    letter-spacing: var(--sc-caps-letter-spacing);
+    text-transform: uppercase;
 
-  .speaker {
+    text-decoration-thickness: .05em;
+    text-underline-offset: .2em;
+}
+
+.speaker
+{
     font-style: italic;
-    text-indent: 3em;
+
     display: block;
-  }
 
-  .pe {
+    text-indent: 3em;
+}
+
+.pe
+{
     font-style: italic;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .expansion-instructions {
+.expansion-instructions
+{
     font-style: italic;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .add {
-    color: var(--sc-secondary-text-color);
-  }
+.add
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  /* end of section */
+/* end of section */
 
-  .endsection,
-  .end,
-  .endsubsection {
+.endsection,
+.end,
+.endsubsection
+{
     font-style: italic;
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .endsutta {
+.endsutta
+{
     font-weight: bold;
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .endbook,
-  .endvagga,
-  .endkanda {
+.endbook,
+.endvagga,
+.endkanda
+{
     text-align: center;
     letter-spacing: var(--sc-caps-letter-spacing);
     text-transform: uppercase;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  [lang='si'] .endbook,
-  [lang='zh'] .endbook,
-  [lang='si'] .endvagga {
+[lang='si'] .endbook,
+[lang='zh'] .endbook,
+[lang='si'] .endvagga
+{
     letter-spacing: normal;
     text-transform: none;
 
     font-variant-caps: normal;
-  }
+}
 
-  .endbook {
+.endbook
+{
     font-weight: bold;
-  }
+}
 
-  /* uddana */
+/* uddana */
 
-  .uddana {
+.uddana
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .uddana-intro {
+.uddana-intro
+{
     font-weight: bold;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .uddanagatha {
+.uddanagatha
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     font-style: inherit;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  /* descriptive classes for metadata*/
+/* descriptive classes for metadata*/
 
-  .author {
+.author
+{
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: small-caps;
-  }
+}
 
-  .ref {
+.ref
+{
     font-family: var(--sc-sans-font);
     font-weight: 600;
     font-style: normal;
@@ -488,304 +548,360 @@ section[role='doc-endnotes']::before
     white-space: nowrap;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     font-variant-caps: normal;
-  }
+}
 
-  footer {
+footer
+{
     display: none;
-  }
+}
 
-  /* style highlighted text, see  zz3/zz/test and zz1/zz/test*/
+/* style highlighted text, see  zz3/zz/test and zz1/zz/test*/
 
-  /* Vinaya classes */
+/* Vinaya classes */
 
-  .kamma {
+.kamma
+{
     font-weight: 600;
-  }
+}
 
-  .highlight .kamma {
+.highlight .kamma
+{
+    position: relative;
+
+    margin: 0 -.25em;
+    padding: 0 .25em;
+
     outline: 2px solid var(--sc-secondary-accent-color);
-    position: relative;
-    padding: 0 0.25em;
-    margin: 0 -0.25em;
-  }
+}
 
-  .rule {
+.rule
+{
     font-weight: 800;
-  }
+}
 
-  .subrule {
+.subrule
+{
     font-weight: 600;
-  }
+}
 
-  .highlight .cakka {
+.highlight .cakka
+{
     color: var(--sc-secondary-accent-color);
-  }
+}
 
-  .highlight .anapatti {
+.highlight .anapatti
+{
     font-weight: 500;
-  }
+}
 
-  .highlight .nidana {
+.highlight .nidana
+{
     color: var(--sc-primary-accent-color);
-  }
+}
 
-  .highlight .patimokkha p {
+.highlight .patimokkha p
+{
+    position: relative;
+
+    margin: 0 -.25em;
+    padding: 0 .25em;
+
     outline: 2px solid var(--sc-toast-error-color);
-    position: relative;
-    padding: 0 0.25em;
-    margin: 0 -0.25em;
-  }
+}
 
-  .highlight :not(.patimokkha) .rule {
+.highlight :not(.patimokkha) .rule
+{
+    position: relative;
+
+    margin: 0 -.25em;
+    padding: 0 .25em;
+
     outline: 2px dotted var(--sc-toast-error-color);
-    position: relative;
-    padding: 0 0.25em;
-    margin: 0 -0.25em;
-  }
+}
 
-  .highlight .suttanta {
+.highlight .suttanta
+{
+    position: relative;
+
+    margin: 0 -.25em;
+    padding: 0 .25em;
+
     outline: 2px solid var(--sc-primary-color-light);
-    position: relative;
-    padding: 0 0.25em;
-    margin: 0 -0.25em;
-  }
+}
 
-  .highlight .jataka {
+.highlight .jataka
+{
+    position: relative;
+
+    margin: 0 -.25em;
+    padding: 0 .25em;
+
     outline: 2px solid var(--sc-primary-accent-color-light);
-    position: relative;
-    padding: 0 0.25em;
-    margin: 0 -0.25em;
-  }
+}
 
-  .highlight .patimokkha p::before,
-  .highlight :not(.patimokkha) .rule::before,
-  .highlight .kamma::before,
-  .highlight .suttanta::before,
-  .highlight .jataka::before {
+.highlight .patimokkha p::before,
+.highlight :not(.patimokkha) .rule::before,
+.highlight .kamma::before,
+.highlight .suttanta::before,
+.highlight .jataka::before
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     font-style: normal;
     line-height: 1.3333;
 
-    z-index: 10;
-
-    display: inline-block;
-
-    box-sizing: border-box;
-    padding: var(--sc-size-sm) var(--sc-size-md);
-
-    color: var(--sc-secondary-text-color);
-
-    letter-spacing: normal;
-
-    font-variant-caps: normal;
-
-    text-align: left;
     position: absolute;
-
+    z-index: 10;
+    top: -36px;
     left: 0;
 
-    top: -36px;
-
+    display: inline-block;
     visibility: hidden;
 
+    box-sizing: border-box;
     height: 36px;
-
+    padding: var(--sc-size-sm) var(--sc-size-md);
     padding: var(--sc-size-sm) var(--sc-size-md);
 
+    text-align: left;
     white-space: normal;
+    letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border-width: 0 0 0 8px;
     border-style: solid;
-    border-radius: var(--sc-size-sm);
     border-color: var(--sc-primary-color);
+    border-radius: var(--sc-size-sm);
     background-color: var(--sc-secondary-background-color);
     box-shadow: var(--sc-shadow-elevation-8dp);
-  }
 
-  .highlight .patimokkha p::before {
+    font-variant-caps: normal;
+}
+
+.highlight .patimokkha p::before
+{
     content: 'This text is included in the patimokkha recitation';
-  }
+}
 
-  .highlight :not(.patimokkha) .rule::before {
+.highlight :not(.patimokkha) .rule::before
+{
     content: 'This rule is not included in the patimokkha recitation';
-  }
+}
 
-  .highlight .kamma::before {
+.highlight .kamma::before
+{
     content: 'This text is a formal legal statement of the Sangha';
-  }
+}
 
-  .highlight .suttanta::before {
+.highlight .suttanta::before
+{
     content: 'This text is found also in the Discourses (Sutta)';
-  }
+}
 
-  .highlight .jataka::before {
+.highlight .jataka::before
+{
     content: 'This text is a story of the Buddha’s past lives (Jātaka)';
-  }
+}
 
-  .highlight :hover::before,
-  .highlight .patimokkha p:hover::before,
-  .highlight :not(.patimokkha) .rule:hover::before {
+.highlight :hover::before,
+.highlight .patimokkha p:hover::before,
+.highlight :not(.patimokkha) .rule:hover::before
+{
     visibility: visible;
-  }
+}
 
-  .highlight .padabhajaniya {
+.highlight .padabhajaniya
+{
+    margin: 0 -.25em;
+    padding: 0 .25em;
+
     background-color: var(--sc-tertiary-background-color);
-    padding: 0 0.25em;
-    margin: 0 -0.25em;
-  }
+}
 
-  .highlight .vinaya-vinita {
-    color: var(--sc-primary-accent-color-dark);
-  }
+.highlight .vinaya-vinita
+{
+    color: var(--sc-primary-accent-color);
+}
 
-  .help-heading {
+.help-heading
+{
     font-style: italic;
-  }
+}
 
-  /* descriptive classes */
+/* descriptive classes */
 
-  .xu {
+.xu
+{
     font-size: var(--sc-dense-font-size-s);
 
-    padding: 1rem;
     margin-bottom: 4rem;
+    padding: 1rem;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
-  }
+}
 
-  .suttainfo {
+.suttainfo
+{
     display: inline-block;
 
-    padding: 1rem;
     margin-bottom: 2rem;
+    padding: 1rem;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: var(--sc-size-s);
     background-color: var(--sc-tertiary-background-color);
-  }
+}
 
-  .suppliedmetre {
-    color: var(--sc-secondary-text-color);
-  }
+.suppliedmetre
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .gap {
-    color: var(--sc-secondary-text-color);
-  }
+.gap
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .describe {
+.describe
+{
     text-decoration: line-through;
 
-    text-decoration-color: var(--sc-secondary-text-color);
-  }
+    text-decoration-color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .del {
+.del
+{
     text-decoration: line-through;
 
-    text-decoration-color: var(--sc-secondary-text-color);
-  }
+    text-decoration-color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .scribe {
+.scribe
+{
     font-style: italic;
-  }
+}
 
-  .alt-title {
+.alt-title
+{
     display: none;
-  }
+}
 
-  .hidden {
+.hidden
+{
     display: none;
-  }
+}
 
-  .metre {
+.metre
+{
     display: none;
-  }
+}
 
-  .t-gaiji {
+.t-gaiji
+{
     color: var(--sc-primary-accent-color);
-  }
+}
 
-  .rule-number {
-    color: var(--sc-secondary-text-color);
-  }
+.rule-number
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .allowance {
+.allowance
+{
     font-weight: bold;
-  }
+}
 
-  .t-note {
-    color: var(--sc-secondary-text-color);
-  }
+.t-note
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .vagga-number {
-    color: var(--sc-secondary-text-color);
-  }
+.vagga-number
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .counter {
+.counter
+{
     font-family: var(--sc-sans-font);
     font-size: var(--sc-dense-font-size-s);
     font-weight: 400;
-    color: var(--sc-secondary-text-color);
-  }
 
-  .term {
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
+.term
+{
     font-weight: bold;
-  }
+}
 
-  .highlight .orthodox::before {
+.highlight .orthodox::before
+{
     content: '☑';
+
     color: var(--sc-toast-success-color);
-  }
+}
 
-  .highlight .heterodox::before {
+.highlight .heterodox::before
+{
     content: '☒ ';
+
     color: var(--sc-toast-error-color);
-  }
+}
 
-  .highlight .term {
+.highlight .term
+{
     color: var(--sc-primary-accent-color);
-  }
+}
 
-  .highlight .gloss {
+.highlight .gloss
+{
     color: var(--sc-primary-accent-color);
-  }
+}
 
-  .highlight .surplus {
+.highlight .surplus
+{
     color: var(--sc-secondary-accent-color);
-  }
+}
 
-  .highlight .supplied {
+.highlight .supplied
+{
     color: var(--sc-primary-color);
-  }
+}
 
-  .highlight .expanded {
-    color: var(--sc-secondary-text-color);
-  }
+.highlight .expanded
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .highlight .var {
+.highlight .var
+{
     color: var(--sc-secondary-accent-color);
-  }
+}
 
-  .highlight .corr,
-  .highlight .corrected {
+.highlight .corr,
+.highlight .corrected
+{
     color: var(--sc-primary-accent-color);
-  }
+}
 
-  .highlight .unclear {
-    color: var(--sc-secondary-text-color);
-  }
+.highlight .unclear
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  .highlight .metre {
-    font-size: var(--sc-skolar-font-size-xxs);
+.highlight .metre
+{
+    font-size: var(--sc-font-size-xxs);
 
     position: absolute;
 
@@ -793,86 +909,104 @@ section[role='doc-endnotes']::before
 
     margin-top: -11px;
 
-    letter-spacing: 0.2em;
+    letter-spacing: .2em;
 
     color: var(--sc-primary-accent-color);
-  }
+}
 
-  #simple_text_content .ref {
+#simple_text_content .ref
+{
     display: none;
-  }
+}
 
-  #simple_text_content .legacy-reference .ref {
+#simple_text_content .legacy-reference .ref
+{
     font-family: var(--sc-sans-font);
-    font-size: 0.8em;
+    font-size: var(-sc-font-size-s);
     font-weight: 400;
     font-style: normal;
-    text-align: left;
 
     display: inline-block;
 
     box-sizing: border-box;
     margin: 0 4px;
-    padding: 0.1em 4px;
+    padding: .1em 4px;
 
+    text-align: left;
     white-space: nowrap;
     text-decoration: none;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-secondary-background-color);
 
     font-variant-caps: normal;
-  }
+}
 
-  /* helper metadata in HTML data- */
+/* helper metadata in HTML data- */
 
-  .highlight [data-counter]::after {
-    padding: 0 0.25rem;
-    margin: 0 0 0 0.5rem;
-    background-color: var(--sc-icon-color);
-    color: white;
-    font-weight: 600;
+.highlight [data-counter]::after
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-xs);
+    font-size: var(--sc-font-size-xs);
+    font-weight: 600;
+
+    margin: 0 0 0 .5rem;
+    padding: 0 .25rem;
+
+    color: white;
     border-radius: 4px;
-  }
+    background-color: var(--sc-icon-color);
+}
 
-  .highlight [data-counter]::after {
+.highlight [data-counter]::after
+{
     content: attr(data-counter);
-  }
+}
 
-  .highlight [data-doxy]::before {
-    margin: 0 0.5rem 0 0;
+.highlight [data-doxy]::before
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-xs);
     font-weight: 600;
-    font-family: sans-serif;
-    font-size: var(--sc-skolar-font-size-xs);
-  }
 
-  .highlight [data-doxy='orthodox']::before {
+    margin: 0 .5rem 0 0;
+}
+
+.highlight [data-doxy='orthodox']::before
+{
     content: '👍🏿';
-  }
+}
 
-  .highlight [data-doxy='heterodox']::before {
+.highlight [data-doxy='heterodox']::before
+{
     content: '👎🏽';
-  }
+}
 
-  .highlight [data-direction]::before {
-    margin: 0 0.5rem 0 0;
+.highlight [data-direction]::before
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-xs);
     font-weight: 600;
-    font-family: sans-serif;
-    font-size: var(--sc-skolar-font-size-xs);
-  }
 
-  .highlight [data-direction='forward']::before {
+    margin: 0 .5rem 0 0;
+}
+
+.highlight [data-direction='forward']::before
+{
     content: '👉🏾';
-    color: var(--sc-icon-color);
-  }
 
-  .highlight [data-direction='reverse']::before {
-    content: '👈🏼';
     color: var(--sc-icon-color);
-  }
+}
+
+.highlight [data-direction='reverse']::before
+{
+    content: '👈🏼';
+
+    color: var(--sc-icon-color);
+}
+
+
 `;

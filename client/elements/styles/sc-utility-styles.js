@@ -22,9 +22,11 @@ export const SCUtilityStyles = css`
 
     --sc-border: 1px solid var(--sc-border-color);
 
-    --sc-umbra-opacity: rgba(0, 0, 0, 0.2);
-    --sc-penumbra-opacity: rgba(0, 0, 0, 0.14);
-    --sc-ambient-opacity: rgba(0, 0, 0, 0.12);
+    --sc-card-border-radius: 16px;
+
+    --sc-umbra-opacity: rgba(0, 0, 0, 0.1);
+    --sc-penumbra-opacity: rgba(0, 0, 0, 0.07);
+    --sc-ambient-opacity: rgba(0, 0, 0, 0.06);
 
     --sc-shadow-elevation-0dp: 0px 0px 0px 0px var(--sc-umbra-opacity),
       0px 0px 0px 0px var(--sc-penumbra-opacity), 0px 0px 0px 0px var(--sc-ambient-opacity);
@@ -50,8 +52,10 @@ export const SCUtilityStyles = css`
     --sc-shadow-elevation-24dp: 0px 11px 15px -7px var(--sc-umbra-opacity),
       0px 24px 38px 3px var(--sc-penumbra-opacity), 0px 9px 46px 8px var(--sc-ambient-opacity);
 
-    --sc-suttaplex-shadow: var(--sc-shadow-elevation-1dp);
+    --sc-suttaplex-shadow: var(--sc-shadow-elevation-4dp);
 
     --sc-suttaplex-padding: var(--sc-size-md);
+
+    --sc-link-transition: background-color 300ms ease, border-bottom 300ms ease, opacity 300ms ease, text-decoration-thickness 300ms ease;
   }
 `;

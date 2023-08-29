@@ -5,8 +5,15 @@ export const suttaplexListCss = css`
     display: block;
   }
 
+  md-filled-button {
+    --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+    --md-sys-color-on-primary: #FFFFFF;
+    width: 100%;
+  }
+
   .division-content {
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-secondary-primary-text-color);
     position: relative;
     padding: 0;
   }
@@ -24,12 +31,12 @@ export const suttaplexListCss = css`
 
   .node {
     padding: var(--sc-size-md) var(--sc-size-md) 0;
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
   }
 
   .vagga-node {
     padding: var(--sc-size-md) var(--sc-size-md) var(--sc-size-sm) var(--sc-size-md);
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-secondary-secondary-text-color);
   }
 
   .vagga-node + .vagga-node {
@@ -47,12 +54,6 @@ export const suttaplexListCss = css`
 
   .hidden {
     display: none;
-  }
-
-  mwc-button {
-    --mdc-theme-primary: var(--sc-primary-accent-color);
-    --mdc-theme-on-primary: white;
-    margin-bottom: 1em;
   }
 
   .compact {
@@ -92,7 +93,7 @@ export const suttaplexListTableViewCss = css`
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
   }

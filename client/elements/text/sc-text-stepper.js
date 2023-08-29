@@ -15,22 +15,20 @@ export class SCTextStepper extends LitElement {
       }
     }
 
-    .bar {
-      display: flex;
-      overflow: hidden;
 
-      height: 100px;
-      margin: 0 0 -64px 0;
+.bar {
+    display: flex;
+    overflow: hidden;
+    height: 6rem;
+    margin: 0px 2%;
+    padding: 0px;
+    gap: 4%;
+    justify-content: space-around;
+    border-radius: 48px;
+}
+      
 
-      border-top: 1px solid var(--sc-border-color);
-      background-color: var(--sc-secondary-background-color);
-    }
-
-    .button {
-      width: 100%;
-    }
-
-    .button-container {
+        .button-container {
       position: relative;
 
       width: 50%;
@@ -40,27 +38,50 @@ export class SCTextStepper extends LitElement {
 
     .button {
       width: 100%;
-      height: 100%;
+      background-color: var(--sc-tertiary-background-color);
+
+      
     }
+
+        .button:hover {
+      background-color: var(--sc-primary-color-light-transparent);
+      transition: var(--sc-link-transition);
+    }
+
+
+    .button {
+      display: flex;
+
+      height: 100%;
+
+      border-radius: 48px
+    }
+
+    .button-right {
+      justify-content: flex-end;
+    }
+
+
+
 
     .action {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-md);
+      font-size: var(--sc-font-size-md);
 
       opacity: 0.55;
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-tertiary-secondary-text-color);
     }
 
     .text-title {
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-l);
+      font-size: var(--sc-font-size-l);
 
       overflow: hidden;
 
       white-space: nowrap;
       text-overflow: ellipsis;
 
-      color: var(--sc-primary-text-color);
+      color: var(--sc-on-tertiary-primary-text-color);
     }
 
     .link {
@@ -70,38 +91,14 @@ export class SCTextStepper extends LitElement {
     }
 
     .link .text-title {
-      opacity: 0.8;
 
       box-sizing: border-box;
 
-      border-bottom: 4px solid rgba(0, 0, 0, 0);
+      transition: var(--sc-link-transition);
 
-      transition: all 200ms ease;
     }
 
-    .link:hover .text-title {
-      opacity: 1;
 
-      border-bottom: 4px solid var(--sc-primary-color-light);
-
-      transition: all 200ms ease;
-    }
-
-    .link:active .text-title {
-      background-color: var(--sc-primary-color-light-transparent);
-
-      transition: background-color 200ms ease;
-    }
-
-    .button {
-      display: flex;
-
-      height: 100%;
-    }
-
-    .button-right {
-      justify-content: flex-end;
-    }
 
     .text {
       display: flex;
@@ -120,7 +117,7 @@ export class SCTextStepper extends LitElement {
     }
 
     .icon {
-      font-size: var(--sc-skolar-font-size-l);
+      font-size: var(--sc-font-size-l);
 
       width: var(--sc-size-md-larger);
       min-width: var(--sc-size-md-larger);
@@ -131,20 +128,7 @@ export class SCTextStepper extends LitElement {
       fill: var(--sc-icon-color);
     }
 
-    .separator {
-      width: 10%;
-    }
-
     @media (min-width: 1280px) {
-      .button-right {
-        width: 80%;
-        margin-right: 20%;
-      }
-
-      .button-left {
-        width: 80%;
-        margin-left: 20%;
-      }
 
       .arrow_right {
         margin-left: 1em;
@@ -176,8 +160,6 @@ export class SCTextStepper extends LitElement {
               `
             : ''}
         </div>
-
-        <div class="separator"></div>
 
         <div class="button-container">
           ${this.next && this.next.uid

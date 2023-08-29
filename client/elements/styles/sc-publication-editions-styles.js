@@ -1,23 +1,28 @@
 import { css } from 'lit';
 
 export const SCPublicationEditionsStyles = css `
- main {
+main
+{
     max-width: 720px;
     margin: 2em auto 4em;
 }
 
-hgroup {
+hgroup
+{
     text-align: center;
 }
 
-.page-header {
-    border-bottom: 2px solid var(--sc-primary-color-light);
+.page-header
+{
     margin-bottom: 4em;
+
+    border-bottom: 2px solid var(--sc-primary-color-light);
 }
 
-h1 {
+h1
+{
     font-family: var(--sc-serif-font);
-    font-size: 3rem;
+    font-size: var(--sc-font-size-xxxxl);
     font-weight: 300;
 
     margin: 0;
@@ -25,7 +30,8 @@ h1 {
     font-variant-caps: small-caps;
 }
 
-.subtitle {
+.subtitle
+{
     font-family: var(--sc-serif-font);
     font-style: italic;
 
@@ -33,11 +39,13 @@ h1 {
     margin-bottom: 1rem;
 }
 
-.down-all ul {
+.down-all ul
+{
     list-style-type: none;
 }
 
-.icon {
+.icon
+{
     width: 24px;
     height: 24px;
     margin-right: 8px;
@@ -47,93 +55,106 @@ h1 {
     fill: var(--sc-icon-color);
 }
 
-.project hgroup {
-    margin-bottom: 1rem;
+.project hgroup
+{
     padding: 1rem;
 }
 
-.translation_title {
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+.translation_title
+{
+    font-size: var(--sc-font-size-xxxl);
 
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
 }
 
-.translation_subtitle {
-    font-size: var(--sc-skolar-font-size-md);
+.translation_subtitle
+{
+    font-size: var(--sc-font-size-md);
     font-style: italic;
 }
 
-.creator_name {
-    font-size: var(--sc-skolar-font-size-l);
+.creator_name
+{
+    font-size: var(--sc-font-size-l);
+
+    margin-top: 0;
 
     text-align: center;
 
     font-variant-caps: all-small-caps;
 }
 
-.project a {
+.block-link
+{
     display: block;
 
+    margin: 2em 0;
+
+    transition: var(--sc-link-transition);
     text-decoration: none;
-    text-decoration-color: var(--sc-primary-color-light);
 
     color: inherit;
-    border-radius: 4px;
+    border-radius: 24px;
+    background-color: inherit;
 }
 
-.project a:hover {
-    background-color: var(sc-primary-color);
-    text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
-    transition: all 200ms ease;
+.block-link:hover
+{
+    transition: var(--sc-link-transition);
+
+    background-color: var(--sc-primary-color-light-transparent);
 }
 
-.publication_blurb {
+.publication_blurb
+{
     font-family: var(--sc-sans-font);
 
     min-height: 20em;
     padding: 1em;
 }
 
-h2 {
+h2
+{
     margin-top: 0;
 }
 
-article {
+article
+{
     margin-bottom: 8em;
 }
 
-.project {
+.project
+{
     margin: 0;
     padding: 0;
 }
 
-.project:before {
+.project:before
+{
     display: block;
 
     width: 50%;
-    margin: 0 auto;
-    margin-bottom: 24px;
+    margin: 24px auto;
 
     content: '';
 
     border-bottom: 1px solid var(--sc-border-color);
 }
 
-img {
+img
+{
     display: block;
     float: left;
 
     width: auto;
     height: 16em;
-    margin: 0.5em 1em 1em 0;
+    margin: .5em 1em 1em 0;
 
     box-shadow: var(--sc-shadow-elevation-8dp);
 }
 
-.main-image {
+.main-image
+{
     float: right;
 
     width: 50%;
@@ -141,38 +162,53 @@ img {
     margin: 0 0 1em 1em;
 }
 
-.down-all {
+.down-all
+{
     margin: 4em 0 4em 0;
 }
 
-.down-all ul {
+.down-all ul
+{
     margin-left: 0;
-    padding-left: 0
+    padding-left: 0;
 }
 
-.down-all li {
+.down-all li
+{
     margin-left: 0;
-    padding-left: 0
+    padding-left: 0;
 }
 
-.down-all aside {
-    background-color: var(--sc-tertiary-background-color);
+.down-all aside
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+
     margin-top: 1rem;
     padding: 1em;
 
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-
-    color: var(--sc-secondary-text-color);
-    
-    border-radius: var(--sc-size-sm);
+    color: var(--sc-on-tertiary-secondary-text-color);
+    border-radius: 24px;
+    background-color: var(--sc-tertiary-background-color);
 }
 
-h1 {
+h1
+{
     font-family: var(--sc-sans-font);
-    letter-spacing: var(--sc-caps-letter-spacing);
-    font-variant-caps: small-caps;
-    font-weight: 500;
+    font-weight: 200;
     font-stretch: expanded;
+
+    letter-spacing: var(--sc-caps-letter-spacing);
 }
+
+.link-button-container
+{
+    display: flex;
+
+    margin-top: 1em;
+
+    justify-content: center;;
+}
+
+
 `;

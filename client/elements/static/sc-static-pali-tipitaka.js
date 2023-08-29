@@ -52,14 +52,14 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
         }
 
         h1 {
-          font-size: 2rem;
+          font-size: var(--sc-font-size-xxxl);
           font-weight: normal;
 
           font-variant-caps: all-small-caps;
         }
 
         .second {
-          font-size: 1.5rem;
+          font-size: var(--sc-font-size-xxl);
         }
 
         .second a {
@@ -80,7 +80,7 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
         }
 
         .third {
-          font-size: 1rem;
+          font-size: var(--sc-font-size-md);
           font-weight: bold;
 
           margin: 0.5rem 1em 0;
@@ -89,7 +89,7 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
         }
 
         .fourth {
-          font-size: 1rem;
+          font-size: var(--sc-font-size-md);
           font-weight: normal;
 
           width: 16rem;
@@ -112,13 +112,13 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
         root {
           display: block;
 
-          font-family: var(--sc-serif-font), serif;
+          font-family: var(--sc-serif-font);
         }
 
         translation {
-          font-family: var(--sc-sans-font), sans-serif;
+          font-family: var(--sc-sans-font);
 
-          color: var(--sc-secondary-text-color);
+          color: var(--sc-on-primary-secondary-text-color);
         }
 
         li a {

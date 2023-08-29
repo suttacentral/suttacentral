@@ -34,7 +34,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     }
 
     .button-text {
-      color: var(--sc-primary-text-color);
+      color: var(--sc-on-secondary-primary-text-color);
       font-weight: 500;
     }
 
@@ -45,7 +45,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     }
 
     .button-text:active {
-      background-color: var(--sc-textual-info-background-color);
+      background-color: var(--sc-dark-fixed-background-color);
       transition: background-color 0.2s ease;
       cursor: pointer;
     }

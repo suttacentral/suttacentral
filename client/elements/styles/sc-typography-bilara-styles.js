@@ -1,73 +1,75 @@
 import { css } from 'lit';
 
 export const typographyBilaraStyles = css`
-  /* styles unique to bilara texts */
+/* styles unique to bilara texts */
 
-  /* verses */
+/* verses */
 
-  blockquote {
+blockquote
+{
     margin: 0;
-  }
+}
 
-  /* lookup */
+/* lookup */
 
-  .spanFocused {
+.spanFocused
+{
     color: rgb(34, 33, 32);
     background-color: var(--sc-primary-color-light);
-  }
+}
 
-  /* notes */
+/* notes */
 
-  /* Anchor tooltips. */
-  article {
+/* Anchor tooltips. */
+article
+{
     position: relative;
-  }
+}
 
-  .comment,
-  .variant {
+.comment,
+.variant
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
     font-style: normal;
     line-height: 1.3333;
-
-    padding: var(--sc-size-sm) var(--sc-size-md);
 
     z-index: 10;
 
     display: inline-block;
 
     box-sizing: border-box;
-
-    color: var(--sc-secondary-text-color);
-    border: 1px solid var(--sc-border-color);
-
-    border-radius: 8px;
-    background-color: var(--sc-secondary-background-color);
-
-    letter-spacing: normal;
-
-    font-variant-caps: normal;
+    padding: var(--sc-size-sm) var(--sc-size-md);
 
     text-align: left;
-
     text-indent: 0;
-  }
+    letter-spacing: normal;
 
-  .comment:hover,
-  .variant:hover {
+    color: var(--sc-on-tertiary-secondary-text-color);
+    border-radius: var(--sc-card-border-radius);
+    background-color: var(--sc-tertiary-background-color);
+
+    font-variant-caps: normal;
+}
+
+.comment:hover,
+.variant:hover
+{
     cursor: help;
-  }
+}
 
-    .comment:empty,
-    .variant:empty{
-      display: none
-    }
+.comment:empty,
+.variant:empty
+{
+    display: none;
+}
 
-  /* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
+/* Set shared styles for the tooltip, but don't show it. Specify classes, avoid unattributed attribute selector for performance.*/
 
-  .comment[data-tooltip]::after,
-  .variant[data-tooltip]::after {
+.comment[data-tooltip]::after,
+.variant[data-tooltip]::after
+{
     position: absolute;
     z-index: 10;
     left: 50%;
@@ -82,74 +84,68 @@ export const typographyBilaraStyles = css`
     content: attr(data-tooltip);
     white-space: normal;
 
-    color: var(--sc-secondary-text-color);
-    border-width: 0 0 0 8px;
-    border-style: solid;
-    border-radius: var(--sc-size-sm);
-    background-color: var(--sc-secondary-background-color);
+    color: var(--sc-on-tertiary-secondary-text-color);
+    border-radius: var(--sc-card-border-radius);
+    background-color: var(--sc-tertiary-background-color);
     box-shadow: var(--sc-shadow-elevation-8dp);
-  }
+}
 
-  .comment[data-tooltip]::after {
-    border-color: var(--sc-primary-accent-color);
-  }
-
-  .variant[data-tooltip]::after {
-    border-color: var(--sc-secondary-accent-color);
-  }
-
-  [data-tooltip]:hover {
+[data-tooltip]:hover
+{
     cursor: help;
-  }
+}
 
-  /* references */
+/* references */
 
-  .reference {
+.reference
+{
     overflow-wrap: anywhere;
-  }
+}
 
-  .reference a {
-    display: inline-block;
-
+.reference a
+{
     font-family: var(--sc-sans-font);
-
-    font-size: var(--sc-skolar-font-size-xxs);
-
+    font-size: var(--sc-font-size-xxs);
     font-weight: 400;
     font-style: normal;
-    text-align: left;
+
+    display: inline-block;
 
     box-sizing: border-box;
-    padding: 0.1em 0.5em;
+    margin-right: .5em;
+    padding: .1em .5em;
 
-    margin-right: 0.5em;
-
+    text-align: left;
     white-space: nowrap;
     text-decoration: none;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border: 1px solid var(--sc-border-color);
     border-radius: 8px;
     background-color: var(--sc-secondary-background-color);
 
     font-variant-caps: normal;
-  }
+}
 
-  .reference a:hover {
+.reference a:hover
+{
     background-color: var(--sc-tertiary-background-color);
-  }
+}
 
-  .reference a {
+.reference a
+{
     text-decoration: none;
-  }
+}
 
-  header .reference,
-  h2 .reference,
-  h3 .reference,
-  h4 .reference,
-  h5 .reference,
-  h6 .reference {
+header .reference,
+h2 .reference,
+h3 .reference,
+h4 .reference,
+h5 .reference,
+h6 .reference
+{
     display: none;
-  }
+}
+
 `;

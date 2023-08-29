@@ -3,6 +3,7 @@ import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 import { reduxActions } from './sc-redux-actions';
+import '@material/web/checkbox/checkbox';
 
 export class SCTopSheetSearchFilter extends SCTopSheetCommon {
   static properties = {
@@ -22,7 +23,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
       :host {
         --mdc-theme-secondary: var(--sc-primary-accent-color);
         --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
         --mdc-typography-body2-font-weight: 550;
         --mdc-checkbox-unchecked-color: var(--sc-icon-color);
       }
@@ -41,7 +42,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
         margin-left: 18px;
         padding: 0 1em;
 
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
         border-radius: 0.8em;
         background-color: var(--sc-border-color);
 
@@ -81,6 +82,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
       td {
         font-family: monospace;
       }
+
+      md-checkbox {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-sys-color-on-primary: white;
+      }
     `,
   ];
 
@@ -109,11 +115,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <tr>
               <td>
                 <mwc-formfield label="Match partial">
-                  <mwc-checkbox
+                  <md-checkbox
                     ?checked=${this.matchPartial}
                     @change=${this.#onMatchTypeChanged}
                   >
-                  </mwc-checkbox>
+                  </md-checkbox>
                 </mwc-formfield>
               </td>
             </tr>

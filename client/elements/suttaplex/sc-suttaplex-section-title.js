@@ -15,7 +15,7 @@ class SCSuttaplexSectionTitle extends LitElement {
   render() {
     return html`
       <div class="node-head-container">
-        <div class=${this.titleClass} style="font-size: 1.333em">
+        <div class=${this.titleClass} style="font-size: var(--sc-font-size-l)">
           ${this.inputTitle}${this.isPatimokkhaRuleCategory &&
           this.inputTitle !== this.originalTitle
             ? `—${this.originalTitle}`

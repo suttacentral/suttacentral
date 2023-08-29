@@ -16,8 +16,8 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
       flex-direction: column;
       gap: 2em;
       font-family: var(--sc-sans-font);
-      font-size: var(--sc-skolar-font-size-static-subtitle);
-      color: var(--sc-secondary-text-color);
+      font-size: var(--sc-font-size-xxxl);
+      color: var(--sc-on-primary-secondary-text-color);
       text-align: center;
     }
 

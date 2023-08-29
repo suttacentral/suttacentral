@@ -318,7 +318,7 @@ export const sideBySideStyles = html`
       }
 
       .root .text {
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
       }
     }
   </style>
@@ -430,7 +430,7 @@ export const sideBySidePlusStyles = html`
       }
 
       .root .text {
-        color: var(--sc-secondary-text-color);
+        color: var(--sc-on-primary-secondary-text-color);
       }
     }
   </style>
@@ -464,7 +464,7 @@ export const lineByLineStyles = html`
     }
 
     .root .text {
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
       font-family: var(--sc-sans-font);
     }
 
@@ -519,7 +519,7 @@ export const lineByLinePlusStyles = html`
     }
 
     .root .text {
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
       font-family: var(--sc-sans-font);
     }
 

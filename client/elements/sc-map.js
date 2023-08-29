@@ -16,7 +16,7 @@ L.Control.StaticMapButton = L.Control.extend({
   onAdd: function () {
     let container = L.DomUtil.create('div', 'leaflet-bar leaflet-control static-map-button');
 
-    this.link = L.DomUtil.create('a', 'leaflet-bar-part static-map-button-link', container);
+    this.link = L.DomUtil.create('a', 'leaflet-bar-part static-map-link-button', container);
     this.link.href = '#';
     this.link.setAttribute('role', 'button');
     this.link.title = this.options.title;
@@ -102,7 +102,7 @@ export class SCMap extends LitLocalized(LitElement) {
         height: 44px;
       }
 
-      .static-map-button-link {
+      .static-map-link-button {
         width: 44px !important;
         height: 44px !important;
       }

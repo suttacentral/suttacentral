@@ -18,7 +18,7 @@ export class SCPieChart extends LitElement {
     text {
       alignment-baseline: middle;
       text-anchor: middle;
-      fill: var(--sc-primary-text-color);
+      fill: var(--sc-on-primary-primary-text-color);
     }
   `;
 

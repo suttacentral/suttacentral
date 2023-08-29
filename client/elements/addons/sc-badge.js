@@ -20,7 +20,7 @@ export class SCBadge extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       padding: 0.25em 0.75em;
-      font-size: var(--sc-skolar-font-size-xxs);
+      font-size: var(--sc-font-size-xxs);
       font-weight: 550;
       font-stretch: condensed;
       line-height: 1;
@@ -46,7 +46,7 @@ export class SCBadge extends LitLocalized(LitElement) {
     }
 
     :host([color='warning']) {
-      background-color: var(--sc-primary-color-medium);
+      background-color: var(--sc-primary-color-dark);
     }
 
     :host([color='info']) {
@@ -63,7 +63,7 @@ export class SCBadge extends LitLocalized(LitElement) {
     }
 
     :host([color='gray']) {
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
       border: 1px solid var(--sc-border-color);
     }
 

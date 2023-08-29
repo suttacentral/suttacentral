@@ -42,7 +42,7 @@ export class SCBottomSheet extends LitElement {
       padding: 0 var(--sc-size-md);
 
       color: var(--sc-primary-background-color);
-      background-color: var(--sc-secondary-text-color);
+      background-color: var(--sc-on-primary-secondary-text-color);
 
       justify-content: space-between;
       align-items: center;
@@ -56,7 +56,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     details {
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
 
       font-stretch: condensed;
 
@@ -65,7 +65,7 @@ export class SCBottomSheet extends LitElement {
       max-width: 720px;
 
       color: var(--sc-primary-background-color);
-      background-color: var(--sc-secondary-text-color);
+      background-color: var(--sc-on-primary-secondary-text-color);
     }
 
     details ul {
@@ -78,15 +78,15 @@ export class SCBottomSheet extends LitElement {
       text-decoration: underline;
       text-decoration-color: var(--sc-primary-color-light);
       text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.06em;
+      text-underline-offset: 0.15em;
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     details a:hover {
       text-decoration-color: var(--sc-primary-color);
       text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.06em;
+      text-underline-offset: 0.15em;
 
       background-color: var(--sc-primary-color-light-transparent);
     }
@@ -129,7 +129,7 @@ export class SCBottomSheet extends LitElement {
       margin-left: 3vw;
 
       border-radius: 4px;
-      background-color: var(--sc-secondary-text-color);
+      background-color: var(--sc-on-primary-secondary-text-color);
       box-shadow: var(--sc-shadow-elevation-8dp);
     }
 
@@ -150,7 +150,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     #btnClose {
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
 
       font-stretch: condensed;
       display: flex;
@@ -167,7 +167,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     header > dfn {
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
       line-height: 1.333;
 
       padding: 0 var(--sc-size-sm);
@@ -192,7 +192,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     dl {
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
 
       margin: 0;
     }
@@ -223,9 +223,9 @@ export class SCBottomSheet extends LitElement {
 
       text-decoration-color: white;
       text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.06em;
+      text-underline-offset: 0.15em;
 
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     .entry a:hover {
@@ -233,15 +233,15 @@ export class SCBottomSheet extends LitElement {
 
       text-decoration-color: white;
       text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.06em;
+      text-underline-offset: 0.15em;
     }
 
     .grammar {
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
 
       font-style: italic;
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
     }
 
     .definition {
@@ -266,7 +266,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     .definition li::before {
-      font-size: var(--sc-skolar-font-size-xxs);
+      font-size: var(--sc-font-size-xxs);
       font-weight: bold;
 
       display: inline-flex;
@@ -277,7 +277,7 @@ export class SCBottomSheet extends LitElement {
       content: ' ' counter(definition-item-counter) '';
       counter-increment: definition-item-counter;
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
       border: 2px solid var(--sc-icon-color);
       border-radius: 50%;
 
@@ -287,7 +287,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     .xr {
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
 
       margin: 0;
       padding: 0;
@@ -300,7 +300,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     .xr a {
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-secondary-text-color);
 
       text-decoration-color: var(--sc-primary-color);
     }
@@ -327,19 +327,19 @@ export class SCBottomSheet extends LitElement {
 
       text-align: center;
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     footer div:hover {
       background-color: var(--sc-tertiary-background-color);
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     footer div:active {
       background-color: var(--sc-border-color);
 
-      transition: background-color 200ms ease;
+      transition: var(--sc-link-transition);
     }
 
     #next {
@@ -347,7 +347,7 @@ export class SCBottomSheet extends LitElement {
     }
 
     footer button {
-      font-size: 2em;
+      font-size: var(--sc-font-size-xxxl);
 
       width: 100%;
       height: 100%;

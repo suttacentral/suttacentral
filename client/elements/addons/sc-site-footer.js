@@ -16,9 +16,8 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
 
     footer {
       padding: 4em 4vw;
-      color: var(--sc-secondary-text-color);
-      border-top: 1px solid var(--sc-border-color);
-      background-color: var(--sc-secondary-background-color);
+      background-color: var(--sc-tertiary-background-color);
+      color: var(--sc-on-tertiary-secondary-text-color);
     }
 
     .footer-top {
@@ -35,14 +34,21 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
       flex: 1;
     }
 
+      h2 {
+    font-size: var(--sc-font-size-xxl);
+    
+    font-weight: 300;
+  }
+
     footer ul {
       padding: 0;
     }
 
     footer li {
       line-height: 1.5;
-      padding-top: 1em;
+      padding-top: 4px;
       list-style-type: none;
+      margin-left: -14px;
     }
 
     .footer-bottom {
@@ -58,20 +64,22 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
     }
 
     li a {
-      transition: all 200ms ease;
+
+      display: inline-block;
+      transition: var(--sc-link-transition);
       text-decoration: none;
       color: inherit;
-      text-decoration-color: var(--sc-primary-color-light);
-      text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.15em;
+
+      border-radius: 20px;
+
+      padding: 8px 16px;
+
     }
 
     li a:hover {
-      text-decoration: underline;
+      
       color: inherit;
-      text-decoration-color: var(--sc-primary-color-light);
-      text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.15em;
+      background-color: var(--sc-primary-color-light-transparent);
     }
 
     li a:active {

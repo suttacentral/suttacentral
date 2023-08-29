@@ -307,17 +307,22 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #printOnDemandTemplate() {
     return html`
       <tr>
-        <td>${icon.paperback} Book, paperback</td>
+        <td>${icon.paperback} 
+        <span>
+        <span>Paperback</span>
+        <small>Order individual volumes</small>
+        </span>
+        </td>
         <td>
           ${this.editionPaperbackInfo?.edition?.volumes
             ? html` ${this.editionPaperbackInfo.edition.volumes.map(
                 vol =>
-                  html` <a href=${vol.volume_lulu_url} class="external"
+                  html` <a class='link-button' href=${vol.volume_lulu_url} class="external"
                     >${icon.external}
                     ${vol.volume_number
-                      ? `Volume ${vol.volume_number.slice(3)}: Print on demand`
-                      : 'Print on demand'}</a
-                  >`
+                      ? `Buy Volume ${vol.volume_number.slice(3)} online`
+                      : 'Print on demand'}
+                      </a>`
               )}`
             : ''}
         </td>
@@ -328,9 +333,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #epubDownloadTemplate() {
     return html`
       <tr>
-        <td>${icon.epub} Epub</td>
+        <td>${icon.epub} <span>Epub</span></td>
         <td>
-          <a href=${this.#computeFileUrlByType('epub')} class="download">
+          <a class='link-button' href=${this.#computeFileUrlByType('epub')} class="download">
             ${icon.file_download} Download
           </a>
         </td>
@@ -341,9 +346,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #pdfDownloadTemplate() {
     return html`
       <tr>
-        <td>${icon.pdf} Pdf</td>
+        <td>${icon.pdf} <span>Pdf</span></td>
         <td>
-          <a href=${this.#computeFileUrlByType('pdf')} class="download">
+          <a class='link-button' href=${this.#computeFileUrlByType('pdf')} class="download">
             ${icon.file_download} Download
           </a>
         </td>
@@ -354,10 +359,15 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #rawHtmlDownloadTemplate() {
     return html`
       <tr>
-        <td>${icon.html} Raw HTML file</td>
+        <td>${icon.html} 
+        <span>
+        <span>HTML</span>
+        <small>(right click → save)</small>
+        </span>
+        </td>
         <td>
-          <a href=${this.#computeFileUrlByType('html')} class="download">
-            ${icon.file_download} Download <small>(right click → save)</small>
+          <a class='link-button' href=${this.#computeFileUrlByType('html')} class="download">
+            ${icon.file_download} <span class='button-text'><span>Download</span> </span>
           </a>
         </td>
       </tr>
@@ -367,9 +377,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #rawTexDownloadTemplate() {
     return html`
       <tr>
-        <td>${icon.latex} Raw TeX file</td>
+        <td>${icon.latex} <span>TeX</span></td>
         <td>
-          <a href=${this.#computeFileUrlByType('tex')} class="download">
+          <a class='link-button' href=${this.#computeFileUrlByType('tex')} class="download">
             ${icon.file_download} Download
           </a>
         </td>
@@ -380,10 +390,10 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   readOnSuttaCentralTemplate() {
     return html`
       <tr>
-        <td>${icon.web} Web</td>
+        <td>${icon.web} <span>Web</span></td>
         <td>
-          <a href=${ifDefined(collectionURL.get(this.editionUid))} class="internal">
-            ${icon.translation} Read on SuttaCentral
+          <a class='link-button' href=${ifDefined(collectionURL.get(this.editionUid))} class="internal">
+            ${icon.translation} <span class='button-text'><span>Read on SuttaCentral</span></span>
           </a>
         </td>
       </tr>
@@ -401,10 +411,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
     return html`
       <style>
-        mwc-button {
-          --mdc-theme-primary: var(--sc-primary-accent-color);
-          --mdc-theme-on-primary: white;
-        }
         ${typographyCommonStyles}
         ${typographyStaticStyles}
         ${SCPublicationStyles}
@@ -417,7 +423,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           <section>
             <table>
               <caption>
-                Available editions
+                Get this book in any of these formats
               </caption>
               <tbody>
                 ${this.#printOnDemandTemplate()} ${this.#epubDownloadTemplate()}
@@ -426,7 +432,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               </tbody>
               <tfoot>
                 <tr>
-                  <td>Updated ${publicationLastGeneratedDate}</td>
+                  <td colspan='2'>Updated ${publicationLastGeneratedDate}</td>
                 </tr>
               </tfoot>
             </table>

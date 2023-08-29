@@ -6,12 +6,12 @@ export const SCPageSearchStyles = css`
     --mdc-select-fill-color: var(--sc-tertiary-background-color);
     --mdc-typography-font-family: var(--sc-sans-font);
     --mdc-theme-surface: var(--sc-secondary-background-color);
-    --mdc-select-ink-color: var(--sc-primary-text-color);
-    --mdc-select-label-ink-color: var(--sc-secondary-text-color);
+    --mdc-select-ink-color: var(--sc-on-primary-primary-text-color);
+    --mdc-select-label-ink-color: var(--sc-on-primary-secondary-text-color);
     --mdc-select-dropdown-icon-color: var(--sc-icon-color);
 
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
     line-height: 1.5;
 
@@ -19,11 +19,11 @@ export const SCPageSearchStyles = css`
 
     width: 100%;
 
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   mwc-list-item {
-    color: var(--sc-primary-text-color);
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   h2 {
@@ -47,7 +47,7 @@ export const SCPageSearchStyles = css`
   .search-result-head {
     display: flex;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     justify-content: space-between;
     flex-wrap: wrap;
@@ -55,7 +55,7 @@ export const SCPageSearchStyles = css`
 
   .search-result-header {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-h1-md);
+
     font-weight: 400;
     line-height: 1.25;
 
@@ -70,9 +70,9 @@ export const SCPageSearchStyles = css`
   }
 
   aside {
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
 
     margin-bottom: 1em;
   }
@@ -122,7 +122,6 @@ export const SCPageSearchStyles = css`
 
   .search-result-title {
     font-family: var(--sc-serif-font);
-    font-size: var(--sc-skolar-font-size-static-subtitle);
     font-weight: 400;
 
     overflow: hidden;
@@ -141,8 +140,8 @@ export const SCPageSearchStyles = css`
 
   .dictionary .all-dictionaries {
     display: inline-flex;
-    color: var(--sc-secondary-text-color);
-    font-size: var(--sc-skolar-font-size-s);
+    color: var(--sc-on-primary-secondary-text-color);
+    font-size: var(--sc-font-size-s);
 
     flex-direction: row;
     align-items: center;
@@ -156,7 +155,7 @@ export const SCPageSearchStyles = css`
 
   .search-result-division {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
     font-weight: 400;
 
     overflow: hidden;
@@ -166,14 +165,14 @@ export const SCPageSearchStyles = css`
     white-space: nowrap;
     text-overflow: ellipsis;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     height: 1.5rem;
   }
 
   .search-result-snippet {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
     line-height: 1.333;
 
@@ -222,7 +221,7 @@ export const SCPageSearchStyles = css`
 
   .dictionary .search-result-title {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-md);
+    font-size: var(--sc-font-size-md);
     font-weight: 400;
     font-variant-caps: all-small-caps;
     letter-spacing: var(--sc-caps-letter-spacing);
@@ -230,7 +229,7 @@ export const SCPageSearchStyles = css`
 
   .dictionary dfn {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-static-subtitle);
+    font-size: var(--sc-font-size-xxxl);
     font-weight: bold;
 
     color: var(--sc-primary-color-dark);
@@ -241,7 +240,7 @@ export const SCPageSearchStyles = css`
   .search-result-term,
   .selected-terms-item > a {
     background-color: var(--sc-primary-color-light-transparent);
-    color: var(--sc-primary-color-darkest);
+    color: var(--sc-primary-color-dark);
   }
 
   .dictionary dd p {
@@ -251,7 +250,7 @@ export const SCPageSearchStyles = css`
   .dictionary .grammar {
     display: block;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
 
     font-style: italic;
   }
@@ -266,7 +265,7 @@ export const SCPageSearchStyles = css`
     white-space: nowrap;
     letter-spacing: normal;
 
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     border-radius: 8px;
     background-color: rgba(159, 158, 157, 0.15);
 
@@ -305,9 +304,11 @@ export const SCPageSearchStyles = css`
     display: none !important;
   }
 
-  mwc-button {
-    --mdc-theme-primary: var(--sc-primary-accent-color);
-    --mdc-theme-on-primary: white;
+  md-filled-button {
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+    --md-sys-color-on-primary: white;
+    --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
+    width: 100%;
   }
 
   #load-more {
@@ -315,11 +316,6 @@ export const SCPageSearchStyles = css`
     display: flex;
     justify-content: center;
   }
-
-  // table td {
-  //   text-align: center;
-  //   vertical-align: middle;
-  // }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -354,7 +350,7 @@ export const searchResultTableViewStyles = css`
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
   }
@@ -377,7 +373,7 @@ export const searchResultTableViewStyles = css`
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
-    text-underline-offset: 0.06em;
+    text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
   }
@@ -401,7 +397,7 @@ export const searchResultTableViewStyles = css`
 
   .parallels-link {
     text-decoration: none; !important;
-    color: var(--sc-secondary-text-color);
+    color: var(--sc-on-primary-secondary-text-color);
     margin-top: 8px;
     padding: 12px;
     border-radius: 50%;

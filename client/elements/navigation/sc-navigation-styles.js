@@ -32,9 +32,10 @@ export const navigationNormalModeStyles = html`
 
       margin-bottom: 0.6667rem;
 
-      border-radius: var(--sc-size-sm);
+      border-radius: var(--sc-card-border-radius);
       background-color: var(--sc-secondary-background-color);
-      box-shadow: var(--sc-shadow-elevation-1dp);
+      color: var(--sc-on-secondary-primary-text-color);
+      box-shadow: var(--sc-shadow-elevation-4dp);
 
       flex: 1;
       justify-content: center;
@@ -73,7 +74,7 @@ export const navigationNormalModeStyles = html`
     }
 
     .blurb {
-      font-size: var(--sc-skolar-font-size-md);
+      font-size: var(--sc-font-size-md);
       font-weight: 400;
       line-height: 1.333;
 
@@ -113,26 +114,26 @@ export const navigationNormalModeStyles = html`
 
     .title {
       font-family: var(--sc-serif-font);
-      font-size: var(--sc-skolar-font-size-static-subtitle);
+      font-size: var(--sc-font-size-xl);
       font-weight: 500;
 
       display: block;
 
-      color: var(--sc-primary-text-color);
+      color: var(--sc-on-secondary-primary-text-color);
     }
 
     .navigation-nerdy-row {
       display: inline-grid;
       grid-auto-flow: column;
       gap: 1rem;
-      font-size: var(--sc-skolar-font-size-s);
+      font-size: var(--sc-font-size-s);
 
       overflow: hidden;
 
       white-space: nowrap;
       text-overflow: ellipsis;
 
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-secondary-secondary-text-color);
     }
 
     .subTitle {
@@ -157,7 +158,7 @@ export const navigationNormalModeStyles = html`
       line-height: 16px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
       --notchSize: 4px;
       clip-path: polygon(
         0% var(--notchSize),
@@ -183,7 +184,7 @@ export const navigationNormalModeStyles = html`
     }
 
     .header-right {
-      font-size: var(--sc-skolar-font-size-xxs);
+      font-size: var(--sc-font-size-xxs);
       font-weight: 600;
       line-height: 1;
 
@@ -191,7 +192,7 @@ export const navigationNormalModeStyles = html`
 
       height: 24px;
       min-width: 72px;
-      padding: 0 4px;
+      padding: 0 8px 0 4px;
       box-sizing: border-box;
 
       color: white;
@@ -207,26 +208,30 @@ export const navigationNormalModeStyles = html`
 
     .essay-link {
       font-family: var(--sc-serif-font);
+
+      font-size: var(--sc-font-size-s);
       font-weight: 500;
 
       margin: 0 0.5rem 0.667rem;
-      padding: 0.333rem 0.5rem;
+      padding: 8px 16px;
 
-      border-radius: 8px;
+      border-radius: 16px;
 
       align-self: flex-start;
     }
 
-    .header-link .title,
+    .header-link,
     .essay-link,
     .shortcut-link {
-      text-decoration-color: transparent;
+    transition: var(--sc-link-transition);
+
+      background-color: inherit;
     }
 
     .header-link:hover,
     .essay-link:hover,
     .shortcut-link:hover {
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
 
       background-color: var(--sc-primary-color-light-transparent);
     }
@@ -234,26 +239,16 @@ export const navigationNormalModeStyles = html`
     .header-link:active,
     .essay-link:active,
     .shortcut-link:active {
-      transition: all 200ms ease;
+      transition: var(--sc-link-transition);
 
       background-color: var(--sc-primary-color-light);
     }
 
-    .header-link:hover .title,
-    .essay-link:hover,
-    .shortcut-link:hover {
-      transition: all 200ms ease;
-
-      text-decoration: underline;
-      text-decoration-color: var(--sc-primary-color-light);
-      text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.06em;
-    }
 
     .essay::before {
       font-family: var(--sc-sans-font);
       font-weight: 800;
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-secondary-secondary-text-color);
 
       content: 'Essay: ';
     }
@@ -267,15 +262,18 @@ export const navigationNormalModeStyles = html`
     }
 
     .shortcut-link {
+
+      box-sizing: border-box;
       font-style: italic;
 
       display: inline-block;
 
-      padding: 0.333rem 0.5rem;
+      padding:  6px 16px;
 
       border: 2px solid var(--sc-primary-color-light);
-      border-radius: 8px;
+      border-radius: 18px;
       margin-bottom: 0.667rem;
+      height: 36px;
     }
 
     .shortcut-link:before {
@@ -325,12 +323,12 @@ export const navigationCompactModeStyles = html`
     }
 
     .title {
-      font-size: var(--sc-skolar-font-size-l);
+      font-size: var(--sc-font-size-l);
       line-height: 1;
     }
 
     .shortcut-link {
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
 
       margin-top: 0;
       margin-bottom: 0.5rem;
@@ -356,7 +354,7 @@ export const navigationPublicationInfoStyles = html`
     }
 
     .editions-nav-notice-lead {
-      font-size: var(--sc-skolar-font-size-xxs);
+      font-size: var(--sc-font-size-xxs);
       font-weight: 600;
 
       display: flex;
@@ -374,7 +372,7 @@ export const navigationPublicationInfoStyles = html`
     }
 
     .edition-title {
-      font-size: var(--sc-skolar-font-size-md);
+      font-size: var(--sc-font-size-md);
     }
 
     .editions-nav-notice-by {
@@ -382,7 +380,7 @@ export const navigationPublicationInfoStyles = html`
     }
 
     .creator {
-      font-size: var(--sc-skolar-font-size-md);
+      font-size: var(--sc-font-size-md);
 
       letter-spacing: var(--sc-caps-letter-spacing);
 
@@ -404,10 +402,13 @@ export const navigationPublicationInfoStyles = html`
       color: inherit;
       border: 1px solid var(--sc-border-color);
       border-radius: 8px;
+
+      transition: var(--sc-link-transition);
     }
 
     a.editions-nav-notice-link:hover {
       background-color: var(--sc-primary-color-light-transparent);
+      transition: var(--sc-link-transition);
     }
 
     .editions-nav-notice img {
@@ -415,7 +416,7 @@ export const navigationPublicationInfoStyles = html`
     }
 
     .editions-nav-notice-banner {
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
       font-weight: 500;
       font-stretch: expanded;
 
@@ -423,7 +424,7 @@ export const navigationPublicationInfoStyles = html`
 
       letter-spacing: var(--sc-caps-letter-spacing);
 
-      color: var(--sc-primary-color-medium);
+      color: var(--sc-primary-color-dark);
 
       align-self: flex-end;
       font-variant-caps: small-caps;

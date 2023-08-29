@@ -1,12 +1,12 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-plusplus */
 import { LitElement, html, css } from 'lit';
 import { queue } from 'd3-queue';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
-import '@material/mwc-checkbox';
-import '@material/mwc-button';
-import '@material/mwc-linear-progress';
+import '@material/web/checkbox/checkbox';
+import '@material/web/button/filled-button';
+import '@material/web/button/outlined-button';
+import '@material/web/field/filled-field';
+import '@material/web/linearprogress/linear-progress';
 import { icon } from '../../img/sc-icon';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
@@ -270,11 +270,7 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
     let failed = 0;
     let passed = 0;
     let interval = 0;
-    const progressBar = this.shadowRoot.querySelector('mwc-linear-progress');
-    if (progressBar) {
-      progressBar.progress = this._calculateCurrentProgress();
-      progressBar.buffer = 0;
-    }
+    const progressBar = this.shadowRoot.querySelector('md-linear-progress');
     this.isDownloadPaused = false;
     this.D3queue = queue(20);
     const filteredUrls = this.allURLs.filter(v => !this.downloadedUrls[v.url]);
@@ -497,15 +493,17 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
       mwc-formfield {
         --mdc-typography-font-family: var(--sc-sans-font);
 
-        --mdc-typography-body2-font-size: var(--sc-skolar-font-size-md);
+        --mdc-typography-body2-font-size: var(--sc-font-size-md);
 
-        --mdc-theme-text-primary-on-background: var(--sc-primary-text-color);
+        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
         --mdc-theme-secondary: var(--sc-primary-accent-color);
       }
 
-      mwc-button {
-        --mdc-theme-primary: var(--sc-primary-accent-color);
-        --mdc-theme-on-primary: white;
+      md-filled-button,
+      md-outlined-button {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-sys-color-on-primary: white;
+        --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
       }
 
       .option-multi-select {
@@ -513,12 +511,10 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
         flex-direction: column;
       }
 
-      mwc-checkbox {
-        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-      }
-
-      mwc-linear-progress {
-        --mdc-theme-primary: var(--sc-primary-accent-color);
+      md-checkbox,
+      md-linear-progress {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-sys-color-on-primary: white;
       }
 
       h3 + mwc-formfield {
@@ -654,11 +650,11 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
             <p>${this.localize('offline:selectDifferentLang')}</p>
             <h3>${this.localize('offline:downloadParallels')}</h3>
             <mwc-formfield label=${this.localize('offline:downloadParallelsDescription')}>
-              <mwc-checkbox
+              <md-checkbox
                 ?checked=${this.shouldDownloadParallels}
                 ?disabled=${this.isDownloadButtonDisabled}
                 @change=${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}
-              ></mwc-checkbox>
+              ></md-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">
@@ -670,11 +666,11 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
                 this.defaultPaliDictToLang.name
               )}
             >
-              <mwc-checkbox
+              <md-checkbox
                 ?checked=${this.shouldDownloadRootTexts}
                 ?disabled=${this.isDownloadButtonDisabled}
                 @change=${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}
-              ></mwc-checkbox>
+              ></md-checkbox>
             </mwc-formfield>
           </div>
           <div class="row">
@@ -684,12 +680,12 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
               ${this.paliLookupLanguages.map(
                 lang => html`
                   <mwc-formfield label=${lang.name}>
-                    <mwc-checkbox
+                    <md-checkbox
                       value=${lang.isoCode}
                       ?checked=${lang.enabled}
                       ?disabled=${this.isDownloadButtonDisabled}
                       @change=${this._setPaliLookup}
-                    ></mwc-checkbox>
+                    ></md-checkbox>
                   </mwc-formfield>
                 `
               )}
@@ -702,12 +698,12 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
               ${this.chineseLookupLanguages.map(
                 lang => html`
                   <mwc-formfield label=${lang.name}>
-                    <mwc-checkbox
+                    <md-checkbox
                       value=${lang.isoCode}
                       ?checked=${lang.enabled}
                       ?disabled=${this.isDownloadButtonDisabled}
                       @change=${this._setChineseLookup}
-                    ></mwc-checkbox>
+                    ></md-checkbox>
                   </mwc-formfield>
                 `
               )}
@@ -715,23 +711,17 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
           </div>
           <hr />
           <div class="row button-row">
-            <mwc-button
-              raised
-              @click=${this.makeOffline}
-              label=${this._getDownloadButtonText()}
-            ></mwc-button>
+            <md-filled-button @click=${this.makeOffline}
+              >${this._getDownloadButtonText()}</md-filled-button
+            >
           </div>
           <div class="row button-row">
-            <mwc-button
-              @click=${this._showAddToHomeScreenPrompt}
-              outlined
-              label=${this.localize('offline:addToHomeScreen')}
-            ></mwc-button>
-            <mwc-button
-              @click=${this._resetDownloadHistory}
-              outlined
-              label=${this.localize('offline:resetButton')}
-            ></mwc-button>
+            <md-outlined-button @click=${this._showAddToHomeScreenPrompt}
+              >${this.localize('offline:addToHomeScreen')}</md-outlined-button
+            >
+            <md-outlined-button @click=${this._resetDownloadHistory}
+              >${this.localize('offline:resetButton')}</md-outlined-button
+            >
           </div>
           ${this.cacheDownloadInProgress
             ? html`
@@ -747,7 +737,7 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
                       <span class="pointer" @click=${this._stopDownload}>${icon.stop}</span>
                     </div>
                     <div class="card-footer">
-                      <mwc-linear-progress indeterminate></mwc-linear-progress>
+                      <md-linear-progress indeterminate></md-linear-progress>
                       <div class="download-progress-percentage">
                         ${this.downloadProgressPercentage}%
                       </div>

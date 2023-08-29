@@ -7,7 +7,7 @@ export class SCToasts extends LitElement {
       display: block;
       position: absolute;
       z-index: 9999;
-      --mdc-typography-body2-font-size: calc(19px * var(--sc-skolar-font-scale));
+      --mdc-typography-body2-font-size: var(--sc-font-size-l);
       --mdc-typography-font-family: var(--sc-sans-font);
     }
 

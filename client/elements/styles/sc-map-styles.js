@@ -333,10 +333,8 @@ export const leafletStyles = css`
 
   /* general typography */
   .leaflet-container {
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-size: 0.75rem;
-    line-height: 1.5;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
   }
 
 
@@ -352,7 +350,7 @@ export const leafletStyles = css`
     border-bottom: 1px solid #ccc;
     width: 26px;
     height: 26px;
-    line-height: 26px;
+
     display: block;
     text-align: center;
     text-decoration: none;

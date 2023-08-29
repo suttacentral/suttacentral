@@ -78,7 +78,7 @@
       body {
         margin: 0;
         background-color: var(--sc-primary-background-color);
-        color: var(--sc-primary-text-color);
+        color: var(--sc-on-primary-primary-text-color);
         overflow-y: scroll;
         overflow-x: hidden;
       }
@@ -89,7 +89,7 @@
         background-color: #f5f5f5;
         color: rgb(33, 33, 33);
         text-align: center;
-        font-family: sans-serif;
+        font-family: var(--sc-sans-font);
       }
 
       .center {
@@ -108,12 +108,7 @@
       }
 
       a {
-        color: rgba(206, 132, 0, 1);
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
+                text-decoration: none;
       }
 
       button {
@@ -129,6 +124,46 @@
       button:hover {
         text-decoration: underline;
       }
+
+      .link-button
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 550;
+    line-height: 1;
+
+    display: inline-flex;
+
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 40px;
+    padding: 0 24px;
+
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    color: var(--sc-primary-accent-color);
+    border: 2px solid var(--sc-border-color);
+    border-radius: 24px;
+    background-color: inherit;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.link-button:hover
+{
+    transition: var(--sc-link-transition);
+
+    background-color: var(--sc-primary-color-light-transparent);
+}
+
+.link-button:active
+{
+    transition: var(--sc-link-transition);
+
+    background-color: var(--sc-primary-color-light);
+}
     </style>
     <% if (htmlWebpackPlugin.options.isDevelopmentMode) { %>
       <script type="module" src="./elements/sc-site-layout.js"></script>

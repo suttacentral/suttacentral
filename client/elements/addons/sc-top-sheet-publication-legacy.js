@@ -15,7 +15,7 @@ export class SCTopSheetPublicationLegacy extends SCTopSheetCommon {
 
       h2 {
         font-family: var(--sc-serif-font);
-        color: var(--sc-primary-text-color);
+        color: var(--sc-on-primary-primary-text-color);
       }
     `,
   ];

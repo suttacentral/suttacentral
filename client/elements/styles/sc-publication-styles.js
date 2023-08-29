@@ -1,77 +1,97 @@
 import { css } from 'lit';
 
 export const SCPublicationStyles = css`
-  main {
+main
+{
     max-width: 720px;
     margin: 2em auto 4em;
-  }
+}
 
-  hgroup {
+hgroup
+{
     text-align: center;
-  }
+}
 
-  h1 {
+h1
+{
     margin: 0;
-  }
+}
 
-  hgroup h1 {
+hgroup h1
+{
     font-variant-caps: small-caps;
-  }
+}
 
-  .translation_subtitle {
-    font-size: var(--sc-skolar-font-size-md);
+.translation_subtitle
+{
+    font-size: var(--sc-font-size-md);
     font-style: italic;
-  }
+}
 
-  .creator_name {
-    font-size: var(--sc-skolar-font-size-l);
+.creator_name
+{
+    font-size: var(--sc-font-size-l);
 
     text-align: center;
 
     font-variant-caps: all-small-caps;
-  }
+}
 
-  [rel~='license'] {
+[rel~='license']
+{
     display: block;
 
     margin: 1em 0;
     padding: 1em 2em;
 
-    transition: all 200ms ease;
+    transition: var(--sc-link-transition);
     text-decoration: none;
 
-    background-color: var(--sc-tertiary-background-color);
-  }
+    border-radius: 24px;
+    background-color: var(--sc-tertiary-background-color);;
+}
 
-  [rel~='license']:hover {
+[rel~='license']:hover
+{
+    text-decoration: none;
+
     background-color: var(--sc-primary-color-light-transparent);
-  }
+}
 
-  [rel~='license'] p {
+[rel~='license'] p
+{
     margin-top: 0;
-  }
+}
 
-  table {
+table
+{
     font-family: var(--sc-sans-font);
 
     position: relative;
 
     width: 100%;
     margin: 4em auto;
+    padding: 1em 2vw;
 
-    border-collapse: collapse;
-  }
+    border-spacing: 0;
+    border-collapse: initial;
 
-  caption {
-    font-size: var(--sc-skolar-font-size-xxl);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 24px;
+}
+
+caption
+{
+    font-size: var(--sc-font-size-xl);
     font-weight: normal;
-
     font-style: italic;
 
     margin-bottom: 0;
-  }
+    padding: 2rem 1rem  1rem 1rem;
+}
 
-  table .icon {
+table .icon
+{
     display: inline-block;
 
     width: 24px;
@@ -79,89 +99,128 @@ export const SCPublicationStyles = css`
     margin-right: 8px;
 
     vertical-align: middle;
-  }
 
-  table svg{
-    fill: var(--sc-icon-color);
-    margin-right: 1rem;
+    min-inline-size: max-content;
+}
+
+table svg
+{
     display: inline-block;
+
+    margin-right: 1vw;
+
     vertical-align: middle;
-  }
 
-  table a .icon {
-    fill: var(--sc-secondary-background-color);
-  }
+    fill: var(--sc-icon-color);
+}
 
-  table a {
-    font-weight: 600;
+table a .icon
+{
+    fill: var(--sc-icon-color);
+}
 
-    display: block;
+.link-button
+{
+    width: 100%;
+    min-width: fit-content;
+    max-width: min-content;
+    height: 48px;
+    padding-right: 4vw;
+    padding-left: 4vw;
+}
 
-    padding: 0.5em 1em 0.5em 0.75em;
+.link-button + .link-button
+{
+    display: flex;;
 
-    margin-bottom: 1em;
+    margin-top: 8px;
+}
 
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    text-decoration: none;
+td
+{
+    padding: 2vw;
 
-    color: var(--sc-primary-background-color);
-    border-radius: 5px;
-    background-color: var(--sc-primary-accent-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  }
+    vertical-align: middle;
+}
 
-  table a:hover {
-    background-color: var(--sc-primary-accent-color);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-
-    text-decoration: none;
-  }
-
-  tfoot td:first-child {
-    font-size: 0.8em;
+tfoot td:first-child
+{
+    font-size: var(--sc-font-size-s);
     font-weight: normal;
 
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  tbody td{
-    height: 52px
-  }
+tbody td:first-child span
+{
+    font-size: var(--sc-font-size-l);
+    font-weight: normal;
 
-  tbody td:first-child{
+    display: inline-flex;
+    flex-direction: column;
 
     font-variant-caps: all-small-caps;
-    font-size: var(--sc-skolar-font-size-xl);
-  }
+}
 
-  figure {
+small
+{
+    font-size: var(--sc-font-size-s);
+    font-weight: 500;
+    font-stretch: condensed;
+    line-height: 1;
+
+    color: var(--sc-on-primary-secondary-text-color);
+
+    font-variant-caps: initial;
+}
+
+
+figure
+{
     float: right;
 
-    width: 300px;
+    max-width: 300px;
     height: auto;
-    margin: 0 0 1em 1em;
-  }
+    margin: 0 0 0 2em;
+}
 
-  figure img {
-    margin-bottom: 8px;
+@media screen and (max-width: 600px)
+{
+    figure
+    {
+        float: initial;
+
+        max-width: 300px;
+        margin: 2em auto 0;
+    }
+}
+
+figure img
+{
+    margin: 0 0 8px 0;
 
     box-shadow: var(--sc-shadow-elevation-8dp);
-  }
+}
 
-  figcaption {
+figcaption
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
+    font-size: var(--sc-font-size-s);
 
     text-align: center;
 
-    color: var(--sc-secondary-text-color);
-  }
+    color: var(--sc-on-primary-secondary-text-color);
+}
 
-  dl.publication {
+dl.publication
+{
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-skolar-font-size-s);
-  }
+    font-size: var(--sc-font-size-s);
+}
 
-  dt {
+dt
+{
     font-weight: bold;
-  }
+}
+
 `;
