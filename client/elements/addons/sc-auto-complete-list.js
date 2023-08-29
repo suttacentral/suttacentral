@@ -34,6 +34,10 @@ class SCAutoCompleteList extends LitElement {
 
     .ss-item-uid {
       font-size: var(--sc-font-size-md);
+
+          display: flex;
+    align-items: center;
+    gap: 1rem;
     }
 
     .ss-item-title {
@@ -42,7 +46,7 @@ class SCAutoCompleteList extends LitElement {
 
     .suggestion-item-description {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 0.25rem;
       grid-area: label;
     }
@@ -58,7 +62,7 @@ class SCAutoCompleteList extends LitElement {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 16px;
+      padding: .5rem 1rem;
       background-color: var(--sc-secondary-background-color);
       border-radius: var(--sc-big-border-radius);
       margin-bottom: 0.25rem;
@@ -69,7 +73,7 @@ class SCAutoCompleteList extends LitElement {
     li:focus:after {
       content: 'go to ⏎';
       color: var(--sc-primary-accent-color);
-      font-size: var(--sc-font-size-xs);
+      font-size: var(--sc-font-size-s);
       font-weight: 600;
       font-stretch: condensed;
     }
@@ -79,7 +83,7 @@ class SCAutoCompleteList extends LitElement {
     }
 
     li:active {
-      background-color: var(--sc-primary-accent-color-light);
+      background-color: var(--sc-primary-color-light);
     }
 
     li:focus {
@@ -98,13 +102,15 @@ class SCAutoCompleteList extends LitElement {
 
     .search-filter{
       font-family: monospace;
-      font-size: var(--sc-font-size-xs);
+      font-size: var(--sc-font-size-s);
     }
 
     .ss-footer {
 
       color: var(--sc-on-tertiary-secondary-text-color);
       border-top: var(--sc-border);
+
+      background-color: var(--sc-tertiary-background-color);
     }
 
     .ss-item-bottom {
@@ -332,7 +338,7 @@ class SCAutoCompleteList extends LitElement {
                   class=${i === 0 ? 'selected' : ''}
                 >
                   <span class="suggestion-item-description">
-                    <span class="ss-item-uid"><span>${icon.leaves}</span>${item.uid}</span>
+                    <span class="ss-item-uid"><span class="ss-item-uid-icon">${icon.leaves}</span><span class='ss-item-uid-text'>${item.uid}</span>
                     <span class="ss-item-title">${item.title}</span>
                   </span>
                 </li>`
