@@ -9,18 +9,19 @@ class SCAutoCompleteList extends LitElement {
     :host {
       position: absolute;
       top: 49px;
-      left: 28px;
-      width: 90%;
+      left: var(--sc-size-sm);
+      width: calc(100% - var(--sc-size-sm) * 2);
       z-index: 9999;
-      background-color: var(--sc-primary-background-color);
-      color: var(--sc-primary-text-color);
+      background-color: var(--sc-tertiary-background-color);
+      color: var(--sc-on-primary-primary-text-color);
+      border-radius: var(--sc-mid-border-radius);
+      box-shadow: var(--sc-shadow-elevation-24dp);
       display: none;
     }
 
     .search-suggestions {
       width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
+
     }
 
     .suggestion-item {
@@ -32,12 +33,11 @@ class SCAutoCompleteList extends LitElement {
     }
 
     .ss-item-uid {
-      color: var(--sc-primary-text-color);
-      font-size: 18px;
+      font-size: var(--sc-font-size-md);
     }
 
     .ss-item-title {
-      color: var(--sc-secondary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
     }
 
     .suggestion-item-description {
@@ -54,39 +54,28 @@ class SCAutoCompleteList extends LitElement {
       overflow-y: auto;
     }
 
-    ul:before {
-      content: 'search';
-      position: absolute;
-      top: -16px;
-      right: 72px;
-      font-size: var(--sc-skolar-font-size-xxs);
-      font-weight: 600;
-      font-stretch: condensed;
-      color: var(--sc-tertiary-text-color);
-    }
-
     li {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px;
-      background-color: var(--sc-tertiary-background-color);
-      border-radius: 0.25rem;
+      padding: 8px 16px;
+      background-color: var(--sc-secondary-background-color);
+      border-radius: var(--sc-big-border-radius);
       margin-bottom: 0.25rem;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: var(--sc-link-transition);
     }
 
     li:focus:after {
       content: 'go to ⏎';
       color: var(--sc-primary-accent-color);
-      font-size: var(--sc-skolar-font-size-xs);
+      font-size: var(--sc-font-size-xs);
       font-weight: 600;
       font-stretch: condensed;
     }
 
     li:hover {
-      background-color: var(--sc-primary-accent-color-light-transparent);
+      background-color: var(--sc-primary-color-light-transparent);
     }
 
     li:active {
@@ -97,12 +86,29 @@ class SCAutoCompleteList extends LitElement {
       background-color: var(--sc-primary-accent-color-light-transparent);
     }
 
+    .search-in {
+
+      color: var(--sc-on-primary-secondary-text-color);
+
+      font-size: var(--sc-font-size-s);
+
+      font-stretch: condensed;
+
+    }
+
+    .search-filter{
+      font-family: monospace;
+      font-size: var(--sc-font-size-xs);
+    }
+
     .ss-footer {
-      border-top: 1px solid var(--sc-border-color);
+
+      color: var(--sc-on-tertiary-secondary-text-color);
+      border-top: var(--sc-border);
     }
 
     .ss-item-bottom {
-      border-bottom: 1px solid var(--sc-border-color);
+      border-bottom: var(--sc-border);
     }
 
     li a {
@@ -309,10 +315,10 @@ class SCAutoCompleteList extends LitElement {
                   @keydown=${(e) => this.gotoSearch(e, item.uid, searchQuery)}
                 >
                   <span class="suggestion-item">
-                    <span>${icon.search_gray}</span>
-                    <span>in:${item.uid} ${searchQuery}</span>
+                    <span class='search-icon'>${icon.search_gray}</span>
+                    <span class='search-entry'><span class='search-filter'>in:${item.uid}</span> <span class='search-query'>${searchQuery}</span></span>
                   </span>
-                  <span>Search in ${item.title}</span>
+                  <span class='search-in'>Search in ${item.title}</span>
                 </li>
               `
             )}

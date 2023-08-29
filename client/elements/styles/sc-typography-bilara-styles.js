@@ -47,7 +47,7 @@ article
     letter-spacing: normal;
 
     color: var(--sc-on-tertiary-secondary-text-color);
-    border-radius: var(--sc-card-border-radius);
+    border-radius: var(--sc-mid-border-radius);
     background-color: var(--sc-tertiary-background-color);
 
     font-variant-caps: normal;
@@ -85,7 +85,7 @@ article
     white-space: normal;
 
     color: var(--sc-on-tertiary-secondary-text-color);
-    border-radius: var(--sc-card-border-radius);
+    border-radius: var(--sc-mid-border-radius);
     background-color: var(--sc-tertiary-background-color);
     box-shadow: var(--sc-shadow-elevation-8dp);
 }

@@ -22,7 +22,8 @@ export const SCUtilityStyles = css`
 
     --sc-border: 1px solid var(--sc-border-color);
 
-    --sc-card-border-radius: 16px;
+    --sc-mid-border-radius: 16px;
+    --sc-big-border-radius: 24px;
 
     --sc-umbra-opacity: rgba(0, 0, 0, 0.1);
     --sc-penumbra-opacity: rgba(0, 0, 0, 0.07);

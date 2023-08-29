@@ -90,7 +90,7 @@ section + section
 
     transition: var(--sc-link-transition);
 
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
 }
 
 .editions a:hover
@@ -229,7 +229,7 @@ article
 
     margin-bottom: 16px;
 
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
 }
 
 .two-cards
@@ -361,7 +361,7 @@ a
 
 video
 {
-    border-radius: var(--sc-card-border-radius);
+    border-radius: var(--sc-mid-border-radius);
     box-shadow: var(--sc-shadow-elevation-2dp);
 }
 

@@ -28,7 +28,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: rgb(75, 74, 73);
+      background-color: var(--sc-dark-fixed-background-color);
       --mdc-theme-surface: var(--sc-secondary-background-color);
     }
 
@@ -38,7 +38,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       padding: 0 4px 0 4px;
       z-index: -1;
       color: white;
-      background-color: rgb(75, 74, 73);
+      background-color: var(--sc-dark-fixed-background-color);
     }
 
     #search_input {
