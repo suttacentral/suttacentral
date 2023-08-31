@@ -22,14 +22,10 @@
   "--sc-on-tertiary-primary-text-color": "#000000",
   "--sc-on-tertiary-secondary-text-color": "#675d4f",
 
-"--sc-dark-fixed-background-color": "#4c4640",
-
+  "--sc-dark-fixed-background-color": "#4c4640",
   "--sc-inverted-text-color": "#ffffff",
-
   "--sc-icon-color": "#969088",
-
   "--sc-border-color": "#cdc5bd",
-  "--sc-dark-fixed-background-color": "#4b4640",
   "--sc-toast-error-color": "#ba1a1a",
   "--sc-toast-success-color": "var(--sc-primary-accent-color-light)",
   "--sc-pie-chart-bg-color": "var(--sc-primary-accent-color-lighter)",

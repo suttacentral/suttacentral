@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import '@material/web/iconbutton/standard-icon-button';
+
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
@@ -8,12 +8,13 @@ import { API_ROOT } from '../../constants';
 Base toolbar that appears on the top right in the header of every page.
 */
 
+import '@material/web/iconbutton/standard-icon-button';
+
 export class SCActionItems extends LitLocalized(LitElement) {
   static properties = {
     path: { type: String },
     suttaplexDisplay: { type: Boolean },
     suttaplexListEnabled: { type: Boolean },
-    mode: { type: String },
     localizedStringsPath: { type: String },
     displaySettingMenu: { type: Boolean },
     displayToolButton: { type: Boolean },
@@ -37,7 +38,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.suttaplexListEnabled = store.getState().suttaplexListDisplay;
     this.colorTheme = store.getState().colorTheme;
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
-    this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/interface';
     this.currentRoute = store.getState().currentRoute;
     this.siteLanguage = store.getState().siteLanguage;

@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/web/button/filled-button';
+import '@material/web/textfield/filled-text-field';
 import './addons/sc-error-icon';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
@@ -126,17 +127,37 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get searchResultHeadTemplate() {
     return html`
       <div class="search-result-head">
-        <h1 class="search-result-header">
+        <h3 class="search-result-header">
+          <md-filled-text-field
+            id="search_input"
+            type="search"
+            label="Full text search"
+            @keypress=${this.#keypressHandler}
+          >
+            <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
+          </md-filled-text-field>
           <span class="search-result-number">
             ${this.#calculateResultCount(this.resultCount)}
           </span>
           <span class="search-result-description">${this.localize('search:resultsFor')} </span>
           <span class="search-result-term">${this.searchQuery} </span> <span>in all languages</span>
-        </h1>
+        </h3>
       </div>
-      <aside>${this.localize('search:hint')}</aside>
       ${this.#notSearchResultFoundForSelectedLanguagesTemplate()}
     `;
+  }
+
+  #keypressHandler({ key }) {
+    if (key === 'Enter') {
+      this._startSearch();
+    }
+  }
+
+  _startSearch() {
+    const searchQuery = this.shadowRoot.getElementById('search_input').value;
+    if (searchQuery) {
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
+    }
   }
 
   #notSearchResultFoundForSelectedLanguagesTemplate() {
@@ -640,7 +661,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       if (
         this.originLastSearchResults.length > 0 &&
         (!searchResult ||
-          searchResult.length < 10 ||
+          searchResult.length === 0 ||
           (searchResult.length === 1 && searchResult[0].category === 'dictionary'))
       ) {
         this.displayHintOfNoResultInSelectedLanguages = true;
@@ -688,10 +709,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.loadingResults = true;
     this.waitTimeAfterNewWordExpired = false;
     this.currentFilter = 'all';
-    const filterMenu = this.shadowRoot.querySelector('#filter_menu');
-    if (filterMenu) {
-      filterMenu.resetFilter();
-    }
     this.#startNewSearch();
   }
 
@@ -780,6 +797,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
       this.#createMetaData();
+      // this.shadowRoot.querySelector('#search_input').value = this.searchQuery;
     }
   }
 

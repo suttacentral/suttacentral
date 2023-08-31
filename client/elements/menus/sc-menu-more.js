@@ -55,15 +55,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --mdc-radio-unchecked-color: var(--sc-icon-color);
     }
 
-    /* [role='separator'] {
-      background-color: var(--sc-border-color);
-      width: 100%;
-      overflow: hidden;
-      height: 1px;
-      margin-top: var(--sc-size-xxs);
-      margin-bottom: var(--sc-size-xxs);
-    } */
-
     .chevron_right {
       display: inline-flex;
       margin-right: 0;
@@ -184,12 +175,13 @@ export class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   _onThemeChanged(e) {
-    const chk = e.currentTarget.shadowRoot.querySelector('md-checkbox');
+    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+    console.log(chk.checked);
     this.actions.changeAppTheme(chk.checked ? 'dark' : 'light');
   }
 
   _onToolbarDisplayModeChanged(e) {
-    const chk = e.currentTarget.shadowRoot.querySelector('md-checkbox');
+    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
     this.actions.changeAlwaysShowToolbarState(chk.checked);
   }
 

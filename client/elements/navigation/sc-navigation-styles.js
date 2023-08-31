@@ -223,7 +223,7 @@ export const navigationNormalModeStyles = html`
     .header-link,
     .essay-link,
     .shortcut-link {
-    transition: var(--sc-link-transition);
+      transition: var(--sc-link-transition);
 
       background-color: inherit;
     }
@@ -244,7 +244,6 @@ export const navigationNormalModeStyles = html`
       background-color: var(--sc-primary-color-light);
     }
 
-
     .essay::before {
       font-family: var(--sc-sans-font);
       font-weight: 800;
@@ -262,13 +261,12 @@ export const navigationNormalModeStyles = html`
     }
 
     .shortcut-link {
-
       box-sizing: border-box;
       font-style: italic;
 
       display: inline-block;
 
-      padding:  6px 16px;
+      padding: 6px 16px;
 
       border: 2px solid var(--sc-primary-color-light);
       border-radius: 18px;
