@@ -3,7 +3,6 @@
   "--sc-primary-color-light": "#fdbb40",
   "--sc-primary-color-light-transparent": "rgba(253,187,64, 0.5)",
   "--sc-primary-color-dark": "#9e6e00",
-
   "--sc-primary-accent-color": "#009966",
   "--sc-primary-accent-color-light": "#00c080",
   "--sc-primary-accent-color-lighter": "#00f3a2",

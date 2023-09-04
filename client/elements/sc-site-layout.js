@@ -132,6 +132,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
         <sc-linear-progress .active=${this.linearProgressActive}></sc-linear-progress>
         <sc-menu-static-pages-nav id="static_pages_nav_menu"></sc-menu-static-pages-nav>
+        <md-ripple></md-ripple>
       </div>
 
       <sc-page-selector id="page_selector"></sc-page-selector>

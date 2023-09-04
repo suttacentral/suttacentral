@@ -432,7 +432,7 @@ export const searchResultTableViewStyles = css`
     display: flex;
     justify-content: space-between;
   }
-  
+
   .volpage {
     white-space: nowrap;
   }

@@ -59,6 +59,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     languagesOfFoundResult: { type: String },
     matchPartial: { type: Boolean },
     priorityAuthors: { type: Object },
+    isCompactMode: { type: String },
   };
 
   constructor() {
@@ -98,6 +99,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
     this.actions.changeLinearProgressActiveState(this.loadingResults);
     this.priorityAuthors = new Map([['en', 'sujato']]);
+    this.isCompactMode = store.getState().suttaplexListDisplay;
   }
 
   #hideRelatedTopSheets() {
@@ -192,6 +194,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           item => html`
             <sc-suttaplex
               .item=${item}
+              .suttaplexListStyle=${this.isCompactMode ? 'compact' : ''}
               .parallels-opened=${false}
               .difficulty=${this.#computeItemDifficulty(
                 item && item.difficulty ? item.difficulty : ''
@@ -585,6 +588,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (this.displayedLanguages !== state.displayedLanguages) {
       this.displayedLanguages = state.searchOptions.displayedLanguages;
       this.#filterSearchResultByLanguages();
+    }
+    if (this.isCompactMode !== state.suttaplexListDisplay) {
+      this.isCompactMode = state.suttaplexListDisplay;
     }
   }
 

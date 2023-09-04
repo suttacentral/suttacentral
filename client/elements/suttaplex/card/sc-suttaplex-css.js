@@ -3,7 +3,12 @@ import { css } from 'lit';
 export const suttaplexCss = css`
   article {
     background-color: var(--sc-secondary-background-color);
+    position: relative;
   }
+
+  /* article:hover {
+    background-color: var(--md-ripple-hover-color);
+  } */
 
   details {
     position: relative;

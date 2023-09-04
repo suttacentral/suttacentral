@@ -8,6 +8,7 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/radio/radio';
 import '@material/mwc-formfield';
+import '@material/web/button/filled-button';
 
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
@@ -181,20 +182,6 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
                   `
                 )}
               </mwc-select>
-
-              <!-- <md-filled-select label="${this.localize('donate:currency')}">
-                ${this.currencies &&
-                this.currencies.map(
-                  ({ symbol }, index) => html`
-                    <md-menu-item
-                      ?selected="${index === this.defaultCurrencyIndex}"
-                      value="${symbol}"
-                    >
-                      ${symbol}
-                    </md-menu-item>
-                  `
-                )}
-              </md-filled-select> -->
 
               <md-filled-text-field
                 pattern="^[+]?(\\d+[.,]?\\d{0,2})$"

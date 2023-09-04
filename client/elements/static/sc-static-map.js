@@ -32,115 +32,102 @@ export class SCStaticMap extends SCStaticPage {
     unsafeCSS(typographyCommonStyles),
     unsafeCSS(typographyStaticStyles),
     css`
-      article
-{
-    max-width: 100%;
-}
-
-.columns
-{
-    margin-top: 2rem;
-
-    columns: 3 480px;
-}
-
-.features-section
-{
-    break-inside: avoid;
-}
-
-ul
-{
-    padding-left: 0;
-}
-
-li
-{
-    margin: .5em 0;
-    padding: 0;
-
-    list-style: none;
-}
-li a
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
-    font-weight: 550;
-    line-height: 1;
-
-    display: inline-flex;
-
-    box-sizing: border-box;
-    min-width: 64px;
-    height: 40px;
-    padding: 0 24px;
-
-    transition: var(--sc-link-transition);
-    text-decoration: none;
-
-    color: var(--sc-on-tertiary-primary-text-color);
-    border: 1px solid var(--sc-border-color);
-    border-radius: 24px;
-    background-color: inherit;
-
-    align-items: center;
-    justify-content: center;
-}
-
-li a:hover
-{
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
-}
-
-li a:active
-{
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light);
-}
-
-a svg
-{
-    display: inline-block;
-
-    width: 1.5em;
-    margin-top: -.2em;
-    margin-right: .2em;
-    margin-left: -.6em;
-
-    vertical-align: middle;
-}
-
-h3
-{
-    margin-top: 0;
-}
-
-.features-section
-{
-    margin-bottom: 2rem;
-}
-
-img
-{
-    margin-bottom: 8px;
-
-    border-radius: 24px;
-    box-shadow: var(--sc-shadow-elevation-2dp);
-}
-
-figcaption
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
-
-    text-align: right;
-
-    color: var(--sc-on-primary-secondary-text-color);
-}
-
+      article {
+        max-width: 100%;
+      }
+      
+      .columns {
+        margin-top: 2rem;
+      
+        columns: 3 480px;
+      }
+      
+      .features-section {
+        break-inside: avoid;
+      }
+      
+      ul {
+        padding-left: 0;
+      }
+      
+      li {
+        margin: 0.5em 0;
+        padding: 0;
+      
+        list-style: none;
+      }
+      
+      li a {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-font-size-s);
+        font-weight: 550;
+        line-height: 1;
+      
+        display: inline-flex;
+      
+        box-sizing: border-box;
+        min-width: 64px;
+        height: 40px;
+        padding: 0 24px;
+      
+        transition: var(--sc-link-transition);
+        text-decoration: none;
+      
+        color: var(--sc-on-tertiary-primary-text-color);
+        border: 1px solid var(--sc-border-color);
+        border-radius: 24px;
+        background-color: inherit;
+      
+        align-items: center;
+        justify-content: center;
+      }
+      
+      li a:hover {
+        transition: var(--sc-link-transition);
+      
+        background-color: var(--sc-primary-color-light-transparent);
+      }
+      
+      li a:active {
+        transition: var(--sc-link-transition);
+      
+        background-color: var(--sc-primary-color-light);
+      }
+      
+      a svg {
+        display: inline-block;
+      
+        width: 1.5em;
+        margin-top: -0.2em;
+        margin-right: 0.2em;
+        margin-left: -0.6em;
+      
+        vertical-align: middle;
+      }
+      
+      h3 {
+        margin-top: 0;
+      }
+      
+      .features-section {
+        margin-bottom: 2rem;
+      }
+      
+      img {
+        margin-bottom: 8px;
+      
+        border-radius: 24px;
+        box-shadow: var(--sc-shadow-elevation-2dp);
+      }
+      
+      figcaption {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-font-size-s);
+      
+        text-align: right;
+      
+        color: var(--sc-on-primary-secondary-text-color);
+      }
     `,
   ];
 

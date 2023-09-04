@@ -359,6 +359,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
             <div class="menu-item-wrapper">${icon.speaker} ${this.localize('interface:voice')}</div>
           </mwc-list-item>
         </a>
+        <md-ripple></md-ripple>
       </mwc-list>
     `;
   }

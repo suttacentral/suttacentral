@@ -1,12 +1,13 @@
 import { html, css, LitElement } from 'lit';
-import { LitLocalized } from '../addons/sc-localization-mixin';
+import { create, search, insertMultiple } from '@orama/orama';
+
+import { LitLocalized } from './sc-localization-mixin';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 
 import '@material/web/textfield/filled-text-field';
-import { create, search, insert, insertMultiple } from '@orama/orama';
 
 const suttaDB = await create({
   schema: {
@@ -25,9 +26,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       z-index: 9999;
       background-color: var(--sc-primary-background-color);
       display: none;
+      margin: auto;
+      box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
     }
 
     .search-suggestions {
+      position: relative;
       width: 100%;
       border-radius: 8px;
       box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
@@ -99,10 +103,16 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       background-color: var(--sc-primary-color-light);
     }
 
+    .ss-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     md-filled-text-field {
+      width: 99%;
+      margin-top: 8px;
       --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
-      margin: 10px 0px 2px 9px;
-      width: 98%;
       --md-sys-color-primary: var(--sc-primary-accent-color);
       --md-sys-color-on-primary: white;
       --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
@@ -314,7 +324,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
   #suggestionsTemplate() {
     const tipitakas = [
-      { uid: 'in:ebt', title: 'Early Buddhist texts' },
+      { uid: 'in:ebt', title: 'Early Buddhist Texts' },
       { uid: 'in:dn', title: 'Dīgha Nikāya' },
       { uid: 'in:mn', title: 'Majjhima Nikāya' },
       { uid: 'in:sn', title: 'Saṁyutta Nikāya' },
@@ -323,16 +333,18 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     ];
 
     return html`
-      <div class="search-suggestions">
-        <md-filled-text-field
-          id="search_input"
-          type="search"
-          label="Input search term"
-          @keyup=${e => this.keyupHandler(e)}
-          @keypress=${this.keypressHandler}
-        >
-          <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
-        </md-filled-text-field>
+      <div id="instant_search_dialog" class="search-suggestions">
+        <div class="ss-header">
+          <md-filled-text-field
+            id="search_input"
+            type="search"
+            label="Input search term"
+            @keyup=${e => this.#keyupHandler(e)}
+            @keypress=${this.#keypressHandler}
+          >
+            <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
+          </md-filled-text-field>
+        </div>
         <div class="ss-list">
           <ul id="ss-items">
             ${this.searchQuery &&
@@ -368,16 +380,18 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                 </li>`
             )}
             <md-divider></md-divider>
-            <li @click=${() => this.#openSearchTip()} class="ss-footer">
-              <span>${icon.tip}</span><span>Search syntax tips</span>
+            <li @click=${() => this.#openSearchTip()}>
+              <span>${icon.tip}</span>
+              <span>Search syntax tips</span>
             </li>
+            <md-ripple></md-ripple>
           </ul>
         </div>
       </div>
     `;
   }
 
-  keypressHandler({ key }) {
+  #keypressHandler({ key }) {
     if (key === 'Enter') {
       this.#startSearch();
     }
@@ -391,7 +405,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
   }
 
-  async keyupHandler(e) {
+  async #keyupHandler(e) {
     if (e.key === 'Enter') {
       return;
     }

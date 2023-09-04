@@ -130,10 +130,9 @@ export class SCNavigation extends LitLocalized(LitElement) {
                   <header>${this.#headerTemplate(child)}</header>
                 </a>
                 ${this.#blurbTemplate(child)} ${this.#pitakaGuideTemplate(child)}
-                ${this.#checkForPublication(child.uid)
-                  ? this.#publicationInfoTemplate(child)
-                  : ''}
+                ${this.#checkForPublication(child.uid) ? this.#publicationInfoTemplate(child) : ''}
                 ${this.#shortcutsTemplate(child)}
+                <md-ripple></md-ripple>
               </section>
             `
           )}

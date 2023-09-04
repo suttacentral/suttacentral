@@ -37,7 +37,7 @@ function formatDate(date) {
 //   'https://raw.githubusercontent.com/suttacentral/editions/main/last_run_date';
 // const response = await fetch(lastActionRunDateUrl);
 // const lastRunDateText = await response.text();
-const lastRunDateText = '2023-06-12T02:33:48Z';
+const lastRunDateText = '2023-08-21T02:33:48Z';
 export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 

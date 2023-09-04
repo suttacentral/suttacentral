@@ -72,6 +72,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
                       </span>
                       ${this.yellowBrickRoadInfoTemplate(item)}
                     </header>
+                    <md-ripple></md-ripple>
                   </a>
                   <div class="nav-card-content">
                     ${this.blurbTemplate(item)}

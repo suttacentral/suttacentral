@@ -376,7 +376,7 @@ export const sideBySidePlusStyles = html`
 
       height: fit-content;
 
-     margin-bottom:  var(--sc-size-sm);
+      margin-bottom: var(--sc-size-sm);
     }
 
     br {
@@ -392,7 +392,7 @@ export const sideBySidePlusStyles = html`
       .root,
       .variant,
       .comment {
-       display: table;
+        display: table;
 
         margin-top: var(--sc-size-sm);
       }
