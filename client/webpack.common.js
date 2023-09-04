@@ -98,6 +98,8 @@ module.exports = {
               ['@babel/plugin-proposal-do-expressions'],
               ['@babel/plugin-proposal-throw-expressions'],
               ['@babel/plugin-proposal-async-do-expressions'],
+              ['@babel/plugin-transform-class-properties'],
+              ['@babel/plugin-transform-private-methods'],
             ],
           },
         },
