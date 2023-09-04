@@ -221,15 +221,21 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
                   <span>
                     <strong>CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.</strong>
                     <br>To the extent possible under law,
-                    <span property='dct:title'>${
-                      this.editionInfo.publication.creator_name
-                    }</span> has waived all copyright and related or neighboring rights to <span property='dct:title'>${this.editionDetail[0].translated_name.replace(
-          'Collection',
-          ''
-        )}</span>. 
-                    This work is published from: <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/${
-                      this.editionUid
-                    }'> Australia</span>.
+                    <span property='dct:title'>
+                      ${this.editionInfo.publication.creator_name}
+                    </span> has waived all copyright and related or neighboring rights to 
+                    <span property='dct:title'>
+                      ${this.editionDetail[0].translated_name.replace('Collection', '')}
+                    </span>.
+                    This work is published from: 
+                    <span 
+                      property='vcard:Country' 
+                      datatype='dct:ISO3166' 
+                      content='AU' 
+                      about='https://suttacentral.net/${this.editionUid}'
+                    >
+                      Australia
+                    </span>.
                   </span>
               </p>
             </a>
@@ -307,22 +313,23 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #printOnDemandTemplate() {
     return html`
       <tr>
-        <td>${icon.paperback} 
-        <span>
-        <span>Paperback</span>
-        <small>Order individual volumes</small>
-        </span>
+        <td>
+          ${icon.paperback}
+          <span>
+            <span>Paperback</span>
+            <small>Order individual volumes</small>
+          </span>
         </td>
         <td>
           ${this.editionPaperbackInfo?.edition?.volumes
             ? html` ${this.editionPaperbackInfo.edition.volumes.map(
                 vol =>
-                  html` <a class='link-button' href=${vol.volume_lulu_url} class="external"
+                  html` <a class="link-button" href=${vol.volume_lulu_url} class="external"
                     >${icon.external}
                     ${vol.volume_number
                       ? `Buy Volume ${vol.volume_number.slice(3)} online`
                       : 'Print on demand'}
-                      </a>`
+                  </a>`
               )}`
             : ''}
         </td>
@@ -335,7 +342,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.epub} <span>Epub</span></td>
         <td>
-          <a class='link-button' href=${this.#computeFileUrlByType('epub')} class="download">
+          <a class="link-button" href=${this.#computeFileUrlByType('epub')} class="download">
             ${icon.file_download} Download
           </a>
         </td>
@@ -348,7 +355,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.pdf} <span>Pdf</span></td>
         <td>
-          <a class='link-button' href=${this.#computeFileUrlByType('pdf')} class="download">
+          <a class="link-button" href=${this.#computeFileUrlByType('pdf')} class="download">
             ${icon.file_download} Download
           </a>
         </td>
@@ -359,15 +366,16 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   #rawHtmlDownloadTemplate() {
     return html`
       <tr>
-        <td>${icon.html} 
-        <span>
-        <span>HTML</span>
-        <small>(right click → save)</small>
-        </span>
+        <td>
+          ${icon.html}
+          <span>
+            <span>HTML</span>
+            <small>(right click → save)</small>
+          </span>
         </td>
         <td>
-          <a class='link-button' href=${this.#computeFileUrlByType('html')} class="download">
-            ${icon.file_download} <span class='button-text'><span>Download</span> </span>
+          <a class="link-button" href=${this.#computeFileUrlByType('html')} class="download">
+            ${icon.file_download} <span class="button-text"><span>Download</span> </span>
           </a>
         </td>
       </tr>
@@ -379,7 +387,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.latex} <span>TeX</span></td>
         <td>
-          <a class='link-button' href=${this.#computeFileUrlByType('tex')} class="download">
+          <a class="link-button" href=${this.#computeFileUrlByType('tex')} class="download">
             ${icon.file_download} Download
           </a>
         </td>
@@ -392,8 +400,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.web} <span>Web</span></td>
         <td>
-          <a class='link-button' href=${ifDefined(collectionURL.get(this.editionUid))} class="internal">
-            ${icon.translation} <span class='button-text'><span>Read on SuttaCentral</span></span>
+          <a class="link-button internal" href=${ifDefined(collectionURL.get(this.editionUid))}>
+            ${icon.translation} <span class="button-text"><span>Read on SuttaCentral</span></span>
           </a>
         </td>
       </tr>
@@ -432,7 +440,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan='2'>Updated ${publicationLastGeneratedDate}</td>
+                  <td colspan="2">Updated ${publicationLastGeneratedDate}</td>
                 </tr>
               </tfoot>
             </table>

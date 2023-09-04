@@ -121,28 +121,29 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
 
   render() {
     return html`
-    <div class='language-chooser-header-wrapper'>
-      <div class="menu-item-wrapper text-only">
-        <md-standard-icon-button
-          title="Return to main menu"
-          class="more-menu-return-arrow"
-          @click=${this._showMoreMenu}
-        >
-          ${icon.arrow_left}
-        </md-standard-icon-button>
-        <span class="language-base-menu-head-main">Choose your language</span>
-      </div>
+      <div class="language-chooser-header-wrapper">
+        <div class="menu-item-wrapper text-only">
+          <md-standard-icon-button
+            title="Return to main menu"
+            class="more-menu-return-arrow"
+            @click=${this._showMoreMenu}
+          >
+            ${icon.arrow_left}
+          </md-standard-icon-button>
+          <span class="language-base-menu-head-main">Choose your language</span>
+        </div>
 
-      <div class="menu-item-wrapper text-only">
-        <span class="language-base-menu-head-secondary"
-          >Where available, view translations and site UI in selected language.</span
-        >
-      </div>
+        <div class="menu-item-wrapper text-only">
+          <span class="language-base-menu-head-secondary"
+            >Where available, view translations and site UI in selected language.</span
+          >
+        </div>
 
-      <li divider role="separator"></li>
+        <li divider role="separator"></li>
       </div>
       <mwc-list>
         ${this.languageListResponse.map(language => this.languageTemplate(language))}
+        <md-ripple></md-ripple>
       </mwc-list>
     `;
   }

@@ -734,7 +734,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _setViewModeButtonDisplayState() {
     this.actions.changeDisplayViewModeButtonState(
-      ['home', 'suttaplex', 'navigation'].includes(this.currentRoute.name)
+      ['home', 'suttaplex', 'navigation', 'search'].includes(this.currentRoute.name)
     );
   }
 

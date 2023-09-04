@@ -132,6 +132,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
         <sc-linear-progress .active=${this.linearProgressActive}></sc-linear-progress>
         <sc-menu-static-pages-nav id="static_pages_nav_menu"></sc-menu-static-pages-nav>
+        <md-ripple></md-ripple>
       </div>
 
       <sc-page-selector id="page_selector"></sc-page-selector>
@@ -234,12 +235,19 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       microSentryClient.report(e);
     });
 
-    document.querySelector('#page_selector').addEventListener('click', () => {
-      document
+    const pageSelector = document.querySelector('#page_selector');
+    const contextToolbar = document.querySelector('#context_toolbar');
+
+    const hideAutoCompleteList = () => {
+      const autoCompleteList = document
         .querySelector('sc-navigation-linden-leaves')
         .shadowRoot.querySelector('sc-action-items-universal')
-        .shadowRoot.querySelector('sc-auto-complete-list').style.display = 'none';
-    });
+        .shadowRoot.querySelector('sc-auto-complete-list');
+      autoCompleteList.style.display = 'none';
+    };
+
+    pageSelector.addEventListener('click', hideAutoCompleteList);
+    contextToolbar.addEventListener('click', hideAutoCompleteList);
   }
 
   updated(changedProps) {

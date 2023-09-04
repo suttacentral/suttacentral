@@ -1,5 +1,7 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import '@material/web/iconbutton/standard-icon-button';
+import '@material/web/iconbutton/filled-tonal-icon-button';
+
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
@@ -13,7 +15,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     path: { type: String },
     suttaplexDisplay: { type: Boolean },
     suttaplexListEnabled: { type: Boolean },
-    mode: { type: String },
     localizedStringsPath: { type: String },
     displaySettingMenu: { type: Boolean },
     displayToolButton: { type: Boolean },
@@ -34,26 +35,26 @@ export class SCActionItems extends LitLocalized(LitElement) {
     super();
     this.path = '';
     this.suttaplexDisplay = '';
-    this.suttaplexListEnabled = store.getState().suttaplexListDisplay;
-    this.colorTheme = store.getState().colorTheme;
+    const state = store.getState();
+    this.suttaplexListEnabled = state.suttaplexListDisplay;
+    this.colorTheme = state.colorTheme;
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
-    this.mode = store.getState().toolbarOptions.mode;
     this.localizedStringsPath = '/localization/elements/interface';
-    this.currentRoute = store.getState().currentRoute;
-    this.siteLanguage = store.getState().siteLanguage;
+    this.currentRoute = state.currentRoute;
+    this.siteLanguage = state.siteLanguage;
 
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaParallelsState(false);
     this.actions.changeDisplaySuttaToCState(false);
     this.actions.changeDisplaySuttaInfoState(false);
 
-    this.tableOfContents = !!store.getState().tableOfContents.items.length;
-    this.displaySettingMenu = store.getState().displaySettingMenu;
-    this.displayToolButton = store.getState().displayToolButton;
-    this.displayInfoButton = store.getState().displayInfoButton;
-    this.displayViewModeButton = store.getState().displayViewModeButton;
-    this.displayParallelTableView = store.getState().displayParallelTableView;
-    this.displaySearchOptionsButton = store.getState().displaySearchOptionsButton;
+    this.tableOfContents = !!state.tableOfContents.items.length;
+    this.displaySettingMenu = state.displaySettingMenu;
+    this.displayToolButton = state.displayToolButton;
+    this.displayInfoButton = state.displayInfoButton;
+    this.displayViewModeButton = state.displayViewModeButton;
+    this.displayParallelTableView = state.displayParallelTableView;
+    this.displaySearchOptionsButton = state.displaySearchOptionsButton;
   }
 
   static styles = css`
@@ -91,12 +92,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
       font-size: var(--sc-font-size-xxs);
       font-weight: 600;
       font-stretch: condensed;
-
       position: absolute;
       bottom: 4px;
-
       width: 100%;
-
       text-align: center;
     }
 

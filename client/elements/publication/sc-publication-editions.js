@@ -135,19 +135,18 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       ${this.webEditionInfo?.map(
         edition => html`
           <section class="project">
-              <hgroup>
-                <h2 class="translation_title">${edition.publication.translation_title}</h2>
-                <span class="translation_subtitle"
-                  >${edition.publication.translation_subtitle}</span
-                >
-              </hgroup>
+            <hgroup>
+              <h2 class="translation_title">${edition.publication.translation_title}</h2>
+              <span class="translation_subtitle">${edition.publication.translation_subtitle}</span>
+            </hgroup>
             <p class="creator_name">${edition.publication.creator_name}</p>
-            <div class='link-button-container'>
-            <a
-              class="link-button"
-              href="/edition/${edition.publication.text_uid}/${edition.publication
-                .translation_lang_iso}/${edition.publication.creator_uid}"
-            >Get this book</a>
+            <div class="link-button-container">
+              <a
+                class="link-button"
+                href="/edition/${edition.publication.text_uid}/${edition.publication
+                  .translation_lang_iso}/${edition.publication.creator_uid}"
+                >Get this book</a
+              >
             </div>
             <p class="publication_blurb">
               <img
@@ -159,7 +158,6 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               )}
             </p>
           </section>
-
         `
       )}
     `;

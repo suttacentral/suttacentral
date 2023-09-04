@@ -316,6 +316,19 @@ export const SCPageSearchStyles = css`
     display: flex;
     justify-content: center;
   }
+
+  md-filled-text-field {
+    --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
+    margin: 0px 2px 22px 9px;
+    width: 100%;
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+    --md-sys-color-on-primary: white;
+    --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
+  }
+
+  md-icon {
+    cursor: pointer;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -419,7 +432,7 @@ export const searchResultTableViewStyles = css`
     display: flex;
     justify-content: space-between;
   }
-  
+
   .volpage {
     white-space: nowrap;
   }
