@@ -32,7 +32,7 @@ export const navigationNormalModeStyles = html`
 
       margin-bottom: 0.6667rem;
 
-      border-radius: var(--sc-card-border-radius);
+      border-radius: var(--sc-mid-border-radius);
       background-color: var(--sc-secondary-background-color);
       color: var(--sc-on-secondary-primary-text-color);
       box-shadow: var(--sc-shadow-elevation-4dp);
@@ -215,7 +215,7 @@ export const navigationNormalModeStyles = html`
       margin: 0 0.5rem 0.667rem;
       padding: 8px 16px;
 
-      border-radius: 16px;
+      border-radius: var(--sc-mid-border-radius);
 
       align-self: flex-start;
     }

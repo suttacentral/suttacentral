@@ -1,13 +1,12 @@
 import { html, css, LitElement } from 'lit';
 import { create, search, insertMultiple } from '@orama/orama';
+import '@material/web/textfield/filled-text-field';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
-
-import '@material/web/textfield/filled-text-field';
 
 const suttaDB = await create({
   schema: {
@@ -20,14 +19,16 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       position: absolute;
-      top: 1px;
-      left: 5%;
-      width: 89.4%;
+      top: 49px;
+      left: var(--sc-size-sm);
+      width: calc(100% - var(--sc-size-sm) * 2);
       z-index: 9999;
+      color: var(--sc-on-primary-primary-text-color);
       background-color: var(--sc-primary-background-color);
       display: none;
       margin: auto;
       box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
+      border-radius: var(--sc-mid-border-radius);
     }
 
     .search-suggestions {
@@ -46,8 +47,10 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     .ss-item-uid {
-      color: var(--sc-primary-text-color);
-      font-size: 18px;
+      font-size: var(--sc-font-size-md);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
     .ss-item-title {
@@ -56,7 +59,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .suggestion-item-description {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 0.25rem;
       grid-area: label;
     }
@@ -68,31 +71,20 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       overflow-y: auto;
     }
 
-    ul:before {
-      content: 'search';
-      position: absolute;
-      top: -16px;
-      right: 72px;
-      font-size: var(--sc-skolar-font-size-xxs);
-      font-weight: 600;
-      font-stretch: condensed;
-      color: var(--sc-tertiary-text-color);
-    }
-
     li {
       display: flex;
+      margin-bottom: 0.25rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: var(--sc-link-transition);
+      border-radius: var(--sc-big-border-radius);
+      background-color: var(--sc-secondary-background-color);
       align-items: center;
       justify-content: space-between;
-      padding: 5px;
-      border-radius: 0.25rem;
-      margin-bottom: 0.25rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      color: var(--sc-on-primary-primary-text-color);
     }
 
     li:hover {
-      background-color: var(--sc-primary-color-light);
+      background-color: var(--sc-primary-color-light-transparent);
     }
 
     li:active {
@@ -100,7 +92,19 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     li:focus {
-      background-color: var(--sc-primary-color-light);
+      background-color: var(--sc-primary-accent-color-light-transparent);
+    }
+
+    .search-in {
+      font-size: var(--sc-font-size-s);
+      font-stretch: condensed;
+
+      color: var(--sc-on-primary-secondary-text-color);
+    }
+
+    .search-filter {
+      font-family: monospace;
+      font-size: var(--sc-font-size-s);
     }
 
     .ss-header {
@@ -355,10 +359,13 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   @keydown=${(e) => this.#gotoSearch(e, item.uid, this.searchQuery)}
                 >
                   <span class="suggestion-item">
-                    <span>${icon.search_gray}</span>
-                    <span>${item.uid} ${this.searchQuery}</span>
+                    <span class="search-icon">${icon.search_gray}</span>
+                    <span class="search-entry"
+                      ><span class="search-filter">in:${item.uid}</span>
+                      <span class="search-query">${this.searchQuery}</span></span
+                    >
                   </span>
-                  <span>Search in ${item.title}</span>
+                  <span class="search-in">Search in ${item.title}</span>
                 </li>
               `
             )}
@@ -373,8 +380,11 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   class=${i === 0 ? 'selected' : ''}
                 >
                   <span class="suggestion-item-description">
-                    <span class="ss-item-uid"><span>${icon.leaves}</span>${item.uid}</span>
-                    <span class="ss-item-title">${item.title}</span>
+                    <span class="ss-item-uid">
+                      <span class="ss-item-uid-icon">${icon.leaves}</span>
+                      <span class="ss-item-uid-text">${item.uid}</span>
+                      <span class="ss-item-title">${item.title}</span>
+                    </span>
                   </span>
                   <span>${icon.gotolink}</span>
                 </li>`

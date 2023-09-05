@@ -79,7 +79,7 @@ export const SCMenuStaticPagesNavStyles = css`
 
     opacity: 0.8;
     color: white;
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 
     align-items: center;

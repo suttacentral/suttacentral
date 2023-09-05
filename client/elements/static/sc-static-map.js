@@ -75,7 +75,7 @@ export class SCStaticMap extends SCStaticPage {
       
         color: var(--sc-on-tertiary-primary-text-color);
         border: 1px solid var(--sc-border-color);
-        border-radius: 24px;
+        border-radius: var(--sc-big-border-radius);
         background-color: inherit;
       
         align-items: center;
@@ -116,7 +116,7 @@ export class SCStaticMap extends SCStaticPage {
       img {
         margin-bottom: 8px;
       
-        border-radius: 24px;
+        border-radius: var(--sc-big-border-radius);
         box-shadow: var(--sc-shadow-elevation-2dp);
       }
       
