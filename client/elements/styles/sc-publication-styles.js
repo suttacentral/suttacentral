@@ -40,9 +40,8 @@ export const SCPublicationStyles = css`
     transition: var(--sc-link-transition);
     text-decoration: none;
   
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
     background-color: var(--sc-tertiary-background-color);
-    ;
   }
   
   [rel~='license']:hover {
@@ -68,7 +67,7 @@ export const SCPublicationStyles = css`
     border-collapse: initial;
   
     border: 1px solid var(--sc-border-color);
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
   }
   
   caption {

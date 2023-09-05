@@ -40,20 +40,20 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    const state = store.getState();
+    const storeState = store.getState();
     this.inputLanguage = '';
-    this.infoDialogMetaArea = state.suttaMetaText;
+    this.infoDialogMetaArea = storeState.suttaMetaText;
     this.item = {};
     this.colorsResponse = {};
-    this.siteLanguage = state.siteLanguage;
-    this.appColorTheme = state.colorTheme;
+    this.siteLanguage = storeState.siteLanguage;
+    this.appColorTheme = storeState.colorTheme;
     this.localizedStringsPath = '/localization/elements/interface';
-    this.changedRoute = state.currentRoute;
-    this.displaySettingMenu = state.displaySettingMenu;
-    this.toolbarTitle = state.toolbarOptions.title;
+    this.changedRoute = storeState.currentRoute;
+    this.displaySettingMenu = storeState.displaySettingMenu;
+    this.toolbarTitle = storeState.toolbarOptions.title;
     this.shouldShowFirstToolbar = true;
     this.linearProgressActive = false;
-    this.toolbarPosition = state.toolbarPosition;
+    this.toolbarPosition = storeState.toolbarPosition;
     this.pageLoaded = false;
     if (this.getUrlLangParam !== store.getState().siteLanguage) {
       this.changeSiteLanguage(this.getUrlLangParam);

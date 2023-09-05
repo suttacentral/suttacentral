@@ -82,7 +82,7 @@ export const SCPublicationEditionsStyles = css`
     text-decoration: none;
   
     color: inherit;
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
     background-color: inherit;
   }
   
@@ -164,7 +164,7 @@ export const SCPublicationEditionsStyles = css`
     padding: 1em;
   
     color: var(--sc-on-tertiary-secondary-text-color);
-    border-radius: 24px;
+    border-radius: var(--sc-big-border-radius);
     background-color: var(--sc-tertiary-background-color);
   }
   

@@ -125,45 +125,42 @@
         text-decoration: underline;
       }
 
-      .link-button
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
-    font-weight: 550;
-    line-height: 1;
+      .link-button {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-font-size-s);
+        font-weight: 550;
+        line-height: 1;
 
-    display: inline-flex;
+        display: inline-flex;
 
-    box-sizing: border-box;
-    min-width: 64px;
-    height: 40px;
-    padding: 0 24px;
+        box-sizing: border-box;
+        min-width: 64px;
+        height: 40px;
+        padding: 0 24px;
 
-    transition: var(--sc-link-transition);
-    text-decoration: none;
+        transition: var(--sc-link-transition);
+        text-decoration: none;
 
-    color: var(--sc-primary-accent-color);
-    border: 2px solid var(--sc-border-color);
-    border-radius: 24px;
-    background-color: inherit;
+        color: var(--sc-primary-accent-color);
+        border: 2px solid var(--sc-border-color);
+        border-radius: var(--sc-big-border-radius);
+        background-color: inherit;
 
-    align-items: center;
-    justify-content: center;
-}
+        align-items: center;
+        justify-content: center;
+      }
 
-.link-button:hover
-{
-    transition: var(--sc-link-transition);
+      .link-button:hover {
+        transition: var(--sc-link-transition);
 
-    background-color: var(--sc-primary-color-light-transparent);
-}
+        background-color: var(--sc-primary-color-light-transparent);
+      }
 
-.link-button:active
-{
-    transition: var(--sc-link-transition);
+      .link-button:active {
+        transition: var(--sc-link-transition);
 
-    background-color: var(--sc-primary-color-light);
-}
+        background-color: var(--sc-primary-color-light);
+      }
     </style>
     <% if (htmlWebpackPlugin.options.isDevelopmentMode) { %>
       <script type="module" src="./elements/sc-site-layout.js"></script>

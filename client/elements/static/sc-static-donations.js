@@ -25,37 +25,32 @@ export class SCStaticDonations extends SCStaticPage {
         ${typographyStaticStyles}
       </style>
       <style>
-  .donate-button-container
-{
-    display: flex;
+        .donate-button-container {
+          display: flex;
 
-    margin: 2em auto;
+          margin: 2em auto;
 
-    justify-content: center;
-}
-.link-button
-{
-    color: var(--sc-primary-accent-color);
-    border: 2px solid var(--sc-primary-accent-color-light);
-}
+          justify-content: center;
+        }
 
-.account-data td
-{
-    padding-right: var(--sc-size-md);
-}
+        .link-button {
+          color: var(--sc-primary-accent-color);
+          border: 2px solid var(--sc-primary-accent-color-light);
+        }
 
+        .account-data td {
+          padding-right: var(--sc-size-md);
+        }
       </style>
       <main>
         <article>
           <h1>${unsafeHTML(this.localize('donations:1'))}</h1>
           <p>${unsafeHTML(this.localize('donations:2'))}</p>
 
-          <div class='donate-button-container'>
-
-          <a class='link-button' href='/donate-now'>
-            ${unsafeHTML(this.localize('donations:3'))}
-          </a>
-
+          <div class="donate-button-container">
+            <a class="link-button" href="/donate-now">
+              ${unsafeHTML(this.localize('donations:3'))}
+            </a>
           </div>
 
           <h2>${unsafeHTML(this.localize('donations:4'))}</h2>
