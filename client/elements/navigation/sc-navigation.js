@@ -61,7 +61,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
     }
     this.currentMenuData = await this._fetchMenuData(this.currentUid);
     this.#markMenuItemsWithChildren();
-    if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
+    if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData?.[0]?.uid)) {
       const pathname = ['sutta', 'vinaya', 'abhidhamma'].includes(this.currentUid)
         ? `/pitaka/${this.currentUid}`
         : `/${this.currentUid}`;
@@ -85,8 +85,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(suttaFullPath => {
         if (
-          !suttaFullPath ||
-          !suttaFullPath.full_path ||
+          !suttaFullPath?.full_path ||
           `${suttaFullPath.full_path}/${this.currentUid}` !== this.routePath
         ) {
           dispatchCustomEvent(this, 'sc-navigate', { pathname: '/pitaka/sutta' });
@@ -112,32 +111,34 @@ export class SCNavigation extends LitLocalized(LitElement) {
   }
 
   get cardContentTemplate() {
-    return this.currentMenuData && this.currentMenuData[0]?.children
-      ? html`
-          ${this.currentMenuData[0].children.map(
-            child => html`
-              <section class="card">
-                <a
-                  class="header-link"
-                  href=${this._genCurrentURL(child.uid, child.has_children)}
-                  @click=${() =>
-                    this._onCardClick({
-                      childId: child.uid,
-                      childName: child.acronym || child.translated_name || child.root_name,
-                      dispatchState: true,
-                    })}
-                >
-                  <header>${this.#headerTemplate(child)}</header>
-                </a>
-                ${this.#blurbTemplate(child)} ${this.#pitakaGuideTemplate(child)}
-                ${this.#checkForPublication(child.uid) ? this.#publicationInfoTemplate(child) : ''}
-                ${this.#shortcutsTemplate(child)}
-                <md-ripple></md-ripple>
-              </section>
-            `
-          )}
+    if (!this.currentMenuData?.[0]?.children) {
+      return '';
+    }
+
+    return html`
+      ${this.currentMenuData[0].children.map(
+        child => html`
+          <section class="card">
+            <a
+              class="header-link"
+              href=${this._genCurrentURL(child.uid, child.has_children)}
+              @click=${() =>
+                this._onCardClick({
+                  childId: child.uid,
+                  childName: child.acronym || child.translated_name || child.root_name,
+                  dispatchState: true,
+                })}
+            >
+              <header>${this.#headerTemplate(child)}</header>
+              <md-ripple></md-ripple>
+            </a>
+            ${this.#blurbTemplate(child)} ${this.#pitakaGuideTemplate(child)}
+            ${this.#checkForPublication(child.uid) ? this.#publicationInfoTemplate(child) : ''}
+            ${this.#shortcutsTemplate(child)}
+          </section>
         `
-      : '';
+      )}
+    `;
   }
 
   #headerTemplate(child) {

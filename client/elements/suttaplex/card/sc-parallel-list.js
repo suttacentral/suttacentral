@@ -137,6 +137,7 @@ export class SCParallels extends LitLocalized(LitElement) {
                             >
                               ${transformId(rootId, this.expansionData)}
                             </div>
+                            <md-ripple></md-ripple>
                           </a>
                         </td>
                         <td

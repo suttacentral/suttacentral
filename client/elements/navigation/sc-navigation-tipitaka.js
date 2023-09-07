@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -50,42 +51,41 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   get tipitakaCardTemplate() {
-    return this.mainMenuData && this.mainMenuData.length
-      ? html`
-          <div class="main-nav">
-            ${this.mainMenuData.map(
-              item => html`
-                <section class="card home-card">
-                  <a
-                    class="header-link"
-                    title=${item.translated_name || item.root_name}
-                    href="/pitaka/${item.uid}"
-                  >
-                    <header>
-                      <span class="header-left">
-                        <span class="title" lang=${this.siteLanguage}>
-                          ${item.translated_name || item.root_name}
-                        </span>
-                        <div class="navigation-nerdy-row">
-                          <span class="subTitle" lang="pi" translate="no">${item.root_name}</span>
-                        </div>
-                      </span>
-                      ${this.yellowBrickRoadInfoTemplate(item)}
-                    </header>
-                    <md-ripple></md-ripple>
-                  </a>
-                  <div class="nav-card-content">
-                    ${this.blurbTemplate(item)}
-                    <a class="essay-link" href=${this.pitakaGuide.get(item.uid)}>
-                      <div class="essay">${this.localize(`interface:${item.uid}EssayTitle`)}</div>
-                    </a>
+    if (!this.mainMenuData || this.mainMenuData.length === 0) {
+      return '';
+    }
+
+    return html`
+      <div class="main-nav">
+        ${this.mainMenuData.map(item => html`
+          <section class="card home-card">
+            <a
+              class="header-link"
+              title=${item.translated_name || item.root_name}
+              href="/pitaka/${item.uid}"
+            >
+              <header>
+                <span class="header-left">
+                  <span class="title" lang=${this.siteLanguage}>
+                    ${item.translated_name || item.root_name}
+                  </span>
+                  <div class="navigation-nerdy-row">
+                    <span class="subTitle" lang="pi" translate="no">${item.root_name}</span>
                   </div>
-                </section>
-              `
-            )}
-          </div>
-        `
-      : '';
+                </span>
+                ${this.yellowBrickRoadInfoTemplate(item)}
+              </header>
+              <md-ripple></md-ripple>
+            </a>
+            <div class="nav-card-content">
+              ${this.blurbTemplate(item)}
+              <a class="essay-link" href=${this.pitakaGuide.get(item.uid)}>
+                <div class="essay">${this.localize(`interface:${item.uid}EssayTitle`)}</div>
+              </a>
+            </div>
+          </section>`
+        )}
+      </div>`;
   }
 
   yellowBrickRoadInfoTemplate(menuItem) {

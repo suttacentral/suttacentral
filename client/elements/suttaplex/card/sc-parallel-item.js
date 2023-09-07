@@ -207,7 +207,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                           ></p>
                         </details>
                       `}
-                      ${!this.parallelItem.biblio ? this.volPageTemplate : ''}
+                      ${this.parallelItem.biblio ? '' : this.volPageTemplate}
                     </div>
                   `
                 : ''}
@@ -234,6 +234,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                 </details>
               </div>
             `}
+            <md-ripple></md-ripple>
           </div>
         </div>
       </a>

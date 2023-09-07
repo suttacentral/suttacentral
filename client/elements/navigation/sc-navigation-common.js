@@ -4,8 +4,9 @@ import { store } from '../../redux-store';
 const shortcuts = [];
 try {
   const allShortcuts = await (await fetch(`${API_ROOT}/shortcuts`)).json();
-  if (allShortcuts && allShortcuts[0] && allShortcuts[0].shortcuts) {
-    shortcuts.push(...allShortcuts[0].shortcuts);
+  const { shortcuts: shortcutList } = allShortcuts?.[0] ?? {};
+  if (shortcutList) {
+    shortcuts.push(...shortcutList);
   }
 } catch (error) {
   console.error(error);

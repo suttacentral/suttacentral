@@ -1,11 +1,12 @@
 import { html, LitElement } from 'lit';
+import '@material/mwc-list/mwc-list-item';
+import '@material/web/iconbutton/icon-button';
+
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { languageBaseMenuCss } from './sc-menu-language-base-css';
 import { icon } from '../../img/sc-icon';
-import '@material/mwc-list/mwc-list-item';
-import '@material/web/iconbutton/standard-icon-button';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCMenuLanguageBase extends LitLocalized(LitElement) {
@@ -64,6 +65,7 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
         class="language-name"
       >
         ${language.name}
+        <md-ripple></md-ripple>
       </mwc-list-item>
     `;
   }
@@ -123,13 +125,13 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
     return html`
       <div class="language-chooser-header-wrapper">
         <div class="menu-item-wrapper text-only">
-          <md-standard-icon-button
+          <md-icon-button
             title="Return to main menu"
             class="more-menu-return-arrow"
             @click=${this._showMoreMenu}
           >
             ${icon.arrow_left}
-          </md-standard-icon-button>
+          </md-icon-button>
           <span class="language-base-menu-head-main">Choose your language</span>
         </div>
 
@@ -143,7 +145,6 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
       </div>
       <mwc-list>
         ${this.languageListResponse.map(language => this.languageTemplate(language))}
-        <md-ripple></md-ripple>
       </mwc-list>
     `;
   }

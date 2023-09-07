@@ -130,6 +130,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
       mwc-formfield {
         display: block;
+        margin-top: 24px;
+        margin-left: 15px;
       }
 
       .two-column {
@@ -572,14 +574,17 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls four-column">
               ${this.references.map(
                 item => html`
-                  <mwc-formfield label=${item.name}>
-                    <md-checkbox
-                      name=${item.edition_set}
-                      value=${item.edition_set}
-                      data-type=${item.name}
-                      ?checked=${item.checked}
-                      @change=${this._onReferenceDisplayTypeChanged}
-                    ></md-checkbox>
+                  <mwc-formfield>
+                    <label>
+                      <md-checkbox
+                        name=${item.edition_set}
+                        value=${item.edition_set}
+                        data-type=${item.name}
+                        ?checked=${item.checked}
+                        @change=${this._onReferenceDisplayTypeChanged}
+                      ></md-checkbox>
+                      ${item.name}
+                    </label>
                   </mwc-formfield>
                 `
               )}

@@ -8,8 +8,6 @@ import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-list/mwc-check-list-item';
 import '@material/mwc-list/mwc-radio-list-item';
 import '@material/web/divider/divider';
-import '@material/web/list/list-item';
-import '@material/web/menu/menu-item-link';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -359,7 +357,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
             <div class="menu-item-wrapper">${icon.speaker} ${this.localize('interface:voice')}</div>
           </mwc-list-item>
         </a>
-        <md-ripple></md-ripple>
       </mwc-list>
     `;
   }

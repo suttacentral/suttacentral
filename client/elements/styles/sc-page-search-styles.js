@@ -2,14 +2,6 @@ import { css } from 'lit';
 
 export const SCPageSearchStyles = css`
   :host {
-    --mdc-theme-primary: var(--sc-primary-accent-color);
-    --mdc-select-fill-color: var(--sc-tertiary-background-color);
-    --mdc-typography-font-family: var(--sc-sans-font);
-    --mdc-theme-surface: var(--sc-secondary-background-color);
-    --mdc-select-ink-color: var(--sc-on-primary-primary-text-color);
-    --mdc-select-label-ink-color: var(--sc-on-primary-secondary-text-color);
-    --mdc-select-dropdown-icon-color: var(--sc-icon-color);
-
     font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-md);
     font-weight: 400;
@@ -319,7 +311,7 @@ export const SCPageSearchStyles = css`
 
   md-filled-text-field {
     --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
-    margin: 0px 2px 22px 9px;
+    margin: 0px 0px 22px 0px;
     width: 100%;
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: white;

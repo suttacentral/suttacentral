@@ -6,7 +6,7 @@ import '@material/web/checkbox/checkbox';
 import '@material/web/button/filled-button';
 import '@material/web/button/outlined-button';
 import '@material/web/field/filled-field';
-import '@material/web/linearprogress/linear-progress';
+import '@material/web/progress/linear-progress';
 import { icon } from '../../img/sc-icon';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
@@ -490,15 +490,6 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
     layoutSimpleStyles,
     typographyCommonStyles,
     css`
-      mwc-formfield {
-        --mdc-typography-font-family: var(--sc-sans-font);
-
-        --mdc-typography-body2-font-size: var(--sc-font-size-md);
-
-        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-      }
-
       md-filled-button,
       md-outlined-button {
         --md-sys-color-primary: var(--sc-primary-accent-color);
@@ -509,6 +500,11 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
       .option-multi-select {
         display: flex;
         flex-direction: column;
+        padding-top: 1em;
+      }
+
+      .option-multi-select > * {
+        margin-bottom: 15px;
       }
 
       md-checkbox,
@@ -517,7 +513,19 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
         --md-sys-color-on-primary: white;
       }
 
-      h3 + mwc-formfield {
+      md-linear-progress {
+        width: 100%;
+      }
+
+      md-checkbox {
+        margin-right: 0.5em;
+      }
+
+      md-filled-button {
+        width: 100%;
+      }
+
+      h3 + div {
         margin-top: 0.75em;
       }
 
@@ -571,6 +579,10 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
       .play_arrow,
       .stop {
         fill: var(--sc-icon-color);
+      }
+
+      label {
+        gap: 0;
       }
 
       @media (max-width: 680px) {
@@ -649,29 +661,33 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
             <h3>${this.localize('offline:language')}</h3>
             <p>${this.localize('offline:selectDifferentLang')}</p>
             <h3>${this.localize('offline:downloadParallels')}</h3>
-            <mwc-formfield label=${this.localize('offline:downloadParallelsDescription')}>
-              <md-checkbox
-                ?checked=${this.shouldDownloadParallels}
-                ?disabled=${this.isDownloadButtonDisabled}
-                @change=${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}
-              ></md-checkbox>
-            </mwc-formfield>
+            <div>
+              <label>
+                <md-checkbox
+                  ?checked=${this.shouldDownloadParallels}
+                  ?disabled=${this.isDownloadButtonDisabled}
+                  @change=${() => (this.shouldDownloadParallels = !this.shouldDownloadParallels)}
+                ></md-checkbox>
+                ${this.localize('offline:downloadParallelsDescription')}
+              </label>
+            </div>
           </div>
           <div class="row">
             <h3>${this.localize('offline:downloadRootTexts')}</h3>
-            <mwc-formfield
-              label=${this.localizeEx(
-                'offline:downloadRootTextsDescription',
-                'toLang',
-                this.defaultPaliDictToLang.name
-              )}
-            >
-              <md-checkbox
-                ?checked=${this.shouldDownloadRootTexts}
-                ?disabled=${this.isDownloadButtonDisabled}
-                @change=${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}
-              ></md-checkbox>
-            </mwc-formfield>
+            <div>
+              <label>
+                <md-checkbox
+                  ?checked=${this.shouldDownloadRootTexts}
+                  ?disabled=${this.isDownloadButtonDisabled}
+                  @change=${() => (this.shouldDownloadRootTexts = !this.shouldDownloadRootTexts)}
+                ></md-checkbox>
+                ${this.localizeEx(
+                  'offline:downloadRootTextsDescription',
+                  'toLang',
+                  this.defaultPaliDictToLang.name
+                )}
+              </label>
+            </div>
           </div>
           <div class="row">
             <h3>${this.localize('offline:paliLookups')}</h3>
@@ -679,14 +695,15 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
             <div class="option-multi-select">
               ${this.paliLookupLanguages.map(
                 lang => html`
-                  <mwc-formfield label=${lang.name}>
+                  <label>
                     <md-checkbox
                       value=${lang.isoCode}
                       ?checked=${lang.enabled}
                       ?disabled=${this.isDownloadButtonDisabled}
                       @change=${this._setPaliLookup}
                     ></md-checkbox>
-                  </mwc-formfield>
+                    ${lang.name}
+                  </label>
                 `
               )}
             </div>
@@ -697,14 +714,15 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
             <div class="option-multi-select">
               ${this.chineseLookupLanguages.map(
                 lang => html`
-                  <mwc-formfield label=${lang.name}>
+                  <label>
                     <md-checkbox
                       value=${lang.isoCode}
                       ?checked=${lang.enabled}
                       ?disabled=${this.isDownloadButtonDisabled}
                       @change=${this._setChineseLookup}
                     ></md-checkbox>
-                  </mwc-formfield>
+                    ${lang.name}
+                  </label>
                 `
               )}
             </div>

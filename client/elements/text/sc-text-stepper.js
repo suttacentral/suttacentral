@@ -15,20 +15,18 @@ export class SCTextStepper extends LitElement {
       }
     }
 
+    .bar {
+      display: flex;
+      overflow: hidden;
+      height: 6rem;
+      margin: 0px 2%;
+      padding: 0px;
+      gap: 4%;
+      justify-content: space-around;
+      border-radius: 48px;
+    }
 
-.bar {
-    display: flex;
-    overflow: hidden;
-    height: 6rem;
-    margin: 0px 2%;
-    padding: 0px;
-    gap: 4%;
-    justify-content: space-around;
-    border-radius: 48px;
-}
-      
-
-        .button-container {
+    .button-container {
       position: relative;
 
       width: 50%;
@@ -39,30 +37,24 @@ export class SCTextStepper extends LitElement {
     .button {
       width: 100%;
       background-color: var(--sc-tertiary-background-color);
-
-      
     }
 
-        .button:hover {
+    .button:hover {
       background-color: var(--sc-primary-color-light-transparent);
       transition: var(--sc-link-transition);
     }
-
 
     .button {
       display: flex;
 
       height: 100%;
 
-      border-radius: 48px
+      border-radius: 48px;
     }
 
     .button-right {
       justify-content: flex-end;
     }
-
-
-
 
     .action {
       font-family: var(--sc-sans-font);
@@ -91,14 +83,10 @@ export class SCTextStepper extends LitElement {
     }
 
     .link .text-title {
-
       box-sizing: border-box;
 
       transition: var(--sc-link-transition);
-
     }
-
-
 
     .text {
       display: flex;
@@ -129,7 +117,6 @@ export class SCTextStepper extends LitElement {
     }
 
     @media (min-width: 1280px) {
-
       .arrow_right {
         margin-left: 1em;
       }
@@ -144,7 +131,7 @@ export class SCTextStepper extends LitElement {
     return html`
       <div class="bar">
         <div class="button-container">
-          ${this.previous && this.previous.uid
+          ${this.previous?.uid
             ? html`
                 <a href=${this._getUrl(this.previous)} class="link">
                   <div class="button button-left">
@@ -162,7 +149,7 @@ export class SCTextStepper extends LitElement {
         </div>
 
         <div class="button-container">
-          ${this.next && this.next.uid
+          ${this.next?.uid
             ? html`
                 <a href=${this._getUrl(this.next)} class="link">
                   <div class="button button-right">

@@ -1,10 +1,11 @@
 import { LitElement, html, css } from 'lit';
-import '@material/web/linearprogress/linear-progress.js';
+import '@material/web/progress/linear-progress';
 
 export class SCLinearProgress extends LitElement {
   static styles = css`
     md-linear-progress {
       --md-linear-progress-active-indicator-color: var(--sc-primary-color-light);
+      width: 100%;
     }
   `;
 
@@ -14,7 +15,7 @@ export class SCLinearProgress extends LitElement {
 
   constructor() {
     super();
-    this.active = true;
+    this.active = false;
   }
 
   render() {
