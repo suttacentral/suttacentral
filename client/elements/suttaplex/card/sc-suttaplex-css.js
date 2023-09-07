@@ -6,10 +6,6 @@ export const suttaplexCss = css`
     position: relative;
   }
 
-  /* article:hover {
-    background-color: var(--md-ripple-hover-color);
-  } */
-
   details {
     position: relative;
 
@@ -296,6 +292,7 @@ export const suttaplexTxCss = css`
     padding: 0 8px;
     margin: 0 -8px;
     border-radius: 20px;
+    position: relative;
   }
 
   .tx,
@@ -444,6 +441,7 @@ export const parallelItemCss = css`
   .parallel-item-main-info-container {
     width: 100%;
     padding: var(--sc-size-xs) var(--sc-size-sm);
+    position: relative;
   }
 
   .parallel-item-title {

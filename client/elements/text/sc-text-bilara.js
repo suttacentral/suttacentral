@@ -1,7 +1,6 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable class-methods-use-this */
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from '../addons/sc-redux-actions';

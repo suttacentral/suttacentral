@@ -32,6 +32,7 @@ export class SCSuttaplexTx extends LitElement {
               <span class="tx-creator">${this.translation?.author}</span>
               <span class="tx-publication"> ${this.publicationInfoTemplate()} </span>
               <span class="badges"> ${this.badgeTemplate()} </span>
+              <md-ripple></md-ripple>
             </div>
           </a>
         `

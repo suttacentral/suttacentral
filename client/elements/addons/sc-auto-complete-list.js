@@ -1,6 +1,8 @@
 import { html, css, LitElement } from 'lit';
 import { create, search, insertMultiple } from '@orama/orama';
 import '@material/web/textfield/filled-text-field';
+import '@material/web/iconbutton/icon-button';
+import '@material/web/button/text-button';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -29,6 +31,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       margin: auto;
       box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
       border-radius: var(--sc-mid-border-radius);
+      --md-icon-button-icon-size: 32px;
     }
 
     .search-suggestions {
@@ -81,6 +84,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
       align-items: center;
       justify-content: space-between;
+      position: relative;
     }
 
     li:hover {
@@ -124,6 +128,14 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     md-icon {
       cursor: pointer;
+    }
+
+    #openSearchTip {
+      display: contents;
+    }
+
+    ul li:last-child:hover {
+      background-color: inherit;
     }
   `;
 
@@ -366,6 +378,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                     >
                   </span>
                   <span class="search-in">Search in ${item.title}</span>
+                  <md-ripple></md-ripple>
                 </li>
               `
             )}
@@ -387,14 +400,19 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                     </span>
                   </span>
                   <span>${icon.gotolink}</span>
+                  <md-ripple></md-ripple>
                 </li>`
             )}
             <md-divider></md-divider>
-            <li @click=${() => this.#openSearchTip()}>
-              <span>${icon.tip}</span>
-              <span>Search syntax tips</span>
+            <li>
+              <div id="openSearchTip">
+                <md-icon-button aria-label="Search syntax tips" @click=${this.#openSearchTip}>
+                  ${icon.tip}
+                </md-icon-button>
+                <span>Search syntax tips</span>
+              </div>
+              <md-icon-button @click=${this.#hide}>${icon.close_fill}</md-icon-button>
             </li>
-            <md-ripple></md-ripple>
           </ul>
         </div>
       </div>

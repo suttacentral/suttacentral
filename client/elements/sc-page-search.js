@@ -129,15 +129,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
   get searchResultHeadTemplate() {
     return html`
       <div class="search-result-head">
+        <md-filled-text-field
+          id="search_input"
+          type="search"
+          label="Full text search"
+          @keypress=${this.#keypressHandler}
+        >
+          <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
+        </md-filled-text-field>
         <h3 class="search-result-header">
-          <md-filled-text-field
-            id="search_input"
-            type="search"
-            label="Full text search"
-            @keypress=${this.#keypressHandler}
-          >
-            <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
-          </md-filled-text-field>
           <span class="search-result-number">
             ${this.#calculateResultCount(this.resultCount)}
           </span>
@@ -196,9 +196,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
               .item=${item}
               .suttaplexListStyle=${this.isCompactMode ? 'compact' : ''}
               .parallels-opened=${false}
-              .difficulty=${this.#computeItemDifficulty(
-                item && item.difficulty ? item.difficulty : ''
-              )}
+              .difficulty=${this.#computeItemDifficulty(item?.difficulty ? item.difficulty : '')}
               .expansion-data=${this.expansionReturns}
             ></sc-suttaplex>
           `
@@ -236,6 +234,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (this.#isSearchByInTitle()) {
       return '';
     }
+    console.log(this.visibleSearchResults);
     return this.visibleSearchResults
       ? this.visibleSearchResults.map(
           item => html`
@@ -259,13 +258,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                       </p>
                     </div>
                   </a>
-                  <a
-                    class="parallels-link"
-                    href=${this.#calculateParallelsLink(item)}
-                    title="parallels"
-                  >
-                    <div class="parallels-btn-container">${icon.parallels}</div>
-                  </a>
+                  ${this.#parallelsButtonTemplate(item)}
                 </div>
                 <div class="secondary">
                   <p class="search-result-snippet">
@@ -277,6 +270,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
           `
         )
       : '';
+  }
+
+  #parallelsButtonTemplate(item) {
+    if (item.category === 'dictionary') {
+      return '';
+    }
+    return html`
+      <a class="parallels-link" href=${this.#calculateParallelsLink(item)} title="parallels">
+        <div class="parallels-btn-container">${icon.parallels}</div>
+      </a>
+    `;
   }
 
   #searchResultByAuthorTemplate() {
@@ -394,7 +398,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
       const volpages = volpage?.split(',');
       if (volpages && volpages.length > 1) {
-        const lastVolpage = volpages[volpages.length - 1].split('.')[1] || volpages[volpages.length - 1];
+        const lastVolpage =
+          volpages[volpages.length - 1].split('.')[1] || volpages[volpages.length - 1];
         item.volpage = `${volpages[0]}...${lastVolpage}`;
       }
     }

@@ -32,13 +32,14 @@ export const navigationNormalModeStyles = html`
 
       margin-bottom: 0.6667rem;
 
-      border-radius: var(--sc-mid-border-radius);
       background-color: var(--sc-secondary-background-color);
       color: var(--sc-on-secondary-primary-text-color);
+      border-radius: var(--sc-mid-border-radius);
       box-shadow: var(--sc-shadow-elevation-4dp);
 
       flex: 1;
       justify-content: center;
+      --md-elevation-level: 3;
     }
 
     .home-card + .home-card {
@@ -292,6 +293,10 @@ export const navigationNormalModeStyles = html`
 
     sc-navigation-tipitaka {
       min-height: 275px;
+    }
+
+    .card > a {
+      position: relative;
     }
   </style>
 `;

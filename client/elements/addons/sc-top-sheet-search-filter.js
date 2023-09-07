@@ -21,11 +21,6 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
     typographyCommonStyles,
     css`
       :host {
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-        --mdc-typography-body2-font-weight: 550;
-        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
       }
 
       fieldset {

@@ -468,10 +468,12 @@ export class SCBottomSheet extends LitElement {
           <div>
             <button accesskey="b" id="btnPrevious" @click=${this._previous}>
               ${icon.arrow_left}
+              <md-ripple></md-ripple>
             </button>
           </div>
           <div>
             <button accesskey="n" id="btnNext" @click=${this._next}>${icon.arrow_right}</button>
+            <md-ripple></md-ripple>
           </div>
         </footer>
       </div>

@@ -336,7 +336,6 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
 
     let dictsUsed = {};
     const finalResults = [];
-    // eslint-disable-next-line guard-for-in
     for (const key in this.dictionaryTitles) {
       dictsUsed = this._sortDictionaryResults(key);
       if (dictsUsed) {
@@ -375,7 +374,6 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       let glossaryObject = {};
       let glossText = '';
       if (glossaryReturns && glossaryReturns[0] && inputArray[0]) {
-        // eslint-disable-next-line guard-for-in
         for (const glossWord in inputArray[0]) {
           const glossLookup = inputArray[0][glossWord];
           glossText = `<a href="/define/${glossLookup}">${glossLookup}`;

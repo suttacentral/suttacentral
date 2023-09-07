@@ -15,9 +15,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     }
 
     nav {
-
-       height: 48px;
-
+      height: 48px;
       display: flex;
 
       overflow: hidden;
@@ -30,8 +28,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       background-color: var(--sc-dark-fixed-background-color);
 
       justify-content: space-between;
-
-
     }
 
     ul {
@@ -41,10 +37,10 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
       padding: 0;
 
-     justify-content: flex-end;
-    flex-direction: row;
+      justify-content: flex-end;
+      flex-direction: row;
 
-    max-width: calc(100vw - 144px);
+      max-width: calc(100vw - 144px);
 
       position: relative;
     }
@@ -65,8 +61,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
       white-space: nowrap;
     }
-
-
 
     li a {
       position: relative;
@@ -125,7 +119,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     li:first-of-type {
       padding-left: 14px;
 
-
       position: fixed;
 
       left: 0px;
@@ -140,22 +133,26 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       box-shadow: 8px -8px 8px 0px var(--sc-dark-fixed-background-color);
     }
 
- li:first-of-type:before{
-  position: absolute;
-      content: "";
+    li:first-of-type:before {
+      position: absolute;
+      content: '';
       background-color: var(--sc-dark-fixed-background-color);
-    width: 12px;
-    height: 48px;
-    left: 0;
-    top: 0
+      width: 12px;
+      height: 48px;
+      left: 0;
+      top: 0;
     }
 
-    li:first-of-type .icon{
-      margin: 0 -10px 0 0
+    li:first-of-type .icon {
+      margin: 0 -10px 0 0;
     }
 
-    li:first-of-type+li {
+    li:first-of-type + li {
       margin-left: 68px;
+    }
+
+    li > a {
+      position: relative;
     }
 
     .icon {
@@ -208,36 +205,23 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   }
 
   #lindenLeavesTemplate() {
+    const navArray = this.navArray || [];
+    const { length } = navArray;
     return html`
       <ul>
-        ${this.navArray
-          ? this.navArray.map(
-              (nav, i) => html`
-                ${nav && nav.title
-                  ? html`
-                      ${this.navArray.length !== i + 1
-                        ? html`
-                            <li @click=${() => this._navClick(nav)}>
-                              <a href=${nav.url}
-                                >${nav.type === 'navigation'
-                                  ? nav.title
-                                  : this.tryLocalize(`interface:${nav.title}`, nav.title)}</a
-                              >
-                              ${icon.chevron_right}
-                            </li>
-                          `
-                        : html`
-                            <li>
-                              ${nav.type === 'navigation'
-                                ? nav.title
-                                : this.tryLocalize(`interface:${nav.title}`, nav.title)}
-                            </li>
-                          `}
-                    `
-                  : ''}
-              `
-            )
-          : ''}
+        ${navArray.map((nav, i) => html`
+          ${nav?.title && html`
+            <li @click=${() => this._navClick(nav)}>
+              <a href=${nav.url}>
+                  ${nav.type === 'navigation'
+                    ? nav.title
+                    : this.tryLocalize(`interface:${nav.title}`, nav.title)}
+                <md-ripple></md-ripple>
+              </a>
+              ${i < length - 1 ? icon.chevron_right : ''}
+            </li>
+          `}
+        `)}
       </ul>
     `;
   }

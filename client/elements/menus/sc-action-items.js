@@ -1,6 +1,5 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
-import '@material/web/iconbutton/standard-icon-button';
-import '@material/web/iconbutton/filled-tonal-icon-button';
+import { LitElement, html, css } from 'lit';
+import '@material/web/iconbutton/icon-button';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -172,7 +171,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   render() {
     return html`
       <div id="tools_menu">
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
           @click=${this._onBtnShowToCClick}
@@ -180,9 +179,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.tableOfContents}
         >
           ${icon.toc}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnViewCompact"
           @click=${this._onBtnViewCompactClick}
@@ -190,9 +189,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayCompactButton}
         >
           ${icon.view_compact}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnViewComfy"
           @click=${this._onBtnViewCompactClick}
@@ -200,9 +199,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayComfyButton}
         >
           ${icon.view_comfy}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnInfo"
           @click=${this._onBtnInfoClick}
@@ -210,9 +209,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayInfoButton}
         >
           ${icon.info}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnTools"
           @click=${this._onBtnToolsClick}
@@ -220,9 +219,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayToolButton}
         >
           ${icon.visibility}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnSearchOptions"
           @click=${this.#onBtnSearchOptionsClick}
@@ -230,9 +229,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displaySearchOptionsButton}
         >
           ${icon.language}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnSearchFilter"
           @click=${this.#onBtnSearchFilterClick}
@@ -240,9 +239,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displaySearchOptionsButton}
         >
           ${icon.filter}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnShowParallels"
           @click=${this._onBtnShowParallelsClick}
@@ -250,16 +249,16 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ?hidden=${this.displayToolButton}
         >
           ${icon.parallels}
-        </md-standard-icon-button>
+        </md-icon-button>
 
-        <md-standard-icon-button
+        <md-icon-button
           class="white-icon toolButtons"
           id="btnShowParallelTableView"
           @click=${this._onBtnShowParallelTableViewClick}
           slot="actionItems"
         >
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
-        </md-standard-icon-button>
+        </md-icon-button>
       </div>
     `;
   }

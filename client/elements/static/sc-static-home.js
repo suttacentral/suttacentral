@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import '@material/web/elevation/elevation';
 
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
@@ -45,12 +46,13 @@ export class SCStaticHomePage extends SCStaticPage {
   #publicationEditionsTemplate() {
     return html`
       <section class="plain editions">
-        <a href="/editions">
+        <a href="/editions" class="card">
           <h2>${unsafeHTML(this.localize('home:43'))}</h2>
           ${this.#publicationEditionsPictureTemplate()}
           <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>
+          <md-ripple></md-ripple>
+          <md-elevation></md-elevation>
         </a>
-        <md-ripple></md-ripple>
       </section>
     `;
   }
@@ -115,17 +117,18 @@ export class SCStaticHomePage extends SCStaticPage {
         <span>${this.randomEpigraph ? this.randomEpigraph.epigraph : ''}</span>
       </blockquote>
       <a
-        class="link-button quote-button ripple"
+        class="link-button quote-button card"
         href=${this.randomEpigraph ? `/${this.randomEpigraph.uid}` : ''}
       >
         ${unsafeHTML(this.localize('home:6'))}
+        <md-ripple></md-ripple>
       </a>
     `;
   }
 
   #introductionTemplate() {
     return html`
-      <article>
+      <article class="card">
         <a href="/introduction">
           <figure>
             <picture>
@@ -142,13 +145,14 @@ export class SCStaticHomePage extends SCStaticPage {
             </div>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
 
   #getStartedTemplate() {
     return html`
-      <article>
+      <article class="card">
         <a href="/start">
           <figure>
             <picture>
@@ -169,6 +173,7 @@ export class SCStaticHomePage extends SCStaticPage {
             </div>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
@@ -196,7 +201,9 @@ export class SCStaticHomePage extends SCStaticPage {
             <span>${icon.speaker}</span>
             <h3>
               <span>SuttaCentral Voice</span>
-              <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:17'))}</span>
+              <span class="sc-related-item-subtitle">
+                ${unsafeHTML(this.localize('home:17'))}
+              </span>
             </h3>
           </header>
 
@@ -208,6 +215,7 @@ export class SCStaticHomePage extends SCStaticPage {
             </ul>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
@@ -237,6 +245,7 @@ export class SCStaticHomePage extends SCStaticPage {
             <p>${unsafeHTML(this.localize('home:23'))}</p>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
@@ -267,6 +276,7 @@ export class SCStaticHomePage extends SCStaticPage {
             </ul>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
@@ -292,6 +302,7 @@ export class SCStaticHomePage extends SCStaticPage {
             <p>${unsafeHTML(this.localize('home:32'))}</p>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
@@ -303,17 +314,18 @@ export class SCStaticHomePage extends SCStaticPage {
         <span>${this.whyWeRead}</span>
       </blockquote>
       <a
-        class="link-button quote-button"
+        class="link-button quote-button card"
         href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
       >
         ${unsafeHTML(this.localize('home:34'))}
+        <md-ripple></md-ripple>
       </a>
     `;
   }
 
   #guidesTemplate() {
     return html`
-      <article>
+      <article class="card">
         <a href="/general-guide-sujato">
           <figure>
             <picture>
@@ -334,13 +346,14 @@ export class SCStaticHomePage extends SCStaticPage {
             </div>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
 
   #indexesTemplate() {
     return html`
-      <article>
+      <article class="card">
         <a href="/subjects">
           <figure>
             <picture>
@@ -357,6 +370,7 @@ export class SCStaticHomePage extends SCStaticPage {
             </div>
           </div>
         </a>
+        <md-ripple></md-ripple>
       </article>
     `;
   }
