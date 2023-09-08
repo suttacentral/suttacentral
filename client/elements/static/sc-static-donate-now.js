@@ -1,22 +1,20 @@
 import { LitElement, html, css } from 'lit';
-import { LitLocalized } from '../addons/sc-localization-mixin';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { loadStripe } from '@stripe/stripe-js';
+
 import '@material/mwc-select';
-import '@material/web/select/filled-select';
-import '@material/web/list/list';
-import '@material/web/menu/menu-item';
 import '@material/mwc-list/mwc-list-item';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/radio/radio';
 import '@material/mwc-formfield';
 import '@material/web/button/filled-button';
 
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 import { icon } from '../../img/sc-icon';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
-import { loadStripe } from '@stripe/stripe-js';
 
 export class SCStaticDonateNow extends LitLocalized(LitElement) {
   static properties = {
@@ -108,6 +106,10 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         vertical-align: text-bottom;
 
         fill: var(--sc-icon-color);
+      }
+
+      mwc-formfield {
+        margin-right: 20px;
       }
     `,
   ];

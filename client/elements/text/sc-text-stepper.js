@@ -146,6 +146,7 @@ export class SCTextStepper extends LitElement {
                 </a>
               `
             : ''}
+          <md-ripple></md-ripple>
         </div>
 
         <div class="button-container">
@@ -164,6 +165,7 @@ export class SCTextStepper extends LitElement {
                 </a>
               `
             : ''}
+          <md-ripple></md-ripple>
         </div>
       </div>
     `;
