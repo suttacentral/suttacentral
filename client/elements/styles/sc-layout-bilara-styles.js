@@ -163,7 +163,7 @@ export const plainPlusStyles = html`
     }
 
     .comment {
-      margin-bottom:  var(--sc-size-sm);
+      margin-bottom: var(--sc-size-sm);
 
       height: fit-content;
 

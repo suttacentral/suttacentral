@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import '@material/web/iconbutton/icon-button';
 
 import { store } from '../../redux-store';
@@ -9,10 +9,23 @@ import { API_ROOT } from '../../constants';
 Base toolbar that appears on the top right in the header of every page.
 */
 
+const scSiteLayout = document.querySelector('sc-site-layout');
+const localizedStrings = {
+  buttonViewCompactText: scSiteLayout.localizedStringById('interface:viewCompactButtonText'),
+  buttonViewComfyText: scSiteLayout.localizedStringById('interface:viewComfyButtonText'),
+  buttonToolsText: scSiteLayout.localizedStringById('interface:toolsButtonText'),
+  buttonInfoText: scSiteLayout.localizedStringById('interface:infoButtonText'),
+  buttonShowParallelsText: scSiteLayout.localizedStringById('interface:showParallelsButtonText'),
+  buttonShowToCText: scSiteLayout.localizedStringById('interface:showToCButtonText'),
+  buttonShowParallelTableViewText: scSiteLayout.localizedStringById(
+    'interface:showParallelTableViewButtonText'
+  ),
+  buttonSearchOptionsText: scSiteLayout.localizedStringById('interface:searchOptionsButtonText'),
+  buttonSearchFilterText: scSiteLayout.localizedStringById('interface:searchFilterButtonText'),
+};
+
 export class SCActionItems extends LitLocalized(LitElement) {
   static properties = {
-    path: { type: String },
-    suttaplexDisplay: { type: Boolean },
     suttaplexListEnabled: { type: Boolean },
     localizedStringsPath: { type: String },
     displaySettingMenu: { type: Boolean },
@@ -32,8 +45,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.path = '';
-    this.suttaplexDisplay = '';
     const state = store.getState();
     this.suttaplexListEnabled = state.suttaplexListDisplay;
     this.colorTheme = state.colorTheme;
@@ -99,19 +110,39 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
 
     #btnViewCompact:after {
-      content: 'spacing';
+      content: '${unsafeCSS(localizedStrings.buttonViewCompactText)}';
     }
 
     #btnViewComfy:after {
-      content: 'spacing';
+      content: '${unsafeCSS(localizedStrings.buttonViewComfyText)}';
     }
 
     #btnTools:after {
-      content: 'views';
+      content: '${unsafeCSS(localizedStrings.buttonToolsText)}';
     }
 
     #btnInfo:after {
-      content: 'info';
+      content: '${unsafeCSS(localizedStrings.buttonInfoText)}';
+    }
+
+    #btnShowParallels:after {
+      content: '${unsafeCSS(localizedStrings.buttonShowParallelsText)}';
+    }
+
+    #btnShowToC:after {
+      content: '${unsafeCSS(localizedStrings.buttonShowToCText)}';
+    }
+
+    #btnShowParallelTableView:after {
+      content: '${unsafeCSS(localizedStrings.buttonShowParallelTableViewText)}';
+    }
+
+    #btnSearchOptions:after {
+      content: '${unsafeCSS(localizedStrings.buttonSearchOptionsText)}';
+    }
+
+    #btnSearchFilter:after {
+      content: '${unsafeCSS(localizedStrings.buttonSearchFilterText)}';
     }
 
     #btnSearchFilter,
@@ -119,26 +150,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     #btnShowParallels,
     #btnShowParallelTableView {
       display: flex;
-    }
-
-    #btnShowParallels:after {
-      content: 'parallels';
-    }
-
-    #btnShowToC:after {
-      content: 'contents';
-    }
-
-    #btnShowParallelTableView:after {
-      content: 'table';
-    }
-
-    #btnSearchOptions:after {
-      content: 'languages';
-    }
-
-    #btnSearchFilter:after {
-      content: 'filter';
     }
 
     .active-light {
@@ -662,9 +673,11 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _displayToCButtonStateChange() {
-    if (this.tableOfContents)
+    if (this.tableOfContents) {
       this.shadowRoot.querySelector('#btnShowToC').style.display = 'inherit';
-    else this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
+    } else {
+      this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
+    }
   }
 
   #displaySearchOptionsButtonStateChange() {
