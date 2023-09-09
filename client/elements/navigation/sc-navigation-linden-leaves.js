@@ -44,7 +44,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     ul {
       display: flex;
 
-      margin: 0px 10px 0px 48px;
+      margin: 0px 10px 0px 40px;
 
       padding: 0px;
 
@@ -151,7 +151,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       background-color: var(--sc-darker-fixed-background-color);
 
       z-index: 1000;
-      box-shadow: 8px 0px 8px -4px var(--sc-darker-fixed-background-color);
+
     }
 
     .home-link svg{

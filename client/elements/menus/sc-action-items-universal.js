@@ -20,7 +20,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       align-items: center;
       background-color: var(--sc-darker-fixed-background-color);
       --mdc-theme-surface: var(--sc-secondary-background-color);
-      box-shadow: -6px 0px 8px -4px var(--sc-darker-fixed-background-color),  -6px 0px 8px -4px var(--sc-darker-fixed-background-color);
+
       z-index: 100;
 
     }
