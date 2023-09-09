@@ -46,7 +46,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #publicationEditionsTemplate() {
     return html`
       <section class="plain editions">
-        <a href="/editions" class="card">
+        <a href="/editions">
           <h2>${unsafeHTML(this.localize('home:43'))}</h2>
           ${this.#publicationEditionsPictureTemplate()}
           <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>

@@ -96,7 +96,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     li:focus {
-      background-color: var(--sc-primary-accent-color-light-transparent);
+      background-color: var(--sc-primary-accent-color-light);
     }
 
     .search-in {
