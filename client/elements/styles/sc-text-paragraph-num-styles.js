@@ -553,7 +553,7 @@ export const textParagraphNumStyles = css`
     margin-right: var(--sc-size-sm);
     padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
     color: var(--sc-on-primary-secondary-text-color);
-    background: var(--sc-dark-fixed-background-color);
+    background: var(--sc-darker-fixed-background-color);
     text-decoration: none;
     transition: 250ms;
     font-style: normal;

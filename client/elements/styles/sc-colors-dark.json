@@ -19,7 +19,7 @@
   "--sc-secondary-background-color": "#515151",
   "--sc-tertiary-background-color": "rgb(113, 113, 113)",
   "--sc-border-color": "rgba(255, 255, 255, 0.12)",
-  "--sc-dark-fixed-background-color": "#515151",
+  "--sc-darker-fixed-background-color": "#515151",
   "--sc-toast-error-color": "#f44336",
   "--sc-toast-success-color": "#43a047",
   "--sc-pie-chart-bg-color": "#e1f7d0",

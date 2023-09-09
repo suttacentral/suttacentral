@@ -9,40 +9,60 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       display: block;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: var(--sc-darker-fixed-background-color);
       position: relative;
       z-index: 200;
     }
 
     nav {
-      height: 48px;
-      display: flex;
 
-      overflow: hidden;
+      display: flex;
       flex-direction: row;
 
       box-sizing: border-box;
 
       padding: 0px 8px;
 
-      background-color: var(--sc-dark-fixed-background-color);
 
       justify-content: space-between;
+
+    }
+
+    .breadcrumbs-wrapper{
+      scroll-snap-type: x mandatory;
+      overflow: auto hidden;
+      box-sizing: border-box;
+      scrollbar-gutter: stable both-edges;
+      display: flex;
+      flex-direction: row;
+      height: 48px;
+      padding: 8px 0px;
+      margin: 0 0 0 0;
+      
     }
 
     ul {
       display: flex;
 
-      margin: 0;
+      margin: 0px 10px 0px 48px;
 
-      padding: 0;
+      padding: 0px;
 
       justify-content: flex-end;
       flex-direction: row;
 
-      max-width: calc(100vw - 144px);
+      height: 32px;
+
+      
 
       position: relative;
+
+      scroll-snap-align: end;
+
+      border-radius: 16px;
+
+
+      background-color: var(--sc-dark-fixed-background-color);
     }
 
     li {
@@ -67,17 +87,19 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
       display: flex;
 
+      padding: 8px 12px;
+
       box-sizing: border-box;
       height: 100%;
-      padding: 4px 2px 0;
 
       text-decoration: none;
 
       opacity: 0.8;
       color: white;
-      border-bottom: 4px solid rgba(0, 0, 0, 0);
 
       align-items: center;
+
+      border-radius: 16px;
 
       transition: var(--sc-link-transition);
     }
@@ -86,7 +108,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       cursor: pointer;
 
       opacity: 1;
-      border-bottom: 4px solid var(--sc-primary-color-light);
 
       transition: var(--sc-link-transition);
     }
@@ -98,9 +119,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     li:last-child {
       box-sizing: border-box;
       height: 100%;
-      padding: 4px 2px 0;
-
-      border-bottom: 4px solid var(--sc-primary-color-light);
     }
 
     li:last-child a:hover {
@@ -116,8 +134,11 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       opacity: 1;
     }
 
-    li:first-of-type {
-      padding-left: 14px;
+    .home-link {
+      padding: 0 12px 0 12px;
+      display: flex;
+          align-items: center;
+
 
       position: fixed;
 
@@ -127,36 +148,23 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       width: fit-content;
       height: 48px;
 
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: var(--sc-darker-fixed-background-color);
 
       z-index: 1000;
-      box-shadow: 8px -8px 8px 0px var(--sc-dark-fixed-background-color);
+      box-shadow: 8px 0px 8px -4px var(--sc-darker-fixed-background-color);
     }
 
-    li:first-of-type:before {
-      position: absolute;
-      content: '';
-      background-color: var(--sc-dark-fixed-background-color);
-      width: 12px;
-      height: 48px;
-      left: 0;
-      top: 0;
-    }
-
-    li:first-of-type .icon {
-      margin: 0 -10px 0 0;
-    }
-
-    li:first-of-type + li {
-      margin-left: 68px;
+    .home-link svg{
+      fill: white;
     }
 
     li > a {
       position: relative;
     }
 
-    .icon {
+    li .icon {
       fill: var(--sc-icon-color);
+      margin: 0 -8px
     }
   `;
 
@@ -198,7 +206,10 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   render() {
     return html`
       <nav>
+      <div class='breadcrumbs-wrapper'>
+      <a class='home-link' href='/'>${icon.home}</a>
         ${this.#lindenLeavesTemplate()}
+        </div>
         <sc-action-items-universal></sc-action-items-universal>
       </nav>
     `;

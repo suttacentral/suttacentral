@@ -49,7 +49,7 @@ export const suttaplexCss = css`
 
   .top-menu-button:active,
   #copy-menu > summary:active {
-    background-color: var(--sc-dark-fixed-background-color);
+    background-color: var(--sc-darker-fixed-background-color);
     border-radius: 50%;
     transition: background-color 0.2s ease;
   }

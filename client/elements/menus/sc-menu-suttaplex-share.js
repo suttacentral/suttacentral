@@ -45,7 +45,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     }
 
     .button-text:active {
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: var(--sc-darker-fixed-background-color);
       transition: background-color 0.2s ease;
       cursor: pointer;
     }

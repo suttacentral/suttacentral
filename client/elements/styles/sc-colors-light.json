@@ -21,7 +21,8 @@
   "--sc-on-tertiary-primary-text-color": "#00192f",
   "--sc-on-tertiary-secondary-text-color": "#675d4f",
 
-  "--sc-dark-fixed-background-color": "#403c3c",
+  "--sc-dark-fixed-background-color": "#544f4f",
+  "--sc-darker-fixed-background-color": "#403c3c",
   "--sc-inverted-text-color": "#ffffff",
   "--sc-icon-color": "#969088",
   "--sc-border-color": "#cdc5bd",
