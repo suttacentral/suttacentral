@@ -610,11 +610,11 @@ export const showAsterisk = html`
     }
 
     .comment::before {
-      color: var(--sc-primary-accent-color);
+      color: var(--sc-primary-accent-color-light);
     }
 
     .variant::before {
-      color: var(--sc-secondary-accent-color);
+      color: var(--sc-secondary-accent-color-light);
     }
   </style>
 `;

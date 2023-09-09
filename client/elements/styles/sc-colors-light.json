@@ -4,10 +4,11 @@
   "--sc-primary-color-light-transparent": "rgba(249, 178, 15, 0.4)",
   "--sc-primary-color-dark": "#9e6f04",
 
-  "--sc-primary-accent-color": "#0062a0",
+  "--sc-primary-accent-color": "#4886C1",
   "--sc-primary-accent-color-light": "#5aa8f2",
 
-  "--sc-secondary-accent-color": "#ba1a1a",
+  "--sc-secondary-accent-color": "#C03030",
+    "--sc-secondary-accent-color-light": "#CC5959",
 
   "--sc-primary-background-color": "#fff8f3",
   "--sc-on-primary-primary-text-color": "#201b13",

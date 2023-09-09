@@ -33,6 +33,8 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       overflow: auto hidden;
       box-sizing: border-box;
       scrollbar-gutter: stable both-edges;
+      scroll-behavior: smooth;
+
       display: flex;
       flex-direction: row;
       height: 48px;

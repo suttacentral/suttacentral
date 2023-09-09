@@ -118,10 +118,8 @@ export const typographyBilaraStyles = css`
   }
 
   .reference a:hover {
-    background-color: var(--sc-tertiary-background-color);
-  }
+    background-color: var(--sc-primary-color-light-transparent);
 
-  .reference a {
     text-decoration: none;
   }
 
