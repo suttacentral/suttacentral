@@ -60,14 +60,10 @@ export const dictStyles = css`
     font-weight: 600;
     font-style: normal;
 
-    padding: 0 4px;
-
     white-space: nowrap;
     letter-spacing: normal;
 
     color: var(--sc-on-primary-secondary-text-color);
-    border-radius: 8px;
-    background-color: rgba(159, 158, 157, 0.15);
 
     font-variant-caps: normal;
   }
@@ -194,30 +190,70 @@ export const dictStyles = css`
     text-align: left;
   }
 
-  dd a {
+       /* inline links */
+
+  p a,
+  li a,
+  dl a,
+  table a {
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
     color: inherit;
 
-    text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 0.15em;
+    text-decoration-color: var(--sc-primary-accent-color-light);
+    text-decoration-thickness: 2px;
     text-underline-offset: 0.15em;
-
-    transition: var(--sc-link-transition);
   }
 
-  dd a:hover {
-    text-decoration-color: var(--sc-primary-color);
-    text-decoration-thickness: 0.15em;
+  p a:hover,
+  li a:hover,
+  dl a:hover,
+  table a:hover {
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
     text-underline-offset: 0.15em;
+  }
+
+  p a:active,
+  li a:active,
+  dl a:active,
+  table a:active {
+    text-decoration-color: var(--sc-primary-color);
+  }
+
+  p a:visited,
+  li a:visited,
+  dl a:visited,
+  table a:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+
+  /* block links */
+
+    .block-link {
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    color: inherit;
+    background-color: inherit;
+  }
+
+  .block-link:hover {
+    transition: var(--sc-link-transition);
+
+    text-decoration: none;
 
     background-color: var(--sc-primary-color-light-transparent);
   }
 
-  dd a:active {
+  .block-link:active{
     background-color: var(--sc-primary-color-light);
   }
 
-  dd a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
-  }
 `;

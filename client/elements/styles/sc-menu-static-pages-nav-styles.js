@@ -97,11 +97,7 @@ export const SCMenuStaticPagesNavStyles = css`
   li a:active {
     transition: var(--sc-link-transition);
 
-    background-color: var(--sc-primary-color-light-transparent);
-  }
-
-  li a:hover .external {
-    visibility: visible;
+    background-color: var(--sc-primary-color-light);
   }
 
   .staticPageSelected {

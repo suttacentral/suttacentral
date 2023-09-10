@@ -5,6 +5,7 @@ import { SCStaticPage } from '../addons/sc-static-page';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
+import { SCUtilityStyles } from '../styles/sc-utility-styles';
 import '../sc-map';
 import mapData from '../../utils/mapData';
 import { icon } from '../../img/sc-icon';
@@ -32,102 +33,103 @@ export class SCStaticMap extends SCStaticPage {
     unsafeCSS(typographyCommonStyles),
     unsafeCSS(typographyStaticStyles),
     css`
-      article {
-        max-width: 100%;
-      }
-      
-      .columns {
-        margin-top: 2rem;
-      
-        columns: 3 480px;
-      }
-      
-      .features-section {
-        break-inside: avoid;
-      }
-      
-      ul {
-        padding-left: 0;
-      }
-      
-      li {
-        margin: 0.5em 0;
-        padding: 0;
-      
-        list-style: none;
-      }
-      
-      li a {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-font-size-s);
-        font-weight: 550;
-        line-height: 1;
-      
-        display: inline-flex;
-      
-        box-sizing: border-box;
-        min-width: 64px;
-        height: 40px;
-        padding: 0 24px;
-      
-        transition: var(--sc-link-transition);
-        text-decoration: none;
-      
-        color: var(--sc-on-tertiary-primary-text-color);
-        border: 1px solid var(--sc-border-color);
-        border-radius: var(--sc-big-border-radius);
-        background-color: inherit;
-      
-        align-items: center;
-        justify-content: center;
-      }
-      
-      li a:hover {
-        transition: var(--sc-link-transition);
-      
-        background-color: var(--sc-primary-color-light-transparent);
-      }
-      
-      li a:active {
-        transition: var(--sc-link-transition);
-      
-        background-color: var(--sc-primary-color-light);
-      }
-      
-      a svg {
-        display: inline-block;
-      
-        width: 1.5em;
-        margin-top: -0.2em;
-        margin-right: 0.2em;
-        margin-left: -0.6em;
-      
-        vertical-align: middle;
-      }
-      
-      h3 {
-        margin-top: 0;
-      }
-      
-      .features-section {
-        margin-bottom: 2rem;
-      }
-      
-      img {
-        margin-bottom: 8px;
-      
-        border-radius: var(--sc-big-border-radius);
-        box-shadow: var(--sc-shadow-elevation-2dp);
-      }
-      
-      figcaption {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-font-size-s);
-      
-        text-align: right;
-      
-        color: var(--sc-on-primary-secondary-text-color);
-      }
+     ${SCUtilityStyles}
+      article
+{
+    max-width: 100%;
+}
+
+.columns
+{
+    margin-top: 2rem;
+
+    columns: 3 480px;
+}
+
+.features-section
+{
+    break-inside: avoid;
+}
+
+ul
+{
+    padding-left: 0;
+}
+
+li
+{
+    margin: .5em 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+li a
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 550;
+    line-height: 1;
+
+    display: inline-flex;
+
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 40px;
+    padding: 0 24px;
+
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    color: var(--sc-on-tertiary-primary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: var(--sc-big-border-radius);
+    background-color: inherit;
+
+    align-items: center;
+    justify-content: center;
+}
+
+a svg
+{
+    display: inline-block;
+
+    width: 1.5em;
+    margin-top: -.2em;
+    margin-right: .2em;
+    margin-left: -.6em;
+
+    vertical-align: middle;
+}
+
+h3
+{
+    margin-top: 0;
+}
+
+.features-section
+{
+    margin-bottom: 2rem;
+}
+
+img
+{
+    margin-bottom: 8px;
+
+    border-radius: var(--sc-big-border-radius);
+    box-shadow: var(--sc-shadow-elevation-2dp);
+}
+
+figcaption
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+
+    text-align: right;
+
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
     `,
   ];
 

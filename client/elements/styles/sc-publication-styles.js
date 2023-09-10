@@ -37,17 +37,8 @@ export const SCPublicationStyles = css`
     margin: 1em 0;
     padding: 1em 2em;
 
-    transition: var(--sc-link-transition);
-    text-decoration: none;
-
-    border-radius: var(--sc-big-border-radius);
+   border-radius: var(--sc-big-border-radius);
     background-color: var(--sc-tertiary-background-color);
-  }
-
-  [rel~='license']:hover {
-    text-decoration: none;
-
-    background-color: var(--sc-primary-color-light-transparent);
   }
 
   [rel~='license'] p {

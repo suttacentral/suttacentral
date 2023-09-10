@@ -252,14 +252,10 @@ export const SCPageSearchStyles = css`
     font-weight: 600;
     font-style: normal;
 
-    padding: 0 4px;
-
     white-space: nowrap;
     letter-spacing: normal;
 
     color: var(--sc-on-primary-secondary-text-color);
-    border-radius: 8px;
-    background-color: rgba(159, 158, 157, 0.15);
 
     font-variant-caps: normal;
   }

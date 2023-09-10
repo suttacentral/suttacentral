@@ -74,23 +74,9 @@ export const SCPublicationEditionsStyles = css`
   }
 
   .block-link {
-    display: block;
-
     margin: 2em 0;
-
-    transition: var(--sc-link-transition);
-    text-decoration: none;
-
-    color: inherit;
-    border-radius: var(--sc-big-border-radius);
-    background-color: inherit;
   }
 
-  .block-link:hover {
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
-  }
 
   .publication_blurb {
     font-family: var(--sc-sans-font);

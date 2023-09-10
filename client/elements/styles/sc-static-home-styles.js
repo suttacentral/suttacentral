@@ -9,12 +9,6 @@ export const staticHomeStyles = css`
     content-visibility: auto;
   }
 
-  a,
-  a:hover,
-  a:active {
-    text-decoration: none;
-  }
-
   main {
     max-width: 1600px;
     margin: 0 auto;
@@ -72,22 +66,14 @@ export const staticHomeStyles = css`
   }
 
   .editions a {
-    display: block;
 
     padding: 1em 1em;
 
     margin: 0 1em;
 
-    transition: var(--sc-link-transition);
-
     border-radius: var(--sc-big-border-radius);
   }
 
-  .editions a:hover {
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
-  }
 
   .editions h2 {
     font-family: var(--sc-sans-font);
@@ -258,6 +244,19 @@ export const staticHomeStyles = css`
     backdrop-filter: blur(2px);
   }
 
+  .card .block-link {
+
+    height: -moz-available;          /* WebKit-based browsers will ignore this. */
+    height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    height: stretch;
+  }
+
+  .two-cards .card{
+
+        background-color: var(--sc-tertiary-background-color);
+        color: var(--sc-on-secondary-primary-text-color);
+  }
+
   .card-content {
     display: flex;
     flex-direction: column;
@@ -266,19 +265,7 @@ export const staticHomeStyles = css`
 
     justify-content: space-between;
     flex: 1;
-  }
 
-  a .card-content {
-    transition: var(--sc-link-transition);
-
-    color: var(--sc-on-secondary-primary-text-color);
-    background-color: var(--sc-tertiary-background-color);
-  }
-
-  a:hover .card-content {
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
   }
 
   .card-text {
@@ -307,10 +294,6 @@ export const staticHomeStyles = css`
     line-height: 1.5;
 
     margin: 0.5em 0 0 0;
-  }
-
-  a {
-    text-decoration: none;
   }
 
   .video {
@@ -519,36 +502,20 @@ export const staticHomeStyles = css`
     display: flex;
     flex-direction: row;
 
-    padding: 0 1em;
-
-    transition: var(--sc-link-transition);
+    padding: 8px 16px;
 
     color: var(--sc-on-primary-secondary-text-color);
-    border-radius: 18px;
+    border-radius: 20px;
 
     gap: 1em;
     align-items: center;
   }
 
-  .related-projects-heading a:hover {
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
-  }
-
   .sc-related-items-wrapper a {
     height: 100%;
 
-    transition: var(--sc-link-transition);
-
     color: var(--sc-on-secondary-primary-text-color);
     background-color: var(--sc-secondary-background-color);
-  }
-
-  .sc-related-items-wrapper a:hover {
-    transition: var(--sc-link-transition);
-
-    background-color: var(--sc-primary-color-light-transparent);
   }
 
   .related-projects-heading a:active {

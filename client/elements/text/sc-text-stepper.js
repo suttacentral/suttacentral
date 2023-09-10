@@ -9,122 +9,156 @@ export class SCTextStepper extends LitElement {
   };
 
   static styles = css`
-    @media print {
-      :host {
+    @media print
+{
+    :host
+    {
         display: none;
-      }
     }
+}
 
-    .bar {
-      display: flex;
-      overflow: hidden;
-      height: 6rem;
-      margin: 0px 2%;
-      padding: 0px;
-      gap: 4%;
-      justify-content: space-around;
-      border-radius: 48px;
-    }
+.bar
+{
+    display: flex;
+    overflow: hidden;
 
-    .button-container {
-      position: relative;
+    height: 6rem;
+    margin: 0 2%;
+    padding: 0;
 
-      width: 50%;
-      height: 100%;
-      margin: 0;
-    }
+    border-radius: 48px;
 
-    .button {
-      width: 100%;
-      background-color: var(--sc-tertiary-background-color);
-    }
+    gap: 4%;
+    justify-content: space-around;
+}
 
-    .button:hover {
-      background-color: var(--sc-primary-color-light-transparent);
-      transition: var(--sc-link-transition);
-    }
+.button-container
+{
+    position: relative;
 
-    .button {
-      display: flex;
+    width: 50%;
+    height: 100%;
+    margin: 0;
+}
 
-      height: 100%;
+.button
+{
+    display: flex;
 
-      border-radius: 48px;
-    }
+    width: 100%;
+    height: 100%;
 
-    .button-right {
-      justify-content: flex-end;
-    }
+    border-radius: 48px;
+    background-color: var(--sc-tertiary-background-color);
+}
 
-    .action {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-md);
+.button:hover
+{
+    transition: var(--sc-link-transition);
 
-      opacity: 0.55;
-      color: var(--sc-on-tertiary-secondary-text-color);
-    }
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-    .text-title {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-l);
+.button-right
+{
+    justify-content: flex-end;
+}
 
-      overflow: hidden;
+.action
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-md);
 
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    opacity: .55;
+    color: var(--sc-on-tertiary-secondary-text-color);
+}
 
-      color: var(--sc-on-tertiary-primary-text-color);
-    }
+.text-title
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-l);
 
-    .link {
-      text-decoration: none;
+    overflow: hidden;
 
-      color: inherit;
-    }
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
-    .link .text-title {
-      box-sizing: border-box;
+    color: var(--sc-on-tertiary-primary-text-color);
+}
 
-      transition: var(--sc-link-transition);
-    }
+.block-link
+{
+    transition: var(--sc-link-transition);
+    text-decoration: none;
 
-    .text {
-      display: flex;
+    color: inherit;
+    background-color: inherit;
+}
 
-      margin: auto 0;
-    }
+.block-link:hover
+{
+    transition: var(--sc-link-transition);
+    text-decoration: none;
 
-    .text-element {
-      display: inline-grid;
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-      text-overflow: ellipsis;
-    }
+.block-link:active
+{
+    background-color: var(--sc-primary-color-light);
+}
+.link .text-title
+{
+    box-sizing: border-box;
 
-    .text-element-right {
-      text-align: end;
-    }
+    transition: var(--sc-link-transition);
+}
 
-    .icon {
-      font-size: var(--sc-font-size-l);
+.text
+{
+    display: flex;
 
-      width: var(--sc-size-md-larger);
-      min-width: var(--sc-size-md-larger);
-      margin-top: 1em;
-      margin-right: 0.5em;
-      margin-left: 0.5em;
+    margin: auto 0;
+}
 
-      fill: var(--sc-icon-color);
-    }
+.text-element
+{
+    display: inline-grid;
 
-    @media (min-width: 1280px) {
-      .arrow_right {
+    text-overflow: ellipsis;
+}
+
+.text-element-right
+{
+    text-align: end;
+}
+
+.icon
+{
+    font-size: var(--sc-font-size-l);
+
+    width: var(--sc-size-md-larger);
+    min-width: var(--sc-size-md-larger);
+    margin-top: 1em;
+    margin-right: .5em;
+    margin-left: .5em;
+
+    fill: var(--sc-icon-color);
+}
+
+@media (min-width: 1280px)
+{
+    .arrow_right
+    {
         margin-left: 1em;
-      }
-
-      .arrow_left {
-        margin-right: 1em;
-      }
     }
+
+    .arrow_left
+    {
+        margin-right: 1em;
+    }
+}
+
   `;
 
   render() {
@@ -133,7 +167,7 @@ export class SCTextStepper extends LitElement {
         <div class="button-container">
           ${this.previous?.uid
             ? html`
-                <a href=${this._getUrl(this.previous)} class="link">
+                <a href=${this._getUrl(this.previous)} class="block-link">
                   <div class="button button-left">
                     <div class="text">
                       ${icon.arrow_left}
@@ -152,7 +186,7 @@ export class SCTextStepper extends LitElement {
         <div class="button-container">
           ${this.next?.uid
             ? html`
-                <a href=${this._getUrl(this.next)} class="link">
+                <a href=${this._getUrl(this.next)} class="block-link">
                   <div class="button button-right">
                     <div class="text">
                       <div class="text-element text-element-right">

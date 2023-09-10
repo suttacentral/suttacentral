@@ -106,7 +106,7 @@ export const typographyBilaraStyles = css`
 
     text-align: left;
     white-space: nowrap;
-    text-decoration: none;
+
     letter-spacing: normal;
 
     color: var(--sc-on-primary-secondary-text-color);
@@ -117,11 +117,7 @@ export const typographyBilaraStyles = css`
     font-variant-caps: normal;
   }
 
-  .reference a:hover {
-    background-color: var(--sc-primary-color-light-transparent);
 
-    text-decoration: none;
-  }
 
   header .reference,
   h2 .reference,

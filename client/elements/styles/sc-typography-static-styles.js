@@ -2,84 +2,89 @@ import { css } from 'lit';
 
 export const typographyStaticStyles = css`
   /* styles unique to static pages */
-  li {
-    padding: 0.25em 0.5em;
+li
+{
     margin: 0 0 0 1em;
-  }
+    padding: .25em .5em;
+}
 
-  pre {
+pre
+{
     font-family: var(--sc-monospace-font);
-  }
-  .byline {
+}
+.byline
+{
     font-style: italic;
-  }
+}
 
-  /* images */
-  img {
+/* images */
+img
+{
     display: block;
 
     max-width: 100%;
     margin: 32px auto;
-  }
-  /* indexes */
+}
+/* indexes */
 
-  .description {
+.description
+{
     font-style: italic;
 
     margin: 0;
-  }
-  .type {
-    margin-bottom: 0.5em;
-  }
-  .life-events {
+}
+.type
+{
+    margin-bottom: .5em;
+}
+.life-events
+{
     font-style: italic;
 
-    margin-top: 0.5em;
+    margin-top: .5em;
 
     color: var(--sc-on-primary-secondary-text-color);
-  }
-  .term-translation {
+}
+.term-translation
+{
     font-family: var(--sc-serif-font);
     font-style: normal;
-  }
-  .entry-list {
+}
+.entry-list
+{
     display: flex;
     flex-direction: row;
 
     text-align: center;
 
     flex-wrap: wrap;
-  }
-  .entry-list a {
+
+    gap: 6px
+}
+.entry-list a
+{
     display: inline-block;
-
     width: 64px;
+    padding: 12px 0 8px 0;
 
-    padding: 0.5em 0;
-
-    text-decoration: none;
-
-    border-radius: 2px;
-  }
-  .entry-list a:hover {
-    background-color: var(--sc-primary-color-light-transparent);
-    transition: var(--sc-link-transition);
-  }
-  .entry-list a:active {
-    background-color: var(--sc-primary-color-light);
-  }
-  .subject {
+    border-radius: 24px;
+}
+.subject
+{
     font-style: italic;
 
     color: var(--sc-on-primary-secondary-text-color);
-  }
-  .subject:before {
+}
+.subject:before
+{
     content: '(';
-  }
-  .subject:after {
+}
+.subject:after
+{
     content: ')';
-  }
-  .static-copyright {
+}
+.static-copyright
+{
     margin-top: 64px;
     padding: 1em 2em;
 
@@ -87,21 +92,25 @@ export const typographyStaticStyles = css`
     border: var(--sc-border);
     border-radius: 2px;
     background: var(--sc-tertiary-background-color);
-  }
-  .about-index {
+}
+.about-index
+{
     margin-top: 64px;
     padding: 1em 2em;
 
     color: var(--sc-on-primary-secondary-text-color);
     border: var(--sc-border);
     border-radius: 2px;
-  }
+}
 
-  sc-page-selector {
+sc-page-selector
+{
     font-family: var(--sc-serif-font);
     font-size: var(--sc-font-size-md);
     font-weight: 400;
     line-height: 1.5;
+
     color: var(--sc-on-primary-primary-text-color);
-  }
+}
+
 `;

@@ -286,6 +286,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
             </p>
             <p class="creative-commons">
               <a
+                class='block-link'
                 rel="license"
                 href="https://creativecommons.org/publicdomain/zero/1.0/legalcode"
                 target="_blank"

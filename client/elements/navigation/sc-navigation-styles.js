@@ -269,7 +269,7 @@ export const navigationNormalModeStyles = html`
 
       padding: 6px 16px;
 
-      border: 2px solid var(--sc-primary-color-light);
+      border: 1px solid var(--sc-border-color);
       border-radius: 18px;
       margin-bottom: 0.667rem;
       height: 36px;
@@ -330,12 +330,13 @@ export const navigationCompactModeStyles = html`
       line-height: 1;
     }
 
-    .shortcut-link {
-      font-size: var(--sc-font-size-xs);
+    .essay-link + .shortcut {
+    margin-top: 0;
+}
 
+    .shortcut-link {
       margin-top: 0;
       margin-bottom: 0.5rem;
-      border: none;
     }
   </style>
 `;
@@ -398,7 +399,7 @@ export const navigationPublicationInfoStyles = html`
       display: block;
       overflow: hidden;
 
-      margin: 1em 1em 1em 1em;
+      margin: .667rem 1rem;
 
       text-decoration: none;
 

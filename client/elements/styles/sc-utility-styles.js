@@ -59,4 +59,110 @@ export const SCUtilityStyles = css`
 
     --sc-link-transition: background-color 300ms ease, border-bottom 300ms ease, opacity 300ms ease, text-decoration-thickness 300ms ease;
   }
+
+       /* inline links */
+
+.link-button
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 550;
+    line-height: 1;
+
+    display: inline-flex;
+
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 40px;
+    padding: 0 24px;
+
+    text-decoration: none;
+
+    color: var(--sc-on-primary-primary-text-color);
+    border: 2px solid var(--sc-border-color);
+    border-radius: var(--sc-big-border-radius);
+    background-color: inherit;
+
+    align-items: center;
+    justify-content: center;
+}
+p a,
+li a,
+dl a,
+table a
+{
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 2px;
+    text-underline-offset: .15em;
+}
+
+p a:hover,
+li a:hover,
+dl a:hover,
+table a:hover
+{
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
+    text-underline-offset: .15em;
+}
+
+p a:active,
+li a:active,
+dl a:active,
+table a:active
+{
+    text-decoration-color: var(--sc-primary-color);
+}
+
+p a:visited,
+li a:visited,
+dl a:visited,
+table a:visited
+{
+    text-decoration-color: var(--sc-primary-color-dark);
+}
+
+/* block links */
+
+.block-link,
+.entry-list a,
+.features-section a,
+.reference a
+{
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    color: inherit;
+    background-color: inherit;
+}
+
+.block-link:hover,
+.entry-list a:hover,
+.features-section a:hover,
+.reference a:hover
+{
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    background-color: var(--sc-primary-color-light-transparent);
+}
+
+.block-link:active,
+.entry-list a:active,
+.features-section a:active,
+.reference a:active
+{
+    background-color: var(--sc-primary-color-light);
+}
+
 `;
