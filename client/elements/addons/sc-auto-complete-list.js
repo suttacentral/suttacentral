@@ -19,148 +19,209 @@ const suttaDB = await create({
 
 class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
-    :host {
-      position: absolute;
-      top: var(--sc-size-sm);
-      left: var(--sc-size-sm);
-      width: calc(100% - var(--sc-size-sm) * 2);
-      z-index: 9999;
-      color: var(--sc-on-tertiary-primary-text-color);
-      background-color: var(--sc-tertiary-background-color);
-      display: none;
-      margin: auto;
-      box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
-      border-radius: var(--sc-mid-border-radius);
-      --md-icon-button-icon-size: 32px;
-    }
+    :host
+{
+    position: absolute;
+    z-index: 9999;
+    top: var(--sc-size-sm);
+    left: var(--sc-size-sm);
 
-    .search-suggestions {
-      position: relative;
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
-    }
+    width: calc(100% - var(--sc-size-sm) * 2);
 
-    .suggestion-item {
-      display: grid;
-      grid-template-columns: max-content minmax(0, auto) max-content;
-      grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
-      user-select: unset;
-      font-size: 18px;
-    }
+    display: none;
 
-    .ss-item-uid {
-      font-size: var(--sc-font-size-md);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+    margin: auto;
 
-    .ss-item-title {
-      color: var(--sc-on-primary-secondary-text-color);
-    }
+    color: var(--sc-on-tertiary-primary-text-color);
+    border-radius: var(--sc-mid-border-radius);
+    background-color: var(--sc-tertiary-background-color);
+    box-shadow: 0 0 0 2048px rgba(0, 0, 0, .8);
 
-    .suggestion-item-description {
-      display: flex;
-      flex-direction: row;
-      gap: 0.25rem;
-      grid-area: label;
-    }
+    --md-icon-button-icon-size: 32px;
+}
 
-    ul {
-      list-style: none;
-      padding: 0.5rem 0.5rem 0.25rem;
-      margin: 0;
-      overflow-y: auto;
-    }
+    .ss-list
+{
+    overflow-y: auto;
+}
 
-    li {
-      display: flex;
-      margin-bottom: 0.25rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      transition: var(--sc-link-transition);
-      border-radius: var(--sc-big-border-radius);
-      background-color: var(--sc-secondary-background-color);
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-    }
+.search-suggestions
+{
+    position: relative;
 
-    li:hover {
-      background-color: var(--sc-primary-color-light-transparent);
-    }
+    width: 100%;
 
-    li:active {
-      background-color: var(--sc-primary-color-light);
-    }
+    border-radius: 8px;
+    box-shadow: 0 0 .25rem .25rem rgba(0, 0, 0, .48);
+}
 
-    li:focus {
-      background-color: var(--sc-primary-color-light);
-    }
+.suggestion-item
+{
+    font-size: 18px;
 
-    .search-in {
-      font-size: var(--sc-font-size-s);
-      font-stretch: condensed;
+    display: grid;
 
-      color: var(--sc-on-primary-secondary-text-color);
-    }
+    user-select: unset;
 
-    .search-filter {
-      font-family: monospace;
-      font-size: var(--sc-font-size-s);
-    }
+    grid-template-columns: max-content minmax(0, auto) max-content;
+    grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
+}
 
-    .ss-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.ss-item-uid
+{
+    font-size: var(--sc-font-size-md);
 
-    md-filled-text-field {
+    display: flex;
+
+    align-items: center;
+    gap: 1rem;
+}
+
+.ss-item-title
+{
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
+.suggestion-item-description
+{
+    display: flex;
+    flex-direction: row;
+
+    gap: .25rem;
+    grid-area: label;
+}
+
+.ss-list
+{
+    max-height: 90vh;
+}
+
+ul
+{
+    margin: 0;
+    padding: .5rem .5rem .25rem;
+
+    list-style: none;
+}
+
+li
+{
+    position: relative;
+
+    display: flex;
+
+    margin-bottom: .25rem;
+    padding: .5rem 1rem;
+
+    cursor: pointer;
+    transition: var(--sc-link-transition);
+
+    border-radius: var(--sc-big-border-radius);
+    background-color: var(--sc-secondary-background-color);
+
+    align-items: center;
+    justify-content: space-between;
+}
+
+li:hover
+{
+    background-color: var(--sc-primary-color-light-transparent);
+}
+
+li:active
+{
+    background-color: var(--sc-primary-color-light);
+}
+
+li:focus
+{
+    background-color: var(--sc-primary-color-light);
+}
+
+.search-in
+{
+    font-size: var(--sc-font-size-s);
+    font-stretch: condensed;
+
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
+.search-filter
+{
+    font-family: monospace;
+    font-size: var(--sc-font-size-s);
+}
+
+.ss-header
+{
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+  md-filled-text-field 
+{
       width: 99%;
+
       margin-top: 8px;
+
       --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
       --md-sys-color-primary: var(--sc-primary-accent-color);
       --md-sys-color-on-primary: white;
       --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
-    }
+}
 
- .icon{
-      fill: var(--sc-icon-color)
-    }
+.icon
+{
+    fill: var(--sc-icon-color);
+}
 
-        md-icon {
-      cursor: pointer;
-    }
+md-icon
+{
+    cursor: pointer;
+}
 
-#openSearchTip {
+#openSearchTip
+{
+    font-size: var(--sc-font-size-s);;
+
     display: flex;
-    align-items: center;
-    gap: 8px;
+
+    padding: 0 16px 8px 16px;
+
     color: var(--sc-on-tertiary-secondary-text-color);
-    font-size: var(--sc-font-size-s)
+
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
+#opensearchtip-left
+{
+    display: inline-flex;
 
-ul li:last-child {
-   color: var(--sc-on-tertiary-primary-text-color);
-   background-color: var(--sc-tertiary-background-color);
-   margin-bottom: 0;
+    align-items: center;
 }
 
-    ul li:last-child:hover {
-    background-color: inherit;
+ul li:last-child
+{
+    margin-bottom: .5rem;
 }
 
-md-divider{
-  margin: 8px 0;
-  display: none
+hr
+{
+    display: none;;
+
+    margin: 8px 0;
 }
 
-li ~ md-divider{
-display: flex
+li ~ hr,
+ul li:last-child + hr
+{
+    display: flex;
 }
+
   `;
 
   static properties = {
@@ -406,7 +467,7 @@ display: flex
                 </li>
               `
             )}
-            <md-divider></md-divider>
+            <hr>
             ${this.items.map(
               (item, i) =>
                 html`<li
@@ -427,18 +488,19 @@ display: flex
                   <md-ripple></md-ripple>
                 </li>`
             )}
-            <md-divider></md-divider>
-            <li>
-              <div id="openSearchTip" class='block-link'>
+            <hr>
+            </ul>
+            </div>
+            
+              <div id="openSearchTip">
+              <span id='opensearchtip-left'>
                 <md-icon-button aria-label="Tips for search syntax" @click=${this.#openSearchTip}>
                   ${icon.info}
                 </md-icon-button>
                 <span>Tips for search syntax</span>
+                </span>
+                <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
               </div>
-              <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
-            </li>
-          </ul>
-        </div>
       </div>
     `;
   }
