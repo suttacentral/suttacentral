@@ -133,22 +133,29 @@ nav li:last-child a
     opacity: 1;
 }
 
-.home-link
+.top-bar-home-link
 {
     position: fixed;
     z-index: 10;
     top: 0;
-    left: 0;
+    left: 4px;
 
     display: flex;
 
     width: fit-content;
     height: 48px;
-    padding: 0 12px 0 12px;
 
     background-color: var(--sc-darker-fixed-background-color);
 
     align-items: center;
+}
+
+.home-link
+{
+    padding: 0 12px 0 12px;
+
+    border-radius: 50%;
+    background-color: var(--sc-darker-fixed-background-color);
 }
 
 .home-link svg
@@ -163,10 +170,11 @@ li > a
 
 li .icon
 {
-    margin: 0 -8px;;
+    margin: 0 -8px;
 
-    fill: var(--sc-icon-color);
+    fill: var(--sc-icon-color);;
 }
+
 
   `;
 
@@ -209,7 +217,12 @@ li .icon
     return html`
       <nav>
       <div class='breadcrumbs-wrapper'>
-      <a class='home-link' href='/'>${icon.home}</a>
+      <div class='top-bar-home-link'>
+      <a class='home-link' href='/'>
+      ${icon.home}
+      <md-ripple></md-ripple>
+      </a>
+      </div>
         ${this.#lindenLeavesTemplate()}
         </div>
         <sc-action-items-universal></sc-action-items-universal>

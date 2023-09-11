@@ -9,7 +9,7 @@ export const SCSiteLayoutStyles = css`
 
     min-height: 100%;
 
-    --md-ripple-hover-color: var(--sc-primary-color-light);
+    --md-ripple-hover-color: var(--sc-secondary-background-color);
     --md-ripple-pressed-color: var(--md-sys-color-primary);
 }
 
