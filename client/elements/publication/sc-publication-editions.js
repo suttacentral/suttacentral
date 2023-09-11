@@ -192,7 +192,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
           <section class="down-all">
             <ul>
               <li>
-                ${icon.translation} Order a printed copy or select files from the individual edition
+                ${icon.open_book} Order a printed copy or select files from the individual edition
                 pages below.
               </li>
               <li>

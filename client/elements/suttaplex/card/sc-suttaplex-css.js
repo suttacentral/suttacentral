@@ -309,7 +309,7 @@ export const suttaplexTxCss = css`
     background-color: var(--sc-primary-color-light);
   }
 
-  .translation {
+  .open_book {
     height: 20px;
     width: 20px;
     padding: 4px;

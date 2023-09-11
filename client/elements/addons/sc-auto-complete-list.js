@@ -454,7 +454,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                 >
                   <span class="suggestion-item-description">
                     <span class="ss-item-uid">
-                      <span class="ss-item-uid-icon">${icon.translation}</span>
+                      <span class="ss-item-uid-icon">${icon.open_book}</span>
                       <span class="ss-item-uid-text">${item.uid}</span>
                       <span class="ss-item-title">${item.title}</span>
                     </span>
