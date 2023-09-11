@@ -41,6 +41,11 @@ export class SCTextStepper extends LitElement {
     margin: 0;
 }
 
+a
+{
+    text-decoration: none
+}
+
 .button
 {
     display: flex;
@@ -55,8 +60,14 @@ export class SCTextStepper extends LitElement {
 .button:hover
 {
     transition: var(--sc-link-transition);
+    text-decoration: none;
 
     background-color: var(--sc-primary-color-light-transparent);
+}
+
+button:active
+{
+    background-color: var(--sc-primary-color-light);
 }
 
 .button-right
@@ -86,27 +97,6 @@ export class SCTextStepper extends LitElement {
     color: var(--sc-on-tertiary-primary-text-color);
 }
 
-.block-link
-{
-    transition: var(--sc-link-transition);
-    text-decoration: none;
-
-    color: inherit;
-    background-color: inherit;
-}
-
-.block-link:hover
-{
-    transition: var(--sc-link-transition);
-    text-decoration: none;
-
-    background-color: var(--sc-primary-color-light-transparent);
-}
-
-.block-link:active
-{
-    background-color: var(--sc-primary-color-light);
-}
 .link .text-title
 {
     box-sizing: border-box;
@@ -167,7 +157,7 @@ export class SCTextStepper extends LitElement {
         <div class="button-container">
           ${this.previous?.uid
             ? html`
-                <a href=${this._getUrl(this.previous)} class="block-link">
+                <a href=${this._getUrl(this.previous)}>
                   <div class="button button-left">
                     <div class="text">
                       ${icon.arrow_left}
@@ -176,17 +166,18 @@ export class SCTextStepper extends LitElement {
                         <span class="text-title">${this.previous.name}</span>
                       </div>
                     </div>
+                    <md-ripple></md-ripple>
                   </div>
                 </a>
               `
             : ''}
-          <md-ripple></md-ripple>
+          
         </div>
 
         <div class="button-container">
           ${this.next?.uid
             ? html`
-                <a href=${this._getUrl(this.next)} class="block-link">
+                <a href=${this._getUrl(this.next)}>
                   <div class="button button-right">
                     <div class="text">
                       <div class="text-element text-element-right">
@@ -195,11 +186,11 @@ export class SCTextStepper extends LitElement {
                       </div>
                       ${icon.arrow_right}
                     </div>
+                    <md-ripple></md-ripple>
                   </div>
                 </a>
               `
             : ''}
-          <md-ripple></md-ripple>
         </div>
       </div>
     `;
