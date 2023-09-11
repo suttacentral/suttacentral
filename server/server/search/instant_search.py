@@ -401,6 +401,9 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
             aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) AND '
         aql_condition_part = aql_condition_part[:-5]
 
+    if 'not' in query_conditions:
+        aql_condition_part += aql_not_part(query_conditions['not'])
+
     aql_condition_part += '''
     )
     ''' + add_collection_condition_to_query_aql(query_conditions) + '''
@@ -1117,6 +1120,11 @@ def extract_rest_keywords(result, param):
         _extract_params_by_operator(rest_param, ' OR ', result, "or")
     elif 'AND' in rest_param:
         _extract_params_by_operator(rest_param, ' AND ', result, "and")
+    elif 'NOT' in rest_param:
+        or_param_list = [rest_param.split('NOT')[0].strip()]
+        not_param_list = [rest_param.split('NOT')[1].strip()]
+        result["or"] = or_param_list
+        result["not"] = not_param_list
     else:
         or_param_list = [rest_param.strip()]
         result["or"] = or_param_list
