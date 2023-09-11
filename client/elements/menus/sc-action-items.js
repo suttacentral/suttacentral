@@ -75,7 +75,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     #tools_menu {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       gap: 4px;
       height: 60px;
     }
@@ -88,7 +88,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
       position: relative;
       box-sizing: border-box;
       border-bottom: 4px solid transparent;
-      height: 100%;
+      border-top: 4px solid transparent;
+      padding: 2.3px 0 2.3px 0;
+      height: 60px;
+      width: 48px;
     }
 
     #btnSearchFilter:after,
@@ -104,7 +107,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
       font-weight: 600;
       font-stretch: condensed;
       position: absolute;
-      bottom: 4px;
+      bottom: 2px;
       width: 100%;
       text-align: center;
     }
@@ -167,10 +170,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         width: 100%;
         justify-content: space-around;
         align-items: flex-end;
-      }
-
-      .toolButtons {
-        box-sizing: content-box;
       }
     }
 

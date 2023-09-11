@@ -7,7 +7,7 @@ export const SCSiteLayoutStyles = css`
 
     min-height: 100%;
 
-    --md-ripple-hover-color: var(--sc-primary-color-light);
+    --md-ripple-hover-color: var(--sc-secondary-background-color);
     --md-ripple-pressed-color: var(--md-sys-color-primary);
   }
 
@@ -41,15 +41,20 @@ export const SCSiteLayoutStyles = css`
   .homeTitle #mainTitle {
     font-family: var(--sc-serif-font);
     line-height: 1;
+
     height: 60px;
+
     letter-spacing: var(--sc-caps-letter-spacing);
+
     font-variant-caps: small-caps;
   }
 
   #subTitle {
     font-size: var(--sc-font-size-l);
     font-style: italic;
-    transition: opacity .5s ease-in;
+
+    transition: opacity 0.5s ease-in;
+
     opacity: 1;
   }
 
@@ -57,6 +62,7 @@ export const SCSiteLayoutStyles = css`
     position: sticky;
     z-index: 100;
     top: 0;
+
     color: var(--sc-inverted-text-color);
     background-color: var(--sc-primary-color);
     box-shadow: none;
@@ -64,17 +70,22 @@ export const SCSiteLayoutStyles = css`
 
   #context_toolbar {
     display: flex;
+
     height: 60px;
     padding: 0 8px 0 16px;
+
     justify-content: space-between;
   }
 
   .generalTitle {
     display: flex;
     overflow: hidden;
+
     height: 60px;
+
     white-space: nowrap;
     text-overflow: ellipsis;
+
     align-items: center;
   }
 
@@ -116,10 +127,13 @@ export const SCSiteLayoutStyles = css`
   .skip-to-content-link {
     position: absolute;
     left: 50%;
+
     height: 30px;
     padding: 8px;
+
     transition: transform 0.3s;
     transform: translateY(-100%);
+
     background: #e77e23;
   }
 

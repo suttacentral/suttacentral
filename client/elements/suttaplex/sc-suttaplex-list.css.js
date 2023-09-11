@@ -8,7 +8,7 @@ export const suttaplexListCss = css`
   md-filled-button {
     --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
     --md-sys-color-primary: var(--sc-primary-accent-color);
-    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-on-primary: #ffffff;
     width: 100%;
   }
 
@@ -84,25 +84,36 @@ export const suttaplexListTableViewCss = css`
 
   .uid {
     white-space: nowrap;
-    color: inherit;
     text-decoration: none;
   }
 
-  .uid:hover {
-    color: inherit;
+  table a {
+    transition: var(--sc-link-transition);
     text-decoration: underline;
-    text-decoration-color: var(--sc-primary-color);
-    text-decoration-thickness: 0.15em;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-accent-color-light);
+    text-decoration-thickness: 2px;
     text-underline-offset: 0.15em;
-
-    background-color: var(--sc-primary-color-light-transparent);
   }
 
-  .uid:active {
-    background-color: var(--sc-primary-color-light);
+  table a:hover {
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 0.15em;
   }
 
-  .uid:visited {
+  table a:active {
+    text-decoration-color: var(--sc-primary-color);
+  }
+
+  table a:visited {
     text-decoration-color: var(--sc-primary-color-dark);
   }
 

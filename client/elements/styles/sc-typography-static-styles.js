@@ -3,8 +3,8 @@ import { css } from 'lit';
 export const typographyStaticStyles = css`
   /* styles unique to static pages */
   li {
-    padding: 0.25em 0.5em;
     margin: 0 0 0 1em;
+    padding: 0.25em 0.5em;
   }
 
   pre {
@@ -49,24 +49,15 @@ export const typographyStaticStyles = css`
     text-align: center;
 
     flex-wrap: wrap;
+
+    gap: 6px;
   }
   .entry-list a {
     display: inline-block;
-
     width: 64px;
+    padding: 12px 0 8px 0;
 
-    padding: 0.5em 0;
-
-    text-decoration: none;
-
-    border-radius: 2px;
-  }
-  .entry-list a:hover {
-    background-color: var(--sc-primary-color-light-transparent);
-    transition: var(--sc-link-transition);
-  }
-  .entry-list a:active {
-    background-color: var(--sc-primary-color-light);
+    border-radius: 24px;
   }
   .subject {
     font-style: italic;
@@ -102,6 +93,7 @@ export const typographyStaticStyles = css`
     font-size: var(--sc-font-size-md);
     font-weight: 400;
     line-height: 1.5;
+
     color: var(--sc-on-primary-primary-text-color);
   }
 `;

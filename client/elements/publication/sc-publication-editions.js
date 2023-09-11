@@ -142,7 +142,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             <p class="creator_name">${edition.publication.creator_name}</p>
             <div class="link-button-container">
               <a
-                class="link-button"
+                class="link-button block-link"
                 href="/edition/${edition.publication.text_uid}/${edition.publication
                   .translation_lang_iso}/${edition.publication.creator_uid}"
                 >Get this book</a

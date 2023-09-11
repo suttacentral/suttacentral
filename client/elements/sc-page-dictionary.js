@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../constants';
 import { dictStyles } from './styles/sc-dict-styles';
+import { SCUtilityStyles } from './styles/sc-utility-styles';
 
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
@@ -93,7 +94,9 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
     }
 
     .related-terms ul {
-      display: block;
+      display: flex;
+
+      gap: 16px;
 
       margin: 0;
       padding: 0;
@@ -106,7 +109,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       font-size: var(--sc-font-size-s);
       font-weight: bold;
 
-      margin: 1em 0 0 0;
+      margin: 1em 0 .5em 0;
 
       color: var(--sc-on-primary-secondary-text-color);
     }
@@ -126,32 +129,15 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
 
     .related-terms li {
       display: inline-block;
-
-      margin: 0.5rem 1rem 0 0;
       padding: 0;
     }
 
     .related-terms a {
       display: inline-block;
 
-      text-decoration: none;
+      padding: 8px 16px;
 
-      color: var(--sc-primary-accent-color);
-      border-bottom: 4px solid rgba(0, 0, 0, 0);
-      border-radius: 4px;
-
-      transition: var(--sc-link-transition);
-    }
-
-    .related-terms a:hover {
-      text-decoration: underline;
-
-      text-decoration-thickness: 0.15em;
-      text-underline-offset: 0.15em;
-
-      color: var(--sc-primary-color);
-
-      transition: var(--sc-link-transition);
+      border-radius: 16px;
     }
 
     .related-terms i {
@@ -376,7 +362,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       if (glossaryReturns && glossaryReturns[0] && inputArray[0]) {
         for (const glossWord in inputArray[0]) {
           const glossLookup = inputArray[0][glossWord];
-          glossText = `<a href="/define/${glossLookup}">${glossLookup}`;
+          glossText = `<a class="block-link" href="/define/${glossLookup}">${glossLookup}`;
           const glossaryLookupItem = glossaryReturns[0][glossLookup];
           if (glossaryLookupItem) {
             glossText += `<i> (${glossaryLookupItem})</i></a>`;

@@ -49,7 +49,7 @@ export const suttaplexCss = css`
 
   .top-menu-button:active,
   #copy-menu > summary:active {
-    background-color: var(--sc-dark-fixed-background-color);
+    background-color: var(--sc-darker-fixed-background-color);
     border-radius: 50%;
     transition: background-color 0.2s ease;
   }
@@ -60,8 +60,8 @@ export const suttaplexCss = css`
     font-size: var(--sc-font-size-xs);
   }
 
-  .suttaplex-share-menu-list{
-    padding: 0
+  .suttaplex-share-menu-list {
+    padding: 0;
   }
 
   summary {
@@ -513,9 +513,9 @@ export const parallelItemCss = css`
     width: 16px;
     height: 16px;
   }
-  
-  .vol-page { 
-    font-stretch: condensed; 
+
+  .vol-page {
+    font-stretch: condensed;
   }
 
   @media only screen and (max-width: 600px) {

@@ -21,37 +21,53 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       position: absolute;
-      top: 49px;
-      left: var(--sc-size-sm);
-      width: calc(100% - var(--sc-size-sm) * 2);
       z-index: 9999;
-      color: var(--sc-on-primary-primary-text-color);
-      background-color: var(--sc-primary-background-color);
+      top: var(--sc-size-sm);
+      left: var(--sc-size-sm);
+
+      width: calc(100% - var(--sc-size-sm) * 2);
+
       display: none;
+
       margin: auto;
-      box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
+
+      color: var(--sc-on-tertiary-primary-text-color);
       border-radius: var(--sc-mid-border-radius);
+      background-color: var(--sc-tertiary-background-color);
+      box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
+
       --md-icon-button-icon-size: 32px;
+    }
+
+    .ss-list {
+      overflow-y: auto;
     }
 
     .search-suggestions {
       position: relative;
+
       width: 100%;
+
       border-radius: 8px;
       box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
     }
 
     .suggestion-item {
+      font-size: 18px;
+
       display: grid;
+
+      user-select: unset;
+
       grid-template-columns: max-content minmax(0, auto) max-content;
       grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
-      user-select: unset;
-      font-size: 18px;
     }
 
     .ss-item-uid {
       font-size: var(--sc-font-size-md);
+
       display: flex;
+
       align-items: center;
       gap: 1rem;
     }
@@ -63,28 +79,38 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .suggestion-item-description {
       display: flex;
       flex-direction: row;
+
       gap: 0.25rem;
       grid-area: label;
     }
 
+    .ss-list {
+      max-height: 90vh;
+    }
+
     ul {
-      list-style: none;
-      padding: 0.5rem 0.5rem 0.25rem;
       margin: 0;
-      overflow-y: auto;
+      padding: 0.5rem 0.5rem 0.25rem;
+
+      list-style: none;
     }
 
     li {
+      position: relative;
+
       display: flex;
+
       margin-bottom: 0.25rem;
       padding: 0.5rem 1rem;
+
       cursor: pointer;
       transition: var(--sc-link-transition);
+
       border-radius: var(--sc-big-border-radius);
       background-color: var(--sc-secondary-background-color);
+
       align-items: center;
       justify-content: space-between;
-      position: relative;
     }
 
     li:hover {
@@ -96,7 +122,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     li:focus {
-      background-color: var(--sc-primary-accent-color-light-transparent);
+      background-color: var(--sc-primary-color-light);
     }
 
     .search-in {
@@ -113,17 +139,24 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .ss-header {
       display: flex;
+
       justify-content: center;
       align-items: center;
     }
 
     md-filled-text-field {
       width: 99%;
+
       margin-top: 8px;
+
       --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
       --md-sys-color-primary: var(--sc-primary-accent-color);
       --md-sys-color-on-primary: white;
       --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
+    }
+
+    .icon {
+      fill: var(--sc-icon-color);
     }
 
     md-icon {
@@ -131,11 +164,38 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     #openSearchTip {
-      display: contents;
+      font-size: var(--sc-font-size-s);
+
+      display: flex;
+
+      padding: 0 16px 8px 16px;
+
+      color: var(--sc-on-tertiary-secondary-text-color);
+
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    ul li:last-child:hover {
-      background-color: inherit;
+    #opensearchtip-left {
+      display: inline-flex;
+
+      align-items: center;
+    }
+
+    ul li:last-child {
+      margin-bottom: 0.5rem;
+    }
+
+    hr {
+      display: none;
+
+      margin: 8px 0;
+    }
+
+    li ~ hr,
+    ul li:last-child + hr {
+      display: flex;
     }
   `;
 
@@ -367,8 +427,8 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
             tipitakas.map(
               (item, i) => html`
                 <li
-                  @click=${(e) => this.#gotoSearch(e, item.uid, this.searchQuery)}
-                  @keydown=${(e) => this.#gotoSearch(e, item.uid, this.searchQuery)}
+                  @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
+                  @keydown=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
                 >
                   <span class="suggestion-item">
                     <span class="search-icon">${icon.search_gray}</span>
@@ -382,7 +442,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                 </li>
               `
             )}
-            <md-divider></md-divider>
+            <hr />
             ${this.items.map(
               (item, i) =>
                 html`<li
@@ -403,17 +463,18 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   <md-ripple></md-ripple>
                 </li>`
             )}
-            <md-divider></md-divider>
-            <li>
-              <div id="openSearchTip">
-                <md-icon-button aria-label="Search syntax tips" @click=${this.#openSearchTip}>
-                  ${icon.tip}
-                </md-icon-button>
-                <span>Search syntax tips</span>
-              </div>
-              <md-icon-button @click=${this.#hide}>${icon.close_fill}</md-icon-button>
-            </li>
+            <hr />
           </ul>
+        </div>
+
+        <div id="openSearchTip">
+          <span id="opensearchtip-left">
+            <md-icon-button aria-label="Tips for search syntax" @click=${this.#openSearchTip}>
+              ${icon.info}
+            </md-icon-button>
+            <span>Tips for search syntax</span>
+          </span>
+          <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
         </div>
       </div>
     `;

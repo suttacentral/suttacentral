@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
+import { SCUtilityStyles } from '../styles/sc-utility-styles';
 
 export class ScSiteFooter extends LitLocalized(LitElement) {
   constructor() {
@@ -9,6 +10,7 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
   }
 
   static styles = css`
+    ${SCUtilityStyles}
     sc-site-footer {
       display: block;
       margin-top: auto;
@@ -34,11 +36,10 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
       flex: 1;
     }
 
-      h2 {
-    font-size: var(--sc-font-size-xxl);
-    
-    font-weight: 300;
-  }
+    h2 {
+      font-size: var(--sc-font-size-xxl);
+      font-weight: 300;
+    }
 
     footer ul {
       padding: 0;
@@ -64,30 +65,9 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
     }
 
     li a {
-
       display: inline-block;
-      transition: var(--sc-link-transition);
-      text-decoration: none;
-      color: inherit;
-
       border-radius: 20px;
-
       padding: 8px 16px;
-
-    }
-
-    li a:hover {
-      
-      color: inherit;
-      background-color: var(--sc-primary-color-light-transparent);
-    }
-
-    li a:active {
-      background-color: var(--sc-primary-color-light);
-    }
-
-    li a:visited:hover {
-      text-decoration-color: var(--sc-primary-color-dark);
     }
 
     @media print {
@@ -104,30 +84,46 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
           <div class="first">
             <h2>${this.localize('footer:usefulThings')}</h2>
             <ul>
-              <li><a href="/introduction">${this.localize('footer:introduction')}</a></li>
-              <li><a href="/start">${this.localize('footer:start')}</a></li>
               <li>
-                <a href="/discourses-guide-sujato"
+                <a class="block-link" href="/introduction"
+                  >${this.localize('footer:introduction')}</a
+                >
+              </li>
+              <li><a class="block-link" href="/start">${this.localize('footer:start')}</a></li>
+              <li>
+                <a class="block-link" href="/discourses-guide-sujato"
                   >${this.localize('footer:discoursesGuideSujato')}</a
                 >
               </li>
               <li>
-                <a href="/general-guide-sujato">${this.localize('footer:generalGuideSujato')}</a>
+                <a class="block-link" href="/general-guide-sujato"
+                  >${this.localize('footer:generalGuideSujato')}</a
+                >
               </li>
-              <li><a href="/subjects">${this.localize('footer:subjects')}</a></li>
               <li>
-                <a href="/editions">${this.localize('footer:editions')}</a>
+                <a class="block-link" href="/subjects">${this.localize('footer:subjects')}</a>
+              </li>
+              <li>
+                <a class="block-link" href="/editions">${this.localize('footer:editions')}</a>
               </li>
             </ul>
           </div>
           <div class="second">
             <h2>${this.localize('footer:technicalInformation')}</h2>
             <ul>
-              <li><a href="/languages">${this.localize('footer:languages')}</a></li>
-              <li><a href="/numbering">${this.localize('footer:numbering')}</a></li>
-              <li><a href="/methodology">${this.localize('footer:methodology')}</a></li>
               <li>
-                <a href="https://github.com/suttacentral">${this.localize('footer:sourceCode')}</a>
+                <a class="block-link" href="/languages">${this.localize('footer:languages')}</a>
+              </li>
+              <li>
+                <a class="block-link" href="/numbering">${this.localize('footer:numbering')}</a>
+              </li>
+              <li>
+                <a class="block-link" href="/methodology">${this.localize('footer:methodology')}</a>
+              </li>
+              <li>
+                <a class="block-link" href="https://github.com/suttacentral"
+                  >${this.localize('footer:sourceCode')}</a
+                >
               </li>
             </ul>
           </div>
@@ -135,23 +131,27 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
             <h2>${this.localize('footer:relatedProjects')}</h2>
             <ul>
               <li>
-                <a href="https://discourse.suttacentral.net">${this.localize('footer:scforum')}</a>
+                <a class="block-link" href="https://discourse.suttacentral.net"
+                  >${this.localize('footer:scforum')}</a
+                >
               </li>
               <li>
-                <a href="https://voice.suttacentral.net/scv/index.html"
+                <a class="block-link" href="https://voice.suttacentral.net/scv/index.html"
                   >${this.localize('footer:scvoice')}</a
                 >
               </li>
               <li>
-                <a href="https://buddhanexus.net">${this.localize('footer:buddhaNexus')}</a>
+                <a class="block-link" href="https://buddhanexus.net"
+                  >${this.localize('footer:buddhaNexus')}</a
+                >
               </li>
               <li>
-                <a href="https://readingfaithfully.org/"
+                <a class="block-link" href="https://readingfaithfully.org/"
                   >${this.localize('footer:readingfaithfully')}</a
                 >
               </li>
               <li>
-                <a href="https://suttacentral.github.io/awesome/"
+                <a class="block-link" href="https://suttacentral.github.io/awesome/"
                   >${this.localize('footer:scawesome')}</a
                 >
               </li>
@@ -160,10 +160,16 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
         </section>
         <section class="footer-bottom">
           <ul>
-            <li><a href="/">${this.localize('footer:home')}</a></li>
-            <li><a href="/acknowledgments">${this.localize('footer:acknowledgments')}</a></li>
-            <li><a href="/licensing">${this.localize('footer:licensing')}</a></li>
-            <li><a href="/About">${this.localize('footer:about')}</a></li>
+            <li><a class="block-link" href="/">${this.localize('footer:home')}</a></li>
+            <li>
+              <a class="block-link" href="/acknowledgments"
+                >${this.localize('footer:acknowledgments')}</a
+              >
+            </li>
+            <li>
+              <a class="block-link" href="/licensing">${this.localize('footer:licensing')}</a>
+            </li>
+            <li><a class="block-link" href="/About">${this.localize('footer:about')}</a></li>
           </ul>
         </section>
       </footer>

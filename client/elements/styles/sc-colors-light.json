@@ -1,32 +1,34 @@
 {
   "--sc-primary-color": "#c68b05",
-  "--sc-primary-color-light": "#fdbb40",
-  "--sc-primary-color-light-transparent": "rgba(253,187,64, 0.5)",
-  "--sc-primary-color-dark": "#9e6e00",
-  "--sc-primary-accent-color": "#009966",
-  "--sc-primary-accent-color-light": "#00c080",
-  "--sc-primary-accent-color-lighter": "#00f3a2",
+  "--sc-primary-color-light": "#f9b20f",
+  "--sc-primary-color-light-transparent": "rgba(249, 178, 15, 0.4)",
+  "--sc-primary-color-dark": "#9e6f04",
 
-  "--sc-secondary-accent-color": "#9e5e6f",
+  "--sc-primary-accent-color": "#4886C1",
+  "--sc-primary-accent-color-light": "#5aa8f2",
+
+  "--sc-secondary-accent-color": "#C03030",
+    "--sc-secondary-accent-color-light": "#CC5959",
 
   "--sc-primary-background-color": "#fff8f3",
-  "--sc-on-primary-primary-text-color": "#1f1b16",
+  "--sc-on-primary-primary-text-color": "#201b13",
   "--sc-on-primary-secondary-text-color": "#7c766f",
 
   "--sc-secondary-background-color": "#fffbff",
-  "--sc-on-secondary-primary-text-color": "#211b10",
+  "--sc-on-secondary-primary-text-color": "#211400",
   "--sc-on-secondary-secondary-text-color": "#807567",
 
-  "--sc-tertiary-background-color": "#ffeed9",
-  "--sc-on-tertiary-primary-text-color": "#000000",
+  "--sc-tertiary-background-color": "#f8ecde",
+  "--sc-on-tertiary-primary-text-color": "#00192f",
   "--sc-on-tertiary-secondary-text-color": "#675d4f",
 
-  "--sc-dark-fixed-background-color": "#4c4640",
+  "--sc-dark-fixed-background-color": "#544f4f",
+  "--sc-darker-fixed-background-color": "#403c3c",
   "--sc-inverted-text-color": "#ffffff",
   "--sc-icon-color": "#969088",
   "--sc-border-color": "#cdc5bd",
   "--sc-toast-error-color": "#ba1a1a",
   "--sc-toast-success-color": "var(--sc-primary-accent-color-light)",
-  "--sc-pie-chart-bg-color": "var(--sc-primary-accent-color-lighter)",
-  "--sc-pie-chart-fill-color": "var(--sc-primary-accent-color-light)"
+  "--sc-pie-chart-bg-color": "var(--sc-primary-accent-color-light)",
+  "--sc-pie-chart-fill-color": "var(--sc-primary-accent-color)"
 }

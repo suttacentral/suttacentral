@@ -34,8 +34,13 @@ export class SCStaticDonations extends SCStaticPage {
         }
 
         .link-button {
-          color: var(--sc-primary-accent-color);
-          border: 2px solid var(--sc-primary-accent-color-light);
+          color: white;
+          border: none;
+          background-color: var(--sc-primary-accent-color);
+        }
+
+        .link-button:hover {
+          background-color: var(--sc-primary-accent-color-light);
         }
 
         .account-data td {
@@ -48,7 +53,7 @@ export class SCStaticDonations extends SCStaticPage {
           <p>${unsafeHTML(this.localize('donations:2'))}</p>
 
           <div class="donate-button-container">
-            <a class="link-button" href="/donate-now">
+            <a class="link-button block-link" href="/donate-now">
               ${unsafeHTML(this.localize('donations:3'))}
             </a>
           </div>

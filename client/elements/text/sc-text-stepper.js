@@ -18,12 +18,15 @@ export class SCTextStepper extends LitElement {
     .bar {
       display: flex;
       overflow: hidden;
+
       height: 6rem;
-      margin: 0px 2%;
-      padding: 0px;
+      margin: 0 2%;
+      padding: 0;
+
+      border-radius: 48px;
+
       gap: 4%;
       justify-content: space-around;
-      border-radius: 48px;
     }
 
     .button-container {
@@ -34,22 +37,29 @@ export class SCTextStepper extends LitElement {
       margin: 0;
     }
 
-    .button {
-      width: 100%;
-      background-color: var(--sc-tertiary-background-color);
-    }
-
-    .button:hover {
-      background-color: var(--sc-primary-color-light-transparent);
-      transition: var(--sc-link-transition);
+    a {
+      text-decoration: none;
     }
 
     .button {
       display: flex;
 
+      width: 100%;
       height: 100%;
 
       border-radius: 48px;
+      background-color: var(--sc-tertiary-background-color);
+    }
+
+    .button:hover {
+      transition: var(--sc-link-transition);
+      text-decoration: none;
+
+      background-color: var(--sc-primary-color-light-transparent);
+    }
+
+    button:active {
+      background-color: var(--sc-primary-color-light);
     }
 
     .button-right {
@@ -74,12 +84,6 @@ export class SCTextStepper extends LitElement {
       text-overflow: ellipsis;
 
       color: var(--sc-on-tertiary-primary-text-color);
-    }
-
-    .link {
-      text-decoration: none;
-
-      color: inherit;
     }
 
     .link .text-title {
@@ -133,7 +137,7 @@ export class SCTextStepper extends LitElement {
         <div class="button-container">
           ${this.previous?.uid
             ? html`
-                <a href=${this._getUrl(this.previous)} class="link">
+                <a href=${this._getUrl(this.previous)}>
                   <div class="button button-left">
                     <div class="text">
                       ${icon.arrow_left}
@@ -142,17 +146,17 @@ export class SCTextStepper extends LitElement {
                         <span class="text-title">${this.previous.name}</span>
                       </div>
                     </div>
+                    <md-ripple></md-ripple>
                   </div>
                 </a>
               `
             : ''}
-          <md-ripple></md-ripple>
         </div>
 
         <div class="button-container">
           ${this.next?.uid
             ? html`
-                <a href=${this._getUrl(this.next)} class="link">
+                <a href=${this._getUrl(this.next)}>
                   <div class="button button-right">
                     <div class="text">
                       <div class="text-element text-element-right">
@@ -161,11 +165,11 @@ export class SCTextStepper extends LitElement {
                       </div>
                       ${icon.arrow_right}
                     </div>
+                    <md-ripple></md-ripple>
                   </div>
                 </a>
               `
             : ''}
-          <md-ripple></md-ripple>
         </div>
       </div>
     `;

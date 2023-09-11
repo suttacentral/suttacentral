@@ -252,14 +252,10 @@ export const SCPageSearchStyles = css`
     font-weight: 600;
     font-style: normal;
 
-    padding: 0 4px;
-
     white-space: nowrap;
     letter-spacing: normal;
 
     color: var(--sc-on-primary-secondary-text-color);
-    border-radius: 8px;
-    background-color: rgba(159, 158, 157, 0.15);
 
     font-variant-caps: normal;
   }
@@ -391,7 +387,6 @@ export const searchResultTableViewStyles = css`
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
-
   .highlightShrink {
     display: -webkit-box;
     overflow: hidden;
@@ -401,7 +396,7 @@ export const searchResultTableViewStyles = css`
   }
 
   .parallels-link {
-    text-decoration: none; !important;
+    text-decoration: none !important;
     color: var(--sc-on-primary-secondary-text-color);
     margin-top: 8px;
     padding: 12px;

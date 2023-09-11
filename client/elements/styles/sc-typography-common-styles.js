@@ -22,46 +22,6 @@ export const typographyCommonStyles = css`
     margin: 0 1em;
   }
 
-  /* inline links */
-
-  p a,
-  li a,
-  dl a {
-    transition: var(--sc-link-transition);
-    text-decoration: underline;
-
-    color: inherit;
-
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.1em;
-  }
-
-  p a:hover,
-  li a:hover,
-  dl a:hover {
-    transition: var(--sc-link-transition);
-    text-decoration: underline;
-
-    color: inherit;
-
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 4px;
-    text-underline-offset: 0.1em;
-  }
-
-  p a:active,
-  li a:active,
-  dl a:active {
-    text-decoration-color: var(--sc-primary-color);
-  }
-
-  p a:visited,
-  li a:visited,
-  dl a:visited {
-    text-decoration-color: var(--sc-primary-color-dark);
-  }
-
   /* text block elements */
 
   ul,
@@ -193,13 +153,28 @@ export const typographyCommonStyles = css`
     font-weight: 400;
 
     margin: 0.5em 0;
-    padding: 0.25em 0 0.25em clamp(0rem, 3vw, 1rem);
   }
 
   .contents a {
+    padding: 8px 16px 6px;
+
     text-decoration: none;
 
     color: inherit;
+    border-radius: 18px;
+    transition: var(--sc-link-transition);
+    background-color: inherit;
+  }
+
+  .contents a:hover {
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .contents a:active {
+    background-color: var(--sc-primary-color-light);
   }
 
   /* tables */
@@ -330,11 +305,13 @@ export const typographyCommonStyles = css`
 
   a[role='doc-backlink']::after {
     font-size: var(--sc-font-size-l);
+
     content: '󰈀';
   }
 
   section[role='doc-endnotes'] {
     position: relative;
+
     margin-top: 3em;
     padding-top: 1em;
   }

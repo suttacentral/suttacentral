@@ -46,7 +46,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #publicationEditionsTemplate() {
     return html`
       <section class="plain editions">
-        <a href="/editions" class="card">
+        <a class="block-link" href="/editions">
           <h2>${unsafeHTML(this.localize('home:43'))}</h2>
           ${this.#publicationEditionsPictureTemplate()}
           <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>
@@ -117,7 +117,7 @@ export class SCStaticHomePage extends SCStaticPage {
         <span>${this.randomEpigraph ? this.randomEpigraph.epigraph : ''}</span>
       </blockquote>
       <a
-        class="link-button quote-button card"
+        class="link-button block-link"
         href=${this.randomEpigraph ? `/${this.randomEpigraph.uid}` : ''}
       >
         ${unsafeHTML(this.localize('home:6'))}
@@ -129,7 +129,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #introductionTemplate() {
     return html`
       <article class="card">
-        <a href="/introduction">
+        <a class="block-link" href="/introduction">
           <figure>
             <picture>
               <source srcset="/img/home-page/pali2.avif" type="image/avif" />
@@ -153,7 +153,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #getStartedTemplate() {
     return html`
       <article class="card">
-        <a href="/start">
+        <a class="block-link" href="/start">
           <figure>
             <picture>
               <source srcset="/img/home-page/koreana2.avif" type="image/avif" />
@@ -181,7 +181,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #relatedProjectsHeaderTemplate() {
     return html`
       <h2>${unsafeHTML(this.localize('home:15'))}</h2>
-      <a href="https://suttacentral.github.io/awesome/">
+      <a class="block-link" href="https://suttacentral.github.io/awesome/">
         <span>More awesome SuttaCentral things</span>
         ${icon.arrow_right}
       </a>
@@ -193,8 +193,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card dark-accent">
         <a
           href="https://voice.suttacentral.net/scv/index.html#/sutta"
-          target="_blank"
-          rel="noopener"
+           class='block-link' 
           title=${this.localize('home:16')}
         >
           <header>
@@ -223,12 +222,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #buddhaNexusCardTemplate() {
     return html`
       <article class="card secondary-accent">
-        <a
-          href="https://buddhanexus.net/"
-          target="_blank"
-          rel="noopener"
-          title=${this.localize('home:21')}
-        >
+        <a href="https://buddhanexus.net/" class="block-link" title=${this.localize('home:21')}>
           <header>
             <span>
               <picture>
@@ -255,8 +249,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card primary-color">
         <a
           href="https://discourse.suttacentral.net/"
-          target="_blank"
-          rel="noopener"
+          class="block-link"
           title=${this.localize('home:24')}
         >
           <header>
@@ -286,8 +279,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card primary-accent">
         <a
           href="https://bilara.suttacentral.net/"
-          target="_blank"
-          rel="noopener"
+          class="block-link"
           title=${this.localize('home:30')}
         >
           <header>
@@ -314,7 +306,7 @@ export class SCStaticHomePage extends SCStaticPage {
         <span>${this.whyWeRead}</span>
       </blockquote>
       <a
-        class="link-button quote-button card"
+        class="link-button block-link"
         href="https://discourse.suttacentral.net/t/why-we-read-tell-us-why-you-read-suttas/6747"
       >
         ${unsafeHTML(this.localize('home:34'))}
@@ -326,7 +318,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #guidesTemplate() {
     return html`
       <article class="card">
-        <a href="/general-guide-sujato">
+        <a class="block-link" href="/general-guide-sujato">
           <figure>
             <picture>
               <source srcset="/img/home-page/pali7.avif" type="image/avif" />
@@ -354,7 +346,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #indexesTemplate() {
     return html`
       <article class="card">
-        <a href="/subjects">
+        <a class="block-link" href="/subjects">
           <figure>
             <picture>
               <source srcset="/img/home-page/bhikkhuni3.avif" type="image/avif" />

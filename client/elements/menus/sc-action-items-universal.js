@@ -18,8 +18,10 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--sc-dark-fixed-background-color);
+      background-color: var(--sc-darker-fixed-background-color);
       --mdc-theme-surface: var(--sc-secondary-background-color);
+
+      z-index: 100;
     }
 
     #sc-menu-more:focus {
