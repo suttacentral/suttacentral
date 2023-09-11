@@ -41,7 +41,6 @@ nav
 
     scroll-snap-type: x mandatory;
     scrollbar-gutter: stable both-edges;
-    scroll-behavior: smooth;
 }
 
 ul
