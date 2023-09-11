@@ -73,7 +73,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     .ss-item-title {
-      color: var(--sc-on-primary-secondary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
     }
 
     .suggestion-item-description {
@@ -454,7 +454,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                 >
                   <span class="suggestion-item-description">
                     <span class="ss-item-uid">
-                      <span class="ss-item-uid-icon">${icon.leaves}</span>
+                      <span class="ss-item-uid-icon">${icon.translation}</span>
                       <span class="ss-item-uid-text">${item.uid}</span>
                       <span class="ss-item-title">${item.title}</span>
                     </span>
