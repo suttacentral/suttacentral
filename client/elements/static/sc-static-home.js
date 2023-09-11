@@ -222,11 +222,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #buddhaNexusCardTemplate() {
     return html`
       <article class="card secondary-accent">
-        <a
-          href="https://buddhanexus.net/"
-           class='block-link' 
-          title=${this.localize('home:21')}
-        >
+        <a href="https://buddhanexus.net/" class="block-link" title=${this.localize('home:21')}>
           <header>
             <span>
               <picture>
@@ -253,7 +249,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card primary-color">
         <a
           href="https://discourse.suttacentral.net/"
-           class='block-link' 
+          class="block-link"
           title=${this.localize('home:24')}
         >
           <header>
@@ -283,7 +279,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card primary-accent">
         <a
           href="https://bilara.suttacentral.net/"
-           class='block-link' 
+          class="block-link"
           title=${this.localize('home:30')}
         >
           <header>

@@ -60,8 +60,8 @@ export const suttaplexCss = css`
     font-size: var(--sc-font-size-xs);
   }
 
-  .suttaplex-share-menu-list{
-    padding: 0
+  .suttaplex-share-menu-list {
+    padding: 0;
   }
 
   summary {
@@ -513,9 +513,9 @@ export const parallelItemCss = css`
     width: 16px;
     height: 16px;
   }
-  
-  .vol-page { 
-    font-stretch: condensed; 
+
+  .vol-page {
+    font-stretch: condensed;
   }
 
   @media only screen and (max-width: 600px) {

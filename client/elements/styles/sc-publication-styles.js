@@ -37,7 +37,7 @@ export const SCPublicationStyles = css`
     margin: 1em 0;
     padding: 1em 2em;
 
-   border-radius: var(--sc-big-border-radius);
+    border-radius: var(--sc-big-border-radius);
     background-color: var(--sc-tertiary-background-color);
   }
 

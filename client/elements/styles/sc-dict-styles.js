@@ -190,7 +190,7 @@ export const dictStyles = css`
     text-align: left;
   }
 
-       /* inline links */
+  /* inline links */
 
   p a,
   li a,
@@ -236,7 +236,7 @@ export const dictStyles = css`
 
   /* block links */
 
-    .block-link {
+  .block-link {
     transition: var(--sc-link-transition);
     text-decoration: none;
 
@@ -252,8 +252,7 @@ export const dictStyles = css`
     background-color: var(--sc-primary-color-light-transparent);
   }
 
-  .block-link:active{
+  .block-link:active {
     background-color: var(--sc-primary-color-light);
   }
-
 `;

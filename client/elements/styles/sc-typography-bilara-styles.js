@@ -117,8 +117,6 @@ export const typographyBilaraStyles = css`
     font-variant-caps: normal;
   }
 
-
-
   header .reference,
   h2 .reference,
   h3 .reference,

@@ -19,149 +19,132 @@ const suttaDB = await create({
 
 class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
-    :host
-{
-    position: absolute;
-    z-index: 9999;
-    top: var(--sc-size-sm);
-    left: var(--sc-size-sm);
+    :host {
+      position: absolute;
+      z-index: 9999;
+      top: var(--sc-size-sm);
+      left: var(--sc-size-sm);
 
-    width: calc(100% - var(--sc-size-sm) * 2);
+      width: calc(100% - var(--sc-size-sm) * 2);
 
-    display: none;
+      display: none;
 
-    margin: auto;
+      margin: auto;
 
-    color: var(--sc-on-tertiary-primary-text-color);
-    border-radius: var(--sc-mid-border-radius);
-    background-color: var(--sc-tertiary-background-color);
-    box-shadow: 0 0 0 2048px rgba(0, 0, 0, .8);
+      color: var(--sc-on-tertiary-primary-text-color);
+      border-radius: var(--sc-mid-border-radius);
+      background-color: var(--sc-tertiary-background-color);
+      box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
 
-    --md-icon-button-icon-size: 32px;
-}
+      --md-icon-button-icon-size: 32px;
+    }
 
-    .ss-list
-{
-    overflow-y: auto;
-}
+    .ss-list {
+      overflow-y: auto;
+    }
 
-.search-suggestions
-{
-    position: relative;
+    .search-suggestions {
+      position: relative;
 
-    width: 100%;
+      width: 100%;
 
-    border-radius: 8px;
-    box-shadow: 0 0 .25rem .25rem rgba(0, 0, 0, .48);
-}
+      border-radius: 8px;
+      box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
+    }
 
-.suggestion-item
-{
-    font-size: 18px;
+    .suggestion-item {
+      font-size: 18px;
 
-    display: grid;
+      display: grid;
 
-    user-select: unset;
+      user-select: unset;
 
-    grid-template-columns: max-content minmax(0, auto) max-content;
-    grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
-}
+      grid-template-columns: max-content minmax(0, auto) max-content;
+      grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
+    }
 
-.ss-item-uid
-{
-    font-size: var(--sc-font-size-md);
+    .ss-item-uid {
+      font-size: var(--sc-font-size-md);
 
-    display: flex;
+      display: flex;
 
-    align-items: center;
-    gap: 1rem;
-}
+      align-items: center;
+      gap: 1rem;
+    }
 
-.ss-item-title
-{
-    color: var(--sc-on-primary-secondary-text-color);
-}
+    .ss-item-title {
+      color: var(--sc-on-primary-secondary-text-color);
+    }
 
-.suggestion-item-description
-{
-    display: flex;
-    flex-direction: row;
+    .suggestion-item-description {
+      display: flex;
+      flex-direction: row;
 
-    gap: .25rem;
-    grid-area: label;
-}
+      gap: 0.25rem;
+      grid-area: label;
+    }
 
-.ss-list
-{
-    max-height: 90vh;
-}
+    .ss-list {
+      max-height: 90vh;
+    }
 
-ul
-{
-    margin: 0;
-    padding: .5rem .5rem .25rem;
+    ul {
+      margin: 0;
+      padding: 0.5rem 0.5rem 0.25rem;
 
-    list-style: none;
-}
+      list-style: none;
+    }
 
-li
-{
-    position: relative;
+    li {
+      position: relative;
 
-    display: flex;
+      display: flex;
 
-    margin-bottom: .25rem;
-    padding: .5rem 1rem;
+      margin-bottom: 0.25rem;
+      padding: 0.5rem 1rem;
 
-    cursor: pointer;
-    transition: var(--sc-link-transition);
+      cursor: pointer;
+      transition: var(--sc-link-transition);
 
-    border-radius: var(--sc-big-border-radius);
-    background-color: var(--sc-secondary-background-color);
+      border-radius: var(--sc-big-border-radius);
+      background-color: var(--sc-secondary-background-color);
 
-    align-items: center;
-    justify-content: space-between;
-}
+      align-items: center;
+      justify-content: space-between;
+    }
 
-li:hover
-{
-    background-color: var(--sc-primary-color-light-transparent);
-}
+    li:hover {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
 
-li:active
-{
-    background-color: var(--sc-primary-color-light);
-}
+    li:active {
+      background-color: var(--sc-primary-color-light);
+    }
 
-li:focus
-{
-    background-color: var(--sc-primary-color-light);
-}
+    li:focus {
+      background-color: var(--sc-primary-color-light);
+    }
 
-.search-in
-{
-    font-size: var(--sc-font-size-s);
-    font-stretch: condensed;
+    .search-in {
+      font-size: var(--sc-font-size-s);
+      font-stretch: condensed;
 
-    color: var(--sc-on-primary-secondary-text-color);
-}
+      color: var(--sc-on-primary-secondary-text-color);
+    }
 
-.search-filter
-{
-    font-family: monospace;
-    font-size: var(--sc-font-size-s);
-}
+    .search-filter {
+      font-family: monospace;
+      font-size: var(--sc-font-size-s);
+    }
 
-.ss-header
-{
-    display: flex;
+    .ss-header {
+      display: flex;
 
-    justify-content: center;
-    align-items: center;
-}
+      justify-content: center;
+      align-items: center;
+    }
 
-  md-filled-text-field 
-{
+    md-filled-text-field {
       width: 99%;
 
       margin-top: 8px;
@@ -170,58 +153,50 @@ li:focus
       --md-sys-color-primary: var(--sc-primary-accent-color);
       --md-sys-color-on-primary: white;
       --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
-}
+    }
 
-.icon
-{
-    fill: var(--sc-icon-color);
-}
+    .icon {
+      fill: var(--sc-icon-color);
+    }
 
-md-icon
-{
-    cursor: pointer;
-}
+    md-icon {
+      cursor: pointer;
+    }
 
-#openSearchTip
-{
-    font-size: var(--sc-font-size-s);;
+    #openSearchTip {
+      font-size: var(--sc-font-size-s);
 
-    display: flex;
+      display: flex;
 
-    padding: 0 16px 8px 16px;
+      padding: 0 16px 8px 16px;
 
-    color: var(--sc-on-tertiary-secondary-text-color);
+      color: var(--sc-on-tertiary-secondary-text-color);
 
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
 
-#opensearchtip-left
-{
-    display: inline-flex;
+    #opensearchtip-left {
+      display: inline-flex;
 
-    align-items: center;
-}
+      align-items: center;
+    }
 
-ul li:last-child
-{
-    margin-bottom: .5rem;
-}
+    ul li:last-child {
+      margin-bottom: 0.5rem;
+    }
 
-hr
-{
-    display: none;;
+    hr {
+      display: none;
 
-    margin: 8px 0;
-}
+      margin: 8px 0;
+    }
 
-li ~ hr,
-ul li:last-child + hr
-{
-    display: flex;
-}
-
+    li ~ hr,
+    ul li:last-child + hr {
+      display: flex;
+    }
   `;
 
   static properties = {
@@ -452,8 +427,8 @@ ul li:last-child + hr
             tipitakas.map(
               (item, i) => html`
                 <li
-                  @click=${(e) => this.#gotoSearch(e, item.uid, this.searchQuery)}
-                  @keydown=${(e) => this.#gotoSearch(e, item.uid, this.searchQuery)}
+                  @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
+                  @keydown=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
                 >
                   <span class="suggestion-item">
                     <span class="search-icon">${icon.search_gray}</span>
@@ -467,7 +442,7 @@ ul li:last-child + hr
                 </li>
               `
             )}
-            <hr>
+            <hr />
             ${this.items.map(
               (item, i) =>
                 html`<li
@@ -488,19 +463,19 @@ ul li:last-child + hr
                   <md-ripple></md-ripple>
                 </li>`
             )}
-            <hr>
-            </ul>
-            </div>
-            
-              <div id="openSearchTip">
-              <span id='opensearchtip-left'>
-                <md-icon-button aria-label="Tips for search syntax" @click=${this.#openSearchTip}>
-                  ${icon.info}
-                </md-icon-button>
-                <span>Tips for search syntax</span>
-                </span>
-                <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
-              </div>
+            <hr />
+          </ul>
+        </div>
+
+        <div id="openSearchTip">
+          <span id="opensearchtip-left">
+            <md-icon-button aria-label="Tips for search syntax" @click=${this.#openSearchTip}>
+              ${icon.info}
+            </md-icon-button>
+            <span>Tips for search syntax</span>
+          </span>
+          <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
+        </div>
       </div>
     `;
   }

@@ -22,7 +22,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       --mdc-theme-surface: var(--sc-secondary-background-color);
 
       z-index: 100;
-
     }
 
     #sc-menu-more:focus {
@@ -36,7 +35,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     mwc-icon-button {
       color: white;
     }
-
 
     #more-menu {
       --mdc-menu-min-width: 275px;

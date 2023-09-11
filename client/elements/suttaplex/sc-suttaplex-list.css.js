@@ -8,7 +8,7 @@ export const suttaplexListCss = css`
   md-filled-button {
     --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
     --md-sys-color-primary: var(--sc-primary-accent-color);
-    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-on-primary: #ffffff;
     width: 100%;
   }
 
@@ -87,7 +87,6 @@ export const suttaplexListTableViewCss = css`
     text-decoration: none;
   }
 
-
   table a {
     transition: var(--sc-link-transition);
     text-decoration: underline;
@@ -98,7 +97,6 @@ export const suttaplexListTableViewCss = css`
     text-decoration-thickness: 2px;
     text-underline-offset: 0.15em;
   }
-
 
   table a:hover {
     transition: var(--sc-link-transition);
@@ -111,11 +109,9 @@ export const suttaplexListTableViewCss = css`
     text-underline-offset: 0.15em;
   }
 
-
   table a:active {
     text-decoration-color: var(--sc-primary-color);
   }
-
 
   table a:visited {
     text-decoration-color: var(--sc-primary-color-dark);

@@ -9,146 +9,126 @@ export class SCTextStepper extends LitElement {
   };
 
   static styles = css`
-    @media print
-{
-    :host
-    {
+    @media print {
+      :host {
         display: none;
+      }
     }
-}
 
-.bar
-{
-    display: flex;
-    overflow: hidden;
+    .bar {
+      display: flex;
+      overflow: hidden;
 
-    height: 6rem;
-    margin: 0 2%;
-    padding: 0;
+      height: 6rem;
+      margin: 0 2%;
+      padding: 0;
 
-    border-radius: 48px;
+      border-radius: 48px;
 
-    gap: 4%;
-    justify-content: space-around;
-}
+      gap: 4%;
+      justify-content: space-around;
+    }
 
-.button-container
-{
-    position: relative;
+    .button-container {
+      position: relative;
 
-    width: 50%;
-    height: 100%;
-    margin: 0;
-}
+      width: 50%;
+      height: 100%;
+      margin: 0;
+    }
 
-a
-{
-    text-decoration: none
-}
+    a {
+      text-decoration: none;
+    }
 
-.button
-{
-    display: flex;
+    .button {
+      display: flex;
 
-    width: 100%;
-    height: 100%;
+      width: 100%;
+      height: 100%;
 
-    border-radius: 48px;
-    background-color: var(--sc-tertiary-background-color);
-}
+      border-radius: 48px;
+      background-color: var(--sc-tertiary-background-color);
+    }
 
-.button:hover
-{
-    transition: var(--sc-link-transition);
-    text-decoration: none;
+    .button:hover {
+      transition: var(--sc-link-transition);
+      text-decoration: none;
 
-    background-color: var(--sc-primary-color-light-transparent);
-}
+      background-color: var(--sc-primary-color-light-transparent);
+    }
 
-button:active
-{
-    background-color: var(--sc-primary-color-light);
-}
+    button:active {
+      background-color: var(--sc-primary-color-light);
+    }
 
-.button-right
-{
-    justify-content: flex-end;
-}
+    .button-right {
+      justify-content: flex-end;
+    }
 
-.action
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-md);
+    .action {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-md);
 
-    opacity: .55;
-    color: var(--sc-on-tertiary-secondary-text-color);
-}
+      opacity: 0.55;
+      color: var(--sc-on-tertiary-secondary-text-color);
+    }
 
-.text-title
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-l);
+    .text-title {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-l);
 
-    overflow: hidden;
+      overflow: hidden;
 
-    white-space: nowrap;
-    text-overflow: ellipsis;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
-    color: var(--sc-on-tertiary-primary-text-color);
-}
+      color: var(--sc-on-tertiary-primary-text-color);
+    }
 
-.link .text-title
-{
-    box-sizing: border-box;
+    .link .text-title {
+      box-sizing: border-box;
 
-    transition: var(--sc-link-transition);
-}
+      transition: var(--sc-link-transition);
+    }
 
-.text
-{
-    display: flex;
+    .text {
+      display: flex;
 
-    margin: auto 0;
-}
+      margin: auto 0;
+    }
 
-.text-element
-{
-    display: inline-grid;
+    .text-element {
+      display: inline-grid;
 
-    text-overflow: ellipsis;
-}
+      text-overflow: ellipsis;
+    }
 
-.text-element-right
-{
-    text-align: end;
-}
+    .text-element-right {
+      text-align: end;
+    }
 
-.icon
-{
-    font-size: var(--sc-font-size-l);
+    .icon {
+      font-size: var(--sc-font-size-l);
 
-    width: var(--sc-size-md-larger);
-    min-width: var(--sc-size-md-larger);
-    margin-top: 1em;
-    margin-right: .5em;
-    margin-left: .5em;
+      width: var(--sc-size-md-larger);
+      min-width: var(--sc-size-md-larger);
+      margin-top: 1em;
+      margin-right: 0.5em;
+      margin-left: 0.5em;
 
-    fill: var(--sc-icon-color);
-}
+      fill: var(--sc-icon-color);
+    }
 
-@media (min-width: 1280px)
-{
-    .arrow_right
-    {
+    @media (min-width: 1280px) {
+      .arrow_right {
         margin-left: 1em;
-    }
+      }
 
-    .arrow_left
-    {
+      .arrow_left {
         margin-right: 1em;
+      }
     }
-}
-
   `;
 
   render() {
@@ -171,7 +151,6 @@ button:active
                 </a>
               `
             : ''}
-          
         </div>
 
         <div class="button-container">

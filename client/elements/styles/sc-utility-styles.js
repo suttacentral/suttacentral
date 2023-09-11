@@ -57,13 +57,13 @@ export const SCUtilityStyles = css`
 
     --sc-suttaplex-padding: var(--sc-size-md);
 
-    --sc-link-transition: background-color 300ms ease, border-bottom 300ms ease, opacity 300ms ease, text-decoration-thickness 300ms ease;
+    --sc-link-transition: background-color 300ms ease, border-bottom 300ms ease, opacity 300ms ease,
+      text-decoration-thickness 300ms ease;
   }
 
-       /* inline links */
+  /* inline links */
 
-.link-button
-{
+  .link-button {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-s);
     font-weight: 550;
@@ -85,12 +85,11 @@ export const SCUtilityStyles = css`
 
     align-items: center;
     justify-content: center;
-}
-p a,
-li a,
-dl a,
-table a
-{
+  }
+  p a,
+  li a,
+  dl a,
+  table a {
     transition: var(--sc-link-transition);
     text-decoration: underline;
 
@@ -98,14 +97,13 @@ table a
 
     text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 2px;
-    text-underline-offset: .15em;
-}
+    text-underline-offset: 0.15em;
+  }
 
-p a:hover,
-li a:hover,
-dl a:hover,
-table a:hover
-{
+  p a:hover,
+  li a:hover,
+  dl a:hover,
+  table a:hover {
     transition: var(--sc-link-transition);
     text-decoration: underline;
 
@@ -113,56 +111,50 @@ table a:hover
 
     text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 4px;
-    text-underline-offset: .15em;
-}
+    text-underline-offset: 0.15em;
+  }
 
-p a:active,
-li a:active,
-dl a:active,
-table a:active
-{
+  p a:active,
+  li a:active,
+  dl a:active,
+  table a:active {
     text-decoration-color: var(--sc-primary-color);
-}
+  }
 
-p a:visited,
-li a:visited,
-dl a:visited,
-table a:visited
-{
+  p a:visited,
+  li a:visited,
+  dl a:visited,
+  table a:visited {
     text-decoration-color: var(--sc-primary-color-dark);
-}
+  }
 
-/* block links */
+  /* block links */
 
-.block-link,
-.entry-list a,
-.features-section a,
-.reference a
-{
+  .block-link,
+  .entry-list a,
+  .features-section a,
+  .reference a {
     transition: var(--sc-link-transition);
     text-decoration: none;
 
     color: inherit;
     background-color: inherit;
-}
+  }
 
-.block-link:hover,
-.entry-list a:hover,
-.features-section a:hover,
-.reference a:hover
-{
+  .block-link:hover,
+  .entry-list a:hover,
+  .features-section a:hover,
+  .reference a:hover {
     transition: var(--sc-link-transition);
     text-decoration: none;
 
     background-color: var(--sc-primary-color-light-transparent);
-}
+  }
 
-.block-link:active,
-.entry-list a:active,
-.features-section a:active,
-.reference a:active
-{
+  .block-link:active,
+  .entry-list a:active,
+  .features-section a:active,
+  .reference a:active {
     background-color: var(--sc-primary-color-light);
-}
-
+  }
 `;

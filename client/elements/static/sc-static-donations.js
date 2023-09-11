@@ -39,7 +39,7 @@ export class SCStaticDonations extends SCStaticPage {
           background-color: var(--sc-primary-accent-color);
         }
 
-        .link-button:hover{
+        .link-button:hover {
           background-color: var(--sc-primary-accent-color-light);
         }
 

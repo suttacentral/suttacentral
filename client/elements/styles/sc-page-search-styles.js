@@ -387,7 +387,6 @@ export const searchResultTableViewStyles = css`
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
-
   .highlightShrink {
     display: -webkit-box;
     overflow: hidden;
@@ -397,7 +396,7 @@ export const searchResultTableViewStyles = css`
   }
 
   .parallels-link {
-    text-decoration: none; !important;
+    text-decoration: none !important;
     color: var(--sc-on-primary-secondary-text-color);
     margin-top: 8px;
     padding: 12px;

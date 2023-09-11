@@ -331,8 +331,8 @@ export const navigationCompactModeStyles = html`
     }
 
     .essay-link + .shortcut {
-    margin-top: 0;
-}
+      margin-top: 0;
+    }
 
     .shortcut-link {
       margin-top: 0;
@@ -399,7 +399,7 @@ export const navigationPublicationInfoStyles = html`
       display: block;
       overflow: hidden;
 
-      margin: .667rem 1rem;
+      margin: 0.667rem 1rem;
 
       text-decoration: none;
 

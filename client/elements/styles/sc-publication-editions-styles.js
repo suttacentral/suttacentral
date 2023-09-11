@@ -77,7 +77,6 @@ export const SCPublicationEditionsStyles = css`
     margin: 2em 0;
   }
 
-
   .publication_blurb {
     font-family: var(--sc-sans-font);
 

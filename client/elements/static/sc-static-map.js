@@ -33,103 +33,91 @@ export class SCStaticMap extends SCStaticPage {
     unsafeCSS(typographyCommonStyles),
     unsafeCSS(typographyStaticStyles),
     css`
-     ${SCUtilityStyles}
-      article
-{
-    max-width: 100%;
-}
+      ${SCUtilityStyles}
+      article {
+        max-width: 100%;
+      }
 
-.columns
-{
-    margin-top: 2rem;
+      .columns {
+        margin-top: 2rem;
 
-    columns: 3 480px;
-}
+        columns: 3 480px;
+      }
 
-.features-section
-{
-    break-inside: avoid;
-}
+      .features-section {
+        break-inside: avoid;
+      }
 
-ul
-{
-    padding-left: 0;
-}
+      ul {
+        padding-left: 0;
+      }
 
-li
-{
-    margin: .5em 0;
-    padding: 0;
+      li {
+        margin: 0.5em 0;
+        padding: 0;
 
-    list-style: none;
-}
+        list-style: none;
+      }
 
-li a
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
-    font-weight: 550;
-    line-height: 1;
+      li a {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-font-size-s);
+        font-weight: 550;
+        line-height: 1;
 
-    display: inline-flex;
+        display: inline-flex;
 
-    box-sizing: border-box;
-    min-width: 64px;
-    height: 40px;
-    padding: 0 24px;
+        box-sizing: border-box;
+        min-width: 64px;
+        height: 40px;
+        padding: 0 24px;
 
-    transition: var(--sc-link-transition);
-    text-decoration: none;
+        transition: var(--sc-link-transition);
+        text-decoration: none;
 
-    color: var(--sc-on-tertiary-primary-text-color);
-    border: 1px solid var(--sc-border-color);
-    border-radius: var(--sc-big-border-radius);
-    background-color: inherit;
+        color: var(--sc-on-tertiary-primary-text-color);
+        border: 1px solid var(--sc-border-color);
+        border-radius: var(--sc-big-border-radius);
+        background-color: inherit;
 
-    align-items: center;
-    justify-content: center;
-}
+        align-items: center;
+        justify-content: center;
+      }
 
-a svg
-{
-    display: inline-block;
+      a svg {
+        display: inline-block;
 
-    width: 1.5em;
-    margin-top: -.2em;
-    margin-right: .2em;
-    margin-left: -.6em;
+        width: 1.5em;
+        margin-top: -0.2em;
+        margin-right: 0.2em;
+        margin-left: -0.6em;
 
-    vertical-align: middle;
-}
+        vertical-align: middle;
+      }
 
-h3
-{
-    margin-top: 0;
-}
+      h3 {
+        margin-top: 0;
+      }
 
-.features-section
-{
-    margin-bottom: 2rem;
-}
+      .features-section {
+        margin-bottom: 2rem;
+      }
 
-img
-{
-    margin-bottom: 8px;
+      img {
+        margin-bottom: 8px;
 
-    border-radius: var(--sc-big-border-radius);
-    box-shadow: var(--sc-shadow-elevation-2dp);
-}
+        border-radius: var(--sc-big-border-radius);
+        box-shadow: var(--sc-shadow-elevation-2dp);
+      }
 
-figcaption
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
+      figcaption {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-font-size-s);
 
-    text-align: right;
+        text-align: right;
 
-    color: var(--sc-on-primary-secondary-text-color);
-}
-
+        color: var(--sc-on-primary-secondary-text-color);
+      }
     `,
   ];
 

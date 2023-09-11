@@ -1,9 +1,7 @@
 import { css } from 'lit';
 
 export const SCSiteLayoutStyles = css`
-
-  sc-site-layout
-{
+  sc-site-layout {
     display: flex;
     flex-direction: column;
 
@@ -11,16 +9,14 @@ export const SCSiteLayoutStyles = css`
 
     --md-ripple-hover-color: var(--sc-secondary-background-color);
     --md-ripple-pressed-color: var(--md-sys-color-primary);
-}
+  }
 
-/* apply font size here to avoid resizing title when returning to Home */
-#title
-{
+  /* apply font size here to avoid resizing title when returning to Home */
+  #title {
     font-size: var(--sc-font-size-xxxxl);
-}
+  }
 
-.homeTitle
-{
+  .homeTitle {
     display: flex;
     overflow: hidden;
     flex-direction: column;
@@ -33,18 +29,16 @@ export const SCSiteLayoutStyles = css`
     text-overflow: ellipsis;
 
     justify-content: center;
-}
+  }
 
-#mainTitle
-{
+  #mainTitle {
     display: flex;
 
     justify-content: center;
     align-items: flex-end;
-}
+  }
 
-.homeTitle #mainTitle
-{
+  .homeTitle #mainTitle {
     font-family: var(--sc-serif-font);
     line-height: 1;
 
@@ -53,20 +47,18 @@ export const SCSiteLayoutStyles = css`
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: small-caps;
-}
+  }
 
-#subTitle
-{
+  #subTitle {
     font-size: var(--sc-font-size-l);
     font-style: italic;
 
-    transition: opacity .5s ease-in;
+    transition: opacity 0.5s ease-in;
 
     opacity: 1;
-}
+  }
 
-#universal_toolbar
-{
+  #universal_toolbar {
     position: sticky;
     z-index: 100;
     top: 0;
@@ -74,20 +66,18 @@ export const SCSiteLayoutStyles = css`
     color: var(--sc-inverted-text-color);
     background-color: var(--sc-primary-color);
     box-shadow: none;
-}
+  }
 
-#context_toolbar
-{
+  #context_toolbar {
     display: flex;
 
     height: 60px;
     padding: 0 8px 0 16px;
 
     justify-content: space-between;
-}
+  }
 
-.generalTitle
-{
+  .generalTitle {
     display: flex;
     overflow: hidden;
 
@@ -97,79 +87,66 @@ export const SCSiteLayoutStyles = css`
     text-overflow: ellipsis;
 
     align-items: center;
-}
+  }
 
-/* make footer stick to the bottom */
-#site_footer
-{
+  /* make footer stick to the bottom */
+  #site_footer {
     margin-top: auto;
-}
+  }
 
-/* apply font size here to avoid resizing title when returning to Home */
-.generalTitle span
-{
+  /* apply font size here to avoid resizing title when returning to Home */
+  .generalTitle span {
     font-size: var(--sc-font-size-l);
     font-weight: 600;
     font-stretch: condensed;
-}
+  }
 
-@media print
-{
+  @media print {
     #universal_toolbar,
     #title,
-    #site_footer
-    {
-        display: none;
+    #site_footer {
+      display: none;
     }
-}
+  }
 
-.sc_logo
-{
+  .sc_logo {
     width: 1.25em;
     height: 1.25em;
-}
+  }
 
-@media only screen and (max-width: 600px)
-{
-    #context_toolbar.contextToolbarExpand
-    {
-        flex-direction: column;
+  @media only screen and (max-width: 600px) {
+    #context_toolbar.contextToolbarExpand {
+      flex-direction: column;
 
-        height: 112px !important;
+      height: 112px !important;
 
-        justify-content: center;
+      justify-content: center;
     }
-}
+  }
 
-.skip-to-content-link
-{
+  .skip-to-content-link {
     position: absolute;
     left: 50%;
 
     height: 30px;
     padding: 8px;
 
-    transition: transform .3s;
+    transition: transform 0.3s;
     transform: translateY(-100%);
 
     background: #e77e23;
-}
+  }
 
-.skip-to-content-link:focus
-{
+  .skip-to-content-link:focus {
     transform: translateY(0%);
-}
+  }
 
-.hidden
-{
+  .hidden {
     display: none !important;
-}
+  }
 
-md-filled-button 
-{
+  md-filled-button {
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: white;
-}
-
-  
+  }
 `;

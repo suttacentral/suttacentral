@@ -29,51 +29,47 @@ export default class SCTopSheetCommon extends LitLocalized(LitElement) {
       padding: 0 3vw;
     }
 
-p a,
-li a,
-dl a,
-table a
-{
-    transition: var(--sc-link-transition);
-    text-decoration: underline;
+    p a,
+    li a,
+    dl a,
+    table a {
+      transition: var(--sc-link-transition);
+      text-decoration: underline;
 
-    color: inherit;
+      color: inherit;
 
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 2px;
-    text-underline-offset: .15em;
-}
+      text-decoration-color: var(--sc-primary-color-light);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.15em;
+    }
 
-p a:hover,
-li a:hover,
-dl a:hover,
-table a:hover
-{
-    transition: var(--sc-link-transition);
-    text-decoration: underline;
+    p a:hover,
+    li a:hover,
+    dl a:hover,
+    table a:hover {
+      transition: var(--sc-link-transition);
+      text-decoration: underline;
 
-    color: inherit;
+      color: inherit;
 
-    text-decoration-color: var(--sc-primary-color-light);
-    text-decoration-thickness: 4px;
-    text-underline-offset: .15em;
-}
+      text-decoration-color: var(--sc-primary-color-light);
+      text-decoration-thickness: 4px;
+      text-underline-offset: 0.15em;
+    }
 
-p a:active,
-li a:active,
-dl a:active,
-table a:active
-{
-    text-decoration-color: var(--sc-primary-color);
-}
+    p a:active,
+    li a:active,
+    dl a:active,
+    table a:active {
+      text-decoration-color: var(--sc-primary-color);
+    }
 
-p a:visited,
-li a:visited,
-dl a:visited,
-table a:visited
-{
-    text-decoration-color: var(--sc-primary-color-dark);
-}
+    p a:visited,
+    li a:visited,
+    dl a:visited,
+    table a:visited {
+      text-decoration-color: var(--sc-primary-color-dark);
+    }
   `;
 
   show() {
