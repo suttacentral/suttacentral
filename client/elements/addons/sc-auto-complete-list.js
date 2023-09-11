@@ -21,12 +21,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       position: absolute;
-      top: 49px;
+      top: var(--sc-size-sm);
       left: var(--sc-size-sm);
       width: calc(100% - var(--sc-size-sm) * 2);
       z-index: 9999;
-      color: var(--sc-on-primary-primary-text-color);
-      background-color: var(--sc-primary-background-color);
+      color: var(--sc-on-tertiary-primary-text-color);
+      background-color: var(--sc-tertiary-background-color);
       display: none;
       margin: auto;
       box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
@@ -96,7 +96,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     li:focus {
-      background-color: var(--sc-primary-accent-color-light);
+      background-color: var(--sc-primary-color-light);
     }
 
     .search-in {
@@ -126,17 +126,41 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
     }
 
-    md-icon {
+ .icon{
+      fill: var(--sc-icon-color)
+    }
+
+        md-icon {
       cursor: pointer;
     }
 
-    #openSearchTip {
-      display: contents;
-    }
+#openSearchTip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--sc-on-tertiary-secondary-text-color);
+    font-size: var(--sc-font-size-s)
+}
+
+
+ul li:last-child {
+   color: var(--sc-on-tertiary-primary-text-color);
+   background-color: var(--sc-tertiary-background-color);
+   margin-bottom: 0;
+}
 
     ul li:last-child:hover {
-      background-color: inherit;
-    }
+    background-color: inherit;
+}
+
+md-divider{
+  margin: 8px 0;
+  display: none
+}
+
+li ~ md-divider{
+display: flex
+}
   `;
 
   static properties = {
@@ -405,13 +429,13 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
             )}
             <md-divider></md-divider>
             <li>
-              <div id="openSearchTip">
-                <md-icon-button aria-label="Search syntax tips" @click=${this.#openSearchTip}>
-                  ${icon.tip}
+              <div id="openSearchTip" class='block-link'>
+                <md-icon-button aria-label="Tips for search syntax" @click=${this.#openSearchTip}>
+                  ${icon.info}
                 </md-icon-button>
-                <span>Search syntax tips</span>
+                <span>Tips for search syntax</span>
               </div>
-              <md-icon-button @click=${this.#hide}>${icon.close_fill}</md-icon-button>
+              <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
             </li>
           </ul>
         </div>

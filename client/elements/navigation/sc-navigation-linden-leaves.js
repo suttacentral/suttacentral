@@ -7,167 +7,168 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   static styles = css`
-    :host {
-      display: block;
-      background-color: var(--sc-darker-fixed-background-color);
-      position: relative;
-      z-index: 200;
-    }
+    :host
+{
+    position: relative;
+    z-index: 200;
 
-    nav {
+    display: block;
 
-      display: flex;
-      flex-direction: row;
+    background-color: var(--sc-darker-fixed-background-color);
+}
 
-      box-sizing: border-box;
+nav
+{
+    display: flex;
+    flex-direction: row;
 
-      padding: 0px 8px;
+    box-sizing: border-box;
+    padding: 0 8px;
 
+    justify-content: space-between;
+}
 
-      justify-content: space-between;
+.breadcrumbs-wrapper
+{
+    display: flex;
+    overflow: auto hidden;
+    flex-direction: row;
 
-    }
+    box-sizing: border-box;
+    height: 48px;
+    margin: 0 0 0 0;
+    padding: 8px 0;
 
-    .breadcrumbs-wrapper{
-      scroll-snap-type: x mandatory;
-      overflow: auto hidden;
-      box-sizing: border-box;
-      scrollbar-gutter: stable both-edges;
-      scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-gutter: stable both-edges;
+    scroll-behavior: smooth;
+}
 
-      display: flex;
-      flex-direction: row;
-      height: 48px;
-      padding: 8px 0px;
-      margin: 0 0 0 0;
-      
-    }
+ul
+{
+    position: relative;
 
-    ul {
-      display: flex;
+    display: flex;
+    flex-direction: row;
 
-      margin: 0px 10px 0px 40px;
+    height: 32px;
+    margin: 0 10px 0 40px;
+    padding: 0;
 
-      padding: 0px;
+    border-radius: 16px;
+    background-color: var(--sc-dark-fixed-background-color);
 
-      justify-content: flex-end;
-      flex-direction: row;
+    justify-content: flex-end;
+    scroll-snap-align: end;
+}
 
-      height: 32px;
+li
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 500;
+    font-stretch: condensed;
 
-      
+    display: flex;
 
-      position: relative;
+    list-style-type: none;
 
-      scroll-snap-align: end;
+    white-space: nowrap;
 
-      border-radius: 16px;
+    color: white;
 
+    align-items: center;
+}
 
-      background-color: var(--sc-dark-fixed-background-color);
-    }
+li a
+{
+    position: relative;
 
-    li {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-s);
-      font-weight: 500;
-      font-stretch: condensed;
+    display: flex;
 
-      display: flex;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 8px 12px;
 
-      list-style-type: none;
+    transition: var(--sc-link-transition);
+    text-decoration: none;
 
-      color: white;
+    opacity: .8;
+    color: white;
+    border-radius: 16px;
 
-      align-items: center;
+    align-items: center;
+}
 
-      white-space: nowrap;
-    }
+li a:hover
+{
+    cursor: pointer;
+    transition: var(--sc-link-transition);
 
-    li a {
-      position: relative;
+    opacity: 1;
+}
 
-      display: flex;
+li a:active
+{
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-      padding: 8px 12px;
+li:last-child
+{
+    box-sizing: border-box;
+    height: 100%;
+}
 
-      box-sizing: border-box;
-      height: 100%;
+li:last-child a:hover
+{
+    cursor: default;
 
-      text-decoration: none;
+    color: white;
+    border-bottom: none;
+}
 
-      opacity: 0.8;
-      color: white;
+nav li:last-child a
+{
+    cursor: default;
 
-      align-items: center;
+    opacity: 1;
+}
 
-      border-radius: 16px;
+.home-link
+{
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
 
-      transition: var(--sc-link-transition);
-    }
+    display: flex;
 
-    li a:hover {
-      cursor: pointer;
+    width: fit-content;
+    height: 48px;
+    padding: 0 12px 0 12px;
 
-      opacity: 1;
+    background-color: var(--sc-darker-fixed-background-color);
 
-      transition: var(--sc-link-transition);
-    }
+    align-items: center;
+}
 
-    li a:active {
-      background-color: var(--sc-primary-color-light-transparent);
-    }
+.home-link svg
+{
+    fill: white;
+}
 
-    li:last-child {
-      box-sizing: border-box;
-      height: 100%;
-    }
+li > a
+{
+    position: relative;
+}
 
-    li:last-child a:hover {
-      cursor: default;
+li .icon
+{
+    margin: 0 -8px;;
 
-      color: white;
-      border-bottom: none;
-    }
+    fill: var(--sc-icon-color);
+}
 
-    nav li:last-child a {
-      cursor: default;
-
-      opacity: 1;
-    }
-
-    .home-link {
-      padding: 0 12px 0 12px;
-      display: flex;
-          align-items: center;
-
-
-      position: fixed;
-
-      left: 0px;
-      top: 0px;
-
-      width: fit-content;
-      height: 48px;
-
-      background-color: var(--sc-darker-fixed-background-color);
-
-      z-index: 1000;
-
-    }
-
-    .home-link svg{
-      fill: white;
-    }
-
-    li > a {
-      position: relative;
-    }
-
-    li .icon {
-      fill: var(--sc-icon-color);
-      margin: 0 -8px
-    }
   `;
 
   static properties = {
