@@ -234,7 +234,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (this.#isSearchByInTitle()) {
       return '';
     }
-    console.log(this.visibleSearchResults);
     return this.visibleSearchResults
       ? this.visibleSearchResults.map(
           item => html`
@@ -795,6 +794,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     requestUrl = requestUrl + bindingChar + this.#getQueryString();
     try {
       const searchResult = await (await fetch(requestUrl)).json();
+      this.visibleSearchResults = [];
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
@@ -808,7 +808,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
       this.#createMetaData();
-      // this.shadowRoot.querySelector('#search_input').value = this.searchQuery;
     }
   }
 
