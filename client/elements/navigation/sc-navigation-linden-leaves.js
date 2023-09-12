@@ -47,7 +47,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       flex-direction: row;
 
       height: 32px;
-      margin: 0 10px 0 40px;
+      margin: 0 10px 0 44px;
       padding: 0;
 
       border-radius: 16px;
