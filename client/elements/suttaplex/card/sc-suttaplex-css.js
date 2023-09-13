@@ -153,6 +153,7 @@ export const suttaplexCss = css`
     color: var(--sc-on-secondary-secondary-text-color);
     text-overflow: ellipsis;
     overflow: hidden;
+    gap: 1em;
   }
 
   .subTitle {
@@ -167,8 +168,6 @@ export const suttaplexCss = css`
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
-    margin-right: 1rem;
-    line-height: 1.4;
   }
 
   .vol-page {
@@ -365,7 +364,7 @@ export const parallelsListCss = css`
 
   .parallels-root-cell,
   .parallels-parallel-cell {
-    border-radius: var(--sc-size-sm);
+    border-radius: 16px;
     background-color: var(--sc-tertiary-background-color);
     transition: background-color 0.2s ease;
   }
@@ -473,6 +472,7 @@ export const parallelItemCss = css`
   .parallel-item-nerdy-row {
     color: var(--sc-on-secondary-secondary-text-color);
     display: flex;
+    gap: 1em;
   }
 
   .parallel-item {
@@ -483,8 +483,6 @@ export const parallelItemCss = css`
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
-    margin-right: 1rem;
-    line-height: 1.4;
   }
 
   .disabled {
@@ -502,20 +500,22 @@ export const parallelItemCss = css`
   }
 
   .volPage-row {
-    display: contents;
+    display: inline-flex;
+    align-items: center
   }
 
   .vol-page {
     font-stretch: condensed;
   }
 
-  .book {
+  .book{
     width: 16px;
     height: 16px;
   }
 
-  .vol-page {
-    font-stretch: condensed;
+  .info {
+    width: 18px;
+    height: 18px;
   }
 
   @media only screen and (max-width: 600px) {
