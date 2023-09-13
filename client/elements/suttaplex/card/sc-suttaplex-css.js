@@ -18,14 +18,13 @@ export const suttaplexCss = css`
     position: absolute;
     z-index: 10;
 
-    max-width: 360px;
+    max-width: 240px;
     margin: 4px 0 0 0;
-    padding: 8px 12px;
+    padding: 12px 12px;
 
-    color: var(--sc-on-secondary-primary-text-color);
-    border: 1px solid var(--sc-border-color);
-    border-radius: 8px;
-    background-color: var(--sc-tertiary-background-color);
+    color: var(--sc-on-secondary-secondary-text-color);
+    border-radius: 12px;
+    background-color: var(--sc-secondary-background-color);
     box-shadow: var(--sc-shadow-elevation-4dp);
   }
 
@@ -58,6 +57,7 @@ export const suttaplexCss = css`
     right: 0px;
     padding: 8px 12px 8px 24px;
     font-size: var(--sc-font-size-xs);
+
   }
 
   .suttaplex-share-menu-list {
@@ -70,9 +70,28 @@ export const suttaplexCss = css`
     outline-color: var(--sc-border-color);
   }
 
-  summary::marker {
-    color: var(--sc-icon-color);
-  }
+/* Remove the default triangle */
+summary {
+  display: flex;
+  align-items: center;
+}
+
+/* Create a new custom triangle on the left side */
+.section-details summary::before {
+  display: inline-block;
+
+  transition: 0.2s;
+  height: 24px;
+  width: 24px;
+  margin-left: -8px;
+  margin-right: 0px;
+
+  content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="rgb(128,117,103)" d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>');
+}
+
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
 
   #copy-menu > summary {
     list-style-type: none;
@@ -238,10 +257,6 @@ export const suttaplexCss = css`
 
   #more_par_menu {
     outline: none;
-  }
-
-  summary::marker {
-    color: var(--sc-icon-color);
   }
 
   sc-suttaplex-tx {
@@ -456,17 +471,14 @@ export const parallelItemCss = css`
     font-size: var(--sc-font-size-s);
     font-weight: 400;
     box-shadow: var(--sc-shadow-elevation-4dp);
-    border-top: var(--sc-border);
     position: absolute;
     z-index: 50;
     background-color: var(--sc-secondary-background-color);
+    color: var(--sc-on-secondary-secondary-text-color);
     padding: 12px;
+    border-radius: 12px;
     margin: 0 var(--sc-size-xl) 0 0;
     white-space: normal;
-  }
-
-  summary::marker {
-    color: var(--sc-icon-color);
   }
 
   .parallel-item-nerdy-row {
@@ -490,10 +502,28 @@ export const parallelItemCss = css`
     background-color: var(--sc-tertiary-background-color);
   }
 
-  summary {
-    cursor: pointer;
-    outline: none;
-  }
+/* Remove the default triangle */
+summary {
+  display: flex;
+    align-items: center;
+}
+
+/* Create a new custom triangle on the left side */
+summary::before {
+  display: inline-block;
+
+  transition: 0.2s;
+  height: 24px;
+  width: 24px;
+  margin-left: -8px;
+  margin-right: -4px;
+
+  content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="rgb(128,117,103)" d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>');
+}
+
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
 
   .icon {
     fill: var(--sc-icon-color);
@@ -517,6 +547,29 @@ export const parallelItemCss = css`
     width: 18px;
     height: 18px;
   }
+
+/* Remove the default triangle */
+summary {
+  display: flex;
+    align-items: center;
+}
+
+/* Create a new custom triangle on the left side */
+summary::before {
+  display: inline-block;
+
+  transition: 0.2s;
+  height: 24px;
+  width: 24px;
+  margin-left: -8px;
+  margin-right: -4px;
+
+  content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="rgb(128,117,103)" d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>');
+}
+
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
 
   @media only screen and (max-width: 600px) {
     .book {
