@@ -213,11 +213,14 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                 : ''}
               ${this.remark &&
               html`
-                <div "nerdy-row-element" @click=${stopPropagation} @tap=${stopPropagation} @mousedown=${stopPropagation}>
+                <div
+                  class="nerdy-row-element"
+                  @click=${stopPropagation}
+                  @tap=${stopPropagation}
+                  @mousedown=${stopPropagation}
+                >
                   <details>
-                    <summary>
-                      ${icon.info}
-                    </summary>
+                    <summary>${icon.info}</summary>
                     <p class="parallel-item-biblio-info" .innerHTML=${this.remark}></p>
                   </details>
                 </div>
@@ -225,17 +228,20 @@ export class SCParallelItem extends LitLocalized(LitElement) {
             </div>
             ${this.parallelItem.note &&
             html`
-              <div "nerdy-row-element" @click=${stopPropagation} @tap=${stopPropagation} @mousedown=${stopPropagation}>
+              <div
+                class="nerdy-row-element"
+                @click=${stopPropagation}
+                @tap=${stopPropagation}
+                @mousedown=${stopPropagation}
+              >
                 <details>
-                  <summary>
-                    ${icon.info}
-                  </summary>
+                  <summary>${icon.info}</summary>
                   <p class="parallel-item-biblio-info" .innerHTML=${this.parallelItem.not}></p>
                 </details>
               </div>
             `}
-            <md-ripple></md-ripple>
           </div>
+          ${this.parallelUrl ? html`<md-ripple></md-ripple>` : ''}
         </div>
       </a>
     `;
