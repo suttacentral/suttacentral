@@ -404,7 +404,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
             class="link-button block-link internal"
             href=${ifDefined(collectionURL.get(this.editionUid))}
           >
-            ${icon.translation} <span class="button-text"><span>Read on SuttaCentral</span></span>
+            ${icon.open_book} <span class="button-text"><span>Read on SuttaCentral</span></span>
           </a>
         </td>
       </tr>

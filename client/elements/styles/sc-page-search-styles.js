@@ -14,10 +14,6 @@ export const SCPageSearchStyles = css`
     color: var(--sc-on-primary-primary-text-color);
   }
 
-  mwc-list-item {
-    color: var(--sc-on-primary-primary-text-color);
-  }
-
   h2 {
     line-height: 1.25;
   }
@@ -316,6 +312,26 @@ export const SCPageSearchStyles = css`
 
   md-icon {
     cursor: pointer;
+  }
+
+  md-switch {
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+  }
+
+  .search-options {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: end;
+  }
+
+  .search-options > label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  select {
+    width: 200px;
   }
 `;
 

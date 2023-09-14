@@ -27,7 +27,7 @@ export class SCSuttaplexTx extends LitElement {
     return this.translation
       ? html`
           <a href=${this.translationUrl} class="tx ${this.isCompact ? 'compact' : ''}">
-            ${icon.translation}
+            ${icon.open_book}
             <div class="tx-details">
               <span class="tx-creator">${this.translation?.author}</span>
               <span class="tx-publication"> ${this.publicationInfoTemplate()} </span>

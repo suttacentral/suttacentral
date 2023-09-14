@@ -2,11 +2,8 @@ import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { loadStripe } from '@stripe/stripe-js';
 
-import '@material/mwc-select';
-import '@material/mwc-list/mwc-list-item';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/radio/radio';
-import '@material/mwc-formfield';
 import '@material/web/button/filled-button';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
@@ -55,37 +52,17 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         margin: 64px 0 18px;
       }
 
-      mwc-formfield {
-        --mdc-typography-body2-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-      }
-
       md-radio {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
+        margin-right: 5px;
       }
 
       md-filled-text-field {
         --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
       }
 
-      mwc-select {
-        margin-right: 20px;
-        width: 120px;
-        --mdc-theme-primary: var(--sc-primary-accent-color);
-        --mdc-select-fill-color: var(--sc-tertiary-background-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-surface: var(--sc-secondary-background-color);
-        --mdc-select-ink-color: var(--sc-on-primary-primary-text-color);
-        --mdc-select-label-ink-color: var(--sc-on-primary-secondary-text-color);
-        --mdc-select-dropdown-icon-color: var(--sc-icon-color);
-      }
-
-      mwc-list-item {
-        color: var(--sc-on-primary-primary-text-color);
-      }
-
-      mwc-select + md-filled-text-field {
+      select + md-filled-text-field {
         max-width: 240px;
       }
 
@@ -108,8 +85,20 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         fill: var(--sc-icon-color);
       }
 
-      mwc-formfield {
+      label {
         margin-right: 20px;
+      }
+
+      select {
+        font-family: var(--sc-sans-font);
+        font-size: var(--sc-font-size-sm);
+        color: var(--sc-on-primary-primary-text-color);
+        padding: 8px;
+        height: 56px;
+        margin-right: 10px;
+        border: 2px solid var(--sc-border-color);
+        border-radius: var(--sc-size-sm);
+        background-color: var(--sc-tertiary-background-color);
       }
     `,
   ];
@@ -134,7 +123,8 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
   }
 
   async processPayment() {
-    const currency = this.shadowRoot.querySelector('mwc-select').value;
+    const currency = this.shadowRoot.querySelector('select').value;
+    console.log(currency);
     // API takes values for instance in cents but we want to to have dollars
     const selectedAmount = this.shadowRoot.querySelector('md-filled-text-field').value * 100;
     const amount = Number.isNaN(selectedAmount) ? 0 : selectedAmount;
@@ -171,27 +161,27 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
           <h1>${this.localize('donate:donateNow')}</h1>
           <form @submit="${this.onSubmit}">
             <div class="row">
-              <mwc-select label="${this.localize('donate:currency')}">
-                ${this.currencies &&
-                this.currencies.map(
+              <select>
+                ${this.currencies?.map(
                   ({ symbol }, index) => html`
-                    <mwc-list-item
-                      ?selected="${index === this.defaultCurrencyIndex}"
-                      value="${symbol}"
+                    <option
+                      ?selected=${index === this.defaultCurrencyIndex}
+                      title=${symbol}
+                      value=${symbol}
                     >
                       ${symbol}
-                    </mwc-list-item>
+                    </option>
                   `
                 )}
-              </mwc-select>
+              </select>
 
               <md-filled-text-field
                 pattern="^[+]?(\\d+[.,]?\\d{0,2})$"
                 type="number"
-                label="${this.localize('donate:amount')}"
+                label=${this.localize('donate:amount')}
                 autoValidate
                 required
-                validationMessage="${this.localize('donate:invalidValue')}"
+                validationMessage=${this.localize('donate:invalidValue')}
                 maxlength="20"
               ></md-filled-text-field>
             </div>
@@ -199,12 +189,11 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
               <p>${this.localize('donate:chooseFrequency')}</p>
             </div>
             <div id="frequency-checkbox" class="row">
-              <mwc-formfield label="${this.localize('donate:oneTime')}">
-                <md-radio name="frequency" checked value="oneTime"></md-radio>
-              </mwc-formfield>
-              <mwc-formfield label="${this.localize('donate:monthly')}">
-                <md-radio name="frequency" value="monthly"></md-radio>
-              </mwc-formfield>
+              <md-radio id="radioOneTime" name="frequency" checked value="oneTime"></md-radio>
+              <label for="radioOneTime">${this.localize('donate:oneTime')}</label>
+
+              <md-radio id="radioMonthly" name="frequency" value="monthly"></md-radio>
+              <label for="radioMonthly">${this.localize('donate:monthly')}</label>
             </div>
             <div id="submit-row" class="row margin-top">
               <md-filled-button

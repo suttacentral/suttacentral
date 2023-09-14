@@ -1,13 +1,10 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-import '@material/mwc-formfield';
 import '@material/web/radio/radio';
 import '@material/web/checkbox/checkbox';
-import '@material/mwc-list/mwc-list-item';
 
 import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converter';
-
 import { store } from '../../redux-store';
 import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
@@ -49,11 +46,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     css`
       :host {
         display: none;
-
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-        --mdc-typography-body2-font-weight: 500;
       }
 
       section {
@@ -128,7 +120,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         color: var(--sc-icon-color);
       }
 
-      mwc-formfield {
+      label {
         display: block;
         margin-top: 24px;
         margin-left: 15px;
@@ -174,6 +166,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         border: 2px solid var(--sc-border-color);
         border-radius: var(--sc-size-sm);
         background-color: var(--sc-secondary-background-color);
+      }
+
+      label {
+        color: var(--sc-on-tertiary-primary-text-color);
       }
     `,
   ];
@@ -374,7 +370,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.textViewArray.map(
                 item => html`
-                  <mwc-formfield label=${this.localize(`dictionary:${item.textViewLabel}`)}>
+                  <label>
                     <md-radio
                       name="textView"
                       value=${item.textView}
@@ -382,7 +378,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${this.selectedTextView === item.textView}
                       @change=${this._onTextViewChanged}
                     ></md-radio>
-                  </mwc-formfield>
+                    ${this.localize(`dictionary:${item.textViewLabel}`)}
+                  </label>
                 `
               )}
             </div>
@@ -413,16 +410,18 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             </details>
             <div class="form-controls">
               ${this.noteDisplayTypeArray.map(
-                ({ displayType, displayTypeLabel }) => html`
-                  <mwc-formfield label=${this.localize(`dictionary:${displayType}`)}>
+                ({ displayType, displayTypeLabel }, i) => html`
+                  <label for="radioNoteDisplayType${i}">
                     <md-radio
+                      id="radioNoteDisplayType${i}"
                       name="noteDisplayType"
                       value=${displayType}
                       data-type=${displayTypeLabel}
                       ?checked=${this.selectedNoteDisplayType === displayType}
                       @change=${this._onNoteDisplayTypeChanged}
                     ></md-radio>
-                  </mwc-formfield>
+                    ${this.localize(`dictionary:${displayType}`)}
+                  </label>
                 `
               )}
             </div>
@@ -442,7 +441,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls two-column">
               ${this.paliLookupArray.map(
                 dictLanguage => html`
-                  <mwc-formfield label=${dictLanguage.language}>
+                  <label>
                     <md-radio
                       name="paliLookup"
                       value=${dictLanguage.dict}
@@ -450,7 +449,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${this.paliLookupLanguage === dictLanguage.language}
                       @change=${this._onPaliLookupChanged}
                     ></md-radio>
-                  </mwc-formfield>
+                    ${dictLanguage.language}
+                  </label>
                 `
               )}
             </div>
@@ -488,7 +488,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls">
               ${this.chineseLookupArray.map(
                 dictLanguage => html`
-                  <mwc-formfield label=${dictLanguage.language}>
+                  <label>
                     <md-radio
                       name="chineseLookup"
                       value=${dictLanguage.dict}
@@ -496,7 +496,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${this.chineseLookupLanguage === dictLanguage.language}
                       @change=${this._onChineseLookupChanged}
                     ></md-radio>
-                  </mwc-formfield>
+                    ${dictLanguage.language}
+                  </label>
                 `
               )}
             </div>
@@ -574,18 +575,16 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <div class="form-controls four-column">
               ${this.references.map(
                 item => html`
-                  <mwc-formfield>
-                    <label>
-                      <md-checkbox
-                        name=${item.edition_set}
-                        value=${item.edition_set}
-                        data-type=${item.name}
-                        ?checked=${item.checked}
-                        @change=${this._onReferenceDisplayTypeChanged}
-                      ></md-checkbox>
-                      ${item.name}
-                    </label>
-                  </mwc-formfield>
+                  <label>
+                    <md-checkbox
+                      name=${item.edition_set}
+                      value=${item.edition_set}
+                      data-type=${item.name}
+                      ?checked=${item.checked}
+                      @change=${this._onReferenceDisplayTypeChanged}
+                    ></md-checkbox>
+                    ${item.name}
+                  </label>
                 `
               )}
             </div>
@@ -622,12 +621,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
           <p>${this.localize('dictionary:showHighlightingDescription')}</p>
         </details>
         <div class="form-controls">
-          <mwc-formfield label="Show Highlighting">
+          <label>
             <md-checkbox
               ?checked=${this.showHighlighting}
               @change=${this._onShowHighlightingChanged}
             ></md-checkbox>
-          </mwc-formfield>
+            Show Highlighting
+          </label>
         </div>
       </div>
     `;
