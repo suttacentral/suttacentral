@@ -10,6 +10,7 @@ import '@material/web/progress/linear-progress';
 import { icon } from '../../img/sc-icon';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { SCUtilityStyles } from '../styles/sc-utility-styles';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 
@@ -489,6 +490,7 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
   static styles = [
     layoutSimpleStyles,
     typographyCommonStyles,
+    SCUtilityStyles,
     css`
       md-filled-button,
       md-outlined-button {

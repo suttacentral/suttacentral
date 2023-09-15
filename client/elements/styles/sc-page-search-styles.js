@@ -13,6 +13,12 @@ export const SCPageSearchStyles = css`
 
     color: var(--sc-on-primary-primary-text-color);
   }
+input{
+  color: red
+}
+  mwc-list-item {
+    color: var(--sc-on-primary-primary-text-color);
+  }
 
   h2 {
     line-height: 1.25;
