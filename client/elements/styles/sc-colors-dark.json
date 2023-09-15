@@ -4,8 +4,8 @@
   "--sc-primary-color-light-transparent": "rgba(252, 239, 149, 0.2)",
   "--sc-primary-color-dark": "#9e6f04",
 
-  "--sc-primary-accent-color": "#4886C1",
-  "--sc-primary-accent-color-light": "#5aa8f2",
+  "--sc-primary-accent-color": "#5aa8f2",
+  "--sc-primary-accent-color-light": "#4886C1",
 
   "--sc-secondary-accent-color": "#C03030",
   "--sc-secondary-accent-color-light": "#CC5959",
