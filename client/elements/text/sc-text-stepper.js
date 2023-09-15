@@ -71,7 +71,7 @@ export class SCTextStepper extends LitElement {
       font-size: var(--sc-font-size-md);
 
       opacity: 0.55;
-      color: var(--sc-on-tertiary-secondary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
     }
 
     .text-title {

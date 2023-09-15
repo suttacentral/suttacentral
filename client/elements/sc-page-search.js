@@ -2,6 +2,8 @@ import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/web/button/filled-button';
 import '@material/web/textfield/filled-text-field';
+import '@material/web/switch/switch';
+
 import './addons/sc-error-icon';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
@@ -10,6 +12,7 @@ import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
+import { reduxActions } from './addons/sc-redux-actions';
 
 import(
   /* webpackMode: "lazy" */
@@ -100,6 +103,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(this.loadingResults);
     this.priorityAuthors = new Map([['en', 'sujato']]);
     this.isCompactMode = store.getState().suttaplexListDisplay;
+    this.matchPartial = store.getState().searchOptions.matchPartial;
   }
 
   #hideRelatedTopSheets() {
@@ -137,6 +141,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         >
           <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
         </md-filled-text-field>
+        ${this.#searchOptionsTemplate()}
         <h3 class="search-result-header">
           <span class="search-result-number">
             ${this.#calculateResultCount(this.resultCount)}
@@ -147,6 +152,22 @@ class SCPageSearch extends LitLocalized(LitElement) {
       </div>
       ${this.#notSearchResultFoundForSelectedLanguagesTemplate()}
     `;
+  }
+
+  #searchOptionsTemplate() {
+    return html`
+      <div class="search-options">
+        <label>
+          Match partial
+          <md-switch ?selected=${this.matchPartial} @change=${this.#onMatchTypeChanged}>
+          </md-switch>
+        </label>
+      </div>
+    `;
+  }
+
+  #onMatchTypeChanged(e) {
+    reduxActions.setSearchMatchType(e.target.selected);
   }
 
   #keypressHandler({ key }) {

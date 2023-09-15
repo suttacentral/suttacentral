@@ -1,15 +1,11 @@
 import { css, html, LitElement } from 'lit';
+import '@material/mwc-list/mwc-list-item';
+import '@material/mwc-menu';
 
 import './sc-menu-more';
 import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { store } from '../../redux-store';
-
-import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-menu';
-import '@material/mwc-button';
-import '@material/mwc-icon-button';
-
 import { icon } from '../../img/sc-icon';
 
 export class SCActionItemsUniversal extends LitLocalized(LitElement) {
@@ -18,8 +14,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--sc-darker-fixed-background-color);
-      --mdc-theme-surface: var(--sc-secondary-background-color);
+      --md-icon-button-icon-color: white;
+      --md-sys-color-on-surface-variant: var(--sc-icon-color);
 
       z-index: 100;
     }
@@ -32,17 +28,31 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
     }
 
-    mwc-icon-button {
-      color: white;
-    }
-
     #more-menu {
       --mdc-menu-min-width: 275px;
       --mdc-menu-max-width: 290px;
     }
 
-    option::before {
-      content: 'Jump To ';
+    .sc-icon-button {
+      position: relative;
+      z-index: 10;
+      top: 0;
+      left: 4px;
+      display: flex;
+      width: fit-content;
+      height: 48px;
+      background-color: var(--sc-darker-fixed-background-color);
+      align-items: center;
+    }
+
+    .button-theme {
+      padding: 0 12px 0 12px;
+      border-radius: 50%;
+      background-color: var(--sc-darker-fixed-background-color);
+    }
+
+    .button-theme svg {
+      fill: white;
     }
   `;
 
@@ -102,25 +112,30 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <mwc-icon-button
+      <div
+        class="sc-icon-button button-theme"
         id="search_glass"
         title=${this.localize('search:searchTooltip')}
         label="search"
         @click=${this.openInstantSearch}
-        aria-label="Search"
       >
         ${icon.search}
-      </mwc-icon-button>
+        <md-ripple></md-ripple>
+      </div>
+
       <sc-auto-complete-list></sc-auto-complete-list>
-      <mwc-icon-button
+
+      <div
+        class="sc-icon-button button-theme"
         label="menu"
         id="more-menu-button"
         @click=${this.openMoreMenu}
         alt="menu"
-        aria-label="Menu"
       >
         ${icon.more_vert}
-      </mwc-icon-button>
+        <md-ripple></md-ripple>
+      </div>
+
       <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
         <sc-menu-more id="sc-menu-more"></sc-menu-more>
       </mwc-menu>

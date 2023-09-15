@@ -4,7 +4,7 @@ import { BrowserMicroSentryClient } from '@micro-sentry/browser';
 import { icon } from '../img/sc-icon';
 import './sc-page-selector';
 import './navigation/sc-navigation-linden-leaves';
-import './addons/sc-linear-progress';
+import './addons/sc-progress';
 import './addons/sc-site-footer';
 import './menus/sc-menu-static-pages-nav';
 import { LitLocalized } from './addons/sc-localization-mixin';
@@ -130,7 +130,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
           </div>
         </div>
 
-        <sc-linear-progress .active=${this.linearProgressActive}></sc-linear-progress>
+        <sc-progress .active=${this.linearProgressActive}></sc-progress>
         <sc-menu-static-pages-nav id="static_pages_nav_menu"></sc-menu-static-pages-nav>
       </div>
 

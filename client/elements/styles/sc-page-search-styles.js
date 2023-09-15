@@ -319,6 +319,26 @@ input{
   md-icon {
     cursor: pointer;
   }
+
+  md-switch {
+    --md-sys-color-primary: var(--sc-primary-accent-color);
+  }
+
+  .search-options {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: end;
+  }
+
+  .search-options > label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  select {
+    width: 200px;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
