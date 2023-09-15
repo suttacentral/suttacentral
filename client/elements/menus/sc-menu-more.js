@@ -333,7 +333,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
         <a class="more-menu-link" href="/about">
           <mwc-list-item class="more-menu-mwc-list-item">
             <div class="menu-item-wrapper">
-              ${icon.info_outline} ${this.localize('interface:about')}
+              ${icon.info} ${this.localize('interface:about')}
             </div>
           </mwc-list-item>
         </a>

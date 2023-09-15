@@ -3,6 +3,7 @@ import { html } from 'lit';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
+import { SCUtilityStyles } from '../styles/sc-utility-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
 import '../addons/sc-pie-chart';
@@ -99,7 +100,7 @@ export class SCStaticLanguages extends SCStaticPage {
 
     const list = (title, names) => html`
       <h2>${this.localize(title)}</h2>
-      <ul>
+      <ul class="author-count-list">
         ${names.map(item => html` <li>${item.name} (${item.total})</li> `)}
       </ul>
     `;
@@ -108,7 +109,7 @@ export class SCStaticLanguages extends SCStaticPage {
       ${rootLanguages.map(
         rootLang => html`
           <h3>${rootLang}</h3>
-          <ul>
+          <ul class="language-count-list">
             ${this.languageData.division
               .filter(rootItem => rootItem.rootLanguageFullName === rootLang)
               .map(item => html` <li>${item.name} (${item.total})</li> `)}
@@ -146,10 +147,14 @@ export class SCStaticLanguages extends SCStaticPage {
   get languageListTemplate() {
     const list = (title, languages) => html`
       <h2>${this.localize(title)} (${languages.length})</h2>
-      <ul>
+      <ul class="languages-list">
         ${languages.map(
           lang => html`
-            <li><a href="/languages/${lang.iso_code}">${lang.name} (${lang.total})</a></li>
+            <li>
+              <a class="block-link" href="/languages/${lang.iso_code}"
+                >${lang.name} (${lang.total})</a
+              >
+            </li>
           `
         )}
       </ul>
@@ -168,17 +173,75 @@ export class SCStaticLanguages extends SCStaticPage {
         ${layoutSimpleStyles}
         ${typographyCommonStyles}
         ${typographyStaticStyles}
+        ${SCUtilityStyles}
       </style>
       <style>
+        article {
+          width: 100%;
+        }
+
         figure {
-          width: 240px;
           float: right;
+
+          width: 240px;
           margin: 0;
+
           text-align: center;
         }
 
         figcaption {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-font-size-s);
+
           margin-top: 0.5em;
+
+          color: var(--sc-on-primary-secondary-text-color);
+        }
+
+        .languages-list {
+          display: flex;
+
+          padding-left: 0;
+
+          list-style-type: none;
+
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+
+        .languages-list li {
+          margin: 0;
+          padding: 0;
+        }
+
+        .language-count-list,
+        .author-count-list {
+          padding: 0;
+        }
+
+        .block-link {
+          font-family: var(--sc-sans-font);
+          font-size: var(--sc-font-size-s);
+          font-weight: 550;
+          line-height: 1;
+
+          display: inline-flex;
+
+          box-sizing: border-box;
+          min-width: 64px;
+          height: 40px;
+          padding: 0 24px;
+
+          transition: var(--sc-link-transition);
+          text-decoration: none;
+
+          color: var(--sc-on-tertiary-primary-text-color);
+          border: 1px solid var(--sc-border-color);
+          border-radius: var(--sc-big-border-radius);
+          background-color: inherit;
+
+          align-items: center;
+          justify-content: center;
         }
       </style>
       <main>

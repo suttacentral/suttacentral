@@ -8,7 +8,7 @@
   "--sc-primary-accent-color-light": "#5aa8f2",
 
   "--sc-secondary-accent-color": "#C03030",
-    "--sc-secondary-accent-color-light": "#CC5959",
+  "--sc-secondary-accent-color-light": "#CC5959",
 
   "--sc-primary-background-color": "#fff8f3",
   "--sc-on-primary-primary-text-color": "#201b13",
@@ -25,7 +25,7 @@
   "--sc-dark-fixed-background-color": "#544f4f",
   "--sc-darker-fixed-background-color": "#403c3c",
   "--sc-inverted-text-color": "#ffffff",
-  "--sc-icon-color": "#9f9a92",
+  "--sc-icon-color": "#A8A49C",
   "--sc-border-color": "#cdc5bd",
   "--sc-toast-error-color": "#ba1a1a",
   "--sc-toast-success-color": "var(--sc-primary-accent-color-light)",
