@@ -78,6 +78,10 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       align-items: end;
       padding: 100% 16px;
     }
+
+    mwc-list {
+      background-color: var(--sc-secondary-background-color);
+    }
   `;
 
   static properties = {
@@ -174,7 +178,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
 
   _onThemeChanged(e) {
     const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
-    console.log(chk.checked);
     this.actions.changeAppTheme(chk.checked ? 'dark' : 'light');
   }
 

@@ -124,7 +124,6 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
 
   async processPayment() {
     const currency = this.shadowRoot.querySelector('select').value;
-    console.log(currency);
     // API takes values for instance in cents but we want to to have dollars
     const selectedAmount = this.shadowRoot.querySelector('md-filled-text-field').value * 100;
     const amount = Number.isNaN(selectedAmount) ? 0 : selectedAmount;
