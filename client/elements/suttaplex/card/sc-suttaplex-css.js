@@ -63,11 +63,6 @@ a.top-menu-button,
     background-color: var(--sc-darker-fixed-background-color);
 }
 
-.suttaplex-share-menu-list
-{
-    padding: 0;
-}
-
 summary
 {
     cursor: s-resize;
@@ -124,7 +119,19 @@ details[open] > summary::before
 
 .suttaplex-share-menu-list
 {
-    background-color: var(--sc-secondary-background-color);
+    position: absolute;
+    z-index: 10;
+    right: 0;
+
+    max-width: 360px;
+    margin: 4px 0 0;
+    padding: 0;
+
+    color: var(--sc-on-tertiary-primary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-tertiary-background-color);
+    box-shadow: var(--sc-shadow-elevation-4dp);
 }
 
 h1

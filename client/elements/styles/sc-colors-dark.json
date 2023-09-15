@@ -1,27 +1,34 @@
 {
-  "--sc-on-primary-primary-text-color": "#ffffff",
-  "--sc-on-primary-secondary-text-color": "#E2E2E2",
-  "--sc-inverted-text-color": "#212121",
-  "--sc-icon-color": "#9a9a9a",
-  "--sc-icon-color-opaque": "rgba(158, 158, 158, .3)",
-  "--sc-primary-color": "#ffcb61",
-  "--sc-primary-color-light": "#ffcb61",
-  "--sc-primary-color-light-transparent": "rgba(255, 203, 97, 0.3)",
-  "--sc-primary-color-medium": "#f6b735",
-  "--sc-primary-color-dark": "rgb(161,108,0)",
-  "--sc-primary-color-darkest": "#ffcb61",
-  "--sc-primary-accent-color": "#8ace8d",
-  "--sc-primary-accent-color-light": "#98e29b",
-  "--sc-primary-accent-color-light-transparent": "rgba(67,160,71,0.2)",
-  "--sc-primary-accent-color-dark": "#74af76",
-  "--sc-secondary-accent-color": "#9c27b0",
+  "--sc-primary-color": "#c68b05",
+  "--sc-primary-color-light": "#f9b20f",
+  "--sc-primary-color-light-transparent": "rgba(252, 239, 149, 0.2)",
+  "--sc-primary-color-dark": "#9e6f04",
+
+  "--sc-primary-accent-color": "#4886C1",
+  "--sc-primary-accent-color-light": "#5aa8f2",
+
+  "--sc-secondary-accent-color": "#C03030",
+  "--sc-secondary-accent-color-light": "#CC5959",
+
   "--sc-primary-background-color": "#414141",
+  "--sc-on-primary-primary-text-color": "#eeeeee",
+  "--sc-on-primary-secondary-text-color": "#cccccc",
+
   "--sc-secondary-background-color": "#515151",
-  "--sc-tertiary-background-color": "rgb(113, 113, 113)",
-  "--sc-border-color": "rgba(255, 255, 255, 0.12)",
-  "--sc-darker-fixed-background-color": "#515151",
-  "--sc-toast-error-color": "#f44336",
-  "--sc-toast-success-color": "#43a047",
-  "--sc-pie-chart-bg-color": "#e1f7d0",
-  "--sc-pie-chart-fill-color": "#c1eda1"
+  "--sc-on-secondary-primary-text-color": "#efefef",
+  "--sc-on-secondary-secondary-text-color": "#cdcdcd",
+
+  "--sc-tertiary-background-color": "#616161",
+  "--sc-on-tertiary-primary-text-color": "#ffffff",
+  "--sc-on-tertiary-secondary-text-color": "#dddddd",
+
+  "--sc-dark-fixed-background-color": "#515151",
+  "--sc-darker-fixed-background-color": "#414141",
+  "--sc-inverted-text-color": "#ffffff",
+  "--sc-icon-color": "#ababab",
+  "--sc-border-color": "#777",
+  "--sc-toast-error-color": "#ba1a1a",
+  "--sc-toast-success-color": "var(--sc-primary-accent-color-light)",
+  "--sc-pie-chart-bg-color": "var(--sc-primary-accent-color-light)",
+  "--sc-pie-chart-fill-color": "var(--sc-primary-accent-color)"
 }
