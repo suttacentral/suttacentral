@@ -7,7 +7,7 @@ class SCSnackbar extends LitElement {
       left: 50%;
       transform: translateX(-50%);
       bottom: 20px;
-      background-color: var(--sc-on-primary-primary-text-color);
+      background-color: var(--sc-dark-fixed-background-color);
       color: var(--sc-inverted-text-color);
       padding: 10px 20px;
       border-radius: 4px;
