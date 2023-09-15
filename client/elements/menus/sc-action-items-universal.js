@@ -118,7 +118,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         title=${this.localize('search:searchTooltip')}
         label="search"
         @click=${this.openInstantSearch}
-        aria-label="Search"
       >
         ${icon.search}
         <md-ripple></md-ripple>
@@ -132,7 +131,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         id="more-menu-button"
         @click=${this.openMoreMenu}
         alt="menu"
-        aria-label="Menu"
       >
         ${icon.more_vert}
         <md-ripple></md-ripple>
