@@ -40,110 +40,185 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       --md-sys-color-primary: var(--sc-primary-accent-color);
     }
 
-    .ss-list {
-      overflow-y: auto;
-    }
 
-    .search-suggestions {
-      position: relative;
+.search-suggestions
+{
+    position: relative;
 
-      width: 100%;
+    width: 100%;
 
-      border-radius: 8px;
-      box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
-    }
+    border-radius: 8px;
+    box-shadow: 0 0 .25rem .25rem rgba(0, 0, 0, .48);
+}
 
-    .suggestion-item {
-      font-size: 18px;
+.ss-list
+{
+    overflow-y: auto;
 
-      display: grid;
+    max-height: 90vh;
+}
 
-      user-select: unset;
+ul
+{
+    margin: 0;
+    padding: 0px 4px 4px;
 
-      grid-template-columns: max-content minmax(0, auto) max-content;
-      grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
-    }
+    list-style: none;
+}
 
-    .ss-item-uid {
-      font-size: var(--sc-font-size-md);
+li
+{
+    position: relative;
 
-      display: flex;
+    display: flex;
 
-      align-items: center;
-      gap: 1rem;
-    }
+    margin-bottom: 4px;
+    padding: 8px 13px 8px 16px;
 
-    .ss-item-title {
-      color: var(--sc-on-primary-primary-text-color);
-    }
+    cursor: pointer;
+    transition: var(--sc-link-transition);
 
-    .suggestion-item-description {
-      display: flex;
-      flex-direction: row;
+    border-radius: var(--sc-big-border-radius);
+    background-color: var(--sc-secondary-background-color);
 
-      gap: 0.25rem;
-      grid-area: label;
-    }
+    align-items: center;
+    justify-content: space-between;
+}
 
-    .ss-list {
-      max-height: 90vh;
-    }
+li:first-of-type
+{
+    margin: 0;
 
-    ul {
-      margin: 0;
-      padding: 0.5rem 0.5rem 0.25rem;
+    border-radius: 0 ;
+    background-color: var(--sc-tertiary-background-color);
+}
 
-      list-style: none;
-    }
+li:first-of-type:hover
+{
+    background-color: rgba(0,0,0,.08);
+}
 
-    li {
-      position: relative;
+hr:first-of-type
+{
+    margin-top: 0;
+}
 
-      display: flex;
+.search-label
+{
+    font-size: var(--sc-font-size-xs);
 
-      margin-bottom: 0.25rem;
-      padding: 0.5rem 1rem;
+    color: var(--sc-on-tertiary-secondary-text-color);
+}
 
-      cursor: pointer;
-      transition: var(--sc-link-transition);
+li:first-of-type:hover .search-label
+{
+    color: var(--sc-primary-accent-color);
+}
 
-      border-radius: var(--sc-big-border-radius);
-      background-color: var(--sc-secondary-background-color);
+li:hover
+{
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-      align-items: center;
-      justify-content: space-between;
-    }
+li:active
+{
+    background-color: var(--sc-primary-color-light);
+}
 
-    li:hover {
-      background-color: var(--sc-primary-color-light-transparent);
-    }
+li:focus
+{
+    background-color: var(--sc-primary-color-light);
+}
 
-    li:active {
-      background-color: var(--sc-primary-color-light);
-    }
+.suggestion-item-description,
+.suggestion-item
+{
+    display: flex;
+    flex-direction: row;
 
-    li:focus {
-      background-color: var(--sc-primary-color-light);
-    }
+    height: 100%;
 
-    .search-in {
-      font-size: var(--sc-font-size-s);
-      font-stretch: condensed;
+    gap: .25rem;
+    align-items: center;
+}
 
-      color: var(--sc-on-primary-secondary-text-color);
-    }
+.search-prompt,
+.ss-goto
+{
+    display: flex;
+    flex-direction: row;
 
-    .search-filter {
-      font-family: monospace;
-      font-size: var(--sc-font-size-s);
-    }
+    align-items: center;
+    gap: 16px;
+}
 
-    .ss-header {
-      display: flex;
+.search-entry
+{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
 
-      justify-content: center;
-      align-items: center;
-    }
+.ss-goto-text
+{
+    font-size: var(--sc-font-size-s);
+    font-stretch: condensed;
+
+    color: var(--sc-on-secondary-secondary-text-color);
+}
+.search-prompt-icon,
+.ss-goto-icon,
+.ss-item-icon
+{
+    display: inline-block;
+
+    height: 24px;
+}
+
+.ss-item
+{
+    font-size: var(--sc-font-size-md);
+
+    display: flex;
+
+    align-items: center;
+    gap: 16px;
+}
+
+.ss-item-title
+{
+    color: var(--sc-on-primary-primary-text-color);
+}
+
+.search-in
+{
+    font-size: var(--sc-font-size-s);
+    font-stretch: condensed;
+
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
+.search-filter
+{
+    font-family: monospace;
+    font-size: var(--sc-font-size-s);
+
+    margin-right: 4px;
+    padding: 0 4px;
+
+    color: var(--sc-on-primary-secondary-text-color);
+    border: 2px solid var(--sc-border-color);
+    border-radius: 16px;
+}
+
+.ss-header
+{
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
 
     md-filled-text-field {
       width: 99%;
@@ -158,6 +233,8 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .icon {
       fill: var(--sc-icon-color);
+                height: 24px;
+    width: 24px;
     }
 
     md-icon {
@@ -339,7 +416,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #suggestionsTemplate() {
-    const tipitakas = [{ uid: 'in:ebt', title: 'Early Buddhist Texts' }];
+    const tipitakas = [{ uid: 'in:ebs', title: 'Early Buddhist Suttas' }];
 
     return html`
       <div id="instant_search_dialog" class="search-suggestions">
@@ -347,7 +424,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
           <md-filled-text-field
             id="search_input"
             type="search"
-            label="Input search term"
+            label="Search in all texts"
             @keyup=${e => this.#keyupHandler(e)}
             @keypress=${this.#keypressHandler}
           >
@@ -364,19 +441,26 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
                   @keydown=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
                 >
+
+
                   <span class="suggestion-item">
-                    <span class="search-icon">${icon.search_gray}</span>
-                    <span class="search-entry"
-                      ><span class="search-filter">in:${item.uid}</span>
-                      <span class="search-query">${this.searchQuery}</span></span
-                    >
+                  
+                    <span class="search-entry">
+                        <span class="search-label">Search in ${item.title}</span>
+                        <span class='search-details'>
+                              <span class="search-filter">${item.uid}</span>
+                              <span class="search-query">${this.searchQuery}</span>
+                         </span>
+                        </span>
+                        </span>
+                  <span class="search-prompt">
+                  <span class="search-prompt-icon">${icon.search}</span>
                   </span>
-                  <span class="search-in">Search in ${item.title}</span>
                   <md-ripple></md-ripple>
                 </li>
               `
             )}
-            <hr />
+            <hr>
             ${this.items.map(
               (item, i) =>
                 html`<li
@@ -387,17 +471,20 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   class=${i === 0 ? 'selected' : ''}
                 >
                   <span class="suggestion-item-description">
-                    <span class="ss-item-uid">
-                      <span class="ss-item-uid-icon">${icon.open_book}</span>
-                      <span class="ss-item-uid-text">${item.uid}</span>
+                    <span class="ss-item">
+                      <span class="ss-item-icon">${icon.open_book}</span>
+                      <span class="ss-item-uid">${item.uid}</span>
                       <span class="ss-item-title">${item.title}</span>
                     </span>
                   </span>
-                  <span>${icon.gotolink}</span>
+                  <span class="ss-goto">
+                  <span class="ss-goto-text">Go to</span>
+                  <span class="ss-goto-icon">${icon.gotolink}</span>
+                  </span>
                   <md-ripple></md-ripple>
                 </li>`
             )}
-            <hr />
+            <hr>
           </ul>
         </div>
 
