@@ -37,6 +37,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
 
       --md-icon-button-icon-size: 32px;
+      --md-sys-color-primary: var(--sc-primary-accent-color);
     }
 
     .ss-list {
@@ -73,7 +74,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     .ss-item-title {
-      color: var(--sc-on-primary-secondary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
     }
 
     .suggestion-item-description {
@@ -202,6 +203,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   static properties = {
     items: { type: Array },
     siteLanguage: { type: String },
+    loadingData: { type: Boolean },
   };
 
   constructor() {
@@ -210,6 +212,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.priorityAuthors = new Map([['en', 'sujato']]);
     this.searchQuery = store.getState().searchQuery || '';
     this.siteLanguage = store.getState().siteLanguage;
+    this.loadingData = false;
   }
 
   stateChanged(state) {
@@ -230,6 +233,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         return;
       }
       await insertMultiple(suttaDB, this.instant_search_data);
+      this.loadingData = false;
     } catch (error) {
       console.error(error);
     }
@@ -237,74 +241,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this.shadowRoot.getElementById('search_input').focus();
-    this.#initInstantSearchData();
-    const ulELem = this.shadowRoot.querySelector('ul');
-
-    document.addEventListener('keydown', event => {
-      const currentSelectedItem = this.shadowRoot.querySelector('.selected');
-
-      if (!currentSelectedItem) {
-        return;
-      }
-
-      if (event.key === 'ArrowDown') {
-        event.preventDefault();
-
-        if (currentSelectedItem) {
-          currentSelectedItem.classList.remove('selected');
-          currentSelectedItem.tabIndex = -1;
-
-          const nextItem = currentSelectedItem.nextElementSibling;
-          if (nextItem) {
-            nextItem.classList.add('selected');
-            nextItem.tabIndex = 0;
-            nextItem.focus();
-          } else {
-            const firstItem = ulELem.querySelector('li:first-child');
-            if (firstItem) {
-              firstItem.classList.add('selected');
-              firstItem.tabIndex = 0;
-              firstItem.focus();
-            }
-          }
-        } else {
-          const firstItem = ulELem.querySelector('li:first-child');
-          if (firstItem) {
-            firstItem.classList.add('selected');
-            firstItem.tabIndex = 0;
-            firstItem.focus();
-          }
-        }
-      } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-
-        if (currentSelectedItem) {
-          currentSelectedItem.classList.remove('selected');
-          currentSelectedItem.tabIndex = -1;
-
-          const previousItem = currentSelectedItem.previousElementSibling;
-          if (previousItem) {
-            previousItem.classList.add('selected');
-            previousItem.tabIndex = 0;
-            previousItem.focus();
-          } else {
-            const lastItem = ulELem.querySelector('li:last-child');
-            if (lastItem) {
-              lastItem.classList.add('selected');
-              lastItem.tabIndex = 0;
-              lastItem.focus();
-            }
-          }
-        } else {
-          const lastItem = ulELem.querySelector('li:last-child');
-          if (lastItem) {
-            lastItem.classList.add('selected');
-            lastItem.tabIndex = 0;
-            lastItem.focus();
-          }
-        }
-      }
-    });
 
     this.addEventListener('keydown', event => {
       const currentSelectedItem = this.shadowRoot.querySelector('.selected');
@@ -317,6 +253,13 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         scAutoCompleteInput?.focus();
       }
     });
+  }
+
+  updated(changedProps) {
+    if (changedProps.has('loadingData') && !this.loadingData && suttaDB.data.docs.count !== 0) {
+      this.searchQuery = this.shadowRoot.getElementById('search_input').value;
+      this.instantSearch();
+    }
   }
 
   render() {
@@ -342,9 +285,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #menuHasChildren() {
-    return (
-      this.currentMenuData?.[0]?.children?.some(child => child.node_type === 'branch') || false
-    );
+    return this.currentMenuData?.[0]?.children?.length >= 1 || false;
   }
 
   async #fetchMenuData(uid) {
@@ -363,7 +304,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   async #selectItem(item) {
     const siteLang = store.getState().siteLanguage;
     this.currentMenuData = await this.#fetchMenuData(item);
-
     let link = `/${item}`;
     if (!this.#menuHasChildren() && this.priorityAuthors?.get(siteLang)) {
       link = `/${item}/${siteLang}/${this.priorityAuthors.get(siteLang)}`;
@@ -399,14 +339,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #suggestionsTemplate() {
-    const tipitakas = [
-      { uid: 'in:ebt', title: 'Early Buddhist Texts' },
-      { uid: 'in:dn', title: 'Dīgha Nikāya' },
-      { uid: 'in:mn', title: 'Majjhima Nikāya' },
-      { uid: 'in:sn', title: 'Saṁyutta Nikāya' },
-      { uid: 'in:an', title: 'Aṅguttara Nikāya' },
-      { uid: '', title: 'All Texts' },
-    ];
+    const tipitakas = [{ uid: 'in:ebt', title: 'Early Buddhist Texts' }];
 
     return html`
       <div id="instant_search_dialog" class="search-suggestions">
@@ -421,6 +354,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
             <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
           </md-filled-text-field>
         </div>
+
         <div class="ss-list">
           <ul id="ss-items">
             ${this.searchQuery &&
@@ -454,7 +388,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                 >
                   <span class="suggestion-item-description">
                     <span class="ss-item-uid">
-                      <span class="ss-item-uid-icon">${icon.leaves}</span>
+                      <span class="ss-item-uid-icon">${icon.open_book}</span>
                       <span class="ss-item-uid-text">${item.uid}</span>
                       <span class="ss-item-title">${item.title}</span>
                     </span>
@@ -474,6 +408,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
             </md-icon-button>
             <span>Tips for search syntax</span>
           </span>
+          <sc-progress .active=${this.loadingData} .type=${'circular'}>er</sc-progress>
           <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
         </div>
       </div>
@@ -498,13 +433,26 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (e.key === 'Enter') {
       return;
     }
+    if (suttaDB.data.docs.count === 0) {
+      this.loadingData = true;
+      this.#initInstantSearchData();
+    }
+
+    if (this.loadingData) {
+      return;
+    }
+
     this.searchQuery = e.target.value;
+    await this.instantSearch();
+  }
+
+  async instantSearch() {
     if (this.searchQuery.length >= 2) {
       const searchResult = await search(suttaDB, {
         term: this.searchQuery,
         properties: '*',
         tolerance: 1,
-        limit: 7,
+        limit: 20,
       });
 
       const { hits } = searchResult;

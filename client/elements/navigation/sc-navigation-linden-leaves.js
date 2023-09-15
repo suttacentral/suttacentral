@@ -40,6 +40,31 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       scrollbar-gutter: stable both-edges;
     }
 
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    ::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: var(--sc-icon-color);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #87817a;
+    }
+    ::-webkit-scrollbar-thumb:active {
+      background: #79746d;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 6px;
+      background: var(--sc-darker-fixed-background-color);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
     ul {
       position: relative;
 
@@ -47,7 +72,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       flex-direction: row;
 
       height: 32px;
-      margin: 0 10px 0 40px;
+      margin: 0 10px 0 44px;
       padding: 0;
 
       border-radius: 16px;

@@ -3,26 +3,12 @@ import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 import { reduxActions } from './sc-redux-actions';
-import '@material/web/checkbox/checkbox';
 
 export class SCTopSheetSearchFilter extends SCTopSheetCommon {
-  static properties = {
-    displayedLanguages: { type: Array },
-    matchPartial: { type: Boolean },
-  };
-
-  constructor() {
-    super();
-    this.matchPartial = store.getState().searchOptions.matchPartial;
-  }
-
   static styles = [
     super.styles,
     typographyCommonStyles,
     css`
-      :host {
-      }
-
       fieldset {
         font-family: var(--sc-sans-font);
 
@@ -85,17 +71,6 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
     `,
   ];
 
-  #onMatchTypeChanged(e) {
-    reduxActions.setSearchMatchType(e.target.checked);
-  }
-
-  stateChanged(state) {
-    super.stateChanged(state);
-    if (this.matchParts !== state.searchOptions.matchParts) {
-      this.matchParts = state.searchOptions.matchParts;
-    }
-  }
-
   render() {
     return html`
       <main>
@@ -104,20 +79,6 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             Refine your search with filters
           </legend>
           <table>
-            <tr>
-              <th colspan="2">Options</th>
-            </tr>
-            <tr>
-              <td>
-                <mwc-formfield label="Match partial">
-                  <md-checkbox
-                    ?checked=${this.matchPartial}
-                    @change=${this.#onMatchTypeChanged}
-                  >
-                  </md-checkbox>
-                </mwc-formfield>
-              </td>
-            </tr>
             <tr>
               <th colspan="2">PTS volume/page search</th>
             </tr>

@@ -1,12 +1,11 @@
 import { html, css } from 'lit';
+import '@material/web/checkbox/checkbox';
+
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from './sc-redux-actions';
-
-import '@material/mwc-formfield';
-import '@material/web/checkbox/checkbox';
 
 export class SCTopSheetSearchOptions extends SCTopSheetCommon {
   static properties = {
@@ -17,14 +16,6 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
     super.styles,
     typographyCommonStyles,
     css`
-      :host {
-        --mdc-theme-secondary: var(--sc-primary-accent-color);
-        --mdc-typography-font-family: var(--sc-sans-font);
-        --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-        --mdc-typography-body2-font-weight: 550;
-        --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-      }
-
       md-checkbox {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
@@ -142,7 +133,7 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
             <section class="single-column">
               ${this.rootLanguageList.map(
                 lang => html`
-                  <mwc-formfield label=${lang.name}>
+                  <label>
                     <md-checkbox
                       name=${lang.name}
                       value=${lang.uid}
@@ -150,7 +141,8 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
                       ?checked=${lang.checked}
                       @change=${this.#onLanguageCheckboxChange}
                     ></md-checkbox>
-                  </mwc-formfield>
+                    ${lang.name}
+                  </label>
                 `
               )}
             </section>
@@ -167,7 +159,7 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
             <section class="five-column">
               ${this.translationLanguageList.map(
                 lang => html`
-                  <mwc-formfield label=${lang.name}>
+                  <label>
                     <md-checkbox
                       name=${lang.uid}
                       value=${lang.uid}
@@ -175,7 +167,8 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
                       ?checked=${lang.checked}
                       @change=${this.#onLanguageCheckboxChange}
                     ></md-checkbox>
-                  </mwc-formfield>
+                    ${lang.name}
+                  </label>
                 `
               )}
             </section>

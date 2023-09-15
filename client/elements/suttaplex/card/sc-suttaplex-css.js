@@ -18,14 +18,13 @@ export const suttaplexCss = css`
     position: absolute;
     z-index: 10;
 
-    max-width: 360px;
+    max-width: 210px;
     margin: 4px 0 0 0;
-    padding: 8px 12px;
+    padding: 12px 12px;
 
-    color: var(--sc-on-secondary-primary-text-color);
-    border: 1px solid var(--sc-border-color);
-    border-radius: 8px;
-    background-color: var(--sc-tertiary-background-color);
+    color: var(--sc-on-secondary-secondary-text-color);
+    border-radius: 12px;
+    background-color: var(--sc-secondary-background-color);
     box-shadow: var(--sc-shadow-elevation-4dp);
   }
 
@@ -70,8 +69,25 @@ export const suttaplexCss = css`
     outline-color: var(--sc-border-color);
   }
 
-  summary::marker {
-    color: var(--sc-icon-color);
+  /* Remove the default triangle */
+  summary {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Create a new custom triangle on the left side */
+  .section-details summary::before {
+    display: inline-block;
+    transition: 0.2s;
+    height: 24px;
+    width: 24px;
+    margin-left: -8px;
+    margin-right: 0px;
+    content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="rgb(128,117,103)" d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>');
+  }
+
+  details[open] > summary::before {
+    transform: rotate(90deg);
   }
 
   #copy-menu > summary {
@@ -167,8 +183,6 @@ export const suttaplexCss = css`
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
-    margin-right: 1rem;
-    line-height: 1.4;
   }
 
   .vol-page {
@@ -241,10 +255,6 @@ export const suttaplexCss = css`
     outline: none;
   }
 
-  summary::marker {
-    color: var(--sc-icon-color);
-  }
-
   sc-suttaplex-tx {
     display: block;
     margin: var(--sc-size-sm) 0;
@@ -309,7 +319,7 @@ export const suttaplexTxCss = css`
     background-color: var(--sc-primary-color-light);
   }
 
-  .translation {
+  .open_book {
     height: 20px;
     width: 20px;
     padding: 4px;
@@ -365,7 +375,7 @@ export const parallelsListCss = css`
 
   .parallels-root-cell,
   .parallels-parallel-cell {
-    border-radius: var(--sc-size-sm);
+    border-radius: 16px;
     background-color: var(--sc-tertiary-background-color);
     transition: background-color 0.2s ease;
   }
@@ -457,7 +467,6 @@ export const parallelItemCss = css`
     font-size: var(--sc-font-size-s);
     font-weight: 400;
     box-shadow: var(--sc-shadow-elevation-4dp);
-    border-top: var(--sc-border);
     position: absolute;
     z-index: 50;
     background-color: var(--sc-secondary-background-color);
@@ -466,13 +475,10 @@ export const parallelItemCss = css`
     white-space: normal;
   }
 
-  summary::marker {
-    color: var(--sc-icon-color);
-  }
-
   .parallel-item-nerdy-row {
     color: var(--sc-on-secondary-secondary-text-color);
     display: flex;
+    gap: 1em;
   }
 
   .parallel-item {
@@ -483,8 +489,6 @@ export const parallelItemCss = css`
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
-    margin-right: 1rem;
-    line-height: 1.4;
   }
 
   .disabled {
@@ -492,9 +496,25 @@ export const parallelItemCss = css`
     background-color: var(--sc-tertiary-background-color);
   }
 
+  /* Remove the default triangle */
   summary {
-    cursor: pointer;
-    outline: none;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Create a new custom triangle on the left side */
+  summary::before {
+    display: inline-block;
+    transition: 0.2s;
+    height: 24px;
+    width: 24px;
+    margin-left: -8px;
+    margin-right: -4px;
+    content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="rgb(128,117,103)" d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>');
+  }
+
+  details[open] > summary::before {
+    transform: rotate(90deg);
   }
 
   .icon {
@@ -502,7 +522,8 @@ export const parallelItemCss = css`
   }
 
   .volPage-row {
-    display: contents;
+    display: inline-flex;
+    align-items: center;
   }
 
   .vol-page {
@@ -514,8 +535,32 @@ export const parallelItemCss = css`
     height: 16px;
   }
 
-  .vol-page {
-    font-stretch: condensed;
+  .info {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Remove the default triangle */
+  summary {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Create a new custom triangle on the left side */
+  summary::before {
+    display: inline-block;
+
+    transition: 0.2s;
+    height: 24px;
+    width: 24px;
+    margin-left: -8px;
+    margin-right: -4px;
+
+    content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="rgb(128,117,103)" d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>');
+  }
+
+  details[open] > summary::before {
+    transform: rotate(90deg);
   }
 
   @media only screen and (max-width: 600px) {
