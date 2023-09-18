@@ -111,21 +111,21 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
                   author:sabbamitta Buddha AND Sāvatthī
               </td>
             </tr>
-  
+
             <tr>
               <td>List all <code>authors</code>.</td>
               <td>list authors</td>
             </tr>
-  
+
             <tr>
               <th colspan="2">title search</th>
             </tr>
-  
+
             <tr>
               <td>List all related suttas by <code>title</title>.</td>
               <td>title:intention</td>
             </tr>
-  
+
             <tr>
               <th colspan="2">collection search</th>
             </tr>
@@ -137,21 +137,21 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
                   in:an Buddha AND Sāvatthī
               </td>
             </tr>
-  
+
             <tr>
-              <th colspan="2">ebt search</th>
+              <th colspan="2">ebs search</th>
             </tr>
             <tr>
-              <td>Narrow search to “early Buddhist texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
-                <code>in:dn da mn ma sn sa an ea ea-2 kp iti ud snp dhp thig thag pli-tv lzh-mg lzh-mi lzh-dg lzh-sarv lzh-mu lzh-ka lzh-upp san-mg san-lo</code>
+              <td>Narrow search to “early Buddhist texts” (<code>ebs</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
+                <code>in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp, dhp, thig, thag, sf</code>
               </td>
-              <td>in:ebt free</td>
+              <td>in:ebs free</td>
             </tr>
-  
+
             <tr>
               <th colspan="2">operators</th>
             </tr>
-  
+
             <tr>
               <td>Return one <code>OR</code> the other.</td>
               <td>greed OR desire</td>
@@ -175,7 +175,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <tr>
               <th colspan="2">combine filters</th>
             </tr>
-  
+
             <tr>
             <td>Use multiple filters.</td>
               <td colspan="2">
@@ -183,11 +183,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
                 in:mn author:sujato Buddha AND Monastery
               </td>
             </tr>
-  
+
             <tr>
               <th colspan="2">chinese</th>
             </tr>
-  
+
             <tr>
               <td>Use space-separated keywords.</td>
               <td>
@@ -196,7 +196,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
                 八正道 AND 涅槃
               </td>
             </tr>
-  
+
             <tr>
               <td>Convert simplified/traditional Chinese characters.</td>
               <td>发勤 ，观心生灭<br>

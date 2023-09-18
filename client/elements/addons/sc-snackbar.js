@@ -7,14 +7,20 @@ class SCSnackbar extends LitElement {
       left: 50%;
       transform: translateX(-50%);
       bottom: 20px;
-      background-color: var(--sc-dark-fixed-background-color);
-      color: var(--sc-inverted-text-color);
+      background-color: var(--sc-opposite-background-color);
+      color: var(--sc-opposite-text-color);
       padding: 10px 20px;
       border-radius: 4px;
+      box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
       z-index: 9999;
-      width: 400px;
-      text-align: center;
+      text-align: left;
       font-family: var(--sc-serif-font);
+    }
+
+    span {
+      white-space: nowrap;
+      width: auto;
+      display: inline-block;
     }
   `;
 
@@ -49,7 +55,7 @@ class SCSnackbar extends LitElement {
   }
 
   render() {
-    return this.visible ? html`<div>${this.labelText}</div>` : html``;
+    return this.visible ? html`<div><span>${this.labelText}</span></div>` : html``;
   }
 }
 

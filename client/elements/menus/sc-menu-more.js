@@ -80,6 +80,8 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     }
 
     mwc-list {
+      margin-top: -8px;
+      margin-bottom: -8px;
       background-color: var(--sc-secondary-background-color);
     }
   `;
@@ -332,9 +334,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
         </a>
         <a class="more-menu-link" href="/about">
           <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.info} ${this.localize('interface:about')}
-            </div>
+            <div class="menu-item-wrapper">${icon.info} ${this.localize('interface:about')}</div>
           </mwc-list-item>
         </a>
         <md-divider></md-divider>

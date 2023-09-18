@@ -18,10 +18,6 @@ export const SCPageSearchStyles = css`
     color: red;
   }
 
-  mwc-list-item {
-    color: var(--sc-on-primary-primary-text-color);
-  }
-
   h2 {
     line-height: 1.25;
   }

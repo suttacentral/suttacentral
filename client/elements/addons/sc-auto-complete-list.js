@@ -312,34 +312,8 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.#hide();
   }
 
-  #keyDownHandler(event, index, uid) {
-    if (event.key === 'Enter') {
-      this.#selectItem(uid);
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      this.selectedIndex = Math.max(0, this.selectedIndex - 1);
-    } else if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      this.selectedIndex = Math.min(this.items.length - 1, this.selectedIndex + 1);
-    }
-    this.requestUpdate();
-  }
-
-  #mouseOverHandler(event, index) {
-    const currentSelectedItem = this.shadowRoot.querySelector('.selected');
-    if (currentSelectedItem) {
-      currentSelectedItem.classList.remove('selected');
-      currentSelectedItem.tabIndex = -1;
-    }
-
-    this.selectedIndex = index;
-    event.target.classList.toggle('selected');
-    event.target.tabIndex = 0;
-    event.target.focus();
-  }
-
   #suggestionsTemplate() {
-    const tipitakas = [{ uid: 'in:ebt', title: 'Early Buddhist Texts' }];
+    const tipitakas = [{ uid: 'in:ebs', title: 'Early Buddhist Suttas' }];
 
     return html`
       <div id="instant_search_dialog" class="search-suggestions">
@@ -350,6 +324,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
             label="Input search term"
             @keyup=${e => this.#keyupHandler(e)}
             @keypress=${this.#keypressHandler}
+            supporting-text="Search in all texts"
           >
             <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
           </md-filled-text-field>
@@ -367,7 +342,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   <span class="suggestion-item">
                     <span class="search-icon">${icon.search_gray}</span>
                     <span class="search-entry"
-                      ><span class="search-filter">in:${item.uid}</span>
+                      ><span class="search-filter">${item.uid}</span>
                       <span class="search-query">${this.searchQuery}</span></span
                     >
                   </span>
@@ -380,10 +355,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
             ${this.items.map(
               (item, i) =>
                 html`<li
-                  tabindex=${i === this.selectedIndex ? '0' : '-1'}
                   @click=${() => this.#selectItem(item.uid)}
-                  @keydown=${e => this.#keyDownHandler(e, i, item.uid)}
-                  @mouseover=${e => this.#mouseOverHandler(e, i)}
                   class=${i === 0 ? 'selected' : ''}
                 >
                   <span class="suggestion-item-description">
