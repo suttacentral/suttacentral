@@ -43,6 +43,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       height: 48px;
       background-color: var(--sc-darker-fixed-background-color);
       align-items: center;
+      cursor: pointer;
     }
 
     .button-theme {
