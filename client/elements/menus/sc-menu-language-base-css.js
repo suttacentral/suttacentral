@@ -8,6 +8,16 @@ export const languageBaseMenuCss = css`
     --mdc-list-side-padding: 16px;
   }
 
+  mwc-list {
+    margin-top: -8px;
+    margin-bottom: -8px;
+    background-color: var(--sc-secondary-background-color);
+  }
+
+  .language-chooser-header-wrapper {
+    background-color: var(--sc-secondary-background-color);
+  }
+
   .separator {
     background-color: var(--sc-border-color);
     width: 100%;
@@ -64,6 +74,7 @@ export const languageBaseMenuCss = css`
   .menu-item-wrapper {
     display: flex;
     align-items: center;
+    margin-top: -8px;
   }
 
   .text-only {
@@ -91,8 +102,5 @@ export const languageBaseMenuCss = css`
     height: 1px;
     margin-top: var(--sc-size-sm);
     margin-bottom: var(--sc-size-xxs);
-  }
-
-  .more-menu-return-arrow {
   }
 `;

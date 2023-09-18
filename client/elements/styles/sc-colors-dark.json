@@ -25,6 +25,8 @@
   "--sc-dark-fixed-background-color": "#515151",
   "--sc-darker-fixed-background-color": "#414141",
   "--sc-inverted-text-color": "#ffffff",
+  "--sc-opposite-background-color": "#ffffff",
+  "--sc-opposite-text-color": "#201b13",
   "--sc-icon-color": "#ababab",
   "--sc-border-color": "#777",
   "--sc-toast-error-color": "#ba1a1a",

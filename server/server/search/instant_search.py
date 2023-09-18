@@ -434,21 +434,15 @@ def add_collection_condition_to_query_aql(condition_combination):
     if collection in ['sutta', 'vinaya', 'abhidhamma']:
         return f' AND d.uid IN (FOR doc IN 0..10 OUTBOUND CONCAT("super_nav_details/", "{collection}") ' \
                              f'super_nav_details_edges RETURN doc.uid) '
-    if collection == 'ebt':
-        return add_in_ebt_aql()
+    if collection == 'ebs':
+        return add_in_ebs_aql()
     return f'AND (STARTS_WITH(d.uid, "{collection}")  AND STARTS_WITH(d.acronym, "{collection.upper()} "))'
 
 
-def add_in_ebt_aql():
-    ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
-                       "thig", "thag", "up", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                       "lzh-upp", "san-mg", "san-lo"]
-    ebt_collections += fetch_children_by_uid("da-ot")
-    ebt_collections += fetch_children_by_uid("ma-ot")
-    ebt_collections += fetch_children_by_uid("sa-ot")
-    ebt_collections += fetch_children_by_uid("ea-ot")
-    ebt_collections += fetch_children_by_uid("d")
-    return f'AND (STARTS_WITH(d.uid, {ebt_collections})) '
+def add_in_ebs_aql():
+    ebs_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
+                       "thig", "thag", "sf"]
+    return f'AND (STARTS_WITH(d.uid, {ebs_collections})) '
 
 
 def fetch_children_by_uid(uid):
