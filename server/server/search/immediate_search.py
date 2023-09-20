@@ -31,11 +31,23 @@ AQL_POSSIBLE_RESULTS_BY_LANG = '''
                 "dhp", "thig", "thag", "sf"]
 
     FOR d IN names
-        FILTER (d.lang == @lang OR d.is_root == true) AND starts_with(d.uid, ebs_prefixes) AND NOT CONTAINS(d.uid, '-name')
+        FILTER (d.lang == @lang OR d.is_root == true) AND NOT CONTAINS(d.uid, '-name')
+        LET navigation_doc = DOCUMENT('super_nav_details', d.uid)
+        LET path_docs = (
+            FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', d.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
+                RETURN doc.uid
+        )
+        LET root_uid = REVERSE(
+            FOR item IN path_docs
+            FILTER CONTAINS(d.uid, item)
+            RETURN item
+        )[0]
+        FILTER root_uid in ebs_prefixes
     RETURN {
         uid:d.uid,
         title:d.name,
-        isRoot: d.is_root
+        isRoot: d.is_root,
+        nodeType: navigation_doc.type
     }
 '''
 

@@ -228,7 +228,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     return html`
       <nav>
         <div class="breadcrumbs-wrapper">
-          <div class="top-bar-home-link">
+          <div class="top-bar-home-link" @click=${this._hideTopSheets}>
             <a class="home-link" href="/">
               ${icon.home}
               <md-ripple></md-ripple>

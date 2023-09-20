@@ -337,6 +337,14 @@ export const SCPageSearchStyles = css`
   select {
     width: 200px;
   }
+
+  md-switch {
+    margin-left: 5px;
+  }
+
+  .search-options label {
+    line-height: 1.8;
+  }
 `;
 
 export const searchResultTableViewStyles = css`

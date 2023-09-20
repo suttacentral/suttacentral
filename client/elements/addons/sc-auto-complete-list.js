@@ -2,7 +2,6 @@ import { html, css, LitElement } from 'lit';
 import { create, search, insertMultiple } from '@orama/orama';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
-import '@material/web/button/text-button';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -24,13 +23,9 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       z-index: 9999;
       top: var(--sc-size-sm);
       left: var(--sc-size-sm);
-
       width: calc(100% - var(--sc-size-sm) * 2);
-
       display: none;
-
       margin: auto;
-
       color: var(--sc-on-tertiary-primary-text-color);
       border-radius: var(--sc-mid-border-radius);
       background-color: var(--sc-tertiary-background-color);
@@ -46,29 +41,22 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .search-suggestions {
       position: relative;
-
       width: 100%;
-
       border-radius: 8px;
       box-shadow: 0 0 0.25rem 0.25rem rgba(0, 0, 0, 0.48);
     }
 
     .suggestion-item {
       font-size: 18px;
-
       display: grid;
-
       user-select: unset;
-
       grid-template-columns: max-content minmax(0, auto) max-content;
       grid-template-areas: 'title title title' 'subtitle subtitle subtitle';
     }
 
     .ss-item-uid {
       font-size: var(--sc-font-size-md);
-
       display: flex;
-
       align-items: center;
       gap: 1rem;
     }
@@ -80,7 +68,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .suggestion-item-description {
       display: flex;
       flex-direction: row;
-
       gap: 0.25rem;
       grid-area: label;
     }
@@ -92,24 +79,18 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     ul {
       margin: 0;
       padding: 0.5rem 0.5rem 0.25rem;
-
       list-style: none;
     }
 
     li {
       position: relative;
-
       display: flex;
-
       margin-bottom: 0.25rem;
       padding: 0.5rem 1rem;
-
       cursor: pointer;
       transition: var(--sc-link-transition);
-
       border-radius: var(--sc-big-border-radius);
       background-color: var(--sc-secondary-background-color);
-
       align-items: center;
       justify-content: space-between;
     }
@@ -129,7 +110,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .search-in {
       font-size: var(--sc-font-size-s);
       font-stretch: condensed;
-
       color: var(--sc-on-primary-secondary-text-color);
     }
 
@@ -140,14 +120,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .ss-header {
       display: flex;
-
       justify-content: center;
       align-items: center;
     }
 
     md-filled-text-field {
       width: 99%;
-
       margin-top: 8px;
 
       --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
@@ -166,13 +144,9 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     #openSearchTip {
       font-size: var(--sc-font-size-s);
-
       display: flex;
-
       padding: 0 16px 8px 16px;
-
       color: var(--sc-on-tertiary-secondary-text-color);
-
       align-items: center;
       justify-content: space-between;
       gap: 8px;
@@ -180,7 +154,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     #opensearchtip-left {
       display: inline-flex;
-
       align-items: center;
     }
 
@@ -190,13 +163,18 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     hr {
       display: none;
-
       margin: 8px 0;
     }
 
     li ~ hr,
     ul li:last-child + hr {
       display: flex;
+    }
+
+    .search-result-link {
+      text-decoration: none;
+      color: inherit;
+      width: 90%;
     }
   `;
 
@@ -266,124 +244,112 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     return html`${this.#suggestionsTemplate()}`;
   }
 
-  #openSearchTip() {
-    this.#hide();
-    dispatchCustomEvent(this, 'sc-navigate', { pathname: '/search-filter' });
-  }
-
   #gotoSearch(event, uid, searchQuery) {
     if (event.type === 'click' || event.key === 'Enter') {
-      this.#hide();
+      this.hide();
       const searchTerm = uid ? `${uid} ${searchQuery}` : searchQuery;
       const link = `/search?query=${searchTerm}`;
       dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
     }
   }
 
-  #hide() {
+  hide() {
     this.style.display = 'none';
   }
 
-  #menuHasChildren() {
-    return this.currentMenuData?.[0]?.children?.length >= 1 || false;
-  }
-
-  async #fetchMenuData(uid) {
-    try {
-      return await (await fetch(this.#computeMenuApiUrl(uid))).json();
-    } catch (error) {
-      console.error(error);
-      return {};
-    }
-  }
-
-  #computeMenuApiUrl(uid) {
-    return `${API_ROOT}/menu/${uid}?language=${store.getState().siteLanguage || 'en'}`;
-  }
-
-  async #selectItem(item) {
+  #generateURL(item) {
     const siteLang = store.getState().siteLanguage;
-    this.currentMenuData = await this.#fetchMenuData(item);
-    let link = `/${item}`;
-    if (!this.#menuHasChildren() && this.priorityAuthors?.get(siteLang)) {
-      link = `/${item}/${siteLang}/${this.priorityAuthors.get(siteLang)}`;
+    let link = `/${item.uid}`;
+    if (item.nodeType === 'leaf' && this.priorityAuthors?.get(siteLang)) {
+      link = `/${item.uid}/${siteLang}/${this.priorityAuthors.get(siteLang)}`;
     }
-    dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
-    this.#hide();
+    return link;
   }
 
   #suggestionsTemplate() {
-    const tipitakas = [{ uid: 'in:ebs', title: 'Early Buddhist Suttas' }];
-
     return html`
       <div id="instant_search_dialog" class="search-suggestions">
-        <div class="ss-header">
-          <md-filled-text-field
-            id="search_input"
-            type="search"
-            label="Input search term"
-            @keyup=${e => this.#keyupHandler(e)}
-            @keypress=${this.#keypressHandler}
-            supporting-text="Search in all texts"
-          >
-            <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
-          </md-filled-text-field>
-        </div>
-
-        <div class="ss-list">
-          <ul id="ss-items">
-            ${this.searchQuery &&
-            tipitakas.map(
-              (item, i) => html`
-                <li
-                  @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
-                  @keydown=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
-                >
-                  <span class="suggestion-item">
-                    <span class="search-icon">${icon.search_gray}</span>
-                    <span class="search-entry"
-                      ><span class="search-filter">${item.uid}</span>
-                      <span class="search-query">${this.searchQuery}</span></span
-                    >
-                  </span>
-                  <span class="search-in">Search in ${item.title}</span>
-                  <md-ripple></md-ripple>
-                </li>
-              `
-            )}
-            <hr />
-            ${this.items.map(
-              (item, i) =>
-                html`<li
-                  @click=${() => this.#selectItem(item.uid)}
-                  class=${i === 0 ? 'selected' : ''}
-                >
-                  <span class="suggestion-item-description">
-                    <span class="ss-item-uid">
-                      <span class="ss-item-uid-icon">${icon.open_book}</span>
-                      <span class="ss-item-uid-text">${item.uid}</span>
-                      <span class="ss-item-title">${item.title}</span>
-                    </span>
-                  </span>
-                  <span>${icon.gotolink}</span>
-                  <md-ripple></md-ripple>
-                </li>`
-            )}
-            <hr />
-          </ul>
-        </div>
-
-        <div id="openSearchTip">
-          <span id="opensearchtip-left">
-            <md-icon-button aria-label="Tips for search syntax" @click=${this.#openSearchTip}>
-              ${icon.info}
-            </md-icon-button>
-            <span>Tips for search syntax</span>
-          </span>
-          <sc-progress .active=${this.loadingData} .type=${'circular'}>er</sc-progress>
-          <md-icon-button @click=${this.#hide}>${icon.close}</md-icon-button>
-        </div>
+        <div class="ss-header">${this.#headerTemplate()}</div>
+        <div class="ss-list">${this.#searchResultListTemplate()}</div>
+        <div id="openSearchTip">${this.#footerTemplate()}</div>
       </div>
+    `;
+  }
+
+  #headerTemplate() {
+    return html`
+      <md-filled-text-field
+        id="search_input"
+        type="search"
+        label="Input search term"
+        @keyup=${e => this.#keyupHandler(e)}
+        @keypress=${this.#keypressHandler}
+        supporting-text="Search in all texts"
+      >
+        <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
+      </md-filled-text-field>
+    `;
+  }
+
+  #searchResultListTemplate() {
+    const filters = [{ uid: 'in:ebs', title: 'Early Buddhist Suttas' }];
+    return html`
+      <ul id="ss-items">
+        ${this.searchQuery &&
+        filters.map(
+          item => html`
+            <li @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}>
+              <span class="suggestion-item">
+                <span class="search-icon">${icon.search_gray}</span>
+                <span class="search-entry"
+                  ><span class="search-filter">${item.uid}</span>
+                  <span class="search-query">${this.searchQuery}</span></span
+                >
+              </span>
+              <span class="search-in">Search in ${item.title}</span>
+              <md-ripple></md-ripple>
+            </li>
+          `
+        )}
+        <hr />
+        ${this.items.map(
+          (item, i) =>
+            html`<li class=${i === 0 ? 'selected' : ''} @click=${this.hide}>
+              <a class="search-result-link" href=${this.#generateURL(item)}>
+                <span class="suggestion-item-description">
+                  <span class="ss-item-uid">
+                    <span class="ss-item-uid-icon"
+                      >${item.nodeType === 'branch' ? icon.network_node : icon.open_book}</span
+                    >
+                    <span class="ss-item-uid-text">${item.uid}</span>
+                    <span class="ss-item-title">${item.title}</span>
+                  </span>
+                </span>
+              </a>
+              <span>${icon.gotolink}</span>
+              <md-ripple></md-ripple>
+            </li>`
+        )}
+        <hr />
+      </ul>
+    `;
+  }
+
+  #footerTemplate() {
+    return html`
+      <span id="opensearchtip-left">
+        <md-icon-button
+          aria-label="Tips for search syntax"
+          href="/search-filter"
+          @click=${this.hide}
+        >
+          ${icon.info}
+        </md-icon-button>
+        <span>Tips for search syntax</span>
+      </span>
+      <sc-progress .active=${this.loadingData} .type=${'circular'}></sc-progress>
+      <md-icon-button @click=${this.hide}>${icon.close}</md-icon-button>
+    </div>
     `;
   }
 
@@ -396,7 +362,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   #startSearch() {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery) {
-      this.#hide();
+      this.hide();
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
     }
   }

@@ -1,5 +1,75 @@
 # SuttaCentral ChangeLog
 
+## 2023.09.20
+
+- optimize instant search data source, adjust html.
+
+## 2023.09.18
+
+- Use ebs filter instead of ebt, adjust styles.
+
+## 2023.09.15
+
+- Remove m2 components and fix instant search bugs.
+
+## 2023.09.11
+
+- Fix search bug.
+- Adjust m3 styles.
+
+## 2023.09.08
+
+- Support localization of toolbar icon button text.
+
+## 2023.09.07
+
+- Upgrade m3 components and adjust relative code.
+
+## 2023.09.05
+
+- Adjust and merge m3 styles, fix a button display bug.
+
+## 2023.09.04
+
+- Modified the instant search component and search page. #2743
+
+## 2023.08.29
+
+- Refresh home design #2741
+
+## 2023.08.28
+
+- Use oramasearch to implement instant search. #2734
+
+## 2023.07.29
+
+- Enhance:site language should be shareable via URL on every page. #2704
+
+## 2023.07.27
+
+- Optimize home page load speed #2702
+
+## 2023.07.20
+
+- Text excerpt in search result should always show search term #2723
+- Refactor navigation module. #2725
+
+## 2023.07.19
+
+- Fix: the dictionary will appear twice in the search results. #2721
+
+## 2023.07.18
+
+- Add new component for jump in feature. #2720
+
+## 2023.07.10
+
+- Fix bugs reported by sentry. #2714
+
+## 2023.07.08
+
+- Added "jump to" feature.
+
 ## 2023.07.05
 
 - FIx: Start and end of lines are not visible in legacy text in mobile phone browser.
