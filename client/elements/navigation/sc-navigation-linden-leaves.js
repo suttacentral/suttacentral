@@ -100,13 +100,11 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     }
 
     li a {
-      position: relative;
-
       display: flex;
 
       box-sizing: border-box;
       height: 100%;
-      padding: 8px 12px;
+      padding: 0 10px;
 
       transition: var(--sc-link-transition);
       text-decoration: none;
