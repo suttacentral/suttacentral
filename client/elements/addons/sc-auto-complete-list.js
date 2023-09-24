@@ -54,7 +54,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 {
     display: flex;
 
-    padding: 0 4px;
+    padding: 0 8px;
 
     justify-content: center;
     align-items: center;
@@ -63,7 +63,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 md-filled-text-field
 {
     width: 100%;
-    margin: 8px 6px 0px 6px;
+    margin: 8px 2px 0px 6px;
 
     --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
     --md-sys-color-primary: var(--sc-primary-accent-color);
