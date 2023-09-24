@@ -11,10 +11,9 @@ def get_font_file_by_name(name):
     fonts_dir = current_app.config.get('BASE_DIR').resolve() / 'frontend/files/fonts'
     font_files = {file.name: file for file in fonts_dir.glob('*.woff2')}
 
-    assert len(font_files) > 0
+    assert font_files
 
-    matches = [filename for filename in font_files if name in filename]
-    if matches:
+    if matches := [filename for filename in font_files if name in filename]:
         # Returning the matching font with the shortest name
         return font_files[sorted(matches, key=len)[0]]
     else:
@@ -22,18 +21,18 @@ def get_font_file_by_name(name):
 
 
 def get_font_files_by_names(names):
-    name_mapping = {}
-    for name in names:
-        name_mapping[name] = get_font_file_by_name(name)
-    return name_mapping
+    return {name: get_font_file_by_name(name) for name in names}
 
 
 def subset_files_by_names(names, text='', flavor=None, out_dir=None, suffix='subset'):
     name_file_mapping = get_font_files_by_names(names)
-    details = subset_files(
-        name_file_mapping, text=text, flavor=flavor, out_dir=out_dir, suffix=suffix
+    return subset_files(
+        name_file_mapping,
+        text=text,
+        flavor=flavor,
+        out_dir=out_dir,
+        suffix=suffix,
     )
-    return details
 
 
 class FontCache:
@@ -47,9 +46,7 @@ class FontCache:
 
     def fetch_from_cache(self, key):
         file = self.dir / key
-        if file.exists():
-            return file
-        return None
+        return file if file.exists() else None
 
     def add_to_cache(self, key, file):
         copy(file, self.dir / key)
@@ -78,14 +75,13 @@ def subset_files(
         for name, file in name_file_mapping.items():
             if suffix in file.name:
                 continue
-            outfile = f'{file.stem}-{suffix}{"." + flavor if flavor else file.suffix}'
+            outfile = f'{file.stem}-{suffix}{f".{flavor}" if flavor else file.suffix}'
             if out_dir:
                 outfile = out_dir / outfile
 
             cache_key = _cache.make_key(name, outfile, text)
 
-            cached_file = _cache.fetch_from_cache(cache_key)
-            if cached_file:
+            if cached_file := _cache.fetch_from_cache(cache_key):
                 copy(cached_file, outfile)
             else:
                 fontTools.subset.main(

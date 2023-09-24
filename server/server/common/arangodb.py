@@ -20,8 +20,9 @@ def explain_error(coll, e, docs, kwargs):
         seen = {}
         for i, doc in enumerate(docs, 0):
             key = doc['_key']
-            illegal_chars = ''.join(re.findall(r'''[^a-zA-Z0-9_:.@()+,=;$!*'%-]''', key))
-            if illegal_chars:
+            if illegal_chars := ''.join(
+                re.findall(r'''[^a-zA-Z0-9_:.@()+,=;$!*'%-]''', key)
+            ):
                 logging.error(f'{coll.name}: document key "{key}" contains illegal characters "{illegal_chars}"')
                 explained = True
             if e.error_code == 1210:

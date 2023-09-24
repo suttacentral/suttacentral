@@ -44,8 +44,8 @@ def run_tests(base_url):
                 fails = True
                 msg += ['"Too small"']
 
-        if not fails:
-            if not data:
+        if not data:
+            if not fails:
                 fails = True
                 msg += ['Empty Object']
 

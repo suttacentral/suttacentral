@@ -34,19 +34,17 @@ def _update_languages(db: Database, localized_elements_dir: Path):
         element, lang = file.stem.split('_')
         count = len(json_load(file))
         num_strings_by_lang[lang] += count
-        
-    updates = []
+
     num_en = num_strings_by_lang['en']
 
-    for iso_code, count in num_strings_by_lang.items():
-        updates.append(
-            {
-                '_key': iso_code,
-                'localized': True,
-                'localized_percent': int(100 * count / num_en),
-            }
-        )
-
+    updates = [
+        {
+            '_key': iso_code,
+            'localized': True,
+            'localized_percent': int(100 * count / num_en),
+        }
+        for iso_code, count in num_strings_by_lang.items()
+    ]
     db['language'].import_bulk(updates, on_duplicate='update')
 
 

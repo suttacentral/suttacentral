@@ -991,13 +991,8 @@ def find_sentences_with_keyword(input_string, keyword):
          return value:
          A list of strings consisting of natural sentences containing the given keywords.
     """
-    result = []
     sentence_list = re.split(r'[.!?...]+', input_string)
-    for sentence in sentence_list:
-        if keyword in sentence:
-            result.append(sentence.strip())
-
-    return result
+    return [sentence.strip() for sentence in sentence_list if keyword in sentence]
 
 
 def compute_url(hit):
@@ -1048,12 +1043,17 @@ def fetch_suttaplexs(db, lang, hits):
 
 
 def fetch_suttaplexs_by_name(db, lang, name):
-    possible_uids = []
     name_exclude_sutta = name
     if 'sutta' in name:
         name_exclude_sutta = name.replace('sutta', '').strip()
 
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name_exclude_sutta})))
+    possible_uids = list(
+        list(
+            db.aql.execute(
+                POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name_exclude_sutta}
+            )
+        )
+    )
     possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name_exclude_sutta}sutta'})))
     possible_uids = list(set(possible_uids))
 

@@ -28,7 +28,7 @@ class CssSelectorFailed(Exception):
         self.selector = selector
 
     def __str__(self):
-        return 'No matches for "{}"'.format(self.selector)
+        return f'No matches for "{self.selector}"'
 
 
 class HtHtmlElementMixin:
@@ -130,20 +130,17 @@ class HtHtmlElementMixin:
     def select_one(self, selector):
         """ Returns the first matching element, or None """
 
-        result = self.select(selector)
-        if result:
-            return result[0]
-        return None
+        return result[0] if (result := self.select(selector)) else None
 
     def select_or_fail(self, selector):
         """ Raises ``CssSelectorFailed`` instead of returning an empty list
 
         """
 
-        result = self.select(selector)
-        if not result:
+        if result := self.select(selector):
+            return result
+        else:
             raise CssSelectorFailed(selector)
-        return result
 
     def each_text(self, callback):
         """ Apply callback to each text and tail, in proper order
@@ -223,12 +220,8 @@ class HtHtmlElementMixin:
         """ Return a string with prettified whitespace """
         string = _html.tostring(self, pretty_print=True, **kwargs).decode()
         extra_tags = ('article', 'section', 'hgroup')
-        string = regex.sub(
-            r'(<(?:{})[^>]*>)'.format('|'.join(extra_tags)), r'\n\1\n', string
-        )
-        string = regex.sub(
-            r'(</(?:{})>)'.format('|'.join(extra_tags)), r'\n\1\n', string
-        )
+        string = regex.sub(f"(<(?:{'|'.join(extra_tags)})[^>]*>)", r'\n\1\n', string)
+        string = regex.sub(f"(</(?:{'|'.join(extra_tags)})>)", r'\n\1\n', string)
         string = string.replace('<br>', '<br>\n')
         string = string.replace('\n\n', '\n')
         string = regex.sub(r'\n +', '\n', string)
@@ -249,17 +242,16 @@ class HtHtmlElementMixin:
     def add_class(self, value):
         if 'class' in self.attrib:
             if value not in self.attrib['class']:
-                self.attrib['class'] += ' ' + value
+                self.attrib['class'] += f' {value}'
         else:
             self.attrib['class'] = value
 
     def remove_class(self, value):
         if 'class' in self.attrib:
             if 'value' in self.attrib['class']:
-                new_class = ' '.join(
+                if new_class := ' '.join(
                     e for e in self.attr['class'].split() if e != value
-                )
-                if new_class:
+                ):
                     self.attrib['class'] = new_class
                 else:
                     del self.attrib['class']
