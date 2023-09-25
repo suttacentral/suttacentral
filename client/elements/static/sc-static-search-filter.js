@@ -132,13 +132,36 @@ export class SCStaticSearchFilter extends SCStaticPage {
             </tr>
 
             <tr>
+              <th colspan="2">ebt search</th>
+            </tr>
+            <tr>
+              <td>Narrow search to “Early Buddhist Texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
+                <code>in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp,
+                  dhp, thig, thag, pli-tv, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
+                  lzh-upp, san-mg, san-lo, up, ea-ot, d, sf</code>
+              </td>
+              <td>in:ebt free</td>
+            </tr>
+
+            <tr>
               <th colspan="2">ebs search</th>
             </tr>
             <tr>
-              <td>Narrow search to “early Buddhist texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
+              <td>Narrow search to “Early Buddhist Suttas” (<code>ebs</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
                 <code>in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp, dhp, thig, thag, sf</code>
               </td>
               <td>in:ebs free</td>
+            </tr>
+
+            <tr>
+              <th colspan="2">ebct search</th>
+            </tr>
+            <tr>
+              <td>Narrow search to “Early Buddhist Chinese Texts” (<code>ebct</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
+                <code>in:da, ma, sa, sa-2, sa-3, ea, ea-2, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
+                  lzh-upp, ea-ot, d</code>
+              </td>
+              <td>in:ebct 四念处</td>
             </tr>
 
             <tr>

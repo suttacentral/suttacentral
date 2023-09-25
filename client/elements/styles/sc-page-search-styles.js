@@ -235,6 +235,11 @@ export const SCPageSearchStyles = css`
     color: var(--sc-primary-color-dark);
   }
 
+  .highlight,
+  .search-result-term {
+    color: var(--sc-primary-color);
+  }
+
   .dictionary dd p {
     margin: 0 0 var(--sc-size-s) 0;
   }
