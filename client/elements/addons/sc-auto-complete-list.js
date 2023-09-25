@@ -8,6 +8,7 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
+import { reduxActions } from './sc-redux-actions';
 
 const suttaDB = await create({
   schema: {
@@ -344,7 +345,11 @@ md-icon
   constructor() {
     super();
     this.items = [];
-    this.priorityAuthors = new Map([['en', 'sujato']]);
+    this.priorityAuthors = new Map([
+      ['en', 'sujato'],
+      ['de', 'sabbamitta'],
+      ['zh', 'zhuang'],
+    ]);
     this.searchQuery = store.getState().searchQuery || '';
     this.siteLanguage = store.getState().siteLanguage;
     this.loadingData = false;
@@ -360,18 +365,41 @@ md-icon
 
   async #initInstantSearchData() {
     try {
-      const { siteLanguage } = store.getState();
-      this.instant_search_data = await (
-        await fetch(`${API_ROOT}/possible_names/${siteLanguage}`)
-      ).json();
-      if (this.instant_search_data?.length < 1) {
-        return;
+      this.loadingData = true;
+      const { lastUpdatedDate } = store.getState().instantSearch;
+      this.instant_search_data = store.getState().instantSearch?.data;
+      if (lastUpdatedDate) {
+        const lastUpdatedDateObj = new Date(lastUpdatedDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - lastUpdatedDateObj);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 7) {
+          await this.#fetchInstantSearchData();
+        }
       }
-      await insertMultiple(suttaDB, this.instant_search_data);
-      this.loadingData = false;
+
+      if (!this.instant_search_data || this.instant_search_data?.length === 0) {
+        await this.#fetchInstantSearchData();
+      }
+
+      if (this.instant_search_data?.length > 0) {
+        await insertMultiple(suttaDB, this.instant_search_data);
+      }
     } catch (error) {
       console.error(error);
+    } finally {
+      this.loadingData = false;
     }
+  }
+
+  async #fetchInstantSearchData() {
+    const today = new Date();
+    const { siteLanguage } = store.getState();
+    this.instant_search_data = await (
+      await fetch(`${API_ROOT}/possible_names/${siteLanguage}`)
+    ).json();
+    reduxActions.setInstantSearchLastUpdatedDate(today);
+    reduxActions.setInstantSearchData(this.instant_search_data);
   }
 
   firstUpdated() {
@@ -393,7 +421,7 @@ md-icon
   updated(changedProps) {
     if (changedProps.has('loadingData') && !this.loadingData && suttaDB.data.docs.count !== 0) {
       this.searchQuery = this.shadowRoot.getElementById('search_input').value;
-      this.instantSearch();
+      this.#instantSearch();
     }
   }
 
@@ -425,10 +453,10 @@ md-icon
 
   #suggestionsTemplate() {
     return html`
-      <div id="instant_search_dialog">
-        <div class="instant-search-header">${this.#headerTemplate()}</div>
-        <div class="instant-search-list">${this.#searchResultListTemplate()}</div>
-        <div id="openSearchTip">${this.#footerTemplate()}</div>
+      <div id="instant_search_dialog" class="search-suggestions">
+        <div class="ss-header">${this.#headerTemplate()}</div>
+        <div class="ss-list">${this.#searchResultListTemplate()}</div>
+        <div class="ss-footer" id="openSearchTip">${this.#footerTemplate()}</div>
       </div>
     `;
   }
@@ -529,7 +557,6 @@ md-icon
       return;
     }
     if (suttaDB.data.docs.count === 0) {
-      this.loadingData = true;
       this.#initInstantSearchData();
     }
 
@@ -538,10 +565,10 @@ md-icon
     }
 
     this.searchQuery = e.target.value;
-    await this.instantSearch();
+    await this.#instantSearch();
   }
 
-  async instantSearch() {
+  async #instantSearch() {
     if (this.searchQuery.length >= 2) {
       const searchResult = await search(suttaDB, {
         term: this.searchQuery,

@@ -85,6 +85,12 @@ class SecondMigration(Migration):
                 "uid": {
                     "analyzers": ["identity"]
                 },
+                "root_uid": {
+                    "analyzers": ["identity"]
+                },
+                "full_path": {
+                    "analyzers": ["identity"]
+                },
                 "lang": {
                     "analyzers": ["identity"]
                 },

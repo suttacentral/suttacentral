@@ -42,6 +42,17 @@ FOR text IN html_text
         RETURN lang.name
     )[0]
 
+    LET path_docs = (
+        FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', text.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
+            RETURN doc.uid
+    )
+
+    LET root_uid = REVERSE(
+        FOR item IN path_docs
+        FILTER CONTAINS(text.uid, item)
+        RETURN item
+    )[0]
+
     RETURN {
         file_path: text.file_path,
         uid: text.uid,
@@ -51,7 +62,9 @@ FOR text IN html_text
         root_lang: nav_doc.root_lang,
         lang: text.lang,
         full_lang: full_lang,
-        acronym: nav_doc.acronym
+        acronym: nav_doc.acronym,
+        root_uid: root_uid,
+        full_path: path_docs
     }
 '''
 
@@ -140,6 +153,17 @@ FOR text IN sc_bilara_texts
         RETURN lang.name
     )[0]
 
+    LET path_docs = (
+        FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', text.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
+            RETURN doc.uid
+    )
+
+    LET root_uid = REVERSE(
+        FOR item IN path_docs
+        FILTER CONTAINS(text.uid, item)
+        RETURN item
+    )[0]
+
     RETURN {
         uid: text.uid,
         title: name_doc.name ? name_doc.name : root_name_doc.name,
@@ -150,7 +174,9 @@ FOR text IN sc_bilara_texts
         lang: text.lang,
         full_lang: full_lang,
         root_lang: nav_doc.root_lang,
-        acronym: nav_doc.acronym
+        acronym: nav_doc.acronym,
+        root_uid: root_uid,
+        full_path: path_docs
     }
 '''
 

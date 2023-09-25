@@ -90,7 +90,12 @@ There is a Makefile with following commands:
 * `run-preview-env` - Fully rebuild and run most recent development version.
 * `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ArangoSearch.
 * `run-production-env` - Fully rebuild and run most recent production version. You will be prompted with questions regarding env variables.
-* `generate-env-vairables` - Runs env_variables_setup.py script and generate env variables for production version.
+* `generate-env-variables` - Runs env_variables_setup.py script and generate env variables for production version.
+
+In addition, the following rebuilds the front end. 
+
+* `docker-compose build sc-frontend`
+* then `make run-dev`
 
 ### 1.5 Working with ArangoDB
 Our project is using [ArangoDB](https://www.arangodb.com/) on the back-end. In the development mode it exposes port 8529 on the localhost.
