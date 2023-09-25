@@ -161,17 +161,13 @@ def generate_title_query_aql(query_param):
 
 
 def generate_collection_query_aql(query_param):
-    collection = query_param["query"].lower()
-    if collection in ['sutta', 'vinaya', 'abhidhamma']:
-        aql_condition_part = f' SEARCH d.uid IN (FOR doc IN 0..10 OUTBOUND CONCAT("super_nav_details/", "{collection}") ' \
-                             f'super_nav_details_edges RETURN doc.uid) OR STARTS_WITH(d.uid, @query) '
-    else:
-        aql_condition_part = f'SEARCH (STARTS_WITH(d.uid, @query) AND STARTS_WITH(d.acronym, "{query_param["query"].upper()} ")) '
-    aql_condition_part += '''
+    aql_condition_part = (
+        'SEARCH (d.root_uid == @query OR @query in d.full_path) '
+        + '''
         FILTER d.is_segmented == False
         FILTER d.author_uid != null
     '''
-
+    )
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
@@ -259,7 +255,7 @@ def generate_reference_query_aql(query):
     return '''
         FOR d IN instant_volpage_search
         SEARCH (PHRASE(d.volpage, @query, "common_text") OR PHRASE(d.alt_volpage, @query, "common_text"))
-        
+
         SORT d.uid
 
         LET translation_title = (
@@ -406,13 +402,13 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
 
     aql_condition_part += '''
     )
-    ''' + add_collection_condition_to_query_aql(query_conditions) + '''
     ''' + add_author_condition_to_query_aql(query_conditions) + '''
     )
     '''
     aql_condition_part += aql_filter_part(query_param['matchpartial'])
+    aql_condition_part += add_collection_condition_to_query_aql(query_conditions)
 
-    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
     '''
@@ -430,19 +426,37 @@ def add_author_condition_to_query_aql(condition_combination):
 def add_collection_condition_to_query_aql(condition_combination):
     if 'collection' not in condition_combination:
         return ''
+
     collection = condition_combination['collection'].lower()
-    if collection in ['sutta', 'vinaya', 'abhidhamma']:
-        return f' AND d.uid IN (FOR doc IN 0..10 OUTBOUND CONCAT("super_nav_details/", "{collection}") ' \
-                             f'super_nav_details_edges RETURN doc.uid) '
     if collection == 'ebs':
         return add_in_ebs_aql()
-    return f'AND (STARTS_WITH(d.uid, "{collection}")  AND STARTS_WITH(d.acronym, "{collection.upper()} "))'
+
+    if collection == 'ebt':
+        return add_in_ebt_aql()
+
+    if collection == 'ebct':
+        return add_in_ebct_aql()
+
+    return f'FILTER (d.root_uid == "{collection}" OR "{collection}" IN d.full_path) '
 
 
 def add_in_ebs_aql():
     ebs_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
                        "thig", "thag", "sf"]
-    return f'AND (STARTS_WITH(d.uid, {ebs_collections})) '
+    return f'FILTER (d.root_uid IN {ebs_collections}) '
+
+
+def add_in_ebt_aql():
+    ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
+                    "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+                    "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
+    return f'FILTER (d.root_uid IN {ebt_collections}) '
+
+
+def add_in_ebct_aql():
+    ebct_collections = ["da", "ma", "sa", "sa-2", "sa-3", "ea", "ea-2","lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+                    "lzh-upp", "ea-ot", "d"]
+    return f'FILTER (d.root_uid IN {ebct_collections}) '
 
 
 def fetch_children_by_uid(uid):
@@ -645,24 +659,11 @@ def highlight_keyword(hits, query):
 
 
 def sort_hits(hits):
-    ebt_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
+    ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
                     "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "san-mg", "san-lo", "up", "t25", "t24", "t23", "t22", "t21", "t20", "t19", "t18", "t17",
-                    "t16", "t15", "t14", "t13", "t12", "t11", "t10", "t9", "t8", "t7", "t6", "t5", "t4", "t3", "t2",
-                    "t98", "t97", "t96", "t95", "t94", "t93", "t92", "t91", "t90", "t89", "t88", "t87", "t86", "t85",
-                    "t84", "t83", "t82", "t81", "t80", "t79", "t78", "t77", "t76", "t75", "t74", "t73", "t72", "t71",
-                    "t70", "t69", "t68", "t67", "t66", "t65", "t64", "t63", "t62", "t61", "t60", "t59", "t58", "t57",
-                    "t56", "t55", "t54", "t53", "t52", "t51", "t50", "t49", "t48", "t47", "t46", "t45", "t44", "t43",
-                    "t42", "t41", "t40", "t39", "t38", "t37", "t36", "t35", "t34", "t33", "t32", "t31", "t30", "t29",
-                    "t28", "t27", "t124", "t123", "t122", "t121", "t120", "t119", "t118", "t117", "t116", "t115",
-                    "t114", "t113", "t112", "t111", "t110", "t109", "t108", "t107", "t106", "t105", "t104", "t103",
-                    "t102", "t151", "t150b", "t149", "t148", "t147", "t146", "t145", "t144", "t143", "t142b", "t142a",
-                    "t141", "t140", "t139", "t138", "t137", "t136", "t135", "t134", "t133", "t132b", "t132a", "t131",
-                    "t130", "t129", "t128b", "t128a", "t127", "t126", "xct-mu-kd-eimer", "d974", "d617", "d338",
-                    "d337", "d331", "d316", "d313", "d300", "d297", "d296", "d294", "d293", "d292", "d291", "d290",
-                    "d211", "d42", "d41", "d38", "d34", "d33", "d31", "d6", "d3", "d1"]
+                    "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
 
-    sorted_lst = sorted(hits, key=lambda x: any(char in x['uid'] for char in ebt_prefixes), reverse=True)
+    sorted_lst = sorted(hits, key=lambda x: any(char in x['uid'] for char in ebs_prefixes), reverse=True)
     # Prioritize items that contain both numbers and characters
     sorted_lst = sorted(sorted_lst, key=lambda x: uid_key(x['uid']))
 
@@ -935,9 +936,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
                 if not is_chinese(query):
                     paragraph = find_paragraph(content, position)
                     sentences = find_sentences_with_keyword(paragraph, query)
-                    highlight = '...'.join(sentences)
-                    if not highlight:
-                        highlight = paragraph
+                    highlight = '...'.join(sentences) or paragraph
                 else:
                     start = position - 100 if position > 100 else 0
                     end = min(position + 100, len(content))

@@ -411,6 +411,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _routeChanged() {
     this.querySelector('#sutta-info')?.hide?.();
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   _colorThemeChanged(newVal, oldVal) {

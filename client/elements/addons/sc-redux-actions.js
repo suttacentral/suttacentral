@@ -99,4 +99,18 @@ export class reduxActions {
       linearProgressActive: active,
     });
   }
+
+  static setInstantSearchLastUpdatedDate(lastUpdatedDate) {
+    store.dispatch({
+      type: 'SET_INSTANT_SEARCH_DATA_LAST_UPDATED_DATE',
+      lastUpdatedDate,
+    });
+  }
+
+  static setInstantSearchData(instantSearchData) {
+    store.dispatch({
+      type: 'SET_INSTANT_SEARCH_DATA',
+      instantSearchData,
+    });
+  }
 }
