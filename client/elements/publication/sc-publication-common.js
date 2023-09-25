@@ -37,21 +37,21 @@ function formatDate(date) {
 //   'https://raw.githubusercontent.com/suttacentral/editions/main/last_run_date';
 // const response = await fetch(lastActionRunDateUrl);
 // const lastRunDateText = await response.text();
-const lastRunDateText = '2023-08-21T02:33:48Z';
+const lastRunDateText = '2023-09-25T02:33:48Z';
 export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-08-21'],
-  ['mn', '2023-08-21'],
-  ['sn', '2023-08-21'],
-  ['an', '2023-08-21'],
-  ['dhp', '2023-08-21'],
-  ['ud', '2023-08-21'],
-  ['iti', '2023-08-21'],
-  ['snp', '2023-08-21'],
-  ['thag', '2023-08-21'],
-  ['thig', '2023-08-21'],
+  ['dn', '2023-09-25'],
+  ['mn', '2023-09-25'],
+  ['sn', '2023-09-25'],
+  ['an', '2023-09-25'],
+  ['dhp', '2023-09-25'],
+  ['ud', '2023-09-25'],
+  ['iti', '2023-09-25'],
+  ['snp', '2023-09-25'],
+  ['thag', '2023-09-25'],
+  ['thig', '2023-09-25'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
