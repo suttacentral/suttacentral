@@ -312,9 +312,11 @@ export const SCPageSearchStyles = css`
   }
 
   md-filled-text-field {
-    --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
     margin: 0px 0px 22px 0px;
     width: 100%;
+
+    --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
+    --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: white;
     --md-filled-text-field-input-text-font: var(--sc-sans-font);
