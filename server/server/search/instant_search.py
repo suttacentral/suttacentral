@@ -162,7 +162,7 @@ def generate_title_query_aql(query_param):
 
 def generate_collection_query_aql(query_param):
     aql_condition_part = (
-        'SEARCH (d.root_uid == @query OR @query in d.full_path) '
+        'FILTER (d.root_uid == @query OR @query in d.full_path) '
         + '''
         FILTER d.is_segmented == False
         FILTER d.author_uid != null
