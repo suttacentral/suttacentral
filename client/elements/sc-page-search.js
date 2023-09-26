@@ -656,6 +656,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // Saves the fetched search results to be displayed in the list.
   #populateList() {
+    if (!this.loadMoreButtonClicked) {
+      this.visibleSearchResults = [];
+    }
     const items = this.lastSearchResults;
     if (items.length === 0) {
       return;

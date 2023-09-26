@@ -19,321 +19,288 @@ const suttaDB = await create({
 
 class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
-:host
-{
-    font-size: var(--sc-font-size-md);
-
-    position: absolute;
-    z-index: 9999;
-    top: var(--sc-size-sm);
-    left: var(--sc-size-sm);
-
-    display: none;
-
-    width: calc(100% - var(--sc-size-sm) * 2);
-    margin: auto;
-
-    color: var(--sc-on-tertiary-primary-text-color);
-    border-radius: var(--sc-mid-border-radius);
-    background-color: var(--sc-tertiary-background-color);
-    box-shadow: 0 0 0 2048px rgba(0, 0, 0, .8);
-
-    --md-icon-button-icon-size: 24px;
-    --md-sys-color-primary: var(--sc-primary-accent-color);
-}
-
-#instant_search_dialog
-{
-    position: relative;
-
-    width: 100%;
-
-    border-radius: var(--sc-mid-border-radius);
-}
-
-.instant-search-header
-{
-    display: flex;
-
-    padding: 0 8px;
-
-    justify-content: center;
-    align-items: center;
-}
-
-md-filled-text-field
-{
-    width: 100%;
-    margin: 8px 2px 0px 6px;
-
-    --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
-    --md-sys-color-primary: var(--sc-primary-accent-color);
-    --md-sys-color-on-primary: white;
-    --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
-}
-
-.instant-search-list
-{
-    overflow-y: auto;
-
-    max-height: 90vh;
-    padding: 0 4px;
-
-    scrollbar-gutter: stable both-edges;
-}
-
-::-webkit-scrollbar
-{
-    width: 6px;
-}
-::-webkit-scrollbar-button
-{
-    width: 0;
-    height: 0;
-}
-::-webkit-scrollbar-thumb
-{
-    border-radius: 6px;
-    background: var(--sc-icon-color);
-}
-::-webkit-scrollbar-thumb:hover
-{
-    background: #87817a;
-}
-::-webkit-scrollbar-thumb:active
-{
-    background: #79746d;
-}
-::-webkit-scrollbar-track
-{
-    border-radius: 6px;
-    background: var(--sc-border-color);
-}
-::-webkit-scrollbar-corner
-{
-    background: transparent;
-}
-
-ul
-{
-    margin: 0;
-    padding: 8px 0 4px;
-
-    list-style: none;
-}
+    :host {
+      font-size: var(--sc-font-size-md);
+
+      position: absolute;
+      z-index: 9999;
+      top: var(--sc-size-sm);
+      left: var(--sc-size-sm);
+
+      display: none;
+
+      width: calc(100% - var(--sc-size-sm) * 2);
+      margin: auto;
+
+      color: var(--sc-on-tertiary-primary-text-color);
+      border-radius: var(--sc-mid-border-radius);
+      background-color: var(--sc-tertiary-background-color);
+      box-shadow: 0 0 0 2048px rgba(0, 0, 0, 0.8);
+
+      --md-icon-button-icon-size: 24px;
+      --md-sys-color-primary: var(--sc-primary-accent-color);
+    }
+
+    #instant_search_dialog {
+      position: relative;
+
+      width: 100%;
+
+      border-radius: var(--sc-mid-border-radius);
+    }
+
+    .instant-search-header {
+      display: flex;
+
+      padding: 0 8px;
+
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ss-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    md-filled-text-field {
+      width: 99%;
+
+      --md-sys-color-primary: var(--sc-primary-accent-color);
+      --md-sys-color-on-primary: white;
+      --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
+      --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
+      --md-filled-text-field-input-text-font: var(--sc-sans-font);
+      --md-filled-text-field-input-text-size: var(--sc-size-md);
+    }
+
+    .instant-search-list {
+      overflow-y: auto;
+
+      max-height: 90vh;
+      padding: 0 4px;
+
+      scrollbar-gutter: stable both-edges;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: var(--sc-icon-color);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #87817a;
+    }
+    ::-webkit-scrollbar-thumb:active {
+      background: #79746d;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 6px;
+      background: var(--sc-border-color);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
 
-li
-{
-    position: relative;
+    ul {
+      margin: 0;
+      padding: 8px 0 4px;
 
-    margin-bottom: 0;
-}
+      list-style: none;
+    }
 
-.search-suggestion-link
-{
-    display: flex;
+    li {
+      position: relative;
 
-    height: 24px;
-    padding: 24px 12px 8px 16px;
+      margin-bottom: 0;
+    }
 
-    cursor: pointer;
-    transition: var(--sc-link-transition);
-    text-decoration: none;
+    .search-suggestion-link {
+      display: flex;
 
-    color: inherit;
-    border-radius: 4px 4px 0 0;
-    background-color: inherit;
+      height: 24px;
+      padding: 24px 12px 8px 16px;
 
-    align-items: center;
-    justify-content: space-between;
-}
+      cursor: pointer;
+      transition: var(--sc-link-transition);
+      text-decoration: none;
 
-.search-suggestion-link:hover
-{
-    background-color: rgba(0,0,0,.06);
-}
+      color: inherit;
+      border-radius: 4px 4px 0 0;
+      background-color: inherit;
 
-.search-suggestion-link:active
-{
-    background-color: var(--sc-primary-color-light);
-}
+      align-items: center;
+      justify-content: space-between;
+    }
 
-.search-suggestion-link:focus
-{
-    background-color: var(--sc-primary-color-light-transparent);
-}
+    .search-suggestion-link:hover {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
 
-.instant-nav,
-.search-suggestion
-{
-    display: flex;
+    .search-suggestion-link:active {
+      background-color: var(--sc-primary-color-light);
+    }
 
-    align-items: center;
-    gap: 1rem;
-}
+    .search-suggestion-link:focus {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
 
-.search-suggestion::before
-{
-    position: absolute;
-    top: 8px;
+    .instant-nav,
+    .search-suggestion {
+      display: flex;
 
-    display: block;
+      align-items: center;
+      gap: 1rem;
+    }
 
-    content: 'Filter search to early Buddhist suttas';
-}
+    .search-suggestion::before {
+      position: absolute;
+      top: 8px;
 
-.search-suggestion::before,
-.instant-nav-description-text
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-xs);
+      display: block;
 
-    color: var(--sc-icon-color);
-}
+      content: 'Filter search to early Buddhist suttas';
+    }
 
-.search-suggestion-filter
-{
-    font-family: monospace;
-    font-size: var(--sc-font-size-s);
+    .search-suggestion::before,
+    .instant-nav-description-text {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-xs);
 
-    position: relative;
+      color: var(--sc-icon-color);
+    }
 
-    color: var(--sc-on-primary-secondary-text-color);
-}
+    .search-suggestion-filter {
+      font-family: monospace;
+      font-size: var(--sc-font-size-s);
 
-.search-suggestion-prompt
-{
-    display: inline-flex;
+      position: relative;
 
-    height: 40px;
-}
+      color: var(--sc-on-primary-secondary-text-color);
+    }
 
-.instant-nav-description-text
-{
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-xs);
+    .search-suggestion-prompt {
+      display: inline-flex;
 
-    color: var(--sc-icon-color);
+      height: 40px;
+    }
 
-    display: none;
+    .instant-nav-description-text {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-xs);
 
-    margin: 16px 0 8px 16px;
+      color: var(--sc-icon-color);
 
-    align-items: center;
-}
+      display: none;
 
-.instant-nav-description-text .icon
-{
-    width: 1em;
-    height: 1em;
-    margin: 0 .25em 0 .25em;
-}
+      margin: 16px 0 8px 16px;
 
-.instant-nav-link
-{
-    display: flex;
+      align-items: center;
+    }
 
-    margin-bottom: 8px;
-    padding: 8px 12px 8px 12px;
+    .instant-nav-description-text .icon {
+      width: 1em;
+      height: 1em;
+      margin: 0 0.25em 0 0.25em;
+    }
 
-    cursor: pointer;
-    transition: var(--sc-link-transition);
-    text-decoration: none;
+    .instant-nav-link {
+      display: flex;
 
-    color: var(--sc-on-primary-primary-text-color);
-    border-radius: var(--sc-big-border-radius);
-    background-color: var(--sc-primary-background-color);
+      margin-bottom: 8px;
+      padding: 8px 12px 8px 12px;
 
-    align-items: center;
-    justify-content: space-between;
-}
+      cursor: pointer;
+      transition: var(--sc-link-transition);
+      text-decoration: none;
 
-.instant-nav-link:hover
-{
-    background-color: var(--sc-primary-color-light-transparent);
-}
+      color: var(--sc-on-primary-primary-text-color);
+      border-radius: var(--sc-big-border-radius);
+      background-color: var(--sc-primary-background-color);
 
-.instant-nav-link:active
-{
-    background-color: var(--sc-primary-color-light);
-}
+      align-items: center;
+      justify-content: space-between;
+    }
 
-.instant-nav-link:focus
-{
-    background-color: var(--sc-primary-color-light-transparent);
-}
+    .instant-nav-link:hover {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
 
-.instant-nav-uid
-{
-    font-size: var(--sc-font-size-s);
+    .instant-nav-link:active {
+      background-color: var(--sc-primary-color-light);
+    }
 
-    color: var(--sc-on-primary-secondary-text-color);
-}
+    .instant-nav-link:focus {
+      background-color: var(--sc-primary-color-light-transparent);
+    }
 
-.instant-nav-title
-{
-    font-family: var(--sc-serif-font);
+    .instant-nav-uid {
+      font-size: var(--sc-font-size-s);
 
-    align-self: self-end;
-}
+      color: var(--sc-on-primary-secondary-text-color);
+    }
 
-.instant-nav-prompt
-{
-    display: inline-flex;
-}
+    .instant-nav-title {
+      font-family: var(--sc-serif-font);
 
-#openSearchTip
-{
-    font-size: var(--sc-font-size-s);
+      align-self: self-end;
+    }
 
-    display: flex;
+    .instant-nav-prompt {
+      display: inline-flex;
+    }
 
-    padding: 8px 16px 8px 16px;
+    #openSearchTip {
+      font-size: var(--sc-font-size-s);
 
-    color: var(--sc-on-tertiary-secondary-text-color);
-    border-top: 1px solid var(--sc-border-color);;
+      display: flex;
 
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
+      padding: 8px 16px 8px 16px;
 
-#opensearchtip-left
-{
-    display: inline-flex;
+      color: var(--sc-on-tertiary-secondary-text-color);
+      border-top: 1px solid var(--sc-border-color);
 
-    align-items: center;
-}
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
 
-ul li:last-child
-{
-    margin-bottom: .5rem;
-}
+    #opensearchtip-left {
+      display: inline-flex;
 
-hr
-{
-    display: none;
+      align-items: center;
+    }
 
-    margin: 0 0 8px;
-}
+    ul li:last-child {
+      margin-bottom: 0.5rem;
+    }
 
-li ~ hr,
-ul li:last-child + hr,
-li ~ .instant-nav-description-text
-{
-    display: flex;
-}
+    hr {
+      display: none;
 
-.icon
-{
-    fill: var(--sc-icon-color);
-}
+      margin: 0 0 8px;
+    }
 
-md-icon
-{
-    cursor: pointer;
-}
+    li ~ hr,
+    ul li:last-child + hr,
+    li ~ .instant-nav-description-text {
+      display: flex;
+    }
 
+    .icon {
+      fill: var(--sc-icon-color);
+    }
+
+    md-icon {
+      cursor: pointer;
+    }
   `;
 
   static properties = {
@@ -438,6 +405,11 @@ md-icon
     }
   }
 
+  #generateSearchURL(uid, searchQuery) {
+    const searchTerm = uid ? `${uid} ${searchQuery}` : searchQuery;
+    return `/search?query=${searchTerm}`;
+  }
+
   hide() {
     this.style.display = 'none';
   }
@@ -469,7 +441,6 @@ md-icon
         label="Search in all texts"
         @keyup=${e => this.#keyupHandler(e)}
         @keypress=${this.#keypressHandler}
-        supporting-text=""
       >
         <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
       </md-filled-text-field>
@@ -484,39 +455,42 @@ md-icon
         filters.map(
           item => html`
             <li>
-            <a class="search-suggestion-link" href='' @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}>
-              <span class="search-suggestion">
+              <a
+                class="search-suggestion-link"
+                href=${this.#generateSearchURL(item.uid, this.searchQuery)}
+                @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
+              >
+                <span class="search-suggestion">
                   <span class="search-suggestion-filter">${item.uid}</span>
                   <span class="search-suggestion-query">${this.searchQuery}</span>
-              </span>
-    
-              <span class="search-suggestion-prompt">${icon.search}</span>
-              <md-ripple></md-ripple>
-                        </a>
+                </span>
+
+                <span class="search-suggestion-prompt">${icon.search}</span>
+                <md-ripple></md-ripple>
+              </a>
             </li>
           `
         )}
-        <hr>
-        <div class='instant-nav-description-text'>Go to ${icon.open_book} text or ${icon.network_node} collection</div>
+        <hr />
+        <div class="instant-nav-description-text">
+          Go to ${icon.open_book} text or ${icon.network_node} collection
+        </div>
         ${this.items.map(
-          (item, i) =>
-            html`
-             <li @click=${this.hide}>
+          item =>
+            html` <li @click=${this.hide}>
               <a class="instant-nav-link" href=${this.#generateURL(item)}>
-                  <span class="instant-nav">
+                <span class="instant-nav">
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
-                    <span class="instant-nav-uid">${item.uid}</span>
-                    <span class="instant-nav-title">${item.title}</span>
-                  </span>
-              
-              <span class="instant-nav-prompt">${icon.arrow_right}</span>
-              <md-ripple></md-ripple>
+                  <span class="instant-nav-uid">${item.uid}</span>
+                  <span class="instant-nav-title">${item.title}</span>
+                </span>
+
+                <span class="instant-nav-prompt">${icon.arrow_right}</span>
+                <md-ripple></md-ripple>
               </a>
             </li>`
         )}
-        
       </ul>
-
     `;
   }
 

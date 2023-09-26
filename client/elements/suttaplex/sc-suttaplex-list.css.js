@@ -6,9 +6,10 @@ export const suttaplexListCss = css`
   }
 
   md-filled-button {
-    --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: #ffffff;
+    --md-filled-button-label-text-font: var(--sc-sans-font);
+    --md-filled-button-label-text-size: var(--sc-size-md);
     width: 100%;
   }
 
