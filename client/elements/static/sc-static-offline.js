@@ -496,10 +496,8 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
       md-outlined-button {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
-        --md-filled-button-label-text-font: var(--sc-sans-font);
-        --md-filled-button-label-text-size: var(--sc-size-md);
         --md-outlined-button-label-text-font: var(--sc-sans-font);
-        --mmd-outlined-button-label-text-size: var(--sc-size-md);
+        --md-outlined-button-label-text-size: var(--sc-size-md);
       }
 
       .option-multi-select {
