@@ -12,9 +12,6 @@ export const SCSiteLayoutStyles = css`
   }
 
   /* apply font size here to avoid resizing title when returning to Home */
-  #title {
-    font-size: var(--sc-font-size-xxxxl);
-  }
 
   .homeTitle {
     display: flex;
@@ -24,6 +21,7 @@ export const SCSiteLayoutStyles = css`
     box-sizing: border-box;
     height: 180px;
     margin: auto;
+    padding-right: 8px;
 
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -32,25 +30,30 @@ export const SCSiteLayoutStyles = css`
   }
 
   #mainTitle {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+
     display: flex;
 
+    height: 44px;
+
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .homeTitle #mainTitle {
     font-family: var(--sc-serif-font);
-    line-height: 1;
-
-    height: 60px;
 
     letter-spacing: var(--sc-caps-letter-spacing);
 
     font-variant-caps: small-caps;
   }
 
+  #mainTitle span {
+    margin-top: 4px;
+  }
+
   #subTitle {
-    font-size: var(--sc-font-size-l);
+    font-size: clamp(0.94rem, 5vw, 1.62rem);
     font-style: italic;
 
     transition: opacity 0.5s ease-in;
@@ -114,6 +117,17 @@ export const SCSiteLayoutStyles = css`
     height: 1.25em;
   }
 
+  @media only screen and (max-width: 300px) {
+    .sc_logo {
+      width: 0;
+      height: 0;
+    }
+
+    #mainTitle {
+      justify-content: flex-start;
+    }
+  }
+
   @media only screen and (max-width: 600px) {
     #context_toolbar.contextToolbarExpand {
       flex-direction: column;
@@ -148,5 +162,7 @@ export const SCSiteLayoutStyles = css`
   md-filled-button {
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: white;
+    --md-filled-button-label-text-font: var(--sc-sans-font);
+    --md-filled-button-label-text-size: var(--sc-size-md);
   }
 `;

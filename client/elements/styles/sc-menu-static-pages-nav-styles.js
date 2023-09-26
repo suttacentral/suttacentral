@@ -103,4 +103,29 @@ export const SCMenuStaticPagesNavStyles = css`
   .staticPageSelected {
     opacity: 1;
   }
+
+  ::-webkit-scrollbar {
+    height: 6px;
+  }
+  ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 `;

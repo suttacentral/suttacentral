@@ -59,7 +59,7 @@ export const typographyCommonStyles = css`
   h4,
   h5,
   h6 {
-    line-height: 1.3333;
+    line-height: 1.25;
 
     margin: 1em 0 0 0;
 

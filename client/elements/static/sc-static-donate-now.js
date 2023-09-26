@@ -31,6 +31,11 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
     layoutSimpleStyles,
     typographyCommonStyles,
     css`
+      :host {
+        --md-filled-button-label-text-font: var(--sc-serif-font);
+        --md-filled-button-label-text-size: var(--sc-font-size-s);
+      }
+
       #error-message {
         text-align: center;
       }
@@ -60,6 +65,11 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
 
       md-filled-text-field {
         --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
+        --md-filled-text-field-input-text-font: var(--sc-sans-font);
+        --md-filled-text-field-input-text-size: var(--sc-size-md);
+        --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
       }
 
       select + md-filled-text-field {
@@ -70,7 +80,6 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
       md-filled-text-field {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
-        --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
       }
 
       aside {
