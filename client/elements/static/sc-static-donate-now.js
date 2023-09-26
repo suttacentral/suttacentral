@@ -68,6 +68,8 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         --md-filled-text-field-input-text-font: var(--sc-sans-font);
         --md-filled-text-field-input-text-size: var(--sc-size-md);
         --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
       }
 
       select + md-filled-text-field {
