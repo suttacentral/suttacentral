@@ -44,28 +44,22 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     #instant_search_dialog {
       position: relative;
 
-      width: 100%;
+      padding: 8px;
 
       border-radius: var(--sc-mid-border-radius);
     }
 
-    .instant-search-header {
-      display: flex;
-
-      padding: 0 8px;
-
-      justify-content: center;
-      align-items: center;
-    }
-
     .ss-header {
       display: flex;
+
+      padding: 0;
+
       justify-content: center;
       align-items: center;
     }
 
     md-filled-text-field {
-      width: 99%;
+      width: 100%;
 
       --md-sys-color-primary: var(--sc-primary-accent-color);
       --md-sys-color-on-primary: white;
