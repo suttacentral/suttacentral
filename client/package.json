@@ -30,7 +30,7 @@
   "dependencies": {
     "@material/mwc-list": "0.27.0",
     "@material/mwc-menu": "0.27.0",
-    "@material/web": "1.0.0-pre.17",
+    "@material/web": "1.0.0",
     "@micro-sentry/browser": "6.0.3",
     "@orama/orama": "^1.2.4",
     "@stripe/stripe-js": "^2.1.2",
