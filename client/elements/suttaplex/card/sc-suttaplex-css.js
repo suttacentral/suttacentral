@@ -348,8 +348,8 @@ export const suttaplexTxCss = css`
 
     display: flex;
 
-    margin: 0 -8px;
-    padding: 0 8px;
+    margin: 0;
+    padding: 0 8px 0 0;
 
     cursor: pointer;
 
@@ -387,13 +387,15 @@ export const suttaplexTxCss = css`
     justify-content: center;
     align-items: center;
     fill: var(--sc-primary-color);
+
+    background-color: var(--sc-secondary-background-color);
   }
 
   .tx-details {
     display: flex;
     flex-direction: row;
 
-    padding: var(--sc-size-sm);
+    padding: 8px 8px 4px 8px;
 
     flex-wrap: wrap;
     align-items: baseline;
