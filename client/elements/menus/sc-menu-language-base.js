@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
-import '@material/mwc-list/mwc-list-item';
+
+import '@material/web/menu/menu-item';
 import '@material/web/iconbutton/icon-button';
 
 import { API_ROOT } from '../../constants';
@@ -59,18 +60,18 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
 
   languageTemplate(language) {
     return html`
-      <mwc-list-item
+      <md-menu-item
         id=${language.uid}
-        @click=${this._selectedLanguageNumChanged}
-        class="language-name"
+        @click=${e => this._selectedLanguageNumChanged(language.uid)}
       >
-        ${language.name}
-        <md-ripple></md-ripple>
-      </mwc-list-item>
+        <div slot="headline">
+          <span data-uid=${language.uid} class="language-name">${language.name}</span>
+        </div>
+      </md-menu-item>
     `;
   }
 
-  _selectedLanguageNumChanged(event) {
+  _selectedLanguageNumChanged(langUid) {
     if (!this.languageListResponse || this.languageListResponse.length === 0) {
       return;
     }
@@ -79,7 +80,7 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
     }
 
     try {
-      this.selectedLanguageNum = this._findChosenLanguageIndex(event.target.id);
+      this.selectedLanguageNum = this._findChosenLanguageIndex(langUid);
       const chosenLanguage = this.languageListResponse[this.selectedLanguageNum];
       // If it's not a main language change menu (but a clone), dispatch an event
       if (this.cloneName) {
@@ -96,8 +97,6 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
     } catch (e) {
       console.error(e);
     }
-
-    dispatchCustomEvent(this, 'item-selected');
   }
 
   async _fetchLanguageList() {
@@ -123,29 +122,29 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <div class="language-chooser-header-wrapper">
-        <div class="menu-item-wrapper text-only">
-          <md-icon-button
-            title="Return to main menu"
-            class="more-menu-return-arrow"
-            @click=${this._showMoreMenu}
-          >
+      <md-menu-item
+        .keepOpen=${true}
+        id="show-more-menu"
+        @click=${this._showMoreMenu}
+        title="Return to main menu"
+      >
+        <div class="language-chooser-header-wrapper">
+          <div class="menu-item-wrapper text-only">
             ${icon.arrow_left}
-          </md-icon-button>
-          <span class="language-base-menu-head-main">Choose your language</span>
-        </div>
+            <span class="language-base-menu-head-main">Choose your language</span>
+          </div>
 
-        <div class="menu-item-wrapper text-only">
-          <span class="language-base-menu-head-secondary"
-            >Where available, view translations and site UI in selected language.</span
-          >
+          <div class="menu-item-wrapper text-only">
+            <span class="language-base-menu-head-secondary">
+              Where available, view translations and site UI in selected language.
+            </span>
+          </div>
         </div>
+      </md-menu-item>
 
-        <li divider role="separator"></li>
-      </div>
-      <mwc-list>
-        ${this.languageListResponse.map(language => this.languageTemplate(language))}
-      </mwc-list>
+      <li divider role="separator"></li>
+
+      ${this.languageListResponse.map(language => this.languageTemplate(language))}
     `;
   }
 }

@@ -1,6 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-menu';
+
+import '@material/web/iconbutton/icon-button';
+import '@material/web/menu/menu';
+import '@material/web/menu/menu-item';
+import '@material/web/button/filled-button';
 
 import './sc-menu-more';
 import '../addons/sc-auto-complete-list';
@@ -28,32 +31,21 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
     }
 
-    #more-menu {
-      --mdc-menu-min-width: 275px;
-      --mdc-menu-max-width: 290px;
-    }
-
-    .sc-icon-button {
-      position: relative;
-      z-index: 10;
-      top: 0;
-      left: 4px;
-      display: flex;
-      width: fit-content;
-      height: 48px;
-      background-color: var(--sc-darker-fixed-background-color);
-      align-items: center;
-      cursor: pointer;
-    }
-
     .button-theme {
-      padding: 0 12px 0 12px;
+      padding: 0 3px 0 3px;
       border-radius: 50%;
       background-color: var(--sc-darker-fixed-background-color);
     }
 
     .button-theme svg {
       fill: white;
+    }
+
+    md-menu {
+      --md-menu-container-color: var(--sc-secondary-background-color);
+      max-height: 1024px;
+      min-width: 275px;
+      max-width: 290px;
     }
   `;
 
@@ -78,29 +70,21 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this.moreMenu = this.shadowRoot.querySelector('#more-menu');
-    this.moreMenu.anchor = this.shadowRoot.querySelector('#more-menu-button');
 
-    this.moreMenu?.addEventListener('item-selected', () => {
-      this.moreMenu.close();
+    this.shadowRoot.querySelector('#search_glass').addEventListener('click', () => {
+      this.#hideTopSheets();
+      this.#showAutoCompleteList();
     });
 
-    this.moreMenu?.anchor.addEventListener('click', () => {
+    this.shadowRoot.querySelector('#more-menu-button').addEventListener('click', () => {
       this.#hideTopSheets();
+      this.moreMenu.open = !this.moreMenu.open;
     });
   }
 
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
-  }
-
-  openMoreMenu() {
-    (this.moreMenu || {}).show?.();
-  }
-
-  openInstantSearch() {
-    this.#hideTopSheets();
-    this.#showAutoCompleteList();
   }
 
   #showAutoCompleteList() {
@@ -113,33 +97,29 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      <div
-        class="sc-icon-button button-theme"
+      <md-icon-button
+        class="button-theme"
         id="search_glass"
         title=${this.localize('search:searchTooltip')}
-        label="search"
-        @click=${this.openInstantSearch}
       >
         ${icon.search}
-        <md-ripple></md-ripple>
-      </div>
+      </md-icon-button>
 
       <sc-auto-complete-list></sc-auto-complete-list>
 
-      <div
-        class="sc-icon-button button-theme"
-        label="menu"
-        id="more-menu-button"
-        @click=${this.openMoreMenu}
-        alt="menu"
-      >
+      <md-icon-button class="button-theme" id="more-menu-button" alt="menu">
         ${icon.more_vert}
-        <md-ripple></md-ripple>
-      </div>
+      </md-icon-button>
 
-      <mwc-menu corner="BOTTOM_LEFT" id="more-menu" activatable>
+      <md-menu
+        id="more-menu"
+        anchor="more-menu-button"
+        .quick=${true}
+        .stayOpenOnOutsideClick=${true}
+        .stayOpenOnFocusout=${true}
+      >
         <sc-menu-more id="sc-menu-more"></sc-menu-more>
-      </mwc-menu>
+      </md-menu>
     `;
   }
 }

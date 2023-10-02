@@ -1,13 +1,14 @@
 import { LitElement, html, css } from 'lit';
+import { cache } from 'lit/directives/cache.js';
 import { store } from '../../redux-store';
 import { reduxActions } from '../addons/sc-redux-actions';
 import './sc-menu-language-base';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 
-import '@material/mwc-list/mwc-list-item';
-import '@material/mwc-list/mwc-check-list-item';
-import '@material/mwc-list/mwc-radio-list-item';
 import '@material/web/divider/divider';
+import '@material/web/menu/menu-item';
+import '@material/web/checkbox/checkbox';
+import '@material/web/radio/radio';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -21,15 +22,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     :host {
       font-family: var(--sc-sans-font);
       font-weight: 550;
-      --mdc-typography-subtitle1-font-family: var(--sc-sans-font);
-      --mdc-typography-subtitle1-font-weight: 550;
-      --mdc-list-side-padding: 0px;
-      --mdc-theme-secondary: var(--sc-primary-accent-color);
-    }
-
-    .more-menu-link {
-      text-decoration: none;
-      color: inherit;
+      --md-sys-color-primary: var(--sc-primary-accent-color);
     }
 
     .icon {
@@ -37,20 +30,8 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       fill: var(--sc-icon-color);
     }
 
-    .more-menu-mwc-list-item {
+    .more-menu-md-menu-item {
       color: var(--sc-on-primary-primary-text-color);
-    }
-
-    mwc-check-list-item {
-      --mdc-list-side-padding: 8px;
-      --mdc-list-item-graphic-margin: 8px;
-      --mdc-checkbox-unchecked-color: var(--sc-icon-color);
-    }
-
-    mwc-radio-list-item {
-      --mdc-list-side-padding: 4px;
-      --mdc-list-item-graphic-margin: 4px;
-      --mdc-radio-unchecked-color: var(--sc-icon-color);
     }
 
     .chevron_right {
@@ -73,16 +54,59 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       white-space: nowrap;
     }
 
-    .menu-item-wrapper {
-      display: flex;
-      align-items: end;
-      padding: 100% 16px;
+    label {
+      background-color: var(--sc-secondary-background-color);
     }
 
-    mwc-list {
-      margin-top: -8px;
-      margin-bottom: -8px;
+    md-menu-item md-checkbox {
+      padding: 0;
+      margin-left: 2px;
+    }
+
+    .menu-item-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+    }
+
+    md-menu-item div {
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+      color: var(--sc-on-primary-primary-text-color);
+    }
+
+    md-checkbox {
+      margin-bottom: 18px;
+    }
+
+    md-menu-item label {
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+    }
+
+    md-menu-item {
       background-color: var(--sc-secondary-background-color);
+      color: var(--sc-on-primary-primary-text-color);
+
+      --md-menu-item-label-text-font: var(--sc-sans-font);
+      --md-menu-item-label-text-weight: 500;
+    }
+
+    .menu-checkbox-item-title {
+      margin-bottom: 16px;
+      margin-left: 4px;
+      color: var(--sc-on-primary-primary-text-color);
+    }
+
+    .menu-radio-item-title {
+      margin-left: 18px;
+      color: var(--sc-on-primary-primary-text-color);
+    }
+
+    #menu-checkbox-item {
+      height: 56px;
     }
   `;
 
@@ -164,43 +188,29 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     return this.localize(`interface:${title}`);
   }
 
-  updated() {
-    if (!this.languageIsVisible) {
-      this._initializeListeners();
-    }
-  }
-
-  _initializeListeners() {
-    this.shadowRoot.querySelectorAll('.more-menu-link').forEach(e => {
-      e.addEventListener('click', () => {
-        dispatchCustomEvent(this, 'item-selected');
-      });
-    });
-  }
-
-  _onThemeChanged(e) {
-    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+  #onThemeChanged() {
+    const chk = this.shadowRoot.querySelector('#theme_toggler');
     this.actions.changeAppTheme(chk.checked ? 'dark' : 'light');
   }
 
   _onToolbarDisplayModeChanged(e) {
-    const chk = e.currentTarget.shadowRoot.querySelector('mwc-checkbox');
+    const chk = e.currentTarget.shadowRoot.querySelector('md-checkbox');
     this.actions.changeAlwaysShowToolbarState(chk.checked);
   }
 
   _onToolbarPositionChanged(e) {
     const toolbarPosition = {};
-    if (e.currentTarget.id === 'radioScrollForToolbar' && e.detail.selected) {
+    if (e.currentTarget.id === 'radioScrollForToolbar' && e.currentTarget.checked) {
       toolbarPosition.scrollForToolbar = true;
       toolbarPosition.fixedToolbar = false;
       toolbarPosition.toolbarAtTop = false;
     }
-    if (e.currentTarget.id === 'radioFixedToolbar' && e.detail.selected) {
+    if (e.currentTarget.id === 'radioFixedToolbar' && e.currentTarget.checked) {
       toolbarPosition.scrollForToolbar = false;
       toolbarPosition.fixedToolbar = true;
       toolbarPosition.toolbarAtTop = false;
     }
-    if (e.currentTarget.id === 'radioToolbarAtTop' && e.detail.selected) {
+    if (e.currentTarget.id === 'radioToolbarAtTop' && e.currentTarget.checked) {
       toolbarPosition.scrollForToolbar = false;
       toolbarPosition.fixedToolbar = false;
       toolbarPosition.toolbarAtTop = true;
@@ -208,6 +218,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     if (JSON.stringify(toolbarPosition) !== '{}') {
       reduxActions.changeToolbarPosition(toolbarPosition);
     }
+    this.requestUpdate();
   }
 
   _showLanguageMenu() {
@@ -220,147 +231,144 @@ export class SCMenuMore extends LitLocalized(LitElement) {
 
   _renderMoreMenu() {
     return html`
-      <mwc-list multi>
-        <mwc-list-item
-          class="more-menu-mwc-list-item language-choice-box"
-          @click=${this._showLanguageMenu}
-        >
-          <div class="menu-item-wrapper">
-            ${icon.language}
-            <div id="language-wrapper">
-              <span id="language-text-wrapper">${this._displayCurrentSiteLanguage()}</span>
-              ${icon.chevron_right}
-            </div>
+      <md-menu-item
+        class="more-menu-md-menu-item language-choice-box"
+        @click=${this._showLanguageMenu}
+        .keepOpen=${true}
+      >
+        <div slot="headline">
+          ${icon.language}
+          <div id="language-wrapper">
+            <span id="language-text-wrapper">${this._displayCurrentSiteLanguage()}</span>
+            ${icon.chevron_right}
           </div>
-        </mwc-list-item>
-        <a class="more-menu-link" href="/donations">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.pray} ${this.localize('interface:donations')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/offline">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.offline_bolt} ${this.localize('interface:useOffline')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <mwc-check-list-item
-          class="more-menu-mwc-list-item"
-          id="theme_toggler"
-          left
-          ?selected=${this.darkThemeChosen}
-          @request-selected=${this._onThemeChanged}
-        >
-          ${this.localize('interface:darkTheme')}
-        </mwc-check-list-item>
-        <md-divider></md-divider>
-        <mwc-radio-list-item
-          class="more-menu-mwc-list-item"
-          left
-          group="toolbarPosition"
-          ?selected=${this.toolbarPosition.scrollForToolbar}
-          id="radioScrollForToolbar"
-          @request-selected=${this._onToolbarPositionChanged}
-          >${this.localize('interface:scrollForToolbar')}</mwc-radio-list-item
-        >
-        <mwc-radio-list-item
-          class="more-menu-mwc-list-item"
-          left
-          group="toolbarPosition"
-          ?selected=${this.toolbarPosition.fixedToolbar}
-          @request-selected=${this._onToolbarPositionChanged}
-          id="radioFixedToolbar"
-          >${this.localize('interface:fixedToolbar')}</mwc-radio-list-item
-        >
-        <mwc-radio-list-item
-          class="more-menu-mwc-list-item"
-          left
-          group="toolbarPosition"
-          ?selected=${this.toolbarPosition.toolbarAtTop}
-          @request-selected=${this._onToolbarPositionChanged}
-          id="radioToolbarAtTop"
-          >${this.localize('interface:toolbarAtTop')}</mwc-radio-list-item
-        >
-        <md-divider></md-divider>
-        <a class="more-menu-link" href="/languages">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.translate} ${this.localize('interface:languages')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/numbering">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.format_list_numbered} ${this.localize('interface:numbering')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/abbreviations">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.abbreviations} ${this.localize('interface:abbreviations')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/map">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.map} ${this.localize('interface:map')}</div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/methodology">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.school} ${this.localize('interface:methodology')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/acknowledgments">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.people} ${this.localize('interface:acknowledgments')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/licensing">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">
-              ${icon.copyright} ${this.localize('interface:licensing')}
-            </div>
-          </mwc-list-item>
-        </a>
-        <a class="more-menu-link" href="/about">
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.info} ${this.localize('interface:about')}</div>
-          </mwc-list-item>
-        </a>
-        <md-divider></md-divider>
-        <a
-          class="more-menu-link"
-          href=${this.getDiscourseUrl(this.routeName)}
-          title=${this.getDiscourseTitle(this.routeName)}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.forum} ${this.localize('interface:discuss')}</div>
-          </mwc-list-item>
-        </a>
-        <a
-          class="more-menu-link"
-          href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
-          title="Listen to suttas"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <mwc-list-item class="more-menu-mwc-list-item">
-            <div class="menu-item-wrapper">${icon.speaker} ${this.localize('interface:voice')}</div>
-          </mwc-list-item>
-        </a>
-      </mwc-list>
+        </div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/donations">
+        <div slot="headline">${icon.pray} ${this.localize('interface:donations')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/offline">
+        <div slot="headline">${icon.offline_bolt} ${this.localize('interface:useOffline')}</div>
+      </md-menu-item>
+
+      <md-menu-item .keepOpen=${true} id="menu-checkbox-item">
+        <label>
+          <md-checkbox
+            touch-target="wrapper"
+            id="theme_toggler"
+            left
+            ?checked=${this.darkThemeChosen}
+            @change=${this.#onThemeChanged}
+          ></md-checkbox>
+          <span class="menu-checkbox-item-title">${this.localize('interface:darkTheme')}</span>
+        </label>
+      </md-menu-item>
+
+      <md-divider></md-divider>
+
+      <div role="radiogroup"></div>
+        <md-menu-item .keepOpen=${true}>
+          <label>
+            <md-radio
+              class="more-menu-md-menu-item"
+              left
+              group="toolbarPosition"
+              ?checked=${this.toolbarPosition.scrollForToolbar}
+              id="radioScrollForToolbar"
+              @change=${e => this._onToolbarPositionChanged(e)}
+            ></md-radio>
+            <span class="menu-radio-item-title">${this.localize('interface:scrollForToolbar')}</span>
+          </label>
+        </md-menu-item>
+
+        <md-menu-item .keepOpen=${true}>
+          <label>
+            <md-radio
+              class="more-menu-md-menu-item"
+              left
+              group="toolbarPosition"
+              ?checked=${this.toolbarPosition.fixedToolbar}
+              @change=${e => this._onToolbarPositionChanged(e)}
+              id="radioFixedToolbar"
+            ></md-radio>
+            <span class="menu-radio-item-title">${this.localize('interface:fixedToolbar')}</span>
+          </label>
+        </md-menu-item>
+
+        <md-menu-item .keepOpen=${true}>
+          <label>
+            <md-radio
+              class="more-menu-md-menu-item"
+              left
+              group="toolbarPosition"
+              ?checked=${this.toolbarPosition.toolbarAtTop}
+              @change=${e => this._onToolbarPositionChanged(e)}
+              id="radioToolbarAtTop"
+            ></md-radio>
+            <span class="menu-radio-item-title">${this.localize('interface:toolbarAtTop')}</span>
+          </label>
+        </md-menu-item>
+      </div>
+
+      <md-divider></md-divider>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/languages">
+        <div slot="headline">${icon.translate} ${this.localize('interface:languages')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/numbering">
+        <div slot="headline">
+          ${icon.format_list_numbered} ${this.localize('interface:numbering')}
+        </div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/abbreviations">
+        <div slot="headline">${icon.abbreviations} ${this.localize('interface:abbreviations')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/map">
+        <div slot="headline">${icon.map} ${this.localize('interface:map')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/methodology">
+        <div slot="headline">${icon.school} ${this.localize('interface:methodology')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/acknowledgments">
+        <div slot="headline">${icon.people} ${this.localize('interface:acknowledgments')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/licensing">
+        <div slot="headline">${icon.copyright} ${this.localize('interface:licensing')}</div>
+      </md-menu-item>
+
+      <md-menu-item class="more-menu-md-menu-item" href="/about">
+        <div slot="headline">${icon.info} ${this.localize('interface:about')}</div>
+      </md-menu-item>
+
+      <md-divider></md-divider>
+
+      <md-menu-item
+        class="more-menu-md-menu-item"
+        href=${this.getDiscourseUrl(this.routeName)}
+        title=${this.getDiscourseTitle(this.routeName)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div slot="headline">${icon.forum} ${this.localize('interface:discuss')}</div>
+      </md-menu-item>
+
+      <md-menu-item
+        class="more-menu-md-menu-item"
+        href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
+        title="Listen to suttas"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div slot="headline">${icon.speaker} ${this.localize('interface:voice')}</div>
+      </md-menu-item>
     `;
   }
 
@@ -369,10 +377,9 @@ export class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   render() {
-    if (this.languageIsVisible) {
-      return this._renderLanguageBaseMenu();
-    }
-    return this._renderMoreMenu();
+    return html`${cache(
+      this.languageIsVisible ? this._renderLanguageBaseMenu() : this._renderMoreMenu()
+    )}`;
   }
 }
 

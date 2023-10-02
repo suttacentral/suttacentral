@@ -3,19 +3,13 @@ import { css } from 'lit';
 export const languageBaseMenuCss = css`
   :host {
     overflow-y: scroll;
-    --mdc-menu-min-width: 500px;
-    --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-    --mdc-list-side-padding: 16px;
-  }
-
-  mwc-list {
-    margin-top: -8px;
-    margin-bottom: -8px;
-    background-color: var(--sc-secondary-background-color);
   }
 
   .language-chooser-header-wrapper {
     background-color: var(--sc-secondary-background-color);
+    width: 250px;
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 
   .separator {
@@ -27,15 +21,12 @@ export const languageBaseMenuCss = css`
     margin-bottom: var(--sc-size-xxs);
   }
 
-  .mdc-list-item__text {
-    margin-left: 1.5em;
-  }
-
   .language-name::before {
+    display: inline-block;
     width: 24px;
     text-align: center;
     margin-right: 16px;
-    content: attr(id);
+    content: attr(data-uid);
     background-color: var(--sc-icon-color);
     color: white;
     font-weight: 800;
@@ -90,7 +81,7 @@ export const languageBaseMenuCss = css`
   .language-base-menu-head-secondary {
     font-size: var(--sc-font-size-xs);
     color: var(--sc-on-primary-secondary-text-color);
-    padding: 0 16px 0 56px;
+    padding: 0 16px 0 40px;
     line-height: 1.5;
     font-stretch: condensed;
   }
@@ -102,5 +93,25 @@ export const languageBaseMenuCss = css`
     height: 1px;
     margin-top: var(--sc-size-sm);
     margin-bottom: var(--sc-size-xxs);
+  }
+
+  .language-name {
+    color: var(--sc-on-primary-primary-text-color);
+  }
+
+  md-menu-item {
+    --md-menu-item-label-text-font: var(--sc-sans-font);
+    --md-menu-item-label-text-weight: 500;
+    background-color: var(--sc-secondary-background-color);
+  }
+
+  .menu-item-wrapper {
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  #show-more-menu {
+    height: 68px;
+    margin-bottom: 12px;
   }
 `;
