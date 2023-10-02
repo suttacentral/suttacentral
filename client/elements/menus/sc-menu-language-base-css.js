@@ -1,117 +1,138 @@
 import { css } from 'lit';
 
 export const languageBaseMenuCss = css`
-  :host {
+ :host
+{
     overflow-y: scroll;
-  }
+}
 
-  .language-chooser-header-wrapper {
-    background-color: var(--sc-secondary-background-color);
-    width: 250px;
+.language-chooser-header-wrapper
+{
     margin-top: 4px;
     margin-bottom: 4px;
-  }
+    padding-top: 8px;
+}
 
-  .separator {
-    background-color: var(--sc-border-color);
-    width: 100%;
+.separator
+{
     overflow: hidden;
+
+    width: 100%;
     height: 1px;
     margin-top: var(--sc-size-xxs);
     margin-bottom: var(--sc-size-xxs);
-  }
 
-  .language-name::before {
-    display: inline-block;
-    width: 24px;
-    text-align: center;
-    margin-right: 16px;
-    content: attr(data-uid);
-    background-color: var(--sc-icon-color);
-    color: white;
+    background-color: var(--sc-border-color);
+}
+
+.language-name::before
+{
+    font-size: var(--sc-font-size-xxs);
     font-weight: 800;
     font-stretch: condensed;
-    padding-bottom: 1px;
     line-height: 16px;
+
+    display: inline-block;
+
+    width: 24px;
+    margin-right: 16px;
+    padding-bottom: 1px;
+
+    content: attr(data-uid);
+    text-align: center;
+    letter-spacing: .5px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: var(--sc-font-size-xs);
+
+    color: white;
+    background-color: var(--sc-icon-color);
+
     --notchSize: 4px;
+
     clip-path: polygon(
-      0% var(--notchSize),
-      var(--notchSize) 0%,
-      calc(100% - var(--notchSize)) 0%,
-      100% var(--notchSize),
-      100% calc(100% - var(--notchSize)),
-      calc(100% - var(--notchSize)) 100%,
-      var(--notchSize) 100%,
-      0% calc(100% - var(--notchSize))
+    0% var(--notchSize),
+    var(--notchSize) 0%,
+    calc(100% - var(--notchSize)) 0%,
+    100% var(--notchSize),
+    100% calc(100% - var(--notchSize)),
+    calc(100% - var(--notchSize)) 100%,
+    var(--notchSize) 100%,
+    0% calc(100% - var(--notchSize))
     );
-  }
+}
 
-  #jpn::before,
-  #sld::before,
-  #kln::before,
-  #kan::before,
-  #haw::before {
+[data-uid='jpn']::before,
+[data-uid='sld']::before,
+[data-uid='kln']::before,
+[data-uid='kan']::before,
+[data-uid='haw']::before
+{
     letter-spacing: 0;
-    font-size: var(--sc-font-size-xxs);
-  }
+}
 
-  .arrow_left {
+.arrow_left
+{
     fill: var(--sc-icon-color);
-  }
+}
 
-  .menu-item-wrapper {
+.menu-item-wrapper
+{
     display: flex;
+
     align-items: center;
-    margin-top: -8px;
-  }
+}
 
-  .text-only {
-    height: 32px;
-  }
-
-  .language-base-menu-head-main {
+.language-base-menu-head-main
+{
     font-weight: 700;
-    color: var(--sc-on-primary-primary-text-color);
+
     padding-left: 8px;
-  }
 
-  .language-base-menu-head-secondary {
+    color: var(--sc-on-primary-primary-text-color);
+}
+
+.language-base-menu-head-secondary
+{
     font-size: var(--sc-font-size-xs);
-    color: var(--sc-on-primary-secondary-text-color);
-    padding: 0 16px 0 40px;
-    line-height: 1.5;
     font-stretch: condensed;
-  }
+    line-height: 1.2;
 
-  [role='separator'] {
-    background-color: var(--sc-border-color);
-    width: 100%;
+    padding: 0 16px 8px 32px;
+
+    color: var(--sc-on-primary-secondary-text-color);
+}
+
+[role='separator']
+{
     overflow: hidden;
+
+    width: 100%;
     height: 1px;
     margin-top: var(--sc-size-sm);
     margin-bottom: var(--sc-size-xxs);
-  }
 
-  .language-name {
+    background-color: var(--sc-border-color);
+}
+
+.language-name
+{
     color: var(--sc-on-primary-primary-text-color);
-  }
+}
 
-  md-menu-item {
+md-menu-item
+{
+    margin: 0 8px;
+
+    border-radius: 28px;
+    background-color: var(--sc-secondary-background-color);
+
     --md-menu-item-label-text-font: var(--sc-sans-font);
     --md-menu-item-label-text-weight: 500;
-    background-color: var(--sc-secondary-background-color);
-  }
+}
 
-  .menu-item-wrapper {
-    margin-top: 2px;
-    margin-bottom: 2px;
-  }
-
-  #show-more-menu {
+#show-more-menu
+{
     height: 68px;
     margin-bottom: 12px;
-  }
+}
+
 `;

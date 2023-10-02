@@ -21,7 +21,11 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       --md-sys-color-on-surface-variant: var(--sc-icon-color);
 
       z-index: 100;
+
+      --md-menu-container-shape: 24px;
     }
+
+
 
     #sc-menu-more:focus {
       outline: none;
