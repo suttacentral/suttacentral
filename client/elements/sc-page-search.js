@@ -173,6 +173,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #onMatchTypeChanged(e) {
     reduxActions.setSearchMatchType(e.target.selected);
+    window.location.reload();
   }
 
   #keypressHandler({ key }) {

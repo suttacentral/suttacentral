@@ -113,4 +113,11 @@ export class reduxActions {
       instantSearchData,
     });
   }
+
+  static changeLanguageMenuVisibility(visibility) {
+    store.dispatch({
+      type: 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE',
+      languageMenuVisibility: visibility,
+    });
+  }
 }

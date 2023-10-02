@@ -226,7 +226,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     return html`
       <nav>
         <div class="breadcrumbs-wrapper">
-          <div class="top-bar-home-link" @click=${this._hideTopSheets}>
+          <div class="top-bar-home-link" @click=${this._hideTopSheetsAndMenu}>
             <a class="home-link" href="/">
               ${icon.home}
               <md-ripple></md-ripple>
@@ -274,7 +274,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   }
 
   _navClick(nav) {
-    this._hideTopSheets();
+    this._hideTopSheetsAndMenu();
     if (nav.type === 'home') {
       this.navArray.length = 1;
       this.actions.setNavigation(this.navArray);
@@ -292,9 +292,15 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     }
   }
 
-  _hideTopSheets() {
+  _hideTopSheetsAndMenu() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideItems();
+
+    const moreMenu = document
+      .querySelector('sc-navigation-linden-leaves')
+      .shadowRoot.querySelector('sc-action-items-universal')
+      .shadowRoot.querySelector('#more-menu');
+    moreMenu?.close?.();
   }
 }
 
