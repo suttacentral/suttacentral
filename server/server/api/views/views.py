@@ -1229,7 +1229,7 @@ class Redirect(Resource):
                 lang = 'pli'
             languages = db.collection('language')
             if lang in languages:
-                hits = db.aql.execute(
+                if hits := db.aql.execute(
                     '''
                     LET modern = (FOR text IN sc_bilara_texts
                         FILTER text.lang == @lang
@@ -1244,8 +1244,7 @@ class Redirect(Resource):
                     RETURN APPEND(modern, legacy)
                 ''',
                     bind_vars={"lang": lang, "uid": uid},
-                ).next()
-                if hits:
+                ).next():
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
@@ -1341,7 +1340,6 @@ class Shortcuts(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
-        # data = list(db.aql.execute('FOR s IN shortcuts RETURN s.shortcuts'))[0]
         data = db.collection('shortcuts').all()
         return list(data), 200
 

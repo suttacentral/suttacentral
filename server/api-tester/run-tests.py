@@ -39,15 +39,13 @@ def run_tests(base_url):
                     msg += [f'.{selector}={str(result)}']
 
         size = len(r.content)
-        if 'size' in obj:
-            if size < obj['size']:
-                fails = True
-                msg += ['"Too small"']
+        if 'size' in obj and size < obj['size']:
+            fails = True
+            msg += ['"Too small"']
 
-        if not fails:
-            if not data:
-                fails = True
-                msg += ['Empty Object']
+        if not data and not fails:
+            fails = True
+            msg += ['Empty Object']
 
         if fails:
             print(colored(f'✖ {url} {size} Why: {", ".join(msg)}', 'red'))
