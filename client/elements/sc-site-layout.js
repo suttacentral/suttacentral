@@ -393,7 +393,8 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _resetUniversalToolbar() {
     document.getElementById('universal_toolbar').style.transform = 'none';
-    document.getElementById('universal_toolbar').style.boxShadow = 'none';
+    document.getElementById('universal_toolbar').style.boxShadow =
+      this.changedRoute.path === '/' ? 'none' : 'var(--sc-shadow-elevation-16dp)';
     document.getElementById('breadCrumb').style.transform = 'none';
     document.getElementById('mainTitle').style.transform = 'scale(1)';
     document.getElementById('subTitle').style.opacity = '1';
