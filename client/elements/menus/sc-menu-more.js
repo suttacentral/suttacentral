@@ -96,6 +96,26 @@ export class SCMenuMore extends LitLocalized(LitElement) {
 
     md-checkbox {
       margin-bottom: 18px;
+      --md-checkbox-hover-state-layer-color: var(--sc-primary-color);
+      --md-checkbox-hover-state-layer-opacity: 0;
+      --md-checkbox-pressed-state-layer-color: var(--sc-primary-color);
+      --md-checkbox-pressed-state-layer-opacity: 0;
+      --md-checkbox-selected-pressed-state-layer-color: var(--sc-primary-color);
+      --md-checkbox-selected-pressed-state-layer-opacity: 0;
+      --md-checkbox-selected-hover-state-layer-color: var(--sc-primary-color);
+      --md-checkbox-selected-hover-state-layer-opacity: 0;
+      --md-checkbox-state-layer-size: 0;
+    }
+
+    md-radio {
+      --md-radio-hover-state-layer-color: var(--sc-primary-color);
+      --md-radio-hover-state-layer-opacity: 0;
+      --md-radio-pressed-state-layer-color: var(--sc-primary-color);
+      --md-radio-pressed-state-layer-opacity: 0;
+      --md-radio-selected-pressed-state-layer-color: var(--sc-primary-color);
+      --md-radio-selected-pressed-state-layer-opacity: 0;
+      --md-radio-selected-hover-state-layer-color: var(--sc-primary-color);
+      --md-radio-selected-hover-state-layer-opacity: 0;
     }
 
     md-menu-item label {
@@ -116,7 +136,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
 
       --md-menu-item-label-text-font: var(--sc-sans-font);
       --md-menu-item-label-text-weight: 500;
-      --md-menu-item-hover-state-layer-color: var(--sc-primary-color-light-transparent);
+      --md-menu-item-hover-state-layer-color: var(--sc-primary-color);
     }
 
     md-menu-item::part(focus-ring) {
