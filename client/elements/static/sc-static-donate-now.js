@@ -83,6 +83,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
           --sc-on-primary-primary-text-color
         );
         margin-right: 10px;
+        min-width: 120px;
       }
 
       md-filled-select + md-filled-text-field {
