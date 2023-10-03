@@ -28,140 +28,121 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --md-menu-item-bottom-space: 8px;
 
       --md-menu-item-one-line-container-height: 48px;
-
-
     }
 
-        .shadow::before{
-      box-shadow: var(--sc-shadow-elevation-24dp)
+    .shadow::before {
+      box-shadow: var(--sc-shadow-elevation-24dp);
     }
 
-    .icon
-{
-    margin-right: var(--sc-size-md);
+    .icon {
+      margin-right: var(--sc-size-md);
 
-    fill: var(--sc-icon-color);
-}
+      fill: var(--sc-icon-color);
+    }
 
-.more-menu-md-menu-item
-{
-    color: var(--sc-on-primary-primary-text-color);
-}
+    .more-menu-md-menu-item {
+      color: var(--sc-on-primary-primary-text-color);
+    }
 
-.chevron_right
-{
-    display: inline-flex;
+    .chevron_right {
+      display: inline-flex;
 
-    margin-right: 0;
-}
+      margin-right: 0;
+    }
 
-#language-wrapper
-{
-    display: inline-flex;
+    #language-wrapper {
+      display: inline-flex;
 
-    min-width: 175px;
-    max-width: 185px;
+      min-width: 175px;
+      max-width: 185px;
 
-    justify-content: space-between;
-    align-items: center;
-}
+      justify-content: space-between;
+      align-items: center;
+    }
 
-#language-text-wrapper
-{
-    overflow: hidden;
+    #language-text-wrapper {
+      overflow: hidden;
 
-    max-width: 150px;
+      max-width: 150px;
 
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
-label
-{
-    background-color: var(--sc-secondary-background-color);
-}
+    label {
+      background-color: var(--sc-secondary-background-color);
+    }
 
-md-menu-item md-checkbox
-{
-    margin-left: 2px;
-    padding: 0;
-}
+    md-menu-item md-checkbox {
+      margin-left: 2px;
+      padding: 0;
+    }
 
-.menu-item-wrapper
-{
-    display: flex;
-    flex-direction: row;
+    .menu-item-wrapper {
+      display: flex;
+      flex-direction: row;
 
-    align-items: end;
-}
+      align-items: end;
+    }
 
-md-menu-item div
-{
-    display: flex;
-    flex-direction: row;
+    md-menu-item div {
+      display: flex;
+      flex-direction: row;
 
-    color: var(--sc-on-primary-primary-text-color);
+      color: var(--sc-on-primary-primary-text-color);
 
-    align-items: end;
-}
+      align-items: end;
+    }
 
-md-checkbox
-{
-    margin-bottom: 18px;
-}
+    md-checkbox {
+      margin-bottom: 18px;
+    }
 
-md-menu-item label
-{
-    display: flex;
-    flex-direction: row;
+    md-menu-item label {
+      display: flex;
+      flex-direction: row;
 
-    align-items: end;
-}
+      align-items: end;
+    }
 
-md-menu-item
-{
-    margin: 4px 8px;
+    md-menu-item {
+      margin: 4px 8px;
 
-    transition: var(--sc-link-transition);
+      transition: var(--sc-link-transition);
 
-    color: var(--sc-on-primary-primary-text-color);
-    border-radius: 28px;
-    background-color: var(--sc-secondary-background-color);
+      color: var(--sc-on-primary-primary-text-color);
+      border-radius: 28px;
+      background-color: var(--sc-secondary-background-color);
 
-    --md-menu-item-label-text-font: var(--sc-sans-font);
-    --md-menu-item-label-text-weight: 500;
-}
+      --md-menu-item-label-text-font: var(--sc-sans-font);
+      --md-menu-item-label-text-weight: 500;
+      --md-menu-item-hover-state-layer-color: var(--sc-primary-color-light-transparent);
+    }
 
+    md-menu-item::part(focus-ring) {
+      border-radius: 28px;
+    }
 
-md-menu-item::part(focus-ring) 
-{
-    border-radius: 28px;
-}
+    .menu-checkbox-item-title {
+      line-height: 1.2;
 
-.menu-checkbox-item-title
-{
-    line-height: 1.2;
+      margin-bottom: 16px;
+      margin-left: 4px;
 
-    margin-bottom: 16px;
-    margin-left: 4px;
+      color: var(--sc-on-primary-primary-text-color);
+    }
 
-    color: var(--sc-on-primary-primary-text-color);
-}
+    .menu-radio-item-title {
+      line-height: 1.2;
 
-.menu-radio-item-title
-{
-    line-height: 1.2;
+      margin-left: 18px;
 
-    margin-left: 18px;
+      color: var(--sc-on-primary-primary-text-color);
+    }
 
-    color: var(--sc-on-primary-primary-text-color);
-}
-
-#menu-checkbox-item
-{
-    height: 48px;
-}
-
+    #menu-checkbox-item {
+      height: 48px;
+    }
   `;
 
   static properties = {
@@ -333,7 +314,9 @@ md-menu-item::part(focus-ring)
               id="radioScrollForToolbar"
               @change=${e => this._onToolbarPositionChanged(e)}
             ></md-radio>
-            <span class="menu-radio-item-title">${this.localize('interface:scrollForToolbar')}</span>
+            <span class="menu-radio-item-title">${this.localize(
+              'interface:scrollForToolbar'
+            )}</span>
           </label>
         </md-menu-item>
 

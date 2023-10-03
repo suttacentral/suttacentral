@@ -25,8 +25,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       --md-menu-container-shape: 24px;
     }
 
-
-
     #sc-menu-more:focus {
       outline: none;
     }
