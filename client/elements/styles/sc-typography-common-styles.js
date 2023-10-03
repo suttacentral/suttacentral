@@ -782,7 +782,7 @@ export const typographyCommonStyles = css`
 
   #simple_text_content .legacy-reference .ref {
     font-family: var(--sc-sans-font);
-    font-size: var(-sc-font-size-s);
+    font-size: var(--sc-font-size-xxs);
     font-weight: 400;
     font-style: normal;
 
