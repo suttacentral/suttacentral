@@ -116,7 +116,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       <md-menu
         id="more-menu"
         anchor="more-menu-button"
-        .quick=${true}
         .stayOpenOnOutsideClick=${true}
         .stayOpenOnFocusout=${true}
       >
