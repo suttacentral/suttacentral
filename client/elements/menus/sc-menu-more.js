@@ -116,7 +116,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
 
       --md-menu-item-label-text-font: var(--sc-sans-font);
       --md-menu-item-label-text-weight: 500;
-      --md-menu-item-hover-state-layer-color: var(--sc-primary-color-light-transparent);
+      --md-menu-item-hover-state-layer-color: var(--sc-primary-color);
     }
 
     md-menu-item::part(focus-ring) {

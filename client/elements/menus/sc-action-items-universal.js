@@ -45,6 +45,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     md-menu {
       --md-menu-container-color: var(--sc-secondary-background-color);
+      --md-menu-container-elevation: 1;
       max-height: 1024px;
       min-width: 275px;
       max-width: 290px;
@@ -116,6 +117,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       <md-menu
         id="more-menu"
         anchor="more-menu-button"
+        .quick=${true}
         .stayOpenOnOutsideClick=${true}
         .stayOpenOnFocusout=${true}
       >

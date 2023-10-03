@@ -115,6 +115,7 @@ export const languageBaseMenuCss = css`
 
     --md-menu-item-label-text-font: var(--sc-sans-font);
     --md-menu-item-label-text-weight: 500;
+    --md-menu-item-hover-state-layer-color: var(--sc-primary-color);
   }
 
   #show-more-menu {
