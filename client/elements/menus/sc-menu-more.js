@@ -104,6 +104,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --md-checkbox-selected-pressed-state-layer-opacity: 0;
       --md-checkbox-selected-hover-state-layer-color: var(--sc-primary-color);
       --md-checkbox-selected-hover-state-layer-opacity: 0;
+      --md-checkbox-state-layer-size: 0;
     }
 
     md-radio {
