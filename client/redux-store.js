@@ -93,6 +93,10 @@ const initialState = {
     url: '',
     root_title: '',
   },
+  instantSearch: {
+    lastUpdatedDate: '2023-09-22T00:00:00.000Z',
+    data: [],
+  },
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -238,6 +242,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         searchOptions: { ...state.searchOptions, matchPartial: action.matchPartial },
+      };
+    case 'SET_INSTANT_SEARCH_DATA':
+      return {
+        ...state,
+        instantSearch: { ...state.instantSearch, data: action.instantSearchData },
+      };
+    case 'SET_INSTANT_SEARCH_DATA_LAST_UPDATED_DATE':
+      return {
+        ...state,
+        instantSearch: { ...state.instantSearch, lastUpdatedDate: action.lastUpdatedDate },
       };
     default:
       return state;

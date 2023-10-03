@@ -117,8 +117,9 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   get displaySimpleTextTemplate() {
-    return !this._shouldHideSimpleText()
-      ? html`
+    return this._shouldHideSimpleText()
+      ? ''
+      : html`
           <sc-text-legacy
             id="simple_text"
             .sutta=${this.translatedSutta || this.rootSutta}
@@ -126,16 +127,16 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
             .error=${this.lastError}
             ?hidden=${this._shouldHideSimpleText()}
           ></sc-text-legacy>
-        `
-      : '';
+        `;
   }
 
   get displaySegmentedTextTemplate() {
-    if (!this.responseData || !this.responseData.root_text) {
+    if (!this.responseData?.root_text) {
       return '';
     }
-    return !this._shouldHideSegmentedText()
-      ? html`
+    return this._shouldHideSegmentedText()
+      ? ''
+      : html`
           <sc-text-bilara
             id="segmented_text"
             .rootSutta=${this.rootSutta}
@@ -151,8 +152,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
             .range_uid=${this.range_uid}
             .transformedSuttaId=${this.transformedSuttaId}
           ></sc-text-bilara>
-        `
-      : '';
+        `;
   }
 
   firstUpdated() {
@@ -216,7 +216,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
         this.responseData.suttaplex.translated_title || this.responseData.suttaplex.original_title;
     }
     suttaTitle = this.responseData.suttaplex.acronym || suttaTitle;
-    if (suttaTitle && suttaTitle.includes('//')) {
+    if (suttaTitle?.includes('//')) {
       const acronyms = suttaTitle.split('//');
       if (acronyms.length === 2) {
         suttaTitle = acronyms[0];
@@ -290,6 +290,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
         this.lastError = {
           type: 'data-load-error',
         };
+        dispatchCustomEvent(this, 'sc-navigate', { pathname: `/${this.suttaId}` });
       } else {
         this.lastError = null;
       }
@@ -368,7 +369,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _getBilaraTextUrl() {
-    let suttaId = this.suttaId;
+    let { suttaId } = this;
     if (this.responseData.root_text.uid !== this.suttaId) {
       suttaId = this.responseData.root_text.uid;
     }
@@ -580,7 +581,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _createMetaData(responseData, expansionReturns) {
-    if (!responseData || !responseData.translation) {
+    if (!responseData?.translation) {
       return;
     }
     let description = this.localize('interface:metaDescriptionText');

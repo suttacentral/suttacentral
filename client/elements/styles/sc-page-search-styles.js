@@ -235,6 +235,11 @@ export const SCPageSearchStyles = css`
     color: var(--sc-primary-color-dark);
   }
 
+  .highlight,
+  .search-result-term {
+    color: var(--sc-primary-color);
+  }
+
   .dictionary dd p {
     margin: 0 0 var(--sc-size-s) 0;
   }
@@ -295,7 +300,8 @@ export const SCPageSearchStyles = css`
   md-filled-button {
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: white;
-    --md-filled-button-label-text-type: 500 var(--sc-size-md) system-ui;
+    --md-filled-button-label-text-font: var(--sc-sans-font);
+    --md-filled-button-label-text-size: var(--sc-size-md);
     width: 100%;
   }
 
@@ -306,12 +312,17 @@ export const SCPageSearchStyles = css`
   }
 
   md-filled-text-field {
-    --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
     margin: 0px 0px 22px 0px;
     width: 100%;
+
+    --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
+    --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
     --md-sys-color-primary: var(--sc-primary-accent-color);
     --md-sys-color-on-primary: white;
-    --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
+    --md-filled-text-field-input-text-font: var(--sc-sans-font);
+    --md-filled-text-field-input-text-size: var(--sc-size-md);
+    --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
+    --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
   }
 
   md-icon {

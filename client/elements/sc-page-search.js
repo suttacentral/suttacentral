@@ -136,7 +136,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
         <md-filled-text-field
           id="search_input"
           type="search"
-          label="Full text search"
+          label="Input search term"
+          supporting-text="Search in all texts"
           @keypress=${this.#keypressHandler}
         >
           <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
@@ -159,7 +160,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
       <div class="search-options">
         <label>
           Match partial
-          <md-switch ?selected=${this.matchPartial} @change=${this.#onMatchTypeChanged}>
+          <md-switch
+            ?selected=${this.matchPartial}
+            @change=${this.#onMatchTypeChanged}
+            ?icons=${true}
+          >
           </md-switch>
         </label>
       </div>
@@ -168,6 +173,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #onMatchTypeChanged(e) {
     reduxActions.setSearchMatchType(e.target.selected);
+    window.location.reload();
   }
 
   #keypressHandler({ key }) {
@@ -606,6 +612,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.searchQuery !== state.currentRoute.params.query) {
       this.searchQuery = state.currentRoute.params.query;
+      this.visibleSearchResults = [];
     }
     if (this.searchParams !== state.searchParams) {
       this.searchParams = state.searchParams;
@@ -650,6 +657,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // Saves the fetched search results to be displayed in the list.
   #populateList() {
+    if (!this.loadMoreButtonClicked) {
+      this.visibleSearchResults = [];
+    }
     const items = this.lastSearchResults;
     if (items.length === 0) {
       return;
@@ -815,7 +825,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     requestUrl = requestUrl + bindingChar + this.#getQueryString();
     try {
       const searchResult = await (await fetch(requestUrl)).json();
-      this.visibleSearchResults = [];
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
@@ -829,6 +838,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
       this.#createMetaData();
+    }
+    const searchInput = this.shadowRoot.querySelector('#search_input');
+    if (searchInput?.value === '') {
+      searchInput.value = this.searchQuery;
     }
   }
 
@@ -1011,7 +1024,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   #createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
-    const toolbarTitle = `${this.localize('search:search')}: ${this.searchQuery}`;
+    const toolbarTitle = `${this.localize?.('search:search').replace('search:search', 'Search')}: ${
+      this.searchQuery
+    }`;
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {

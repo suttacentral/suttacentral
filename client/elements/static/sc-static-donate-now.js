@@ -5,6 +5,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/radio/radio';
 import '@material/web/button/filled-button';
+import '@material/web/select/filled-select';
+import '@material/web/select/select-option';
 
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
@@ -31,6 +33,11 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
     layoutSimpleStyles,
     typographyCommonStyles,
     css`
+      :host {
+        --md-filled-button-label-text-font: var(--sc-serif-font);
+        --md-filled-button-label-text-size: var(--sc-font-size-s);
+      }
+
       #error-message {
         text-align: center;
       }
@@ -60,9 +67,25 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
 
       md-filled-text-field {
         --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
+        --md-filled-text-field-input-text-font: var(--sc-sans-font);
+        --md-filled-text-field-input-text-size: var(--sc-size-md);
+        --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
       }
 
-      select + md-filled-text-field {
+      md-filled-select {
+        --md-sys-color-primary: var(--sc-primary-accent-color);
+        --md-filled-select-text-field-container-color: var(--sc-tertiary-background-color);
+        --md-filled-select-text-field-input-text-font: var(--sc-sans-font);
+        --md-filled-select-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-select-text-field-focus-input-text-color: var(
+          --sc-on-primary-primary-text-color
+        );
+        margin-right: 10px;
+      }
+
+      md-filled-select + md-filled-text-field {
         max-width: 240px;
       }
 
@@ -70,7 +93,6 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
       md-filled-text-field {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
-        --md-filled-button-label-text-type: 600 var(--sc-size-md) var(--sc-sans-font);
       }
 
       aside {
@@ -87,18 +109,6 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
 
       label {
         margin-right: 20px;
-      }
-
-      select {
-        font-family: var(--sc-sans-font);
-        font-size: var(--sc-font-size-sm);
-        color: var(--sc-on-primary-primary-text-color);
-        padding: 8px;
-        height: 56px;
-        margin-right: 10px;
-        border: 2px solid var(--sc-border-color);
-        border-radius: var(--sc-size-sm);
-        background-color: var(--sc-tertiary-background-color);
       }
     `,
   ];
@@ -123,7 +133,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
   }
 
   async processPayment() {
-    const currency = this.shadowRoot.querySelector('select').value;
+    const currency = this.shadowRoot.querySelector('md-filled-select').value;
     // API takes values for instance in cents but we want to to have dollars
     const selectedAmount = this.shadowRoot.querySelector('md-filled-text-field').value * 100;
     const amount = Number.isNaN(selectedAmount) ? 0 : selectedAmount;
@@ -150,7 +160,9 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
       sessionId: session.id,
     });
 
-    if (result.error) this.isError = true;
+    if (result.error) {
+      this.isError = true;
+    }
   }
 
   renderForm() {
@@ -160,19 +172,21 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
           <h1>${this.localize('donate:donateNow')}</h1>
           <form @submit="${this.onSubmit}">
             <div class="row">
-              <select>
+              <md-filled-select required>
+                <md-select-option selected value="USD">
+                  <div slot="headline">USD</div>
+                </md-select-option>
                 ${this.currencies?.map(
                   ({ symbol }, index) => html`
-                    <option
+                    <md-select-option
                       ?selected=${index === this.defaultCurrencyIndex}
-                      title=${symbol}
                       value=${symbol}
                     >
-                      ${symbol}
-                    </option>
+                      <div slot="headline">${symbol}</div>
+                    </md-select-option>
                   `
                 )}
-              </select>
+              </md-filled-select>
 
               <md-filled-text-field
                 pattern="^[+]?(\\d+[.,]?\\d{0,2})$"
@@ -181,7 +195,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
                 autoValidate
                 required
                 validationMessage=${this.localize('donate:invalidValue')}
-                maxlength="20"
+                maxLength="20"
               ></md-filled-text-field>
             </div>
             <div class="row">

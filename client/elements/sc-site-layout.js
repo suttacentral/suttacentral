@@ -237,16 +237,24 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     const pageSelector = document.querySelector('#page_selector');
     const contextToolbar = document.querySelector('#context_toolbar');
 
-    const hideAutoCompleteList = () => {
+    const hideAutoCompleteListAndMenu = () => {
       const autoCompleteList = document
         .querySelector('sc-navigation-linden-leaves')
         .shadowRoot.querySelector('sc-action-items-universal')
         .shadowRoot.querySelector('sc-auto-complete-list');
-      autoCompleteList.style.display = 'none';
+      autoCompleteList?.hide?.();
+
+      const moreMenu = document
+        .querySelector('sc-navigation-linden-leaves')
+        .shadowRoot.querySelector('sc-action-items-universal')
+        .shadowRoot.querySelector('#more-menu');
+      moreMenu?.close?.();
+
+      reduxActions.changeLanguageMenuVisibility(false);
     };
 
-    pageSelector.addEventListener('click', hideAutoCompleteList);
-    contextToolbar.addEventListener('click', hideAutoCompleteList);
+    pageSelector.addEventListener('click', hideAutoCompleteListAndMenu);
+    contextToolbar.addEventListener('click', hideAutoCompleteListAndMenu);
   }
 
   updated(changedProps) {
@@ -365,7 +373,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _setUniversalToolbarTransformStyles() {
-    const transitionStyle = 'transform 300ms cubic-bezier(0.4, 0, 0.6, 1) 0ms';
+    const transitionStyle = 'all 300ms cubic-bezier(0.4, 0, 0.6, 1) 0ms';
     document.getElementById('universal_toolbar').style.transition = transitionStyle;
     document.getElementById('breadCrumb').style.transition = transitionStyle;
     document.getElementById('mainTitle').style.transition = transitionStyle;
@@ -374,14 +382,13 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _universalToolbarTransform() {
     document.getElementById('universal_toolbar').style.transform = 'translateY(-120px) ';
-    document.getElementById('universal_toolbar').style.boxShadow = 'var(--sc-shadow-elevation-16dp)';
+    document.getElementById('universal_toolbar').style.boxShadow =
+      'var(--sc-shadow-elevation-16dp)';
     document.getElementById('breadCrumb').style.transform = 'translateY(120px)';
-    document.getElementById('mainTitle').style.transform = 'translateY(74px) scale(0.667)';
+    document.getElementById('mainTitle').style.transform = 'translateY(62px) scale(0.8)';
     document.getElementById('subTitle').style.opacity = '0';
     document.getElementById('subTitle').style.transform = 'scale(0)';
-    if (window.innerWidth < 480) {
-      document.getElementById('mainTitle').style.transform = 'translateY(70px) scale(0.667)';
-    }
+    document.getElementById('subTitle').style.height = '0';
   }
 
   _resetUniversalToolbar() {
@@ -391,6 +398,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     document.getElementById('mainTitle').style.transform = 'scale(1)';
     document.getElementById('subTitle').style.opacity = '1';
     document.getElementById('subTitle').style.transform = 'scale(1)';
+    document.getElementById('subTitle').style.height = '1em';
   }
 
   _initNavigation() {
@@ -411,6 +419,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _routeChanged() {
     this.querySelector('#sutta-info')?.hide?.();
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   _colorThemeChanged(newVal, oldVal) {

@@ -539,8 +539,6 @@ export const lineByLinePlusStyles = html`
     .variant {
       padding: var(--sc-size-sm) var(--sc-size-md);
 
-      box-shadow: var(--sc-shadow-elevation-1dp);
-
       grid-column: 2;
       grid-row: 1;
     }

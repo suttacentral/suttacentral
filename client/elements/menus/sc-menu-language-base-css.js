@@ -3,49 +3,47 @@ import { css } from 'lit';
 export const languageBaseMenuCss = css`
   :host {
     overflow-y: scroll;
-    --mdc-menu-min-width: 500px;
-    --mdc-theme-text-primary-on-background: var(--sc-on-primary-primary-text-color);
-    --mdc-list-side-padding: 16px;
-  }
-
-  mwc-list {
-    margin-top: -8px;
-    margin-bottom: -8px;
-    background-color: var(--sc-secondary-background-color);
   }
 
   .language-chooser-header-wrapper {
-    background-color: var(--sc-secondary-background-color);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-top: 8px;
   }
 
   .separator {
-    background-color: var(--sc-border-color);
-    width: 100%;
     overflow: hidden;
+
+    width: 100%;
     height: 1px;
     margin-top: var(--sc-size-xxs);
     margin-bottom: var(--sc-size-xxs);
-  }
 
-  .mdc-list-item__text {
-    margin-left: 1.5em;
+    background-color: var(--sc-border-color);
   }
 
   .language-name::before {
-    width: 24px;
-    text-align: center;
-    margin-right: 16px;
-    content: attr(id);
-    background-color: var(--sc-icon-color);
-    color: white;
+    font-size: var(--sc-font-size-xxs);
     font-weight: 800;
     font-stretch: condensed;
-    padding-bottom: 1px;
     line-height: 16px;
-    text-transform: uppercase;
+
+    display: inline-block;
+
+    width: 24px;
+    margin-right: 16px;
+    padding-bottom: 1px;
+
+    content: attr(data-uid);
+    text-align: center;
     letter-spacing: 0.5px;
-    font-size: var(--sc-font-size-xs);
+    text-transform: uppercase;
+
+    color: white;
+    background-color: var(--sc-icon-color);
+
     --notchSize: 4px;
+
     clip-path: polygon(
       0% var(--notchSize),
       var(--notchSize) 0%,
@@ -58,13 +56,12 @@ export const languageBaseMenuCss = css`
     );
   }
 
-  #jpn::before,
-  #sld::before,
-  #kln::before,
-  #kan::before,
-  #haw::before {
+  [data-uid='jpn']::before,
+  [data-uid='sld']::before,
+  [data-uid='kln']::before,
+  [data-uid='kan']::before,
+  [data-uid='haw']::before {
     letter-spacing: 0;
-    font-size: var(--sc-font-size-xxs);
   }
 
   .arrow_left {
@@ -73,34 +70,55 @@ export const languageBaseMenuCss = css`
 
   .menu-item-wrapper {
     display: flex;
-    align-items: center;
-    margin-top: -8px;
-  }
 
-  .text-only {
-    height: 32px;
+    align-items: center;
   }
 
   .language-base-menu-head-main {
     font-weight: 700;
-    color: var(--sc-on-primary-primary-text-color);
+
     padding-left: 8px;
+
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   .language-base-menu-head-secondary {
     font-size: var(--sc-font-size-xs);
-    color: var(--sc-on-primary-secondary-text-color);
-    padding: 0 16px 0 56px;
-    line-height: 1.5;
     font-stretch: condensed;
+    line-height: 1.2;
+
+    padding: 0 16px 8px 32px;
+
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   [role='separator'] {
-    background-color: var(--sc-border-color);
-    width: 100%;
     overflow: hidden;
+
+    width: 100%;
     height: 1px;
     margin-top: var(--sc-size-sm);
     margin-bottom: var(--sc-size-xxs);
+
+    background-color: var(--sc-border-color);
+  }
+
+  .language-name {
+    color: var(--sc-on-primary-primary-text-color);
+  }
+
+  md-menu-item {
+    margin: 0 8px;
+
+    border-radius: 28px;
+    background-color: var(--sc-secondary-background-color);
+
+    --md-menu-item-label-text-font: var(--sc-sans-font);
+    --md-menu-item-label-text-weight: 500;
+  }
+
+  #show-more-menu {
+    height: 68px;
+    margin-bottom: 12px;
   }
 `;

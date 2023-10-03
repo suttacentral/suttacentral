@@ -281,7 +281,7 @@ export class SCTextLegacy extends SCTextCommon {
   }
 
   _extractSuttaText() {
-    if (this.sutta && this.sutta.text) {
+    if (this.sutta?.text) {
       return this.sutta.text.replace(/<head>((.|\n)*)<\/head>/, '');
     }
     return '';
@@ -291,7 +291,7 @@ export class SCTextLegacy extends SCTextCommon {
   _computeMeta() {
     let metaText = '';
     let matches = [];
-    if (this.sutta && this.sutta.text) {
+    if (this.sutta?.text) {
       matches = this.sutta.text.match(/<footer>((.|\n)*)<\/footer>/);
     }
     try {
@@ -307,7 +307,7 @@ export class SCTextLegacy extends SCTextCommon {
   // After the paragraph list has been loaded, adds relevant data to the placeholders in the sutta text file.
   _computeParagraphs() {
     this._setTextualInformationVisible(this.showParagraphs);
-    if (!this.sutta || !this.sutta.uid) {
+    if (!this.sutta?.uid) {
       return;
     }
     let divisionId = /^[a-z]+/.exec(this.sutta.uid)[0];
@@ -364,11 +364,11 @@ export class SCTextLegacy extends SCTextCommon {
     setTimeout(() => {
       item.innerHTML = `
         <span class="image-link">
-            <span class="${prefix}" 
+            <span class="${prefix}"
             title="${paragraph.description}">
             ${displayText}
             </span>
-            <span 
+            <span
             title="${this.localize('text:viewImage')}" class="image-book-link">
             ${icon.book}
             </span>
@@ -430,11 +430,13 @@ export class SCTextLegacy extends SCTextCommon {
   }
 
   _shouldDisplayError() {
-    return !(this.sutta && this.sutta.text) || this.error;
+    return !this.sutta?.text || this.error;
   }
 
   _scrollToSection(sectionId, margin = 120) {
-    if (!sectionId) return;
+    if (!sectionId) {
+      return;
+    }
     try {
       let targetElement = null;
       if (isNaN(sectionId)) {
@@ -601,7 +603,9 @@ export class SCTextLegacy extends SCTextCommon {
     const arraySpans = Array.from(allWordSpans);
     arraySpans.forEach(word => {
       word.onclick = e => {
-        if (!this.isChineseLookupEnabled) return;
+        if (!this.isChineseLookupEnabled) {
+          return;
+        }
         const scBottomSheet = this.querySelector('sc-bottom-sheet');
         if (scBottomSheet) {
           this._removeDefineFocusedClass();
@@ -648,9 +652,9 @@ export class SCTextLegacy extends SCTextCommon {
     const { displayedReferences, showHighlighting } = store.getState().textOptions;
     const { siteLanguage } = store.getState();
     const langParam = `lang=${siteLanguage}`;
-    const urlParams = `?${langParam}&reference=${displayedReferences.join('/')}&highlight=${showHighlighting}${
-      window.location.hash
-    }`;
+    const urlParams = `?${langParam}&reference=${displayedReferences.join(
+      '/'
+    )}&highlight=${showHighlighting}${window.location.hash}`;
     // eslint-disable-next-line no-restricted-globals
     history.replaceState(null, null, urlParams);
   }
