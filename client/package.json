@@ -31,7 +31,7 @@
     "@material/web": "1.0.0",
     "@micro-sentry/browser": "6.0.3",
     "@orama/orama": "^1.2.8",
-    "@stripe/stripe-js": "^2.1.6",
+    "@stripe/stripe-js": "^2.1.5",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "d3-queue": "^3.0.7",
     "history": "^5.3.0",
