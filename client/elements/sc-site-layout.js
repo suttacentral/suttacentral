@@ -209,12 +209,10 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
         } else if (currentScrollTop < 10) {
           this._resetUniversalToolbar();
         } else {
-          document.getElementById('universal_toolbar').style.transition =
+          universalToolbarEl.style.transition =
             'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, opacity 0ms ease 300ms, background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms';
           universalToolbarEl.style.transform = `translateY(0)`;
-
-          document.getElementById('universal_toolbar').style.boxShadow =
-            'var(--sc-shadow-elevation-16dp)';
+          universalToolbarEl.style.boxShadow = 'var(--sc-shadow-elevation-16dp)';
         }
 
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
@@ -396,8 +394,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _resetUniversalToolbar() {
     document.getElementById('universal_toolbar').style.transform = 'none';
-    document.getElementById('universal_toolbar').style.boxShadow =
-      this.changedRoute.path === '/' ? 'none' : 'var(--sc-shadow-elevation-16dp)';
+    document.getElementById('universal_toolbar').style.boxShadow = 'none';
     document.getElementById('breadCrumb').style.transform = 'none';
     document.getElementById('mainTitle').style.transform = 'scale(1)';
     document.getElementById('subTitle').style.opacity = '1';
