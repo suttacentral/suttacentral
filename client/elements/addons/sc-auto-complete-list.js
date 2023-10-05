@@ -71,7 +71,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
     }
 
-    .instant-search-list {
+    .ss-list {
       overflow-y: auto;
 
       max-height: 90vh;
