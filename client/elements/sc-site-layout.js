@@ -212,6 +212,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
           document.getElementById('universal_toolbar').style.transition =
             'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, opacity 0ms ease 300ms, background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms';
           universalToolbarEl.style.transform = `translateY(0)`;
+
+          document.getElementById('universal_toolbar').style.boxShadow =
+            'var(--sc-shadow-elevation-16dp)';
         }
 
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
