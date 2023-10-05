@@ -30,10 +30,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --md-menu-item-one-line-container-height: 48px;
     }
 
-    .shadow::before {
-      box-shadow: var(--sc-shadow-elevation-24dp);
-    }
-
     .icon {
       margin-right: var(--sc-size-md);
 

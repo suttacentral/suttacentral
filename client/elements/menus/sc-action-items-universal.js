@@ -50,6 +50,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       min-width: 275px;
       max-width: 290px;
     }
+
   `;
 
   static properties = {
@@ -121,7 +122,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         .stayOpenOnOutsideClick=${true}
         .stayOpenOnFocusout=${true}
       >
-        <sc-menu-more id="sc-menu-more"></sc-menu-more>
+      <div class='shadow-div'>
+        <sc-menu-more id="sc-menu-more"></sc-menu-more></div>
       </md-menu>
     `;
   }

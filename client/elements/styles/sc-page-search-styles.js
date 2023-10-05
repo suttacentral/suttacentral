@@ -232,12 +232,7 @@ export const SCPageSearchStyles = css`
   .search-result-term,
   .selected-terms-item > a {
     background-color: var(--sc-primary-color-light-transparent);
-    color: var(--sc-primary-color-dark);
-  }
-
-  .highlight,
-  .search-result-term {
-    color: var(--sc-primary-color);
+    color: inherit;
   }
 
   .dictionary dd p {
