@@ -26,7 +26,11 @@ export class SCSuttaplexTx extends LitElement {
   render() {
     return this.translation
       ? html`
-          <a href=${this.translationUrl} class="tx ${this.isCompact ? 'compact' : ''}">
+          <a
+            href=${this.translationUrl}
+            class="tx ${this.isCompact ? 'compact' : ''}"
+            @click=${this.#hideTopSheets}
+          >
             ${icon.open_book}
             <div class="tx-details">
               <span class="tx-creator">${this.translation?.author}</span>
@@ -37,6 +41,11 @@ export class SCSuttaplexTx extends LitElement {
           </a>
         `
       : '';
+  }
+
+  #hideTopSheets() {
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+    scActionItems?.hideTopSheets();
   }
 
   publicationInfoTemplate() {
