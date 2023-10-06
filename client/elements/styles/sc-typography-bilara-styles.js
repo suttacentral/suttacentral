@@ -39,6 +39,7 @@ export const typographyBilaraStyles = css`
 
     text-align: left;
     text-indent: 0;
+    text-transform: none;
     letter-spacing: normal;
 
     color: var(--sc-on-tertiary-secondary-text-color);
@@ -105,6 +106,8 @@ export const typographyBilaraStyles = css`
     padding: 0.1em 0.5em;
 
     text-align: left;
+    text-indent: 0;
+    text-transform: none;
     white-space: nowrap;
 
     letter-spacing: normal;
