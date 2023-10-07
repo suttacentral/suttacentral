@@ -166,7 +166,11 @@ export class SCParallelItem extends LitLocalized(LitElement) {
 
   normalViewTemplate() {
     return html`
-      <a href=${this.parallelUrl} class=${this.parallelUrl ? '' : 'disabled'}>
+      <a
+        href=${this.parallelUrl}
+        class=${this.parallelUrl ? '' : 'disabled'}
+        @click=${this.parallelUrl ? this.#hideTopSheets : null}
+      >
         <div class="parallel-item">
           <div class="parallel-item-main-info-container">
             <div class="parallel-item-title" title=${this.headingTitle}>${this.heading}</div>
@@ -245,6 +249,11 @@ export class SCParallelItem extends LitLocalized(LitElement) {
         </div>
       </a>
     `;
+  }
+
+  #hideTopSheets() {
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+    scActionItems?.hideTopSheets();
   }
 
   static styles = [parallelItemCss];
