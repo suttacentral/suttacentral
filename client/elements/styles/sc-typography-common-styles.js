@@ -619,7 +619,8 @@ export const typographyCommonStyles = css`
     color: var(--sc-primary-accent-color);
   }
 
-  .help-heading {
+  .help-heading,
+  .inserted-heading {
     font-style: italic;
   }
 
