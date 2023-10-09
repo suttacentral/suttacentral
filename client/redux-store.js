@@ -95,6 +95,7 @@ const initialState = {
   },
   instantSearch: {
     lastUpdatedDate: '2023-09-22T00:00:00.000Z',
+    language: 'en',
     data: [],
   },
 };
@@ -252,6 +253,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         instantSearch: { ...state.instantSearch, lastUpdatedDate: action.lastUpdatedDate },
+      };
+    case 'SET_INSTANT_SEARCH_DATA_LANGUAGE':
+      return {
+        ...state,
+        instantSearch: { ...state.instantSearch, language: action.language },
       };
     default:
       return state;

@@ -122,8 +122,9 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         .stayOpenOnOutsideClick=${true}
         .stayOpenOnFocusout=${true}
       >
-      <div class='shadow-div'>
-        <sc-menu-more id="sc-menu-more"></sc-menu-more></div>
+        <div class="shadow-div">
+          <sc-menu-more id="sc-menu-more"></sc-menu-more>
+        </div>
       </md-menu>
     `;
   }

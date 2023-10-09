@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import { create, search, insertMultiple } from '@orama/orama';
+import { create, search, insertMultiple, removeMultiple } from '@orama/orama';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
 
@@ -10,7 +10,7 @@ import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from './sc-redux-actions';
 
-const suttaDB = await create({
+let suttaDB = await create({
   schema: {
     uid: 'string',
     title: 'string',
@@ -331,12 +331,15 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       this.loadingData = true;
       const { lastUpdatedDate } = store.getState().instantSearch;
       this.instant_search_data = store.getState().instantSearch?.data;
+      const { siteLanguage } = store.getState();
+      const { language } = store.getState().instantSearch;
+
       if (lastUpdatedDate) {
         const lastUpdatedDateObj = new Date(lastUpdatedDate);
         const today = new Date();
         const diffTime = Math.abs(today - lastUpdatedDateObj);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        if (diffDays > 7) {
+        if (diffDays > 7 || language !== siteLanguage) {
           await this.#fetchInstantSearchData();
         }
       }
@@ -346,6 +349,13 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       }
 
       if (this.instant_search_data?.length > 0) {
+        suttaDB = null;
+        suttaDB = await create({
+          schema: {
+            uid: 'string',
+            title: 'string',
+          },
+        });
         await insertMultiple(suttaDB, this.instant_search_data);
       }
     } catch (error) {
@@ -361,7 +371,9 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.instant_search_data = await (
       await fetch(`${API_ROOT}/possible_names/${siteLanguage}`)
     ).json();
+    console.log('instant_search_data', this.instant_search_data);
     reduxActions.setInstantSearchLastUpdatedDate(today);
+    reduxActions.setInstantSearchDataLanguage(siteLanguage);
     reduxActions.setInstantSearchData(this.instant_search_data);
   }
 
@@ -549,32 +561,10 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
       const { hits } = searchResult;
       const copiedHits = JSON.parse(JSON.stringify(hits));
-
-      this.items = [];
-      for (const hit of copiedHits) {
-        this.items.push(hit.document);
-      }
-      this.#mergedResultByUid();
+      this.items = copiedHits.map(hit => hit.document);
     } else {
       this.items = [];
     }
-  }
-
-  #mergedResultByUid() {
-    const result = Object.values(
-      this.items.reduce((acc, curr) => {
-        if (acc[curr.uid]) {
-          if (acc[curr.uid].isRoot !== curr.isRoot) {
-            acc[curr.uid].title += ` – ${curr.title}`;
-          }
-        } else {
-          acc[curr.uid] = curr;
-        }
-        return acc;
-      }, {})
-    );
-
-    this.items = result;
   }
 }
 
