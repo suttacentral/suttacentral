@@ -45,10 +45,14 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
     md-menu {
       --md-menu-container-color: var(--sc-secondary-background-color);
-      --md-menu-container-elevation: 5;
+      --md-menu-container-elevation: 0;
       max-height: 1024px;
       min-width: 275px;
       max-width: 290px;
+    }
+
+    md-menu::part(elevation) {
+      box-shadow: var(--sc-shadow-elevation-24dp)
     }
 
   `;
