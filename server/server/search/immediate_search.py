@@ -45,9 +45,13 @@ def fetch_possible_result(lang):
     for item in data:
         uid = item["uid"]
         title = item["title"]
-
         if uid in merged_data:
-            merged_data[uid]["title"] += f"-{title}"
+            is_root = item["isRoot"]
+
+            if is_root:
+                merged_data[uid]["title"] = f"{title}-" + merged_data[uid]["title"]
+            else:
+                merged_data[uid]["title"] += f"-{title}"
         else:
             merged_data[uid] = {"uid": uid, "title": title, "nodeType": item['nodeType']}
 
