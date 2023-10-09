@@ -42,15 +42,15 @@ export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-10-02'],
-  ['mn', '2023-10-02'],
-  ['sn', '2023-10-02'],
-  ['an', '2023-10-02'],
+  ['dn', '2023-10-09'],
+  ['mn', '2023-10-09'],
+  ['sn', '2023-10-09'],
+  ['an', '2023-10-09'],
   ['dhp', '2023-09-25'],
-  ['ud', '2023-09-25'],
+  ['ud', '2023-10-09'],
   ['iti', '2023-10-02'],
   ['snp', '2023-10-02'],
-  ['thag', '2023-09-25'],
+  ['thag', '2023-10-09'],
   ['thig', '2023-10-02'],
 ]);
 
