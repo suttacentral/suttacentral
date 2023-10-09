@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import { create, search, insertMultiple, removeMultiple } from '@orama/orama';
+import { create, search, insertMultiple } from '@orama/orama';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
 
@@ -371,7 +371,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.instant_search_data = await (
       await fetch(`${API_ROOT}/possible_names/${siteLanguage}`)
     ).json();
-    console.log('instant_search_data', this.instant_search_data);
     reduxActions.setInstantSearchLastUpdatedDate(today);
     reduxActions.setInstantSearchDataLanguage(siteLanguage);
     reduxActions.setInstantSearchData(this.instant_search_data);
