@@ -60,6 +60,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     md-filled-text-field {
       width: 100%;
+      padding: 0 10px;
 
       --md-sys-color-primary: var(--sc-primary-accent-color);
       --md-sys-color-on-primary: white;
@@ -449,7 +450,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         @keyup=${e => this.#keyupHandler(e)}
         @keypress=${this.#keypressHandler}
       >
-        <md-icon slot="trailingicon" @click=${this.#startSearch}> ${icon.search} </md-icon>
+        <md-icon slot="trailing-icon" @click=${this.#startSearch}>${icon.search}</md-icon>
       </md-filled-text-field>
     `;
   }
