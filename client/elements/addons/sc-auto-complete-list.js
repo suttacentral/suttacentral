@@ -52,7 +52,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .ss-header {
       display: flex;
 
-      padding: 0;
+      padding: 0px;
 
       justify-content: center;
       align-items: center;
@@ -75,7 +75,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .ss-list {
       overflow-y: auto;
 
-      max-height: 90vh;
+      max-height: calc(100vh - 160px);
       padding: 0 4px;
 
       scrollbar-gutter: stable both-edges;
@@ -135,6 +135,8 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
       align-items: center;
       justify-content: space-between;
+
+      gap: 16px;
     }
 
     .search-suggestion-link:hover {
@@ -149,12 +151,15 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       background-color: var(--sc-primary-color-light-transparent);
     }
 
-    .instant-nav,
     .search-suggestion {
       display: flex;
 
-      align-items: center;
-      gap: 1rem;
+      align-items: baseline;
+      gap: 8px;
+
+      scroll-snap-type: x mandatory;
+
+      overflow-x: hidden;
     }
 
     .search-suggestion::before {
@@ -176,11 +181,18 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .search-suggestion-filter {
       font-family: monospace;
-      font-size: var(--sc-font-size-s);
+      font-size: var(--sc-font-size-xs);
 
       position: relative;
 
       color: var(--sc-on-primary-secondary-text-color);
+    }
+
+    .search-suggestion-query {
+      text-wrap: nowrap;
+      scroll-snap-align: end;
+
+      font-size: 16px;
     }
 
     .search-suggestion-prompt {
@@ -204,15 +216,24 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .instant-nav-description-text .icon {
       width: 1em;
+      min-width: 1em;
       height: 1em;
       margin: 0 0.25em 0 0.25em;
+    }
+
+        .instant-nav {
+      display: flex;
+      align-items: center;
+
+      flex-direction: row;
+      gap: 8px;
     }
 
     .instant-nav-link {
       display: flex;
 
       margin-bottom: 8px;
-      padding: 8px 12px 8px 12px;
+      padding: 4px 12px 4px 12px;
 
       cursor: pointer;
       transition: var(--sc-link-transition);
@@ -238,16 +259,20 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       background-color: var(--sc-primary-color-light-transparent);
     }
 
+    .instant-nav-uid-title-wrap {
+      display: flex;
+
+      flex-direction: column;
+    }
+
     .instant-nav-uid {
-      font-size: var(--sc-font-size-s);
+      font-size: var(--sc-font-size-xs);
 
       color: var(--sc-on-primary-secondary-text-color);
     }
 
     .instant-nav-title {
       font-family: var(--sc-serif-font);
-
-      align-self: self-end;
     }
 
     .instant-nav-prompt {
@@ -259,7 +284,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
       display: flex;
 
-      padding: 8px 16px 8px 16px;
+      padding: 8px 16px 0px 16px;
 
       color: var(--sc-on-tertiary-secondary-text-color);
       border-top: 1px solid var(--sc-border-color);
@@ -267,6 +292,8 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+
+
     }
 
     #opensearchtip-left {
@@ -293,6 +320,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .icon {
       fill: var(--sc-icon-color);
+      min-width: 24px;
     }
 
     md-icon {
@@ -489,8 +517,10 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
               <a class="instant-nav-link" href=${this.#generateURL(item)}>
                 <span class="instant-nav">
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
+               <span class='instant-nav-uid-title-wrap'>
                   <span class="instant-nav-uid">${item.uid}</span>
                   <span class="instant-nav-title">${item.title}</span>
+                </span>
                 </span>
 
                 <span class="instant-nav-prompt">${icon.arrow_right}</span>
