@@ -92,9 +92,9 @@ def remove_hits_if_uid_in_suttaplexs(hits, suttaplexs):
 
 def generate_general_query_aql(query, limit, offset, matchpartial):
     aql_condition_part = '''
-    SEARCH (PHRASE(d.content, @query, "common_text") 
-        OR PHRASE(d.name, @query, "common_text") 
-        OR d.uid == @query 
+    SEARCH (PHRASE(d.content, @query, "common_text")
+        OR PHRASE(d.name, @query, "common_text")
+        OR d.uid == @query
     '''
 
     if matchpartial == 'true':
@@ -110,7 +110,7 @@ def generate_general_query_aql(query, limit, offset, matchpartial):
 
     aql_condition_part += aql_filter_part(matchpartial)
 
-    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_sort_part() + '''
     ''' + aql_limit_part(limit, offset) + '''
     ''' + aql_return_part(True) + '''
@@ -134,7 +134,7 @@ def fetch_record_count(collection, condition, query):
 def generate_author_query_aql(query_param):
     aql_condition_part = '''
         SEARCH d.author_uid == @query
-        FILTER d.is_segmented == False AND d.author_uid != null 
+        FILTER d.is_segmented == False AND d.author_uid != null
     '''
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
@@ -152,7 +152,7 @@ def generate_title_query_aql(query_param):
         FILTER d.is_segmented == False
         '''
 
-    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
     '''
@@ -168,7 +168,7 @@ def generate_collection_query_aql(query_param):
         FILTER d.author_uid != null
     '''
     )
-    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + ''' 
+    full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
     ''' + aql_return_part(True) + '''
     '''
@@ -291,7 +291,7 @@ def generate_reference_query_aql(query):
 
 def generate_multi_keyword_query_aql(keywords, query_param):
     aql_condition_part = '''
-    SEARCH (PHRASE(d.content, @query, "common_text") OR 
+    SEARCH (PHRASE(d.content, @query, "common_text") OR
     '''
     aql_condition_part += '''('''
     for keyword in keywords:
@@ -331,7 +331,7 @@ def generate_multi_keyword_query_aql(keywords, query_param):
 
 def generate_and_query_aql(keywords, query_param):
     aql_condition_part = '''
-    SEARCH PHRASE(d.content, @query, "common_text") OR  
+    SEARCH PHRASE(d.content, @query, "common_text") OR
     '''
 
     for keyword in keywords:
@@ -361,7 +361,7 @@ def generate_and_query_aql(keywords, query_param):
 
 def generate_not_query_aql(keywords, query_param):
     aql_condition_part = '''
-    SEARCH 1==@query OR  
+    SEARCH 1==@query OR
     '''
 
     keyword_exclude_not = keywords.split(' NOT ')[0]
@@ -383,13 +383,13 @@ def generate_not_query_aql(keywords, query_param):
 
 def generate_query_aql_by_conditions(query_conditions, query_param):
     aql_condition_part = '''
-    SEARCH ((PHRASE(d.content, @query, "common_text") OR 
+    SEARCH ((PHRASE(d.content, @query, "common_text") OR
     '''
     if 'or' in query_conditions:
         keyword_list = query_conditions['or']
         keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
         for keyword in keyword_list:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) OR '
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%") OR d.uid == "{keyword}") OR '
         aql_condition_part = aql_condition_part[:-4]
 
     if 'and' in query_conditions:
@@ -520,7 +520,7 @@ def aql_not_part(keyword):
 
 def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial):
     aql_condition_part = '''
-    SEARCH PHRASE(d.content, @query, "common_text") OR 
+    SEARCH PHRASE(d.content, @query, "common_text") OR
     '''
 
     for keyword in keywords:
@@ -541,7 +541,7 @@ def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial):
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     suttaplexs = []
-    if original_query.startswith('title:'):
+    if original_query.startswith('title:') or original_query.startswith('in:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     elif suttaplex := fetch_suttaplex(db, lang, query):
         suttaplexs = [suttaplex]
