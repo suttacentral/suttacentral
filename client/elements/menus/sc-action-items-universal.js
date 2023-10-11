@@ -52,9 +52,8 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
 
     md-menu::part(elevation) {
-      box-shadow: var(--sc-shadow-elevation-24dp)
+      box-shadow: var(--sc-shadow-elevation-24dp);
     }
-
   `;
 
   static properties = {
@@ -76,20 +75,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     }
   }
 
-  firstUpdated() {
-    this.moreMenu = this.shadowRoot.querySelector('#more-menu');
-
-    this.shadowRoot.querySelector('#search_glass').addEventListener('click', () => {
-      this.#hideTopSheets();
-      this.#showAutoCompleteList();
-    });
-
-    this.shadowRoot.querySelector('#more-menu-button').addEventListener('click', () => {
-      this.#hideTopSheets();
-      this.moreMenu.open = !this.moreMenu.open;
-    });
-  }
-
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
@@ -103,19 +88,36 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       .focus();
   }
 
+  openInstantSearchDialog() {
+    this.#hideTopSheets();
+    this.#showAutoCompleteList();
+  }
+
+  #openMoreMenu() {
+    this.#hideTopSheets();
+    this.moreMenu = this.shadowRoot.querySelector('#more-menu');
+    this.moreMenu.open = !this.moreMenu.open;
+  }
+
   render() {
     return html`
       <md-icon-button
         class="button-theme"
         id="search_glass"
         title=${this.localize('search:searchTooltip')}
+        @click=${this.openInstantSearchDialog}
       >
         ${icon.search}
       </md-icon-button>
 
       <sc-auto-complete-list></sc-auto-complete-list>
 
-      <md-icon-button class="button-theme" id="more-menu-button" alt="menu">
+      <md-icon-button
+        class="button-theme"
+        id="more-menu-button"
+        alt="menu"
+        @click=${this.#openMoreMenu}
+      >
         ${icon.more_vert}
       </md-icon-button>
 
