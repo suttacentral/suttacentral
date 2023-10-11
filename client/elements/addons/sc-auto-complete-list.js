@@ -419,6 +419,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         scAutoCompleteInput?.focus();
       }
     });
+
+    this.shadowRoot.querySelector('#search_input').addEventListener('keydown', event => {
+      if (event.key === '/') {
+        event.stopPropagation();
+      }
+    });
   }
 
   updated(changedProps) {
@@ -517,10 +523,10 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
               <a class="instant-nav-link" href=${this.#generateURL(item)}>
                 <span class="instant-nav">
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
-               <span class='instant-nav-uid-title-wrap'>
-                  <span class="instant-nav-uid">${item.uid}</span>
-                  <span class="instant-nav-title">${item.title}</span>
-                </span>
+                  <span class="instant-nav-uid-title-wrap">
+                    <span class="instant-nav-uid">${item.uid}</span>
+                    <span class="instant-nav-title">${item.title}</span>
+                  </span>
                 </span>
 
                 <span class="instant-nav-prompt">${icon.arrow_right}</span>

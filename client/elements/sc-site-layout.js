@@ -256,6 +256,22 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
     pageSelector.addEventListener('click', hideAutoCompleteListAndMenu);
     contextToolbar.addEventListener('click', hideAutoCompleteListAndMenu);
+
+    document.addEventListener('keydown', event => {
+      if (event.key === '/') {
+        document
+          .querySelector('sc-navigation-linden-leaves')
+          .shadowRoot.querySelector('sc-action-items-universal')
+          .openInstantSearchDialog?.();
+        event.preventDefault();
+      } else if (event.key === 'Escape') {
+        document
+          .querySelector('sc-navigation-linden-leaves')
+          .shadowRoot.querySelector('sc-action-items-universal')
+          .shadowRoot.querySelector('sc-auto-complete-list')
+          ?.hide?.();
+      }
+    });
   }
 
   updated(changedProps) {
