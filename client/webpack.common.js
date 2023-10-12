@@ -52,10 +52,6 @@ module.exports = {
           handler: 'StaleWhileRevalidate',
         },
         {
-          urlPattern: /main\..*\.js/,
-          handler: 'NetworkFirst',
-        },
-        {
           urlPattern: new RegExp('/node_modules/(.*)'),
           handler: 'StaleWhileRevalidate',
         },
