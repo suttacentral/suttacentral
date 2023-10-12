@@ -121,7 +121,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         ${icon.more_vert}
       </md-icon-button>
 
-      <md-menu
+      <!-- <md-menu
         id="more-menu"
         anchor="more-menu-button"
         .quick=${true}
@@ -131,7 +131,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
         <div class="shadow-div">
           <sc-menu-more id="sc-menu-more"></sc-menu-more>
         </div>
-      </md-menu>
+      </md-menu> -->
     `;
   }
 }
