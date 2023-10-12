@@ -75,7 +75,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .ss-list {
       overflow-y: auto;
 
-      max-height: calc(100vh - 160px);
+      max-height: calc(100vh - 200px);
       padding: 0 4px;
 
       scrollbar-gutter: stable both-edges;
@@ -221,7 +221,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       margin: 0 0.25em 0 0.25em;
     }
 
-        .instant-nav {
+    .instant-nav {
       display: flex;
       align-items: center;
 
@@ -292,8 +292,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-
-
     }
 
     #opensearchtip-left {
