@@ -112,26 +112,28 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
       <sc-auto-complete-list></sc-auto-complete-list>
 
-      <md-icon-button
-        class="button-theme"
-        id="more-menu-button"
-        alt="menu"
-        @click=${this.#openMoreMenu}
-      >
-        ${icon.more_vert}
-      </md-icon-button>
+      <span style="position: relative">
+        <md-icon-button
+          class="button-theme"
+          id="more-menu-button"
+          alt="menu"
+          @click=${this.#openMoreMenu}
+        >
+          ${icon.more_vert}
+        </md-icon-button>
 
-      <md-menu
-        id="more-menu"
-        anchor="more-menu-button"
-        .quick=${true}
-        .stayOpenOnOutsideClick=${true}
-        .stayOpenOnFocusout=${true}
-      >
-        <div class="shadow-div">
-          <sc-menu-more id="sc-menu-more"></sc-menu-more>
-        </div>
-      </md-menu>
+        <md-menu
+          id="more-menu"
+          anchor="more-menu-button"
+          .quick=${true}
+          .stayOpenOnOutsideClick=${true}
+          .stayOpenOnFocusout=${true}
+        >
+          <div class="shadow-div">
+            <sc-menu-more id="sc-menu-more"></sc-menu-more>
+          </div>
+        </md-menu>
+      </span>
     `;
   }
 }
