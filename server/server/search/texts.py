@@ -69,6 +69,8 @@ class TextLoader:
             with open(text['strings_path']) as f:
                 strings = json.load(f)
 
+            strings = {key: value for key, value in strings.items() if ":0." not in key}
+
             text_info = {
                 'acronym': text['acronym'],
                 'uid': uid,
@@ -107,7 +109,7 @@ class TextLoader:
             with open(text['strings_path']) as f:
                 strings = json.load(f)
             for key, value in strings.items():
-                if value:
+                if value and f'{uid}:0.' not in key:
                     segmented_text_info = {
                         'acronym': text['acronym'],
                         'uid': uid,

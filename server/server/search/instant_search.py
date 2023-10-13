@@ -541,7 +541,7 @@ def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial):
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
     suttaplexs = []
-    if original_query.startswith('title:') or original_query.startswith('in:'):
+    if original_query.startswith('title:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     elif suttaplex := fetch_suttaplex(db, lang, query):
         suttaplexs = [suttaplex]
