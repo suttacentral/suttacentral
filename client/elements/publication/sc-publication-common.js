@@ -13,6 +13,7 @@ export const coverImage = new Map([
   ['snp', 'snp-book.jpg'],
   ['thag', 'thag-book.jpg'],
   ['thig', 'thig-book.jpg'],
+  ['pli-tv-vi', 'pli-tv-vi-book.jpg'],
 ]);
 
 export const collectionURL = new Map([
@@ -37,21 +38,22 @@ function formatDate(date) {
 //   'https://raw.githubusercontent.com/suttacentral/editions/main/last_run_date';
 // const response = await fetch(lastActionRunDateUrl);
 // const lastRunDateText = await response.text();
-const lastRunDateText = '2023-10-09T09:19:38Z';
+const lastRunDateText = '2023-10-16T09:19:38Z';
 export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-10-09'],
-  ['mn', '2023-10-09'],
-  ['sn', '2023-10-09'],
-  ['an', '2023-10-09'],
-  ['dhp', '2023-09-25'],
+  ['dn', '2023-10-16'],
+  ['mn', '2023-10-16'],
+  ['sn', '2023-10-16'],
+  ['an', '2023-10-16'],
+  ['dhp', '2023-10-16'],
   ['ud', '2023-10-09'],
-  ['iti', '2023-10-02'],
-  ['snp', '2023-10-02'],
-  ['thag', '2023-10-09'],
-  ['thig', '2023-10-02'],
+  ['iti', '2023-10-16'],
+  ['snp', '2023-10-16'],
+  ['thag', '2023-10-16'],
+  ['thig', '2023-09-25'],
+  ['pli-tv-vi', '2023-10-16'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
