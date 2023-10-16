@@ -74,7 +74,7 @@ export const SCPublicationStyles = css`
     display: inline-block;
 
     width: 24px;
-    height: 24px;
+    height: 48px;
     margin-right: 8px;
 
     vertical-align: middle;
