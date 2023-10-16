@@ -1,5 +1,67 @@
 # SuttaCentral ChangeLog
 
+## 2023.10.13
+
+- Exclude some content from search indexing and upgrade nginx.
+- Adjust menu html structure.
+
+## 2023.10.12
+
+- Upgrade ArangoDB, Lit, Python, Nodejs to latest version.
+
+## 2023.10.11
+
+- Supports using shortcut keys to open and close the instant search dialog.
+
+## 2023.10.10
+
+- show search icon in md text field (fix reversion, typo in js)
+- ensure text fields and nav items are evenly aligned (fix style reversion)
+- use max-height: calc(100vh - 160px) to ensure the sheet footer is always visible (needs testing!)
+- reduce size of footer a little
+- adjust display of nav items for better responsiveness
+- make text suggestion more like md text field, especially on long queries
+- Enable in: keyword to support uid search, adjust styles.
+
+## 2023.10.09
+
+- Adjust instant search data storage logic.
+- Adjust instant data merge logic.
+
+## 2023.10.08
+
+- Upgrade stripe and oramasearch.
+
+## 2023.10.07
+
+- Hide topsheets when clicked parallels link.
+
+## 2023.10.6
+
+- Close the top sheet when clicking the parallels top sheet link.
+
+## 2023.10.03
+
+- Adjust menu styles.
+- Adjust universal toolbar shadow style.
+- Adjust universal toolbar styles.
+
+## 2023.10.02
+
+- Replace the last m2 component.
+
+## 2023.09.27
+
+- fix padding in instant search dialogue.
+
+## 2023.09.25
+
+- Optimize the loading logic of instant search data and update it every seven days instead of loading it from the server every time.
+- In fulltext search, add support for in:ebs, in:ebt, in:ebct.
+- Optimize the structure of fulltext data sources to speed up retrieval.
+- Supports searching for all uids. e.g. in:kn, in:ud, in:iti.
+- Adjust some styles and fix some bugs.
+
 ## 2023.09.20
 
 - optimize instant search data source, adjust html.
