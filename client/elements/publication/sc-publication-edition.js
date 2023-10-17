@@ -172,10 +172,15 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   }
 
   #computeFileUrlByType(publicationType) {
-    const discoursesName = this.editionDetail[0].translated_name
+    let discoursesName = this.editionDetail[0].translated_name
       ?.replace('Collection', '')
       .trim()
       .replace(/\s+/g, '-');
+
+    if (this.editionUid === 'pli-tv-vi') {
+      discoursesName = this.editionInfo.publication.translation_title.trim().replace(/\s+/g, '-');
+    }
+
     const { authorUid, langIsoCode } = this.currentRoute.params;
 
     if (publicationType === 'tex') {
