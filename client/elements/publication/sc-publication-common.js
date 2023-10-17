@@ -53,7 +53,7 @@ export const lastUpdatedDateOfCollections = new Map([
   ['snp', '2023-10-16'],
   ['thag', '2023-10-16'],
   ['thig', '2023-09-25'],
-  ['pli-tv-vi', '2023-10-16'],
+  ['pli-tv-vi', '2023-10-17'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
