@@ -82,6 +82,10 @@ export const SCPublicationStyles = css`
     min-inline-size: max-content;
   }
 
+  table a .icon {
+    height: 24px;
+  }
+
   table svg {
     display: inline-block;
 
