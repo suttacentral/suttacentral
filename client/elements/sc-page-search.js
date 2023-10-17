@@ -137,6 +137,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
           id="search_input"
           type="search"
           label="Input search term"
+          required
+          minlength="2"
+          maxlength="20"
           supporting-text="Search in all texts"
           @keypress=${this.#keypressHandler}
         >
@@ -177,7 +180,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #keypressHandler({ key }) {
-    if (key === 'Enter') {
+    const approved = this.shadowRoot.getElementById('search_input')?.reportValidity();
+    if (key === 'Enter' && approved) {
       this._startSearch();
     }
   }

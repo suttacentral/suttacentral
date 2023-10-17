@@ -320,6 +320,12 @@ export const SCPageSearchStyles = css`
     --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
     --md-filled-text-field-label-text-color: var(--sc-primary-accent-color);
     --md-filled-text-field-hover-label-text-color: var(--sc-primary-accent-color);
+    --md-filled-text-field-error-focus-supporting-text-color: var(--sc-primary-color);
+    --md-filled-text-field-error-hover-supporting-text-color: var(--sc-primary-color);
+    --md-filled-text-field-error-supporting-text-color: var(--sc-primary-color);
+    --md-filled-text-field-error-label-text-color: var(--sc-primary-color);
+    --md-filled-text-field-error-focus-label-text-color: var(--sc-primary-color);
+    --md-filled-text-field-error-hover-label-text-color: var(--sc-primary-color);
   }
 
   md-icon {

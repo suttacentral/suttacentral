@@ -39,6 +39,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       ['snp', 'snp-book.jpg'],
       ['thag', 'thag-book.jpg'],
       ['thig', 'thig-book.jpg'],
+      ['pli-tv-vi', 'pli-tv-vi-book.jpg'],
     ]);
   }
 
@@ -62,7 +63,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       this.webEditionIds = [];
       this.webEditionInfo = [];
       for (const edition of this.allEditions) {
-        if (edition.edition_id.includes('-web_') && !edition.edition_id.includes('brahmali')) {
+        if (edition.edition_id.includes('-web_')) {
           this.webEditionIds.push(edition.edition_id);
         }
       }

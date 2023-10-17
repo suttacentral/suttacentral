@@ -389,7 +389,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
         keyword_list = query_conditions['or']
         keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
         for keyword in keyword_list:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%") OR d.uid == "{keyword}") OR '
+            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%") OR d.uid == "{keyword}" OR PHRASE(d.name,  "{keyword}", "common_text")) OR '
         aql_condition_part = aql_condition_part[:-4]
 
     if 'and' in query_conditions:

@@ -1,5 +1,11 @@
 import { html, css, LitElement } from 'lit';
 import { create, search, insertMultiple } from '@orama/orama';
+import { stemmer as sanStemmer } from '@orama/stemmers/sanskrit'
+import { stopwords as sanStopwords } from '@orama/stopwords/sanskrit'
+import { stopwords as enStopwords } from '@orama/stopwords/english'
+import { stopwords as deStopwords } from '@orama/stopwords/german'
+import { stemmer as enStemmer } from '@orama/stemmers/english';
+import { stemmer as deStemmer } from '@orama/stemmers/german';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
 
@@ -13,7 +19,16 @@ import { reduxActions } from './sc-redux-actions';
 let suttaDB = await create({
   schema: {
     uid: 'string',
-    title: 'string',
+    rootTitle: 'string',
+    translationTitle: 'string',
+  },
+  components: {
+    tokenizer: {
+      stemming: true,
+      sanStemmer,
+      stemmerSkipProperties: ['uid'],
+      stopWords: sanStopwords,
+    },
   },
 });
 
@@ -376,11 +391,27 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       }
 
       if (this.instant_search_data?.length > 0) {
+        this.instant_search_data = this.instant_search_data.map(item => {
+          const [rootTitle, translationTitle] = item.title.split('-');
+          return { ...item, rootTitle, translationTitle };
+        });
+
+        const stemmer = siteLanguage === 'de' ? deStemmer : enStemmer;
+        const stopWords = siteLanguage === 'de' ? deStopwords : enStopwords;
         suttaDB = null;
         suttaDB = await create({
           schema: {
             uid: 'string',
-            title: 'string',
+            rootTitle: 'string',
+            translationTitle: 'string',
+          },
+          components: {
+            tokenizer: {
+              stemming: true,
+              stemmer,
+              stemmerSkipProperties: ['uid'],
+              stopWords,
+            },
           },
         });
         await insertMultiple(suttaDB, this.instant_search_data);
@@ -561,7 +592,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #startSearch() {
-    const searchQuery = this.shadowRoot.getElementById('search_input').value;
+    const searchQuery = this.shadowRoot.getElementById('search_input')?.value;
     if (searchQuery) {
       this.hide();
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
@@ -589,11 +620,30 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       const searchResult = await search(suttaDB, {
         term: this.searchQuery,
         properties: '*',
-        tolerance: 1,
         limit: 20,
+        boost: {
+          uid: 2,
+          translationTitle: 1.5,
+          rootTitle: 1.4,
+        },
+        threshold: 0.4,
       });
 
-      const { hits } = searchResult;
+      let { hits } = searchResult;
+      if (hits.length === 0) {
+        const searchResultWithTypoTolerance = await search(suttaDB, {
+          term: this.searchQuery,
+          properties: '*',
+          tolerance: 1,
+          limit: 20,
+          boost: {
+            uid: 2,
+            rootTitle: 1.5,
+            translationTitle: 1.4,
+          },
+        });
+        hits = searchResultWithTypoTolerance.hits;
+      }
       const copiedHits = JSON.parse(JSON.stringify(hits));
       this.items = copiedHits.map(hit => hit.document);
     } else {
