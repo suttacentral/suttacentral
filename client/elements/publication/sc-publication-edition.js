@@ -59,10 +59,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       this.volumesMenu.anchor = this.querySelector('#volumes-menu-button');
     }
 
-    if (changedProps.has('editionId')) {
-      if (this.editionId) {
-        this.#loadNewResult();
-      }
+    if (changedProps.has('editionId') && this.editionId) {
+      this.#loadNewResult();
     }
     if (changedProps.has('volumesInfoForDownloadMenu')) {
       this.requestUpdate();
@@ -110,11 +108,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
   async #fetchEditionDetails() {
     try {
-      try {
-        this.editionDetail = await (await fetch(`${API_ROOT}/menu/${this.editionUid}`)).json();
-      } catch (error) {
-        console.error(error);
-      }
+      this.editionDetail = await (await fetch(`${API_ROOT}/menu/${this.editionUid}`)).json();
     } catch (error) {
       console.error(error);
     }
@@ -223,15 +217,15 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
                     <br>To the extent possible under law,
                     <span property='dct:title'>
                       ${this.editionInfo.publication.creator_name}
-                    </span> has waived all copyright and related or neighboring rights to 
+                    </span> has waived all copyright and related or neighboring rights to
                     <span property='dct:title'>
                       ${this.editionDetail[0].translated_name.replace('Collection', '')}
                     </span>.
-                    This work is published from: 
-                    <span 
-                      property='vcard:Country' 
-                      datatype='dct:ISO3166' 
-                      content='AU' 
+                    This work is published from:
+                    <span
+                      property='vcard:Country'
+                      datatype='dct:ISO3166'
+                      content='AU'
                       about='https://suttacentral.net/${this.editionUid}'
                     >
                       Australia
@@ -304,10 +298,14 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           src="/img/publication-pages/${this.creatorInfo.creator_uid}.jpg"
           alt=${this.creatorInfo.creator_uid}
         />
-        <figcaption>${this.creatorInfo.creator_uid}</figcaption>
+        <figcaption>Bhante ${this.#capitalizeFirstLetter(this.creatorInfo.creator_uid)}</figcaption>
       </figure>
       ${unsafeHTML(this.creatorInfo.creator_biography)}
     `;
+  }
+
+  #capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   #printOnDemandTemplate() {
