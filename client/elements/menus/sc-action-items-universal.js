@@ -133,9 +133,18 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
           .positioning=${'fixed'}
           .hasOverflow=${true}
         >
-          <div class="shadow-div">
+          <!-- <div class="shadow-div">
             <sc-menu-more id="sc-menu-more"></sc-menu-more>
-          </div>
+          </div> -->
+          <md-menu-item>
+            <div slot="headline">Apple</div>
+          </md-menu-item>
+          <md-menu-item>
+            <div slot="headline">Banana</div>
+          </md-menu-item>
+          <md-menu-item>
+            <div slot="headline">Cucumber</div>
+          </md-menu-item>
         </md-menu>
       </span>
     `;
