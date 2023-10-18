@@ -49,6 +49,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       max-height: 1024px;
       min-width: 275px;
       max-width: 290px;
+      display: none;
     }
 
     md-menu::part(elevation) {
@@ -97,6 +98,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.#hideTopSheets();
     this.moreMenu = this.shadowRoot.querySelector('#more-menu');
     this.moreMenu.open = !this.moreMenu.open;
+    this.moreMenu.style.display = this.moreMenu.open ? 'initial' : 'none';
   }
 
   render() {
