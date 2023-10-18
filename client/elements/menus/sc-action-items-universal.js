@@ -130,8 +130,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
           .quick=${true}
           .stayOpenOnOutsideClick=${true}
           .stayOpenOnFocusout=${true}
-          .positioning=${'fixed'}
-          .hasOverflow=${true}
         >
           <div class="shadow-div">
             <sc-menu-more id="sc-menu-more"></sc-menu-more>
