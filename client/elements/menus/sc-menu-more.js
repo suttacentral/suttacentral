@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { cache } from 'lit/directives/cache.js';
+import 'element-internals-polyfill';
 import { store } from '../../redux-store';
 import { reduxActions } from '../addons/sc-redux-actions';
 import './sc-menu-language-base';
