@@ -63,15 +63,10 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     siteLanguage: { type: String },
   };
 
-  static get formAssociated() {
-    return true;
-  }
-
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/interface';
     this.siteLanguage = store.getState().siteLanguage;
-    this._internals = this.attachInternals();
   }
 
   stateChanged(state) {
