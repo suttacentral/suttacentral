@@ -168,6 +168,10 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     languageIsVisible: { type: Boolean },
   };
 
+  static get formAssociated() {
+    return true;
+  }
+
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/interface';
@@ -177,6 +181,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     this.languageIsVisible = store.getState().languageMenuVisibility;
     this.suttaId = store.getState().currentRoute.params?.suttaId;
     this.toolbarPosition = store.getState().toolbarPosition;
+    this._internals = this.attachInternals();
   }
 
   get actions() {
