@@ -172,6 +172,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       </style>
       <main>
         <article>
+        <section class='editions-header'>
           <hgroup class="page-header">
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
@@ -189,6 +190,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
             entire Buddhist tradition and we believe that they deserve to be preserved and made
             available in highest quality without compromise.
           </p>
+          </section>
 
           <section class="down-all">
             <ul>
@@ -220,9 +222,12 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
                 use to pay our developers.
               </p>
               <p>We intend to make other printing options avilable in the future.</p>
+              <p>Please contact us if you would like to sponsor your own edition for free distribution.</p>
             </aside>
           </section>
+          <section class='all-editions'>
           ${this.#allEditionsTemplate()}
+          </section>
         </article>
       </main>
     `;
