@@ -949,7 +949,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return ``;
     }
     if (item.author) {
-      return `${this.#getDivision(item)} — ${item.author}`;
+      return `${this.#getDivision(item)} — ${item.root_name || ''} — ${item.author}`;
     }
     if (item.name) {
       return `${this.#getDivision(item)} — ${item.name}`;

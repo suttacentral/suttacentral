@@ -34,6 +34,15 @@ RETURN {
 }
 '''
 
+ROOT_NAMES = '''
+For n IN names
+FILTER n.uid in @uids AND n.is_root == true
+RETURN {
+    uid: n.uid,
+    name: n.name,
+}
+'''
+
 
 def instant_search_query(query, lang, restrict, limit, offset, matchpartial):
     db = get_db()
@@ -81,7 +90,20 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial):
         total = len(suttaplexs)
     lookup_dictionary(hits, lang, query, restrict)
 
+    root_names = fetch_root_names(db, hits)
+    root_names_set = {root_name['uid']: root_name['name'] for root_name in root_names}
+    for hit in hits:
+        uid = hit.get('uid')
+        if uid in root_names_set:
+            hit['root_name'] = root_names_set[uid]
+
     return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
+
+
+def fetch_root_names(db, hits):
+    uids = [hit['uid'] for hit in hits if 'uid' in hit]
+    cursor = db.aql.execute(ROOT_NAMES, bind_vars={'uids': uids})
+    return list(cursor)
 
 
 def remove_hits_if_uid_in_suttaplexs(hits, suttaplexs):
