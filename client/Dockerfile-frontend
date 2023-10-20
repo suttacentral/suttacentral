@@ -1,4 +1,4 @@
-FROM node:18.16.0
+FROM node:lts-hydrogen
 
 WORKDIR /opt/sc/frontend
 
