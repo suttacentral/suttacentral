@@ -2,27 +2,13 @@ from common.arangodb import get_db
 
 
 AQL_POSSIBLE_RESULTS_BY_LANG = '''
-    LET ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
-                "dhp", "thig", "thag", "sf"]
-
-    FOR d IN names
+    FOR d IN ebs_names
         FILTER (d.lang == @lang OR d.is_root == true)
-        LET navigation_doc = DOCUMENT('super_nav_details', d.uid)
-        LET path_docs = (
-            FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', d.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
-                RETURN doc.uid
-        )
-        LET root_uid = REVERSE(
-            FOR item IN path_docs
-            FILTER CONTAINS(d.uid, item)
-            RETURN item
-        )[0]
-        FILTER root_uid IN ebs_prefixes OR d.uid IN ebs_prefixes
     RETURN {
         uid: d.uid,
         title: d.name,
         isRoot: d.is_root,
-        nodeType: navigation_doc.type
+        nodeType: d.node_type
     }
 '''
 
