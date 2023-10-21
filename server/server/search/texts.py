@@ -20,6 +20,9 @@ ebt_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", 
                     "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                     "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
 
+ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
+                "dhp", "thig", "thag", "sf"]
+
 class TextLoader:
     doc_type = 'text'
     version = '2'
@@ -58,6 +61,9 @@ class TextLoader:
     def check_text_whether_is_ebt(self, root_uid):
         return root_uid in ebt_prefixes
 
+    def check_text_whether_is_ebs(self, root_uid):
+        return root_uid in ebs_prefixes
+
     def import_bilara_texts(self):
         bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
         if not bilara_texts:
@@ -88,6 +94,7 @@ class TextLoader:
                 'is_segmented': False,
                 'is_bilara_text': True,
                 'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
+                'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
                 'root_uid': text['root_uid'],
                 'full_path': text['full_path']
             }
@@ -128,6 +135,7 @@ class TextLoader:
                         'content': '',
                         'is_segmented': True,
                         'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
+                        'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
                         'root_uid': text['root_uid'],
                         'full_path': text['full_path']
                     }
@@ -185,6 +193,7 @@ class TextLoader:
                     'is_segmented': False,
                     'is_legacy_text': True,
                     'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
+                    'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
                     'root_uid': text['root_uid'],
                     'full_path': text['full_path']
                 }

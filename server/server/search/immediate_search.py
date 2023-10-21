@@ -6,10 +6,10 @@ AQL_POSSIBLE_RESULTS_BY_LANG = '''
                 "dhp", "thig", "thag", "sf"]
 
     FOR d IN names
-        FILTER (d.lang == @lang OR d.is_root == true) AND NOT CONTAINS(d.uid, '-name')
+        FILTER (d.lang == @lang OR d.is_root == true)
         LET navigation_doc = DOCUMENT('super_nav_details', d.uid)
         LET path_docs = (
-            FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', d.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
+            FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', d.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
                 RETURN doc.uid
         )
         LET root_uid = REVERSE(
