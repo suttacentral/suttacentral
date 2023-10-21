@@ -29,6 +29,7 @@ from common.queries import (
     UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO,
     SINGLE_ROOT_TEXT,
     UPSERT_ROOT_NAMES,
+    INSERT_EBS_NAMES,
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
@@ -486,6 +487,11 @@ def update_root_title():
             db.aql.execute(UPSERT_ROOT_NAMES, bind_vars={'uid': uid, 'name': title})
 
 
+def load_ebs_names():
+    db = arangodb.get_db()
+    db.aql.execute(INSERT_EBS_NAMES)
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -656,6 +662,9 @@ def run(no_pull=False):
 
     print_stage("Update Acronym")
     upsert_text_acronym(structure_dir)
+
+    print_stage("Loading ebs_names")
+    load_ebs_names()
 
     print_stage("Generating sitemap")
     sitemap = generate_sitemap(db)

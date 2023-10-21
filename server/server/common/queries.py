@@ -183,7 +183,7 @@ FOR text IN sc_bilara_texts
 TEXT_REFERENCES = '''
 FOR text IN sc_bilara_texts
     FILTER text.lang == @lang AND ('reference' IN text.muids)
-    
+
     LET nav_doc = (
         RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
     )[0]
@@ -278,7 +278,7 @@ FOR navigation_doc IN super_nav_details
             )
             // Trying to get blurb with user-defined-language translation, take english if not exist
             LET blurb = (
-                 RETURN LENGTH(en_and_language_blurbs) == 2 ? 
+                 RETURN LENGTH(en_and_language_blurbs) == 2 ?
                      (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
                      en_and_language_blurbs[0]
             )[0].blurb
@@ -350,8 +350,8 @@ LET descendants = (
                     RETURN blurb
         )
         LET blurb = (
-             RETURN LENGTH(en_and_language_blurbs) == 2 ? 
-                 (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+             RETURN LENGTH(en_and_language_blurbs) == 2 ?
+                 (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
                  en_and_language_blurbs[0]
         )[0].blurb
 
@@ -383,8 +383,8 @@ LET en_and_language_blurbs = (
             RETURN blurb
 )
 LET blurb = (
-     RETURN LENGTH(en_and_language_blurbs) == 2 ? 
-         (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] : 
+     RETURN LENGTH(en_and_language_blurbs) == 2 ?
+         (FOR blurb IN en_and_language_blurbs FILTER blurb.lang == @language RETURN blurb)[0] :
          en_and_language_blurbs[0]
 )[0].blurb
 
@@ -579,7 +579,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
     )
     LET blurb = (
         RETURN LENGTH(blurbs_by_uid) == 2 ?
-            (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] : 
+            (FOR blurb IN blurbs_by_uid FILTER blurb.lang == @language RETURN blurb.blurb)[0] :
             blurbs_by_uid[0].blurb
     )[0]
 
@@ -1067,7 +1067,7 @@ LET result = MERGE(
         FILTER doc.uid == @uid
         FILTER 'translation' NOT IN doc.muids OR @author_uid IN doc.muids
         FILTER 'comment' NOT IN doc.muids OR @author_uid IN doc.muids
-        
+
         LET type = doc.muids[0]
         RETURN {
             [CONCAT(type, '_text')]: doc.file_path
@@ -1312,7 +1312,7 @@ RETURN {
     '''
 
     SIZES = '''
-LET languages = (FOR s IN pwa_sizes 
+LET languages = (FOR s IN pwa_sizes
     RETURN { [s.lang]: KEEP(s, ['parallels', 'base', 'lookup'])})
 
 RETURN MERGE(languages)
@@ -1375,7 +1375,7 @@ LET counts = MERGE(
             [division_uid]: div_count
         }
 )
-    
+
 LET keys = ATTRIBUTES(counts)
 
 FOR key IN keys
@@ -1579,6 +1579,26 @@ UPDATE {
 } IN names
 '''
 
+INSERT_EBS_NAMES = '''
+    LET ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
+                "dhp", "thig", "thag", "sf"]
+
+    FOR d IN names
+        LET navigation_doc = DOCUMENT('super_nav_details', d.uid)
+        LET path_docs = (
+            FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', d.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
+                RETURN doc.uid
+        )
+        LET root_uid = REVERSE(
+            FOR item IN path_docs
+            FILTER CONTAINS(d.uid, item)
+            RETURN item
+        )[0]
+        FILTER root_uid IN ebs_prefixes OR d.uid IN ebs_prefixes
+
+        INSERT { uid: d.uid, lang: d.lang, is_root: d.is_root, name: d.name, node_type: navigation_doc.type  } INTO ebs_names
+'''
+
 PARALLELS_LITE = '''
 FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {order: 'dfs'}
     FILTER v.type == 'leaf'
@@ -1677,7 +1697,7 @@ FOR doc, edge, path IN 0..10 OUTBOUND CONCAT('super_nav_details/', @uid) super_n
                 FILTER file_doc.muids ALL IN value
                 RETURN {[key]: file_doc.file_path}
     )
-    
+
     RETURN {
         uid,
         type: doc.type,
