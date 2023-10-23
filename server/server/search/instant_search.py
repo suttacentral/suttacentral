@@ -463,22 +463,15 @@ def add_collection_condition_to_query_aql(condition_combination):
 
 
 def add_in_ebs_aql():
-    ebs_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp",
-                       "thig", "thag", "sf"]
-    return f'FILTER (d.root_uid IN {ebs_collections}) '
+    return 'FILTER (d.is_ebs == true) '
 
 
 def add_in_ebt_aql():
-    ebt_collections = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
-                    "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
-    return f'FILTER (d.root_uid IN {ebt_collections}) '
+    return 'FILTER (d.is_ebt == true) '
 
 
 def add_in_ebct_aql():
-    ebct_collections = ["da", "ma", "sa", "sa-2", "sa-3", "ea", "ea-2","lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "ea-ot", "d"]
-    return f'FILTER (d.root_uid IN {ebct_collections}) '
+    return 'FILTER (d.is_ebct == true) '
 
 
 def fetch_children_by_uid(uid):

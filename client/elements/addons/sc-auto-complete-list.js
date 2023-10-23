@@ -1,4 +1,5 @@
 import { html, css, LitElement } from 'lit';
+import algoliasearch  from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
 import { stemmer as sanStemmer } from '@orama/stemmers/sanskrit'
 import { stopwords as sanStopwords } from '@orama/stopwords/sanskrit'
@@ -15,6 +16,9 @@ import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from './sc-redux-actions';
+
+const algoliaClient = algoliasearch('B3DSEV09M1', 'b3b5a4de4c16de7a500c7f324d77113b');
+const algoliaIndex = algoliaClient.initIndex('sc_ebs_names');
 
 let suttaDB = await create({
   schema: {
@@ -369,6 +373,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   async #initInstantSearchData() {
+    return;
     try {
       this.loadingData = true;
       const { lastUpdatedDate } = store.getState().instantSearch;
@@ -570,6 +575,11 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   #footerTemplate() {
     return html`
       <span id="opensearchtip-left">
+        <img
+          src="/img/Algolia-logo-blue.png"
+          height="15px"
+          width="80px"
+        />
         <md-icon-button
           aria-label="Tips for search syntax"
           href="/search-filter"
@@ -617,38 +627,79 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
   async #instantSearch() {
     if (this.searchQuery.length >= 2) {
-      const searchResult = await search(suttaDB, {
-        term: this.searchQuery,
-        properties: '*',
-        limit: 20,
-        boost: {
-          uid: 2,
-          translationTitle: 1.5,
-          rootTitle: 1.4,
-        },
-        threshold: 0.4,
-      });
-
-      let { hits } = searchResult;
-      if (hits.length === 0) {
-        const searchResultWithTypoTolerance = await search(suttaDB, {
-          term: this.searchQuery,
-          properties: '*',
-          tolerance: 1,
-          limit: 20,
-          boost: {
-            uid: 2,
-            rootTitle: 1.5,
-            translationTitle: 1.4,
-          },
-        });
-        hits = searchResultWithTypoTolerance.hits;
-      }
-      const copiedHits = JSON.parse(JSON.stringify(hits));
-      this.items = copiedHits.map(hit => hit.document);
+      this.#searchByAlgolia();
     } else {
       this.items = [];
     }
+  }
+
+  async #searchByOrama() {
+    const searchResult = await search(suttaDB, {
+      term: this.searchQuery,
+      properties: '*',
+      limit: 20,
+      boost: {
+        uid: 2,
+        translationTitle: 1.5,
+        rootTitle: 1.4,
+      },
+      threshold: 0.4,
+    });
+
+    let { hits } = searchResult;
+    if (hits.length === 0) {
+      const searchResultWithTypoTolerance = await search(suttaDB, {
+        term: this.searchQuery,
+        properties: '*',
+        tolerance: 1,
+        limit: 20,
+        boost: {
+          uid: 2,
+          rootTitle: 1.5,
+          translationTitle: 1.4,
+        },
+      });
+      hits = searchResultWithTypoTolerance.hits;
+    }
+    const copiedHits = JSON.parse(JSON.stringify(hits));
+    this.items = copiedHits.map(hit => hit.document);
+  }
+
+  #searchByAlgolia() {
+    this.items = [];
+    algoliaIndex
+      .search(this.searchQuery, {
+        filters: `lang:${this.siteLanguage} OR isRoot:true`,
+      })
+      .then(({ hits }) => {
+        this.items = hits;
+        this.#mergedResultByUid();
+        return true;
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  #mergedResultByUid() {
+    const result = Object.values(
+      this.items.reduce((acc, curr) => {
+        if (acc[curr.uid]) {
+          if (acc[curr.uid].isRoot !== curr.isRoot) {
+            if (curr.isRoot) {
+              acc[curr.uid].title = `${curr.title} – ${acc[curr.uid].title}`;
+            } else {
+              acc[curr.uid].title += ` – ${curr.title}`;
+            }
+          }
+        } else {
+          acc[curr.uid] = curr;
+        }
+        return acc;
+      }, {})
+    );
+
+    this.items = result;
   }
 }
 

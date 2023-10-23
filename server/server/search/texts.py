@@ -23,6 +23,9 @@ ebt_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", 
 ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
                 "dhp", "thig", "thag", "sf"]
 
+ebct_prefixes = ["da", "ma", "sa", "sa-2", "sa-3", "ea", "ea-2","lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+                    "lzh-upp", "ea-ot", "d"]
+
 class TextLoader:
     doc_type = 'text'
     version = '2'
@@ -36,7 +39,7 @@ class TextLoader:
 
     @staticmethod
     def truncate_text_contents():
-        print('The original index is being deleted...')
+        print('Deleting index...')
         get_db().collection('text_contents').truncate()
         get_db().collection('segmented_text_contents').truncate()
         get_db().collection('text_references').truncate()
@@ -63,6 +66,9 @@ class TextLoader:
 
     def check_text_whether_is_ebs(self, root_uid):
         return root_uid in ebs_prefixes
+
+    def check_text_whether_is_ebct(self, root_uid):
+        return root_uid in ebct_prefixes
 
     def import_bilara_texts(self):
         bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
@@ -95,6 +101,7 @@ class TextLoader:
                 'is_bilara_text': True,
                 'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
                 'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
+                'is_ebct': self.check_text_whether_is_ebct(text['root_uid']),
                 'root_uid': text['root_uid'],
                 'full_path': text['full_path']
             }
@@ -102,7 +109,7 @@ class TextLoader:
             segmented_texts.append(text_info)
 
         if segmented_texts:
-            print(f'Import {len(segmented_texts)} {self.full_lang} segmented texts to arangoDB')
+            print(f'Index {len(segmented_texts)} {self.full_lang} segmented texts.')
             get_db().collection('text_contents').import_bulk(segmented_texts)
 
     def import_segmented_texts(self):
@@ -136,6 +143,7 @@ class TextLoader:
                         'is_segmented': True,
                         'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
                         'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
+                        'is_ebct': self.check_text_whether_is_ebct(text['root_uid']),
                         'root_uid': text['root_uid'],
                         'full_path': text['full_path']
                     }
@@ -147,7 +155,7 @@ class TextLoader:
         bilara_text_references = list(get_db().aql.execute(TEXT_REFERENCES, bind_vars={'lang': self.lang}))
         if not bilara_text_references:
             return
-        print(f'Import {len(bilara_text_references)} {self.full_lang} text references to arangoDB')
+        print(f'Index {len(bilara_text_references)} {self.full_lang} text references.')
         text_references = []
         for text in bilara_text_references:
             uid = text['uid']
@@ -194,6 +202,7 @@ class TextLoader:
                     'is_legacy_text': True,
                     'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
                     'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
+                    'is_ebct': self.check_text_whether_is_ebct(text['root_uid']),
                     'root_uid': text['root_uid'],
                     'full_path': text['full_path']
                 }
@@ -203,7 +212,7 @@ class TextLoader:
                 logger.exception(f'{text["uid"]}, {e}')
 
         if legacy_texts:
-            print(f'Import {len(legacy_texts)} {self.full_lang} legacy texts to arangoDB')
+            print(f'Index {len(legacy_texts)} {self.full_lang} legacy texts.')
             get_db().collection('text_contents').import_bulk(legacy_texts)
 
     def extract_fields_from_html(self, data):
@@ -262,6 +271,7 @@ def import_texts_to_arangodb():
     db = get_db()
     TextLoader.truncate_text_contents()
     time.sleep(5)
+    print('Start re-indexing...')
     languages = list(db.aql.execute('FOR l IN language SORT l.uid RETURN {uid: l.uid, name: l.name}'))
 
     order = ["en", "pli", "lzh", "san", "pra", "xct", "pgd", "de", "zh", "af", "ar", "au", "bn", "ca", "cs", "es", "ev",
