@@ -489,6 +489,7 @@ def update_root_title():
 
 def load_ebs_names():
     db = arangodb.get_db()
+    db['ebs_names'].truncate()
     db.aql.execute(INSERT_EBS_NAMES)
 
 
