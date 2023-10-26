@@ -220,7 +220,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   get suttaplexTemplate() {
     return html`
-      <div class="dictionary-snippet-card">
+      <div class="dictionary-snippet-card suttaplex">
         ${this.suttaplex?.map(
           item => html`
             <sc-suttaplex
@@ -256,8 +256,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.loadingResults
       ? ''
       : html`
-          ${this.searchResultHeadTemplate} ${this.suttaplexTemplate}
-          ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
+          ${this.searchResultHeadTemplate}
+          <section class="wrap-dictionary-and-suttaplex-results">
+            ${this.dictionaryTemplate} ${this.suttaplexTemplate}
+          </section>
+          <section class="wrap-text-results">${this.searchResultListTemplate}</section>
+          ${this.loadMoreButtonTemplate}
         `;
   }
 
@@ -268,38 +272,81 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.visibleSearchResults
       ? this.visibleSearchResults.map(
           item => html`
-            <div
-              class="search-result-item ${this.#calculateItemCategory(item)}"
-              tabindex=${this.tabIndex}
-            >
-              <div class="padded-container">
-                <div class="item-head">
-                  <a class="search-result-link" href=${this.#calculateLink(item)}>
-                    <div class="primary">
-                      <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
-                      <div class="all-dictionaries">
-                        <span>All dictionaries</span>
-                        ${icon.arrow_right}
+            ${this.#calculateItemCategory(item) !== 'dictionary'
+              ? html`
+                  <div
+                    class="search-result-item ${this.#calculateItemCategory(item)}"
+                    tabindex=${this.tabIndex}
+                  >
+                    <div class="padded-container">
+                      <div class="item-head">
+                        <a class="search-result-link" href=${this.#calculateLink(item)}>
+                          <div class="primary">
+                            <h2 class="search-result-title">
+                              ${unsafeHTML(this.#calculateTitle(item))}
+                            </h2>
+                            <div class="all-dictionaries">
+                              <span>All dictionaries</span>
+                              ${icon.arrow_right}
+                            </div>
+                          </div>
+                          <div class="secondary">
+                            <p class="search-result-division">
+                              ${unsafeHTML(this.#calculateDivision(item))}
+                            </p>
+                          </div>
+                        </a>
+                        ${this.#parallelsButtonTemplate(item)}
+                      </div>
+                      <div class="secondary">
+                        <p class="search-result-snippet">
+                          ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
+                        </p>
                       </div>
                     </div>
-                    <div class="secondary">
-                      <p class="search-result-division">
-                        ${unsafeHTML(this.#calculateDivision(item))}
-                      </p>
-                    </div>
-                  </a>
-                  ${this.#parallelsButtonTemplate(item)}
-                </div>
-                <div class="secondary">
-                  <p class="search-result-snippet">
-                    ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
-                  </p>
-                </div>
-              </div>
-            </div>
+                  </div>
+                `
+              : ''}
           `
         )
       : '';
+  }
+
+  get dictionaryTemplate() {
+    const dictionaryItem = this.visibleSearchResults.find(item => item.category === 'dictionary');
+    if (!dictionaryItem) {
+      return '';
+    }
+    return html`
+      <div class="search-result-item dictionary" tabindex=${this.tabIndex}>
+        <div class="padded-container">
+          <div class="item-head">
+            <a class="search-result-link" href=${this.#calculateLink(dictionaryItem)}>
+              <div class="primary">
+                <h2 class="search-result-title">
+                  ${unsafeHTML(this.#calculateTitle(dictionaryItem))}
+                </h2>
+                <div class="all-dictionaries">
+                  <span>All dictionaries</span>
+                  ${icon.arrow_right}
+                </div>
+              </div>
+              <div class="secondary">
+                <p class="search-result-division">
+                  ${unsafeHTML(this.#calculateDivision(dictionaryItem))}
+                </p>
+              </div>
+            </a>
+            ${this.#parallelsButtonTemplate(dictionaryItem)}
+          </div>
+          <div class="secondary">
+            <p class="search-result-snippet">
+              ${unsafeHTML(this.#calculateSnippetContent(dictionaryItem.highlight?.content))}
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   #parallelsButtonTemplate(item) {
