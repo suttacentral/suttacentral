@@ -273,39 +273,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       ? this.visibleSearchResults.map(
           item => html`
             ${this.#calculateItemCategory(item) !== 'dictionary'
-              ? html`
-                  <div
-                    class="search-result-item ${this.#calculateItemCategory(item)}"
-                    tabindex=${this.tabIndex}
-                  >
-                    <div class="padded-container">
-                      <div class="item-head">
-                        <a class="search-result-link" href=${this.#calculateLink(item)}>
-                          <div class="primary">
-                            <h2 class="search-result-title">
-                              ${unsafeHTML(this.#calculateTitle(item))}
-                            </h2>
-                            <div class="all-dictionaries">
-                              <span>All dictionaries</span>
-                              ${icon.arrow_right}
-                            </div>
-                          </div>
-                          <div class="secondary">
-                            <p class="search-result-division">
-                              ${unsafeHTML(this.#calculateDivision(item))}
-                            </p>
-                          </div>
-                        </a>
-                        ${this.#parallelsButtonTemplate(item)}
-                      </div>
-                      <div class="secondary">
-                        <p class="search-result-snippet">
-                          ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                `
+              ? html` ${this.#searchResultItemGeneralTemplate(item)} `
               : ''}
           `
         )
@@ -317,31 +285,34 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!dictionaryItem) {
       return '';
     }
+    return html` ${this.#searchResultItemGeneralTemplate(dictionaryItem)} `;
+  }
+
+  #searchResultItemGeneralTemplate(item) {
     return html`
-      <div class="search-result-item dictionary" tabindex=${this.tabIndex}>
+      <div
+        class="search-result-item ${this.#calculateItemCategory(item)}"
+        tabindex=${this.tabIndex}
+      >
         <div class="padded-container">
           <div class="item-head">
-            <a class="search-result-link" href=${this.#calculateLink(dictionaryItem)}>
+            <a class="search-result-link" href=${this.#calculateLink(item)}>
               <div class="primary">
-                <h2 class="search-result-title">
-                  ${unsafeHTML(this.#calculateTitle(dictionaryItem))}
-                </h2>
+                <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
                 <div class="all-dictionaries">
                   <span>All dictionaries</span>
                   ${icon.arrow_right}
                 </div>
               </div>
               <div class="secondary">
-                <p class="search-result-division">
-                  ${unsafeHTML(this.#calculateDivision(dictionaryItem))}
-                </p>
+                <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
               </div>
             </a>
-            ${this.#parallelsButtonTemplate(dictionaryItem)}
+            ${this.#parallelsButtonTemplate(item)}
           </div>
           <div class="secondary">
             <p class="search-result-snippet">
-              ${unsafeHTML(this.#calculateSnippetContent(dictionaryItem.highlight?.content))}
+              ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
             </p>
           </div>
         </div>
