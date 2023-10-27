@@ -165,4 +165,8 @@ export const SCSiteLayoutStyles = css`
     --md-filled-button-label-text-font: var(--sc-sans-font);
     --md-filled-button-label-text-size: var(--sc-size-md);
   }
+
+  .highlight {
+    color: yellow;
+  }
 `;

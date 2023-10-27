@@ -36,7 +36,7 @@ export const SCPageSearchStyles = css`
     padding-bottom: 64px;
   }
 
-  .main-and-additional-search-results{
+  .all-search-results{
         
     display: flex;
     flex-direction: row;
@@ -44,7 +44,7 @@ export const SCPageSearchStyles = css`
   }
 
     .search-result-head,
-    .main-search-results{
+    .primary-search-results{
       display: flex;
       flex-direction: column;
       max-width: 720px;
@@ -58,12 +58,12 @@ export const SCPageSearchStyles = css`
   }
 
     @media (max-width: 780px) {
-  .main-and-additional-search-results {
+  .all-search-results {
     flex-direction: column-reverse;
     gap: var(--sc-size-xl);
   }
 
-    .main-search-results{
+    .primary-search-results{
       max-width: 100%;
   }
 
@@ -206,7 +206,7 @@ export const SCPageSearchStyles = css`
   }
 
     .search-result-snippet dl {
-    margin: 8px 0 0 0;
+    margin: 8px 0 0;
   }
 
   .search-result-snippet dd {
