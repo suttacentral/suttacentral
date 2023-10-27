@@ -256,12 +256,19 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.loadingResults
       ? ''
       : html`
+          <section class="search-result-head">
           ${this.searchResultHeadTemplate}
-          <section class="wrap-dictionary-and-suttaplex-results">
-            ${this.dictionaryTemplate} ${this.suttaplexTemplate}
           </section>
-          <section class="wrap-text-results">${this.searchResultListTemplate}</section>
+          <div class='main-and-additional-search-results'>
+          <section class="main-search-results">
+          ${this.searchResultListTemplate}
           ${this.loadMoreButtonTemplate}
+          </section>
+          <section class="additional-search-results">
+            ${this.dictionaryTemplate} 
+            ${this.suttaplexTemplate}
+          </section>
+          </div>
         `;
   }
 
@@ -294,7 +301,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
         class="search-result-item ${this.#calculateItemCategory(item)}"
         tabindex=${this.tabIndex}
       >
-        <div class="padded-container">
           <div class="item-head">
             <a class="search-result-link" href=${this.#calculateLink(item)}>
               <div class="primary">
@@ -316,7 +322,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
             </p>
           </div>
         </div>
-      </div>
     `;
   }
 

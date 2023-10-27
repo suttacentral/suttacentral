@@ -201,7 +201,7 @@ export const dictStyles = css`
 
     color: inherit;
 
-    text-decoration-color: var(--sc-primary-accent-color-light);
+    text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 2px;
     text-underline-offset: 0.15em;
   }
