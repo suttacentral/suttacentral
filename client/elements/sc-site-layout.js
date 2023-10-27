@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BrowserMicroSentryClient } from '@micro-sentry/browser';
 
 import { icon } from '../img/sc-icon';
@@ -124,7 +125,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
           <div id="title">
             <div id="mainTitle">
               ${icon.sc_logo}
-              <span>${this.toolbarTitle}</span>
+              <span>${unsafeHTML(this.toolbarTitle)}</span>
             </div>
             <div id="subTitle">${this.localize('interface:pageSubtitle')}</div>
           </div>

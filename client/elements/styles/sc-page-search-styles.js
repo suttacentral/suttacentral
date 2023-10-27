@@ -36,26 +36,6 @@ export const SCPageSearchStyles = css`
     padding-bottom: 64px;
   }
 
-  .search-result-head {
-    display: flex;
-
-    color: var(--sc-on-primary-secondary-text-color);
-
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .search-result-header {
-    font-family: var(--sc-sans-font);
-
-    font-weight: 400;
-    line-height: 1.25;
-
-    display: inline-block;
-
-    margin: 0 1rem 1rem 0;
-  }
-
   .search-result-term {
     font-family: var(--sc-serif-font);
     font-weight: bold;
@@ -307,7 +287,6 @@ export const SCPageSearchStyles = css`
   }
 
   md-filled-text-field {
-    margin: 0px 0px 22px 0px;
     width: 100%;
 
     --md-filled-text-field-container-color: var(--sc-tertiary-background-color);
