@@ -74,6 +74,7 @@ export const suttaplexListTableViewCss = css`
     vertical-align: baseline;
     border-bottom: 1px solid var(--sc-border-color);
   }
+
   tr:first-of-type {
     border-top: 1px solid var(--sc-border-color);
   }
@@ -90,11 +91,11 @@ export const suttaplexListTableViewCss = css`
 
   table a {
     transition: var(--sc-link-transition);
-    text-decoration: underline;
+    text-decoration: none;
 
     color: inherit;
 
-    text-decoration-color: var(--sc-primary-accent-color-light);
+    text-decoration-color: var(--sc-primary-color-light);
     text-decoration-thickness: 2px;
     text-underline-offset: 0.15em;
   }

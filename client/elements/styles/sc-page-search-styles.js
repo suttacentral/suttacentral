@@ -31,18 +31,51 @@ export const SCPageSearchStyles = css`
   }
 
   .search-results-main {
-    max-width: 720px;
+    max-width: 1440px;
     margin: 0 auto;
     padding-bottom: 64px;
   }
 
-  .search-result-head {
+  .all-search-results{
+        
     display: flex;
+    flex-direction: row;
+    gap: var(--sc-size-xl);
+  }
+
+    .search-result-head,
+    .primary-search-results{
+      display: flex;
+      flex-direction: column;
+      max-width: 720px;
+      min-width: 40%;
+      flex-grow: 2;
+  }
+
+  .additional-search-results{
+    max-width: 40%;
+    min-width: 40%;
+  }
+
+    @media (max-width: 780px) {
+  .all-search-results {
+    flex-direction: column-reverse;
+    gap: var(--sc-size-xl);
+  }
+
+    .primary-search-results{
+      max-width: 100%;
+  }
+
+  .additional-search-results{
+    max-width: 100%;
+  }
+  }
+
+  .search-result-head {
+
 
     color: var(--sc-on-primary-secondary-text-color);
-
-    justify-content: space-between;
-    flex-wrap: wrap;
   }
 
   .search-result-header {
@@ -61,14 +94,6 @@ export const SCPageSearchStyles = css`
     font-weight: bold;
   }
 
-  aside {
-    color: var(--sc-on-primary-secondary-text-color);
-
-    font-size: var(--sc-font-size-s);
-
-    margin-bottom: 1em;
-  }
-
   .search-result-item {
     display: flex;
     flex-direction: column;
@@ -77,15 +102,29 @@ export const SCPageSearchStyles = css`
   }
 
   .search-result-item dl a {
+    transition: var(--sc-link-transition);
     text-decoration: underline;
 
     color: inherit;
 
-    text-decoration-color: var(--sc-primary-color);
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.15em;
   }
 
   .search-result-item dl a:hover {
-    color: var(--sc-primary-color);
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 0.15em;
+  }
+
+  .search-result-item dl a:active {
+    text-decoration-color: var(--sc-primary-color);
   }
 
   .search-result-item dl a:visited {
@@ -94,13 +133,6 @@ export const SCPageSearchStyles = css`
 
   .search-result-item:focus {
     outline: 0;
-  }
-
-  .padded-container {
-    display: flex;
-    flex-direction: column;
-
-    padding: 0;
   }
 
   .primary {
@@ -115,6 +147,7 @@ export const SCPageSearchStyles = css`
   .search-result-title {
     font-family: var(--sc-serif-font);
     font-weight: 400;
+    font-size: var(--sc-font-size-xl);
 
     overflow: hidden;
 
@@ -123,7 +156,7 @@ export const SCPageSearchStyles = css`
     white-space: nowrap;
     text-overflow: ellipsis;
 
-    color: var(--sc-primary-accent-color);
+    color: var(--sc-primary-color);
   }
 
   .all-dictionaries {
@@ -139,6 +172,7 @@ export const SCPageSearchStyles = css`
     align-items: center;
     gap: 0.5em;
   }
+
   .icon {
     fill: var(--sc-icon-color);
     height: 20px;
@@ -171,6 +205,10 @@ export const SCPageSearchStyles = css`
     margin: 0 0 1rem 0;
   }
 
+    .search-result-snippet dl {
+    margin: 8px 0 0;
+  }
+
   .search-result-snippet dd {
     margin-left: 0;
   }
@@ -183,28 +221,48 @@ export const SCPageSearchStyles = css`
   }
 
   .search-result-link {
+    transition: var(--sc-link-transition);
     text-decoration: none;
 
-    color: initial;
+    color: inherit;
 
-    padding: 12px 0 8px;
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.15em;
+    padding: 12px 0 4px;
 
     width: 100%;
   }
 
   .search-result-link:hover {
+    transition: var(--sc-link-transition);
     text-decoration: underline;
 
-    text-decoration-color: var(--sc-primary-accent-color);
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 0.15em;
+  }
+
+    .search-result-link:active {
+text-decoration-color: var(--sc-primary-color);
+  }
+
+      .search-result-link:visited {
+text-decoration-color: var(--sc-primary-color-dark);
   }
 
   .dictionary {
-    margin: 5px 0 1em 0;
-    padding: 0 clamp(1rem, 3vw, 2rem);
+    margin: 0;
+    padding: 0 var(--sc-suttaplex-padding);
 
-    border-radius: var(--sc-size-sm);
-    background-color: var(--sc-secondary-background-color);
-    box-shadow: var(--sc-shadow-elevation-1dp);
+    border-radius: var(--sc-size-lg);
+    background-color: var(--sc-tertiary-background-color);
+  }
+
+  .dictionary + .suttaplex{
+    margin-top: var(--sc-size-lg)
   }
 
   .dictionary .search-result-division {
@@ -221,7 +279,7 @@ export const SCPageSearchStyles = css`
 
   .dictionary dfn {
     font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-xxxl);
+    font-size: var(--sc-font-size-xl);
     font-weight: bold;
 
     color: var(--sc-primary-color-dark);
@@ -263,7 +321,7 @@ export const SCPageSearchStyles = css`
   dd ol,
   dd ul {
     margin: 0;
-    padding: 0 0 0 1rem;
+    padding: 0 0 0 var(--sc-size-md-larger);
   }
 
   li {

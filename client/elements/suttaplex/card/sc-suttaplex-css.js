@@ -206,7 +206,7 @@ export const suttaplexCss = css`
     color: var(--sc-on-secondary-secondary-text-color);
 
     flex-wrap: wrap;
-    gap: 1em;
+    gap: 0 1em;
   }
 
   .subTitle {

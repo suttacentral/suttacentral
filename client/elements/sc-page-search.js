@@ -132,29 +132,19 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   get searchResultHeadTemplate() {
     return html`
-      <div class="search-result-head">
-        <md-filled-text-field
-          id="search_input"
-          type="search"
-          label="Input search term"
-          required
-          minlength="2"
-          maxlength="20"
-          supporting-text="Search in all texts"
-          @keypress=${this.#keypressHandler}
-        >
-          <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
-        </md-filled-text-field>
-        ${this.#searchOptionsTemplate()}
-        <h3 class="search-result-header">
-          <span class="search-result-number">
-            ${this.#calculateResultCount(this.resultCount)}
-          </span>
-          <span class="search-result-description">${this.localize('search:resultsFor')} </span>
-          <span class="search-result-term">${this.searchQuery} </span> <span>in all languages</span>
-        </h3>
-      </div>
-      ${this.#notSearchResultFoundForSelectedLanguagesTemplate()}
+      <md-filled-text-field
+        id="search_input"
+        type="search"
+        label="Input search term"
+        required
+        minlength="2"
+        maxlength="20"
+        supporting-text="Search in all texts"
+        @keypress=${this.#keypressHandler}
+      >
+        <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
+      </md-filled-text-field>
+      ${this.#searchOptionsTemplate()} ${this.#notSearchResultFoundForSelectedLanguagesTemplate()}
     `;
   }
 
@@ -220,7 +210,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   get suttaplexTemplate() {
     return html`
-      <div class="dictionary-snippet-card">
+      <div class="dictionary-snippet-card suttaplex">
         ${this.suttaplex?.map(
           item => html`
             <sc-suttaplex
@@ -256,8 +246,19 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.loadingResults
       ? ''
       : html`
-          ${this.searchResultHeadTemplate} ${this.suttaplexTemplate}
-          ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
+          <section class="search-result-head">
+          ${this.searchResultHeadTemplate}
+          </section>
+          <div class='all-search-results'>
+          <section class="primary-search-results">
+          ${this.searchResultListTemplate}
+          ${this.loadMoreButtonTemplate}
+          </section>
+          <section class="additional-search-results">
+            ${this.dictionaryTemplate} 
+            ${this.suttaplexTemplate}
+          </section>
+          </div>
         `;
   }
 
@@ -268,38 +269,50 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.visibleSearchResults
       ? this.visibleSearchResults.map(
           item => html`
-            <div
-              class="search-result-item ${this.#calculateItemCategory(item)}"
-              tabindex=${this.tabIndex}
-            >
-              <div class="padded-container">
-                <div class="item-head">
-                  <a class="search-result-link" href=${this.#calculateLink(item)}>
-                    <div class="primary">
-                      <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
-                      <div class="all-dictionaries">
-                        <span>All dictionaries</span>
-                        ${icon.arrow_right}
-                      </div>
-                    </div>
-                    <div class="secondary">
-                      <p class="search-result-division">
-                        ${unsafeHTML(this.#calculateDivision(item))}
-                      </p>
-                    </div>
-                  </a>
-                  ${this.#parallelsButtonTemplate(item)}
-                </div>
-                <div class="secondary">
-                  <p class="search-result-snippet">
-                    ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
-                  </p>
-                </div>
-              </div>
-            </div>
+            ${this.#calculateItemCategory(item) !== 'dictionary'
+              ? html` ${this.#searchResultItemGeneralTemplate(item)} `
+              : ''}
           `
         )
       : '';
+  }
+
+  get dictionaryTemplate() {
+    const dictionaryItem = this.visibleSearchResults.find(item => item.category === 'dictionary');
+    if (!dictionaryItem) {
+      return '';
+    }
+    return html` ${this.#searchResultItemGeneralTemplate(dictionaryItem)} `;
+  }
+
+  #searchResultItemGeneralTemplate(item) {
+    return html`
+      <div
+        class="search-result-item ${this.#calculateItemCategory(item)}"
+        tabindex=${this.tabIndex}
+      >
+          <div class="item-head">
+            <a class="search-result-link" href=${this.#calculateLink(item)}>
+              <div class="primary">
+                <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
+                <div class="all-dictionaries">
+                  <span>All dictionaries</span>
+                  ${icon.arrow_right}
+                </div>
+              </div>
+              <div class="secondary">
+                <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
+              </div>
+            </a>
+            ${this.#parallelsButtonTemplate(item)}
+          </div>
+          <div class="secondary">
+            <p class="search-result-snippet">
+              ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
+            </p>
+          </div>
+        </div>
+    `;
   }
 
   #parallelsButtonTemplate(item) {
@@ -1028,9 +1041,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
   #createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
-    const toolbarTitle = `${this.localize?.('search:search').replace('search:search', 'Search')}: ${
-      this.searchQuery
-    }`;
+    const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
+      'search:resultsFor'
+    )} <strong class="highlight">${this.searchQuery}</strong> in all languages`;
+
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
