@@ -36,45 +36,42 @@ export const SCPageSearchStyles = css`
     padding-bottom: 64px;
   }
 
-  .all-search-results{
-        
+  .all-search-results {
     display: flex;
     flex-direction: row;
     gap: var(--sc-size-xl);
   }
 
-    .search-result-head,
-    .primary-search-results{
-      display: flex;
-      flex-direction: column;
-      max-width: 720px;
-      min-width: 40%;
-      flex-grow: 2;
+  .search-result-head,
+  .primary-search-results {
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    min-width: 40%;
+    flex-grow: 2;
   }
 
-  .additional-search-results{
+  .additional-search-results {
     max-width: 40%;
     min-width: 40%;
   }
 
-    @media (max-width: 780px) {
-  .all-search-results {
-    flex-direction: column-reverse;
-    gap: var(--sc-size-xl);
-  }
+  @media (max-width: 780px) {
+    .all-search-results {
+      flex-direction: column-reverse;
+      gap: var(--sc-size-xl);
+    }
 
-    .primary-search-results{
+    .primary-search-results {
       max-width: 100%;
-  }
+    }
 
-  .additional-search-results{
-    max-width: 100%;
-  }
+    .additional-search-results {
+      max-width: 100%;
+    }
   }
 
   .search-result-head {
-
-
     color: var(--sc-on-primary-secondary-text-color);
   }
 
@@ -205,7 +202,7 @@ export const SCPageSearchStyles = css`
     margin: 0 0 1rem 0;
   }
 
-    .search-result-snippet dl {
+  .search-result-snippet dl {
     margin: 8px 0 0;
   }
 
@@ -245,12 +242,12 @@ export const SCPageSearchStyles = css`
     text-underline-offset: 0.15em;
   }
 
-    .search-result-link:active {
-text-decoration-color: var(--sc-primary-color);
+  .search-result-link:active {
+    text-decoration-color: var(--sc-primary-color);
   }
 
-      .search-result-link:visited {
-text-decoration-color: var(--sc-primary-color-dark);
+  .search-result-link:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
   }
 
   .dictionary {
@@ -261,8 +258,8 @@ text-decoration-color: var(--sc-primary-color-dark);
     background-color: var(--sc-tertiary-background-color);
   }
 
-  .dictionary + .suttaplex{
-    margin-top: var(--sc-size-lg)
+  .dictionary + .suttaplex {
+    margin-top: var(--sc-size-lg);
   }
 
   .dictionary .search-result-division {
