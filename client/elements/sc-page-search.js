@@ -246,18 +246,14 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.loadingResults
       ? ''
       : html`
-          <section class="search-result-head">
-          ${this.searchResultHeadTemplate}
-          </section>
-          <div class='all-search-results'>
-          <section class="primary-search-results">
-          ${this.searchResultListTemplate}
-          ${this.loadMoreButtonTemplate}
-          </section>
-          <section class="additional-search-results">
-            ${this.dictionaryTemplate} 
-            ${this.suttaplexTemplate}
-          </section>
+          <section class="search-result-head">${this.searchResultHeadTemplate}</section>
+          <div class="all-search-results">
+            <section class="primary-search-results">
+              ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
+            </section>
+            <section class="additional-search-results">
+              ${this.dictionaryTemplate} ${this.suttaplexTemplate}
+            </section>
           </div>
         `;
   }
@@ -291,27 +287,27 @@ class SCPageSearch extends LitLocalized(LitElement) {
         class="search-result-item ${this.#calculateItemCategory(item)}"
         tabindex=${this.tabIndex}
       >
-          <div class="item-head">
-            <a class="search-result-link" href=${this.#calculateLink(item)}>
-              <div class="primary">
-                <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
-                <div class="all-dictionaries">
-                  <span>All dictionaries</span>
-                  ${icon.arrow_right}
-                </div>
+        <div class="item-head">
+          <a class="search-result-link" href=${this.#calculateLink(item)}>
+            <div class="primary">
+              <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
+              <div class="all-dictionaries">
+                <span>All dictionaries</span>
+                ${icon.arrow_right}
               </div>
-              <div class="secondary">
-                <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
-              </div>
-            </a>
-            ${this.#parallelsButtonTemplate(item)}
-          </div>
-          <div class="secondary">
-            <p class="search-result-snippet">
-              ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
-            </p>
-          </div>
+            </div>
+            <div class="secondary">
+              <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
+            </div>
+          </a>
+          ${this.#parallelsButtonTemplate(item)}
         </div>
+        <div class="secondary">
+          <p class="search-result-snippet">
+            ${unsafeHTML(this.#calculateSnippetContent(item.highlight?.content))}
+          </p>
+        </div>
+      </div>
     `;
   }
 
@@ -1043,7 +1039,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultsText = this.localize('search:searchResultsText');
     const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} <strong class="highlight">${this.searchQuery}</strong> in all languages`;
+    )} <strong class="highlightTitle">${this.searchQuery}</strong> in all languages`;
 
     document.dispatchEvent(
       new CustomEvent('metadata', {

@@ -166,7 +166,7 @@ export const SCSiteLayoutStyles = css`
     --md-filled-button-label-text-size: var(--sc-size-md);
   }
 
-  .highlight {
+  .highlightTitle {
     color: yellow;
   }
 `;
