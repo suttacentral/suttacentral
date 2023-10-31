@@ -21,18 +21,32 @@ class Hyphenator:
 
         self.segments = set(json_load(segments_file)['segments'])
         self.cons = '(?:br|[kgcjtṭdḍbp]h|[kgcjtṭdḍp](?!h)|[mnyrlvshṅṇṃṁñḷ]|b(?![rh]))'
-        self.vowel_pattern = '[' + vowel_chars.lower() + ']'
+        self.vowel_pattern = f'[{vowel_chars.lower()}]'
 
-        segments_revoweled = [regex.sub(self.vowel_pattern + '$', self.vowel_pattern, segment, flags=regex.I)
-                              for segment in sorted(self.segments, key=len, reverse=True)]
+        segments_revoweled = [
+            regex.sub(
+                f'{self.vowel_pattern}$',
+                self.vowel_pattern,
+                segment,
+                flags=regex.I,
+            )
+            for segment in sorted(self.segments, key=len, reverse=True)
+        ]
 
-        self.segment_rex = regex.compile('({})'.format('|'.join(segments_revoweled)), flags=regex.I)
+        self.segment_rex = regex.compile(
+            f"({'|'.join(segments_revoweled)})", flags=regex.I
+        )
         self.alpha_rex = regex.compile(r'\p{alpha}+')
 
     def _fix_hyphens(self, word: str) -> str:
-        for i in range(0, 2):
-            word = regex.sub(r'-({})({})'.format(self.cons, self.cons), r'\1-\2', word, flags=regex.I)
-            word = regex.sub(r'([kgcjḍṭdtpb])-(h{})'.format(self.vowel_pattern), r'\1\2-', word, flags=regex.I)
+        for _ in range(0, 2):
+            word = regex.sub(f'-({self.cons})({self.cons})', r'\1-\2', word, flags=regex.I)
+            word = regex.sub(
+                f'([kgcjḍṭdtpb])-(h{self.vowel_pattern})',
+                r'\1\2-',
+                word,
+                flags=regex.I,
+            )
         word = regex.sub(r'^(\p{alpha}{0,3})-', r'\1', word)
         word = regex.sub(r'-(\p{alpha}{0,3})$', r'\1', word)
         return word

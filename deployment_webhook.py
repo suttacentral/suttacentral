@@ -86,5 +86,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     app = bottle.default_app()
-    if __name__ == '__main__':
-        bottle.run(addr=args.addr, port=args.port)
+if __name__ == '__main__':
+    bottle.run(addr=args.addr, port=args.port)
