@@ -1037,6 +1037,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
   #createMetaData() {
     const description = this.localize('interface:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
+    const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
+      'search:resultsFor'
+    )} ${this.searchQuery} in all languages`;
+
     const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
     )} <strong class="highlightTitle">${this.searchQuery}</strong> in all languages`;
@@ -1044,7 +1048,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
-          pageTitle: toolbarTitle,
+          pageTitle,
           title: `${searchResultsText} ${this.searchQuery}`,
           description,
           bubbles: true,
