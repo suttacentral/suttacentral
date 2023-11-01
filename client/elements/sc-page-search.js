@@ -144,7 +144,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       >
         <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
       </md-filled-text-field>
-      ${this.#searchOptionsTemplate()} ${this.#notSearchResultFoundForSelectedLanguagesTemplate()}
+      ${this.#searchOptionsTemplate()}
     `;
   }
 
@@ -181,19 +181,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (searchQuery) {
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
     }
-  }
-
-  #notSearchResultFoundForSelectedLanguagesTemplate() {
-    if (this.displayHintOfNoResultInSelectedLanguages) {
-      return html`
-        <aside>
-          We found no results in the languages in your search language settings. But we did find
-          results in ${this.languagesOfFoundResult}, so here they are. If you want to search in
-          these languages, add them via the “languages” icon in the toolbar.
-        </aside>
-      `;
-    }
-    return '';
   }
 
   get loadMoreButtonTemplate() {
@@ -632,7 +619,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
     if (this.displayedLanguages !== state.displayedLanguages) {
       this.displayedLanguages = state.searchOptions.displayedLanguages;
-      this.#filterSearchResultByLanguages();
     }
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
@@ -686,53 +672,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       // If the filter fits, add to visible items
       if (this.#belongsToFilterScope(items[i])) {
         this.visibleSearchResults.push(items[i]);
-      }
-    }
-  }
-
-  #filterSearchResultByLanguages() {
-    if (this.searchQuery?.includes('lang:')) {
-      return;
-    }
-    let searchResult = this.originLastSearchResults;
-    this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
-    if (
-      this.displayedLanguages &&
-      this.displayedLanguages.length > 0 &&
-      searchResult &&
-      searchResult.length > 0
-    ) {
-      const checkedLanguages = this.displayedLanguages.filter(item => item.checked);
-      searchResult = searchResult.filter(item => {
-        if (item.lang) {
-          return checkedLanguages.some(checkedLanguage => checkedLanguage.uid === item.lang);
-        }
-        return true;
-      });
-    }
-
-    if (!this.loadMoreButtonClicked) {
-      if (
-        this.originLastSearchResults.length > 0 &&
-        (!searchResult ||
-          searchResult.length === 0 ||
-          (searchResult.length === 1 && searchResult[0].category === 'dictionary'))
-      ) {
-        this.displayHintOfNoResultInSelectedLanguages = true;
-        const languages = this.originLastSearchResults
-          .reduce((acc, item) => {
-            const lang = item.full_lang;
-            if (acc.indexOf(lang) === -1) {
-              acc.push(lang);
-            }
-            return acc;
-          }, [])
-          .join(', ');
-        this.languagesOfFoundResult = languages;
-        this.visibleSearchResults = this.originLastSearchResults;
-      } else {
-        this.displayHintOfNoResultInSelectedLanguages = false;
-        this.visibleSearchResults = searchResult;
       }
     }
   }
