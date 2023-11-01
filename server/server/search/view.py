@@ -22,16 +22,15 @@ class InstantSearch(Resource):
         if restrict == 'all':
             restrict = None
 
+        selected_languages = request.args.get('selectedLanguages', '["en", "pli"]')
+
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
-        return instant_search_query(query, lang, restrict, limit, offset, matchpartial)
+        return instant_search_query(query, lang, restrict, limit, offset, matchpartial, selected_languages)
 
 
     def post(self):
-        """
-        Search for the given query in arangodb, very fast
-        """
         lang = request.args.get('language')
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
