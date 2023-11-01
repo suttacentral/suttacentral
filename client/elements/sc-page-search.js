@@ -138,7 +138,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         label="Input search term"
         required
         minlength="2"
-        maxlength="20"
+        maxlength="100"
         supporting-text="Search in all texts"
         @keypress=${this.#keypressHandler}
       >
@@ -691,7 +691,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #filterSearchResultByLanguages() {
-    if (this.originLastSearchResults.length < 15 || this.searchQuery?.includes('lang:')) {
+    if (this.searchQuery?.includes('lang:')) {
       return;
     }
     let searchResult = this.originLastSearchResults;
@@ -837,7 +837,19 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
     requestUrl = requestUrl + bindingChar + this.#getQueryString();
     try {
-      const searchResult = await (await fetch(requestUrl)).json();
+      let selectedLangs = store
+        .getState()
+        .searchOptions.displayedLanguages.filter(item => item.checked);
+      selectedLangs = selectedLangs.map(item => item.uid);
+      const searchResult = await (
+        await fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(selectedLangs),
+        })
+      ).json();
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {

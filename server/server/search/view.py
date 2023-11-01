@@ -28,6 +28,27 @@ class InstantSearch(Resource):
         return instant_search_query(query, lang, restrict, limit, offset, matchpartial)
 
 
+    def post(self):
+        """
+        Search for the given query in arangodb, very fast
+        """
+        lang = request.args.get('language')
+        limit = request.args.get('limit', 10)
+        offset = request.args.get('offset', 0)
+        query = request.args.get('query', None)
+        restrict = request.args.get('restrict', None)
+        matchpartial = request.args.get('matchpartial', 'false')
+        if restrict == 'all':
+            restrict = None
+
+        selected_languages = request.get_json()
+
+        if query is None:
+            return json.dumps({'error': '\'query\' param is required'}), 422
+
+        return instant_search_query(query, lang, restrict, limit, offset, matchpartial, selected_languages)
+
+
 class FetchPossibleNames(Resource):
     @cache.cached(timeout=600, key_prefix=make_cache_key)
     def get(self, lang):
