@@ -393,10 +393,13 @@ export class SCNavigation extends LitLocalized(LitElement) {
   #fetchCreatorInfo(uid) {
     const editionId = this.#fetchEditionId(uid);
     if (editionId) {
-      const creator = editionId.split('-')[2].split('_')[0];
-      const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
-      const creatorFullName = this.#parseCreatorFullName(creatorInfo);
-      this.creatorOfPublications.set(uid, creatorFullName);
+      const match = editionId.match(/-(\w+)_/);
+      if (match) {
+        const creator = match[1];
+        const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
+        const creatorFullName = this.#parseCreatorFullName(creatorInfo);
+        this.creatorOfPublications.set(uid, { creatorUid: creator, creatorFullName });
+      }
     }
   }
 
@@ -427,7 +430,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
         ${navigationPublicationInfoStyles}
       </style>
       <a
-        href="https://suttacentral.net/edition/${leaf.uid}/en/sujato"
+        href="/edition/${leaf.uid}/en/${this.creatorOfPublications.get(leaf.uid)?.creatorUid}"
         class="editions-nav-notice-link"
       >
         <section class="editions-nav-notice">
@@ -440,7 +443,9 @@ export class SCNavigation extends LitLocalized(LitElement) {
             <div class="editions-nav-notice-lead">
               <cite class="edition-title">${leaf.translated_name?.replace('Collection', '')}</cite>
               <span class="editions-nav-notice-by">by</span>
-              <span class="creator">${this.creatorOfPublications.get(leaf.uid)}</span>
+              <span class="creator"
+                >${this.creatorOfPublications.get(leaf.uid)?.creatorFullName}</span
+              >
             </div>
             <div class="editions-nav-notice-banner">A SuttaCentral Edition</div>
             <div class="editions-nav-notice-description">
