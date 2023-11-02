@@ -1,5 +1,6 @@
 import { html, css, LitElement } from 'lit';
-import algoliasearch  from 'algoliasearch/lite';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import algoliasearch from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
 import { stemmer as sanStemmer } from '@orama/stemmers/sanskrit'
 import { stopwords as sanStopwords } from '@orama/stopwords/sanskrit'
@@ -19,6 +20,7 @@ import { reduxActions } from './sc-redux-actions';
 
 const algoliaClient = algoliasearch('B3DSEV09M1', 'b3b5a4de4c16de7a500c7f324d77113b');
 const algoliaIndex = algoliaClient.initIndex('sc_ebs_names');
+const algoliaSegmentedTextIndex = algoliaClient.initIndex('sc_text_contents');
 
 let suttaDB = await create({
   schema: {
@@ -35,6 +37,8 @@ let suttaDB = await create({
     },
   },
 });
+
+let timeout = null;
 
 class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = css`
@@ -89,6 +93,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       --md-filled-text-field-input-text-size: var(--sc-size-md);
       --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
       --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
+      --md-filled-text-field-error-focus-supporting-text-color: var(--sc-primary-color);
+      --md-filled-text-field-error-hover-supporting-text-color: var(--sc-primary-color);
+      --md-filled-text-field-error-supporting-text-color: var(--sc-primary-color);
+      --md-filled-text-field-error-label-text-color: var(--sc-primary-color);
+      --md-filled-text-field-error-focus-label-text-color: var(--sc-primary-color);
+      --md-filled-text-field-error-hover-label-text-color: var(--sc-primary-color);
     }
 
     .ss-list {
@@ -343,6 +353,11 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     md-icon {
       cursor: pointer;
     }
+
+    .highlight {
+      color: var(--sc-primary-color-dark);
+      background-color: var(--sc-primary-color-light-transparent);
+    }
   `;
 
   static properties = {
@@ -373,7 +388,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   async #initInstantSearchData() {
-    return;
+    // return;
     try {
       this.loadingData = true;
       const { lastUpdatedDate } = store.getState().instantSearch;
@@ -493,8 +508,10 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   #generateURL(item) {
     const siteLang = store.getState().siteLanguage;
     let link = `/${item.uid}`;
-    if (item.nodeType === 'leaf' && this.priorityAuthors?.get(siteLang)) {
-      link = `/${item.uid}/${siteLang}/${this.priorityAuthors.get(siteLang)}`;
+    if (item.nodeType === 'leaf' && (this.priorityAuthors?.get(siteLang) || item.author_uid)) {
+      link = `/${item.uid}/${item.lang || siteLang}/${
+        item.author_uid || this.priorityAuthors.get(siteLang)
+      }`;
     }
     return link;
   }
@@ -559,7 +576,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
                   <span class="instant-nav-uid-title-wrap">
                     <span class="instant-nav-uid">${item.uid}</span>
-                    <span class="instant-nav-title">${item.title}</span>
+                    <span class="instant-nav-title">${unsafeHTML(item.title)}</span>
                   </span>
                 </span>
 
@@ -613,6 +630,36 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (e.key === 'Enter') {
       return;
     }
+    // if (suttaDB.data.docs.count === 0) {
+    //   this.#initInstantSearchData();
+    // }
+
+    // if (this.loadingData) {
+    //   return;
+    // }
+
+    this.searchQuery = e.target.value;
+
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      this.#instantSearch();
+    }, 500);
+  }
+
+  async #instantSearch() {
+    if (this.searchQuery.length >= 2) {
+      this.#searchByAlgolia();
+      this.#fulltextSearchByAlgolia();
+      if (this.items.length === 0) {
+        this.#searchByOrama();
+      }
+      this.requestUpdate();
+    } else {
+      this.items = [];
+    }
+  }
+
+  async #searchByOrama() {
     if (suttaDB.data.docs.count === 0) {
       this.#initInstantSearchData();
     }
@@ -621,19 +668,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       return;
     }
 
-    this.searchQuery = e.target.value;
-    await this.#instantSearch();
-  }
-
-  async #instantSearch() {
-    if (this.searchQuery.length >= 2) {
-      this.#searchByAlgolia();
-    } else {
-      this.items = [];
-    }
-  }
-
-  async #searchByOrama() {
     const searchResult = await search(suttaDB, {
       term: this.searchQuery,
       properties: '*',
@@ -674,7 +708,30 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       .then(({ hits }) => {
         this.items = hits;
         this.#mergedResultByUid();
-        return true;
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  #fulltextSearchByAlgolia() {
+    algoliaSegmentedTextIndex
+      .search(this.searchQuery, {
+        filters: `lang:${this.siteLanguage}`,
+        restrictSearchableAttributes: ['segmented_text'],
+      })
+      .then(({ hits }) => {
+        for (const hit of hits) {
+          this.items.push({
+            uid: hit.uid,
+            isRoot: hit.is_root,
+            nodeType: 'leaf',
+            title: hit._highlightResult.segmented_text.value,
+            lang: hit.lang,
+            author_uid: hit.author_uid,
+          });
+        }
+        this.requestUpdate();
       })
       .catch(err => {
         console.error(err);

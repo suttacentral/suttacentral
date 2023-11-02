@@ -18,10 +18,10 @@ class InstantSearch(Resource):
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
-        matchpartial = request.args.get('matchpartial', 'false')
         if restrict == 'all':
             restrict = None
 
+        matchpartial = request.args.get('matchpartial', 'false')
         selected_languages = request.args.get('selectedLanguages', '["en", "pli"]')
 
         if query is None:
@@ -36,10 +36,10 @@ class InstantSearch(Resource):
         offset = request.args.get('offset', 0)
         query = request.args.get('query', None)
         restrict = request.args.get('restrict', None)
-        matchpartial = request.args.get('matchpartial', 'false')
         if restrict == 'all':
             restrict = None
 
+        matchpartial = request.args.get('matchpartial', 'false')
         selected_languages = request.get_json()
 
         if query is None:

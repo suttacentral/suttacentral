@@ -69,6 +69,16 @@ def index_arangosearch():
     import_texts_to_arangodb()
 
 
+@app.cli.command('index_algoliasearch')
+def index_algoliasearch():
+    """
+    Create AlgoliaSearch index.
+    """
+    from search.algolia_texts import import_texts_to_algolia
+
+    import_texts_to_algolia()
+
+
 @app.cli.command('calculate_download_sizes')
 def calculate_download_sizes():
     """
