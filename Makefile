@@ -82,6 +82,9 @@ delete-database:
 index-arangosearch:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py index_arangosearch"
 
+index-algoliasearch:
+	@docker exec -t sc-flask bash -c "cd server && python manage.py index_algoliasearch"
+
 hyphenate:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py hyphenate"
 
