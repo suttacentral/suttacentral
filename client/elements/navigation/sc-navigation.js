@@ -398,7 +398,8 @@ export class SCNavigation extends LitLocalized(LitElement) {
         const creator = match[1];
         const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
         const creatorFullName = this.#parseCreatorFullName(creatorInfo);
-        this.creatorOfPublications.set(uid, { creatorUid: creator, creatorFullName });
+        const langIso = editionId.split('_')[0]?.split('-')?.reverse()[1];
+        this.creatorOfPublications.set(uid, { creatorUid: creator, creatorFullName, langIso });
       }
     }
   }
@@ -430,7 +431,8 @@ export class SCNavigation extends LitLocalized(LitElement) {
         ${navigationPublicationInfoStyles}
       </style>
       <a
-        href="/edition/${leaf.uid}/en/${this.creatorOfPublications.get(leaf.uid)?.creatorUid}"
+        href="/edition/${leaf.uid}/${this.creatorOfPublications.get(leaf.uid)?.langIso ||
+        'en'}/${this.creatorOfPublications.get(leaf.uid)?.creatorUid}"
         class="editions-nav-notice-link"
       >
         <section class="editions-nav-notice">
