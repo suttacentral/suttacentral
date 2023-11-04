@@ -377,6 +377,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchQuery = store.getState().searchQuery || '';
     this.siteLanguage = store.getState().siteLanguage;
     this.loadingData = false;
+    this.searchResult = [];
   }
 
   stateChanged(state) {
@@ -388,7 +389,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   async #initInstantSearchData() {
-    // return;
     try {
       this.loadingData = true;
       const { lastUpdatedDate } = store.getState().instantSearch;
@@ -511,7 +511,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (item.nodeType === 'leaf' && (this.priorityAuthors?.get(siteLang) || item.author_uid)) {
       link = `/${item.uid}/${item.lang || siteLang}/${
         item.author_uid || this.priorityAuthors.get(siteLang)
-      }`;
+      }${item.segmented_uid ? `#${item.segmented_uid}` : ''}`;
     }
     return link;
   }
@@ -571,11 +571,14 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         ${this.items.map(
           item =>
             html` <li @click=${this.hide}>
-              <a class="instant-nav-link" href=${this.#generateURL(item)}>
+              <a class="instant-nav-link" target="_blank" href=${this.#generateURL(item)}>
                 <span class="instant-nav">
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
                   <span class="instant-nav-uid-title-wrap">
-                    <span class="instant-nav-uid">${item.uid}</span>
+                    <span class="instant-nav-uid"
+                      >${unsafeHTML(item.acronym || item.uid)} ${item.name ? ` – ${item.name}` : ''}
+                      ${item.author ? ` – ${item.author}` : ''}</span
+                    >
                     <span class="instant-nav-title">${unsafeHTML(item.title)}</span>
                   </span>
                 </span>
@@ -630,19 +633,14 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (e.key === 'Enter') {
       return;
     }
-    // if (suttaDB.data.docs.count === 0) {
-    //   this.#initInstantSearchData();
-    // }
-
-    // if (this.loadingData) {
-    //   return;
-    // }
-
     this.searchQuery = e.target.value;
-
+    this.searchResult.length = 0;
+    this.items.length = 0;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
+      this.loadingData = true;
       this.#instantSearch();
+      this.loadingData = false;
     }, 500);
   }
 
@@ -650,10 +648,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (this.searchQuery.length >= 2) {
       this.#searchByAlgolia();
       this.#fulltextSearchByAlgolia();
-      if (this.items.length === 0) {
-        this.#searchByOrama();
-      }
-      this.requestUpdate();
     } else {
       this.items = [];
     }
@@ -706,11 +700,23 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         filters: `lang:${this.siteLanguage} OR isRoot:true`,
       })
       .then(({ hits }) => {
-        this.items = hits;
-        this.#mergedResultByUid();
+        const formattedHit = [];
+        for (const hit of hits) {
+          formattedHit.push({
+            uid: hit._highlightResult?.uid?.value || hit.uid,
+            isRoot: hit.isRoot,
+            nodeType: hit.nodeType,
+            title: hit._highlightResult?.title?.value,
+            lang: hit.lang,
+            author_uid: '',
+          });
+        }
+        this.searchResult = this.#mergedResultByUid(formattedHit);
+        return true;
       })
       .catch(err => {
         console.error(err);
+        return false;
       });
   }
 
@@ -722,25 +728,35 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       })
       .then(({ hits }) => {
         for (const hit of hits) {
-          this.items.push({
+          this.searchResult.push({
             uid: hit.uid,
+            acronym: hit.acronym,
             isRoot: hit.is_root,
             nodeType: 'leaf',
-            title: hit._highlightResult.segmented_text.value,
+            title: hit._highlightResult?.segmented_text?.value || hit.segmented_text,
             lang: hit.lang,
+            author: hit.author,
             author_uid: hit.author_uid,
+            segmented_uid: hit.segmented_uid?.split(':')[1] || hit.segmented_uid,
+            name: hit.name,
           });
         }
-        this.requestUpdate();
+        this.items = this.searchResult;
+        if (this.items.length === 0) {
+          this.#searchByOrama();
+        }
+        this.loadingData = false;
+        return true;
       })
       .catch(err => {
         console.error(err);
+        return false;
       });
   }
 
-  #mergedResultByUid() {
+  #mergedResultByUid(hits) {
     const result = Object.values(
-      this.items.reduce((acc, curr) => {
+      hits.reduce((acc, curr) => {
         if (acc[curr.uid]) {
           if (acc[curr.uid].isRoot !== curr.isRoot) {
             if (curr.isRoot) {
@@ -755,8 +771,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         return acc;
       }, {})
     );
-
-    this.items = result;
+    return result;
   }
 }
 
