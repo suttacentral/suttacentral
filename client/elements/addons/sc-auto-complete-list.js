@@ -2,12 +2,6 @@ import { html, css, LitElement } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import algoliasearch from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
-import { stemmer as sanStemmer } from '@orama/stemmers/sanskrit'
-import { stopwords as sanStopwords } from '@orama/stopwords/sanskrit'
-import { stopwords as enStopwords } from '@orama/stopwords/english'
-import { stopwords as deStopwords } from '@orama/stopwords/german'
-import { stemmer as enStemmer } from '@orama/stemmers/english';
-import { stemmer as deStemmer } from '@orama/stemmers/german';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
 
@@ -27,14 +21,6 @@ let suttaDB = await create({
     uid: 'string',
     rootTitle: 'string',
     translationTitle: 'string',
-  },
-  components: {
-    tokenizer: {
-      stemming: true,
-      sanStemmer,
-      stemmerSkipProperties: ['uid'],
-      stopWords: sanStopwords,
-    },
   },
 });
 
@@ -416,22 +402,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
           return { ...item, rootTitle, translationTitle };
         });
 
-        const stemmer = siteLanguage === 'de' ? deStemmer : enStemmer;
-        const stopWords = siteLanguage === 'de' ? deStopwords : enStopwords;
         suttaDB = null;
         suttaDB = await create({
           schema: {
             uid: 'string',
             rootTitle: 'string',
             translationTitle: 'string',
-          },
-          components: {
-            tokenizer: {
-              stemming: true,
-              stemmer,
-              stemmerSkipProperties: ['uid'],
-              stopWords,
-            },
           },
         });
         await insertMultiple(suttaDB, this.instant_search_data);
@@ -477,7 +453,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   updated(changedProps) {
-    if (changedProps.has('loadingData') && !this.loadingData && suttaDB.data.docs.count !== 0) {
+    if (changedProps.has('loadingData') && !this.loadingData && suttaDB?.data?.docs?.count !== 0) {
       this.searchQuery = this.shadowRoot.getElementById('search_input').value;
       this.#instantSearch();
     }
@@ -633,6 +609,15 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (e.key === 'Enter') {
       return;
     }
+
+    if (suttaDB?.data?.docs?.count === 0) {
+      await this.#initInstantSearchData();
+    }
+
+    if (this.loadingData) {
+      return;
+    }
+
     this.searchQuery = e.target.value;
     this.searchResult.length = 0;
     this.items.length = 0;
@@ -645,7 +630,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   async #instantSearch() {
-    if (this.searchQuery.length >= 2) {
+    if (this.searchQuery?.length >= 2) {
       this.#searchByAlgolia();
       this.#fulltextSearchByAlgolia();
     } else {
@@ -654,14 +639,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   async #searchByOrama() {
-    if (suttaDB.data.docs.count === 0) {
-      this.#initInstantSearchData();
-    }
-
-    if (this.loadingData) {
-      return;
-    }
-
     const searchResult = await search(suttaDB, {
       term: this.searchQuery,
       properties: '*',
@@ -729,11 +706,14 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       .then(({ hits }) => {
         for (const hit of hits) {
           this.searchResult.push({
-            uid: hit.uid,
+            uid: hit._highlightResult?.uid?.value || hit.uid,
             acronym: hit.acronym,
             isRoot: hit.is_root,
             nodeType: 'leaf',
-            title: hit._highlightResult?.segmented_text?.value || hit.segmented_text,
+            title:
+              hit._highlightResult?.segmented_text?.value ||
+              hit._highlightResult?.title?.value ||
+              hit.segmented_text,
             lang: hit.lang,
             author: hit.author,
             author_uid: hit.author_uid,
@@ -745,6 +725,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         if (this.items.length === 0) {
           this.#searchByOrama();
         }
+        this.requestUpdate();
         this.loadingData = false;
         return true;
       })
