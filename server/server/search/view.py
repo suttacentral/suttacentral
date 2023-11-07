@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from common.extensions import cache, make_cache_key
 from search.instant_search import instant_search_query
-from search.immediate_search import fetch_possible_result
+from search.immediate_search import fetch_possible_result, fulltext_search
 import json
 
 
@@ -52,3 +52,9 @@ class FetchPossibleNames(Resource):
     @cache.cached(timeout=600, key_prefix=make_cache_key)
     def get(self, lang):
         return fetch_possible_result(lang)
+
+
+class FulltextSearch(Resource):
+    @cache.cached(timeout=600, key_prefix=make_cache_key)
+    def get(self, query):
+        return fulltext_search(query)

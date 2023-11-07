@@ -44,3 +44,39 @@ def fetch_possible_result(lang):
     merged_list = list(merged_data.values())
 
     return merged_list, 200
+
+def fulltext_search(query):
+    db = get_db()
+    aql_fulltext_search = '''
+        FOR d IN segmented_text_instant_search
+    '''
+    aql_fulltext_search += f'SEARCH PHRASE(d.segmented_Text, "{query}", "common_text") OR LIKE(d.segmented_text, "%{query}%")'
+    aql_fulltext_search += '''
+    FILTER d.is_ebs == true
+    LIMIT 60
+    return {
+        uid: d.uid,
+        acronym: d.acronym,
+        name: d.name,
+        lang: d.lang,
+        author: d.author,
+        author_uid: d.author_uid,
+        is_root: d.is_root,
+        segmented_uid: d.segmented_uid,
+        segmented_text: d.segmented_text,
+        root_uid: d.root_uid
+    }
+    '''
+    data = list(db.aql.execute(aql_fulltext_search))
+    seen = set()
+    result = []
+    for item in data:
+        key = (item['uid'], item['author_uid'])
+        if key not in seen:
+            seen.add(key)
+            result.append(item)
+
+    if len(result) > 15:
+        result = result[:15]
+
+    return result
