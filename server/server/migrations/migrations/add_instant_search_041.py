@@ -135,6 +135,14 @@ class SecondMigration(Migration):
             },
         }
 
+        segmented_text_content_fields = {
+            "fields": {
+                "segmented_text": {
+                    "analyzers": ["identity"]
+                },
+            },
+        }
+
         view = {
             "links": {
                 "names": common_fields,
@@ -169,5 +177,21 @@ class SecondMigration(Migration):
             "countApproximate": "cost"
         }
 
+        segmented_text_content_view = {
+            "links": {
+                "segmented_text_contents": segmented_text_content_fields
+            },
+            "primarySort": [
+                {"field": "uid", "direction": "asc"},
+                {"field": "lang", "direction": "asc"}
+            ],
+            "storedValues": [
+                {"fields": ["uid", "lang", 'acronym', 'volpage', 'author_uid'], "compression": "lz4"}
+            ],
+            "conditionOptimization": "auto",
+            "countApproximate": "cost"
+        }
+
         get_db().create_arangosearch_view("instant_search", view)
+        get_db().create_arangosearch_view("segmented_text_instant_search", segmented_text_content_view)
         get_db().create_arangosearch_view("instant_volpage_search", volpage_view)

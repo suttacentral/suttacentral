@@ -1,7 +1,9 @@
 import { html, css, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import algoliasearch from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
+import { afterInsert as highlightAfterInsert, searchWithHighlight } from '@orama/plugin-match-highlight';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
 
@@ -290,6 +292,10 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       font-family: var(--sc-serif-font);
     }
 
+    .instant-nav-text {
+      font-family: var(--sc-serif-font);
+    }
+
     .instant-nav-prompt {
       display: inline-flex;
     }
@@ -546,16 +552,22 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         </div>
         ${this.items.map(
           item =>
-            html` <li @click=${this.hide}>
+            html` <li
+              @click=${this.hide}
+              class=${item.segmented_uid ? 'nav-segmented-text' : 'nav-title'}
+            >
               <a class="instant-nav-link" target="_blank" href=${this.#generateURL(item)}>
                 <span class="instant-nav">
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
                   <span class="instant-nav-uid-title-wrap">
                     <span class="instant-nav-uid"
-                      >${unsafeHTML(item.acronym || item.uid)} ${item.name ? ` – ${item.name}` : ''}
+                      >${unsafeHTML(item.acronym || item.highlight_uid || item.uid)}
+                      ${item.name ? ` – ${item.name}` : ''}
                       ${item.author ? ` – ${item.author}` : ''}</span
                     >
-                    <span class="instant-nav-title">${unsafeHTML(item.title)}</span>
+                    <span class=${item.segmented_uid ? 'instant-nav-text' : 'instant-nav-title'}
+                      >${unsafeHTML(item.title)}</span
+                    >
                   </span>
                 </span>
 
@@ -633,6 +645,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (this.searchQuery?.length >= 2) {
       this.#searchByAlgolia();
       this.#fulltextSearchByAlgolia();
+      if (this.items.length === 0) {
+        this.searchResult.length = 0;
+        this.#searchByOrama();
+        this.#fulltextSearchByArangoSearch();
+      }
+      this.requestUpdate();
     } else {
       this.items = [];
     }
@@ -642,7 +660,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     const searchResult = await search(suttaDB, {
       term: this.searchQuery,
       properties: '*',
-      limit: 20,
+      limit: 15,
       boost: {
         uid: 2,
         translationTitle: 1.5,
@@ -667,7 +685,11 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       hits = searchResultWithTypoTolerance.hits;
     }
     const copiedHits = JSON.parse(JSON.stringify(hits));
-    this.items = copiedHits.map(hit => hit.document);
+    this.searchResult = copiedHits.map(hit => hit.document);
+    for (const item of this.searchResult) {
+      item.highlight_uid = this.#highlight(item.uid, this.searchQuery);
+      item.title = this.#highlight(item.title, this.searchQuery);
+    }
   }
 
   #searchByAlgolia() {
@@ -680,7 +702,8 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         const formattedHit = [];
         for (const hit of hits) {
           formattedHit.push({
-            uid: hit._highlightResult?.uid?.value || hit.uid,
+            uid: hit.uid,
+            highlight_uid: hit._highlightResult?.uid?.value || hit.uid,
             isRoot: hit.isRoot,
             nodeType: hit.nodeType,
             title: hit._highlightResult?.title?.value,
@@ -700,13 +723,14 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   #fulltextSearchByAlgolia() {
     algoliaSegmentedTextIndex
       .search(this.searchQuery, {
-        filters: `lang:${this.siteLanguage}`,
+        filters: `lang:${this.siteLanguage} AND is_ebs:true`,
         restrictSearchableAttributes: ['segmented_text'],
       })
       .then(({ hits }) => {
         for (const hit of hits) {
           this.searchResult.push({
-            uid: hit._highlightResult?.uid?.value || hit.uid,
+            uid: hit.uid,
+            highlight_uid: hit._highlightResult?.uid?.value || hit.uid,
             acronym: hit.acronym,
             isRoot: hit.is_root,
             nodeType: 'leaf',
@@ -722,10 +746,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
           });
         }
         this.items = this.searchResult;
-        if (this.items.length === 0) {
-          this.#searchByOrama();
-        }
-        this.requestUpdate();
         this.loadingData = false;
         return true;
       })
@@ -733,6 +753,35 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
         console.error(err);
         return false;
       });
+  }
+
+  async #fulltextSearchByArangoSearch() {
+    const segmentedTextData = await (
+      await fetch(`${API_ROOT}/fulltextsearch/${this.searchQuery}`)
+    ).json();
+    for (const hit of segmentedTextData) {
+      this.searchResult.push({
+        uid: hit.uid,
+        acronym: hit.acronym,
+        isRoot: hit.is_root,
+        nodeType: 'leaf',
+        title: this.#highlight(hit.segmented_text, this.searchQuery),
+        lang: hit.lang,
+        author: hit.author,
+        author_uid: hit.author_uid,
+        segmented_uid: hit.segmented_uid?.split(':')[1] || hit.segmented_uid,
+        name: hit.name,
+      });
+    }
+    this.items = this.searchResult;
+  }
+
+  #highlight(text, searchTerm) {
+    if (!text || !searchTerm) {
+      return '';
+    }
+    const regex = new RegExp(searchTerm, 'gi');
+    return text.replace(regex, match => `<strong class="highlight">${match}</strong>`);
   }
 
   #mergedResultByUid(hits) {

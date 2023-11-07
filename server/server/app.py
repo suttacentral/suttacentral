@@ -59,7 +59,7 @@ from api.views import (
 from common.arangodb import ArangoDB
 from common.extensions import cache
 from config import app_config, swagger_config, swagger_template
-from search.view import InstantSearch, FetchPossibleNames
+from search.view import InstantSearch, FetchPossibleNames, FulltextSearch
 from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
 
 
@@ -140,6 +140,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(NavigationData, '/navigation_data/<string:uid>')
     api.add_resource(DataForHomepage, '/homepage_data')
     api.add_resource(FetchPossibleNames, '/possible_names/<string:lang>')
+    api.add_resource(FulltextSearch, '/fulltextsearch/<string:query>')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
