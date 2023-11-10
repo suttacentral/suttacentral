@@ -131,12 +131,12 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
         <div class="language-chooser-header-wrapper">
           <div class="menu-item-wrapper text-only">
             ${icon.arrow_left}
-            <span class="language-base-menu-head-main">Choose your language</span>
+            <span class="language-base-menu-head-main">${this.localize('interface:chooseYourLanguage')}</span>
           </div>
 
           <div class="menu-item-wrapper text-only">
             <span class="language-base-menu-head-secondary">
-              Where available, view translations and site UI in selected language.
+              ${this.localize('interface:chooseYourLanguageDescription')}
             </span>
           </div>
         </div>
