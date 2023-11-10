@@ -290,6 +290,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
     .instant-nav-title {
       font-family: var(--sc-serif-font);
+      font-style: italic;
     }
 
     .instant-nav-text {
@@ -349,6 +350,33 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     .highlight {
       color: var(--sc-primary-color-dark);
       background-color: var(--sc-primary-color-light-transparent);
+    }
+
+    .reference {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-xxs);
+      font-weight: 400;
+      font-style: normal;
+
+      display: inline-block;
+
+      box-sizing: border-box;
+      margin-right: 0.5em;
+      padding: 0.1em 0.5em;
+
+      text-align: left;
+      text-indent: 0;
+      text-transform: none;
+      white-space: nowrap;
+
+      letter-spacing: normal;
+
+      color: var(--sc-on-primary-secondary-text-color);
+      border: 1px solid var(--sc-border-color);
+      border-radius: 8px;
+      background-color: var(--sc-secondary-background-color);
+
+      font-variant-caps: normal;
     }
   `;
 
@@ -565,9 +593,12 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                       ${item.name ? ` – ${item.name}` : ''}
                       ${item.author ? ` – ${item.author}` : ''}</span
                     >
-                    <span class=${item.segmented_uid ? 'instant-nav-text' : 'instant-nav-title'}
-                      >${unsafeHTML(item.title)}</span
-                    >
+                    <span class=${item.segmented_uid ? 'instant-nav-text' : 'instant-nav-title'}>
+                      ${item.segmented_uid ? html`
+                        <span class="reference" title="SuttaCentral segment number">${item.segmented_uid}</span>
+                      ` : ''}
+                      ${unsafeHTML(item.title)}
+                    </span>
                   </span>
                 </span>
 
