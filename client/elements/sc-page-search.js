@@ -135,11 +135,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
       <md-filled-text-field
         id="search_input"
         type="search"
-        label="Input search term"
+        label="${this.localize('search:inputSearchTerm')}"
         required
         minlength="2"
         maxlength="100"
-        supporting-text="Search in all texts"
+        supporting-text="${this.localize('search:searchInAllText')}"
         @keypress=${this.#keypressHandler}
       >
         <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
@@ -152,7 +152,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return html`
       <div class="search-options">
         <label>
-          Match partial
+          ${this.localize('search:matchPartial')}
           <md-switch
             ?selected=${this.matchPartial}
             @change=${this.#onMatchTypeChanged}
@@ -1027,11 +1027,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultsText = this.localize('search:searchResultsText');
     const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} ${this.searchQuery} in all languages`;
+    )} ${this.searchQuery} ${this.localize('search:inAllLanguage')}`;
 
     const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} <strong class="highlightTitle">${this.searchQuery}</strong> in all languages`;
+    )} <strong class="highlightTitle">${this.searchQuery}</strong> ${this.localize('search:inAllLanguage')}`;
 
     document.dispatchEvent(
       new CustomEvent('metadata', {

@@ -541,7 +541,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       <md-filled-text-field
         id="search_input"
         type="search"
-        label="Search in all texts"
+        label="${this.localize('search:searchInAllText')}"
         @keyup=${e => this.#keyupHandler(e)}
         @keypress=${this.#keypressHandler}
       >
@@ -620,13 +620,13 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
           width="80px"
         />
         <md-icon-button
-          aria-label="Tips for search syntax"
+          aria-label="${this.localize('search:tipsForSearchSyntax')}"
           href="/search-filter"
           @click=${this.hide}
         >
           ${icon.info}
         </md-icon-button>
-        <span>Tips for search syntax</span>
+        <span>${this.localize('search:tipsForSearchSyntax')}</span>
       </span>
       <sc-progress .active=${this.loadingData} .type=${'circular'}></sc-progress>
       <md-icon-button @click=${this.hide}>${icon.close}</md-icon-button>
