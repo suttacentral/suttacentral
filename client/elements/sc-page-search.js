@@ -293,7 +293,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (
       entry?.highlight?.content[0] &&
       typeof entry.highlight.content[0] === 'string' &&
-      !entry.highlight.content[0].includes('<dfn>')
+      !entry.highlight.content[0].includes('<dfn')
     ) {
       entry.highlight.content[0] = `
         <dl id="${entry.highlight.detail[0].word}">
