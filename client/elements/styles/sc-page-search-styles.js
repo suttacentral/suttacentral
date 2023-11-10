@@ -252,6 +252,7 @@ export const SCPageSearchStyles = css`
 
   .dictionary {
     margin: 0;
+    margin-bottom: 3px;
     padding: 0 var(--sc-suttaplex-padding);
 
     border-radius: var(--sc-size-lg);

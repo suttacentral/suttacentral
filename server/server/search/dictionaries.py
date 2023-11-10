@@ -1,5 +1,5 @@
 from common.arangodb import get_db
-from common.queries import DICTIONARY_SEARCH_RESULT_FULL
+from common.queries import DICTIONARY_SEARCH_RESULT_FULL, DICTIONARY_FUZZY_SEARCH_RESULT_FULL
 
 
 def cleanly_truncate_html(html_string, length):
@@ -47,3 +47,26 @@ def search(word, language, truncate_length=1000):
         'url': f'/define/{word}',
         'category': 'dictionary',
     }
+
+def fuzzy_search(word, language, truncate_length=1000):
+    db = get_db()
+
+    results = (db.aql.execute(DICTIONARY_FUZZY_SEARCH_RESULT_FULL, bind_vars={'fuzzy_word': f"%{word}%", 'language': language})).next()
+    if (not results or len(results) == 0) and language != 'en':
+        results = (db.aql.execute(DICTIONARY_FUZZY_SEARCH_RESULT_FULL, bind_vars={'fuzzy_word': f"%{word}%", 'language': 'en'})).next()
+
+    if not results:
+        return
+
+    matching_entries = []
+    for result in results:
+        word = result['word']
+        content = cleanly_truncate_html(result['text'], truncate_length) or result['definition']
+        matching_entries.append({
+            'heading': {'division': result['dictname'], 'subhead': '', 'title': ''},
+            'highlight': {'content': [content], 'detail': [result]},
+            'url': f'/define/{word}',
+            'category': 'dictionary',
+        })
+
+    return matching_entries

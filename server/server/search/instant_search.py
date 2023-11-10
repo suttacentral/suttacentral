@@ -90,6 +90,7 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial, sel
     if total == 0:
         total = len(suttaplexs)
     lookup_dictionary(hits, lang, query, restrict)
+    fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
 
     root_names = fetch_root_names(db, hits)
     root_names_set = {root_name['uid']: root_name['name'] for root_name in root_names}
@@ -98,7 +99,7 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial, sel
         if uid in root_names_set:
             hit['root_name'] = root_names_set[uid]
 
-    return {'total': total, 'hits': hits, 'suttaplex': suttaplexs}
+    return {'total': total, 'hits': hits, 'suttaplex': suttaplexs, 'fuzzy_dictionary': fuzzy_dictionary_entries}
 
 
 def fetch_root_names(db, hits):
@@ -948,7 +949,8 @@ def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_t
 def cut_highlight(content, hit, query, is_segmented_text):
     if is_segmented_text:
         highlight = content
-        highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+        matching_string = get_matched_string(query, highlight)
+        highlight = re.sub(query, f'<strong class="highlight">{matching_string}</strong>', highlight, flags=re.I)
         if 'class="highlight"' in highlight:
             hit['highlight']['content'].append(highlight)
     else:
@@ -975,9 +977,17 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     if last_punctuation := re.search(r'[\.\?!…,”]', highlight[::-1]):
                         highlight = highlight[:len(highlight) - last_punctuation.start()]
 
-                highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+                matching_string = get_matched_string(query, highlight)
+                highlight = re.sub(query, f'<strong class="highlight">{matching_string}</strong>', highlight, flags=re.I)
                 hit['highlight']['content'].append(highlight)
                 hit['highlight']['content'] = list(set(hit['highlight']['content']))
+
+
+def get_matched_string(query, highlight):
+    pattern = re.escape(query)
+    matching_string = re.search(pattern, highlight, re.IGNORECASE)
+    matching_string = matching_string.group() if matching_string else query
+    return matching_string
 
 
 def is_pali(content):
@@ -1037,6 +1047,12 @@ def lookup_dictionary(hits, lang, query, restrict):
             hits.insert(0, dictionary_result)
 
 
+def fuzzy_lookup_dictionary(lang, query, restrict):
+    if not restrict or restrict == 'dictionaries':
+        if fuzzy_dictionary_result := dictionaries.fuzzy_search(query, lang):
+            return fuzzy_dictionary_result
+
+
 def fetch_suttaplex(db, lang, query):
     query_lower = query.lower()
     possible_uids = [
@@ -1090,9 +1106,18 @@ def fetch_suttaplexs_by_name(db, lang, name):
     suttaplexs = []
     for uid in possible_uids:
         suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
-        suttaplexs.append(suttaplex)
+        if suttaplex and name_exclude_sutta.lower() in suttaplex['translated_title'].lower():
+            suttaplexs.append(suttaplex)
 
-    return suttaplexs
+    return sorted(suttaplexs, key=custom_sort)
+
+
+def custom_sort(obj):
+    uid = obj["uid"]
+    if uid.startswith("dn") or uid.startswith("mn") or uid.startswith("sn") or uid.startswith("an"):
+        return (0, uid)
+    else:
+        return (1, uid)
 
 
 def is_chinese(uchar):

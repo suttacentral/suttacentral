@@ -239,7 +239,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
               ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
             </section>
             <section class="additional-search-results">
-              ${this.dictionaryTemplate} ${this.suttaplexTemplate}
+              ${this.dictionaryTemplate} ${this.fuzzyDictionaryTemplate} ${this.suttaplexTemplate}
             </section>
           </div>
         `;
@@ -265,7 +265,43 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!dictionaryItem) {
       return '';
     }
+    console.log(dictionaryItem);
     return html` ${this.#searchResultItemGeneralTemplate(dictionaryItem)} `;
+  }
+
+  get fuzzyDictionaryTemplate() {
+    if (!this.fuzzyDictionary) {
+      return '';
+    }
+    const dictionaryItem = this.visibleSearchResults.find(item => item.category === 'dictionary');
+    if (dictionaryItem) {
+      return '';
+    }
+    for (const entry of this.fuzzyDictionary) {
+      this.#touchUpDictionaryEntry(entry);
+    }
+    return html`
+        ${this.fuzzyDictionary?.map(
+          item => html`
+            ${this.#searchResultItemGeneralTemplate(item)}
+          `
+        )}
+    `;
+  }
+
+  #touchUpDictionaryEntry(entry) {
+    if (
+      entry?.highlight?.content[0] &&
+      typeof entry.highlight.content[0] === 'string' &&
+      !entry.highlight.content[0].includes('<dfn>')
+    ) {
+      entry.highlight.content[0] = `
+        <dl id="${entry.highlight.detail[0].word}">
+          <dt><dfn>${entry.highlight.detail[0].word}</dfn></dt>
+          <dd><p>${entry.highlight.content[0]}</p></dd>
+        </dl>
+      `;
+    }
   }
 
   #searchResultItemGeneralTemplate(item) {
@@ -821,6 +857,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #setProperties(searchResult) {
     this.suttaplex = searchResult.suttaplex;
+    this.fuzzyDictionary = searchResult.fuzzy_dictionary;
     this.lastSearchResults = searchResult.hits;
     this.originLastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;

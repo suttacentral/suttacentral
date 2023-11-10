@@ -53,7 +53,7 @@ def fulltext_search(query):
     aql_fulltext_search += f'SEARCH PHRASE(d.segmented_Text, "{query}", "common_text") OR LIKE(d.segmented_text, "%{query}%")'
     aql_fulltext_search += '''
     FILTER d.is_ebs == true
-    LIMIT 60
+    LIMIT 50
     return {
         uid: d.uid,
         acronym: d.acronym,

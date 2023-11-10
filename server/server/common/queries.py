@@ -1227,6 +1227,43 @@ LET dic_simple = (
 RETURN APPEND(dic_complex, dic_simple)
 '''
 
+DICTIONARY_FUZZY_SEARCH_RESULT_FULL = '''
+LET dic_complex = (
+    FOR doc IN dictionaries_complex
+        FILTER doc.to == @language AND (doc.word LIKE @fuzzy_word OR doc.word_ascii LIKE @fuzzy_word)
+        RETURN {
+            dictname: doc.dictname,
+            lang_to: doc.to,
+            lang_from: doc.from,
+            word: doc.word,
+            word_ascii: doc.word_ascii,
+            text: doc.text,
+            grammar: null,
+            definition: null,
+            xr: null
+        }
+)
+
+LET dic_simple = (
+    FOR doc IN dictionaries_simple
+        FILTER doc.to == @language AND doc.entry LIKE @fuzzy_word
+        RETURN {
+            dictname: doc.dictname,
+            lang_to: doc.to,
+            lang_from: doc.from,
+            word: doc.entry,
+            word_ascii: null,
+            text: '',
+            grammar: doc.grammar,
+            definition: doc.definition,
+            xr: doc.xr
+        }
+)
+
+RETURN APPEND(dic_complex, dic_simple)
+'''
+
+
 DICTIONARY_SIMILAR = '''
 LET words = FLATTEN(
     FOR doc IN v_dict SEARCH STARTS_WITH(doc.word_ascii, LEFT(@word_ascii, 1))
