@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import SCTopSheetCommon from './sc-top-sheet-common';
@@ -130,6 +131,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     super();
     this.isPublished = false;
     this.lang = store.getState().siteLanguage;
+    this.localizedStringsPath = '/localization/elements/interface';
   }
 
   stateChanged(state) {
@@ -206,79 +208,79 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     if (this.isPublished)
       return html`
         <section>
-          <h2>Publication details</h2>
+          <h2>${this.localize('publication:title')}</h2>
 
           <section class="text-metadata" about=${this.sourceURL}>
-            <p>This text is included in the following publication.</p>
+            <p>${this.localize('publication:titleDescription')}</p>
             <dl class="main-details">
-              <dt class="translation-title">Translation title</dt>
+              <dt class="translation-title">${this.localize('publication:translationTitle')}</dt>
               <dd class="translation-title" property="dc:title">${this.translationTitle}</dd>
-              <dt class="translation-subtitle">Translation subtitle</dt>
+              <dt class="translation-subtitle">${this.localize('publication:translationSubTitle')}</dt>
               <dd class="translation-subtitle" property="dc:title">${this.translationSubtitle}</dd>
               ${this.authorName
                 ? html`
-                    <dt class="author-name">Translator</dt>
+                    <dt class="author-name">${this.localize('publication:translator')}</dt>
                     <dd class="author-name" property="dc:creator">${this.authorName}</dd>
                   `
                 : ''}
               ${this.collaborator
                 ? html`
-                    <dt class="author-name">Translator</dt>
+                    <dt class="author-name">${this.localize('publication:translator')}</dt>
                     <dd class="author-name" property="dc:creator">${this.collaborator}</dd>
                   `
                 : ''}
             </dl>
             <dl class="translation-details">
-              <dt class="root-title">Root title</dt>
+              <dt class="root-title">${this.localize('publication:rootTitle')}</dt>
               <dd class="root-title" property="dc:title">${this.rootTitle}</dd>
-              <dt class="translation-language">Translation language</dt>
+              <dt class="translation-language">${this.localize('publication:translationLanguage')}</dt>
               <dd class="translation-language" property="dc:language">
                 ${this.translationLanguage}
               </dd>
-              <dt class="root-language">Root language</dt>
+              <dt class="root-language">${this.localize('publication:rootLanguage')}</dt>
               <dd class="root-language">${this.rootLanguage}</dd>
             </dl>
             <dl class="descriptive-details">
-              <dt class="translation-description">Translation description</dt>
+              <dt class="translation-description">${this.localize('publication:translationDescription')}</dt>
               <dd class="translation-description" property="dc:description">
                 ${this.translationDescription}
               </dd>
-              <dt class="translation-process">Translation process</dt>
+              <dt class="translation-process">${this.localize('publication:translationProcess')}</dt>
               <dd class="translation-process" property="dc:description">
                 ${this.translationProcess}
               </dd>
-              <dt class="publication-status">Publication status</dt>
+              <dt class="publication-status">${this.localize('publication:publicationStatus')}</dt>
               <dd class="publication-status">${this.publicationStatus}</dd>
             </dl>
             <dl class="edition">
-              <dt class="edition-number">Edition</dt>
+              <dt class="edition-number">${this.localize('publication:edition')}</dt>
               <dd class="edition-number">${this.editionNumber}</dd>
-              <dt class="publication-date">Publication date</dt>
+              <dt class="publication-date">${this.localize('publication:publicationDate')}</dt>
               <dd class="publication-date" property="dc:date">${this.publicationDate}</dd>
-              <dt class="publisher">Publisher</dt>
+              <dt class="publisher">${this.localize('publication:publisher')}</dt>
               <dd class="publisher" property="dc:publisher">${this.publisher}</dd>
-              <dt class="publication-type">Publication type</dt>
+              <dt class="publication-type">${this.localize('publication:publicationType')}</dt>
               <dd class="publication-type" property="dc:format">${this.publicationType}</dd>
-              <dt class="number-of_volumes">Number of volumes</dt>
+              <dt class="number-of_volumes">${this.localize('publication:numberOfVolumes')}</dt>
               <dd class="number-of_volumes">${this.numberOfVolumes}</dd>
             </dl>
             <dl class="metadata-details">
-              <dt class="text-uid">Text identifier (UID)</dt>
+              <dt class="text-uid">${this.localize('publication:textUid')}</dt>
               <dd class="text-uid" property="dc:identifier">${this.textUID}</dd>
               <dt class="edition-url">URL</dt>
               <dd class="edition-url">
                 <a href=${this.editionURL} target="_blank" rel="noopener">${this.editionURL}</a>
               </dd>
-              <dt class="source-url">Source</dt>
+              <dt class="source-url">${this.localize('publication:source')}</dt>
               <dd class="source-url">
                 <a href=${this.sourceURL} target="_blank" rel="noopener">${this.sourceURL}</a>
               </dd>
-              <dt class="publication-number">SuttaCentral publication number</dt>
+              <dt class="publication-number">${this.localize('publication:suttaCentralPublicationNumber')}</dt>
               <dd class="publication-number" property="dc:identifier">${this.publicationNumber}</dd>
             </dl>
           </section>
           <section class="license">
-            <h3>License</h3>
+            <h3>${this.localize('publication:license')}</h3>
             <p class="license-type" property="dc:rights">
               ${this.licenseType} (
               <span class="license-abbreviation">${this.licenseAbbreviation}</span>
@@ -298,23 +300,9 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
                   alt="CC0"
                 />
               </a>
-              To the extent possible under law,
-              <a rel="dct:publisher" href="https://suttacentral.net/">
-                <span property="dct:title">${this.authorName}</span>
-              </a>
-              has waived all copyright and related or neighboring rights to
-              <cite property="dct:title">${this.translationTitle}</cite>. This work is published
-              from
-              <span
-                property="vcard:Country"
-                datatype="dct:ISO3166"
-                content="AU"
-                about="https://suttacentral.net/licensing"
-              >
-                Australia </span
-              >.
+              ${unsafeHTML(this.localizeEx('publication:licenseDescription', 'authorName', this.authorName, 'translationTitle', this.translationTitle))}
             </p>
-            <h3>About this license</h3>
+            <h3>${this.localize('publication:aboutThisLicense')}</h3>
             <p class="license-statement">${this.licenseStatement}</p>
           </section>
         </section>

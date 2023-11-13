@@ -449,7 +449,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${this.paliLookupLanguage === dictLanguage.language}
                       @change=${this._onPaliLookupChanged}
                     ></md-radio>
-                    ${dictLanguage.language}
+                    ${dictLanguage.language === 'None' ? this.localize('dictionary:none') : dictLanguage.language}
                   </label>
                 `
               )}
@@ -496,7 +496,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${this.chineseLookupLanguage === dictLanguage.language}
                       @change=${this._onChineseLookupChanged}
                     ></md-radio>
-                    ${dictLanguage.language}
+                    ${dictLanguage.language === 'None' ? this.localize('dictionary:none') : dictLanguage.language}
                   </label>
                 `
               )}
@@ -583,7 +583,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${item.checked}
                       @change=${this._onReferenceDisplayTypeChanged}
                     ></md-checkbox>
-                    ${item.name}
+                    ${item.name === 'Main' ? this.localize('dictionary:referenceDisplayTypeMain') : item.name}
                   </label>
                 `
               )}
@@ -626,7 +626,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
               ?checked=${this.showHighlighting}
               @change=${this._onShowHighlightingChanged}
             ></md-checkbox>
-            Show Highlighting
+            ${this.localize('dictionary:showHighlightingTitle')}
           </label>
         </div>
       </div>
