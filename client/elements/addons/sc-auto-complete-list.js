@@ -388,6 +388,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
 
   constructor() {
     super();
+    this.localizedStringsPath = '/localization/elements/interface';
     this.items = [];
     this.priorityAuthors = new Map([
       ['en', 'sujato'],
@@ -620,13 +621,13 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
           width="80px"
         />
         <md-icon-button
-          aria-label="${this.localize('search:tipsForSearchSyntax')}"
+          aria-label="${this.localize('interface:tipsForSearchSyntax')}"
           href="/search-filter"
           @click=${this.hide}
         >
           ${icon.info}
         </md-icon-button>
-        <span>${this.localize('search:tipsForSearchSyntax')}</span>
+        <span>${this.localize('interface:tipsForSearchSyntax')}</span>
       </span>
       <sc-progress .active=${this.loadingData} .type=${'circular'}></sc-progress>
       <md-icon-button @click=${this.hide}>${icon.close}</md-icon-button>
@@ -676,11 +677,6 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (this.searchQuery?.length >= 2) {
       this.#searchByAlgolia();
       this.#fulltextSearchByAlgolia();
-      if (this.items.length === 0) {
-        this.searchResult.length = 0;
-        this.#searchByOrama();
-        this.#fulltextSearchByArangoSearch();
-      }
       this.requestUpdate();
     } else {
       this.items = [];
@@ -754,7 +750,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   #fulltextSearchByAlgolia() {
     algoliaSegmentedTextIndex
       .search(this.searchQuery, {
-        filters: `lang:${this.siteLanguage} AND is_ebs:true`,
+        filters: `(lang:${this.siteLanguage} OR is_root:true) AND is_ebs:true`,
         restrictSearchableAttributes: ['segmented_text'],
       })
       .then(({ hits }) => {
@@ -777,6 +773,11 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
           });
         }
         this.items = this.searchResult;
+        if (this.items.length === 0) {
+          this.searchResult.length = 0;
+          this.#searchByOrama();
+          this.#fulltextSearchByArangoSearch();
+        }
         this.loadingData = false;
         return true;
       })
