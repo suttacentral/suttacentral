@@ -17,7 +17,7 @@ RETURN r.uid
 POSSIBLE_SUTTA_BY_NAME = '''
 FOR d IN instant_search
     SEARCH PHRASE(d.name, @name, "common_text")
-    FILTER d.is_segmented != True AND d.lang == @lang
+    FILTER d.is_segmented != True AND (d.lang == @lang OR d.is_root == true)
 RETURN d.uid
 '''
 
@@ -60,7 +60,8 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial, sel
     }
     if restrict != 'dictionaries':
         search_aql, aql_condition_part = \
-            generate_general_query_aql(query, limit, offset, matchpartial, selected_languages)
+            generate_general_query_aql(
+                query, limit, offset, matchpartial, selected_languages)
 
         query_conditions = extract_query_conditions(query)
         if is_complex_query(query_conditions):
@@ -71,7 +72,8 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial, sel
                 compute_query_aql(search_aql, aql_condition_part, query_param)
 
         query = bind_param['query']
-        total = fetch_record_count(INSTANT_SEARCH_VIEW, aql_condition_part, query)
+        total = fetch_record_count(
+            INSTANT_SEARCH_VIEW, aql_condition_part, query)
         cursor = db.aql.execute(search_aql, bind_vars=bind_param)
         hits = list(cursor)
         if total == 0:
@@ -93,7 +95,8 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial, sel
     fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
 
     root_names = fetch_root_names(db, hits)
-    root_names_set = {root_name['uid']: root_name['name'] for root_name in root_names}
+    root_names_set = {root_name['uid']: root_name['name']
+                      for root_name in root_names}
     for hit in hits:
         uid = hit.get('uid')
         if uid in root_names_set:
@@ -316,6 +319,7 @@ def generate_reference_query_aql(query):
         }
         '''
 
+
 def generate_multi_keyword_query_aql(keywords, query_param):
     aql_condition_part = '''
     SEARCH (PHRASE(d.content, @query, "common_text") OR
@@ -387,7 +391,6 @@ def generate_and_query_aql(keywords, query_param):
     return full_aql, aql_condition_part
 
 
-
 def generate_not_query_aql(keywords, query_param):
     aql_condition_part = '''
     SEARCH 1==@query OR
@@ -437,7 +440,8 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
     '''
     aql_condition_part += aql_filter_part(query_param['matchpartial'])
     aql_condition_part += add_lang_condition(query_param['selected_languages'])
-    aql_condition_part += add_collection_condition_to_query_aql(query_conditions)
+    aql_condition_part += add_collection_condition_to_query_aql(
+        query_conditions)
 
     full_aql = AQL_INSTANT_SEARCH_FIRST_PART + aql_condition_part + '''
     ''' + aql_limit_part(query_param['limit'], query_param['offset']) + '''
@@ -526,11 +530,13 @@ def aql_limit_part(limit, offset):
 def aql_filter_part(matchpartial):
     return '' if matchpartial == 'true' else ' FILTER d.is_segmented != True  '
 
+
 def add_lang_condition(selected_languages):
     if isinstance(selected_languages, list) and len(selected_languages) > 0:
         return f'AND (d.lang IN {selected_languages}) '
     else:
         return ''
+
 
 def aql_sort_part():
     return 'SORT d.lang == @lang ? -1 : 1,' \
@@ -579,7 +585,8 @@ def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
         suttaplexs.extend(fetch_suttaplexs_by_name(db, lang, query))
 
     for suttaplex in suttaplexs:
-        suttaplex['verseNo'] = compute_verse_no(suttaplex['uid'], suttaplex['verseNo'])
+        suttaplex['verseNo'] = compute_verse_no(
+            suttaplex['uid'], suttaplex['verseNo'])
 
     return suttaplexs
 
@@ -602,7 +609,8 @@ def merge_duplicate_hits(hits):
         if 'uid' in item and 'author_uid' in item and 'highlight' in item and 'content' in item['highlight']:
             key = (item['uid'], item['author_uid'])
             if key in merged:
-                merged[key]['highlight']['content'].extend(item['highlight']['content'])
+                merged[key]['highlight']['content'].extend(
+                    item['highlight']['content'])
             else:
                 merged[key] = item
         else:
@@ -617,7 +625,8 @@ def is_complex_query(query_conditions):
 
 
 def compute_complex_query_aql(query_conditions, query_param):
-    search_aql, aql_condition_part = generate_query_aql_by_conditions(query_conditions, query_param)
+    search_aql, aql_condition_part = generate_query_aql_by_conditions(
+        query_conditions, query_param)
     bind_param = {
         'query': query_param['query'],
         'lang': query_param['lang']
@@ -627,13 +636,16 @@ def compute_complex_query_aql(query_conditions, query_param):
 
 def compute_query_aql(search_aql, aql_condition_part, query_param):
     search_aql, aql_condition_part = \
-        generate_aql_by_not_operator(search_aql, aql_condition_part, query_param)
+        generate_aql_by_not_operator(
+            search_aql, aql_condition_part, query_param)
 
     search_aql, aql_condition_part = \
-        generate_aql_by_and_operator(search_aql, aql_condition_part, query_param)
+        generate_aql_by_and_operator(
+            search_aql, aql_condition_part, query_param)
 
     search_aql, aql_condition_part = \
-        generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param)
+        generate_aql_by_chinese_keywords(
+            search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
         generate_aql_by_author(search_aql, aql_condition_part, query_param)
@@ -645,16 +657,19 @@ def compute_query_aql(search_aql, aql_condition_part, query_param):
         generate_aql_by_reference(search_aql, aql_condition_part, query_param)
 
     search_aql, aql_condition_part = \
-        generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part, query_param)
+        generate_aql_by_multi_chinese_keywords(
+            search_aql, aql_condition_part, query_param)
 
     search_aql, aql_condition_part = \
-        generate_aql_by_or_operator(search_aql, aql_condition_part, query_param)
+        generate_aql_by_or_operator(
+            search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
         generate_aql_by_collection(search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
-        generate_aql_by_list_authors(search_aql, aql_condition_part, query_param)
+        generate_aql_by_list_authors(
+            search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
         generate_aql_by_title(search_aql, aql_condition_part, query_param)
@@ -693,7 +708,8 @@ def sort_hits(hits):
                     "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
                     "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
 
-    sorted_lst = sorted(hits, key=lambda x: any(char in x['uid'] for char in ebs_prefixes), reverse=True)
+    sorted_lst = sorted(hits, key=lambda x: any(
+        char in x['uid'] for char in ebs_prefixes), reverse=True)
     # Prioritize items that contain both numbers and characters
     sorted_lst = sorted(sorted_lst, key=lambda x: uid_key(x['uid']))
 
@@ -712,7 +728,8 @@ def sort_hits(hits):
 
 
 def sort_search_result(search_result):
-    search_result = sorted(search_result, key=lambda x: len(x['highlight']['content']), reverse=True)
+    search_result = sorted(search_result, key=lambda x: len(
+        x['highlight']['content']), reverse=True)
     return search_result
 
 
@@ -743,7 +760,8 @@ def get_uid(dic):
 
 def generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param):
     if is_chinese(query_param['query']) and ' ' not in query_param['query']:
-        query_list = [zhconv_convert(query_param['query'], 'zh-hant'), zhconv_convert(query_param['query'], 'zh-hans')]
+        query_list = [zhconv_convert(
+            query_param['query'], 'zh-hant'), zhconv_convert(query_param['query'], 'zh-hans')]
         search_aql, aql_condition_part = generate_chinese_keyword_query_aql(query_list, query_param['limit'],
                                                                             query_param['offset'],
                                                                             query_param['matchpartial'],
@@ -754,7 +772,8 @@ def generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param
 def generate_aql_by_collection(search_aql, aql_condition_part, query_param):
     if query_param['query'].startswith(constant.CMD_IN):
         query_param['query'] = query_param['query'][3:].lower()
-        search_aql, aql_condition_part = generate_collection_query_aql(query_param)
+        search_aql, aql_condition_part = generate_collection_query_aql(
+            query_param)
     return query_param, search_aql, aql_condition_part
 
 
@@ -775,7 +794,8 @@ def generate_aql_by_lang(search_aql, aql_condition_part, query_param):
         else:
             keyword_list.append(keyword)
 
-        search_aql, aql_condition_part = generate_lang_query_aql(lang, keyword_list, operator, query_param)
+        search_aql, aql_condition_part = generate_lang_query_aql(
+            lang, keyword_list, operator, query_param)
     return query_param, search_aql, aql_condition_part
 
 
@@ -790,24 +810,28 @@ def generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part, query
     if is_chinese(query_param['query']) and ' ' in query_param['query']:
         if ' AND ' not in query_param['query']:
             query_list = query_param['query'].split(' ')
-            search_aql, aql_condition_part = generate_multi_keyword_query_aql(query_list, query_param)
+            search_aql, aql_condition_part = generate_multi_keyword_query_aql(
+                query_list, query_param)
         else:
             query_list = query_param['query'].split(' AND ')
-            search_aql, aql_condition_part = generate_and_query_aql(query_list, query_param)
+            search_aql, aql_condition_part = generate_and_query_aql(
+                query_list, query_param)
     return search_aql, aql_condition_part
 
 
 def generate_aql_by_or_operator(search_aql, aql_condition_part, query_param):
     if ' OR ' in query_param['query']:
         query_list = query_param['query'].split(' OR ')
-        search_aql, aql_condition_part = generate_multi_keyword_query_aql(query_list, query_param)
+        search_aql, aql_condition_part = generate_multi_keyword_query_aql(
+            query_list, query_param)
     return search_aql, aql_condition_part
 
 
 def generate_aql_by_and_operator(search_aql, aql_condition_part, query_param):
     if ' AND ' in query_param['query']:
         query_list = query_param['query'].split(' AND ')
-        search_aql, aql_condition_part = generate_and_query_aql(query_list, query_param)
+        search_aql, aql_condition_part = generate_and_query_aql(
+            query_list, query_param)
     return search_aql, aql_condition_part
 
 
@@ -817,7 +841,8 @@ def generate_aql_by_not_operator(search_aql, aql_condition_part, query_param):
         and 'AND' not in query_param['query']
         and 'OR' not in query_param['query']
     ):
-        search_aql, aql_condition_part = generate_not_query_aql(query_param['query'], query_param)
+        search_aql, aql_condition_part = generate_not_query_aql(
+            query_param['query'], query_param)
     return search_aql, aql_condition_part
 
 
@@ -874,7 +899,8 @@ def generate_aql_by_reference(search_aql, aql_condition_part, query_param):
 def cut_highlights_when_content_is_none(hit, query):
     hit['highlight'] = {'content': []}
     highlight = hit['name']
-    highlight = re.sub(query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
+    highlight = re.sub(
+        query, f'<strong class="highlight">{query}</strong>', highlight, flags=re.I)
     hit['highlight']['content'].append(highlight)
 
 
@@ -884,7 +910,8 @@ def cut_highlights(content, hit, query, is_segmented_text):
         query = query.split(' NOT ')[0]
     query_conditions = extract_query_conditions(query)
     if is_chinese(query):
-        keyword_list = query.split(' AND ') if ' AND ' in query else query.split(' ')
+        keyword_list = query.split(
+            ' AND ') if ' AND ' in query else query.split(' ')
         for keyword in keyword_list:
             zhhant_keyword = zhconv_convert(keyword, 'zh-hant')
             zhhans_keyword = zhconv_convert(keyword, 'zh-hans')
@@ -898,19 +925,23 @@ def cut_highlights(content, hit, query, is_segmented_text):
         keyword_list = query_conditions['or']
         keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
         for keyword in keyword_list:
-            highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+            highlight_by_multiple_possible_keyword(
+                content, hit, keyword, is_segmented_text)
     elif ('author' in query_conditions or 'collection' in query_conditions) and 'and' in query_conditions:
         keyword_list = query_conditions['and']
         for keyword in keyword_list:
-            highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+            highlight_by_multiple_possible_keyword(
+                content, hit, keyword, is_segmented_text)
     elif not is_chinese(query) and (' OR ' in query) and constant.CMD_LANG not in query:
         keyword_list = query.split(' OR ')
         for keyword in keyword_list:
-            highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+            highlight_by_multiple_possible_keyword(
+                content, hit, keyword, is_segmented_text)
     elif not is_chinese(query) and (' AND ' in query) and constant.CMD_LANG not in query:
         keyword_list = query.split(' AND ')
         for keyword in keyword_list:
-            highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+            highlight_by_multiple_possible_keyword(
+                content, hit, keyword, is_segmented_text)
     elif constant.CMD_LANG in query:
         lang_param = extract_lang_param(query)
         if len(lang_param) == 2:
@@ -923,16 +954,19 @@ def cut_highlights(content, hit, query, is_segmented_text):
             else:
                 keyword_list.append(keyword)
             for keyword in keyword_list:
-                highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text)
+                highlight_by_multiple_possible_keyword(
+                    content, hit, keyword, is_segmented_text)
     else:
-        highlight_by_multiple_possible_keyword(content, hit, query, is_segmented_text)
+        highlight_by_multiple_possible_keyword(
+            content, hit, query, is_segmented_text)
 
 
 def extend_chinese_keywords(keyword_list, query_conditions):
     keywords = []
     for keyword in query_conditions['or']:
         if is_chinese(keyword):
-            keywords.extend([zhconv_convert(keyword, 'zh-hant'), zhconv_convert(keyword, 'zh-hans')])
+            keywords.extend([zhconv_convert(keyword, 'zh-hant'),
+                            zhconv_convert(keyword, 'zh-hans')])
     keyword_list.extend(keywords)
     keyword_list = list(set(keyword_list))
     return keyword_list
@@ -950,7 +984,8 @@ def cut_highlight(content, hit, query, is_segmented_text):
     if is_segmented_text:
         highlight = content
         matching_string = get_matched_string(query, highlight)
-        highlight = re.sub(query, f'<strong class="highlight">{matching_string}</strong>', highlight, flags=re.I)
+        highlight = re.sub(
+            query, f'<strong class="highlight">{matching_string}</strong>', highlight, flags=re.I)
         if 'class="highlight"' in highlight:
             hit['highlight']['content'].append(highlight)
     else:
@@ -958,10 +993,12 @@ def cut_highlight(content, hit, query, is_segmented_text):
         if is_chinese(query):
             positions = [m.start() for m in re.finditer(query, content, re.I)]
         else:
-            positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.I)]
+            positions = [m.start() for m in re.finditer(
+                r"\b" + query + r"\b", content, re.I)]
             if not positions and is_pali(content):
                 content = convert_to_standard_roman(content)
-                positions = [m.start() for m in re.finditer(r"\b" + query + r"\b", content, re.I)]
+                positions = [m.start() for m in re.finditer(
+                    r"\b" + query + r"\b", content, re.I)]
 
         if content is not None and positions:
             for position in positions[:3]:
@@ -975,12 +1012,15 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     highlight = content[start:end]
                     highlight = re.sub(r'^.*?[\.\?!…“]', '', highlight)
                     if last_punctuation := re.search(r'[\.\?!…,”]', highlight[::-1]):
-                        highlight = highlight[:len(highlight) - last_punctuation.start()]
+                        highlight = highlight[:len(
+                            highlight) - last_punctuation.start()]
 
                 matching_string = get_matched_string(query, highlight)
-                highlight = re.sub(query, f'<strong class="highlight">{matching_string}</strong>', highlight, flags=re.I)
+                highlight = re.sub(
+                    query, f'<strong class="highlight">{matching_string}</strong>', highlight, flags=re.I)
                 hit['highlight']['content'].append(highlight)
-                hit['highlight']['content'] = list(set(hit['highlight']['content']))
+                hit['highlight']['content'] = list(
+                    set(hit['highlight']['content']))
 
 
 def get_matched_string(query, highlight):
@@ -1082,7 +1122,8 @@ def fetch_suttaplexs(db, lang, hits):
     uids = list({item['uid'] for item in hits})
     suttaplexs = []
     for uid in uids:
-        suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
+        suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={
+                         'uid': uid, 'language': lang}))[0]
         suttaplexs.append(suttaplex)
     return suttaplexs
 
@@ -1095,18 +1136,33 @@ def fetch_suttaplexs_by_name(db, lang, name):
     possible_uids = list(
         list(
             db.aql.execute(
-                POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': name_exclude_sutta, 'lang': lang}
+                POSSIBLE_SUTTA_BY_NAME,
+                bind_vars={'name': name_exclude_sutta, 'lang': lang}
             )
         )
     )
 
-    possible_uids.extend(list(db.aql.execute(POSSIBLE_SUTTA_BY_NAME, bind_vars={'name': f'{name_exclude_sutta}sutta', 'lang': lang})))
+    possible_uids.extend(
+        list(db.aql.execute(
+            POSSIBLE_SUTTA_BY_NAME,
+            bind_vars={
+                'name': f'{name_exclude_sutta}sutta',
+                'lang': lang
+            }
+        ))
+    )
     possible_uids = list(set(possible_uids))
 
     suttaplexs = []
     for uid in possible_uids:
-        suttaplex = list(db.aql.execute(SUTTAPLEX_LIST, bind_vars={'uid': uid, 'language': lang}))[0]
-        if suttaplex and name_exclude_sutta.lower() in suttaplex['translated_title'].lower():
+        suttaplex = list(db.aql.execute(
+            SUTTAPLEX_LIST,
+            bind_vars={'uid': uid, 'language': lang}
+        ))[0]
+        if suttaplex and (
+            name_exclude_sutta.lower() in suttaplex['translated_title'].lower() or
+            name_exclude_sutta.lower() in suttaplex['original_title'].lower()
+        ):
             suttaplexs.append(suttaplex)
 
     return sorted(suttaplexs, key=custom_sort)
@@ -1114,10 +1170,7 @@ def fetch_suttaplexs_by_name(db, lang, name):
 
 def custom_sort(obj):
     uid = obj["uid"]
-    if uid.startswith("dn") or uid.startswith("mn") or uid.startswith("sn") or uid.startswith("an"):
-        return (0, uid)
-    else:
-        return (1, uid)
+    return (0, uid) if uid.startswith(("dn", "mn", "sn", "an")) else (1, uid)
 
 
 def is_chinese(uchar):
@@ -1150,19 +1203,20 @@ def extract_rest_keywords(result, param):
     rest_param = ''
     if 'author' in result and 'collection' not in result:
         author_param = 'author:' + result["author"]
-        rest_param = param[param.find(author_param) + len(author_param) :]
+        rest_param = param[param.find(author_param) + len(author_param):]
 
     if 'author' not in result and 'collection' in result:
         collection_param = 'in:' + result["collection"]
-        rest_param = param[param.find(collection_param) + len(collection_param) :]
+        rest_param = param[param.find(
+            collection_param) + len(collection_param):]
 
     if 'author' in result and 'collection' in result:
         author_param = 'author:' + result["author"]
         collection_param = 'in:' + result["collection"]
         rest_param = (
-            param[param.find(author_param) + len(author_param) :]
+            param[param.find(author_param) + len(author_param):]
             if param.find(author_param) > param.find(collection_param)
-            else param[param.find(collection_param) + len(collection_param) :]
+            else param[param.find(collection_param) + len(collection_param):]
         )
 
     if 'OR' in rest_param:
@@ -1190,7 +1244,8 @@ def format_volpage(volpage):
 
 
 def roman_to_int(roman):
-    roman_dict = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    roman_dict = {"I": 1, "V": 5, "X": 10,
+                  "L": 50, "C": 100, "D": 500, "M": 1000}
     result = 0
     for i in range(len(roman)):
         if i == len(roman) - 1 or roman_dict[roman[i].upper()] >= roman_dict[roman[i + 1].upper()]:
