@@ -44,7 +44,8 @@ RETURN {
 '''
 
 
-def instant_search_query(query, lang, restrict, limit, offset, matchpartial, selected_languages):
+def instant_search_query(query, lang, restrict, limit, offset, matchpartial,
+                         selected_languages):
     db = get_db()
     query = query.strip()
     hits = []
@@ -102,7 +103,12 @@ def instant_search_query(query, lang, restrict, limit, offset, matchpartial, sel
         if uid in root_names_set:
             hit['root_name'] = root_names_set[uid]
 
-    return {'total': total, 'hits': hits, 'suttaplex': suttaplexs, 'fuzzy_dictionary': fuzzy_dictionary_entries}
+    return {
+        'total': total,
+        'hits': hits,
+        'suttaplex': suttaplexs,
+        'fuzzy_dictionary': fuzzy_dictionary_entries
+    }
 
 
 def fetch_root_names(db, hits):
@@ -113,11 +119,13 @@ def fetch_root_names(db, hits):
 
 def remove_hits_if_uid_in_suttaplexs(hits, suttaplexs):
     uids = [suttaplex['uid'] for suttaplex in suttaplexs]
-    hits = [hit for hit in hits if 'category' not in hit and hit['uid'] not in uids]
+    hits = [hit for hit in hits
+            if 'category' not in hit and hit['uid'] not in uids]
     return hits
 
 
-def generate_general_query_aql(query, limit, offset, matchpartial, selected_languages):
+def generate_general_query_aql(query, limit, offset, matchpartial,
+                               selected_languages):
     aql_condition_part = '''
     SEARCH (PHRASE(d.content, @query, "common_text")
         OR PHRASE(d.name, @query, "common_text")
@@ -125,11 +133,16 @@ def generate_general_query_aql(query, limit, offset, matchpartial, selected_lang
     '''
 
     if matchpartial == 'true':
-        aql_condition_part += f'OR LIKE(d.volpage, "%{query}%") OR LIKE(d.name, "%{query}%") '
+        aql_condition_part += (
+            f'OR LIKE(d.volpage, "%{query}%") '
+            f'OR LIKE(d.name, "%{query}%") '
+        )
         if possible_pali_words := [query]:
             aql_condition_part += ''' OR ('''
             for pali_word in possible_pali_words:
-                aql_condition_part += f'LIKE(d.segmented_text, "%{pali_word}%") OR '
+                aql_condition_part += (
+                    f'LIKE(d.segmented_text, "%{pali_word}%") OR '
+                )
             aql_condition_part = aql_condition_part[:-4]
             aql_condition_part += '''))'''
     else:
@@ -208,16 +221,20 @@ def generate_lang_query_aql(lang, keyword_list, operator, query_param):
     aql_condition_part = f'SEARCH (d.lang == "{lang}" OR d.name==@query) AND '
     if operator == 'OR':
         for keyword in keyword_list:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR ' \
-                                  f'LIKE(d.segmented_text, "%{keyword}%") OR ' \
-                                  f'LIKE(d.name, "%{keyword}%")) OR '
+            aql_condition_part += (
+                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'LIKE(d.name, "%{keyword}%")) OR '
+            )
         aql_condition_part = aql_condition_part[:-4]
 
     if operator == 'AND':
         for keyword in keyword_list:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR ' \
-                                  f'LIKE(d.segmented_text, "%{keyword}%") OR ' \
-                                  f'LIKE(d.name, "%{keyword}%")) AND '
+            aql_condition_part += (
+                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'LIKE(d.name, "%{keyword}%")) AND '
+            )
         aql_condition_part = aql_condition_part[:-5]
 
     aql_condition_part += aql_filter_part(query_param['matchpartial'])
@@ -234,11 +251,15 @@ def generate_lang_query_aql(lang, keyword_list, operator, query_param):
 def generate_volpage_query_aql(possible_volpages):
     aql = '''
     FOR d IN instant_volpage_search
-    SEARCH (PHRASE(d.volpage, @query, "common_text") OR PHRASE(d.alt_volpage, @query, "common_text") OR
+    SEARCH (PHRASE(d.volpage, @query, "common_text")
+        OR PHRASE(d.alt_volpage, @query, "common_text") OR
     '''
 
     for volpage in possible_volpages:
-        aql += f'PHRASE(d.volpage, "{volpage}", "common_text") OR PHRASE(d.alt_volpage, "{volpage}", "common_text") OR '
+        aql += (
+            f'PHRASE(d.volpage, "{volpage}", "common_text") OR '
+            f'PHRASE(d.alt_volpage, "{volpage}", "common_text") OR '
+        )
     aql = aql[:-4]
     aql += '''
 
@@ -284,7 +305,8 @@ def generate_volpage_query_aql(possible_volpages):
 def generate_reference_query_aql(query):
     return '''
         FOR d IN instant_volpage_search
-        SEARCH (PHRASE(d.volpage, @query, "common_text") OR PHRASE(d.alt_volpage, @query, "common_text"))
+        SEARCH (PHRASE(d.volpage, @query, "common_text")
+                OR PHRASE(d.alt_volpage, @query, "common_text"))
 
         SORT d.uid
 
@@ -327,22 +349,30 @@ def generate_multi_keyword_query_aql(keywords, query_param):
     aql_condition_part += '''('''
     for keyword in keywords:
         if ' NOT ' not in keyword:
-            aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") AND '
+            aql_condition_part += (
+                f'PHRASE(d.content, "{keyword}", "common_text") AND '
+            )
         else:
             keyword_exclude_not = keyword.split(' NOT ')[0]
-            aql_condition_part += f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") AND '
+            aql_condition_part += (
+                f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") AND '
+            )
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
     aql_condition_part += ''' OR ('''
     for keyword in keywords:
         if ' NOT ' not in keyword:
-            aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") OR ' \
-                                  f'LIKE(d.segmented_text, "%{keyword}%") OR '
+            aql_condition_part += (
+                f'PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword}%") OR '
+            )
         else:
             keyword_exclude_not = keyword.split(' NOT ')[0]
-            aql_condition_part += f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR ' \
-                                  f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
+            aql_condition_part += (
+                f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
+            )
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
 
@@ -368,12 +398,16 @@ def generate_and_query_aql(keywords, query_param):
 
     for keyword in keywords:
         if ' NOT ' not in keyword:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR' \
-                                  f' LIKE(d.segmented_text, "%{keyword}%")) AND '
+            aql_condition_part += (
+                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword}%")) AND '
+            )
         else:
             keyword_exclude_not = keyword.split(' NOT ')[0]
-            aql_condition_part += f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR' \
-                                  f' LIKE(d.segmented_text, "%{keyword_exclude_not}%")) AND '
+            aql_condition_part += (
+                f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) AND '
+            )
 
     aql_condition_part = aql_condition_part[:-5]
 
@@ -397,8 +431,10 @@ def generate_not_query_aql(keywords, query_param):
     '''
 
     keyword_exclude_not = keywords.split(' NOT ')[0]
-    aql_condition_part += f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR' \
-                          f' LIKE(d.segmented_text, "%{keyword_exclude_not}%")) '
+    aql_condition_part += (
+        f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+        f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) '
+    )
 
     if not_keywords := extract_not_param(query_param['query']):
         aql_condition_part += aql_not_part(not_keywords)
@@ -422,12 +458,20 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
         keyword_list = query_conditions['or']
         keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
         for keyword in keyword_list:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%") OR d.uid == "{keyword}" OR PHRASE(d.name,  "{keyword}", "common_text")) OR '
+            aql_condition_part += (
+                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'd.uid == "{keyword}" OR '
+                f'PHRASE(d.name,  "{keyword}", "common_text")) OR '
+            )
         aql_condition_part = aql_condition_part[:-4]
 
     if 'and' in query_conditions:
         for keyword in query_conditions['and']:
-            aql_condition_part += f'(PHRASE(d.content, "{keyword}", "common_text") OR LIKE(d.segmented_text, "%{keyword}%")) AND '
+            aql_condition_part += (
+                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'LIKE(d.segmented_text, "%{keyword}%")) AND '
+            )
         aql_condition_part = aql_condition_part[:-5]
 
     if 'not' in query_conditions:
@@ -553,13 +597,16 @@ def aql_not_part(keyword):
            f'LIKE(d.segmented_text, "%{keyword}%")) '
 
 
-def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial, selected_languages):
+def generate_chinese_keyword_query_aql(keywords, limit, offset, matchpartial,
+                                       selected_languages):
     aql_condition_part = '''
     SEARCH PHRASE(d.content, @query, "common_text") OR
     '''
 
     for keyword in keywords:
-        aql_condition_part += f'PHRASE(d.content, "{keyword}", "common_text") OR '
+        aql_condition_part += (
+            f'PHRASE(d.content, "{keyword}", "common_text") OR '
+        )
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += '''
     '''
@@ -704,9 +751,11 @@ def highlight_keyword(hits, query):
 
 
 def sort_hits(hits):
-    ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
-                    "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
+    ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an",
+                    "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp", "thig",
+                    "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv",
+                    "lzh-mu", "lzh-ka", "lzh-upp", "san-mg", "san-lo", "up",
+                    "ea-ot", "d", "sf"]
 
     sorted_lst = sorted(hits, key=lambda x: any(
         char in x['uid'] for char in ebs_prefixes), reverse=True)
@@ -758,14 +807,17 @@ def get_uid(dic):
     return letter_part, num
 
 
-def generate_aql_by_chinese_keywords(search_aql, aql_condition_part, query_param):
+def generate_aql_by_chinese_keywords(search_aql, aql_condition_part,
+                                     query_param):
     if is_chinese(query_param['query']) and ' ' not in query_param['query']:
-        query_list = [zhconv_convert(
-            query_param['query'], 'zh-hant'), zhconv_convert(query_param['query'], 'zh-hans')]
-        search_aql, aql_condition_part = generate_chinese_keyword_query_aql(query_list, query_param['limit'],
-                                                                            query_param['offset'],
-                                                                            query_param['matchpartial'],
-                                                                            query_param['selected_languages'])
+        query_list = [
+            zhconv_convert(query_param['query'], 'zh-hant'),
+            zhconv_convert(query_param['query'], 'zh-hans')
+        ]
+        search_aql, aql_condition_part = generate_chinese_keyword_query_aql(
+            query_list, query_param['limit'], query_param['offset'],
+            query_param['matchpartial'], query_param['selected_languages']
+        )
     return search_aql, aql_condition_part
 
 
@@ -806,7 +858,8 @@ def generate_aql_by_list_authors(search_aql, aql_condition_part, query_param):
     return query_param, search_aql, aql_condition_part
 
 
-def generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part, query_param):
+def generate_aql_by_multi_chinese_keywords(search_aql, aql_condition_part,
+                                           query_param):
     if is_chinese(query_param['query']) and ' ' in query_param['query']:
         if ' AND ' not in query_param['query']:
             query_list = query_param['query'].split(' ')
@@ -972,7 +1025,8 @@ def extend_chinese_keywords(keyword_list, query_conditions):
     return keyword_list
 
 
-def highlight_by_multiple_possible_keyword(content, hit, keyword, is_segmented_text):
+def highlight_by_multiple_possible_keyword(content, hit, keyword,
+                                           is_segmented_text):
     possible_word_list = [f'{keyword}']
     for word in possible_word_list:
         cut_highlight(content, hit, word, is_segmented_text)
