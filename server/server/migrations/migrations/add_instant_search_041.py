@@ -98,13 +98,27 @@ class SecondMigration(Migration):
                     "analyzers": ["identity"]
                 },
                 "name": {
-                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                    "analyzers": [
+                        "normalize",
+                        "common_ngram",
+                        "common_text",
+                        "identity"
+                    ]
                 },
                 "acronym": {
                     "analyzers": ["identity"]
                 },
                 "heading": {
-                    "fields": {"title": {"analyzers": ["normalize", "common_ngram", "common_text", "identity"]}}
+                    "fields": {
+                        "title": {
+                            "analyzers": [
+                                "normalize",
+                                "common_ngram",
+                                "common_text",
+                                "identity"
+                            ]
+                        }
+                    }
                 },
                 "author": {
                     "analyzers": ["identity"]
@@ -113,7 +127,12 @@ class SecondMigration(Migration):
                     "analyzers": ["identity"]
                 },
                 "volpage": {
-                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                    "analyzers": [
+                        "normalize",
+                        "common_ngram",
+                        "common_text",
+                        "identity"
+                    ]
                 },
                 "content": {
                     "analyzers": ["common_text", "text_zh", "text_pali"]
@@ -127,10 +146,20 @@ class SecondMigration(Migration):
                     "analyzers": ["identity"]
                 },
                 "volpage": {
-                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                    "analyzers": [
+                        "normalize",
+                        "common_ngram",
+                        "common_text",
+                        "identity"
+                    ]
                 },
                 "alt_volpage": {
-                    "analyzers": ["normalize", "common_ngram", "common_text", "identity"]
+                    "analyzers": [
+                        "normalize",
+                        "common_ngram",
+                        "common_text",
+                        "identity"
+                    ]
                 },
             },
         }
@@ -155,7 +184,16 @@ class SecondMigration(Migration):
                 {"field": "lang", "direction": "asc"}
             ],
             "storedValues": [
-                {"fields": ["uid", "lang", 'acronym', 'volpage', 'author_uid'], "compression": "lz4"}
+                {
+                    "fields": [
+                        "uid",
+                        "lang",
+                        'acronym',
+                        'volpage',
+                        'author_uid'
+                    ],
+                    "compression": "lz4"
+                }
             ],
             "conditionOptimization": "auto",
             "countApproximate": "cost"
@@ -171,7 +209,14 @@ class SecondMigration(Migration):
                 {"field": "uid", "direction": "asc"},
             ],
             "storedValues": [
-                {"fields": ["uid", 'volpage', 'alt_volpage'], "compression": "lz4"}
+                {
+                    "fields": [
+                        "uid",
+                        "volpage",
+                        "alt_volpage"
+                    ],
+                    "compression": "lz4"
+                }
             ],
             "conditionOptimization": "auto",
             "countApproximate": "cost"
@@ -186,12 +231,27 @@ class SecondMigration(Migration):
                 {"field": "lang", "direction": "asc"}
             ],
             "storedValues": [
-                {"fields": ["uid", "lang", 'acronym', 'volpage', 'author_uid'], "compression": "lz4"}
+                {
+                    "fields": [
+                        "uid",
+                        "lang",
+                        'acronym',
+                        'volpage',
+                        'author_uid'
+                    ],
+                    "compression": "lz4"
+                }
             ],
             "conditionOptimization": "auto",
             "countApproximate": "cost"
         }
 
         get_db().create_arangosearch_view("instant_search", view)
-        get_db().create_arangosearch_view("segmented_text_instant_search", segmented_text_content_view)
-        get_db().create_arangosearch_view("instant_volpage_search", volpage_view)
+        get_db().create_arangosearch_view(
+            "segmented_text_instant_search",
+            segmented_text_content_view
+        )
+        get_db().create_arangosearch_view(
+            "instant_volpage_search",
+            volpage_view
+        )

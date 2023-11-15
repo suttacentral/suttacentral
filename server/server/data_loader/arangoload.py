@@ -365,7 +365,7 @@ def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
 
 def load_shortcuts_file(db: Database, shortcuts_file: Path):
     shortcuts: Dict[str, dict] = json_load(shortcuts_file)
-    docs = [{'uid': key, 'shortcuts': value,} for key, value in shortcuts.items()]
+    docs = [{'uid': key, 'shortcuts': value, } for key, value in shortcuts.items()]
     db.collection('shortcuts').import_bulk(docs)
 
 
@@ -373,7 +373,7 @@ def load_fallen_leaves_files(db: Database, fallen_leaves_file_dir: Path):
     fallen_leaves = []
     for fallen_leaves_file in fallen_leaves_file_dir.glob('*.json'):
         leaves: Dict[str, dict] = json_load(fallen_leaves_file)
-        docs = [{'uid': key, 'fallen_leaves': value,} for key, value in leaves.items()]
+        docs = [{'uid': key, 'fallen_leaves': value, } for key, value in leaves.items()]
         fallen_leaves.extend(docs)
     db['fallen_leaves'].truncate()
     db.collection('fallen_leaves').import_bulk(fallen_leaves)
@@ -392,17 +392,33 @@ def update_text_extra_info():
             refs = get_pts_ref(ref)
             for pts_ref in refs:
                 if pts_ref.find('pts-vp-pli2ed') != -1:
-                    pts_refs_2nd.append(pts_ref.replace('pts-vp-pli2ed', 'PTS (2nd ed) '))
+                    pts_refs_2nd.append(
+                        pts_ref.replace('pts-vp-pli2ed', 'PTS (2nd ed) ')
+                    )
                     continue
                 elif pts_ref.find('pts-vp-pli1ed') != -1:
-                    pts_refs_1st.append(pts_ref.replace('pts-vp-pli1ed', 'PTS (1st ed) '))
+                    pts_refs_1st.append(
+                        pts_ref.replace('pts-vp-pli1ed', 'PTS (1st ed) ')
+                    )
                     continue
                 elif pts_ref.find('pts-vp-pli') != -1:
                     pts_refs_1st.append(pts_ref.replace('pts-vp-pli', 'PTS '))
         if pts_refs_1st:
-            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(pts_refs_1st)})
+            db.aql.execute(
+                UPDATE_TEXT_EXTRA_INFO_VOLPAGE,
+                bind_vars={
+                    'uid': reference['uid'],
+                    'ref': ','.join(pts_refs_1st)
+                }
+            )
         if pts_refs_2nd:
-            db.aql.execute(UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE, bind_vars={'uid': reference['uid'], 'ref': ','.join(pts_refs_2nd)})
+            db.aql.execute(
+                UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE,
+                bind_vars={
+                    'uid': reference['uid'],
+                    'ref': ','.join(pts_refs_2nd)
+                }
+            )
 
 
 def upsert_text_acronym(structure_dir):
@@ -413,32 +429,67 @@ def upsert_text_acronym(structure_dir):
     """
     db = arangodb.get_db()
     uids = list(db.aql.execute(ACRONYM_IS_NULL_UIDS))
-    super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
+    file_path = structure_dir / 'super_extra_info.json'
+    super_extra_info = process_extra_info_file(file_path)
     for uid in tqdm(uids):
-        sutta_full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
+        params = {'uid': uid}
+        sutta_full_path = db.aql.execute(SUTTA_PATH, bind_vars=params).next()
         for path in reversed(sutta_full_path['full_path'].split('/')):
             sutta_superior_path = super_extra_info.get(path)
             if sutta_superior_path is not None:
                 acronym = ''
                 if re.match(r'.*-\d+$', uid):
-                    acronym = uid.replace(path, sutta_superior_path['acronym'] + ' ').replace('-', '–')
-                    if acronym.find(sutta_superior_path['acronym'] + ' –') != -1:
-                        acronym = acronym.replace(sutta_superior_path['acronym'] + ' –', sutta_superior_path['acronym'] + ' ')
+                    replacement = sutta_superior_path['acronym'] + ' '
+                    acronym_with_path_replaced = uid.replace(path, replacement)
+                    acronym = acronym_with_path_replaced.replace('-', '–')
+                    if acronym.find(
+                        sutta_superior_path['acronym'] + ' –'
+                    ) != -1:
+                        old = sutta_superior_path['acronym'] + ' –'
+                        new = sutta_superior_path['acronym'] + ' '
+                        acronym = acronym.replace(old, new)
                         # Add space between Numbers and Alphabets in String
-                        acronym = re.sub("[A-Za-z]+", lambda ele: f" {ele[0]} ", acronym)
+                        acronym = re.sub(
+                            "[A-Za-z]+",
+                            lambda ele: f" {ele[0]} ",
+                            acronym
+                        )
                         acronym = str(acronym).title().replace("   ", " ")
                 else:
                     first_part_index = uid.find(f'{path}-')
                     if first_part_index != -1:
-                        sutta_name_subsection = uid.replace(f'{path}-', '').capitalize()
+                        sutta_name_subsection = uid.replace(
+                            f'{path}-',
+                            ''
+                        ).capitalize()
                         # Add spaces before numbers
-                        sutta_name_subsection = re.sub(r"([0-9]+(\.[0-9]+)?)", r" \1 ", sutta_name_subsection).strip()
-                        acronym = sutta_superior_path['acronym'] + ' ' + sutta_name_subsection
+                        pattern = r"([0-9]+(\.[0-9]+)?)"
+                        replacement = r" \1 "
+                        sutta_name_subsection = re.sub(
+                            pattern,
+                            replacement,
+                            sutta_name_subsection
+                        ).strip()
+                        acronym = (
+                            sutta_superior_path['acronym']
+                            + ' '
+                            + sutta_name_subsection
+                        )
                     else:
-                        acronym = uid.replace(path, sutta_superior_path['acronym'] + ' ')
+                        acronym = uid.replace(
+                            path,
+                            sutta_superior_path['acronym'] + ' '
+                        )
                 if acronym != '':
-                    db.aql.execute(UPSERT_TEXT_EXTRA_ACRONYM_INFO, bind_vars={'uid': uid, 'acronym': acronym})
-                    db.aql.execute(UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO, bind_vars={'uid': uid, 'acronym': acronym})
+                    bind_vars = {'uid': uid, 'acronym': acronym}
+                    db.aql.execute(
+                        UPSERT_TEXT_EXTRA_ACRONYM_INFO,
+                        bind_vars=bind_vars
+                    )
+                    db.aql.execute(
+                        UPDATE_SUPER_NAV_DETAILS_ACRONYM_INFO,
+                        bind_vars=bind_vars
+                    )
                 break
 
 
@@ -451,7 +502,13 @@ def update_translated_title():
     """Format translated title and upsert to ArangoDB
     """
     db = arangodb.get_db()
-    translations = list(db.aql.execute("FOR trans IN sc_bilara_texts FILTER 'translation' IN trans.muids RETURN trans"))
+    translations = list(
+        db.aql.execute(
+            "FOR trans IN sc_bilara_texts "
+            "FILTER 'translation' IN trans.muids "
+            "RETURN trans"
+        )
+    )
     title_index = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     for translation in tqdm(translations):
         trans = json_load(translation['file_path'])
@@ -462,16 +519,36 @@ def update_translated_title():
                 title = trans.get(translation['uid'].split('-')[0] + ':0.' + str(i))
             if title is not None:
                 break
-        if title is not None and title.find('.') != -1 and len(title.split('.')) == 2 and title.find('Etc.') == -1:
+
+        if (
+            title is not None
+            and title.find('.') != -1
+            and len(title.split('.')) == 2
+            and title.find('Etc.') == -1
+        ):
             title = title.split('.')[1].strip()
-        db.aql.execute(UPSERT_NAMES, bind_vars={'uid': translation['uid'], 'lang': translation['lang'], 'name': title})
+
+        db.aql.execute(
+            UPSERT_NAMES,
+            bind_vars={
+                'uid': translation['uid'],
+                'lang': translation['lang'],
+                'name': title
+            }
+        )
 
 
 def update_root_title():
     """Format root title and upsert to ArangoDB
     """
     db = arangodb.get_db()
-    root_title_is_null_uids = list(db.aql.execute("FOR u IN super_nav_details FILTER u.root_lang == 'pli' AND u.name == '' RETURN u.uid"))
+    root_title_is_null_uids = list(
+        db.aql.execute(
+            "FOR u IN super_nav_details "
+            "FILTER u.root_lang == 'pli' AND u.name == '' "
+            "RETURN u.uid"
+        )
+    )
     for uid in tqdm(root_title_is_null_uids):
         root = db.aql.execute(SINGLE_ROOT_TEXT, bind_vars={'uid': uid}).next()
         if root is not None:
@@ -484,7 +561,10 @@ def update_root_title():
                     title = root_text.get(uid.split('-')[0] + ':0.' + str(i))
                 if title is not None:
                     break
-            db.aql.execute(UPSERT_ROOT_NAMES, bind_vars={'uid': uid, 'name': title})
+            db.aql.execute(
+                UPSERT_ROOT_NAMES,
+                bind_vars={'uid': uid, 'name': title}
+            )
 
 
 def load_ebs_names():
