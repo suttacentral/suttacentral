@@ -140,11 +140,7 @@ def generate_relationship_edges(
                 full = [uid for uid in uids if not uid.startswith('~')]
                 partial = [uid for uid in uids if uid.startswith('~')]
                 for from_uid in full:
-                    m = regex.search('[0-9]+$', from_uid)
-                    if m:
-                        from_nr = int(m[0])
-                    else:
-                        from_nr = 0
+                    from_nr = int(m[0]) if (m := regex.search('[0-9]+$', from_uid)) else 0
                     true_from_uids = uid_matcher.get_matching_uids(from_uid)
                     if not true_from_uids and ' ' not in from_uid:
                         logging.error(
@@ -182,11 +178,7 @@ def generate_relationship_edges(
                                     )
             else:
                 first_uid = uids[0]
-                m = regex.search('[0-9]+$', first_uid)
-                if m:
-                    from_nr = int(m[0])
-                else:
-                    from_nr = 0
+                from_nr = int(m[0]) if (m := regex.search('[0-9]+$', first_uid)) else 0
                 true_first_uids = uid_matcher.get_matching_uids(first_uid)
                 for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
                     true_from_uids = uid_matcher.get_matching_uids(to_uid)
@@ -213,11 +205,7 @@ def generate_relationship_edges(
                                 'remark': remark,
                             }
                         )
-                        m = regex.search('[0-9]+$', to_uid)
-                        if m:
-                            to_nr = int(m[0])
-                        else:
-                            to_nr = 0
+                        to_nr = int(m[0]) if (m := regex.search('[0-9]+$', to_uid)) else 0
                         ll_edges.append(
                             {
                                 '_from': true_from_uid,
