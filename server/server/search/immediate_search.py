@@ -25,7 +25,11 @@ def fetch_possible_result(lang):
         int: The HTTP status code.
     """
     db = get_db()
-    data = list(db.aql.execute(AQL_POSSIBLE_RESULTS_BY_LANG, bind_vars={'lang': lang}))
+    query = db.aql.execute(
+        AQL_POSSIBLE_RESULTS_BY_LANG,
+        bind_vars={'lang': lang}
+    )
+    data = list(query)
 
     merged_data = {}
     for item in data:
@@ -35,22 +39,32 @@ def fetch_possible_result(lang):
             is_root = item["isRoot"]
 
             if is_root:
-                merged_data[uid]["title"] = f"{title}-" + merged_data[uid]["title"]
+                merged_data[uid]["title"] = (
+                    f"{title}-" + merged_data[uid]["title"]
+                )
             else:
                 merged_data[uid]["title"] += f"-{title}"
         else:
-            merged_data[uid] = {"uid": uid, "title": title, "nodeType": item['nodeType']}
+            merged_data[uid] = {
+                "uid": uid,
+                "title": title,
+                "nodeType": item['nodeType']
+            }
 
     merged_list = list(merged_data.values())
 
     return merged_list, 200
+
 
 def fulltext_search(query):
     db = get_db()
     aql_fulltext_search = '''
         FOR d IN segmented_text_instant_search
     '''
-    aql_fulltext_search += f'SEARCH PHRASE(d.segmented_Text, "{query}", "common_text") OR LIKE(d.segmented_text, "%{query}%")'
+    aql_fulltext_search += (
+        f'SEARCH PHRASE(d.segmented_Text, "{query}", "common_text") OR '
+        f'LIKE(d.segmented_text, "%{query}%")'
+    )
     aql_fulltext_search += '''
     FILTER d.is_ebs == true
     LIMIT 60

@@ -22,13 +22,24 @@ class InstantSearch(Resource):
             restrict = None
 
         matchpartial = request.args.get('matchpartial', 'false')
-        selected_languages = request.args.get('selectedLanguages', '["en", "pli"]')
+        default_languages = '["en", "pli"]'
+        selected_languages = request.args.get(
+            'selectedLanguages',
+            default_languages
+        )
 
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
-        return instant_search_query(query, lang, restrict, limit, offset, matchpartial, selected_languages)
-
+        return instant_search_query(
+            query,
+            lang,
+            restrict,
+            limit,
+            offset,
+            matchpartial,
+            selected_languages
+        )
 
     def post(self):
         lang = request.args.get('language')
@@ -45,7 +56,15 @@ class InstantSearch(Resource):
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 
-        return instant_search_query(query, lang, restrict, limit, offset, matchpartial, selected_languages)
+        return instant_search_query(
+            query,
+            lang,
+            restrict,
+            limit,
+            offset,
+            matchpartial,
+            selected_languages
+        )
 
 
 class FetchPossibleNames(Resource):
