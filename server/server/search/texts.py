@@ -16,15 +16,26 @@ from common.queries import (
 
 logger = logging.getLogger('arango_search.texts')
 
-ebt_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
-                    "dhp", "thig", "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "san-mg", "san-lo", "up", "ea-ot", "d", "sf"]
+ebt_prefixes = [
+    "dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an",
+    "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp", "thig",
+    "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg",
+    "lzh-sarv", "lzh-mu", "lzh-ka", "lzh-upp", "san-mg",
+    "san-lo", "up", "ea-ot", "d", "sf"
+]
 
-ebs_prefixes = ["dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an", "ea", "ea-2", "kp", "iti", "ud", "snp",
-                "dhp", "thig", "thag", "sf"]
+ebs_prefixes = [
+    "dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an",
+    "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp", "thig",
+    "thag", "sf"
+]
 
-ebct_prefixes = ["da", "ma", "sa", "sa-2", "sa-3", "ea", "ea-2","lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
-                    "lzh-upp", "ea-ot", "d"]
+ebct_prefixes = [
+    "da", "ma", "sa", "sa-2", "sa-3", "ea", "ea-2", "lzh-mg",
+    "lzh-mi", "lzh-dg", "lzh-sarv", "lzh-mu", "lzh-ka",
+    "lzh-upp", "ea-ot", "d"
+]
+
 
 class TextLoader:
     doc_type = 'text'
@@ -61,17 +72,21 @@ class TextLoader:
         string = string.replace('\xad', '')
         return string.strip()
 
-    def check_text_whether_is_ebt(self, root_uid):
+    def is_ebt(self, root_uid):
         return root_uid in ebt_prefixes
 
-    def check_text_whether_is_ebs(self, root_uid):
+    def is_ebs(self, root_uid):
         return root_uid in ebs_prefixes
 
-    def check_text_whether_is_ebct(self, root_uid):
+    def is_ebct(self, root_uid):
         return root_uid in ebct_prefixes
 
     def import_bilara_texts(self):
-        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        bilara_texts = list(
+            get_db().aql.execute(
+                BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}
+            )
+        )
         if not bilara_texts:
             return
 
@@ -81,12 +96,20 @@ class TextLoader:
             with open(text['strings_path']) as f:
                 strings = json.load(f)
 
-            strings = {key: value for key, value in strings.items() if ":0." not in key}
+            strings = {
+                key: value
+                for key, value in strings.items()
+                if ":0." not in key
+            }
 
             text_info = {
                 'acronym': text['acronym'],
                 'uid': uid,
-                'name': self.fix_text(text['title']) if text['title'] else text['uid'],
+                'name': (
+                    self.fix_text(text['title'])
+                    if text['title']
+                    else text['uid']
+                ),
                 'lang': text['lang'],
                 'full_lang': text['full_lang'],
                 'author': text['author'],
@@ -94,14 +117,18 @@ class TextLoader:
                 'author_short': text['author_short'],
                 'is_root': self.lang == text['root_lang'],
                 'heading': {
-                    'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                    'title': (
+                        self.fix_text(text['title'])
+                        if text['title']
+                        else text['uid']
+                    )
                 },
                 'content': '\n\n'.join(strings.values()),
                 'is_segmented': False,
                 'is_bilara_text': True,
-                'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
-                'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
-                'is_ebct': self.check_text_whether_is_ebct(text['root_uid']),
+                'is_ebt': self.is_ebt(text['root_uid']),
+                'is_ebs': self.is_ebs(text['root_uid']),
+                'is_ebct': self.is_ebct(text['root_uid']),
                 'root_uid': text['root_uid'],
                 'full_path': text['full_path']
             }
@@ -109,11 +136,17 @@ class TextLoader:
             segmented_texts.append(text_info)
 
         if segmented_texts:
-            print(f'Index {len(segmented_texts)} {self.full_lang} segmented texts.')
+            print(
+                f'Index {len(segmented_texts)} {self.full_lang} segmented texts.'
+            )
             get_db().collection('text_contents').import_bulk(segmented_texts)
 
     def import_segmented_texts(self):
-        bilara_texts = list(get_db().aql.execute(BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        bilara_texts = list(
+            get_db().aql.execute(
+                BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}
+            )
+        )
         if not bilara_texts:
             return
 
@@ -127,7 +160,11 @@ class TextLoader:
                     segmented_text_info = {
                         'acronym': text['acronym'],
                         'uid': uid,
-                        'name': self.fix_text(text['title']) if text['title'] else text['uid'],
+                        'name': (
+                            self.fix_text(text['title'])
+                            if text['title']
+                            else text['uid']
+                        ),
                         'lang': text['lang'],
                         'full_lang': text['full_lang'],
                         'author': text['author'],
@@ -135,27 +172,39 @@ class TextLoader:
                         'author_short': text['author_short'],
                         'is_root': self.lang == text['root_lang'],
                         'heading': {
-                            'title': self.fix_text(text['title']) if text['title'] else text['uid']
+                            'title': (
+                                self.fix_text(text['title'])
+                                if text['title']
+                                else text['uid']
+                            )
                         },
                         'segmented_uid': key,
                         'segmented_text': value,
                         'content': '',
                         'is_segmented': True,
-                        'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
-                        'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
-                        'is_ebct': self.check_text_whether_is_ebct(text['root_uid']),
+                        'is_ebt': self.is_ebt(text['root_uid']),
+                        'is_ebs': self.is_ebs(text['root_uid']),
+                        'is_ebct': self.is_ebct(text['root_uid']),
                         'root_uid': text['root_uid'],
                         'full_path': text['full_path']
                     }
                     segmented_texts.append(segmented_text_info)
-            get_db().collection('segmented_text_contents').import_bulk(segmented_texts)
+            get_db().collection(
+                'segmented_text_contents'
+            ).import_bulk(segmented_texts)
             segmented_texts = []
 
     def import_text_references(self):
-        bilara_text_references = list(get_db().aql.execute(TEXT_REFERENCES, bind_vars={'lang': self.lang}))
+        bilara_text_references = list(
+            get_db().aql.execute(
+                TEXT_REFERENCES, bind_vars={'lang': self.lang}
+            )
+        )
         if not bilara_text_references:
             return
-        print(f'Index {len(bilara_text_references)} {self.full_lang} text references.')
+        print(
+            f'Index {len(bilara_text_references)} {self.full_lang} text references.'
+        )
         text_references = []
         for text in bilara_text_references:
             uid = text['uid']
@@ -174,7 +223,11 @@ class TextLoader:
             text_references = []
 
     def import_html_texts(self):
-        html_texts = list(get_db().aql.execute(TEXTS_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}))
+        html_texts = list(
+            get_db().aql.execute(
+                TEXTS_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}
+            )
+        )
         if not html_texts:
             return
 
@@ -200,9 +253,9 @@ class TextLoader:
                     'is_root': self.lang == root_lang,
                     'is_segmented': False,
                     'is_legacy_text': True,
-                    'is_ebt': self.check_text_whether_is_ebt(text['root_uid']),
-                    'is_ebs': self.check_text_whether_is_ebs(text['root_uid']),
-                    'is_ebct': self.check_text_whether_is_ebct(text['root_uid']),
+                    'is_ebt': self.is_ebt(text['root_uid']),
+                    'is_ebs': self.is_ebs(text['root_uid']),
+                    'is_ebct': self.is_ebct(text['root_uid']),
                     'root_uid': text['root_uid'],
                     'full_path': text['full_path']
                 }
@@ -221,7 +274,9 @@ class TextLoader:
         if text is None:
             text = root.find('body/section')
         if text is None:
-            raise ValueError("Structure of html is not body > article or not body > section")
+            raise ValueError(
+                "Structure of html is not body > article or not body > section"
+            )
 
         if metaarea := root.cssselect('#metaarea'):
             metaarea[0].drop_tree()
@@ -254,7 +309,10 @@ class TextLoader:
 
         content = text.text_content()
         title = self.fix_text(title.text_content()) if title is not None else ''
-        division = '' if division is None else self.fix_text(division.text_content())
+        division = (
+            '' if division is None
+            else self.fix_text(division.text_content())
+        )
 
         return {
             'name': title,
@@ -272,12 +330,21 @@ def import_texts_to_arangodb():
     TextLoader.truncate_text_contents()
     time.sleep(5)
     print('Start re-indexing...')
-    languages = list(db.aql.execute('FOR l IN language SORT l.uid RETURN {uid: l.uid, name: l.name}'))
+    query = (
+        'FOR l IN language '
+        'SORT l.uid '
+        'RETURN {uid: l.uid, name: l.name}'
+    )
+    languages = list(db.aql.execute(query))
 
-    order = ["en", "pli", "lzh", "san", "pra", "xct", "pgd", "de", "zh", "af", "ar", "au", "bn", "ca", "cs", "es", "ev",
-             "fa", "fi", "fr", "gu", "haw", "he", "hi", "hr", "hu", "id", "it", "jpn", "kan", "kho", "kln", "ko", "la",
-             "lt", "mr", "my", "nl", "no", "pl", "pt", "ro", "ru", "si", "sk", "sl", "sld", "sr", "sv", "ta", "th",
-             "uig", "vi", "vu", "xto"]
+    order = [
+        "en", "pli", "lzh", "san", "pra", "xct", "pgd", "de", "zh", "af",
+        "ar", "au", "bn", "ca", "cs", "es", "ev", "fa", "fi", "fr", "gu",
+        "haw", "he", "hi", "hr", "hu", "id", "it", "jpn", "kan", "kho",
+        "kln", "ko", "la", "lt", "mr", "my", "nl", "no", "pl", "pt",
+        "ro", "ru", "si", "sk", "sl", "sld", "sr", "sv", "ta", "th",
+        "uig", "vi", "vu", "xto"
+    ]
     languages = sorted(languages, key=lambda x: order.index(x["uid"]))
 
     for lang in tqdm(languages):
