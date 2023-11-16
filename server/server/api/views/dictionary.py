@@ -15,23 +15,35 @@ class DictionaryFull(Resource):
         language = request.args.get(
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
-        data = db.aql.execute(DICTIONARY_FULL, bind_vars={'word': word, 'language': language}).next()
+        data = db.aql.execute(
+            DICTIONARY_FULL,
+            bind_vars={'word': word, 'language': language}
+        ).next()
         if (data is None or len(data) == 0) and language != 'en':
-            data = db.aql.execute(DICTIONARY_FULL, bind_vars={'word': word, 'language': 'en'}).next()
+            data = db.aql.execute(
+                DICTIONARY_FULL,
+                bind_vars={'word': word, 'language': 'en'}
+            ).next()
         return list(data), 200
 
 
 class LookupDictionaries(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
-        to_lang = request.args.get('to', current_app.config.get('DEFAULT_LANGUAGE'))
+        to_lang = request.args.get(
+            'to',
+            current_app.config.get('DEFAULT_LANGUAGE')
+        )
         from_lang = request.args.get('from', None)
 
         if from_lang is None:
             return {'message': 'from not specified'}, 422
 
         db = get_db()
-        data = db.aql.execute(DICTIONARY_SIMPLE, bind_vars={'from': from_lang, 'to': to_lang})
+        data = db.aql.execute(
+            DICTIONARY_SIMPLE,
+            bind_vars={'from': from_lang, 'to': to_lang}
+        )
         return list(data), 200
 
 

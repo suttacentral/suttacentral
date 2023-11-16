@@ -62,6 +62,8 @@ from data_loader.util import json_load
 default_cache_timeout = 600
 long_cache_timeout = 7200
 
+DHP_PATH = '/dharmapadas/sutta/minor'
+
 
 class Languages(Resource):
     """
@@ -394,10 +396,14 @@ class SuttaplexList(Resource):
                 )
                 if translation_text_file is not None:
                     file_result = next(translation_text_file)
-                    if file_result is not None and 'translation_text' in file_result:
+                    if (
+                        file_result is not None
+                        and 'translation_text' in file_result
+                    ):
                         translation_text = json_load(file_result['translation_text'])
-                        if translation_text and result['uid']+':0.3' in translation_text:
-                            result['translated_title'] = translation_text[result['uid']+':0.3']
+                        uid_key = result['uid'] + ':0.3'
+                        if translation_text and uid_key in translation_text:
+                            result['translated_title'] = translation_text[uid_key]
 
             result['verseNo'] = self.compute_verse_no(result['uid'], result['verseNo'])
 
@@ -516,7 +522,12 @@ class RangeSuttaplexList(Resource):
 
     def get_suttaplex_list_by_uid(self, db, language, uid):
         if uid[:3].lower() == 'dhp' and uid.count('-') == 0:
-            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
+            vagga_children_uids = list(
+                db.aql.execute(
+                    VAGGA_CHILDREN,
+                    bind_vars={'uid': 'dhp'}
+                )
+            )
             for child_uid in vagga_children_uids:
                 if child_uid.count('-'):
                     sutta_number = uid.strip('dhp')
@@ -525,12 +536,21 @@ class RangeSuttaplexList(Resource):
                     range_end = child_range[child_range.find('-') + 1:]
                     if int(range_begin) <= int(sutta_number) <= int(range_end):
                         results = db.aql.execute(
-                            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': child_uid}
+                            SUTTAPLEX_LIST,
+                            bind_vars={
+                                'language': language,
+                                'uid': child_uid
+                            }
                         )
         elif uid.count('.') == 1 and uid.count('-') == 0:
             vagga_uid = uid[:uid.find('.')]
             sutta_number = uid[uid.find('.') + 1:]
-            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': vagga_uid}))
+            vagga_children_uids = list(
+                db.aql.execute(
+                    VAGGA_CHILDREN,
+                    bind_vars={'uid': vagga_uid}
+                )
+            )
             for child_uid in vagga_children_uids:
                 if child_uid.count('-'):
                     child_range = child_uid[child_uid.find('.') + 1:]
@@ -542,7 +562,11 @@ class RangeSuttaplexList(Resource):
                         )
         elif uid != 'pli-tv-bi-vb-sk1-75' and uid[:15] == 'pli-tv-bi-vb-sk':
             results = db.aql.execute(
-                SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': 'pli-tv-bi-vb-sk1-75'}
+                SUTTAPLEX_LIST,
+                bind_vars={
+                    'language': language,
+                    'uid': 'pli-tv-bi-vb-sk1-75'
+                }
             )
         else:
             results = db.aql.execute(
@@ -650,6 +674,7 @@ class Parallels(Resource):
 
         return data, 200
 
+
 class ParallelsLite(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid):
@@ -749,24 +774,58 @@ class Sutta(Resource):
 
         result = results.next()
 
-        if result['root_text'] is None and result['translation'] is None and uid.count('.') == 1:
+        if (
+            result['root_text'] is None
+            and result['translation'] is None
+            and uid.count('.') == 1
+        ):
             vagga_uid = uid[:uid.find('.')]
             sutta_number = uid[uid.find('.') + 1:]
-            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': vagga_uid}))
+            vagga_children_uids = list(
+                db.aql.execute(
+                    VAGGA_CHILDREN,
+                    bind_vars={'uid': vagga_uid}
+                )
+            )
             for child_uid in vagga_children_uids:
                 if child_uid.count('-'):
                     child_range = child_uid[child_uid.find('.')+1:]
-                    result = self.get_sutta_view(author_uid, child_range, child_uid, db, lang, result, sutta_number,
-                                                 vagga_children_uids)
+                    result = self.get_sutta_view(
+                        author_uid,
+                        child_range,
+                        child_uid,
+                        db,
+                        lang,
+                        result,
+                        sutta_number,
+                        vagga_children_uids
+                    )
 
-        if result['root_text'] is None and result['translation'] is None and uid[:3].lower() == 'dhp':
+        if (
+            result['root_text'] is None
+            and result['translation'] is None
+            and uid[:3].lower() == 'dhp'
+        ):
             sutta_number = uid.strip('dhp')
-            vagga_children_uids = list(db.aql.execute(VAGGA_CHILDREN, bind_vars={'uid': 'dhp'}))
+            vagga_children_uids = list(
+                db.aql.execute(
+                    VAGGA_CHILDREN,
+                    bind_vars={'uid': 'dhp'}
+                )
+            )
             for child_uid in vagga_children_uids:
                 if child_uid.count('-'):
                     child_range = child_uid.strip('dhp')
-                    result = self.get_sutta_view(author_uid, child_range, child_uid, db, lang, result, sutta_number,
-                                                 vagga_children_uids)
+                    result = self.get_sutta_view(
+                        author_uid,
+                        child_range,
+                        child_uid,
+                        db,
+                        lang,
+                        result,
+                        sutta_number,
+                        vagga_children_uids
+                    )
 
         self.convert_paths_to_content(result)
         for k in ('root_text', 'translation'):
@@ -777,13 +836,27 @@ class Sutta(Resource):
         self.get_candidate_authors(uid, author_uid, site_lang, result)
         return result, 200
 
-    def get_sutta_view(self, author_uid, child_range, child_uid, db, lang, result, sutta_number, vagga_children_uids):
+    def get_sutta_view(
+        self,
+        author_uid,
+        child_range,
+        child_uid,
+        db,
+        lang,
+        result,
+        sutta_number,
+        vagga_children_uids
+    ):
         range_begin = child_range[:child_range.find('-')]
         range_end = child_range[child_range.find('-') + 1:]
         if int(range_begin) <= int(sutta_number) <= int(range_end):
             results = db.aql.execute(
                 SUTTA_VIEW,
-                bind_vars={'uid': child_uid, 'language': lang, 'author_uid': author_uid},
+                bind_vars={
+                    'uid': child_uid,
+                    'language': lang,
+                    'author_uid': author_uid
+                }
             )
             result = results.next()
             result['range_uid'] = child_uid
@@ -813,7 +886,12 @@ class Sutta(Resource):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
 
-        all_doc_uid = list(db.aql.execute(ALL_DOC_UID_BY_ROOT_UID, bind_vars={'uid': uid}))
+        all_doc_uid = list(
+            db.aql.execute(
+                ALL_DOC_UID_BY_ROOT_UID,
+                bind_vars={'uid': uid}
+            )
+        )
         if uid in all_doc_uid:
             uid_index = all_doc_uid.index(uid)
             if uid_index != 0:
@@ -827,7 +905,12 @@ class Sutta(Resource):
             doc['next']['uid'] = sutta_prev_next.get('next_uid', '')
 
         for k, v in sutta_prev_next.items():
-            name_result = list(db.aql.execute(SUTTA_NAME, bind_vars={'uid': v, 'lang': site_lang}))
+            name_result = list(
+                db.aql.execute(
+                    SUTTA_NAME,
+                    bind_vars={'uid': v, 'lang': site_lang}
+                )
+            )
             if k == 'next_uid' and doc['next']:
                 doc['next']['name'] = name_result[0]
             elif k == 'prev_uid' and doc['previous']:
@@ -1097,8 +1180,18 @@ class DataForHomepage(Resource):
         except ValueError:
             limit = 10
 
-        epigraphs_data = list(db.aql.execute(EPIGRAPHS, bind_vars={'number': limit}))
-        why_we_read_data = list(db.aql.execute(WHY_WE_READ, bind_vars={'number': limit}))
+        epigraphs_data = list(
+            db.aql.execute(
+                EPIGRAPHS,
+                bind_vars={'number': limit}
+            )
+        )
+        why_we_read_data = list(
+            db.aql.execute(
+                WHY_WE_READ,
+                bind_vars={'number': limit}
+            )
+        )
 
         language = request.args.get(
             'language', current_app.config.get('DEFAULT_LANGUAGE')
@@ -1107,7 +1200,11 @@ class DataForHomepage(Resource):
             TIPITAKA_MENU, bind_vars={'language': language})
         )
 
-        return {'epigraphs': epigraphs_data, 'whyweread': why_we_read_data, 'tipitaka': tipitaka_menu_data}, 200
+        return {
+            'epigraphs': epigraphs_data,
+            'whyweread': why_we_read_data,
+            'tipitaka': tipitaka_menu_data
+        }, 200
 
 
 class Expansion(Resource):
@@ -1274,8 +1371,11 @@ class TransliteratedSutta(Resource):
 
         sutta_texts = {k: json_load(v) for k, v in result.items()}
         for key, value in sutta_texts[uid].items():
-            sutta_texts[uid][key] = transliterate.process('ISO', target, value.replace(
-                'o', 'ō').replace('e', 'ē').replace('O', 'Ō').replace('E', 'Ē'))
+            sutta_texts[uid][key] = transliterate.process(
+                'ISO',
+                target,
+                value.replace('o', 'ō').replace('e', 'ē').replace('O', 'Ō').replace('E', 'Ē')
+            )
 
         return sutta_texts[uid]
 
@@ -1286,10 +1386,17 @@ class SuttaFullPath(Resource):
         db = get_db()
         full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
         if full_path['full_path'].count('/sutta/minor') > 1:
-            if full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count('kn/dhp') > 0:
-                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
-            if uid == 'dhp' and full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count('/kn') > 0:
-                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
+            if (
+                full_path['full_path'].count('dharmapadas') > 0
+                and full_path['full_path'].count('kn/dhp') > 0
+            ):
+                full_path['full_path'] = full_path['full_path'].replace(DHP_PATH, '')
+            if (
+                uid == 'dhp'
+                and full_path['full_path'].count('dharmapadas') > 0
+                and full_path['full_path'].count('/kn') > 0
+            ):
+                full_path['full_path'] = full_path['full_path'].replace(DHP_PATH, '')
         return full_path
 
 
@@ -1309,7 +1416,16 @@ class PublicationInfo(Resource):
         if lang == 'pli':
             publication_info = list(db.aql.execute(PLI_SUTTA_PUBLICATION_INFO))
         else:
-            publication_info = list(db.aql.execute(SUTTA_PUBLICATION_INFO, bind_vars={'uid': uid, 'lang': lang, 'authorUid': author_uid}))
+            publication_info = list(
+                db.aql.execute(
+                    SUTTA_PUBLICATION_INFO,
+                    bind_vars={
+                        'uid': uid,
+                        'lang': lang,
+                        'authorUid': author_uid
+                    }
+                )
+            )
         return publication_info or ({'error': 'Not Found'}, 404)
 
 
@@ -1341,7 +1457,6 @@ class Shortcuts(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
         db = get_db()
-        # data = list(db.aql.execute('FOR s IN shortcuts RETURN s.shortcuts'))[0]
         data = db.collection('shortcuts').all()
         return list(data), 200
 
@@ -1432,9 +1547,11 @@ class NavigationData(Resource):
                 ):
                     navigation_item = {
                         'uid': uid,
-                        'title': menu_data['translated_name']
-                                or menu_data['acronym']
-                                or menu_data['root_name'],
+                        'title': (
+                            menu_data['translated_name']
+                            or menu_data['acronym']
+                            or menu_data['root_name']
+                        ),
                         'url': current_url,
                         'type': 'navigation',
                         'index': navigation_index,
@@ -1446,11 +1563,17 @@ class NavigationData(Resource):
     def fetch_full_path_by_uid(self, db, uid):
         full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
         if full_path['full_path'].count('/sutta/minor') > 1:
-            if full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count('kn/dhp') > 0:
-                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
-            if uid == 'dhp' and full_path['full_path'].count('dharmapadas') > 0 and full_path['full_path'].count(
-                    '/kn') > 0:
-                full_path['full_path'] = full_path['full_path'].replace('/dharmapadas/sutta/minor', '')
+            if (
+                full_path['full_path'].count('dharmapadas') > 0
+                and full_path['full_path'].count('kn/dhp') > 0
+            ):
+                full_path['full_path'] = full_path['full_path'].replace(DHP_PATH, '')
+            if (
+                uid == 'dhp'
+                and full_path['full_path'].count('dharmapadas') > 0
+                and full_path['full_path'].count('/kn') > 0
+            ):
+                full_path['full_path'] = full_path['full_path'].replace(DHP_PATH, '')
         return full_path
 
     def is_patimokkha(self, uid):

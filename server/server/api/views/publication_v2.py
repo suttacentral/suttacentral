@@ -92,7 +92,14 @@ FOR doc IN blurbs
 class Edition(Resource):
     def get(self, edition_id):
         db = get_db()
-        if result := list(db.aql.execute(EDITION_QUERY, bind_vars={'edition_id': edition_id})):
+        if (
+            result := list(
+                db.aql.execute(
+                    EDITION_QUERY,
+                    bind_vars={'edition_id': edition_id}
+                )
+            )
+        ):
             return result[0]
         else:
             # do better error handling
@@ -106,7 +113,7 @@ class Editions(Resource):
       200:
         type: array
         items:
-          type: object  
+          type: object
           properties:
               edition_id:
                   type: string
@@ -171,7 +178,15 @@ class EditionFiles(Resource):
 class EditionMainmatter(Resource):
     def get(self, edition_id, uid):
         db = get_db()
-        result = list(db.aql.execute(EDITION_MAINMATTER_QUERY, bind_vars={'edition_id': edition_id, 'uid': uid}))
+        result = list(
+            db.aql.execute(
+                EDITION_MAINMATTER_QUERY,
+                bind_vars={
+                    'edition_id': edition_id,
+                    'uid': uid
+                }
+            )
+        )
         for doc in result:
             if doc['mainmatter']:
                 for k, file_path in list(doc['mainmatter'].items()):
@@ -210,8 +225,16 @@ class EditionData(Resource):
         lang = request.args.get('lang')
 
         db = get_db()
-        result = list(db.aql.execute(EBOOK_DATA_QUERY,
-                                     bind_vars={'uid': uid, 'translation_muids': translation_muids, 'lang': lang}))
+        result = list(
+            db.aql.execute(
+                EBOOK_DATA_QUERY,
+                bind_vars={
+                    'uid': uid,
+                    'translation_muids': translation_muids,
+                    'lang': lang
+                }
+            )
+        )
         for doc in result:
             if doc['files']:
                 for k, file_path in list(doc['files'].items()):
