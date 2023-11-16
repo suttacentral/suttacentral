@@ -69,7 +69,7 @@ class SecondMigration(Migration):
             "text_pali",
             "text",
             {
-                "locale": "pali",
+                "locale": "pli",
                 "case": "lower",
                 "accent": False,
                 "stemming": False,
@@ -95,7 +95,7 @@ class SecondMigration(Migration):
                     "analyzers": ["identity"]
                 },
                 "segmented_text": {
-                    "analyzers": ["identity"]
+                    "analyzers": ["identity", "normalize"]
                 },
                 "name": {
                     "analyzers": [
@@ -167,7 +167,7 @@ class SecondMigration(Migration):
         segmented_text_content_fields = {
             "fields": {
                 "segmented_text": {
-                    "analyzers": ["identity"]
+                    "analyzers": ["identity", "normalize"]
                 },
             },
         }

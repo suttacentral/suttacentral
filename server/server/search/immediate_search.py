@@ -63,7 +63,8 @@ def fulltext_search(query):
     '''
     aql_fulltext_search += (
         f'SEARCH PHRASE(d.segmented_Text, "{query}", "common_text") OR '
-        f'LIKE(d.segmented_text, "%{query}%")'
+        f'LIKE(d.segmented_text, "%{query}%") OR '
+        f'ANALYZER(LIKE(d.segmented_text, "%{query}%"), "normalize") '
     )
     aql_fulltext_search += '''
     FILTER d.is_ebs == true

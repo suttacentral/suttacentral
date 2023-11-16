@@ -96,7 +96,11 @@ def instant_search_query(
     suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
     current_page_total = len(hits)
     hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
-    total = total - (current_page_total - len(hits))
+    if total <= int(limit):
+        total = current_page_total
+    else:
+        total = total - (current_page_total - len(hits))
+
     if total == 0:
         total = len(suttaplexs)
     lookup_dictionary(hits, lang, query, restrict)
@@ -150,6 +154,8 @@ def generate_general_query_aql(
         aql_condition_part += (
             f'OR LIKE(d.volpage, "%{query}%") '
             f'OR LIKE(d.name, "%{query}%") '
+            f'OR ANALYZER(LIKE(d.name, "%{query}%"), "normalize") '
+            f'OR ANALYZER(LIKE(d.segmented_text, "%{query}%"), "normalize") '
         )
         if possible_pali_words := [query]:
             aql_condition_part += ''' OR ('''
@@ -610,7 +616,7 @@ def aql_filter_part(matchpartial):
 
 def add_lang_condition(selected_languages):
     if isinstance(selected_languages, list) and len(selected_languages) > 0:
-        return f'AND (d.lang IN {selected_languages}) '
+        return f' AND (d.lang IN {selected_languages}) '
     else:
         return ''
 
@@ -1127,8 +1133,9 @@ def cut_highlight(content, hit, query, is_segmented_text):
             highlight,
             flags=re.I
         )
-        if 'class="highlight"' in highlight:
-            hit['highlight']['content'].append(highlight)
+        # if 'class="highlight"' in highlight:
+        #     hit['highlight']['content'].append(highlight)
+        hit['highlight']['content'].append(highlight)
     else:
         positions = []
         if is_chinese(query):
