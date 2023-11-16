@@ -250,6 +250,8 @@ def generate_lang_query_aql(lang, keyword_list, operator, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.name, "%{keyword}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.name, "%{keyword}%")) OR '
             )
         aql_condition_part = aql_condition_part[:-4]
@@ -259,6 +261,8 @@ def generate_lang_query_aql(lang, keyword_list, operator, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.name, "%{keyword}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.name, "%{keyword}%")) AND '
             )
         aql_condition_part = aql_condition_part[:-5]
@@ -393,12 +397,14 @@ def generate_multi_keyword_query_aql(keywords, query_param):
             aql_condition_part += (
                 f'PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
             )
         else:
             keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
             aql_condition_part += (
                 f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
             )
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
@@ -429,12 +435,14 @@ def generate_and_query_aql(keywords, query_param):
         if constant.OPERATOR_NOT not in keyword:
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%")) AND '
             )
         else:
             keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) AND '
             )
 
@@ -464,6 +472,7 @@ def generate_not_query_aql(keywords, query_param):
     keyword_exclude_not = keywords.split(constant.OPERATOR_NOT)[0]
     aql_condition_part += (
         f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+        f'ANALYZER(LIKE(d.segmented_text, "%{keyword_exclude_not}%"), "normalize") OR '
         f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) '
     )
 
@@ -494,6 +503,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'd.uid == "{keyword}" OR '
                 f'PHRASE(d.name,  "{keyword}", "common_text")) OR '
             )
@@ -503,6 +513,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
         for keyword in query_conditions['and']:
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%")) AND '
             )
         aql_condition_part = aql_condition_part[:-5]
@@ -633,6 +644,7 @@ def aql_not_part(keyword):
     return f' AND NOT (PHRASE(d.content, "{keyword}", "common_text") OR ' \
            f'PHRASE(d.name,  "{keyword}", "common_text") OR ' \
            f'd.uid ==  "{keyword}" OR ' \
+           f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR ' \
            f'LIKE(d.segmented_text, "%{keyword}%")) '
 
 
