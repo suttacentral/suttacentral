@@ -1297,8 +1297,7 @@ class CollectionUrlList(Resource):
 class StripePublicKey(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):
-        key = os.environ.get('PUBLISHABLE_KEY')
-        if key:
+        if key := os.environ.get('PUBLISHABLE_KEY'):
             return {"public_key": key}, 200
         else:
             return 'Key not found', 404
@@ -1326,7 +1325,7 @@ class Redirect(Resource):
                 lang = 'pli'
             languages = db.collection('language')
             if lang in languages:
-                hits = db.aql.execute(
+                if hits := db.aql.execute(
                     '''
                     LET modern = (FOR text IN sc_bilara_texts
                         FILTER text.lang == @lang
@@ -1341,8 +1340,7 @@ class Redirect(Resource):
                     RETURN APPEND(modern, legacy)
                 ''',
                     bind_vars={"lang": lang, "uid": uid},
-                ).next()
-                if hits:
+                ).next():
                     author_uid = hits[0]['author_uid']
                     return "Redirect", 301, {'Location': f'/{uid}/{lang}/{author_uid}'}
                 else:
