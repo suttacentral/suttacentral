@@ -417,6 +417,33 @@ export const SCPageSearchStyles = css`
   .search-options label {
     line-height: 1.8;
   }
+
+  .reference {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-xxs);
+    font-weight: 400;
+    font-style: normal;
+
+    display: inline-block;
+
+    box-sizing: border-box;
+    margin-right: 0.5em;
+    padding: 0.1em 0.5em;
+
+    text-align: left;
+    text-indent: 0;
+    text-transform: none;
+    white-space: nowrap;
+
+    letter-spacing: normal;
+
+    color: var(--sc-on-primary-secondary-text-color);
+    border: 1px solid var(--sc-border-color);
+    border-radius: 8px;
+    background-color: var(--sc-secondary-background-color);
+
+    font-variant-caps: normal;
+  }
 `;
 
 export const searchResultTableViewStyles = css`

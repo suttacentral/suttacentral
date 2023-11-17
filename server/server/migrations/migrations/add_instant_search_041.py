@@ -135,7 +135,11 @@ class SecondMigration(Migration):
                     ]
                 },
                 "content": {
-                    "analyzers": ["common_text", "text_zh", "text_pali"]
+                    "analyzers": [
+                        "common_text",
+                        "text_zh",
+                        "text_pali"
+                    ]
                 }
             },
         }

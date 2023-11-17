@@ -842,24 +842,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (searchInput?.value === '') {
       searchInput.value = this.searchQuery;
     }
-
-    if (this.matchPartial) {
-      this.#searchInPage(this.searchQuery);
-    }
-  }
-
-  #searchInPage(text) {
-    if (window.find && window.getSelection) {
-        let sel = window.getSelection();
-        while (window.find(text)) {
-            let range = sel.getRangeAt(0);
-            let highlightStrong = document.createElement('strong');
-            highlightStrong.classList.add('highlight');
-
-            range.surroundContents(highlightStrong);
-        }
-        window.scrollTo(0, 0);
-    }
   }
 
   #didRespond(searchResult) {
