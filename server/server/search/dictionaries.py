@@ -61,7 +61,7 @@ def search(word, language, truncate_length=1000):
 
 def fuzzy_search(word, language, truncate_length=1000):
     db = get_db()
-
+    matching_entries = []
     results = (
         db.aql.execute(
             DICTIONARY_FUZZY_SEARCH_RESULT_FULL,
@@ -77,9 +77,8 @@ def fuzzy_search(word, language, truncate_length=1000):
         ).next()
 
     if not results:
-        return
+        return matching_entries
 
-    matching_entries = []
     for result in results:
         word = result['word']
         content = (

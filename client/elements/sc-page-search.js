@@ -860,6 +860,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.lastSearchResults = searchResult.hits;
     this.originLastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
+    if (searchResult.hits.length === 1 && searchResult.hits[0]?.category === 'dictionary') {
+      this.resultCount = searchResult.suttaplex.length;
+    }
     this.waitTimeAfterNewWordExpired = true;
     this.updateComplete.then(() => {
       this.loadingResults = false;

@@ -1314,6 +1314,8 @@ def fuzzy_lookup_dictionary(lang, query, restrict):
     if not restrict or restrict == 'dictionaries':
         if fuzzy_dictionary_result := dictionaries.fuzzy_search(query, lang):
             return fuzzy_dictionary_result
+        else:
+            return []
 
 
 def fetch_suttaplex(db, lang, query):
