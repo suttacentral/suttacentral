@@ -1197,13 +1197,14 @@ def highlight_segmented_text(content, query, hit):
     highlight_ascii = unidecode(content)
     query_ascii = unidecode(query)
     start, end = get_matched_string_position(query_ascii, highlight_ascii)
-    matching_string = content[start:end]
-    highlight = re.sub(
-        matching_string,
-        f'<strong class="highlight">{matching_string}</strong>',
-        highlight,
-        flags=re.I
-    )
+    if start != 0 and end != 0:
+        matching_string = content[start:end]
+        highlight = re.sub(
+            matching_string,
+            f'<strong class="highlight">{matching_string}</strong>',
+            highlight,
+            flags=re.I
+        )
     if 'class="highlight"' in highlight:
         sc_id_tag = ""
         if (
@@ -1227,6 +1228,8 @@ def highlight_segmented_text(content, query, hit):
                     f'</span></a>'
                 )
         hit['highlight']['content'].append(sc_id_tag + highlight)
+    else:
+        hit['highlight']['content'].append(highlight)
 
 
 def get_matched_string(query, highlight):
@@ -1239,6 +1242,8 @@ def get_matched_string(query, highlight):
 def get_matched_string_position(query, highlight):
     pattern = re.escape(query)
     matching_string = re.search(pattern, highlight, re.IGNORECASE)
+    if matching_string is None:
+        return 0, 0
     return matching_string.start(), matching_string.end()
 
 
