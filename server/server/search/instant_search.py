@@ -3,6 +3,7 @@ from zhconv import convert as zhconv_convert
 import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries, constant
+from unidecode import unidecode
 
 INSTANT_SEARCH_VIEW = 'instant_search'
 AQL_INSTANT_SEARCH_FIRST_PART = 'FOR d IN instant_search '
@@ -87,21 +88,42 @@ def instant_search_query(
         if total == 0:
             total = len(hits)
 
+        if matchpartial == 'true':
+            hits = sorted(hits, key=lambda item: item.get('segmented_uid') or '')
+
         if original_query != constant.CMD_LIST_AUTHORS:
             highlight_keyword(hits, query)
 
-    if matchpartial == 'true':
-        hits = merge_duplicate_hits(hits)
+        if matchpartial == 'true':
+            hits = merge_duplicate_hits(hits)
 
-    suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
-    current_page_total = len(hits)
-    hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
-    total = total - (current_page_total - len(hits))
+        suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
+        current_page_total = len(hits)
+        hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
+        total = calculate_total(current_page_total, hits, limit, suttaplexs, total)
+        lookup_dictionary(hits, lang, query, restrict)
+        fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
+        add_root_name(db, hits)
+
+        return {
+            'total': total,
+            'hits': hits,
+            'suttaplex': suttaplexs,
+            'fuzzy_dictionary': fuzzy_dictionary_entries
+        }
+
+
+def calculate_total(current_page_total, hits, limit, suttaplexs, total):
+    if total <= int(limit):
+        total = current_page_total
+    else:
+        total = total - (current_page_total - len(hits))
     if total == 0:
         total = len(suttaplexs)
-    lookup_dictionary(hits, lang, query, restrict)
-    fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
+    return total
 
+
+def add_root_name(db, hits):
     root_names = fetch_root_names(db, hits)
     root_names_set = {
         root_name['uid']: root_name['name']
@@ -111,13 +133,6 @@ def instant_search_query(
         uid = hit.get('uid')
         if uid in root_names_set:
             hit['root_name'] = root_names_set[uid]
-
-    return {
-        'total': total,
-        'hits': hits,
-        'suttaplex': suttaplexs,
-        'fuzzy_dictionary': fuzzy_dictionary_entries
-    }
 
 
 def fetch_root_names(db, hits):
@@ -150,6 +165,8 @@ def generate_general_query_aql(
         aql_condition_part += (
             f'OR LIKE(d.volpage, "%{query}%") '
             f'OR LIKE(d.name, "%{query}%") '
+            f'OR ANALYZER(LIKE(d.name, "%{query}%"), "normalize") '
+            f'OR ANALYZER(LIKE(d.segmented_text, "%{query}%"), "normalize") '
         )
         if possible_pali_words := [query]:
             aql_condition_part += ''' OR ('''
@@ -244,6 +261,8 @@ def generate_lang_query_aql(lang, keyword_list, operator, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.name, "%{keyword}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.name, "%{keyword}%")) OR '
             )
         aql_condition_part = aql_condition_part[:-4]
@@ -253,6 +272,8 @@ def generate_lang_query_aql(lang, keyword_list, operator, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.name, "%{keyword}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.name, "%{keyword}%")) AND '
             )
         aql_condition_part = aql_condition_part[:-5]
@@ -387,12 +408,14 @@ def generate_multi_keyword_query_aql(keywords, query_param):
             aql_condition_part += (
                 f'PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
             )
         else:
             keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
             aql_condition_part += (
                 f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
             )
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
@@ -423,12 +446,14 @@ def generate_and_query_aql(keywords, query_param):
         if constant.OPERATOR_NOT not in keyword:
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%")) AND '
             )
         else:
             keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) AND '
             )
 
@@ -458,6 +483,7 @@ def generate_not_query_aql(keywords, query_param):
     keyword_exclude_not = keywords.split(constant.OPERATOR_NOT)[0]
     aql_condition_part += (
         f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
+        f'ANALYZER(LIKE(d.segmented_text, "%{keyword_exclude_not}%"), "normalize") OR '
         f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) '
     )
 
@@ -488,6 +514,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'd.uid == "{keyword}" OR '
                 f'PHRASE(d.name,  "{keyword}", "common_text")) OR '
             )
@@ -497,6 +524,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
         for keyword in query_conditions['and']:
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%")) AND '
             )
         aql_condition_part = aql_condition_part[:-5]
@@ -589,7 +617,7 @@ def aql_return_part(include_content=True):
         is_root: d.is_root,
         heading: d.heading,
         content: 'content',
-        segmented_id: d.segmented_id,
+        segmented_uid: d.segmented_uid,
         segmented_text: d.segmented_text,
         is_segmented: d.is_segmented,
         param_lang: @lang
@@ -610,7 +638,7 @@ def aql_filter_part(matchpartial):
 
 def add_lang_condition(selected_languages):
     if isinstance(selected_languages, list) and len(selected_languages) > 0:
-        return f'AND (d.lang IN {selected_languages}) '
+        return f' AND (d.lang IN {selected_languages}) '
     else:
         return ''
 
@@ -627,6 +655,7 @@ def aql_not_part(keyword):
     return f' AND NOT (PHRASE(d.content, "{keyword}", "common_text") OR ' \
            f'PHRASE(d.name,  "{keyword}", "common_text") OR ' \
            f'd.uid ==  "{keyword}" OR ' \
+           f'ANALYZER(LIKE(d.segmented_text, "%{keyword}%"), "normalize") OR ' \
            f'LIKE(d.segmented_text, "%{keyword}%")) '
 
 
@@ -1097,8 +1126,10 @@ def extend_chinese_keywords(keyword_list, query_conditions):
     keywords = []
     for keyword in query_conditions['or']:
         if is_chinese(keyword):
-            keywords.extend([zhconv_convert(keyword, 'zh-hant'),
-                            zhconv_convert(keyword, 'zh-hans')])
+            keywords.extend([
+                zhconv_convert(keyword, 'zh-hant'),
+                zhconv_convert(keyword, 'zh-hans')
+            ])
     keyword_list.extend(keywords)
     keyword_list = list(set(keyword_list))
     return keyword_list
@@ -1119,16 +1150,7 @@ def highlight_by_multiple_possible_keyword(
 
 def cut_highlight(content, hit, query, is_segmented_text):
     if is_segmented_text:
-        highlight = content
-        matching_string = get_matched_string(query, highlight)
-        highlight = re.sub(
-            query,
-            f'<strong class="highlight">{matching_string}</strong>',
-            highlight,
-            flags=re.I
-        )
-        if 'class="highlight"' in highlight:
-            hit['highlight']['content'].append(highlight)
+        highlight_segmented_text(content, query, hit)
     else:
         positions = []
         if is_chinese(query):
@@ -1170,11 +1192,54 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     set(hit['highlight']['content']))
 
 
+def highlight_segmented_text(content, query, hit):
+    highlight = content
+    highlight_ascii = unidecode(content)
+    query_ascii = unidecode(query)
+    start, end = get_matched_string_position(query_ascii, highlight_ascii)
+    matching_string = content[start:end]
+    highlight = re.sub(
+        matching_string,
+        f'<strong class="highlight">{matching_string}</strong>',
+        highlight,
+        flags=re.I
+    )
+    if 'class="highlight"' in highlight:
+        sc_id_tag = ""
+        if (
+            "segmented_uid" in hit and
+            "uid" in hit and
+            "lang" in hit and
+            "author_uid" in hit
+        ):
+            parts = hit["segmented_uid"].split(":") if hit["segmented_uid"] else []
+            if len(parts) > 1:
+                sc_id = parts[1]
+                link = ''
+                if hit["author_uid"]:
+                    link = f'/{hit["uid"]}/{hit["lang"]}/{hit["author_uid"]}#{sc_id}'
+                else:
+                    link = f'/{hit["uid"]}'
+                sc_id_tag = (
+                    f'<a target="_blank" href="{link}">'
+                    f'<span class="reference" id="{hit["segmented_uid"]}">'
+                    f'{sc_id}'
+                    f'</span></a>'
+                )
+        hit['highlight']['content'].append(sc_id_tag + highlight)
+
+
 def get_matched_string(query, highlight):
     pattern = re.escape(query)
     matching_string = re.search(pattern, highlight, re.IGNORECASE)
     matching_string = matching_string.group() if matching_string else query
     return matching_string
+
+
+def get_matched_string_position(query, highlight):
+    pattern = re.escape(query)
+    matching_string = re.search(pattern, highlight, re.IGNORECASE)
+    return matching_string.start(), matching_string.end()
 
 
 def is_pali(content):
@@ -1209,15 +1274,15 @@ def find_paragraph(text, position):
 
 def find_sentences_with_keyword(input_string, keyword):
     """
-         Find natural sentences containing the given keyword from a string.
+        Find natural sentences containing the given keyword from a string.
 
-         parameter:
-         input_string: string, the sentence to find
-         keyword: string, the keyword to find
+        parameter:
+        input_string: string, the sentence to find
+        keyword: string, the keyword to find
 
-         return value:
-         A list of strings consisting of natural sentences
-         containing the given keywords.
+        return value:
+        A list of strings consisting of natural sentences
+        containing the given keywords.
     """
     sentence_list = re.split(r'[.!?...]+', input_string)
     return [

@@ -105,10 +105,10 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             </tr>
             <tr>
               <td>Filter results by <code>author</code>.</td>
-              <td>author:brahmali cat<br>
-                  author:sabbamitta Katze<br>
-                  author:sabbamitta Buddha OR Sāvatthī<br>
-                  author:sabbamitta Buddha AND Sāvatthī
+              <td>author:sujato cat<br>
+                  author:sujato Katze<br>
+                  author:sujato Buddha OR Sāvatthī<br>
+                  author:sujato Buddha AND Sāvatthī
               </td>
             </tr>
 

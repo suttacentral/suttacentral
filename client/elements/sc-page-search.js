@@ -265,7 +265,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!dictionaryItem) {
       return '';
     }
-    console.log(dictionaryItem);
     return html` ${this.#searchResultItemGeneralTemplate(dictionaryItem)} `;
   }
 
