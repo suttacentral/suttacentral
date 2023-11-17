@@ -184,7 +184,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get loadMoreButtonTemplate() {
-    return this.#areAllItemsLoaded()
+    return this.resultCount === 0 || this.#areAllItemsLoaded()
       ? ''
       : html`
           <div id="load-more">
