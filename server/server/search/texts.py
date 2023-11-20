@@ -123,7 +123,7 @@ class TextLoader:
                         else text['uid']
                     )
                 },
-                'content': '\n\n'.join(strings.values()),
+                'content': '\n\n'.join(f'{key.split(":")[1]}: {value}' for key, value in strings.items()),
                 'is_segmented': False,
                 'is_bilara_text': True,
                 'is_ebt': self.is_ebt(text['root_uid']),

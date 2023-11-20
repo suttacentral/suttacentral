@@ -783,7 +783,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // Formats the search result description snippet
   #calculateSnippetContent(description) {
-    return description?.join(' ... ');
+    return description?.join(' ');
   }
 
   // Calls the input results when page is loaded
@@ -860,7 +860,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.lastSearchResults = searchResult.hits;
     this.originLastSearchResults = searchResult.hits;
     this.resultCount = searchResult.total;
-    if (searchResult.hits.length === 1 && searchResult.hits[0]?.category === 'dictionary') {
+    if (searchResult.hits.length === 0 || (searchResult.hits.length === 1 && searchResult.hits[0]?.category === 'dictionary')) {
       this.resultCount = searchResult.suttaplex.length;
     }
     this.waitTimeAfterNewWordExpired = true;
