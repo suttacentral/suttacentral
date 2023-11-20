@@ -315,7 +315,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                 class="top-menu-button"
                 href=${this.listenUrl}
                 target="_blank"
-                title="Listen to this sutta"
+                title=${this.localize('suttaplex:listenSutta')}
                 aria-label=${this.localize('suttaplex:listenSutta')}
                 rel="noopener noreferrer"
               >
@@ -324,7 +324,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             `
           : ''}
 
-        <details id="copy-menu" class="top-menu-button" title="Share this sutta">
+        <details id="copy-menu" class="top-menu-button" title=${this.localize('suttaplex:shareThisSutta')}>
           <summary class="ripple">${icon.share}</summary>
           <ul class="suttaplex-share-menu-list">
             <sc-menu-suttaplex-share
