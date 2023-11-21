@@ -76,7 +76,7 @@ export class SCStaticHomePage extends SCStaticPage {
 
   #tipitakaSectionTemplate() {
     return html`
-    <section class='fundraising' style='
+    <section class='fundraising-banner' style='
     margin: -3rem 0 3rem 0; 
     background-color: var(--sc-secondary-accent-color); 
     color: white; 
