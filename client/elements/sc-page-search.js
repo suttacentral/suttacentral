@@ -122,6 +122,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     `;
   }
 
+  badgeTemplate(item) {
+    const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
+    return html`<sc-badge text=${badgeText} color="gray"></sc-badge>`;
+  }
+
   get offLineTemplate() {
     return this.isOnline ? '' : html` <sc-error-icon type="connect-to-internet"></sc-error-icon> `;
   }
@@ -312,7 +317,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         <div class="item-head">
           <a class="search-result-link" href=${this.#calculateLink(item)}>
             <div class="primary">
-              <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
+              <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))} ${this.badgeTemplate(item)}</h2>
               <div class="all-dictionaries">
                 <span>All dictionaries</span>
                 ${icon.arrow_right}

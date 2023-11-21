@@ -108,7 +108,17 @@ def instant_search_query(
         }
 
 
-def process_search_results(db, hits, lang, limit, matchpartial, original_query, query, restrict, total):
+def process_search_results(
+    db,
+    hits,
+    lang,
+    limit,
+    matchpartial,
+    original_query,
+    query,
+    restrict,
+    total
+):
     if total == 0:
         total = len(hits)
     if matchpartial == 'true':
@@ -130,7 +140,15 @@ def process_search_results(db, hits, lang, limit, matchpartial, original_query, 
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
 
-def execute_search_query(aql_condition_part, bind_param, db, hits, query, search_aql, total):
+def execute_search_query(
+    aql_condition_part,
+    bind_param,
+    db,
+    hits,
+    query,
+    search_aql,
+    total
+):
     query = bind_param['query']
     total = fetch_record_count(
         INSTANT_SEARCH_VIEW, aql_condition_part, query)
@@ -139,7 +157,14 @@ def execute_search_query(aql_condition_part, bind_param, db, hits, query, search
     return hits, query, total
 
 
-def construct_search_query_aql(limit, matchpartial, offset, query, query_param, selected_languages):
+def construct_search_query_aql(
+    limit,
+    matchpartial,
+    offset,
+    query,
+    query_param,
+    selected_languages
+):
     search_aql, aql_condition_part = \
         generate_general_query_aql(
             query, limit, offset, matchpartial, selected_languages)
@@ -1234,27 +1259,24 @@ def cut_highlight(content, hit, query, is_segmented_text):
             highlight = ''
             for position in positions[:3]:
                 if is_chinese(query):
-                    start = position - 100 if position > 100 else 0
-                    end = min(position + 100, len(content))
-                    highlight = content[start:end]
-                    highlight = re.sub(r'^.*?[\.\?!…“]', '', highlight)
-                    if last_punctuation := re.search(
-                        r'[\.\?!…,”]', highlight[::-1]
-                    ):
-                        highlight = highlight[:len(
-                            highlight) - last_punctuation.start()]
-
+                    paragraph = find_paragraph(content, position)
+                    if len(paragraph) > 300:
+                        sentences = find_chinese_sentences_with_keyword(paragraph, query)
+                        highlight = ' '.join(sentences) or paragraph
+                    else:
+                        highlight = paragraph
                 elif hit['is_bilara_text']:
                     paragraph = find_paragraph(content, position)
                     parts = paragraph.split(":")
                     if len(parts) > 1:
                         segmented_id = parts[0]
-                        sc_id_tag = generate_segmented_id_anchor_tag(hit, segmented_id)
-                        highlight = sc_id_tag + parts[1]
+                        segmented_id_anchor_tag = generate_segmented_id_anchor_tag(hit, segmented_id)
+                        highlight = segmented_id_anchor_tag + parts[1] + '<br/>'
                 else:
                     paragraph = find_paragraph(content, position)
                     sentences = find_sentences_with_keyword(paragraph, query)
-                    highlight = '...'.join(sentences) or paragraph
+                    highlight = ' '.join(sentences) or paragraph
+
                 matching_string = get_matched_string(query, highlight)
                 highlight = re.sub(
                     query,
@@ -1263,6 +1285,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     flags=re.I
                 )
                 hit['highlight']['content'].append(highlight)
+                hit['highlight']['content'] = list(set(hit['highlight']['content']))
 
 
 def generate_segmented_id_anchor_tag(hit, segmented_id):
@@ -1272,7 +1295,6 @@ def generate_segmented_id_anchor_tag(hit, segmented_id):
     else:
         link = f'/{hit["uid"]}'
     return (
-        '<br/>'
         '<a target="_blank" '
         f'href="{link}" '
         f'id="{segmented_id}">'
@@ -1295,7 +1317,7 @@ def highlight_segmented_text(content, query, hit):
             flags=re.I
         )
     if 'class="highlight"' in highlight:
-        sc_id_tag = ""
+        segmented_id_anchor_tag = ""
         if (
             "segmented_uid" in hit and
             "uid" in hit and
@@ -1305,8 +1327,8 @@ def highlight_segmented_text(content, query, hit):
             parts = hit["segmented_uid"].split(":") if hit["segmented_uid"] else []
             if len(parts) > 1:
                 segmented_id = parts[1]
-                sc_id_tag = generate_segmented_id_anchor_tag(hit, segmented_id)
-        hit['highlight']['content'].append(sc_id_tag + highlight)
+                segmented_id_anchor_tag = generate_segmented_id_anchor_tag(hit, segmented_id)
+        hit['highlight']['content'].append(segmented_id_anchor_tag + highlight + '<br/>')
     else:
         hit['highlight']['content'].append(highlight)
 
@@ -1353,9 +1375,30 @@ def find_sentences_with_keyword(input_string, keyword):
         A list of strings consisting of natural sentences
         containing the given keywords.
     """
-    sentence_list = re.split(r'[.!?...]+', input_string)
+    sentence_list = re.split(r'[.!?]+', input_string)
     return [
-        sentence.strip()
+        f'{sentence.strip()}<br/>'
+        for sentence in sentence_list
+        if keyword in sentence
+    ]
+
+
+def find_chinese_sentences_with_keyword(input_string, keyword):
+    """
+        Find natural chinese sentences containing the given keyword
+        from a string.
+
+        parameter:
+        input_string: string, the sentence to find
+        keyword: string, the keyword to find
+
+        return value:
+        A list of strings consisting of natural sentences
+        containing the given keywords.
+    """
+    sentence_list = re.split(r'[。！？]+', input_string)
+    return [
+        f'{sentence.strip()}<br/>'
         for sentence in sentence_list
         if keyword in sentence
     ]
