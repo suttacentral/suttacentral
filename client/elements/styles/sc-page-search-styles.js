@@ -154,6 +154,13 @@ export const SCPageSearchStyles = css`
     text-overflow: ellipsis;
 
     color: var(--sc-primary-color);
+
+    display: flex;
+    align-items: center;
+  }
+
+  sc-badge {
+    margin-left: 0.5em;
   }
 
   .all-dictionaries {

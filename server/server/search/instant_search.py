@@ -1276,6 +1276,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     paragraph = find_paragraph(content, position)
                     sentences = find_sentences_with_keyword(paragraph, query)
                     highlight = ' '.join(sentences) or paragraph
+                    highlight = f'{highlight}<br/>'
 
                 matching_string = get_matched_string(query, highlight)
                 highlight = re.sub(
