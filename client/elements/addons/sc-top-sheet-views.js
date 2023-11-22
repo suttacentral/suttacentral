@@ -565,6 +565,11 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   get referenceDisplayTypeTemplate() {
+    const nameMapping = {
+      'Main': this.localize('dictionary:referenceDisplayTypeMain'),
+      'None': this.localize('dictionary:referenceDisplayTypeNone')
+    };
+
     return this.references.length
       ? html`
           <div class="tools">
@@ -583,7 +588,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${item.checked}
                       @change=${this._onReferenceDisplayTypeChanged}
                     ></md-checkbox>
-                    ${item.name === 'Main' ? this.localize('dictionary:referenceDisplayTypeMain') : item.name}
+                    ${nameMapping[item.name] || item.name}
                   </label>
                 `
               )}
