@@ -5,6 +5,7 @@ import '@material/web/textfield/filled-text-field';
 import '@material/web/switch/switch';
 
 import './addons/sc-error-icon';
+import './addons/sc-progress';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
 import { LitLocalized } from './addons/sc-localization-mixin';
@@ -122,6 +123,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
     `;
   }
 
+  noResultTemplate() {
+    if (this.resultCount !== 0) {
+      return '';
+    }
+    return html`<p>${unsafeHTML(this.localizeEx('search:noResult', 'searchTerm', this.searchQuery))}</p>`;
+  }
+
   badgeTemplate(item) {
     const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
     return html`<sc-badge text=${badgeText} color="gray"></sc-badge>`;
@@ -197,6 +205,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
               ${this.localize('search:loadMore')}
             </md-filled-button>
           </div>
+          <div id="load-more-progress">
+            <sc-progress
+              .type=${'circular'}
+              .active=${this.loadMoreButtonClicked}
+            ></sc-progress>
+          </div>
         `;
   }
 
@@ -238,7 +252,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.loadingResults
       ? ''
       : html`
-          <section class="search-result-head">${this.searchResultHeadTemplate}</section>
+          <section class="search-result-head">${this.searchResultHeadTemplate}${this.noResultTemplate()}</section>
           <div class="all-search-results">
             <section class="primary-search-results">
               ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
@@ -871,6 +885,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.waitTimeAfterNewWordExpired = true;
     this.updateComplete.then(() => {
       this.loadingResults = false;
+      this.loadMoreButtonClicked = false;
       this.actions.changeLinearProgressActiveState(this.loadingResults);
     });
   }
