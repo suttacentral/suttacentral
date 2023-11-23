@@ -76,30 +76,36 @@ export class SCStaticHomePage extends SCStaticPage {
 
   #tipitakaSectionTemplate() {
     return html`
-    <section class='fundraising-banner' style='
-    margin: -3rem 0 3rem 0; 
-    background-color: var(--sc-secondary-accent-color); 
-    color: white; 
-    padding: 1rem 2rem; 
-    box-shadow: var(--sc-shadow-elevation-4dp
-    '>
-    <details>
-    <summary>
-    <h3 style='
-    display: inline-block
-    '>Help us by donating for SuttaCentral development</h3>
-    </summary>
-    <p style='margin-bottom: 1rem'>
-      SuttaCentral is a wide-ranging multi-disciplinary project for the preservation, study, translation, and dissemination of early Buddhist texts. As part of our project, we are building specialized software to assist translators to present the Dhamma in the world’s languages. We are currently in need of funding to complete this project. We rely on your support to continue making the Dhamma available to people all around the world.
-    </p>
-    <a class="link-button block-link" href="/donations">
-        Donate
-        <md-ripple aria-hidden="true"></md-ripple>
-      </a>
-    </details>
-    </section>
+      ${this.#donationsBannerTemplate()}
       <section class="tipitaka-section">
         <h2>${unsafeHTML(this.localize('home:1'))}</h2>
+      </section>
+    `;
+  }
+
+  #donationsBannerTemplate() {
+    return html`
+      <section
+        class='fundraising-banner'
+        style='
+          margin: -3rem 0 3rem 0;
+          background-color: var(--sc-secondary-accent-color);
+          color: white;
+          padding: 1rem 2rem;
+          box-shadow: var(--sc-shadow-elevation-4dp
+        '>
+        <details>
+          <summary>
+            <h3 style='display: inline-block'>Help us by donating for SuttaCentral development</h3>
+          </summary>
+          <p style='margin-bottom: 1rem'>
+            SuttaCentral is a wide-ranging multi-disciplinary project for the preservation, study, translation, and dissemination of early Buddhist texts. As part of our project, we are building specialized software to assist translators to present the Dhamma in the world’s languages. We are currently in need of funding to complete this project. We rely on your support to continue making the Dhamma available to people all around the world.
+          </p>
+          <a class="link-button block-link" href="/donations">
+            Donate
+            <md-ripple aria-hidden="true"></md-ripple>
+          </a>
+        </details>
       </section>
     `;
   }
@@ -215,7 +221,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card dark-accent">
         <a
           href="https://voice.suttacentral.net/scv/index.html#/sutta"
-           class='block-link' 
+           class='block-link'
           title=${this.localize('home:16')}
         >
           <header>
