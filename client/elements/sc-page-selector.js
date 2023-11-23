@@ -48,6 +48,7 @@ const staticPages = [
   'palitipitaka',
   'publicationAn',
   'searchFilter',
+  'sponsor',
 ];
 
 // prettier-ignore
@@ -241,6 +242,11 @@ const routes = {
     path: '/vinaya-guide-brahmali',
     content: html`<sc-static-vinaya />`,
     loader: () => import('./static/sc-static-vinaya.js')
+  },
+  'sponsor': {
+    path: '/sponsor',
+    content: html`<sc-static-sponsor />`,
+    loader: () => import('./static/sc-static-sponsor.js')
   },
   'sutta': {
     path: '/:suttaId/:langIsoCode/:authorUid',
