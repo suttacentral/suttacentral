@@ -366,7 +366,14 @@ export const SCPageSearchStyles = css`
   #load-more {
     padding: 24px 0;
     display: flex;
+
     justify-content: center;
+  }
+
+  #load-more-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   md-filled-text-field {
