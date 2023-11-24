@@ -98,6 +98,7 @@ const initialState = {
     language: 'en',
     data: [],
   },
+  displayDonationBanner: true,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -259,6 +260,8 @@ const reducer = (state, action) => {
         ...state,
         instantSearch: { ...state.instantSearch, language: action.language },
       };
+    case 'CHANGE_DONATION_BANNER_STATE':
+      return { ...state, displayDonationBanner: action.displayDonationBanner };
     default:
       return state;
   }
