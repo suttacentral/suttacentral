@@ -110,16 +110,22 @@ export class SCStaticHomePage extends SCStaticPage {
           padding: 1rem 2rem;
           box-shadow: var(--sc-shadow-elevation-4dp
         '>
-        <md-outlined-icon-button @click=${this.#changeDonationBannerDisplayState}>${icon.close}</md-outlined-icon-button>
+        <md-outlined-icon-button
+          @click=${this.#changeDonationBannerDisplayState}
+        >
+          ${icon.close}
+        </md-outlined-icon-button>
         <details>
           <summary>
-            <h3 style='display: inline-block'>Help us by donating for SuttaCentral development </h3>
+            <h3 style='display: inline-block'>
+              ${unsafeHTML(this.localize('donate:helpUs'))}
+            </h3>
           </summary>
           <p style='margin-bottom: 1rem'>
-            SuttaCentral is a wide-ranging multi-disciplinary project for the preservation, study, translation, and dissemination of early Buddhist texts. As part of our project, we are building specialized software to assist translators to present the Dhamma in the world’s languages. We are currently in need of funding to complete this project. We rely on your support to continue making the Dhamma available to people all around the world.
+            ${unsafeHTML(this.localize('donate:donateToBilara'))}
           </p>
           <md-outlined-button href="/donations" @click=${this.#changeDonationBannerDisplayState}>
-            Donate
+            ${unsafeHTML(this.localize('donate:donate'))}
             <md-ripple aria-hidden="true"></md-ripple>
           </md-outlined-button>
         </details>
