@@ -127,4 +127,11 @@ export class reduxActions {
       languageMenuVisibility: visibility,
     });
   }
+
+  static changeDonationBannerDisplayState(displayDonationBanner) {
+    store.dispatch({
+      type: 'CHANGE_DONATION_BANNER_STATE',
+      displayDonationBanner: displayDonationBanner,
+    });
+  }
 }
