@@ -159,10 +159,6 @@ export const SCPageSearchStyles = css`
     align-items: center;
   }
 
-  sc-badge {
-    margin-left: 0.5em;
-  }
-
   .all-dictionaries {
     display: none;
   }
@@ -559,6 +555,7 @@ export const searchResultTableViewStyles = css`
   .item-head {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   .volpage {
