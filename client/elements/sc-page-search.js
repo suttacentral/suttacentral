@@ -132,7 +132,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   badgeTemplate(item) {
     const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
-    return html`<sc-badge text=${badgeText} color="gray"></sc-badge>`;
+    return html`<a><sc-badge text=${badgeText} color="gray"></sc-badge></a>`;
   }
 
   get offLineTemplate() {
@@ -331,7 +331,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         <div class="item-head">
           <a class="search-result-link" href=${this.#calculateLink(item)}>
             <div class="primary">
-              <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))} ${this.badgeTemplate(item)}</h2>
+              <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
               <div class="all-dictionaries">
                 <span>All dictionaries</span>
                 ${icon.arrow_right}
@@ -341,6 +341,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
               <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
             </div>
           </a>
+          ${this.badgeTemplate(item)}
           ${this.#parallelsButtonTemplate(item)}
         </div>
         <div class="secondary">
@@ -843,6 +844,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           body: JSON.stringify(selectedLangs),
         })
       ).json();
+      console.log(searchResult);
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
