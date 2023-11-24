@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/web/elevation/elevation';
+import '@material/web/button/outlined-button';
+import '@material/web/iconbutton/outlined-icon-button';
 
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
@@ -9,19 +11,30 @@ import { icon } from '../../img/sc-icon';
 import { staticHomeStyles } from '../styles/sc-static-home-styles';
 import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
 import { store } from '../../redux-store';
+import { reduxActions } from '../addons/sc-redux-actions';
 
 export class SCStaticHomePage extends SCStaticPage {
   static properties = {
     randomEpigraph: { type: String },
     whyWeRead: { type: String },
     tipitaka: { type: Array },
+    displayDonationBanner: { type: Boolean },
   };
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/home';
     this.siteLanguage = store.getState().siteLanguage;
+    this.displayDonationBanner = store.getState().displayDonationBanner;
     this.#fetchDataForHomePage();
+    // reduxActions.changeDonationBannerDisplayState(true);
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.displayDonationBanner !== state.displayDonationBanner) {
+      this.displayDonationBanner = state.displayDonationBanner;
+    }
   }
 
   async #fetchDataForHomePage() {
@@ -76,10 +89,46 @@ export class SCStaticHomePage extends SCStaticPage {
 
   #tipitakaSectionTemplate() {
     return html`
+      ${this.#donationsBannerTemplate()}
       <section class="tipitaka-section">
         <h2>${unsafeHTML(this.localize('home:1'))}</h2>
       </section>
     `;
+  }
+
+  #donationsBannerTemplate() {
+    if (!this.displayDonationBanner) {
+      return '';
+    }
+    return html`
+      <section
+        class='fundraising-banner'
+        style='
+          margin: -3rem 0 3rem 0;
+          background-color: var(--sc-secondary-accent-color);
+          color: white;
+          padding: 1rem 2rem;
+          box-shadow: var(--sc-shadow-elevation-4dp
+        '>
+        <md-outlined-icon-button @click=${this.#changeDonationBannerDisplayState}>${icon.close}</md-outlined-icon-button>
+        <details>
+          <summary>
+            <h3 style='display: inline-block'>Help us by donating for SuttaCentral development </h3>
+          </summary>
+          <p style='margin-bottom: 1rem'>
+            SuttaCentral is a wide-ranging multi-disciplinary project for the preservation, study, translation, and dissemination of early Buddhist texts. As part of our project, we are building specialized software to assist translators to present the Dhamma in the world’s languages. We are currently in need of funding to complete this project. We rely on your support to continue making the Dhamma available to people all around the world.
+          </p>
+          <md-outlined-button href="/donations" @click=${this.#changeDonationBannerDisplayState}>
+            Donate
+            <md-ripple aria-hidden="true"></md-ripple>
+          </md-outlined-button>
+        </details>
+      </section>
+    `;
+  }
+
+  #changeDonationBannerDisplayState() {
+    reduxActions.changeDonationBannerDisplayState(false);
   }
 
   #videoTemplate() {
@@ -193,7 +242,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card dark-accent">
         <a
           href="https://voice.suttacentral.net/scv/index.html#/sutta"
-           class='block-link' 
+           class='block-link'
           title=${this.localize('home:16')}
         >
           <header>

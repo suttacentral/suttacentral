@@ -553,4 +553,25 @@ export const staticHomeStyles = css`
   sc-navigation-tipitaka {
     min-height: 270px;
   }
+
+  md-outlined-button {
+    --md-outlined-button-outline-color: white;
+    --md-outlined-button-label-text-color: white;
+    --md-outlined-button-label-text-font: var(--sc-sans-font);
+    --md-outlined-button-label-text-size: 16px;
+    --md-outlined-button-outline-width: 2px;
+    --md-outlined-button-hover-label-text-color: white;
+    --md-outlined-button-focus-label-text-color: white;
+    --md-outlined-button-pressed-label-text-color: white;
+  }
+
+  md-outlined-icon-button {
+    float: right;
+    --md-sys-color-outline: white;
+    --md-outlined-icon-button-outline-width: 2px;
+  }
+
+  .icon {
+    fill: white;
+  }
 `;
