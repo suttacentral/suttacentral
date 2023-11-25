@@ -4,12 +4,14 @@ import json
 import time
 import lxml.html
 import regex
+import sys
 from tqdm import tqdm
 
 from algoliasearch.search_client import SearchClient
 
 ALGOLIA_ADMIN_API_KEY = os.getenv('ALGOLIA_ADMIN_API_KEY')
-algolia_client = SearchClient.create('B3DSEV09M1', '')
+# algolia_client = SearchClient.create('B3DSEV09M1', '')
+algolia_client = SearchClient.create('6P1QMGK4ZX', '')
 algolia_index = algolia_client.init_index('sc_text_contents')
 
 from common.arangodb import get_db
@@ -59,8 +61,10 @@ class TextLoader:
 
     def index_all_text(self):
         # self.index_bilara_texts()
-        self.index_segmented_texts()
         # self.index_html_texts()
+
+        # self.index_segmented_texts()
+        self.index_merged_segmented_texts()
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
@@ -190,6 +194,50 @@ class TextLoader:
                         'full_path': text['full_path']
                     }
                     segmented_texts.append(segmented_text_info)
+            algolia_index.save_objects(
+                segmented_texts, {'autoGenerateObjectIDIfNotExist': True}
+            )
+            segmented_texts = []
+
+    def index_merged_segmented_texts(self):
+        bilara_texts = list(
+            get_db().aql.execute(
+                BILARA_TEXT_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}
+            )
+        )
+        if not bilara_texts:
+            return
+
+        segmented_texts = []
+        for text in bilara_texts:
+            uid = text['uid']
+            with open(text['strings_path']) as f:
+                strings = json.load(f)
+
+            merged_count = 0
+            merged_values = []
+            for key, value in strings.items():
+                if value and f'{uid}:0.' not in key:
+                    merged_values.append(key.split(':')[1] + ':' + value)
+                    merged_count += 1
+                    if merged_count % 10 == 0:
+                        segmented_text_info = {
+                            'acronym': text['acronym'],
+                            'uid': uid,
+                            'name': (
+                                self.fix_text(text['title'])
+                                if text['title']
+                                else text['uid']
+                            ),
+                            'lang': text['lang'],
+                            'author': text['author'],
+                            'author_uid': text['author_uid'],
+                            'is_root': self.lang == text['root_lang'],
+                            'is_ebs': self.is_ebs(text['root_uid']),
+                            'segmented_text': '\n\n'.join(merged_values),
+                        }
+                        segmented_texts.append(segmented_text_info)
+                        merged_values = []
             algolia_index.save_objects(
                 segmented_texts, {'autoGenerateObjectIDIfNotExist': True}
             )

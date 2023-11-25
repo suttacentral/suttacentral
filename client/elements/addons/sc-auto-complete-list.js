@@ -14,8 +14,7 @@ import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from './sc-redux-actions';
 
-const algoliaClient = algoliasearch('B3DSEV09M1', 'b3b5a4de4c16de7a500c7f324d77113b');
-const algoliaIndex = algoliaClient.initIndex('sc_ebs_names');
+const algoliaClient = algoliasearch('6P1QMGK4ZX', '91894dd5d8c89a8491d39f2903124373');
 const algoliaSegmentedTextIndex = algoliaClient.initIndex('sc_text_contents');
 
 let suttaDB = await create({
@@ -383,6 +382,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   static properties = {
     items: { type: Array },
     siteLanguage: { type: String },
+    loadingOramaData: { type: Boolean },
     loadingData: { type: Boolean },
   };
 
@@ -398,6 +398,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchQuery = store.getState().searchQuery || '';
     this.siteLanguage = store.getState().siteLanguage;
     this.loadingData = false;
+    this.loadingOramaData = false;
     this.searchResult = [];
   }
 
@@ -591,7 +592,7 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
                   <span class="instant-nav-uid-title-wrap">
                     <span class="instant-nav-uid"
                       >${unsafeHTML(item.acronym || item.highlight_uid || item.uid)}
-                      ${item.name ? ` – ${item.name}` : ''}
+                      ${unsafeHTML(item.name ? ` – ${item.name}` : '')}
                       ${item.author ? ` – ${item.author}` : ''}</span
                     >
                     <span class=${item.segmented_uid ? 'instant-nav-text' : 'instant-nav-title'}>
@@ -665,19 +666,19 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchQuery = e.target.value;
     this.searchResult.length = 0;
     this.items.length = 0;
-    clearTimeout(timeout);
+
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+
     timeout = setTimeout(() => {
-      this.loadingData = true;
       this.#instantSearch();
-      this.loadingData = false;
-    }, 500);
+    }, 1000);
   }
 
   async #instantSearch() {
     if (this.searchQuery?.length >= 2) {
-      this.#searchByAlgolia();
       this.#fulltextSearchByAlgolia();
-      this.requestUpdate();
     } else {
       this.items = [];
     }
@@ -719,57 +720,47 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
   }
 
-  #searchByAlgolia() {
-    this.items = [];
-    algoliaIndex
+  #fulltextSearchByAlgolia() {
+    algoliaSegmentedTextIndex
       .search(this.searchQuery, {
-        filters: `lang:${this.siteLanguage} OR isRoot:true`,
+        filters: `(lang:${this.siteLanguage} OR is_root:true) AND is_ebs:true`,
+        restrictSearchableAttributes: ['uid', 'name', 'segmented_text'],
       })
       .then(({ hits }) => {
+        const ebsNameHits = hits.filter(item => item.is_ebs_name);
+        const segmentedTextHits = hits.filter(item => !item.is_ebs_name);
+
         const formattedHit = [];
-        for (const hit of hits) {
+        for (const hit of ebsNameHits) {
           formattedHit.push({
             uid: hit.uid,
             highlight_uid: hit._highlightResult?.uid?.value || hit.uid,
-            isRoot: hit.isRoot,
-            nodeType: hit.nodeType,
-            title: hit._highlightResult?.title?.value,
+            isRoot: hit.is_root,
+            nodeType: hit.node_type,
+            title: hit._highlightResult?.name?.value,
             lang: hit.lang,
             author_uid: '',
           });
         }
         this.searchResult = this.#mergedResultByUid(formattedHit);
-        return true;
-      })
-      .catch(err => {
-        console.error(err);
-        return false;
-      });
-  }
 
-  #fulltextSearchByAlgolia() {
-    algoliaSegmentedTextIndex
-      .search(this.searchQuery, {
-        filters: `(lang:${this.siteLanguage} OR is_root:true) AND is_ebs:true`,
-        restrictSearchableAttributes: ['segmented_text'],
-      })
-      .then(({ hits }) => {
-        for (const hit of hits) {
+        for (const hit of segmentedTextHits) {
+          let { segmented_text, segmented_uid } = this.#extractSegmentedInfo(hit);
           this.searchResult.push({
             uid: hit.uid,
             highlight_uid: hit._highlightResult?.uid?.value || hit.uid,
             acronym: hit.acronym,
             isRoot: hit.is_root,
-            nodeType: 'leaf',
+            nodeType: hit.node_type || 'leaf',
             title:
-              hit._highlightResult?.segmented_text?.value ||
-              hit._highlightResult?.title?.value ||
+              segmented_text ||
+              hit._highlightResult?.name?.value ||
               hit.segmented_text,
             lang: hit.lang,
             author: hit.author,
             author_uid: hit.author_uid,
-            segmented_uid: hit.segmented_uid?.split(':')[1] || hit.segmented_uid,
-            name: hit.name,
+            segmented_uid: segmented_uid,
+            name: hit._highlightResult?.name?.value || hit.name,
           });
         }
         this.items = this.searchResult;
@@ -787,7 +778,32 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
       });
   }
 
+  #extractSegmentedInfo(hit) {
+    let { segmented_uid } = hit;
+    segmented_uid = segmented_uid?.split(':')[1] || segmented_uid;
+    let segmented_text = hit._highlightResult?.segmented_text?.value;
+    const segmentedTexts = hit._highlightResult?.segmented_text?.value?.split('\n\n');
+    for (const text of segmentedTexts) {
+      if (text.includes('class="highlight"')) {
+        const parts = text.split(':');
+        if (parts.length >= 2) {
+          segmented_uid = parts[0];
+          segmented_text = parts[1];
+
+          if (segmented_uid.includes('class="highlight"')) {
+            segmented_uid = '';
+          }
+        }
+        break;
+      }
+    }
+    return { segmented_text, segmented_uid };
+  }
+
   async #fulltextSearchByArangoSearch() {
+    if (!this.searchQuery) {
+      return;
+    }
     const segmentedTextData = await (
       await fetch(`${API_ROOT}/fulltextsearch/${this.searchQuery}`)
     ).json();
@@ -817,23 +833,24 @@ class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #mergedResultByUid(hits) {
-    const result = Object.values(
-      hits.reduce((acc, curr) => {
-        if (acc[curr.uid]) {
-          if (acc[curr.uid].isRoot !== curr.isRoot) {
-            if (curr.isRoot) {
-              acc[curr.uid].title = `${curr.title} – ${acc[curr.uid].title}`;
+    return Object.values(
+          hits.reduce((acc, curr) => {
+            if (acc[curr.uid]) {
+              if (acc[curr.uid].isRoot !== curr.isRoot) {
+                if (curr.isRoot) {
+                  acc[curr.uid].title = `${curr.title} – ${acc[curr.uid].title}`;
+                } else {
+                  acc[curr.uid].title += ` – ${curr.title}`;
+                  acc[curr.uid].lang = curr.lang;
+                  acc[curr.uid].nodeType = curr.nodeType;
+                }
+              }
             } else {
-              acc[curr.uid].title += ` – ${curr.title}`;
+              acc[curr.uid] = curr;
             }
-          }
-        } else {
-          acc[curr.uid] = curr;
-        }
-        return acc;
-      }, {})
-    );
-    return result;
+            return acc;
+          }, {})
+        );
   }
 }
 
