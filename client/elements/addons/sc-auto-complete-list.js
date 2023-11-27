@@ -26,12 +26,6 @@ let suttaDB = await create({
 
 let timeout = null;
 
-// const scSiteLayout = document.querySelector('sc-site-layout');
-// const localizedStrings = {
-//   filterSearchText: scSiteLayout?.localizedStringById?.('autocomplete:filterSearch'),
-// };
-// console.log(localizedStrings);
-
 export class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = [SCAutoCompleteListStyles];
   static properties = {
@@ -371,7 +365,6 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         restrictSearchableAttributes: ['uid', 'name', 'segmented_text'],
       })
       .then(({ hits }) => {
-        console.log(hits);
         const ebsNameHits = hits.filter(item => item.is_ebs_name);
         const segmentedTextHits = hits.filter(item => !item.is_ebs_name);
 
