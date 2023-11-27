@@ -24,7 +24,7 @@ let suttaDB = await create({
   },
 });
 
-let timeout = null;
+let timeoutId = null;
 
 export class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = [SCAutoCompleteListStyles];
@@ -184,7 +184,15 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         id="search_input"
         type="search"
         label="${this.localize('search:searchInAllText')}"
-        @keyup=${e => this.#keyupHandler(e)}
+        @keyup=${e => {
+            if (timeoutId !== null) {
+              clearTimeout(timeoutId);
+            }
+
+            timeoutId = setTimeout(() => {
+              this.#keyupHandler(e);
+            }, 1200);
+        }}
         @keypress=${this.#keypressHandler}
       >
         <md-icon slot="trailing-icon" @click=${this.#startSearch}>${icon.search}</md-icon>
@@ -300,18 +308,19 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       return;
     }
 
-    this.searchQuery = e.target.value;
+    this.searchQuery = this.shadowRoot.getElementById('search_input')?.value;
     this.searchResult.length = 0;
     this.items.length = 0;
 
-    if (timeout !== null) {
-      clearTimeout(timeout);
-    }
-
-    timeout = setTimeout(() => {
-      this.loadingData = true;
+    this.loadingData = true;
+    if (/\d/.test(this.searchQuery)) {
+      await this.#searchByOrama();
+      this.items = [...this.searchResult];
+    } else {
       this.#instantSearch();
-    }, 1200);
+      this.loadingData = false;
+    }
+    this.loadingData = false;
   }
 
   async #instantSearch() {
@@ -323,6 +332,10 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   async #searchByOrama() {
+    if (suttaDB?.data?.docs?.count === 0) {
+      await this.#initInstantSearchData();
+    }
+
     const searchResult = await search(suttaDB, {
       term: this.searchQuery,
       properties: '*',
@@ -404,9 +417,6 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         this.items = this.searchResult;
         if (this.items.length === 0) {
           this.searchResult.length = 0;
-          if (suttaDB?.data?.docs?.count === 0) {
-            this.#initInstantSearchData();
-          }
           this.#searchByOrama();
           this.#fulltextSearchByArangoSearch();
         }
@@ -462,7 +472,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         name: hit.name,
       });
     }
-    this.items = this.searchResult;
+    this.items = [...this.searchResult]
   }
 
   #highlight(text, searchTerm) {
