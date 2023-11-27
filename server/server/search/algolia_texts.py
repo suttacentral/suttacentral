@@ -9,7 +9,6 @@ from tqdm import tqdm
 
 from algoliasearch.search_client import SearchClient
 
-ALGOLIA_ADMIN_API_KEY = os.getenv('ALGOLIA_ADMIN_API_KEY')
 # algolia_client = SearchClient.create('B3DSEV09M1', '')
 algolia_client = SearchClient.create('6P1QMGK4ZX', '')
 algolia_index = algolia_client.init_index('sc_text_contents')

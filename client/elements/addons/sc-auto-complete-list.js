@@ -309,6 +309,10 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     this.searchQuery = this.shadowRoot.getElementById('search_input')?.value;
+    if (this.searchQuery && !/[\u4e00-\u9fa5]/.test(this.searchQuery) && this.searchQuery.length < 3) {
+      return;
+    }
+
     this.searchResult.length = 0;
     this.items.length = 0;
 
