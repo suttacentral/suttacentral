@@ -844,7 +844,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
           body: JSON.stringify(selectedLangs),
         })
       ).json();
-      console.log(searchResult);
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
