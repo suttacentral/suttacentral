@@ -20,6 +20,29 @@ from common.queries import (
     BILARA_TEXT_BY_LANG_FOR_SEARCH,
 )
 
+EBS_NAMES = '''
+FOR d IN ebs_names
+    LET acronym = (
+        FOR t IN text_extra_info
+            FILTER t.uid == d.uid
+            LIMIT 1
+            RETURN t.acronym
+    )[0]
+    RETURN {
+        uid: d.uid,
+        name: d.name,
+        acronym: acronym,
+        lang: d.lang,
+        node_type: d.node_type,
+        is_root: d.is_root,
+        segmented_text: "",
+        author_uid: "",
+        author: "",
+        is_ebs: true,
+        is_ebs_name: true
+    }
+'''
+
 logger = logging.getLogger('algolia_search.texts')
 
 ebt_prefixes = [
@@ -65,6 +88,7 @@ class TextLoader:
 
         # self.index_segmented_texts()
         self.index_merged_segmented_texts()
+
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
@@ -243,6 +267,13 @@ class TextLoader:
             )
             segmented_texts = []
 
+    def index_ebs_names(self):
+        if ebs_names := list(get_db().aql.execute(EBS_NAMES)):
+            print(f'Index {len(ebs_names)} early buddhist suttas names.')
+            algolia_index.save_objects(ebs_names, {'autoGenerateObjectIDIfNotExist': True})
+        else:
+            return
+
     def index_html_texts(self):
         html_texts = list(
             get_db().aql.execute(
@@ -371,3 +402,6 @@ def import_texts_to_algolia():
     for lang in tqdm(languages):
         loader = TextLoader(lang)
         loader.index_all_text()
+
+    loader = TextLoader({'uid': 'en', 'name': 'English'})
+    loader.index_ebs_names()
