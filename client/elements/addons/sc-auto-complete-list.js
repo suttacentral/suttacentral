@@ -378,7 +378,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   #fulltextSearchByAlgolia() {
     algoliaSegmentedTextIndex
       .search(this.searchQuery, {
-        filters: `(lang:${this.siteLanguage} OR is_root:true) AND is_ebs:true`,
+        filters: `is_ebs:true`,
         restrictSearchableAttributes: ['uid', 'name', 'segmented_text'],
       })
       .then(({ hits }) => {
