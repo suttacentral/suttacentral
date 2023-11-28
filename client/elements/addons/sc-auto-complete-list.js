@@ -309,6 +309,11 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
 
     this.searchQuery = this.shadowRoot.getElementById('search_input')?.value;
+
+    if (this.searchQuery && /volpage:|author:|title:|list authors|in:/.test(this.searchQuery)) {
+      return;
+    }
+
     if (this.searchQuery && !/[\u4e00-\u9fa5]/.test(this.searchQuery) && this.searchQuery.length < 3) {
       return;
     }
