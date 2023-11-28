@@ -301,6 +301,17 @@ export class SCTextLegacy extends SCTextCommon {
     } catch (e) {
       console.error(e);
     }
+
+    if (!metaText && this.sutta) {
+      metaText = `Sutta Id: ${this.sutta?.uid}
+      <br />
+      Sutta Title: ${this.sutta?.title}
+      <br />
+      Author: ${this.author}
+      <br/>
+      Language: ${this.lang}`
+    }
+
     return metaText;
   }
 

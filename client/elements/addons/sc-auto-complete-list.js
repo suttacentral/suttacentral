@@ -313,6 +313,10 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       return;
     }
 
+    if (this.searchQuery && this.searchQuery.length > 512) {
+      this.searchQuery = this.searchQuery.substring(0, 500);
+    }
+
     this.searchResult.length = 0;
     this.items.length = 0;
 
