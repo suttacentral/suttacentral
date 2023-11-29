@@ -571,7 +571,7 @@ export const staticHomeStyles = css`
     --md-outlined-icon-button-outline-width: 2px;
   }
 
-  .icon {
+  .fundraising-banner .icon {
     fill: white;
   }
 `;
