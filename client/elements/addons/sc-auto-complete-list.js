@@ -308,25 +308,31 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       return;
     }
 
-    this.searchQuery = this.shadowRoot.getElementById('search_input')?.value;
+    this.searchQuery = this.shadowRoot.getElementById('search_input')?.value?.trim();
 
-    if (this.searchQuery && /volpage:|author:|title:|list authors|in:/.test(this.searchQuery)) {
+    if (!this.searchQuery || this.searchQuery.length < 2) {
       return;
     }
 
-    if (this.searchQuery && !/[\u4e00-\u9fa5]/.test(this.searchQuery) && this.searchQuery.length < 3) {
+    if (!/[\u4e00-\u9fa5]/.test(this.searchQuery) && this.searchQuery.length < 3) {
       return;
     }
 
-    if (this.searchQuery && this.searchQuery.length > 512) {
+    if (/volpage:|author:|title:|list authors|in:/.test(this.searchQuery)) {
+      return;
+    }
+
+    if (this.searchQuery.length > 512) {
       this.searchQuery = this.searchQuery.substring(0, 500);
     }
 
     this.searchResult.length = 0;
     this.items.length = 0;
 
+    const isPaliSuttaName = this.#isPaliText(this.searchQuery) && this.searchQuery.includes('sutta');
+
     this.loadingData = true;
-    if (/\d/.test(this.searchQuery)) {
+    if (/\d/.test(this.searchQuery) || isPaliSuttaName) {
       await this.#searchByOrama();
       this.items = [...this.searchResult];
     } else {
@@ -334,6 +340,25 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       this.loadingData = false;
     }
     this.loadingData = false;
+  }
+
+  #isPaliText(str) {
+    const diacritics = [
+      'ṁ',
+      'ṃ',
+      'ā',
+      'ḍ',
+      'ī',
+      'ū',
+      'ṅ',
+      'ḷ',
+      'ṭ',
+      'ň',
+      'ñ',
+      'ṇ',
+      'ṣ'
+    ];
+    return diacritics.some(diacritic => str.includes(diacritic));
   }
 
   async #instantSearch() {
