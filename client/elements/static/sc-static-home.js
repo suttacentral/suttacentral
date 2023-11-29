@@ -118,14 +118,14 @@ export class SCStaticHomePage extends SCStaticPage {
         <details>
           <summary>
             <h3 style='display: inline-block'>
-              ${unsafeHTML(this.localize('donate:helpUs'))}
+              ${unsafeHTML(this.localize('home:46'))}
             </h3>
           </summary>
           <p style='margin-bottom: 1rem'>
-            ${unsafeHTML(this.localize('donate:donateToBilara'))}
+            ${unsafeHTML(this.localize('home:47'))}
           </p>
           <md-outlined-button href="/donations" @click=${this.#changeDonationBannerDisplayState}>
-            ${unsafeHTML(this.localize('donate:donate'))}
+            ${unsafeHTML(this.localize('home:45'))}
             <md-ripple aria-hidden="true"></md-ripple>
           </md-outlined-button>
         </details>
@@ -248,7 +248,7 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card dark-accent">
         <a
           href="https://voice.suttacentral.net/scv/index.html#/sutta"
-           class='block-link'
+          class='block-link'
           title=${this.localize('home:16')}
         >
           <header>
