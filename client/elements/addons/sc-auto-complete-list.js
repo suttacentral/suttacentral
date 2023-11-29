@@ -188,10 +188,9 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
             if (timeoutId !== null) {
               clearTimeout(timeoutId);
             }
-
             timeoutId = setTimeout(() => {
               this.#keyupHandler(e);
-            }, 1200);
+            }, 1000);
         }}
         @keypress=${this.#keypressHandler}
       >
@@ -265,11 +264,14 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   #footerTemplate() {
     return html`
       <span id="opensearchtip-left">
-        <img
-          src="/img/Algolia-logo-blue.png"
-          height="15px"
-          width="80px"
-        />
+        Search By
+        <a target="_blank" href="https://algolia.com">
+          <img style="margin-top: 5px;"
+            src="/img/Algolia-logo-blue.png"
+            height="15px"
+            width="80px"
+          />
+        </a>
         <md-icon-button
           aria-label="${this.localize('interface:tipsForSearchSyntax')}"
           href="/search-filter"
@@ -329,10 +331,8 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchResult.length = 0;
     this.items.length = 0;
 
-    const isPaliSuttaName = this.#isPaliText(this.searchQuery) && this.searchQuery.includes('sutta');
-
     this.loadingData = true;
-    if (/\d/.test(this.searchQuery) || isPaliSuttaName) {
+    if (/\d/.test(this.searchQuery)) {
       await this.#searchByOrama();
       this.items = [...this.searchResult];
     } else {
@@ -340,25 +340,6 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       this.loadingData = false;
     }
     this.loadingData = false;
-  }
-
-  #isPaliText(str) {
-    const diacritics = [
-      'ṁ',
-      'ṃ',
-      'ā',
-      'ḍ',
-      'ī',
-      'ū',
-      'ṅ',
-      'ḷ',
-      'ṭ',
-      'ň',
-      'ñ',
-      'ṇ',
-      'ṣ'
-    ];
-    return diacritics.some(diacritic => str.includes(diacritic));
   }
 
   async #instantSearch() {
