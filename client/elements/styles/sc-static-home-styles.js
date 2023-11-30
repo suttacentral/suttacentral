@@ -571,6 +571,10 @@ export const staticHomeStyles = css`
     --md-outlined-icon-button-outline-width: 2px;
   }
 
+  .fundraising-banner {
+    cursor: pointer;
+  }
+
   .fundraising-banner .icon {
     fill: white;
   }
