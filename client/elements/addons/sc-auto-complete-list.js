@@ -1,4 +1,4 @@
-import { html, css, LitElement, unsafeCSS } from 'lit';
+import { html, LitElement, unsafeCSS } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import algoliasearch from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
@@ -332,14 +332,16 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.items.length = 0;
 
     this.loadingData = true;
-    if (/\d/.test(this.searchQuery)) {
-      await this.#searchByOrama();
-      this.items = [...this.searchResult];
-    } else {
-      this.#instantSearch();
+    try {
+      if (/\d/.test(this.searchQuery)) {
+        await this.#searchByOrama();
+        this.items = [...this.searchResult];
+      } else {
+        this.#instantSearch();
+      }
+    } finally {
       this.loadingData = false;
     }
-    this.loadingData = false;
   }
 
   async #instantSearch() {
@@ -355,21 +357,19 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       await this.#initInstantSearchData();
     }
 
-    const searchResult = await search(suttaDB, {
-      term: this.searchQuery,
-      properties: '*',
-      limit: 15,
-      boost: {
-        uid: 2,
-        translationTitle: 1.5,
-        rootTitle: 1.4,
+    const searchParams = [
+      {
+        term: this.searchQuery,
+        properties: '*',
+        limit: 15,
+        boost: {
+          uid: 2,
+          translationTitle: 1.5,
+          rootTitle: 1.4,
+        },
+        threshold: 0.4,
       },
-      threshold: 0.4,
-    });
-
-    let { hits } = searchResult;
-    if (hits.length === 0) {
-      const searchResultWithTypoTolerance = await search(suttaDB, {
+      {
         term: this.searchQuery,
         properties: '*',
         tolerance: 1,
@@ -379,9 +379,19 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
           rootTitle: 1.5,
           translationTitle: 1.4,
         },
-      });
-      hits = searchResultWithTypoTolerance.hits;
+      },
+    ];
+
+    let hits = [];
+
+    for (const params of searchParams) {
+      const searchResult = await search(suttaDB, params);
+      hits = searchResult.hits;
+      if (hits.length > 0) {
+        break;
+      }
     }
+
     const copiedHits = JSON.parse(JSON.stringify(hits));
     this.searchResult = copiedHits.map(hit => hit.document);
     for (const item of this.searchResult) {
