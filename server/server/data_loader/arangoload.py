@@ -607,7 +607,25 @@ def generate_sutta_uid_list_from_range_sutta_uid():
         uid_list = [f'{prefix}{i}' for i in range(start, end + 1)]
         db['expanded_sutta_uids'].insert({'range_uid': uid, 'expanded_uids': uid_list})
 
-    # TODO vb_list
+    pli_tv_bu_vb_as_list = generate_uids("pli-tv-bu-vb-as", 1, 7)
+    pli_tv_bi_vb_pj_list = generate_uids("pli-tv-bi-vb-pj", 1, 4)
+    pli_tv_bi_vb_pc_list = generate_uids("pli-tv-bi-vb-pc", 91, 93)
+    pli_tv_bi_vb_pd_list = generate_uids("pli-tv-bi-vb-pd", 2, 8)
+    pli_tv_bi_vb_as_list = generate_uids("pli-tv-bi-vb-as", 1, 7)
+
+    insert_uids(db, 'pli-tv-bu-vb-as1-7', pli_tv_bu_vb_as_list)
+    insert_uids(db, 'pli-tv-bi-vb-pj1-4', pli_tv_bi_vb_pj_list)
+    insert_uids(db, 'pli-tv-bi-vb-pc91-93', pli_tv_bi_vb_pc_list)
+    insert_uids(db, 'pli-tv-bi-vb-pd2-8', pli_tv_bi_vb_pd_list)
+    insert_uids(db, 'pli-tv-bi-vb-as1-7', pli_tv_bi_vb_as_list)
+
+
+def generate_uids(prefix, start, end):
+    return [f"{prefix}{i}" for i in range(start, end + 1)]
+
+
+def insert_uids(db, range_uid, uids):
+    db['expanded_sutta_uids'].insert({'range_uid': range_uid, 'expanded_uids': uids})
 
 
 def run(no_pull=False):
