@@ -403,13 +403,19 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   #fulltextSearchByAlgolia() {
     algoliaSegmentedTextIndex
       .search(this.searchQuery, {
-        filters: `is_ebs:true`,
+        filters: `(lang:${this.siteLanguage} OR is_root:true) AND is_ebs:true`,
         restrictSearchableAttributes: ['uid', 'name', 'segmented_text'],
       })
       .then(({ hits }) => {
         const ebsNameHits = hits.filter(item => item.is_ebs_name);
-        const segmentedTextHits = hits.filter(item => !item.is_ebs_name);
-
+        let segmentedTextHits = hits.filter(item => !item.is_ebs_name);
+        segmentedTextHits = segmentedTextHits.filter(item => {
+          if (item._highlightResult.name.matchLevel === 'full'
+                && item._highlightResult.segmented_text.matchLevel === 'none') {
+            return false;
+          }
+          return true;
+        });
         const formattedHit = [];
         for (const hit of ebsNameHits) {
           formattedHit.push({
