@@ -578,7 +578,19 @@ def generate_sutta_uid_list_from_range_sutta_uid():
     db = arangodb.get_db()
     db['expanded_sutta_uids'].truncate()
     range_uid_list = list(db.aql.execute(RANGE_UIDS))
+
+    dot_list = []
+    dhp_list = []
+    vb_list = []
     for uid in range_uid_list:
+        if '.' in uid:
+            dot_list.append(uid)
+        elif 'dhp' in uid:
+            dhp_list.append(uid)
+        elif '-vb-' in uid:
+            vb_list.append(uid)
+
+    for uid in dot_list:
         uid_prefix, uid_suffix = uid.split('-')
         uid_prefix_prefix, uid_prefix_suffix = uid_prefix.split('.')
         uid_list = [
@@ -586,6 +598,16 @@ def generate_sutta_uid_list_from_range_sutta_uid():
             for i in range(int(uid_prefix_suffix), int(uid_suffix) + 1)
         ]
         db['expanded_sutta_uids'].insert({'range_uid': uid, 'expanded_uids': uid_list})
+
+    for uid in dhp_list:
+        match = re.search(r'\d+-\d+', uid)
+        prefix = uid[:match.start()]
+        range_part = uid[match.start():]
+        start, end = map(int, range_part.split('-'))
+        uid_list = [f'{prefix}{i}' for i in range(start, end + 1)]
+        db['expanded_sutta_uids'].insert({'range_uid': uid, 'expanded_uids': uid_list})
+
+    # TODO vb_list
 
 
 def run(no_pull=False):
