@@ -970,7 +970,8 @@ class ExtractSuttaFromRangeSutta(Resource):
 
         text_keys = ['html_text', 'root_text', 'translation_text', 'variant_text', 'reference_text']
         for text_key in text_keys:
-            data[text_key] = {k: v for k, v in data[text_key].items() if k.split(':')[0] == uid}
+            if text_key in data:
+                data[text_key] = {k: v for k, v in data[text_key].items() if k.split(':')[0] == uid}
 
         data['keys_order'] = list(data['html_text'].keys())
 
