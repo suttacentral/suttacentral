@@ -1636,6 +1636,13 @@ INSERT_EBS_NAMES = '''
         INSERT { uid: d.uid, lang: d.lang, is_root: d.is_root, name: d.name, node_type: navigation_doc.type  } INTO ebs_names
 '''
 
+RANGE_UIDS = '''
+FOR n IN names
+    FILTER n.is_root == true AND REGEX_TEST(n.uid, "\\\\b\\\\d+-\\\\d+\\\\b")
+    RETURN n.uid
+'''
+
+
 PARALLELS_LITE = '''
 FOR v IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_details_edges OPTIONS {order: 'dfs'}
     FILTER v.type == 'leaf'

@@ -30,6 +30,7 @@ from common.queries import (
     SINGLE_ROOT_TEXT,
     UPSERT_ROOT_NAMES,
     INSERT_EBS_NAMES,
+    RANGE_UIDS
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
@@ -573,6 +574,20 @@ def load_ebs_names():
     db.aql.execute(INSERT_EBS_NAMES)
 
 
+def generate_sutta_uid_list_from_range_sutta_uid():
+    db = arangodb.get_db()
+    db['expanded_sutta_uids'].truncate()
+    range_uid_list = list(db.aql.execute(RANGE_UIDS))
+    for uid in range_uid_list:
+        uid_prefix, uid_suffix = uid.split('-')
+        uid_prefix_prefix, uid_prefix_suffix = uid_prefix.split('.')
+        uid_list = [
+            f'{uid_prefix_prefix}.{i}'
+            for i in range(int(uid_prefix_suffix), int(uid_suffix) + 1)
+        ]
+        db['expanded_sutta_uids'].insert({'range_uid': uid, 'expanded_uids': uid_list})
+
+
 def run(no_pull=False):
     """Runs data load.
 
@@ -746,6 +761,9 @@ def run(no_pull=False):
 
     print_stage("Loading ebs_names")
     load_ebs_names()
+
+    print_stage("Generate uid list from range uid")
+    generate_sutta_uid_list_from_range_sutta_uid()
 
     print_stage("Generating sitemap")
     sitemap = generate_sitemap(db)

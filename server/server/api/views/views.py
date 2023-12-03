@@ -944,6 +944,39 @@ class SegmentedSutta(Resource):
         return data, 200
 
 
+class ExtractSuttaFromRangeSutta(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self, uid, author_uid=''):
+        db = get_db()
+        results = db.aql.execute(
+            "FOR n IN expanded_sutta_uids filter @uid in n.expanded_uids return n.range_uid",
+            bind_vars={'uid': uid}
+        )
+        result = list(results)
+        range_uid = ''
+        if not result:
+            return {'msg': 'Not Found'}, 200
+        else:
+            range_uid = result[0]
+
+        if not range_uid:
+            return {'msg': 'Not Found'}, 200
+        range_sutta_result = db.aql.execute(
+            SEGMENTED_SUTTA_VIEW,
+            bind_vars={'uid': range_uid, 'author_uid': author_uid}
+        )
+        range_sutta = next(range_sutta_result)
+        data = {k: json_load(v) for k, v in range_sutta.items()}
+
+        text_keys = ['html_text', 'root_text', 'translation_text', 'variant_text', 'reference_text']
+        for text_key in text_keys:
+            data[text_key] = {k: v for k, v in data[text_key].items() if k.split(':')[0] == uid}
+
+        data['keys_order'] = list(data['html_text'].keys())
+
+        return data, 200
+
+
 class Currencies(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self):

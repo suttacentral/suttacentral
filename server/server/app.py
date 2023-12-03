@@ -55,6 +55,7 @@ from api.views import (
     MapData,
     NavigationData,
     DataForHomepage,
+    ExtractSuttaFromRangeSutta,
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -111,6 +112,9 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Redirect, '/redirect/<path:url>')
     api.add_resource(
         SegmentedSutta, '/bilarasuttas/<string:uid>/<string:author_uid>', '/bilarasuttas/<string:uid>'
+    )
+    api.add_resource(
+        ExtractSuttaFromRangeSutta, '/extractsutta/<string:uid>/<string:author_uid>', '/extractsutta/<string:uid>'
     )
     api.add_resource(
         Transliterate, '/transliterate/<string:target>/<string:text>'
