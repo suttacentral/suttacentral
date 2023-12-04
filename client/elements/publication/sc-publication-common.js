@@ -38,19 +38,19 @@ function formatDate(date) {
 //   'https://raw.githubusercontent.com/suttacentral/editions/main/last_run_date';
 // const response = await fetch(lastActionRunDateUrl);
 // const lastRunDateText = await response.text();
-const lastRunDateText = '2023-11-27T09:19:38Z';
+const lastRunDateText = '2023-12-04T09:19:38Z';
 export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-11-27'],
-  ['mn', '2023-11-27'],
+  ['dn', '2023-12-04'],
+  ['mn', '2023-12-04'],
   ['sn', '2023-11-27'],
   ['an', '2023-11-27'],
   ['dhp', '2023-11-20'],
-  ['ud', '2023-11-27'],
+  ['ud', '2023-12-04'],
   ['iti', '2023-11-06'],
-  ['snp', '2023-11-27'],
+  ['snp', '2023-12-04'],
   ['thag', '2023-11-27'],
   ['thig', '2023-11-20'],
   ['pli-tv-vi', '2023-11-06'],
