@@ -42,7 +42,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     this.currentRoute = store.getState().currentRoute;
     this.editionUid = store.getState().currentRoute.params.editionUid;
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
-    this.lastUpdatedDateOfCollection = lastUpdatedDateOfCollections.get(this.editionUid);
     this.#fetchAllEditions();
     this.#loadNewResult();
   }
@@ -184,14 +183,26 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     const { authorUid, langIsoCode } = this.currentRoute.params;
 
     if (publicationType === 'tex') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${this.lastUpdatedDateOfCollection}-${publicationType}.zip`;
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publishedDate}-${publicationType}.zip`;
     }
 
     if (publicationType === 'pdf') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${this.lastUpdatedDateOfCollection}.zip`;
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publishedDate}.zip`;
     }
 
-    return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${this.lastUpdatedDateOfCollection}.${publicationType}`;
+    if (publicationType === 'epub') {
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publishedDate}.${publicationType}`;
+    }
+
+    if (publicationType === 'html') {
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publishedDate}.${publicationType}`;
+    }
+
+    return 'https://github.com/suttacentral/editions/tree/main';
   }
 
   createRenderRoot() {

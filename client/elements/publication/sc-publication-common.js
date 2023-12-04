@@ -38,22 +38,55 @@ function formatDate(date) {
 //   'https://raw.githubusercontent.com/suttacentral/editions/main/last_run_date';
 // const response = await fetch(lastActionRunDateUrl);
 // const lastRunDateText = await response.text();
-const lastRunDateText = '2023-11-27T09:19:38Z';
+const lastRunDateText = '2023-12-04T09:19:38Z';
 export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn', '2023-11-27'],
-  ['mn', '2023-11-27'],
-  ['sn', '2023-11-27'],
-  ['an', '2023-11-27'],
-  ['dhp', '2023-11-20'],
-  ['ud', '2023-11-27'],
-  ['iti', '2023-11-06'],
-  ['snp', '2023-11-27'],
-  ['thag', '2023-11-27'],
-  ['thig', '2023-11-20'],
-  ['pli-tv-vi', '2023-11-06'],
+  ['dn-epub', '2023-12-04'],
+  ['dn-html', '2023-12-04'],
+  ['dn-tex', '2023-12-04'],
+  ['dn-pdf', '2023-12-04'],
+  ['mn-epub', '2023-12-04'],
+  ['mn-html', '2023-12-04'],
+  ['mn-tex', '2023-10-30'],
+  ['mn-pdf', '2023-10-30'],
+  ['sn-epub', '2023-11-27'],
+  ['sn-html', '2023-11-27'],
+  ['sn-tex', '2023-11-27'],
+  ['sn-pdf', '2023-11-27'],
+  ['an-epub', '2023-11-27'],
+  ['an-html', '2023-11-27'],
+  ['an-tex', '2023-11-27'],
+  ['an-pdf', '2023-11-27'],
+  ['dhp-epub', '2023-11-20'],
+  ['dhp-html', '2023-11-20'],
+  ['dhp-tex', '2023-11-20'],
+  ['dhp-pdf', '2023-11-20'],
+  ['ud-epub', '2023-12-04'],
+  ['ud-html', '2023-12-04'],
+  ['ud-tex', '2023-12-04'],
+  ['ud-pdf', '2023-12-04'],
+  ['iti-epub', '2023-11-06'],
+  ['iti-html', '2023-11-06'],
+  ['iti-tex', '2023-11-06'],
+  ['iti-pdf', '2023-11-06'],
+  ['snp-epub', '2023-12-04'],
+  ['snp-html', '2023-12-04'],
+  ['snp-tex', '2023-10-30'],
+  ['snp-pdf', '2023-10-30'],
+  ['thag-epub', '2023-11-27'],
+  ['thag-html', '2023-11-27'],
+  ['thag-tex', '2023-11-27'],
+  ['thag-pdf', '2023-11-27'],
+  ['thig-epub', '2023-11-20'],
+  ['thig-html', '2023-11-20'],
+  ['thig-tex', '2023-11-20'],
+  ['thig-pdf', '2023-11-20'],
+  ['pli-tv-vi-epub', '2023-11-06'],
+  ['pli-tv-vi-html', '2023-11-06'],
+  ['pli-tv-vi-tex', '2023-11-06'],
+  ['pli-tv-vi-pdf', '2023-11-06'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
