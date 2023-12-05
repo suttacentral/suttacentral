@@ -63,7 +63,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       this.webEditionIds = [];
       this.webEditionInfo = [];
       for (const edition of this.allEditions) {
-        if (edition.edition_id.includes('-web_')) {
+        if (edition.edition_id.includes('-web_') && !edition.edition_id.includes('pli-tv-vi')) {
           this.webEditionIds.push(edition.edition_id);
         }
       }
