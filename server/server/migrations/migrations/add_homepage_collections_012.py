@@ -11,5 +11,7 @@ class SecondMigration(Migration):
 
         epigraphs = db.create_collection('epigraphs')
         epigraphs.add_hash_index(fields=['uid'], unique=False)
+        epigraphs.add_hash_index(fields=['lang'], unique=False)
 
         why_we_read = db.create_collection('why_we_read')
+        why_we_read.add_hash_index(fields=['lang'], unique=False)

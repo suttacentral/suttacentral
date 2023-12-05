@@ -1126,6 +1126,7 @@ FOR image IN images
 
 EPIGRAPHS = '''
 FOR epigraph IN epigraphs
+    FILTER epigraph.lang == @lang
     SORT RAND()
     LIMIT @number
     RETURN KEEP(epigraph, ['uid', 'epigraph'])
@@ -1133,6 +1134,7 @@ FOR epigraph IN epigraphs
 
 WHY_WE_READ = '''
 FOR text IN why_we_read
+    FILTER text.lang == @lang
     SORT RAND()
     LIMIT @number
     RETURN text.text
@@ -1639,7 +1641,7 @@ INSERT_EBS_NAMES = '''
 RANGE_UIDS = '''
 FOR n IN names
     FILTER n.is_root == true AND REGEX_TEST(n.uid, "\\\\d+-\\\\d+")
-        AND n.uid NOT LIKE '%sa%' 
+        AND n.uid NOT LIKE '%sa%'
         AND n.uid NOT LIKE '%pdhp%'
         AND n.uid NOT LIKE '%gdhp%'
         AND n.uid NOT LIKE '%g3dhp%'

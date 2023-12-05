@@ -1173,7 +1173,7 @@ class Epigraphs(Resource):
         except ValueError:
             limit = 10
 
-        data = db.aql.execute(EPIGRAPHS, bind_vars={'number': limit})
+        data = db.aql.execute(EPIGRAPHS, bind_vars={'number': limit, 'lang': 'en'})
 
         return list(data), 200
 
@@ -1199,7 +1199,7 @@ class WhyWeRead(Resource):
         except ValueError:
             limit = 10
 
-        data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit})
+        data = db.aql.execute(WHY_WE_READ, bind_vars={'number': limit, 'lang': 'en'})
 
         return list(data), 200
 
@@ -1214,22 +1214,40 @@ class DataForHomepage(Resource):
         except ValueError:
             limit = 10
 
-        epigraphs_data = list(
-            db.aql.execute(
-                EPIGRAPHS,
-                bind_vars={'number': limit}
-            )
-        )
-        why_we_read_data = list(
-            db.aql.execute(
-                WHY_WE_READ,
-                bind_vars={'number': limit}
-            )
-        )
-
         language = request.args.get(
             'language', current_app.config.get('DEFAULT_LANGUAGE')
         )
+
+        epigraphs_data = list(
+            db.aql.execute(
+                EPIGRAPHS,
+                bind_vars={'number': limit, 'lang': language}
+            )
+        )
+
+        if not epigraphs_data and language != 'en':
+            epigraphs_data = list(
+                db.aql.execute(
+                    EPIGRAPHS,
+                    bind_vars={'number': limit, 'lang': 'en'}
+                )
+            )
+
+        why_we_read_data = list(
+            db.aql.execute(
+                WHY_WE_READ,
+                bind_vars={'number': limit, 'lang': language}
+            )
+        )
+
+        if not why_we_read_data and language != 'en':
+            why_we_read_data = list(
+                db.aql.execute(
+                    WHY_WE_READ,
+                    bind_vars={'number': limit, 'lang': 'en'}
+                )
+            )
+
         tipitaka_menu_data = list(db.aql.execute(
             TIPITAKA_MENU, bind_vars={'language': language})
         )
