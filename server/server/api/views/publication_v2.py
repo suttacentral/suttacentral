@@ -9,7 +9,6 @@ from common.queries import EBOOK_DATA_QUERY
 
 EDITIONS_QUERY = '''
 FOR edition IN publication_editions
-    FILTER edition.edition_id NOT LIKE '%pli-tv-vi%'
     RETURN {
         edition_id: edition.edition_id,
         publication_number: edition.publication_number
