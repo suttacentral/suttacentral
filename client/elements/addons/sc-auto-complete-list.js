@@ -28,6 +28,7 @@ let timeoutId = null;
 
 export class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = [SCAutoCompleteListStyles];
+
   static properties = {
     items: { type: Array },
     siteLanguage: { type: String },
@@ -213,6 +214,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
                 @click=${e => this.#gotoSearch(e, item.uid, this.searchQuery)}
               >
                 <span class="search-suggestion">
+                  <span class="search-suggestion-tip">${this.localize('autocomplete:filterSearch')}</span>
                   <span class="search-suggestion-filter">${item.uid}</span>
                   <span class="search-suggestion-query">${this.searchQuery}</span>
                 </span>

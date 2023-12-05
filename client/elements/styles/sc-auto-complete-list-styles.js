@@ -150,13 +150,14 @@ export const SCAutoCompleteListStyles = css`
     overflow-x: hidden;
   }
 
-  .search-suggestion::before {
+  .search-suggestion-tip {
+    display: block;
     position: absolute;
     top: 8px;
 
-    display: block;
-
-    content: 'Filter search to early Buddhist suttas';
+    font-family: monospace;
+    font-size: var(--sc-font-size-xxs);
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   .search-suggestion::before,
