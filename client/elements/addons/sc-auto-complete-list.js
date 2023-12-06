@@ -403,9 +403,10 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #fulltextSearchByAlgolia() {
+    const langFilters = this.#computeAlgoliaSearchLangFilter();
     algoliaSegmentedTextIndex
       .search(this.searchQuery, {
-        filters: `(lang:${this.siteLanguage} OR is_root:true) AND is_ebs:true`,
+        filters: `(${langFilters} OR is_root:true) AND is_ebs:true`,
         restrictSearchableAttributes: ['uid', 'name', 'segmented_text'],
       })
       .then(({ hits }) => {
@@ -464,6 +465,18 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         console.error(err);
         return false;
       });
+  }
+
+  #computeAlgoliaSearchLangFilter() {
+    let selectedLangs = store
+      .getState()
+      .searchOptions.displayedLanguages.filter(item => item.checked);
+    selectedLangs = selectedLangs.map(item => item.uid);
+    let langFilters = selectedLangs.map(lang => `lang:${lang}`).join(' OR ');
+    if (selectedLangs.length === 0 || !langFilters) {
+      langFilters = `lang:${this.siteLanguage}`;
+    }
+    return langFilters;
   }
 
   #extractSegmentedInfo(hit) {
