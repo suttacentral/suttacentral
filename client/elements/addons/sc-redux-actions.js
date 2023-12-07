@@ -134,4 +134,11 @@ export class reduxActions {
       displayDonationBanner: displayDonationBanner,
     });
   }
+
+  static changeTemporarySiteLanguage(temporarySiteLanguage) {
+    store.dispatch({
+      type: 'CHANGE_TEMPORARY_SITE_LANGUAGE',
+      temporarySiteLanguage,
+    });
+  }
 }
