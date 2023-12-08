@@ -172,7 +172,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       </style>
       <main>
         <article>
-                          <hgroup class="page-header">
+          <hgroup class="page-header">
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
