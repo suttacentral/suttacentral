@@ -172,11 +172,13 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       </style>
       <main>
         <article>
-        <section class='editions-header'>
           <hgroup class="page-header">
             <h1>SuttaCentral Editions</h1>
             <p class="subtitle">Selected translations as books in multiple formats</p>
           </hgroup>
+        <div class='editions-top-sections'>
+
+        <section class='editions-header'>
           <img class="main-image" src="/img/publication-pages/editions-kn-wet.jpg" />
           <p>
             The “Editions” series makes selected translations available as books in various formats,
@@ -225,6 +227,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
               <p>Please contact us if you would like to sponsor your own edition for free distribution.</p>
             </aside>
           </section>
+          </div>
           <section class='all-editions'>
           ${this.#allEditionsTemplate()}
           </section>

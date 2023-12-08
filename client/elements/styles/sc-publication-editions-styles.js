@@ -34,10 +34,6 @@ export const SCPublicationEditionsStyles = css`
     margin-bottom: 1rem;
   }
 
-  .down-all ul {
-    list-style-type: none;
-  }
-
   .icon {
     width: 24px;
     height: 24px;
@@ -97,6 +93,14 @@ export const SCPublicationEditionsStyles = css`
     align-items: center;
   }
 
+  .editions-top-sections {
+    display: flex;
+
+    flex-wrap: wrap;
+    gap: 36px;
+    justify-content: center;
+  }
+
   .editions-header {
     max-width: 720px;
   }
@@ -126,7 +130,7 @@ export const SCPublicationEditionsStyles = css`
 
     width: auto;
     height: 16em;
-    margin: 0.5em 1em 1em 0;
+    margin: .5em 1em 1em 0;
 
     box-shadow: var(--sc-shadow-elevation-8dp);
   }
@@ -140,47 +144,55 @@ export const SCPublicationEditionsStyles = css`
   }
 
   .down-all {
-    max-width: 720px;
-    margin: 4em 0 4em 0;
+    max-width: 360px;
+    margin: 0;
     padding: 24px;
 
     border: 1px solid var(--sc-border-color);
     border-radius: 24px;
   }
 
-  .down-all ul {
-    margin-left: 0;
-    padding-left: 0;
-  }
+  @media screen and (max-width: 1260px) {
+    .down-all {
+      max-width: 720px;
+    }
 
-  .down-all li {
-    margin-left: 0;
-    padding-left: 0;
-  }
+    .down-all ul {
+      margin-left: 0;
+      padding-left: 0;
 
-  .down-all aside {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
+      list-style-type: none;
+    }
 
-    margin-top: 1rem;
-    padding: 1em;
+    .down-all li {
+      margin-left: 0;
+      padding-left: 0;
+    }
 
-    color: var(--sc-on-primary-secondary-text-color);
-  }
+    .down-all aside {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-s);
 
-  h1 {
-    font-family: var(--sc-sans-font);
-    font-weight: 200;
-    font-stretch: expanded;
+      margin-top: 1rem;
+      padding: 1em;
 
-    letter-spacing: var(--sc-caps-letter-spacing);
-  }
+      color: var(--sc-on-primary-secondary-text-color);
+    }
 
-  .link-button-container {
-    display: flex;
+    h1 {
+      font-family: var(--sc-sans-font);
+      font-weight: 200;
+      font-stretch: expanded;
 
-    margin-top: 1em;
+      letter-spacing: var(--sc-caps-letter-spacing);
+    }
 
-    justify-content: center;
+    .link-button-container {
+      display: flex;
+
+      margin-top: 1em;
+
+      justify-content: center;
+    }
   }
 `;
