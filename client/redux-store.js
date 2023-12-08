@@ -8,6 +8,7 @@ const initialState = {
   },
   dialog: undefined,
   siteLanguage: 'en',
+  temporarySiteLanguage: 'en',
   fullSiteLanguageName: 'English',
   toolbarOptions: {
     title: '',
@@ -117,6 +118,8 @@ const reducer = (state, action) => {
       return { ...state, currentEditionHomeInfo: action.currentEditionHomeInfo };
     case 'CHANGE_SITE_LANGUAGE':
       return { ...state, siteLanguage: action.language, fullSiteLanguageName: action.fullName };
+    case 'CHANGE_TEMPORARY_SITE_LANGUAGE':
+      return { ...state, temporarySiteLanguage: action.temporarySiteLanguage};
     case 'CHANGE_TOOLBAR_TITLE':
       return { ...state, toolbarOptions: { ...state.toolbarOptions, title: action.title } };
     case 'SAVE_TOOLBAR_TITLE':

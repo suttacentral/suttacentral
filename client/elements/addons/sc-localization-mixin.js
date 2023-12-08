@@ -141,4 +141,8 @@ export const LitLocalized = base =>
     fallbackLanguage() {
       return FALLBACK_LANGUAGE;
     }
+
+    loadTemporaryLocalization(lang) {
+      this.__siteLanguageChanged(lang);
+    }
   };

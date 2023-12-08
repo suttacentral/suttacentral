@@ -2,6 +2,7 @@ import { LitElement } from 'lit';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { store } from '../../redux-store';
+import { reduxActions } from './sc-redux-actions';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
   static properties = {
@@ -32,6 +33,18 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     });
 
     this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+
+    this.#loadTempLocaleIfNeeded();
+  }
+
+  #loadTempLocaleIfNeeded() {
+    this.temporarySiteLanguage = store.getState().temporarySiteLanguage;
+    if (this.temporarySiteLanguage !== this.siteLanguage) {
+      this.loadTemporaryLocalization(this.temporarySiteLanguage);
+      window.history.replaceState(null, null, `?lang=${this.temporarySiteLanguage || 'en'}`);
+      this.requestUpdate();
+      reduxActions.changeTemporarySiteLanguage('en');
+    }
   }
 
   stateChanged(state) {

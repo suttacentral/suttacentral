@@ -57,7 +57,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.toolbarPosition = storeState.toolbarPosition;
     this.pageLoaded = false;
     if (this.getUrlLangParam !== store.getState().siteLanguage) {
-      this.changeSiteLanguage(this.getUrlLangParam);
+      reduxActions.changeTemporarySiteLanguage(this.getUrlLangParam);
     }
   }
 
