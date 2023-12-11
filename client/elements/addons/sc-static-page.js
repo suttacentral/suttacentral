@@ -39,11 +39,11 @@ export class SCStaticPage extends LitLocalized(LitElement) {
 
   #loadTempLocaleIfNeeded() {
     this.temporarySiteLanguage = store.getState().temporarySiteLanguage;
-    if (this.temporarySiteLanguage !== this.siteLanguage) {
+    if (this.temporarySiteLanguage && this.temporarySiteLanguage !== this.siteLanguage) {
       this.loadTemporaryLocalization(this.temporarySiteLanguage);
-      window.history.replaceState(null, null, `?lang=${this.temporarySiteLanguage || 'en'}`);
+      window.history.replaceState(null, null, `?lang=${this.temporarySiteLanguage || this.siteLanguage}`);
       this.requestUpdate();
-      reduxActions.changeTemporarySiteLanguage('en');
+      reduxActions.changeTemporarySiteLanguage(this.siteLanguage);
     }
   }
 
