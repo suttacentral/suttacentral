@@ -128,12 +128,28 @@ export class SCStaticMap extends SCStaticPage {
         feature => feature.properties.name
       ).map(this._featureItem);
       return html`<div class="features-section">
-        <h3>${layerName}</h3>
+        <h3>${this._getLocalizedTextBylayerName(layerName)}</h3>
         <ul>
           ${listItems}
         </ul>
       </div>`;
     });
+  }
+
+  _getLocalizedTextBylayerName(text) {
+    const textMap = {
+      'Capital cities': 'map:5',
+      'Towns & villages': 'map:6',
+      'Temples & features': 'map:7',
+      'Regions': 'map:8',
+      'Mahajanapadas': 'map:9',
+      'Republics / countries': 'map:10',
+      'Mahāparinibbāna journey': 'map:11',
+      'Pārāyanavagga journey': 'map:12',
+      'Extraterrestrial Places': 'map:13'
+    };
+
+    return textMap[text] ? this.localize(textMap[text]) : text;
   }
 
   _sortObjectsByStringKey(objectList, keyFn) {
