@@ -389,27 +389,66 @@ class SuttaplexList(Resource):
                 except KeyError:
                     parent['children'] = [result]
 
-            if result['translated_title'] == '':
-                translation_text_file = db.aql.execute(
-                    SEGMENTED_TRANSLATION_TEXT,
-                    bind_vars={'uid': result['uid'], 'language': language}
-                )
-                if translation_text_file is not None:
-                    file_result = next(translation_text_file)
-                    if (
-                        file_result is not None
-                        and 'translation_text' in file_result
-                    ):
-                        translation_text = json_load(file_result['translation_text'])
-                        uid_key = result['uid'] + ':0.3'
-                        if translation_text and uid_key in translation_text:
-                            result['translated_title'] = translation_text[uid_key]
-
+            self.fetch_alternative_translated_title_if_empty(db, language, result)
             result['verseNo'] = self.compute_verse_no(result['uid'], result['verseNo'])
 
+        fallen_leaves = self.try_to_load_fallen_leaves(uid, language, db, data)
         data = flat_tree(data)
+        self.add_acronym_to_fallen_leaves(uid, data, fallen_leaves)
+        data = self.sort_suttaplex_items(uid, data, fallen_leaves)
 
         return data, 200
+
+    def fetch_alternative_translated_title_if_empty(self, db, language, result):
+        if result['translated_title'] == '':
+            translation_text_file = db.aql.execute(
+                SEGMENTED_TRANSLATION_TEXT,
+                bind_vars={'uid': result['uid'], 'language': language}
+            )
+            if translation_text_file is not None:
+                file_result = next(translation_text_file)
+                if (
+                        file_result is not None
+                        and 'translation_text' in file_result
+                ):
+                    translation_text = json_load(file_result['translation_text'])
+                    uid_key = result['uid'] + ':0.3'
+                    if translation_text and uid_key in translation_text:
+                        result['translated_title'] = translation_text[uid_key]
+
+    def add_acronym_to_fallen_leaves(self, uid, data, fallen_leaves):
+        if fallen_leaves:
+            first_acronym = next((item['acronym'] for item in data if item['acronym']), '')
+            parent_acronym = first_acronym[:first_acronym.rfind(' ')] if ' ' in first_acronym else uid
+            for leave in fallen_leaves:
+                leave['acronym'] = f'{parent_acronym} ' + leave['uid'].replace(uid, '')
+
+    def try_to_load_fallen_leaves(self, uid, language, db, data):
+        fallen_leaves_results = db.aql.execute(
+            FALLEN_LEAVES_SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
+        )
+        fallen_leaves = list(fallen_leaves_results)
+        data.extend(fallen_leaves)
+        return fallen_leaves
+
+    def sort_suttaplex_items(self, uid, data, fallen_leaves):
+        if fallen_leaves:
+            data = list(filter(lambda x: x['uid'] is not None, data))
+            for item in data:
+                item['hasFallenLeaves'] = True
+                if index := item['uid'].replace(uid, ''):
+                    split_index = index.split('-')
+                    item['index'] = (
+                        split_index[0]
+                        if '-' in index
+                        and len(split_index) > 1
+                        and split_index[0].isdigit()
+                        else index
+                    )
+                else:
+                    item['index'] = 0
+            data = sorted(data, key=lambda x: int(x['index']))
+        return data
 
     def compute_verse_no(self, uid, verses):
         if verses is not None and verses != '' and 'dhp' not in uid:

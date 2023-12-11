@@ -802,6 +802,7 @@ FOR doc IN fallen_leaves
                     parallel_count: parallel_count,
                     biblio: null,
                     priority_author_uid: null,
+                    isFallenLeaf: true,
                 }
 '''
 
