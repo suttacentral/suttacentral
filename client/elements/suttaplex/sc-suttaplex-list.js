@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { partitionAsync } from '../../utils/partitionAsync';
-import { isFallenLeaf } from '../../utils/sc-structure';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { getURLParam } from '../addons/sc-functions-miscellaneous';
 import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list.css.js';
@@ -196,7 +195,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this.rangeCategoryId = responseData[0].uid;
       }
       this.priorityAuthorUid = responseData[0].priority_author_uid;
-      await this.#addFallenLeavesToSuttaplexList(responseData[0].uid, responseData);
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -213,50 +211,9 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
   }
 
-  async #addFallenLeavesToSuttaplexList(categoryId, suttaPlexList) {
-    const firstAcronym = this.#getFirstAcronymFromSuttaPlexList(suttaPlexList);
-    const parentAcronym = firstAcronym.slice(0, firstAcronym.lastIndexOf(' ')) || this.categoryId;
-    try {
-      const responseData = await fetch(
-        `${API_ROOT}/fallen_leaves_suttaplex/${this.categoryId}?language=${this.language}`
-      ).then(r => r.json());
-      if (responseData?.length > 0) {
-        for (const suttaPlex of responseData) {
-          suttaPlex.isFallenLeaf = true;
-        }
-        suttaPlexList.push(...responseData);
-        for (const suttaPlex of suttaPlexList) {
-          suttaPlex.hasFallenLeaves = true;
-          suttaPlex.index = parseInt(suttaPlex.uid?.replaceAll(this.categoryId, ''), 10);
-          if (Object.hasOwn(suttaPlex, 'isFallenLeaf') && suttaPlex.isFallenLeaf) {
-            suttaPlex.acronym = `${parentAcronym} ${suttaPlex.uid?.replaceAll(
-              this.categoryId,
-              ''
-            )}`;
-          }
-        }
-        suttaPlexList.sort((a, b) => a.index - b.index);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  #getFirstAcronymFromSuttaPlexList(suttaPlexList) {
-    if (!suttaPlexList) {
-      return '';
-    }
-    for (const suttaPlex of suttaPlexList) {
-      if (suttaPlex.acronym) {
-        return suttaPlex.acronym;
-      }
-    }
-    return '';
-  }
-
   _updateMetaData() {
     const { suttaplexData, isSuttaInRangeSutta, categoryId, rangeCategoryId } = this;
-    if (this.suttaplexData && this.suttaplexData.length) {
+    if (this.suttaplexData?.length) {
       const { title, original_title, blurb } = suttaplexData[0];
       let description = this.localize('interface:metaDescriptionText');
       if (blurb) {
@@ -377,7 +334,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
         .inRangeSuttaId=${this.categoryId}
         .priorityAuthorUid=${this.priorityAuthorUid}
-        .isFallenLeaf=${isFallenLeaf(item.uid)}
+        .isFallenLeaf=${item.isFallenLeaf || false}
         class=${ifDefined(
           this.isPatimokkha() && item.uid !== this.categoryId ? 'hidden' : undefined
         )}
@@ -564,7 +521,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           item => item.key,
           item =>
             this.isSuttaplex(item) ||
-            isFallenLeaf(item.uid) ||
+            item.isFallenLeaf ||
             (this.isPatimokkha() && !this.isPatimokkhaRuleCategory(item.uid))
               ? this.suttaplexTemplate(item)
               : this.sectionTemplate(item)
