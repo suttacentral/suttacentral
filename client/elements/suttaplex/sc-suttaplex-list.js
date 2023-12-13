@@ -417,7 +417,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     } else {
       urlParams = `?view=table&${langParam}`;
     }
-    history.replaceState(null, null, urlParams);
+    window.history.replaceState(null, null, urlParams);
   }
 
   sectionTemplate(item) {

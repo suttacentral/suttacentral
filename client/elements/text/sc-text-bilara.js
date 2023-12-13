@@ -29,6 +29,8 @@ import {
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
 import { setNavigation } from '../navigation/sc-navigation-common';
+import { paliReferenceEditions } from './sc-text-functions';
+
 
 export class SCTextBilara extends SCTextCommon {
   static properties = {
@@ -58,6 +60,8 @@ export class SCTextBilara extends SCTextCommon {
     rootEdition: { type: Array },
     isRangeSutta: { type: Boolean },
     transformedSuttaId: { type: String },
+    isTextOptionsMismatchSavedSettings: { type: Boolean },
+    shouldRestoreUserSettings: { type: Boolean },
   };
 
   constructor() {
@@ -71,7 +75,6 @@ export class SCTextBilara extends SCTextCommon {
     this.localizedStringsPath = '/localization/elements/interface';
     this.commentSpanRectInfo = new Map();
     this.rootEdition = [];
-
     this._setTextViewState();
 
     this._hashChangeHandler = () => {
@@ -172,7 +175,7 @@ export class SCTextBilara extends SCTextCommon {
     this._prepareNavigation();
 
     setTimeout(() => {
-      this._changeTextView();
+      this._updateTextViewStylesBasedOnState();
       this._recalculateCommentSpanHeight();
     }, 0);
     this.actions.changeSuttaMetaText('');
@@ -398,9 +401,9 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   updated(changedProps) {
+    let shouldChangeTextView = false;
     if (changedProps.has('chosenTextView')) {
-      this._changeTextView();
-      this._updateURLSearchParams();
+      shouldChangeTextView = true;
     }
     if (changedProps.has('paliScript')) {
       this._changeScript();
@@ -416,7 +419,7 @@ export class SCTextBilara extends SCTextCommon {
       this._updateView();
     }
     if (changedProps.has('displayedReferences')) {
-      this._changeTextView();
+      shouldChangeTextView = true;
       if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
         this._deleteReference();
         this._addSCReference();
@@ -424,11 +427,9 @@ export class SCTextBilara extends SCTextCommon {
       } else {
         this._deleteReference();
       }
-      this._updateURLSearchParams();
     }
     if (changedProps.has('chosenNoteDisplayType')) {
-      this._changeTextView();
-      this._updateURLSearchParams();
+      shouldChangeTextView = true;
     }
     if (changedProps.has('showHighlighting')) {
       this._showHighlightingChanged();
@@ -441,18 +442,17 @@ export class SCTextBilara extends SCTextCommon {
         this._resetCommentSpan();
       }
     }
+
+    if (shouldChangeTextView) {
+      this._updateTextViewStylesBasedOnState();
+      this._updateURLSearchParams();
+    }
   }
 
   _showHighlightingChanged() {
-    if (this.showHighlighting) {
-      this._articleElement().forEach(article => {
-        article.classList.add('highlight');
-      });
-    } else {
-      this._articleElement().forEach(article => {
-        article.classList.remove('highlight');
-      });
-    }
+    this._articleElement().forEach(article => {
+      this.showHighlighting ? article.classList.add('highlight') : article.classList.remove('highlight');
+    });
   }
 
   _isPlusStyle() {
@@ -511,87 +511,124 @@ export class SCTextBilara extends SCTextCommon {
     if (!textBilara) {
       return;
     }
-    const {
-      segmentedSuttaTextView,
-      displayedReferences,
-      noteDisplayType,
-      showHighlighting,
-      script,
-    } = store.getState().textOptions;
-    const { siteLanguage } = store.getState();
-    const langParam = `lang=${siteLanguage}`;
-    const urlParams = `?${langParam}&layout=${segmentedSuttaTextView}&reference=${displayedReferences.join(
-      '/'
-    )}&notes=${noteDisplayType}&highlight=${showHighlighting}&script=${script}${
-      window.location.hash
-    }`;
-    // eslint-disable-next-line no-restricted-globals
-    history.replaceState(null, null, urlParams);
+    const { siteLanguage, textOptions } = store.getState();
+    const chosenNoteDisplayType = textOptions.noteDisplayType;
+    const chosenTextView = textOptions.segmentedSuttaTextView;
+    const {showHighlighting} = textOptions;
+    const paliScript = textOptions.script;
+    const {displayedReferences} = textOptions;
+    const params = ['notes', 'layout', 'script', 'highlight', 'reference'];
+    let [notes, layout, script, highlight, reference] = params.map(getURLParam);
+
+    this.isTextOptionsMismatchSavedSettings = (
+      chosenNoteDisplayType !== notes?.toLowerCase() ||
+      chosenTextView !== layout?.toLowerCase() ||
+      showHighlighting !== (highlight === 'true') ||
+      paliScript !== script ||
+      displayedReferences !== reference?.split('/')
+    );
+
+    if (this.shouldRestoreUserSettings) {
+      this.isTextOptionsMismatchSavedSettings = false;
+    }
+
+    if (notes && !['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {
+      notes = chosenNoteDisplayType;
+    }
+
+    if (layout && !['plain', 'sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
+      layout = chosenTextView;
+    }
+
+    if (highlight && !['true', 'false'].includes(highlight.toLowerCase())) {
+      highlight = showHighlighting;
+    }
+
+    if (script && !scriptIdentifiers.find(x => x.script === script)) {
+      script = paliScript;
+    }
+
+    if (reference) {
+      const paramReference = reference
+        .split('/')
+        .filter(ref =>
+          ['main', 'none'].includes(ref.toLowerCase()) ||
+          paliReferenceEditions.some(x => x.edition_set === ref)
+        );
+      if (paramReference.length === 0) {
+        reference = displayedReferences;
+      }
+    }
+
+    const urlParams = new URLSearchParams({
+      lang: siteLanguage,
+      layout: this.isTextOptionsMismatchSavedSettings ? layout : chosenTextView,
+      reference: this.isTextOptionsMismatchSavedSettings ? reference : displayedReferences,
+      notes: this.isTextOptionsMismatchSavedSettings ? notes : chosenNoteDisplayType,
+      highlight: this.isTextOptionsMismatchSavedSettings ? highlight : showHighlighting,
+      script: this.isTextOptionsMismatchSavedSettings ? script : paliScript
+    }).toString();
+    const finalUrl = `?${urlParams}${window.location.hash}`;
+    window.history.replaceState(null, null, finalUrl);
   }
 
   _setTextViewState() {
-    const notes = getURLParam('notes');
-    const root = getURLParam('root');
-    const layout = getURLParam('layout');
-    const script = getURLParam('script');
-    const highlight = getURLParam('highlight');
-    const reference = getURLParam('reference');
+    const params = ['notes', 'layout', 'script', 'highlight', 'reference'];
+    const [notes, layout, script, highlight, reference] = params.map(getURLParam);
+    if (!notes && !layout && !script && !highlight && !reference) {
+      this.isTextOptionsMismatchSavedSettings = false;
+      return;
+    }
+
     const { textOptions } = store.getState();
+    this.chosenNoteDisplayType = textOptions.noteDisplayType;
+    this.chosenTextView = textOptions.segmentedSuttaTextView;
+    this.showHighlighting = textOptions.showHighlighting;
+    this.paliScript = textOptions.script;
+    this.displayedReferences = textOptions.displayedReferences;
+
+    this.isTextOptionsMismatchSavedSettings = (
+      this.chosenNoteDisplayType !== notes?.toLowerCase() ||
+      this.chosenTextView !== layout?.toLowerCase() ||
+      this.showHighlighting !== (highlight === 'true') ||
+      this.paliScript !== script ||
+      this.displayedReferences !== reference?.split('/')
+    );
+
+    if (!this.isTextOptionsMismatchSavedSettings) {
+      return;
+    }
 
     if (notes && ['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {
       this.chosenNoteDisplayType = notes.toLowerCase();
-      reduxActions.setNoteDisplayType(this.chosenNoteDisplayType);
-    } else {
-      this.chosenNoteDisplayType = textOptions.noteDisplayType;
     }
 
     if (layout && ['plain', 'sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
-      reduxActions.chooseSegmentedSuttaTextView(layout.toLowerCase());
-    } else {
-      this.chosenTextView = textOptions.segmentedSuttaTextView;
+      this.chosenTextView = layout.toLowerCase()
     }
 
     if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
       this.showHighlighting = highlight === 'true';
-      reduxActions.setShowHighlighting(highlight === 'true');
-    } else {
-      this.showHighlighting = textOptions.showHighlighting;
     }
 
     if (script && scriptIdentifiers.find(x => x.script === script)) {
       this.paliScript = script;
-      reduxActions.choosePaliTextScript(script);
-    } else {
-      this.paliScript = textOptions.script;
     }
 
     if (reference) {
-      const paramReference = [];
-      fetch(`${API_ROOT}/pali_reference_edition`)
-        .then(r => r.json())
-        .then(data => {
-          const refs = reference.split('/');
-          for (const ref of refs) {
-            if (
-              ref.toLowerCase() === 'main' ||
-              ref.toLowerCase() === 'none' ||
-              data.find(x => x.edition_set === ref)
-            ) {
-              paramReference.push(ref);
-            }
-          }
-          if (paramReference.length > 0) {
-            this.displayedReferences = paramReference;
-            reduxActions.setReferenceDisplayType(paramReference);
-          }
-        })
-        .catch(e => console.error(e));
-    } else {
-      this.displayedReferences = textOptions.displayedReferences;
+      const paramReference = reference
+        .split('/')
+        .filter(ref =>
+          ['main', 'none'].includes(ref.toLowerCase()) ||
+          paliReferenceEditions.some(x => x.edition_set === ref)
+        );
+      if (paramReference.length > 0) {
+        this.displayedReferences = paramReference;
+      }
     }
   }
 
-  _changeTextView() {
+  _updateTextViewStylesBasedOnState() {
     let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
     if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
       if (this.chosenNoteDisplayType === 'sidenotes') {
@@ -646,10 +683,10 @@ export class SCTextBilara extends SCTextCommon {
 
   stateChanged(state) {
     super.stateChanged(state);
-    if (this.chosenTextView !== state.textOptions.segmentedSuttaTextView) {
+    if (this.chosenTextView !== state.textOptions.segmentedSuttaTextView && this.shouldRestoreUserSettings) {
       this.chosenTextView = state.textOptions.segmentedSuttaTextView;
     }
-    if (this.paliScript !== state.textOptions.script) {
+    if (this.paliScript !== state.textOptions.script && this.shouldRestoreUserSettings) {
       this.paliScript = state.textOptions.script;
       this.hasScriptBeenChanged = true;
     }
@@ -661,13 +698,13 @@ export class SCTextBilara extends SCTextCommon {
     }
     const currentReferences = this.buildReferences(this.displayedReferences);
     const incomingReferences = this.buildReferences(state.textOptions.displayedReferences);
-    if (currentReferences !== incomingReferences) {
+    if (currentReferences !== incomingReferences && this.shouldRestoreUserSettings) {
       this.displayedReferences = Array.from(state.textOptions.displayedReferences);
     }
-    if (this.chosenNoteDisplayType !== state.textOptions.noteDisplayType) {
+    if (this.chosenNoteDisplayType !== state.textOptions.noteDisplayType && this.shouldRestoreUserSettings) {
       this.chosenNoteDisplayType = state.textOptions.noteDisplayType;
     }
-    if (this.showHighlighting !== state.textOptions.showHighlighting) {
+    if (this.showHighlighting !== state.textOptions.showHighlighting && this.shouldRestoreUserSettings) {
       this.showHighlighting = state.textOptions.showHighlighting;
     }
   }
@@ -1078,7 +1115,9 @@ export class SCTextBilara extends SCTextCommon {
 
   _addSpanToNode(node, unit) {
     const NODE_TYPE_TEXT = 3;
-    if (node.nodeType !== NODE_TYPE_TEXT) return;
+    if (node.nodeType !== NODE_TYPE_TEXT) {
+      return;
+    }
     const tt = node.data;
     const strArr = tt.split(/\s+/g);
     let str = '';
@@ -1290,6 +1329,9 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _scriptFunctionName() {
+    if (!this.paliScript) {
+      return 'latin';
+    }
     return this.paliScript.charAt(0).toUpperCase() + this.paliScript.slice(1);
   }
 }

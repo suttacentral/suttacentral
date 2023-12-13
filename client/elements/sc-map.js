@@ -153,7 +153,7 @@ export class SCMap extends LitLocalized(LitElement) {
           [],
           Object.fromEntries(
             layerNames.map(layerName => [
-              layerName,
+              this._getLocalizedTextByLayerName(layerName),
               this._buildLayer(geoJSON, layerName).addTo(this.map),
             ])
           )
@@ -165,6 +165,22 @@ export class SCMap extends LitLocalized(LitElement) {
     });
 
     this.getRootNode().addEventListener('keydown', e => this._keydownHandler(e));
+  }
+
+  _getLocalizedTextByLayerName(text) {
+    const textMap = {
+      'Capital cities': 'map:5',
+      'Towns & villages': 'map:6',
+      'Temples & features': 'map:7',
+      'Regions': 'map:8',
+      'Mahajanapadas': 'map:9',
+      'Republics / countries': 'map:10',
+      'Mahāparinibbāna journey': 'map:11',
+      'Pārāyanavagga journey': 'map:12',
+      'Extraterrestrial Places': 'map:13'
+    };
+
+    return textMap[text] ? this.localize(textMap[text]) : text;
   }
 
   _keydownHandler(e) {
