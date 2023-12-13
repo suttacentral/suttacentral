@@ -83,10 +83,10 @@ export const lastUpdatedDateOfCollections = new Map([
   ['thig-html', '2023-11-20'],
   ['thig-tex', '2023-11-20'],
   ['thig-pdf', '2023-11-20'],
-  ['pli-tv-vi-epub', '2023-12-05'],
-  ['pli-tv-vi-html', '2023-12-05'],
-  ['pli-tv-vi-tex', '2023-12-05'],
-  ['pli-tv-vi-pdf', '2023-12-05'],
+  ['pli-tv-vi-epub', '2023-12-11'],
+  ['pli-tv-vi-html', '2023-12-11'],
+  ['pli-tv-vi-tex', '2023-12-11'],
+  ['pli-tv-vi-pdf', '2023-12-11'],
 ]);
 
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
