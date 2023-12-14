@@ -520,44 +520,48 @@ export class SCTextBilara extends SCTextCommon {
     const params = ['notes', 'layout', 'script', 'highlight', 'reference'];
     let [notes, layout, script, highlight, reference] = params.map(getURLParam);
 
-    this.isTextOptionsMismatchSavedSettings = (
-      chosenNoteDisplayType !== notes?.toLowerCase() ||
-      chosenTextView !== layout?.toLowerCase() ||
-      showHighlighting !== (highlight === 'true') ||
-      paliScript !== script ||
-      displayedReferences !== reference?.split('/')
-    );
+    if (notes && layout && script && highlight && reference) {
+      this.isTextOptionsMismatchSavedSettings = (
+        chosenNoteDisplayType !== notes?.toLowerCase() ||
+        chosenTextView !== layout?.toLowerCase() ||
+        showHighlighting !== (highlight === 'true') ||
+        paliScript !== script ||
+        displayedReferences !== reference?.split('/')
+      );
 
-    if (this.shouldRestoreUserSettings) {
-      this.isTextOptionsMismatchSavedSettings = false;
-    }
-
-    if (notes && !['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {
-      notes = chosenNoteDisplayType;
-    }
-
-    if (layout && !['plain', 'sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
-      layout = chosenTextView;
-    }
-
-    if (highlight && !['true', 'false'].includes(highlight.toLowerCase())) {
-      highlight = showHighlighting;
-    }
-
-    if (script && !scriptIdentifiers.find(x => x.script === script)) {
-      script = paliScript;
-    }
-
-    if (reference) {
-      const paramReference = reference
-        .split('/')
-        .filter(ref =>
-          ['main', 'none'].includes(ref.toLowerCase()) ||
-          paliReferenceEditions.some(x => x.edition_set === ref)
-        );
-      if (paramReference.length === 0) {
-        reference = displayedReferences;
+      if (this.shouldRestoreUserSettings) {
+        this.isTextOptionsMismatchSavedSettings = false;
       }
+
+      if (notes && !['none', 'asterisk', 'sidenotes'].includes(notes.toLowerCase())) {
+        notes = chosenNoteDisplayType;
+      }
+
+      if (layout && !['plain', 'sidebyside', 'linebyline'].includes(layout.toLowerCase())) {
+        layout = chosenTextView;
+      }
+
+      if (highlight && !['true', 'false'].includes(highlight.toLowerCase())) {
+        highlight = showHighlighting;
+      }
+
+      if (script && !scriptIdentifiers.find(x => x.script === script)) {
+        script = paliScript;
+      }
+
+      if (reference) {
+        const paramReference = reference
+          .split('/')
+          .filter(ref =>
+            ['main', 'none'].includes(ref.toLowerCase()) ||
+            paliReferenceEditions.some(x => x.edition_set === ref)
+          );
+        if (paramReference.length === 0) {
+          reference = displayedReferences;
+        }
+      }
+    } else {
+      this.isTextOptionsMismatchSavedSettings = false;
     }
 
     const urlParams = new URLSearchParams({
@@ -573,19 +577,20 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _setTextViewState() {
-    const params = ['notes', 'layout', 'script', 'highlight', 'reference'];
-    const [notes, layout, script, highlight, reference] = params.map(getURLParam);
-    if (!notes && !layout && !script && !highlight && !reference) {
-      this.isTextOptionsMismatchSavedSettings = false;
-      return;
-    }
-
     const { textOptions } = store.getState();
     this.chosenNoteDisplayType = textOptions.noteDisplayType;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
     this.showHighlighting = textOptions.showHighlighting;
     this.paliScript = textOptions.script;
     this.displayedReferences = textOptions.displayedReferences;
+
+    const params = ['notes', 'layout', 'script', 'highlight', 'reference'];
+    const [notes, layout, script, highlight, reference] = params.map(getURLParam);
+
+    if (!notes && !layout && !script && !highlight && !reference) {
+      this.isTextOptionsMismatchSavedSettings = false;
+      return;
+    }
 
     this.isTextOptionsMismatchSavedSettings = (
       this.chosenNoteDisplayType !== notes?.toLowerCase() ||
