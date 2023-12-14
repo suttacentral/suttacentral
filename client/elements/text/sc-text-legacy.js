@@ -666,8 +666,7 @@ export class SCTextLegacy extends SCTextCommon {
     const urlParams = `?${langParam}&reference=${displayedReferences.join(
       '/'
     )}&highlight=${showHighlighting}${window.location.hash}`;
-    // eslint-disable-next-line no-restricted-globals
-    history.replaceState(null, null, urlParams);
+    window.history.replaceState(null, null, urlParams);
   }
 
   _setTextViewState() {

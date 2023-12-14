@@ -280,7 +280,9 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
           const reference = this.references.find(
             reference => reference.edition_set === edition_set
           );
-          if (reference) reference.checked = true;
+          if (reference) {
+            reference.checked = true;
+          }
         });
       } else {
         const defaultDisplayedReference = this.references.find(
@@ -651,6 +653,14 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
   show() {
     this.style.display = 'block';
+    this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
+  }
+
+  #setTextBilaraPageIsTextOptionsMismatchSavedSettingsState() {
+    const textBilara = document.querySelector('sc-text-bilara');
+    if (textBilara) {
+      textBilara.shouldRestoreUserSettings = true;
+    }
   }
 
   hide() {

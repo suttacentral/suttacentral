@@ -128,7 +128,7 @@ export class SCStaticMap extends SCStaticPage {
         feature => feature.properties.name
       ).map(this._featureItem);
       return html`<div class="features-section">
-        <h3>${this._getLocalizedTextBylayerName(layerName)}</h3>
+        <h3>${this._getLocalizedTextByLayerName(layerName)}</h3>
         <ul>
           ${listItems}
         </ul>
@@ -136,7 +136,7 @@ export class SCStaticMap extends SCStaticPage {
     });
   }
 
-  _getLocalizedTextBylayerName(text) {
+  _getLocalizedTextByLayerName(text) {
     const textMap = {
       'Capital cities': 'map:5',
       'Towns & villages': 'map:6',
