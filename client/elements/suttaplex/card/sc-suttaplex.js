@@ -140,7 +140,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
 
   get acronymTitle() {
     let scAcronymTitle = this.localize('suttaplex:suttaCentralID');
-    if (this.item && this.item.acronym) {
+    if (this.item?.acronym) {
       const altNumber = this.item.acronym.split('//')[1];
       if (altNumber) {
         const book = altNumber[0] === 'T' ? 'Taishō' : 'PTS';
@@ -204,7 +204,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   static styles = [suttaplexCss];
 
   render() {
-    if (!this.item || !this.item.uid) {
+    if (!this.item?.uid) {
       return '';
     }
 
@@ -219,22 +219,17 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
             >
               ${this.mainHeading}
             </h1>
-
             ${this.topRowIconsTemplate}
           </div>
-
           ${this.isSuttaInRangeSutta ? '' : this.nerdyRowTemplate}
         </div>
-
         ${this.#blurbTemplate()}
         ${this.#shouldShowUserLangTranslations() ? this.userLanguageTranslationsTemplate : ''}
         ${!this.isCompact
           ? html`
-              ${this.#shouldShowRootTexts() ? this.rootTextsTemplate : ''}
-              ${this.#shouldShowModernLangTranslations()
-                ? this.modernLanguageTranslationsTemplate
-                : ''}
-              ${this.#shouldHideParallels() ? '' : this.parallelsTemplate}
+              ${this.rootTextsTemplate}
+              ${this.modernLanguageTranslationsTemplate}
+              ${this.parallelsTemplate}
             `
           : ''}
         ${this.isCompact && this.isFallenLeaf ? this.parallelsTemplate : ''}
@@ -272,10 +267,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
 
   #shouldShowUserLangTranslations() {
     return (
-      !this.isPatimokkhaDetails &&
-      !this.isFallenLeaf &&
-      this.translationsInUserLanguage.length > 0 &&
-      this.translationsInUserLanguage[0] !== undefined
+      !this.isPatimokkhaDetails && !this.isFallenLeaf
     );
   }
 
@@ -408,8 +400,8 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get userLanguageTranslationsTemplate() {
-    const translationKey =
-      this.translationsInUserLanguage.length === 1 ? 'translationIn' : 'translationsIn';
+    const userLangTransCount = this.translationsInUserLanguage.length;
+    const translationKey = userLangTransCount === 1 ? 'translationIn' : 'translationsIn';
     return html`
       <div class="section-details main-translations">
         ${!this.isCompact
@@ -423,6 +415,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
                       })}
                     </b>
                     ${this.localize('suttaplex:inYourLanguage')}
+                    ${userLangTransCount === 0 ? html`<b>(${userLangTransCount})</b>` : ''}
                   </h3>
                 </summary>
                 <ul>
@@ -466,7 +459,11 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     `;
   }
 
+
   get rootTextsTemplate() {
+    if (!this.#shouldShowRootTexts()) {
+      return '';
+    }
     const translationKey = this.rootTexts.length === 1 ? 'edition' : 'editions';
     return html`
       <div class="section-details">
@@ -494,6 +491,9 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get modernLanguageTranslationsTemplate() {
+    if (!this.#shouldShowModernLangTranslations()) {
+      return '';
+    }
     const translationKey =
       this.translationsInModernLanguages.length === 1 ? 'translation' : 'translations';
 
@@ -522,8 +522,10 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get parallelsTemplate() {
+    if (!this.#shouldHideParallels()) {
+      return '';
+    }
     const translationKey = this.item.parallel_count === 1 ? 'countParallel' : 'countParallels';
-
     return html`
       <details
         class="section-details"
