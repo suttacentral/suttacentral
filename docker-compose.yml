@@ -101,8 +101,8 @@ services:
       
 networks:
   default:
-    name: nginx-proxy
-    external: true
+    external:
+      name: nginx-proxy
 
 volumes:
   db-data-volume:
