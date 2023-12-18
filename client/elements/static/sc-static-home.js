@@ -39,7 +39,8 @@ export class SCStaticHomePage extends SCStaticPage {
 
   async #fetchDataForHomePage() {
     try {
-      const response = await fetch(`${API_ROOT}/homepage_data?language=${this.siteLanguage || 'en'}`);
+      const api = `${API_ROOT}/homepage_data?language=${this.siteLanguage || 'en'}&r=${Math.random()}`;
+      const response = await fetch(api);
       const dataForHomepage = await response.json();
       const getRandomEl = arr => arr[Math.floor(Math.random() * arr.length)];
       this.randomEpigraph = getRandomEl(dataForHomepage.epigraphs);
