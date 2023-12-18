@@ -1,6 +1,8 @@
 import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import {until} from 'lit/directives/until.js';
 import '@material/web/button/filled-button';
+import '@material/web/iconbutton/icon-button';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/switch/switch';
 
@@ -128,11 +130,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return '';
     }
     return html`<p>${unsafeHTML(this.localizeEx('search:noResult', 'searchTerm', this.searchQuery))}</p>`;
-  }
-
-  badgeTemplate(item) {
-    const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
-    return html`<a><sc-badge text=${badgeText} color="gray"></sc-badge></a>`;
   }
 
   get offLineTemplate() {
@@ -329,20 +326,27 @@ class SCPageSearch extends LitLocalized(LitElement) {
         tabindex=${this.tabIndex}
       >
         <div class="item-head">
-          <a class="search-result-link" href=${this.#calculateLink(item)}>
-            <div class="primary">
-              <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
-              <div class="all-dictionaries">
-                <span>All dictionaries</span>
-                ${icon.arrow_right}
+          <div>
+            <a class="search-result-link" href=${this.#calculateLink(item)}>
+              <div class="primary">
+                <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
+                <div class="all-dictionaries">
+                  <span>All dictionaries</span>
+                  ${icon.arrow_right}
+                </div>
               </div>
+              <div class="secondary">
+                <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
+              </div>
+            </a>
+            <div class="navigation-links">
+              ${until(this.#generateNavigationLinks(item.uid), html`Loading...`)}
             </div>
-            <div class="secondary">
-              <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
-            </div>
-          </a>
-          ${this.badgeTemplate(item)}
-          ${this.#parallelsButtonTemplate(item)}
+          </div>
+          <div class="search-result-action-items">
+            ${this.badgeTemplate(item)}
+            ${this.#parallelsButtonTemplate(item)}
+          </div>
         </div>
         <div class="secondary">
           <p class="search-result-snippet">
@@ -353,14 +357,32 @@ class SCPageSearch extends LitLocalized(LitElement) {
     `;
   }
 
+  async #generateNavigationLinks(uid) {
+    const api = `${API_ROOT}/navigation_data/${uid}?language=${this.language || 'en'}`;
+    const menuData = await (await fetch(api)).json();
+    const lastIndex = menuData.length - 1;
+    return html`${menuData.map((item, i) => html`
+      <a target="_blank" href=${item.url}>
+        ${item.acronym || item.uid}
+      </a> ${i < lastIndex ? '>' : ''} `)
+    }`;
+  }
+
+  badgeTemplate(item) {
+    const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
+    return html`<a><sc-badge text=${badgeText} color="gray"></sc-badge></a>`;
+  }
+
   #parallelsButtonTemplate(item) {
     if (item.category === 'dictionary') {
       return '';
     }
     return html`
-      <a class="parallels-link" href=${this.#calculateParallelsLink(item)} title="parallels">
-        <div class="parallels-btn-container">${icon.parallels}</div>
-      </a>
+      <md-icon-button
+        href=${this.#calculateParallelsLink(item)}
+      >
+        ${icon.parallels}
+      </md-icon-button>
     `;
   }
 
@@ -969,7 +991,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return ``;
     }
     if (item.author) {
-      return `${this.#getDivision(item)} ${item.root_name || ''} — ${item.author}`;
+      return `${this.#getDivision(item)} ${item.root_name || ''} — ${item.full_lang} — ${item.author}`;
     }
     if (item.name) {
       return `${this.#getDivision(item)} — ${item.name}`;

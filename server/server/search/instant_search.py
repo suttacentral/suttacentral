@@ -688,7 +688,8 @@ def get_return_part_for_aql(include_content=True):
         segmented_text: d.segmented_text,
         is_segmented: d.is_segmented,
         is_bilara_text: d.is_bilara_text,
-        param_lang: @lang
+        param_lang: @lang,
+        root_uid: d.root_uid
     }
     '''
     if include_content:

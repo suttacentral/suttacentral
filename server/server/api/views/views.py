@@ -1638,6 +1638,7 @@ class NavigationData(Resource):
                 ):
                     navigation_item = {
                         'uid': uid,
+                        'acronym': menu_data['acronym'],
                         'title': (
                             menu_data['translated_name']
                             or menu_data['acronym']
