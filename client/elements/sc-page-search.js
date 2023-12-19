@@ -363,7 +363,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const lastIndex = menuData.length - 1;
     return html`${menuData.map((item, i) => html`
       <a target="_blank" href=${item.url}>
-        ${item.acronym || item.uid}
+        ${item.title || item.uid}
       </a> ${i < lastIndex ? '>' : ''} `)
     }`;
   }
