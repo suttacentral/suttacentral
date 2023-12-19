@@ -1638,11 +1638,10 @@ class NavigationData(Resource):
                 ):
                     navigation_item = {
                         'uid': uid,
-                        'acronym': menu_data['acronym'],
                         'title': (
-                            menu_data['translated_name']
-                            or menu_data['acronym']
+                            menu_data['acronym']
                             or menu_data['root_name']
+                            or menu_data['translated_name']
                         ),
                         'url': current_url,
                         'type': 'navigation',
