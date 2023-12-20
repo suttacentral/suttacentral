@@ -370,7 +370,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   badgeTemplate(item) {
     const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
-    return html`<a><sc-badge text=${badgeText} color="gray"></sc-badge></a>`;
+    const RootLang = this.expansionReturns[0][item.root_lang]?.[1];
+    return html`
+      <a><sc-badge text="Root language: ${RootLang || item.root_lang}" color="gray"></sc-badge></a>
+      <a><sc-badge text=${badgeText} color="gray"></sc-badge></a>
+    `;
   }
 
   #parallelsButtonTemplate(item) {

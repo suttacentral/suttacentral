@@ -350,4 +350,27 @@ export const SCAutoCompleteListStyles = css`
 
     font-variant-caps: normal;
   }
+
+  .navigation-links {
+    margin-left: 1em;
+    margin-bottom: 0.3em;
+    font-size: var(--sc-font-size-s);
+    color: var(--sc-on-primary-secondary-text-color);
+  }
+
+  .navigation-links a {
+    text-decoration: none;
+    color: var(--sc-on-primary-primary-text-color);
+    box-sizing: border-box;
+    transition: var(--sc-link-transition);
+    opacity: 0.8;
+    border-radius: 16px;
+  }
+
+  .navigation-links a:hover {
+    cursor: pointer;
+    transition: var(--sc-link-transition);
+    background-color: var(--sc-primary-color-light-transparent);
+    opacity: 1;
+  }
 `;
