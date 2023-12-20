@@ -1,5 +1,6 @@
 import { html, LitElement, unsafeCSS } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import {until} from 'lit/directives/until.js';
 import algoliasearch from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
 import '@material/web/textfield/filled-text-field';
@@ -225,6 +226,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
             </li>
           `
         )}
+        ${until(this.#generateNavigationLinks(this.searchQuery), html``)}
         <hr />
         <div class="instant-nav-description-text">
           ${this.localize('autocomplete:goto')} ${icon.open_book}
@@ -260,6 +262,21 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
             </li>`
         )}
       </ul>
+    `;
+  }
+
+  async #generateNavigationLinks(uid) {
+    const api = `${API_ROOT}/navigation_data/${uid}?language=${this.language || 'en'}`;
+    const menuData = await (await fetch(api)).json();
+    const lastIndex = menuData.length - 1;
+    if (menuData.length === 0) {
+      return '';
+    }
+    return html`
+      <hr />
+      <li class="navigation-links">${menuData.map((item, i) => html`
+        <a target="_blank" href=${item.url}>${item.title || item.uid}</a> ${i < lastIndex ? '>' : ''} `)}
+      </li>
     `;
   }
 

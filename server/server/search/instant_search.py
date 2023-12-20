@@ -676,6 +676,7 @@ def get_return_part_for_aql(include_content=True):
         uid: d.uid,
         lang: d.lang,
         full_lang: d.full_lang,
+        root_lang: d.root_lang,
         name: d.name,
         volpage: d.volpage,
         author: d.author,

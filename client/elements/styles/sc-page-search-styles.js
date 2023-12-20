@@ -482,6 +482,10 @@ export const SCPageSearchStyles = css`
     align-items: center;
     flex-direction: row;
   }
+
+  sc-badge {
+    margin-left: 2px;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
