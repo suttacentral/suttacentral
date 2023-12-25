@@ -522,9 +522,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get parallelsTemplate() {
-    if (!this.#shouldHideParallels()) {
-      return '';
-    }
     const translationKey = this.item.parallel_count === 1 ? 'countParallel' : 'countParallels';
     return html`
       <details
