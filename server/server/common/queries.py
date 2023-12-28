@@ -115,7 +115,7 @@ FOR text IN sc_bilara_texts
 
 BILARA_TEXT_BY_LANG_FOR_SEARCH = '''
 FOR text IN sc_bilara_texts
-    FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids) AND ('site' NOT IN text.muids)
+    FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids)
     AND NOT CONTAINS(text.file_path, 'blurb')
     AND NOT CONTAINS(text.file_path, '-name')
     LET nav_doc = (
