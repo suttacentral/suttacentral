@@ -295,7 +295,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         <li>accurate rendition of the Pali;</li>
         <li>free of copyright.</li>
       </ul>
-      <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
+      ${this.editionUid === 'pli-tv-vi' ? '' : html`
+        <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
+      `}
     `;
   }
 
