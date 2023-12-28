@@ -244,7 +244,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
           html`
             <div
               class="blurb"
-              title=${this.localize('suttaplex:blurb')}
               .innerHTML=${this.item.blurb}
             ></div>
           `}
