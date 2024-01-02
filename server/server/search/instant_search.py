@@ -640,6 +640,9 @@ def add_collection_condition_to_aql(condition_combination):
     if collection == 'ebct':
         return add_in_ebct_condition_to_aql()
 
+    if collection == 'article':
+        return add_in_article_condition_to_aql()
+
     return (
         f'FILTER (d.root_uid == "{collection}" OR '
         f'"{collection}" IN d.full_path) '
@@ -656,6 +659,10 @@ def add_in_ebt_condition_to_aql():
 
 def add_in_ebct_condition_to_aql():
     return 'FILTER (d.is_ebct == true) '
+
+
+def add_in_article_condition_to_aql():
+    return 'FILTER (d.is_article == true) '
 
 
 def fetch_children_by_uid(uid):

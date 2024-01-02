@@ -176,7 +176,8 @@ FOR text IN sc_bilara_texts
         root_lang: nav_doc.root_lang,
         acronym: nav_doc.acronym,
         root_uid: root_uid,
-        full_path: path_docs
+        full_path: path_docs,
+        muids: text.muids
     }
 '''
 

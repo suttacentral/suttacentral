@@ -130,6 +130,7 @@ class TextLoader:
                 'is_ebt': self.is_ebt(text['root_uid']),
                 'is_ebs': self.is_ebs(text['root_uid']),
                 'is_ebct': self.is_ebct(text['root_uid']),
+                'is_article': 'site' in text['muids'],
                 'root_uid': text['root_uid'],
                 'full_path': text['full_path']
             }
