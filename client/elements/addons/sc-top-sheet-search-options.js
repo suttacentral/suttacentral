@@ -36,6 +36,25 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
         gap: 2em;
       }
 
+      @media (max-width: 680px) {
+        fieldset {
+          flex-direction: column;
+          margin: 24px 1em 1em 1em;
+        }
+
+        section b {
+          padding-left: 0;
+        }
+
+        .single-column {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .five-column {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+
       legend {
         padding: 0 1em;
 
@@ -73,8 +92,6 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
 
       section b {
         display: block;
-
-        padding-left: 14px;
       }
 
       fieldset div,

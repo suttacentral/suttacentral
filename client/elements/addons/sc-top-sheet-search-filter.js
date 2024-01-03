@@ -53,6 +53,8 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
         padding: 0.5em;
 
         text-align: left;
+
+        word-wrap: break-word;
       }
 
       td:first-child {
