@@ -21,7 +21,8 @@ const SUPPORTED_TRANSLATIONS = [
   'sl',
   'nl',
   'th',
-  'no'
+  'no',
+  'my',
 ];
 const USE_PRODUCTION_LOCALIZATION = true;
 
