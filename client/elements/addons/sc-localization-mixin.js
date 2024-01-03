@@ -20,6 +20,8 @@ const SUPPORTED_TRANSLATIONS = [
   'fi',
   'sl',
   'nl',
+  'th',
+  'no'
 ];
 const USE_PRODUCTION_LOCALIZATION = true;
 
