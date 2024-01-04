@@ -119,7 +119,9 @@ class TextLoader:
                 'is_root': self.lang == text['root_lang'],
                 'heading': {
                     'title': (
-                        self.fix_text(text['title'])
+                        strings[list(strings.keys())[0]]
+                        if 'site' in text['muids']
+                        else self.fix_text(text['title'])
                         if text['title']
                         else text['uid']
                     )
