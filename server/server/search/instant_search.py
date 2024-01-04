@@ -662,7 +662,7 @@ def add_in_ebct_condition_to_aql():
 
 
 def add_in_article_condition_to_aql():
-    return 'FILTER (d.is_article == true) '
+    return 'FILTER (d.is_article == true AND d.uid != "interface") '
 
 
 def fetch_children_by_uid(uid):
@@ -697,7 +697,8 @@ def get_return_part_for_aql(include_content=True):
         is_segmented: d.is_segmented,
         is_bilara_text: d.is_bilara_text,
         param_lang: @lang,
-        root_uid: d.root_uid
+        root_uid: d.root_uid,
+        is_article: d.is_article
     }
     '''
     if include_content:

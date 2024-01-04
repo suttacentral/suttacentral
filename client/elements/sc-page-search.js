@@ -369,6 +369,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   badgeTemplate(item) {
+    if (item.is_article) {
+      return '';
+    }
     const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
     const RootLang = this.expansionReturns[0][item.root_lang]?.[1];
     return html`
@@ -378,6 +381,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #parallelsButtonTemplate(item) {
+    if (item.is_article) {
+      return '';
+    }
     if (item.category === 'dictionary') {
       return '';
     }
@@ -988,6 +994,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   // If there is a title, the division is the subtitle
   #calculateDivision(item) {
+    if (item.is_article) {
+      return 'Static page';
+    }
     if (this.searchQuery?.includes('volpage:')) {
       return `${this.#getDivision(item)} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
     }
@@ -1056,6 +1065,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #calculateLink(item) {
+    if (item.uid === 'discourses') {
+      return '/discourses-guide-sujato'
+    }
+    if (item.uid === 'vinaya') {
+      return '/vinaya-guide-brahmali'
+    }
+    if (item.uid === 'abhidhamma') {
+      return '/abhidhamma-guide-sujato'
+    }
     return item.url;
   }
 
