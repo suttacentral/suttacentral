@@ -9,126 +9,162 @@ export class SCTextStepper extends LitElement {
   };
 
   static styles = css`
-    @media print {
-      :host {
+    @media print
+{
+    :host
+    {
         display: none;
-      }
     }
+}
 
-    .bar {
-      display: flex;
-      overflow: hidden;
+.bar
+{
+    display: flex;
+    overflow: hidden;
 
-      height: 6rem;
-      margin: 0 2%;
-      padding: 0;
+    margin: 0 2%;
+    padding: 0;
 
-      border-radius: 48px;
+    border-radius: 48px;
 
-      gap: 4%;
-      justify-content: space-around;
+    gap: 4%;
+    justify-content: space-around;
+}
+
+@media only screen and (max-width: 600px)
+{
+    .bar
+    {
+        flex-direction: column;;
+
+        height: 13rem;
     }
+}
 
-    .button-container {
-      position: relative;
+a
+{
+    text-decoration: none;
+}
 
-      width: 50%;
-      height: 100%;
-      margin: 0;
-    }
+.button
+{
+    display: flex;
 
-    a {
-      text-decoration: none;
-    }
+    width: 100%;
+    height: 6rem;
 
-    .button {
-      display: flex;
+    border-radius: 48px;
+    background-color: var(--sc-tertiary-background-color);
+}
 
-      width: 100%;
-      height: 100%;
+.button:hover
+{
+    transition: var(--sc-link-transition);
+    text-decoration: none;
 
-      border-radius: 48px;
-      background-color: var(--sc-tertiary-background-color);
-    }
+    background-color: var(--sc-primary-color-light-transparent);
+}
 
-    .button:hover {
-      transition: var(--sc-link-transition);
-      text-decoration: none;
+button:active
+{
+    background-color: var(--sc-primary-color-light);
+}
 
-      background-color: var(--sc-primary-color-light-transparent);
-    }
 
-    button:active {
-      background-color: var(--sc-primary-color-light);
-    }
 
-    .button-right {
-      justify-content: flex-end;
-    }
+.button-right
+{
+    justify-content: flex-end;
+}
 
-    .action {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-md);
+.button-right .text-title
+{
+    padding-left: 1em;
+}
 
-      opacity: 0.55;
-      color: var(--sc-on-primary-primary-text-color);
-    }
+.button-left .text-title
+{
+    padding-right: 1em;
+}
 
-    .text-title {
-      font-family: var(--sc-sans-font);
-      font-size: var(--sc-font-size-l);
+.action
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-stretch: expanded;
 
-      overflow: hidden;
+    opacity: .55;
+    color: var(--sc-on-primary-primary-text-color);
 
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    font-variant-caps: all-small-caps;
+}
 
-      color: var(--sc-on-tertiary-primary-text-color);
-    }
+.text-title
+{
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-l);
+    font-stretch: condensed;
 
-    .link .text-title {
-      box-sizing: border-box;
+    overflow: hidden;
 
-      transition: var(--sc-link-transition);
-    }
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
-    .text {
-      display: flex;
+    color: var(--sc-on-tertiary-primary-text-color);
+}
 
-      margin: auto 0;
-    }
+.link .text-title
+{
+    box-sizing: border-box;
 
-    .text-element {
-      display: inline-grid;
+    transition: var(--sc-link-transition);
+}
 
-      text-overflow: ellipsis;
-    }
+.text
+{
+    display: flex;
 
-    .text-element-right {
-      text-align: end;
-    }
+    margin: auto 0;
+}
 
-    .icon {
-      font-size: var(--sc-font-size-l);
+.text-element
+{
+    display: inline-grid;
 
-      width: var(--sc-size-md-larger);
-      min-width: var(--sc-size-md-larger);
-      margin-top: 1em;
-      margin-right: 0.5em;
-      margin-left: 0.5em;
+    text-overflow: ellipsis;
+}
 
-      fill: var(--sc-icon-color);
-    }
+.text-element-right
+{
+    text-align: end;
+}
 
-    @media (min-width: 1280px) {
-      .arrow_right {
+.icon
+{
+    font-size: var(--sc-font-size-l);
+
+    width: var(--sc-size-md-larger);
+    min-width: var(--sc-size-md-larger);
+    margin-top: 1em;
+    margin-right: .5em;
+    margin-left: .5em;
+
+    fill: var(--sc-icon-color);
+}
+
+@media (min-width: 1280px)
+{
+    .arrow_right
+    {
         margin-left: 1em;
-      }
-
-      .arrow_left {
-        margin-right: 1em;
-      }
     }
+
+    .arrow_left
+    {
+        margin-right: 1em;
+    }
+}
+
   `;
 
   render() {
