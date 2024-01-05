@@ -278,6 +278,12 @@ export const SCPageSearchStyles = css`
     letter-spacing: var(--sc-caps-letter-spacing);
   }
 
+  @media (max-width: 1080px) {
+    .dictionary .search-result-title {
+      font-size: var(--sc-font-size-xs) !important;
+    }
+  }
+
   .dictionary dfn {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-xl);
@@ -484,7 +490,7 @@ export const SCPageSearchStyles = css`
   }
 
   sc-badge {
-    margin-left: 2px;
+    margin-right: 2px;
   }
 `;
 

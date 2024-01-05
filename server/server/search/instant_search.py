@@ -135,7 +135,9 @@ def process_search_results(
     hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
     total = calculate_total(current_page_total, hits, limit, suttaplexs, total)
     lookup_dictionary(hits, lang, query, restrict)
-    fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
+    fuzzy_dictionary_entries = []
+    if matchpartial == 'true':
+        fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
     add_root_name_to_hits(db, hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
