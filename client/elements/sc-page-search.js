@@ -339,12 +339,12 @@ class SCPageSearch extends LitLocalized(LitElement) {
                 <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
               </div>
             </a>
+            ${this.badgeTemplate(item)}
             <div class="navigation-links">
               ${until(this.#generateNavigationLinks(item.uid), html`Loading...`)}
             </div>
           </div>
           <div class="search-result-action-items">
-            ${this.badgeTemplate(item)}
             ${this.#parallelsButtonTemplate(item)}
           </div>
         </div>
@@ -369,7 +369,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   badgeTemplate(item) {
-    if (item.is_article) {
+    if (item.is_article || item.category === 'dictionary') {
       return '';
     }
     const badgeText = item.is_bilara_text || item.is_segmented ? 'aligned' : 'legacy';
