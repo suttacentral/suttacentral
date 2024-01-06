@@ -9,21 +9,6 @@ import { API_ROOT } from '../../constants';
 Base toolbar that appears on the top right in the header of every page.
 */
 
-const scSiteLayout = document.querySelector('sc-site-layout');
-const localizedStrings = {
-  buttonViewCompactText: scSiteLayout.localizedStringById('interface:viewCompactButtonText'),
-  buttonViewComfyText: scSiteLayout.localizedStringById('interface:viewComfyButtonText'),
-  buttonToolsText: scSiteLayout.localizedStringById('interface:toolsButtonText'),
-  buttonInfoText: scSiteLayout.localizedStringById('interface:infoButtonText'),
-  buttonShowParallelsText: scSiteLayout.localizedStringById('interface:showParallelsButtonText'),
-  buttonShowToCText: scSiteLayout.localizedStringById('interface:showToCButtonText'),
-  buttonShowParallelTableViewText: scSiteLayout.localizedStringById(
-    'interface:showParallelTableViewButtonText'
-  ),
-  buttonSearchOptionsText: scSiteLayout.localizedStringById('interface:searchOptionsButtonText'),
-  buttonSearchFilterText: scSiteLayout.localizedStringById('interface:searchFilterButtonText'),
-};
-
 export class SCActionItems extends LitLocalized(LitElement) {
   static properties = {
     suttaplexListEnabled: { type: Boolean },
@@ -67,119 +52,119 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.displaySearchOptionsButton = state.displaySearchOptionsButton;
   }
 
-  static styles = css`
-    .white-icon {
-      color: var(--sc-inverted-text-color);
-    }
-
-    #tools_menu {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px;
-      height: 60px;
-    }
-
-    .invisible {
-      display: none;
-    }
-
-    .toolButtons {
-      position: relative;
-      box-sizing: border-box;
-      border-bottom: 4px solid transparent;
-      border-top: 4px solid transparent;
-      padding: 2.3px 0 2.3px 0;
-      height: 60px;
-      width: 48px;
-    }
-
-    #btnSearchFilter:after,
-    #btnSearchOptions:after,
-    #btnViewCompact:after,
-    #btnViewComfy:after,
-    #btnTools:after,
-    #btnInfo:after,
-    #btnShowParallels:after,
-    #btnShowToC:after,
-    #btnShowParallelTableView:after {
-      font-size: var(--sc-font-size-xxs);
-      font-weight: 600;
-      font-stretch: condensed;
-      position: absolute;
-      bottom: 2px;
-      width: 100%;
-      text-align: center;
-    }
-
-    #btnViewCompact:after {
-      content: '${unsafeCSS(localizedStrings.buttonViewCompactText)}';
-    }
-
-    #btnViewComfy:after {
-      content: '${unsafeCSS(localizedStrings.buttonViewComfyText)}';
-    }
-
-    #btnTools:after {
-      content: '${unsafeCSS(localizedStrings.buttonToolsText)}';
-    }
-
-    #btnInfo:after {
-      content: '${unsafeCSS(localizedStrings.buttonInfoText)}';
-    }
-
-    #btnShowParallels:after {
-      content: '${unsafeCSS(localizedStrings.buttonShowParallelsText)}';
-    }
-
-    #btnShowToC:after {
-      content: '${unsafeCSS(localizedStrings.buttonShowToCText)}';
-    }
-
-    #btnShowParallelTableView:after {
-      content: '${unsafeCSS(localizedStrings.buttonShowParallelTableViewText)}';
-    }
-
-    #btnSearchOptions:after {
-      content: '${unsafeCSS(localizedStrings.buttonSearchOptionsText)}';
-    }
-
-    #btnSearchFilter:after {
-      content: '${unsafeCSS(localizedStrings.buttonSearchFilterText)}';
-    }
-
-    #btnSearchFilter,
-    #btnSearchOptions,
-    #btnShowParallels,
-    #btnShowParallelTableView {
-      display: flex;
-    }
-
-    .active-light {
-      font-weight: 800;
-      border-bottom: 4px solid var(--sc-primary-color-light) !important;
-    }
-
-    .active-dark {
-      font-weight: 800;
-      border-bottom: 4px solid var(--sc-primary-color-dark) !important;
-    }
-
-    @media only screen and (max-width: 600px) {
-      #tools_menu.contextToolbarExpand {
-        width: 100%;
-        justify-content: space-around;
-        align-items: flex-end;
-      }
-    }
-
-    .icon {
-      fill: var(--sc-inverted-text-color);
-    }
-  `;
-
   render() {
     return html`
+      <style>
+        .white-icon {
+          color: var(--sc-inverted-text-color);
+        }
+
+        #tools_menu {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 4px;
+          height: 60px;
+        }
+
+        .invisible {
+          display: none;
+        }
+
+        .toolButtons {
+          position: relative;
+          box-sizing: border-box;
+          border-bottom: 4px solid transparent;
+          border-top: 4px solid transparent;
+          padding: 2.3px 0 2.3px 0;
+          height: 60px;
+          width: 48px;
+        }
+
+        #btnSearchFilter:after,
+        #btnSearchOptions:after,
+        #btnViewCompact:after,
+        #btnViewComfy:after,
+        #btnTools:after,
+        #btnInfo:after,
+        #btnShowParallels:after,
+        #btnShowToC:after,
+        #btnShowParallelTableView:after {
+          font-size: var(--sc-font-size-xxs);
+          font-weight: 600;
+          font-stretch: condensed;
+          position: absolute;
+          bottom: 2px;
+          width: 100%;
+          text-align: center;
+        }
+
+        #btnViewCompact:after {
+          content: '${unsafeCSS(this.localize('interface:viewCompactButtonText'))}';
+        }
+
+        #btnViewComfy:after {
+          content: '${unsafeCSS(this.localize('interface:viewComfyButtonText'))}';
+        }
+
+        #btnTools:after {
+          content: '${unsafeCSS(this.localize('interface:toolsButtonText'))}';
+        }
+
+        #btnInfo:after {
+          content: '${unsafeCSS(this.localize('interface:infoButtonText'))}';
+        }
+
+        #btnShowParallels:after {
+          content: '${unsafeCSS(this.localize('interface:showParallelsButtonText'))}';
+        }
+
+        #btnShowToC:after {
+          content: '${unsafeCSS(this.localize('interface:showToCButtonText'))}';
+        }
+
+        #btnShowParallelTableView:after {
+          content: '${unsafeCSS(this.localize('interface:showParallelTableViewButtonText'))}';
+        }
+
+        #btnSearchOptions:after {
+          content: '${unsafeCSS(this.localize('interface:searchOptionsButtonText'))}';
+        }
+
+        #btnSearchFilter:after {
+          content: '${unsafeCSS(this.localize('interface:searchFilterButtonText'))}';
+        }
+
+        #btnSearchFilter,
+        #btnSearchOptions,
+        #btnShowParallels,
+        #btnShowParallelTableView {
+          display: flex;
+        }
+
+        .active-light {
+          font-weight: 800;
+          border-bottom: 4px solid var(--sc-primary-color-light) !important;
+        }
+
+        .active-dark {
+          font-weight: 800;
+          border-bottom: 4px solid var(--sc-primary-color-dark) !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+          #tools_menu.contextToolbarExpand {
+            width: 100%;
+            justify-content: space-around;
+            align-items: flex-end;
+          }
+        }
+
+        .icon {
+          fill: var(--sc-inverted-text-color);
+        }
+      </style>
+
       <div id="tools_menu">
         <md-icon-button
           class="white-icon toolButtons"

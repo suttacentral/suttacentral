@@ -79,7 +79,7 @@ export class SCBadge extends LitLocalized(LitElement) {
   `;
 
   render() {
-    const localizeString = `badge:${this.text.toLowerCase()}`;
+    const localizeString = this.localize(`badge:${this.text.toLowerCase()}`);
     if (localizeString.includes('badge:')) {
       return html` ${this.text} `;
     }
