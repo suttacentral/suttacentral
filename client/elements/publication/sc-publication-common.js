@@ -43,7 +43,7 @@ export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn-epub', '2024-01-01'],
+  ['dn-epub', '2024-01-08'],
   ['dn-html', '2024-01-01'],
   ['dn-tex', '2024-01-01'],
   ['dn-pdf', '2024-01-01'],
@@ -55,10 +55,10 @@ export const lastUpdatedDateOfCollections = new Map([
   ['sn-html', '2023-12-11'],
   ['sn-tex', '2023-12-11'],
   ['sn-pdf', '2023-12-11'],
-  ['an-epub', '2024-01-01'],
-  ['an-html', '2024-01-01'],
-  ['an-tex', '2024-01-01'],
-  ['an-pdf', '2024-01-01'],
+  ['an-epub', '2024-01-08'],
+  ['an-html', '2024-01-08'],
+  ['an-tex', '2024-01-08'],
+  ['an-pdf', '2024-01-08'],
   ['dhp-epub', '2023-12-11'],
   ['dhp-html', '2023-12-11'],
   ['dhp-tex', '2023-12-11'],
