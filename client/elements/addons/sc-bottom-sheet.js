@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
+import { LitLocalized } from './sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
 
-export class SCBottomSheet extends LitElement {
+export class SCBottomSheet extends LitLocalized(LitElement) {
   static properties = {
     currentDefine: { type: String },
     currentDefineDetail: { type: String },
@@ -398,6 +399,7 @@ export class SCBottomSheet extends LitElement {
 
   constructor() {
     super();
+    this.localizedStringsPath = '/localization/elements/interface';
     this.currentDefine = '';
     this.currentDefineDetail = '';
     this.currentTarget = {};
@@ -415,7 +417,7 @@ export class SCBottomSheet extends LitElement {
             <details class="help-display">
               <summary>
                 ${icon.help}
-                <span class="bottom-sheet-icon-label">Help</span>
+                <span class="bottom-sheet-icon-label">${this.localize('bottomsheet:help')}</span>
               </summary>
               <div class="help-display-inner">
                 <ul>
@@ -457,7 +459,7 @@ export class SCBottomSheet extends LitElement {
             </details>
             <button id="btnClose" @click=${this.hide}>
               ${icon.cancel}
-              <span class="bottom-sheet-icon-label">Close</span>
+              <span class="bottom-sheet-icon-label">${this.localize('bottomsheet:close')}</span>
             </button>
           </div>
         </header>
