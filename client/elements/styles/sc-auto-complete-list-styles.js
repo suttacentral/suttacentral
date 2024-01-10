@@ -373,4 +373,14 @@ export const SCAutoCompleteListStyles = css`
     background-color: var(--sc-primary-color-light-transparent);
     opacity: 1;
   }
+
+  .algolia-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .algolia-title {
+    margin-right: 0.3em;
+  }
 `;
