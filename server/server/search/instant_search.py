@@ -713,7 +713,7 @@ def get_limit_part_for_aql(limit, offset):
 
 
 def get_filter_part_for_aql(matchpartial):
-    return '' if matchpartial == 'true' else ' FILTER d.is_segmented != True  '
+    return ' FILTER d.is_segmented == True ' if matchpartial == 'true' else ' FILTER d.is_segmented != True  '
 
 
 def get_lang_condition_for_aql(selected_languages):
