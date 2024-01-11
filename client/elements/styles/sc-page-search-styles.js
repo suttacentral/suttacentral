@@ -492,6 +492,14 @@ export const SCPageSearchStyles = css`
   sc-badge {
     margin-right: 2px;
   }
+
+  .no-result-prompt {
+    color: var(--sc-on-primary-secondary-text-color);
+  }
+
+  .no-result-prompt a {
+    color: var(--sc-primary-accent-color);
+  }
 `;
 
 export const searchResultTableViewStyles = css`
