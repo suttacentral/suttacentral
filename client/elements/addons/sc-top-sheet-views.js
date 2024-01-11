@@ -144,6 +144,14 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         --md-sys-color-on-primary: white;
       }
 
+      md-radio {
+        --md-radio-icon-color: var(--sc-opposite-background-color);
+        --md-radio-selected-icon-color: var(--sc-primary-accent-color);
+        --md-radio-hover-icon-color: var(--sc-primary-accent-color);
+        --md-radio-focus-icon-color: var(--sc-primary-accent-color);
+        --md-radio-pressed-icon-color: var(--sc-primary-accent-color);
+      }
+
       section::-webkit-scrollbar {
         height: 10px;
       }

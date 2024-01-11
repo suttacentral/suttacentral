@@ -381,6 +381,8 @@ export const SCAutoCompleteListStyles = css`
   }
 
   .algolia-title {
+    font-size: var(--sc-font-size-s);
     margin-right: 0.3em;
+    color: var(--sc-on-tertiary-secondary-text-color);
   }
 `;
