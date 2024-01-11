@@ -102,6 +102,9 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --md-checkbox-selected-hover-state-layer-color: var(--sc-primary-color);
       --md-checkbox-selected-hover-state-layer-opacity: 0;
       --md-checkbox-state-layer-size: 0;
+      --md-checkbox-hover-outline-color: var(--sc-primary-accent-color);
+      --md-checkbox-focus-outline-color: var(--sc-primary-accent-color);
+      --md-checkbox-pressed-outline-color: var(--sc-primary-accent-color);
     }
 
     md-radio {
@@ -113,6 +116,11 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       --md-radio-selected-pressed-state-layer-opacity: 0;
       --md-radio-selected-hover-state-layer-color: var(--sc-primary-color);
       --md-radio-selected-hover-state-layer-opacity: 0;
+      --md-radio-icon-color: var(--sc-opposite-background-color);
+      --md-radio-selected-icon-color: var(--sc-primary-accent-color);
+      --md-radio-hover-icon-color: var(--sc-primary-accent-color);
+      --md-radio-focus-icon-color: var(--sc-primary-accent-color);
+      --md-radio-pressed-icon-color: var(--sc-primary-accent-color);
     }
 
     md-menu-item label {

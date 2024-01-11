@@ -62,6 +62,11 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
       md-radio {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
+        --md-radio-icon-color: var(--sc-opposite-background-color);
+        --md-radio-selected-icon-color: var(--sc-primary-accent-color);
+        --md-radio-hover-icon-color: var(--sc-primary-accent-color);
+        --md-radio-focus-icon-color: var(--sc-primary-accent-color);
+        --md-radio-pressed-icon-color: var(--sc-primary-accent-color);
         margin-right: 5px;
       }
 
@@ -72,6 +77,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         --md-filled-text-field-focus-input-text-color: var(--sc-on-primary-primary-text-color);
         --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
         --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
+        --md-filled-text-field-label-text-color:  var(--sc-on-primary-secondary-text-color);
       }
 
       md-filled-select {
