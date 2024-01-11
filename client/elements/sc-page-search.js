@@ -358,6 +358,9 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   async #generateNavigationLinks(uid) {
+    if (!uid) {
+      return '';
+    }
     const api = `${API_ROOT}/navigation_data/${uid}?language=${this.language || 'en'}`;
     const menuData = await (await fetch(api)).json();
     const lastIndex = menuData.length - 1;
