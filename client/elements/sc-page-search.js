@@ -129,7 +129,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (this.resultCount !== 0) {
       return '';
     }
-    return html`<p>${unsafeHTML(this.localizeEx('search:noResult', 'searchTerm', this.searchQuery))}</p>`;
+    return html`<p class="no-result-prompt">${unsafeHTML(this.localizeEx('search:noResult', 'searchTerm', this.searchQuery))}</p>`;
   }
 
   get offLineTemplate() {

@@ -78,6 +78,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         --md-filled-text-field-input-text-color: var(--sc-on-primary-primary-text-color);
         --md-filled-text-field-hover-input-text-color: var(--sc-on-primary-primary-text-color);
         --md-filled-text-field-label-text-color:  var(--sc-on-primary-secondary-text-color);
+        --md-filled-text-field-supporting-text-color: var(--sc-on-primary-secondary-text-color);
       }
 
       md-filled-select {
@@ -106,6 +107,10 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         font-family: var(--sc-sans-font);
 
         margin-top: 64px;
+      }
+
+      aside p a {
+        color: var(--sc-primary-accent-color);
       }
 
       .icon {
