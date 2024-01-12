@@ -1262,7 +1262,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
         else:
             positions = [m.start() for m in re.finditer(
                 r"\b" + query + r"\b", content, re.I)]
-            if not positions and (is_pali(content) or is_pali(query)):
+            if not positions and (is_pali(content.lower()) or is_pali(query.lower())):
                 content = unidecode(content)
                 query = unidecode(query)
                 positions = [m.start() for m in re.finditer(
@@ -1364,7 +1364,7 @@ def get_matched_string_position(query, highlight):
 
 def is_pali(content):
     vowels = ['ṁ', 'ā', 'ī', 'ū', 'ṅ', 'ḷ', 'ṭ', 'ň', 'ñ', 'ṣ']
-    return any(vowel in content for vowel in vowels)
+    return any(vowel.lower() in content for vowel in vowels)
 
 
 def find_paragraph(text, position):
