@@ -1,4 +1,4 @@
-FROM node:18.16.0
+FROM node:18.18.2
 
 WORKDIR /opt/sc/frontend
 
