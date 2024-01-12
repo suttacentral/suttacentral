@@ -176,16 +176,6 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         <div class="ss-header">${this.#headerTemplate()}</div>
         <div class="ss-list">${this.#searchResultListTemplate()}</div>
         <div class="ss-footer" id="openSearchTip">${this.#footerTemplate()}</div>
-        <div class="algolia-logo">
-          <span class="algolia-title">Search By</span>
-          <a target="_blank" href="https://algolia.com">
-            <img style="margin-top: 5px;"
-              src="/img/Algolia-logo-blue.png"
-              height="15px"
-              width="80px"
-            />
-          </a>
-        </div>
       </div>
     `;
   }
@@ -304,6 +294,12 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
           ${icon.info}
         </md-icon-button>
         <span>${this.localize('interface:tipsForSearchSyntax')}</span>
+        <div class="algolia-logo">
+          <span class="algolia-title">Search By</span>
+          <a target="_blank" href="https://algolia.com">
+            ${icon.algolia}
+          </a>
+        </div>
       </span>
       <sc-progress .active=${this.loadingData} .type=${'circular'}></sc-progress>
       <md-icon-button @click=${this.hide}>${icon.close}</md-icon-button>
