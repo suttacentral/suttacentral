@@ -1262,8 +1262,9 @@ def cut_highlight(content, hit, query, is_segmented_text):
         else:
             positions = [m.start() for m in re.finditer(
                 r"\b" + query + r"\b", content, re.I)]
-            if not positions and is_pali(content):
+            if not positions and (is_pali(content) or is_pali(query)):
                 content = unidecode(content)
+                query = unidecode(query)
                 positions = [m.start() for m in re.finditer(
                     r"\b" + query + r"\b", content, re.I)]
 

@@ -278,7 +278,7 @@ export const SCAutoCompleteListStyles = css`
 
     display: flex;
 
-    padding: 8px 16px 0px 16px;
+    padding: 8px 2px 0px 2px;
 
     color: var(--sc-on-tertiary-secondary-text-color);
     border-top: 1px solid var(--sc-border-color);
@@ -312,7 +312,7 @@ export const SCAutoCompleteListStyles = css`
 
   .icon {
     fill: var(--sc-icon-color);
-    min-width: 24px;
+    min-width: 48px;
   }
 
   md-icon {
@@ -378,11 +378,12 @@ export const SCAutoCompleteListStyles = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 0.5em;
   }
 
   .algolia-title {
-    font-size: var(--sc-font-size-s);
-    margin-right: 0.3em;
+    font-size: var(--sc-font-size-xs);
+    margin-right: 0.2em;
     color: var(--sc-on-tertiary-secondary-text-color);
   }
 `;
