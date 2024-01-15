@@ -23,6 +23,8 @@ const SUPPORTED_TRANSLATIONS = [
   'th',
   'no',
   'my',
+  'gu',
+  'hi'
 ];
 const USE_PRODUCTION_LOCALIZATION = true;
 
