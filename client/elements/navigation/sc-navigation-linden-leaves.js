@@ -249,10 +249,8 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
             ${nav?.title &&
             html`
               <li @click=${() => this._navClick(nav)}>
-                <a href=${nav.url}>
-                  ${nav.type === 'navigation'
-                    ? nav.title
-                    : this.tryLocalize(`interface:${nav.title}`, nav.title)}
+                <a class="nav-link" data-uid=${nav.uid} href=${nav.url}>
+                  ${this.tryLocalize(`interface:${nav.title.toLowerCase()}`, nav.title)}
                   <md-ripple></md-ripple>
                 </a>
                 ${i < length - 1 ? icon.chevron_right : ''}

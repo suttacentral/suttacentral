@@ -81,7 +81,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.currentPage = 0;
     this.currentFilter = 'all';
     this.searchResultElemHeight = 170;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/search';
     this.totalLoadedResults = 0;
     this.isOnline = store.getState().isOnline;
     this.dictionaryTitles = {
@@ -1093,7 +1093,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #createMetaData() {
-    const description = this.localize('interface:metaDescriptionText');
+    const description = this.localize('search:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
     const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
