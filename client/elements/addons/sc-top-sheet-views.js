@@ -261,7 +261,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this.textualInfoToggleEnabled = textOptions.paragraphsEnabled;
     this.textualInfoResponse = {};
     this.textualParagraphs = textOptions.paragraphDescriptions;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/viewoption';
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
     this.showHighlighting = textOptions.showHighlighting;
     this.displayedReferences = textOptions.displayedReferences;
