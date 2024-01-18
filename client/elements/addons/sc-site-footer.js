@@ -6,7 +6,7 @@ import { SCUtilityStyles } from '../styles/sc-utility-styles';
 export class ScSiteFooter extends LitLocalized(LitElement) {
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/footer';
   }
 
   static styles = css`
