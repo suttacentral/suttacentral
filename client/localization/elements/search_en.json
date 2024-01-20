@@ -3,6 +3,7 @@
   "autocomplete:goto": "Go to",
   "autocomplete:textOr": "text or",
   "autocomplete:collection": "collection",
+  "autocomplete:tipsForSearchSyntax": "Tips for search syntax",
   "search:all": "All",
   "search:dictionaries": "Dictionaries",
   "search:filter": "Filter",
