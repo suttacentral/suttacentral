@@ -25,7 +25,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
     this.parallels = [];
     this.loadingParallels = false;
     this.areParallelsAvailable = false;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/share';
   }
 
   static styles = css`

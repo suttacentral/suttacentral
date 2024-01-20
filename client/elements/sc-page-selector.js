@@ -469,7 +469,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       : html`
           <div class="page-not-found-container">
             <h2>${this.localize('error:error404')}</h2>
-            <h3>${this.localize('interface:pageNotFound')}</h3>
+            <h3>${this.localize('error:pageNotFound')}</h3>
           </div>
         `;
   }

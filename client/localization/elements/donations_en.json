@@ -25,5 +25,16 @@
   "donations:24": "SuttaCentral Development Trust",
   "donations:25": "The SuttaCentral Development Trust is a charitable trust. The founding members of the trust are Bhante Sujato, Bhante Brahmali, and John Kelly. The trust is managed by Deepika Weerakoon.",
   "donations:26": "The accountants and auditors of the Trust are <a href='http://www.alwisco.com.au' rel='noopener' target='_blank'>Randolph Alwis &amp; Co Pty Ltd</a>. The <a href='https://abr.business.gov.au/SearchByAbn.aspx?SearchText=858%20188%2075744' rel='noopener' target='_blank'>ABN is 858 188 75744</a>.",
-  "donations:27": "Financial details of the trust are available if you have any inquiries. The Trust was created solely to support the development of SuttaCentral. All funds in the Trust will be solely spent on SuttaCentral, and none on trust administration, which is being managed by volunteers."
+  "donations:27": "Financial details of the trust are available if you have any inquiries. The Trust was created solely to support the development of SuttaCentral. All funds in the Trust will be solely spent on SuttaCentral, and none on trust administration, which is being managed by volunteers.",
+  "donations:amount": "Amount",
+  "donations:chooseFrequency": "You can make a one-time donation or a monthly donation.",
+  "donations:currency": "Currency",
+  "donations:donateNow": "Donate Now",
+  "donations:errorMessage": "The service is temporarily unavailable, please try later",
+  "donations:feeDisclaimer": "The Stripe handling fee deducted from a donation is 1.75% + 30¢ for Australian cards, and 2.9% + 30¢ for International cards, plus a 1.8% currency conversion fee when applicable.",
+  "donations:invalidValue": "Invalid value",
+  "donations:monthly": "Monthly",
+  "donations:oneTime": "One time",
+  "donations:payWithCard": "Donate with card",
+  "donations:storageDisclaimer": "SuttaCentral does not handle or store your credit card details. All credit card transactions are handled securely by <a href='https://stripe.com' target='blank'>Stripe</a>."
 }

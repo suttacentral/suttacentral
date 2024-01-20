@@ -23,7 +23,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/suttaplex';
     this.rootLangMappings = {
       pli: 'Pali',
       lzh: 'Chinese',

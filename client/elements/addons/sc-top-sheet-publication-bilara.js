@@ -131,7 +131,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     super();
     this.isPublished = false;
     this.lang = store.getState().siteLanguage;
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/publication';
   }
 
   stateChanged(state) {

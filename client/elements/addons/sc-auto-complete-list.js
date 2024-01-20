@@ -38,7 +38,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/search';
     this.items = [];
     this.priorityAuthors = new Map([
       ['en', 'sujato'],
@@ -287,13 +287,13 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     return html`
       <span id="opensearchtip-left">
         <md-icon-button
-          aria-label="${this.localize('interface:tipsForSearchSyntax')}"
+          aria-label="${this.localize('autocomplete:tipsForSearchSyntax')}"
           href="/search-filter"
           @click=${this.hide}
         >
           ${icon.info}
         </md-icon-button>
-        <span>${this.localize('interface:tipsForSearchSyntax')}</span>
+        <span>${this.localize('autocomplete:tipsForSearchSyntax')}</span>
         <div class="algolia-logo">
           <span class="algolia-title">Search By</span>
           <a target="_blank" href="https://algolia.com">

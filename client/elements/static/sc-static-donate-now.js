@@ -25,7 +25,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/donations';
     this.isError = false;
   }
 
@@ -181,7 +181,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
     return html`
       <main>
         <article>
-          <h1>${this.localize('donate:donateNow')}</h1>
+          <h1>${this.localize('donations:donateNow')}</h1>
           <form @submit="${this.onSubmit}">
             <div class="row">
               <md-filled-select required>
@@ -203,22 +203,22 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
               <md-filled-text-field
                 pattern="^[+]?(\\d+[.,]?\\d{0,2})$"
                 type="number"
-                label=${this.localize('donate:amount')}
+                label=${this.localize('donations:amount')}
                 autoValidate
                 required
-                validationMessage=${this.localize('donate:invalidValue')}
+                validationMessage=${this.localize('donations:invalidValue')}
                 maxLength="20"
               ></md-filled-text-field>
             </div>
             <div class="row">
-              <p>${this.localize('donate:chooseFrequency')}</p>
+              <p>${this.localize('donations:chooseFrequency')}</p>
             </div>
             <div id="frequency-checkbox" class="row">
               <md-radio id="radioOneTime" name="frequency" checked value="oneTime"></md-radio>
-              <label for="radioOneTime">${this.localize('donate:oneTime')}</label>
+              <label for="radioOneTime">${this.localize('donations:oneTime')}</label>
 
               <md-radio id="radioMonthly" name="frequency" value="monthly"></md-radio>
-              <label for="radioMonthly">${this.localize('donate:monthly')}</label>
+              <label for="radioMonthly">${this.localize('donations:monthly')}</label>
             </div>
             <div id="submit-row" class="row margin-top">
               <md-filled-button
@@ -234,13 +234,13 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
                     button.remove();
                   }
                 }}"
-                >${this.localize('donate:payWithCard')}</md-filled-button
+                >${this.localize('donations:payWithCard')}</md-filled-button
               >
             </div>
           </form>
           <aside>
-            <p>${icon.info} ${unsafeHTML(this.localize('donate:storageDisclaimer'))}</p>
-            <p>${icon.info} ${this.localize('donate:feeDisclaimer')}</p>
+            <p>${icon.info} ${unsafeHTML(this.localize('donations:storageDisclaimer'))}</p>
+            <p>${icon.info} ${this.localize('donations:feeDisclaimer')}</p>
           </aside>
         </article>
       </main>
@@ -248,7 +248,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
   }
 
   renderErrorMessage() {
-    return html` <p id="error-message">${this.localize('donate:errorMessage')}</p> `;
+    return html` <p id="error-message">${this.localize('donations:errorMessage')}</p> `;
   }
 
   render() {
