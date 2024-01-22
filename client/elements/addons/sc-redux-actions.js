@@ -141,4 +141,11 @@ export class reduxActions {
       temporarySiteLanguage,
     });
   }
+
+  static changeFirstLoadState(firstLoad) {
+    store.dispatch({
+      type: 'CHANGE_FIRST_LOAD_STATE',
+      firstLoad,
+    });
+  }
 }
