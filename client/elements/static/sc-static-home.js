@@ -334,20 +334,20 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <article class="card primary-accent">
         <a
-          href="https://bilara.suttacentral.net/"
+          href="https://buddhism.net/"
           class="block-link"
           title=${this.localize('home:30')}
         >
           <header>
-            <span>${icon.bilara}</span>
+            <span>${icon.buddhismnet}</span>
             <h3>
-              <span>Bilara</span>
-              <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:31'))}</span>
+              <span>Buddhism.net</span>
+              <span class="sc-related-item-subtitle">making the teachings of the Buddha accessible</span>
             </h3>
           </header>
 
           <div class="related-projects-content">
-            <p>${unsafeHTML(this.localize('home:32'))}</p>
+            <p>At Buddhism.net, we hope to help you 1) learn Buddhism, 2) develop a practice, and 3) discover teachers and communities. Buddhism.net is cross-sectarian. We focus on early Buddhism, the common root of all modern forms of Buddhism. We aim to offer you a solid foundation in early Buddhism, which will be immensely helpful to you regardless of which form of Buddhism you adopt.</p>
           </div>
         </a>
         <md-ripple></md-ripple>
