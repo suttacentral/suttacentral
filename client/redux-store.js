@@ -100,6 +100,7 @@ const initialState = {
     data: [],
   },
   displayDonationBanner: true,
+  firstLoad: true,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
@@ -265,6 +266,8 @@ const reducer = (state, action) => {
       };
     case 'CHANGE_DONATION_BANNER_STATE':
       return { ...state, displayDonationBanner: action.displayDonationBanner };
+    case 'CHANGE_FIRST_LOAD_STATE':
+      return { ...state, firstLoad: action.firstLoad };
     default:
       return state;
   }

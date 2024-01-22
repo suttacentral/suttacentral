@@ -37,6 +37,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     toolbarTitle: { type: String },
     linearProgressActive: { type: Boolean },
     toolbarPosition: { type: Object },
+    userBrowserLangIso: { type: String },
   };
 
   constructor() {
@@ -56,8 +57,22 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.linearProgressActive = false;
     this.toolbarPosition = storeState.toolbarPosition;
     this.pageLoaded = false;
-    if (this.getUrlLangParam !== store.getState().siteLanguage) {
-      reduxActions.changeTemporarySiteLanguage(this.getUrlLangParam);
+    this.#checkAndChangeSiteLanguage();
+  }
+
+  #checkAndChangeSiteLanguage() {
+    const userLanguage = navigator.language || navigator.userLanguage;
+    if (userLanguage.includes('-')) {
+      this.userBrowserLangIso = userLanguage.split('-')[0];
+    }
+    const { siteLanguage, firstLoad } = store.getState();
+    const { getUrlLangParam } = this;
+    if (getUrlLangParam !== siteLanguage) {
+      if (firstLoad && this.isSupportedLanguage(this.userBrowserLangIso)) {
+        this.changeSiteLanguage(this.userBrowserLangIso);
+      } else {
+        reduxActions.changeTemporarySiteLanguage(getUrlLangParam);
+      }
     }
   }
 
