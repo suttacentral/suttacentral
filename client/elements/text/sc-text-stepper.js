@@ -45,6 +45,7 @@ export class SCTextStepper extends LitElement {
       display: flex;
 
       width: 100%;
+      min-width: 10rem;
       height: 6rem;
 
       border-radius: 48px;
