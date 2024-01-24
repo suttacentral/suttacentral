@@ -27,7 +27,6 @@ export class SCStaticHomePage extends SCStaticPage {
     this.siteLanguage = store.getState().siteLanguage;
     this.displayDonationBanner = store.getState().displayDonationBanner;
     this.#fetchDataForHomePage();
-    // reduxActions.changeDonationBannerDisplayState(true);
   }
 
   stateChanged(state) {

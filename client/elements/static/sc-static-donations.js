@@ -5,7 +5,6 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCStaticPage } from '../addons/sc-static-page';
-import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCStaticDonations extends SCStaticPage {
   constructor() {
