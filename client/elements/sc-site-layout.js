@@ -64,15 +64,17 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     const userLanguage = navigator.language || navigator.userLanguage;
     if (userLanguage.includes('-')) {
       this.userBrowserLangIso = userLanguage.split('-')[0];
+    } else {
+      this.userBrowserLangIso = userLanguage;
     }
     const { siteLanguage, firstLoad } = store.getState();
     const { getUrlLangParam } = this;
-    if (getUrlLangParam !== siteLanguage) {
-      if (firstLoad && this.isSupportedLanguage(this.userBrowserLangIso)) {
-        this.changeSiteLanguage(this.userBrowserLangIso);
-      } else {
-        reduxActions.changeTemporarySiteLanguage(getUrlLangParam);
-      }
+
+    if (firstLoad && this.isSupportedLanguage(this.userBrowserLangIso)) {
+      this.changeSiteLanguage(this.userBrowserLangIso);
+    }
+    if (!firstLoad && getUrlLangParam !== siteLanguage) {
+      reduxActions.changeTemporarySiteLanguage(getUrlLangParam);
     }
   }
 
