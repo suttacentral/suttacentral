@@ -37,7 +37,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     toolbarTitle: { type: String },
     linearProgressActive: { type: Boolean },
     toolbarPosition: { type: Object },
-    userBrowserLangIso: { type: String },
   };
 
   constructor() {
@@ -61,19 +60,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   #checkAndChangeSiteLanguage() {
-    const userLanguage = navigator.language || navigator.userLanguage;
-    if (userLanguage.includes('-')) {
-      this.userBrowserLangIso = userLanguage.split('-')[0];
-    } else {
-      this.userBrowserLangIso = userLanguage;
-    }
-    const { siteLanguage, firstLoad } = store.getState();
+    const { siteLanguage } = store.getState();
     const { getUrlLangParam } = this;
-
-    if (firstLoad && this.isSupportedLanguage(this.userBrowserLangIso)) {
-      this.changeSiteLanguage(this.userBrowserLangIso);
-    }
-    if (!firstLoad && getUrlLangParam !== siteLanguage) {
+    if (getUrlLangParam !== siteLanguage) {
       reduxActions.changeTemporarySiteLanguage(getUrlLangParam);
     }
   }

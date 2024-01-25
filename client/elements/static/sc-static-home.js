@@ -89,46 +89,8 @@ export class SCStaticHomePage extends SCStaticPage {
 
   #tipitakaSectionTemplate() {
     return html`
-      ${this.#donationsBannerTemplate()}
       <section class="tipitaka-section">
         <h2>${unsafeHTML(this.localize('home:1'))}</h2>
-      </section>
-    `;
-  }
-
-  #donationsBannerTemplate() {
-    if (!this.displayDonationBanner) {
-      return '';
-    }
-    return html`
-      <section
-        class='fundraising-banner'
-        style='
-          margin: -3rem 0 3rem 0;
-          background-color: var(--sc-secondary-accent-color);
-          color: white;
-          padding: 1rem 2rem;
-          box-shadow: var(--sc-shadow-elevation-4dp
-        '>
-        <md-outlined-icon-button
-          @click=${this.#changeDonationBannerDisplayState}
-        >
-          ${icon.close}
-        </md-outlined-icon-button>
-        <details>
-          <summary>
-            <h3 style='display: inline-block'>
-              ${unsafeHTML(this.localize('home:46'))}
-            </h3>
-          </summary>
-          <p style='margin-bottom: 1rem'>
-            ${unsafeHTML(this.localize('home:47'))}
-          </p>
-          <md-outlined-button href="/donations" @click=${this.#changeDonationBannerDisplayState}>
-            ${unsafeHTML(this.localize('home:45'))}
-            <md-ripple aria-hidden="true"></md-ripple>
-          </md-outlined-button>
-        </details>
       </section>
     `;
   }

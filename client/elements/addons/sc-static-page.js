@@ -42,6 +42,9 @@ export class SCStaticPage extends LitLocalized(LitElement) {
       reduxActions.changeFirstLoadState(false);
       return;
     }
+    if (store.getState().currentRoute.name === 'home') {
+      return;
+    }
     this.temporarySiteLanguage = store.getState().temporarySiteLanguage;
     if (this.temporarySiteLanguage && this.temporarySiteLanguage !== this.siteLanguage) {
       this.loadTemporaryLocalization(this.temporarySiteLanguage);
