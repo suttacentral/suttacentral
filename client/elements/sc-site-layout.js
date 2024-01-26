@@ -133,7 +133,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
               ${icon.sc_logo}
               <span>${unsafeHTML(this.toolbarTitle)}</span>
             </div>
-            <div id="subTitle">${this.localize('interface:pageSubtitle')}</div>
+            <div id="subTitle" lang=${this.siteLanguage}>${this.localize('interface:pageSubtitle')}</div>
           </div>
         </div>
 
