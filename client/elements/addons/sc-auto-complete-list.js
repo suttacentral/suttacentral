@@ -5,6 +5,7 @@ import algoliasearch from 'algoliasearch/lite';
 import { create, search, insertMultiple } from '@orama/orama';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/iconbutton/icon-button';
+import '@material/web/button/filled-tonal-button';
 
 import { LitLocalized } from './sc-localization-mixin';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -13,6 +14,7 @@ import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from './sc-redux-actions';
 import { SCAutoCompleteListStyles } from '../styles/sc-auto-complete-list-styles';
+import { extractSelectedLangsName } from './sc-functions-miscellaneous';
 
 const algoliaClient = algoliasearch('6P1QMGK4ZX', '91894dd5d8c89a8491d39f2903124373');
 const algoliaSegmentedTextIndex = algoliaClient.initIndex('sc_text_contents');
@@ -174,6 +176,9 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     return html`
       <div id="instant_search_dialog" class="search-suggestions">
         <div class="ss-header">${this.#headerTemplate()}</div>
+        <div class="selected-languages">
+          <p>${unsafeHTML(extractSelectedLangsName(store.getState().searchOptions.displayedLanguages, this.localize('autocomplete:change')))}</p>
+        </div>
         <div class="ss-list">${this.#searchResultListTemplate()}</div>
         <div class="ss-footer" id="openSearchTip">${this.#footerTemplate()}</div>
       </div>
