@@ -4,13 +4,11 @@
   "autocomplete:textOr": "text or",
   "autocomplete:collection": "collection",
   "autocomplete:tipsForSearchSyntax": "Tips for search syntax",
-  "autocomplete:change": "Change",
   "search:all": "All",
   "search:dictionaries": "Dictionaries",
   "search:filter": "Filter",
   "search:hint": "Hint: Search e.g. mn34 or sn3.2 to go straight to that sutta.",
   "search:inAllLanguage": "in all languages",
-  "search:inSelectedLanguage": "in selected languages",
   "search:inputSearchTerm": "Input search term",
   "search:loadMore": "Load more",
   "search:matchPartial": "Match partial",
@@ -21,7 +19,5 @@
   "search:searchInAllText": "Search in all texts",
   "search:searchResultsText": "Search results for",
   "search:searchTooltip": "Search SuttaCentral",
-  "search:translations": "Translations",
-  "search:searchOptions": "Search Options",
-  "search:searchLanguageOptionsDescription": "Language options for search"
+  "search:translations": "Translations"
 }
