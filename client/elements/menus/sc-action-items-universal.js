@@ -86,7 +86,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.shadowRoot
       .querySelector('sc-auto-complete-list')
       .shadowRoot.querySelector('#search_input')
-      .focus();
+      ?.focus();
   }
 
   openInstantSearchDialog() {
