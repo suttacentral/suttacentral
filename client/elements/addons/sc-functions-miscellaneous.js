@@ -12,7 +12,11 @@ export function isMobileBrowser() {
 }
 
 export function extractSelectedLangsName(displayedLanguages, linkText) {
+  const specialLangs = new Map([['lzh', 'Classic Chinese']]);
   const selectedLangs = displayedLanguages.filter(item => item.checked);
+  if (selectedLangs.length === 0) {
+    return '';
+  }
   selectedLangs.sort((a, b) => {
     if (a.is_root && !b.is_root) {
       return -1;
@@ -24,14 +28,11 @@ export function extractSelectedLangsName(displayedLanguages, linkText) {
   });
 
   selectedLangs.forEach(item => {
-    if (item.uid === 'lzh') {
-      item.name = 'Classic Chinese';
+    if (specialLangs.has(item.uid)) {
+      item.name = specialLangs.get(item.uid);
     }
   });
 
-  if (selectedLangs.length === 0) {
-    return '';
-  }
   if (selectedLangs.length <= 5) {
     return `
       Languages searched
