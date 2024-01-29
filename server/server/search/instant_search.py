@@ -1322,7 +1322,7 @@ def highlight_segmented_text(content, query, hit):
     highlight_ascii = unidecode(content)
     query_ascii = unidecode(query)
     start, end = get_matched_string_position(query_ascii, highlight_ascii)
-    if start != 0 and end != 0:
+    if start != -1 and end != 0:
         matching_string = highlight_ascii[start:end]
         highlight = re.sub(
             matching_string,

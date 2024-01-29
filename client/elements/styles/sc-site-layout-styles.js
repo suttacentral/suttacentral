@@ -61,6 +61,13 @@ export const SCSiteLayoutStyles = css`
     opacity: 1;
   }
 
+  @media only screen and (max-width: 618px) {
+    #subTitle[lang='de'], #subTitle[lang='my'] {
+      white-space: normal;
+      font-size: clamp(0.94rem, 3.5vw, 1.4rem);
+    }
+  }
+
   #universal_toolbar {
     position: sticky;
     z-index: 100;

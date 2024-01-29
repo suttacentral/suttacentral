@@ -386,4 +386,20 @@ export const SCAutoCompleteListStyles = css`
     margin-right: 0.2em;
     color: var(--sc-on-tertiary-secondary-text-color);
   }
+
+  .selected-languages {
+    display: flex;
+    margin-left: 1em;
+  }
+
+  .selected-languages a {
+    margin-right: 0.5em;
+    padding: 0.2em 0.5em;
+    border-radius: 16px;
+    background-color: var(--sc-primary-color-light-transparent);
+    color: var(--sc-on-primary-primary-text-color);
+    font-size: var(--sc-font-size-xs);
+    text-decoration: none;
+    transition: var(--sc-link-transition);
+  }
 `;

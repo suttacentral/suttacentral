@@ -67,6 +67,11 @@ const routes = {
     content: html`<sc-static-search-filter />`,
     loader: () => import('./static/sc-static-search-filter.js')
   },
+  'searchOptions': {
+    path: '/search-options',
+    content: html`<sc-static-search-options />`,
+    loader: () => import('./static/sc-static-search-options.js')
+  },
   'define': {
     path: '/define/:word',
     content: html`<sc-page-dictionary />`,

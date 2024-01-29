@@ -671,8 +671,8 @@ def run(no_pull=False):
     print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)
 
-    print_stage("Loading images")
-    images_files.load_images_links(db)
+    # print_stage("Loading images")
+    # images_files.load_images_links(db)
 
     print_stage("Loading ChangeTracker")
     change_tracker = ChangeTracker(data_dir, db)

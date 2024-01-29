@@ -16,6 +16,7 @@ import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
 import { reduxActions } from './addons/sc-redux-actions';
+import { extractSelectedLangsName } from './addons/sc-functions-miscellaneous';
 
 import(
   /* webpackMode: "lazy" */
@@ -149,11 +150,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
         required
         minlength="2"
         maxlength="100"
-        supporting-text="${this.localize('search:searchInAllText')}"
         @keypress=${this.#keypressHandler}
       >
         <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
       </md-filled-text-field>
+      <div class="selected-languages">${unsafeHTML(extractSelectedLangsName(store.getState().searchOptions.displayedLanguages, this.localize('autocomplete:change')))}</div>
       ${this.#searchOptionsTemplate()}
     `;
   }
@@ -1097,11 +1098,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultsText = this.localize('search:searchResultsText');
     const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} ${this.searchQuery} ${this.localize('search:inAllLanguage')}`;
+    )} ${this.searchQuery} ${this.localize('search:inSelectedLanguage')}`;
 
     const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} <strong class="highlightTitle">${this.searchQuery}</strong> ${this.localize('search:inAllLanguage')}`;
+    )} <strong class="highlightTitle">${this.searchQuery}</strong> ${this.localize('search:inSelectedLanguage')}`;
 
     document.dispatchEvent(
       new CustomEvent('metadata', {

@@ -500,6 +500,17 @@ export const SCPageSearchStyles = css`
   .no-result-prompt a {
     color: var(--sc-primary-accent-color);
   }
+
+  .selected-languages a {
+    margin-right: 0.5em;
+    padding: 0.2em 0.5em;
+    border-radius: 16px;
+    background-color: var(--sc-primary-color-light-transparent);
+    color: var(--sc-on-primary-primary-text-color);
+    font-size: var(--sc-font-size-xs);
+    text-decoration: none;
+    transition: var(--sc-link-transition);
+  }
 `;
 
 export const searchResultTableViewStyles = css`
