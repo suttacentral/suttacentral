@@ -501,6 +501,12 @@ export const SCPageSearchStyles = css`
     color: var(--sc-primary-accent-color);
   }
 
+  .selected-languages {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
   .selected-languages a {
     margin-right: 0.5em;
     padding: 0.2em 0.5em;
