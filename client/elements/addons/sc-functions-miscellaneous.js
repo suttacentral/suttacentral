@@ -28,7 +28,7 @@ function openGeneralSearchOptions(e) {
 }
 
 export function extractSelectedLangsName(displayedLanguages, linkText, isSearchPage = false) {
-  const specialLangs = new Map([['lzh', 'Classic Chinese']]);
+  const specialLangs = new Map([['lzh', 'Literary Chinese']]);
   const selectedLangs = displayedLanguages.filter(item => item.checked);
   if (selectedLangs.length === 0) {
     return '';
