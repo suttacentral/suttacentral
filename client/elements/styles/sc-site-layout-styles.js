@@ -62,9 +62,12 @@ export const SCSiteLayoutStyles = css`
   }
 
   @media only screen and (max-width: 618px) {
-    #subTitle[lang='de'], #subTitle[lang='my'] {
+    #subTitle[lang='de'], #subTitle[lang='my'], #subTitle[lang='ru'] {
       white-space: normal;
       font-size: clamp(0.94rem, 3.5vw, 1.4rem);
+      text-align: center;
+      justify-content: center;
+      align-items: center;
     }
   }
 
