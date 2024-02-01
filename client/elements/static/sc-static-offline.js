@@ -132,6 +132,7 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
+      this.chosenLanguageNativeName = this.fullSiteLanguageName;
     }
   }
 

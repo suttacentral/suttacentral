@@ -1,3 +1,8 @@
+import { dispatchCustomEvent } from '../../utils/customEvent';
+import { icon } from '../../img/sc-icon';
+import '@material/web/iconbutton/icon-button';
+import { html } from 'lit';
+
 export function getURLParam(name) {
   try {
     const searchParams = new URLSearchParams(window.location.search);
@@ -11,8 +16,19 @@ export function isMobileBrowser() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-export function extractSelectedLangsName(displayedLanguages, linkText) {
-  const specialLangs = new Map([['lzh', 'Classic Chinese']]);
+function openTopSheetSearchOptions(e) {
+  e.stopPropagation();
+  const scSiteLayout = document.querySelector('sc-site-layout');
+  const searchOptionsTopSheet = scSiteLayout.querySelector('#search-options');
+  searchOptionsTopSheet.toggle();
+}
+
+function openGeneralSearchOptions(e) {
+  dispatchCustomEvent(e.target, 'sc-navigate', { pathname: '/search-options' });
+}
+
+export function extractSelectedLangsName(displayedLanguages, linkText, isSearchPage = false) {
+  const specialLangs = new Map([['lzh', 'Literary Chinese']]);
   const selectedLangs = displayedLanguages.filter(item => item.checked);
   if (selectedLangs.length === 0) {
     return '';
@@ -32,20 +48,28 @@ export function extractSelectedLangsName(displayedLanguages, linkText) {
       item.name = specialLangs.get(item.uid);
     }
   });
-
+  const handleClickEvent = isSearchPage ? openTopSheetSearchOptions : openGeneralSearchOptions;
   if (selectedLangs.length <= 5) {
-    return `
-      Languages searched
-      ${selectedLangs.map(item => item.name).join(', ')}
-      <a href="/search-options">${linkText}</a>
+    return html`
+      <div class="selected-languages">
+        Languages searched
+        ${selectedLangs.map(item => item.name).join(', ')}
+        <md-icon-button @click=${(e) => handleClickEvent(e)}>
+          ${icon.language}
+        </md-icon-button>
+      </div>
     `;
   }
   const firstFiveLangs = selectedLangs.slice(0, 5);
   const restLangs = selectedLangs.slice(5);
-  return `
-    Languages searched
-    ${firstFiveLangs.map(item => item.name).join(', ')}
-    +${restLangs.length} more
-    <a href="/search-options">${linkText}</a>
+  return html`
+    <div class="selected-languages">
+      <p>Languages searched
+      ${firstFiveLangs.map(item => item.name).join(', ')}
+      +${restLangs.length} more</p>
+      <md-icon-button @click=${(e) => handleClickEvent(e)}>
+        ${icon.language}
+      </md-icon-button>
+    </div>
   `;
 }

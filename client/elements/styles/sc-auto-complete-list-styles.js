@@ -389,6 +389,8 @@ export const SCAutoCompleteListStyles = css`
 
   .selected-languages {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-left: 1em;
   }
 

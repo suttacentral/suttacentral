@@ -1435,6 +1435,7 @@ FOR key IN keys
     COLLECT div = highest_div /* Filter out the subdivisions */
     /* But accumulate their counts */
     AGGREGATE total = SUM(counts[key])
+    FILTER div.uid
     RETURN {
         uid: div.uid,
         name: div.name,
@@ -1460,9 +1461,12 @@ LET segmented_counts = (
     FOR doc IN sc_bilara_texts
         FILTER doc.lang == @lang AND ('root' IN doc.muids OR 'translation' IN doc.muids)
         COLLECT author = doc.muids[2] WITH COUNT INTO total
+        LET author_fullname = (FOR author_doc IN bilara_author_edition
+            FILTER author_doc.type == 'author' AND author_doc.uid == author
+        RETURN author_doc.long_name)[0]
         SORT null
         RETURN {
-            author,
+            author: author_fullname,
             total
         }
     )
@@ -1470,6 +1474,7 @@ LET segmented_counts = (
 FOR subcount IN APPEND(legacy_counts, segmented_counts)
     /* If there are multiple authors split them and count seperately */
     FOR author_name IN SPLIT(subcount.author, ', ')
+        FILTER author_name != '' AND author_name != 'site'
         COLLECT name = author_name
         AGGREGATE total = SUM(subcount.total)
         SORT total DESC

@@ -154,7 +154,13 @@ class SCPageSearch extends LitLocalized(LitElement) {
       >
         <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
       </md-filled-text-field>
-      <div class="selected-languages">${unsafeHTML(extractSelectedLangsName(store.getState().searchOptions.displayedLanguages, this.localize('autocomplete:change')))}</div>
+      ${
+        extractSelectedLangsName(
+          store.getState().searchOptions.displayedLanguages,
+          this.localize('autocomplete:change'),
+          true
+        )
+      }
       ${this.#searchOptionsTemplate()}
     `;
   }

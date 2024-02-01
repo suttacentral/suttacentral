@@ -425,7 +425,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
 
       <md-menu-item
         class="more-menu-md-menu-item"
-        href="https://voice.suttacentral.net/scv/index.html#/sutta${this.routeName}"
+        href=${this.#computeSCVoiceLink()}
         title="Listen to suttas"
         target="_blank"
         rel="noopener noreferrer"
@@ -433,6 +433,10 @@ export class SCMenuMore extends LitLocalized(LitElement) {
         <div slot="headline">${icon.speaker} ${this.localize('interface:voice')}</div>
       </md-menu-item>
     `;
+  }
+
+  #computeSCVoiceLink() {
+    return `https://www.api.sc-voice.net/scv/ebt-site/site/${this.language}`;
   }
 
   _renderLanguageBaseMenu() {

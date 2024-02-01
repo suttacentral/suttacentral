@@ -176,9 +176,13 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     return html`
       <div id="instant_search_dialog" class="search-suggestions">
         <div class="ss-header">${this.#headerTemplate()}</div>
-        <div class="selected-languages">
-          <p>${unsafeHTML(extractSelectedLangsName(store.getState().searchOptions.displayedLanguages, this.localize('autocomplete:change')))}</p>
-        </div>
+        ${
+          extractSelectedLangsName(
+            store.getState().searchOptions.displayedLanguages,
+            this.localize('autocomplete:change'),
+            false
+          )
+        }
         <div class="ss-list">${this.#searchResultListTemplate()}</div>
         <div class="ss-footer" id="openSearchTip">${this.#footerTemplate()}</div>
       </div>
