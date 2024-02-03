@@ -220,6 +220,12 @@ export const staticHomeStyles = css`
     object-fit: cover;
   }
 
+  .buddhismnet-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
   figcaption {
     font-size: var(--sc-font-size-s);
     font-weight: 600;
