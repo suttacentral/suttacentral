@@ -45,8 +45,6 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     super.connectedCallback();
 
     this._fetchExpansionData();
-    this._fetchAvailableVoice();
-
     setTimeout(() => {
       const copyMenu = this.shadowRoot.querySelector('#copy-menu');
       if (copyMenu) {
@@ -62,6 +60,10 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     if (changedProps.has('item')) {
       this._fetchAvailableVoice();
     }
+  }
+
+  firstUpdated() {
+    this._fetchAvailableVoice();
   }
 
   orderTranslationsByTranslator(translations) {
@@ -198,7 +200,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get listenUrl() {
-    return `${SUTTACENTRAL_VOICE_URL}scv/#/?search=${this.item.uid}&lang=${this.language}`;
+    return `https://www.api.sc-voice.net/scv/ebt-site/${this.item.uid}/${this.language}`;
   }
 
   static styles = [suttaplexCss];
@@ -568,20 +570,16 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     if (!this.item?.uid) {
       return;
     }
+
     this.hasVoice = false;
     const voiceApi = `${API_ROOT}/available_voices/${this.item?.uid}`;
-    const availableVoice = fetch(voiceApi).then(r => r.json());
-    const voices = await availableVoice;
+    const voices = await fetch(voiceApi).then(r => r.json());
+
     if (voices?.length > 0) {
-      for (const voice of Object.keys(voices[0].voices)) {
+      this.hasVoice = Object.keys(voices[0].voices).some(voice => {
         const voiceInfo = voice.split('/');
-        if (!voiceInfo.includes('root') && !voiceInfo.includes('vinaya')) {
-          this.hasVoice = voice.split('/').includes(this.language);
-          if (this.hasVoice) {
-            break;
-          }
-        }
-      }
+        return !voiceInfo.includes('root') && !voiceInfo.includes('vinaya') && voiceInfo.includes(this.language);
+      });
     }
   }
 }

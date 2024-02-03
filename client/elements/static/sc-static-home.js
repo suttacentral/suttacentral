@@ -300,7 +300,7 @@ export class SCStaticHomePage extends SCStaticPage {
           title=${this.localize('home:30')}
         >
           <header>
-            <span>${icon.buddhismnet}</span>
+            <span class="buddhismnet-image-container"><img src='/img/home-page/bn.png' alt='Buddhism.net' /></span>
             <h3>
               <span>Buddhism.net</span>
               <span class="sc-related-item-subtitle">making the teachings of the Buddha accessible</span>

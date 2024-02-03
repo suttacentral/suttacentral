@@ -30,43 +30,33 @@ function openGeneralSearchOptions(e) {
 export function extractSelectedLangsName(displayedLanguages, linkText, isSearchPage = false) {
   const specialLangs = new Map([['lzh', 'Literary Chinese']]);
   const selectedLangs = displayedLanguages.filter(item => item.checked);
+
   if (selectedLangs.length === 0) {
-    return '';
+    return html``;
   }
-  selectedLangs.sort((a, b) => {
-    if (a.is_root && !b.is_root) {
-      return -1;
-    }
-    if (!a.is_root && b.is_root) {
-      return 1;
-    }
-    return 0;
-  });
+
+  selectedLangs.sort((a, b) => b.is_root - a.is_root);
 
   selectedLangs.forEach(item => {
     if (specialLangs.has(item.uid)) {
       item.name = specialLangs.get(item.uid);
     }
   });
+
   const handleClickEvent = isSearchPage ? openTopSheetSearchOptions : openGeneralSearchOptions;
+
+  let languagesSearched;
   if (selectedLangs.length <= 5) {
-    return html`
-      <div class="selected-languages">
-        Languages searched
-        ${selectedLangs.map(item => item.name).join(', ')}
-        <md-icon-button @click=${(e) => handleClickEvent(e)}>
-          ${icon.language}
-        </md-icon-button>
-      </div>
-    `;
+    languagesSearched = selectedLangs.map(item => item.name).join(', ');
+  } else {
+    const firstFiveLangs = selectedLangs.slice(0, 5);
+    const restLangs = selectedLangs.slice(5);
+    languagesSearched = `${firstFiveLangs.map(item => item.name).join(', ')} +${restLangs.length} more`;
   }
-  const firstFiveLangs = selectedLangs.slice(0, 5);
-  const restLangs = selectedLangs.slice(5);
+
   return html`
     <div class="selected-languages">
-      <p>Languages searched
-      ${firstFiveLangs.map(item => item.name).join(', ')}
-      +${restLangs.length} more</p>
+      <p>Languages searched ${languagesSearched}</p>
       <md-icon-button @click=${(e) => handleClickEvent(e)}>
         ${icon.language}
       </md-icon-button>
