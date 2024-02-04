@@ -576,9 +576,17 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     const voices = await fetch(voiceApi).then(r => r.json());
 
     if (voices?.length > 0) {
-      this.hasVoice = Object.keys(voices[0].voices).some(voice => {
-        const voiceInfo = voice.split('/');
-        return !voiceInfo.includes('root') && !voiceInfo.includes('vinaya') && voiceInfo.includes(this.language);
+      this.hasVoice = Object.entries(voices[0].voices).some(([key, value]) => {
+        const voiceKeyInfo = key.split('/');
+        const voiceValueInfo = value.split('/');
+        const VINAYA = 'vinaya';
+        const PLI = 'pli';
+        const MS = 'ms';
+
+        const isNotVinaya = !voiceValueInfo.includes(VINAYA);
+        const isLanguageOrPliAndMs = voiceKeyInfo.includes(this.language) || (voiceKeyInfo.includes(PLI) && voiceKeyInfo.includes(MS));
+
+        return isNotVinaya && isLanguageOrPliAndMs;
       });
     }
   }
