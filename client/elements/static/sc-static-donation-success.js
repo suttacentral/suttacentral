@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { SCUtilityStyles } from '../styles/sc-utility-styles';
 
 class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
   constructor() {
@@ -12,6 +13,7 @@ class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
   static styles = [
     layoutSimpleStyles,
     typographyCommonStyles,
+    SCUtilityStyles,
     css`
       h1 {
         text-align: center;

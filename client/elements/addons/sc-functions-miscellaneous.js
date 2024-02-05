@@ -56,7 +56,7 @@ export function extractSelectedLangsName(displayedLanguages, linkText, isSearchP
 
   return html`
     <div class="selected-languages">
-      <p>Languages searched ${languagesSearched}</p>
+      <p>Documents searched ${languagesSearched}</p>
       <md-icon-button @click=${(e) => handleClickEvent(e)}>
         ${icon.language}
       </md-icon-button>

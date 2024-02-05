@@ -292,7 +292,8 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
   _hideTopSheetsAndMenu() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideItems();
+    scActionItems?.hideTopSheets();
+    scActionItems?.hideSpeakerButton();
 
     const moreMenu = document
       .querySelector('sc-navigation-linden-leaves')
