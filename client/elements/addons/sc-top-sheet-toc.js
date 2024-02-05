@@ -92,7 +92,7 @@ figcaption
 
   _hideMenu() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideItems();
+    scActionItems?.hideTopSheets();
 
     this.actions.changeDisplaySettingMenuState(false);
     this.actions.changeDisplaySuttaToCState(false);

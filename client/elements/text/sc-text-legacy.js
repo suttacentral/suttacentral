@@ -157,7 +157,7 @@ export class SCTextLegacy extends SCTextCommon {
 
   _hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideItems();
+    scActionItems?.hideTopSheets();
   }
 
   disconnectedCallback() {

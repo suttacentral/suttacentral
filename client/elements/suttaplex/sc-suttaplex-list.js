@@ -109,7 +109,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   _hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideItems();
+    scActionItems?.hideTopSheets();
   }
 
   isSuttaplex(item) {

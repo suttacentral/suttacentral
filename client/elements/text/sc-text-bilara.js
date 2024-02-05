@@ -30,6 +30,7 @@ import {
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { paliReferenceEditions } from './sc-text-functions';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 
 export class SCTextBilara extends SCTextCommon {
@@ -140,6 +141,9 @@ export class SCTextBilara extends SCTextCommon {
     this.addEventListener('click', this._onClickHandler);
     this._updateView();
     this._updateURLSearchParams();
+
+    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+    scActionItems?.showSpeakerButton();
   }
 
   disconnectedCallback() {
@@ -285,7 +289,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _hideTopSheets() {
-    document.querySelector('sc-site-layout').querySelector('#action_items')?.hideItems();
+    document.querySelector('sc-site-layout').querySelector('#action_items')?.hideTopSheets();
   }
 
   _segmentedTextContentElement() {
@@ -1338,6 +1342,14 @@ export class SCTextBilara extends SCTextCommon {
       return 'latin';
     }
     return this.paliScript.charAt(0).toUpperCase() + this.paliScript.slice(1);
+  }
+
+  listenThisSutta() {
+    if (!this.suttaId || !this.language) {
+      return;
+    }
+    const url = `https://www.api.sc-voice.net/scv/ebt-site/${this.suttaId}/${this.language}`;;
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: url });
   }
 }
 

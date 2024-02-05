@@ -21,6 +21,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     displayComfyButton: { type: Boolean },
     displayViewModeButton: { type: Boolean },
     displaySearchOptionsButton: { type: Boolean },
+    displaySpeakerButton: { type: Boolean },
     colorTheme: { type: String },
     suttaMetaText: { type: String },
     suttaPublicationInfo: { type: Object },
@@ -50,6 +51,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.displayViewModeButton = state.displayViewModeButton;
     this.displayParallelTableView = state.displayParallelTableView;
     this.displaySearchOptionsButton = state.displaySearchOptionsButton;
+    this.displaySpeakerButton = false;
   }
 
   render() {
@@ -89,7 +91,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
         #btnInfo:after,
         #btnShowParallels:after,
         #btnShowToC:after,
-        #btnShowParallelTableView:after {
+        #btnShowParallelTableView:after,
+        #btnListenThisSutta::after {
           font-size: var(--sc-font-size-xxs);
           font-weight: 600;
           font-stretch: condensed;
@@ -135,10 +138,15 @@ export class SCActionItems extends LitLocalized(LitElement) {
           content: '${unsafeCSS(this.localize('interface:searchFilterButtonText'))}';
         }
 
+        #btnListenThisSutta:after {
+          content: 'Voice';
+        }
+
         #btnSearchFilter,
         #btnSearchOptions,
         #btnShowParallels,
-        #btnShowParallelTableView {
+        #btnShowParallelTableView,
+        #btnListenThisSutta {
           display: flex;
         }
 
@@ -254,6 +262,16 @@ export class SCActionItems extends LitLocalized(LitElement) {
         >
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
         </md-icon-button>
+
+        <md-icon-button
+          class="white-icon toolButtons"
+          id="btnListenThisSutta"
+          slot="actionItems"
+          style="display: none;"
+          @click=${this.#btnListenThisSuttaClick}
+        >
+          ${icon.speaker}
+        </md-icon-button>
       </div>
     `;
   }
@@ -328,10 +346,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.scSiteLayout = document.querySelector('sc-site-layout');
   }
 
-  hideItems() {
+  hideTopSheets() {
+    this._hideSettingMenu();
     this._hideSuttaInfo();
     this._hideSuttaParallels();
-    this._hideSettingMenu();
     this._hideSuttaToC();
     this.#hideSearchOptions();
     this.#hideSearchFilter();
@@ -574,15 +592,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
-  hideTopSheets() {
-    this._hideSettingMenu();
-    this._hideSuttaInfo();
-    this._hideSuttaParallels();
-    this._hideSuttaToC();
-    this.#hideSearchOptions();
-    this.#hideSearchFilter();
-  }
-
   stateChanged(state) {
     super.stateChanged(state);
     if (this.displaySettingMenu !== state.displaySettingMenu) {
@@ -707,6 +716,19 @@ export class SCActionItems extends LitLocalized(LitElement) {
         e.classList.add(this.activeClass);
       }
     });
+  }
+
+  showSpeakerButton() {
+    this.shadowRoot.querySelector('#btnListenThisSutta').style.display = 'inherit';
+  }
+
+  hideSpeakerButton() {
+    this.shadowRoot.querySelector('#btnListenThisSutta').style.display = 'none';
+  }
+
+  #btnListenThisSuttaClick() {
+    const textBilara = document.querySelector('sc-text-bilara');
+    textBilara?.listenThisSutta();
   }
 }
 

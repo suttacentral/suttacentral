@@ -14,6 +14,7 @@ import { LitLocalized } from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
+import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
 import { reduxActions } from './addons/sc-redux-actions';
 import { extractSelectedLangsName } from './addons/sc-functions-miscellaneous';
@@ -112,10 +113,10 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #hideRelatedTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideItems();
+    scActionItems?.hideTopSheets();
   }
 
-  static styles = [searchResultTableViewStyles, SCPageSearchStyles];
+  static styles = [searchResultTableViewStyles, SCPageSearchStyles, SCUtilityStyles];
 
   render() {
     return html`

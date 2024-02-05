@@ -497,10 +497,6 @@ export const SCPageSearchStyles = css`
     color: var(--sc-on-primary-secondary-text-color);
   }
 
-  .no-result-prompt a {
-    color: var(--sc-primary-accent-color);
-  }
-
   .selected-languages {
     display: flex;
     flex-direction: row;
