@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2024.2.6
+
+- Add SC Voice icon in the segmented text page.
+
 ## 2024.2.4
 
 - Modify the code logic of the Suttaplex card regarding displaying the voice icon.
