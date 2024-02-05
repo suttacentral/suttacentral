@@ -1,5 +1,272 @@
 # SuttaCentral ChangeLog
 
+## 2024.2.4
+
+- Modify the code logic of the Suttaplex card regarding displaying the voice icon.
+
+## 2024.2.3
+
+- Update SC Voice link in suttaplex card and refactor related code.
+
+## 2024.2.1
+
+- Several fixes and improvements.
+
+## 2024.1.30
+
+- Show included languages in search results.
+
+## 2024.1.25
+
+- Remove the donation banner.
+
+## 2024.1.24
+
+- Optimize the code logic for setting the default site language.
+- Fix: Language and Filter interface for search broken on mobile.
+- Adjust search pages based on feedback.
+- Format css.
+- Localize sc-bottom-sheet.
+- Fix a bug regarding keyword extraction.
+- Modify the position of the Algolia icon and fix an error in search results.
+
+## 2024.1.22
+
+- Add buddhism.net info to the home page.
+- Set the SC site language according to the browser language.
+
+## 2024.1.20
+
+- Reorganize localization files and modify related frontend code.
+
+## 2024.1.12
+
+- Improve search result highlight code logic.
+
+## 2024.1.11
+
+- Fixed an issue with duplicate highlights.
+- Upgrade frontend dependencies.
+- Adjust md components styles.
+- Adjust styles.
+
+## 2024.1.10
+
+- Adjust instant search dialog styles.
+
+## 2024.1.6
+
+- Fix two frontend bugs.
+
+## 2024.1.4
+
+- Improve static page content search based on feedback.
+
+## 2024.1.2
+
+- Support in:article filter in search.
+
+- Index static page content to support search.
+
+- Downgrade the Vite version.
+
+## 2023.12.20
+
+- Add root language information to search results.
+
+## 2023.12.19
+
+- Adjust the breadcrumb title.
+
+## 2023.12.18
+
+- Randomly obtain the contents of whyweread and epigraph.
+- Show more meta data in search results list to give more context.
+
+## 2023.12.15
+
+- Add explicit indicator of no modern translation found on SuttaPlex card.
+- Upgrade node dependencies.
+
+## 2023.12.14
+
+- Enhance: text page parameters don't alter saved settings.
+
+## 2023.12.11
+
+- fix the presentation of rules related in fallenleaves.
+- Fixed localization issue on the map page.
+- Refactor lang param setting code.
+
+## 2023.12.8
+
+- Viewing a non-site lang page should not change your lang setting.
+- Make top part of editions view 2 columns.
+
+## 2023.12.7
+
+- Replace Vinaya publications cover.
+
+## 2023.12.6
+
+-Adjust the autocomplete filter and publication page.
+
+## 2023.12.5
+
+- Add lang key for Epigraphs and Whyweread info.
+- Adjust publication code.
+
+## 2023.12.4
+
+- Optimize publications download link generate logic.
+
+## 2023.12.3
+
+- Instant search adjustments and new sutta extraction API.
+- Adjust extract sutta API.
+- Add support for Vinaya to extract sutta API.
+
+## 2023.12.1
+
+- Refactor `sc-auto-complete-list.js`.
+
+## 2023.11.30
+
+- Fix logo style.
+- Update SC Logo.
+
+## 2023.11.29
+
+- Adjust home page and instant search component.
+- Add algolia link and adjust the search limit.
+
+## 2023.11.28
+
+- fix: legacy texts without footer display the info text of previously viewed sutta.
+- Add restrictions to instant search.
+
+## 2023.11.27
+
+- Reorganize the Algolia index, and adjust the relevant frontend code.
+- If the search keyword contains numbers, use Orama search.
+- Tuning instant search.
+- Adjust algolia search filter param.
+
+## 2023.11.24
+
+- Add donations banner.
+- Localization donation banner.
+- Add NL localization support, and adjust styles.
+
+## 2023.11.23
+
+- Add spinner to "Load more" search results button.
+
+## 2023.11.22
+
+- Adjust arango search index and search logic.
+
+## 2023.11.20
+
+- Upgrade lit, nodejs, orama, vite to latest version.
+- Update sc-suttaplex.js localization info.
+
+## 2023.11.18
+
+- Optimize search result total calculation logic and fix bugs.
+
+## 2023.11.17
+
+- Support searching with diacritics ignored.
+
+## 2023.11.16
+
+- Refactor views.py, dictionary.py,publication_v2.py.
+
+## 2023.11.15
+
+- Refactor arangoload.py and add_instant_search.
+
+## 2023.11.14
+
+- When searching, if it is pali text, suttaplex matching is also performed.
+- Format instant search python code.
+- Refactor fulltext search python code.
+
+## 2023.11.13
+
+- Tuning instant search, localize some pages.
+
+## 2023.11.10
+
+- Adjust instant search result styles.
+- Localization updates.
+
+## 2023.11.7
+
+- Refine instant search.
+- Refine fulltext search.
+
+## 2023.11.5
+
+- Refactor sc-auto-complete-list.js.
+
+## 2023.11.4
+
+- Improve instant search result.
+
+## 2023.11.2
+
+- Apply full text search to instant search.
+- Fix publication links in navigation page.
+
+## 2023.11.1
+
+- Filter search results based on the user's selected language.
+- Remove unnecessary code from search module.
+
+## 2023.10.31
+
+- Fix the problem of html tags displayed in browser titles.
+
+## 2023.10.28
+
+- Sujato responsive page search.
+- Format styles.
+- Fix for highlighting style.
+
+## 2023.10.23
+
+- Using Algolia to drive instant search.
+- Adjust CSP.
+
+## 2023.10.22
+
+- OPtimize instant search AQL.
+
+## 2023.10.21
+
+- Adjust search results and code about index.
+
+## 2023.10.20
+
+-Upgrade flask and some packages to latest version.
+
+## 2023.10.19
+
+- Apply Element Internals Polyfill.
+- make cooler responsive design for editions page.
+- Remove element-internals-polyfill in universal toolbar.
+
+## 2023.10.18
+
+- Try to fix the problem of incorrect menu layout in ios 16.1 and below.
+
+## 2023.10.17
+
+- Improve oarama search, adjust search strategy and other.
+- Adjust vinaya publication links.
+
 ## 2023.10.13
 
 - Exclude some content from search indexing and upgrade nginx.
