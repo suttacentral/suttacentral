@@ -1346,8 +1346,8 @@ export class SCTextBilara extends SCTextCommon {
     if (!this.suttaId || !this.language) {
       return;
     }
-    const url = `https://www.api.sc-voice.net/scv/ebt-site/${this.suttaId}/${this.language}`;;
-    dispatchCustomEvent(this, 'sc-navigate', { pathname: url });
+    const url = `https://www.api.sc-voice.net/scv/ebt-site/${this.suttaId}/${this.language}`;
+    window.open(url, '_blank');
   }
 }
 
