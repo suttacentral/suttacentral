@@ -137,13 +137,12 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   firstUpdated() {
+    this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', this._onClickHandler);
     this._updateView();
     this._updateURLSearchParams();
-
-    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.showSpeakerButton();
+    this.scActionItems?.showSpeakerButton();
   }
 
   disconnectedCallback() {
@@ -274,10 +273,9 @@ export class SCTextBilara extends SCTextCommon {
 
       this.actions.showToc([]);
 
-      document.querySelector('sc-site-layout').querySelector('#action_items').range_uid =
-        this.range_uid;
+      this.scActionItems.range_uid = this.range_uid;
     } else {
-      document.querySelector('sc-site-layout').querySelector('#action_items').range_uid = '';
+      this.scActionItems.range_uid = '';
     }
   }
 
@@ -289,7 +287,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _hideTopSheets() {
-    document.querySelector('sc-site-layout').querySelector('#action_items')?.hideTopSheets();
+    this.scActionItems?.hideTopSheets();
   }
 
   _segmentedTextContentElement() {
