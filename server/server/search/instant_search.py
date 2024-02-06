@@ -1545,7 +1545,7 @@ def is_chinese(uchar):
 def extract_query_conditions(param):
     param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
-    author = re.search("author:(\w+)", param)
+    author = re.search("author:([\w-]+)", param)
     if author:
         result["author"] = author[1].strip()
     collection = re.search("in:(\w+)", param)
