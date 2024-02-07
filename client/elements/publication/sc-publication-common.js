@@ -50,7 +50,7 @@ export const lastUpdatedDateOfCollections = new Map([
   ['mn-epub', '2024-01-29'],
   ['mn-html', '2024-01-29'],
   ['mn-tex', '2023-10-30'],
-  ['mn-pdf', '2023-01-30'],
+  ['mn-pdf', '2023-10-30'],
   ['sn-epub', '2024-01-29'],
   ['sn-html', '2024-01-29'],
   ['sn-tex', '2024-01-29'],
