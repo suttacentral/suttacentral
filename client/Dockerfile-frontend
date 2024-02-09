@@ -4,7 +4,7 @@ WORKDIR /opt/sc/frontend
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm --registry https://registry.npmjs.org install
 
 COPY . ./
 
