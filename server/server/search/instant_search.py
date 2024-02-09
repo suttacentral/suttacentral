@@ -235,12 +235,15 @@ def generate_general_query_aql(
             f'OR LIKE(d.name, "%{query}%") '
             f'OR ANALYZER(LIKE(d.name, "%{query.lower()}%"), "normalize") '
             f'OR ANALYZER(LIKE(d.segmented_text, "%{query.lower()}%"), "normalize") '
+            f'OR ANALYZER(LIKE(d.name, "%{unidecode(query.lower())}%"), "normalize") '
+            f'OR ANALYZER(LIKE(d.segmented_text, "%{unidecode(query.lower())}%"), "normalize") '
         )
         if possible_pali_words := [query]:
             aql_condition_part += ''' OR ('''
             for pali_word in possible_pali_words:
                 aql_condition_part += (
                     f'LIKE(d.segmented_text, "%{pali_word}%") OR '
+                    f'LIKE(d.segmented_text, "%{unidecode(pali_word)}%") OR '
                 )
             aql_condition_part = aql_condition_part[:-4]
             aql_condition_part += '''))'''
@@ -331,6 +334,8 @@ def generate_aql_for_lang_filter(lang, keyword_list, operator, query_param):
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
                 f'ANALYZER(LIKE(d.name, "%{keyword.lower()}%"), "normalize") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.name, "%{unidecode(keyword.lower())}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
                 f'LIKE(d.name, "%{keyword}%")) OR '
             )
         aql_condition_part = aql_condition_part[:-4]
@@ -342,6 +347,8 @@ def generate_aql_for_lang_filter(lang, keyword_list, operator, query_param):
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
                 f'ANALYZER(LIKE(d.name, "%{keyword.lower()}%"), "normalize") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.name, "%{unidecode(keyword.lower())}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
                 f'LIKE(d.name, "%{keyword}%")) AND '
             )
         aql_condition_part = aql_condition_part[:-5]
@@ -477,6 +484,7 @@ def generate_aql_for_multi_keyword(keywords, query_param):
                 f'PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
             )
         else:
             keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
@@ -484,6 +492,7 @@ def generate_aql_for_multi_keyword(keywords, query_param):
                 f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
                 f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
             )
     aql_condition_part = aql_condition_part[:-4]
     aql_condition_part += ''')'''
@@ -515,6 +524,7 @@ def generate_aql_for_and_operator(keywords, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%")) AND '
             )
         else:
@@ -522,6 +532,7 @@ def generate_aql_for_and_operator(keywords, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) AND '
             )
 
@@ -552,6 +563,7 @@ def generate_aql_for_not_operator(keywords, query_param):
     aql_condition_part += (
         f'(PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
         f'ANALYZER(LIKE(d.segmented_text, "%{keyword_exclude_not.lower()}%"), "normalize") OR '
+        f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword_exclude_not.lower())}%"), "normalize") OR '
         f'LIKE(d.segmented_text, "%{keyword_exclude_not}%")) '
     )
 
@@ -584,6 +596,8 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
                 f'LIKE(d.segmented_text, "%{keyword}%") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
                 f'ANALYZER(LIKE(d.name, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.name, "%{unidecode(keyword.lower())}%"), "normalize") OR '
                 f'd.uid == "{keyword}" OR '
                 f'PHRASE(d.name,  "{keyword}", "common_text")) OR '
             )
@@ -594,6 +608,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
             aql_condition_part += (
                 f'(PHRASE(d.content, "{keyword}", "common_text") OR '
                 f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
                 f'LIKE(d.segmented_text, "%{keyword}%")) AND '
             )
         aql_condition_part = aql_condition_part[:-5]
@@ -736,6 +751,7 @@ def get_not_part_for_aql(keyword):
            f'PHRASE(d.name,  "{keyword}", "common_text") OR ' \
            f'd.uid ==  "{keyword}" OR ' \
            f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR ' \
+           f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR ' \
            f'LIKE(d.segmented_text, "%{keyword}%")) '
 
 
@@ -1330,6 +1346,15 @@ def highlight_segmented_text(content, query, hit):
             highlight,
             flags=re.I
         )
+
+        if 'class="highlight"' not in highlight and (is_pali(content.lower()) or is_pali(query.lower())):
+            highlight = re.sub(
+                matching_string,
+                f'<strong class="highlight">{matching_string}</strong>',
+                highlight_ascii,
+                flags=re.I
+            )
+
     if 'class="highlight"' in highlight:
         segmented_id_anchor_tag = ""
         if (
@@ -1358,7 +1383,7 @@ def get_matched_string_position(query, highlight):
     pattern = re.escape(query)
     matching_string = re.search(pattern, highlight, re.IGNORECASE)
     if matching_string is None:
-        return 0, 0
+        return -1, 0
     return matching_string.start(), matching_string.end()
 
 
