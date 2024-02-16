@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
@@ -35,7 +36,7 @@ class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
           <picture>
             <source srcset="/img/static-pages/novice_reading.avif" type="image/avif" />
             <img
-              alt="${unsafeHTML(this.localize('donations:successAltText'))}"
+              alt=${this.localize('donations:successAltText')}
               class="image-home-full"
               src="/img/static-pages/novice_reading.jpg"
               width="100%"
