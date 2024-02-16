@@ -7,7 +7,7 @@ import { SCUtilityStyles } from '../styles/sc-utility-styles';
 class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/donations';
   }
 
   static styles = [
