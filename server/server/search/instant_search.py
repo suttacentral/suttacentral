@@ -1321,7 +1321,14 @@ def cut_highlight(content, hit, query, is_segmented_text):
 
 def extract_number(html):
     match = re.search(r'<span class="reference">(\d+\.\d+)</span>', html)
-    return float(match.group(1)) if match else 0
+    if match:
+        number = match[1]
+        try:
+            return float(number)
+        except ValueError:
+            return 0
+    else:
+        return 0
 
 
 def generate_segmented_id_anchor_tag(hit, segmented_id):
