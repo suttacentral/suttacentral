@@ -30,46 +30,31 @@ class SCStaticDonationSuccessPage extends LitLocalized(LitElement) {
     return html`
       <main>
         <article>
-          <h1>Sādhu! Sādhu!</h1>
-          <p>
-            Your gift of Dhamma is precious to us. It will be carefully used to support
-            SuttaCentral, and help make the Dhamma available for all those who wish to be free from
-            suffering.
-          </p>
+          <h1>${unsafeHTML(this.localize('donations:success1'))}</h1>
+          <p>${unsafeHTML(this.localize('donations:success2'))}</p>
           <picture>
             <source srcset="/img/static-pages/novice_reading.avif" type="image/avif" />
             <img
-              alt="A photo of two Burmese novices reading Dhamma"
+              alt="${unsafeHTML(this.localize('donations:successAltText'))}"
               class="image-home-full"
               src="/img/static-pages/novice_reading.jpg"
-              title="Novices reading"
               width="100%"
               height="auto"
             />
           </picture>
-          <p>
-            May the merit of you kind offering be for the long-lasting happiness and welfare of
-            yourself and all your loved ones!
-          </p>
-          <p>May it be for the happiness, welfare, and liberation of all sentient beings!</p>
+          <p>${unsafeHTML(this.localize('donations:success3'))}</p>
+          <p>${unsafeHTML(this.localize('donations:success4'))}</p>
           <blockquote>
-            <p>
-              The gift of the teaching beats all other gifts;
+            <p>${unsafeHTML(this.localize('donations:success5'))}
               <br />
-              the taste of the teaching beats all other tastes;
+              ${unsafeHTML(this.localize('donations:success6'))}
               <br />
-              the joy of the teaching beats all other joys;
+              ${unsafeHTML(this.localize('donations:success7'))}
               <br />
-              one who has ended craving beats all suffering.
+              ${unsafeHTML(this.localize('donations:success8'))}
             </p>
           </blockquote>
-          <p>
-            Multiply your merit:
-            <a href="https://suttacentral.net/search?query=giving">
-              read some suttas on the joys of giving
-            </a>
-            , and take the time to remind yourself of your own kindness.
-          </p>
+          <p>${unsafeHTML(this.localize('donations:success9'))}</p>
         </article>
       </main>
     `;
