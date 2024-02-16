@@ -1316,6 +1316,12 @@ def cut_highlight(content, hit, query, is_segmented_text):
                 )
                 hit['highlight']['content'].append(highlight)
                 hit['highlight']['content'] = list(set(hit['highlight']['content']))
+                hit['highlight']['content'] = sorted(hit['highlight']['content'], key=extract_number)
+
+
+def extract_number(html):
+    match = re.search(r'<span class="reference">(\d+\.\d+)</span>', html)
+    return float(match.group(1)) if match else 0
 
 
 def generate_segmented_id_anchor_tag(hit, segmented_id):
@@ -1348,10 +1354,11 @@ def highlight_segmented_text(content, query, hit):
         )
 
         if 'class="highlight"' not in highlight and (is_pali(content.lower()) or is_pali(query.lower())):
+            matching_string = highlight[start:end]
             highlight = re.sub(
                 matching_string,
                 f'<strong class="highlight">{matching_string}</strong>',
-                highlight_ascii,
+                highlight,
                 flags=re.I
             )
 
