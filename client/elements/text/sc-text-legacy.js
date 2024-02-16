@@ -153,24 +153,16 @@ export class SCTextLegacy extends SCTextCommon {
     this._setTextViewState();
     this._updateView();
     this._updateURLSearchParams();
+    this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+    this.scActionItems?.hideSpeakerButton();
   }
 
   _hideTopSheets() {
-    const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideTopSheets();
+    this.scActionItems?.hideTopSheets();
   }
 
   disconnectedCallback() {
     window.removeEventListener('hashchange', this._hashChangeHandler);
-  }
-
-  _hideSettingMenu() {
-    this.dispatchEvent(
-      new CustomEvent('hide-sc-top-sheet', {
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   updated(changedProps) {
