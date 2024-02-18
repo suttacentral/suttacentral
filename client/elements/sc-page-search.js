@@ -739,7 +739,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       },
       setNavigation(navArray) {
         store.dispatch({
-          type: 'SET_NAVIGATION',createMetaData
+          type: 'SET_NAVIGATION',
           navigationArray: navArray,
         });
       },
