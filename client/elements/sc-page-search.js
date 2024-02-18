@@ -739,7 +739,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       },
       setNavigation(navArray) {
         store.dispatch({
-          type: 'SET_NAVIGATION',
+          type: 'SET_NAVIGATION',createMetaData
           navigationArray: navArray,
         });
       },
@@ -1105,11 +1105,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultsText = this.localize('search:searchResultsText');
     const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} ${this.searchQuery} ${this.localize('search:inSelectedLanguage')}`;
+    )} ${this.searchQuery}`;
 
     const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} <strong class="highlightTitle">${this.searchQuery}</strong> ${this.localize('search:inSelectedLanguage')}`;
+    )} <strong class="highlightTitle">${this.searchQuery}</strong>`;
 
     document.dispatchEvent(
       new CustomEvent('metadata', {
