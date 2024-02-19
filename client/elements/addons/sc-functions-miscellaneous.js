@@ -18,9 +18,8 @@ export function isMobileBrowser() {
 
 function openTopSheetSearchOptions(e) {
   e.stopPropagation();
-  const scSiteLayout = document.querySelector('sc-site-layout');
-  const searchOptionsTopSheet = scSiteLayout.querySelector('#search-options');
-  searchOptionsTopSheet.toggle();
+  const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
+  scActionItems?.btnSearchOptionsClick();
 }
 
 function openGeneralSearchOptions(e) {

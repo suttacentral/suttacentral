@@ -148,4 +148,46 @@ export class reduxActions {
       firstLoad,
     });
   }
+
+  static toggleSuttaplexDisplay(suttaplexdisplay) {
+    store.dispatch({
+      type: 'SUTTPLEX_LIST_DISPLAY',
+      suttaplexdisplay,
+    });
+  }
+
+  static changeDisplaySettingMenuState(display) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
+      displaySettingMenu: display,
+    });
+  }
+
+  static changeDisplaySuttaParallelsState(displayState) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
+      displaySuttaParallels: displayState,
+    });
+  }
+
+  static changeDisplaySuttaToCState(displayState) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
+      displaySuttaToC: displayState,
+    });
+  }
+
+  static changeDisplaySuttaInfoState(displayState) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
+      displaySuttaInfo: displayState,
+    });
+  }
+
+  static changeDisplayParallelTableViewState(displayState) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
+      displayParallelTableView: displayState,
+    });
+  }
 }

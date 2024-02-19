@@ -1,8 +1,9 @@
-import { LitElement, html, css, unsafeCSS } from 'lit';
+import { LitElement, html, unsafeCSS } from 'lit';
 import '@material/web/iconbutton/icon-button';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { reduxActions } from '../addons/sc-redux-actions';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 /*
@@ -39,10 +40,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.currentRoute = state.currentRoute;
     this.siteLanguage = state.siteLanguage;
 
-    this.actions.changeDisplaySettingMenuState(false);
-    this.actions.changeDisplaySuttaParallelsState(false);
-    this.actions.changeDisplaySuttaToCState(false);
-    this.actions.changeDisplaySuttaInfoState(false);
+    reduxActions.changeDisplaySettingMenuState(false);
+    reduxActions.changeDisplaySuttaParallelsState(false);
+    reduxActions.changeDisplaySuttaToCState(false);
+    reduxActions.changeDisplaySuttaInfoState(false);
 
     this.tableOfContents = !!state.tableOfContents.items.length;
     this.displaySettingMenu = state.displaySettingMenu;
@@ -52,6 +53,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.displayParallelTableView = state.displayParallelTableView;
     this.displaySearchOptionsButton = state.displaySearchOptionsButton;
     this.displaySpeakerButton = false;
+    this.displayCompactButton = false;
   }
 
   render() {
@@ -177,7 +179,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
-          @click=${this._onBtnShowToCClick}
+          @click=${this.#onBtnShowToCClick}
           slot="actionItems"
           ?hidden=${this.tableOfContents}
         >
@@ -187,7 +189,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnViewCompact"
-          @click=${this._onBtnViewCompactClick}
+          @click=${this.#onBtnViewCompactClick}
           slot="actionItems"
           ?hidden=${this.displayCompactButton}
         >
@@ -197,7 +199,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnViewComfy"
-          @click=${this._onBtnViewCompactClick}
+          @click=${this.#onBtnViewCompactClick}
           slot="actionItems"
           ?hidden=${this.displayComfyButton}
         >
@@ -207,7 +209,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnInfo"
-          @click=${this._onBtnInfoClick}
+          @click=${this.#onBtnInfoClick}
           slot="actionItems"
           ?hidden=${this.displayInfoButton}
         >
@@ -217,7 +219,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnTools"
-          @click=${this._onBtnToolsClick}
+          @click=${this.#onBtnToolsClick}
           slot="actionItems"
           ?hidden=${this.displayToolButton}
         >
@@ -227,7 +229,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnSearchOptions"
-          @click=${this.#onBtnSearchOptionsClick}
+          @click=${this.btnSearchOptionsClick}
           slot="actionItems"
           ?hidden=${this.displaySearchOptionsButton}
         >
@@ -247,7 +249,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnShowParallels"
-          @click=${this._onBtnShowParallelsClick}
+          @click=${this.#onBtnShowParallelsClick}
           slot="actionItems"
           ?hidden=${this.displayToolButton}
         >
@@ -257,7 +259,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         <md-icon-button
           class="white-icon toolButtons"
           id="btnShowParallelTableView"
-          @click=${this._onBtnShowParallelTableViewClick}
+          @click=${this.#onBtnShowParallelTableViewClick}
           slot="actionItems"
         >
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
@@ -276,70 +278,11 @@ export class SCActionItems extends LitLocalized(LitElement) {
     `;
   }
 
-  get actions() {
-    return {
-      toggleSuttaplexDisplay(suttaplexdisplay) {
-        store.dispatch({
-          type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay,
-        });
-      },
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
-      saveToolbarTitle(title) {
-        store.dispatch({
-          type: 'SAVE_TOOLBAR_TITLE',
-          toolbarTitle: title,
-        });
-      },
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-      changeDisplayToolButtonState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_TOOL_BUTTON_STATE',
-          displayToolButton: display,
-        });
-      },
-      changeDisplaySuttaParallelsState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
-          displaySuttaParallels: displayState,
-        });
-      },
-      changeDisplaySuttaToCState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
-          displaySuttaToC: displayState,
-        });
-      },
-      changeDisplaySuttaInfoState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
-          displaySuttaInfo: displayState,
-        });
-      },
-      changeDisplayParallelTableViewState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
-          displayParallelTableView: displayState,
-        });
-      },
-    };
-  }
-
   firstUpdated() {
-    this._displayToolButtonStateChange();
-    this._displayViewModeButtonStateChange();
-    this._viewModeChanged();
-    this._displayToCButtonStateChange();
+    this.#displayToolButtonStateChange();
+    this.#displayViewModeButtonStateChange();
+    this.#viewModeChanged();
+    this.#displayToCButtonStateChange();
     this.#setBtnShowParallelTableViewDisplayState();
     this.#setBtnShowParallelTableViewIcon();
     this.#displaySearchOptionsButtonStateChange();
@@ -347,39 +290,27 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   hideTopSheets() {
-    this._hideSettingMenu();
-    this._hideSuttaInfo();
-    this._hideSuttaParallels();
-    this._hideSuttaToC();
+    this.#hideSettingMenu();
+    this.#hideSuttaInfo();
+    this.#hideSuttaParallels();
+    this.#hideSuttaToC();
     this.#hideSearchOptions();
     this.#hideSearchFilter();
   }
 
-  _onBtnInfoClick() {
+  #onBtnInfoClick() {
     this.displaySuttaInfo = store.getState().displaySuttaInfo;
     if (!this.displaySuttaInfo) {
-      const { displaySettingMenu, displaySuttaParallels, displaySuttaToC } = store.getState();
-      if (displaySettingMenu) {
-        this.actions.changeDisplaySettingMenuState(false);
-        this._hideSettingMenu();
-      }
-      if (displaySuttaParallels) {
-        this.actions.changeDisplaySuttaParallelsState(false);
-        this._hideSuttaParallels();
-      }
-      if (displaySuttaToC) {
-        this.actions.changeDisplaySuttaToCState(false);
-        this._hideSuttaToC();
-      }
-      this.actions.changeDisplaySuttaInfoState(true);
-      this._showSuttaInfo();
+      this.#closeAllTopSheetsOfTextPage();
+      reduxActions.changeDisplaySuttaInfoState(true);
+      this.#showSuttaInfo();
     } else {
-      this.actions.changeDisplaySuttaInfoState(false);
-      this._hideSuttaInfo();
+      reduxActions.changeDisplaySuttaInfoState(false);
+      this.#hideSuttaInfo();
     }
   }
 
-  _showSuttaInfo() {
+  #showSuttaInfo() {
     const isSegmentedText = !this.suttaMetaText;
     if (isSegmentedText) {
       this.scSiteLayout.querySelector('#bilara-sutta-info').show?.();
@@ -389,16 +320,15 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.shadowRoot.querySelector('#btnInfo')?.classList.add(this.activeClass);
   }
 
-  _onBtnViewCompactClick(e) {
-    this.actions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
-    this._viewModeChanged();
+  #onBtnViewCompactClick(e) {
+    reduxActions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
+    this.#viewModeChanged();
   }
 
-  _displayViewModeButtonStateChange() {
-    const displayStyle = this.displayViewModeButton ? 'inherit' : 'none';
-    this.shadowRoot.querySelector('#btnViewCompact').style.display = displayStyle;
-    this.shadowRoot.querySelector('#btnViewComfy').style.display = displayStyle;
-    this._viewModeChanged();
+  #displayViewModeButtonStateChange() {
+    this.#toggleElementVisibility('btnViewCompact', this.displayViewModeButton);
+    this.#toggleElementVisibility('btnViewComfy', this.displayViewModeButton);
+    this.#viewModeChanged();
   }
 
   #setBtnShowParallelTableViewDisplayState() {
@@ -409,88 +339,91 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
-  _viewModeChanged() {
+  #viewModeChanged() {
     if (!this.displayViewModeButton) {
       return;
     }
     const isCompactView = store.getState().suttaplexListDisplay;
-    if (isCompactView) {
-      this.displayCompactButton = false;
-      this.displayComfyButton = true;
-      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'none';
-      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'inherit';
-    } else {
-      this.displayCompactButton = true;
-      this.displayComfyButton = false;
-      this.shadowRoot.querySelector('#btnViewCompact').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnViewComfy').style.display = 'none';
-    }
+    this.displayCompactButton = !isCompactView;
+    this.displayComfyButton = isCompactView;
+    this.#toggleElementVisibility('btnViewComfy', isCompactView);
+    this.#toggleElementVisibility('btnViewCompact', !isCompactView);
     this.requestUpdate();
   }
 
-  _onBtnToolsClick(e) {
+  #onBtnToolsClick(e) {
     this.displaySettingMenu = store.getState().displaySettingMenu;
     if (!this.displaySettingMenu) {
-      const { displaySuttaParallels, displaySuttaInfo, displaySuttaToC } = store.getState();
-      if (displaySuttaParallels) {
-        this.actions.changeDisplaySuttaParallelsState(false);
-        this._hideSuttaParallels();
-      }
-      if (displaySuttaInfo) {
-        this.actions.changeDisplaySuttaInfoState(false);
-        this._hideSuttaInfo();
-      }
-      if (displaySuttaToC) {
-        this.actions.changeDisplaySuttaToCState(false);
-        this._hideSuttaToC();
-      }
-      this.actions.changeDisplaySettingMenuState(true);
-      this._showSettingMenu();
+      this.#closeAllTopSheetsOfTextPage();
+      reduxActions.changeDisplaySettingMenuState(true);
+      this.#showSettingMenu();
     } else {
-      this.actions.changeDisplaySettingMenuState(false);
-      this._hideSettingMenu();
+      reduxActions.changeDisplaySettingMenuState(false);
+      this.#hideSettingMenu();
     }
   }
 
-  #onBtnSearchOptionsClick(e) {
+  #closeAllTopSheetsOfTextPage() {
+    const { displaySettingMenu, displaySuttaParallels, displaySuttaInfo, displaySuttaToC } = store.getState();
+    if (displaySettingMenu) {
+      reduxActions.changeDisplaySettingMenuState(false);
+      this.#hideSettingMenu();
+    }
+    if (displaySuttaParallels) {
+      reduxActions.changeDisplaySuttaParallelsState(false);
+      this.#hideSuttaParallels();
+    }
+    if (displaySuttaInfo) {
+      reduxActions.changeDisplaySuttaInfoState(false);
+      this.#hideSuttaInfo();
+    }
+    if (displaySuttaToC) {
+      reduxActions.changeDisplaySuttaToCState(false);
+      this.#hideSuttaToC();
+    }
+  }
+
+  btnSearchOptionsClick(e) {
     this.#hideSearchFilter();
     const searchOptionsTopSheet = this.scSiteLayout.querySelector('#search-options');
     searchOptionsTopSheet.toggle();
+    this.shadowRoot.querySelector('#btnSearchOptions')?.classList.toggle(this.activeClass);
   }
 
   #onBtnSearchFilterClick(e) {
     this.#hideSearchOptions();
     const searchFilterTopSheet = this.scSiteLayout.querySelector('#search-filter');
     searchFilterTopSheet.toggle();
+    this.shadowRoot.querySelector('#btnSearchFilter')?.classList.toggle(this.activeClass);
   }
 
-  _hideSettingMenu() {
+  #hideSettingMenu() {
     this.scSiteLayout.querySelector('#setting_menu')?.hide?.();
-    this.actions.changeDisplaySettingMenuState(false);
+    reduxActions.changeDisplaySettingMenuState(false);
     this.shadowRoot.querySelector('#btnTools')?.classList.remove(this.activeClass);
   }
 
-  _showSettingMenu() {
+  #showSettingMenu() {
     this.scSiteLayout.querySelector('#setting_menu')?.show?.();
     this.shadowRoot.querySelector('#btnTools')?.classList.add(this.activeClass);
   }
 
-  _hideSuttaParallels() {
+  #hideSuttaParallels() {
     this.scSiteLayout.querySelector('#sutta_parallels')?.hide?.();
-    this.actions.changeDisplaySuttaParallelsState(false);
+    reduxActions.changeDisplaySuttaParallelsState(false);
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.remove(this.activeClass);
   }
 
-  _hideSuttaToC() {
+  #hideSuttaToC() {
     this.scSiteLayout.querySelector('#sutta_toc')?.hide?.();
-    this.actions.changeDisplaySuttaToCState(false);
+    reduxActions.changeDisplaySuttaToCState(false);
     this.shadowRoot.querySelector('#btnShowToC')?.classList.remove(this.activeClass);
   }
 
-  _hideSuttaInfo() {
+  #hideSuttaInfo() {
     this.scSiteLayout.querySelector('#sutta-info')?.hide?.();
     this.scSiteLayout.querySelector('#bilara-sutta-info')?.hide?.();
-    this.actions.changeDisplaySuttaInfoState(false);
+    reduxActions.changeDisplaySuttaInfoState(false);
     this.shadowRoot.querySelector('#btnInfo')?.classList.remove(this.activeClass);
   }
 
@@ -499,6 +432,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     if (searchOptions) {
       searchOptions.hide?.();
     }
+    this.shadowRoot.querySelector('#btnSearchOptions')?.classList.remove(this.activeClass);
   }
 
   #hideSearchFilter() {
@@ -506,40 +440,29 @@ export class SCActionItems extends LitLocalized(LitElement) {
     if (searchFilter) {
       searchFilter.hide?.();
     }
+    this.shadowRoot.querySelector('#btnSearchFilter')?.classList.remove(this.activeClass);
   }
 
-  _showSuttaParallels() {
+  #showSuttaParallels() {
     this.scSiteLayout.querySelector('#sutta_parallels')?.show?.();
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.add(this.activeClass);
   }
 
-  _showSuttaToC() {
+  #showSuttaToC() {
     this.scSiteLayout.querySelector('#sutta_toc')?.show?.();
     this.shadowRoot.querySelector('#btnShowToC')?.classList.add(this.activeClass);
   }
 
-  _onBtnShowParallelsClick() {
+  #onBtnShowParallelsClick() {
     this.bindDataToSCSuttaParallels(this.range_uid || store.getState().currentRoute.params.suttaId);
     this.displaySuttaParallels = store.getState().displaySuttaParallels;
     if (!this.displaySuttaParallels) {
-      const { displaySettingMenu, displaySuttaInfo, displaySuttaToC } = store.getState();
-      if (displaySettingMenu) {
-        this.actions.changeDisplaySettingMenuState(false);
-        this._hideSettingMenu();
-      }
-      if (displaySuttaInfo) {
-        this.actions.changeDisplaySuttaInfoState(false);
-        this._hideSuttaInfo();
-      }
-      if (displaySuttaToC) {
-        this.actions.changeDisplaySuttaToCState(false);
-        this._hideSuttaToC();
-      }
-      this.actions.changeDisplaySuttaParallelsState(true);
-      this._showSuttaParallels();
+      this.#closeAllTopSheetsOfTextPage();
+      reduxActions.changeDisplaySuttaParallelsState(true);
+      this.#showSuttaParallels();
     } else {
-      this.actions.changeDisplaySuttaParallelsState(false);
-      this._hideSuttaParallels();
+      reduxActions.changeDisplaySuttaParallelsState(false);
+      this.#hideSuttaParallels();
     }
   }
 
@@ -556,8 +479,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
       .catch(e => console.error(e));
   }
 
-  _onBtnShowParallelTableViewClick() {
-    this.actions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
+  #onBtnShowParallelTableViewClick() {
+    reduxActions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
   }
 
   #setBtnShowParallelTableViewIcon() {
@@ -565,30 +488,18 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   showParallelsTopSheet() {
-    this._onBtnShowParallelsClick();
+    this.#onBtnShowParallelsClick();
   }
 
-  _onBtnShowToCClick() {
+  #onBtnShowToCClick() {
     this.displaySuttaToC = store.getState().displaySuttaToC;
     if (!this.displaySuttaToC) {
-      const { displaySettingMenu, displaySuttaInfo, displaySuttaParallels } = store.getState();
-      if (displaySettingMenu) {
-        this.actions.changeDisplaySettingMenuState(false);
-        this._hideSettingMenu();
-      }
-      if (displaySuttaInfo) {
-        this.actions.changeDisplaySuttaInfoState(false);
-        this._hideSuttaInfo();
-      }
-      if (displaySuttaParallels) {
-        this.actions.changeDisplaySuttaParallelsState(false);
-        this._hideSuttaParallels();
-      }
-      this.actions.changeDisplaySuttaToCState(true);
-      this._showSuttaToC();
+      this.#closeAllTopSheetsOfTextPage();
+      reduxActions.changeDisplaySuttaToCState(true);
+      this.#showSuttaToC();
     } else {
-      this.actions.changeDisplaySuttaToCState(false);
-      this._hideSuttaToC();
+      reduxActions.changeDisplaySuttaToCState(false);
+      this.#hideSuttaToC();
     }
   }
 
@@ -637,78 +548,57 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   updated(changedProps) {
     if (changedProps.has('displayToolButton')) {
-      this._displayToolButtonStateChange();
+      this.#displayToolButtonStateChange();
     }
     if (changedProps.has('displayViewModeButton')) {
-      this._displayViewModeButtonStateChange();
+      this.#displayViewModeButtonStateChange();
     }
     if (changedProps.has('colorTheme')) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
-      this._resetToolButtonsActiveClass();
+      this.#resetToolButtonsActiveClass();
     }
     if (changedProps.has('suttaplexListEnabled')) {
-      this._viewModeChanged();
+      this.#viewModeChanged();
     }
     if (changedProps.has('suttaMetaText') || changedProps.has('suttaPublicationInfo')) {
-      this._suttaMetaTextChanged();
+      this.#suttaMetaTextChanged();
     }
     if (changedProps.has('tableOfContents')) {
-      this._displayToCButtonStateChange();
+      this.#displayToCButtonStateChange();
     }
   }
 
-  _suttaMetaTextChanged() {
-    const displayStyle = this.suttaMetaText || this.suttaPublicationInfo ? 'inherit' : 'none';
-    const btnInfo = this.shadowRoot.querySelector('#btnInfo');
-    if (btnInfo) {
-      btnInfo.style.display = displayStyle;
+  #suttaMetaTextChanged() {
+    this.#toggleElementVisibility('btnInfo', this.suttaMetaText || this.suttaPublicationInfo);
+  }
+
+  #toggleElementVisibility(elementId, isVisible) {
+    const element = this.shadowRoot.querySelector(`#${elementId}`);
+    if (element) {
+      element.style.display = isVisible ? 'inherit' : 'none';
     }
   }
 
-  _displayToCButtonStateChange() {
-    if (this.tableOfContents) {
-      this.shadowRoot.querySelector('#btnShowToC').style.display = 'inherit';
-    } else {
-      this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
-    }
+  #displayToCButtonStateChange() {
+    this.#toggleElementVisibility('btnShowToC', this.tableOfContents);
   }
 
   #displaySearchOptionsButtonStateChange() {
-    if (this.displaySearchOptionsButton) {
-      this.shadowRoot.querySelector('#btnSearchOptions').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnSearchFilter').style.display = 'inherit';
-    } else {
-      this.shadowRoot.querySelector('#btnSearchOptions').style.display = 'none';
-      this.shadowRoot.querySelector('#btnSearchFilter').style.display = 'none';
-    }
+    this.#toggleElementVisibility('btnSearchOptions', this.displaySearchOptionsButton);
+    this.#toggleElementVisibility('btnSearchFilter', this.displaySearchOptionsButton);
   }
 
-  _displayToolButtonStateChange() {
-    if (this.displayToolButton) {
-      this.shadowRoot.querySelector('#btnTools').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnInfo').style.display = 'inherit';
-      this.shadowRoot.querySelector('#btnShowParallels').style.display = 'inherit';
-      this._suttaMetaTextChanged();
-      this._displayToCButtonStateChange();
-      this.shadowRoot.querySelector('#tools_menu').classList.add('contextToolbarExpand');
-    } else {
-      this.shadowRoot.querySelector('#btnTools').style.display = 'none';
-      this.shadowRoot.querySelector('#btnInfo').style.display = 'none';
-      this.shadowRoot.querySelector('#btnShowParallels').style.display = 'none';
-      this.shadowRoot.querySelector('#btnShowToC').style.display = 'none';
-      this.shadowRoot.querySelector('#tools_menu').classList.remove('contextToolbarExpand');
-    }
+  #displayToolButtonStateChange() {
+    this.#suttaMetaTextChanged();
+    this.shadowRoot.querySelector('#tools_menu').classList
+      .toggle('contextToolbarExpand', this.displayToolButton);
+    this.#toggleElementVisibility('btnShowToC', this.displayToolButton);
+    this.#toggleElementVisibility('btnTools', this.displayToolButton);
+    this.#toggleElementVisibility('btnInfo', this.displayToolButton);
+    this.#toggleElementVisibility('btnShowParallels', this.displayToolButton);
   }
 
-  _setToolButtonsVisible(visible) {
-    this.shadowRoot.querySelectorAll('.toolButtons').forEach(e => {
-      if (e.style.display !== 'none') {
-        visible ? e.classList.remove('invisible') : e.classList.add('invisible');
-      }
-    });
-  }
-
-  _resetToolButtonsActiveClass() {
+  #resetToolButtonsActiveClass() {
     this.shadowRoot.querySelectorAll('.toolButtons').forEach(e => {
       if (e.classList.contains('active-light') || e.classList.contains('active-dark')) {
         e.classList.remove('active-light');
