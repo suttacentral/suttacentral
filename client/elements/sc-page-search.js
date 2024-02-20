@@ -148,7 +148,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
         id="search_input"
         type="search"
         label="${this.localize('search:inputSearchTerm')}"
-        required
         minlength="2"
         maxlength="100"
         @keypress=${this.#keypressHandler}
@@ -1105,11 +1104,11 @@ class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultsText = this.localize('search:searchResultsText');
     const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} ${this.searchQuery} ${this.localize('search:inSelectedLanguage')}`;
+    )} ${this.searchQuery}`;
 
     const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
       'search:resultsFor'
-    )} <strong class="highlightTitle">${this.searchQuery}</strong> ${this.localize('search:inSelectedLanguage')}`;
+    )} <strong class="highlightTitle">${this.searchQuery}</strong>`;
 
     document.dispatchEvent(
       new CustomEvent('metadata', {

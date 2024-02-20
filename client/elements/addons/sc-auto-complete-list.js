@@ -194,7 +194,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       <md-filled-text-field
         id="search_input"
         type="search"
-        label="${this.localize('search:searchInAllText')}"
+        label="${this.localize('search:inputSearchTerm')}"
         @keyup=${e => {
             if (timeoutId !== null) {
               clearTimeout(timeoutId);
