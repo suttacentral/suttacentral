@@ -139,7 +139,13 @@ def process_search_results(
     if matchpartial == 'true':
         fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
     add_root_name_to_hits(db, hits)
+    sort_highlight_clips(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
+
+
+def sort_highlight_clips(hits):
+    for hit in hits:
+        hit['highlight']['content'] = sorted(hit['highlight']['content'], key=extract_number)
 
 
 def execute_search_query(
@@ -629,6 +635,7 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
     full_aql = (
             AQL_INSTANT_SEARCH_FIRST_PART +
             aql_condition_part + '\n' +
+            get_sort_part_for_aql() + '\n' +
             get_limit_part_for_aql(query_param['limit'], query_param['offset']) + '\n' +
             get_return_part_for_aql(True) + '\n'
     )
@@ -1140,8 +1147,6 @@ def prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, 
         else:
             possible_volpages.append(query)
 
-        standardized_volpages = standardization_volpage(query)
-        possible_volpages.append(standardized_volpages)
         possible_volpages = list(set(possible_volpages))
         search_aql = generate_aql_for_volpage_filter(possible_volpages)
         query_param['query'] = query
@@ -1316,19 +1321,19 @@ def cut_highlight(content, hit, query, is_segmented_text):
                 )
                 hit['highlight']['content'].append(highlight)
                 hit['highlight']['content'] = list(set(hit['highlight']['content']))
-                hit['highlight']['content'] = sorted(hit['highlight']['content'], key=extract_number)
 
 
 def extract_number(html):
     match = re.search(r'<span class="reference">(\d+\.\d+)</span>', html)
     if match:
         number = match[1]
+        before_dot, after_dot = str(number).split('.')
         try:
-            return float(number)
+            return int(before_dot), int(after_dot)
         except ValueError:
-            return 0
+            return 0, 0
     else:
-        return 0
+        return 0, 0
 
 
 def generate_segmented_id_anchor_tag(hit, segmented_id):

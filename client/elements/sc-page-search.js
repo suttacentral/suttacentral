@@ -148,7 +148,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
         id="search_input"
         type="search"
         label="${this.localize('search:inputSearchTerm')}"
-        required
         minlength="2"
         maxlength="100"
         @keypress=${this.#keypressHandler}
