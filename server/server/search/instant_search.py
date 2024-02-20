@@ -139,11 +139,11 @@ def process_search_results(
     if matchpartial == 'true':
         fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
     add_root_name_to_hits(db, hits)
-    SortHighlightClips(hits)
+    sort_highlight_clips(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
 
-def SortHighlightClips(hits):
+def sort_highlight_clips(hits):
     for hit in hits:
         hit['highlight']['content'] = sorted(hit['highlight']['content'], key=extract_number)
 
