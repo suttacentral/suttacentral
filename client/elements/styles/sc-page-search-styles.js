@@ -474,7 +474,7 @@ export const SCPageSearchStyles = css`
     transition: var(--sc-link-transition);
     opacity: 0.8;
     border-radius: 16px;
-    padding: 0 4px 0 4px;
+    padding: 0 4px;
     display: inline-block;
   }
 
