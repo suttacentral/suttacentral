@@ -487,13 +487,13 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _normalizeParams(params) {
     if (!params) {
-      return;
+      return {};
     }
     const keys = ['categoryId', 'langIsoCode', 'authorUid', 'suttaId', 'word'];
-    const normalized = {};
+    const normalized = { ...params };
     keys.forEach(key => {
-      if (params[key]) {
-        normalized[key] = params[key].toLowerCase();
+      if (normalized[key] && typeof normalized[key] === 'string') {
+        normalized[key] = normalized[key].toLowerCase();
       }
     });
     return normalized;
