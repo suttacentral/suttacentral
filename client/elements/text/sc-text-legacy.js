@@ -143,7 +143,6 @@ export class SCTextLegacy extends SCTextCommon {
     super.connectedCallback();
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', () => {
-      this._hideTopSheets();
       this.actions.changeDisplaySettingMenuState(false);
     });
     this.inputElement = this.querySelector('#simple_text_content');
@@ -155,10 +154,6 @@ export class SCTextLegacy extends SCTextCommon {
     this._updateURLSearchParams();
     this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     this.scActionItems?.hideSpeakerButton();
-  }
-
-  _hideTopSheets() {
-    this.scActionItems?.hideTopSheets();
   }
 
   disconnectedCallback() {
