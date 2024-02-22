@@ -179,6 +179,12 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
       </footer>
     `;
   }
+
+  firstUpdated() {
+    this.addEventListener('click', e => {
+      this.parentNode.querySelector('#action_items')?.hideTopSheets?.();
+    });
+  }
 }
 
 customElements.define('sc-site-footer', ScSiteFooter);

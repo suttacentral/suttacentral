@@ -481,24 +481,22 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _changeRoute(location) {
     const [route, params] = this.router.match(location.pathname);
-    if (params) {
-      if (params.categoryId) {
-        params.categoryId = params?.categoryId.toLowerCase();
-      }
-      if (params.langIsoCode) {
-        params.langIsoCode = params?.langIsoCode.toLowerCase();
-      }
-      if (params.authorUid) {
-        params.authorUid = params?.authorUid.toLowerCase();
-      }
-      if (params.suttaId) {
-        params.suttaId = params?.suttaId.toLowerCase();
-      }
-      if (params.word) {
-        params.word = params?.word.toLowerCase();
-      }
+    const normalizedParams = this._normalizeParams(params);
+    this.actions.changeRoute(route, normalizedParams, location.pathname);
+  }
+
+  _normalizeParams(params) {
+    if (!params) {
+      return {};
     }
-    this.actions.changeRoute(route, params, location.pathname);
+    const keys = ['categoryId', 'langIsoCode', 'authorUid', 'suttaId', 'word'];
+    const normalized = { ...params };
+    keys.forEach(key => {
+      if (normalized[key] && typeof normalized[key] === 'string') {
+        normalized[key] = normalized[key].toLowerCase();
+      }
+    });
+    return normalized;
   }
 
   get routeDefinition() {
@@ -626,40 +624,30 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _changeToolbarTitle() {
-    switch (this.currentRoute.name) {
-      case 'search':
-        this.actions.changeToolbarTitle(this.localize('interface:searchResults'));
-        break;
-      case 'define':
-        this.actions.changeToolbarTitle(this.localize('interface:dictionaryResults'));
-        break;
-      case 'home':
-        this.actions.changeToolbarTitle('SuttaCentral');
-        break;
-      case 'navigation':
-        return;
-      case 'suttaplex':
-        return;
-      case 'sutta':
-        return;
-      case 'publicationEditionMatter':
-        return;
-      case 'palitipitaka':
-        this.actions.changeToolbarTitle('Pāḷi Tipiṭaka');
-        break;
-      case 'searchFilter':
-        this.actions.changeToolbarTitle('Search Filter');
-        break;
-      default:
+    const titleMap = {
+        'search': this.localize('interface:searchResults'),
+        'define': this.localize('interface:dictionaryResults'),
+        'home': 'SuttaCentral',
+        'navigation': '',
+        'suttaplex': '',
+        'sutta': '',
+        'publicationEditionMatter': '',
+        'palitipitaka': 'Pāḷi Tipiṭaka',
+        'searchFilter': 'Search Filter',
+    };
+
+    let title = titleMap[this.currentRoute.name];
+    if (title === undefined) {
         const key = `interface:${this.currentRoute.name}Title`;
         if (this.__resources[key]) {
-          const pageNameTitle = this.localize(key);
-          this.actions.changeToolbarTitle(pageNameTitle);
+            title = this.localize(key);
         } else {
-          this.actions.changeToolbarTitle('');
+            title = '';
         }
     }
-  }
+
+    this.actions.changeToolbarTitle(title);
+}
 
   _updateNav() {
     if (staticPages.includes(this.currentRoute.name)) {
@@ -745,6 +733,12 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   #setSearchOptionsButtonDisplayState() {
     reduxActions.changeDisplaySearchOptionsButtonState(['search'].includes(this.currentRoute.name));
+  }
+
+  firstUpdated() {
+    this.addEventListener('click', e => {
+      this.parentNode.querySelector('#action_items')?.hideTopSheets?.();
+    });
   }
 }
 

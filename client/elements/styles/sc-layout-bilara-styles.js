@@ -34,6 +34,10 @@ export const commonStyles = css`
   .refFocused {
     background-color: var(--sc-primary-color) !important;
   }
+
+  .sutta-title {
+    word-break: break-word;
+  }
 `;
 
 export const plainStyles = html`
@@ -47,8 +51,11 @@ export const plainStyles = html`
       display: none;
     }
 
-    .verse-line .translation {
+    .verse-line {
       display: block;
+    }
+
+    .verse-line .translation {
       hyphens: none;
       margin-left: 2em;
     }

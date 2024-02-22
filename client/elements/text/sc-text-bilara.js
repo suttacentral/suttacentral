@@ -85,7 +85,6 @@ export class SCTextBilara extends SCTextCommon {
     };
 
     this._onClickHandler = () => {
-      this._hideTopSheets();
       this.actions.changeDisplaySettingMenuState(false);
     };
 
@@ -284,10 +283,6 @@ export class SCTextBilara extends SCTextCommon {
     if (span) {
       span.textContent = suttaTitle;
     }
-  }
-
-  _hideTopSheets() {
-    this.scActionItems?.hideTopSheets();
   }
 
   _segmentedTextContentElement() {
