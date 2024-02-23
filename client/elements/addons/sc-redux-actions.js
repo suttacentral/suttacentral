@@ -190,4 +190,18 @@ export class reduxActions {
       displayParallelTableView: displayState,
     });
   }
+
+  static setOnlineStatus(isOnline) {
+    store.dispatch({
+      type: 'SET_ONLINE_STATUS',
+      isOnline,
+    });
+  }
+
+  static setNavigation(navArray) {
+    store.dispatch({
+      type: 'SET_NAVIGATION',
+      navigationArray: navArray,
+    });
+  }
 }
