@@ -27,8 +27,6 @@ let suttaDB = await create({
   },
 });
 
-let timeoutId = null;
-
 export class SCAutoCompleteList extends LitLocalized(LitElement) {
   static styles = [SCAutoCompleteListStyles];
 
@@ -194,15 +192,8 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       <md-filled-text-field
         id="search_input"
         type="search"
-        label="${this.localize('search:inputSearchTerm')}"
-        @keyup=${e => {
-            if (timeoutId !== null) {
-              clearTimeout(timeoutId);
-            }
-            timeoutId = setTimeout(() => {
-              this.#keyupHandler(e);
-            }, 1000);
-        }}
+        label=${this.localize('search:inputSearchTerm')}
+        @keyup=${this.#keyupHandler}
         @keypress=${this.#keypressHandler}
       >
         <md-icon slot="trailing-icon" @click=${this.#startSearch}>${icon.search}</md-icon>
@@ -341,10 +332,6 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchQuery = this.shadowRoot.getElementById('search_input')?.value?.trim();
 
     if (!this.searchQuery || this.searchQuery.length < 2) {
-      return;
-    }
-
-    if (!/[\u4e00-\u9fa5]/.test(this.searchQuery) && this.searchQuery.length < 3) {
       return;
     }
 
