@@ -149,10 +149,15 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   firstUpdated() {
     this._colorThemeChanged();
     this.removeAttribute('unresolved');
+    this._addEventListeners();
+    this._initNavigation();
+    this._setToolbarPosition();
+  }
 
+  _addEventListeners() {
     ['load', 'online', 'offline'].forEach(eventName => {
       window.addEventListener(eventName, () => {
-        this.actions.setOnlineStatus(navigator.onLine);
+        reduxActions.setOnlineStatus(navigator.onLine);
       });
     });
 
@@ -225,6 +230,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
       })
     );
+
     window.addEventListener('resize', () => {
       if (!this.pageLoaded) {
         return;
@@ -234,9 +240,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       document.getElementById('mainTitle').style.transition = '';
       document.getElementById('subTitle').style.transition = '';
     });
-
-    this._initNavigation();
-    this._setToolbarPosition();
 
     window.addEventListener('error', e => {
       microSentryClient.report(e);
@@ -292,47 +295,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     if (changedProps.has('toolbarPosition')) {
       this._setToolbarPosition();
     }
-  }
-
-  get actions() {
-    return {
-      setOnlineStatus(isOnline) {
-        store.dispatch({
-          type: 'SET_ONLINE_STATUS',
-          isOnline,
-        });
-      },
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-      setNavigation(navArray) {
-        store.dispatch({
-          type: 'SET_NAVIGATION',
-          navigationArray: navArray,
-        });
-      },
-      changeDisplaySuttaParallelsState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE',
-          displaySuttaParallels: displayState,
-        });
-      },
-      changeDisplaySuttaToCState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
-          displaySuttaToC: displayState,
-        });
-      },
-      changeDisplaySuttaInfoState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
-          displaySuttaInfo: displayState,
-        });
-      },
-    };
   }
 
   stateChanged(state) {
@@ -398,31 +360,66 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   _setUniversalToolbarTransformStyles() {
     const transitionStyle = 'all 300ms cubic-bezier(0.4, 0, 0.6, 1) 0ms';
-    document.getElementById('universal_toolbar').style.transition = transitionStyle;
-    document.getElementById('breadCrumb').style.transition = transitionStyle;
-    document.getElementById('mainTitle').style.transition = transitionStyle;
-    document.getElementById('subTitle').style.transition = transitionStyle;
+    const elements = ['universal_toolbar', 'breadCrumb', 'mainTitle', 'subTitle'];
+
+    elements.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.style.transition = transitionStyle;
+      }
+    });
   }
 
   _universalToolbarTransform() {
-    document.getElementById('universal_toolbar').style.transform = 'translateY(-120px) ';
-    document.getElementById('universal_toolbar').style.boxShadow =
-      'var(--sc-shadow-elevation-16dp)';
-    document.getElementById('breadCrumb').style.transform = 'translateY(120px)';
-    document.getElementById('mainTitle').style.transform = 'translateY(62px) scale(0.8)';
-    document.getElementById('subTitle').style.opacity = '0';
-    document.getElementById('subTitle').style.transform = 'scale(0)';
-    document.getElementById('subTitle').style.height = '0';
+    const universalToolbar = document.getElementById('universal_toolbar');
+    const breadCrumb = document.getElementById('breadCrumb');
+    const mainTitle = document.getElementById('mainTitle');
+    const subTitle = document.getElementById('subTitle');
+
+    if (universalToolbar) {
+      universalToolbar.style.transform = 'translateY(-120px)';
+      universalToolbar.style.boxShadow = 'var(--sc-shadow-elevation-16dp)';
+    }
+
+    if (breadCrumb) {
+      breadCrumb.style.transform = 'translateY(120px)';
+    }
+
+    if (mainTitle) {
+      mainTitle.style.transform = 'translateY(62px) scale(0.8)';
+    }
+
+    if (subTitle) {
+      subTitle.style.opacity = '0';
+      subTitle.style.transform = 'scale(0)';
+      subTitle.style.height = '0';
+    }
   }
 
   _resetUniversalToolbar() {
-    document.getElementById('universal_toolbar').style.transform = 'none';
-    document.getElementById('universal_toolbar').style.boxShadow = 'none';
-    document.getElementById('breadCrumb').style.transform = 'none';
-    document.getElementById('mainTitle').style.transform = 'scale(1)';
-    document.getElementById('subTitle').style.opacity = '1';
-    document.getElementById('subTitle').style.transform = 'scale(1)';
-    document.getElementById('subTitle').style.height = '1em';
+    const universalToolbar = document.getElementById('universal_toolbar');
+    const breadCrumb = document.getElementById('breadCrumb');
+    const mainTitle = document.getElementById('mainTitle');
+    const subTitle = document.getElementById('subTitle');
+
+    if (universalToolbar) {
+      universalToolbar.style.transform = 'none';
+      universalToolbar.style.boxShadow = 'none';
+    }
+
+    if (breadCrumb) {
+      breadCrumb.style.transform = 'none';
+    }
+
+    if (mainTitle) {
+      mainTitle.style.transform = 'scale(1)';
+    }
+
+    if (subTitle) {
+      subTitle.style.opacity = '1';
+      subTitle.style.transform = 'scale(1)';
+      subTitle.style.height = '1em';
+    }
   }
 
   _initNavigation() {
@@ -437,7 +434,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
           index: 0,
         },
       ];
-      this.actions.setNavigation(this.navArray);
+      reduxActions.setNavigation(this.navArray);
     }
   }
 
@@ -472,11 +469,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   _setSiteLanguage() {
-    // main_menu_root is defined in index.html
-    if (this.isSupportedLanguage(this.siteLanguage)) {
-      document.getElementById('main_html_root').lang = this.siteLanguage;
-    } else {
-      document.getElementById('main_html_root').lang = this.fallbackLanguage();
+    const mainHtmlRoot = document.getElementById('main_html_root');
+    if (mainHtmlRoot) {
+      mainHtmlRoot.lang = this.isSupportedLanguage(this.siteLanguage) ? this.siteLanguage : this.fallbackLanguage();
     }
   }
 
