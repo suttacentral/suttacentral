@@ -1,5 +1,9 @@
 # SuttaCentral server and client repository
 
+SuttaCentral is a Python Flask server which serves a Progressive Web App (`client`) and its associated JSON API (`server`).
+
+The API pulls its data in real time from an ArangoDB instance populated periodically with data from the `sc-data` repository.
+
 # Deploying
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
 2. `$ cd suttacentral`
