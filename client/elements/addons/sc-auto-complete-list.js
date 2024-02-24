@@ -194,14 +194,14 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       <md-filled-text-field
         id="search_input"
         type="search"
-        label="${this.localize('search:inputSearchTerm')}"
+        label=${this.localize('search:inputSearchTerm')}
         @keyup=${e => {
             if (timeoutId !== null) {
               clearTimeout(timeoutId);
             }
             timeoutId = setTimeout(() => {
               this.#keyupHandler(e);
-            }, 1000);
+            }, 200);
         }}
         @keypress=${this.#keypressHandler}
       >
@@ -341,10 +341,6 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchQuery = this.shadowRoot.getElementById('search_input')?.value?.trim();
 
     if (!this.searchQuery || this.searchQuery.length < 2) {
-      return;
-    }
-
-    if (!/[\u4e00-\u9fa5]/.test(this.searchQuery) && this.searchQuery.length < 3) {
       return;
     }
 
