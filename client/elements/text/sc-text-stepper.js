@@ -1,12 +1,19 @@
 import { LitElement, html, css } from 'lit';
 import { icon } from '../../img/sc-icon';
+import { LitLocalized } from '../addons/sc-localization-mixin';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-export class SCTextStepper extends LitElement {
+export class SCTextStepper extends LitLocalized(LitElement) {
   static properties = {
     next: { type: Object },
     previous: { type: Object },
     lang: { type: String },
   };
+
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+  }
 
   static styles = css`
     @media print {
@@ -157,7 +164,7 @@ export class SCTextStepper extends LitElement {
                     <div class="text">
                       ${icon.arrow_left}
                       <div class="text-element">
-                        <span class="action">Previous</span>
+                        <span class="action">${unsafeHTML(this.localize('interface:previous'))}</span>
                         <span class="text-title">${this.previous.name}</span>
                       </div>
                     </div>
@@ -175,7 +182,7 @@ export class SCTextStepper extends LitElement {
                   <div class="button button-right">
                     <div class="text">
                       <div class="text-element text-element-right">
-                        <span class="action">Next</span>
+                        <span class="action">${unsafeHTML(this.localize('interface:next'))}</span>
                         <span class="text-title">${this.next.name}</span>
                       </div>
                       ${icon.arrow_right}
