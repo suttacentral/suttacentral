@@ -19,6 +19,6 @@
   "publication:source": "Source",
   "publication:suttaCentralPublicationNumber": "SuttaCentral publication number",
   "publication:license": "License",
-  "publication:licenseDescription": "To the extent possible under law, <a rel='dct:publisher' href='https://suttacentral.net/'><span property='dct:title'>{authorName}</span></a> has waived all copyright and related or neighboring rights to <cite property='dct:title'>{translationTitle}</cite>. This work is published from <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/licensing'>Australia</span>.",
+  "publication:licenseDescription": "To the extent possible under law, <span property='dct:title'>{authorName}</span> has waived all copyright and related or neighboring rights to <cite property='dct:title'>{translationTitle}</cite>. This work is published from <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/licensing'>Australia</span>.",
   "publication:aboutThisLicense": "About this license"
 }
