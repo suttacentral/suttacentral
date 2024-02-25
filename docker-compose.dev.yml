@@ -41,6 +41,3 @@ services:
     ports:
       - '3000:3000'
 
-  sc-chrome-headless:
-    ports:
-      - '9222:9222'

@@ -35,11 +35,6 @@ services:
     environment:
       - "API_URL=https://suttacentral.net/api/swagger.json"
 
-  sc-chrome-headless:
-    restart: always
-    ports:
-     - '9222:9222'
-
   sc-frontend:
     command: npm run build
     volumes:
