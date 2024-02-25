@@ -90,7 +90,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <th colspan="2">PTS volume and page search</th>
             </tr>
             <tr>
-              <td>Find texts using PTS volume/page references.</td>
+              <td>Find texts using PTS volume and page references.</td>
               <td>
                 volpage:SN ii 4<br>
                 volpage:M II 246<br>
