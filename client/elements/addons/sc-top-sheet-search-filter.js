@@ -70,6 +70,10 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
         --md-sys-color-primary: var(--sc-primary-accent-color);
         --md-sys-color-on-primary: white;
       }
+
+      p {
+        margin: 10px 10px
+      }
     `,
   ];
 
@@ -80,12 +84,13 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
           <legend>
             Refine your search with filters
           </legend>
+          <p>Filters must always appear first in a search before keywords. Pāli diacritcs are ignored in search terms.</p>
           <table>
             <tr>
-              <th colspan="2">PTS volume/page search</th>
+              <th colspan="2">PTS volume and page search</th>
             </tr>
             <tr>
-              <td>Find texts using legacy PTS volume/page references.</td>
+              <td>Find texts using PTS volume/page references.</td>
               <td>
                 volpage:SN ii 4<br>
                 volpage:M II 246<br>
@@ -108,10 +113,10 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <tr>
               <td>Filter results by <code>author</code>.</td>
               <td>author:sujato cat<br>
-                  author:sujato Katze<br>
-                  author:sujato Buddha OR Sāvatthī<br>
-                  author:sujato Buddha AND Sāvatthī
-              </td>
+              author:sabbamitta Katze<br>
+              author:sujato Buddha OR Sāvatthī<br>
+              author:sujato Buddha AND Sāvatthī
+          </td>
             </tr>
 
             <tr>
@@ -124,7 +129,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             </tr>
 
             <tr>
-              <td>List all related suttas by <code>title</title>.</td>
+              <td>Search only in the <code>title</title>.</td>
               <td>title:intention</td>
             </tr>
 
@@ -134,9 +139,11 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             <tr>
               <td>Search <code>in</code> a specific collection with SuttaCentral IDs.</td>
               <td>in:dn cat<br>
-                  in:an dog<br>
-                  in:an Buddha OR Sāvatthī<br>
-                  in:an Buddha AND Sāvatthī
+                  in:an4 dog<br>
+                  in:sutta moat</br>
+                  in:abhidhamma feelings</br>
+                  in:kn flame</br>
+                  in:an Buddha OR Sāvatthī
               </td>
             </tr>
 
@@ -144,30 +151,30 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <th colspan="2">ebt search</th>
             </tr>
             <tr>
-              <td>Narrow search to “Early Buddhist Texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
-                <code>in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp,
+              <td>Narrow search to “Early Buddhist Texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following:<br>
+                <code>dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp,
                   dhp, thig, thag, pli-tv, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
                   lzh-upp, san-mg, san-lo, up, ea-ot, d, sf</code>
               </td>
-              <td>in:ebt free</td>
+              <td>in:ebt elephant</td>
             </tr>
 
             <tr>
               <th colspan="2">ebs search</th>
             </tr>
             <tr>
-              <td>Narrow search to “Early Buddhist Suttas” (<code>ebs</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
-                <code>in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp, dhp, thig, thag, sf</code>
+              <td>Narrow search to “Early Buddhist Suttas” (<code>ebs</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following:<br>
+                <code>dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp, dhp, thig, thag, sf</code>
               </td>
-              <td>in:ebs free</td>
+              <td>in:ebs lion</td>
             </tr>
 
             <tr>
               <th colspan="2">ebct search</th>
             </tr>
             <tr>
-              <td>Narrow search to “Early Buddhist Chinese Texts” (<code>ebct</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following.<br>
-                <code>in:da, ma, sa, sa-2, sa-3, ea, ea-2, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
+              <td>Narrow search to “Early Buddhist Chinese Texts” (<code>ebct</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following:<br>
+                <code>da, ma, sa, sa-2, sa-3, ea, ea-2, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
                   lzh-upp, ea-ot, d</code>
               </td>
               <td>in:ebct 四念处</td>
