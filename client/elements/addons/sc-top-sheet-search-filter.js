@@ -72,7 +72,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
       }
 
       p {
-        margin: 10px 10px
+        margin: 10px 10px;
       }
     `,
   ];
@@ -84,7 +84,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
           <legend>
             Refine your search with filters
           </legend>
-          <p>Filters must always appear first in a search before keywords. Pāli diacritcs are ignored in search terms.</p>
+          <p>Filters must always appear first in a search before keywords. Pāli diacritics are ignored in search terms.</p>
           <table>
             <tr>
               <th colspan="2">PTS volume and page search</th>
@@ -129,7 +129,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
             </tr>
 
             <tr>
-              <td>Search only in the <code>title</title>.</td>
+              <td>Search only in the <code>title</code>.</td>
               <td>title:intention</td>
             </tr>
 
