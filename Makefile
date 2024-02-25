@@ -16,7 +16,7 @@ generate-cert:
 
 
 
-SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend sc-chrome-headless
+SERVICES := sc-flask sc-nginx sc-swagger sc-arangodb sc-frontend
 
 run-dev:
 	@$(COMPOSEDEV) up $(SERVICES)
@@ -25,7 +25,7 @@ run-dev-no-logs:
 	@$(COMPOSEDEV) up -d $(SERVICES)
 
 run-dev-rebuild:
-	@$(COMPOSEDEV) up --build -d $(SERVICES)
+	@$(COMPOSEDEV) up --build --remove-orphans -d $(SERVICES)
 
 run-prod:
 	@$(COMPOSEPROD) up $(SERVICES)

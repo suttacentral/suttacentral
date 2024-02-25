@@ -75,19 +75,7 @@ services:
     volumes:
       - sc-data-volume:/opt/sc/sc-data
     working_dir: /opt/sc/frontend
-
-  sc-chrome-headless:
-    build:
-      context: ./server/docker/
-      dockerfile: Dockerfile-chrome-headless
-    container_name: 'sc-chrome-headless'
-    labels:
-      application: 'sc-chrome-headless'
-    expose:
-      - '9222'
-    cap_add:
-      - SYS_ADMIN
-      
+     
   sc-api-tester:
     build:
       context: ./server/api-tester/
