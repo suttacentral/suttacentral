@@ -1447,7 +1447,7 @@ class Redirect(Resource):
 class Transliterate(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, target, text):
-        return transliterate.process('ISO', target, text)
+        return transliterate.process('ISOPali', target, text)
 
 
 class TransliteratedSutta(Resource):
