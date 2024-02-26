@@ -152,7 +152,7 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
               </li>
                <li>
                 <a class="block-link" href="https://buddhism.net/"
-                  >Buddhism.net — making the teachings of the Buddha accessible</a>
+                  >${this.localize('footer:buddhismnet')}</a>
               </li>
               <li>
                 <a class="block-link" href="https://suttacentral.github.io/awesome/"
