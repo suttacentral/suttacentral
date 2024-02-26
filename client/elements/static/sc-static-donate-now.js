@@ -14,6 +14,8 @@ import { icon } from '../../img/sc-icon';
 
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { SCUtilityStyles } from '../styles/sc-utility-styles';
+
 
 export class SCStaticDonateNow extends LitLocalized(LitElement) {
   static properties = {
@@ -32,6 +34,7 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
   static styles = [
     layoutSimpleStyles,
     typographyCommonStyles,
+    SCUtilityStyles,
     css`
       :host {
         --md-filled-button-label-text-font: var(--sc-serif-font);
@@ -107,10 +110,6 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         font-family: var(--sc-sans-font);
 
         margin-top: 64px;
-      }
-
-      aside p a {
-        color: var(--sc-primary-accent-color);
       }
 
       .icon {
