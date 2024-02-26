@@ -114,7 +114,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <td>Filter results by <code>author</code>.</td>
               <td>author:sujato cat<br>
               author:sabbamitta Katze<br>
-              author:sujato Buddha OR Sāvatthī<br>
+              author:sujato kassapa OR moggallana<br>
               author:sujato Buddha AND Sāvatthī
           </td>
             </tr>
@@ -143,7 +143,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
                   in:sutta moat</br>
                   in:abhidhamma feelings</br>
                   in:kn flame</br>
-                  in:an Buddha OR Sāvatthī
+                  in:an kassapa OR moggallana
               </td>
             </tr>
 
@@ -151,7 +151,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <th colspan="2">ebt search</th>
             </tr>
             <tr>
-              <td>Narrow search to “Early Buddhist Texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following:<br>
+              <td>Narrow search to “Early Buddhist Texts” (<code>ebt</code>). This is a shortcut and not a definitive list of what is early. Searches within the following:<br>
                 <code>dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp,
                   dhp, thig, thag, pli-tv, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
                   lzh-upp, san-mg, san-lo, up, ea-ot, d, sf</code>
@@ -163,7 +163,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <th colspan="2">ebs search</th>
             </tr>
             <tr>
-              <td>Narrow search to “Early Buddhist Suttas” (<code>ebs</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following:<br>
+              <td>Narrow search to “Early Buddhist Suttas” (<code>ebs</code>). This is a shortcut and not a definitive list of what is early. Searches within the following:<br>
                 <code>dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud, snp, dhp, thig, thag, sf</code>
               </td>
               <td>in:ebs lion</td>
@@ -173,7 +173,7 @@ export class SCTopSheetSearchFilter extends SCTopSheetCommon {
               <th colspan="2">ebct search</th>
             </tr>
             <tr>
-              <td>Narrow search to “Early Buddhist Chinese Texts” (<code>ebct</code>). This is a shortcut and not a definitive list of what is early. Equivalent to the following:<br>
+              <td>Narrow search to “Early Buddhist Chinese Texts” (<code>ebct</code>). This is a shortcut and not a definitive list of what is early. Searches within the following:<br>
                 <code>da, ma, sa, sa-2, sa-3, ea, ea-2, lzh-mg, lzh-mi, lzh-dg, lzh-sarv, lzh-mu, lzh-ka,
                   lzh-upp, ea-ot, d</code>
               </td>
