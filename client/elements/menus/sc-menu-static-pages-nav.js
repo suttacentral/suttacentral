@@ -157,7 +157,6 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
               <a
                 href="https://discourse.suttacentral.net/c/meta/updates"
                 class="external"
-                title="See updates on SuttaCentral forum"
                 target="_blank"
                 rel="noopener"
               >

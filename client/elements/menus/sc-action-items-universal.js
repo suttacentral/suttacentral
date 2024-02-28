@@ -106,7 +106,6 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
       <md-icon-button
         class="button-theme"
         id="search_glass"
-        title=${this.localize('search:searchTooltip')}
         @click=${this.openInstantSearchDialog}
       >
         ${icon.search}

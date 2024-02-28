@@ -96,4 +96,15 @@ export const typographyStaticStyles = css`
 
     color: var(--sc-on-primary-primary-text-color);
   }
+
+  figcaption {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+
+    text-align: center;
+
+    color: var(--sc-on-primary-secondary-text-color);
+    margin-top: -16px;
+    margin-bottom: 32px
+  }
 `;
