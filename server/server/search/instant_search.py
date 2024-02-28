@@ -139,7 +139,8 @@ def process_search_results(
     if matchpartial == 'true':
         fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
     add_root_name_to_hits(db, hits)
-    sort_highlight_clips(hits)
+    if original_query != constant.CMD_LIST_AUTHORS:
+        sort_highlight_clips(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
 
