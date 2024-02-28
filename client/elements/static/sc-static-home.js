@@ -208,7 +208,7 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <article class="card dark-accent">
         <a
-          href="https://voice.suttacentral.net/scv/index.html#/sutta"
+          href="https://sc-voice.net"
           class='block-link'
         >
           <header>
