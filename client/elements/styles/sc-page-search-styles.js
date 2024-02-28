@@ -406,7 +406,7 @@ export const SCPageSearchStyles = css`
     cursor: pointer;
   }
 
-  md-switch {
+  md-switch, md-checkbox {
     --md-sys-color-primary: var(--sc-primary-accent-color);
   }
 
@@ -414,7 +414,7 @@ export const SCPageSearchStyles = css`
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: end;
+    justify-content: space-between
   }
 
   .search-options > label {
@@ -514,6 +514,34 @@ export const SCPageSearchStyles = css`
     font-size: var(--sc-font-size-xs);
     text-decoration: none;
     transition: var(--sc-link-transition);
+  }
+
+  .search-result-head {
+    margin-bottom: 1rem;
+  }
+
+  .search-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .search-filter label {
+    line-height: 1;
+  }
+
+  .search-filter-items {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+  }
+
+  .search-filter-items > label {
+    margin-bottom: 1rem;
+  }
+
+  .search-filter-items fieldset {
+    width: 100%;
   }
 `;
 

@@ -168,6 +168,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   #searchOptionsTemplate() {
     return html`
       <div class="search-options">
+        ${this.#searchResultFilterTemplate()}
         <label>
           ${this.localize('search:matchPartial')}
           <md-switch
@@ -179,6 +180,121 @@ class SCPageSearch extends LitLocalized(LitElement) {
         </label>
       </div>
     `;
+  }
+
+  #searchResultFilterTemplate() {
+    return html`
+      <div class="search-filter">
+        ${this.searchResultAuthors.length > 1 ? html`
+          <fieldset>
+            <legend>Author filter</legend>
+            <div class="search-filter-items">
+              ${this.searchResultAuthors?.map?.(item => html`
+                <label>
+                  <md-checkbox
+                    name=${item}
+                    value=${item}
+                    checked
+                    @change=${this.#onAuthorFilterChange}
+                  ></md-checkbox>
+                  ${item}
+                </label>
+              `)}
+            </div>
+          </fieldset>
+        ` : ''}
+        ${this.searchResultLangs.length > 1 ? html`
+          <fieldset>
+            <legend>Language filter</legend>
+            <div class="search-filter-items">
+              ${this.searchResultLangs?.map?.(item => html`
+                <label>
+                  <md-checkbox
+                    name=${item}
+                    value=${item}
+                    checked
+                    @change=${this.#onLangsFilterChange}
+                  ></md-checkbox>
+                  ${item}
+                </label>
+              `)}
+            </div>
+          </fieldset>
+        ` : ''}
+        ${this.searchResultRootLangs.length > 1 ? html`
+          <fieldset>
+            <legend>Root Language filter</legend>
+            <div class="search-filter-items">
+              ${this.searchResultRootLangs?.map?.(item => html`
+                <label>
+                  <md-checkbox
+                    name=${item}
+                    value=${item}
+                    checked
+                    @change=${this.#onRootLangsFilterChange}
+                  ></md-checkbox>
+                  ${this.expansionReturns[0][item]?.[1] || item}
+                </label>
+              `)}
+            </div>
+          </fieldset>
+        ` : ''}
+        ${this.searchResultRootUids.length > 1 ? html`
+          <fieldset>
+            <legend>Collection filter</legend>
+            <div class="search-filter-items">
+              ${this.searchResultRootUids?.map?.(item => html`
+                <label>
+                  <md-checkbox
+                    name=${item}
+                    value=${item}
+                    checked
+                    @change=${this.#onRootUidsFilterChange}
+                  ></md-checkbox>
+                  ${this.expansionReturns[0][item]?.[1] || item}
+                </label>
+              `)}
+            </div>
+          </fieldset>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  #onAuthorFilterChange({ target: { checked, value } }) {
+    this.visibleSearchResults.forEach(item => {
+      if (item.author === value) {
+        item.visible = checked;
+      }
+    });
+    this.requestUpdate();
+  }
+
+  #onLangsFilterChange({ target: { checked, value } }) {
+    this.visibleSearchResults.forEach(item => {
+      if (item.full_lang === value) {
+        item.visible = checked;
+      }
+    });
+    this.requestUpdate();
+  }
+
+  #onRootLangsFilterChange({ target: { checked, value } }) {
+    this.visibleSearchResults.forEach(item => {
+      if (item.root_lang === value) {
+        item.visible = checked;
+      }
+    });
+    this.requestUpdate();
+  }
+
+  #onRootUidsFilterChange({ target: { checked, value } }) {
+    this.visibleSearchResults.forEach(item => {
+      if (item.root_uid === value) {
+        item.visible = checked;
+      }
+    });
+    this.requestUpdate();
   }
 
   #onMatchTypeChanged(e) {
@@ -212,7 +328,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
           <div id="load-more-progress">
             <sc-progress
               .type=${'circular'}
-              .active=${this.loadMoreButtonClicked}
+              .active=${this.loadMoreButtonClicked || false}
             ></sc-progress>
           </div>
         `;
@@ -275,7 +391,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     return this.visibleSearchResults
       ? this.visibleSearchResults.map(
           item => html`
-            ${this.#calculateItemCategory(item) !== 'dictionary'
+            ${this.#calculateItemCategory(item) !== 'dictionary' && item.visible
               ? html` ${this.#searchResultItemGeneralTemplate(item)} `
               : ''}
           `
@@ -768,9 +884,28 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.allSearchResults.push(items[i]);
       // If the filter fits, add to visible items
       if (this.#belongsToFilterScope(items[i])) {
+        items[i].visible = true;
         this.visibleSearchResults.push(items[i]);
       }
     }
+    this.#extractSearchResultAttributes();
+  }
+
+  #extractSearchResultAttributes() {
+    const langSet = new Set();
+    const rootLangSet = new Set();
+    const authorSet = new Set();
+    const rootUidSet = new Set();
+    this.visibleSearchResults.forEach(item => {
+      if (item.full_lang) langSet.add(item.full_lang);
+      if (item.root_lang) rootLangSet.add(item.root_lang);
+      if (item.author) authorSet.add(item.author);
+      if (item.root_uid) rootUidSet.add(item.root_uid);
+    });
+    this.searchResultAuthors = Array.from(authorSet);
+    this.searchResultLangs = Array.from(langSet);
+    this.searchResultRootLangs = Array.from(rootLangSet);
+    this.searchResultRootUids = Array.from(rootUidSet);
   }
 
   #loadMoreData() {
