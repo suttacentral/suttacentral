@@ -30,34 +30,38 @@ export class SCStaticIntroduction extends SCStaticPage {
           <p>${unsafeHTML(this.localize('introduction:3'))}</p>
           <p>${unsafeHTML(this.localize('introduction:4'))}</p>
           <p>${unsafeHTML(this.localize('introduction:5'))}</p>
-          <picture>
-            <source
-              srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif"
-              type="image/avif"
-            />
-            <img
-              alt=${this.localize('introduction:6')}
-              class="image-home-full"
-              src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
-              title=${this.localize('introduction:7')}
-              width="640px"
-            />
-          </picture>
+          <figure>
+            <picture>
+              <source
+                srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif"
+                type="image/avif"
+              />
+              <img
+                alt=${this.localize('introduction:6')}
+                class="image-home-full"
+                src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
+                width="640px"
+              >
+            </picture>
+            <figcaption>${this.localize('introduction:7')}</figcaption>
+          </figure>
           <h2>${unsafeHTML(this.localize('introduction:8'))}</h2>
           <p>${unsafeHTML(this.localize('introduction:9'))}</p>
           <p>${unsafeHTML(this.localize('introduction:10'))}</p>
           <p>${unsafeHTML(this.localize('introduction:11'))}</p>
           <h2>${unsafeHTML(this.localize('introduction:12'))}</h2>
           <p>
-            <picture>
-              <source srcset="/img/static-pages/birchbark_w400.avif" type="image/avif" />
-              <img
-                alt=${this.localize('introduction:13')}
-                class="image-home"
-                src="/img/static-pages/birchbark_w400.jpg"
-                title=${this.localize('introduction:14')}
-              />
-            </picture>
+            <figure>
+              <picture>
+                <source srcset="/img/static-pages/birchbark_w400.avif" type="image/avif" />
+                <img
+                  alt=${this.localize('introduction:13')}
+                  class="image-home"
+                  src="/img/static-pages/birchbark_w400.jpg"
+                />
+              </picture>
+              <figcaption>${this.localize('introduction:14')}</figcaption>
+            </figure>
             ${unsafeHTML(this.localize('introduction:15'))}
             <i lang="pi">${unsafeHTML(this.localize('introduction:16'))}</i>
             ${unsafeHTML(this.localize('introduction:17'))}
@@ -88,16 +92,18 @@ export class SCStaticIntroduction extends SCStaticPage {
           </ul>
           <h2>${unsafeHTML(this.localize('introduction:34'))}</h2>
           <p>
-            <picture>
-              <source srcset="/img/static-pages/dn20.avif" type="image/avif" />
-              <img
-                alt=${this.localize('introduction:35')}
-                class="image-home"
-                src="/img/static-pages/dn20.jpg"
-                title=${this.localize('introduction:36')}
-                width="640px"
-              />
-            </picture>
+            <figure>
+              <picture>
+                <source srcset="/img/static-pages/dn20.avif" type="image/avif" />
+                <img
+                  alt=${this.localize('introduction:35')}
+                  class="image-home"
+                  src="/img/static-pages/dn20.jpg"
+                  width="640px"
+                />
+              </picture>
+              <figcaption>${this.localize('introduction:36')}</figcaption>
+            </figure>
             ${unsafeHTML(this.localize('introduction:37'))}
           </p>
           <p>${unsafeHTML(this.localize('introduction:38'))}</p>
