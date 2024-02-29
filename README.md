@@ -61,6 +61,7 @@ Then run the commands for updating, probably including the `make delete-database
 1. run `make run-dev`.
 
 ### 1.2 Loading the data
+When changes are made on `bilara-data` and `sc-data`, they do not automatically get updated in `suttacentral`. During initial setup in step 1.0.4 above, the raw data from those repositories is brought into `suttacentral` and added to the database. So if you make changes in `bilara-data` and `sc-data` you must run the steps below to see them in the build.
 0. ensure server is up and run `make load-data`.
 1. To index arangosearch run `make index-arangosearch`.
 
