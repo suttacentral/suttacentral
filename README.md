@@ -49,13 +49,16 @@ Then run the commands for updating, probably including the `make delete-database
 # Development
 ## 1. Server
 
-### 1.1 Running the project
+### 1.0 Setting up the project and *first run*
 0. Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
 2. Cd into the repo `cd suttacentral`.
 3. run `make prepare-host` in order to make some small adjustment on the host machine.
-4.  * 1st time run: run `make run-preview-env` - Build images, load data, index-arangosearch and more.
-	* normal run: run `make run-dev`.
+4. run `make run-preview-env` - Build images, load data, index-arangosearch and more. This will run the project for the first time.
+
+### 1.1 Running the project
+
+1. run `make run-dev`.
 
 ### 1.2 Loading the data
 0. ensure server is up and run `make load-data`.
