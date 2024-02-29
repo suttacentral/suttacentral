@@ -152,7 +152,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         maxlength="100"
         @keypress=${this.#keypressHandler}
       >
-        <md-icon slot="trailingicon" @click=${this._startSearch}> ${icon.search} </md-icon>
+        <md-icon slot="trailing-icon" @click=${this._startSearch}> ${icon.search} </md-icon>
       </md-filled-text-field>
       ${
         extractSelectedLangsName(
