@@ -4,7 +4,7 @@ SuttaCentral is a Python Flask server which serves a Progressive Web App (`clien
 
 The API pulls its data in real time from an ArangoDB instance populated periodically with data from the `sc-data` repository.
 
-# Deploying
+# Deploying for production
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
 2. `$ cd suttacentral`
 3. `$ git checkout production`
@@ -62,7 +62,7 @@ Then run the commands for updating, probably including the `make delete-database
 1. To index arangosearch run `make index-arangosearch`.
 
 ### 1.3 Docs
-API documentation is available at `/api/docs`.
+API documentation is available at `suttacentral.net/api/docs`.
 
 Swagger documentation is generated from doc strings in api methods. The docstring should use 
 [OpenAPI specification 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object) yaml format. 
