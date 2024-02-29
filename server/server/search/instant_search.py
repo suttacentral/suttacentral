@@ -1593,7 +1593,7 @@ def extract_query_conditions(param):
     author = re.search("author:([\w-]+)", param)
     if author:
         result["author"] = author[1].strip()
-    collection = re.search("in:(\w+)", param)
+    collection = re.search("in:([\w-]+)", param)
     if collection:
         result["collection"] = collection[1].strip()
 
