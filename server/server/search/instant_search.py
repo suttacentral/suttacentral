@@ -25,6 +25,16 @@ RETURN d.uid
 
 LIST_AUTHORS = '''
 FOR a IN author_edition
+FILTER a.uid != 'test'
+
+LET translations = (
+    FOR d IN instant_search
+        SEARCH d.author_uid == a.uid
+        FILTER d.is_segmented == False AND d.author_uid != null
+        LIMIT 1
+    RETURN d.uid
+)
+FILTER length(translations) > 0
 SORT a.uid
 RETURN {
     uid: @query,
