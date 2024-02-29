@@ -553,7 +553,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         pageName = 'Three Baskets of the Pāḷi Canon';
       }
       dispatchCustomEvent(document, 'metadata', {
-        pageTitle: `SuttaCentral—${pageName.toLowerCase()}`,
+        pageTitle: `${pageName}—SuttaCentral`,
         title: `SuttaCentral—${pageName.toLowerCase()}`,
         description,
       });
