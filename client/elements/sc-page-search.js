@@ -444,11 +444,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #searchResultByVolpageTemplate() {
-    if (
-      !this.visibleSearchResults ||
-      this.visibleSearchResults.length === 0 ||
-      !this.#isSearchByVolpage()
-    ) {
+    if (!this.#isSearchByVolpage()) {
       return ``;
     }
     const searchResultByVolpage = this.visibleSearchResults;
@@ -523,7 +519,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       if (volpages && volpages.length > 1) {
         const lastVolpage =
           volpages[volpages.length - 1].split('.')[1] || volpages[volpages.length - 1];
-        item.volpage = `${volpages[0]}...${lastVolpage}`;
+        item.volpage = `${volpages[0]}–${lastVolpage}`;
       }
     }
   }
