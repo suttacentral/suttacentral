@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import {until} from 'lit/directives/until.js';
+import { until } from 'lit/directives/until.js';
 import '@material/web/button/filled-button';
 import '@material/web/iconbutton/icon-button';
 import '@material/web/textfield/filled-text-field';
@@ -106,7 +106,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     });
 
     reduxActions.changeLinearProgressActiveState(this.loadingResults);
-    this.priorityAuthors = new Map([['en', 'sujato']]);
+    this.priorityAuthors = new Map([['en', 'sujato'], ['de', 'sabbamitta']]);
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.matchPartial = store.getState().searchOptions.matchPartial;
   }
@@ -335,7 +335,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       >
         <div class="item-head">
           <div>
-            <a class="search-result-link" href=${this.#calculateLink(item)}>
+            <a class="search-result-link" href=${this._calculateLink(item)}>
               <div class="primary">
                 <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
                 <div class="all-dictionaries">
@@ -1049,15 +1049,15 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-#calculateLink(item) {
-  const urlMap = {
-    'discourses': '/discourses-guide-sujato',
-    'vinaya': '/vinaya-guide-brahmali',
-    'abhidhamma': '/abhidhamma-guide-sujato'
-  };
+  _calculateLink(item) {
+    const urlMap = {
+      'discourses': '/discourses-guide-sujato',
+      'vinaya': '/vinaya-guide-brahmali',
+      'abhidhamma': '/abhidhamma-guide-sujato'
+    };
 
-  return urlMap[item.uid] || item.url;
-}
+    return urlMap[item.uid] || item.url;
+  }
 
   #calculateParallelsLink(item) {
     return `${item.uid}?view=normal`;
