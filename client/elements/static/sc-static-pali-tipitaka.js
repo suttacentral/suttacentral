@@ -173,7 +173,7 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
                   </a>
                   <ul class="horizontal third">
                     <li>
-                      <a href="https://suttacentral.net/">
+                      <a href="https://suttacentral.net/pli-tv-vi">
                         <root>Suttavibhaṅga</root>
                         <translation>${unsafeHTML(this.localize('vinayapitaka:suttavibhanga'))}</translation>
                       </a>
