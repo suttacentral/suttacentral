@@ -462,6 +462,18 @@ class SCPageSearch extends LitLocalized(LitElement) {
       priorityAuthor || 'ms'
     }?${linkParamPart}`;
 
+    function formatRef (ref){
+      const romanNumerals = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
+      let volpage = ref.replace(/pts-vp-pli/,"")
+      let [vol, page] = volpage.split(".")
+      return `${romanNumerals[vol-1]} ${page}`
+    }
+
+    function getBook(acronym){
+      let [book, number] = acronym.split(" ")
+      return book
+    }
+
     return searchResultByVolpage
       ? html`
           <div class="search-results-container">
@@ -484,7 +496,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
                                     class="pts_reference"
                                     href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
                                     target="_blank"
-                                    >${ref.replace(/(^\s*)/g, '')}</a
+                                    >${getBook(item.acronym)} ${formatRef(ref.replace(/(^\s*)/g, ''))}</a
                                   >, `
                             )
                           : ''}

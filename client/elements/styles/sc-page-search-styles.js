@@ -528,6 +528,8 @@ export const searchResultTableViewStyles = css`
   tr {
     vertical-align: baseline;
     border-bottom: 1px solid var(--sc-border-color);
+    display: flex;
+    flex-wrap:wrap;
   }
   tr:first-of-type {
     border-top: 1px solid var(--sc-border-color);
@@ -537,6 +539,14 @@ export const searchResultTableViewStyles = css`
   th {
     padding: 0.5em;
   }
+
+  @media (max-width: 900px) { 
+ 
+    th:last-child, td:last-child {
+        display: block;
+        width: 100%;
+    }
+}
 
   .uid {
     white-space: nowrap;
