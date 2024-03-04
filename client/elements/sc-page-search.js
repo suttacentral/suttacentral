@@ -197,6 +197,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery) {
       dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}`});
+      this.searchQuery = searchQuery;
       this.#startNewSearch();
     }
   }
