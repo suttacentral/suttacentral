@@ -31,7 +31,7 @@ import(
   './sc-map.js'
 );
 
-class SCPageSearch extends LitLocalized(LitElement) {
+export class SCPageSearch extends LitLocalized(LitElement) {
   static properties = {
     // The query to search for
     searchQuery: {
@@ -105,7 +105,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       this.#hideRelatedTopSheets();
     });
 
-    this.actions.changeLinearProgressActiveState(this.loadingResults);
+    reduxActions.changeLinearProgressActiveState(this.loadingResults);
     this.priorityAuthors = new Map([['en', 'sujato']]);
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.matchPartial = store.getState().searchOptions.matchPartial;
@@ -196,7 +196,8 @@ class SCPageSearch extends LitLocalized(LitElement) {
   _startSearch() {
     const searchQuery = this.shadowRoot.getElementById('search_input').value;
     if (searchQuery) {
-      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}`});
+      this.#startNewSearch();
     }
   }
 
@@ -718,35 +719,6 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  get actions() {
-    return {
-      initiateSearch(params) {
-        store.dispatch({
-          type: 'INITIATE_SEARCH',
-          params,
-        });
-      },
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
-      setNavigation(navArray) {
-        store.dispatch({
-          type: 'SET_NAVIGATION',
-          navigationArray: navArray,
-        });
-      },
-      changeLinearProgressActiveState(active) {
-        store.dispatch({
-          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
-          linearProgressActive: active,
-        });
-      },
-    };
-  }
-
   // Saves the fetched search results to be displayed in the list.
   #populateList() {
     if (!this.loadMoreButtonClicked) {
@@ -756,17 +728,17 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (items.length === 0) {
       return;
     }
-    for (let i = 0; i < items.length; i++) {
-      if (!items[i]) {
+    items.forEach(item => {
+      if (!item) {
         return;
       }
       this.totalLoadedResults++;
-      this.allSearchResults.push(items[i]);
+      this.allSearchResults.push(item);
       // If the filter fits, add to visible items
-      if (this.#belongsToFilterScope(items[i])) {
-        this.visibleSearchResults.push(items[i]);
+      if (this.#belongsToFilterScope(item)) {
+        this.visibleSearchResults.push(item);
       }
-    }
+    });
   }
 
   #loadMoreData() {
@@ -776,7 +748,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
 
   #loadNextPage() {
     this.currentPage++;
-    this.actions.initiateSearch({
+    reduxActions.initiateSearch({
       limit: this.resultsPerLoad,
       offset: this.currentPage * this.resultsPerLoad,
       query: this.searchQuery,
@@ -804,7 +776,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       return;
     }
     this.clearSearchPage();
-    this.actions.initiateSearch({
+    reduxActions.initiateSearch({
       limit: this.resultsPerLoad,
       query: this.searchQuery,
       language: this.language,
@@ -823,7 +795,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
       url: `${currentPath}?query=${this.searchQuery}`,
       type: 'searchPage',
     });
-    this.actions.setNavigation(navArray);
+    reduxActions.setNavigation(navArray);
   }
 
   // Clears search result arrays, resets variables
@@ -849,7 +821,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     if (!this.searchParams || !this.searchQuery || this.#areAllItemsLoaded()) {
       return;
     }
-    this.actions.changeLinearProgressActiveState(true);
+    reduxActions.changeLinearProgressActiveState(true);
     this.#fetchExpansion();
     this.#fetchSearchResult();
     this.#updateNav();
@@ -925,7 +897,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
     this.updateComplete.then(() => {
       this.loadingResults = false;
       this.loadMoreButtonClicked = false;
-      this.actions.changeLinearProgressActiveState(this.loadingResults);
+      reduxActions.changeLinearProgressActiveState(this.loadingResults);
     });
   }
 
@@ -999,24 +971,31 @@ class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   // If there is a title, the division is the subtitle
-  #calculateDivision(item) {
-    if (item.is_article) {
-      return 'Static page';
-    }
-    if (this.searchQuery?.includes('volpage:')) {
-      return `${this.#getDivision(item)} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
-    }
-    if (!this.#getDivision(item) && !item.author) {
-      return ``;
-    }
-    if (item.author) {
-      return `${this.#getDivision(item)} ${item.root_name || ''} — ${item.full_lang} — ${item.author}`;
-    }
-    if (item.name) {
-      return `${this.#getDivision(item)} — ${item.name}`;
-    }
-    return `${this.#getDivision(item)}`;
+#calculateDivision(item) {
+  const division = this.#getDivision(item);
+
+  if (item.is_article) {
+    return 'Static page';
   }
+
+  if (this.searchQuery?.includes('volpage:')) {
+    return `${division} — ${item.name} — ${this.#addHighlighting(item.volpage)}`;
+  }
+
+  if (!division && !item.author) {
+    return ``;
+  }
+
+  if (item.author) {
+    return `${division} ${item.root_name || ''} — ${item.full_lang} — ${item.author}`;
+  }
+
+  if (item.name) {
+    return `${division} — ${item.name}`;
+  }
+
+  return division;
+}
 
   #addHighlighting(text) {
     return html`<strong class="highlight">${text}</strong>`;
@@ -1070,18 +1049,15 @@ class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  #calculateLink(item) {
-    if (item.uid === 'discourses') {
-      return '/discourses-guide-sujato'
-    }
-    if (item.uid === 'vinaya') {
-      return '/vinaya-guide-brahmali'
-    }
-    if (item.uid === 'abhidhamma') {
-      return '/abhidhamma-guide-sujato'
-    }
-    return item.url;
-  }
+#calculateLink(item) {
+  const urlMap = {
+    'discourses': '/discourses-guide-sujato',
+    'vinaya': '/vinaya-guide-brahmali',
+    'abhidhamma': '/abhidhamma-guide-sujato'
+  };
+
+  return urlMap[item.uid] || item.url;
+}
 
   #calculateParallelsLink(item) {
     return `${item.uid}?view=normal`;
@@ -1117,7 +1093,7 @@ class SCPageSearch extends LitLocalized(LitElement) {
         },
       })
     );
-    this.actions.changeToolbarTitle(toolbarTitle);
+    reduxActions.changeToolbarTitle(toolbarTitle);
     this.#updateNav();
   }
 
