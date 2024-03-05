@@ -515,26 +515,20 @@ export const SCPageSearchStyles = css`
     transition: var(--sc-link-transition);
   }
 
-  .sutta_title {
-    font-family: var(--sc-serif-font);
-    font-weight: bold;
-    font-size: var(--sc-font-size-l);
-    color: var(--sc-primary-color);
-  }
-
   .volpage-search-result-item {
     margin-bottom: 1em;
   }
 
   .volpage-search-result-item .sutta_title {
     font-family: var(--sc-serif-font);
-    font-weight: bold;
     font-size: var(--sc-font-size-l);
     color: var(--sc-primary-color);
   }
 
   .volpage-search-result-item .sutta_name {
     color: var(--sc-primary-color);
+    font-weight: 400;
+    font-size: var(--sc-font-size-xl);
     white-space: normal;
     margin: 0;
   }
@@ -554,9 +548,8 @@ export const SCPageSearchStyles = css`
     font-weight: 400;
     color: var(--sc-on-primary-secondary-text-color);
     margin: 0;
-    padding: 0;
     display: inline-flex;
-    aligin-items: center;
+    align-items: center;
     flex-wrap: nowrap;
   }
 
