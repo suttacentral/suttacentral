@@ -28,6 +28,7 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
     this.currentRoute = store.getState().currentRoute;
     this.webEditionInfo = [];
     this.editionBlurbs = [];
+    this.localizedStringsPath = '/localization/elements/publication';
     this.coverImage = new Map([
       ['dn', 'dn-book.jpg'],
       ['mn', 'mn-book.jpg'],
@@ -173,58 +174,35 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
       <main>
         <article>
           <hgroup class="page-header">
-            <h1>SuttaCentral Editions</h1>
-            <p class="subtitle">Selected translations as books in multiple formats</p>
+            <h1>${this.localize('publication:suttaCentralEditions')}</h1>
+            <p class="subtitle">${this.localize('publication:editionsSubtitle')}</p>
           </hgroup>
         <div class='editions-top-sections'>
 
         <section class='editions-header'>
           <img class="main-image" src="/img/publication-pages/editions-kn-wet.jpg" />
-          <p>
-            The “Editions” series makes selected translations available as books in various formats,
-            including print, PDF, and EPUB.
-          </p>
-          <p>
-            Editions are selected from our most complete, well-crafted, and reliable translations.
-            They aim to bring these texts to a wider audience in forms that reward mindful reading.
-            Care is taken with every detail of the production, and we aim to meet or exceed
-            professional best standards in every way. These are the core scriptures underlying the
-            entire Buddhist tradition and we believe that they deserve to be preserved and made
-            available in highest quality without compromise.
-          </p>
+          <p>${this.localize('publication:editions1')}</p>
+          <p>${this.localize('publication:editions2')}</p>
           </section>
 
           <section class="down-all">
             <ul>
-              <li>
-                ${icon.open_book} Order a printed copy or select files from the individual edition
-                pages below.
-              </li>
+              <li>${icon.open_book} ${this.localize('publication:orderPrint')}</li>
               <li>
                 ${icon.file_download}
                 <a href="https://github.com/suttacentral/editions/archive/refs/heads/main.zip"
-                  >Download digital editions in all file types (about 150 MB zip).
-                </a>
+                  >${this.localize('publication:download')}</a>
               </li>
               <li>
                 ${icon.external}
-                <a href="https://github.com/suttacentral/editions">Go to the source on Github.</a>
-              </li>
+                <a href="https://github.com/suttacentral/editions">${this.localize('publication:githubSource')}</a></li>
             </ul>
             <aside>
-              <b>About the printed editions</b>
-              <p>
-                SuttaCentral produces PDF files and relies on third-parties for printing and
-                distribution.
-              </p>
-              <p>
-                Initial publishing is through Lulu, an online print-on-demand service. When you
-                order a book, Lulu will print it and post it to you. Lulu has fixed charges for
-                printing and postage. SuttaCentral receives a portion of the final price, which we
-                use to pay our developers.
-              </p>
-              <p>We intend to make other printing options avilable in the future.</p>
-              <p>Please contact us if you would like to sponsor your own edition for free distribution.</p>
+              <b>${this.localize('publication:aboutTitle')}</b>
+              <p>${this.localize('publication:about1')}</p>
+              <p>${this.localize('publication:about2')}</p>
+              <p>${this.localize('publication:about3')}</p>
+              <p>${this.localize('publication:about4')}</p>
             </aside>
           </section>
           </div>
