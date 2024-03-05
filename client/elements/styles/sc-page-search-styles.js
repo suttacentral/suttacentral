@@ -555,18 +555,32 @@ export const searchResultTableViewStyles = css`
 
   .uid {
     white-space: nowrap;
-    color: inherit;
     text-decoration: none;
   }
 
   .uid:hover {
-    color: inherit;
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
     text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .sutta_info {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 400;
+    color: var(--sc-on-primary-secondary-text-color);
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    aligin-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .sutta_name {
+    margin: 0;
   }
 
   .uid:active {
