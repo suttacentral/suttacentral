@@ -460,17 +460,29 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       priorityAuthor || 'ms'
     }?${linkParamPart}`;
 
-    function formatRef (ref){
-      const romanNumerals = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
-      let volpage = ref.replace(/pts-vp-pli/,"")
-      let [vol, page] = volpage.split(".")
-      return `${romanNumerals[vol-1]} ${page}`
-    }
+    const formatRef = function(ref) {
+      if (typeof ref !== 'string' || !ref.includes('pts-vp-pli')) {
+        return '';
+      }
 
-    function getBook(acronym){
-      let [book, number] = acronym.split(" ")
-      return book
-    }
+      const romanNumerals = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
+      const volpage = ref.replace(/pts-vp-pli/,"");
+      const [vol, page] = volpage.split(".");
+
+      if (vol < 1 || vol > 8) {
+        return ref;
+      }
+
+      return `${romanNumerals[vol-1]} ${page}`;
+    };
+
+    const getBook = function(acronym) {
+      if (typeof acronym !== 'string' || !acronym.includes(' ')) {
+        return '';
+      }
+      const [book, number] = acronym.split(" ");
+      return book;
+    };
 
     return searchResultByVolpage
       ? html`
@@ -481,11 +493,16 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                 ${searchResultByVolpage.map(
                   item => html`
                     <tr>
+                      <td class="sutta_title">
+                        <a class="uid" href=${item.url}>${item.name}</a>
+                      </td>  
+
                       <td class="sutta_uid">
                         <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
                       </td>
-                      <td class="sutta_title">${item.name}</td>
+                      
                       <td class="volpage">${item.volpage}</td>
+
                       <td class="references">
                         ${item.filteredReferences && Array.isArray(item.filteredReferences)
                           ? item.filteredReferences?.map(

@@ -539,8 +539,14 @@ export const searchResultTableViewStyles = css`
     padding: 0.5em;
   }
 
+  .sutta_title {
+    font-family: var(--sc-serif-font);
+    font-weight: bold;
+    font-size: var(--sc-font-size-l);
+    color: var(--sc-primary-color);
+  }
+
   @media (max-width: 900px) { 
- 
     th:last-child, td:last-child {
         display: block;
         width: 100%;
