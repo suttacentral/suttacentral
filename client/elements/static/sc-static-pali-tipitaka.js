@@ -451,13 +451,13 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
                         <li>
                           <a href="https://suttacentral.net/pli-tv-pvr1.1">
                             <root>Katthapaññattivāra</root>
-                            <translation>${unsafeHTML(this.localize('parivara:katthapajnjnattivara1'))}</translation>
+                            <translation>${unsafeHTML(this.localize('parivara:katthapannattivara1'))}</translation>
                           </a>
                         </li>
                         <li>
                           <a href="https://suttacentral.net/pli-tv-pvr2.1">
                             <root>Katthapaññattivāra</root>
-                            <translation>${unsafeHTML(this.localize('parivara:katthapajnjnattivara2'))}</translation>
+                            <translation>${unsafeHTML(this.localize('parivara:katthapannattivara2'))}</translation>
                           </a>
                         </li>
                         <li>
