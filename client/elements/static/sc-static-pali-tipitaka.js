@@ -1325,7 +1325,7 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
                 </li>
                 <li>
                   <a href="https://suttacentral.net/pli-tv-ab">
-                    <root>Abhidhamma Piṭaka</root>
+                    <root>Abhidhammapiṭaka</root>
                     <translation>${unsafeHTML(this.localize('palitipitaka:abhidhammaPitaka'))}</translation>
                   </a>
                   <ul class="horizontal third">
