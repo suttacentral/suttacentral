@@ -426,7 +426,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       <md-menu-item
         class="more-menu-md-menu-item"
         href=${this.#computeSCVoiceLink()}
-        title="Listen to suttas"
         target="_blank"
         rel="noopener noreferrer"
       >

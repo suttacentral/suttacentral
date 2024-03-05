@@ -1341,7 +1341,9 @@ export class SCTextBilara extends SCTextCommon {
     if (!this.suttaId || !this.language) {
       return;
     }
-    const url = `https://www.api.sc-voice.net/scv/ebt-site/${this.suttaId}/${this.language}`;
+    const langIso = this.translatedSutta?.lang || 'en';
+    const authorUid = this.translatedSutta?.author_uid || 'sujato';
+    const url = `https://www.api.sc-voice.net/scv/ebt-site/${this.suttaId}/${langIso}/${authorUid}`;
     window.open(url, '_blank');
   }
 }

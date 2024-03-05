@@ -25,6 +25,16 @@ RETURN d.uid
 
 LIST_AUTHORS = '''
 FOR a IN author_edition
+FILTER a.uid != 'test'
+
+LET translations = (
+    FOR d IN instant_search
+        SEARCH d.author_uid == a.uid
+        FILTER d.is_segmented == False AND d.author_uid != null
+        LIMIT 1
+    RETURN d.uid
+)
+FILTER length(translations) > 0
 SORT a.uid
 RETURN {
     uid: @query,
@@ -139,7 +149,8 @@ def process_search_results(
     if matchpartial == 'true':
         fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
     add_root_name_to_hits(db, hits)
-    sort_highlight_clips(hits)
+    if original_query != constant.CMD_LIST_AUTHORS:
+        sort_highlight_clips(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
 
@@ -371,7 +382,7 @@ def generate_aql_for_lang_filter(lang, keyword_list, operator, query_param):
     return full_aql, aql_condition_part
 
 
-def generate_aql_for_volpage_filter(possible_volpages):
+def generate_aql_for_volpage_filter(possible_volpages, first_part_of_volpage):
     aql = '''
     FOR d IN instant_volpage_search
     SEARCH (PHRASE(d.volpage, @query, "common_text")
@@ -384,11 +395,14 @@ def generate_aql_for_volpage_filter(possible_volpages):
             f'PHRASE(d.alt_volpage, "{volpage}", "common_text") OR '
         )
     aql = aql[:-4]
-    aql += '''
 
+    aql += '''
     )
     SORT d.uid
-
+    '''
+    if first_part_of_volpage:
+        aql += f' FILTER STARTS_WITH(d.uid, "{first_part_of_volpage.lower()}")'
+    aql += '''
     LET translation_title = (
         FOR name IN names
             FILTER name.uid == d.uid AND name.lang == @lang
@@ -1135,7 +1149,7 @@ def prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, 
         pattern = r"^([asmdASMD])\s"
         replacement = r"\1n "
         query = re.sub(pattern, replacement, query)
-
+        first_part_of_volpage = query.split(' ')[0] if ' ' in query else ''
         possible_volpages = []
         if vol_page_number is not None:
             vol_page_no = re.search(r'\d+', query).group()
@@ -1147,8 +1161,12 @@ def prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, 
         else:
             possible_volpages.append(query)
 
+        standardized_volpages = standardization_volpage(query)
+        if not re.search(r'\d+', standardized_volpages):
+            first_part_of_volpage = ''
+        possible_volpages.append(standardized_volpages)
         possible_volpages = list(set(possible_volpages))
-        search_aql = generate_aql_for_volpage_filter(possible_volpages)
+        search_aql = generate_aql_for_volpage_filter(possible_volpages, first_part_of_volpage)
         query_param['query'] = query
     return query_param, search_aql, aql_condition_part
 
@@ -1592,7 +1610,7 @@ def extract_query_conditions(param):
     author = re.search("author:([\w-]+)", param)
     if author:
         result["author"] = author[1].strip()
-    collection = re.search("in:(\w+)", param)
+    collection = re.search("in:([\w-]+)", param)
     if collection:
         result["collection"] = collection[1].strip()
 
@@ -1681,7 +1699,7 @@ def standardization_volpage(volpage):
     parts = volpage.split()
     if len(parts) < 3:
         return volpage
-    parts[0] = "pts-vp-pli"
+    parts[0] = "PTS "
     parts[1] = roman_to_int(parts[1])
     parts[2] = f".{parts[2]}"
     return "{}{}{}".format(*parts)

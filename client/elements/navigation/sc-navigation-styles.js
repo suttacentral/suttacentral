@@ -123,6 +123,12 @@ export const navigationNormalModeStyles = html`
       color: var(--sc-on-secondary-primary-text-color);
     }
 
+    @media only screen and (max-width: 400px) {
+      .header-left {
+        width: 75%;
+      }
+    }
+
     .navigation-nerdy-row {
       display: inline-grid;
       grid-auto-flow: column;

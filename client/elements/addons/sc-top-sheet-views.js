@@ -546,7 +546,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
               <select id="selPaliScripts">
                 ${scriptIdentifiers.map(
                   script => html`
-                    <option value=${script.script} title=${script.language}>
+                    <option value=${script.script}>
                       ${script.language}
                     </option>
                   `

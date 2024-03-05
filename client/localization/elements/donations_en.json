@@ -36,5 +36,15 @@
   "donations:monthly": "Monthly",
   "donations:oneTime": "One time",
   "donations:payWithCard": "Donate with card",
-  "donations:storageDisclaimer": "SuttaCentral does not handle or store your credit card details. All credit card transactions are handled securely by <a href='https://stripe.com' target='blank'>Stripe</a>."
+  "donations:storageDisclaimer": "SuttaCentral does not handle or store your credit card details. All credit card transactions are handled securely by <a href='https://stripe.com' target='blank'>Stripe</a>.",
+  "donations:success1": "Sādhu! Sādhu!",
+  "donations:success2": "Your gift of Dhamma is precious to us. It will be carefully used to support SuttaCentral, and help make the Dhamma available for all those who wish to be free from suffering.",
+  "donations:successAltText": "A photo of two Burmese novices reading Dhamma",
+  "donations:success3": "May the merit of you kind offering be for the long-lasting happiness and welfare of yourself and all your loved ones!",
+  "donations:success4": "May it be for the happiness, welfare, and liberation of all sentient beings!",
+  "donations:success5": "The gift of the teaching beats all other gifts;",
+  "donations:success6": "the taste of the teaching beats all other tastes;",
+  "donations:success7": "the joy of the teaching beats all other joys;",
+  "donations:success8": "one who has ended craving beats all suffering.",
+  "donations:success9": "Multiply your merit: <a href='https://suttacentral.net/search?query=giving'> read some suttas on the joys of giving</a>, and take the time to remind yourself of your own kindness."
 }

@@ -32,7 +32,7 @@ class SecondMigration(Migration):
             "common_text",
             "text",
             {
-                "locale": "en.utf8-",
+                "locale": "en.utf-8",
                 "case": "lower",
                 "accent": False,
                 "stemming": False,

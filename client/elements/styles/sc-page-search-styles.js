@@ -379,7 +379,6 @@ export const SCPageSearchStyles = css`
   }
 
   md-filled-text-field {
-    margin: 0px 0px 22px 0px;
     width: 100%;
 
     --md-filled-text-field-container-color: var(--sc-tertiary-background-color);

@@ -204,4 +204,11 @@ export class reduxActions {
       navigationArray: navArray,
     });
   }
+
+  static initiateSearch(params) {
+    store.dispatch({
+      type: 'INITIATE_SEARCH',
+      params,
+    });
+  }
 }

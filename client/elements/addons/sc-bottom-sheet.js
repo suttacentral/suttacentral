@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { LitLocalized } from './sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 export class SCBottomSheet extends LitLocalized(LitElement) {
   static properties = {
@@ -132,6 +133,7 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
       border-radius: 4px;
       background-color: var(--sc-on-primary-secondary-text-color);
       box-shadow: var(--sc-shadow-elevation-8dp);
+      padding: 10px;
     }
 
     .bottom-sheet-icon-label {
@@ -422,37 +424,27 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
               <div class="help-display-inner">
                 <ul>
                   <li>
-                    Source:
-                    <cite>New Concise Pali-English Dictionary</cite>, compiled by SuttaCentral from
-                    Buddhadatta’s <cite>Concise Pali-English Dictionary</cite>, updated and
-                    corrected from Margaret Cone’s <cite>Dictionary of Pali</cite>.
+                  ${unsafeHTML(this.localize('bottomsheet:help1'))}
                   </li>
-                  <li>Pali words are analyzed by machine and results are not always accurate.</li>
-                  <li>Click on a head word to go to full dictionary entry.</li>
+                  <li>${this.localize('bottomsheet:help2')}</li>
+                  <li>${this.localize('bottomsheet:help3')}</li>
                   <li>
-                    Navigate using keyboard.
+                    ${this.localize('bottomsheet:help4')}
                     <ul>
                       <li>
-                        Next =
+                      ${this.localize('bottomsheet:help5')} =
                         <kbd>Alt</kbd>
                         +
                         <kbd>n</kbd>
                       </li>
                       <li>
-                        Back =
+                      ${this.localize('bottomsheet:help6')} =
                         <kbd>Alt</kbd>
                         +
                         <kbd>b</kbd>
                       </li>
                     </ul>
-                    If this doesn’t work for you, check the
-                    <a
-                      href="https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers"
-                      target="_blank"
-                    >
-                      HTML access key for your browser
-                    </a>
-                    .
+                    ${unsafeHTML(this.localize('bottomsheet:help7'))}
                   </li>
                 </ul>
               </div>

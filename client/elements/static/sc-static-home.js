@@ -103,7 +103,6 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <section class="video">
         <video
-          title=${this.localize('home:2')}
           width="640"
           height="360"
           controls
@@ -209,9 +208,8 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <article class="card dark-accent">
         <a
-          href="https://voice.suttacentral.net/scv/index.html#/sutta"
+          href="https://sc-voice.net"
           class='block-link'
-          title=${this.localize('home:16')}
         >
           <header>
             <span>${icon.speaker}</span>
@@ -239,7 +237,7 @@ export class SCStaticHomePage extends SCStaticPage {
   #buddhaNexusCardTemplate() {
     return html`
       <article class="card secondary-accent">
-        <a href="https://buddhanexus.net/" class="block-link" title=${this.localize('home:21')}>
+        <a href="https://buddhanexus.net/" class="block-link">
           <header>
             <span>
               <picture>
@@ -267,7 +265,6 @@ export class SCStaticHomePage extends SCStaticPage {
         <a
           href="https://discourse.suttacentral.net/"
           class="block-link"
-          title=${this.localize('home:24')}
         >
           <header>
             <span>${icon.people}</span>
@@ -297,18 +294,17 @@ export class SCStaticHomePage extends SCStaticPage {
         <a
           href="https://buddhism.net/"
           class="block-link"
-          title=${this.localize('home:30')}
         >
           <header>
             <span class="buddhismnet-image-container"><img src='/img/home-page/bn.png' alt='Buddhism.net' /></span>
             <h3>
               <span>Buddhism.net</span>
-              <span class="sc-related-item-subtitle">making the teachings of the Buddha accessible</span>
+              <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:31'))}</span>
             </h3>
           </header>
 
           <div class="related-projects-content">
-            <p>At Buddhism.net, we hope to help you 1) learn Buddhism, 2) develop a practice, and 3) discover teachers and communities. Buddhism.net is cross-sectarian. We focus on early Buddhism, the common root of all modern forms of Buddhism. We aim to offer you a solid foundation in early Buddhism, which will be immensely helpful to you regardless of which form of Buddhism you adopt.</p>
+            <p>${unsafeHTML(this.localize('home:32'))}</p>
           </div>
         </a>
         <md-ripple></md-ripple>

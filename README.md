@@ -4,7 +4,7 @@ SuttaCentral is a Python Flask server which serves a Progressive Web App (`clien
 
 The API pulls its data in real time from an ArangoDB instance populated periodically with data from the `sc-data` repository.
 
-# Deploying
+# Deploying for production
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
 2. `$ cd suttacentral`
 3. `$ git checkout production`
@@ -49,20 +49,25 @@ Then run the commands for updating, probably including the `make delete-database
 # Development
 ## 1. Server
 
-### 1.1 Running the project
+### 1.0 Setting up the project and *first run*
 0. Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
 2. Cd into the repo `cd suttacentral`.
 3. run `make prepare-host` in order to make some small adjustment on the host machine.
-4.  * 1st time run: run `make run-preview-env` - Build images, load data, index-arangosearch and more.
-	* normal run: run `make run-dev`.
+4. run `make run-preview-env` - Build images, load data, index-arangosearch and more. This will run the project for the first time.
+
+### 1.1 Running the project
+
+1. run `make run-dev`.
 
 ### 1.2 Loading the data
+When changes are made on `bilara-data` and `sc-data`, they do not automatically get updated in `suttacentral`. During initial setup in step 1.0.4 above, the raw data from those repositories is brought into `suttacentral` and added to the database. So if you make changes in `bilara-data` and `sc-data` you must run the steps below to see them in the build.
+
 0. ensure server is up and run `make load-data`.
 1. To index arangosearch run `make index-arangosearch`.
 
 ### 1.3 Docs
-API documentation is available at `/api/docs`.
+API documentation is available at `suttacentral.net/api/docs`.
 
 Swagger documentation is generated from doc strings in api methods. The docstring should use 
 [OpenAPI specification 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object) yaml format. 
