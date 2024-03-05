@@ -514,6 +514,56 @@ export const SCPageSearchStyles = css`
     text-decoration: none;
     transition: var(--sc-link-transition);
   }
+
+  .sutta_title {
+    font-family: var(--sc-serif-font);
+    font-weight: bold;
+    font-size: var(--sc-font-size-l);
+    color: var(--sc-primary-color);
+  }
+
+  .volpage-search-result-item {
+    margin-bottom: 1em;
+  }
+
+  .volpage-search-result-item .sutta_title {
+    font-family: var(--sc-serif-font);
+    font-weight: bold;
+    font-size: var(--sc-font-size-l);
+    color: var(--sc-primary-color);
+  }
+
+  .volpage-search-result-item .sutta_name {
+    color: var(--sc-primary-color);
+    white-space: normal;
+    margin: 0;
+  }
+
+  .volpage-search-result-item .uid:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.15em;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .volpage-search-result-item .sutta_info {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 400;
+    color: var(--sc-on-primary-secondary-text-color);
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    aligin-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .volpage-search-result-item .references {
+    margin-top: 0.3em;
+    font-size: var(--sc-font-size-s);
+  }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -539,13 +589,6 @@ export const searchResultTableViewStyles = css`
     padding: 0.5em;
   }
 
-  .sutta_title {
-    font-family: var(--sc-serif-font);
-    font-weight: bold;
-    font-size: var(--sc-font-size-l);
-    color: var(--sc-primary-color);
-  }
-
   @media (max-width: 900px) { 
     th:last-child, td:last-child {
         display: block;
@@ -565,22 +608,6 @@ export const searchResultTableViewStyles = css`
     text-underline-offset: 0.15em;
 
     background-color: var(--sc-primary-color-light-transparent);
-  }
-
-  .sutta_info {
-    font-family: var(--sc-sans-font);
-    font-size: var(--sc-font-size-s);
-    font-weight: 400;
-    color: var(--sc-on-primary-secondary-text-color);
-    margin: 0;
-    padding: 0;
-    display: inline-flex;
-    aligin-items: center;
-    flex-wrap: nowrap;
-  }
-
-  .sutta_name {
-    margin: 0;
   }
 
   .uid:active {

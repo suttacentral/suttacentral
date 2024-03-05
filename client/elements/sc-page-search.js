@@ -488,12 +488,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       ? html`
           <div class="search-results-container">
             ${this.searchResultHeadTemplate}
-            <table>
-              <tbody>
+            <div class="volpage-search-results">
                 ${searchResultByVolpage.map(
                   item => html`
-                    <tr>
-                      <td class="sutta_title">
+                    <div class="volpage-search-result-item">
+                      <div class="sutta_title">
                         <a class="uid" href=${item.url}>
                           <div>
                             <p class="sutta_name">${item.name}</p>
@@ -502,9 +501,9 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                             </div>
                           </div>
                         </a>
-                      </td>  
+                      </div>  
 
-                      <td class="references">
+                      <div class="references">
                         ${item.filteredReferences && Array.isArray(item.filteredReferences)
                           ? item.filteredReferences?.map(
                               ref =>
@@ -516,12 +515,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                                   >, `
                             )
                           : ''}
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   `
                 )}
-              </tbody>
-            </table>
+              </div>
             ${this.loadMoreButtonTemplate}
           </div>
         `
