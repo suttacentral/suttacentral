@@ -557,6 +557,10 @@ export const SCPageSearchStyles = css`
     margin-top: 0.3em;
     font-size: var(--sc-font-size-s);
   }
+
+  md-filled-text-field {
+    max-width: 720px;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
