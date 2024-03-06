@@ -269,11 +269,11 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
               <dd class="text-uid" property="dc:identifier">${this.textUID}</dd>
               <dt class="edition-url">URL</dt>
               <dd class="edition-url">
-                <a href=${this.editionURL} target="_blank" rel="noopener">${this.editionURL}</a>
+                <a href=${this.editionURL} target="_blank" rel="noopener noreferrer">${this.editionURL}</a>
               </dd>
               <dt class="source-url">${this.localize('publication:source')}</dt>
               <dd class="source-url">
-                <a href=${this.sourceURL} target="_blank" rel="noopener">${this.sourceURL}</a>
+                <a href=${this.sourceURL} target="_blank" rel="noopener noreferrer">${this.sourceURL}</a>
               </dd>
               <dt class="publication-number">${this.localize('publication:suttaCentralPublicationNumber')}</dt>
               <dd class="publication-number" property="dc:identifier">${this.publicationNumber}</dd>
@@ -292,7 +292,7 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
                 rel="license"
                 href="https://creativecommons.org/publicdomain/zero/1.0/legalcode"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
               >
                 <img
                   src="https://i.creativecommons.org/p/zero/1.0/88x31.png"

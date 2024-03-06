@@ -211,6 +211,7 @@ export class SCStaticHomePage extends SCStaticPage {
           href="https://www.api.sc-voice.net/scv/ebt-site/site/${this.language}"
           target="_blank"
           class='block-link'
+          rel="noopener noreferrer"
         >
           <header>
             <span>${icon.speaker}</span>

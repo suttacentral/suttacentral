@@ -48,6 +48,7 @@ export class SCStaticLicensing extends SCStaticPage {
               <a
                 href="https://creativecommons.org/licenses/by/3.0/us/"
                 tager="_blank"
+                rel="noopener noreferrer"
               >
                 Creative Commons Attribution (CC BY 3.0 US)
               </a>
