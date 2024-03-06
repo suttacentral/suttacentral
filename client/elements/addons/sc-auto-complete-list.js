@@ -247,7 +247,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
               @click=${this.hide}
               class=${item.segmented_uid ? 'nav-segmented-text' : 'nav-title'}
             >
-              <a class="instant-nav-link" target="_blank" href=${this.#generateURL(item)}>
+              <a class="instant-nav-link" target="_blank" rel="noopener noreferrer" href=${this.#generateURL(item)}>
                 <span class="instant-nav">
                   ${item.nodeType === 'branch' ? icon.network_node : icon.open_book}
                   <span class="instant-nav-uid-title-wrap">
@@ -287,7 +287,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     return html`
       <hr />
       <li class="navigation-links">${menuData.map((item, i) => html`
-        <a target="_blank" href=${item.url}>${item.title || item.uid}</a> ${i < lastIndex ? '>' : ''} `)}
+        <a target="_blank" rel="noopener noreferrer" href=${item.url}>${item.title || item.uid}</a> ${i < lastIndex ? '>' : ''} `)}
       </li>
     `;
   }
@@ -305,7 +305,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         <span>${this.localize('autocomplete:tipsForSearchSyntax')}</span>
         <div class="algolia-logo">
           <span class="algolia-title">Search By</span>
-          <a target="_blank" href="https://algolia.com">
+          <a target="_blank" rel="noopener noreferrer" href="https://algolia.com">
             ${icon.algolia}
           </a>
         </div>

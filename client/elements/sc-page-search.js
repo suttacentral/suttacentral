@@ -374,7 +374,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const menuData = await (await fetch(api)).json();
     const lastIndex = menuData.length - 1;
     return html`${menuData.map((item, i) => html`
-      <a target="_blank" href=${item.url}>
+      <a target="_blank" rel="noopener noreferrer" href=${item.url}>
         ${item.title || item.uid}
       </a> ${i < lastIndex ? '>' : ''} `)
     }`;
@@ -511,6 +511,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                                     class="pts_reference"
                                     href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
                                     target="_blank"
+                                    rel="noopener noreferrer"
                                     >${getBook(item.acronym)} ${formatRef(ref.replace(/(^\s*)/g, ''))}</a
                                   >, `
                             )
@@ -594,6 +595,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                                     class="pts_reference"
                                     href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
                                     target="_blank"
+                                    rel="noopener noreferrer"
                                     >${ref.replace(/(^\s*)/g, '') === query
                                       ? this.#addHighlighting(ref.replace(/(^\s*)/g, ''))
                                       : ref.replace(/(^\s*)/g, '')}</a

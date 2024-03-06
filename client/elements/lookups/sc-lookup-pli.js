@@ -93,7 +93,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
           <dl>
             <dt>
               <dfn class="entry" lang="pi" translate="no">
-                <a href="/define/${match.base}" target="_blank" rel="noopener" class="lookup-link">
+                <a href="/define/${match.base}" target="_blank" rel="noopener noreferrer" class="lookup-link">
                   ${match.base}
                 </a>
               </dfn>

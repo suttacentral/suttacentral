@@ -136,7 +136,7 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
                 >
               </li>
               <li>
-                <a class="block-link" href="https://sc-voice.net"
+                <a class="block-link" target="_blank" rel="noopener noreferrer" href="https://www.api.sc-voice.net/scv/ebt-site/site/${this.language}"
                   >${this.localize('footer:scvoice')}</a
                 >
               </li>
