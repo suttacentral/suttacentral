@@ -696,10 +696,15 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                             class="uid"
                             href="/search?query=author:${item.author_uid}"
                             @click=${() => this.#onAuthorNameClick(item.author_uid)}
-                            >${item.author_short}</a
+                            ><code>${item.author_uid}</code></a
                           >
                         </td>
-                        <td>${item.author}</td>
+                        <td><a
+                        class="uid"
+                        tabindex="-1"
+                        href="/search?query=author:${item.author_uid}"
+                        @click=${() => this.#onAuthorNameClick(item.author_uid)}
+                        >${item.author}</a></td>
                       </tr>
                     `
                   )}
