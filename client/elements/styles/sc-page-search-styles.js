@@ -514,6 +514,59 @@ export const SCPageSearchStyles = css`
     text-decoration: none;
     transition: var(--sc-link-transition);
   }
+
+  .volpage-search-result-item {
+    margin-bottom: 1em;
+  }
+
+  .volpage-search-result-item .sutta_title {
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-font-size-l);
+    color: var(--sc-primary-color);
+  }
+
+  .volpage-search-result-item .sutta_name {
+    color: var(--sc-primary-color);
+    font-weight: 400;
+    font-size: var(--sc-font-size-xl);
+    white-space: normal;
+    margin: 0;
+  }
+
+  .volpage-search-result-item .uid:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--sc-primary-color);
+    text-decoration-thickness: 0.15em;
+    text-underline-offset: 0.15em;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .volpage-search-result-item .sutta_info {
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 400;
+    color: var(--sc-on-primary-secondary-text-color);
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .volpage-search-result-item .highlight {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .volpage-search-result-item .references {
+    margin-top: 0.3em;
+    font-size: var(--sc-font-size-m);
+  }
+
+  md-filled-text-field {
+    max-width: 720px;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -527,6 +580,8 @@ export const searchResultTableViewStyles = css`
   tr {
     vertical-align: baseline;
     border-bottom: 1px solid var(--sc-border-color);
+    display: flex;
+    flex-wrap:wrap;
   }
   tr:first-of-type {
     border-top: 1px solid var(--sc-border-color);
@@ -537,14 +592,19 @@ export const searchResultTableViewStyles = css`
     padding: 0.5em;
   }
 
+  @media (max-width: 900px) { 
+    th:last-child, td:last-child {
+        display: block;
+        width: 100%;
+    }
+}
+
   .uid {
     white-space: nowrap;
-    color: inherit;
     text-decoration: none;
   }
 
   .uid:hover {
-    color: inherit;
     text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;

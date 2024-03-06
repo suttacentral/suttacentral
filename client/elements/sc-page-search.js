@@ -460,21 +460,50 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       priorityAuthor || 'ms'
     }?${linkParamPart}`;
 
+    const formatRef = function(ref) {
+      if (typeof ref !== 'string' || !ref.includes('pts-vp-pli')) {
+        return '';
+      }
+
+      const romanNumerals = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
+      const volpage = ref.replace(/pts-vp-pli/,"");
+      const [vol, page] = volpage.split(".");
+
+      if (vol < 1 || vol > 8) {
+        return ref;
+      }
+
+      return `${romanNumerals[vol-1]} ${page}`;
+    };
+
+    const getBook = function(acronym) {
+      if (typeof acronym !== 'string' || !acronym.includes(' ')) {
+        return '';
+      }
+      const [book, number] = acronym.split(" ");
+      return book;
+    };
+
     return searchResultByVolpage
       ? html`
           <div class="search-results-container">
             ${this.searchResultHeadTemplate}
-            <table>
-              <tbody>
+            <div class="volpage-search-results">
                 ${searchResultByVolpage.map(
                   item => html`
-                    <tr>
-                      <td class="sutta_uid">
-                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                      </td>
-                      <td class="sutta_title">${item.name}</td>
-                      <td class="volpage">${item.volpage}</td>
-                      <td class="references">
+                    <div class="volpage-search-result-item">
+                      <div class="sutta_title">
+                        <a class="uid" href=${item.url}>
+                          <div>
+                            <p class="sutta_name">${item.name}</p>
+                            <div class="sutta_info">
+                              ${item.acronym || item.uid}  <p class="highlight">${icon.book}  ${item.volpage}</p>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+
+                      <div class="references">
                         ${item.filteredReferences && Array.isArray(item.filteredReferences)
                           ? item.filteredReferences?.map(
                               ref =>
@@ -482,16 +511,15 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                                     class="pts_reference"
                                     href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
                                     target="_blank"
-                                    >${ref.replace(/(^\s*)/g, '')}</a
+                                    >${getBook(item.acronym)} ${formatRef(ref.replace(/(^\s*)/g, ''))}</a
                                   >, `
                             )
                           : ''}
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   `
                 )}
-              </tbody>
-            </table>
+              </div>
             ${this.loadMoreButtonTemplate}
           </div>
         `
