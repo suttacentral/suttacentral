@@ -686,8 +686,10 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
+              <p>Click the Author ID below to see all texts by a single author. Or use the ID to limit search results to a single author, e.g. <code>author:sujato</code></p>
               <table>
                 <tbody>
+                  <tr><th>Author ID</th><th>Author name</th></tr>
                   ${searchResultByListAuthors.map(
                     item => html`
                       <tr>
