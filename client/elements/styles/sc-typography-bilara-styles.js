@@ -84,7 +84,7 @@ export const typographyBilaraStyles = css`
   }
 
   [data-tooltip]:hover {
-    cursor: help;
+    cursor: inherit;
   }
 
   /* references */
