@@ -553,9 +553,15 @@ export const SCPageSearchStyles = css`
     flex-wrap: nowrap;
   }
 
+  .volpage-search-result-item .highlight {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
   .volpage-search-result-item .references {
     margin-top: 0.3em;
-    font-size: var(--sc-font-size-s);
+    font-size: var(--sc-font-size-m);
   }
 
   md-filled-text-field {

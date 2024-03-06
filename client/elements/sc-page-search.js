@@ -497,11 +497,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                           <div>
                             <p class="sutta_name">${item.name}</p>
                             <div class="sutta_info">
-                              ${item.acronym || item.uid}  ${icon.book}  ${item.volpage}
+                              ${item.acronym || item.uid}  <p class="highlight">${icon.book}  ${item.volpage}</p>
                             </div>
                           </div>
                         </a>
-                      </div>  
+                      </div>
 
                       <div class="references">
                         ${item.filteredReferences && Array.isArray(item.filteredReferences)
