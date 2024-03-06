@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  sc-flask:
+    command: bash docker/entrypoint.debug.sh
+    env_file:
+      - server/env/.dev.env
+    volumes:
+      - ./server/:/opt/sc/sc-flask
+      - ./client/:/opt/sc/frontend
+    ports:
+      - '5000:5000'
+      - '5679:5679'
+
+  sc-nginx:
+    volumes:
+      - ./client/:/opt/sc/static
+    command: bash entry-point.dev.sh
+
+  sc-arangodb:
+    env_file:
+      - server/env/.dev.env
+    ports:
+      - '8529:8529'
+
+  sc-swagger:
+    ports:
+      - '8080:8080'
+
+  sc-frontend:
+    command: npm run dev
+    volumes:
+      - ./client/elements:/opt/sc/frontend/elements
+      - ./client/utils:/opt/sc/frontend/utils
+      - ./client/img:/opt/sc/frontend/img
+      - ./client/localization:/opt/sc/frontend/localization
+      - ./client/index.html:/opt/sc/frontend/index.html
+      - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
+      - ./client/webpack.config.js:/opt/sc/frontend/webpack.config.js
+      - ./client/localization/elements:/opt/sc/frontend/localization/elements
+    ports:
+      - '3000:3000'
+
