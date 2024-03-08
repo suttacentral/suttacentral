@@ -561,6 +561,67 @@ export const SCPageSearchStyles = css`
   md-filled-text-field {
     max-width: 720px;
   }
+
+  .author-list-header,
+  .author-list-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .author-id,
+  .author-name {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .author-name a {
+    font-family: var(--sc-sans-font);
+    font-weight: 400;
+    color: var(--sc-primary-color);
+  }
+
+  .author-id a {
+    color: var(--sc-on-primary-secondary-text-color);
+  }
+
+  .author-list-header {
+    font-weight: bold;
+    white-space: nowrap;
+    background-color: var(--sc-primary-background-color);
+  }
+
+  @media (max-width: 600px) {
+    .author-id,
+    .author-name {
+      flex-basis: 100%;
+    }
+
+    .author-list-header,
+    .author-list-item {
+      flex-direction: column;
+    }
+  }
+
+  .author-list {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    color: #333;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .author-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .author-id,
+  .author-name {
+    flex: 1;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -586,12 +647,11 @@ export const searchResultTableViewStyles = css`
     padding: 0.5em;
   }
 
-  @media (max-width: 900px) { 
+  @media (max-width: 900px) {
     th:last-child, td:last-child {
         display: block;
-        width: 100%;
     }
-}
+  }
 
   .uid {
     white-space: nowrap;
@@ -675,4 +735,6 @@ export const searchResultTableViewStyles = css`
   .volpage {
     white-space: nowrap;
   }
+
+
 `;
