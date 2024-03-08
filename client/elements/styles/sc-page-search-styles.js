@@ -575,6 +575,12 @@ export const SCPageSearchStyles = css`
     border-bottom: 1px solid #ccc;
   }
 
+  .byauthor-results-list a {
+    font-family: var(--sc-sans-font);
+    font-weight: 400;
+    color: var(--sc-primary-color);
+  }
+
   .author-id,
   .author-name {
     flex: 1;
@@ -594,7 +600,7 @@ export const SCPageSearchStyles = css`
   .author-list-header {
     font-weight: bold;
     white-space: nowrap;
-    background-color: var(--sc-primary-background-color);
+    background-color: var(--sc-tertiary-background-color);
   }
 
   @media (max-width: 600px) {
@@ -628,37 +634,160 @@ export const SCPageSearchStyles = css`
   .author-name {
     flex: 1;
   }
-`;
 
-export const searchResultTableViewStyles = css`
-  table {
-    margin: 3vw;
+  .byauthor-results-list {
     display: flex;
-    justify-content: center;
-    border-collapse: collapse;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
-  tr {
-    vertical-align: baseline;
-    border-bottom: 1px solid var(--sc-border-color);
+  .byauthor-result-item {
     display: flex;
-    flex-wrap:wrap;
-  }
-  tr:first-of-type {
-    border-top: 1px solid var(--sc-border-color);
-  }
-
-  td,
-  th {
-    padding: 0.5em;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
   }
 
-  @media (max-width: 900px) {
-    th:last-child, td:last-child {
-        display: block;
+  .byauthor-item-acronym,
+  .byauthor-item-title,
+  .byauthor-item-author {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .byauthor-results-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--sc-tertiary-background-color);
+    border-bottom: 1px solid #ccc;
+  }
+
+  .byauthor-header-acronym,
+  .byauthor-header-title,
+  .byauthor-header-author {
+    flex: 1;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    .byauthor-result-item {
+      flex-direction: column;
     }
   }
 
+  .ref-results-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .ref-result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .ref-item-uid,
+  .ref-item-title,
+  .ref-item-references {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .ref-item-uid a {
+    font-family: var(--sc-sans-font);
+    font-weight: 400;
+    color: var(--sc-primary-color);
+  }
+
+  .ref-results-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ref-results-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--sc-tertiary-background-color);
+    border-bottom: 1px solid #ccc;
+  }
+
+  .ref-header-uid,
+  .ref-header-title,
+  .ref-header-references {
+    flex: 1;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    .ref-result-item {
+      flex-direction: column;
+    }
+  }
+
+  .collection-results-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .collection-results-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--sc-tertiary-background-color);
+    border-bottom: 1px solid #ccc;
+  }
+
+  .collection-header-uid,
+  .collection-header-name,
+  .collection-header-author,
+  .collection-header-lang {
+    flex: 1;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  .collection-item-uid a {
+    font-family: var(--sc-sans-font);
+    font-weight: 400;
+    color: var(--sc-primary-color);
+  }
+
+  .collection-result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .collection-item-uid,
+  .collection-item-name,
+  .collection-item-author,
+  .collection-item-lang {
+    flex: 1;
+    padding: 10px;
+  }
+
+  @media (max-width: 600px) {
+    .collection-result-item {
+      flex-direction: column;
+    }
+  }
+`;
+
+export const searchResultTableViewStyles = css`
   .uid {
     white-space: nowrap;
     text-decoration: none;
@@ -741,6 +870,4 @@ export const searchResultTableViewStyles = css`
   .volpage {
     white-space: nowrap;
   }
-
-
 `;

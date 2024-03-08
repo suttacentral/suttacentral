@@ -425,19 +425,27 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
-              <table>
-                <tbody>
-                  ${searchResultByAuthor.map(
-                    item => html`
-                      <tr>
-                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
-                        <td>${item.heading?.title ? item.heading.title : ''}</td>
-                        <td>${item.author}</td>
-                      </tr>
-                    `
-                  )}
-                </tbody>
-              </table>
+              <div class="byauthor-results-list">
+                <div class="byauthor-results-header">
+                  <div class="byauthor-header-acronym">SuttaID</div>
+                  <div class="byauthor-header-title">Name</div>
+                  <div class="byauthor-header-author">Author</div>
+                </div>
+                ${searchResultByAuthor.map(
+                  item => html`
+                    <div class="byauthor-results-container">
+
+                      <div class="byauthor-result-item">
+                        <div class="byauthor-item-acronym">
+                          <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                        </div>
+                        <div class="byauthor-item-title">${item.heading?.title ? item.heading.title : ''}</div>
+                        <div class="byauthor-item-author">${item.author}</div>
+                      </div>
+                    </div>
+                  `
+                )}
+              </div>
               ${this.loadMoreButtonTemplate}
             </main>
           </div>
@@ -578,16 +586,21 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       ? html`
           <div class="search-results-container">
             ${this.searchResultHeadTemplate}
-            <table>
-              <tbody>
-                ${searchResultByReference.map(
-                  item => html`
-                    <tr>
-                      <td class="sutta_uid">
+            <div class="ref-results-list">
+              <div class="ref-results-header">
+                <div class="ref-header-uid">SuttaID</div>
+                <div class="ref-header-title">Name</div>
+                <div class="ref-header-references">References</div>
+              </div>
+              ${searchResultByReference.map(
+                item => html`
+                  <div class="ref-results-container">
+                    <div class="ref-result-item">
+                      <div class="ref-item-uid">
                         <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                      </td>
-                      <td class="sutta_title">${item.name}</td>
-                      <td class="references">
+                      </div>
+                      <div class="ref-item-title">${item.name}</div>
+                      <div class="ref-item-references">
                         ${item.filteredReferences && Array.isArray(item.filteredReferences)
                           ? item.filteredReferences?.map(
                               ref =>
@@ -602,12 +615,12 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                                   >, `
                             )
                           : ''}
-                      </td>
-                    </tr>
-                  `
-                )}
-              </tbody>
-            </table>
+                      </div>
+                    </div>
+                  </div>
+                `
+              )}
+            </div>
             ${this.loadMoreButtonTemplate}
           </div>
         `
@@ -653,20 +666,26 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
-              <table>
-                <tbody>
-                  ${searchResultByCollection.map(
-                    item => html`
-                      <tr>
-                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
-                        <td>${item.name || item.heading?.title}</td>
-                        <td>${item.author || item.author_uid}</td>
-                        <td>${this.#addHighlighting(item.full_lang)}</td>
-                      </tr>
-                    `
-                  )}
-                </tbody>
-              </table>
+              <div class="collection-results-container">
+                <div class="collection-results-header">
+                  <div class="collection-header-uid">SuttaID</div>
+                  <div class="collection-header-name">Name</div>
+                  <div class="collection-header-author">Author</div>
+                  <div class="collection-header-lang">Language</div>
+                </div>
+                ${searchResultByCollection.map(
+                  item => html`
+                    <div class="collection-result-item">
+                      <div class="collection-item-uid">
+                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                      </div>
+                      <div class="collection-item-name">${item.name || item.heading?.title}</div>
+                      <div class="collection-item-author">${item.author || item.author_uid}</div>
+                      <div class="collection-item-lang">${this.#addHighlighting(item.full_lang)}</div>
+                    </div>
+                  `
+                )}
+              </div>
               ${this.loadMoreButtonTemplate}
             </main>
           </div>
