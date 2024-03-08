@@ -685,28 +685,38 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultByListAuthors = this.visibleSearchResults;
     return searchResultByListAuthors
       ? html`
-          <div class="search-results-container">
+          <div class="search-results-container listauthors_results">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
-              <table>
-                <tbody>
-                  ${searchResultByListAuthors.map(
-                    item => html`
-                      <tr>
-                        <td>
-                          <a
-                            class="uid"
-                            href="/search?query=author:${item.author_uid}"
-                            @click=${() => this.#onAuthorNameClick(item.author_uid)}
-                            >${item.author_short}</a
-                          >
-                        </td>
-                        <td>${item.author}</td>
-                      </tr>
-                    `
-                  )}
-                </tbody>
-              </table>
+              <p>Click the Author ID below to see all texts by a single author. Or use the ID to limit search results to a single author, e.g. <code>author:sujato</code></p>
+              <div class="author-list">
+                <div class="author-list-header">
+                  <div class="author-id">Author ID</div>
+                  <div class="author-name">Author name</div>
+                </div>
+                ${searchResultByListAuthors.map(
+                  item => html`
+                    <div class="author-list-item">
+                      <div class="author-id">
+                        <a
+                          class="uid"
+                          href="/search?query=author:${item.author_uid}"
+                          @click=${() => this.#onAuthorNameClick(item.author_uid)}
+                          ><code>${item.author_uid}</code></a
+                        >
+                      </div>
+                      <div class="author-name">
+                        <a
+                          class="uid"
+                          tabindex="-1"
+                          href="/search?query=author:${item.author_uid}"
+                          @click=${() => this.#onAuthorNameClick(item.author_uid)}
+                        >${item.author}</a>
+                      </div>
+                    </div>
+                  `
+                )}
+              </div>
               ${this.loadMoreButtonTemplate}
             </main>
           </div>
