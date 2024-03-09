@@ -425,19 +425,24 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
-              <table>
-                <tbody>
-                  ${searchResultByAuthor.map(
-                    item => html`
-                      <tr>
-                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
-                        <td>${item.heading?.title ? item.heading.title : ''}</td>
-                        <td>${item.author}</td>
-                      </tr>
-                    `
-                  )}
-                </tbody>
-              </table>
+              <div class="search-results-table">
+                <div class="search-results-table-header">
+                  <div class="search-results-table-column font-weight-bold">SuttaID</div>
+                  <div class="search-results-table-column font-weight-bold">Name</div>
+                  <div class="search-results-table-column font-weight-bold">Author</div>
+                </div>
+                ${searchResultByAuthor.map(
+                  item => html`
+                    <div class="search-results-table-item">
+                      <div class="search-results-table-column">
+                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                      </div>
+                      <div class="search-results-table-column">${item.heading?.title ? item.heading.title : ''}</div>
+                      <div class="search-results-table-column">${item.author}</div>
+                    </div>
+                  `
+                )}
+              </div>
               ${this.loadMoreButtonTemplate}
             </main>
           </div>
@@ -578,16 +583,20 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       ? html`
           <div class="search-results-container">
             ${this.searchResultHeadTemplate}
-            <table>
-              <tbody>
-                ${searchResultByReference.map(
-                  item => html`
-                    <tr>
-                      <td class="sutta_uid">
+            <div class="search-results-table">
+              <div class="search-results-table-header">
+                <div class="search-results-table-column font-weight-bold">SuttaID</div>
+                <div class="search-results-table-column font-weight-bold">Name</div>
+                <div class="search-results-table-column font-weight-bold">References</div>
+              </div>
+              ${searchResultByReference.map(
+                item => html`
+                    <div class="search-results-table-item">
+                      <div class="search-results-table-column">
                         <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                      </td>
-                      <td class="sutta_title">${item.name}</td>
-                      <td class="references">
+                      </div>
+                      <div class="search-results-table-column">${item.name}</div>
+                      <div class="search-results-table-column">
                         ${item.filteredReferences && Array.isArray(item.filteredReferences)
                           ? item.filteredReferences?.map(
                               ref =>
@@ -602,12 +611,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                                   >, `
                             )
                           : ''}
-                      </td>
-                    </tr>
-                  `
-                )}
-              </tbody>
-            </table>
+                      </div>
+                    </div>
+                `
+              )}
+            </div>
             ${this.loadMoreButtonTemplate}
           </div>
         `
@@ -653,20 +661,26 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
-              <table>
-                <tbody>
-                  ${searchResultByCollection.map(
-                    item => html`
-                      <tr>
-                        <td><a class="uid" href=${item.url}>${item.acronym || item.uid}</a></td>
-                        <td>${item.name || item.heading?.title}</td>
-                        <td>${item.author || item.author_uid}</td>
-                        <td>${this.#addHighlighting(item.full_lang)}</td>
-                      </tr>
-                    `
-                  )}
-                </tbody>
-              </table>
+              <div class="search-results-table">
+                <div class="search-results-table-header">
+                  <div class="search-results-table-column font-weight-bold">SuttaID</div>
+                  <div class="search-results-table-column font-weight-bold">Name</div>
+                  <div class="search-results-table-column font-weight-bold">Author</div>
+                  <div class="search-results-table-column font-weight-bold">Language</div>
+                </div>
+                ${searchResultByCollection.map(
+                  item => html`
+                    <div class="search-results-table-item">
+                      <div class="search-results-table-column">
+                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                      </div>
+                      <div class="search-results-table-column">${item.name || item.heading?.title}</div>
+                      <div class="search-results-table-column">${item.author || item.author_uid}</div>
+                      <div class="search-results-table-column">${this.#addHighlighting(item.full_lang)}</div>
+                    </div>
+                  `
+                )}
+              </div>
               ${this.loadMoreButtonTemplate}
             </main>
           </div>
@@ -685,19 +699,19 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const searchResultByListAuthors = this.visibleSearchResults;
     return searchResultByListAuthors
       ? html`
-          <div class="search-results-container listauthors_results">
+          <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
               <p>Click the Author ID below to see all texts by a single author. Or use the ID to limit search results to a single author, e.g. <code>author:sujato</code></p>
-              <div class="author-list">
-                <div class="author-list-header">
-                  <div class="author-id">Author ID</div>
-                  <div class="author-name">Author name</div>
+              <div class="search-results-table">
+                <div class="search-results-table-header">
+                  <div class="search-results-table-column font-weight-bold">Author ID</div>
+                  <div class="search-results-table-column font-weight-bold">Author name</div>
                 </div>
                 ${searchResultByListAuthors.map(
                   item => html`
-                    <div class="author-list-item">
-                      <div class="author-id">
+                    <div class="search-results-table-item">
+                      <div class="search-results-table-column secondary-text-color">
                         <a
                           class="uid"
                           href="/search?query=author:${item.author_uid}"
@@ -705,7 +719,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                           ><code>${item.author_uid}</code></a
                         >
                       </div>
-                      <div class="author-name">
+                      <div class="search-results-table-column">
                         <a
                           class="uid"
                           tabindex="-1"
