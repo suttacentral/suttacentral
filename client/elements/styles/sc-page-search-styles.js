@@ -567,224 +567,6 @@ export const SCPageSearchStyles = css`
   md-filled-text-field {
     max-width: 720px;
   }
-
-  .author-list-header,
-  .author-list-item {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .byauthor-results-list a {
-    font-family: var(--sc-sans-font);
-    font-weight: 400;
-    color: var(--sc-primary-color);
-  }
-
-  .author-id,
-  .author-name {
-    flex: 1;
-    padding: 10px;
-  }
-
-  .author-name a {
-    font-family: var(--sc-sans-font);
-    font-weight: 400;
-    color: var(--sc-primary-color);
-  }
-
-  .author-id a {
-    color: var(--sc-on-primary-secondary-text-color);
-  }
-
-  .author-list-header {
-    font-weight: bold;
-    white-space: nowrap;
-    background-color: var(--sc-tertiary-background-color);
-  }
-
-  @media (max-width: 600px) {
-    .author-id,
-    .author-name {
-      flex-basis: 100%;
-    }
-
-    .author-list-header,
-    .author-list-item {
-      flex-direction: column;
-    }
-  }
-
-  .author-list {
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    color: #333;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .author-list-item:last-child {
-    border-bottom: none;
-  }
-
-  .author-id,
-  .author-name {
-    flex: 1;
-  }
-
-  .byauthor-results-list {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .byauthor-result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .byauthor-item-acronym,
-  .byauthor-item-title,
-  .byauthor-item-author {
-    flex: 1;
-    padding: 10px;
-  }
-
-  .byauthor-results-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: var(--sc-tertiary-background-color);
-    border-bottom: 1px solid #ccc;
-  }
-
-  .byauthor-header-acronym,
-  .byauthor-header-title,
-  .byauthor-header-author {
-    flex: 1;
-    padding: 10px;
-    font-weight: bold;
-  }
-
-  @media (max-width: 600px) {
-    .byauthor-result-item {
-      flex-direction: column;
-    }
-  }
-
-  .ref-results-list {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .ref-result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .ref-item-uid,
-  .ref-item-title,
-  .ref-item-references {
-    flex: 1;
-    padding: 10px;
-  }
-
-  .ref-item-uid a {
-    font-family: var(--sc-sans-font);
-    font-weight: 400;
-    color: var(--sc-primary-color);
-  }
-
-  .ref-results-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ref-results-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: var(--sc-tertiary-background-color);
-    border-bottom: 1px solid #ccc;
-  }
-
-  .ref-header-uid,
-  .ref-header-title,
-  .ref-header-references {
-    flex: 1;
-    padding: 10px;
-    font-weight: bold;
-  }
-
-  @media (max-width: 600px) {
-    .ref-result-item {
-      flex-direction: column;
-    }
-  }
-
-  .collection-results-container {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .collection-results-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: var(--sc-tertiary-background-color);
-    border-bottom: 1px solid #ccc;
-  }
-
-  .collection-header-uid,
-  .collection-header-name,
-  .collection-header-author,
-  .collection-header-lang {
-    flex: 1;
-    padding: 10px;
-    font-weight: bold;
-  }
-
-  .collection-item-uid a {
-    font-family: var(--sc-sans-font);
-    font-weight: 400;
-    color: var(--sc-primary-color);
-  }
-
-  .collection-result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .collection-item-uid,
-  .collection-item-name,
-  .collection-item-author,
-  .collection-item-lang {
-    flex: 1;
-    padding: 10px;
-  }
-
-  @media (max-width: 600px) {
-    .collection-result-item {
-      flex-direction: column;
-    }
-  }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -833,41 +615,56 @@ export const searchResultTableViewStyles = css`
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
-  .highlightShrink {
-    display: -webkit-box;
-    overflow: hidden;
-
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  .parallels-link {
-    text-decoration: none !important;
-    color: var(--sc-on-primary-secondary-text-color);
-    margin-top: 8px;
-    padding: 12px;
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
-  }
-
-  .parallels-link:hover {
-    background-color: var(--sc-tertiary-background-color);
-  }
-
-  .parallels-btn-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .item-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   .volpage {
     white-space: nowrap;
+  }
+
+  .search-results-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-results-table-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--sc-tertiary-background-color);
+    border-bottom: 1px solid #ccc;
+  }
+
+  .search-results-table-column {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .search-results-table-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .search-results-table-item a {
+    font-family: var(--sc-sans-font);
+    font-weight: 400;
+    color: var(--sc-primary-color);
+  }
+
+  .font-weight-bold {
+    font-weight: bold;
+  }
+
+  .secondary-text-color a {
+    color: var(--sc-on-primary-secondary-text-color);
+  }
+
+  @media (max-width: 600px) {
+    .search-results-table-item,
+    .search-results-table-header {
+      flex-direction: column;
+    }
   }
 `;
