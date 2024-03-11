@@ -330,7 +330,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #isSpecialSearch(query) {
-    return /(author:|in:|title:|volpage:|ref:)/.test(query);
+    return /(author:|in:|title:|volpage:|ref:|lang:)/.test(query);
   }
 
   #removeSpecialKeywordsFromSearchTerms() {
