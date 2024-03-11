@@ -595,7 +595,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const linkTemplate = `/${priorityAuthor ? this.language : 'pli'}/${
       priorityAuthor || 'ms'
     }?${linkParamPart}`;
-console.log(searchResultByReference);
+
     return searchResultByReference
       ? html`
           <div class="search-results-container">
