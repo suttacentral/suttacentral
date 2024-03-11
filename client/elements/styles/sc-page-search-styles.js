@@ -179,21 +179,41 @@ export const SCPageSearchStyles = css`
     width: 20px;
   }
 
+  .sutta-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badges {
+    margin-left: 0.3em;
+    margin-bottom: 0.5em;
+  }
+
+  @media (max-width: 600px) {
+    .sutta-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .badges {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
   .search-result-division {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-s);
     font-weight: 400;
 
-    overflow: hidden;
+    margin:0;
 
-    margin: 0;
-
-    white-space: nowrap;
+    white-space: normal;
     text-overflow: ellipsis;
 
     color: var(--sc-on-primary-secondary-text-color);
-
-    height: 1.5rem;
   }
 
   .search-result-snippet {
@@ -365,6 +385,14 @@ export const SCPageSearchStyles = css`
     width: 100%;
   }
 
+  md-filled-tonal-icon-button {
+    --md-filled-tonal-icon-button-container-color: var(--sc-tertiary-background-color);
+  }
+
+  md-filled-tonal-icon-button:hover {
+    --md-filled-tonal-icon-button-container-color: var(--sc-primary-color-light-transparent);
+  }
+
   #load-more {
     padding: 24px 0;
     display: flex;
@@ -461,9 +489,11 @@ export const SCPageSearchStyles = css`
   }
 
   .navigation-links {
-    margin-bottom: 0.3em;
+    margin: 0.3em 0;
     font-size: var(--sc-font-size-s);
     color: var(--sc-on-primary-secondary-text-color);
+    background-color: var(--sc-tertiary-background-color);
+    border-radius: 16px;
   }
 
   .navigation-links a {
@@ -567,6 +597,11 @@ export const SCPageSearchStyles = css`
   md-filled-text-field {
     max-width: 720px;
   }
+
+  .item-head {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 export const searchResultTableViewStyles = css`
@@ -576,7 +611,6 @@ export const searchResultTableViewStyles = css`
   }
 
   .uid:hover {
-    text-decoration: underline;
     text-decoration-color: var(--sc-primary-color);
     text-decoration-thickness: 0.15em;
     text-underline-offset: 0.15em;
@@ -638,6 +672,9 @@ export const searchResultTableViewStyles = css`
   .search-results-table-column {
     flex: 1;
     padding: 10px;
+    font-family: var(--sc-sans-font);
+    font-weight: 400;
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   .search-results-table-item {
@@ -651,6 +688,15 @@ export const searchResultTableViewStyles = css`
     font-family: var(--sc-sans-font);
     font-weight: 400;
     color: var(--sc-primary-color);
+  }
+
+  .ref-filter-results {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .refs a {
+    color: var(--sc-on-primary-primary-text-color);
   }
 
   .font-weight-bold {

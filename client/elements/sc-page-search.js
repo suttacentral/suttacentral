@@ -3,6 +3,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { until } from 'lit/directives/until.js';
 import '@material/web/button/filled-button';
 import '@material/web/iconbutton/icon-button';
+import '@material/web/iconbutton/filled-tonal-icon-button';
 import '@material/web/textfield/filled-text-field';
 import '@material/web/switch/switch';
 
@@ -165,7 +166,19 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     `;
   }
 
+  #isSpecialSearch() {
+    return this.#isSearchByAuthor() ||
+      this.#isSearchByVolpage() ||
+      this.#isSearchByCollection() ||
+      this.#isSearchByListAuthors() ||
+      this.#isSearchByReference();
+  }
+
   #searchOptionsTemplate() {
+    if (this.#isSpecialSearch()) {
+      return '';
+    }
+
     return html`
       <div class="search-options">
         <label>
@@ -335,10 +348,15 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         tabindex=${this.tabIndex}
       >
         <div class="item-head">
-          <div>
+          <div class="sutta-info">
             <a class="search-result-link" href=${this._calculateLink(item)}>
               <div class="primary">
-                <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
+                <div class="sutta-title">
+                  <h2 class="search-result-title">${unsafeHTML(this.#calculateTitle(item))}</h2>
+                  <div class="badges">
+                    ${this.badgeTemplate(item)}
+                  </div>
+                </div>
                 <div class="all-dictionaries">
                   <span>All dictionaries</span>
                   ${icon.arrow_right}
@@ -348,7 +366,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                 <p class="search-result-division">${unsafeHTML(this.#calculateDivision(item))}</p>
               </div>
             </a>
-            ${this.badgeTemplate(item)}
             <div class="navigation-links">
               ${until(this.#generateNavigationLinks(item.uid), html`Loading...`)}
             </div>
@@ -400,11 +417,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       return '';
     }
     return html`
-      <md-icon-button
+      <md-filled-tonal-icon-button
         href=${this.#calculateParallelsLink(item)}
       >
         ${icon.parallels}
-      </md-icon-button>
+      </md-filled-tonal-icon-button>
     `;
   }
 
@@ -429,17 +446,17 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                 <div class="search-results-table-header">
                   <div class="search-results-table-column font-weight-bold">SuttaID</div>
                   <div class="search-results-table-column font-weight-bold">Name</div>
-                  <div class="search-results-table-column font-weight-bold">Author</div>
                 </div>
                 ${searchResultByAuthor.map(
                   item => html`
-                    <div class="search-results-table-item">
-                      <div class="search-results-table-column">
-                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                    <a class="uid" href=${item.url}>
+                      <div class="search-results-table-item">
+                        <div class="search-results-table-column">
+                          ${item.acronym || item.uid}
+                        </div>
+                        <div class="search-results-table-column">${item.heading?.title ? item.heading.title : ''}</div>
                       </div>
-                      <div class="search-results-table-column">${item.heading?.title ? item.heading.title : ''}</div>
-                      <div class="search-results-table-column">${item.author}</div>
-                    </div>
+                    </a>
                   `
                 )}
               </div>
@@ -584,35 +601,31 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             ${this.searchResultHeadTemplate}
             <div class="search-results-table">
-              <div class="search-results-table-header">
-                <div class="search-results-table-column font-weight-bold">SuttaID</div>
-                <div class="search-results-table-column font-weight-bold">Name</div>
-                <div class="search-results-table-column font-weight-bold">References</div>
-              </div>
               ${searchResultByReference.map(
                 item => html`
-                    <div class="search-results-table-item">
-                      <div class="search-results-table-column">
-                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
-                      </div>
-                      <div class="search-results-table-column">${item.name}</div>
-                      <div class="search-results-table-column">
-                        ${item.filteredReferences && Array.isArray(item.filteredReferences)
-                          ? item.filteredReferences?.map(
-                              ref =>
-                                html`<a
-                                    class="pts_reference"
-                                    href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    >${ref.replace(/(^\s*)/g, '') === query
-                                      ? this.#addHighlighting(ref.replace(/(^\s*)/g, ''))
-                                      : ref.replace(/(^\s*)/g, '')}</a
-                                  >, `
-                            )
-                          : ''}
+                  <div class="search-results-table-item ref-filter-results">
+                    <div class="search-results-table-column">
+                      <a class="uid" href=${item.url}>${item.acronym || item.uid} — ${item.name}</a>
+                    </div>
+                    <div class="search-results-table-column">
+                      <div class="refs">
+                      ${item.filteredReferences && Array.isArray(item.filteredReferences)
+                        ? item.filteredReferences?.map(
+                            ref =>
+                              html`<a
+                                  class="pts_reference"
+                                  href="/${item.uid}${linkTemplate}${ref.replace(/(^\s*)/g, '')}"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  >${ref.replace(/(^\s*)/g, '') === query
+                                    ? this.#addHighlighting(ref.replace(/(^\s*)/g, ''))
+                                    : ref.replace(/(^\s*)/g, '')}</a
+                                >, `
+                          )
+                        : ''}
                       </div>
                     </div>
+                  </div>
                 `
               )}
             </div>
@@ -631,7 +644,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         const filteredReferences = [];
         if (references) {
           for (const ref of references) {
-            if (ref.includes('vns')) {
+            if (ref.includes('pts-vp-pli')) {
               filteredReferences.push(ref);
             }
           }
@@ -670,14 +683,16 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                 </div>
                 ${searchResultByCollection.map(
                   item => html`
-                    <div class="search-results-table-item">
-                      <div class="search-results-table-column">
-                        <a class="uid" href=${item.url}>${item.acronym || item.uid}</a>
+                    <a class="uid" href=${item.url}>
+                      <div class="search-results-table-item">
+                        <div class="search-results-table-column">
+                          ${item.acronym || item.uid}
+                        </div>
+                        <div class="search-results-table-column">${item.name || item.heading?.title}</div>
+                        <div class="search-results-table-column">${item.author || item.author_uid}</div>
+                        <div class="search-results-table-column">${item.full_lang}</div>
                       </div>
-                      <div class="search-results-table-column">${item.name || item.heading?.title}</div>
-                      <div class="search-results-table-column">${item.author || item.author_uid}</div>
-                      <div class="search-results-table-column">${this.#addHighlighting(item.full_lang)}</div>
-                    </div>
+                    </a>
                   `
                 )}
               </div>
@@ -703,31 +718,27 @@ export class SCPageSearch extends LitLocalized(LitElement) {
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
               <p>Click the Author ID below to see all texts by a single author. Or use the ID to limit search results to a single author, e.g. <code>author:sujato</code></p>
-              <div class="search-results-table">
+              <div class="search-results-table listauthorsResult">
                 <div class="search-results-table-header">
                   <div class="search-results-table-column font-weight-bold">Author ID</div>
                   <div class="search-results-table-column font-weight-bold">Author name</div>
                 </div>
                 ${searchResultByListAuthors.map(
                   item => html`
-                    <div class="search-results-table-item">
-                      <div class="search-results-table-column secondary-text-color">
-                        <a
-                          class="uid"
-                          href="/search?query=author:${item.author_uid}"
-                          @click=${() => this.#onAuthorNameClick(item.author_uid)}
-                          ><code>${item.author_uid}</code></a
-                        >
+                    <a
+                      class="uid"
+                      href="/search?query=author:${item.author_uid}"
+                      @click=${() => this.#onAuthorNameClick(item.author_uid)}
+                    >
+                      <div class="search-results-table-item authorInfo">
+                        <div class="search-results-table-column">
+                          ${item.author_uid}
+                        </div>
+                        <div class="search-results-table-column">
+                          ${item.author}
+                        </div>
                       </div>
-                      <div class="search-results-table-column">
-                        <a
-                          class="uid"
-                          tabindex="-1"
-                          href="/search?query=author:${item.author_uid}"
-                          @click=${() => this.#onAuthorNameClick(item.author_uid)}
-                        >${item.author}</a>
-                      </div>
-                    </div>
+                    </a>
                   `
                 )}
               </div>
