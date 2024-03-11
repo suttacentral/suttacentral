@@ -337,6 +337,13 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.searchQuery = this.searchQuery.replace(/OR/g, ' ').replace(/AND/g, ' ');
   }
 
+  async #performInstantSearch() {
+    this.#removeSpecialKeywordsFromSearchTerms();
+    if (!this.#isSpecialSearch(this.searchQuery)) {
+      await this.#instantSearch();
+    }
+  }
+
   async #keyupHandler(e) {
     if (e.key === 'Enter') {
       return;
@@ -369,10 +376,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         await this.#searchByOrama();
         this.items = [...this.searchResult];
       } else {
-        this.#removeSpecialKeywordsFromSearchTerms();
-        if (!this.#isSpecialSearch(this.searchQuery)) {
-          this.#instantSearch();
-        }
+        await this.#performInstantSearch();
       }
     } finally {
       this.loadingData = false;
