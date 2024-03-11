@@ -329,6 +329,14 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
   }
 
+  #isSpecialSearch(query) {
+    return /(author:|in:|title:|volpage:|ref:)/.test(query);
+  }
+
+  #removeSpecialKeywordsFromSearchTerms() {
+    this.searchQuery = this.searchQuery.replace(/OR/g, ' ').replace(/AND/g, ' ');
+  }
+
   async #keyupHandler(e) {
     if (e.key === 'Enter') {
       return;
@@ -361,7 +369,10 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         await this.#searchByOrama();
         this.items = [...this.searchResult];
       } else {
-        this.#instantSearch();
+        this.#removeSpecialKeywordsFromSearchTerms();
+        if (!this.#isSpecialSearch(this.searchQuery)) {
+          this.#instantSearch();
+        }
       }
     } finally {
       this.loadingData = false;
