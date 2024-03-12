@@ -175,10 +175,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #searchOptionsTemplate() {
-    if (this.#isSpecialSearch()) {
-      return '';
-    }
-
     return html`
       <div class="search-options">
         <label>

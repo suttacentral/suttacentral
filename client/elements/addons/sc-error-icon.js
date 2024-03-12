@@ -42,10 +42,10 @@ export class SCErrorIcon extends LitLocalized(LitElement) {
         title: 'generalError',
         message: 'generalError',
       },
-      'page-no-found': {
+      'page-not-found': {
         image: 'pagenotfound',
-        title: 'pageNoFound',
-        message: 'pageNoFound',
+        title: 'pageNotFound',
+        message: 'pageNotFound',
       },
       'data-load-error': {
         image: 'dataloaderror',
