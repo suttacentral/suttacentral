@@ -514,7 +514,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   normalViewTemplate() {
     return html`
       <div class="division-content main">
-        ${this.hasError() ? html` <sc-error-icon type="no-network"></sc-error-icon> ` : ''}
+        ${this.hasError() ? html` <sc-error-icon type="page-not-found"></sc-error-icon> ` : ''}
         ${this.suttaplexData &&
         repeat(
           this.suttaplexData,
