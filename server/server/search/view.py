@@ -28,6 +28,11 @@ class InstantSearch(Resource):
             default_languages
         )
 
+        try:
+            selected_languages = json.loads(selected_languages)
+        except json.JSONDecodeError:
+            selected_languages = json.loads(default_languages)
+
         if query is None:
             return json.dumps({'error': '\'query\' param is required'}), 422
 

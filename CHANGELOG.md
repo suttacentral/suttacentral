@@ -1,5 +1,121 @@
 # SuttaCentral ChangeLog
 
+## 2024.3.13
+
+- Enhance: list authors should only list authors for the manuscripts and languages selected #2971
+
+## 2024.3.12
+
+- Fix: Incorrect "You're offline" message for invalid URLs.
+
+## 2024.3.11
+
+- Redesign search result html based on feedback.
+- Enhance: In the Algolia search, operators should not be searched as keywords.
+
+## 2024.3.9
+
+- Redesign search results, use div instead of table.
+
+## 2024.3.8
+
+- Put UIDs in list authors table.
+
+## 2024.3.6
+
+- improve the volpage results IDEAS.
+- change pointers as mentioned in issue.
+- Adjust sc voice links.
+
+## 2024.3.5
+
+- Adjust search button event code logic.
+- Use @web/test-runner to instead of jest and upgrade dependencies.
+- localize publication edition page.
+
+## 2024.3.4
+
+- Refactor search functionality and Redux actions.
+
+## 2023.3.2
+
+- Optimize volpage filter search logic.
+- localize /pali-tipitaka.
+
+## 2024.3.1
+
+- Update sc voice link for segmented text page.
+- Put unique page title of static pages first in tab title.
+
+## 2024.2.29
+
+- Initial removal of tool tips.
+- Enhance: Add a search button to the input field on SERP.
+- Enhance: adjust the order of page title structure.
+
+## 2024.2.28
+
+- Add author uid parameter to SC Voice link of text page.
+- In search, if the command is list authors, highlight snippet sorting is not performed.
+- Update SC Voice links.
+
+## 2024.2.27
+
+- Switch the conversion character set to ISOPali.
+- fix link style on donate-now.
+- Fix the style problem of navigation card on mobile phone.
+
+## 2024.2.26
+
+- Update filter overlay documentation.
+- add missing localization and remove title attributes.
+- Bump string constants.
+- Remove headless Chrome from dependencies.
+- Add a little high level intro to the README.
+- Remove Unused Numpy Dependency.
+
+## 2024.2.25
+
+- Add i18n for previous/next buttons.
+
+## 2024.2.23
+
+- Refactor sc-site-layout.js.
+- Fix: Instant search is no longer instant enough.
+
+## 2024.2.22
+
+- Add padding around search result breadcrumbs.
+- Clicking outside of "views" overlay doesn't always close it.
+
+## 2024.2.21
+
+- Added Marathi localization support.
+- Fix broken package-lock file.
+
+## 2024.2.20
+
+- Fix bug regarding volpage filter, adjust highlight clips sort logic.
+
+## 2024.2.19
+
+- Search icons "languages" and "filter" are missing the yellow underline when open.
+
+## 2024.2.16
+
+- localize sc-static-donation-success.js.
+- Fix: Some search excerpts are out of order on database SERP page.
+- Hide the SC Voice button when opening legacy text pages.
+- Hide the SC Voice button when opening suttaplex card list.
+
+## 2024.2.10
+
+- Fix: Partial Search can't find ekībhāva.
+
+## 2024.2.7
+
+- Open the SC Voice link in a new browser tab.
+
 ## 2024.2.6
 
 - Add SC Voice icon in the segmented text page.
