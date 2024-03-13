@@ -30,7 +30,7 @@ FILTER a.uid != 'test'
 LET translations = (
     FOR d IN instant_search
         SEARCH d.author_uid == a.uid
-        FILTER d.is_segmented == False AND d.author_uid != null
+        FILTER d.is_segmented == False AND d.author_uid != null AND d.lang IN @lang
         LIMIT 1
     RETURN d.uid
 )
@@ -1080,6 +1080,7 @@ def generate_aql_for_list_authors_command(search_aql, aql_condition_part, query_
     if query_param['query'] == constant.CMD_LIST_AUTHORS:
         search_aql = LIST_AUTHORS
         query_param['query'] = ''
+        query_param['lang'] = query_param['selected_languages']
     return query_param, search_aql, aql_condition_part
 
 
