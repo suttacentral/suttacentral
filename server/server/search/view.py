@@ -30,7 +30,8 @@ class InstantSearch(Resource):
 
         try:
             selected_languages = json.loads(selected_languages)
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            logging.error(f"JSONDecodeError for selected_languages: {e}; falling back to default_languages.")
             selected_languages = json.loads(default_languages)
 
         if query is None:
