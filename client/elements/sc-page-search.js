@@ -775,6 +775,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     }
     if (this.displayedLanguages !== state.displayedLanguages) {
       this.displayedLanguages = state.searchOptions.displayedLanguages;
+      this.requestUpdate();
     }
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
@@ -794,7 +795,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       if (!item) {
         return;
       }
-      this.totalLoadedResults++;
+      this.totalLoadedResults += 1;
       this.allSearchResults.push(item);
       // If the filter fits, add to visible items
       if (this.#belongsToFilterScope(item)) {
@@ -809,7 +810,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #loadNextPage() {
-    this.currentPage++;
+    this.currentPage += 1;
     reduxActions.initiateSearch({
       limit: this.resultsPerLoad,
       offset: this.currentPage * this.resultsPerLoad,
