@@ -334,7 +334,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #removeSpecialKeywordsFromSearchTerms() {
-    this.searchQuery = this.searchQuery.replace(/OR/g, ' ').replace(/AND/g, ' ');
+    this.searchQuery = this.searchQuery.replace(/OR/g, ' ').replace(/AND/g, ' ').replace(/NOT/g, ' ');
   }
 
   async #performInstantSearch() {
