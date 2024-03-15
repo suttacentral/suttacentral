@@ -177,6 +177,16 @@ export class reduxActions {
     });
   }
 
+  static showToc(tableOfContents) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_TOC_BUTTON_STATE',
+      payload: {
+        tableOfContents,
+        disableToCListStyle: false,
+      },
+    });
+  }
+
   static changeDisplaySuttaInfoState(displayState) {
     store.dispatch({
       type: 'CHANGE_DISPLAY_SUTTA_INFO_STATE',
