@@ -198,7 +198,7 @@ export class SCStaticHomePage extends SCStaticPage {
     return html`
       <h2>${unsafeHTML(this.localize('home:15'))}</h2>
       <a class="block-link" href="https://suttacentral.github.io/awesome/">
-        <span>More awesome SuttaCentral things</span>
+        <span>${unsafeHTML(this.localize('home:48'))}</span>
         ${icon.arrow_right}
       </a>
     `;

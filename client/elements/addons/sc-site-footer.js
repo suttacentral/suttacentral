@@ -104,6 +104,9 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
                 <a class="block-link" href="/subjects">${this.localize('footer:subjects')}</a>
               </li>
               <li>
+                <a class="block-link" href="/pali-tipitaka">${this.localize('footer:paliCanonOverview')}</a>
+              </li>
+              <li>
                 <a class="block-link" href="/editions">${this.localize('footer:editions')}</a>
               </li>
             </ul>
