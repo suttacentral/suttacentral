@@ -592,7 +592,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.#suttaMetaTextChanged();
     this.shadowRoot.querySelector('#tools_menu').classList
       .toggle('contextToolbarExpand', this.displayToolButton);
-    this.#toggleElementVisibility('btnShowToC', this.displayToolButton);
     this.#toggleElementVisibility('btnTools', this.displayToolButton);
     this.#toggleElementVisibility('btnInfo', this.displayToolButton);
     this.#toggleElementVisibility('btnShowParallels', this.displayToolButton);
