@@ -304,6 +304,17 @@ export const SCPageSearchStyles = css`
     }
   }
 
+  @media (max-width: 680px) {
+    .sutta-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .badges {
+      display: none;
+    }
+  }
+
   .dictionary dfn {
     font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-xl);
