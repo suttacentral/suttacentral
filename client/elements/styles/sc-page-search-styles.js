@@ -307,7 +307,7 @@ export const SCPageSearchStyles = css`
   @media (max-width: 680px) {
     .sutta-title {
       display: flex;
-      flex-direction: column
+      flex-direction: column;
     }
 
     .badges {
