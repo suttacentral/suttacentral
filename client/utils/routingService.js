@@ -118,7 +118,8 @@ export default class RoutingService {
       if (route && !isJustHashChange) {
         e.preventDefault();
         if (this.location.pathname !== url.pathname) {
-          this.push(url.pathname);
+          const newPath = url.pathname + (url.search || "");
+          this.push(newPath);
         }
       }
     }
