@@ -94,6 +94,10 @@ export class SCStaticDonateNow extends LitLocalized(LitElement) {
         );
         margin-right: 10px;
         min-width: 120px;
+      }
+
+      md-filled-select::part(menu) {
+        position: relative;
         z-index: 9999;
       }
 
