@@ -1,0 +1,21 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Server",
+      "type": "debugpy",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/server/server",
+      "envFile": "${workspaceFolder}/server/env/.base.env",
+      "env": {
+        "SERVER_ADDRESS": "http://localhost",
+        "ARANGO_HOST": "localhost",
+        "ENVIRONMENT": "development",
+      },
+      "module": "app"
+    }
+  ]
+}
