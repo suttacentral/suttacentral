@@ -36,6 +36,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     items: { type: Array },
     siteLanguage: { type: String },
     loadingData: { type: Boolean },
+    displayedLanguages: { type: Array },
   };
 
   constructor() {
@@ -49,6 +50,8 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     ]);
     this.searchQuery = store.getState().searchQuery || '';
     this.siteLanguage = store.getState().siteLanguage;
+    this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+    this.displayedLanguagesCheckedCount = this.displayedLanguages.filter(item => item.checked === true).length;
     this.loadingData = false;
     this.searchResult = [];
   }
@@ -58,6 +61,14 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
       this.#initInstantSearchData();
+    }
+
+    let stateDisplayedLanguagesCheckedCount
+      = state.searchOptions.displayedLanguages.filter(item => item.checked === true).length;
+    if (this.displayedLanguagesCheckedCount !== stateDisplayedLanguagesCheckedCount) {
+      this.displayedLanguagesCheckedCount = stateDisplayedLanguagesCheckedCount;
+      this.displayedLanguages = state.searchOptions.displayedLanguages;
+      this.requestUpdate();
     }
   }
 
@@ -178,7 +189,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
         <div class="ss-header">${this.#headerTemplate()}</div>
         ${
           extractSelectedLangsName(
-            store.getState().searchOptions.displayedLanguages,
+            this.displayedLanguages,
             this.localize('autocomplete:change'),
             false
           )
@@ -505,9 +516,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #computeAlgoliaSearchLangFilter() {
-    let selectedLangs = store
-      .getState()
-      .searchOptions.displayedLanguages.filter(item => item.checked);
+    let selectedLangs = this.displayedLanguages.filter(item => item.checked);
     selectedLangs = selectedLangs.map(item => item.uid);
     let langFilters = selectedLangs.map(lang => `lang:${lang}`).join(' OR ');
     if (selectedLangs.length === 0 || !langFilters) {
