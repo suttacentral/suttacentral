@@ -38,7 +38,7 @@ class SecondMigration(Migration):
                 "stemming": False,
                 "stopwords": []
             },
-            ["frequency", "norm", "position"]
+            ["frequency", "norm", "position", "offset"]
         )
 
         db.create_analyzer(

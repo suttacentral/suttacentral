@@ -4,6 +4,7 @@ import re
 from common.queries import SUTTAPLEX_LIST
 from search import dictionaries, constant
 from unidecode import unidecode
+import unicodedata
 
 INSTANT_SEARCH_VIEW = 'instant_search'
 AQL_INSTANT_SEARCH_FIRST_PART = 'FOR d IN instant_search '
@@ -1303,10 +1304,7 @@ def cut_highlight(content, hit, query, is_segmented_text):
             positions = [m.start() for m in re.finditer(
                 r"\b" + query + r"\b", content, re.I)]
             if not positions and (is_pali(content.lower()) or is_pali(query.lower())):
-                content = unidecode(content)
-                query = unidecode(query)
-                positions = [m.start() for m in re.finditer(
-                    r"\b" + query + r"\b", content, re.I)]
+                positions = search_string(query, content)
 
         if content is not None and positions:
             highlight = ''
@@ -1331,15 +1329,27 @@ def cut_highlight(content, hit, query, is_segmented_text):
                     highlight = ' '.join(sentences) or paragraph
                     highlight = f'{highlight}'
 
-                matching_string = get_matched_string(query, highlight)
+                matching_string = content[position:position + len(query)]
                 highlight = re.sub(
-                    query,
+                    matching_string,
                     f'<strong class="highlight">{matching_string}</strong>',
                     highlight,
                     flags=re.I
                 )
                 hit['highlight']['content'].append(highlight)
                 hit['highlight']['content'] = list(set(hit['highlight']['content']))
+
+
+def normalize_string(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s)
+                   if unicodedata.category(c) != 'Mn')
+
+
+def search_string(query, content):
+    normalized_query = normalize_string(query)
+    normalized_content = normalize_string(content)
+    matches = re.finditer(r'\b' + normalized_query + r'\b', normalized_content, re.I)
+    return [match.start() for match in matches]
 
 
 def extract_number(html):
