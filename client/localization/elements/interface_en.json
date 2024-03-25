@@ -21,7 +21,7 @@
   "error:generalError": "General Error",
   "error:networkError": "Network error",
   "error:offline": "You're offline.",
-  "error:pageNotFound": "Page No Found",
+  "error:pageNotFound": "Page Not Found",
   "error:translationDataLoadError": "Translation Data Load Error",
   "interface:aNewBeginning": "SuttaCentral 2018",
   "interface:aNewBeginningTitle": "SuttaCentral 2018",

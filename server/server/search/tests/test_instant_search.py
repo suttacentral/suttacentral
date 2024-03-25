@@ -5,7 +5,9 @@ from search.instant_search import (
     extract_query_conditions,
     is_chinese,
     extract_lang_param,
-    extract_not_param
+    extract_not_param,
+    search_string,
+    normalize_string
 )
 
 
@@ -81,17 +83,17 @@ def test_extract_param():
 
 
 def test_is_chinese():
-    assert is_chinese('四念处') == True
-    assert is_chinese('四正勤') == True
-    assert is_chinese('四神足') == True
-    assert is_chinese('五根') == True
-    assert is_chinese('五力') == True
-    assert is_chinese('七觉支') == True
-    assert is_chinese('八正道') == True
-    assert is_chinese('Buddha') == False
-    assert is_chinese('Metta') == False
-    assert is_chinese('八正道 AND 四圣谛') == True
-    assert is_chinese('in:sa 如实知见') == False
+    assert is_chinese('四念处') is True
+    assert is_chinese('四正勤') is True
+    assert is_chinese('四神足') is True
+    assert is_chinese('五根') is True
+    assert is_chinese('五力') is True
+    assert is_chinese('七觉支') is True
+    assert is_chinese('八正道') is True
+    assert is_chinese('Buddha') is False
+    assert is_chinese('Metta') is False
+    assert is_chinese('八正道 AND 四圣谛') is True
+    assert is_chinese('in:sa 如实知见') is False
 
 
 def test_extract_lang_param():
@@ -103,3 +105,19 @@ def test_extract_lang_param():
 
 def test_extract_not_param():
     assert extract_not_param('NOT cat') == 'cat'
+
+
+def test_search_string():
+    assert search_string('rupa', 'Yañcāvuso, cakkhu ye ca rūpā') == [24]
+    assert search_string('rupa', 'Rūpā saddā rasā gandhā,') == [0]
+    assert search_string('Rūpā', 'Rūpā saddā rasā gandhā,') == [0]
+    assert search_string('Rūpā', 'Rūpa saddā rasā gandhā,') == [0]
+    assert search_string('samma', 'Evaṁ sammā vimuttacittassa') == [5]
+    assert search_string('sāmma', 'Evaṁ sammā vimuttacittassa') == [5]
+
+
+def test_normalize_string():
+    assert normalize_string('rupa') == 'rupa'
+    assert normalize_string('Rūpā') == 'Rupa'
+    assert normalize_string('samma') == 'samma'
+    assert normalize_string('sāmma') == 'samma'
