@@ -253,8 +253,8 @@ export class SCNavigation extends LitLocalized(LitElement) {
     document.dispatchEvent(
       new CustomEvent('metadata', {
         detail: {
-          pageTitle: `${this._getTitle()}—navigation`,
-          title: `${this._getTitle()}—navigation`,
+          pageTitle: `${this._getTitle()}—${this.localize('interface:navigationTitle')}`,
+          title: `${this._getTitle()}—${this.localize('interface:navigationTitle')}`,
           description,
         },
       })
