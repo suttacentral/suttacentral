@@ -20,4 +20,16 @@ describe('SCTextBilara', () => {
 
     expect(result).to.equal('TestScript');
   });
+
+  it('should return true when suttaId represents multiple suttas', () => {
+    const instance = new SCTextBilara();
+    const result = instance.checkIfMultiSutta('test.1-10');
+    expect(result).to.be.true;
+  });
+
+  it('should return false when suttaId represents a single sutta', () => {
+    const instance = new SCTextBilara();
+    const result = instance.checkIfMultiSutta('test.1');
+    expect(result).to.be.false;
+  });
 });
