@@ -237,7 +237,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         }, 100);
       }
 
-      const pageTitle = `${title || original_title}—Suttas and Parallels`;
+      const pageTitle = `${title || original_title}—${this.localize('interface:parallelsTitle')}`;
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
