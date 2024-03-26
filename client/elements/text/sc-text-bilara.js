@@ -147,10 +147,20 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   checkIfMultiSutta(suttaId) {
-    let rangePartOfSuttaUid = suttaId.split('.')[1];
+    if (!suttaId || typeof suttaId !== 'string') {
+        return false;
+    }
+    let parts = suttaId.split('.');
+    if (parts.length < 2) {
+        return false;
+    }
+    let rangePartOfSuttaUid = parts[1];
     if (rangePartOfSuttaUid.includes('-')) {
         let rangePartOfSuttaUidArray = rangePartOfSuttaUid.split('-');
-        if (!isNaN(rangePartOfSuttaUidArray[0]) && !isNaN(rangePartOfSuttaUidArray[1])) {
+        if (rangePartOfSuttaUidArray.length !== 2) {
+            return false;
+        }
+        if (!Number.isNaN(Number(rangePartOfSuttaUidArray[0])) && !Number.isNaN(Number(rangePartOfSuttaUidArray[1]))) {
             return true;
         }
     }

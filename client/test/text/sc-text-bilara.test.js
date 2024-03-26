@@ -37,5 +37,14 @@ describe('SCTextBilara', () => {
 
     result = instance.checkIfMultiSutta('pli-tv-vb2.1');
     expect(result).to.be.false;
+
+    result = instance.checkIfMultiSutta('dn1');
+    expect(result).to.be.false;
+
+    result = instance.checkIfMultiSutta('mn1');
+    expect(result).to.be.false;
+
+    result = instance.checkIfMultiSutta('sn1.1');
+    expect(result).to.be.false;
   });
 });
