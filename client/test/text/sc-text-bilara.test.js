@@ -23,13 +23,19 @@ describe('SCTextBilara', () => {
 
   it('should return true when suttaId represents multiple suttas', () => {
     const instance = new SCTextBilara();
-    const result = instance.checkIfMultiSutta('test.1-10');
+    let result = instance.checkIfMultiSutta('test.1-10');
+    expect(result).to.be.true;
+
+    result = instance.checkIfMultiSutta('an2.21-31');
     expect(result).to.be.true;
   });
 
   it('should return false when suttaId represents a single sutta', () => {
     const instance = new SCTextBilara();
-    const result = instance.checkIfMultiSutta('test.1');
+    let result = instance.checkIfMultiSutta('test.1');
+    expect(result).to.be.false;
+
+    result = instance.checkIfMultiSutta('pli-tv-vb2.1');
     expect(result).to.be.false;
   });
 });
