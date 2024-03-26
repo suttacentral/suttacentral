@@ -16,7 +16,9 @@ class InstantSearch(Resource):
         lang = request.args.get('language')
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
-        query = request.args.get('query', None)
+        query = request.args.get('query', None, type=str)
+        if query:
+            query = query.replace('+', ' ')
         restrict = request.args.get('restrict', None)
         if restrict == 'all':
             restrict = None
@@ -51,7 +53,9 @@ class InstantSearch(Resource):
         lang = request.args.get('language')
         limit = request.args.get('limit', 10)
         offset = request.args.get('offset', 0)
-        query = request.args.get('query', None)
+        query = request.args.get('query', None, type=str)
+        if query:
+            query = query.replace('+', ' ')
         restrict = request.args.get('restrict', None)
         if restrict == 'all':
             restrict = None
