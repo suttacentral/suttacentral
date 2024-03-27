@@ -62,7 +62,7 @@ def handler(path):
 
     data = request.json
 
-    if data.get('ref') == 'refs/heads/master':
+    if data.get('ref') == 'refs/heads/main':
         head_commit_id = data['head_commit']['id']
         print('Building @ commit {head_commit_id}'.format(head_commit_id=head_commit_id))
         terminate_builder()

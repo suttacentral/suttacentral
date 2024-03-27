@@ -64,7 +64,7 @@ def collect_data(repo_dir: Path, repo_addr: str):
     """
     print(f'downloading {repo_addr}')
     if not (repo_dir / '.git').exists():
-        subprocess.run(['git', 'clone', '--depth', '1', '--branch', 'master', repo_addr, './'], cwd=repo_dir)
+        subprocess.run(['git', 'clone', '--depth', '1', '--branch', 'main', repo_addr, './'], cwd=repo_dir)
     else:
         subprocess.run(['git', 'reset', '--hard'], cwd=repo_dir)
         subprocess.run(['git', 'pull'], cwd=repo_dir)
