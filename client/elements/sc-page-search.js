@@ -1209,10 +1209,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   #changeSearchResultsLayout() {
     const allSearchResults = this.shadowRoot.querySelector('.all-search-results');
     const additionalSearchResults = this.shadowRoot.querySelector('.additional-search-results');
-    if (!additionalSearchResults) {
-      return;
-    }
-    if (!allSearchResults) {
+    if (!additionalSearchResults || !allSearchResults) {
       return;
     }
     if (this.#isSearchByInTitle()) {
