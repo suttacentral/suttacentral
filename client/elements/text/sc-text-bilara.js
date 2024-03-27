@@ -106,6 +106,7 @@ export class SCTextBilara extends SCTextCommon {
       ['none', hideAsterisk],
       ['asterisk', showAsterisk],
     ]);
+    this.isMultiSutta = false;
   }
 
   createRenderRoot() {
@@ -142,6 +143,28 @@ export class SCTextBilara extends SCTextCommon {
     this._updateView();
     this._updateURLSearchParams();
     this.scActionItems?.showSpeakerButton();
+    this.isMultiSutta = this.checkIfMultiSutta(this.suttaId);
+  }
+
+  checkIfMultiSutta(suttaId) {
+    if (!suttaId || typeof suttaId !== 'string') {
+        return false;
+    }
+    let parts = suttaId.split('.');
+    if (parts.length < 2) {
+        return false;
+    }
+    let rangePartOfSuttaUid = parts[1];
+    if (rangePartOfSuttaUid.includes('-')) {
+        let rangePartOfSuttaUidArray = rangePartOfSuttaUid.split('-');
+        if (rangePartOfSuttaUidArray.length !== 2) {
+            return false;
+        }
+        if (!Number.isNaN(Number(rangePartOfSuttaUidArray[0])) && !Number.isNaN(Number(rangePartOfSuttaUidArray[1]))) {
+            return true;
+        }
+    }
+    return false;
   }
 
   disconnectedCallback() {
@@ -924,7 +947,10 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _addSCReferenceAnchor(key) {
-    const subKey = key.substring(key.indexOf(':') + 1, key.length);
+    let subKey = key.substring(key.indexOf(':') + 1, key.length);
+    if (this.isMultiSutta) {
+      subKey = key.replace(':', '::');
+    }
     const anchor = document.createElement('a');
     anchor.className = 'sc';
     anchor.id = subKey;
