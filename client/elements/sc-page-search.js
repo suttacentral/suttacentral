@@ -213,7 +213,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   get loadMoreButtonTemplate() {
-    return this.resultCount === 0 || this.#areAllItemsLoaded()
+    return this.resultCount === 0 || this.resultCount <= this.resultsPerLoad || this.#areAllItemsLoaded()
       ? ''
       : html`
           <div id="load-more">
@@ -936,6 +936,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     if (searchInput?.value === '') {
       searchInput.value = this.searchQuery;
     }
+
+    this.#changeSearchResultsLayout();
   }
 
   #didRespond(searchResult) {
@@ -1202,6 +1204,24 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByReference() {
     return this.searchQuery?.includes('ref:');
+  }
+
+  #changeSearchResultsLayout() {
+    const allSearchResults = this.shadowRoot.querySelector('.all-search-results');
+    const additionalSearchResults = this.shadowRoot.querySelector('.additional-search-results');
+    if (!additionalSearchResults) {
+      return;
+    }
+    if (!allSearchResults) {
+      return;
+    }
+    if (this.#isSearchByInTitle()) {
+      allSearchResults.style.flexDirection = 'column';
+      additionalSearchResults.style.maxWidth = '50%';
+    } else {
+      allSearchResults.style.flexDirection = 'row';
+      additionalSearchResults.style.maxWidth = '40%';
+    }
   }
 }
 
