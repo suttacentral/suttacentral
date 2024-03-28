@@ -949,7 +949,7 @@ export class SCTextBilara extends SCTextCommon {
   _addSCReferenceAnchor(key) {
     let subKey = key.substring(key.indexOf(':') + 1, key.length);
     if (this.isMultiSutta) {
-      subKey = key.replace(':', '::');
+      subKey = key.replace(':', '_');
     }
     const anchor = document.createElement('a');
     anchor.className = 'sc';
