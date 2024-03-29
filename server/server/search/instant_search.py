@@ -1599,7 +1599,7 @@ def fetch_suttaplexs_by_name(db, lang, name):
                 name_exclude_sutta.lower() in suttaplex['original_title'].lower() or
                 name_ascii in unidecode(suttaplex['translated_title'].lower()) or
                 name_ascii in unidecode(suttaplex['original_title'].lower())
-            )
+            ) and suttaplex['translations']
         ):
             suttaplexs.append(suttaplex)
 
