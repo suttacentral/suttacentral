@@ -559,7 +559,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             LET publication = (
                 FOR publication IN publications_v2
                 FILTER publication.creator_uid == text.muids[2]
-                AND STARTS_WITH(text.uid, publication.text_uid)
+                AND STARTS_WITH(text.uid, SUBSTITUTE(publication.text_uid, "pli-tv-vi", "pli-tv-"))
                 RETURN publication
             )[0]
             RETURN {
