@@ -556,6 +556,12 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 FILTER doc.uid == v.uid AND 'comment' IN doc.muids AND author_doc.uid in doc.muids
                 RETURN doc.muids
             )
+            LET publication = (
+                FOR publication IN publications_v2
+                FILTER publication.creator_uid == text.muids[2]
+                AND STARTS_WITH(text.uid, SUBSTITUTE(publication.text_uid, "pli-tv-vi", "pli-tv-"))
+                RETURN publication
+            )[0]
             RETURN {
                 lang: text.lang,
                 lang_name: lang_doc.name,
@@ -563,7 +569,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
                 author: author_doc.long_name,
                 author_short: author_doc.short_name,
                 author_uid: author_doc.uid,
-                publication_date: null,
+                publication_date: publication.first_published,
                 id: text._key,
                 segmented: true,
                 title: name_doc.name,
