@@ -948,15 +948,17 @@ export class SCTextBilara extends SCTextCommon {
 
   _addSCReferenceAnchor(key) {
     let subKey = key.substring(key.indexOf(':') + 1, key.length);
+    let anchorText = subKey;
     if (this.isMultiSutta) {
       subKey = key.replace(':', '_');
+      anchorText = key;
     }
     const anchor = document.createElement('a');
     anchor.className = 'sc';
     anchor.id = subKey;
     anchor.href = `#${subKey}`;
     anchor.title = this.localize('text:segmentNumber');
-    const text = document.createTextNode(subKey);
+    const text = document.createTextNode(anchorText);
     anchor.appendChild(text);
     return anchor;
   }
