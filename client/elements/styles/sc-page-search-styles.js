@@ -187,6 +187,7 @@ export const SCPageSearchStyles = css`
   }
 
   .badges {
+    display: flex;  
     margin-left: 0.3em;
     margin-bottom: 0.5em;
   }
