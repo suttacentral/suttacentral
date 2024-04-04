@@ -554,7 +554,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     );
     if (pageName) {
       if (pageName === 'palitipitaka') {
-        pageName = 'Three Baskets of the Pāḷi Canon';
+        pageName = this.localize('interface:palitipitaka');
       }
       dispatchCustomEvent(document, 'metadata', {
         pageTitle: `${pageName}—SuttaCentral`,
@@ -659,7 +659,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       const currentPath = this.currentRoute.path;
       let pageName = this.currentRoute.name;
       if (pageName === 'palitipitaka') {
-        pageName = 'Three Baskets of the Pāḷi Canon';
+        pageName = this.localize('interface:palitipitaka');
       }
       if (pageName === 'searchFilter') {
         pageName = 'Search Filter';
