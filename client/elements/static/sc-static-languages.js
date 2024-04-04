@@ -56,7 +56,7 @@ export class SCStaticLanguages extends SCStaticPage {
       type: 'LanguageDetailPage',
     };
     setNavigation(navArray);
-    this.actions.changeToolbarTitle('Languages on SuttaCentral');
+    this.actions.changeToolbarTitle(this.localize('languages:languagesOnSuttaCentral'));
   }
 
   get actions() {
