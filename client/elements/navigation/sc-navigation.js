@@ -266,6 +266,9 @@ export class SCNavigation extends LitLocalized(LitElement) {
   }
 
   _computeMenuApiUrl(uid) {
+    if (!uid) {
+      return '';
+    }
     return `${API_ROOT}/menu/${uid}?language=${this.siteLanguage || 'en'}`;
   }
 
