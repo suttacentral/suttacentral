@@ -10,6 +10,10 @@ from search.instant_search import (
     normalize_string
 )
 
+from urllib.parse import quote
+from app import app
+client = app.test_client()
+
 
 def test_format_volpage():
     assert format_volpage('S.II,236') == 'S II 236'
@@ -121,3 +125,51 @@ def test_normalize_string():
     assert normalize_string('Rūpā') == 'Rupa'
     assert normalize_string('samma') == 'samma'
     assert normalize_string('sāmma') == 'samma'
+
+
+def instant_search(query, languages):
+    encoded_query = quote(query)
+    response = client.post(f'/search/instant?query={encoded_query}&language=en&limit=10&offset=0&matchpartial=false',
+                            json={'selectedLanguages': languages})
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert json_data['total'] != '0'
+
+
+def test_volpage_search():
+    instant_search('volpage:s ii 1', ['en', 'pli'])
+    instant_search('volpage:d i 1', ['en', 'pli'])
+    instant_search('volpage:m i 1', ['en', 'pli'])
+    instant_search('volpage:a i 1', ['en', 'pli'])
+
+
+def test_author_search():
+    instant_search('author:sujato cat', ['en', 'pli'])
+
+
+def test_title_search():
+    instant_search('title:intention', ['en', 'pli'])
+
+
+def test_collection_search():
+    instant_search('in:dn cat', ['en', 'pli'])
+
+
+def test_ebt_search():
+    instant_search('in:ebt free', ['en', 'pli'])
+
+
+def test_ebs_search():
+    instant_search('in:ebs free', ['en', 'pli'])
+
+
+def test_ebct_search():
+    instant_search('in:ebct 四念处', ['en', 'pli'])
+
+
+def test_operators_search():
+    instant_search('greed OR desire NOT anicca', ['en', 'pli'])
+
+
+def test_chinese_search():
+    instant_search('八正道 涅槃', ['lzh', 'zh'])
