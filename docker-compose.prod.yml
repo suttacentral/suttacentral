@@ -33,7 +33,7 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - "API_URL=https://suttacentral.net/api/swagger.json"
+      - "API_URL=https://suttacentral.net/api/spec"
 
   sc-frontend:
     command: npm run build
