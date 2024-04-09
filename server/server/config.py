@@ -64,7 +64,7 @@ app_config = {
 # https://github.com/rochacbruno/flasgger
 swagger_config = {
     "headers": [],
-    "specs": [{"endpoint": 'swagger', "route": '/swagger.json'}],
+    "specs": [{"endpoint": 'swagger', "route": '/spec'}],
     "swagger_ui": False,
     "specs_route": "/swagger/",
 }
