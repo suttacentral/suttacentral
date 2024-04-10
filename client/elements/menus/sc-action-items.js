@@ -144,6 +144,22 @@ export class SCActionItems extends LitLocalized(LitElement) {
           content: 'Voice';
         }
 
+        [lang='my'] {
+          #btnViewCompact:after,
+          #btnViewComfy:after,
+          #btnTools:after,
+          #btnInfo:after,
+          #btnShowParallels:after,
+          #btnShowParallelTableView:after,
+          #btnSearchOptions:after,
+          #btnSearchFilter:after {
+            font-size: 6px;
+          }
+          #btnShowToC:after {
+            font-size: 5px;
+          }
+        }
+
         #btnSearchFilter,
         #btnSearchOptions,
         #btnShowParallels,
@@ -287,6 +303,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.#setBtnShowParallelTableViewIcon();
     this.#displaySearchOptionsButtonStateChange();
     this.scSiteLayout = document.querySelector('sc-site-layout');
+    this.#setToolBarLanguage();
   }
 
   hideTopSheets() {
@@ -539,6 +556,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
+      this.#setToolBarLanguage();
     }
     if (this.displaySearchOptionsButton !== state.displaySearchOptionsButton) {
       this.displaySearchOptionsButton = state.displaySearchOptionsButton;
@@ -618,6 +636,13 @@ export class SCActionItems extends LitLocalized(LitElement) {
   #btnListenThisSuttaClick() {
     const textBilara = document.querySelector('sc-text-bilara');
     textBilara?.listenThisSutta();
+  }
+
+  #setToolBarLanguage() {
+    const toolsMenu = this.shadowRoot.getElementById('tools_menu');
+    if (toolsMenu) {
+      toolsMenu.lang = this.isSupportedLanguage(this.siteLanguage) ? this.siteLanguage : this.fallbackLanguage();
+    }
   }
 }
 
