@@ -147,6 +147,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
+    this._setSiteLanguage();
     this._colorThemeChanged();
     this.removeAttribute('unresolved');
     this._addEventListeners();

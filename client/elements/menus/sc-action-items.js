@@ -150,11 +150,13 @@ export class SCActionItems extends LitLocalized(LitElement) {
           #btnTools:after,
           #btnInfo:after,
           #btnShowParallels:after,
-          #btnShowToC:after,
           #btnShowParallelTableView:after,
           #btnSearchOptions:after,
           #btnSearchFilter:after {
             font-size: 6px;
+          }
+          #btnShowToC:after {
+            font-size: 5px;
           }
         }
 
