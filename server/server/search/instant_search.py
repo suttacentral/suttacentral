@@ -32,7 +32,27 @@ RETURN d.uid
 '''
 
 LIST_AUTHORS = '''
-FOR a IN author_edition
+LET scdata_authors = (
+  FOR doc IN author_edition
+  FILTER doc.type == 'author'
+  RETURN {
+    uid: doc.uid,
+    short_name: LOWER(doc.short_name),
+    long_name: doc.long_name
+  }
+)
+
+LET bilara_authors = (
+  FOR doc IN bilara_author_edition
+  FILTER doc.type == 'author'
+  RETURN {
+    uid: doc.uid,
+    short_name: LOWER(doc.short_name),
+    long_name: doc.long_name
+  }
+)
+
+FOR a IN UNION_DISTINCT(scdata_authors, bilara_authors)
 FILTER a.uid != 'test'
 
 LET translations = (
