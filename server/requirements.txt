@@ -22,7 +22,7 @@ Flask-RESTful==0.3.9
 fonttools==4.38.0
 gitdb==4.0.10
 GitPython==3.1.30
-idna==3.4
+idna==3.7
 imagesize==1.4.1
 importlib-metadata==5.1.0
 importlib-resources==5.10.0
