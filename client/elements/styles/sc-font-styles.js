@@ -386,37 +386,6 @@ export const SCFontStyles = css`
     font-display: swap;
   }
 
-  @font-face {
-    font-family: 'Tengwar Annatar Italic';
-    src: url('/files/fonts/tngani.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Klingon';
-    src: url('/files/fonts/Klingon.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Vulcan';
-    src: url('/files/fonts/Vulcan.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Aurebesh';
-    src: url('/files/fonts/Aurebesh.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
 
   @font-face {
     font-family: 'Noto Sans CJK JP';
@@ -1367,14 +1336,6 @@ export const SCFontStyles = css`
     --sc-thai-serif-font: 'Noto Serif Thai', 'Noto Serif', 'Noto Sans Thai', 'Noto Sans', serif;
 
     --sc-tibetan-font: 'Noto Sans Tibetan', 'Noto Sans', sans-serif;
-
-    --sc-tengwar-font: 'Tengwar Annatar Italic', sans-serif;
-
-    --sc-klingon-font: 'Klingon', sans-serif;
-
-    --sc-vulcan-font: 'Vulcan', sans-serif;
-
-    --sc-aurebesh-font: 'Aurebesh', sans-serif;
 
     --sc-japanese-font: 'Noto Sans CJK JP', 'Noto Sans', sans-serif;
 
