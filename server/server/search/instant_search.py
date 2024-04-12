@@ -20,7 +20,14 @@ POSSIBLE_SUTTA_BY_NAME = '''
 FOR d IN instant_search
     SEARCH PHRASE(d.name, @name, "common_text")
     OR ANALYZER(LIKE(d.name, @name_like_pattern), "normalize")
-    FILTER d.is_segmented != True AND (d.lang == @lang OR d.is_root == true)
+    FILTER d.is_segmented != True AND (d.lang IN @selected_languages OR d.lang == @lang)
+RETURN d.uid
+'''
+
+POSSIBLE_SUTTA_BY_NAME_EXACT_MATCH = '''
+FOR d IN instant_search
+    SEARCH PHRASE(d.name, @name, "common_text")
+    FILTER d.is_segmented != True AND (d.lang IN @selected_languages OR d.lang == @lang)
 RETURN d.uid
 '''
 
@@ -108,7 +115,8 @@ def instant_search_query(
             original_query,
             query,
             restrict,
-            total
+            total,
+            selected_languages
         )
 
         return {
@@ -128,7 +136,8 @@ def process_search_results(
     original_query,
     query,
     restrict,
-    total
+    total,
+    selected_languages
 ):
     if total == 0:
         total = len(hits)
@@ -141,7 +150,7 @@ def process_search_results(
         hits = merge_duplicate_hits(hits)
     suttaplexs = []
     if original_query != constant.CMD_LIST_AUTHORS:
-        suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query)
+        suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query, selected_languages, matchpartial)
     current_page_total = len(hits)
     hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
     total = calculate_total(current_page_total, hits, limit, suttaplexs, total)
@@ -807,14 +816,14 @@ def generate_aql_for_chinese_keyword(
     return full_aql, aql_condition_part
 
 
-def try_to_fetch_suttaplex(db, hits, lang, original_query, query):
+def try_to_fetch_suttaplex(db, hits, lang, original_query, query, selected_languages, matchpartial):
     suttaplexs = []
     if original_query.startswith('title:'):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     elif suttaplex := fetch_suttaplex(db, lang, query):
         suttaplexs = [suttaplex]
     else:
-        suttaplexs.extend(fetch_suttaplexs_by_name(db, lang, query))
+        suttaplexs.extend(fetch_suttaplexs_by_name(db, lang, query, selected_languages, matchpartial))
 
     for suttaplex in suttaplexs:
         suttaplex['verseNo'] = compute_verse_no(
@@ -1550,31 +1559,43 @@ def fetch_suttaplexs(db, lang, hits):
     return suttaplexs
 
 
-def fetch_suttaplexs_by_name(db, lang, name):
+def fetch_suttaplexs_by_name(db, lang, name, selected_languages, matchpartial):
     name_exclude_sutta = name
     if 'sutta' in name:
         name_exclude_sutta = name.replace('sutta', '').strip()
 
+    if matchpartial == 'true':
+        AQL = POSSIBLE_SUTTA_BY_NAME
+        bind_vars={
+            'name': name_exclude_sutta,
+            'lang': lang,
+            'name_like_pattern': f"%{name.lower()}%",
+            'selected_languages': selected_languages
+        }
+    else:
+        AQL = POSSIBLE_SUTTA_BY_NAME_EXACT_MATCH
+        bind_vars={
+            'name': name_exclude_sutta,
+            'lang': lang,
+            'selected_languages': selected_languages
+        }
+
     possible_uids = list(
         list(
             db.aql.execute(
-                POSSIBLE_SUTTA_BY_NAME,
-                bind_vars={
-                    'name': name_exclude_sutta,
-                    'lang': lang,
-                    'name_like_pattern': f"%{name.lower()}%"
-                }
+                AQL,
+                bind_vars=bind_vars
             )
         )
     )
 
     possible_uids.extend(
         list(db.aql.execute(
-            POSSIBLE_SUTTA_BY_NAME,
+            POSSIBLE_SUTTA_BY_NAME_EXACT_MATCH,
             bind_vars={
                 'name': f'{name_exclude_sutta}sutta',
                 'lang': lang,
-                'name_like_pattern': f"%{name.lower()}%"
+                'selected_languages': selected_languages
             }
         ))
     )
