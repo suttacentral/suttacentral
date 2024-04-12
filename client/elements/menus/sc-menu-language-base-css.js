@@ -58,7 +58,6 @@ export const languageBaseMenuCss = css`
 
   [data-uid='jpn']::before,
   [data-uid='sld']::before,
-  [data-uid='kln']::before,
   [data-uid='kan']::before,
   [data-uid='haw']::before {
     letter-spacing: 0;
