@@ -34,6 +34,7 @@ RETURN d.uid
 LIST_AUTHORS = '''
 LET scdata_authors = (
   FOR doc IN author_edition
+  FILTER doc.type == 'author'
   RETURN {
     uid: doc.uid,
     short_name: LOWER(doc.short_name),
@@ -43,6 +44,7 @@ LET scdata_authors = (
 
 LET bilara_authors = (
   FOR doc IN bilara_author_edition
+  FILTER doc.type == 'author'
   RETURN {
     uid: doc.uid,
     short_name: LOWER(doc.short_name),
