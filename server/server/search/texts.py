@@ -350,7 +350,7 @@ def import_texts_to_arangodb():
         "ro", "ru", "si", "sk", "sl", "sld", "sr", "sv", "ta", "th",
         "uig", "vi", "xto"
     ]
-    languages = sorted(languages, key=lambda x: order.index(x["uid"]))
+    # languages = sorted(languages, key=lambda x: order.index(x["uid"]))
 
     for lang in tqdm(languages):
         loader = TextLoader(lang)
