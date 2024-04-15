@@ -47,6 +47,7 @@ const staticPages = [
   'palitipitaka',
   'publicationAn',
   'searchFilter',
+  'pirivena-project'
 ];
 
 // prettier-ignore
@@ -60,6 +61,11 @@ const routes = {
     path: '/search',
     content: html`<sc-page-search />`,
     loader: () => import('./sc-page-search.js'),
+  },
+  'pirivena-project': {
+    path: '/pirivena-project',
+    content: html`<sc-static-pirivenas-project />`,
+    loader: () => import('./static/sc-static-pirivenas-project.js')
   },
   'searchFilter': {
     path: '/search-filter',

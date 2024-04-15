@@ -58,15 +58,18 @@ export class SCStaticHomePage extends SCStaticPage {
 
   #publicationEditionsTemplate() {
     return html`
-      <section class="plain editions">
-        <a class="block-link" href="/editions">
-          <h2>${unsafeHTML(this.localize('home:43'))}</h2>
-          ${this.#publicationEditionsPictureTemplate()}
-          <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>
-          <md-ripple></md-ripple>
-          <md-elevation></md-elevation>
-        </a>
-      </section>
+      <div class="editions-card">
+        <section class="plain editions">
+          <a class="block-link" href="/editions">
+            <h2>${unsafeHTML(this.localize('home:43'))}</h2>
+            ${this.#publicationEditionsPictureTemplate()}
+            <div class="call-to-action">${unsafeHTML(this.localize('home:44'))}</div>
+            <md-ripple></md-ripple>
+            <md-elevation></md-elevation>
+          </a>
+          ${this.#pirivenasProjectCardTemplate()}
+        </section>
+      </div>
     `;
   }
 
@@ -311,6 +314,19 @@ export class SCStaticHomePage extends SCStaticPage {
         </a>
         <md-ripple></md-ripple>
       </article>
+    `;
+  }
+
+  #pirivenasProjectCardTemplate() {
+    return html`
+      <div class="home-page-pirivena-notice">
+        <h3 class="home-page-pirivena-heading">SuttaCentral Translations For Pirivenas</h3>
+        <p>SuttaCentral, in conjunction with the Amarapura–Rāmañña and Siam Nikāyas, is pleased to launch the printing of English translations of the Suttas and Vinaya and their distribution through monastic education centers (Pirivena) of Sri Lanka.</p>
+        <a class="link-button block-link" href="/pirivena-project">
+          Learn More
+          <md-ripple></md-ripple>
+        </a>
+      </div>
     `;
   }
 

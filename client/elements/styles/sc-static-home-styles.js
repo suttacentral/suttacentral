@@ -584,4 +584,24 @@ export const staticHomeStyles = css`
   .fundraising-banner .icon {
     fill: white;
   }
+
+  .home-page-pirivena-notice {
+    margin-top: 1em;
+    width:50%;
+    padding:1em;
+    border: 4px dashed var(--sc-primary-accent-color);
+    border-radius: 2em;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  .home-page-pirivena-notice p {
+    padding-bottom: 2em;
+  }
+
+  .editions-card {
+    position: relative;
+  }
 `;
