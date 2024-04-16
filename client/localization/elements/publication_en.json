@@ -21,6 +21,7 @@
   "publication:license": "License",
   "publication:licenseDescription": "To the extent possible under law, <span property='dct:title'>{authorName}</span> has waived all copyright and related or neighboring rights to <cite property='dct:title'>{translationTitle}</cite>. This work is published from <span property='vcard:Country' datatype='dct:ISO3166' content='AU' about='https://suttacentral.net/licensing'>Australia</span>.",
   "publication:aboutThisLicense": "About this license",
+  "publication:editionsToolbarTitle": "Editions",
   "publication:suttaCentralEditions": "SuttaCentral Editions",
   "publication:editionsSubtitle": "Selected translations as books in multiple formats",
   "publication:editions1": "The “Editions” series makes selected translations available as books in various formats, including print, PDF, and EPUB.",

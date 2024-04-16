@@ -6,5 +6,6 @@
   "languages:translators": "Translators",
   "languages:divisions": "Divisions",
   "languages:authors": "Authors",
-  "languages:percentageOfOriginalTexts": "Percentage of original texts on SuttaCentral that have been translated into {lang}"
+  "languages:percentageOfOriginalTexts": "Percentage of original texts on SuttaCentral that have been translated into {lang}",
+  "languages:other": "Other"
 }
