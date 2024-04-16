@@ -1,8 +1,17 @@
 import { LitElement, html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+
+import { dpd_deconstructor } from '../../files/dpd/dpd_deconstructor.js'
+import { dpd_ebts } from '../../files/dpd/dpd_ebts.js' 
+import { dpd_i2h } from '../../files/dpd/dpd_i2h.js' 
+
+// import dpd_deconstructor from '../../files/dpd/dpd_deconstructor.json'
+// import dpd_ebts from '../../files/dpd/dpd_ebts.json' 
+// import dpd_i2h from '../../files/dpd/dpd_i2h.json' 
 
 export class SCPaliLookup extends LitLocalized(LitElement) {
   static properties = {
@@ -53,7 +62,44 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     this.loadingDict = false;
   }
 
-  lookupWord(word) {
+  lookupWord(word){
+    word = this._stripSpecialCharacters(word);
+    word = word.toLowerCase().trim();
+    word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
+    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
+    // BEHAVIOUR
+    // take the word variable and search for that in dpd_i2h.json
+    // 	if it return a list of headwords
+    // 		look up each headword in the list in dpd_ebts.json
+    // 			add the result to html_string
+    // lookup the word in  dpd_deconstructor.json
+    // 	if it returns any results
+    // 		 add the result to html_string
+    // display the html string as a popup
+    // TODO: the words in the popup must be able to be recursively looked up by clicking on them in the same way as above.
+    let allMatches_dpd = []
+    word = word.replace(/[’”]/g, "").replace(/ṁ/g, "ṃ");
+    if(word in dpd_i2h){
+      const def = []
+      for (const headword of dpd_i2h[word]){
+        if(headword in dpd_ebts){
+          def.push(dpd_ebts[headword])
+        }
+      }
+      allMatches_dpd.push({base: word, meaning: def}) 
+    }
+  
+    if(word in dpd_deconstructor){
+      allMatches_dpd.push({base: word, meaning: dpd_deconstructor[word]})
+
+    }
+    //return { html: out.replace(/ṃ/g, "ṁ") };
+    const meaning = this._toHtml(allMatches_dpd, word);
+    return { html: meaning };
+
+  }
+
+  lookupWord_old(word) {
     word = this._stripSpecialCharacters(word);
     word = word.toLowerCase().trim();
     word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
@@ -104,8 +150,8 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
                 ? html`
                     <ol class="definition">
                       ${match.meaning.constructor === Array
-                        ? html` ${match.meaning.map(item => html` <li>${item}</li> `)} `
-                        : html` <li>${match.meaning}</li> `}
+                        ? html` ${match.meaning.map(item => html` <li>${unsafeHTML(item)}</li> `)} `
+                        : html` <li>${unsafeHTML(match.meaning)}</li> `}
                     </ol>
                   `
                 : ''}
