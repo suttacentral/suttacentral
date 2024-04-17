@@ -80,20 +80,39 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     let allMatches_dpd = []
     word = word.replace(/[’”]/g, "").replace(/ṁ/g, "ṃ");
     if(word in dpd_i2h){
-      const def = []
-      for (const headword of dpd_i2h[word]){
-        if(headword in dpd_ebts){
-          def.push(dpd_ebts[headword])
+      const dpd_i2h_t = this._dpdTransform(dpd_i2h[word].sort((a, b) => a - b)) // create array like below instead of simple enumeration of the dpd_i2h...
+
+      // [
+      //  {root: akaci, vars: [
+      //       "akaci 1",
+      //       "akaci 2",
+      //       "akaci 3",
+      //       "akaci 4"]},
+      //  {root: "akiñcita", vars: ["akiñcita"]},
+      //  {root: "akiñcito", vars: [
+      //       "akiñcito 1",
+      //       "akiñcito 2",
+      //       "akiñcito 3"]},
+      //  {root: "akiña", vars: [akiña]}
+      // ]
+
+      let matches = []
+      for (const match of dpd_i2h_t){
+        for (const variation of match.vars){
+          if(variation in dpd_ebts){
+            matches.push(dpd_ebts[variation]);
+          }
         }
+        allMatches_dpd.push({base: match.root, meaning: matches}) 
+        matches = []
       }
-      allMatches_dpd.push({base: word, meaning: def}) 
     }
   
     if(word in dpd_deconstructor){
       allMatches_dpd.push({base: word, meaning: dpd_deconstructor[word]})
-
     }
-    //return { html: out.replace(/ṃ/g, "ṁ") };
+
+    //return { html: out.replace(/ṃ/g, "ṁ") }; based on user preference ?
     const meaning = this._toHtml(allMatches_dpd, word);
     return { html: meaning };
 
@@ -108,6 +127,29 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     const meaning = this._toHtml(allMatches, word);
     return { html: meaning };
   }
+
+  _dpdTransform = (arr) => {
+    // Step 1: Use reduce to accumulate results into an object
+    const resultObj = arr.reduce((acc, item) => {
+       // Step 2: Extract the root part of the string
+       const root = item.split(' ')[0];
+       
+       // Step 3: Check if the root exists in the accumulator
+       if (acc[root]) {
+         // If it exists, push the item into the vars array
+         acc[root].vars.push(item);
+       } else {
+         // If it doesn't exist, create a new entry
+         acc[root] = { root, vars: [item] };
+       }
+       
+       return acc;
+    }, {});
+     
+    // Step 4: Convert the object into the desired array format
+    return Object.values(resultObj);
+   };
+    
 
   _stripSpecialCharacters(word) {
     return word.replace(
