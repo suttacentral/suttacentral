@@ -67,35 +67,11 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     word = word.toLowerCase().trim();
     word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
     word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
-    // BEHAVIOUR
-    // take the word variable and search for that in dpd_i2h.json
-    // 	if it return a list of headwords
-    // 		look up each headword in the list in dpd_ebts.json
-    // 			add the result to html_string
-    // lookup the word in  dpd_deconstructor.json
-    // 	if it returns any results
-    // 		 add the result to html_string
-    // display the html string as a popup
-    // TODO: the words in the popup must be able to be recursively looked up by clicking on them in the same way as above.
+
     let allMatches_dpd = []
     word = word.replace(/[’”]/g, "").replace(/ṁ/g, "ṃ");
     if(word in dpd_i2h){
       const dpd_i2h_t = this._dpdTransform(dpd_i2h[word].sort((a, b) => a - b)) // create array like below instead of simple enumeration of the dpd_i2h...
-
-      // [
-      //  {root: akaci, vars: [
-      //       "akaci 1",
-      //       "akaci 2",
-      //       "akaci 3",
-      //       "akaci 4"]},
-      //  {root: "akiñcita", vars: ["akiñcita"]},
-      //  {root: "akiñcito", vars: [
-      //       "akiñcito 1",
-      //       "akiñcito 2",
-      //       "akiñcito 3"]},
-      //  {root: "akiña", vars: [akiña]}
-      // ]
-
       let matches = []
       for (const match of dpd_i2h_t){
         for (const variation of match.vars){
@@ -129,6 +105,8 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
   }
 
   _dpdTransform = (arr) => {
+    // function made by https://www.phind.com/ to help formating the dpd entries. Prompt in dpd/README.md
+
     // Step 1: Use reduce to accumulate results into an object
     const resultObj = arr.reduce((acc, item) => {
        // Step 2: Extract the root part of the string
