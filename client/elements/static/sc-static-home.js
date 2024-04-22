@@ -318,6 +318,7 @@ export class SCStaticHomePage extends SCStaticPage {
   }
 
   #pirivenasProjectCardTemplate() {
+    return '';
     return html`
       <div class="home-page-pirivena-notice">
         <h3 class="home-page-pirivena-heading">SuttaCentral Translations For Pirivenas</h3>
