@@ -1,14 +1,14 @@
 import requests
 
 download_links_of_collections = [
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/epub/Long-Discourses-sujato-2024-04-15.epub',
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/paperback/Long-Discourses-sujato-2024-04-15.zip',
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/html/Long-Discourses-sujato-2024-04-15.html',
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/paperback/Long-Discourses-sujato-2024-04-15-tex.zip',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/epub/Long-Discourses-sujato-2024-04-22.epub',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/paperback/Long-Discourses-sujato-2024-04-22.zip',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/html/Long-Discourses-sujato-2024-04-22.html',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/paperback/Long-Discourses-sujato-2024-04-22-tex.zip',
 
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/mn/epub/Middle-Discourses-sujato-2024-04-15.epub',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/mn/epub/Middle-Discourses-sujato-2024-04-22.epub',
   'https://github.com/suttacentral/editions/raw/main/en/sujato/mn/paperback/Middle-Discourses-sujato-2023-10-30.zip',
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/mn/html/Middle-Discourses-sujato-2024-04-15.html',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/mn/html/Middle-Discourses-sujato-2024-04-22.html',
   'https://github.com/suttacentral/editions/raw/main/en/sujato/mn/paperback/Middle-Discourses-sujato-2023-10-30-tex.zip',
 
   'https://github.com/suttacentral/editions/raw/main/en/sujato/sn/epub/Linked-Discourses-sujato-2024-04-15.epub',
@@ -36,9 +36,9 @@ download_links_of_collections = [
   'https://github.com/suttacentral/editions/raw/main/en/sujato/iti/html/So-It-Was-Said-sujato-2024-04-15.html',
   'https://github.com/suttacentral/editions/raw/main/en/sujato/iti/paperback/So-It-Was-Said-sujato-2024-04-15-tex.zip',
 
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/snp/epub/Anthology-of-Discourses-sujato-2024-04-15.epub',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/snp/epub/Anthology-of-Discourses-sujato-2024-04-22.epub',
   'https://github.com/suttacentral/editions/raw/main/en/sujato/snp/paperback/Anthology-of-Discourses-sujato-2023-10-30.zip',
-  'https://github.com/suttacentral/editions/raw/main/en/sujato/snp/html/Anthology-of-Discourses-sujato-2024-04-15.html',
+  'https://github.com/suttacentral/editions/raw/main/en/sujato/snp/html/Anthology-of-Discourses-sujato-2024-04-22.html',
   'https://github.com/suttacentral/editions/raw/main/en/sujato/snp/paperback/Anthology-of-Discourses-sujato-2023-10-30-tex.zip',
 
   'https://github.com/suttacentral/editions/raw/main/en/sujato/thag/epub/Verses-of-the-Senior-Monks-sujato-2024-04-15.epub',
