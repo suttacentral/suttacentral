@@ -95,7 +95,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
 
     .related-terms ul {
       display: flex;
-
+      flex-wrap: wrap;
       gap: 16px;
 
       margin: 0;

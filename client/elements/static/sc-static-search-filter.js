@@ -94,6 +94,17 @@ export class SCStaticSearchFilter extends SCStaticPage {
               </td>
             </tr>
             <tr>
+              <th colspan="2">Reference search</th>
+            </tr>
+            <tr>
+              <td>Find texts using the reference number.</td>
+              <td>
+                ref:PTS 1.1<br>
+                ref:sya13.544<br>
+                ref:vri13.346
+              </td>
+            </tr>
+            <tr>
               <th colspan="2">author search</th>
             </tr>
             <tr>
