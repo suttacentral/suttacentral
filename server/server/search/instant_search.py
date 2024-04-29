@@ -181,6 +181,8 @@ def process_search_results(
     add_root_name_to_hits(db, hits)
     if original_query != constant.CMD_LIST_AUTHORS:
         sort_highlight_clips(hits)
+    if original_query.startswith(constant.CMD_AUTHOR):
+        sort_by_sutta_numbering_rules(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
 
@@ -995,68 +997,31 @@ def highlight_keyword(hits, query):
         del hit['content']
         del hit['segmented_text']
 
+# Sort according to sutta numbering rules, e.g. sn1.1, sn1.2, sn1.12, dn1, dn4
+def sort_by_sutta_numbering_rules(input_list):
+    def get_key(item):
+        if 'uid' not in item or 'category' in item:
+            return ('', (0, 0.0))
+        uid = item['uid']
 
-def sort_hits(hits):
-    ebs_prefixes = [
-        "dn", "da", "mn", "ma", "sn", "sa", "sa-2", "sa-3", "an",
-        "ea", "ea-2", "kp", "iti", "ud", "snp", "dhp", "thig",
-        "thag", "pli-tv", "lzh-mg", "lzh-mi", "lzh-dg", "lzh-sarv",
-        "lzh-mu", "lzh-ka", "lzh-upp", "san-mg", "san-lo", "up",
-        "ea-ot", "d", "sf"
-    ]
-
-    sorted_lst = sorted(hits, key=lambda x: any(
-        char in x['uid'] for char in ebs_prefixes), reverse=True)
-    # Prioritize items that contain both numbers and characters
-    sorted_lst = sorted(sorted_lst, key=lambda x: uid_key(x['uid']))
-
-    sorted_lst1 = []
-    sorted_lst2 = []
-    pattern = "^[^.-]*[a-zA-Z][^.-]*[0-9][^.-]*$"
-    for item in sorted_lst:
-        if (
-            re.match(pattern, item['uid']) and
-            item['uid'].count('-') < 2
-        ):
-            sorted_lst1.append(item)
+        if uid.count('-') > 1:
+            letter_part = ''.join([char for char in uid if char.isalpha()])
+            number_part = uid[len(letter_part):]
         else:
-            sorted_lst2.append(item)
+            letter_part = ''.join([char for char in uid if char.isalpha()])
+            number_part = ''.join([char for char in uid if char.isdigit() or char == '.'])
 
-    sorted_lst = sorted(sorted_lst1, key=get_uid)
-    sorted_lst.extend(sorted_lst2)
+        if '.' in number_part:
+            integer_part, decimal_part = number_part.split('.')
+            number_part = (int(integer_part), float(decimal_part))
+        else:
+            if number_part == '' or not number_part.isdigit():
+                number_part = '0'
+            number_part = (int(number_part), 0.0)
 
-    return sorted_lst
+        return (letter_part, number_part)
 
-
-def sort_search_result(search_result):
-    search_result = sorted(search_result, key=lambda x: len(
-        x['highlight']['content']), reverse=True)
-    return search_result
-
-
-def uid_key(uid):
-    if re.match(".*[a-zA-Z].*[0-9].*", uid):
-        return 0
-    elif re.match(".*[a-zA-Z].*", uid):
-        return 1
-    else:
-        return 2
-
-
-def get_uid(dic):
-    uid = dic['uid']
-    letter_part = ''.join([c for c in uid if c.isalpha()])
-    number_part = uid[len(letter_part):]
-
-    if '-' in number_part:
-        start, end = number_part.split('-')
-        num = float(start)
-    elif number_part.count('.') > 1:
-        num = number_part.split('.')[0]
-    else:
-        num = float(number_part) if number_part else 0
-
-    return letter_part, num
+    input_list.sort(key=get_key)
 
 
 def prepare_and_generate_aql_for_chinese_keywords(
