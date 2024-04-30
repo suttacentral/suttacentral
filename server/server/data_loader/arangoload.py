@@ -175,7 +175,7 @@ def generate_relationship_edges(
                                             '_to': true_to_uid,
                                             'from': from_uid,
                                             'number': from_nr,
-                                            'to': to_uid.lstrip('~'),
+                                            'to': to_uid.lstrip('~').split('-')[0],
                                             'type': r_type,
                                             'resembling': is_resembling,
                                             'remark': remark,
