@@ -83,7 +83,6 @@ export class SCStaticPirivenasProject extends SCStaticPage {
           <div class="donate-button-container">
             <a class="link-button block-link" href="https://suttacentral-pirivena-pitaka.raiselysite.com/">
               Support this Project
-              <md-ripple aria-hidden="true"></md-ripple>
             </a>
           </div>
         </article>
