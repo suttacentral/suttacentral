@@ -35,6 +35,10 @@ export class SCStaticPirivenasProject extends SCStaticPage {
         ${layoutSimpleStyles}
         ${typographyCommonStyles}
         ${typographyStaticStyles}
+
+        article h1 {
+          text-align: center;
+        }
       </style>
       <main>
         <article>
