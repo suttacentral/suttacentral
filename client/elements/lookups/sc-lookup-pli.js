@@ -1,8 +1,17 @@
 import { LitElement, html } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+
+import { dpd_deconstructor } from '../../files/dpd/dpd_deconstructor.js'
+import { dpd_ebts } from '../../files/dpd/dpd_ebts.js' 
+import { dpd_i2h } from '../../files/dpd/dpd_i2h.js' 
+
+// import dpd_deconstructor from '../../files/dpd/dpd_deconstructor.json'
+// import dpd_ebts from '../../files/dpd/dpd_ebts.json' 
+// import dpd_i2h from '../../files/dpd/dpd_i2h.json' 
 
 export class SCPaliLookup extends LitLocalized(LitElement) {
   static properties = {
@@ -53,7 +62,39 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     this.loadingDict = false;
   }
 
-  lookupWord(word) {
+  lookupWord(word){
+    word = this._stripSpecialCharacters(word);
+    word = word.toLowerCase().trim();
+    word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
+    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
+
+    let allMatches_dpd = []
+    word = word.replace(/[’”]/g, "").replace(/ṁ/g, "ṃ");
+    if(word in dpd_i2h){
+      const dpd_i2h_t = this._dpdTransform(dpd_i2h[word].sort((a, b) => a - b)) // create array like below instead of simple enumeration of the dpd_i2h...
+      let matches = []
+      for (const match of dpd_i2h_t){
+        for (const variation of match.vars){
+          if(variation in dpd_ebts){
+            matches.push(dpd_ebts[variation]);
+          }
+        }
+        allMatches_dpd.push({base: match.root, meaning: matches}) 
+        matches = []
+      }
+    }
+  
+    if(word in dpd_deconstructor){
+      allMatches_dpd.push({base: word, meaning: dpd_deconstructor[word]})
+    }
+
+    //return { html: out.replace(/ṃ/g, "ṁ") }; based on user preference ?
+    const meaning = this._toHtml(allMatches_dpd, word);
+    return { html: meaning };
+
+  }
+
+  lookupWord_old(word) {
     word = this._stripSpecialCharacters(word);
     word = word.toLowerCase().trim();
     word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
@@ -62,6 +103,31 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     const meaning = this._toHtml(allMatches, word);
     return { html: meaning };
   }
+
+  _dpdTransform = (arr) => {
+    // function made by https://www.phind.com/ to help formating the dpd entries. Prompt in dpd/README.md
+
+    // Step 1: Use reduce to accumulate results into an object
+    const resultObj = arr.reduce((acc, item) => {
+       // Step 2: Extract the root part of the string
+       const root = item.split(' ')[0];
+       
+       // Step 3: Check if the root exists in the accumulator
+       if (acc[root]) {
+         // If it exists, push the item into the vars array
+         acc[root].vars.push(item);
+       } else {
+         // If it doesn't exist, create a new entry
+         acc[root] = { root, vars: [item] };
+       }
+       
+       return acc;
+    }, {});
+     
+    // Step 4: Convert the object into the desired array format
+    return Object.values(resultObj);
+   };
+    
 
   _stripSpecialCharacters(word) {
     return word.replace(
@@ -104,8 +170,8 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
                 ? html`
                     <ol class="definition">
                       ${match.meaning.constructor === Array
-                        ? html` ${match.meaning.map(item => html` <li>${item}</li> `)} `
-                        : html` <li>${match.meaning}</li> `}
+                        ? html` ${match.meaning.map(item => html` <li>${unsafeHTML(item)}</li> `)} `
+                        : html` <li>${unsafeHTML(match.meaning)}</li> `}
                     </ol>
                   `
                 : ''}
