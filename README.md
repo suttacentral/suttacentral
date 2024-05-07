@@ -110,7 +110,7 @@ In addition, the following rebuilds the front end.
 Our project is using [ArangoDB](https://www.arangodb.com/) on the back-end. In the development mode it exposes port 8529 on the localhost.
 You can access its web interface on <http://127.0.0.1:8529>.
 
-In the code that is running in the docker containers you can access the database on the adress `sc-arangodb` on the same port.
+In the code that is running in the docker containers you can access the database on the address `sc-arangodb` on the same port.
 
 In the development mode:
     
@@ -124,7 +124,7 @@ In order to change password you have to change `ARANGO_ROOT_PASSWORD` in env's `
 Our project is using nginx as a HTTP reverse proxy. It is responsible for serving static files and passing `/api/*` endpoints to the uwsgi+flask server.
 
 ### 1.7 Flask + uWSGI
-Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The socket file (`uwsgi.sock`) is in `socket-volume` shared beetwen `nginx` and `flask+uwsgi`
+Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The socket file (`uwsgi.sock`) is in `socket-volume` shared between `nginx` and `flask+uwsgi`
 
 #### Creating db migrations
 In order to create database migration in out app you have to follow those simple steps:

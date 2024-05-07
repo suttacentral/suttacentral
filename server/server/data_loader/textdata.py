@@ -130,7 +130,7 @@ class TextInfoModel:
                 self.add_document(text_info)
 
             except Exception as e:
-                print('An exception occured: {!s}'.format(htmlfile))
+                print('An exception occurred: {!s}'.format(htmlfile))
                 raise
 
         self.update_code_points(
