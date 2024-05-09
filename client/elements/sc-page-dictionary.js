@@ -44,6 +44,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
       dppn: 'Dictionary of Pali Proper Names',
       pts: 'PTS Pali English Dictionary',
+      dpd: 'Digital Pāḷi Dictionary',
     };
     this.adjacent = true;
     this.dictionaryAdjacent = [];
