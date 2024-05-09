@@ -134,7 +134,7 @@ def get_client() -> ArangoClient:
 
 def get_db() -> Database:
     """
-    Returns db obejct for current db session and creats one if not presenet.
+    Returns db object for current db session and creates one if not present.
     """
     db = ArangoDB._get_db_from_g_or_none()
     if db is None:
