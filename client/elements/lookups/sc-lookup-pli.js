@@ -55,12 +55,11 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
 
   async fetchDictionary() {
     if (!this.toLang || !this.isPaliLookupEnabled) {
-        return;
+      return;
     }
     this.loadingDict = true;
     this.loadedLanguage = this.toLang;
     this.dictData = await (await fetch(this._computeUrl())).json();
-    console.log(this.dictData.length);
     this.loadingDict = false;
   }
 
