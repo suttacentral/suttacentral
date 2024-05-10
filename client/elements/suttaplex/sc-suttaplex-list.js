@@ -129,7 +129,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   hasError() {
-    return this.networkError || ((this.suttaplexData && this.suttaplexData.length === 0) || !this.suttaplexData[0]?.uid);
+    return this.networkError || ((this.suttaplexData && this.suttaplexData.length === 0) || (this.suttaplexData?.length > 0 && !this.suttaplexData[0]?.uid));
   }
 
   calculateClass(itemType) {

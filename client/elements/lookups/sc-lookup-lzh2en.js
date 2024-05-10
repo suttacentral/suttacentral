@@ -17,7 +17,9 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.loadedLanguage = '';
-    this.toLang = store.getState().textOptions.chineseLookupTargetLanguage;
+    const { textOptions } = store.getState();
+    this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
+    this.toLang = textOptions.chineseLookupTargetLanguage;
     this.dictData = {};
     this.loadingDict = true;
     this.loadFallbackLanguage = true;
@@ -30,7 +32,7 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this.getNewDict();
+    this.fetchDictionary();
   }
 
   updated(changedProps) {
@@ -46,10 +48,14 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;
     }
+    if (this.isChineseLookupEnabled !== state.textOptions.chineseLookupActivated) {
+      this.isChineseLookupEnabled = state.textOptions.chineseLookupActivated;
+      this.fetchDictionary();
+    }
   }
 
-  async getNewDict() {
-    if (!this.toLang) {
+  async fetchDictionary() {
+    if (!this.toLang || !this.isChineseLookupEnabled) {
       return;
     }
     this.loadingDict = true;
@@ -197,7 +203,7 @@ export class SCChineseLookup extends LitLocalized(LitElement) {
       return;
     }
     if (typeof this.toLang !== 'undefined' && this.toLang !== this.loadedLanguage) {
-      this.getNewDict();
+      this.fetchDictionary();
     }
   }
 }

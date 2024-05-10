@@ -5,13 +5,8 @@ import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 
-import { dpd_deconstructor } from '../../files/dpd/dpd_deconstructor.js'
-import { dpd_ebts } from '../../files/dpd/dpd_ebts.js' 
-import { dpd_i2h } from '../../files/dpd/dpd_i2h.js' 
-
-// import dpd_deconstructor from '../../files/dpd/dpd_deconstructor.json'
-// import dpd_ebts from '../../files/dpd/dpd_ebts.json' 
-// import dpd_i2h from '../../files/dpd/dpd_i2h.json' 
+import { dpd_deconstructor } from './dpd/dpd_deconstructor.js';
+import { dpd_i2h } from './dpd/dpd_i2h.js';
 
 export class SCPaliLookup extends LitLocalized(LitElement) {
   static properties = {
@@ -30,11 +25,13 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     this.loadingDict = true;
     this.isTi = false;
     this.loadedLanguage = '';
-    this.toLang = store.getState().textOptions.paliLookupTargetLanguage;
+    const { textOptions } = store.getState();
+    this.toLang = textOptions.paliLookupTargetLanguage;
+    this.isPaliLookupEnabled = textOptions.paliLookupActivated;
   }
 
   firstUpdated() {
-    this.getNewDict();
+    this.fetchDictionary();
   }
 
   updated(changedProps) {
@@ -50,10 +47,14 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     if (this.toLang !== targetLanguage) {
       this.toLang = targetLanguage;
     }
+    if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
+      this.isPaliLookupEnabled = state.textOptions.paliLookupActivated;
+      this.fetchDictionary();
+    }
   }
 
-  async getNewDict() {
-    if (!this.toLang) {
+  async fetchDictionary() {
+    if (!this.toLang || !this.isPaliLookupEnabled) {
       return;
     }
     this.loadingDict = true;
@@ -62,43 +63,61 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     this.loadingDict = false;
   }
 
-  lookupWord(word){
+  lookupWord(wordToLookup){
+    let word = wordToLookup;
     word = this._stripSpecialCharacters(word);
     word = word.toLowerCase().trim();
     word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
-    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
-
-    let allMatches_dpd = []
+    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk');
     word = word.replace(/[’”]/g, "").replace(/ṁ/g, "ṃ");
-    if(word in dpd_i2h){
+
+    const allMatches = []
+    const matches = []
+
+    if (word in dpd_i2h) {
+      matches.push(word);
       const dpd_i2h_t = this._dpdTransform(dpd_i2h[word].sort((a, b) => a - b)) // create array like below instead of simple enumeration of the dpd_i2h...
-      let matches = []
-      for (const match of dpd_i2h_t){
-        for (const variation of match.vars){
-          if(variation in dpd_ebts){
-            matches.push(dpd_ebts[variation]);
+      for (const match of dpd_i2h_t) {
+        for (const variation of match.vars) {
+          const matchedEntry = variation.match(/^[^\s]+/)[0];
+          if (!matches.includes(matchedEntry)) {
+            matches.push(matchedEntry);
           }
         }
-        allMatches_dpd.push({base: match.root, meaning: matches}) 
-        matches = []
       }
     }
-  
-    if(word in dpd_deconstructor){
-      allMatches_dpd.push({base: word, meaning: dpd_deconstructor[word]})
+
+    if(word in dpd_deconstructor) {
+      matches.push(dpd_deconstructor[word].split('+')[0].trim());
+      allMatches.push({base: word, meaning: dpd_deconstructor[word]});
     }
 
-    //return { html: out.replace(/ṃ/g, "ṁ") }; based on user preference ?
-    const meaning = this._toHtml(allMatches_dpd, word);
-    return { html: meaning };
+    for (const matchedEntry of matches) {
+      const target = this.dictData?.find?.(x => x.entry === matchedEntry);
+      if (typeof target === 'object') {
+        allMatches.push({
+          base: matchedEntry,
+          meaning: target.definition,
+          grammar: target.grammar,
+          xr: target.xr
+        });
+      }
+    }
 
+    if (allMatches?.length !== 0 || (allMatches.length === 1 && !allMatches[0]?.meaning)) {
+      const meaning = this._toHtml(allMatches, word);
+      return { html: meaning };
+    }
+
+    return this.lookupWord_old(wordToLookup);
   }
 
-  lookupWord_old(word) {
+  lookupWord_old(wordToLookup) {
+    let word = wordToLookup;
     word = this._stripSpecialCharacters(word);
     word = word.toLowerCase().trim();
     word = word.replace(/­/g, '').replace(RegExp(this.syllSpacer, 'g'), ''); // optional hyphen, syllable-breaker
-    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk').replace(/ṁ/g, 'ṁ').replace(/ṁ/g, 'ṁ');
+    word = word.replace(/ṁg/g, 'ṅg').replace(/ṁk/g, 'ṅk');
     const allMatches = this._lookupWord(word);
     const meaning = this._toHtml(allMatches, word);
     return { html: meaning };
@@ -111,7 +130,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     const resultObj = arr.reduce((acc, item) => {
        // Step 2: Extract the root part of the string
        const root = item.split(' ')[0];
-       
+
        // Step 3: Check if the root exists in the accumulator
        if (acc[root]) {
          // If it exists, push the item into the vars array
@@ -120,14 +139,13 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
          // If it doesn't exist, create a new entry
          acc[root] = { root, vars: [item] };
        }
-       
+
        return acc;
     }, {});
-     
+
     // Step 4: Convert the object into the desired array format
     return Object.values(resultObj);
-   };
-    
+  };
 
   _stripSpecialCharacters(word) {
     return word.replace(
@@ -142,7 +160,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
 
   _targetLanguageChanged() {
     if (this.toLang && this.toLang !== this.loadedLanguage) {
-      this.getNewDict();
+      this.fetchDictionary();
     }
   }
 
@@ -368,7 +386,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
         if (part.length < maxLength) {
           break;
         }
-        const target = this.dictData?.find(x => x.entry === part);
+        const target = this.dictData?.find?.(x => x.entry === part);
         if (typeof target === 'object') {
           return {
             base: part,
@@ -391,7 +409,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     if (!this.dictData || this.dictData.length === 0) {
       return;
     }
-    const target = this.dictData?.find(x => x.entry === word);
+    const target = this.dictData?.find?.(x => x.entry === word);
     if (typeof target === 'object') {
       return { base: word, meaning: target.definition, grammar: target.grammar, xr: target.xr };
     }
@@ -409,7 +427,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
         word.substring(word.length - end[i][0].length, word.length) === end[i][0]
       ) {
         const orig = word.substring(0, word.length - end[i][0].length + end[i][1]) + end[i][3];
-        const target = this.dictData?.find(x => x.entry === orig);
+        const target = this.dictData?.find?.(x => x.entry === orig);
         if (typeof target === 'object') {
           return { base: orig, meaning: target.definition, grammar: target.grammar, xr: target.xr };
         }

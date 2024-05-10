@@ -1289,7 +1289,7 @@ RETURN SLICE(words, 0, 10)
 
 DICTIONARY_SIMPLE = '''
 FOR dict IN dictionaries_simple
-    FILTER dict.from == @from AND dict.to == @to
+    FILTER dict.from == @from AND dict.to == @to and dict.dictname != 'ncped'
     RETURN {
         entry: dict.entry,
         grammar: dict.grammar,
