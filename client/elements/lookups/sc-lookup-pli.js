@@ -107,6 +107,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
       const meaning = this._toHtml(allMatches, word);
       return { html: meaning };
     }
+
     return this.lookupWord_old(wordToLookup);
   }
 
@@ -223,7 +224,6 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
 
     // First we try to match the word as-is
     let matchCompleteResult = this.matchComplete(word, { ti: this.isTi });
-    console.log(matchCompleteResult);
     if (!matchCompleteResult || matchCompleteResult.length === 0) {
       if (word.search(/^an|^a(.)\1/) !== -1) {
         unword = word.substring(2, word.length);
