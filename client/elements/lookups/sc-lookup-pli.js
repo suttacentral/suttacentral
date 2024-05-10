@@ -88,7 +88,7 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
 
     if(word in dpd_deconstructor) {
       matches.push(dpd_deconstructor[word].split('+')[0].trim());
-      allMatches.push({base: word, meaning: dpd_deconstructor[word]})
+      allMatches.push({base: word, meaning: dpd_deconstructor[word]});
     }
 
     for (const matchedEntry of matches) {
