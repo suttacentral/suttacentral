@@ -1478,7 +1478,7 @@ LET segmented_counts = (
     )
 
 FOR subcount IN APPEND(legacy_counts, segmented_counts)
-    /* If there are multiple authors split them and count seperately */
+    /* If there are multiple authors split them and count separately */
     FOR author_name IN SPLIT(subcount.author, ', ')
         FILTER author_name != '' AND author_name != 'site'
         COLLECT name = author_name
