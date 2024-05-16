@@ -45,11 +45,6 @@ export class SCStaticPirivenasProject extends SCStaticPage {
           <h1>SuttaCentral Translations For Pirivenas</h1>
           <figure>
             <picture>
-              <source srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif" type="image/avif">
-              <img class="image-home-full" src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
-                width="640px" alt="Buddhist monk walking in forest with novice students holding textbooks">
-            </picture>
-            <picture>
               <source srcset="/img/static-pages/pirivena-monks-walking.avif" type="image/avif">
               <img class="image-home-full" src="/img/static-pages/pirivena-monks-walking.jpg"
                 width="640px" alt="Buddhist monk walking in forest with novice students holding textbooks">
