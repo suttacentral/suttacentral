@@ -47,7 +47,7 @@ export class SCStaticPirivenasProject extends SCStaticPage {
             <picture>
               <source srcset="/img/static-pages/pirivena-monks-walking.avif" type="image/avif">
               <img class="image-home-full" src="/img/static-pages/pirivena-monks-walking.jpg"
-                width="640px" alt="Buddhist monk walking in forest with novice students holding textbooks">
+                width="100%" alt="Buddhist monk walking in forest with novice students holding textbooks">
             </picture>
             <figcaption>Buddhist Monk Teacher With Students. Sri Lanka. Photo by Hugh Sitton</figcaption>
           </figure>
