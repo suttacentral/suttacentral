@@ -644,6 +644,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         'publicationEditionMatter': '',
         'palitipitaka': 'Pāḷi Tipiṭaka',
         'searchFilter': 'Search Filter',
+        'pirivena-project': 'SuttaCentral Translations For Pirivenas',
     };
 
     let title = titleMap[this.currentRoute.name];
@@ -664,12 +665,12 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       const navArray = store.getState().navigationArray;
       const currentPath = this.currentRoute.path;
       let pageName = this.currentRoute.name;
-      if (pageName === 'palitipitaka') {
-        pageName = this.localize('interface:palitipitaka');
-      }
-      if (pageName === 'searchFilter') {
-        pageName = 'Search Filter';
-      }
+      const pageNameMap = {
+        'palitipitaka': this.localize('interface:palitipitaka'),
+        'searchFilter': 'Search Filter',
+        'pirivena-project': 'SuttaCentral Translations For Pirivenas'
+      };
+      pageName = pageNameMap[pageName] || pageName;
       navArray.length = 1;
       if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
         navArray.push({
