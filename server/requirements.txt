@@ -57,7 +57,7 @@ python-dateutil==2.8.2
 pytz==2022.6
 PyYAML==6.0
 regex==2022.10.31
-requests==2.31.0
+requests==2.32.0
 requests-toolbelt==0.10.1
 setuptools-scm==7.0.5
 six==1.16.0
