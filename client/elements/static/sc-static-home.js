@@ -320,10 +320,10 @@ export class SCStaticHomePage extends SCStaticPage {
   #pirivenasProjectCardTemplate() {
     return html`
       <div class="home-page-pirivena-notice">
-        <h3 class="home-page-pirivena-heading">SuttaCentral Translations For Pirivenas</h3>
-        <p>SuttaCentral, in conjunction with the Amarapura–Rāmañña and Siam Nikāyas, is pleased to launch the printing of English translations of the Suttas and Vinaya and their distribution through monastic education centers (Pirivena) of Sri Lanka.</p>
+        <h3 class="home-page-pirivena-heading">${unsafeHTML(this.localize('home:pirivenaTitle'))}</h3>
+        <p>${unsafeHTML(this.localize('home:pirivenaText'))}</p>
         <a class="link-button block-link" href="/pirivena-project">
-          Learn More
+        ${unsafeHTML(this.localize('home:pirivenaButton'))}
           <md-ripple></md-ripple>
         </a>
       </div>

@@ -8,7 +8,7 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 export class SCStaticPirivenasProject extends SCStaticPage {
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/interface';
+    this.localizedStringsPath = '/localization/elements/pirivena';
   }
 
   createRenderRoot() {
@@ -42,43 +42,34 @@ export class SCStaticPirivenasProject extends SCStaticPage {
       </style>
       <main>
         <article>
-          <h1>SuttaCentral Translations For Pirivenas</h1>
+          <h1>${this.localize('pirivenaPage:title')}</h1>
           <figure>
             <picture>
               <source srcset="/img/static-pages/pirivena-monks-walking.avif" type="image/avif">
               <img class="image-home-full" src="/img/static-pages/pirivena-monks-walking.jpg"
-                width="100%" alt="Buddhist monk walking in forest with novice students holding textbooks">
+                width="100%" alt="${this.localize('pirivenaPage:imageAlt')}">
             </picture>
-            <figcaption>Buddhist Monk Teacher With Students. Sri Lanka. Photo by Hugh Sitton</figcaption>
+            <figcaption>${this.localize('pirivenaPage:photoCaption')}</figcaption>
           </figure>
-          <p>SuttaCentral, in conjunction with the Amarapura–Rāmañña and Siam Nikāyas, is pleased to launch the printing of
-            English translations of the Suttas and Vinaya and their distribution through monastic education centers (Pirivena)
-            of Sri Lanka.</p>
-          <p>The goal of the project is to ensure that all monastics in Sri Lanka have ready access to modern, accurate, and
-            readable translations of the most important works of the Tipiṭaka (Buddhist scripture). </p>
-          <p>Leaders of the Sri Lankan Nikāyas have agreed to support this project after detailed discussions. Before agreeing,
-            they extensively reviewed SuttaCentral’s translations to assure their accuracy and suitability. </p>
-          <p>Our aim is to print 1,000 sets of the Sutta and Vinaya translations by Venerables Sujato and Brahmali. </p>
-          <p>Each set consists of:</p>
+          <p>${this.localize('pirivenaPage:1')}</p>
+          <p>${this.localize('pirivenaPage:2')}</p>
+          <p>${this.localize('pirivenaPage:3')}</p>
+          <p>${this.localize('pirivenaPage:4')}</p>
+          <p>${this.localize('pirivenaPage:5')}</p>
           <ul>
-            <li>Vinayapiṭaka — 6 volumes</li>
-            <li>Dīghanikāya — 3 volumes</li>
-            <li>Majjhimanikāya — 3 volumes</li>
-            <li>Saṁyuttanikāya — 5 volumes</li>
-            <li>Aṅguttaranikāya — 5 volumes</li>
-            <li>Khuddakanikāya — Dhammapada, Udāna, Itivuttaka, Suttanipāta, Theragāthā, Therīgāthā; 1 volume each</li>
+            <li>Vinayapiṭaka — 6 ${this.localize('pirivenaPage:volumes')}</li>
+            <li>Dīghanikāya — 3 ${this.localize('pirivenaPage:volumes')}</li>
+            <li>Majjhimanikāya — 3 ${this.localize('pirivenaPage:volumes')}</li>
+            <li>Saṁyuttanikāya — 5 ${this.localize('pirivenaPage:volumes')}</li>
+            <li>Aṅguttaranikāya — 5 ${this.localize('pirivenaPage:volumes')}</li>
+            <li>Khuddakanikāya — Dhammapada, Udāna, Itivuttaka, Suttanipāta, Theragāthā, Therīgāthā; ${this.localize('pirivenaPage:1volume')}</li>
           </ul>
-          <p>This totals 28 volumes, so the entire printing run will be 28,000 books in 1,000 sets. </p>
-          <p>The books will be printed in excellent quality hard cover with sewn bindings. The printing will be handled by the
-            premier Lake House printers of Sri Lanka. </p>
-          <p>We can only bring this worthy project to completion with your help. If you would like to donate to support the
-            costs of printing, please visit our fundraising page on Raisely.</p>
-          <p>For any questions, please contact our financial officer, Deepika Weerakoon
-            (suttacentraldevelopmenttrust@gmail.com).</p>
+          <p>${this.localize('pirivenaPage:6')}</p>
+          <p>${this.localize('pirivenaPage:7')}</p>
+          <p>${this.localize('pirivenaPage:8')}</p>
+          <p>${this.localize('pirivenaPage:contact')}: Deepika Weerakoon (suttacentraldevelopmenttrust@gmail.com).</p>
           <div class="donate-button-container">
-            <a class="link-button block-link" href="https://suttacentral-pirivena-pitaka.raiselysite.com/">
-              Support this Project
-            </a>
+            <a class="link-button block-link" href="https://suttacentral-pirivena-pitaka.raiselysite.com/">${this.localize('pirivenaPage:button')}</a>
           </div>
         </article>
       </main>
