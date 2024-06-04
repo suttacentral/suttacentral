@@ -120,6 +120,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         color: var(--sc-icon-color);
       }
 
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
       label {
         display: block;
         margin-top: 24px;
