@@ -1644,24 +1644,19 @@ def extract_query_conditions(param):
 
 
 def extract_rest_keywords(result, param):
+    """
+    Note:
+        This assumes only a single author filter is specified.  This function
+        will silently clobber any additional author filters.  Ditto for
+        collection.  Update extract_query_conditions if/when we want to handle
+        multiple authors or collections, or raise an error when #2978 exists.
+    """
     rest_param = ''
-    if 'author' in result and 'collection' not in result:
-        author_param = 'author:' + result["author"]
-        rest_param = param[param.find(author_param) + len(author_param):]
-
-    if 'author' not in result and 'collection' in result:
-        collection_param = 'in:' + result["collection"]
-        rest_param = param[param.find(
-            collection_param) + len(collection_param):]
-
-    if 'author' in result and 'collection' in result:
-        author_param = 'author:' + result["author"]
-        collection_param = 'in:' + result["collection"]
-        rest_param = (
-            param[param.find(author_param) + len(author_param):]
-            if param.find(author_param) > param.find(collection_param)
-            else param[param.find(collection_param) + len(collection_param):]
-        )
+    param_tokens = param.split()
+    for term in param.split():
+        if term.startswith(constant.CMD_AUTHOR) or term.startswith(constant.CMD_IN):
+            param_tokens.remove(term)
+    rest_param = ' '.join(param_tokens)
 
     if 'OR' in rest_param:
         operator = constant.OPERATOR_OR
