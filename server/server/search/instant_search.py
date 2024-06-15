@@ -840,7 +840,7 @@ def generate_aql_for_chinese_keyword(
 
 def try_to_fetch_suttaplex(db, hits, lang, original_query, query, selected_languages, matchpartial):
     suttaplexs = []
-    if original_query.startswith('title:'):
+    if original_query.startswith(constant.CMD_TITLE):
         suttaplexs.extend(fetch_suttaplexs(db, lang, hits))
     elif suttaplex := fetch_suttaplex(db, lang, query):
         suttaplexs = [suttaplex]
@@ -1043,7 +1043,7 @@ def prepare_and_generate_aql_for_chinese_keywords(
 
 def generate_aql_by_collection(search_aql, aql_condition_part, query_param):
     if query_param['query'].startswith(constant.CMD_IN):
-        query_param['query'] = query_param['query'][3:].lower()
+        query_param['query'] = query_param['query'][len(constant.CMD_IN):].lower()
         search_aql, aql_condition_part = generate_aql_for_collection_filter(
             query_param)
     return query_param, search_aql, aql_condition_part
@@ -1126,21 +1126,21 @@ def prepare_and_generate_aql_for_not_operator(search_aql, aql_condition_part, qu
 def prepare_and_generate_aql_for_author_filter(search_aql, aql_condition_part, query_param):
     if query_param['query'].startswith(constant.CMD_AUTHOR):
         search_aql, aql_condition_part = generate_aql_for_author_filter(query_param)
-        query_param['query'] = query_param['query'][7:]
+        query_param['query'] = query_param['query'][len(constant.CMD_AUTHOR):]
     return query_param, search_aql, aql_condition_part
 
 
 def prepare_and_generate_aql_for_title_filter(search_aql, aql_condition_part, query_param):
-    if query_param['query'].startswith('title:'):
+    if query_param['query'].startswith(constant.CMD_TITLE):
         search_aql, aql_condition_part = generate_aql_for_title_filter(query_param)
-        query_param['query'] = query_param['query'][6:]
+        query_param['query'] = query_param['query'][len(constant.CMD_TITLE):]
     return query_param, search_aql, aql_condition_part
 
 
 def prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, query_param):
     vol_page_number = re.search(r'\d+', query_param['query'])
     if query_param['query'].startswith(constant.CMD_VOLPAGE):
-        query = query_param['query'][8:].strip()
+        query = query_param['query'][len(constant.CMD_VOLPAGE):].strip()
         query = format_volpage(query)
         pattern = r"^([asmdASMD])\s"
         replacement = r"\1n "
@@ -1169,7 +1169,7 @@ def prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, 
 
 def prepare_and_generate_aql_for_reference_filter(search_aql, aql_condition_part, query_param):
     if query_param['query'].startswith(constant.CMD_REFERENCE):
-        query = query_param['query'][4:].strip()
+        query = query_param['query'][len(constant.CMD_REFERENCE):].strip()
         search_aql = generate_aql_for_reference_filter(query)
         query_param['query'] = query
     return query_param, search_aql, aql_condition_part
@@ -1624,10 +1624,10 @@ def is_chinese(uchar):
 def extract_query_conditions(param):
     param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
-    author = re.search("author:([\w-]+)", param)
+    author = re.search(f"{constant.CMD_AUTHOR}([\w-]+)", param)
     if author:
         result["author"] = author[1].strip()
-    collection = re.search("in:([\w-]+)", param)
+    collection = re.search(f"{constant.CMD_IN}([\w-]+)", param)
     if collection:
         result["collection"] = collection[1].strip()
 
@@ -1718,9 +1718,9 @@ def standardization_volpage(volpage):
 
 
 def extract_lang_param(query_string):
-    chunks = re.split("(lang:[a-z]+)\\s+", query_string)
+    chunks = re.split(f"({constant.CMD_LANG}[a-z]+)\\s+", query_string)
     chunks = [c for c in chunks if c]
-    return [c[5:] if c.startswith("lang:") else c for c in chunks]
+    return [c[len(constant.CMD_LANG):] if c.startswith(constant.CMD_LANG) else c for c in chunks]
 
 
 def extract_not_param(query_string):
