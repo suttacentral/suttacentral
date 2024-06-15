@@ -181,7 +181,7 @@ def process_search_results(
     add_root_name_to_hits(db, hits)
     if original_query != constant.CMD_LIST_AUTHORS:
         sort_highlight_clips(hits)
-    if original_query.startswith(constant.CMD_AUTHOR):
+    if constant.CMD_AUTHOR in original_query:
         sort_by_sutta_numbering_rules(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 

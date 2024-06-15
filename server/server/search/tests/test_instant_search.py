@@ -90,6 +90,7 @@ def test_extract_param():
     assert extract_query_conditions('cat in:vinaya') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('in:sutta cat') == {"collection": "sutta", "or": ["cat"]}
     assert extract_query_conditions('in:abhidhamma cat') == {"collection": "abhidhamma", "or": ["cat"]}
+    assert extract_query_conditions('NOT cat in:an10') == {"collection": "an10", "not": ["cat"]}
     assert extract_query_conditions('in:vinaya respect NOT feet') == {"collection": "vinaya", "or": ["respect"], "not": ["feet"]}
     assert extract_query_conditions('respect NOT feet in:vinaya') == {"collection": "vinaya", "or": ["respect"], "not": ["feet"]}
 
