@@ -43,7 +43,7 @@
     "leaflet": "^1.9.4",
     "leaflet-fullscreen": "git://github.com/runette/Leaflet.fullscreen.git",
     "lit": "3.1.4",
-    "path-to-regexp": "^7.0.0",
+    "path-to-regexp": "^6.2.2",
     "pwa-helpers": "^0.9.1",
     "redux": "^4.2.1",
     "turbolinks": "^5.2.0",
