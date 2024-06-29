@@ -132,6 +132,12 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
   }
 
   async #fetchEditionInfo() {
+    if (!this.editionId) {
+      return;
+    }
+    if (!this.editionPaperbackId) {
+      return;
+    }
     try {
       this.editionInfo = await (
         await fetch(`${API_ROOT}/publication/edition/${this.editionId}`)

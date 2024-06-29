@@ -98,6 +98,9 @@ class ScPublicationEditions extends LitLocalized(LitElement) {
   }
 
   async #fetchEditionInfo(editionId) {
+    if (!editionId) {
+      return;
+    }
     try {
       this.editionInfo = await (await fetch(`${API_ROOT}/publication/edition/${editionId}`)).json();
       this.webEditionInfo.push(this.editionInfo);
