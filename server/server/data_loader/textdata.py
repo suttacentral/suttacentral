@@ -58,7 +58,7 @@ class TextInfoModel:
         files = [f for f in all_files if f.stem == 'metadata'] + [
             f for f in all_files if f.stem != 'metadata'
         ]
-        for i, htmlfile in enumerate(files):
+        for htmlfile in files:
             try:
                 # Should we process this file?
 
@@ -92,20 +92,14 @@ class TextInfoModel:
                 unicode_points['normal'].update(root.text_content())
 
                 author = self._get_author(root, htmlfile)
-                author_data = self.get_author_by_name(author, htmlfile)
-
-                if author_data:
+                if author_data := self.get_author_by_name(author, htmlfile):
                     author_uid = author_data['uid']
                     author_short = author_data['short_name']
                 else:
                     author_uid = None
                     author_short = None
 
-                if author_uid:
-                    path = f'{lang_uid}/{uid}/{author_uid}'
-                else:
-                    path = f'{lang_uid}/{uid}'
-
+                path = f'{lang_uid}/{uid}/{author_uid}' if author_uid else f'{lang_uid}/{uid}'
                 publication_date = self._get_publication_date(root)
 
                 name = self._get_name(root, lang_uid, uid)
@@ -140,14 +134,9 @@ class TextInfoModel:
         del self._ppn
 
     def _get_author(self, root, file):
-        author = None
-        e = root.select_one('meta[author]')
-        if e:
-            author = e.attrib['author']
-
+        author = e.attrib['author'] if (e := root.select_one('meta[author]')) else None
         if not author:
-            e = root.select_one('meta[name=author]')
-            if e:
+            if e := root.select_one('meta[name=author]'):
                 author = e.attrib['content']
 
         if not author:
@@ -155,8 +144,7 @@ class TextInfoModel:
         return author
 
     def _get_publication_date(self, root):
-        e = root.select_one('.publication-date')
-        if e:
+        if e := root.select_one('.publication-date'):
             return e.text_content()
 
         return None
@@ -176,7 +164,7 @@ class TextInfoModel:
             left_side = h1.select_one('.mirror-left')
             right_side = h1.select_one('.mirror-right')
             if left_side and right_side:
-                return right_side.text_content() + ' (' + left_side.text_content() + ')'
+                return f'{right_side.text_content()} ({left_side.text_content()})'
 
         return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
@@ -189,7 +177,7 @@ class TextInfoModel:
                 e = e.next_in_order()
             else:
                 return
-            return '{}'.format(e.attrib['id']).replace('t', 'T ')
+            return f"{e.attrib['id']}".replace('t', 'T ')
         elif lang_uid == 'pli':
             if self._ppn is None:
                 return None
@@ -332,22 +320,21 @@ class PaliPageNumbinator:
 
             # Pick out only the references we're interested in.
             for ref in v:
-                match = regex.fullmatch(r'ms(\d+[A-Z][a-z]*\d*)_(\d+)', ref)
-                if match:
+                if match := regex.fullmatch(r'ms(\d+[A-Z][a-z]*\d*)_(\d+)', ref):
                     msbook, msnum = match.groups()
                     ms.append((msbook.lower(), int(msnum)))
                     continue
 
-                match = regex.fullmatch(r'(pts-vp-pli(?:[12]ed)?)(?:(\d+)\.)?(\d+)', ref)
-                if match:
+                if match := regex.fullmatch(
+                    r'(pts-vp-pli(?:[12]ed)?)(?:(\d+)\.)?(\d+)', ref
+                ):
                     pts_edition, vol, page = match.groups()
                     if pts_edition == 'pts-vp-pli':
                         pts_edition = 'pts-vp-pli1ed'
                     pts.append((pts_edition, vol, int(page)))
                     continue
 
-                match = regex.fullmatch(r'vnp(\d+)', ref)
-                if match:
+                if match := regex.fullmatch(r'vnp(\d+)', ref):
                     verse = match[1]
                     pts.append(('vnp', None, int(verse)))
                     continue

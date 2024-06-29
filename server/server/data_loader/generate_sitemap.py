@@ -6,10 +6,7 @@ import jinja2
 def sort_key(doc):
     lang = doc['lang']
     uid = doc['uid']
-    if lang == 'en':
-        return 'a', uid
-    else:
-        return lang, uid
+    return ('a', uid) if lang == 'en' else (lang, uid)
 
 
 url_template = jinja2.Template(

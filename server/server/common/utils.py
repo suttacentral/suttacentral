@@ -146,14 +146,8 @@ def flat_tree(data: List[Dict], children='children') -> List[Dict]:
 
 def language_sort(original_lang):
     def l_sort(lang):
-        if lang['lang'] == original_lang:
-            result = '11111'  # So that root language is always first.
-        else:
-            result = lang['lang']
-        if lang['segmented']:
-            result += '_0'
-        else:
-            result += '_1'
+        result = '11111' if lang['lang'] == original_lang else lang['lang']
+        result += '_0' if lang['segmented'] else '_1'
         return result
 
     return l_sort
@@ -172,10 +166,7 @@ def sort_parallels_key(x):
 
 
 def sort_parallels_type_key(x):
-    if x['type'] == 'full' and x['resembling']:
-        p_type = 'resembling'
-    else:
-        p_type = x['type']
+    p_type = 'resembling' if x['type'] == 'full' and x['resembling'] else x['type']
     values = {'full': 1, 'resembling': 2, 'mention': 3, 'retelling': 4}
     return values[p_type], x['to']['to']
 
@@ -188,8 +179,7 @@ def chunks(iterable, chunk_size):
     else:
         iterator = iter(iterable)
         while True:
-            r = list(itertools.islice(iterator, 0, chunk_size))
-            if r:
+            if r := list(itertools.islice(iterator, 0, chunk_size)):
                 yield r
             else:
                 break

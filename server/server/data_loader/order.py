@@ -25,8 +25,7 @@ def further_split_uids(divisions):
         if len(stems) == 1:
             yield division_uid, uids_in_division
         else:
-            for stem, group in zip(stems, groups):
-                yield stem, group
+            yield from zip(stems, groups)
 
 
 def get_matching_uids(divisions, text_uids, lang):
