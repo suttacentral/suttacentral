@@ -16,6 +16,7 @@ import {
   allEditions,
   collectionURL,
   editionsGithubUrl,
+  lastUpdatedDateOfCollections,
   publicationLastGeneratedDate,
 } from './sc-publication-common';
 
@@ -182,19 +183,23 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     const { authorUid, langIsoCode } = this.currentRoute.params;
 
     if (publicationType === 'tex') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publicationType}.zip`;
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publishedDate}-${publicationType}.zip`;
     }
 
     if (publicationType === 'pdf') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}.zip`;
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publishedDate}.zip`;
     }
 
     if (publicationType === 'epub') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}.${publicationType}`;
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publishedDate}.${publicationType}`;
     }
 
     if (publicationType === 'html') {
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}.${publicationType}`;
+      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
+      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publishedDate}.${publicationType}`;
     }
 
     return 'https://github.com/suttacentral/editions/tree/main';
