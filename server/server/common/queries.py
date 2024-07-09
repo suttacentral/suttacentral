@@ -1505,14 +1505,15 @@ RETURN {
 '''
 
 ALL_DOC_UID_BY_ROOT_UID = '''
-LET root_uid = REVERSE(POP(
+LET root_doc = REVERSE(POP(
 FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges OPTIONS {order: 'dfs'}
     FILTER doc.type == 'branch'
-    RETURN doc.uid
+    RETURN doc
 ))[0]
 
-FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_uid) super_nav_details_edges OPTIONS {order: 'dfs'}
-    FILTER docs.type == 'leaf'
+
+FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_doc.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
+    FILTER docs.type == 'leaf' AND STARTS_WITH(docs.uid, LOWER(root_doc.acronym))
     RETURN docs.uid
 '''
 
