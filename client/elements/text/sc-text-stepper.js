@@ -76,6 +76,10 @@ export class SCTextStepper extends LitLocalized(LitElement) {
       justify-content: flex-end;
     }
 
+    .button-left, .button-right {
+      position: relative;
+    }
+
     .button-right .text-title {
       padding-left: 1em;
     }
