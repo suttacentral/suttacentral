@@ -88,4 +88,4 @@ websockets==10.4
 Werkzeug==2.3.4
 wrapt==1.14.1
 zhconv==1.4.3
-zipp==3.11.0
+zipp==3.19.1
