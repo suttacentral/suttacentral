@@ -5,6 +5,7 @@ from common.queries import SUTTAPLEX_LIST
 from search import dictionaries, constant
 from unidecode import unidecode
 import unicodedata
+import string
 
 INSTANT_SEARCH_VIEW = 'instant_search'
 AQL_INSTANT_SEARCH_FIRST_PART = 'FOR d IN instant_search '
@@ -1287,7 +1288,15 @@ def highlight_by_multiple_possible_keyword(
             break
 
 
+def remove_punctuation(text):
+    punctuation = string.punctuation.replace(":", "")  # 从标点符号中移除冒号
+    translator = str.maketrans("", "", punctuation)
+    return text.translate(translator)
+
+
 def cut_highlight(content, hit, query, is_segmented_text):
+    content = remove_punctuation(content)
+    query = remove_punctuation(query)
     if is_segmented_text:
         highlight_segmented_text(content, query, hit)
     else:
