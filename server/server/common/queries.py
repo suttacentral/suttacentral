@@ -1513,7 +1513,7 @@ FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_e
 
 
 FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_doc.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
-    FILTER docs.type == 'leaf' AND STARTS_WITH(docs.uid, LOWER(root_doc.acronym))
+    FILTER docs.type == 'leaf' AND AND (STARTS_WITH(docs.uid, LOWER(root_doc.uid)) OR STARTS_WITH(docs.uid, LOWER(root_doc.acronym)))
     RETURN docs.uid
 '''
 
