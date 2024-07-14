@@ -1463,9 +1463,12 @@ class TransliteratedSutta(Resource):
         sutta_texts = {k: json_load(v) for k, v in result.items()}
         for key, value in sutta_texts[uid].items():
             sutta_texts[uid][key] = transliterate.process(
-                'ISO',
+                'ISOPali',
                 target,
-                value.replace('o', 'ō').replace('e', 'ē').replace('O', 'Ō').replace('E', 'Ē')
+                value.replace('o', 'ō')
+                .replace('e', 'ē')
+                .replace('O', 'Ō')
+                .replace('E', 'Ē'),
             )
 
         return sutta_texts[uid]
