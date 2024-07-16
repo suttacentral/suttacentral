@@ -89,3 +89,4 @@ Werkzeug==2.3.4
 wrapt==1.14.1
 zhconv==1.4.3
 zipp==3.11.0
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
