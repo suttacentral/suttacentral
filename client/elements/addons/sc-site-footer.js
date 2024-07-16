@@ -144,11 +144,6 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
                 >
               </li>
               <li>
-                <a class="block-link" href="https://buddhanexus.net"
-                  >${this.localize('footer:buddhaNexus')}</a
-                >
-              </li>
-              <li>
                 <a class="block-link" href="https://readingfaithfully.org/"
                   >${this.localize('footer:readingfaithfully')}</a
                 >
@@ -177,6 +172,14 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
               <a class="block-link" href="/licensing">${this.localize('footer:licensing')}</a>
             </li>
             <li><a class="block-link" href="/About">${this.localize('footer:about')}</a></li>
+          </ul>
+        </section>
+        <section class="footer-bottom">
+          <ul>
+            <li>
+            <b>By humans, for humans</b><br>
+            All work on this website was created by humans, not by AI. 
+            </li>
           </ul>
         </section>
       </footer>
