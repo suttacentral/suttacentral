@@ -1465,10 +1465,7 @@ class TransliteratedSutta(Resource):
             sutta_texts[uid][key] = transliterate.process(
                 'ISOPali',
                 target,
-                value.replace('o', 'ō')
-                .replace('e', 'ē')
-                .replace('O', 'Ō')
-                .replace('E', 'Ē'),
+                value,
             )
 
         return sutta_texts[uid]
