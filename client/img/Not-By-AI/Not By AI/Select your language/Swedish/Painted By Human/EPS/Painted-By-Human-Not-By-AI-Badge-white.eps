@@ -1,0 +1,1720 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%APL_DSC_Encoding: UTF8
+%APLProducer: (Version 12.6 (Build 21G115) Quartz PS Context)
+%%Title: (Unknown)
+%%Creator: (Unknown)
+%%CreationDate: (Unknown)
+%%For: (Unknown)
+%%DocumentData: Clean7Bit
+%%LanguageLevel: 2
+%%Pages: 1
+%%BoundingBox: 0 0 132 43
+%%EndComments
+%%BeginProlog
+%%BeginFile: cg-pdf.ps
+%%Copyright: Copyright 2000-2004 Apple Computer Incorporated.
+%%Copyright: All Rights Reserved.
+currentpacking true setpacking
+/cg_md 141 dict def
+cg_md begin
+/L3? languagelevel 3 ge def
+/bd{bind def}bind def
+/ld{load def}bd
+/xs{exch store}bd
+/xd{exch def}bd
+/cmmtx matrix def
+mark
+/sc/setcolor
+/scs/setcolorspace
+/dr/defineresource
+/fr/findresource
+/T/true
+/F/false
+/d/setdash
+/w/setlinewidth
+/J/setlinecap
+/j/setlinejoin
+/M/setmiterlimit
+/i/setflat
+/rc/rectclip
+/rf/rectfill
+/rs/rectstroke
+/f/fill
+/f*/eofill
+/sf/selectfont
+/s/show
+%/as/ashow
+/xS/xshow
+/yS/yshow
+/xyS/xyshow
+/S/stroke
+/m/moveto
+/l/lineto
+/c/curveto
+/h/closepath
+/n/newpath
+/q/gsave
+/Q/grestore
+counttomark 2 idiv
+%dup (number of ld's = )print == flush	% *** how many 
+{ld}repeat pop
+/SC{	% CSname
+    /ColorSpace fr scs
+}bd
+/sopr /setoverprint where{pop/setoverprint}{/pop}ifelse ld
+/soprm /setoverprintmode where{pop/setoverprintmode}{/pop}ifelse ld
+/cgmtx matrix def
+/sdmtx{cgmtx currentmatrix pop}bd
+/CM {cgmtx setmatrix}bd		% pop the ctm: our gstate ctm on host is now identity
+/cm {cmmtx astore CM concat}bd	% reset the matrix and then concat
+/W{clip newpath}bd
+/W*{eoclip newpath}bd
+
+statusdict begin product end dup (HP) anchorsearch{
+    pop pop pop	% pop off the search results
+    true
+}{
+    pop	% previous search result
+   (hp) anchorsearch{
+	pop pop true
+    }{
+	pop false
+    }ifelse
+}ifelse
+
+{	% HP is the product: we use this method of stroking because of a bug in their clone printers with certain T3 fonts
+    { 
+	{ % charCode Wx Wy
+	    pop pop % charCode
+	    (0)dup 0 4 -1 roll put
+	    F charpath
+	}cshow
+    }
+}{
+    {F charpath}
+}ifelse
+/cply exch bd
+/cps {cply stroke}bd
+/pgsave 0 def
+/bp{/pgsave save store}bd
+/ep{pgsave restore showpage}def		% dont' bind
+/re{4 2 roll m 1 index 0 rlineto 0 exch rlineto neg 0 rlineto h}bd
+
+/scrdict 10 dict def
+/scrmtx matrix def
+/patarray 0 def
+/createpat{patarray 3 1 roll put}bd
+/makepat{
+scrmtx astore pop
+gsave
+initgraphics
+CM 
+patarray exch get
+scrmtx
+makepattern
+grestore
+setpattern
+}bd
+
+/cg_BeginEPSF{
+    userdict save/cg_b4_Inc_state exch put
+    userdict/cg_endepsf/cg_EndEPSF load put
+    count userdict/cg_op_count 3 -1 roll put 
+    countdictstack dup array dictstack userdict/cg_dict_array 3 -1 roll put
+    3 sub{end}repeat
+    /showpage {} def
+    0 setgray 0 setlinecap 1 setlinewidth 0 setlinejoin
+    10 setmiterlimit [] 0 setdash newpath
+    false setstrokeadjust false setoverprint	% don't use F
+}bd
+/cg_EndEPSF{
+  countdictstack 3 sub { end } repeat
+  cg_dict_array 3 1 index length 3 sub getinterval
+  {begin}forall
+  count userdict/cg_op_count get sub{pop}repeat
+  userdict/cg_b4_Inc_state get restore
+  F setpacking
+}bd
+
+/cg_biproc{currentfile/RunLengthDecode filter}bd
+/cg_aiproc{currentfile/ASCII85Decode filter/RunLengthDecode filter}bd
+/ImageDataSource 0 def
+L3?{
+    /cg_mibiproc{pop pop/ImageDataSource{cg_biproc}def}bd
+    /cg_miaiproc{pop pop/ImageDataSource{cg_aiproc}def}bd
+}{
+    /ImageBandMask 0 def
+    /ImageBandData 0 def
+    /cg_mibiproc{
+	string/ImageBandMask xs
+	string/ImageBandData xs
+	/ImageDataSource{[currentfile/RunLengthDecode filter dup ImageBandMask/readstring cvx
+	    /pop cvx dup ImageBandData/readstring cvx/pop cvx]cvx bind}bd
+    }bd
+    /cg_miaiproc{	
+	string/ImageBandMask xs
+	string/ImageBandData xs
+	/ImageDataSource{[currentfile/ASCII85Decode filter/RunLengthDecode filter
+	    dup ImageBandMask/readstring cvx
+	    /pop cvx dup ImageBandData/readstring cvx/pop cvx]cvx bind}bd
+    }bd
+}ifelse
+/imsave 0 def
+/BI{save/imsave xd mark}bd
+/EI{imsave restore}bd
+/ID{
+counttomark 2 idiv
+dup 2 add	% leave room for imagetype and imagematrix
+dict begin
+{def} repeat
+pop		% remove mark
+/ImageType 1 def
+/ImageMatrix[Width 0 0 Height neg 0 Height]def
+currentdict dup/ImageMask known{ImageMask}{F}ifelse exch
+% currentdict on stack
+L3?{
+    dup/MaskedImage known
+    { 
+	pop
+	<<
+	    /ImageType 3
+	    /InterleaveType 2
+	    /DataDict currentdict
+	    /MaskDict
+	    <<  /ImageType 1
+		/Width Width
+		/Height Height
+		/ImageMatrix ImageMatrix
+		/BitsPerComponent 1
+		/Decode [0 1]
+		currentdict/Interpolate known
+		{/Interpolate Interpolate}if
+	    >>
+	>>
+    }if
+}if
+exch
+{imagemask}{image}ifelse	
+end	% pop imagedict from dict stack
+}bd
+
+/cguidfix{statusdict begin mark version end
+{cvr}stopped{cleartomark 0}{exch pop}ifelse
+2012 lt{dup findfont dup length dict begin
+{1 index/FID ne 2 index/UniqueID ne and
+{def} {pop pop} ifelse}forall
+currentdict end definefont pop
+}{pop}ifelse
+}bd
+/t_array 0 def
+/t_i 0 def
+/t_c 1 string def
+/x_proc{ % x y
+    exch t_array t_i get add exch moveto
+    /t_i t_i 1 add store
+}bd
+/y_proc{ % x y
+    t_array t_i get add moveto
+    /t_i t_i 1 add store
+}bd
+/xy_proc{
+        % x y
+	t_array t_i 2 copy 1 add get 3 1 roll get 
+	4 -1 roll add 3 1 roll add moveto
+	/t_i t_i 2 add store
+}bd
+/sop 0 def		% don't bind sop
+/cp_proc/x_proc ld 	% default moveto proc is for xwidths only
+/base_charpath		% string array
+{
+    /t_array xs
+    /t_i 0 def
+    { % char
+	t_c 0 3 -1 roll put
+        currentpoint
+	t_c cply sop
+        cp_proc
+    }forall
+    /t_array 0 def
+}bd
+/sop/stroke ld		% default sop is stroke. Done here so we don't bind in /base_charpath 
+
+% default sop is stroke
+/nop{}def
+/xsp/base_charpath ld
+/ysp{/cp_proc/y_proc ld base_charpath/cp_proc/x_proc ld}bd
+/xysp{/cp_proc/xy_proc ld base_charpath/cp_proc/x_proc ld}bd
+/xmp{/sop/nop ld /cp_proc/x_proc ld base_charpath/sop/stroke ld}bd
+/ymp{/sop/nop ld /cp_proc/y_proc ld base_charpath/sop/stroke ld}bd
+/xymp{/sop/nop ld /cp_proc/xy_proc ld base_charpath/sop/stroke ld}bd
+/refnt{ % newname encoding fontname
+findfont dup length dict copy dup
+/Encoding 4 -1 roll put 
+definefont pop
+}bd
+/renmfont{ % newname fontname
+findfont dup length dict copy definefont pop
+}bd
+
+L3? dup dup{save exch}if
+
+% languagelevel2 ONLY code goes here
+
+/Range 0 def
+/DataSource 0 def
+/val 0 def
+/nRange 0 def
+/mulRange 0 def
+/d0 0 def
+/r0 0 def
+/di 0 def
+/ri 0 def
+/a0 0 def
+/a1 0 def
+/r1 0 def
+/r2 0 def
+/dx 0 def
+/Nsteps 0 def
+/sh3tp 0 def
+/ymax 0 def
+/ymin 0 def
+/xmax 0 def
+/xmin 0 def
+
+/setupFunEval % funDict -- 	% this calculates and sets up a function dict for evaulation.
+{
+    begin
+	/nRange Range length 2 idiv store
+	/mulRange   % precompute the range data needed to map a sample value from the table to a range value
+		    % this data looks like [ range0mul range0min range1mul range1min ... rangeN-1mul rangeN-1min ]
+	[ 
+	    0 1 nRange 1 sub
+	    { % index
+		    2 mul/nDim2 xd		% 2*dimension# we are dealing with
+		    Range nDim2 get		% ymin
+		    Range nDim2 1 add get	% ymin ymax 
+		    1 index sub			% ymin (ymax-ymin)
+						% xmin = 0, xmax = 255 (2^bitspersample - 1)
+		    255 div			% ymin (ymax-ymin)/(xmax - xmin)
+		    exch			% (ymax-ymin)/(xmax - xmin) ymin
+	    }for
+	]store
+    end
+}bd
+
+/FunEval % val1 fundict -> comp1 comp2 ... compN
+{
+    begin
+	% the value passed in is the base index into the table
+	nRange mul /val xd	% compute the actual index to the table
+				% since there are nRange entries per base index
+	0 1 nRange 1 sub
+	{
+	    dup 2 mul/nDim2 xd % dim
+	    val	% base value to use to do our lookup
+	    add DataSource exch get %  lookedupval
+	    mulRange nDim2 get mul 	% lookedupval*(ymax-ymin)/(xmax-xmin)
+	    mulRange nDim2 1 add get % lookedupval*(ymax-ymin)/(xmax-xmin) ymin
+	    add % interpolated result
+	}for	% comp1 comp2 ... compN
+    end
+}bd
+
+/max % a b -> max(a, b)
+{
+	2 copy lt
+	{exch pop}{pop}ifelse
+}bd
+
+/sh2
+{	% emulation of shading type 2. Assumes shading dictionary is top dictionary on the dict stack
+	/Coords load aload pop 	% x0 y0 x1 y1
+	3 index 3 index translate	% origin is now at beginning point of shading
+					% x0 y0 x1 y1
+	3 -1 roll sub	% x0 x1 y1-y0
+	3 1 roll exch 	% y1-y0 x1 x0
+	sub				% y1-y0 x1-x0
+	2 copy
+	dup mul exch dup mul add sqrt	% length of segment between two points
+	dup
+	scale  
+	atan	% atan (dy/dx)
+	%dup (rotation angle = )print ==
+	rotate		% now line between 0,0 and 1,0 is the line perpendicular to which the axial lines are drawn					
+	
+	/Function load setupFunEval	% may need to setup function dictionary by calling setupFunEval
+	
+	% this is now specific to axial shadings. Compute the maximum bounds to fill
+	clippath {pathbbox}stopped {0 0 0 0}if newpath 	% x0 y0 x1 y1
+	/ymax xs
+	/xmax xs
+	/ymin xs
+	/xmin xs
+	currentdict/Extend known
+	{
+		/Extend load 0 get
+		{	
+			0/Function load FunEval sc	% evaluate the function to get a color and set it
+			xmin ymin xmin abs ymax ymin sub rectfill
+		}if
+	}if
+	% paint the rects. The sampling frequency is that of our table
+	/Nsteps/Function load/Size get 0 get 1 sub store
+	/dx 1 Nsteps div store
+	gsave
+		/di ymax ymin sub store
+		/Function load
+		% loop Nsteps + 1 times, incrementing the index by 1 each time
+		0 1 Nsteps
+		{
+			1 index FunEval sc
+			0 ymin dx di rectfill
+			dx 0 translate
+		}for
+		pop	% pop our function
+	grestore	% origin is back to start point
+	currentdict/Extend known
+	{
+		/Extend load 1 get
+		{	
+			Nsteps/Function load FunEval sc	% last element
+			1 ymin xmax 1 sub abs ymax ymin sub rectfill
+		}if
+	}if
+}bd
+
+/shp	% this paints our shape for shading type 3
+{	% x1 r1 x0 r0 -
+	4 copy
+
+	% fill interior arc
+	dup 0 gt{
+		0 exch a1 a0 arc
+	}{
+		pop 0 moveto
+	}ifelse
+
+	dup 0 gt{
+		0 exch a0 a1 arcn
+	}{
+		pop 0 lineto
+	}ifelse
+	
+	fill
+
+	% fill exterior arc
+	dup 0 gt{
+		0 exch a0 a1 arc
+	}{
+		pop 0 moveto
+	}ifelse
+
+	dup 0 gt{
+		0 exch a1 a0 arcn
+	}{
+		pop 0 lineto
+	}ifelse
+	
+	fill
+}bd
+
+/calcmaxs
+{	% calculate maximum distance vector from origin to corner points
+	% of bbox
+	xmin dup mul ymin dup mul add sqrt		% (xmin2 + ymin2)
+	xmax dup mul ymin dup mul add sqrt		% (xmax2 + ymin2)
+	xmin dup mul ymax dup mul add sqrt		% (xmin2 + ymax2)
+	xmax dup mul ymax dup mul add sqrt		% (xmax2 + ymax2)
+	max max max								% maximum value
+}bd
+
+/sh3
+{	% emulation of shading type 3. Assumes shading dictionary is top dictionary on the dict stack
+	/Coords load aload pop 	% x0 y0 r1 x1 y1 r2
+	5 index 5 index translate	% origin is now at first circle origin
+	3 -1 roll 6 -1 roll sub		% y0 r1 y1 r2 dx
+	3 -1 roll 5 -1 roll sub		% r1 r2 dx dy
+	2 copy dup mul exch dup mul add sqrt
+	/dx xs						% r1 r2 dx dy
+	2 copy 0 ne exch 0 ne or
+	{
+		% r1 r2 dx dy
+		exch atan rotate	% we are now rotated so dy is zero and positive values of dx move us as expected
+	}{
+		pop pop
+	}ifelse
+	% r1 r2		
+	/r2 xs
+	/r1 xs
+	/Function load 
+	dup/Size get 0 get 1 sub	% this is the size of our table minus 1
+	/Nsteps xs		% at some point we should optimize this better so NSteps is based on needed steps for the device
+	setupFunEval		% may need to setup function dictionary by calling setupFunEval
+	% determine the case:
+	% case 0: circle1 inside circle2
+	% case 1: circle 2 inside circle 1
+	% case 2: r1 = r2 
+	% case 3: r1 != r2
+	dx r2 add r1 lt{
+		% circle 2 inside of circle 1
+		0 
+	}{
+		dx r1 add r2 le
+		{ % circle 1 inside of circle 2
+			1
+		}{ % circles don't contain each other
+			r1 r2 eq
+			{	% equal
+				2
+			}{ % r1 != r2
+				3
+			}ifelse		
+		}ifelse
+	}ifelse
+	/sh3tp xs		% sh3tp has the number of our different cases
+	clippath {pathbbox}stopped {0 0 0 0}if 
+	newpath 	% x0 y0 x1 y1
+	/ymax xs
+	/xmax xs
+	/ymin xs
+	/xmin xs
+
+	% Arc angle atan( sqrt((dx*dx + dy*dy) - dr*dr), dr)
+	dx dup mul r2 r1 sub dup mul sub dup 0 gt
+	{
+		sqrt r2 r1 sub atan
+		/a0 exch 180 exch sub store 
+		/a1 a0 neg store 
+	}{
+		pop
+		/a0 0 store
+		/a1 360 store		
+	}ifelse		
+
+	currentdict/Extend known
+	{
+		/Extend load 0 get r1 0 gt and	% no need to extend if the radius of the first end is 0
+		{	
+			0/Function load FunEval sc	% evaluate the function to get a color and set it
+			% case 0: circle1 inside circle2
+			% case 1: circle 2 inside circle 1
+			% case 2: circles don't contain each other and r1 == r2
+			% case 3: circles don't contain each other and r1 != r2
+			{ 
+				{	% case 0
+					dx 0 r1 360 0 arcn
+					xmin ymin moveto
+					xmax ymin lineto
+					xmax ymax lineto
+					xmin ymax lineto
+					xmin ymin lineto
+					eofill		% for the bigger radius we fill everything except our circle
+				}
+				{	% case 1
+					r1 0 gt{0 0 r1 0 360 arc fill}if
+				}
+				{	% case 2
+					% r1 == r2, extend 0
+					% r3 = r, x3 = -(abs(minx) + r), x1 = 0
+				
+					% x(i+1) r(i+1) x(i) r(i) shp
+					0 r1 xmin abs r1 add neg r1 shp
+				}
+				{	% case 3
+					% no containment, r1 != r2
+				
+					r2 r1 gt{	% the endpoint we are drawing is that with a circle of zero radius
+						% x(i+1) r(i+1) x(i) r(i) shp
+						0 r1
+						r1 neg r2 r1 sub div dx mul	% this is point of beginning circle
+						0	% point of ending circle
+						shp	% takes x(i+1) r(i+1) x(i) r(i)
+					}{	% the first circle is the bigger of the two
+						% we find a circle on our line which is outside the bbox in the
+						% negative direction
+						% x(i+1) r(i+1) x(i) r(i) shp
+						0 r1 calcmaxs	% 0 r1 maxs
+						dup
+						% calculating xs: (-(maxs+r2)*x2)/(x2-(r1-r2))
+						r2 add dx mul dx r1 r2 sub sub div
+						neg				% maxs xs'
+						exch 1 index	% xs' maxs xs'
+						abs exch sub
+						shp
+					}ifelse
+				} 
+			}sh3tp get exec	% execute the extend at beginning proc for our shading type
+		}if
+	}if
+
+	% now do the shading
+	/d0 0 store
+	/r0 r1 store
+	/di dx Nsteps div store
+	/ri r2 r1 sub Nsteps div store 
+	/Function load 
+	0 1 Nsteps
+	{	% function t(i)
+		1 index FunEval sc
+		d0 di add r0 ri add d0 r0 shp
+		{
+		% fill interior arc
+		d0 0 r0 a1 a0 arc
+		d0 di add 0 r0 ri add a0 a1 arcn
+		fill
+		
+		% fill exterior arc
+		d0 0 r0 a0 a1 arc
+		d0 di add 0 r0 ri add a1 a0 arcn
+		fill
+		}pop
+		
+		% advance to next
+		/d0 d0 di add store
+		/r0 r0 ri add store
+	}for
+	pop	% pop our function dict
+
+	% handle Extend
+	currentdict/Extend known
+	{
+		/Extend load 1 get r2 0 gt and	% no need to extend if the radius of the last end is 0
+		{	
+			Nsteps/Function load FunEval sc	% last element
+			% case 0: circle1 inside circle2
+			% case 1: circle 2 inside circle 1
+			% case 2: circles don't contain each other and r1 == r2
+			% case 3: circles don't contain each other and r1 != r2
+			{ 
+				{
+					dx 0 r2 0 360 arc fill
+				} 
+				{
+					dx 0 r2 360 0 arcn
+					xmin ymin moveto
+					xmax ymin lineto
+					xmax ymax lineto
+					xmin ymax lineto
+					xmin ymin lineto
+					eofill		% for the bigger radius we fill everything except our circle
+				} 
+				{	% r1 == r2, extend 1
+					% r3 = r, x3 = (abs(xmax) + r), x1 = dx
+					% x(i+1) r(i+1) x(i) r(i) shp
+					xmax abs r1 add r1 dx r1 shp
+				}	
+				{	% no containment, r1 != r2
+			
+					r2 r1 gt{
+						% we find a circle on our line which is outside the bbox in the
+						% positive direction
+						% x(i+1) r(i+1) x(i) r(i) shp
+						calcmaxs dup	% maxs maxs
+						% calculating xs: ((maxs+r1)*x2)/(x2-(r2-r1))
+						r1 add dx mul dx r2 r1 sub sub div	% maxs xs
+						exch 1 index	% xs maxs xs
+						exch sub
+						dx r2
+						shp
+					}{	% the endpoint we are drawing is that with a circle of zero radius
+						% x(i+1) r(i+1) x(i) r(i) shp
+						r1 neg r2 r1 sub div dx mul	% this is point of ending circle
+						0		% radius of ending circle
+						dx 		% point of starting circle
+						r2		% radius of starting circle
+						shp
+					}ifelse
+				}
+			}			
+			sh3tp get exec	% execute the extend at end proc for our shading type
+		}if
+	}if
+}bd
+/sh		% emulation of shfill operator for type 2 and type 3 shadings based on type 0 functions
+{	% shadingDict --
+	begin
+		/ShadingType load dup dup 2 eq exch 3 eq or
+		{	% shadingtype
+			gsave
+				newpath
+				/ColorSpace load scs
+				currentdict/BBox known
+				{
+					/BBox load aload pop	% llx lly urx ury
+					2 index sub				% llx lly urx ury-lly
+					3 index					% llx lly urx ury-lly llx
+					3 -1 roll exch sub 
+					exch rectclip
+				}if
+				2 eq
+				{sh2}{sh3}ifelse
+			grestore
+		}{
+			% shadingtype
+			pop 
+			(DEBUG: shading type unimplemented\n)print flush
+		}ifelse
+	end
+}bd
+
+% end of language level 2 ONLY code
+
+{restore}if not dup{save exch}if
+% languagelevel3 ONLY code goes here
+	L3?{	% we do these loads conditionally or else they will fail on a level 2 printer
+		/sh/shfill ld
+		/csq/clipsave ld
+		/csQ/cliprestore ld
+	}if
+{restore}if
+
+%currentdict dup maxlength exch length sub (number of extra slots in md = )print == flush	% *** how many entries are free
+end
+setpacking
+% count 0 ne { pstack(***extras on stack during prolog execution***\n)print flush}if	% *** BARK if anything is left on stack
+%%EndFile
+%%EndProlog
+%%BeginSetup
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: 0 0 132 43
+%%BeginPageSetup
+cg_md begin
+bp
+sdmtx
+[ /CIEBasedABC 4 dict dup begin 
+/WhitePoint [ 0.9505 1.0000 1.0891 ] def 
+/DecodeABC [ 
+{ 1.0 0.0 3 -1 roll 1 index 1 index le { exch pop} { pop } ifelse 
+ 1 index 1 index ge { exch pop } { pop } ifelse < 
+0000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000001010101010101010101010101
+0101010101010101010101010101010101010101010101020202020202020202
+0202020202020202020202020202020202030303030303030303030303030303
+0303030303030304040404040404040404040404040404040404050505050505
+0505050505050505050506060606060606060606060606060607070707070707
+0707070707070708080808080808080808080808090909090909090909090909
+0a0a0a0a0a0a0a0a0a0a0a0b0b0b0b0b0b0b0b0b0b0b0c0c0c0c0c0c0c0c0c0c
+0d0d0d0d0d0d0d0d0d0d0e0e0e0e0e0e0e0e0e0f0f0f0f0f0f0f0f0f10101010
+1010101010111111111111111112121212121212121313131313131313141414
+1414141414151515151515151616161616161616171717171717171818181818
+18181919191919191a1a1a1a1a1a1a1b1b1b1b1b1b1c1c1c1c1c1c1c1d1d1d1d
+1d1d1e1e1e1e1e1e1f1f1f1f1f1f202020202020212121212121222222222223
+2323232323242424242425252525252526262626262727272727282828282829
+292929292a2a2a2a2a2b2b2b2b2b2c2c2c2c2c2d2d2d2d2d2e2e2e2e2e2f2f2f
+2f2f303030303131313131323232323333333333343434343535353535363636
+36373737373838383839393939393a3a3a3a3b3b3b3b3c3c3c3c3d3d3d3d3e3e
+3e3e3f3f3f3f4040404041414141424242424343434444444445454545464646
+4647474748484848494949494a4a4a4b4b4b4b4c4c4c4d4d4d4d4e4e4e4f4f4f
+4f50505051515151525252535353535454545555555656565657575758585859
+59595a5a5a5a5b5b5b5c5c5c5d5d5d5e5e5e5f5f5f6060606061616162626263
+63636464646565656666666767676868686969696a6a6a6b6b6b6c6c6d6d6d6e
+6e6e6f6f6f707070717171727273737374747475757576767677777878787979
+797a7a7b7b7b7c7c7c7d7d7e7e7e7f7f7f808081818182828283838484848585
+86868687878888888989898a8a8b8b8b8c8c8d8d8d8e8e8f8f90909091919292
+9293939494949595969697979798989999999a9a9b9b9c9c9c9d9d9e9e9f9f9f
+a0a0a1a1a2a2a3a3a3a4a4a5a5a6a6a6a7a7a8a8a9a9aaaaabababacacadadae
+aeafafb0b0b0b1b1b2b2b3b3b4b4b5b5b6b6b6b7b7b8b8b9b9bababbbbbcbcbd
+bdbebebebfbfc0c0c1c1c2c2c3c3c4c4c5c5c6c6c7c7c8c8c9c9cacacbcbcccc
+cdcdcececfcfd0d0d1d1d2d2d3d3d4d4d5d5d6d6d7d7d8d8d9d9dadadbdcdcdd
+dddededfdfe0e0e1e1e2e2e3e3e4e4e5e6e6e7e7e8e8e9e9eaeaebebecededee
+eeefeff0f0f1f1f2f3f3f4f4f5f5f6f6f7f8f8f9f9fafafbfcfcfdfdfefeffff
+>  dup length 1 sub 3 -1 roll mul dup dup floor cvi exch ceiling 
+ cvi 3 index exch get 4 -1 roll 3 -1 roll get
+ dup 3 1 roll sub 3 -1 roll dup floor cvi sub mul add 255 div } bind 
+
+{ 1.0 0.0 3 -1 roll 1 index 1 index le { exch pop} { pop } ifelse 
+ 1 index 1 index ge { exch pop } { pop } ifelse < 
+0000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000001010101010101010101010101
+0101010101010101010101010101010101010101010101020202020202020202
+0202020202020202020202020202020202030303030303030303030303030303
+0303030303030304040404040404040404040404040404040404050505050505
+0505050505050505050506060606060606060606060606060607070707070707
+0707070707070708080808080808080808080808090909090909090909090909
+0a0a0a0a0a0a0a0a0a0a0a0b0b0b0b0b0b0b0b0b0b0b0c0c0c0c0c0c0c0c0c0c
+0d0d0d0d0d0d0d0d0d0d0e0e0e0e0e0e0e0e0e0f0f0f0f0f0f0f0f0f10101010
+1010101010111111111111111112121212121212121313131313131313141414
+1414141414151515151515151616161616161616171717171717171818181818
+18181919191919191a1a1a1a1a1a1a1b1b1b1b1b1b1c1c1c1c1c1c1c1d1d1d1d
+1d1d1e1e1e1e1e1e1f1f1f1f1f1f202020202020212121212121222222222223
+2323232323242424242425252525252526262626262727272727282828282829
+292929292a2a2a2a2a2b2b2b2b2b2c2c2c2c2c2d2d2d2d2d2e2e2e2e2e2f2f2f
+2f2f303030303131313131323232323333333333343434343535353535363636
+36373737373838383839393939393a3a3a3a3b3b3b3b3c3c3c3c3d3d3d3d3e3e
+3e3e3f3f3f3f4040404041414141424242424343434444444445454545464646
+4647474748484848494949494a4a4a4b4b4b4b4c4c4c4d4d4d4d4e4e4e4f4f4f
+4f50505051515151525252535353535454545555555656565657575758585859
+59595a5a5a5a5b5b5b5c5c5c5d5d5d5e5e5e5f5f5f6060606061616162626263
+63636464646565656666666767676868686969696a6a6a6b6b6b6c6c6d6d6d6e
+6e6e6f6f6f707070717171727273737374747475757576767677777878787979
+797a7a7b7b7b7c7c7c7d7d7e7e7e7f7f7f808081818182828283838484848585
+86868687878888888989898a8a8b8b8b8c8c8d8d8d8e8e8f8f90909091919292
+9293939494949595969697979798989999999a9a9b9b9c9c9c9d9d9e9e9f9f9f
+a0a0a1a1a2a2a3a3a3a4a4a5a5a6a6a6a7a7a8a8a9a9aaaaabababacacadadae
+aeafafb0b0b0b1b1b2b2b3b3b4b4b5b5b6b6b6b7b7b8b8b9b9bababbbbbcbcbd
+bdbebebebfbfc0c0c1c1c2c2c3c3c4c4c5c5c6c6c7c7c8c8c9c9cacacbcbcccc
+cdcdcececfcfd0d0d1d1d2d2d3d3d4d4d5d5d6d6d7d7d8d8d9d9dadadbdcdcdd
+dddededfdfe0e0e1e1e2e2e3e3e4e4e5e6e6e7e7e8e8e9e9eaeaebebecededee
+eeefeff0f0f1f1f2f3f3f4f4f5f5f6f6f7f8f8f9f9fafafbfcfcfdfdfefeffff
+>  dup length 1 sub 3 -1 roll mul dup dup floor cvi exch ceiling 
+ cvi 3 index exch get 4 -1 roll 3 -1 roll get
+ dup 3 1 roll sub 3 -1 roll dup floor cvi sub mul add 255 div } bind 
+
+{ 1.0 0.0 3 -1 roll 1 index 1 index le { exch pop} { pop } ifelse 
+ 1 index 1 index ge { exch pop } { pop } ifelse < 
+0000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000001010101010101010101010101
+0101010101010101010101010101010101010101010101020202020202020202
+0202020202020202020202020202020202030303030303030303030303030303
+0303030303030304040404040404040404040404040404040404050505050505
+0505050505050505050506060606060606060606060606060607070707070707
+0707070707070708080808080808080808080808090909090909090909090909
+0a0a0a0a0a0a0a0a0a0a0a0b0b0b0b0b0b0b0b0b0b0b0c0c0c0c0c0c0c0c0c0c
+0d0d0d0d0d0d0d0d0d0d0e0e0e0e0e0e0e0e0e0f0f0f0f0f0f0f0f0f10101010
+1010101010111111111111111112121212121212121313131313131313141414
+1414141414151515151515151616161616161616171717171717171818181818
+18181919191919191a1a1a1a1a1a1a1b1b1b1b1b1b1c1c1c1c1c1c1c1d1d1d1d
+1d1d1e1e1e1e1e1e1f1f1f1f1f1f202020202020212121212121222222222223
+2323232323242424242425252525252526262626262727272727282828282829
+292929292a2a2a2a2a2b2b2b2b2b2c2c2c2c2c2d2d2d2d2d2e2e2e2e2e2f2f2f
+2f2f303030303131313131323232323333333333343434343535353535363636
+36373737373838383839393939393a3a3a3a3b3b3b3b3c3c3c3c3d3d3d3d3e3e
+3e3e3f3f3f3f4040404041414141424242424343434444444445454545464646
+4647474748484848494949494a4a4a4b4b4b4b4c4c4c4d4d4d4d4e4e4e4f4f4f
+4f50505051515151525252535353535454545555555656565657575758585859
+59595a5a5a5a5b5b5b5c5c5c5d5d5d5e5e5e5f5f5f6060606061616162626263
+63636464646565656666666767676868686969696a6a6a6b6b6b6c6c6d6d6d6e
+6e6e6f6f6f707070717171727273737374747475757576767677777878787979
+797a7a7b7b7b7c7c7c7d7d7e7e7e7f7f7f808081818182828283838484848585
+86868687878888888989898a8a8b8b8b8c8c8d8d8d8e8e8f8f90909091919292
+9293939494949595969697979798989999999a9a9b9b9c9c9c9d9d9e9e9f9f9f
+a0a0a1a1a2a2a3a3a3a4a4a5a5a6a6a6a7a7a8a8a9a9aaaaabababacacadadae
+aeafafb0b0b0b1b1b2b2b3b3b4b4b5b5b6b6b6b7b7b8b8b9b9bababbbbbcbcbd
+bdbebebebfbfc0c0c1c1c2c2c3c3c4c4c5c5c6c6c7c7c8c8c9c9cacacbcbcccc
+cdcdcececfcfd0d0d1d1d2d2d3d3d4d4d5d5d6d6d7d7d8d8d9d9dadadbdcdcdd
+dddededfdfe0e0e1e1e2e2e3e3e4e4e5e6e6e7e7e8e8e9e9eaeaebebecededee
+eeefeff0f0f1f1f2f3f3f4f4f5f5f6f6f7f8f8f9f9fafafbfcfcfdfdfefeffff
+>  dup length 1 sub 3 -1 roll mul dup dup floor cvi exch ceiling 
+ cvi 3 index exch get 4 -1 roll 3 -1 roll get
+ dup 3 1 roll sub 3 -1 roll dup floor cvi sub mul add 255 div } bind 
+] def 
+/MatrixABC [ 0.4124 0.2126 0.0193 0.3576 0.7151 0.1192 0.1805 0.0722 0.9508 ] def 
+/RangeLMN [ 0.0 0.9505 0.0 1.0000 0.0 1.0891 ] def 
+end ] /Cs1 exch/ColorSpace dr pop
+%%EndPageSetup
+0.60000002 i
+/Cs1 SC
+1 1 1 sc
+q
+1 42 m
+116.5 42 l
+124.508 42 131 35.508129 131 27.5 c
+131 1 l
+15.5 1 l
+7.4918699 1 1 7.4919 1 15.5 c
+1 42 l
+h
+W
+0 0 132 43 rc
+0 43 m
+132 43 l
+132 0 l
+0 0 l
+h
+f
+Q
+0 0 0 sc
+q
+0 0 132 43 rc
+1 0 0 -1 1 42 cm
+0 0 m
+115.5 0 l
+123.508 0 130 6.4918699 130 14.5 c
+130 41 l
+14.5 41 l
+6.4918699 41 0 34.508099 0 26.5 c
+0 0 l
+h
+S
+Q
+q
+43.5 21.076 2.5773001 2.424 rc
+42.5 24.5 m
+47.077301 24.5 l
+47.077301 20.076 l
+42.5 20.076 l
+h
+f
+Q
+q
+43.5 9.8318005 2.5773001 10.0461 rc
+42.5 20.877899 m
+47.077301 20.877899 l
+47.077301 8.8318005 l
+42.5 8.8318005 l
+h
+f
+Q
+q
+53.569 20.1175 m
+54.5737 20.1175 55.394199 19.844101 56.030399 19.297199 c
+56.672501 18.7565 56.9935 17.8564 56.9935 16.5968 c
+56.9935 9.8318005 l
+54.3894 9.8318005 l
+54.3894 15.9424 l
+54.3894 16.4708 54.321098 16.876301 54.184299 17.159 c
+53.934601 17.6751 53.459 17.933201 52.757401 17.933201 c
+51.895302 17.933201 51.303699 17.5553 50.9827 16.7995 c
+50.8162 16.4002 50.733002 15.8902 50.733002 15.2696 c
+50.733002 9.8318005 l
+48.200199 9.8318005 l
+48.200199 19.8594 l
+50.652699 19.8594 l
+50.652699 18.393999 l
+50.979698 18.910101 51.288898 19.2819 51.5802 19.509199 c
+52.103401 19.9147 52.7663 20.1175 53.569 20.1175 c
+h
+W
+0 0 132 43 rc
+47.200199 21.1175 m
+57.9935 21.1175 l
+57.9935 8.8318005 l
+47.200199 8.8318005 l
+h
+f
+Q
+q
+57.983799 19.7857 m
+57.983799 17.9147 l
+59.339401 17.9147 l
+59.339401 11.7304 l
+59.339401 11.1037 59.482101 10.6398 59.767399 10.3387 c
+60.207401 9.8655996 61.027901 9.6505003 62.228901 9.6934996 c
+63.4328 9.7396002 l
+63.4328 11.7028 l
+63.349602 11.6966 63.263401 11.6905 63.174198 11.6843 c
+62.933399 11.6843 l
+62.4161 11.6843 62.106998 11.7335 62.005901 11.8318 c
+61.9048 11.9363 61.854301 12.1943 61.854301 12.606 c
+61.854301 17.9147 l
+63.4328 17.9147 l
+63.4328 19.7857 l
+61.854301 19.7857 l
+61.854301 22.587601 l
+59.339401 22.587601 l
+59.339401 19.7857 l
+57.983799 19.7857 l
+h
+W
+0 0 132 43 rc
+56.983799 23.587601 m
+64.4328 23.587601 l
+64.4328 8.6505003 l
+56.983799 8.6505003 l
+h
+f
+Q
+q
+68.534401 20.145201 m
+69.342903 20.145201 70.071297 19.988501 70.719299 19.6751 c
+71.367401 19.361799 71.902397 18.8671 72.3246 18.1912 c
+72.705101 17.5952 72.951797 16.903999 73.064796 16.1175 c
+73.130203 15.6567 73.156898 14.9931 73.144997 14.1267 c
+66.492104 14.1267 l
+66.527802 13.119 66.834 12.4124 67.410698 12.0069 c
+67.761398 11.755 68.183601 11.629 68.677002 11.629 c
+69.200203 11.629 69.625298 11.7826 69.952301 12.0899 c
+70.130699 12.2558 70.2883 12.4862 70.425003 12.7811 c
+73.020203 12.7811 l
+72.954803 12.1851 72.654503 11.5799 72.119499 10.9654 c
+71.287102 9.9884996 70.121803 9.5 68.623497 9.5 c
+67.386902 9.5 66.295898 9.9117002 65.350601 10.735 c
+64.405197 11.5584 63.932598 12.8978 63.932598 14.7535 c
+63.932598 16.4923 64.357697 17.825701 65.207901 18.7535 c
+66.064003 19.681299 67.172798 20.145201 68.534401 20.145201 c
+h
+68.534401 17.9793 m
+67.945801 17.9793 67.487999 17.788799 67.161003 17.407801 c
+66.839897 17.026899 66.637802 16.510799 66.554497 15.8594 c
+70.505302 15.8594 l
+70.463699 16.553801 70.258499 17.0791 69.8899 17.435499 c
+69.527199 17.798 69.075401 17.9793 68.534401 17.9793 c
+h
+W*
+0 0 132 43 rc
+62.932598 21.145201 m
+74.156898 21.145201 l
+74.156898 8.5 l
+62.932598 8.5 l
+h
+f
+Q
+q
+103.387 23.2526 m
+106.458 23.2526 l
+111.066 9.8072996 l
+108.118 9.8072996 l
+107.279 12.5712 l
+102.487 12.5712 l
+101.586 9.8072996 l
+98.744202 9.8072996 l
+103.387 23.2526 l
+h
+103.219 14.8881 m
+106.52 14.8881 l
+104.896 20.1786 l
+103.219 14.8881 l
+h
+W*
+0 0 132 43 rc
+97.744202 24.2526 m
+112.066 24.2526 l
+112.066 8.8072996 l
+97.744202 8.8072996 l
+h
+f
+Q
+q
+113.383 20.965599 m
+113.383 12.0912 l
+111.781 12.0912 l
+111.781 9.8042002 l
+117.5 9.8042002 l
+117.5 12.0912 l
+116.084 12.0912 l
+116.084 20.965599 l
+117.5 20.965599 l
+117.5 23.2526 l
+111.781 23.2526 l
+111.781 20.965599 l
+113.383 20.965599 l
+h
+W
+0 0 132 43 rc
+110.781 24.2526 m
+118.5 24.2526 l
+118.5 8.8042002 l
+110.781 8.8042002 l
+h
+f
+Q
+q
+82.559196 16.1728 m
+82.357002 16.080601 82.021103 16.003799 81.551399 15.9424 c
+80.686401 15.8318 l
+79.705399 15.7028 78.962196 15.4877 78.456802 15.1866 c
+77.535301 14.6336 77.074501 13.7396 77.074501 12.5046 c
+77.074501 11.5522 77.359901 10.8149 77.930702 10.2926 c
+78.507401 9.7764997 79.235703 9.5184002 80.115601 9.5184002 c
+80.805298 9.5184002 81.423599 9.6813002 81.970596 10.0069 c
+82.428398 10.2834 82.832703 10.6183 83.183502 11.0115 c
+83.201302 10.7842 83.225098 10.5814 83.254799 10.4032 c
+83.2845 10.225 83.337997 10.0346 83.415298 9.8318005 c
+86.18 9.8318005 l
+86.18 10.2189 l
+86.013496 10.2988 85.888603 10.4002 85.805397 10.523 c
+85.722198 10.6459 85.6716 10.8794 85.653801 11.2235 c
+85.641899 11.6782 85.636002 12.0653 85.636002 12.3848 c
+85.636002 16.993099 l
+85.636002 18.203501 85.222702 19.026899 84.396301 19.4631 c
+83.569901 19.899401 82.624603 20.1175 81.560402 20.1175 c
+79.9254 20.1175 78.771896 19.6751 78.100098 18.7903 c
+77.678001 18.225 77.440201 17.503099 77.386703 16.624399 c
+79.839104 16.624399 l
+79.898598 17.011499 80.017502 17.318701 80.1959 17.546101 c
+80.445602 17.8533 80.870697 18.006901 81.471199 18.006901 c
+82.006302 18.006901 82.410599 17.927 82.683998 17.7673 c
+82.963501 17.613701 83.103203 17.330999 83.103203 16.919399 c
+83.103203 16.5814 82.921898 16.3326 82.559196 16.1728 c
+h
+82.603798 14.4585 m
+82.770302 14.5261 82.9338 14.6121 83.094299 14.7166 c
+83.094299 13.7396 l
+83.076401 12.861 82.835701 12.2558 82.371902 11.924 c
+81.914101 11.5922 81.411697 11.4263 80.8647 11.4263 c
+80.519897 11.4263 80.225601 11.5246 79.981796 11.7212 c
+79.744003 11.924 79.625099 12.2496 79.625099 12.6982 c
+79.625099 13.202 79.821297 13.5737 80.213699 13.8134 c
+80.445602 13.9547 80.829102 14.0745 81.364197 14.1728 c
+81.934898 14.2834 l
+82.220299 14.3387 82.443199 14.3971 82.603798 14.4585 c
+h
+W*
+0 0 132 43 rc
+76.074501 21.1175 m
+87.18 21.1175 l
+87.18 8.5184002 l
+76.074501 8.5184002 l
+h
+f
+Q
+q
+96.257797 19.877899 m
+93.5289 19.877899 l
+91.4599 12.4677 l
+89.435402 19.877899 l
+86.581596 19.877899 l
+90.068604 9.8318005 l
+92.752998 9.8318005 l
+96.257797 19.877899 l
+h
+W
+0 0 132 43 rc
+85.581596 20.877899 m
+97.257797 20.877899 l
+97.257797 8.8318005 l
+85.581596 8.8318005 l
+h
+f
+Q
+q
+53.587101 31.0609 m
+53.518101 30.920099 53.381802 30.836901 53.1782 30.8113 c
+51.764198 30.638599 l
+51.2682 30.577801 50.8675 30.416201 50.562 30.1539 c
+50.256599 29.8915 50.103802 29.521999 50.103802 29.0453 c
+50.103802 28.610201 50.258202 28.247101 50.567001 27.9559 c
+50.879002 27.667999 51.279701 27.524 51.7691 27.524 c
+52.176399 27.524 52.549198 27.608801 52.887501 27.778299 c
+53.2258 27.947901 53.485298 28.1479 53.665901 28.378201 c
+53.695499 28.1735 53.746399 28.0151 53.818699 27.903099 c
+53.9566 27.691999 54.178299 27.586399 54.483799 27.586399 c
+54.608601 27.586399 54.7071 27.5912 54.7794 27.6008 c
+54.851601 27.610399 54.956699 27.634399 55.0947 27.6728 c
+55.0947 28.311001 l
+55.038898 28.301399 54.986301 28.2934 54.937 28.287001 c
+54.887798 28.2838 54.843399 28.2822 54.804001 28.2822 c
+54.682499 28.2822 54.602001 28.309401 54.562599 28.3638 c
+54.526501 28.4182 54.5084 28.4902 54.5084 28.5798 c
+54.5084 31.5408 l
+54.5084 32.0271 54.316299 32.385399 53.931999 32.61578 c
+53.544399 32.84613 53.040199 32.961311 52.419399 32.961311 c
+51.884102 32.961311 51.412701 32.836529 51.005402 32.586979 c
+50.601398 32.340599 50.391201 31.9007 50.374802 31.2672 c
+51.202499 31.2672 l
+51.235401 31.532801 51.306 31.7328 51.414398 31.8671 c
+51.6082 32.110298 51.9366 32.231899 52.3997 32.231899 c
+52.8004 32.231899 53.107498 32.1647 53.320999 32.0303 c
+53.5378 31.899099 53.646198 31.686399 53.646198 31.392 c
+53.646198 31.2481 53.626499 31.137699 53.587101 31.0609 c
+h
+51.310902 28.474199 m
+51.123699 28.6182 51.030102 28.814899 51.030102 29.064501 c
+51.030102 29.393999 51.166401 29.634001 51.438999 29.7843 c
+51.599899 29.873899 51.8414 29.939501 52.1632 29.9811 c
+52.700298 30.0483 l
+52.864498 30.067499 53.032001 30.099501 53.202801 30.1443 c
+53.3736 30.1891 53.513199 30.2451 53.621601 30.312201 c
+53.621601 29.6164 l
+53.621601 29.0853 53.375198 28.702999 52.882599 28.4694 c
+52.590199 28.3286 52.288101 28.258301 51.976002 28.258301 c
+51.719799 28.258301 51.4981 28.3302 51.310902 28.474199 c
+h
+W*
+0 0 132 43 rc
+49.103802 33.961311 m
+56.0947 33.961311 l
+56.0947 26.524 l
+49.103802 26.524 l
+h
+f
+Q
+q
+53.286598 35.202461 m
+53.086201 35.400822 52.844799 35.5 52.562302 35.5 c
+52.2798 35.5 52.038399 35.400822 51.8381 35.202461 c
+51.637699 35.007301 51.537498 34.772148 51.537498 34.497002 c
+51.537498 34.221859 51.637699 33.9851 51.8381 33.786739 c
+52.038399 33.591579 52.2798 33.493999 52.562302 33.493999 c
+52.844799 33.493999 53.086201 33.591579 53.286598 33.786739 c
+53.4902 33.9851 53.591999 34.221859 53.591999 34.497002 c
+53.591999 34.772148 53.4902 35.007301 53.286598 35.202461 c
+h
+53.000801 34.069889 m
+52.879299 33.951511 52.733101 33.892319 52.562302 33.892319 c
+52.394798 33.892319 52.250301 33.951511 52.128799 34.069889 c
+52.007198 34.188259 51.946499 34.330631 51.946499 34.497002 c
+51.946499 34.663368 52.007198 34.80574 52.128799 34.924122 c
+52.250301 35.042488 52.394798 35.101681 52.562302 35.101681 c
+52.733101 35.101681 52.879299 35.042488 53.000801 34.924122 c
+53.122299 34.80574 53.183102 34.663368 53.183102 34.497002 c
+53.183102 34.330631 53.122299 34.188259 53.000801 34.069889 c
+h
+W*
+0 0 132 43 rc
+50.537498 36.5 m
+54.591999 36.5 l
+54.591999 32.493999 l
+50.537498 32.493999 l
+h
+f
+Q
+q
+43.376999 32.836529 m
+42.5 32.836529 l
+42.5 27.6968 l
+43.386799 27.6968 l
+43.386799 30.4226 l
+43.386799 31.0849 43.523102 31.5424 43.795799 31.795099 c
+44.071701 32.047901 44.377102 32.174301 44.712101 32.174301 c
+45.080002 32.174301 45.331299 32.054298 45.4659 31.814301 c
+45.5513 31.6544 45.594002 31.4 45.594002 31.0513 c
+45.594002 27.6968 l
+46.495602 27.6968 l
+46.495602 30.6866 l
+46.495602 31.217699 46.620499 31.5968 46.870098 31.8239 c
+47.123001 32.051102 47.4235 32.1647 47.771702 32.1647 c
+48.024601 32.1647 48.238098 32.1007 48.412201 31.9727 c
+48.5895 31.8447 48.6782 31.6096 48.6782 31.2672 c
+48.6782 27.6968 l
+49.599499 27.6968 l
+49.599499 31.1185 l
+49.599499 31.5728 49.530602 31.934299 49.392601 32.203098 c
+49.136398 32.70216 48.653599 32.95171 47.944099 32.95171 c
+47.6124 32.95171 47.313499 32.884521 47.047401 32.750149 c
+46.781399 32.61898 46.549801 32.415798 46.352798 32.140701 c
+46.234501 32.364601 46.1031 32.534191 45.958599 32.649368 c
+45.7024 32.850929 45.364101 32.95171 44.943699 32.95171 c
+44.572498 32.95171 44.240799 32.85413 43.948502 32.65897 c
+43.777699 32.543789 43.5872 32.359798 43.376999 32.107101 c
+43.376999 32.836529 l
+h
+W
+0 0 132 43 rc
+41.5 33.95171 m
+50.599499 33.95171 l
+50.599499 26.6968 l
+41.5 26.6968 l
+h
+f
+Q
+q
+55.436401 27.6968 0.88679999 7.0497499 rc
+54.436401 35.746552 m
+57.3232 35.746552 l
+57.3232 26.6968 l
+54.436401 26.6968 l
+h
+f
+Q
+q
+60.340401 31.0609 m
+60.2714 30.920099 60.135101 30.836901 59.9314 30.8113 c
+58.517399 30.638599 l
+58.0215 30.577801 57.6208 30.416201 57.3153 30.1539 c
+57.0098 29.8915 56.857101 29.521999 56.857101 29.0453 c
+56.857101 28.610201 57.011501 28.247101 57.320202 27.9559 c
+57.632301 27.667999 58.033001 27.524 58.5224 27.524 c
+58.929699 27.524 59.302502 27.608801 59.6408 27.778299 c
+59.979099 27.947901 60.238499 28.1479 60.419201 28.378201 c
+60.448799 28.1735 60.499699 28.0151 60.571899 27.903099 c
+60.7099 27.691999 60.931599 27.586399 61.237 27.586399 c
+61.3619 27.586399 61.4604 27.5912 61.5327 27.6008 c
+61.6049 27.610399 61.709999 27.634399 61.848 27.6728 c
+61.848 28.311001 l
+61.792099 28.301399 61.739601 28.2934 61.6903 28.287001 c
+61.640999 28.2838 61.596699 28.2822 61.557301 28.2822 c
+61.435799 28.2822 61.355301 28.309401 61.315899 28.3638 c
+61.279701 28.4182 61.2617 28.4902 61.2617 28.5798 c
+61.2617 31.5408 l
+61.2617 32.0271 61.0695 32.385399 60.6852 32.61578 c
+60.297699 32.84613 59.793499 32.961311 59.172699 32.961311 c
+58.637299 32.961311 58.166 32.836529 57.758701 32.586979 c
+57.354698 32.340599 57.144501 31.9007 57.128101 31.2672 c
+57.955799 31.2672 l
+57.988602 31.532801 58.059299 31.7328 58.167599 31.8671 c
+58.361401 32.110298 58.689899 32.231899 59.153 32.231899 c
+59.553699 32.231899 59.860802 32.1647 60.074299 32.0303 c
+60.2911 31.899099 60.399502 31.686399 60.399502 31.392 c
+60.399502 31.2481 60.379799 31.137699 60.340401 31.0609 c
+h
+58.064201 28.474199 m
+57.876999 28.6182 57.783401 28.814899 57.783401 29.064501 c
+57.783401 29.393999 57.919701 29.634001 58.192299 29.7843 c
+58.353199 29.873899 58.594601 29.939501 58.9165 29.9811 c
+59.453499 30.0483 l
+59.617802 30.067499 59.785301 30.099501 59.9561 30.1443 c
+60.1269 30.1891 60.266499 30.2451 60.374901 30.312201 c
+60.374901 29.6164 l
+60.374901 29.0853 60.128502 28.702999 59.635799 28.4694 c
+59.343498 28.3286 59.041302 28.258301 58.729301 28.258301 c
+58.473099 28.258301 58.2514 28.3302 58.064201 28.474199 c
+h
+W*
+0 0 132 43 rc
+55.857101 33.961311 m
+62.848 33.961311 l
+62.848 26.524 l
+55.857101 26.524 l
+h
+f
+Q
+q
+64.061897 32.927719 m
+64.465897 32.927719 64.804199 32.844528 65.076797 32.678169 c
+65.234497 32.582191 65.413498 32.4142 65.6138 32.174301 c
+65.6138 34.77055 l
+66.466202 34.77055 l
+66.466202 27.6968 l
+65.667999 27.6968 l
+65.667999 28.4118 l
+65.461098 28.0951 65.2164 27.866301 64.933899 27.725599 c
+64.651497 27.584801 64.327904 27.5144 63.963299 27.5144 c
+63.375401 27.5144 62.866299 27.7544 62.436001 28.234301 c
+62.005798 28.7174 61.7906 29.358801 61.7906 30.158701 c
+61.7906 30.907301 61.986099 31.555201 62.3769 32.102299 c
+62.771099 32.652569 63.332699 32.927719 64.061897 32.927719 c
+h
+62.7267 30.206699 m
+62.7267 29.656401 62.8466 29.1957 63.086399 28.824499 c
+63.326099 28.4534 63.7104 28.2679 64.239197 28.2679 c
+64.649803 28.2679 64.986504 28.438999 65.249199 28.7813 c
+65.515297 29.1269 65.6483 29.621201 65.6483 30.264299 c
+65.6483 30.9137 65.512001 31.3936 65.239403 31.704 c
+64.966797 32.017502 64.630096 32.174301 64.229401 32.174301 c
+63.7827 32.174301 63.4198 32.0079 63.140598 31.6752 c
+62.8647 31.3424 62.7267 30.8529 62.7267 30.206699 c
+h
+W*
+0 0 132 43 rc
+60.7906 35.77055 m
+67.466202 35.77055 l
+67.466202 26.5144 l
+60.7906 26.5144 l
+h
+f
+Q
+q
+71.617203 30.811399 m
+71.820801 30.836901 71.9571 30.920099 72.0261 31.0609 c
+72.065498 31.137699 72.085197 31.2481 72.085197 31.392 c
+72.085197 31.686399 71.976799 31.899099 71.760101 32.0303 c
+71.5466 32.1647 71.239502 32.231899 70.838699 32.231899 c
+70.375603 32.231899 70.047203 32.110298 69.853401 31.8671 c
+69.745003 31.7328 69.6744 31.532801 69.641502 31.2673 c
+68.813797 31.2673 l
+68.830299 31.9007 69.040497 32.340599 69.444504 32.587002 c
+69.8517 32.836552 70.323097 32.961319 70.858498 32.961319 c
+71.479202 32.961319 71.983398 32.846149 72.371002 32.615791 c
+72.755302 32.385399 72.947403 32.0271 72.947403 31.5408 c
+72.947403 28.5798 l
+72.947403 28.4902 72.9655 28.4182 73.001602 28.3638 c
+73.041 28.3095 73.121498 28.282301 73.242996 28.282301 c
+73.282402 28.282301 73.326797 28.283899 73.376099 28.2871 c
+73.425301 28.293501 73.477898 28.3015 73.533699 28.3111 c
+73.533699 27.6728 l
+73.395798 27.634399 73.290703 27.610399 73.218399 27.6008 c
+73.146103 27.5912 73.0476 27.586399 72.922798 27.586399 c
+72.617302 27.586399 72.395599 27.691999 72.257698 27.903099 c
+72.185402 28.0151 72.134499 28.1735 72.104897 28.378201 c
+71.924301 28.1479 71.664803 27.947901 71.3265 27.7784 c
+70.988197 27.608801 70.615402 27.524 70.208099 27.524 c
+69.718697 27.524 69.318001 27.667999 69.005997 27.9559 c
+68.697197 28.247101 68.5429 28.610201 68.5429 29.0453 c
+68.5429 29.521999 68.695602 29.8915 69.000999 30.1539 c
+69.306503 30.416201 69.707199 30.577801 70.203201 30.638599 c
+71.617203 30.811399 l
+h
+69.469101 29.064501 m
+69.469101 28.815001 69.562698 28.6182 69.749901 28.474199 c
+69.937103 28.330299 70.158798 28.258301 70.415001 28.258301 c
+70.727097 28.258301 71.029297 28.328699 71.321602 28.4694 c
+71.814301 28.702999 72.0606 29.0853 72.0606 29.6164 c
+72.0606 30.3123 l
+71.952202 30.2451 71.812599 30.1891 71.6418 30.1443 c
+71.471001 30.099501 71.303497 30.067499 71.139297 30.0483 c
+70.602303 29.9811 l
+70.280403 29.939501 70.039001 29.873899 69.877998 29.784401 c
+69.6054 29.634001 69.469101 29.393999 69.469101 29.064501 c
+h
+W*
+0 0 132 43 rc
+67.5429 33.961319 m
+74.533699 33.961319 l
+74.533699 26.524 l
+67.5429 26.524 l
+h
+f
+Q
+q
+74.284401 32.836552 m
+75.693398 28.6518 l
+77.166496 32.836552 l
+78.1371 32.836552 l
+76.146698 27.6968 l
+75.200699 27.6968 l
+73.2547 32.836552 l
+74.284401 32.836552 l
+h
+W
+0 0 132 43 rc
+72.2547 33.836552 m
+79.1371 33.836552 l
+79.1371 26.6968 l
+72.2547 26.6968 l
+h
+f
+Q
+q
+103.084 27.6968 0.90100002 5.1157298 rc
+102.084 33.812531 m
+104.985 33.812531 l
+104.985 26.6968 l
+102.084 26.6968 l
+h
+f
+Q
+q
+103.084 33.76754 0.90100002 0.97900999 rc
+102.084 35.746552 m
+104.985 35.746552 l
+104.985 32.76754 l
+102.084 32.76754 l
+h
+f
+Q
+q
+91.135696 31.0609 m
+91.066704 30.920099 90.930397 30.836901 90.726799 30.8113 c
+89.312798 30.638599 l
+88.816803 30.577801 88.4161 30.416201 88.110703 30.1539 c
+87.805199 29.8915 87.652496 29.521999 87.652496 29.0453 c
+87.652496 28.610201 87.806801 28.247 88.115601 27.9559 c
+88.427597 27.667999 88.8283 27.524 89.317703 27.524 c
+89.724998 27.524 90.097801 27.608801 90.436096 27.778299 c
+90.774399 27.947901 91.033897 28.1479 91.2145 28.378201 c
+91.244102 28.1735 91.294998 28.0151 91.367302 27.903099 c
+91.505203 27.691999 91.726898 27.586399 92.032402 27.586399 c
+92.157204 27.586399 92.255798 27.5912 92.328003 27.6008 c
+92.400299 27.610399 92.505402 27.634399 92.643303 27.6728 c
+92.643303 28.311001 l
+92.587502 28.301399 92.534897 28.2934 92.485703 28.287001 c
+92.436401 28.2838 92.392097 28.2822 92.3526 28.2822 c
+92.231102 28.2822 92.150597 28.309401 92.111198 28.3638 c
+92.075104 28.4182 92.056999 28.4902 92.056999 28.5798 c
+92.056999 31.5408 l
+92.056999 32.0271 91.864899 32.385399 91.480598 32.615768 c
+91.093002 32.84613 90.588799 32.9613 89.968102 32.9613 c
+89.432701 32.9613 88.961403 32.836529 88.5541 32.586979 c
+88.150101 32.340599 87.939903 31.9007 87.923401 31.2672 c
+88.751099 31.2672 l
+88.783997 31.532801 88.854599 31.7328 88.962997 31.8671 c
+89.156799 32.110298 89.485199 32.231899 89.948402 32.231899 c
+90.349098 32.231899 90.656197 32.1647 90.869698 32.0303 c
+91.086502 31.899099 91.194801 31.686399 91.194801 31.392 c
+91.194801 31.247999 91.175102 31.137699 91.135696 31.0609 c
+h
+88.859497 28.474199 m
+88.672302 28.6182 88.578697 28.814899 88.578697 29.064501 c
+88.578697 29.393999 88.714996 29.634001 88.987602 29.7843 c
+89.148598 29.873899 89.389999 29.939501 89.711899 29.9811 c
+90.248901 30.0483 l
+90.413101 30.067499 90.580597 30.099501 90.751404 30.1443 c
+90.922203 30.1891 91.061798 30.245001 91.170197 30.312201 c
+91.170197 29.6164 l
+91.170197 29.0853 90.923897 28.702999 90.431198 28.4694 c
+90.138901 28.3286 89.8367 28.2582 89.524696 28.2582 c
+89.268501 28.2582 89.046799 28.3302 88.859497 28.474199 c
+h
+W*
+0 0 132 43 rc
+86.652496 33.9613 m
+93.643303 33.9613 l
+93.643303 26.524 l
+86.652496 26.524 l
+h
+f
+Q
+q
+90.455803 33.633171 0.92129999 0.9982 rc
+89.455803 35.631371 m
+92.377098 35.631371 l
+92.377098 32.633171 l
+89.455803 32.633171 l
+h
+f
+Q
+q
+88.830002 33.633171 0.92129999 0.9982 rc
+87.830002 35.631371 m
+90.751297 35.631371 l
+90.751297 32.633171 l
+87.830002 32.633171 l
+h
+f
+Q
+q
+80.925598 32.836529 m
+80.048599 32.836529 l
+80.048599 27.6968 l
+80.935501 27.6968 l
+80.935501 30.4226 l
+80.935501 31.0849 81.0718 31.5424 81.344398 31.795099 c
+81.6203 32.047901 81.925697 32.174301 82.260803 32.174301 c
+82.628601 32.174301 82.879898 32.054298 83.014603 31.814301 c
+83.099998 31.6544 83.1427 31.4 83.1427 31.0513 c
+83.1427 27.6968 l
+84.044296 27.6968 l
+84.044296 30.6866 l
+84.044296 31.217699 84.169098 31.5968 84.418701 31.8239 c
+84.6716 32.051102 84.972198 32.1647 85.320297 32.1647 c
+85.573196 32.1647 85.786697 32.1007 85.9608 31.9727 c
+86.138199 31.8447 86.226799 31.6096 86.226799 31.2672 c
+86.226799 27.6968 l
+87.148201 27.6968 l
+87.148201 31.1185 l
+87.148201 31.5728 87.079201 31.934299 86.9412 32.203098 c
+86.684998 32.70216 86.202202 32.95171 85.492798 32.95171 c
+85.161003 32.95171 84.862099 32.884521 84.5961 32.750149 c
+84.330002 32.618969 84.098503 32.415798 83.901398 32.140701 c
+83.783203 32.364601 83.651802 32.534191 83.507202 32.649368 c
+83.251099 32.850929 82.912697 32.95171 82.492302 32.95171 c
+82.121201 32.95171 81.789398 32.85413 81.497101 32.65897 c
+81.326302 32.543789 81.135803 32.359798 80.925598 32.107101 c
+80.925598 32.836529 l
+h
+W
+0 0 132 43 rc
+79.048599 33.95171 m
+88.148201 33.95171 l
+88.148201 26.6968 l
+79.048599 26.6968 l
+h
+f
+Q
+q
+92.960403 32.836529 m
+93.802902 32.836529 l
+93.802902 32.107101 l
+94.052498 32.407799 94.316902 32.623772 94.5961 32.754951 c
+94.875298 32.88612 95.185699 32.95171 95.527298 32.95171 c
+96.276199 32.95171 96.781998 32.697361 97.044701 32.188702 c
+97.189301 31.910299 97.261497 31.511999 97.261497 30.9937 c
+97.261497 27.6968 l
+96.359901 27.6968 l
+96.359901 30.9361 l
+96.359901 31.249599 96.312302 31.502399 96.217003 31.694401 c
+96.059402 32.014301 95.773598 32.174301 95.359802 32.174301 c
+95.149597 32.174301 94.977097 32.1535 94.842499 32.1119 c
+94.599403 32.0415 94.385902 31.9007 94.202003 31.6896 c
+94.054199 31.52 93.957298 31.344 93.911301 31.161699 c
+93.868599 30.9825 93.847198 30.725 93.847198 30.389 c
+93.847198 27.6968 l
+92.960403 27.6968 l
+92.960403 32.836529 l
+h
+W
+0 0 132 43 rc
+91.960403 33.95171 m
+98.261497 33.95171 l
+98.261497 26.6968 l
+91.960403 26.6968 l
+h
+f
+Q
+q
+98.864502 32.836529 m
+98.022003 32.836529 l
+98.022003 27.6968 l
+98.908798 27.6968 l
+98.908798 30.389 l
+98.908798 30.725 98.930199 30.9825 98.9729 31.161699 c
+99.018898 31.344 99.115799 31.52 99.263603 31.6896 c
+99.447502 31.9007 99.661003 32.0415 99.904099 32.1119 c
+100.0387 32.1535 100.2112 32.174301 100.4214 32.174301 c
+100.835 32.174301 101.121 32.014301 101.279 31.694401 c
+101.374 31.502399 101.422 31.249599 101.422 30.9361 c
+101.422 27.6968 l
+102.323 27.6968 l
+102.323 30.9937 l
+102.323 31.511999 102.251 31.910299 102.106 32.188702 c
+101.844 32.697361 101.338 32.95171 100.589 32.95171 c
+100.2473 32.95171 99.936897 32.88612 99.6577 32.754951 c
+99.378502 32.623772 99.114098 32.407799 98.864502 32.107101 c
+98.864502 32.836529 l
+h
+W
+0 0 132 43 rc
+97.022003 33.95171 m
+103.323 33.95171 l
+103.323 26.6968 l
+97.022003 26.6968 l
+h
+f
+Q
+q
+105.524 28.646999 m
+105.403 28.800501 105.329 29.021299 105.302 29.3092 c
+104.45 29.3092 l
+104.473 28.7973 104.647 28.367001 104.972 28.018299 c
+105.301 27.6728 105.858 27.5 106.643 27.5 c
+107.372 27.5 107.914 27.666401 108.268 27.9991 c
+108.626 28.3318 108.805 28.726999 108.805 29.1845 c
+108.805 29.658001 108.633 30.0051 108.288 30.225901 c
+108.071 30.3666 107.644 30.512199 107.007 30.6626 c
+106.421 30.801701 l
+106.165 30.862499 105.971 30.932899 105.839 31.012899 c
+105.613 31.147301 105.5 31.326401 105.5 31.5504 c
+105.5 31.7551 105.585 31.919901 105.756 32.044701 c
+105.93 32.169498 106.184 32.231899 106.519 32.231899 c
+107.022 32.231899 107.375 32.118301 107.579 31.8911 c
+107.703 31.731199 107.774 31.5536 107.791 31.3584 c
+108.628 31.3584 l
+108.635 31.6912 108.528 32.001499 108.308 32.289398 c
+107.956 32.743752 107.383 32.970901 106.588 32.970901 c
+105.981 32.970901 105.496 32.82053 105.135 32.519791 c
+104.777 32.219101 104.598 31.8255 104.598 31.339199 c
+104.598 30.9265 104.788 30.603399 105.169 30.369801 c
+105.383 30.2355 105.715 30.113899 106.165 30.0051 c
+106.869 29.8323 l
+107.247 29.739599 107.5 29.658001 107.628 29.587601 c
+107.828 29.472401 107.928 29.304399 107.928 29.0837 c
+107.928 28.7925 107.804 28.576599 107.554 28.435801 c
+107.304 28.298201 107.015 28.2295 106.687 28.2295 c
+106.135 28.2295 105.748 28.368601 105.524 28.646999 c
+h
+W
+0 0 132 43 rc
+103.45 33.970901 m
+109.805 33.970901 l
+109.805 26.5 l
+103.45 26.5 l
+h
+f
+Q
+q
+109.246 34.746552 m
+110.098 34.746552 l
+110.098 30.653 l
+112.374 32.836529 l
+113.507 32.836529 l
+111.487 30.9121 l
+113.621 27.6968 l
+112.488 27.6968 l
+110.842 30.2882 l
+110.098 29.625999 l
+110.098 27.6968 l
+109.246 27.6968 l
+109.246 34.746552 l
+h
+W
+0 0 132 43 rc
+108.246 35.746552 m
+114.621 35.746552 l
+114.621 26.6968 l
+108.246 26.6968 l
+h
+f
+Q
+q
+116.992 31.0609 m
+116.923 30.920099 116.787 30.836901 116.583 30.8113 c
+115.169 30.638599 l
+114.674 30.577801 114.273 30.416201 113.967 30.1539 c
+113.662 29.8915 113.509 29.521999 113.509 29.0453 c
+113.509 28.610201 113.664 28.247 113.972 27.9559 c
+114.284 27.667999 114.685 27.524 115.174 27.524 c
+115.582 27.524 115.954 27.608801 116.293 27.778299 c
+116.631 27.947901 116.891 28.1479 117.071 28.378201 c
+117.101 28.1735 117.152 28.0151 117.224 27.903099 c
+117.362 27.691999 117.584 27.586399 117.889 27.586399 c
+118.014 27.586399 118.112 27.5912 118.185 27.6008 c
+118.257 27.610399 118.362 27.634399 118.5 27.6728 c
+118.5 28.311001 l
+118.444 28.301399 118.392 28.2934 118.342 28.287001 c
+118.293 28.2838 118.249 28.2822 118.209 28.2822 c
+118.088 28.2822 118.007 28.309401 117.968 28.3638 c
+117.932 28.4182 117.914 28.4902 117.914 28.5798 c
+117.914 31.5408 l
+117.914 32.0271 117.722 32.385399 117.337 32.615768 c
+116.95 32.84613 116.446 32.9613 115.825 32.9613 c
+115.289 32.9613 114.818 32.836529 114.411 32.586979 c
+114.007 32.340599 113.797 31.9007 113.78 31.2672 c
+114.608 31.2672 l
+114.641 31.532801 114.711 31.7328 114.82 31.8671 c
+115.013 32.110298 115.342 32.231899 115.805 32.231899 c
+116.206 32.231899 116.513 32.1647 116.726 32.0303 c
+116.943 31.899099 117.052 31.686399 117.052 31.392 c
+117.052 31.247999 117.032 31.137699 116.992 31.0609 c
+h
+114.716 28.474199 m
+114.529 28.6182 114.435 28.814899 114.435 29.064501 c
+114.435 29.393999 114.572 29.634001 114.844 29.7843 c
+115.005 29.873899 115.247 29.939501 115.569 29.9811 c
+116.106 30.0483 l
+116.27 30.067499 116.437 30.099501 116.608 30.1443 c
+116.779 30.1891 116.918 30.245001 117.027 30.312201 c
+117.027 29.6164 l
+117.027 29.0853 116.781 28.702999 116.288 28.4694 c
+115.996 28.3286 115.693 28.2582 115.381 28.2582 c
+115.125 28.2582 114.903 28.3302 114.716 28.474199 c
+h
+W*
+0 0 132 43 rc
+112.509 33.9613 m
+119.5 33.9613 l
+119.5 26.524 l
+112.509 26.524 l
+h
+f
+Q
+q
+18.460501 18.342501 m
+21.9266 15.5357 26.8836 15.5357 30.349701 18.342501 c
+29.009501 19.9974 l
+26.3248 17.8234 22.485399 17.8234 19.800699 19.9974 c
+18.460501 18.342501 l
+h
+W
+0 0 132 43 rc
+17.460501 20.9974 m
+31.349701 20.9974 l
+31.349701 14.5357 l
+17.460501 14.5357 l
+h
+f
+Q
+q
+19.903999 21.986601 2.1296 2.8769 rc
+18.903999 25.863501 m
+23.0336 25.863501 l
+23.0336 20.986601 l
+18.903999 20.986601 l
+h
+f
+Q
+q
+26.511999 21.986601 2.1294999 2.8769 rc
+25.511999 25.863501 m
+29.6415 25.863501 l
+29.6415 20.986601 l
+25.511999 20.986601 l
+h
+f
+Q
+q
+35.5 21 m
+35.5 14.6487 30.351299 9.5 24 9.5 c
+17.648701 9.5 12.5 14.6487 12.5 21 c
+12.5 27.351299 17.648701 32.5 24 32.5 c
+30.351299 32.5 35.5 27.351299 35.5 21 c
+h
+33.370499 21 m
+33.370499 15.8248 29.1752 11.6295 24 11.6295 c
+18.8248 11.6295 14.6295 15.8248 14.6295 21 c
+14.6295 26.1752 18.8248 30.370501 24 30.370501 c
+29.1752 30.370501 33.370499 26.1752 33.370499 21 c
+h
+W*
+0 0 132 43 rc
+11.5 33.5 m
+36.5 33.5 l
+36.5 8.5 l
+11.5 8.5 l
+h
+f
+ep
+end
+%%Trailer
+%%EOF
