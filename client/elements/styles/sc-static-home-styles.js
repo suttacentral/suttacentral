@@ -388,7 +388,7 @@ export const staticHomeStyles = css`
   }
 
   .sc-related article img {
-    width: 72px;
+    max-width: 72px;
   }
 
   .sc-related article header h3 {

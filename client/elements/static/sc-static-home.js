@@ -247,16 +247,16 @@ export class SCStaticHomePage extends SCStaticPage {
             <span>
               <picture>
                 <source srcset="/img/home-page/reading-faithfully_logo-300.avif" type="image/avif" />
-                <img src="/img/home-page/reading-faithfully_logo-300.png" alt="Buddhanexus logo" />
+                <img src="/img/home-page/reading-faithfully_logo-300.png" alt="Reading Faithfully logo" />
               </picture>
             </span>
             <h3>
               <span>Reading Faithfully</span>
-              <span class="sc-related-item-subtitle">Devotional and Contemplative Sutta Reading</span>
+              <span class="sc-related-item-subtitle">guides & supports</span>
             </h3>
           </header>
           <div class="related-projects-content">
-            <p>Lovingly and expertly crafted to guide a Buddhist devotee into a deeper personal relationship with the Dhamma through the practice of reading the Buddha’s words. </p>
+            <p>A devotional and contemplative approach to reading suttas. Lovingly and expertly crafted to guide a Buddhist devotee into a deeper personal relationship with the Dhamma through the practice of reading the Buddha’s words. </p>
             <ul>
               <li>How to mindfully develop a sutta reading practice</li>
               <li>Daily sutta readings</li>
@@ -306,7 +306,12 @@ export class SCStaticHomePage extends SCStaticPage {
           class="block-link"
         >
           <header>
-            <span class="buddhismnet-image-container"><img src='/img/home-page/bn.png' alt='Buddhism.net' /></span>
+            <span>
+              <picture>
+                <source srcset="/img/home-page/bn.avif" type="image/avif" />
+                <img src="/img/home-page/bn.png" alt="Buddhism.net logo" />
+              </picture>
+            </span>
             <h3>
               <span>Buddhism.net</span>
               <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:31'))}</span>
