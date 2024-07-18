@@ -66,15 +66,30 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     this._fetchAvailableVoice();
   }
 
-  orderTranslationsByTranslator(translations) {
+  prioritizeTranslationsByTranslator(translations) {
+    this.sortTranslationsBySegmentationStatus();
     if (this.priorityAuthorUid) {
       const priorityTranslationItemIndex = translations.findIndex(
         item =>
           item.author_uid === this.priorityAuthorUid ||
           this.priorityAuthorUid.includes(item.author_uid)
       );
-      translations.unshift(translations.splice(priorityTranslationItemIndex, 1)[0]);
+      if (priorityTranslationItemIndex !== -1) {
+        translations.unshift(translations.splice(priorityTranslationItemIndex, 1)[0]);
+      }
     }
+  }
+
+  sortTranslationsBySegmentationStatus() {
+    this._translationsInUserLanguage.sort((a, b) => {
+      if (a.segmented && !b.segmented) {
+        return -1;
+      }
+      if (!a.segmented && b.segmented) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   shouldUpdate(changedProperties) {
@@ -82,7 +97,7 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
       this._translationsInUserLanguage = translations.filter(item => item.lang === lang);
-      this.orderTranslationsByTranslator(this._translationsInUserLanguage);
+      this.prioritizeTranslationsByTranslator(this._translationsInUserLanguage);
       this.translationsInModernLanguages = translations.filter(
         item => !item.is_root && item.lang !== lang
       );
