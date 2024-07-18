@@ -239,24 +239,29 @@ export class SCStaticHomePage extends SCStaticPage {
     `;
   }
 
-  #buddhaNexusCardTemplate() {
+  #readingFaithfullyCardTemplate() {
     return html`
       <article class="card secondary-accent">
-        <a href="https://buddhanexus.net/" class="block-link">
+        <a href="https://readingfaithfully.org/" class="block-link">
           <header>
             <span>
               <picture>
-                <source srcset="/img/home-page/buddhanexus_logo.avif" type="image/avif" />
-                <img src="/img/home-page/buddhanexus_logo.png" alt="Buddhanexus logo" />
+                <source srcset="/img/home-page/reading-faithfully_logo-300.avif" type="image/avif" />
+                <img src="/img/home-page/reading-faithfully_logo-300.png" alt="Buddhanexus logo" />
               </picture>
             </span>
             <h3>
-              <span>BuddhaNexus</span>
-              <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:22'))}</span>
+              <span>Reading Faithfully</span>
+              <span class="sc-related-item-subtitle">Devotional and Contemplative Sutta Reading</span>
             </h3>
           </header>
           <div class="related-projects-content">
-            <p>${unsafeHTML(this.localize('home:23'))}</p>
+            <p>Lovingly and expertly crafted to guide a Buddhist devotee into a deeper personal relationship with the Dhamma through the practice of reading the Buddha’s words. </p>
+            <ul>
+              <li>How to mindfully develop a sutta reading practice</li>
+              <li>Daily sutta readings</li>
+              <li>Full of helpful advice and tools</li>
+            </ul>
           </div>
         </a>
         <md-ripple></md-ripple>
@@ -427,7 +432,7 @@ export class SCStaticHomePage extends SCStaticPage {
         <section class="sc-related">
           <div class="related-projects-heading">${this.#relatedProjectsHeaderTemplate()}</div>
           <div class="sc-related-items-wrapper">
-            ${this.#scVoiceCardTemplate()} ${this.#buddhaNexusCardTemplate()}
+            ${this.#scVoiceCardTemplate()} ${this.#readingFaithfullyCardTemplate()}
             ${this.#scForumCardTemplate()} ${this.#bilaraCardTemplate()}
           </div>
         </section>

@@ -59,11 +59,12 @@ export class SCStaticLicensing extends SCStaticPage {
                 <li>${unsafeHTML(this.localize('licensing:21'))}</li>
               </ul>
             </li>
-            <li>${unsafeHTML(this.localize('licensing:22'))}</li>
           </ul>
           <h3>${unsafeHTML(this.localize('licensing:23'))}</h3>
           <p>${unsafeHTML(this.localize('licensing:24'))}</p>
           <p>${unsafeHTML(this.localize('licensing:25'))}</p>
+          <h3>AI</h3>
+          <p>SuttaCentral does not make use of artifically-generated data. We politely request that our content not be scraped or used in any way for the creation of datasets for generative AI or similar. This request applies to those who create applications directly, and those who build apps downstream of AI models that have scraped SuttaCentral’s data. </p>
         </article>
       </main>
     `;

@@ -306,55 +306,55 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd2">
-                                <root>Uposathakkhandhaka</root>
+                                <root>Uposathak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:uposathakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd3">
-                                <root>Vassūpanāyikakkhandhaka</root>
+                                <root>Vassūpanāyikak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:vassupanayikakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd4">
-                                <root>Pavāraṇākkhandhaka</root>
+                                <root>Pavāraṇāk­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:pavaranakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd5">
-                                <root>Cammakkhandhaka</root>
+                                <root>Cammak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:cammakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd6">
-                                <root>Bhesajjakkhandhaka</root>
+                                <root>Bhesajjak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:bhesajjakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd7">
-                                <root>Kathinakkhandhaka</root>
+                                <root>Kathinak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:kathinakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd8">
-                                <root>Cīvarakkhandhaka</root>
+                                <root>Cīvarak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:civarakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd9">
-                                <root>Campeyyakkhandhaka</root>
+                                <root>Campeyyak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:campeyyakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd10">
-                                <root>Kosambakakkhandhaka</root>
+                                <root>Kosambakak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('mahavagga:kosambakakkhandhaka'))}</translation>
                               </a>
                             </li>
@@ -368,73 +368,73 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
                           <ul class="vertical fifth">
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd11">
-                                <root>Kammakkhandhaka</root>
+                                <root>Kammak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:kammakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd12">
-                                <root>Pārivāsikakkhandhaka</root>
+                                <root>Pārivāsikak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:parivasikakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd13">
-                                <root>Samuccayakkhandhaka</root>
+                                <root>Samuccayak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:samuccayakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd14">
-                                <root>Samathakkhandhaka</root>
+                                <root>Samathak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:samathakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd15">
-                                <root>Khuddakavatthukkhandhaka</root>
+                                <root>Khuddakavatthuk­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:khuddakavatthukkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd16">
-                                <root>Senāsanakkhandhaka</root>
+                                <root>Senāsanak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:senasanakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd17">
-                                <root>Saṁghabhedakakkhandhaka</root>
+                                <root>Saṁghabhedakak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:samghabhedakakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd18">
-                                <root>Vattakkhandhaka</root>
+                                <root>Vattak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:vattakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd19">
-                                <root>Pātimokkhaṭṭhapanakkhandhaka</root>
+                                <root>Pātimokkhaṭṭhapanak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:patimokkhatthapanakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd20">
-                                <root>Bhikkhunikkhandhaka</root>
+                                <root>Bhikkhunik­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:bhikkhunikkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd21">
-                                <root>Pañcasatikakkhandhaka</root>
+                                <root>Pañcasatikak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:pancasatikakkhandhaka'))}</translation>
                               </a>
                             </li>
                             <li>
                               <a href="https://suttacentral.net/pli-tv-kd22">
-                                <root>Sattasatikakkhandhaka</root>
+                                <root>Sattasatikak­khandhaka</root>
                                 <translation>${unsafeHTML(this.localize('culavagga:sattasatikakkhandhaka'))}</translation>
                               </a>
                             </li>
@@ -970,7 +970,7 @@ export class SCStaticPaliTipitaka extends SCStaticPage {
                           </ul>
                         </li>
                         <li>
-                          <a href="https://suttacentral.net/sn-salayatanavaggasamyutta">
+                          <a href="https://suttacentral.net/sn-salayatanavaggasamyutta" style="height:5.2rem">
                             <root>Saḷāyatanavaggasaṁyutta</root>
                             <translation>${unsafeHTML(this.localize('samyuttanikaya:salayatanavaggasamyutta'))}</translation>
                           </a>
