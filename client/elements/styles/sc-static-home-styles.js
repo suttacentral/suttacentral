@@ -409,6 +409,10 @@ export const staticHomeStyles = css`
     font-style: italic;
   }
 
+  .sc-related-item-subtitle.readingFaithfully {
+    font-size: var(--sc-font-size-md);
+  }
+
   .related-projects-content {
     position: relative;
 
