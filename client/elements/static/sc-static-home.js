@@ -246,13 +246,13 @@ export class SCStaticHomePage extends SCStaticPage {
           <header>
             <span>
               <picture>
-                <source srcset="/img/home-page/reading-faithfully_logo-300.avif" type="image/avif" />
-                <img src="/img/home-page/reading-faithfully_logo-300.png" alt="Buddhanexus logo" />
+                <source srcset="/img/home-page/ReadingFaithfullyLogo-BW--300.png" type="image/avif" />
+                <img src="/img/home-page/ReadingFaithfullyLogo-BW--300.png" alt="Reading Faithfully" />
               </picture>
             </span>
             <h3>
               <span>Reading Faithfully</span>
-              <span class="sc-related-item-subtitle">Devotional and Contemplative Sutta Reading</span>
+              <span class="sc-related-item-subtitle readingFaithfully">Devotional and Contemplative Sutta Reading</span>
             </h3>
           </header>
           <div class="related-projects-content">
