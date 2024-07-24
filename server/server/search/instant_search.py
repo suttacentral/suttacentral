@@ -1289,7 +1289,7 @@ def highlight_by_multiple_possible_keyword(
 
 
 def remove_punctuation(text):
-    punctuation = string.punctuation.replace(":", "")
+    punctuation = string.punctuation.replace(":", "").replace(".", "")
     translator = str.maketrans("", "", punctuation)
     return text.translate(translator)
 
