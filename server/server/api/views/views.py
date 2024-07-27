@@ -969,9 +969,10 @@ class SegmentedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid, author_uid=''):
         db = get_db()
+        lang = request.args.get('lang', 'en')
         results = db.aql.execute(
             SEGMENTED_SUTTA_VIEW,
-            bind_vars={'uid': uid, 'author_uid': author_uid}
+            bind_vars={'uid': uid, 'author_uid': author_uid, 'lang': lang}
         )
         result = next(results)
         if not result:

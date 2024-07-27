@@ -1073,7 +1073,7 @@ SEGMENTED_SUTTA_VIEW = '''
 LET result = MERGE(
     FOR doc IN sc_bilara_texts
         FILTER doc.uid == @uid
-        FILTER 'translation' NOT IN doc.muids OR @author_uid IN doc.muids
+        FILTER 'translation' NOT IN doc.muids OR (@author_uid IN doc.muids AND @lang IN doc.muids)
         FILTER 'comment' NOT IN doc.muids OR @author_uid IN doc.muids
 
         LET type = doc.muids[0]
