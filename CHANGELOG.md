@@ -1,8 +1,182 @@
 # SuttaCentral ChangeLog
 
+## 2024.7.27
+
+- Fix: problem with an author having multiple translation languages.
+
+## 2024.7.21
+
+- Upgrade the Aksharamukha version to 2.2.2.
+- adjust styles about readingfaithfully content.
+
+## 2024.7.19
+
+- Enhance: Punctuation should be ignored in all places and ways in database search results.
+
+## 2024.7.18
+
+- make noai version.
+- Enhance: Segmented Bilara texts should always take priority over legacy texts in suttaplex.
+
+## 2024.7.16
+
+- Remove unnecessary replacement code.
+
+## 2024.7.14
+
+- Use ISOPali to instead of ISO in script convert.
+
+## 2024.7.10
+
+- Fix: Last chapter of Pali Dhammapada should not lead you "Next" to the Udānavarga.
+
+## 2024.7.9
+
+- Fix: Unsupported browser page still links to legacy site.
+
+## 2024.6.29
+
+- Adjust cache strategy.
+- Adjust nginx config.
+- Re-add date information to publication files.
+- Adjust webpack config.
+- Refactor publication frontend code.
+
+## 2024.6.28
+
+- Upgrade frontend dependencies.
+- Adjust path-to-regexp version.
+
+## 2024.6.25
+
+- Update DPD dictionary.
+- Fix: handle author and collection filters anywhere in search string.
+- Fix typo in no search result message.
+
+## 2024.6.13
+
+- Fix: Change styling of summary marker to not show in Safari
+
+## 2024.5.22
+
+- Modify publication download url format.
+
+## 2024.5.17
+
+- Update Pirivenas project page title.
+
+## 2024.5.13
+
+- Update publication download links.
+
+## 2024.5.10
+
+- Rewrite Pali lookup according to DPD.
+
+## 2024.5.9
+
+- Fix typo in arangodb.py.
+
+## 2024.5.7
+
+- Add dpd word lookup.
+
+## 2024.5.6
+
+- Update ebook download links.
+
+## 2024.5.2
+
+- Adjust pirivenas page styles.
+
+## 2024.4.30
+
+- Fix: Results for an author: search are not sorted in natural order.
+- Upgrade dependencies version.
+- Upgrade nodejs version.
+
+## 2024.4.26
+
+- Fix: "Adjacent Terms" on definition page gets cut off/overflows the window.
+
+## 2024.4.15
+
+- Add pirivena manks walking phoro.
+- Update publications file info and add test download link code.
+- Add: SuttaCentral Translations For Pirivenas' page.
+
+## 2024.4.12
+
+- Fix: Root language titles should not be searched in unless that language is selected.
+- Fix: a problem with incomplete list authors command query results.
+- remove fonts, css and more for fictional languages
+
+## 2024.4.10
+
+- fix swagger at /api/docs.
+- Fix: Issues with some Myanmar(Burmese) menu text displays.
+
+## 2024.4.8
+
+- Rewrite test cases for instant search.
+
+## 2024.4.5
+
+- Add more localization support.
+
+## 2024.3.30
+
+- Fix: Chapters should not return in title results because they are not texts.
+- Support Čeština localization.
+- Modify: adjust the text format of the reference anchor.
+- Show dates on Bilara translations in Suttaplex.
+- Fix: Adjust badge container style.
+
+## 2024.3.28
+
+- Fix: SERP has problems with title: filter.
+
+## 2024.3.27
+
+- Fix: Segment links take you to the wrong segment in suttas with ranges such as AN2.11-20.
+- Use main instead of master.
+
+## 2024.3.26
+
+- Replace spaces in url Search params with + sign.
+
+## 2024.3.25
+
+- Fix: Highlighted Pali search keywords are missing diacritics on the SERP.
+
+## 2024.3.21
+
+- Fix: Document Language list does not update on auto-complete-list dialog when settings change.
+
+## 2024.3.20
+
+- Fix: Currency drop down on form on donate-now page drops up and hides behind header.
+- Let VSCode Debugging to work on the server.
+
+## 2024.3.19
+
+- Fix: link to "giving" search broken on Donation success page.
+
+## 2024.3.15
+
+- Fix: Texts without any subheadings are sometimes getting TOC buttons and empty overlays. #3035
+- Fix: old link to downloads page leads to blank page.
+- Refactor hasError() method in SCSuttaplexList class.
+- Add localized segments.
+
+## 2024.3.14
+
+- Exclude NOT from instant search keywords.
+
 ## 2024.3.13
 
 - Enhance: list authors should only list authors for the manuscripts and languages selected #2971
+- Fix: Document Language list does not update on SERP when settings change.
 
 ## 2024.3.12
 
