@@ -175,6 +175,8 @@ export const SCPublicationStyles = css`
     font-family: var(--sc-sans-font);
     font-size: var(--sc-font-size-s);
 
+    margin-top: 0;
+
     text-align: center;
 
     color: var(--sc-on-primary-secondary-text-color);
