@@ -104,6 +104,7 @@ export const typographyStaticStyles = css`
     text-align: center;
 
     color: var(--sc-on-primary-secondary-text-color);
+    margin-top: -16px;
     margin-bottom: 32px
   }
 `;
