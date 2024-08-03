@@ -32,7 +32,8 @@ export const commonStyles = css`
   }
 
   .refFocused {
-    background-color: var(--sc-primary-color) !important;
+    background-color: var(--sc-primary-color-light-transparent) !important;
+    padding-top: 8px;
   }
 
   .sutta-title {
