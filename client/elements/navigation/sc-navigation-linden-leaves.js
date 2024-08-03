@@ -142,6 +142,8 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     nav li:last-child a {
       cursor: default;
 
+      font-weight: 700;
+
       opacity: 1;
     }
 
