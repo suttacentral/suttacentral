@@ -14,7 +14,7 @@
   "search:inputSearchTerm": "Input search term",
   "search:loadMore": "Load more",
   "search:matchPartial": "Match partial",
-  "search:noResult": "There were no results for '{searchTerm}'. <br/> Consider <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>searching on the forum</a> or posting a <a target='_blank' href='https://discourse.suttacentral.net'>new question</a>.",
+  "search:noResult": "There where no results for '{searchTerm}'. <br/> Consider <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>searching on the forum</a> or posting a <a target='_blank' href='https://discourse.suttacentral.net'>new question</a>.",
   "search:resultsFor": "results for",
   "search:rootTexts": "Root texts",
   "search:search": "Search",
