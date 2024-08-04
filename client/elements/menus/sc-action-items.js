@@ -304,6 +304,13 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.#displaySearchOptionsButtonStateChange();
     this.scSiteLayout = document.querySelector('sc-site-layout');
     this.#setToolBarLanguage();
+    document.addEventListener('keydown', this._handleKeydown.bind(this));
+  }
+
+  _handleKeydown(e) {
+    if (e.key === 'Escape') {
+      this.#closeAllTopSheetsOfTextPage();
+    }
   }
 
   hideTopSheets() {
