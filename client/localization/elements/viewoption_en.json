@@ -1,7 +1,7 @@
 {
   "viewoption:activateChineseDescription": "This enables word lookup for ancient Chinese texts. Word meanings are from the Digital Dictionary of Buddhism.",
   "viewoption:activateChineseLookup": "Activate Chinese word lookup",
-  "viewoption:activatePaliDescription": "Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid only, and is not always accurate. Word meanings are from the New Concise Pali English Dictionary.",
+  "viewoption:activatePaliDescription": "Analyzes the Pali text and attempts to display the word meaning. Note that this is an aid only, and is not always accurate. Word meanings are from the Digital Pali Dictionary.",
   "viewoption:activatePaliLookup": "Activate Pali word lookup",
   "viewoption:asterisk": "Tooltip on asterisk",
   "viewoption:changePaliScript": "Change Pali script",
