@@ -309,6 +309,11 @@ export const typographyCommonStyles = css`
     content: '󰈀';
   }
 
+  a[role='doc-noteref']:hover,
+  a[role='doc-backlink']::hover {
+    text-decoration: none
+  }
+
   section[role='doc-endnotes'] {
     position: relative;
 
