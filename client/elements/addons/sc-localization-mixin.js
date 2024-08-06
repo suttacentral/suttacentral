@@ -27,7 +27,8 @@ const SUPPORTED_TRANSLATIONS = [
   'hi',
   'jpn',
   'mr',
-  'cs'
+  'cs',
+  'ko'
 ];
 const USE_PRODUCTION_LOCALIZATION = true;
 
