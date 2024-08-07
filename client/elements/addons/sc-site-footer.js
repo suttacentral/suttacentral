@@ -177,8 +177,8 @@ export class ScSiteFooter extends LitLocalized(LitElement) {
         <section class="footer-bottom">
           <ul>
             <li>
-            <b>By humans, for humans</b><br>
-            All work on this website was created by humans, not by AI. 
+            <b>${this.localize('footer:byHumans')}</b><br>
+            ${this.localize('footer:allWork')}
             </li>
           </ul>
         </section>
