@@ -252,15 +252,15 @@ export class SCStaticHomePage extends SCStaticPage {
             </span>
             <h3>
               <span>Reading Faithfully</span>
-              <span class="sc-related-item-subtitle readingFaithfully">Devotional and Contemplative Sutta Reading</span>
+              <span class="sc-related-item-subtitle readingFaithfully">${unsafeHTML(this.localize('home:22'))}</span>
             </h3>
           </header>
           <div class="related-projects-content">
-            <p>Lovingly and expertly crafted to guide a Buddhist devotee into a deeper personal relationship with the Dhamma through the practice of reading the Buddha’s words. </p>
+            <p>${unsafeHTML(this.localize('home:23'))}</p>
             <ul>
-              <li>How to mindfully develop a sutta reading practice</li>
-              <li>Daily sutta readings</li>
-              <li>Full of helpful advice and tools</li>
+              <li>${unsafeHTML(this.localize('home:24.1'))}</li>
+              <li>${unsafeHTML(this.localize('home:24.2'))}</li>
+              <li>${unsafeHTML(this.localize('home:24.3'))}</li>
             </ul>
           </div>
         </a>

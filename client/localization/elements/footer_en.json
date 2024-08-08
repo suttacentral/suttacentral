@@ -22,5 +22,7 @@
   "footer:home": "Home",
   "footer:acknowledgments": "Acknowledgements",
   "footer:licensing": "Licensing",
-  "footer:about": "About"
+  "footer:about": "About",
+  "footer:byHumans": "By humans, for humans",
+  "footer:allWork": "All work on this website was created by humans, not by AI."
 }
