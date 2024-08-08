@@ -35,9 +35,8 @@ for file in sorted(templates_dir.glob('*.js')):
 
         if re.search(r'>\s*$', lookbehind):
             return f"${{unsafeHTML(this.localize('{segment_id}'))}}"
-        else:
-            print(lookbehind)
-            return f"${{this.localize('{segment_id}')}}"
+        print(lookbehind)
+        return f"${{this.localize('{segment_id}')}}"
 
     new_string = generic_template_regex.sub(tag_sub_fn, string)
 

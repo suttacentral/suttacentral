@@ -17,14 +17,15 @@ def load_simple_dictionaries(db: Database, dictionaries_dir: Path):
         from_lang, to_lang_and_name = dictionary.stem.split('2')
         to_lang, dict_name = to_lang_and_name.split('_')
         content = json_load(dictionary)
-        for item in content:
-            docs.append({
+        docs.extend(
+            {
                 'from': from_lang,
                 'to': to_lang,
                 'dictname': dict_name,
                 **item,
-            })
-
+            }
+            for item in content
+        )
     db.collection('dictionaries_simple').truncate()
     db.collection('dictionaries_simple').import_bulk(docs)
 

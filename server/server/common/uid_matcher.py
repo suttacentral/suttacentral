@@ -35,11 +35,8 @@ class UidMatcher:
         num_start = None
         num_end = None
 
-        m = decompose_rex.match(uid)
-        if m:
-            # Test for an edge case that is handled incorrectly
-            m2 = decompose_x_rex.match(uid)
-            if m2:
+        if m := decompose_rex.match(uid):
+            if m2 := decompose_x_rex.match(uid):
                 m = m2
 
             prefix = m['prefix']
@@ -82,23 +79,15 @@ class UidMatcher:
             return [uid]
         decomposed = self.decompose(uid)
 
-        matches = sorted(self.range_query(**decomposed), key=humansortkey)
-        if matches:
+        if matches := sorted(self.range_query(**decomposed), key=humansortkey):
             return matches
         prefix = decomposed['prefix']
-        if prefix in self.all_uids:
-            return [prefix]
-        return self.prefix_query(prefix)
+        return [prefix] if prefix in self.all_uids else self.prefix_query(prefix)
 
     def range_query(self, prefix, num_start, num_end, uid):
         candidates = self.prefix_index.get(prefix, [])
         for doc in candidates:
-            if (
-                    num_start <= doc['num_end']
-                    and num_end >= doc['num_start']
-                    or doc['num_start'] <= num_end
-                    and doc['num_end'] >= num_start
-            ):
+            if num_start <= doc['num_end'] and num_end >= doc['num_start']:
                 yield doc['uid']
 
     def prefix_query(self, prefix):
