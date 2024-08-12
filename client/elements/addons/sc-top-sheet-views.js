@@ -338,11 +338,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     super.connectedCallback();
     this._loadScToasts();
     this._fetchReferenceDisplayType();
-    document.addEventListener('keydown', this._handleKeydown.bind(this));
-    window.setTimeout(() => {
-      this.show();
-      this.hide();
-    }, 2000);
   }
 
   // This componenet is _never_ disconnected the way the code is written today (2024-08-04)
@@ -356,9 +351,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     switch (event.key) {
       case 'v':
       case 'V':
-        var idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
+        let idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
         if (idx >= 0) {
           idx = (idx + 1) % this.textViewArray.length;
+          this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
           this._changeTextView(this.textViewArray[idx].textView);
         }
         break;
@@ -807,6 +803,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       .querySelector('#selPaliScripts')
       .addEventListener('change', this._onPaliScriptChanged);
     this.#setPaliScriptSelected();
+    document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
 
   #setPaliScriptSelected() {
