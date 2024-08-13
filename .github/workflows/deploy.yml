@@ -21,7 +21,7 @@ jobs:
         run: |
           make prepare-tests
           # docker wait sc-frontend
-          docker-compose logs
+          docker compose logs
           docker ps
 
       - name: Test
