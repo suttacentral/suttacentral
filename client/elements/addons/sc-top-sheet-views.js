@@ -348,6 +348,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _handleKeydown(event) {
+    if(event.target.tagName != 'BODY') return;
     switch (event.key) {
       case 'v':
       case 'V':

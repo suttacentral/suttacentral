@@ -35,7 +35,7 @@
   "viewoption:sideBySide": "Side by side",
   "viewoption:sidenotes": "Show as sidenotes",
   "viewoption:textView": "Original text and translation",
-  "viewoption:textViewDescription": "Some texts on SuttaCentral are “segmented”; the original text and translation are approximately matched line by line. For such texts, see both root text and translation. Press <code class=\"key\">V</code> to toggle between the views.",
+  "viewoption:textViewDescription": "Some texts on SuttaCentral are “segmented”; the original text and translation are approximately matched line by line. For such texts, see both root text and translation.",
   "viewoption:textViewDisabled": "Pali-English view is now disabled.",
   "viewoption:textViewEnabled": "{textView}-view is now enabled on applicable texts.",
   "viewoption:viewRoot": "View root text with translation"
