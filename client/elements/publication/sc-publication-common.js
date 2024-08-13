@@ -34,7 +34,7 @@ function formatDate(date) {
   return date.split('T')[0];
 }
 
-const lastRunDateText = '2024-05-20T00:43:22Z';
+const lastRunDateText = '2024-08-13T10:00:22Z';
 export const publicationLastGeneratedDate = lastRunDateText;
 export const publicationLastGeneratedFormattedDate = formatDate(publicationLastGeneratedDate);
 export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/main';
