@@ -1,4 +1,4 @@
-COMPOSE     := docker-compose -f docker-compose.yml
+COMPOSE     := docker compose -f docker-compose.yml
 COMPOSEDEV  := $(COMPOSE) -f docker-compose.dev.yml
 COMPOSETEST := $(COMPOSE) -f docker-compose.test.yml
 COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
