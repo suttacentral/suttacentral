@@ -74,6 +74,8 @@ export const suttaplexCss = css`
   .section-details summary::before {
     display: inline-block;
 
+    list-style: none;
+
     width: 24px;
     height: 24px;
     margin-right: 0;
