@@ -183,6 +183,14 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       label {
         color: var(--sc-on-tertiary-primary-text-color);
       }
+      
+      code.key {
+        padding: 3px 6px 2px;
+        background-color: gray;
+        color: white;
+        border-radius: 3px;
+        margin: 5px;
+      }
     `,
   ];
 
@@ -332,6 +340,28 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this._fetchReferenceDisplayType();
   }
 
+  // This componenet is _never_ disconnected the way the code is written today (2024-08-04)
+  // Still, adding this in case some day this component is properly unloaded.
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('keydown', this._handleKeydown);
+  }
+
+  _handleKeydown(event) {
+    if(event.target.tagName != 'BODY') return;
+    switch (event.key) {
+      case 'v':
+      case 'V':
+        let idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
+        if (idx >= 0) {
+          idx = (idx + 1) % this.textViewArray.length;
+          this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
+          this._changeTextView(this.textViewArray[idx].textView);
+        }
+        break;
+    }
+  }
+
   _fetchReferenceDisplayType() {
     fetch(`${API_ROOT}/pali_reference_edition`)
       .then(r => r.json())
@@ -378,7 +408,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('viewoption:viewRoot')}</summary>
+              <summary>
+                ${this.localize('viewoption:viewRoot')}
+                <code class="key">V</code>
+              </summary>
               <p>${unsafeHTML(this.localize('viewoption:textViewDescription'))}</p>
             </details>
             <div class="form-controls">
@@ -403,13 +436,18 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _onTextViewChanged(e) {
-    this.selectedTextView = e.target.value;
-    this.actions.chooseSegmentedSuttaTextView(this.selectedTextView);
+    this._changeTextView(e.target.value);
+  }
+
+  _changeTextView(newTextView) {
+    this.selectedTextView = newTextView;
+    this.actions.chooseSegmentedSuttaTextView(newTextView);
+    const newType = this.textViewArray.find(item => item.textView === newTextView).textViewLabel;
     this._showToast(
       this.localizeEx(
         'viewoption:textViewEnabled',
         'textView',
-        this.localize(`viewoption:${e.target.dataset.type}`)
+        this.localize(`viewoption:${newType}`)
       )
     );
   }
@@ -766,6 +804,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       .querySelector('#selPaliScripts')
       .addEventListener('change', this._onPaliScriptChanged);
     this.#setPaliScriptSelected();
+    document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
 
   #setPaliScriptSelected() {
