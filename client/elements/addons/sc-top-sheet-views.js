@@ -699,6 +699,9 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   _onNoteDisplayTypeChanged(e) {
     this.selectedNoteDisplayType = e.target.value;
     this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
+    this._showToast(this.localize('viewoption:noteDisplayType' + 
+      this.selectedNoteDisplayType.charAt(0).toUpperCase() + this.selectedNoteDisplayType.slice(1)
+    ));
   }
 
   show() {
