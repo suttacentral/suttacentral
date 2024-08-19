@@ -82,6 +82,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   _handleKeydown(event) {
     if(event.target.tagName != 'BODY') return;
+    if(event.ctrlKey || event.metaKey || event.altKey) return;
     switch (event.key) {
       case 's':
       case 'S':
