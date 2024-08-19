@@ -69,10 +69,25 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
   }
 
+  firstUpdated() {
+    document.addEventListener('keydown', this._handleKeydown.bind(this));
+  }
+
   stateChanged(state) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
+    }
+  }
+
+  _handleKeydown(event) {
+    if(event.target.tagName != 'BODY') return;
+    switch (event.key) {
+      case 's':
+      case 'S':
+        this.openInstantSearchDialog();
+        event.preventDefault();
+        break;
     }
   }
 
