@@ -10,6 +10,7 @@ import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
+import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 
 export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   static styles = css`
@@ -81,8 +82,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   }
 
   _handleKeydown(event) {
-    if(event.target.tagName != 'BODY') return;
-    if(event.ctrlKey || event.metaKey || event.altKey) return;
+    if (ignorableKeydownEvent(event)) return;
     switch (event.key) {
       case 's':
       case 'S':
