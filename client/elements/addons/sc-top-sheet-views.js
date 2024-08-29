@@ -184,7 +184,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         color: var(--sc-on-tertiary-primary-text-color);
       }
       
-      code.key {
+      kbd {
         padding: 3px 6px 2px;
         background-color: gray;
         color: white;
@@ -348,6 +348,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _handleKeydown(event) {
+    console.log(event.target);
     if(event.target.tagName != 'BODY') return;
     switch (event.key) {
       case 'v':
@@ -410,7 +411,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
             <details>
               <summary>
                 ${this.localize('viewoption:viewRoot')}
-                <code class="key">V</code>
+                <kbd>V</kbd>
               </summary>
               <p>${unsafeHTML(this.localize('viewoption:textViewDescription'))}</p>
             </details>
