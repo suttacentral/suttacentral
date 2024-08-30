@@ -8,6 +8,7 @@ import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converte
 import { store } from '../../redux-store';
 import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 
 const DEFAULT_REFERENCE_OPTION = [
   {
@@ -348,8 +349,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _handleKeydown(event) {
-    console.log(event.target);
-    if(event.target.tagName != 'BODY') return;
+    if(ignorableKeydownEvent(event)) return;
     switch (event.key) {
       case 'v':
       case 'V':
@@ -666,9 +666,21 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       );
     }
     this.requestUpdate();
-    this.actions.setDisplayedReferences(
-      this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set)
-    );
+    const references = this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set);
+    if (references.length === 0 || (references.length === 1 && references[0] === 'none')) {
+      this._showToast(this.localize('viewoption:allRefsDisabled'));
+    }
+    if (references.length === this.references.length - 1) {
+      this._showToast(this.localize('viewoption:allRefsEnabled'));
+    }
+    if(selectedReferenceDisplayType === 'main') {
+      if (checked) {
+        this._showToast(this.localize('viewoption:mainRefsEnabled'));
+      } else {
+        this._showToast(this.localize('viewoption:mainRefsDisabled'));
+      }
+    }
+    this.actions.setDisplayedReferences(references);
   }
 
   get showHighlightingTemplate() {
@@ -700,6 +712,9 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   _onNoteDisplayTypeChanged(e) {
     this.selectedNoteDisplayType = e.target.value;
     this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
+    this._showToast(this.localize('viewoption:noteDisplayTypeToast' + 
+      this.selectedNoteDisplayType.charAt(0).toUpperCase() + this.selectedNoteDisplayType.slice(1)
+    ));
   }
 
   show() {
