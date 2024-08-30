@@ -8,6 +8,7 @@ import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converte
 import { store } from '../../redux-store';
 import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 
 const DEFAULT_REFERENCE_OPTION = [
   {
@@ -348,7 +349,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _handleKeydown(event) {
-    if(event.target.tagName != 'BODY') return;
+    if(ignorableKeydownEvent(event)) return;
     switch (event.key) {
       case 'v':
       case 'V':

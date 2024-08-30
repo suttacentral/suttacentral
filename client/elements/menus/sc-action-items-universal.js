@@ -10,6 +10,7 @@ import '../addons/sc-auto-complete-list';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
+import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 
 export class SCActionItemsUniversal extends LitLocalized(LitElement) {
   static styles = css`
@@ -69,10 +70,25 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
   }
 
+  firstUpdated() {
+    document.addEventListener('keydown', this._handleKeydown.bind(this));
+  }
+
   stateChanged(state) {
     super.stateChanged(state);
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
+    }
+  }
+
+  _handleKeydown(event) {
+    if (ignorableKeydownEvent(event)) return;
+    switch (event.key) {
+      case 's':
+      case 'S':
+        this.openInstantSearchDialog();
+        event.preventDefault();
+        break;
     }
   }
 
