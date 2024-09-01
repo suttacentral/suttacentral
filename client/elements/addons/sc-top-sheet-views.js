@@ -350,10 +350,19 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
   _handleKeydown(event) {
     if(ignorableKeydownEvent(event)) return;
+    let idx = -1;
     switch (event.key) {
+      case 'n':
+      case 'N':
+        idx = this.noteDisplayTypeArray.findIndex(item => item.displayType === this.selectedNoteDisplayType);
+        if (idx >= 0) {
+          idx = (idx + 1) % this.noteDisplayTypeArray.length;
+          this.changeNoteDisplayType(this.noteDisplayTypeArray[idx].displayType);
+        }
+        break;
       case 'v':
       case 'V':
-        let idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
+        idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
         if (idx >= 0) {
           idx = (idx + 1) % this.textViewArray.length;
           this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
@@ -458,7 +467,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('viewoption:noteSummary')}</summary>
+              <summary>${this.localize('viewoption:noteSummary')} <kbd>N</kbd></summary>
               <p>${unsafeHTML(this.localize('viewoption:noteDescription'))}</p>
             </details>
             <div class="form-controls">
@@ -710,7 +719,11 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _onNoteDisplayTypeChanged(e) {
-    this.selectedNoteDisplayType = e.target.value;
+    this.changeNoteDisplayType(e.target.value);
+  }
+
+  changeNoteDisplayType(selectedNoteDisplayType) {
+    this.selectedNoteDisplayType = selectedNoteDisplayType;
     this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
     this._showToast(this.localize('viewoption:noteDisplayTypeToast' + 
       this.selectedNoteDisplayType.charAt(0).toUpperCase() + this.selectedNoteDisplayType.slice(1)
