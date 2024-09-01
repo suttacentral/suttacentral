@@ -357,6 +357,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         idx = this.noteDisplayTypeArray.findIndex(item => item.displayType === this.selectedNoteDisplayType);
         if (idx >= 0) {
           idx = (idx + 1) % this.noteDisplayTypeArray.length;
+          this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
           this.changeNoteDisplayType(this.noteDisplayTypeArray[idx].displayType);
         }
         break;
