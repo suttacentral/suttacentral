@@ -348,28 +348,27 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     document.removeEventListener('keydown', this._handleKeydown);
   }
 
+  _handleNKeydown() {
+    let idx = this.noteDisplayTypeArray.findIndex(item => item.displayType === this.selectedNoteDisplayType);
+    if (idx >= 0) {
+      idx = (idx + 1) % this.noteDisplayTypeArray.length;
+      this.changeNoteDisplayType(this.noteDisplayTypeArray[idx].displayType);
+    }
+  }
+
+  _handleVKeydown() {
+    let idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
+    if (idx >= 0) {
+      idx = (idx + 1) % this.textViewArray.length;
+      this._changeTextView(this.textViewArray[idx].textView);
+    }
+  }
+
   _handleKeydown(event) {
     if(ignorableKeydownEvent(event)) return;
-    let idx = -1;
-    switch (event.key) {
-      case 'n':
-      case 'N':
-        idx = this.noteDisplayTypeArray.findIndex(item => item.displayType === this.selectedNoteDisplayType);
-        if (idx >= 0) {
-          idx = (idx + 1) % this.noteDisplayTypeArray.length;
-          this.changeNoteDisplayType(this.noteDisplayTypeArray[idx].displayType);
-        }
-        break;
-      case 'v':
-      case 'V':
-        idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
-        if (idx >= 0) {
-          idx = (idx + 1) % this.textViewArray.length;
-          this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
-          this._changeTextView(this.textViewArray[idx].textView);
-        }
-        break;
-    }
+    if(!(event.key in this._keydownHandlers)) return;
+    this.#setTextBilaraPageIsTextOptionsMismatchSavedSettingsState();
+    this._keydownHandlers[event.key]();
   }
 
   _fetchReferenceDisplayType() {
@@ -833,6 +832,12 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       .querySelector('#selPaliScripts')
       .addEventListener('change', this._onPaliScriptChanged);
     this.#setPaliScriptSelected();
+    this._keydownHandlers = {
+      'n': this._handleNKeydown.bind(this),
+      'N': this._handleNKeydown.bind(this),
+      'v': this._handleVKeydown.bind(this),
+      'V': this._handleVKeydown.bind(this),
+    };
     document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
 
