@@ -89,6 +89,14 @@ export const suttaplexCss = css`
     list-style: none;
   }
 
+  .section-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .section-details summary::marker {
+    display: none;
+  }
+
   details[open] > summary::before {
     transform: rotate(90deg);
   }
