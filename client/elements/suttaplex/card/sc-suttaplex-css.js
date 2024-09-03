@@ -85,6 +85,10 @@ export const suttaplexCss = css`
     transition: 0.2s;
   }
 
+  .section-details summary {
+    list-style: none;
+  }
+
   details[open] > summary::before {
     transform: rotate(90deg);
   }
