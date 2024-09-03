@@ -444,13 +444,8 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         this._setVisibleToolbar();
         this._recalculateView();
         document.querySelector('sc-site-layout')?.showATB();
-        this._resetValuesOnRouteChange();
       }
     }
-  }
-
-  _resetValuesOnRouteChange() {
-    reduxActions.showToc([]);
   }
 
   createRenderRoot() {
