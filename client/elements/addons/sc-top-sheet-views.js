@@ -348,6 +348,11 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     document.removeEventListener('keydown', this._handleKeydown);
   }
 
+  _handleMKeydown() {
+    const is_main_checked = this.references.find(item => item.edition_set === "main").checked;
+    this._onReferenceDisplayTypeChanged({ target: { checked: !is_main_checked, value: "main" }});  
+  }
+
   _handleNKeydown() {
     let idx = this.noteDisplayTypeArray.findIndex(item => item.displayType === this.selectedNoteDisplayType);
     if (idx >= 0) {
@@ -833,6 +838,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       .addEventListener('change', this._onPaliScriptChanged);
     this.#setPaliScriptSelected();
     this._keydownHandlers = {
+      'm': this._handleMKeydown.bind(this),
+      'M': this._handleMKeydown.bind(this),
       'n': this._handleNKeydown.bind(this),
       'N': this._handleNKeydown.bind(this),
       'v': this._handleVKeydown.bind(this),
