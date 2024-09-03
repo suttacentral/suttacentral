@@ -655,7 +655,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       ? html`
           <div class="tools">
             <details>
-              <summary>${this.localize('viewoption:reference')}</summary>
+              <summary>${this.localize('viewoption:reference')} <kbd>R</kbd></summary>
               <p>${this.localize('viewoption:referenceDescription')}</p>
             </details>
             <div class="form-controls four-column">
@@ -669,7 +669,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${item.checked}
                       @change=${this._onReferenceDisplayTypeChanged}
                     ></md-checkbox>
-                    ${nameMapping[item.name] || item.name}
+                    ${nameMapping[item.name] || item.name} ${item.edition_set === 'main' ? html`<kbd>M</kbd>` : ''}
                   </label>
                 `
               )}
