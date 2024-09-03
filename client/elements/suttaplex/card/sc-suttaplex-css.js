@@ -85,15 +85,15 @@ export const suttaplexCss = css`
     transition: 0.2s;
   }
 
-  .section-details summary {
+  details summary {
     list-style: none;
   }
 
-  .section-details summary::-webkit-details-marker {
+  details summary::-webkit-details-marker {
     display: none;
   }
 
-  .section-details summary::marker {
+  details summary::marker {
     display: none;
   }
 
