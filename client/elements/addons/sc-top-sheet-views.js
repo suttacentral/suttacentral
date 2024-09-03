@@ -348,11 +348,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     document.removeEventListener('keydown', this._handleKeydown);
   }
 
+  // M Toggles the "main" references
   _handleMKeydown() {
     const is_main_checked = this.references.find(item => item.edition_set === "main").checked;
     this._onReferenceDisplayTypeChanged({ target: { checked: !is_main_checked, value: "main" }});  
   }
 
+  // N cycles through the note display types (none, asterisk, sidenotes)
   _handleNKeydown() {
     let idx = this.noteDisplayTypeArray.findIndex(item => item.displayType === this.selectedNoteDisplayType);
     if (idx >= 0) {
@@ -361,6 +363,17 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     }
   }
 
+  // R Toggles all references on/off
+  _handleRKeydown() {
+    const checked_references = this.references.filter(({ checked }) => checked);
+    if (checked_references.length == 0 || (checked_references.length == 1 && checked_references[0].edition_set === 'none')) {
+      this.enableAllReferences();
+    } else {
+      this.disableAllReferences();
+    }
+  }
+
+  // V cycles through the bilara text display types (plain, sidebyside, linebyline)
   _handleVKeydown() {
     let idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
     if (idx >= 0) {
@@ -369,6 +382,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     }
   }
 
+  // The above keyboard shortcuts are loaded into this._keydownHandlers
+  // This listener delegates to the above based on the key pressed
   _handleKeydown(event) {
     if(ignorableKeydownEvent(event)) return;
     if(!(event.key in this._keydownHandlers)) return;
@@ -664,6 +679,22 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       : '';
   }
 
+  disableAllReferences() {
+    this.references = this.references.map(item => ({ ...item, checked: false }));
+    this.references.find(reference => reference.edition_set === 'none').checked = true;
+    this.requestUpdate();
+    this._showToast(this.localize('viewoption:allRefsDisabled'));
+    this.actions.setDisplayedReferences(['none']);
+  }
+
+  enableAllReferences() {
+    this.references = this.references.map(item => ({ ...item, checked: true }));
+    this.references.find(reference => reference.edition_set === 'none').checked = false;
+    this.requestUpdate();
+    this._showToast(this.localize('viewoption:allRefsEnabled'));
+    this.actions.setDisplayedReferences(this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set));
+  }
+
   _onReferenceDisplayTypeChanged({ target: { checked, value: selectedReferenceDisplayType } }) {
     const selectedReference = this.references.find(
       reference => reference.edition_set === selectedReferenceDisplayType
@@ -842,6 +873,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       'M': this._handleMKeydown.bind(this),
       'n': this._handleNKeydown.bind(this),
       'N': this._handleNKeydown.bind(this),
+      'r': this._handleRKeydown.bind(this),
+      'R': this._handleRKeydown.bind(this),
       'v': this._handleVKeydown.bind(this),
       'V': this._handleVKeydown.bind(this),
     };
