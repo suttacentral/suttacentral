@@ -15,7 +15,7 @@ def test_run_migrations_and_class_import(monkeypatch):
     monkeypatch.setattr(runner, '_run_migration', mock__run)
 
     runner.run_migrations()
-    assert len(paths) != 0
+    assert paths
 
     migration_class = runner._import_migration_class(paths[0])
     assert issubclass(migration_class, base.Migration)
