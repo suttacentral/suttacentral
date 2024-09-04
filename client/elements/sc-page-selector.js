@@ -47,7 +47,8 @@ const staticPages = [
   'palitipitaka',
   'publicationAn',
   'searchFilter',
-  'pirivena-project'
+  'pirivena-project',
+  'hotkeys'
 ];
 
 // prettier-ignore
@@ -66,6 +67,11 @@ const routes = {
     path: '/pirivena-project',
     content: html`<sc-static-pirivenas-project />`,
     loader: () => import('./static/sc-static-pirivenas-project.js')
+  },
+  'hotkeys': {
+    path: '/hotkeys',
+    content: html`<sc-static-hotkeys />`,
+    loader: () => import('./static/sc-static-hotkeys.js')
   },
   'searchFilter': {
     path: '/search-filter',
