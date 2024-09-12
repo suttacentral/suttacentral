@@ -433,10 +433,12 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   #showSettingMenu() {
     const settingMenu = this.scSiteLayout.querySelector('#setting_menu');
-    settingMenu.show?.();
+    if (!settingMenu) return;
+    settingMenu.show();
     this.shadowRoot.querySelector('#btnTools')?.classList.add(this.activeClass);
-    settingMenu.setAttribute?.("tabindex", "0");
-    settingMenu.focus?.();
+    const horizontalMenu = settingMenu.shadowRoot.firstElementChild;
+    horizontalMenu.setAttribute("tabindex", "0");
+    horizontalMenu.focus();
   }
 
   #hideSuttaParallels() {
