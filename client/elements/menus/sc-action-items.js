@@ -336,12 +336,16 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   #showSuttaInfo() {
     const isSegmentedText = !this.suttaMetaText;
+    let infoPanel = null;
     if (isSegmentedText) {
-      this.scSiteLayout.querySelector('#bilara-sutta-info').show?.();
+      infoPanel = this.scSiteLayout.querySelector('#bilara-sutta-info');
     } else {
-      this.scSiteLayout.querySelector('#sutta-info').show?.();
+      infoPanel = this.scSiteLayout.querySelector('#sutta-info');
     }
+    infoPanel.show?.();
     this.shadowRoot.querySelector('#btnInfo')?.classList.add(this.activeClass);
+    infoPanel.setAttribute?.("tabindex", "0");
+    infoPanel.focus?.();
   }
 
   #onBtnViewCompactClick(e) {
@@ -428,8 +432,11 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #showSettingMenu() {
-    this.scSiteLayout.querySelector('#setting_menu')?.show?.();
+    const settingMenu = this.scSiteLayout.querySelector('#setting_menu');
+    settingMenu.show?.();
     this.shadowRoot.querySelector('#btnTools')?.classList.add(this.activeClass);
+    settingMenu.setAttribute?.("tabindex", "0");
+    settingMenu.focus?.();
   }
 
   #hideSuttaParallels() {
@@ -468,13 +475,20 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #showSuttaParallels() {
-    this.scSiteLayout.querySelector('#sutta_parallels')?.show?.();
+    const parallelsPanel = this.scSiteLayout.querySelector('#sutta_parallels');
+    parallelsPanel.show?.();
     this.shadowRoot.querySelector('#btnShowParallels')?.classList.add(this.activeClass);
+    parallelsPanel.setAttribute?.("tabindex", "0");
+    parallelsPanel.focus?.();
   }
 
   #showSuttaToC() {
-    this.scSiteLayout.querySelector('#sutta_toc')?.show?.();
+    const suttaToC = this.scSiteLayout.querySelector('#sutta_toc');
+    if (!suttaToC) return false;
+    suttaToC.show();
     this.shadowRoot.querySelector('#btnShowToC')?.classList.add(this.activeClass);
+    suttaToC.setAttribute("tabindex", "0");
+    suttaToC.focus();
   }
 
   #onBtnShowParallelsClick() {
