@@ -6,6 +6,7 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
+import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
@@ -308,8 +309,24 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   _handleKeydown(e) {
-    if (e.key === 'Escape') {
-      this.#closeAllTopSheetsOfTextPage();
+    if (ignorableKeydownEvent(e)) return;
+    if (!this.displayToolButton) return; // Not on a text page
+    switch (e.key) {
+      case 'i':
+      case 'I':
+        this.#onBtnInfoClick();
+        break;
+      case 'o':
+      case 'O':
+        this.#onBtnToolsClick();
+        break;
+      case 'p':
+      case 'P':
+        this.#onBtnShowParallelsClick();
+        break;
+      case 'Escape':
+        this.#closeAllTopSheetsOfTextPage();
+        break;
     }
   }
 
