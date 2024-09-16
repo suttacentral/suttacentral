@@ -373,6 +373,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     }
   }
 
+  // T Toggles the "pTs" references
+  _handleTKeydown() {
+    const pts_input = this.references.find(item => item.edition_set === "pts");
+    if (!pts_input) return;
+    this._onReferenceDisplayTypeChanged({ target: { checked: !pts_input.checked, value: "pts" }});
+  }
+
   // V cycles through the bilara text display types (plain, sidebyside, linebyline)
   _handleVKeydown() {
     let idx = this.textViewArray.findIndex(item => item.textView === this.selectedTextView);
@@ -669,7 +676,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       ?checked=${item.checked}
                       @change=${this._onReferenceDisplayTypeChanged}
                     ></md-checkbox>
-                    ${nameMapping[item.name] || item.name} ${item.edition_set === 'main' ? html`<kbd>M</kbd>` : ''}
+                    ${nameMapping[item.name] || item.name} ${item.edition_set === 'main' ? html`<kbd>M</kbd>` : (item.edition_set === 'pts' ? html`<kbd>T</kbd>` : '')}
                   </label>
                 `
               )}
@@ -875,6 +882,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       'N': this._handleNKeydown.bind(this),
       'r': this._handleRKeydown.bind(this),
       'R': this._handleRKeydown.bind(this),
+      't': this._handleTKeydown.bind(this),
+      'T': this._handleTKeydown.bind(this),
       'v': this._handleVKeydown.bind(this),
       'V': this._handleVKeydown.bind(this),
     };
