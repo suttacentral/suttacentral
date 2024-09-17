@@ -26,6 +26,8 @@
   "viewoption:notesDescription": "See translator's notes, variant readings, etc..",
   "viewoption:paliLookupDictionaryDisabled": "The Pali lookup dictionary is now disabled.",
   "viewoption:plain": "Plain",
+  "viewoption:ptsRefsEnabled": "The PTS references are now enabled.",
+  "viewoption:ptsRefsDisabled": "The PTS references are now disabled.",
   "viewoption:reference": "References",
   "viewoption:referenceDescription": "“Main” displays the primary SuttaCentral references for segmented texts, and all references for other texts. Remaining items are extra Pali editions.",
   "viewoption:referenceDisplayTypeMain": "Main",
