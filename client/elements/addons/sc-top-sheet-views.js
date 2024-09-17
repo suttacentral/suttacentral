@@ -731,6 +731,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         this._showToast(this.localize('viewoption:mainRefsDisabled'));
       }
     }
+    if (selectedReferenceDisplayType === 'pts') {
+      if (checked) {
+        this._showToast(this.localize('viewoption:ptsRefsEnabled'));
+      } else {
+        this._showToast(this.localize('viewoption:ptsRefsDisabled'));
+      }
+    }
     this.actions.setDisplayedReferences(references);
   }
 
