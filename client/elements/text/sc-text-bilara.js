@@ -916,7 +916,6 @@ export class SCTextBilara extends SCTextCommon {
       if (segmentElement) {
         const refSpan = this._addReferenceSpan();
         refSpan.appendChild(this._addSCReferenceAnchor(key));
-        refSpan.appendChild(document.createElement('br'));
         this._prependChild(segmentElement, refSpan);
       }
     });
@@ -1043,7 +1042,6 @@ export class SCTextBilara extends SCTextCommon {
         anchor.title = editionInfo?.long_name || item;
         this._initPtsReferenceAnchor(anchor, item);
         refElement.appendChild(anchor);
-        refElement.appendChild(document.createElement('br'));
       }
     });
   }
