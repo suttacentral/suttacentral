@@ -91,6 +91,8 @@ export const typographyBilaraStyles = css`
 
   .reference {
     overflow-wrap: anywhere;
+    word-break: break-all;
+    overflow-wrap: break-word;
   }
 
   .reference a {
