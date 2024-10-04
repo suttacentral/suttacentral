@@ -637,43 +637,63 @@ def generate_aql_for_not_operator(keywords, query_param):
 
 
 def generate_query_aql_by_conditions(query_conditions, query_param):
-    aql_condition_part = '''
-    SEARCH ((PHRASE(d.content, @query, "common_text") OR
-    '''
-    if 'or' in query_conditions:
-        keyword_list = query_conditions['or']
-        keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
-        for keyword in keyword_list:
-            aql_condition_part += (
-                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
-                f'LIKE(d.segmented_text, "%{keyword}%") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
-                f'ANALYZER(LIKE(d.name, "%{keyword.lower()}%"), "normalize") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
-                f'ANALYZER(LIKE(d.name, "%{unidecode(keyword.lower())}%"), "normalize") OR '
-                f'd.uid == "{keyword}" OR '
-                f'PHRASE(d.name,  "{keyword}", "common_text")) OR '
-            )
-        aql_condition_part = aql_condition_part[:-4]
+    if not is_chinese_ex(query_conditions):
+        aql_condition_part = '''
+        SEARCH ((PHRASE(d.content, @query, "common_text") OR
+        '''
 
-    if 'and' in query_conditions:
-        for keyword in query_conditions['and']:
-            aql_condition_part += (
-                f'(PHRASE(d.content, "{keyword}", "common_text") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
-                f'LIKE(d.segmented_text, "%{keyword}%")) AND '
-            )
-        aql_condition_part = aql_condition_part[:-5]
+        if 'or' in query_conditions:
+            keyword_list = query_conditions['or']
+            keyword_list = extend_chinese_keywords(keyword_list, query_conditions)
+            for keyword in keyword_list:
+                aql_condition_part += (
+                    f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                    f'LIKE(d.segmented_text, "%{keyword}%") OR '
+                    f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                    f'ANALYZER(LIKE(d.name, "%{keyword.lower()}%"), "normalize") OR '
+                    f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
+                    f'ANALYZER(LIKE(d.name, "%{unidecode(keyword.lower())}%"), "normalize") OR '
+                    f'd.uid == "{keyword}" OR '
+                    f'PHRASE(d.name,  "{keyword}", "common_text")) OR '
+                )
 
-    if 'not' in query_conditions:
-        aql_condition_part += get_not_part_for_aql(query_conditions['not'])
+            aql_condition_part = aql_condition_part[:-4]
 
-    aql_condition_part += '''
-    )
-    ''' + add_author_condition_to_aql(query_conditions) + '''
-    )
-    '''
+        if 'and' in query_conditions:
+            for keyword in query_conditions['and']:
+                aql_condition_part += (
+                    f'(PHRASE(d.content, "{keyword}", "common_text") OR '
+                    f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
+                    f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
+                    f'LIKE(d.segmented_text, "%{keyword}%")) AND '
+                )
+            aql_condition_part = aql_condition_part[:-5]
+
+        if 'not' in query_conditions:
+            aql_condition_part += get_not_part_for_aql(query_conditions['not'])
+
+        aql_condition_part += '''
+        )
+        ''' + add_author_condition_to_aql(query_conditions) + '''
+        )
+        '''
+    else:
+        aql_condition_part = '''
+            LET cjk_tokens = TOKENS(d.content, 'cjk_ngram')
+            FILTER @query == @query AND
+        '''
+
+        or_conditions = generate_conditions(query_conditions, 'or')
+        and_conditions = generate_conditions(query_conditions, 'and')
+
+        if or_conditions:
+            aql_condition_part += ' OR '.join(or_conditions)
+
+        if and_conditions:
+            if or_conditions:
+                aql_condition_part += ' AND '
+            aql_condition_part += ' AND '.join(and_conditions)
+
     aql_condition_part += get_filter_part_for_aql(query_param['matchpartial'])
     aql_condition_part += get_lang_condition_for_aql(query_param['selected_languages'])
     aql_condition_part += add_collection_condition_to_aql(
@@ -688,6 +708,17 @@ def generate_query_aql_by_conditions(query_conditions, query_param):
     )
 
     return full_aql, aql_condition_part
+
+
+def generate_conditions(query_conditions, operator):
+    conditions = []
+    if operator in query_conditions:
+        keyword_list = query_conditions[operator]
+        for keyword in keyword_list:
+            zh_hant_keyword = zhconv_convert(keyword, 'zh-hant')
+            zh_hans_keyword = zhconv_convert(keyword, 'zh-hans')
+            conditions.append(f'(CONTAINS(cjk_tokens, "{zh_hant_keyword}") OR CONTAINS(cjk_tokens, "{zh_hans_keyword}"))')
+    return conditions
 
 
 def add_author_condition_to_aql(condition_combination):
@@ -769,7 +800,8 @@ def get_return_part_for_aql(include_content=True):
         is_bilara_text: d.is_bilara_text,
         param_lang: @lang,
         root_uid: d.root_uid,
-        is_article: d.is_article
+        is_article: d.is_article,
+        param_query: @query
     }
     '''
     if include_content:
@@ -1628,6 +1660,15 @@ def custom_sort(obj):
 
 def is_chinese(uchar):
     return u'\u4e00' <= uchar <= u'\u9fa5'
+
+
+def is_chinese_ex(query_conditions):
+    keyword_list = []
+    if 'or' in query_conditions:
+        keyword_list = query_conditions['or']
+    if 'and' in query_conditions:
+        keyword_list = query_conditions['and']
+    return any(is_chinese(keyword) for keyword in keyword_list)
 
 
 def extract_query_conditions(param):
