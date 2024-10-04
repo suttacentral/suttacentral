@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from typing import List
 from urllib.parse import urlparse
 
@@ -400,21 +401,34 @@ class SuttaplexList(Resource):
         return data, 200
 
     def fetch_alternative_translated_title_if_empty(self, db, language, result):
-        if result['translated_title'] == '':
-            translation_text_file = db.aql.execute(
-                SEGMENTED_TRANSLATION_TEXT,
-                bind_vars={'uid': result['uid'], 'language': language}
-            )
-            if translation_text_file is not None:
-                file_result = next(translation_text_file)
-                if (
-                        file_result is not None
-                        and 'translation_text' in file_result
-                ):
-                    translation_text = json_load(file_result['translation_text'])
-                    uid_key = result['uid'] + ':0.3'
-                    if translation_text and uid_key in translation_text:
-                        result['translated_title'] = translation_text[uid_key]
+        translation_text_file = db.aql.execute(
+            SEGMENTED_TRANSLATION_TEXT,
+            bind_vars={'uid': result['uid'], 'language': language}
+        )
+        if translation_text_file is not None:
+            file_result = next(translation_text_file)
+            if (
+                    file_result is not None
+                    and 'translation_text' in file_result
+            ):
+                translation_text = json_load(file_result['translation_text'])
+                uid_key = self.get_max_key_with_zero_prefix(translation_text)
+                if translation_text and uid_key in translation_text:
+                    result['translated_title'] = translation_text[uid_key]
+
+    def get_max_key_with_zero_prefix(self, data):
+        pattern = re.compile(r'^[^:]+:(0\.\d+)')
+        max_key = None
+        max_value = -1
+
+        for key in data.keys():
+            if match := pattern.match(key):
+                value = float(match[1])
+                if value > max_value:
+                    max_value = value
+                    max_key = key
+
+        return max_key
 
     def add_acronym_to_fallen_leaves(self, uid, data, fallen_leaves):
         if fallen_leaves:
