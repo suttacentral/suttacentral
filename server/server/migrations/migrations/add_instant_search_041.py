@@ -138,7 +138,8 @@ class SecondMigration(Migration):
                     "analyzers": [
                         "common_text",
                         "text_zh",
-                        "text_pali"
+                        "text_pali",
+                        "cjk_ngram",
                     ]
                 }
             },
