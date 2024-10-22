@@ -402,7 +402,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const RootLang = this.expansionReturns[0][item.root_lang]?.[1];
     return html`
       <a><sc-badge text="Root language: ${RootLang || item.root_lang}" color="gray"></sc-badge></a>
-      <a><sc-badge text=${badgeText} color="gray"></sc-badge></a>
+      <a><sc-badge text=${badgeText} color="gray" visible=${item.is_root ? 'false' : 'true'}></sc-badge></a>
     `;
   }
 
@@ -774,7 +774,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     if (this.searchParams !== state.searchParams) {
       this.searchParams = state.searchParams;
     }
-    if (this.displayedLanguages !== state.displayedLanguages) {
+    if (this.displayedLanguages !== state.searchOptions.displayedLanguages) {
       this.displayedLanguages = state.searchOptions.displayedLanguages;
       this.requestUpdate();
     }

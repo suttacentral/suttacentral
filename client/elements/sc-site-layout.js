@@ -19,6 +19,8 @@ import { getURLParam } from './addons/sc-functions-miscellaneous';
 import { reduxActions } from './addons/sc-redux-actions';
 import { API_ROOT } from '../constants';
 
+import { typographyI18nStyles } from './styles/sc-typography-i18n-styles';
+
 const microSentryClient = new BrowserMicroSentryClient({
   dsn: 'https://c7d8c1d86423434b8965874d954ba735@sentry.io/358981',
 });
@@ -118,6 +120,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     return html`
       <style>
         ${SCSiteLayoutStyles}
+        ${typographyI18nStyles}
       </style>
 
       <div id="universal_toolbar">
