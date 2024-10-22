@@ -7,6 +7,7 @@ export class SCBadge extends LitLocalized(LitElement) {
     text: { type: String },
     color: { type: String },
     background: { type: String },
+    visible: { type: String },
   };
 
   constructor() {
@@ -15,6 +16,7 @@ export class SCBadge extends LitLocalized(LitElement) {
     this.text = '';
     this.color = 'primary';
     this.background = '';
+    this.visible = 'true';
   }
 
   static styles = css`
@@ -75,6 +77,10 @@ export class SCBadge extends LitLocalized(LitElement) {
     :host([text='annotated']):before {
       content: '✓ ';
       color: var(--sc-primary-accent-color);
+    }
+
+    :host([visible='false']) {
+      display: none;
     }
   `;
 

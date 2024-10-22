@@ -144,4 +144,8 @@ export const typographyI18nStyles = css`
 
     overflow-wrap: break-word;
   }
+
+  [lang='ko'] * {
+    font-synthesis: none;
+  }
 `;

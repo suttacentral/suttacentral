@@ -187,6 +187,11 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     ul li:first-child {
       display: none;
     }
+
+    .last-leaves {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
   `;
 
   static properties = {
@@ -250,13 +255,19 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
           (nav, i) => html`
             ${nav?.title &&
             html`
-              <li @click=${() => this._navClick(nav)}>
-                <a class="nav-link" data-uid=${nav.uid} href=${nav.url}>
-                  ${this.tryLocalize(`interface:${nav.title.toLowerCase()}`, nav.title)}
-                  <md-ripple></md-ripple>
-                </a>
-                ${i < length - 1 ? icon.chevron_right : ''}
-              </li>
+              ${i < length - 1 ? html`
+                <li @click=${() => this._navClick(nav)}>
+                  <a class="nav-link" data-uid=${nav.uid} href=${nav.url}>
+                    ${this.tryLocalize(`interface:${nav.title.toLowerCase()}`, nav.title)}
+                    <md-ripple></md-ripple>
+                  </a>
+                  ${i < length - 1 ? icon.chevron_right : ''}
+                </li>
+              ` : html`
+                <li>
+                  <p class="last-leaves">${this.tryLocalize(`interface:${nav.title.toLowerCase()}`, nav.title)}</p>
+                </li>
+              `}
             `}
           `
         )}

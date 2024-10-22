@@ -292,18 +292,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     return html`
       <h2>This translation</h2>
       <p>
-        This translation was part of a project to translate the four Pali Nikāyas with the following
-        aims:
+        ${this.editionInfo.publication?.text_description}
       </p>
-      <ul>
-        <li>plain, approachable English;</li>
-        <li>consistent terminology;</li>
-        <li>accurate rendition of the Pali;</li>
-        <li>free of copyright.</li>
-      </ul>
-      ${this.editionUid === 'pli-tv-vi' ? '' : html`
-        <p>It was made during 2016–2018 while Bhikkhu Sujato was staying in Qimei, Taiwan.</p>
-      `}
     `;
   }
 
