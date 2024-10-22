@@ -94,7 +94,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
 
       white-space: nowrap;
 
-      color: white;
+      color: var(--sc-inverted-text-color);
 
       align-items: center;
     }
@@ -110,7 +110,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
       text-decoration: none;
 
       opacity: 0.8;
-      color: white;
+      color: var(--sc-inverted-text-color);
       border-radius: 16px;
 
       align-items: center;
@@ -135,7 +135,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     li:last-child a:hover {
       cursor: default;
 
-      color: white;
+      color: var(--sc-inverted-text-color);
       border-bottom: none;
     }
 

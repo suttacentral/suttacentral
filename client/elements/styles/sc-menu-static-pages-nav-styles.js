@@ -78,7 +78,7 @@ export const SCMenuStaticPagesNavStyles = css`
     text-decoration: none;
 
     opacity: 0.8;
-    color: white;
+    color: var(--sc-inverted-text-color);
     border-radius: var(--sc-big-border-radius);
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 
@@ -90,7 +90,7 @@ export const SCMenuStaticPagesNavStyles = css`
     transition: var(--sc-link-transition);
 
     opacity: 1;
-    color: white;
+    color: var(--sc-inverted-text-color);
     background-color: var(--sc-primary-color-light-transparent);
   }
 

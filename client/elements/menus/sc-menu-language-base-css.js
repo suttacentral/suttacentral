@@ -39,7 +39,7 @@ export const languageBaseMenuCss = css`
     letter-spacing: 0.5px;
     text-transform: uppercase;
 
-    color: white;
+    color: var(--sc-inverted-text-color);
     background-color: var(--sc-icon-color);
 
     --notchSize: 4px;
