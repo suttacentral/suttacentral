@@ -187,8 +187,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       
       kbd {
         padding: 3px 6px 2px;
-        background-color: gray;
-        color: white;
+        background-color: var(--sc-icon-color);
+        color: var(--sc-inverted-text-color);
         border-radius: 3px;
         margin: 5px;
       }

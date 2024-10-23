@@ -157,7 +157,7 @@ export const navigationNormalModeStyles = html`
     .show-root-language::before {
       content: attr(lang);
       background-color: var(--sc-icon-color);
-      color: white;
+      color: var(--sc-inverted-text-color);
       font-weight: 800;
       font-stretch: condensed;
       padding: 0 4px 1px 4px;
@@ -202,7 +202,7 @@ export const navigationNormalModeStyles = html`
       padding: 0 8px 0 4px;
       box-sizing: border-box;
 
-      color: white;
+      color: var(--sc-inverted-text-color);
       background-color: var(--sc-primary-color-dark);
 
       justify-content: center;

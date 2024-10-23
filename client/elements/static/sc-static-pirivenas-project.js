@@ -19,7 +19,7 @@ export class SCStaticPirivenasProject extends SCStaticPage {
     return html`
       <style>
         .link-button {
-          color: white;
+          color: var(--sc-inverted-text-color);
           border: none;
           background-color: var(--sc-primary-accent-color);
         }

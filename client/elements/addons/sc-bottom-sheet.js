@@ -224,7 +224,7 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
       color: rgb(34, 33, 32);
       background-color: var(--sc-primary-color-light);
 
-      text-decoration-color: white;
+      text-decoration-color: var(--sc-inverted-text-color);
       text-decoration-thickness: 0.15em;
       text-underline-offset: 0.15em;
 
@@ -234,7 +234,7 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
     .entry a:hover {
       background-color: var(--sc-primary-accent-color-light);
 
-      text-decoration-color: white;
+      text-decoration-color: var(--sc-inverted-text-color);
       text-decoration-thickness: 0.15em;
       text-underline-offset: 0.15em;
     }

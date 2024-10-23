@@ -241,7 +241,7 @@ export const staticHomeStyles = css`
     text-align: right;
     letter-spacing: 0.5px;
 
-    color: white;
+    color: var(--sc-inverted-text-color);
     background-color: rgba(0, 0, 0, 0.5);
 
     backdrop-filter: blur(2px);
@@ -382,7 +382,7 @@ export const staticHomeStyles = css`
     height: 80px;
     padding: 1rem;
 
-    color: white;
+    color: var(--sc-inverted-text-color);
 
     justify-content: space-between;
   }
