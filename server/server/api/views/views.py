@@ -725,7 +725,21 @@ class Parallels(Resource):
         for entry in data:
             data[entry] = sorted(data[entry], key=sort_parallels_type_key)
 
+        if self.is_vinaya(uid):
+            for entry in data:
+                data[entry] = sorted(data[entry], key=self.sort_by_root_lang)
+            print(data)
+
         return data, 200
+
+    def sort_by_root_lang(self, item):
+        return 0 if item['to']['root_lang'] == 'pli' else 1
+
+    def is_vinaya(self, uid):
+        db = get_db()
+        uid = re.sub(r'\d+$', '', uid)
+        full_path = db.aql.execute(SUTTA_PATH, bind_vars={'uid': uid}).next()
+        return '/pitaka/vinaya' in full_path['full_path']
 
 
 class ParallelsLite(Resource):
