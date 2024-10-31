@@ -113,7 +113,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   isSuttaplex(item) {
-    return item.type === 'leaf';
+    return item.type === 'leaf' || item.type === 'root';
   }
 
   isPatimokkha() {

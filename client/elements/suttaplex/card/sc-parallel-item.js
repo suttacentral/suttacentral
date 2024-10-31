@@ -37,10 +37,23 @@ export class SCParallelItem extends LitLocalized(LitElement) {
     };
   }
 
+  firstUpdated() {
+    this.updateLanguageNames();
+  }
+
+  updateLanguageNames() {
+    if (this.expansionData[0].lzh && this.expansionData[0].lzh[1] === "Literary Chinese") {
+      this.expansionData[0].lzh[1] = "Chinese";
+    }
+    if (this.expansionData[0].xct && this.expansionData[0].xct[1] === "Classical Tibetan") {
+      this.expansionData[0].xct[1] = "Tibetan";
+    }
+  }
+
   get heading() {
     const uidLanguage = this.parallelItem?.uid?.substring(0, 3);
     if (Object.keys(this.rootLangMappings).includes(uidLanguage)) {
-      return transformId(this.parallelItem.to, this.expansionData, 1);
+      return (this.parallelItem.translated_title || this.parallelItem.original_title);
     }
     if (this.parallelItem.translated_title) {
       return this.parallelItem.translated_title;
@@ -49,6 +62,14 @@ export class SCParallelItem extends LitLocalized(LitElement) {
       return this.parallelItem.original_title;
     }
     return this.acronymOrUid;
+  }
+
+  get itemFullLanguage() {
+    const uidLanguage = this.parallelItem?.uid?.substring(0, 3);
+    if (Object.keys(this.rootLangMappings).includes(uidLanguage)) {
+      return this.rootLangMappings[uidLanguage];
+    }
+    return '';
   }
 
   get headingTitle() {
@@ -111,7 +132,6 @@ export class SCParallelItem extends LitLocalized(LitElement) {
       return `${scAcronym}${idPart}`;
     }
     scAcronym = transformId(this.parallelItem.to, this.expansionData, 0);
-
     return scAcronym;
   }
 
@@ -193,6 +213,13 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                     </div>
                   `
                 : ''}
+              ${Object.keys(this.rootLangMappings).includes(this.parallelItem?.uid?.substring(0, 3))
+              ? html`
+                  <div class="nerdy-row-element" title=${this.itemFullLanguage}>
+                    ${this.itemFullLanguage}
+                  </div>
+                `
+              : ''}
               ${this.volpagesAvailable
                 ? html`
                     <div
