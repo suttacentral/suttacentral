@@ -52,7 +52,7 @@ install-requirements:
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
 	@make create-network
-	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+	-@docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
 # Run tests
@@ -63,7 +63,7 @@ test-server:
 	@docker exec -t sc-flask pytest -s server/
 
 test-api:
-	docker-compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
+	docker compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
 migrate:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py migrate"
@@ -92,10 +92,10 @@ list_routes:
 	@docker exec -t sc-flask bash -c "cd server && python manage.py list_routes"
 
 rebuild-frontend:
-	docker-compose run sc-frontend npm run build
+	docker compose run sc-frontend npm run build
 
 bundle-analyzer:
-	docker-compose run sc-frontend npm run build --report
+	docker compose run sc-frontend npm run build --report
 
 rebuild-static-pages:
 	cd client && npm run extract-static-strings
