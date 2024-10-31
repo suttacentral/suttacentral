@@ -22,5 +22,8 @@
   "licensing:22": "The paintings on the Home page are by the Australian artist Kim Hoa Tram, and are used by kind permission of the artist and the National Gallery of Victoria. These and other works by Kim Hoa Tram may be seen at the <a href='https://www.ngv.vic.gov.au/explore/collection/artist/11810/' title='Kim Hoa Tram at the National Gallery of Victoria'>National Gallery of Victoria website</a>.",
   "licensing:23": "3. Public domain material",
   "licensing:24": "The original texts of Buddhism in Pali, Chinese, Sanskrit, Tibetan, and other languages are in the <a href='http://creativecommons.org/publicdomain/mark/1.0/'>public domain</a>. Such material does not fall within the scope of copyright.",
-  "licensing:25": "In addition, the reference data, including information on parallels, is not an “original creation” and as such does not fall within the scope of copyright."
+  "licensing:25": "In addition, the reference data, including information on parallels, is not an “original creation” and as such does not fall within the scope of copyright.",
+  "licensing:26": "AI",
+  "licensing:27": "SuttaCentral does not make use of artifically-generated data. We politely request that our content not be scraped or used in any way for the creation of datasets for generative AI or similar. This request applies to those who create applications directly, and those who build apps downstream of AI models that have scraped SuttaCentral’s data. "
+
 }
