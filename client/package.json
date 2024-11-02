@@ -31,7 +31,7 @@
     "algoliasearch": "4.21.1",
     "@material/web": "1.1.1",
     "@micro-sentry/browser": "7.0.2",
-    "@orama/orama": "^2.0.0-beta.12",
+    "@orama/orama": "^2.1.1",
     "@orama/stemmers": "^2.0.0-beta.12",
     "@orama/stopwords": "^2.0.0-beta.12",
     "@orama/plugin-match-highlight": "^2.0.0-beta.12",
