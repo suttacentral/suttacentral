@@ -32,7 +32,7 @@
     "@material/web": "1.1.1",
     "@micro-sentry/browser": "7.0.2",
     "@orama/orama": "^2.0.0-beta.12",
-    "@orama/stemmers": "^2.0.0-beta.12",
+    "@orama/stemmers": "^2.1.1",
     "@orama/stopwords": "^2.0.0-beta.12",
     "@orama/plugin-match-highlight": "^2.0.0-beta.12",
     "@stripe/stripe-js": "^2.2.2",
