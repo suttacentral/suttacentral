@@ -177,6 +177,36 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       background-color: var(--sc-primary-color-light-transparent);
       color: var(--sc-primary-color-dark);
     }
+
+    .dpd-link-container {
+      display: block;
+    }
+
+    .dpd-link {
+      display: flex;
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-md);
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--sc-primary-color-light);
+      text-decoration-thickness: 0.15em;
+      text-underline-offset: 0.15em;
+
+      transition: var(--sc-link-transition);
+    }
+
+    .dpd-link span {
+      font-weight: bold;
+      background-color: var(--sc-primary-color-light-transparent);
+      color: var(--sc-primary-color-dark);
+      margin-left: 0.2em;
+      margin-right: 0.2em;
+    }
+
+    .dpd-icon {
+      height: 30px;
+      width: 30px;
+    }
   `;
 
   render() {
@@ -189,6 +219,12 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
                 >${this.localize('dictionary:definitionsFor')}</span
               >
               <span class="dictionary-results-term">${this.dictionaryWord}</span>
+              <div class="dpd-link-container">
+                <a class="dpd-link" href='https://dpdict.net/?q=${this.dictionaryWord}' target="_blank">
+                <img src="https://dpdict.net/static/dpd.ico" alt="DPD Icon" class="dpd-icon">
+                <span>${this.dictionaryWord}</span> in Digital Pali Dictionary
+                </a>
+              </div>
             </h1>
           </div>
 
