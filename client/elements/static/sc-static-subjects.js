@@ -1865,6 +1865,75 @@ class SCStaticSubjects extends SCStaticPage {
       </main>
     `;
   }
+
+  firstUpdated() {
+    this._reindex();
+    // this._restructure();
+  }
+
+  _removeDiacritics(str) {
+    const firstLetter = str.charAt(0);
+    const normalizedFirstLetter = firstLetter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return normalizedFirstLetter + str.slice(1);
+  }
+
+  _reindex() {
+    const dtElements = document.querySelectorAll('dt');
+    dtElements.forEach((dt, index) => {
+      const firstLetter = this._removeDiacritics(dt.textContent.trim().charAt(0).toLowerCase());
+      const { parentElement } = dt;
+      const previousSibling = parentElement.previousElementSibling;
+
+      if (previousSibling?.tagName === 'H2' && previousSibling.id !== firstLetter) {
+        const H2ByFirstLetter = document.getElementById(firstLetter);
+        const dl = H2ByFirstLetter?.nextElementSibling;
+        const tempDiv = document.createElement('div');
+        if (dl) {
+          let newDt = dt.cloneNode(true);
+          tempDiv.appendChild(newDt);
+          let nextSibling = dt.nextElementSibling;
+          while (nextSibling && nextSibling.tagName !== 'DT') {
+            const dd = nextSibling;
+            nextSibling = nextSibling.nextElementSibling;
+            tempDiv.appendChild(dd);
+          }
+          while (tempDiv.firstChild) {
+            dl.appendChild(tempDiv.firstChild);
+          }
+        }
+        dt.remove();
+      }
+    });
+  }
+
+  _restructure() {
+    const dtElements = document.querySelectorAll('dt');
+    dtElements.forEach((dt, index) => {
+      const firstLetter = this._removeDiacritics(dt.textContent.trim().charAt(0).toLowerCase());
+      const { parentElement } = dt;
+      const previousSibling = parentElement.previousElementSibling;
+      if (!previousSibling?.tagName !== 'H2' && !document.getElementById(firstLetter)) {
+        const H2ByFirstLetter = document.createElement('h2');
+        H2ByFirstLetter.id = firstLetter;
+        H2ByFirstLetter.textContent = firstLetter.toUpperCase();
+        parentElement.before(H2ByFirstLetter);
+      }
+    });
+    this._generateTOC();
+  }
+
+  _generateTOC() {
+    const headings = document.querySelectorAll('h2');
+    const toc = document.querySelector('.entry-list');
+    headings.forEach((heading) => {
+      const listItem = document.createElement('li');
+      const anchor = document.createElement('a');
+      anchor.href = `#${heading.id}`;
+      anchor.textContent = heading.textContent;
+      listItem.appendChild(anchor);
+      toc.appendChild(listItem);
+    });
+  }
 }
 
 customElements.define('sc-static-subjects', SCStaticSubjects);
