@@ -13,6 +13,7 @@ import '../addons/sc-error-icon';
 import { RefreshNavNew, setNavigation } from '../navigation/sc-navigation-common';
 import { transformId, getParagraphRange } from '../../utils/suttaplex';
 import '@material/web/button/filled-button';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static properties = {
@@ -541,8 +542,21 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
+    this._correctAndRedirectRootURL();
     this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     this.scActionItems?.hideSpeakerButton();
+  }
+
+  _correctAndRedirectRootURL() {
+    ['sutta', 'vinaya', 'abhidhamma'].forEach(this._redirectToPitaka.bind(this));
+  }
+  
+  _redirectToPitaka(section) {
+    const currentUrl = window.location.href;
+    if (currentUrl.includes(`/${section}`) && !currentUrl.includes('/pitaka')) {
+      const link = currentUrl.replace(`/${section}`, `/pitaka/${section}`);
+      dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
+    }
   }
 }
 
