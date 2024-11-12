@@ -360,7 +360,7 @@ class SuttaplexList(Resource):
 
         db = get_db()
         results = db.aql.execute(
-            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}
+            SUTTAPLEX_LIST, bind_vars={'language': language, 'uid': uid}, count=True
         )
 
         difficulties = {3: 'advanced', 2: 'intermediate', 1: 'beginner'}
@@ -392,6 +392,8 @@ class SuttaplexList(Resource):
 
             self.fetch_alternative_translated_title_if_empty(db, language, result)
             result['verseNo'] = self.compute_verse_no(result['uid'], result['verseNo'])
+            if len(results) == 1:
+                self.calculate_neighbors(result['uid'], result, language, db)
 
         fallen_leaves = self.try_to_load_fallen_leaves(uid, language, db, data)
         data = flat_tree(data)
@@ -473,6 +475,40 @@ class SuttaplexList(Resource):
                 if len(all_verse) > 1
                 else ' '.join(all_verse).replace('vns', 'Verse ')
             )
+
+    def calculate_neighbors(self, uid, doc, site_lang, db):
+        sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
+
+        all_doc_uid = list(
+            db.aql.execute(
+                ALL_DOC_UID_BY_ROOT_UID,
+                bind_vars={'uid': uid}
+            )
+        )
+
+        if uid in all_doc_uid:
+            uid_index = all_doc_uid.index(uid)
+            if uid_index != 0:
+                sutta_prev_next['prev_uid'] = all_doc_uid[uid_index - 1]
+            if uid_index != len(all_doc_uid) - 1:
+                sutta_prev_next['next_uid'] = all_doc_uid[uid_index + 1]
+
+        if doc['previous']:
+            doc['previous']['uid'] = sutta_prev_next.get('prev_uid', '')
+        if doc['next']:
+            doc['next']['uid'] = sutta_prev_next.get('next_uid', '')
+
+        for k, v in sutta_prev_next.items():
+            name_result = list(
+                db.aql.execute(
+                    SUTTA_NAME,
+                    bind_vars={'uid': v, 'lang': site_lang}
+                )
+            )
+            if k == 'next_uid' and doc['next']:
+                doc['next']['name'] = name_result[0]
+            elif k == 'prev_uid' and doc['previous']:
+                doc['previous']['name'] = name_result[0]
 
 
 class RangeSuttaplexList(Resource):
@@ -728,7 +764,6 @@ class Parallels(Resource):
         if self.is_vinaya(uid):
             for entry in data:
                 data[entry] = sorted(data[entry], key=self.sort_by_root_lang)
-            print(data)
 
         return data, 200
 
