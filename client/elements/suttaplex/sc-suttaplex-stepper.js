@@ -3,7 +3,7 @@ import { icon } from '../../img/sc-icon';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-export class SCTextStepper extends LitLocalized(LitElement) {
+export class SCSuttaplexStepper extends LitLocalized(LitElement) {
   static properties = {
     next: { type: Object },
     previous: { type: Object },
@@ -200,9 +200,8 @@ export class SCTextStepper extends LitLocalized(LitElement) {
   }
 
   _getUrl(object) {
-    const { author_uid: author, uid, lang } = object;
-    return `/${uid}/${lang}/${author}`;
+    return `/${object.uid}`;
   }
 }
 
-customElements.define('sc-text-stepper', SCTextStepper);
+customElements.define('sc-suttaplex-stepper', SCSuttaplexStepper);

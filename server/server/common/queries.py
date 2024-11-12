@@ -697,6 +697,14 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
         biblio: biblio,
         priority_author_uid: priority_author,
         verseNo: references,
+        previous: {
+            name: null,
+            uid: null,
+        },
+        next: {
+            name: null,
+            uid: null,
+        },
     }
 '''
 
@@ -1513,8 +1521,10 @@ FOR doc IN 1..10 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_e
 
 LET possibleRoot = REGEX_REPLACE(@uid, "\\\\d+(\\\\.\\\\d+)?", "")
 
+LET possibleRoot2 = REGEX_REPLACE(@uid, "(\\d+\\.\\d+)$", "")
+
 FOR docs IN 1..10 OUTBOUND DOCUMENT('super_nav_details', root_doc.uid) super_nav_details_edges OPTIONS {order: 'dfs'}
-    FILTER docs.type == 'leaf' AND (STARTS_WITH(docs.uid, LOWER(root_doc.uid)) OR STARTS_WITH(docs.uid, LOWER(root_doc.acronym)) OR STARTS_WITH(docs.uid, LOWER(possibleRoot)))
+    FILTER docs.type == 'leaf' AND (STARTS_WITH(docs.uid, LOWER(root_doc.uid)) OR STARTS_WITH(docs.uid, LOWER(root_doc.acronym)) OR STARTS_WITH(docs.uid, LOWER(possibleRoot))  OR STARTS_WITH(docs.uid, LOWER(possibleRoot2)))
     RETURN docs.uid
 '''
 

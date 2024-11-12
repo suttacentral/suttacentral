@@ -14,6 +14,7 @@ import { RefreshNavNew, setNavigation } from '../navigation/sc-navigation-common
 import { transformId, getParagraphRange } from '../../utils/suttaplex';
 import '@material/web/button/filled-button';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+import './sc-suttaplex-stepper.js';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static properties = {
@@ -196,6 +197,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         this.rangeCategoryId = responseData[0].uid;
       }
       this.priorityAuthorUid = responseData[0].priority_author_uid;
+      this.previous = responseData[0].previous;
+      this.next = responseData[0].next;
       this.suttaplexData = [];
       partitionAsync(
         responseData,
@@ -538,6 +541,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
           ? this.tableViewTemplate(this.parallelsLite)
           : this.normalViewTemplate()
       )}
+      ${this.displayStepper}
     `;
   }
 
@@ -557,6 +561,25 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       const link = currentUrl.replace(`/${section}`, `/pitaka/${section}`);
       dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
     }
+  }
+
+  _shouldDisplayStepper() {
+    if (!this.suttaplexData) {
+      return false;
+    }
+    return this.suttaplexData.length === 1 && (this.next || this.previous);
+  }
+
+  get displayStepper() {
+    return this._shouldDisplayStepper()
+      ? html`
+          <sc-suttaplex-stepper
+            .next=${this.next}
+            .previous=${this.previous}
+            .lang=${this.langIsoCode}
+          ></sc-suttaplex-stepper>
+        `
+      : '';
   }
 }
 
