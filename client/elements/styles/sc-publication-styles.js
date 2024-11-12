@@ -78,6 +78,8 @@ export const SCPublicationStyles = css`
     margin-right: 8px;
 
     vertical-align: middle;
+
+    min-width: max-content;
   }
 
   table a .icon {

@@ -70,8 +70,6 @@ export class SCSuttaplexStepper extends LitLocalized(LitElement) {
       background-color: var(--sc-primary-color-light);
     }
 
-
-
     .button-right {
       justify-content: flex-end;
     }
