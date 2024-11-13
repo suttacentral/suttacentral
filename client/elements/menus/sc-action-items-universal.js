@@ -23,7 +23,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
       z-index: 100;
 
-      --md-menu-container-shape: 24px;
+      --md-menu-container-shape: 12px;
     }
 
     #sc-menu-more:focus {
