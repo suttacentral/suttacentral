@@ -557,8 +557,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   
   _redirectToPitaka(section) {
     const currentUrl = window.location.href;
-    if (currentUrl.includes(`/${section}`) && !currentUrl.includes('/pitaka')) {
-      const link = currentUrl.replace(`/${section}`, `/pitaka/${section}`);
+    const domain = window.location.origin;
+  
+    if (currentUrl.includes(`${domain}/${section}`) && !currentUrl.includes(`${domain}/pitaka/${section}`)) {
+      const link = currentUrl.replace(`${domain}/${section}`, `${domain}/pitaka/${section}`);
       dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
     }
   }
