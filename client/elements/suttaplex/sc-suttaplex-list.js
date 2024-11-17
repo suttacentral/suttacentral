@@ -546,7 +546,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    // this._correctAndRedirectRootURL();
+    this._correctAndRedirectRootURL();
     this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     this.scActionItems?.hideSpeakerButton();
   }
