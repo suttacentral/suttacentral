@@ -1,4 +1,4 @@
-FROM python:3.11.3
+FROM python:3.12.7
 RUN apt-get update && apt-get install -y pngnq && apt-get install -y python3-enchant
 RUN mkdir -p /opt/sc/sockets
 RUN mkdir -p /opt/sc/sc-flask
