@@ -1142,12 +1142,13 @@ def generate_aql_for_list_authors_command(search_aql, aql_condition_part, query_
 
 
 def generate_aql_for_list_language_command(search_aql, aql_condition_part, query_param):
-    cmd_prefix = query_param['query'].split(' ')[0]
-    iso_code = query_param['query'].split(' ')[1]
-    if (cmd_prefix == constant.CMD_LIST and iso_code in LANGUAGES_ISO_CODE):
-        search_aql = LIST_TEXT_BY_LANGUAGE
-        query_param['query'] = ''
-        query_param['lang'] = iso_code
+    if len(query_param['query'].split(' ')) > 1:
+        cmd_prefix = query_param['query'].split(' ')[0]
+        iso_code = query_param['query'].split(' ')[1]
+        if (cmd_prefix == constant.CMD_LIST and iso_code in LANGUAGES_ISO_CODE):
+            search_aql = LIST_TEXT_BY_LANGUAGE
+            query_param['query'] = ''
+            query_param['lang'] = iso_code
     return query_param, search_aql, aql_condition_part
 
 
