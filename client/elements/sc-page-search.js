@@ -1257,8 +1257,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl',
       'sr', 'sv', 'ta', 'th', 'ug', 'uig', 'vi', 'vn', 'xct', 'xto', 'zh', 'zz'
     ];
-    const param = this.searchQuery.split(" ");
-    return (param.length > 1 && param[0] === 'list' && isoCodes.includes(param[1]));
+    const param = this.searchQuery?.split(" ");
+    return (param?.length > 1 && param[0] === 'list' && isoCodes.includes(param[1]));
   }
 
   #isSearchByInTitle() {

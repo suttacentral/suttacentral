@@ -77,7 +77,7 @@ RETURN {
 
 LIST_TEXT_BY_LANGUAGE = '''
 FOR d IN text_contents
-    FILTER d.lang == @lang and d.is_article == false
+    FILTER d.lang == @lang and (d.is_article == false || d.is_article == null)
     SORT d.author_uid, d.uid
 RETURN {
     lang: d.lang,
@@ -393,6 +393,7 @@ def generate_aql_for_collection_filter(query_param):
     full_aql = (
             AQL_INSTANT_SEARCH_FIRST_PART +
             aql_condition_part + '\n' +
+            get_lang_condition_for_aql(query_param['selected_languages']) + '\n' +
             get_limit_part_for_aql(query_param['limit'], query_param['offset']) + '\n' +
             get_return_part_for_aql(True) + '\n'
     )
