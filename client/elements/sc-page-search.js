@@ -124,7 +124,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       ${this.displayDataLoadError} ${this.offLineTemplate} ${this.#searchResultByAuthorTemplate()}
       ${this.#searchResultByVolpageTemplate()} ${this.#searchResultByCollectionTemplate()}
       ${this.#searchResultByListAuthorsTemplate()} ${this.generalSearchResultTemplate}
-      ${this.#searchResultByReferenceTemplate()}
+      ${this.#searchResultByReferenceTemplate()} ${this.#searchResultByListLanguageTemplate()}
     `;
   }
 
@@ -171,7 +171,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       this.#isSearchByVolpage() ||
       this.#isSearchByCollection() ||
       this.#isSearchByListAuthors() ||
-      this.#isSearchByReference();
+      this.#isSearchByReference() ||
+      this.#isSearchByListLanguage();
   }
 
   #searchOptionsTemplate() {
@@ -255,7 +256,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       !this.#isSearchByVolpage() &&
       !this.#isSearchByCollection() &&
       !this.#isSearchByListAuthors() &&
-      !this.#isSearchByReference()
+      !this.#isSearchByReference() &&
+      !this.#isSearchByListLanguage()
       ? html`
           <div class="search-results-container">
             <main class="search-results-main">${this.searchResultTemplate}</main>
@@ -746,6 +748,55 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       : '';
   }
 
+  #searchResultByListLanguageTemplate() {
+    if (
+      !this.visibleSearchResults ||
+      this.visibleSearchResults.length === 0 ||
+      !this.#isSearchByListLanguage()
+    ) {
+      return ``;
+    }
+    const searchResultByListLanguage = this.visibleSearchResults;
+    return searchResultByListLanguage
+      ? html`
+          <div class="search-results-container">
+            <main class="search-results-main">
+              ${this.searchResultHeadTemplate}
+              <p>Click the Sutta ID below to see the text. </p>
+              <div class="search-results-table listauthorsResult">
+                <div class="search-results-table-header">
+                  <div class="search-results-table-column font-weight-bold">Sutta ID</div>
+                  <div class="search-results-table-column font-weight-bold">Sutta Title</div>
+                  <div class="search-results-table-column font-weight-bold">Author</div>
+                </div>
+                ${searchResultByListLanguage.map(
+                  item => html`
+                    <a
+                      class="uid"
+                      href="/${item.uid}/${item.lang}/${item.author_uid}"
+                    >
+                      <div class="search-results-table-item authorInfo">
+                        <div class="search-results-table-column">
+                          ${item.uid}
+                        </div>
+                        <div class="search-results-table-column">
+                          ${item.name}
+                        </div>
+                        <div class="search-results-table-column">
+                          ${item.author}
+                        </div>
+                      </div>
+                    </a>
+                  `
+                )}
+              </div>
+              ${this.loadMoreButtonTemplate}
+            </main>
+          </div>
+        `
+      : '';
+  }
+
   #onAuthorNameClick(authorUid) {
     dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=author:${authorUid}` });
   }
@@ -1196,6 +1247,18 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByListAuthors() {
     return this.searchQuery === 'list authors';
+  }
+
+  #isSearchByListLanguage() {
+    const isoCodes = [
+      'af', 'ar', 'bn', 'bo', 'ca', 'cs', 'de', 'en', 'es', 'fa', 'fi',
+      'fr', 'gr', 'gu', 'he', 'hi', 'hu', 'id', 'it', 'jp', 'jpn', 'kho',
+      'ko', 'la', 'lt', 'lzh', 'mr', 'my', 'nl', 'no', 'ot', 'pgd', 'pi',
+      'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl',
+      'sr', 'sv', 'ta', 'th', 'ug', 'uig', 'vi', 'vn', 'xct', 'xto', 'zh', 'zz'
+    ];
+    const param = this.searchQuery?.split(" ");
+    return (param?.length > 1 && param[0] === 'list' && isoCodes.includes(param[1]));
   }
 
   #isSearchByInTitle() {

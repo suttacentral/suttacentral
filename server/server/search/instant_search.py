@@ -75,6 +75,23 @@ RETURN {
 }
 '''
 
+LIST_TEXT_BY_LANGUAGE = '''
+FOR d IN text_contents
+    FILTER d.lang == @lang and (d.is_article == false || d.is_article == null)
+    SORT d.author_uid, d.uid
+RETURN {
+    lang: d.lang,
+    full_lang: d.full_lang,
+    uid: d.uid,
+    name: d.name,
+    author_uid: d.author_uid,
+    author: d.author,
+    is_segmented: d.is_bilara_text ? true : false,
+    content: 'content',
+    keyword: @query
+}
+'''
+
 ROOT_NAMES = '''
 For n IN names
 FILTER n.uid in @uids AND n.is_root == true
@@ -84,6 +101,14 @@ RETURN {
 }
 '''
 
+LANGUAGES_ISO_CODE = [
+    "en", "pli", "lzh", "san", "pra", "xct", "pgd", "de", "zh", "af",
+    "ar", "bn", "ca", "cs", "es", "fa", "fi", "fr", "gu",
+    "haw", "he", "hi", "hr", "hu", "id", "it", "jpn", "kan", "kho",
+    "ko", "la", "lt", "mr", "my", "nl", "no", "pl", "pt",
+    "ro", "ru", "si", "sk", "sl", "sld", "sr", "sv", "ta", "th",
+    "uig", "vi", "xto"
+]
 
 def instant_search_query(
     query,
@@ -165,12 +190,12 @@ def process_search_results(
     if matchpartial == 'true':
         hits = sorted(hits, key=lambda item: item.get('segmented_uid') or '')
         hits = crop_hits(hits)
-    if original_query != constant.CMD_LIST_AUTHORS:
+    if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
         highlight_keyword(hits, query)
     if matchpartial == 'true':
         hits = merge_duplicate_hits(hits)
     suttaplexs = []
-    if original_query != constant.CMD_LIST_AUTHORS:
+    if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
         suttaplexs = try_to_fetch_suttaplex(db, hits, lang, original_query, query, selected_languages, matchpartial)
     current_page_total = len(hits)
     hits = remove_hits_if_uid_in_suttaplexs(hits, suttaplexs)
@@ -180,7 +205,7 @@ def process_search_results(
     if matchpartial == 'true':
         fuzzy_dictionary_entries = fuzzy_lookup_dictionary(lang, query, restrict)
     add_root_name_to_hits(db, hits)
-    if original_query != constant.CMD_LIST_AUTHORS:
+    if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
         sort_highlight_clips(hits)
     if constant.CMD_AUTHOR in original_query:
         sort_by_sutta_numbering_rules(hits)
@@ -368,6 +393,7 @@ def generate_aql_for_collection_filter(query_param):
     full_aql = (
             AQL_INSTANT_SEARCH_FIRST_PART +
             aql_condition_part + '\n' +
+            get_lang_condition_for_aql(query_param['selected_languages']) + '\n' +
             get_limit_part_for_aql(query_param['limit'], query_param['offset']) + '\n' +
             get_return_part_for_aql(True) + '\n'
     )
@@ -997,6 +1023,10 @@ def generate_aql_based_on_query(search_aql, aql_condition_part, query_param):
             search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
+        generate_aql_for_list_language_command(
+            search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
         prepare_and_generate_aql_for_title_filter(search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
@@ -1109,6 +1139,17 @@ def generate_aql_for_list_authors_command(search_aql, aql_condition_part, query_
         search_aql = LIST_AUTHORS
         query_param['query'] = ''
         query_param['lang'] = query_param['selected_languages']
+    return query_param, search_aql, aql_condition_part
+
+
+def generate_aql_for_list_language_command(search_aql, aql_condition_part, query_param):
+    if len(query_param['query'].split(' ')) > 1:
+        cmd_prefix = query_param['query'].split(' ')[0]
+        iso_code = query_param['query'].split(' ')[1]
+        if (cmd_prefix == constant.CMD_LIST and iso_code in LANGUAGES_ISO_CODE):
+            search_aql = LIST_TEXT_BY_LANGUAGE
+            query_param['query'] = ''
+            query_param['lang'] = iso_code
     return query_param, search_aql, aql_condition_part
 
 
