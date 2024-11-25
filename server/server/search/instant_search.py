@@ -101,14 +101,10 @@ RETURN {
 }
 '''
 
-LANGUAGES_ISO_CODE = [
-    "en", "pli", "lzh", "san", "pra", "xct", "pgd", "de", "zh", "af",
-    "ar", "bn", "ca", "cs", "es", "fa", "fi", "fr", "gu",
-    "haw", "he", "hi", "hr", "hu", "id", "it", "jpn", "kan", "kho",
-    "ko", "la", "lt", "mr", "my", "nl", "no", "pl", "pt",
-    "ro", "ru", "si", "sk", "sl", "sld", "sr", "sv", "ta", "th",
-    "uig", "vi", "xto"
-]
+ALL_LANGUAGES_ISO_CODE = '''
+FOR l IN language RETURN l.iso_code
+'''
+
 
 def instant_search_query(
     query,
@@ -1000,6 +996,9 @@ def generate_aql_based_on_query(search_aql, aql_condition_part, query_param):
 
     query_param, search_aql, aql_condition_part = \
         prepare_and_generate_aql_for_author_filter(search_aql, aql_condition_part, query_param)
+        
+    query_param, search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_by_filter(search_aql, aql_condition_part, query_param)
 
     query_param, search_aql, aql_condition_part = \
         prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, query_param)
@@ -1146,7 +1145,8 @@ def generate_aql_for_list_language_command(search_aql, aql_condition_part, query
     if len(query_param['query'].split(' ')) > 1:
         cmd_prefix = query_param['query'].split(' ')[0]
         iso_code = query_param['query'].split(' ')[1]
-        if (cmd_prefix == constant.CMD_LIST and iso_code in LANGUAGES_ISO_CODE):
+        supported_languages_iso_code = fetch_supported_languages_iso_code()
+        if (cmd_prefix == constant.CMD_LIST and iso_code in supported_languages_iso_code):
             search_aql = LIST_TEXT_BY_LANGUAGE
             query_param['query'] = ''
             query_param['lang'] = iso_code
@@ -1201,6 +1201,13 @@ def prepare_and_generate_aql_for_author_filter(search_aql, aql_condition_part, q
     if query_param['query'].startswith(constant.CMD_AUTHOR):
         search_aql, aql_condition_part = generate_aql_for_author_filter(query_param)
         query_param['query'] = query_param['query'][len(constant.CMD_AUTHOR):]
+    return query_param, search_aql, aql_condition_part
+
+
+def prepare_and_generate_aql_for_by_filter(search_aql, aql_condition_part, query_param):
+    if query_param['query'].startswith(constant.CMD_BY):
+        search_aql, aql_condition_part = generate_aql_for_author_filter(query_param)
+        query_param['query'] = query_param['query'][len(constant.CMD_BY):]
     return query_param, search_aql, aql_condition_part
 
 
@@ -1715,7 +1722,7 @@ def is_chinese_ex(query_conditions):
 def extract_query_conditions(param):
     param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
-    author = re.search(f"{constant.CMD_AUTHOR}([\w-]+)", param)
+    author = re.search(f"{constant.CMD_AUTHOR}([\w-]+)", param) or re.search(f"{constant.CMD_BY}([\w-]+)", param)
     if author:
         result["author"] = author[1].strip()
     collection = re.search(f"{constant.CMD_IN}([\w-]+)", param)
@@ -1745,7 +1752,7 @@ def extract_rest_keywords(result, param):
     rest_param = ''
     param_tokens = param.split()
     for term in param.split():
-        if term.startswith(constant.CMD_AUTHOR) or term.startswith(constant.CMD_IN):
+        if (term.startswith(constant.CMD_AUTHOR) or term.startswith(constant.CMD_BY)) or term.startswith(constant.CMD_IN):
             param_tokens.remove(term)
     rest_param = ' '.join(param_tokens)
 
@@ -1819,3 +1826,8 @@ def extract_not_param(query_string):
         return not_match[1]
     else:
         return None
+
+
+def fetch_supported_languages_iso_code():
+    db = get_db()
+    return list(db.aql.execute(ALL_LANGUAGES_ISO_CODE))

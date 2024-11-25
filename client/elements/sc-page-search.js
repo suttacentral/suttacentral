@@ -110,6 +110,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     this.priorityAuthors = new Map([['en', 'sujato'], ['de', 'sabbamitta']]);
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.matchPartial = store.getState().searchOptions.matchPartial;
+
+    this._fetchLanguageIsoCodes();
   }
 
   #hideRelatedTopSheets() {
@@ -1250,15 +1252,17 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #isSearchByListLanguage() {
-    const isoCodes = [
-      'af', 'ar', 'bn', 'bo', 'ca', 'cs', 'de', 'en', 'es', 'fa', 'fi',
-      'fr', 'gr', 'gu', 'he', 'hi', 'hu', 'id', 'it', 'jp', 'jpn', 'kho',
-      'ko', 'la', 'lt', 'lzh', 'mr', 'my', 'nl', 'no', 'ot', 'pgd', 'pi',
-      'pl', 'pli', 'pr', 'pra', 'pt', 'ro', 'ru', 'san', 'si', 'skt', 'sl',
-      'sr', 'sv', 'ta', 'th', 'ug', 'uig', 'vi', 'vn', 'xct', 'xto', 'zh', 'zz'
-    ];
     const param = this.searchQuery?.split(" ");
-    return (param?.length > 1 && param[0] === 'list' && isoCodes.includes(param[1]));
+    return (param?.length > 1 && param[0] === 'list' && this.languageIsoCodes?.includes(param[1]));
+  }
+
+  async _fetchLanguageIsoCodes() {
+    try {
+      const languageListResponse = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
+      this.languageIsoCodes = languageListResponse.map(item => item.iso_code);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   #isSearchByInTitle() {
