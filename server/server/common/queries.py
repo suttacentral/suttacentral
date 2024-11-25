@@ -1492,7 +1492,15 @@ FOR subcount IN APPEND(legacy_counts, segmented_counts)
         COLLECT name = author_name
         AGGREGATE total = SUM(subcount.total)
         SORT total DESC
-        RETURN {name, total}
+        LET authorSearchPattern = CONCAT('%', name, '%')
+        LET legacy_text_author_uid = (FOR author_doc IN author_edition
+            FILTER (author_doc.long_name == name OR author_doc.long_name LIKE authorSearchPattern)
+        RETURN author_doc.uid)[0]
+        LET segmented_text_author_uid = (FOR author_doc IN bilara_author_edition
+            FILTER author_doc.type == 'author' AND (author_doc.long_name == name OR author_doc.long_name LIKE authorSearchPattern)
+        RETURN author_doc.uid)[0]
+        LET author_uid = segmented_text_author_uid or legacy_text_author_uid
+        RETURN {author_uid, name, total}
 '''
 
 SUTTA_SINGLE_PALI_TEXT = '''

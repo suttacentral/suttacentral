@@ -101,7 +101,7 @@ export class SCStaticLanguages extends SCStaticPage {
     const list = (title, names) => html`
       <h2>${this.localize(title)}</h2>
       <ul class="author-count-list">
-        ${names.map(item => html` <li>${item.name} (${item.total})</li> `)}
+        ${names.map(item => html` <li><a href="/search?query=by:${item.author_uid}">${item.name}</a> (${item.total})</li> `)}
       </ul>
     `;
 
