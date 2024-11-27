@@ -30,8 +30,17 @@ export function extractSelectedLangsName(displayedLanguages, linkText, isSearchP
   const specialLangs = new Map([['lzh', 'Literary Chinese']]);
   const selectedLangs = displayedLanguages.filter(item => item.checked);
 
+  const handleClickEvent = isSearchPage ? openTopSheetSearchOptions : openGeneralSearchOptions;
+
   if (selectedLangs.length === 0) {
-    return html``;
+    return html`
+      <div class="selected-languages">
+        <p>Searching in all document languages</p>
+        <md-icon-button @click=${(e) => handleClickEvent(e)}>
+          ${icon.language}
+        </md-icon-button>
+      </div>
+    `;
   }
 
   selectedLangs.sort((a, b) => b.is_root - a.is_root);
@@ -42,7 +51,6 @@ export function extractSelectedLangsName(displayedLanguages, linkText, isSearchP
     }
   });
 
-  const handleClickEvent = isSearchPage ? openTopSheetSearchOptions : openGeneralSearchOptions;
 
   let languagesSearched;
   if (selectedLangs.length <= 5) {
