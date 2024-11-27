@@ -31,6 +31,12 @@ export function dictionarySimpleItemToHtml(dicItem) {
             </ul>
           ` : ''
         }
+        ${
+          dicItem.pronunciation
+            ? `
+              <label class="pronunciation-label">Pronunciation</label>
+              <p class="pronunciation-text">${dicItem.pronunciation}</p>` : ''
+        }
       </dd>
     </dl>
   `;

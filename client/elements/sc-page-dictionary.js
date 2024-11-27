@@ -45,6 +45,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       dppn: 'Dictionary of Pali Proper Names',
       pts: 'PTS Pali English Dictionary',
       dpd: 'Digital Pāḷi Dictionary',
+      ddb: 'Digital Dictionary of Buddhism'
     };
     this.adjacent = true;
     this.dictionaryAdjacent = [];
@@ -207,6 +208,21 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       height: 30px;
       width: 30px;
     }
+
+    .pronunciation-label {
+      margin-top: 1em;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 0.5em;
+      display: block;
+    }
+
+    .pronunciation-text {
+      font-size: 1em;
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 1em;
+    }
   `;
 
   render() {
@@ -307,11 +323,18 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
     if (changedProps.has('dictionaryWord')) {
       this._loadNewResult();
     }
+
+    if (this._containsChineseCharacters(this.dictionaryWord)) {
+      this.shadowRoot.querySelector('.related-terms').style.display = 'none';
+    }
   }
 
   async _loadNewResult() {
-    await this._fetchAdjacent();
-    await this._fetchSimilar();
+    if (!this._containsChineseCharacters(this.dictionaryWord)) {
+      await this._fetchAdjacent();
+      await this._fetchSimilar();
+    }
+    
     this._fetchDictionary();
   }
 
@@ -435,6 +458,11 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
         },
       })
     );
+  }
+
+  _containsChineseCharacters(str) {
+    const chineseCharacterPattern = /[\u4e00-\u9fa5]/;
+    return chineseCharacterPattern.test(str);
   }
 }
 

@@ -1187,7 +1187,8 @@ LET dict_simple = (
             definition: dict.definition,
             xr: dict.xr,
             dictname: dict.dictname,
-            text: null
+            text: null,
+            pronunciation: dict.pronunciation
         }
 )
 
@@ -1203,6 +1204,7 @@ LET dict_complex = (
             xr: null,
             dictname: dict.dictname,
             text: dict.text,
+            pronunciation: dict.pronunciation
         }
 )
 
