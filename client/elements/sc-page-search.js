@@ -512,6 +512,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     return searchResultByVolpage
       ? html`
           <div class="search-results-container">
+            <main class="search-results-main">
             ${this.searchResultHeadTemplate}
             <div class="volpage-search-results">
                 ${searchResultByVolpage.map(
@@ -547,6 +548,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                 )}
               </div>
             ${this.loadMoreButtonTemplate}
+            </main>
           </div>
         `
       : '';

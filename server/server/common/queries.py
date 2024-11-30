@@ -118,6 +118,7 @@ FOR text IN sc_bilara_texts
     FILTER text.lang == @lang AND ('root' IN text.muids OR 'translation' IN text.muids)
     AND NOT CONTAINS(text.file_path, 'blurb')
     AND NOT CONTAINS(text.file_path, '-name')
+    AND NOT CONTAINS(text.file_path, 'interface')
     LET nav_doc = (
         RETURN DOCUMENT(CONCAT('super_nav_details/', text.uid))
     )[0]
