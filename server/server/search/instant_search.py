@@ -238,6 +238,19 @@ def construct_search_query_aql(
     query_param,
     selected_languages
 ):
+    if ':' not in query_param['query']:
+        if (
+            not query_param['query'].startswith("'")
+            and not query_param['query'].startswith('"')
+            and ' ' in query_param['query']
+        ):
+            query_param['query'] = query_param['query'].replace(' ', ' AND ')
+            query = query.replace(' ', ' AND ')
+
+        if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
+            query_param['query'] = query_param['query'][1:-1]
+            query = query[1:-1]
+
     search_aql, aql_condition_part = \
         generate_general_query_aql(
             query, limit, offset, matchpartial, selected_languages)
@@ -246,19 +259,9 @@ def construct_search_query_aql(
         bind_param, search_aql, aql_condition_part = \
             generate_aql_for_complex_query(query_conditions, query_param)
     else:
-        if ':' not in query_param['query']:
-            if (
-                not query_param['query'].startswith("'")
-                and not query_param['query'].startswith('"')
-                and ' ' in query_param['query']
-            ):
-                query_param['query'] = query_param['query'].replace(' ', ' AND ')
-
-            if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
-                query_param['query'] = query_param['query'][1:-1]
-
         bind_param, search_aql, aql_condition_part = \
             generate_aql_based_on_query(search_aql, aql_condition_part, query_param)
+    
     return aql_condition_part, bind_param, search_aql
 
 
@@ -355,6 +358,7 @@ def fetch_record_count(collection, condition, query):
 
         RETURN record_count
     '''
+    print(aql)
     return list(get_db().aql.execute(aql, bind_vars={"query": query}))[0]
 
 
