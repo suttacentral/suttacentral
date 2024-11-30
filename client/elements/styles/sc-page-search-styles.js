@@ -274,6 +274,10 @@ export const SCPageSearchStyles = css`
     text-decoration-color: var(--sc-primary-color-dark);
   }
 
+  .search-again-link {
+    cursor: pointer;
+  }
+
   .dictionary {
     margin: 0;
     margin-bottom: 3px;
