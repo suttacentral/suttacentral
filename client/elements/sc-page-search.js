@@ -103,6 +103,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
     this.displayHintOfNoResultInSelectedLanguages = false;
     this.matchPartial = store.getState().searchOptions.matchPartial;
+    this.siteLanguage = store.getState().siteLanguage;
+    this.fullSiteLanguageName = store.getState().fullSiteLanguageName;
 
     this.addEventListener('click', e => {
       this.#hideRelatedTopSheets();
@@ -136,7 +138,33 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     if (this.resultCount !== 0) {
       return '';
     }
+    const { displayedLanguages } = store.getState().searchOptions;
+    const selectedLangs = displayedLanguages.filter(item => item.checked);
+    if (!selectedLangs.some(item => item.uid === this.siteLanguage)) {
+      
+      return html`
+        <p>
+          <a class="search-result-link search-again-link" @click=${this.handleClickEvent}>Search again including ${this.fullSiteLanguageName}.</a>
+          <br>Or consider adding root languages
+        </p>
+      `;
+    }
+    
     return html`<p class="no-result-prompt">${unsafeHTML(this.localizeEx('search:noResult', 'searchTerm', this.searchQuery))}</p>`;
+  }
+
+  handleClickEvent() {
+    this.enableSiteLanguageInSearch(this.siteLanguage);
+    this._startSearch();
+  }
+
+  enableSiteLanguageInSearch(langUid) {
+    this.displayedLanguages.forEach(item => {
+      if (item.uid === langUid) {
+        item.checked = true;
+      }
+    });
+    reduxActions.setSearchDisplayLanguage(this.displayedLanguages);
   }
 
   get offLineTemplate() {
