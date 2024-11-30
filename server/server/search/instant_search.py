@@ -246,6 +246,17 @@ def construct_search_query_aql(
         bind_param, search_aql, aql_condition_part = \
             generate_aql_for_complex_query(query_conditions, query_param)
     else:
+        if ':' not in query_param['query']:
+            if (
+                not query_param['query'].startswith("'")
+                and not query_param['query'].startswith('"')
+                and ' ' in query_param['query']
+            ):
+                query_param['query'] = query_param['query'].replace(' ', ' AND ')
+
+            if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
+                query_param['query'] = query_param['query'][1:-1]
+
         bind_param, search_aql, aql_condition_part = \
             generate_aql_based_on_query(search_aql, aql_condition_part, query_param)
     return aql_condition_part, bind_param, search_aql
