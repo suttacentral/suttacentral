@@ -73,21 +73,15 @@ def test_extract_param():
     assert extract_query_conditions('cat in:sn author:sujato') == {"collection": "sn", "author": "sujato", "or": ["cat"]}
     assert extract_query_conditions('in:an author:sujato dog') == {"collection": "an", "author": "sujato", "or": ["dog"]}
     assert extract_query_conditions('author:sujato dog in:an') == {"collection": "an", "author": "sujato", "or": ["dog"]}
-    assert extract_query_conditions('in:dn author:sujato "root of suffering"') == {"collection": "dn", "author": "sujato",
-                                                                      "or": ["root of suffering"]}
-    assert extract_query_conditions('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato",
-                                                                      "and": ["root", "of", "suffering"]}
-    assert extract_query_conditions('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato",
-                                                               "or": ["cat", "dog"]}
+    assert extract_query_conditions('in:dn author:sujato "root of suffering"') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
+    assert extract_query_conditions('in:dn author:sujato root of suffering') == {"collection": "dn", "author": "sujato", "and": ["root", "of", "suffering"]}
+    assert extract_query_conditions('in:mn author:sujato cat OR dog') == {"collection": "mn", "author": "sujato", "or": ["cat", "dog"]}
     assert extract_query_conditions('in:sn cat') == {"collection": "sn", "or": ["cat"]}
     assert extract_query_conditions('author:sujato cat') == {"author": "sujato", "or": ["cat"]}
     assert extract_query_conditions('author:sujato cat AND dog') == {"author": "sujato", "and": ["cat", "dog"]}
-    assert extract_query_conditions('in:mn author:sujato cat AND dog') == {"collection": "mn", "author": "sujato",
-                                                               "and": ["cat", "dog"]}
-    assert extract_query_conditions('author:sujato dog AND cat in:mn') == {"collection": "mn", "author": "sujato",
-                                                               "and": ["dog", "cat"]}
-    assert extract_query_conditions('cat AND dog in:mn author:sujato') == {"collection": "mn", "author": "sujato",
-                                                               "and": ["cat", "dog"]}
+    assert extract_query_conditions('in:mn author:sujato cat AND dog') == {"collection": "mn", "author": "sujato", "and": ["cat", "dog"]}
+    assert extract_query_conditions('author:sujato dog AND cat in:mn') == {"collection": "mn", "author": "sujato", "and": ["dog", "cat"]}
+    assert extract_query_conditions('cat AND dog in:mn author:sujato') == {"collection": "mn", "author": "sujato", "and": ["cat", "dog"]}
     assert extract_query_conditions('in:vinaya cat') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('cat in:vinaya') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('in:sutta cat') == {"collection": "sutta", "or": ["cat"]}
