@@ -1,6 +1,63 @@
 import { createBrowserHistory } from 'history';
 import { compile, match, parse } from 'path-to-regexp';
 
+const isoCodes = [
+  "af",
+  "ar",
+  "bn",
+  "ca",
+  "cs",
+  "de",
+  "en",
+  "es",
+  "fa",
+  "fi",
+  "fr",
+  "gu",
+  "haw",
+  "he",
+  "hi",
+  "hr",
+  "hu",
+  "id",
+  "it",
+  "jpn",
+  "kan",
+  "kho",
+  "ko",
+  "la",
+  "lo",
+  "lt",
+  "lzh",
+  "mn",
+  "mr",
+  "my",
+  "nl",
+  "no",
+  "pgd",
+  "pl",
+  "pli",
+  "pra",
+  "pt",
+  "ro",
+  "ru",
+  "san",
+  "si",
+  "sk",
+  "sl",
+  "sld",
+  "sr",
+  "sv",
+  "ta",
+  "th",
+  "tr",
+  "uig",
+  "vi",
+  "xct",
+  "xto",
+  "zh"
+];
+
 /**
  * Abstraction for browser history, use to set up a list of routes to handle
  */
@@ -118,7 +175,14 @@ export default class RoutingService {
       if (route && !isJustHashChange) {
         e.preventDefault();
         if (this.location.pathname !== url.pathname) {
-          const newPath = url.pathname + (url.search || "") + (this.location.hash || "");
+          let newPath = url.pathname + (url.search || "")
+          const urlPath  = url.pathname.split('/');
+          if (urlPath.length > 3) {
+            const lang = urlPath[2];
+            if (isoCodes.includes(lang)) {
+              newPath = url.pathname + (url.search || "") + (this.location.hash || "");
+            } 
+          }
           this.push(newPath);
         }
       }
