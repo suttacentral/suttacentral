@@ -242,6 +242,9 @@ def construct_search_query_aql(
         if (
             not query_param['query'].startswith("'")
             and not query_param['query'].startswith('"')
+            and 'OR' not in query_param['query']
+            and 'AND' not in query_param['query']
+            and 'NOT' not in query_param['query']
             and ' ' in query_param['query']
         ):
             query_param['query'] = query_param['query'].replace(' ', ' AND ')
@@ -358,7 +361,6 @@ def fetch_record_count(collection, condition, query):
 
         RETURN record_count
     '''
-    print(aql)
     return list(get_db().aql.execute(aql, bind_vars={"query": query}))[0]
 
 
@@ -1770,6 +1772,19 @@ def extract_rest_keywords(result, param):
         if (term.startswith(constant.CMD_AUTHOR) or term.startswith(constant.CMD_BY)) or term.startswith(constant.CMD_IN):
             param_tokens.remove(term)
     rest_param = ' '.join(param_tokens)
+
+    if (
+        not rest_param.startswith("'")
+        and not rest_param.startswith('"')
+        and 'OR' not in rest_param
+        and 'AND' not in rest_param
+        and 'NOT' not in rest_param
+        and ' ' in rest_param
+    ):
+        rest_param = rest_param.replace(' ', ' AND ')
+
+    if (rest_param.startswith("'") or rest_param.startswith('"')):
+        rest_param = rest_param[1:-1]
 
     if 'OR' in rest_param:
         operator = constant.OPERATOR_OR
