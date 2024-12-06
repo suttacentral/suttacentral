@@ -89,7 +89,7 @@ export class SCBadge extends LitLocalized(LitElement) {
     if (localizeString.includes('badge:')) {
       return html` ${this.text} `;
     }
-    return html` ${this.localize(localizeString)} `;
+    return html` ${localizeString} `;
   }
 }
 
