@@ -247,8 +247,11 @@ def construct_search_query_aql(
             and 'NOT' not in query_param['query']
             and ' ' in query_param['query']
         ):
-            query_param['query'] = query_param['query'].replace(' ', ' AND ')
-            query = query.replace(' ', ' AND ')
+            keyword_count = query_param['query'].count(' ')
+            # Limit the AND keyword to prevent high CPU usage
+            if keyword_count < 5:
+                query_param['query'] = query_param['query'].replace(' ', ' AND ')
+                query = query.replace(' ', ' AND ')
 
         if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
             query_param['query'] = query_param['query'][1:-1]
