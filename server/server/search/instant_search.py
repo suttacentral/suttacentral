@@ -238,6 +238,7 @@ def construct_search_query_aql(
     query_param,
     selected_languages
 ):
+    '''
     if ':' not in query_param['query'] and not query_param['query'].startswith(constant.CMD_LIST):
         if (
             not query_param['query'].startswith("'")
@@ -256,6 +257,7 @@ def construct_search_query_aql(
         if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
             query_param['query'] = query_param['query'][1:-1]
             query = query[1:-1]
+    '''
 
     search_aql, aql_condition_part = \
         generate_general_query_aql(
