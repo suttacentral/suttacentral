@@ -249,7 +249,7 @@ def construct_search_query_aql(
         ):
             keyword_count = query_param['query'].count(' ')
             # Limit the AND keyword to prevent high CPU usage
-            if keyword_count < 5:
+            if keyword_count < 4:
                 query_param['query'] = query_param['query'].replace(' ', ' AND ')
                 query = query.replace(' ', ' AND ')
 
