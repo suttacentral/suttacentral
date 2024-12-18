@@ -81,8 +81,8 @@ export const lastUpdatedDateOfCollections = new Map([
   ['thig-html', '2024-12-12'],
   ['thig-tex', '2024-12-12'],
   ['thig-pdf', '2024-12-12'],
-  ['pli-tv-vi-epub', '2024-12-14'],
-  ['pli-tv-vi-html', '2024-12-14'],
+  ['pli-tv-vi-epub', '2024-12-18'],
+  ['pli-tv-vi-html', '2024-12-18'],
   ['pli-tv-vi-tex', '2024-08-15'],
   ['pli-tv-vi-pdf', '2024-08-15'],
 ]);
