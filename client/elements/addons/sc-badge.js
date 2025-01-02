@@ -22,7 +22,7 @@ export class SCBadge extends LitLocalized(LitElement) {
   static styles = css`
     :host {
       padding: 0.25em 0.75em;
-      font-size: var(--sc-font-size-xxs);
+      font-size: var(--sc-font-size-xs);
       font-weight: 550;
       font-stretch: condensed;
       line-height: 1;
@@ -90,6 +90,14 @@ export class SCBadge extends LitLocalized(LitElement) {
       return html` ${this.text} `;
     }
     return html` ${localizeString} `;
+  }
+
+  firstUpdated() {
+    if (this.color === 'language') {
+      this.style.setProperty('font-size', 'var(--sc-font-size-xs)');
+      this.style.setProperty('font-weight', 'bold');
+      this.style.setProperty('background-color', 'var(--sc-primary-color-light)');
+    }
   }
 }
 
