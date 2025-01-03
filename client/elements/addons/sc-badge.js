@@ -69,6 +69,12 @@ export class SCBadge extends LitLocalized(LitElement) {
       border: 1px solid var(--sc-border-color);
     }
 
+    :host([color='language']) {
+      background-color: var(--sc-primary-color-light);
+      font-weight: 700;
+      font-size: var(--sc-font-size-xs);
+    }
+
     :host([text='aligned']):before {
       content: '✓ ';
       color: var(--sc-primary-accent-color);
@@ -90,14 +96,6 @@ export class SCBadge extends LitLocalized(LitElement) {
       return html` ${this.text} `;
     }
     return html` ${localizeString} `;
-  }
-
-  firstUpdated() {
-    if (this.color === 'language') {
-      this.style.setProperty('font-size', 'var(--sc-font-size-xs)');
-      this.style.setProperty('font-weight', 'bold');
-      this.style.setProperty('background-color', 'var(--sc-primary-color-light)');
-    }
   }
 }
 
