@@ -70,7 +70,7 @@ export class SCBadge extends LitLocalized(LitElement) {
     }
 
     :host([color='language']) {
-      background-color: var(--sc-primary-color-light);
+      background-color: gray;
       font-weight: 700;
       font-size: var(--sc-font-size-xs);
     }
