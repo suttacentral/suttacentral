@@ -117,6 +117,8 @@ def instant_search_query(
 ):
     db = get_db()
     query = query.strip()
+    if query.startswith("'") or query.startswith('"') or query.startswith('“'):
+        query = query[1:-1]
     hits = []
     total = 0
     original_query = query
