@@ -81,10 +81,10 @@ export const lastUpdatedDateOfCollections = new Map([
   ['thig-html', '2025-01-20'],
   ['thig-tex', '2025-01-20'],
   ['thig-pdf', '2025-01-20'],
-  ['pli-tv-vi-epub', '2025-01-20'],
-  ['pli-tv-vi-html', '2025-01-20'],
-  ['pli-tv-vi-tex', '2025-01-20'],
-  ['pli-tv-vi-pdf', '2025-01-20'],
+  ['pli-tv-vi-epub', '2025-01-13'],
+  ['pli-tv-vi-html', '2025-01-13'],
+  ['pli-tv-vi-tex', '2025-01-13'],
+  ['pli-tv-vi-pdf', '2025-01-13'],
 ]);
 
 let allEditions = [];
