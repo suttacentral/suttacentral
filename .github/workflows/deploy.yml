@@ -16,6 +16,10 @@ jobs:
 
       - name: Initialize docker
         uses: docker-practice/actions-setup-docker@master
+        with:
+          # Docker Version
+          docker_version: 20.10
+          # Docker nightly Version
         
       - name: Build
         run: |
