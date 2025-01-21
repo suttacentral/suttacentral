@@ -17,9 +17,7 @@ jobs:
       - name: Initialize docker
         uses: docker-practice/actions-setup-docker@master
         with:
-          # Docker Version
-          docker_version: 20.10
-          # Docker nightly Version
+          docker_daemon_json: { "experimental": true }
         
       - name: Build
         run: |
