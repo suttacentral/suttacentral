@@ -436,6 +436,7 @@ export const suttaplexTxCss = css`
 
     gap: var(--sc-size-xs);
     align-self: center;
+    margin-bottom: var(--sc-size-xs);
   }
 `;
 

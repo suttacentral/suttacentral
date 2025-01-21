@@ -69,6 +69,7 @@ export const typographyCommonStyles = css`
   h1 {
     font-size: var(--sc-font-size-xxxxl);
     font-weight: 400;
+    text-wrap: balance;
   }
 
   h2 {
