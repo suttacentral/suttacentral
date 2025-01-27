@@ -41,14 +41,14 @@ export const editionsGithubUrl = 'https://github.com/suttacentral/editions/raw/m
 export const editionsGithubRawUrl = 'https://raw.githubusercontent.com/suttacentral/editions/main';
 
 export const lastUpdatedDateOfCollections = new Map([
-  ['dn-epub', '2025-01-25'],
-  ['dn-html', '2025-01-25'],
-  ['dn-tex', '2025-01-25'],
-  ['dn-pdf', '2025-01-25'],
-  ['mn-epub', '2025-01-25'],
-  ['mn-html', '2025-01-25'],
-  ['mn-tex', '2025-01-25'],
-  ['mn-pdf', '2025-01-25'],
+  ['dn-epub', '2025-01-27'],
+  ['dn-html', '2025-01-27'],
+  ['dn-tex', '2025-01-27'],
+  ['dn-pdf', '2025-01-27'],
+  ['mn-epub', '2025-01-27'],
+  ['mn-html', '2025-01-27'],
+  ['mn-tex', '2025-01-27'],
+  ['mn-pdf', '2025-01-27'],
   ['sn-epub', '2025-01-25'],
   ['sn-html', '2025-01-25'],
   ['sn-tex', '2025-01-25'],
