@@ -415,7 +415,7 @@ class SuttaplexList(Resource):
             ):
                 translation_text = json_load(file_result['translation_text'])
                 uid_key = self.get_max_key_with_zero_prefix(translation_text)
-                if translation_text and uid_key in translation_text:
+                if translation_text and uid_key in translation_text and (result['translated_title'] is None or result['translated_title'] == ''):
                     result['translated_title'] = translation_text[uid_key]
 
     def get_max_key_with_zero_prefix(self, data):
