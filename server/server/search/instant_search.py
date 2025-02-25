@@ -1780,18 +1780,18 @@ def extract_rest_keywords(result, param):
             param_tokens.remove(term)
     rest_param = ' '.join(param_tokens)
 
-    if (
-        not rest_param.startswith("'")
-        and not rest_param.startswith('"')
-        and 'OR' not in rest_param
-        and 'AND' not in rest_param
-        and 'NOT' not in rest_param
-        and ' ' in rest_param
-    ):
-        rest_param = rest_param.replace(' ', ' AND ')
+    # if (
+    #     not rest_param.startswith("'")
+    #     and not rest_param.startswith('"')
+    #     and 'OR' not in rest_param
+    #     and 'AND' not in rest_param
+    #     and 'NOT' not in rest_param
+    #     and ' ' in rest_param
+    # ):
+    #     rest_param = rest_param.replace(' ', ' AND ')
 
-    if (rest_param.startswith("'") or rest_param.startswith('"')):
-        rest_param = rest_param[1:-1]
+    # if (rest_param.startswith("'") or rest_param.startswith('"')):
+    #     rest_param = rest_param[1:-1]
 
     if 'OR' in rest_param:
         operator = constant.OPERATOR_OR
