@@ -1,6 +1,8 @@
 import itertools
 from typing import Callable, Dict, List
 
+import re
+
 import decorator
 
 from common import models
@@ -193,3 +195,7 @@ def chunks(iterable, chunk_size):
                 yield r
             else:
                 break
+
+
+def get_possible_parent_uid(uid):
+    return re.sub(r'([a-z]+(?:-[a-z]+)*)(?:-\d|\d).*', r'\1', uid)
