@@ -54,6 +54,7 @@ from common.utils import (
     language_sort,
     sort_parallels_key,
     sort_parallels_type_key,
+    get_possible_parent_uid
 )
 
 from aksharamukha import transliterate
@@ -478,11 +479,14 @@ class SuttaplexList(Resource):
 
     def calculate_neighbors(self, uid, doc, site_lang, db):
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
-
+        possible_parent_uid = get_possible_parent_uid(uid)
         all_doc_uid = list(
             db.aql.execute(
                 ALL_DOC_UID_BY_ROOT_UID,
-                bind_vars={'uid': uid}
+                bind_vars={
+                    'uid': uid,
+                    'possibleParentUid': possible_parent_uid
+                }
             )
         )
 
@@ -987,11 +991,14 @@ class Sutta(Resource):
     def calculate_sutta_neighbors(uid, doc, text_type, site_lang):
         db = get_db()
         sutta_prev_next = {'prev_uid': '', 'next_uid': ''}
-
+        possible_parent_uid = get_possible_parent_uid(uid)
         all_doc_uid = list(
             db.aql.execute(
                 ALL_DOC_UID_BY_ROOT_UID,
-                bind_vars={'uid': uid}
+                bind_vars={
+                    'uid': uid,
+                    'possibleParentUid': possible_parent_uid
+                }
             )
         )
         if uid in all_doc_uid:
