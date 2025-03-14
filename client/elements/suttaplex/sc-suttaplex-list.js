@@ -218,7 +218,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   _updateMetaData() {
     const { suttaplexData, isSuttaInRangeSutta, categoryId, rangeCategoryId } = this;
     if (this.suttaplexData?.length) {
-      const { title, original_title, blurb } = suttaplexData[0];
+      const { title, original_title, blurb, acronym } = suttaplexData[0];
       let description = this.localize('interface:metaDescriptionText');
       if (blurb) {
         description = blurb;
@@ -241,7 +241,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         }, 100);
       }
 
-      const pageTitle = `${title || original_title}—${this.localize('interface:parallelsTitle')}`;
+      const pageTitle = `${title || original_title || acronym}—${this.localize('interface:parallelsTitle')}`;
       document.dispatchEvent(
         new CustomEvent('metadata', {
           detail: {
