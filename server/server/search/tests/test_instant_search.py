@@ -7,7 +7,8 @@ from search.instant_search import (
     extract_lang_param,
     extract_not_param,
     search_string,
-    normalize_string
+    normalize_string,
+    sanitize_quoted_query
 )
 
 from urllib.parse import quote
@@ -179,3 +180,17 @@ def test_operators_search():
 
 def test_chinese_search():
     instant_search('八正道 涅槃', ['lzh', 'zh'])
+
+
+def test_sanitize_quoted_query():
+    assert sanitize_quoted_query('"root of suffering"') == 'root of suffering'
+    assert sanitize_quoted_query("'root of suffering'") == "root of suffering"
+    assert sanitize_quoted_query("“root of suffering“") == "root of suffering"
+    assert sanitize_quoted_query("「苦的根源」") == "苦的根源"
+    assert sanitize_quoted_query("『苦的根源』") == "苦的根源"
+    assert sanitize_quoted_query("‘苦的根源’") == "苦的根源"
+    assert sanitize_quoted_query('„root of suffering"') == 'root of suffering'
+    assert sanitize_quoted_query("«root of suffering»") == "root of suffering"
+    assert sanitize_quoted_query("〈苦的根源〉") == "苦的根源"
+    assert sanitize_quoted_query("《root of suffering》") == "root of suffering"
+    assert sanitize_quoted_query("﴾root of suffering﴿") == "root of suffering"

@@ -117,8 +117,7 @@ def instant_search_query(
 ):
     db = get_db()
     query = query.strip()
-    if query.startswith("'") or query.startswith('"') or query.startswith('“'):
-        query = query[1:-1]
+    query = sanitize_quoted_query(query)
     hits = []
     total = 0
     original_query = query
@@ -271,7 +270,7 @@ def construct_search_query_aql(
     else:
         bind_param, search_aql, aql_condition_part = \
             generate_aql_based_on_query(search_aql, aql_condition_part, query_param)
-    
+
     return aql_condition_part, bind_param, search_aql
 
 
@@ -1868,3 +1867,43 @@ def extract_not_param(query_string):
 def fetch_supported_languages_iso_code():
     db = get_db()
     return list(db.aql.execute(ALL_LANGUAGES_ISO_CODE))
+
+
+def sanitize_quoted_query(query):
+    """
+    Safely handle quotes in query strings, removing them only if the string
+    both starts and ends with matching quotes.
+
+    Args:
+        query (str): The query string entered by the user
+
+    Returns:
+        str: Processed query string
+    """
+
+    if len(query) < 2:
+        return query
+
+    quote_pairs = {
+        "'": "'",
+        "‘": "’",
+        '"': '"',
+        '“': '“',
+        '「': '」',
+        '『': '』',
+        '«': '»',
+        '„': '"',
+        '〈': '〉',
+        '《': '》',
+        '﴾': '﴿'
+    }
+
+    first_char = query[0]
+    if first_char in quote_pairs:
+        # If it starts with a quote, check if it ends with a matching quote
+        matching_end_quote = quote_pairs[first_char]
+        if query[-1] == matching_end_quote:
+            return query[1:-1]  # Remove the opening and closing quotes
+
+    # If the condition is not met, return to the original query
+    return query
