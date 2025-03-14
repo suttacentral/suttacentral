@@ -1068,7 +1068,16 @@ LET root_name = (
         RETURN name.name
 )[0]
 
-RETURN translated_name ? translated_name : root_name
+LET acronym = (
+    FOR name IN super_nav_details
+        FILTER name.uid == @uid
+        LIMIT 1
+        RETURN name.acronym
+)[0]
+
+LET title = translated_name ? translated_name : acronym
+
+RETURN title ? title : root_name
 '''
 
 VAGGA_CHILDREN = '''
