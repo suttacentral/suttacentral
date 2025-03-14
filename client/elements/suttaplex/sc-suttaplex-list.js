@@ -15,6 +15,7 @@ import { transformId, getParagraphRange } from '../../utils/suttaplex';
 import '@material/web/button/filled-button';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import './sc-suttaplex-stepper.js';
+import { reduxActions } from '../addons/sc-redux-actions';
 
 class SCSuttaplexList extends LitLocalized(LitElement) {
   static properties = {
@@ -71,6 +72,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.displayParallelTableView = store.getState().displayParallelTableView;
     this.#showTableViewButton();
     this._setViewState();
+    reduxActions.showToc([]);
   }
 
   #showTableViewButton() {
