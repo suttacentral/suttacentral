@@ -417,6 +417,12 @@ export const suttaplexTxCss = css`
     gap: var(--sc-size-xs) var(--sc-size-md);
   }
 
+  @media only screen and (max-width: 600px) {
+    .tx-details {
+      gap: var(--sc-size-xs);
+    }
+  }
+
   .tx-creator {
     font-family: var(--sc-serif-font);
     font-size: var(--sc-font-size-md);
