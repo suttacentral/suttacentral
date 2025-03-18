@@ -1,5 +1,171 @@
 # SuttaCentral ChangeLog
 
+## 2025.3.18
+
+- Fix sorting error caused by more than one dot in a uid.
+
+## 2025.3.15
+
+- Optimize suttaplex entry layout on small screens.
+
+## 2025.3.14
+
+- Rewrite the code for handling quotes in search strings and test it.
+- For prev/next buttons, if there is no translation name or root name, try using acronym instead.
+- fix: when in suttaplex page, do not display toc button. 
+
+## 2025.3.13
+
+- Fixed a previous/next button bug and optimized the code. 
+
+## 2025.1.21
+
+- Enhance: Add text-wrap: balance to headings, adjust suttaplex styles. 
+
+## 2025.1.4
+
+- Change the location of the language badge in suttaplex. 
+
+## 2025.1.3
+
+- Optimize code.
+- Modify the color of the language badge. 
+
+## 2025.1.2
+
+- Add language badge to suttplex.
+
+## 2024.12.6
+
+- Enhance: If view different versions of the same sutta, the hash will be inherited.
+
+## 2024.12.4
+
+- Enhance: Literal vs. non-literal keyword searches(Modify all filters involved)
+- Fix: Double blank dictionary results are returned for uppādetv match partial.
+- Fix a url parameter error. 
+
+## 2024.11.30
+
+- Enhance: Literal vs. non-literal keyword searches.
+- Enhance: If there are no search results on SERP, check to see if user's site language and search document language match. 
+
+## 2024.11.27
+
+- Fix: Weird results for dictionaries when searching Chinese.
+- Fix: If no document languages are selected, then explicitly search in all documents.
+
+## 2024.11.26
+
+- Enhance: Added link to the list of authors on the language page.
+
+## 2024.11.25
+
+- Enhance: Change author: filter to by:
+
+## 2024.11.21
+
+- Enhance: use list + language code list all related documents. 
+
+## 2024.11.19
+
+- Enhance: Keep ref id in url when switching to root or alternative translation. 
+
+## 2024.11.12
+
+- Enhance: Add prev/next to bare suttaplex cards. 
+
+## 2024.11.10
+
+- Fix: URLs not behaving as 'expected' .
+
+## 2024.11.8
+
+- Enhance: dynamically index the content of the subject page.
+
+## 2024.11.4
+
+- Enhance: Link Pali word results to DPD. 
+
+## 2024.10.31
+
+- changes to static license page to localize.
+- Enhance: Vinaya parallels improvements.
+- Update frontend dependencies.
+- fix CICD error. 
+
+## 2024.10.23
+
+- change hardcoded white to var(--sc-inverted-text-color) .
+
+## 2024.10.22
+
+- Improve SCBadge visibility handling, remove unexpected refreshes on search page.
+
+## 2024.10.20
+
+- Enhance chinese full text search.
+
+## 2024.10.15
+
+- Remove !important from main style tags.
+
+## 2024.10.4
+
+- Improved suttaplex translation title acquisition algorithm. 
+
+## 2024.9.24
+
+- Fix a ref display bug in firefox.
+
+## 2024.9.17
+
+- Add T Shortcut for toggling PTS Refs.
+
+## 2024.9.13
+
+- Add I O P Shortcuts.
+- Only one tab to focus on newly opened panels.
+
+## 2024.9.4
+
+- Fix: double arrow in Safari for parallel.
+
+## 2024.9.3
+
+- Fix: table of contents icon in page header disappears when clicked.
+
+## 2024.9.1
+
+- Add N shortcut for notes.
+- Fix notes shortcut bug.
+- Add M and R shortcuts for toggling references.
+
+## 2024.8.31
+
+- Add Toasts for changing ref/notes Display Types.
+- Use <kbd> instead of code.key for shortcut icons.
+
+## 2024.8.30
+
+- Tap "S" to open search dialog.
+
+## 2024.8.18
+
+- Add keyboard shortcut: "V" to toggle between TextViews.
+
+## 2024.8.8
+
+- modify js and json files to localize new bits on home and footer.
+
+## 2024.8.6
+
+- Fix: some minor suttas do not display the next/prev buttons. 
+
+## 2024.8.4
+
+- Fix: a bug where some suttas did not display the next/prex buttons. 
+
 ## 2024.7.27
 
 - Fix: problem with an author having multiple translation languages.
