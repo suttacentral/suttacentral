@@ -1096,7 +1096,7 @@ def sort_by_sutta_numbering_rules(input_list):
             letter_part = ''.join([char for char in uid if char.isalpha()])
             number_part = ''.join([char for char in uid if char.isdigit() or char == '.'])
 
-        if '.' in number_part:
+        if '.' in number_part and number_part.count('.') == 1:
             integer_part, decimal_part = number_part.split('.')
             number_part = (int(integer_part), float(decimal_part))
         else:
