@@ -204,8 +204,6 @@ def process_search_results(
     add_root_name_to_hits(db, hits)
     if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
         sort_highlight_clips(hits)
-    if constant.CMD_AUTHOR in original_query:
-        sort_by_sutta_numbering_rules(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
 
 
@@ -870,11 +868,24 @@ def get_lang_condition_for_aql(selected_languages):
 
 
 def get_sort_part_for_aql():
-    return 'SORT d.lang == @lang ? -1 : 1,' \
-           'd.is_ebt == true ? -1: d.is_ebt == false ? 1: 0, ' \
-           'd.is_bilara == true ? -1 : 1,' \
-           'd.is_segmented == false ? -1 : 1,' \
-           'd.uid'
+    return '''SORT
+        d.lang == @lang ? -1 : 1,
+        d.is_ebt == true ? -1 : d.is_ebt == false ? 1 : 0,
+        d.is_bilara == true ? -1 : 1,
+        d.is_segmented == false ? -1 : 1,
+        REGEX_REPLACE(d.uid, "([a-z-]+).*", "$1"),
+        // handling e.g. pli-tv-bu-vb-pj1 or pli-tv-pj1 UID with variable number of parts
+        REGEX_TEST(d.uid, "^[a-z]+(?:-[a-z-]+)+\\d+$") ?
+            TO_NUMBER(REGEX_REPLACE(d.uid, "^[a-z]+(?:-[a-z-]+)+(\\d+)$", "$1")) :
+
+        // Processing the numeric portion of a standard UID
+        LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '.')) == 0 ? 0 :
+            TO_NUMBER(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '.')[0]),
+        LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '.')) <= 1 ? 0 :
+            TO_NUMBER(REGEX_REPLACE(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '.')[1], "([0-9]+).*", "$1")),
+        LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '.')) <= 2 ? 0 :
+            TO_NUMBER(REGEX_REPLACE(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '.')[2], "([0-9]+).*", "$1"))
+    '''
 
 
 def get_not_part_for_aql(keyword):
@@ -1019,7 +1030,7 @@ def generate_aql_based_on_query(search_aql, aql_condition_part, query_param):
 
     query_param, search_aql, aql_condition_part = \
         prepare_and_generate_aql_for_author_filter(search_aql, aql_condition_part, query_param)
-        
+
     query_param, search_aql, aql_condition_part = \
         prepare_and_generate_aql_for_by_filter(search_aql, aql_condition_part, query_param)
 
@@ -1081,32 +1092,6 @@ def highlight_keyword(hits, query):
             cut_highlights_when_content_is_none(hit, query)
         del hit['content']
         del hit['segmented_text']
-
-# Sort according to sutta numbering rules, e.g. sn1.1, sn1.2, sn1.12, dn1, dn4
-def sort_by_sutta_numbering_rules(input_list):
-    def get_key(item):
-        if 'uid' not in item or 'category' in item:
-            return ('', (0, 0.0))
-        uid = item['uid']
-
-        if uid.count('-') > 1:
-            letter_part = ''.join([char for char in uid if char.isalpha()])
-            number_part = uid[len(letter_part):]
-        else:
-            letter_part = ''.join([char for char in uid if char.isalpha()])
-            number_part = ''.join([char for char in uid if char.isdigit() or char == '.'])
-
-        if '.' in number_part and number_part.count('.') == 1:
-            integer_part, decimal_part = number_part.split('.')
-            number_part = (int(integer_part), float(decimal_part))
-        else:
-            if number_part == '' or not number_part.isdigit():
-                number_part = '0'
-            number_part = (int(number_part), 0.0)
-
-        return (letter_part, number_part)
-
-    input_list.sort(key=get_key)
 
 
 def prepare_and_generate_aql_for_chinese_keywords(
