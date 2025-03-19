@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.3.19
+
+- Optimize search sorting. 
+
 ## 2025.3.18
 
 - Fix sorting error caused by more than one dot in a uid.
