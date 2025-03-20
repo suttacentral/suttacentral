@@ -1075,9 +1075,7 @@ LET acronym = (
         RETURN name.acronym
 )[0]
 
-LET title = translated_name ? translated_name : acronym
-
-RETURN title ? title : root_name
+RETURN translated_name OR root_name OR acronym
 '''
 
 VAGGA_CHILDREN = '''
