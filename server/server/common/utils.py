@@ -198,4 +198,7 @@ def chunks(iterable, chunk_size):
 
 
 def get_possible_parent_uid(uid):
-    return re.sub(r'([a-z]+(?:-[a-z]+)*)(?:-\d|\d).*', r'\1', uid)
+    if uid is None:
+        return ''
+    else:
+        return re.sub(r'([a-z]+(?:-[a-z]+)*)(?:-\d|\d).*', r'\1', uid)
