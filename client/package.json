@@ -49,7 +49,7 @@
     "turbolinks": "^5.2.0",
     "viewerjs": "^1.11.6",
     "web-animations-js": "^2.3.2",
-    "workbox-sw": "7.0.0"
+    "workbox-sw": "7.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.23.6",
