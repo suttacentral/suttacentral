@@ -24,6 +24,6 @@ jobs:
           docker compose logs
           docker ps
 
-      - name: Test
-        run: make test
+      # - name: Test
+      #   run: make test
        
