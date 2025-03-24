@@ -21,7 +21,8 @@ def test_get_possible_parent_uid():
       'divy13',
       'ea-2.7',
       'sa-3.13',
-      'thi-ap5'
+      'thi-ap5',
+      'dhp123'
     ]
 
     expected_results = [
@@ -44,7 +45,8 @@ def test_get_possible_parent_uid():
       'divy',
       'ea',
       'sa',
-      'thi-ap'
+      'thi-ap',
+      'dhp'
     ]
 
     for i, uid in enumerate(test_uids):
