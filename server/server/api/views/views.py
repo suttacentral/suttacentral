@@ -614,6 +614,7 @@ class RangeSuttaplexList(Resource):
         return data, 200
 
     def get_suttaplex_list_by_uid(self, db, language, uid):
+        results = {}
         if uid[:3].lower() == 'dhp' and uid.count('-') == 0:
             vagga_children_uids = list(
                 db.aql.execute(
@@ -1071,9 +1072,11 @@ class ExtractSuttaFromRangeSutta(Resource):
 
         if not range_uid:
             return {'msg': 'Not Found'}, 200
+
+        lang = request.args.get('lang', 'en')
         range_sutta_result = db.aql.execute(
             SEGMENTED_SUTTA_VIEW,
-            bind_vars={'uid': range_uid, 'author_uid': author_uid}
+            bind_vars={'uid': range_uid, 'author_uid': author_uid, 'lang': lang}
         )
         range_sutta = next(range_sutta_result)
         data = {k: json_load(v) for k, v in range_sutta.items()}
