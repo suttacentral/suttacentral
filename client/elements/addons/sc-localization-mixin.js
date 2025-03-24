@@ -28,7 +28,8 @@ const SUPPORTED_TRANSLATIONS = [
   'jpn',
   'mr',
   'cs',
-  'ko'
+  'ko',
+  'kan'
 ];
 const USE_PRODUCTION_LOCALIZATION = true;
 
