@@ -62,6 +62,9 @@ test:
 test-server:
 	@docker exec -t sc-flask pytest -s server/
 
+test-data-load:
+	@docker exec -t sc-flask pytest -v server/data_loader/
+
 test-api:
 	docker compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
