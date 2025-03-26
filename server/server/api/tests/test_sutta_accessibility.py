@@ -88,9 +88,9 @@ class TestSegmentedText():
                 assert 'keys_order' in data
                 file_path = text['file_path']
                 assert os.path.exists(file_path), f"File does not exist: {file_path}"
-                assert os.path.isfile(file_path), f"The path exists but is not a file: {full_path}"
-                assert os.path.getsize(file_path) > 0, f"The file exists but is empty: {full_path}"
-                assert os.access(file_path, os.R_OK), f"The file exists but is not readable: {full_path}"
+                assert os.path.isfile(file_path), f"The path exists but is not a file: {file_path}"
+                assert os.path.getsize(file_path) > 0, f"The file exists but is empty: {file_path}"
+                assert os.access(file_path, os.R_OK), f"The file exists but is not readable: {file_path}"
         finally:
             app.config['ARANGO_DB'] = original_db
             app.config['ARANGO_URL'] = original_url
@@ -145,7 +145,6 @@ class TestLegacyText:
                 assert 'author_uid' in root_text
                 assert 'next' in root_text
                 assert 'previous' in root_text
-                # assert 'text' in root_text
         finally:
             app.config['ARANGO_DB'] = original_db
             app.config['ARANGO_URL'] = original_url
