@@ -47,7 +47,6 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME') + '_tests'
-    ARANGO_DB_DATA_LOAD_TEST = os.getenv('ARANGO_BASE_DB_NAME') + '_data_load_tests'
 
 
 class ProductionConfig(Config):
