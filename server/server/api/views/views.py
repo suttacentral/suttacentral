@@ -954,9 +954,12 @@ class Sutta(Resource):
         sutta_number,
         vagga_children_uids
     ):
+        parsed_sutta_number = sutta_number
         range_begin = child_range[:child_range.find('-')]
         range_end = child_range[child_range.find('-') + 1:]
-        if int(range_begin) <= int(sutta_number) <= int(range_end):
+        if '-' in parsed_sutta_number:
+            parsed_sutta_number = parsed_sutta_number.split('-')[1]
+        if int(range_begin) <= int(parsed_sutta_number) <= int(range_end):
             results = db.aql.execute(
                 SUTTA_VIEW,
                 bind_vars={
