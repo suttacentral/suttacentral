@@ -33,9 +33,6 @@ export class SCSuttaplexTx extends LitElement {
           >
             ${icon.open_book}
             <div class="tx-details">
-              <span class="badges">
-                <sc-badge text="${this.translation?.lang?.toUpperCase()}" color="language"></sc-badge>
-              </span>
               <span class="tx-creator">${this.translation?.author}</span>
               <span class="tx-publication"> ${this.publicationInfoTemplate()} </span>
               <span class="badges"> ${this.badgeTemplate()} </span>
