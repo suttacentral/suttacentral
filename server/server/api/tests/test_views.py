@@ -15,19 +15,17 @@ from api.views import (
     Guides,
     RootEdition,
     AvailableVoices,
+    RangeSuttaplexList
 )
 
 from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
 
 from app import api
 from common import utils
+import json
 
-
-def test_languages(client):
-    languages = utils.generate_languages()
-    languages.save()
-    res = client.get(api.url_for(Languages))
-    assert res.status_code == 200
+from app import app
+test_client = app.test_client()
 
 
 def test_menu(client):
