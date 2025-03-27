@@ -2,9 +2,11 @@ from pathlib import Path
 
 import pytest
 
-from common.arangodb import get_db
+from common import arangodb
+from common.arangodb import get_db, delete_db
 from common.utils import current_app
 from data_loader import arangoload
+from migrations.runner import run_migrations
 
 
 @pytest.fixture
@@ -29,7 +31,9 @@ def test_do_collect_data_stage(data_load_app):
         git_repository = data_load_app.config.get('DATA_REPO')
         arangoload.collect_data(data_dir, git_repository)
 
-@pytest.mark.skip("Get copy_localization working")
 def test_do_entire_run(data_load_app):
     with data_load_app.app_context():
+        db = get_db()
+        delete_db(db)
+        run_migrations()
         arangoload.run()
