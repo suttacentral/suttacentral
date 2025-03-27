@@ -2,7 +2,6 @@ from pathlib import Path
 
 import pytest
 
-from common import arangodb
 from common.arangodb import get_db, delete_db
 from common.utils import current_app
 from data_loader import arangoload
