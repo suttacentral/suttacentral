@@ -62,7 +62,7 @@ test:
 test-server:
 	@docker exec -t sc-flask pytest -s --ignore server/data_loader/ server/
 
-test-data-load:
+test-load-data:
 	@docker exec -t sc-flask pytest -v server/data_loader/
 
 test-api:
