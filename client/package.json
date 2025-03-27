@@ -47,7 +47,7 @@
     "pwa-helpers": "^0.9.1",
     "redux": "^4.2.1",
     "turbolinks": "^5.2.0",
-    "viewerjs": "^1.11.6",
+    "viewerjs": "^1.11.7",
     "web-animations-js": "^2.3.2",
     "workbox-sw": "7.0.0"
   },
