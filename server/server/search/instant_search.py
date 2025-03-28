@@ -556,44 +556,49 @@ def generate_aql_for_reference_filter(query):
 
 
 def generate_aql_for_multi_keyword(keywords, query_param):
-    aql_condition_part = '''
-    SEARCH (PHRASE(d.content, @query, "common_text") OR
-    '''
-    aql_condition_part += '''('''
-    for keyword in keywords:
-        if constant.OPERATOR_NOT not in keyword:
-            aql_condition_part += (
-                f'PHRASE(d.content, "{keyword}", "common_text") AND '
-            )
-        else:
-            keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
-            aql_condition_part += (
-                f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") AND '
-            )
-    aql_condition_part = aql_condition_part[:-4]
-    aql_condition_part += ''')'''
+    """
+    Generate AQL query conditions based on multiple keywords
 
-    aql_condition_part += ''' OR ('''
-    for keyword in keywords:
-        if constant.OPERATOR_NOT not in keyword:
-            aql_condition_part += (
-                f'PHRASE(d.content, "{keyword}", "common_text") OR '
-                f'LIKE(d.segmented_text, "%{keyword}%") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
-            )
-        else:
-            keyword_exclude_not = keyword.split(constant.OPERATOR_NOT)[0]
-            aql_condition_part += (
-                f'PHRASE(d.content, "{keyword_exclude_not}", "common_text") OR '
-                f'LIKE(d.segmented_text, "%{keyword_exclude_not}%") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{keyword.lower()}%"), "normalize") OR '
-                f'ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword.lower())}%"), "normalize") OR '
-            )
-    aql_condition_part = aql_condition_part[:-4]
-    aql_condition_part += ''')'''
+    parameters:
+        keywords (list): Keyword list
+        query_param (dict): Query parameter dictionary
 
-    aql_condition_part += ''')'''
+    returns:
+        tuple: (Complete AQL query, AQL condition part)
+    """
+
+    contains_special_command = any(cmd in query_param['query'] for cmd in [
+        constant.CMD_LIST_AUTHORS, constant.CMD_VOLPAGE, constant.CMD_IN,
+        constant.CMD_AUTHOR, constant.CMD_BY, constant.CMD_TITLE,
+        constant.CMD_LANG, constant.CMD_REFERENCE, constant.CMD_LIST
+    ])
+
+    contains_special_operator = any(op in query_param['query'] for op in [
+        constant.OPERATOR_NOT, constant.OPERATOR_AND, constant.OPERATOR_OR
+    ])
+
+    if contains_special_command or contains_special_operator:
+        aql_condition_part = 'SEARCH @query == 1 OR '
+    else:
+        aql_condition_part = 'SEARCH PHRASE(d.content, @query, "common_text") OR\n'
+
+    keyword_conditions = []
+    for keyword in keywords:
+        keyword_clean = keyword.split(constant.OPERATOR_NOT)[0].strip() if constant.OPERATOR_NOT in keyword else keyword
+
+        condition = (
+            f'(PHRASE(d.content, "{keyword_clean}", "common_text") OR '
+            f'ANALYZER(LIKE(d.segmented_text, "%{keyword_clean.lower()}%"), "normalize")'
+        )
+
+        if unidecode(keyword_clean.lower()) != keyword_clean.lower() and not is_chinese(keyword_clean):
+            condition += f' OR ANALYZER(LIKE(d.segmented_text, "%{unidecode(keyword_clean.lower())}%"), "normalize")'
+
+        condition += ')'
+        keyword_conditions.append(condition)
+
+    if keyword_conditions:
+        aql_condition_part += ' OR '.join(keyword_conditions)
 
     if not_keywords := extract_not_param(query_param['query']):
         aql_condition_part += get_not_part_for_aql(not_keywords)
@@ -602,11 +607,12 @@ def generate_aql_for_multi_keyword(keywords, query_param):
     aql_condition_part += get_lang_condition_for_aql(query_param['selected_languages'])
 
     full_aql = (
-            AQL_INSTANT_SEARCH_FIRST_PART +
-            aql_condition_part + '\n' +
-            get_limit_part_for_aql(query_param['limit'], query_param['offset']) + '\n' +
-            get_return_part_for_aql(True) + '\n'
+        AQL_INSTANT_SEARCH_FIRST_PART +
+        aql_condition_part + '\n' +
+        get_limit_part_for_aql(query_param['limit'], query_param['offset']) + '\n' +
+        get_return_part_for_aql(True) + '\n'
     )
+
     return full_aql, aql_condition_part
 
 
