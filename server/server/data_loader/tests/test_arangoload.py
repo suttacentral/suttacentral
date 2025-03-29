@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -39,7 +40,16 @@ def test_do_entire_run(data_load_app):
         run_migrations()
         printer = StagePrinter()
         arangoload.run(no_pull=False, printer=printer)
-        assert len(printer.messages) == 51
+        assert len(printer.stages) == 51
+        printer.save_as_csv("load-data-run.csv")
+
+
+class FakePerfCounter:
+    def __init__(self, times: list[float]):
+        self._times = iter(times)
+
+    def __call__(self) -> float:
+        return next(self._times)
 
 
 class TestStagePrinter:
@@ -58,11 +68,20 @@ class TestStagePrinter:
         expected += '\n   2: Copying localization files\n'
         assert captured.out == expected
 
-    def test_saves_messages(self):
+    def test_tracks_message(self):
         printer = StagePrinter()
         printer.print_stage('Retrieving Data Repository')
         printer.print_stage('Copying localization files')
-        assert printer.messages == [
-            '1: Retrieving Data Repository',
-            '2: Copying localization files',
-        ]
+        assert printer.stages[0].description == 'Retrieving Data Repository'
+        assert printer.stages[1].description == 'Copying localization files'
+
+    def test_tracks_elapsed_time(self):
+        perf_counter = FakePerfCounter([1.1, 2.3, 11.6, 11.9])
+        printer = StagePrinter(perf_counter=perf_counter)
+        printer.print_stage('Retrieving Data Repository')
+        printer.print_stage('Copying localization files')
+        printer.print_stage('All done')
+
+        assert printer.stages[0].elapsed_time == pytest.approx(1.2)
+        assert printer.stages[1].elapsed_time == pytest.approx(9.3)
+        assert printer.stages[2].elapsed_time == 0.0
