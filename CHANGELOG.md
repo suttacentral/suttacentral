@@ -1,5 +1,32 @@
 # SuttaCentral ChangeLog
 
+## 2025.3.28
+
+- Rewrote generate_aql_for_multi_keyword.
+
+## 2025.3.27
+
+- Entire data load process runs in pytest.
+- Remove the language badge in the suttaplex cards. 
+
+## 2025.3.26
+
+- A start on running the data load process in pytest.
+- Added suttas accessibility test.
+
+## 2025.3.25
+
+- Wrote more detailed tests for the API. 
+
+## 2025.3.24
+
+- Add localization support for 'kan' language. 
+
+## 2025.3.20
+
+- Rewrite generate_aql_for_and_operator function to optimize search speed.
+- Adjust the priority of the sutta title. 
+
 ## 2025.3.19
 
 - Optimize search sorting. 
