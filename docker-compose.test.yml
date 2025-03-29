@@ -5,6 +5,7 @@ services:
   sc-flask:
     volumes:
       - ./server/:/opt/sc/sc-flask
+      - ./client/:/opt/sc/frontend
     env_file:
       - server/env/.test.env
     command: bash docker/entrypoint.test.sh
