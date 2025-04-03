@@ -625,7 +625,7 @@ def insert_uids(db, range_uid, uids):
     db['expanded_sutta_uids'].insert({'range_uid': range_uid, 'expanded_uids': uids})
 
 
-def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
+def run(no_pull: bool = False) -> StagePrinter:
     """Runs data load.
 
     It will take data from sc-data repository and populate the database with it.
@@ -652,8 +652,7 @@ def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
         storage_dir.mkdir()
     db = arangodb.get_db()
 
-    if not printer:
-        printer = StagePrinter()
+    printer = StagePrinter()
 
     if not no_pull:
         printer.print_stage("Retrieving Data Repository")
@@ -816,6 +815,7 @@ def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
 
     printer.print_stage('All done')
 
+    return printer
 
 def hyphenate_pali_and_san():
     db = arangodb.get_db()

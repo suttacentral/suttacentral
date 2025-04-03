@@ -1,4 +1,3 @@
-from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -38,8 +37,7 @@ def test_do_entire_run(data_load_app):
         db = get_db()
         delete_db(db)
         run_migrations()
-        printer = StagePrinter()
-        arangoload.run(no_pull=False, printer=printer)
+        printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         printer.save_as_csv("load-data-run.csv")
 
