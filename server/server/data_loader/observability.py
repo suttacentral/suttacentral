@@ -1,5 +1,6 @@
 import csv
 import time
+from collections.abc import Iterator
 from dataclasses import dataclass
 from itertools import count
 from typing import Callable
@@ -24,11 +25,11 @@ class StagePrinter:
         self._perf_counter = perf_counter
         self._elapsed: float = self._perf_counter()
 
-    def _get_elapsed_time(self) -> float:
+    def _clock_time_elapsed(self) -> Iterator[float]:
         old_time = self._elapsed
         new_time = self._perf_counter()
         self._elapsed = new_time
-        return new_time - old_time
+        yield new_time - old_time
 
     def _create_stage(self, description) -> Stage:
         number = next(self._numbers)
@@ -41,7 +42,7 @@ class StagePrinter:
 
     def _set_elapsed_time_of_previous_stage(self):
         if len(self.stages) > 0:
-            self.stages[-1].elapsed_time = self._get_elapsed_time()
+            self.stages[-1].elapsed_time = next(self._clock_time_elapsed())
 
     def print_stage(self, description: str) -> None:
         self._set_elapsed_time_of_previous_stage()
