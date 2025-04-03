@@ -9,8 +9,8 @@ class FakePerfCounter:
     def __init__(self,
                  start_time: float,
                  stage_time: float,
-                 time_between_stages: float,
-                 increase_each_stage_by: float):
+                 time_between_stages: float = 0.0,
+                 increase_each_stage_by: float = 0.0):
         self._start_time = start_time
         self._stage_time = stage_time
         self._time_between_stages = time_between_stages
@@ -37,8 +37,6 @@ class TestFakePerfCounter:
         counter = FakePerfCounter(
             start_time=1.1,
             stage_time=1.0,
-            time_between_stages=0.0,
-            increase_each_stage_by=0.0,
         )
 
         assert counter() == 1.1
@@ -48,7 +46,6 @@ class TestFakePerfCounter:
             start_time=1.0,
             stage_time=2.0,
             time_between_stages=0.0,
-            increase_each_stage_by=0.0
         )
 
         assert counter() == 1.0
@@ -83,13 +80,12 @@ class TestFakePerfCounter:
         assert counter() == 4.6
 
 class TestRunTime:
-    @pytest.mark.skip("Sort out FakePerfCounter first")
     def test_create_run_time(self):
-        perf_counter = FakePerfCounter(start=1.2, intervals=[1.1])
+        perf_counter = FakePerfCounter(start_time=1.2, stage_time=1.3)
         run_time = RunTime(perf_counter=perf_counter)
         run_time.start()
         run_time.end()
-        assert run_time.clock_seconds == pytest.approx(1.2)
+        assert run_time.clock_seconds == 1.3
 
 
 class TestStagePrinter:
@@ -115,14 +111,14 @@ class TestStagePrinter:
         assert printer.stages[0].description == 'Retrieving Data Repository'
         assert printer.stages[1].description == 'Copying localization files'
 
-    @pytest.mark.skip("Sort out FakePerfCounter first")
+    @pytest.mark.skip("Still needs work")
     def test_tracks_elapsed_time(self):
-        perf_counter = FakePerfCounter([1.1, 2.3, 11.6, 11.9])
+        perf_counter = FakePerfCounter(start_time=1.2, stage_time=1.3)
         printer = StagePrinter(perf_counter=perf_counter)
         printer.print_stage('Retrieving Data Repository')
         printer.print_stage('Copying localization files')
         printer.print_stage('All done')
 
-        assert printer.stages[0].run_time.clock_seconds == pytest.approx(1.2)
-        assert printer.stages[1].run_time.clock_seconds == pytest.approx(9.3)
+        assert printer.stages[0].run_time.clock_seconds == 1.3
+        assert printer.stages[1].run_time.clock_seconds == 1.3
         assert printer.stages[2].run_time.clock_seconds is None
