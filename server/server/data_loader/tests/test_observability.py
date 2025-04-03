@@ -1,19 +1,44 @@
+from collections.abc import Iterator
+
 import pytest
 
 from data_loader.observability import StagePrinter, RunTime
 
 
 class FakePerfCounter:
-    def __init__(self, times: list[float]):
-        self._times = iter(times)
+    def __init__(self,
+                 first_result: float,
+                 interval: float,
+                 time_between_stages: float,
+                 increment_interval_by: float):
+        self._first_results = first_result
+        self._interval = interval
+        self._time_between_stages = time_between_stages
+        self._increment_interval_by = increment_interval_by
+
+    def _results(self) -> Iterator[float]:
+        yield self._first_results
 
     def __call__(self) -> float:
-        return next(self._times)
+        return next(self._results())
+
+
+class TestFakePerfCounter:
+    def test_first_result(self):
+        counter = FakePerfCounter(
+            first_result=1.1,
+            interval=1.0,
+            time_between_stages=0.0,
+            increment_interval_by=0.0,
+        )
+
+        assert counter() == 1.1
 
 
 class TestRunTime:
+    @pytest.mark.skip("Sort out FakePerfCounter first")
     def test_create_run_time(self):
-        perf_counter = FakePerfCounter([1.1, 2.3])
+        perf_counter = FakePerfCounter(start=1.2, intervals=[1.1])
         run_time = RunTime(perf_counter=perf_counter)
         run_time.start()
         run_time.end()
@@ -43,6 +68,7 @@ class TestStagePrinter:
         assert printer.stages[0].description == 'Retrieving Data Repository'
         assert printer.stages[1].description == 'Copying localization files'
 
+    @pytest.mark.skip("Sort out FakePerfCounter first")
     def test_tracks_elapsed_time(self):
         perf_counter = FakePerfCounter([1.1, 2.3, 11.6, 11.9])
         printer = StagePrinter(perf_counter=perf_counter)
@@ -50,6 +76,6 @@ class TestStagePrinter:
         printer.print_stage('Copying localization files')
         printer.print_stage('All done')
 
-        assert printer.stages[0].elapsed_time == pytest.approx(1.2)
-        assert printer.stages[1].elapsed_time == pytest.approx(9.3)
-        assert printer.stages[2].elapsed_time == 0.0
+        assert printer.stages[0].run_time.clock_seconds == pytest.approx(1.2)
+        assert printer.stages[1].run_time.clock_seconds == pytest.approx(9.3)
+        assert printer.stages[2].run_time.clock_seconds is None

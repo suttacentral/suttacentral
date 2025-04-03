@@ -27,7 +27,7 @@ class RunTime:
 class Stage:
     number: int
     description: str
-    elapsed_time: float
+    run_time: RunTime
 
     def __str__(self) -> str:
         return f'\n   {self.number}: {self.description}'
@@ -50,19 +50,18 @@ class StagePrinter:
 
     def _create_stage(self, description) -> Stage:
         number = next(self._numbers)
+        run_time = RunTime(perf_counter=self._perf_counter)
+        run_time.start()
 
         return Stage(
             number=number,
             description=description,
-            elapsed_time=0,
+            run_time=run_time,
         )
 
-    def _set_elapsed_time_of_previous_stage(self):
-        if len(self.stages) > 0:
-            self.stages[-1].elapsed_time = next(self._clock_time_elapsed())
-
     def print_stage(self, description: str) -> None:
-        self._set_elapsed_time_of_previous_stage()
+        if len(self.stages) > 0:
+            self.stages[-1].run_time.end()
 
         stage = self._create_stage(description)
         self.stages.append(stage)
@@ -74,4 +73,4 @@ class StagePrinter:
             writer = csv.writer(output_file)
             writer.writerow(['Number', 'Message', 'Elapsed Time'])
             for stage in self.stages:
-                writer.writerow([stage.number, stage.description, stage.elapsed_time])
+                writer.writerow([stage.number, stage.description, stage.run_time.clock_seconds])
