@@ -36,17 +36,8 @@ class Stage:
 class StagePrinter:
     def __init__(self, perf_counter: Callable[[], float] = time.perf_counter):
         self.stages: list[Stage] = []
-
         self._numbers = count(start=1)
-
         self._perf_counter = perf_counter
-        self._elapsed: float = self._perf_counter()
-
-    def _clock_time_elapsed(self) -> Iterator[float]:
-        old_time = self._elapsed
-        new_time = self._perf_counter()
-        self._elapsed = new_time
-        yield new_time - old_time
 
     def _create_stage(self, description) -> Stage:
         number = next(self._numbers)

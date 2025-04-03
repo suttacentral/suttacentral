@@ -81,11 +81,13 @@ class TestFakePerfCounter:
 
 class TestRunTime:
     def test_create_run_time(self):
-        perf_counter = FakePerfCounter(start_time=1.2, stage_time=1.3)
+        perf_counter = FakePerfCounter(
+            start_time=1.0, stage_time=2.0)
+
         run_time = RunTime(perf_counter=perf_counter)
         run_time.start()
         run_time.end()
-        assert run_time.clock_seconds == 1.3
+        assert run_time.clock_seconds == 2.0
 
 
 class TestStagePrinter:
@@ -111,14 +113,16 @@ class TestStagePrinter:
         assert printer.stages[0].description == 'Retrieving Data Repository'
         assert printer.stages[1].description == 'Copying localization files'
 
-    @pytest.mark.skip("Still needs work")
     def test_tracks_elapsed_time(self):
-        perf_counter = FakePerfCounter(start_time=1.2, stage_time=1.3)
+        perf_counter = FakePerfCounter(
+            start_time=1.0, stage_time=2.0,
+            time_between_stages=0.5, increase_each_stage_by=0.5)
+
         printer = StagePrinter(perf_counter=perf_counter)
         printer.print_stage('Retrieving Data Repository')
         printer.print_stage('Copying localization files')
         printer.print_stage('All done')
 
-        assert printer.stages[0].run_time.clock_seconds == 1.3
-        assert printer.stages[1].run_time.clock_seconds == 1.3
-        assert printer.stages[2].run_time.clock_seconds is None
+        assert printer.stages[0].run_time.clock_seconds == 2.0
+        assert printer.stages[1].run_time.clock_seconds == 2.5
+        # assert printer.stages[2].run_time.clock_seconds is None
