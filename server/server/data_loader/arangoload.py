@@ -1,22 +1,15 @@
-import csv
 import json
 import logging
-import os
 import pathlib
-import time
 from collections import defaultdict
-from collections.abc import Callable
-from dataclasses import dataclass
-from itertools import product, count
+from itertools import product
 from pathlib import Path
 from typing import Dict
 import subprocess
 
 import regex
-import re
 from arango.database import Database
 from flask import current_app
-from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
@@ -44,7 +37,6 @@ from . import (
     dictionaries,
     paragraphs,
     textdata,
-    images_files,
     homepage,
     languages,
     order,
@@ -56,6 +48,7 @@ from . import (
 )
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
+from .observability import StagePrinter
 from .util import json_load
 import re
 from data_loader.extra_info import process_extra_info_file
@@ -630,60 +623,6 @@ def generate_uids(prefix, start, end):
 
 def insert_uids(db, range_uid, uids):
     db['expanded_sutta_uids'].insert({'range_uid': range_uid, 'expanded_uids': uids})
-
-
-@dataclass
-class Stage:
-    number: int
-    description: str
-    elapsed_time: float
-
-    def __str__(self) -> str:
-        return f'\n   {self.number}: {self.description}'
-
-class StagePrinter:
-    def __init__(self, perf_counter: Callable[[], float] = time.perf_counter):
-        self.stages: list[Stage] = []
-
-        self._numbers = count(start=1)
-
-        self._perf_counter = perf_counter
-        self._elapsed: float = self._perf_counter()
-
-    def _get_elapsed_time(self) -> float:
-        old_time = self._elapsed
-        new_time = self._perf_counter()
-        self._elapsed = new_time
-        return new_time - old_time
-
-    def _create_stage(self, description) -> Stage:
-        number = next(self._numbers)
-
-        return Stage(
-            number=number,
-            description=description,
-            elapsed_time=0,
-        )
-
-    def _set_elapsed_time_of_previous_stage(self):
-        if len(self.stages) > 0:
-            self.stages[-1].elapsed_time = self._get_elapsed_time()
-
-    def print_stage(self, description: str) -> None:
-        self._set_elapsed_time_of_previous_stage()
-
-        stage = self._create_stage(description)
-        self.stages.append(stage)
-
-        print(stage)
-
-    def save_as_csv(self, file: str) -> None:
-        with open(file, mode='w') as output_file:
-            writer = csv.writer(output_file)
-            writer.writerow(['Number', 'Message', 'Elapsed Time'])
-            for stage in self.stages:
-                writer.writerow([stage.number, stage.description, stage.elapsed_time])
-
 
 
 def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
