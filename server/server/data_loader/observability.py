@@ -6,6 +6,10 @@ from itertools import count
 from typing import Callable
 
 
+def clock_seconds(perf_counter: Callable[[], float]) -> Iterator[float]:
+    yield from [1.2, 9.3, 0.3]
+
+
 @dataclass
 class Stage:
     number: int

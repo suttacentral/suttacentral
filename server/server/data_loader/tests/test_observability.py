@@ -1,6 +1,6 @@
 import pytest
 
-from data_loader.observability import StagePrinter
+from data_loader.observability import StagePrinter, clock_seconds
 
 
 class FakePerfCounter:
@@ -10,6 +10,12 @@ class FakePerfCounter:
     def __call__(self) -> float:
         return next(self._times)
 
+
+class TestClockSeconds:
+    def test_clock_seconds(self):
+        counter = FakePerfCounter([1.1, 2.3, 11.6, 11.9])
+        seconds = clock_seconds(counter)
+        assert next(seconds) == 1.2
 
 class TestStagePrinter:
     def test_prints_one_stage(self, capsys):
