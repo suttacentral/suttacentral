@@ -7,49 +7,80 @@ from data_loader.observability import StagePrinter, RunTime
 
 class FakePerfCounter:
     def __init__(self,
-                 first_result: float,
-                 interval: float,
+                 start_time: float,
+                 stage_time: float,
                  time_between_stages: float,
-                 increment_interval_by: float):
-        self._first_results = first_result
-        self._interval = interval
+                 increase_each_stage_by: float):
+        self._start_time = start_time
+        self._stage_time = stage_time
         self._time_between_stages = time_between_stages
-        self._increment_interval_by = increment_interval_by
+        self._increase_each_stage_by = increase_each_stage_by
         self._results = iter(self._result_generator())
 
     def _result_generator(self) -> Iterator[float]:
-        result = self._first_results
+        result = self._start_time
 
         while True:
             yield result
-            result += self._interval
+            result += self._stage_time
+            yield result
+            result += self._time_between_stages
+            self._stage_time += self._increase_each_stage_by
+
 
     def __call__(self) -> float:
         return next(self._results)
 
 
 class TestFakePerfCounter:
-    def test_first_result(self):
+    def test_starting_time(self):
         counter = FakePerfCounter(
-            first_result=1.1,
-            interval=1.0,
+            start_time=1.1,
+            stage_time=1.0,
             time_between_stages=0.0,
-            increment_interval_by=0.0,
+            increase_each_stage_by=0.0,
         )
 
         assert counter() == 1.1
 
-    def test_constant_intervals(self):
+    def test_constant_stage_time_with_no_inbetween(self):
         counter = FakePerfCounter(
-            first_result=1.1,
-            interval=1.2,
+            start_time=1.0,
+            stage_time=2.0,
             time_between_stages=0.0,
-            increment_interval_by=0.0
+            increase_each_stage_by=0.0
         )
 
-        assert counter() == 1.1
-        assert counter() == 2.3
+        assert counter() == 1.0
+        assert counter() == 3.0
+        assert counter() == 3.0
+        assert counter() == 5.0
 
+    def test_time_between_stages(self):
+        counter = FakePerfCounter(
+            start_time=2.0,
+            stage_time=1.0,
+            time_between_stages=0.2,
+            increase_each_stage_by=0.0
+        )
+
+        assert counter() == 2.0
+        assert counter() == 3.0
+        assert counter() == 3.2
+        assert counter() == 4.2
+
+    def test_increment_stage_time(self):
+        counter = FakePerfCounter(
+            start_time=2.0,
+            stage_time=1.0,
+            time_between_stages=0.1,
+            increase_each_stage_by=0.5
+        )
+
+        assert counter() == 2.0
+        assert counter() == 3.0
+        assert counter() == 3.1
+        assert counter() == 4.6
 
 class TestRunTime:
     @pytest.mark.skip("Sort out FakePerfCounter first")
