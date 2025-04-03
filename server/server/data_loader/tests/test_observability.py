@@ -16,6 +16,8 @@ class TestClockSeconds:
         counter = FakePerfCounter([1.1, 2.3, 11.6, 11.9])
         seconds = clock_seconds(counter)
         assert next(seconds) == 1.2
+        assert next(seconds) == 9.3
+        assert next(seconds) == 0.3
 
 class TestStagePrinter:
     def test_prints_one_stage(self, capsys):
