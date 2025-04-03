@@ -1,6 +1,6 @@
 import pytest
 
-from data_loader.observability import StagePrinter
+from data_loader.observability import StagePrinter, RunTime
 
 
 class FakePerfCounter:
@@ -9,6 +9,15 @@ class FakePerfCounter:
 
     def __call__(self) -> float:
         return next(self._times)
+
+
+class TestRunTime:
+    def test_create_run_time(self):
+        perf_counter = FakePerfCounter([1.1, 2.3])
+        run_time = RunTime(perf_counter=perf_counter)
+        run_time.start()
+        run_time.end()
+        assert run_time.clock_seconds == pytest.approx(1.2)
 
 
 class TestStagePrinter:

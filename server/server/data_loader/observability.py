@@ -6,6 +6,23 @@ from itertools import count
 from typing import Callable
 
 
+class RunTime:
+    def __init__(self, perf_counter: Callable[[], float] = time.perf_counter):
+        self._perf_counter = perf_counter
+        self._start_clock_time = 0
+        self._end_clock_time = 0
+
+    def start(self) -> None:
+        self._start_clock_time = self._perf_counter()
+
+    def end(self) -> None:
+        self._end_clock_time = self._perf_counter()
+
+    @property
+    def clock_seconds(self) -> float | None:
+        return self._end_clock_time - self._start_clock_time
+
+
 @dataclass
 class Stage:
     number: int
