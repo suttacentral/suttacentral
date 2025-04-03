@@ -15,12 +15,17 @@ class FakePerfCounter:
         self._interval = interval
         self._time_between_stages = time_between_stages
         self._increment_interval_by = increment_interval_by
+        self._results = iter(self._result_generator())
 
-    def _results(self) -> Iterator[float]:
-        yield self._first_results
+    def _result_generator(self) -> Iterator[float]:
+        result = self._first_results
+
+        while True:
+            yield result
+            result += self._interval
 
     def __call__(self) -> float:
-        return next(self._results())
+        return next(self._results)
 
 
 class TestFakePerfCounter:
@@ -33,6 +38,17 @@ class TestFakePerfCounter:
         )
 
         assert counter() == 1.1
+
+    def test_constant_intervals(self):
+        counter = FakePerfCounter(
+            first_result=1.1,
+            interval=1.2,
+            time_between_stages=0.0,
+            increment_interval_by=0.0
+        )
+
+        assert counter() == 1.1
+        assert counter() == 2.3
 
 
 class TestRunTime:
