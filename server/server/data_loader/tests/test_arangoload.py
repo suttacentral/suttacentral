@@ -30,7 +30,7 @@ def test_do_collect_data_stage(data_load_app):
         git_repository = data_load_app.config.get('DATA_REPO')
         arangoload.collect_data(data_dir, git_repository)
 
-# @pytest.mark.skip('Long running test.')
+@pytest.mark.skip('Long running test.')
 def test_do_entire_run(data_load_app):
     with data_load_app.app_context():
         db = get_db()
