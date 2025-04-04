@@ -145,8 +145,12 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
-    folders: List[Path] = {folder for folder in sc_bilara_data_dir.glob('*') 
-                           if not folder.name.startswith(('_', '.')) and not folder.name in {'name', 'blurb'}}
+    folders: List[Path] = {
+        folder
+        for folder in sc_bilara_data_dir.glob('*')
+        if not folder.name.startswith(('_', '.'))
+        and folder.name not in {'name', 'blurb'}
+    }
 
     files: List[Path] = []
     for folder in folders:

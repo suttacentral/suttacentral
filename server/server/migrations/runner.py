@@ -51,13 +51,11 @@ def _import_migration_class(file_path: Path):
     migration_classes = getmembers(
         migrations, lambda cls: isclass(cls) and issubclass(cls, Migration)
     )
-    # filter out base class from results and get class object
-    migration_class = [
+    return [
         migration_cls
         for migration_cls in migration_classes
         if migration_cls[0] != 'Migration'
     ][0][1]
-    return migration_class
 
 
 def _get_file_id(file_name: Path) -> int:
