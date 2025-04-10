@@ -5,6 +5,7 @@ import pytest
 from common.arangodb import get_db, delete_db
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
 
@@ -30,7 +31,7 @@ def test_do_collect_data_stage(data_load_app):
         git_repository = data_load_app.config.get('DATA_REPO')
         arangoload.collect_data(data_dir, git_repository)
 
-@pytest.mark.skip('Long running test.')
+# @pytest.mark.skip('Long running test.')
 def test_do_entire_run(data_load_app):
     with data_load_app.app_context():
         db = get_db()
@@ -38,6 +39,4 @@ def test_do_entire_run(data_load_app):
         run_migrations()
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
-        printer.save_as_csv("load-data-run.csv")
-
-
+        save_as_csv(printer.stages, "load-data-run.csv")

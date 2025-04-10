@@ -87,9 +87,13 @@ class StagePrinter:
 
         print(stage)
 
-    def save_as_csv(self, file: str) -> None:
-        with open(file, mode='w') as output_file:
-            writer = csv.writer(output_file)
-            writer.writerow(['Number', 'Message', 'Elapsed Time'])
-            for stage in self.stages:
-                writer.writerow([stage.number, stage.description, stage.run_time.clock_seconds])
+def save_as_csv(stages: list[Stage], file: str) -> None:
+    with open(file, mode='w') as output_file:
+        writer = csv.writer(output_file)
+        writer.writerow(['Number', 'Message', 'Clock Time (s)', 'CPU Time (s)'])
+        for stage in stages:
+            writer.writerow(
+                [stage.number,
+                 stage.description,
+                 stage.run_time.clock_seconds,
+                 stage.run_time.cpu_seconds])
