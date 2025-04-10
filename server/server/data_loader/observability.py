@@ -54,14 +54,22 @@ class Stage:
 
 
 class StagePrinter:
-    def __init__(self, perf_counter: Callable[[], float] = time.perf_counter):
+    def __init__(self,
+                 perf_counter: Callable[[], float] = time.perf_counter,
+                 process_time: Callable[[], float] = time.process_time,
+                 ):
+
         self.stages: list[Stage] = []
         self._numbers = count(start=1)
         self._perf_counter = perf_counter
+        self._process_time = process_time
 
     def _create_stage(self, description) -> Stage:
         number = next(self._numbers)
-        run_time = RunTime(perf_counter=self._perf_counter)
+        run_time = RunTime(
+            perf_counter=self._perf_counter,
+            process_time=self._process_time,
+        )
         run_time.start()
 
         return Stage(

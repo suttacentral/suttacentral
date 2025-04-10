@@ -127,13 +127,23 @@ class TestStagePrinter:
             start_time=1.0, stage_time=2.0,
             time_between_stages=0.5, increase_each_stage_by=0.5)
 
-        printer = StagePrinter(perf_counter=perf_counter)
+        process_time = FakeTimeCounter(
+            start_time=1.0, stage_time=1.5,
+            time_between_stages=0.5, increase_each_stage_by=0.5)
+
+        printer = StagePrinter(
+            perf_counter=perf_counter,
+            process_time=process_time,
+        )
         printer.print_stage('Retrieving Data Repository')
         printer.print_stage('Copying localization files')
         printer.print_stage('All done')
 
         assert printer.stages[0].run_time.clock_seconds == 2.0
         assert printer.stages[1].run_time.clock_seconds == 2.5
+
+        assert printer.stages[0].run_time.cpu_seconds == 1.5
+        assert printer.stages[1].run_time.cpu_seconds == 2.0
 
     def test_clock_seconds_is_none_when_there_is_no_subsequent_stage(self):
         printer = StagePrinter()
