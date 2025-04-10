@@ -80,7 +80,7 @@ class TestTimeCounter:
         assert counter() == 4.6
 
 class TestRunTime:
-    def test_create_run_time(self):
+    def test_run_time_records_clock_seconds(self):
         perf_counter = FakeTimeCounter(
             start_time=1.0, stage_time=2.0)
 
