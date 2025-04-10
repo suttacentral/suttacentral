@@ -5,7 +5,7 @@ import pytest
 from common.arangodb import get_db, delete_db
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import StagePrinter
+from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
 
@@ -37,32 +37,6 @@ def test_do_entire_run(data_load_app):
         db = get_db()
         delete_db(db)
         run_migrations()
-        printer = StagePrinter()
-        arangoload.run(no_pull=False, printer=printer)
-        assert len(printer.messages) == 51
-
-
-class TestStagePrinter:
-    def test_prints_one_stage(self, capsys):
-        printer = StagePrinter()
-        printer.print_stage('Retrieving Data Repository')
-        captured = capsys.readouterr()
-        assert captured.out == '\n   1: Retrieving Data Repository\n'
-
-    def test_prints_two_stages(self, capsys):
-        printer = StagePrinter()
-        printer.print_stage('Retrieving Data Repository')
-        printer.print_stage('Copying localization files')
-        captured = capsys.readouterr()
-        expected =  '\n   1: Retrieving Data Repository\n'
-        expected += '\n   2: Copying localization files\n'
-        assert captured.out == expected
-
-    def test_saves_messages(self):
-        printer = StagePrinter()
-        printer.print_stage('Retrieving Data Repository')
-        printer.print_stage('Copying localization files')
-        assert printer.messages == [
-            '1: Retrieving Data Repository',
-            '2: Copying localization files',
-        ]
+        printer = arangoload.run(no_pull=False)
+        assert len(printer.stages) == 51
+        save_as_csv(printer.stages, "load-data-run.csv")

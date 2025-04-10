@@ -1,18 +1,15 @@
 import json
 import logging
-import os
 import pathlib
 from collections import defaultdict
-from itertools import product, count
+from itertools import product
 from pathlib import Path
 from typing import Dict
 import subprocess
 
 import regex
-import re
 from arango.database import Database
 from flask import current_app
-from git import InvalidGitRepositoryError, Repo
 from tqdm import tqdm
 
 from common import arangodb
@@ -40,7 +37,6 @@ from . import (
     dictionaries,
     paragraphs,
     textdata,
-    images_files,
     homepage,
     languages,
     order,
@@ -52,6 +48,7 @@ from . import (
 )
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
+from .observability import StagePrinter
 from .util import json_load
 import re
 from data_loader.extra_info import process_extra_info_file
@@ -628,20 +625,7 @@ def insert_uids(db, range_uid, uids):
     db['expanded_sutta_uids'].insert({'range_uid': range_uid, 'expanded_uids': uids})
 
 
-class StagePrinter:
-    def __init__(self):
-        self._numbers = count(start=1)
-        self.messages: list[str] = []
-
-    def print_stage(self, description: str) -> None:
-        number = next(self._numbers)
-        message = f'{number}: {description}'
-        print(f'\n   {message}')
-        self.messages.append(message)
-
-
-
-def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
+def run(no_pull: bool = False) -> StagePrinter:
     """Runs data load.
 
     It will take data from sc-data repository and populate the database with it.
@@ -668,8 +652,7 @@ def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
         storage_dir.mkdir()
     db = arangodb.get_db()
 
-    if not printer:
-        printer = StagePrinter()
+    printer = StagePrinter()
 
     if not no_pull:
         printer.print_stage("Retrieving Data Repository")
@@ -832,6 +815,7 @@ def run(no_pull: bool = False, printer: StagePrinter | None = None) -> None:
 
     printer.print_stage('All done')
 
+    return printer
 
 def hyphenate_pali_and_san():
     db = arangodb.get_db()
