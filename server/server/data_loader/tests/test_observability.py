@@ -89,6 +89,15 @@ class TestRunTime:
         run_time.end()
         assert run_time.clock_seconds == 2.0
 
+    def test_run_time_records_cpu_seconds(self):
+        process_time = FakeTimeCounter(
+            start_time=1.0, stage_time=2.0)
+
+        run_time = RunTime(process_time=process_time)
+        run_time.start()
+        run_time.end()
+        assert run_time.cpu_seconds == 2.0
+
 
 class TestStagePrinter:
     def test_prints_one_stage(self, capsys):

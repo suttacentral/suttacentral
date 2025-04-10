@@ -7,21 +7,38 @@ from typing import Callable
 
 
 class RunTime:
-    def __init__(self, perf_counter: Callable[[], float] = time.perf_counter):
+    def __init__(self,
+                 perf_counter: Callable[[], float] = time.perf_counter,
+                 process_time: Callable[[], float] = time.process_time,
+                 ):
+
         self._perf_counter = perf_counter
+        self._process_time = process_time
+
         self._start_clock_time = None
         self._end_clock_time = None
+        self._start_cpu_time = None
+        self._end_cpu_time = None
 
     def start(self) -> None:
         self._start_clock_time = self._perf_counter()
+        self._start_cpu_time = self._process_time()
 
     def end(self) -> None:
         self._end_clock_time = self._perf_counter()
+        self._end_cpu_time = self._process_time()
 
     @property
     def clock_seconds(self) -> float | None:
         if self._start_clock_time and self._end_clock_time:
             return self._end_clock_time - self._start_clock_time
+        else:
+            return None
+
+    @property
+    def cpu_seconds(self) -> float | None:
+        if self._start_cpu_time and self._end_cpu_time:
+            return self._end_cpu_time - self._start_cpu_time
         else:
             return None
 
