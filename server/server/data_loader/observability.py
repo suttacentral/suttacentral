@@ -9,8 +9,8 @@ from typing import Callable
 class RunTime:
     def __init__(self, perf_counter: Callable[[], float] = time.perf_counter):
         self._perf_counter = perf_counter
-        self._start_clock_time = 0
-        self._end_clock_time = 0
+        self._start_clock_time = None
+        self._end_clock_time = None
 
     def start(self) -> None:
         self._start_clock_time = self._perf_counter()
@@ -20,7 +20,10 @@ class RunTime:
 
     @property
     def clock_seconds(self) -> float | None:
-        return self._end_clock_time - self._start_clock_time
+        if self._start_clock_time and self._end_clock_time:
+            return self._end_clock_time - self._start_clock_time
+        else:
+            return None
 
 
 @dataclass

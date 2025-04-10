@@ -125,4 +125,8 @@ class TestStagePrinter:
 
         assert printer.stages[0].run_time.clock_seconds == 2.0
         assert printer.stages[1].run_time.clock_seconds == 2.5
-        # assert printer.stages[2].run_time.clock_seconds is None
+
+    def test_clock_seconds_is_none_when_there_is_no_subsequent_stage(self):
+        printer = StagePrinter()
+        printer.print_stage('First Stage')
+        assert printer.stages[0].run_time.clock_seconds is None
