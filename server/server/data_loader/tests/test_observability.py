@@ -5,7 +5,7 @@ import pytest
 from data_loader.observability import StagePrinter, RunTime
 
 
-class FakePerfCounter:
+class FakeTimeCounter:
     def __init__(self,
                  start_time: float,
                  stage_time: float,
@@ -32,9 +32,9 @@ class FakePerfCounter:
         return next(self._results)
 
 
-class TestFakePerfCounter:
+class TestTimeCounter:
     def test_starting_time(self):
-        counter = FakePerfCounter(
+        counter = FakeTimeCounter(
             start_time=1.1,
             stage_time=1.0,
         )
@@ -42,7 +42,7 @@ class TestFakePerfCounter:
         assert counter() == 1.1
 
     def test_constant_stage_time_with_no_inbetween(self):
-        counter = FakePerfCounter(
+        counter = FakeTimeCounter(
             start_time=1.0,
             stage_time=2.0,
             time_between_stages=0.0,
@@ -54,7 +54,7 @@ class TestFakePerfCounter:
         assert counter() == 5.0
 
     def test_time_between_stages(self):
-        counter = FakePerfCounter(
+        counter = FakeTimeCounter(
             start_time=2.0,
             stage_time=1.0,
             time_between_stages=0.2,
@@ -67,7 +67,7 @@ class TestFakePerfCounter:
         assert counter() == 4.2
 
     def test_increment_stage_time(self):
-        counter = FakePerfCounter(
+        counter = FakeTimeCounter(
             start_time=2.0,
             stage_time=1.0,
             time_between_stages=0.1,
@@ -81,7 +81,7 @@ class TestFakePerfCounter:
 
 class TestRunTime:
     def test_create_run_time(self):
-        perf_counter = FakePerfCounter(
+        perf_counter = FakeTimeCounter(
             start_time=1.0, stage_time=2.0)
 
         run_time = RunTime(perf_counter=perf_counter)
@@ -114,7 +114,7 @@ class TestStagePrinter:
         assert printer.stages[1].description == 'Copying localization files'
 
     def test_tracks_elapsed_time(self):
-        perf_counter = FakePerfCounter(
+        perf_counter = FakeTimeCounter(
             start_time=1.0, stage_time=2.0,
             time_between_stages=0.5, increase_each_stage_by=0.5)
 
