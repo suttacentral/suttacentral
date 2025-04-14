@@ -263,7 +263,7 @@ def load_map_data(additional_info_dir, db):
     db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
 
 
-def load_html_texts(change_tracker, data_dir, db, html_dir):
+def load_html_texts(change_tracker: ChangeTracker, data_dir: Path, db: Database, html_dir: Path):
     print('Loading HTML texts')
 
     force = change_tracker.is_any_function_changed(

@@ -1,10 +1,15 @@
 import gc
 import hashlib
 import inspect
+from collections.abc import Iterable
+from pathlib import Path
+from typing import Callable
+
+from arango.database import Database
 
 
 class ChangeTracker:
-    def __init__(self, base_dir, db):
+    def __init__(self, base_dir: Path, db: Database):
         self.base_dir = base_dir
         self.db = db
 
@@ -48,30 +53,30 @@ class ChangeTracker:
         print(f'{len(self.changed_or_new)} files to be processed')
         print(f'{len(self.deleted)} files to be deleted')
 
-    def is_file_new_or_changed(self, path, check_calling_function=True):
+    def is_file_new_or_changed(self, path: Path, check_calling_function: bool = True) -> bool:
         if check_calling_function and self.is_function_changed(who_is_calling()):
             return True
         return str(path.relative_to(self.base_dir)) in self.changed_or_new
 
-    def is_any_file_new_or_changed(self, files, check_calling_function=True):
+    def is_any_file_new_or_changed(self, files: list[Path], check_calling_function: bool = True) -> bool:
         if check_calling_function and self.is_function_changed(who_is_calling()):
             return True
         return any(self.is_file_new_or_changed(file, False) for file in files)
 
-    def is_any_function_changed(self, functions):
+    def is_any_function_changed(self, functions: Iterable[Callable]) -> bool:
         return any(self.is_function_changed(function) for function in functions)
 
-    def is_function_changed(self, function):
+    def is_function_changed(self, function: Callable | None) -> bool:
         key = f'{function.__module__}.{function.__qualname__}'
         return self.is_thing_changed(key, function)
 
-    def is_thing_changed(self, key, thing):
+    def is_thing_changed(self, key: str, thing: Callable) -> bool:
         function_hash = hashlib.md5(function_source(thing).encode()).hexdigest()
 
         self.new_function_hashes[key] = function_hash
         return self.old_function_hashes.get(key) != function_hash
 
-    def update_mtimes(self):
+    def update_mtimes(self) -> None:
         # Update mtimes in arangodb
         if self.deleted:
             self.db.aql.execute(
@@ -93,11 +98,11 @@ class ChangeTracker:
         self.db['function_hashes'].import_bulk_logged(docs, wipe=True)
 
 
-def function_source(function):
+def function_source(function: Callable) -> str:
     return ''.join(inspect.getsourcelines(function)[0])
 
 
-def who_is_calling(depth=2):
+def who_is_calling(depth: int = 2) -> Callable | None:
     """Return the calling function at given stack depth
     
     adapted from https://stackoverflow.com/a/4506081/4092906
@@ -116,7 +121,7 @@ def who_is_calling(depth=2):
     return funcs[0] if funcs else None
 
 
-def whoami():
+def whoami() -> Callable | None:
     """
     Returns the function that calls it
     """
