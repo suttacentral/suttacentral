@@ -23,3 +23,8 @@ class TestHtHtmlElementMixin:
         dom = fromstring('<div><a>foo</a>bar</div>')
         dom.find('a').wrap_inner(dom.makeelement('i'))
         assert str(dom) == '<div><a><i>foo</i></a>bar</div>'
+
+    def test_convert_bad_tags(self):
+        dom = fromstring('<baa><p><moo>Goes the cow</namo> ...')
+        dom.convert_bad_tags()
+        assert str(dom) == '<div class="baa"><p><span class="moo">Goes the cow ...</span></p></div>'
