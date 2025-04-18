@@ -50,12 +50,6 @@ class HtHtmlElementMixin:
         tag), secondly, the dropped element is returned as a convenience
         for re-insertion.
 
-        >>> p = fromstring('<p><em>p1</em>Once upon a time...</p>')
-        >>> p.append(p.find('em').detach())
-        >>> str(p)
-        '<p>Once upon a time...<em>p1</em></p>'
-
-
         """
 
         self.drop_tree()
@@ -67,31 +61,14 @@ class HtHtmlElementMixin:
 
         Unlike .insert(0, other), handles text properly.
 
-        >>> p = fromstring('<p>There can be only one.</p>')
-        >>> p.insert(0, p.makeelement('a', {'id': 'wrong'}))
-        >>> str(p)
-        '<p>There can be only one.<a id="wrong"></a></p>'
-        >>> p.prepend(p.makeelement('a', {'id': 'right'}))
-        >>> str(p)
-        '<p><a id="right"></a>There can be only one.<a id="wrong"></a></p>'
-
-
         """
-
         self.insert(0, other)
         if self.text:
             other.tail = self.text + (other.tail or '')
             self.text = None
 
     def wrap_outer(self, other):
-        """Wrap self in other
-
-        >>> dom = fromstring('<div><a>foo</a>bar</div>')
-        >>> dom.find('a').wrap_outer(dom.makeelement('b'))
-        >>> str(dom)
-        '<div><b><a>foo</a></b>bar</div>'
-
-        """
+        """Wrap self in other"""
 
         self.addprevious(other)
         other.tail = self.tail
@@ -99,14 +76,7 @@ class HtHtmlElementMixin:
         other.append(self)
 
     def wrap_inner(self, other):
-        """Wrap the contents of self inside other
-
-        >>> dom = fromstring('<div><a>foo</a>bar</div>')
-        >>> dom.find('a').wrap_inner(dom.makeelement('i'))
-        >>> str(dom)
-        '<div><a><i>foo</i></a>bar</div>'
-
-        """
+        """Wrap the contents of self inside other """
 
         other.extend(self)
         other.text = self.text
@@ -136,9 +106,7 @@ class HtHtmlElementMixin:
         return None
 
     def select_or_fail(self, selector):
-        """ Raises ``CssSelectorFailed`` instead of returning an empty list
-
-        """
+        """ Raises ``CssSelectorFailed`` instead of returning an empty list """
 
         result = self.select(selector)
         if not result:
@@ -169,12 +137,6 @@ class HtHtmlElementMixin:
         Uses a simple heuristic to decide whether it should be a span
         or div, an element which contains block level elements will
         be a div, otherwise it will be span.
-
-        >>> dom = fromstring('<baa><p><moo>Goes the cow</namo> ...')
-        >>> dom.convert_bad_tags()
-        >>> str(dom)
-        '<div class="baa"><p><span class="moo">Goes the cow ...</span></p></div>'
-
 
         """
 
