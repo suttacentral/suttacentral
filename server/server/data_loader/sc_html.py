@@ -8,6 +8,8 @@ manipulations.
 The only HtmlElement method which is overridden by this module is __str__,
 which now returns the html code of the element.
 
+Ajahn J.R.: This is not true, we override __bool__ as well. And the code
+may change again so don't write comments like this.
 """
 
 import itertools
