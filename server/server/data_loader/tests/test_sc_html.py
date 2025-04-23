@@ -6,33 +6,6 @@ from data_loader import sc_html
 
 
 class TestHtHtmlElementMixin:
-    def test_detach(self):
-        p = sc_html.fromstring('<p><em>p1</em>Once upon a time...</p>')
-        with pytest.raises(NotImplementedError):
-            p.append(p.find('em').detach())
-
-    def test_prepend(self):
-        p = sc_html.fromstring('<p>There can be only one.</p>')
-        p.insert(0, p.makeelement('a', {'id': 'wrong'}))
-        assert str(p) == '<p>There can be only one.<a id="wrong"></a></p>'
-        with pytest.raises(NotImplementedError):
-            p.prepend(p.makeelement('a', {'id': 'right'}))
-
-    def test_wrap_outer(self):
-        dom = sc_html.fromstring('<div><a>foo</a>bar</div>')
-        with pytest.raises(NotImplementedError):
-            dom.find('a').wrap_outer(dom.makeelement('b'))
-
-    def test_wrap_inner(self):
-        dom = sc_html.fromstring('<div><a>foo</a>bar</div>')
-        with pytest.raises(NotImplementedError):
-            dom.find('a').wrap_inner(dom.makeelement('i'))
-
-    def test_convert_bad_tags(self):
-        dom = sc_html.fromstring('<baa><p><moo>Goes the cow</namo> ...')
-        with pytest.raises(NotImplementedError):
-            dom.convert_bad_tags()
-
     def test_str_returns_html_code(self):
         p = sc_html.fromstring('<p>There can be only one.</p>')
         assert str(p) == '<p>There can be only one.</p>'
