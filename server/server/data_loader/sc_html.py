@@ -98,43 +98,6 @@ class HtHtmlElementMixin:
 
         return None
 
-    def detach(self):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def prepend(self, other):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def wrap_outer(self, other):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def wrap_inner(self, other):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def select_or_fail(self, selector):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def each_text(self, callback):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def convert_bad_tags(self):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def pretty(self, **kwargs):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def add_class(self, value):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def remove_class(self, value):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    def id_map(self):
-        raise NotImplementedError('Unused mixin method deleted.')
-
-    @property
-    def headsure(self):
-        raise NotImplementedError('Unused mixin method deleted.')
-
 
 # We need to jump through some hoops to ensure the mixins are included
 # in all Element class for every tag type. (in lxml.html, some, like input
