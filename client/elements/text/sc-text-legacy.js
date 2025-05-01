@@ -4,6 +4,7 @@ import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { SCTextCommon } from './sc-text-common';
+import './sc-text-context-menu';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles';
@@ -110,6 +111,7 @@ export class SCTextLegacy extends SCTextCommon {
 
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
       <sc-bottom-sheet></sc-bottom-sheet>
+      <sc-text-context-menu></sc-text-context-menu>
     `;
   }
 
@@ -154,6 +156,7 @@ export class SCTextLegacy extends SCTextCommon {
     this._updateURLSearchParams();
     this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     this.scActionItems?.hideSpeakerButton();
+    document.addEventListener('mouseup', this.handleTextSelection.bind(this));
   }
 
   disconnectedCallback() {

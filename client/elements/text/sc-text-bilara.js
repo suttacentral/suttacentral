@@ -9,6 +9,7 @@ import { SCTextCommon } from './sc-text-common';
 import '../lookups/sc-lookup-pli';
 import '../lookups/sc-lookup-lzh2en';
 import '../addons/sc-bottom-sheet';
+import './sc-text-context-menu';
 
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles';
@@ -122,17 +123,16 @@ export class SCTextBilara extends SCTextCommon {
         ${paliScriptsStyles}
       </style>
       ${this.currentStyles} ${this.referencesDisplayStyles} ${this.notesDisplayStyles}
-
       <main>
         <div id="segmented_text_content" class="html-text-content">
           ${unsafeHTML(this.markup || ' ')}
         </div>
       </main>
-
       <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
       <slot></slot>
       <sc-bottom-sheet></sc-bottom-sheet>
+      <sc-text-context-menu></sc-text-context-menu>
     `;
   }
 
@@ -140,6 +140,7 @@ export class SCTextBilara extends SCTextCommon {
     this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', this._onClickHandler);
+    document.addEventListener('mouseup', this.handleTextSelection.bind(this));
     this._updateView();
     this._updateURLSearchParams();
     this.scActionItems?.showSpeakerButton();
