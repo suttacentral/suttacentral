@@ -34,7 +34,7 @@ class TextInfoModel:
     def process_lang_dir(self,
             lang_dir: Path,
             data_dir: Path = None,
-            files_to_process: dict[Path, int] | None = None,
+            files_to_process: dict[str, int] | None = None,
             force: bool = False
     ):
         # files_to_process is actually "files that may be processed" its
