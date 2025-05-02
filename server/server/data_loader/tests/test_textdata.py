@@ -69,7 +69,7 @@ class TestTextInfoModel:
         text_info.process_lang_dir(tmp_path)
         assert not text_info.added_documents
 
-    def test_one_html_file_and_no_data_dir(self, text_info, sc_data_dir, html_text_dir):
+    def test_one_html_file_and_data_dir_not_specified(self, text_info, sc_data_dir, html_text_dir):
         # Blows up when we call relative_to(data_dir)
         with pytest.raises(TypeError):
             text_info.process_lang_dir(lang_dir=html_text_dir)
