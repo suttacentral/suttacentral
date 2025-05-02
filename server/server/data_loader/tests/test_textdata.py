@@ -42,15 +42,20 @@ def text_info():
 
 @pytest.fixture
 def sc_data_dir(tmp_path) -> Path:
-    file_location = tmp_path / "html_text" / "en" / "pli" / "sutta" / "mn"
+    file_location = tmp_path / 'html_text' / 'en' / 'pli' / 'sutta' / 'mn'
     file_location.mkdir(parents=True)
-    html_file = file_location / "mn1.html"
-    with html_file.open("w") as f:
+    html_file = file_location / 'mn1.html'
+    with html_file.open('w') as f:
         html_file.write_text(
-            "<html/>"
+            '<html/>'
         )
 
     return tmp_path
+
+
+@pytest.fixture
+def html_text_dir(sc_data_dir) -> Path:
+    return sc_data_dir / 'html_text'
 
 
 class TestTextInfoModel:
@@ -59,13 +64,12 @@ class TestTextInfoModel:
         assert not text_info.added_documents
 
     def test_one_lang_dir(self, text_info, tmp_path):
-        en = tmp_path / "en"
+        en = tmp_path / 'en'
         en.mkdir()
         text_info.process_lang_dir(tmp_path)
         assert not text_info.added_documents
 
-    def test_one_html_file_and_no_data_dir(self, text_info, sc_data_dir):
-        lang_dir = sc_data_dir / "html_text"
+    def test_one_html_file_and_no_data_dir(self, text_info, sc_data_dir, html_text_dir):
         # Blows up when we call relative_to(data_dir)
         with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir)
+            text_info.process_lang_dir(lang_dir=html_text_dir)
