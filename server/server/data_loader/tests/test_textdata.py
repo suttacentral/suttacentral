@@ -76,3 +76,11 @@ class TestTextInfoModel:
     def test_fails_when_no_files_to_process(self, text_info, sc_data_dir, html_text_dir):
         with pytest.raises(TypeError):
             text_info.process_lang_dir(lang_dir=html_text_dir, data_dir=sc_data_dir)
+
+    def test_html_file_not_in_files_to_process(self, text_info, sc_data_dir, html_text_dir):
+        text_info.process_lang_dir(
+            lang_dir=html_text_dir,
+            data_dir=sc_data_dir,
+            files_to_process={}
+        )
+        assert not text_info.added_documents
