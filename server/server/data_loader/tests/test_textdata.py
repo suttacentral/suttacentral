@@ -35,20 +35,23 @@ class TextInfoModelSpy(TextInfoModel):
         pass
 
 
-class TestTextInfoModel:
-    def test_lang_dir_empty(self, tmp_path):
-        model = TextInfoModelSpy()
-        model.process_lang_dir(lang_dir=tmp_path)
-        assert not model.added_documents
+@pytest.fixture
+def text_info():
+    return TextInfoModelSpy()
 
-    def test_one_lang_dir(self, tmp_path):
+
+class TestTextInfoModel:
+    def test_lang_dir_empty(self, text_info, tmp_path):
+        text_info.process_lang_dir(lang_dir=tmp_path)
+        assert not text_info.added_documents
+
+    def test_one_lang_dir(self, text_info, tmp_path):
         en = tmp_path / "en"
         en.mkdir()
-        model = TextInfoModelSpy()
-        model.process_lang_dir(tmp_path)
-        assert not model.added_documents
+        text_info.process_lang_dir(tmp_path)
+        assert not text_info.added_documents
 
-    def test_one_html_file_and_no_data_dir(self, tmp_path):
+    def test_one_html_file_and_no_data_dir(self, text_info, tmp_path):
         file_location = tmp_path / "en" / "pli" / "sutta" / "mn"
         file_location.mkdir(parents=True)
         html_file = file_location / "mn1.html"
@@ -57,8 +60,6 @@ class TestTextInfoModel:
                 "<html/>"
             )
 
-        model = TextInfoModelSpy()
-
         # Blows up when we call relative_to(data_dir)
         with pytest.raises(TypeError):
-            model.process_lang_dir(tmp_path)
+            text_info.process_lang_dir(tmp_path)
