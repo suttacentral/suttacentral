@@ -32,16 +32,18 @@ class TextInfoModelSpy(TextInfoModel):
     def update_code_points(self, lang_uid, unicode_points, force):
         pass
 
+
+@pytest.fixture
+def text_info():
+    return TextInfoModelSpy()
+
+
 @pytest.fixture
 def valid_html() -> str:
     return """\
 <html>
 <meta name='author' content='Bhikkhu Bodhi'>
 </html>"""
-
-@pytest.fixture
-def text_info():
-    return TextInfoModelSpy()
 
 
 @pytest.fixture
@@ -72,7 +74,6 @@ class TestTextInfoModel:
             data_dir=sc_data_dir,
             files_to_process=files_to_process
         )
-
         assert text_info.added_documents[0]['author'] == 'Bhikkhu Bodhi'
 
     def test_empty_lang_dir_does_not_add_text_info(self, text_info, tmp_path):
