@@ -17,15 +17,13 @@ class TextInfoModelSpy(TextInfoModel):
 
     def get_author_by_name(self, name, file) -> dict:
         return {
-            'Veruca Salt': {
-                '_key': '123456',
-                '_id': 'author_edition/123456',
-                '_rev': 'randomjunk',
-                'type': 'edition',
-                'uid': 'salt',
-                'short_name': 'Salt',
-                'long_name': 'Veruca Salt'
-            }
+            '_key': '123456',
+            '_id': 'author_edition/123456',
+            '_rev': 'randomjunk',
+            'type': 'edition',
+            'uid': 'salt',
+            'short_name': 'Salt',
+            'long_name': 'Veruca Salt'
         }
 
     def add_document(self, doc):
@@ -34,6 +32,12 @@ class TextInfoModelSpy(TextInfoModel):
     def update_code_points(self, lang_uid, unicode_points, force):
         pass
 
+@pytest.fixture
+def valid_html() -> str:
+    return """\
+<html>
+<meta name='author' content='Veruca Salt'>
+</html>"""
 
 @pytest.fixture
 def text_info():
@@ -41,14 +45,12 @@ def text_info():
 
 
 @pytest.fixture
-def sc_data_dir(tmp_path) -> Path:
+def sc_data_dir(tmp_path, valid_html) -> Path:
     file_location = tmp_path / 'html_text' / 'en' / 'pli' / 'sutta' / 'mn'
     file_location.mkdir(parents=True)
     html_file = file_location / 'mn1.html'
     with html_file.open('w') as f:
-        html_file.write_text(
-            '<html/>'
-        )
+        html_file.write_text(valid_html)
 
     return tmp_path
 
@@ -85,12 +87,13 @@ class TestTextInfoModel:
         )
         assert not text_info.added_documents
 
-    def test_html_file_in_files_to_process(self, text_info, sc_data_dir, html_text_dir):
+    def test_happy_path_adds_document(self, text_info, sc_data_dir, html_text_dir):
         html_file = 'html_text/en/pli/sutta/mn/mn1.html'
-        # Die at line 102
-        with pytest.raises(KeyError):
-            text_info.process_lang_dir(
-                lang_dir=html_text_dir,
-                data_dir=sc_data_dir,
-                files_to_process={ html_file: 0 }
-            )
+
+        text_info.process_lang_dir(
+            lang_dir=html_text_dir,
+            data_dir=sc_data_dir,
+            files_to_process={ html_file: 0 }
+        )
+
+        assert len(text_info.added_documents) == 1
