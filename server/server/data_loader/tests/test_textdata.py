@@ -17,13 +17,13 @@ class TextInfoModelSpy(TextInfoModel):
 
     def get_author_by_name(self, name, file) -> dict:
         return {
-            '_key': '123456',
-            '_id': 'author_edition/123456',
-            '_rev': 'randomjunk',
-            'type': 'edition',
-            'uid': 'salt',
-            'short_name': 'Salt',
-            'long_name': 'Veruca Salt'
+            "_key" : "10318325",
+            "_id" : "author_edition/10318325",
+            "_rev" : "_jbu75VK--G",
+            "type" : "author",
+            "uid" : "bodhi",
+            "short_name" : "Bodhi",
+            "long_name" : "Bhikkhu Bodhi"
         }
 
     def add_document(self, doc):
@@ -36,7 +36,7 @@ class TextInfoModelSpy(TextInfoModel):
 def valid_html() -> str:
     return """\
 <html>
-<meta name='author' content='Veruca Salt'>
+<meta name='author' content='Bhikkhu Bodhi'>
 </html>"""
 
 @pytest.fixture
