@@ -61,7 +61,7 @@ def html_text_dir(sc_data_dir) -> Path:
 
 
 class TestTextInfoModel:
-    def test_happy_path_adds_document(self, text_info, sc_data_dir, html_text_dir):
+    def test_process_lang_dir_adds_text_info(self, text_info, sc_data_dir, html_text_dir):
         html_file = 'html_text/en/pli/sutta/mn/mn1.html'
 
         text_info.process_lang_dir(
@@ -72,28 +72,28 @@ class TestTextInfoModel:
 
         assert len(text_info.added_documents) == 1
 
-    def test_lang_dir_empty(self, text_info, tmp_path):
+    def test_empty_lang_dir_does_not_add_text_info(self, text_info, tmp_path):
         text_info.process_lang_dir(lang_dir=tmp_path)
         assert not text_info.added_documents
 
-    def test_one_lang_dir(self, text_info, tmp_path):
+    def test_lang_dir_with_empty_language_does_not_add_text_info(self, text_info, tmp_path):
         en = tmp_path / 'en'
         en.mkdir()
         text_info.process_lang_dir(tmp_path)
         assert not text_info.added_documents
 
-    def test_fails_when_no_data_dir(self, text_info, sc_data_dir, html_text_dir):
-        with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir=html_text_dir)
-
-    def test_fails_when_no_files_to_process(self, text_info, sc_data_dir, html_text_dir):
-        with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir=html_text_dir, data_dir=sc_data_dir)
-
-    def test_html_file_ignored_if_not_in_files_to_process(self, text_info, sc_data_dir, html_text_dir):
+    def test_file_not_in_files_to_process_does_not_add_text_info(self, text_info, sc_data_dir, html_text_dir):
         text_info.process_lang_dir(
             lang_dir=html_text_dir,
             data_dir=sc_data_dir,
             files_to_process={}
         )
         assert not text_info.added_documents
+
+    def test_missing_data_dir_causes_type_error(self, text_info, sc_data_dir, html_text_dir):
+        with pytest.raises(TypeError):
+            text_info.process_lang_dir(lang_dir=html_text_dir)
+
+    def test_missing_files_to_process_causes_type_error(self, text_info, sc_data_dir, html_text_dir):
+        with pytest.raises(TypeError):
+            text_info.process_lang_dir(lang_dir=html_text_dir, data_dir=sc_data_dir)
