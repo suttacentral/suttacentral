@@ -73,7 +73,7 @@ class TestTextInfoModel:
             files_to_process=files_to_process
         )
 
-        assert len(text_info.added_documents) == 1
+        assert text_info.added_documents[0]['author'] == 'Bhikkhu Bodhi'
 
     def test_empty_lang_dir_does_not_add_text_info(self, text_info, tmp_path):
         text_info.process_lang_dir(lang_dir=tmp_path)
