@@ -93,10 +93,18 @@ class TestTextInfoModel:
         )
         assert not text_info.added_documents
 
-    def test_missing_data_dir_causes_type_error(self, text_info, sc_data_dir, html_text_dir):
+    def test_type_error_raised_when_files_to_process_is_none(self, text_info, sc_data_dir, html_text_dir):
         with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir=html_text_dir)
+            text_info.process_lang_dir(
+                lang_dir=html_text_dir,
+                data_dir=sc_data_dir,
+                files_to_process=None
+            )
 
-    def test_missing_files_to_process_causes_type_error(self, text_info, sc_data_dir, html_text_dir):
+    def test_type_error_when_data_dir_is_none(self, text_info, html_text_dir, files_to_process):
         with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir=html_text_dir, data_dir=sc_data_dir)
+            text_info.process_lang_dir(
+                lang_dir=html_text_dir,
+                data_dir=None,
+                files_to_process=files_to_process
+            )
