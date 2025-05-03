@@ -61,6 +61,17 @@ def html_text_dir(sc_data_dir) -> Path:
 
 
 class TestTextInfoModel:
+    def test_happy_path_adds_document(self, text_info, sc_data_dir, html_text_dir):
+        html_file = 'html_text/en/pli/sutta/mn/mn1.html'
+
+        text_info.process_lang_dir(
+            lang_dir=html_text_dir,
+            data_dir=sc_data_dir,
+            files_to_process={ html_file: 0 }
+        )
+
+        assert len(text_info.added_documents) == 1
+
     def test_lang_dir_empty(self, text_info, tmp_path):
         text_info.process_lang_dir(lang_dir=tmp_path)
         assert not text_info.added_documents
@@ -86,14 +97,3 @@ class TestTextInfoModel:
             files_to_process={}
         )
         assert not text_info.added_documents
-
-    def test_happy_path_adds_document(self, text_info, sc_data_dir, html_text_dir):
-        html_file = 'html_text/en/pli/sutta/mn/mn1.html'
-
-        text_info.process_lang_dir(
-            lang_dir=html_text_dir,
-            data_dir=sc_data_dir,
-            files_to_process={ html_file: 0 }
-        )
-
-        assert len(text_info.added_documents) == 1
