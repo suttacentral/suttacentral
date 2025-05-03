@@ -46,7 +46,7 @@ def text_info():
 
 @pytest.fixture
 def sc_data_dir(tmp_path, valid_html) -> Path:
-    file_location = tmp_path / 'html_text' / 'en' / 'pli' / 'sutta' / 'mn'
+    file_location = tmp_path / 'html_text/en/pli/sutta/mn'
     file_location.mkdir(parents=True)
     html_file = file_location / 'mn1.html'
     with html_file.open('w') as f:
