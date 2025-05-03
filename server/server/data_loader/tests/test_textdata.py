@@ -60,14 +60,17 @@ def html_text_dir(sc_data_dir) -> Path:
     return sc_data_dir / 'html_text'
 
 
-class TestTextInfoModel:
-    def test_process_lang_dir_adds_text_info(self, text_info, sc_data_dir, html_text_dir):
-        html_file = 'html_text/en/pli/sutta/mn/mn1.html'
+@pytest.fixture
+def files_to_process() -> dict[str, int]:
+    return {'html_text/en/pli/sutta/mn/mn1.html': 0}
 
+
+class TestTextInfoModel:
+    def test_process_lang_dir_adds_text_info(self, text_info, sc_data_dir, html_text_dir, files_to_process):
         text_info.process_lang_dir(
             lang_dir=html_text_dir,
             data_dir=sc_data_dir,
-            files_to_process={ html_file: 0 }
+            files_to_process=files_to_process
         )
 
         assert len(text_info.added_documents) == 1
