@@ -1,5 +1,6 @@
 import json
 import logging
+from pathlib import Path
 
 import regex
 from arango.exceptions import DocumentReplaceError
@@ -30,8 +31,11 @@ class TextInfoModel:
     def is_italic(self, element):
         return element.tag in {'i', 'em'}
 
-    def process_lang_dir(
-            self, lang_dir, data_dir=None, files_to_process=None, force=False
+    def process_lang_dir(self,
+            lang_dir: Path,
+            data_dir: Path = None,
+            files_to_process: dict[str, int] | None = None,
+            force: bool = False
     ):
         # files_to_process is actually "files that may be processed" its
         # not the list of files to actually process
