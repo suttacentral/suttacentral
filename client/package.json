@@ -45,7 +45,7 @@
     "lit": "3.1.0",
     "path-to-regexp": "^6.2.1",
     "pwa-helpers": "^0.9.1",
-    "redux": "^4.2.1",
+    "redux": "^5.0.0",
     "turbolinks": "^5.2.0",
     "viewerjs": "^1.11.6",
     "web-animations-js": "^2.3.2",
