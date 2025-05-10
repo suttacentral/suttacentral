@@ -20,7 +20,7 @@ class TextInfoModel:
     def add_document(self, doc):
         raise NotImplementedError
 
-    def update_code_points(self, lang_uid, unicode_points, force):
+    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool) -> None:
         raise NotImplementedError
 
     def is_bold(self, lang, element):
@@ -244,7 +244,7 @@ class ArangoTextInfoModel(TextInfoModel):
             self.db['html_text'].import_bulk_logged(self.queue)
             self.queue.clear()
 
-    def update_code_points(self, lang_uid, unicode_points, force=False):
+    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool = False) -> None:
         keys = ('normal', 'bold', 'italic')
         try:
             existing = self.db['unicode_points'].get(lang_uid)

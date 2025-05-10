@@ -38,7 +38,7 @@ class TextInfoModelSpy(TextInfoModel):
     def add_document(self, doc):
         self.added_documents.append(doc)
 
-    def update_code_points(self, lang_uid, unicode_points, force):
+    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool) -> None:
         self.added_code_points.append(CodePoints(lang_uid, unicode_points, force))
 
 
