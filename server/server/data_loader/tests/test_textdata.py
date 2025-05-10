@@ -43,6 +43,7 @@ class TextInfoModelSpy(TextInfoModel):
 
 
 def add_html_file(path: Path, html: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open('w') as f:
         path.write_text(html)
 
@@ -53,29 +54,44 @@ def text_info():
 
 
 @pytest.fixture
-def sc_data_dir(tmp_path) -> Path:
-    file_location = tmp_path / 'html_text/en/pli/sutta/mn'
-    file_location.mkdir(parents=True)
+def language_relative() -> Path:
+    return Path('html_text/en/')
+
+
+@pytest.fixture
+def collection_relative(language_relative) -> Path:
+    return language_relative / 'pli/sutta/mn'
+
+
+@pytest.fixture
+def sutta_relative(collection_relative) -> Path:
+    return collection_relative / Path('mn1.html')
+
+
+@pytest.fixture
+def base_path(tmp_path) -> Path:
     return tmp_path
 
 
 @pytest.fixture
-def en_dir(sc_data_dir) -> Path:
-    return sc_data_dir / 'html_text/en/'
+def language_path(base_path, language_relative) -> Path:
+    path = base_path / language_relative
+    return path
 
 
 @pytest.fixture
-def files_to_process() -> dict[str, int]:
-    return {'html_text/en/pli/sutta/mn/mn1.html': 0}
+def collection_path(base_path, collection_relative) -> Path:
+    return base_path / collection_relative
 
 
 @pytest.fixture
-def with_mn1(sc_data_dir) -> Path:
-    add_html_file(
-        sc_data_dir / 'html_text/en/pli/sutta/mn/mn1.html',
-        "<html><meta name='author' content='Bhikkhu Bodhi'></html>"
-    )
-    return sc_data_dir
+def sutta_path(base_path, sutta_relative) -> Path:
+    return base_path / sutta_relative
+
+
+@pytest.fixture
+def files_to_process(sutta_relative) -> dict[str, int]:
+    return {str(sutta_relative): 0}
 
 
 class TestTextInfoModel:
@@ -83,32 +99,34 @@ class TestTextInfoModel:
         text_info.process_lang_dir(lang_dir=tmp_path)
         assert not text_info.added_documents
 
-    def test_lang_dir_with_empty_language_does_not_add_text_info(self, text_info, tmp_path):
-        en = tmp_path / 'en'
-        en.mkdir()
-        text_info.process_lang_dir(tmp_path)
+    def test_lang_dir_with_empty_language_does_not_add_text_info(self, text_info, collection_path):
+        collection_path.mkdir(parents=True)
+        text_info.process_lang_dir(collection_path)
         assert not text_info.added_documents
 
-    def test_file_not_in_files_to_process_does_not_add_text_info(self, text_info, with_mn1, en_dir):
+    def test_file_not_in_files_to_process_does_not_add_text_info(self, text_info, base_path, language_path, sutta_path):
+        add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
         text_info.process_lang_dir(
-            lang_dir=en_dir,
-            data_dir=with_mn1,
+            lang_dir=language_path,
+            data_dir=base_path,
             files_to_process={}
         )
         assert not text_info.added_documents
 
-    def test_type_error_raised_when_files_to_process_is_none(self, text_info, with_mn1, en_dir):
+    def test_type_error_raised_when_files_to_process_is_none(self, text_info, base_path, language_path, sutta_path):
+        add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
         with pytest.raises(TypeError):
             text_info.process_lang_dir(
-                lang_dir=en_dir,
-                data_dir=with_mn1,
+                lang_dir=language_path,
+                data_dir=base_path,
                 files_to_process=None
             )
 
-    def test_type_error_when_data_dir_is_none(self, text_info, with_mn1, en_dir, files_to_process):
+    def test_type_error_when_data_dir_is_none(self, text_info, language_path, sutta_path, files_to_process):
+        add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
         with pytest.raises(TypeError):
             text_info.process_lang_dir(
-                lang_dir=with_mn1,
+                lang_dir=language_path,
                 data_dir=None,
                 files_to_process=files_to_process
             )
@@ -122,20 +140,20 @@ class TestTextInfoModel:
         ]
     )
     def test_extracts_author_from_html(
-            self, text_info, sc_data_dir, en_dir, files_to_process, html, author):
-        add_html_file(sc_data_dir / 'html_text/en/pli/sutta/mn/mn1.html', html)
-        text_info.process_lang_dir(en_dir, sc_data_dir, files_to_process)
+            self, text_info, base_path, language_path, sutta_path, files_to_process, html, author):
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['author'] == author
 
-    def test_update_code_points(self, text_info, sc_data_dir, en_dir, files_to_process):
+    def test_update_code_points(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
         <html>
         <head><meta author='Bhikkhu Bodhi'></head>
         <body><b>abcd</b><em>wxyz</em></body>
         </html>
         """
-        add_html_file(sc_data_dir / 'html_text/en/pli/sutta/mn/mn1.html', html)
-        text_info.process_lang_dir(en_dir, sc_data_dir, files_to_process)
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_code_points[0].lang_uid == "en"
         assert text_info.added_code_points[0].force is False
         assert text_info.added_code_points[0].unicode_points == {
