@@ -24,7 +24,10 @@ class TextInfoModelSpy(TextInfoModel):
         self.added_documents = []
         self.added_code_points: list[CodePoints] = []
 
-    def get_author_by_name(self, name, file) -> dict:
+    def get_author_by_name(self, name, file) -> dict | None:
+        if name != "Bhikkhu Bodhi":
+            return None
+
         return {
             "_key" : "10318325",
             "_id" : "author_edition/10318325",
@@ -132,18 +135,53 @@ class TestTextInfoModel:
             )
 
     @pytest.mark.parametrize(
-        "html,author",
+        "html,author_long_name",
         [
             ("<html><meta name='author' content='Bhikkhu Bodhi'></html>", 'Bhikkhu Bodhi'),
             ("<html><meta author='Bhikkhu Bodhi'></html>", 'Bhikkhu Bodhi'),
             ("<html></html>", None),
         ]
     )
-    def test_extracts_author_from_html(
-            self, text_info, base_path, language_path, sutta_path, files_to_process, html, author):
+    def test_extracts_author_long_name_from_html(
+            self, text_info, base_path, language_path, sutta_path,
+            files_to_process, html, author_long_name
+    ):
         add_html_file(sutta_path, html)
         text_info.process_lang_dir(language_path, base_path, files_to_process)
-        assert text_info.added_documents[0]['author'] == author
+        assert text_info.added_documents[0]['author'] == author_long_name
+
+    def test_retrieves_author_short_name(self, text_info, base_path, language_path, sutta_path, files_to_process):
+        html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+    @pytest.mark.parametrize(
+        "author,author_uid",
+        [
+            ('Bhikkhu Bodhi', 'bodhi'),
+            ('No such author', None),
+         ]
+    )
+    def test_retrieves_author_uid(
+            self, text_info, base_path, language_path, sutta_path, files_to_process, author, author_uid
+    ):
+        html = f"<html><head><meta author='{author}'></head></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        assert text_info.added_documents[0]['author_uid'] == author_uid
+
+    @pytest.mark.parametrize(
+        "author,path",
+        [
+            ('Bhikkhu Bodhi', 'en/mn1/bodhi'),
+            ('No such author', 'en/mn1'),
+        ]
+    )
+    def test_generates_path(self, text_info, base_path, language_path, sutta_path, files_to_process, author, path):
+        html = f"<html><head><meta author='{author}'></head></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        assert text_info.added_documents[0]['path'] == path
 
     def test_update_code_points(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
