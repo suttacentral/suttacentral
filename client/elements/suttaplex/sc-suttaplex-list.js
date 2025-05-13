@@ -171,8 +171,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       if (this.siteLanguage !== state.siteLanguage) {
         this.siteLanguage = state.siteLanguage;
       }
-
-      RefreshNavNew(this.categoryId);
     }
 
     if (this.suttaplexListDisplay !== state.suttaplexListDisplay) {
