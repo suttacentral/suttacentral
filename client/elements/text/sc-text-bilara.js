@@ -25,6 +25,8 @@ import {
   hideAsterisk,
   showAsterisk,
   rootPlainPlusStyles,
+  userSelectStyleForTranslation,
+  userSelectStyleForRoot
 } from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
@@ -55,6 +57,7 @@ export class SCTextBilara extends SCTextCommon {
     hasScriptBeenChanged: { type: Boolean },
     localizedStringsPath: { type: String },
     currentStyles: { type: Object },
+    userSelectStyles: { type: Object },
     referencesDisplayStyles: { type: Object },
     notesDisplayStyles: { type: Object },
     showHighlighting: { type: Boolean },
@@ -121,7 +124,10 @@ export class SCTextBilara extends SCTextCommon {
         ${typographyBilaraStyles}
         ${paliScriptsStyles}
       </style>
-      ${this.currentStyles} ${this.referencesDisplayStyles} ${this.notesDisplayStyles}
+      ${this.currentStyles}
+      ${this.referencesDisplayStyles}
+      ${this.notesDisplayStyles}
+      ${this.userSelectStyles}
 
       <main>
         <div id="segmented_text_content" class="html-text-content">
@@ -146,6 +152,26 @@ export class SCTextBilara extends SCTextCommon {
     this.isMultiSutta = this.checkIfMultiSutta(this.suttaId);
   }
 
+  _setupSelectionEvents() {
+    this.querySelector('#segmented_text_content')?.removeEventListener('mousedown', this._handleContentMouseOver);
+
+    const contentElement = this.querySelector('#segmented_text_content');
+    if (contentElement) {
+      this._handleContentMouseOver = (e) => {
+        const translationElement = e.target.closest('.translation');
+        const rootElement = e.target.closest('.root');
+
+        if (translationElement && this.userSelectStyles !== userSelectStyleForTranslation) {
+          this.userSelectStyles = userSelectStyleForTranslation;
+        } else if (rootElement && this.userSelectStyles !== userSelectStyleForRoot) {
+          this.userSelectStyles = userSelectStyleForRoot;
+        }
+      };
+
+      contentElement.addEventListener('mousedown', this._handleContentMouseOver);
+    }
+}
+
   checkIfMultiSutta(suttaId) {
     if (!suttaId || typeof suttaId !== 'string') {
         return false;
@@ -168,8 +194,10 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback();
     window.removeEventListener('hashchange', this._hashChangeHandler);
     window.removeEventListener('click', this._onClickHandler);
+    this.querySelector('#segmented_text_content')?.removeEventListener('mousedown', this._handleContentMouseOver);
   }
 
   _updateView() {
@@ -203,6 +231,11 @@ export class SCTextBilara extends SCTextCommon {
       this._updateTextViewStylesBasedOnState();
       this._recalculateCommentSpanHeight();
     }, 0);
+
+    setTimeout(() => {
+      this._setupSelectionEvents();
+    }, 100);
+
     this.actions.changeSuttaMetaText('');
     if (!this.isRangeSutta) {
       this.actions.changeSuttaPublicationInfo({

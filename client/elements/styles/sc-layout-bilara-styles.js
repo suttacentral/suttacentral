@@ -262,6 +262,7 @@ export const sideBySideStyles = html`
 
       grid-template-columns: minmax(240px, 720px) minmax(240px, 720px);
       grid-column-gap: var(--sc-size-lg);
+      user-select: none;
     }
 
     .verse-line .translation,
@@ -271,10 +272,12 @@ export const sideBySideStyles = html`
 
     .translation {
       grid-column: 1;
+      user-select: text;
     }
 
     .root {
       grid-column: 2;
+      user-select: text;
     }
 
     .root .text {
@@ -621,6 +624,30 @@ export const showAsterisk = html`
 
     .variant::before {
       color: var(--sc-secondary-accent-color-light);
+    }
+  </style>
+`;
+
+export const userSelectStyleForTranslation = html`
+  <style>
+    .translation {
+      user-select: text !important;
+    }
+
+    .root {
+      user-select: none !important;
+    }
+  </style>
+`;
+
+export const userSelectStyleForRoot = html`
+  <style>
+    .translation {
+      user-select: none ;
+    }
+
+    .root {
+      user-select: text;
     }
   </style>
 `;
