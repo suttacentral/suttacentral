@@ -250,6 +250,30 @@ class TestTextInfoModel:
 
         assert text_info.added_documents[0]['name'] == '（四三）不思經 (43. No Need for Thought)'
 
+    def test_extracts_chinese_volpage(self, text_info, base_path):
+        sutta_relative = 'html_text/lzh/sutta/ma/ma43.html'
+        sutta_path = base_path / sutta_relative
+        language_path = base_path / 'html_text/lzh/'
+        files_to_process = {str(sutta_relative): 0}
+
+        html = ("<html><head><meta name='author' content='Taishō Tripiṭaka'></head><body><header>"
+                "<a class='ref t' id='t0485b21' href='#t0485b21'>T 0485b21</a>"
+                "</h1></header></body></html>")
+
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        assert text_info.added_documents[0]['volpage'] == 'T 0485b21'
+
+    def test_volpage_none_when_legacy_translation(
+            self, text_info, base_path, language_path, sutta_path, files_to_process
+    ):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        assert text_info.added_documents[0]['volpage'] is None
+
     def test_update_code_points(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
         <html>
