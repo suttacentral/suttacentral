@@ -274,6 +274,15 @@ class TestTextInfoModel:
 
         assert text_info.added_documents[0]['volpage'] is None
 
+    def test_sets_file_path(
+            self, text_info, base_path, language_path, sutta_path, files_to_process
+    ):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        assert text_info.added_documents[0]['file_path'] == str(sutta_path)
+
     def test_update_code_points(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
         <html>
