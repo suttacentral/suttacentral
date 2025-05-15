@@ -283,6 +283,15 @@ class TestTextInfoModel:
 
         assert text_info.added_documents[0]['file_path'] == str(sutta_path)
 
+    def test_sets_last_modified(
+            self, text_info, base_path, language_path, sutta_path, files_to_process
+    ):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        assert text_info.added_documents[0]['mtime'] == sutta_path.stat().st_mtime
+
     def test_update_code_points(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
         <html>
