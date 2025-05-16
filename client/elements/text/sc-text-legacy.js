@@ -26,7 +26,6 @@ export class SCTextLegacy extends SCTextCommon {
     error: { type: Object },
     lang: { type: String },
     isLoading: { type: Boolean },
-    isTextViewHidden: { type: Boolean },
     spansForWordsGenerated: { type: Boolean },
     spansForGraphsGenerated: { type: Boolean },
     isChineseLookupEnabled: { type: Boolean },
@@ -160,6 +159,13 @@ export class SCTextLegacy extends SCTextCommon {
     window.removeEventListener('hashchange', this._hashChangeHandler);
   }
 
+  willUpdate(changedProperties) {
+    if (changedProperties.has('sutta')) {
+      this.author = this.sutta?.author;
+      this.lang = this.sutta?.lang;
+    }
+  }
+
   updated(changedProps) {
     if (changedProps.has('sutta')) {
       this._updateView();
@@ -229,7 +235,6 @@ export class SCTextLegacy extends SCTextCommon {
   }
 
   _updateView() {
-    this._setAttributes();
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.actions.changeSuttaMetaText(this._computeMeta());
@@ -257,14 +262,6 @@ export class SCTextLegacy extends SCTextCommon {
     });
     arrayTOC = arrayTOC.filter(Boolean);
     this.actions.showToc(arrayTOC);
-  }
-
-  _setAttributes() {
-    if (!this.sutta) {
-      return;
-    }
-    this.author = this.sutta.author;
-    this.lang = this.sutta.lang;
   }
 
   _extractSuttaText() {
