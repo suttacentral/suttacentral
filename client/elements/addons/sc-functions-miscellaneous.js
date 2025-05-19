@@ -16,6 +16,10 @@ export function isMobileBrowser() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
+export function isChinese(langIso) {
+  return langIso === 'zh' || langIso === 'lzh'
+}
+
 function openTopSheetSearchOptions(e) {
   e.stopPropagation();
   const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');

@@ -75,10 +75,10 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   connectedCallback() {
     super.connectedCallback();
     this._addStaticPageLinkEventListener();
+    this._initStaticPagesToolbarDisplayState();
   }
 
   firstUpdated() {
-    this._initStaticPagesToolbarDisplayState();
     this._setStaticPageMenuItemSelected();
     this._fetchMatter();
   }
