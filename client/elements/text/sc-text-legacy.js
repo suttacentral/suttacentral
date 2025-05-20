@@ -12,8 +12,9 @@ import '../lookups/sc-lookup-lzh2en';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
-import { getURLParam } from '../addons/sc-functions-miscellaneous';
+import { getURLParam, isChinese } from '../addons/sc-functions-miscellaneous';
 import { reduxActions } from '../addons/sc-redux-actions';
+import * as OpenCC from 'opencc-js';
 
 export class SCTextLegacy extends SCTextCommon {
   static properties = {
@@ -88,6 +89,8 @@ export class SCTextLegacy extends SCTextCommon {
         this._scrollToSection(window.location.hash.substring(1));
       }, 0);
     };
+    this.suttaContent = '';
+    this.isTraditionalChinese = false;
   }
 
   createRenderRoot() {
@@ -104,7 +107,7 @@ export class SCTextLegacy extends SCTextCommon {
       </style>
 
       <main id="simple_text_content" class="html-text-content" ?hidden=${this.isTextViewHidden}>
-        ${unsafeHTML(this._extractSuttaText())}
+        ${unsafeHTML(this.suttaContent)}
       </main>
 
       <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
@@ -145,6 +148,7 @@ export class SCTextLegacy extends SCTextCommon {
       this.actions.changeDisplaySettingMenuState(false);
     });
     this.inputElement = this.querySelector('#simple_text_content');
+    this._extractSuttaText();
   }
 
   firstUpdated() {
@@ -153,6 +157,7 @@ export class SCTextLegacy extends SCTextCommon {
     this._updateURLSearchParams();
     this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     this.scActionItems?.hideSpeakerButton();
+    this._showChineseConverterButton();
   }
 
   disconnectedCallback() {
@@ -163,6 +168,7 @@ export class SCTextLegacy extends SCTextCommon {
     if (changedProperties.has('sutta')) {
       this.author = this.sutta?.author;
       this.lang = this.sutta?.lang;
+      this.isTraditionalChinese = this.lang === 'lzh';
     }
   }
 
@@ -191,6 +197,10 @@ export class SCTextLegacy extends SCTextCommon {
 
   _articleElement() {
     return this.querySelectorAll('article');
+  }
+
+  _showChineseConverterButton() {
+    reduxActions.changeDisplayChineseConverterState(isChinese(this.sutta?.lang));
   }
 
   _showHighlightingChanged() {
@@ -266,9 +276,31 @@ export class SCTextLegacy extends SCTextCommon {
 
   _extractSuttaText() {
     if (this.sutta?.text) {
-      return this.sutta.text.replace(/<head>((.|\n)*)<\/head>/, '');
+      this.suttaContent = this.sutta.text.replace(/<head>((.|\n)*)<\/head>/, '');
     }
     return '';
+  }
+
+  toggleChineseConvert() {
+    if (!this.sutta?.text) {
+      return '';
+    }
+    try {
+      const suttaText = this.sutta.text.replace(/<head>((.|\n)*)<\/head>/, '');
+      const convertParam = this.isTraditionalChinese
+        ? { from: 'tw', to: 'cn' }
+        : { from: 'cn', to: 'tw' };
+
+      const converter = OpenCC.Converter(convertParam);
+      this.suttaContent = converter(suttaText);
+      this.isTraditionalChinese = !this.isTraditionalChinese;
+      this.requestUpdate();
+
+      return '';
+    } catch (error) {
+      console.error('Simplified Chinese to Traditional Chinese conversion failed:', error);
+      return 'Simplified Chinese to Traditional Chinese conversion failed.';
+    }
   }
 
   // returns the meta-data from the loaded sutta text

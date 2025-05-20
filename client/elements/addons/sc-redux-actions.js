@@ -221,4 +221,11 @@ export class reduxActions {
       params,
     });
   }
+
+  static changeDisplayChineseConverterState(displayChineseConverterButton) {
+    store.dispatch({
+      type: 'CHANGE_DISPLAY_CHINESE_CONVERTER_BUTTON_STATE',
+      displayChineseConverterButton,
+    });
+  }
 }

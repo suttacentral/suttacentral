@@ -68,6 +68,7 @@ const initialState = {
   displaySuttaInfo: false,
   displayParallelTableView: false,
   displaySearchOptionsButton: false,
+  displayChineseConverterButton: false,
   tableOfContents: {
     items: [],
     disableToCListStyle: false,
@@ -239,6 +240,8 @@ const reducer = (state, action) => {
       return { ...state, linearProgressActive: action.linearProgressActive };
     case 'CHANGE_DISPLAY_SEARCH_OPTIONS_BUTTON_STATE':
       return { ...state, displaySearchOptionsButton: action.displaySearchOptionsButton };
+    case 'CHANGE_DISPLAY_CHINESE_CONVERTER_BUTTON_STATE':
+      return { ...state, displayChineseConverterButton: action.displayChineseConverterButton };
     case 'SET_SEARCH_DISPLAY_LANGUAGES_ARRAY':
       return {
         ...state,

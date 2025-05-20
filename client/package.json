@@ -45,7 +45,8 @@
     "redux": "^4.2.1",
     "viewerjs": "^1.11.7",
     "web-animations-js": "^2.3.2",
-    "workbox-sw": "7.3.0"
+    "workbox-sw": "7.3.0",
+    "opencc-js": "1.0.5"
   },
   "devDependencies": {
     "@babel/core": "7.23.6",

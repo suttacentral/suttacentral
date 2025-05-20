@@ -4,7 +4,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from '../addons/sc-redux-actions';
-import { getURLParam } from '../addons/sc-functions-miscellaneous';
+import { getURLParam, isChinese } from '../addons/sc-functions-miscellaneous';
 import { SCTextCommon } from './sc-text-common';
 import '../lookups/sc-lookup-pli';
 import '../lookups/sc-lookup-lzh2en';
@@ -33,6 +33,7 @@ import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-
 import { setNavigation } from '../navigation/sc-navigation-common';
 import { paliReferenceEditions } from './sc-text-functions';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+import * as OpenCC from 'opencc-js';
 
 
 export class SCTextBilara extends SCTextCommon {
@@ -110,6 +111,7 @@ export class SCTextBilara extends SCTextCommon {
       ['asterisk', showAsterisk],
     ]);
     this.isMultiSutta = false;
+    this.isTraditionalChinese = false;
   }
 
   createRenderRoot() {
@@ -150,6 +152,13 @@ export class SCTextBilara extends SCTextCommon {
     this._updateURLSearchParams();
     this.scActionItems?.showSpeakerButton();
     this.isMultiSutta = this.checkIfMultiSutta(this.suttaId);
+    this._showChineseConverterButton();
+    this.isTraditionalChinese = this.translatedSutta?.lang === 'lzh' || this.rootSutta?.lang === 'lzh';
+  }
+
+  _showChineseConverterButton() {
+    const hasChinese = this.translatedSutta?.lang === 'lzh' || this.rootSutta?.lang === 'lzh' || this.translatedSutta?.lang === 'zh' || this.rootSutta?.lang === 'zh';
+    reduxActions.changeDisplayChineseConverterState(hasChinese);
   }
 
   _setupSelectionEvents() {
@@ -246,6 +255,39 @@ export class SCTextBilara extends SCTextCommon {
     }
     this._serveRangeSuttasPerSutta();
     reduxActions.changeLinearProgressActiveState(false);
+  }
+
+  toggleChineseConvert() {
+    if (!this.bilaraRootSutta) {
+      return '';
+    }
+    try {
+      const convertParam = this.isTraditionalChinese
+        ? { from: 'tw', to: 'cn' }
+        : { from: 'cn', to: 'tw' };
+      const converter = OpenCC.Converter(convertParam);
+      const convertObject = (obj) => {
+        if (!obj) {
+          return null;
+        }
+        const result = {};
+        for (const [key, value] of Object.entries(obj)) {
+          if (typeof value === 'string') {
+            result[key] = converter(value);
+          } else {
+            result[key] = value;
+          }
+        }
+        return result;
+      };
+      this.bilaraRootSutta = convertObject(this.bilaraRootSutta);
+      this.bilaraTranslatedSutta = convertObject(this.bilaraTranslatedSutta);
+      this.isTraditionalChinese = !this.isTraditionalChinese;
+      this._updateView();
+      return '';
+    } catch (error) {
+      return 'Simplified Chinese to Traditional Chinese conversion failed.';
+    }
   }
 
   _serveRangeSuttasPerSutta() {
