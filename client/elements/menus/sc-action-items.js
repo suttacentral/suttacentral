@@ -24,6 +24,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     displayViewModeButton: { type: Boolean },
     displaySearchOptionsButton: { type: Boolean },
     displaySpeakerButton: { type: Boolean },
+    displayChineseConverterButton: { type: Boolean },
     colorTheme: { type: String },
     suttaMetaText: { type: String },
     suttaPublicationInfo: { type: Object },
@@ -53,8 +54,14 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.displayViewModeButton = state.displayViewModeButton;
     this.displayParallelTableView = state.displayParallelTableView;
     this.displaySearchOptionsButton = state.displaySearchOptionsButton;
+    this.displayChineseConverterButton = state.displayChineseConverterButton;
     this.displaySpeakerButton = false;
     this.displayCompactButton = false;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.scSiteLayout = document.querySelector('sc-site-layout');
   }
 
   render() {
@@ -95,7 +102,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
         #btnShowParallels:after,
         #btnShowToC:after,
         #btnShowParallelTableView:after,
-        #btnListenThisSutta::after {
+        #btnListenThisSutta::after,
+        #btnChineseConverter:after {
           font-size: var(--sc-font-size-xxs);
           font-weight: 600;
           font-stretch: condensed;
@@ -103,6 +111,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
           bottom: 2px;
           width: 100%;
           text-align: center;
+        }
+
+        #btnChineseConverter:after {
+          font-size: 8px;
         }
 
         #btnViewCompact:after {
@@ -143,6 +155,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
         #btnListenThisSutta:after {
           content: 'Voice';
+        }
+
+        #btnChineseConverter:after {
+          content: '转换';
         }
 
         [lang='my'] {
@@ -291,6 +307,16 @@ export class SCActionItems extends LitLocalized(LitElement) {
         >
           ${icon.speaker}
         </md-icon-button>
+
+        <md-icon-button
+          class="white-icon toolButtons"
+          id="btnChineseConverter"
+          slot="actionItems"
+          style="display: none;"
+          @click=${this.#btnChineseConverterClick}
+        >
+          ${icon.chinese_convert}
+        </md-icon-button>
       </div>
     `;
   }
@@ -301,9 +327,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.#viewModeChanged();
     this.#displayToCButtonStateChange();
     this.#setBtnShowParallelTableViewDisplayState();
-    this.#setBtnShowParallelTableViewIcon();
     this.#displaySearchOptionsButtonStateChange();
-    this.scSiteLayout = document.querySelector('sc-site-layout');
+    this.#displayChineseConverterButtonStateChange();
     this.#setToolBarLanguage();
     document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
@@ -602,6 +627,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
       this.displaySearchOptionsButton = state.displaySearchOptionsButton;
       this.#displaySearchOptionsButtonStateChange();
     }
+    if (this.displayChineseConverterButton !== state.displayChineseConverterButton) {
+      this.displayChineseConverterButton = state.displayChineseConverterButton;
+      this.#displayChineseConverterButtonStateChange();
+    }
   }
 
   updated(changedProps) {
@@ -655,6 +684,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.#toggleElementVisibility('btnShowParallels', this.displayToolButton);
   }
 
+  #displayChineseConverterButtonStateChange() {
+    this.#toggleElementVisibility('btnChineseConverter', this.displayChineseConverterButton);
+  }
+
   #resetToolButtonsActiveClass() {
     this.shadowRoot.querySelectorAll('.toolButtons').forEach(e => {
       if (e.classList.contains('active-light') || e.classList.contains('active-dark')) {
@@ -676,6 +709,14 @@ export class SCActionItems extends LitLocalized(LitElement) {
   #btnListenThisSuttaClick() {
     const textBilara = document.querySelector('sc-text-bilara');
     textBilara?.listenThisSutta();
+  }
+
+  #btnChineseConverterClick() {
+    const textLegacy = document.querySelector('sc-text-legacy');
+    textLegacy?.toggleChineseConvert();
+
+    const textBilara = document.querySelector('sc-text-bilara');
+    textBilara?.toggleChineseConvert();
   }
 
   #setToolBarLanguage() {
