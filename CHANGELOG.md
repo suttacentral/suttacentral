@@ -1,5 +1,38 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.20
+
+- Enhance: enable transition between traditional and simplified Chinese.
+
+## 2025.5.19
+
+- Modify the lit components code to avoid cyclic updates. 
+
+## 2025.5.16
+
+- Increase test coverage for TextInfoModel.
+
+## 2025.5.15
+
+- Enhance: ability to select only the translation text when root texts visible.
+
+## 2025.5.13
+
+- Fixed a navigation bar flickering problem, upgrade the dependencies.
+
+## 2025.5.7
+
+- Tests written and type hints added for TextInfoModel class. 
+
+## 2025.4.23
+
+- Delete dead code from sc_html.py.
+- Delete failing tests for removed methods.
+
+## 2025.4.10
+
+- StagePrinter writes clock and cpu time to CSV.
+
 ## 2025.3.28
 
 - Rewrote generate_aql_for_multi_keyword.
