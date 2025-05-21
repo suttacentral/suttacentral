@@ -23,6 +23,11 @@ export class SCSuttaplexTx extends LitElement {
 
   static styles = [suttaplexTxCss];
 
+  constructor() {
+    super();
+    this.editionsDetails = new Map([['sct', 'SuttaCentral Taishō']]);
+  }
+
   render() {
     return this.translation
       ? html`
@@ -33,7 +38,12 @@ export class SCSuttaplexTx extends LitElement {
           >
             ${icon.open_book}
             <div class="tx-details">
-              <span class="tx-creator">${this.translation?.author}</span>
+              <span class="tx-creator">
+                  ${this.translation?.author ||
+                    (this.translation?.author_uid && this.editionsDetails.get(this.translation.author_uid)) ||
+                    this.translation?.author_uid ||
+                    ''}
+              </span>
               <span class="tx-publication"> ${this.publicationInfoTemplate()} </span>
               <span class="badges"> ${this.badgeTemplate()} </span>
               <md-ripple></md-ripple>
