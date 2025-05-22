@@ -308,3 +308,70 @@ class TestTextInfoModel:
             'bold' : {'a', 'b', 'c', 'd'},
             'italic' : {'w', 'x', 'y', 'z'},
         }
+
+    def test_multiple_files_added(self, text_info, base_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+
+        paths = [
+            Path('html_text/en/pli/sutta/mn/mn1.html'),
+            Path('html_text/en/pli/sutta/mn/mn2.html'),
+            Path('html_text/en/pli/sutta/mn/mn3.html'),
+        ]
+
+        files_to_process = dict()
+        for path in paths:
+            files_to_process[str(path)] = 0
+            add_html_file(base_path / path, html)
+
+        language_path = base_path / 'html_text/en'
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        assert len(text_info.added_documents) == 3
+
+    def test_files_not_in_files_to_process_are_skipped(self, text_info, base_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+
+        paths = [
+            Path('html_text/en/pli/sutta/mn/mn1.html'),
+            Path('html_text/en/pli/sutta/mn/mn2.html'),
+            Path('html_text/en/pli/sutta/mn/mn3.html'),
+        ]
+
+        for path in paths:
+            add_html_file(base_path / path, html)
+
+        files_to_process = {
+            'html_text/en/pli/sutta/mn/mn1.html' : 0,
+            'html_text/en/pli/sutta/mn/mn3.html' : 0,
+        }
+
+        language_path = base_path / 'html_text/en'
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        file_names = [Path(document['file_path']).name
+                 for document in text_info.added_documents]
+
+        assert file_names == ['mn1.html', 'mn3.html']
+
+    def test_force_flag_causes_all_files_to_be_added(self, text_info, base_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+
+        paths = [
+            Path('html_text/en/pli/sutta/mn/mn1.html'),
+            Path('html_text/en/pli/sutta/mn/mn2.html'),
+        ]
+
+        for path in paths:
+            add_html_file(base_path / path, html)
+
+        files_to_process = {
+            'html_text/en/pli/sutta/mn/mn1.html': 0,
+        }
+
+        language_path = base_path / 'html_text/en'
+        text_info.process_lang_dir(language_path, base_path, files_to_process, force=True)
+
+        file_names = [Path(document['file_path']).name
+                      for document in text_info.added_documents]
+
+        assert file_names == ['mn1.html', 'mn2.html']
