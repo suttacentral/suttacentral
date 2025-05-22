@@ -249,6 +249,16 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
   #lindenLeavesTemplate() {
     const navArray = this.navArray || [];
     const { length } = navArray;
+
+    const getLocalizedTitle = (title) => {
+      if (!title) return '';
+      const localizedLower = this.tryLocalize(`interface:${title.toLowerCase()}`, null);
+      if (localizedLower) return localizedLower;
+      const localized = this.tryLocalize(`interface:${title}`, null);
+      if (localized) return localized;
+      return title;
+    };
+
     return html`
       <ul>
         ${navArray.map(
@@ -258,15 +268,13 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
               ${i < length - 1 ? html`
                 <li @click=${() => this._navClick(nav)}>
                   <a class="nav-link" data-uid=${nav.uid} href=${nav.url}>
-                    ${this.tryLocalize(`interface:${nav.title.toLowerCase()}`, nav.title)}
+                    ${getLocalizedTitle(nav.title)}
                     <md-ripple></md-ripple>
                   </a>
                   ${i < length - 1 ? icon.chevron_right : ''}
                 </li>
               ` : html`
-                <li>
-                  <p class="last-leaves">${this.tryLocalize(`interface:${nav.title.toLowerCase()}`, nav.title)}</p>
-                </li>
+                <li><p class="last-leaves">${getLocalizedTitle(nav.title)}</p></li>
               `}
             `}
           `
