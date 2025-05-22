@@ -1,5 +1,10 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.21
+
+- Fixed a problem where some static page titles were not localized in the breadcrumbs.
+- Fixed a problem where the author name of a suttaplex card was not displayed.
+
 ## 2025.5.20
 
 - Enhance: enable transition between traditional and simplified Chinese.
