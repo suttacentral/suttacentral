@@ -56,18 +56,7 @@ class TextInfoModel:
 
                 root = sc_html.fromstring(text)
 
-                # Set codepoint data
-
-                _stack = [root]
-                while _stack:
-                    e = _stack.pop()
-                    if self.is_bold(lang_uid, e):
-                        unicode_points['bold'].update(e.text_content())
-                    elif self.is_italic(e):
-                        unicode_points['italic'].update(e.text_content())
-                    else:
-                        _stack.extend(e)
-                unicode_points['normal'].update(root.text_content())
+                self._extract_unicode_points(lang_uid, root, unicode_points)
 
                 author = self._get_author(root, html_file)
                 author_data = self.get_author_by_name(author, html_file)
@@ -114,6 +103,18 @@ class TextInfoModel:
         self.update_code_points(
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
         )
+
+    def _extract_unicode_points(self, lang_uid, root, unicode_points):
+        _stack = [root]
+        while _stack:
+            e = _stack.pop()
+            if self.is_bold(lang_uid, e):
+                unicode_points['bold'].update(e.text_content())
+            elif self.is_italic(e):
+                unicode_points['italic'].update(e.text_content())
+            else:
+                _stack.extend(e)
+        unicode_points['normal'].update(root.text_content())
 
     def _should_process_file(self, data_dir, files_to_process, force, html_file):
         return (
