@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class TextInfoModel:
     def __init__(self):
-        pass
+        self._ppn: PaliPageNumbinator | None = None
 
     def get_author_by_name(self, name, file):
         raise NotImplementedError
@@ -45,7 +45,7 @@ class TextInfoModel:
         # But it shouldn't be created at all if we don't need it.
         # So we use a getter, and delete it when we are done.
 
-        self._ppn = None
+
         if lang_dir.stem == 'pli':
             try:
                 self._ppn = PaliPageNumbinator(data_dir=data_dir)
