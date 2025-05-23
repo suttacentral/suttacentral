@@ -58,7 +58,7 @@ class TextInfoModel:
 
                 self._extract_unicode_points(lang_uid, root, unicode_points)
 
-                author = self._get_author(root, html_file)
+                author = self._get_authors_long_name(root, html_file)
                 author_data = self.get_author_by_name(author, html_file)
 
                 if author_data:
@@ -131,7 +131,7 @@ class TextInfoModel:
         ]
         return files
 
-    def _get_author(self, root, file):
+    def _get_authors_long_name(self, root, file):
         author = None
         e = root.select_one('meta[author]')
         if e:
