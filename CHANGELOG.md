@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.23
+
+- Improve the code of sc-site-layout.js and sc-navigation.js.
+
 ## 2025.5.21
 
 - Fixed a problem where some static page titles were not localized in the breadcrumbs.
