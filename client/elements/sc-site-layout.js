@@ -28,8 +28,6 @@ const microSentryClient = new BrowserMicroSentryClient({
 export class SCSiteLayout extends LitLocalized(LitElement) {
   static properties = {
     inputLanguage: { type: String },
-    infoDialogMetaArea: { type: String },
-    item: { type: Object },
     colorsResponse: { type: Object },
     siteLanguage: { type: String },
     appColorTheme: { type: String },
@@ -45,8 +43,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     super();
     const storeState = store.getState();
     this.inputLanguage = '';
-    this.infoDialogMetaArea = storeState.suttaMetaText;
-    this.item = {};
     this.colorsResponse = {};
     this.siteLanguage = storeState.siteLanguage;
     this.appColorTheme = storeState.colorTheme;
@@ -66,21 +62,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     const { getUrlLangParam } = this;
     if (getUrlLangParam !== siteLanguage) {
       reduxActions.changeTemporarySiteLanguage(getUrlLangParam);
-    }
-  }
-
-  async changeSiteLanguage(lang) {
-    await this._fetchLanguageList();
-    if (!this.languageListResponse || this.languageListResponse.length === 0) {
-      return;
-    }
-    try {
-      const chosenLanguage = this.languageListResponse.find(x => x.iso_code === lang);
-      if (chosenLanguage) {
-        reduxActions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
-      }
-    } catch (e) {
-      console.error(e);
     }
   }
 
@@ -136,7 +117,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
               ${icon.sc_logo}
               <span>${unsafeHTML(this.toolbarTitle)}</span>
             </div>
-            <div id="subTitle" lang=${this.siteLanguage}>${this.localize('interface:pageSubtitle')}</div>
+            <div id="subTitle" lang=${this.language}>${this.localize('interface:pageSubtitle')}</div>
           </div>
         </div>
 
@@ -295,6 +276,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (changedProps.has('changedRoute')) {
       this._routeChanged();
+      this._updateUrlParams();
     }
     if (changedProps.has('toolbarPosition')) {
       this._setToolbarPosition();
@@ -309,9 +291,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.displayToolButton !== state.displayToolButton) {
       this.displayToolButton = state.displayToolButton;
     }
-    if (this.infoDialogMetaArea !== state.suttaMetaText) {
-      this.infoDialogMetaArea = state.suttaMetaText;
-    }
     if (this.toolbarTitle !== state.toolbarOptions.title) {
       this.toolbarTitle = state.toolbarOptions.title;
     }
@@ -320,7 +299,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
-      this._updateUrlParams();
     }
     if (this.linearProgressActive !== state.linearProgressActive) {
       this.linearProgressActive = state.linearProgressActive;
@@ -475,7 +453,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   _setSiteLanguage() {
     const mainHtmlRoot = document.getElementById('main_html_root');
     if (mainHtmlRoot) {
-      mainHtmlRoot.lang = this.isSupportedLanguage(this.siteLanguage) ? this.siteLanguage : this.fallbackLanguage();
+      mainHtmlRoot.lang = this.isSupportedLanguage(this.language) ? this.language : this.fallbackLanguage();
     }
   }
 
