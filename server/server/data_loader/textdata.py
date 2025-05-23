@@ -117,10 +117,7 @@ class TextInfoModel:
         unicode_points['normal'].update(root.text_content())
 
     def _should_process_file(self, data_dir, files_to_process, force, html_file):
-        return (
-                not force
-                and str(html_file.relative_to(data_dir)) not in files_to_process
-        )
+        return not force and str(html_file.relative_to(data_dir)) not in files_to_process
 
     def _files_for_language(self, lang_dir):
         all_files = sorted(
