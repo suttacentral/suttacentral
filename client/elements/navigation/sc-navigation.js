@@ -41,12 +41,16 @@ export class SCNavigation extends LitLocalized(LitElement) {
     this.creatorOfPublications = new Map();
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this._viewModeChanged();
+  }
+
   firstUpdated() {
     this.#extractUidsFromEditionsInfo();
     if (document.referrer === '') {
       this._verifyURL();
     }
-    this._viewModeChanged();
     this._parseURL();
   }
 
