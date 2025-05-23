@@ -41,12 +41,9 @@ class TextInfoModel:
         unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
 
         lang_uid = lang_dir.stem
-        all_files = sorted(
-            lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
-        )
-        files = [f for f in all_files if f.stem == 'metadata'] + [
-            f for f in all_files if f.stem != 'metadata'
-        ]
+
+        files = self._files_for_language(lang_dir)
+
         for html_file in files:
             try:
                 # Should we process this file?
@@ -125,6 +122,15 @@ class TextInfoModel:
         self.update_code_points(
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
         )
+
+    def _files_for_language(self, lang_dir):
+        all_files = sorted(
+            lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
+        )
+        files = [f for f in all_files if f.stem == 'metadata'] + [
+            f for f in all_files if f.stem != 'metadata'
+        ]
+        return files
 
     def _get_author(self, root, file):
         author = None
