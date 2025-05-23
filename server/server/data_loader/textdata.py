@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class TextInfoModel:
     def __init__(self):
-        self._ppn: PaliPageNumbinator | None = None
+        pass
 
     def get_author_by_name(self, name, file):
         raise NotImplementedError
@@ -40,19 +40,7 @@ class TextInfoModel:
         # files_to_process is actually "files that may be processed" its
         # not the list of files to actually process
 
-        # The pagenumbinator should be scoped because it uses
-        # a large chunk of memory which should be gc'd.
-        # But it shouldn't be created at all if we don't need it.
-        # So we use a getter, and delete it when we are done.
-
-
-        if lang_dir.stem == 'pli':
-            try:
-                self._ppn = PaliPageNumbinator(data_dir=data_dir)
-            except:
-                logger.exception("Error while loading Pali volpages")
-
-            # It should be noted SuttaCentral does not use bolditalic
+        # It should be noted SuttaCentral does not use bolditalic
         unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
 
         lang_uid = lang_dir.stem
@@ -141,8 +129,6 @@ class TextInfoModel:
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
         )
 
-        del self._ppn
-
     def _get_author(self, root, file):
         author = None
         e = root.select_one('meta[author]')
@@ -194,20 +180,6 @@ class TextInfoModel:
             else:
                 return
             return '{}'.format(e.attrib['id']).replace('t', 'T ')
-        elif lang_uid == 'pli':
-            if self._ppn is None:
-                return None
-            ppn = self._ppn
-            e = element.next_in_order()
-            while e:
-                if e.tag == 'a' and e.select_one('.ms'):
-                    try:
-                        return ppn.get_pts_ref_from_pid(e.attrib['id'])
-                    except:
-                        logger.exception(f'Error while loading Pali volpage for {uid}')
-                        return None
-                e = e.next_in_order()
-
         return None
 
 
@@ -271,129 +243,3 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.flush_documents()
-
-
-# This code converts the volume page concordence from mahasangiti
-# data dump into a form useful for us
-# Maybe put it in DB one day
-
-
-class PaliPageNumbinator:
-    msbook_to_ptsbook_mapping = {
-        'a': 'AN',
-        'ap': 'Ap',
-        'bu': 'Bv',
-        'cn': 'Cnd',
-        'cp': 'Cp',
-        'd': 'DN',
-        'dh': 'Dhp',
-        'dhs': 'Ds',
-        'dht': 'Dt',
-        'it': 'It',
-        'j': 'Ja',
-        'kh': 'Kp',
-        'kv': 'Kv',
-        'm': 'MN',
-        'mi': 'Mil',
-        'mn': 'Mnd',
-        'ne': 'Ne',
-        'p': 'Pt',
-        'pe': 'Pe',
-        'ps': 'Ps',
-        'pu': 'Pp',
-        'pv': 'Pv',
-        's': 'SN',
-        'sn': 'Snp',
-        'th1': 'Thag',
-        'th2': 'Thig',
-        'ud': 'Ud',
-        'v': 'Vin',
-        'vbh': 'Vb',
-        'vv': 'Vv',
-        'y': 'Ya',
-    }
-
-    default_attempts = list(range(0, -16, -1)) + list(range(1, 6))
-
-    def __init__(self, data_dir):
-        self.mapping = {}
-        self.load(data_dir)
-
-    def load(self, data_dir):
-        with (data_dir / 'misc' / 'all_pali_concordance.json').open('r', encoding='utf8') as f:
-            entries = json.load(f)
-
-        # v is an array of reference-strings. Each such string is a
-        # reference into a particular manuscript edition for the given
-        # text segment (k).
-        self.mapping = mapping = {}
-        for k, v in entries.items():
-
-            # We are so far only interested in concordance between Mahasangiti
-            # volumes and Pali Text Society ones.
-            ms = []
-            pts = []
-
-            # Pick out only the references we're interested in.
-            for ref in v:
-                match = regex.fullmatch(r'ms(\d+[A-Z][a-z]*\d*)_(\d+)', ref)
-                if match:
-                    msbook, msnum = match.groups()
-                    ms.append((msbook.lower(), int(msnum)))
-                    continue
-
-                match = regex.fullmatch(r'(pts-vp-pli(?:[12]ed)?)(?:(\d+)\.)?(\d+)', ref)
-                if match:
-                    pts_edition, vol, page = match.groups()
-                    if pts_edition == 'pts-vp-pli':
-                        pts_edition = 'pts-vp-pli1ed'
-                    pts.append((pts_edition, vol, int(page)))
-                    continue
-
-                match = regex.fullmatch(r'vnp(\d+)', ref)
-                if match:
-                    verse = match[1]
-                    pts.append(('vnp', None, int(verse)))
-                    continue
-
-            for msbook, msnum in ms:
-                for pts_edition, vol, page in pts:
-                    mapping[msbook, msnum, pts_edition] = (vol, page)
-
-    def msbook_to_ptsbook(self, msbook):
-        m = regex.match(r'\d+([A-Za-z]+(?:(?<=th)[12])?)', msbook)
-        return self.msbook_to_ptsbook_mapping[m[1]]
-
-    def get_pts_ref_from_pid(self, pid):
-        m = regex.match(r'p_(\w+)_(\d+)', pid)
-
-        msbook = m[1].lower()
-        msnum = int(m[2])
-        return self.get_pts_ref(msbook, msnum)
-
-    def get_pts_ref(self, msbook, msnum, attempts=None):
-        if not attempts:
-            attempts = self.default_attempts
-
-        refs = {}
-        for edition in ['pts-vp-pli1ed', 'pts-vp-pli2ed', 'vnp']:
-            for i in attempts:
-                n = msnum + i
-                if n < 1:
-                    continue
-                key = (msbook, n, edition)
-                if key in self.mapping:
-                    book, num = self.mapping[key]
-                    ptsbook = self.msbook_to_ptsbook(msbook)
-                    refs[edition] = self.format_book(ptsbook, book, num)
-                    break
-        return refs or None
-
-    def format_book(self, ptsbook, book, num):
-        if not book:
-            return f'{ptsbook} {num}'
-
-        book = {'1': 'i', '2': 'ii', '3': 'iii', '4': 'iv', '5': 'v', '6': 'vi'}.get(
-            book, book
-        )
-        return f'{ptsbook} {book} {num}'
