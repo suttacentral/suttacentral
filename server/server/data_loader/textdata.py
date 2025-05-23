@@ -37,9 +37,6 @@ class TextInfoModel:
             files_to_process: dict[str, int] | None = None,
             force: bool = False
     ):
-        # files_to_process is actually "files that may be processed" its
-        # not the list of files to actually process
-
         # It should be noted SuttaCentral does not use bolditalic
         unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
 
