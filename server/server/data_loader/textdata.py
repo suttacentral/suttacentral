@@ -47,22 +47,22 @@ class TextInfoModel:
         files = [f for f in all_files if f.stem == 'metadata'] + [
             f for f in all_files if f.stem != 'metadata'
         ]
-        for htmlfile in files:
+        for html_file in files:
             try:
                 # Should we process this file?
 
                 if (
                         not force
-                        and str(htmlfile.relative_to(data_dir)) not in files_to_process
+                        and str(html_file.relative_to(data_dir)) not in files_to_process
                 ):
                     continue
 
                 # By the way we can't just iterate over the files_to_process
                 # because we also care about the previous and next file
 
-                logger.info('Adding file: {!s}'.format(htmlfile))
-                uid = htmlfile.stem
-                with htmlfile.open('r', encoding='utf8') as f:
+                logger.info('Adding file: {!s}'.format(html_file))
+                uid = html_file.stem
+                with html_file.open('r', encoding='utf8') as f:
                     text = f.read()
 
                 root = sc_html.fromstring(text)
@@ -80,8 +80,8 @@ class TextInfoModel:
                         _stack.extend(e)
                 unicode_points['normal'].update(root.text_content())
 
-                author = self._get_author(root, htmlfile)
-                author_data = self.get_author_by_name(author, htmlfile)
+                author = self._get_author(root, html_file)
+                author_data = self.get_author_by_name(author, html_file)
 
                 if author_data:
                     author_uid = author_data['uid']
@@ -100,7 +100,7 @@ class TextInfoModel:
                 name = self._get_name(root, lang_uid, uid)
                 volpage = self._get_volpage(root, lang_uid, uid)
 
-                mtime = htmlfile.stat().st_mtime
+                mtime = html_file.stat().st_mtime
 
                 text_info = {
                     "uid": uid,
@@ -113,13 +113,13 @@ class TextInfoModel:
                     "publication_date": publication_date,
                     "volpage": volpage,
                     "mtime": mtime,
-                    "file_path": str(htmlfile.resolve()),
+                    "file_path": str(html_file.resolve()),
                 }
 
                 self.add_document(text_info)
 
             except Exception as e:
-                print('An exception occurred: {!s}'.format(htmlfile))
+                print('An exception occurred: {!s}'.format(html_file))
                 raise
 
         self.update_code_points(
