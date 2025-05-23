@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class TextInfoModel:
     def __init__(self):
-        self._metadata = {}
+        pass
 
     def get_author_by_name(self, name, file):
         raise NotImplementedError
