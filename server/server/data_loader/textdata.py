@@ -47,7 +47,7 @@ class TextInfoModel:
         files = [f for f in all_files if f.stem == 'metadata'] + [
             f for f in all_files if f.stem != 'metadata'
         ]
-        for i, htmlfile in enumerate(files):
+        for htmlfile in files:
             try:
                 # Should we process this file?
 
