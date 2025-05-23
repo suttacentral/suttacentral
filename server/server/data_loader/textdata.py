@@ -46,13 +46,8 @@ class TextInfoModel:
 
         for html_file in files:
             try:
-                # Should we process this file?
-
                 if self._should_process_file(data_dir, files_to_process, force, html_file):
                     continue
-
-                # By the way we can't just iterate over the files_to_process
-                # because we also care about the previous and next file
 
                 logger.info('Adding file: {!s}'.format(html_file))
                 uid = html_file.stem
