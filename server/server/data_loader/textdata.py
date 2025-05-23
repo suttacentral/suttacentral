@@ -48,10 +48,7 @@ class TextInfoModel:
             try:
                 # Should we process this file?
 
-                if (
-                        not force
-                        and str(html_file.relative_to(data_dir)) not in files_to_process
-                ):
+                if self._should_process_file(data_dir, files_to_process, force, html_file):
                     continue
 
                 # By the way we can't just iterate over the files_to_process
@@ -121,6 +118,12 @@ class TextInfoModel:
 
         self.update_code_points(
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
+        )
+
+    def _should_process_file(self, data_dir, files_to_process, force, html_file):
+        return (
+                not force
+                and str(html_file.relative_to(data_dir)) not in files_to_process
         )
 
     def _files_for_language(self, lang_dir):
