@@ -38,6 +38,26 @@ class UnsegmentedText:
 
         return None
 
+    def title(self, lang_uid, uid):
+        root = self._root
+        header = root.select_one('header')
+        if not header:
+            logger.error(f'No header found in {lang_uid}/{uid}')
+            return ''
+
+        h1 = header.select_one('h1')
+        if not h1:
+            logger.error(f'No h1 found in {lang_uid}/{uid}')
+            return ''
+
+        if lang_uid == 'lzh':
+            left_side = h1.select_one('.mirror-left')
+            right_side = h1.select_one('.mirror-right')
+            if left_side and right_side:
+                return right_side.text_content() + ' (' + left_side.text_content() + ')'
+
+        return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
+
 
 class TextInfoModel:
     def __init__(self):
@@ -106,7 +126,8 @@ class TextInfoModel:
 
                 publication_date = unsegmented_text.publication_date()
 
-                name = self._get_title(root, lang_uid, uid)
+                name = unsegmented_text.title(lang_uid, uid)
+
                 volpage = self._get_volpage(root, lang_uid, uid)
 
                 mtime = html_file.stat().st_mtime
@@ -158,25 +179,6 @@ class TextInfoModel:
             f for f in all_files if f.stem != 'metadata'
         ]
         return files
-
-    def _get_title(self, root, lang_uid, uid):
-        header = root.select_one('header')
-        if not header:
-            logger.error(f'No header found in {lang_uid}/{uid}')
-            return ''
-
-        h1 = header.select_one('h1')
-        if not h1:
-            logger.error(f'No h1 found in {lang_uid}/{uid}')
-            return ''
-
-        if lang_uid == 'lzh':
-            left_side = h1.select_one('.mirror-left')
-            right_side = h1.select_one('.mirror-right')
-            if left_side and right_side:
-                return right_side.text_content() + ' (' + left_side.text_content() + ')'
-
-        return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
     def _get_volpage(self, element, lang_uid, uid):
         if lang_uid == 'lzh':
