@@ -182,6 +182,7 @@ def process_search_results(
     total,
     selected_languages
 ):
+    hits = simplify_results(hits)
     if total == 0:
         total = len(hits)
     if matchpartial == 'true':
@@ -205,6 +206,32 @@ def process_search_results(
     if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
         sort_highlight_clips(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
+
+
+def simplify_results(hits):
+    """
+    Remove duplicate search results, and give priority to keeping the bilara_text version
+    Args:
+        hits: A list of search results, each element contains the uid and is_bilara_text fields
+    Returns:
+        Search results list after deduplication
+    """
+    seen_uids = {}
+    simplified_hits = []
+
+    for hit in hits:
+        uid = hit['uid']
+        if uid not in seen_uids:
+            seen_uids[uid] = len(simplified_hits)
+            simplified_hits.append(hit)
+        else:
+            existing_index = seen_uids[uid]
+            existing_hit = simplified_hits[existing_index]
+
+            if hit['is_bilara_text'] and not existing_hit['is_bilara_text']:
+                simplified_hits[existing_index] = hit
+
+    return simplified_hits
 
 
 def sort_highlight_clips(hits):
