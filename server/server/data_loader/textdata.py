@@ -129,7 +129,6 @@ class TextInfoModel:
                     text = f.read()
 
                 unsegmented_text = UnsegmentedText(html_file, text)
-                root = sc_html.fromstring(text)
 
                 unsegmented_text.extract_unicode_points(lang_uid, unicode_points)
 
