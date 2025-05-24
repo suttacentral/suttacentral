@@ -10,6 +10,26 @@ from . import sc_html, util
 logger = logging.getLogger(__name__)
 
 
+class UnsegmentedText:
+    def __init__(self, html: str):
+        pass
+
+    def get_authors_long_name(self, root, file):
+        author = None
+        e = root.select_one('meta[author]')
+        if e:
+            author = e.attrib['author']
+
+        if not author:
+            e = root.select_one('meta[name=author]')
+            if e:
+                author = e.attrib['content']
+
+        if not author:
+            logging.critical(f'Author not found: {str(file)}')
+        return author
+
+
 class TextInfoModel:
     def __init__(self):
         pass
@@ -54,11 +74,13 @@ class TextInfoModel:
                 with html_file.open('r', encoding='utf8') as f:
                     text = f.read()
 
+                unsegmented_text = UnsegmentedText(text)
                 root = sc_html.fromstring(text)
 
                 self._extract_unicode_points(lang_uid, root, unicode_points)
 
-                author = self._get_authors_long_name(root, html_file)
+                author = unsegmented_text.get_authors_long_name(root, html_file)
+
                 author_data = self.get_author_by_name(author, html_file)
 
                 if author_data:
