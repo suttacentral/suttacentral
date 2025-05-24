@@ -58,6 +58,19 @@ class UnsegmentedText:
 
         return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
+    def volpage(self, lang_uid):
+        root = self._root
+        if lang_uid == 'lzh':
+            e = root.next_in_order()
+            while e is not None:
+                if e.tag == 'a' and e.select_one('.t'):
+                    break
+                e = e.next_in_order()
+            else:
+                return
+            return '{}'.format(e.attrib['id']).replace('t', 'T ')
+        return None
+
 
 class TextInfoModel:
     def __init__(self):
@@ -128,7 +141,7 @@ class TextInfoModel:
 
                 name = unsegmented_text.title(lang_uid)
 
-                volpage = self._get_volpage(root, lang_uid)
+                volpage = unsegmented_text.volpage(lang_uid)
 
                 mtime = html_file.stat().st_mtime
 
@@ -179,18 +192,6 @@ class TextInfoModel:
             f for f in all_files if f.stem != 'metadata'
         ]
         return files
-
-    def _get_volpage(self, root, lang_uid):
-        if lang_uid == 'lzh':
-            e = root.next_in_order()
-            while e is not None:
-                if e.tag == 'a' and e.select_one('.t'):
-                    break
-                e = e.next_in_order()
-            else:
-                return
-            return '{}'.format(e.attrib['id']).replace('t', 'T ')
-        return None
 
 
 class ArangoTextInfoModel(TextInfoModel):
