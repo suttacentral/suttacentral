@@ -106,7 +106,7 @@ class TextInfoModel:
 
                 publication_date = unsegmented_text.publication_date()
 
-                name = self._get_name(root, lang_uid, uid)
+                name = self._get_title(root, lang_uid, uid)
                 volpage = self._get_volpage(root, lang_uid, uid)
 
                 mtime = html_file.stat().st_mtime
@@ -159,7 +159,7 @@ class TextInfoModel:
         ]
         return files
 
-    def _get_name(self, root, lang_uid, uid):
+    def _get_title(self, root, lang_uid, uid):
         header = root.select_one('header')
         if not header:
             logger.error(f'No header found in {lang_uid}/{uid}')
