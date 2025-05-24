@@ -151,21 +151,6 @@ class TextInfoModel:
         ]
         return files
 
-    def _get_authors_long_name(self, root, file):
-        author = None
-        e = root.select_one('meta[author]')
-        if e:
-            author = e.attrib['author']
-
-        if not author:
-            e = root.select_one('meta[name=author]')
-            if e:
-                author = e.attrib['content']
-
-        if not author:
-            logging.critical(f'Author not found: {str(file)}')
-        return author
-
     def _get_publication_date(self, root):
         e = root.select_one('.publication-date')
         if e:
