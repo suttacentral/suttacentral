@@ -16,7 +16,7 @@ class UnsegmentedText:
         self._html = html
         self._root = sc_html.fromstring(html)
 
-    def get_authors_long_name(self):
+    def authors_long_name(self):
         author = None
         e = self._root.select_one('meta[author]')
         if e:
@@ -81,7 +81,7 @@ class TextInfoModel:
 
                 self._extract_unicode_points(lang_uid, root, unicode_points)
 
-                author = unsegmented_text.get_authors_long_name()
+                author = unsegmented_text.authors_long_name()
 
                 author_data = self.get_author_by_name(author, html_file)
 
