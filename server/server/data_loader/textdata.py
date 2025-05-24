@@ -11,8 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 class UnsegmentedText:
-    def __init__(self, html: str):
-        pass
+    def __init__(self, file: Path, html: str):
+        self._file = file
+        self._html = html
 
     def get_authors_long_name(self, root, file):
         author = None
@@ -26,7 +27,7 @@ class UnsegmentedText:
                 author = e.attrib['content']
 
         if not author:
-            logging.critical(f'Author not found: {str(file)}')
+            logging.critical(f'Author not found: {str(self._file)}')
         return author
 
 
@@ -74,7 +75,7 @@ class TextInfoModel:
                 with html_file.open('r', encoding='utf8') as f:
                     text = f.read()
 
-                unsegmented_text = UnsegmentedText(text)
+                unsegmented_text = UnsegmentedText(html_file, text)
                 root = sc_html.fromstring(text)
 
                 self._extract_unicode_points(lang_uid, root, unicode_points)
