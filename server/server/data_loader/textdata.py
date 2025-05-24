@@ -59,9 +59,8 @@ class UnsegmentedText:
         return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
     def volpage(self, lang_uid):
-        root = self._root
         if lang_uid == 'lzh':
-            e = root.next_in_order()
+            e = self._root.next_in_order()
             while e is not None:
                 if e.tag == 'a' and e.select_one('.t'):
                     break
