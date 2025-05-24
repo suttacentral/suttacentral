@@ -38,16 +38,16 @@ class UnsegmentedText:
 
         return None
 
-    def title(self, lang_uid, uid):
+    def title(self, lang_uid):
         root = self._root
         header = root.select_one('header')
         if not header:
-            logger.error(f'No header found in {lang_uid}/{uid}')
+            logger.error(f'No header found in {str(self._file)}')
             return ''
 
         h1 = header.select_one('h1')
         if not h1:
-            logger.error(f'No h1 found in {lang_uid}/{uid}')
+            logger.error(f'No h1 found in {str(self._file)}')
             return ''
 
         if lang_uid == 'lzh':
@@ -126,7 +126,7 @@ class TextInfoModel:
 
                 publication_date = unsegmented_text.publication_date()
 
-                name = unsegmented_text.title(lang_uid, uid)
+                name = unsegmented_text.title(lang_uid)
 
                 volpage = self._get_volpage(root, lang_uid, uid)
 
