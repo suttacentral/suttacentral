@@ -14,15 +14,16 @@ class UnsegmentedText:
     def __init__(self, file: Path, html: str):
         self._file = file
         self._html = html
+        self._root = sc_html.fromstring(html)
 
-    def get_authors_long_name(self, root, file):
+    def get_authors_long_name(self):
         author = None
-        e = root.select_one('meta[author]')
+        e = self._root.select_one('meta[author]')
         if e:
             author = e.attrib['author']
 
         if not author:
-            e = root.select_one('meta[name=author]')
+            e = self._root.select_one('meta[name=author]')
             if e:
                 author = e.attrib['content']
 
@@ -80,7 +81,7 @@ class TextInfoModel:
 
                 self._extract_unicode_points(lang_uid, root, unicode_points)
 
-                author = unsegmented_text.get_authors_long_name(root, html_file)
+                author = unsegmented_text.get_authors_long_name()
 
                 author_data = self.get_author_by_name(author, html_file)
 
