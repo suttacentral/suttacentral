@@ -31,6 +31,13 @@ class UnsegmentedText:
             logging.critical(f'Author not found: {str(self._file)}')
         return author
 
+    def publication_date(self):
+        e = self._root.select_one('.publication-date')
+        if e:
+            return e.text_content()
+
+        return None
+
 
 class TextInfoModel:
     def __init__(self):
@@ -97,7 +104,7 @@ class TextInfoModel:
                 else:
                     path = f'{lang_uid}/{uid}'
 
-                publication_date = self._get_publication_date(root)
+                publication_date = unsegmented_text.publication_date()
 
                 name = self._get_name(root, lang_uid, uid)
                 volpage = self._get_volpage(root, lang_uid, uid)
@@ -151,13 +158,6 @@ class TextInfoModel:
             f for f in all_files if f.stem != 'metadata'
         ]
         return files
-
-    def _get_publication_date(self, root):
-        e = root.select_one('.publication-date')
-        if e:
-            return e.text_content()
-
-        return None
 
     def _get_name(self, root, lang_uid, uid):
         header = root.select_one('header')
