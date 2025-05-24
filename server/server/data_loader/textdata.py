@@ -70,6 +70,27 @@ class UnsegmentedText:
             return '{}'.format(e.attrib['id']).replace('t', 'T ')
         return None
 
+    def extract_unicode_points(self, lang_uid, unicode_points):
+        root = self._root
+        _stack = [root]
+        while _stack:
+            e = _stack.pop()
+            if self.is_bold(lang_uid, e):
+                unicode_points['bold'].update(e.text_content())
+            elif self.is_italic(e):
+                unicode_points['italic'].update(e.text_content())
+            else:
+                _stack.extend(e)
+        unicode_points['normal'].update(root.text_content())
+
+    def is_bold(self, lang, element):
+        if element.tag in {'b', 'strong'}:
+            return True
+        return lang in {'lzh', 'ko', 'jp', 'tw'} and element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
+
+    def is_italic(self, element):
+        return element.tag in {'i', 'em'}
+
 
 class TextInfoModel:
     def __init__(self):
@@ -83,14 +104,6 @@ class TextInfoModel:
 
     def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool) -> None:
         raise NotImplementedError
-
-    def is_bold(self, lang, element):
-        if element.tag in {'b', 'strong'}:
-            return True
-        return lang in {'lzh', 'ko', 'jp', 'tw'} and element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
-
-    def is_italic(self, element):
-        return element.tag in {'i', 'em'}
 
     def process_lang_dir(self,
             lang_dir: Path,
@@ -118,7 +131,7 @@ class TextInfoModel:
                 unsegmented_text = UnsegmentedText(html_file, text)
                 root = sc_html.fromstring(text)
 
-                self._extract_unicode_points(lang_uid, root, unicode_points)
+                unsegmented_text.extract_unicode_points(lang_uid, unicode_points)
 
                 author = unsegmented_text.authors_long_name()
 
@@ -167,18 +180,6 @@ class TextInfoModel:
         self.update_code_points(
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
         )
-
-    def _extract_unicode_points(self, lang_uid, root, unicode_points):
-        _stack = [root]
-        while _stack:
-            e = _stack.pop()
-            if self.is_bold(lang_uid, e):
-                unicode_points['bold'].update(e.text_content())
-            elif self.is_italic(e):
-                unicode_points['italic'].update(e.text_content())
-            else:
-                _stack.extend(e)
-        unicode_points['normal'].update(root.text_content())
 
     def _should_process_file(self, data_dir, files_to_process, force, html_file):
         return not force and str(html_file.relative_to(data_dir)) not in files_to_process
