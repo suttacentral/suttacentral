@@ -128,7 +128,7 @@ class TextInfoModel:
 
                 name = unsegmented_text.title(lang_uid)
 
-                volpage = self._get_volpage(root, lang_uid, uid)
+                volpage = self._get_volpage(root, lang_uid)
 
                 mtime = html_file.stat().st_mtime
 
@@ -180,9 +180,9 @@ class TextInfoModel:
         ]
         return files
 
-    def _get_volpage(self, element, lang_uid, uid):
+    def _get_volpage(self, root, lang_uid):
         if lang_uid == 'lzh':
-            e = element.next_in_order()
+            e = root.next_in_order()
             while e is not None:
                 if e.tag == 'a' and e.select_one('.t'):
                     break
