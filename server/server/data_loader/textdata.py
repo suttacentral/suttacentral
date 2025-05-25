@@ -146,7 +146,7 @@ class TextInfoModel:
                 else:
                     path = f'{lang_uid}/{uid}'
 
-                text_info = {
+                document = {
                     "uid": uid,
                     "lang": lang_uid,
                     "path": path,
@@ -160,7 +160,7 @@ class TextInfoModel:
                     "file_path": str(html_file.resolve()),
                 }
 
-                self.add_document(text_info)
+                self.add_document(document)
 
             except Exception as e:
                 print('An exception occurred: {!s}'.format(html_file))
