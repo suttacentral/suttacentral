@@ -147,8 +147,6 @@ class TextInfoModel:
                 else:
                     path = f'{lang_uid}/{uid}'
 
-                mtime = html_file.stat().st_mtime
-
                 text_info = {
                     "uid": uid,
                     "lang": lang_uid,
@@ -159,7 +157,7 @@ class TextInfoModel:
                     "author_uid": author_uid,
                     "publication_date": text.publication_date(),
                     "volpage": text.volpage(),
-                    "mtime": mtime,
+                    "mtime": self.last_modified(html_file),
                     "file_path": str(html_file.resolve()),
                 }
 
@@ -172,6 +170,9 @@ class TextInfoModel:
         self.update_code_points(
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
         )
+
+    def last_modified(self, html_file):
+        return html_file.stat().st_mtime
 
     def _should_process_file(self, data_dir, files_to_process, force, html_file):
         return not force and str(html_file.relative_to(data_dir)) not in files_to_process
