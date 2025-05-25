@@ -129,14 +129,11 @@ class TextInfoModel:
                 with html_file.open('r', encoding='utf8') as f:
                     text = f.read()
 
-                unsegmented_text = UnsegmentedText(html_file, text, lang_uid)
-                unsegmented_text.extract_unicode_points(unicode_points)
-                publication_date = unsegmented_text.publication_date()
-                name = unsegmented_text.title()
-                volpage = unsegmented_text.volpage()
-                author = unsegmented_text.authors_long_name()
+                text = UnsegmentedText(html_file, text, lang_uid)
 
-                author_data = self.get_author_by_name(author, html_file)
+                text.extract_unicode_points(unicode_points)
+
+                author_data = self.get_author_by_name(text.authors_long_name(), html_file)
 
                 if author_data:
                     author_uid = author_data['uid']
@@ -156,12 +153,12 @@ class TextInfoModel:
                     "uid": uid,
                     "lang": lang_uid,
                     "path": path,
-                    "name": name,
-                    "author": author,
+                    "name": text.title(),
+                    "author": text.authors_long_name(),
                     "author_short": author_short,
                     "author_uid": author_uid,
-                    "publication_date": publication_date,
-                    "volpage": volpage,
+                    "publication_date": text.publication_date(),
+                    "volpage": text.volpage(),
                     "mtime": mtime,
                     "file_path": str(html_file.resolve()),
                 }
