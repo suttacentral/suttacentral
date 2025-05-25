@@ -3,6 +3,7 @@
 ## 2025.5.23
 
 - Improve the code of sc-site-layout.js and sc-navigation.js.
+- Enhance: only return one translation of any given text with preference to segmented texts.
 
 ## 2025.5.21
 
