@@ -124,41 +124,7 @@ class TextInfoModel:
                     continue
 
                 logger.info('Adding file: {!s}'.format(html_file))
-                uid = html_file.stem
-                with html_file.open('r', encoding='utf8') as f:
-                    text = f.read()
-
-                text = UnsegmentedText(html_file, text, lang_uid)
-
-                text.extract_unicode_points(unicode_points)
-
-                author_data = self.get_author_by_name(text.authors_long_name(), html_file)
-
-                if author_data:
-                    author_uid = author_data['uid']
-                    author_short = author_data['short_name']
-                else:
-                    author_uid = None
-                    author_short = None
-
-                if author_uid:
-                    path = f'{lang_uid}/{uid}/{author_uid}'
-                else:
-                    path = f'{lang_uid}/{uid}'
-
-                document = {
-                    "uid": uid,
-                    "lang": lang_uid,
-                    "path": path,
-                    "name": text.title(),
-                    "author": text.authors_long_name(),
-                    "author_short": author_short,
-                    "author_uid": author_uid,
-                    "publication_date": text.publication_date(),
-                    "volpage": text.volpage(),
-                    "mtime": self.last_modified(html_file),
-                    "file_path": str(html_file.resolve()),
-                }
+                document = self.create_document(html_file, lang_uid, unicode_points)
 
                 self.add_document(document)
 
@@ -169,6 +135,45 @@ class TextInfoModel:
         self.update_code_points(
             unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
         )
+
+    def create_document(self, html_file, lang_uid, unicode_points):
+        uid = html_file.stem
+
+        with html_file.open('r', encoding='utf8') as f:
+            text = f.read()
+
+        text = UnsegmentedText(html_file, text, lang_uid)
+
+        text.extract_unicode_points(unicode_points)
+
+        author_data = self.get_author_by_name(text.authors_long_name(), html_file)
+
+        if author_data:
+            author_uid = author_data['uid']
+            author_short = author_data['short_name']
+        else:
+            author_uid = None
+            author_short = None
+        if author_uid:
+            path = f'{lang_uid}/{uid}/{author_uid}'
+        else:
+            path = f'{lang_uid}/{uid}'
+
+        document = {
+            "uid": uid,
+            "lang": lang_uid,
+            "path": path,
+            "name": text.title(),
+            "author": text.authors_long_name(),
+            "author_short": author_short,
+            "author_uid": author_uid,
+            "publication_date": text.publication_date(),
+            "volpage": text.volpage(),
+            "mtime": self.last_modified(html_file),
+            "file_path": str(html_file.resolve()),
+        }
+
+        return document
 
     def last_modified(self, html_file):
         return html_file.stat().st_mtime
