@@ -112,7 +112,6 @@ class TextInfoModel:
             files_to_process: dict[str, int] | None = None,
             force: bool = False
     ):
-        # It should be noted SuttaCentral does not use bolditalic
         unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
 
         lang_uid = lang_dir.stem
