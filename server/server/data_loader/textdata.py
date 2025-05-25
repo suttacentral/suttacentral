@@ -71,12 +71,12 @@ class UnsegmentedText:
             return '{}'.format(e.attrib['id']).replace('t', 'T ')
         return None
 
-    def extract_unicode_points(self, lang_uid, unicode_points):
+    def extract_unicode_points(self, unicode_points):
         root = self._root
         _stack = [root]
         while _stack:
             e = _stack.pop()
-            if self.is_bold(lang_uid, e):
+            if self.is_bold(self._lang_uid, e):
                 unicode_points['bold'].update(e.text_content())
             elif self.is_italic(e):
                 unicode_points['italic'].update(e.text_content())
@@ -130,7 +130,7 @@ class TextInfoModel:
                     text = f.read()
 
                 unsegmented_text = UnsegmentedText(html_file, text, lang_uid)
-                unsegmented_text.extract_unicode_points(lang_uid, unicode_points)
+                unsegmented_text.extract_unicode_points(unicode_points)
                 publication_date = unsegmented_text.publication_date()
                 name = unsegmented_text.title()
                 volpage = unsegmented_text.volpage()
