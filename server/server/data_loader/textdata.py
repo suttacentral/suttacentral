@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 class UnsegmentedText:
-    def __init__(self, file: Path, html: str):
+    def __init__(self, file: Path, html: str, lang_uid: str):
         self._file = file
         self._html = html
+        self._lang_uid = lang_uid
         self._root = sc_html.fromstring(html)
 
     def authors_long_name(self):
@@ -38,7 +39,7 @@ class UnsegmentedText:
 
         return None
 
-    def title(self, lang_uid):
+    def title(self):
         root = self._root
         header = root.select_one('header')
         if not header:
@@ -50,7 +51,7 @@ class UnsegmentedText:
             logger.error(f'No h1 found in {str(self._file)}')
             return ''
 
-        if lang_uid == 'lzh':
+        if self._lang_uid == 'lzh':
             left_side = h1.select_one('.mirror-left')
             right_side = h1.select_one('.mirror-right')
             if left_side and right_side:
@@ -128,10 +129,10 @@ class TextInfoModel:
                 with html_file.open('r', encoding='utf8') as f:
                     text = f.read()
 
-                unsegmented_text = UnsegmentedText(html_file, text)
+                unsegmented_text = UnsegmentedText(html_file, text, lang_uid)
                 unsegmented_text.extract_unicode_points(lang_uid, unicode_points)
                 publication_date = unsegmented_text.publication_date()
-                name = unsegmented_text.title(lang_uid)
+                name = unsegmented_text.title()
                 volpage = unsegmented_text.volpage(lang_uid)
                 author = unsegmented_text.authors_long_name()
 
