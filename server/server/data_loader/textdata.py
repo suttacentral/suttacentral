@@ -59,8 +59,8 @@ class UnsegmentedText:
 
         return regex.sub(r'[\d\.\{\} –-]*', '', h1.text_content(), 1)
 
-    def volpage(self, lang_uid):
-        if lang_uid == 'lzh':
+    def volpage(self):
+        if self._lang_uid == 'lzh':
             e = self._root.next_in_order()
             while e is not None:
                 if e.tag == 'a' and e.select_one('.t'):
@@ -133,7 +133,7 @@ class TextInfoModel:
                 unsegmented_text.extract_unicode_points(lang_uid, unicode_points)
                 publication_date = unsegmented_text.publication_date()
                 name = unsegmented_text.title()
-                volpage = unsegmented_text.volpage(lang_uid)
+                volpage = unsegmented_text.volpage()
                 author = unsegmented_text.authors_long_name()
 
                 author_data = self.get_author_by_name(author, html_file)
