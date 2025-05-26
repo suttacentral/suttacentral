@@ -1067,6 +1067,9 @@ export class SCTextBilara extends SCTextCommon {
     spanElement.setAttribute('translate', 'no');
     const textSpan = document.createElement('span');
     textSpan.className = 'text';
+    if (this.rootSutta.lang === 'pli') {
+      textSpan.lang = 'la';
+    }
     spanElement.appendChild(textSpan);
     return spanElement;
   }
