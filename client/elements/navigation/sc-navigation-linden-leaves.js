@@ -266,7 +266,7 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
             ${nav?.title &&
             html`
               ${i < length - 1 ? html`
-                <li @click=${() => this._navClick(nav)}>
+                <li @click=${(e) => this._navClick(e, nav)}>
                   <a class="nav-link" data-uid=${nav.uid} href=${nav.url}>
                     ${getLocalizedTitle(nav.title)}
                     <md-ripple></md-ripple>
@@ -292,7 +292,10 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     }
   }
 
-  _navClick(nav) {
+  _navClick(e, nav) {
+    if (!this._shouldInterceptClick(e)) {
+      return;
+    }
     this._hideTopSheetsAndMenu();
     if (nav.type === 'home') {
       this.navArray.length = 1;
@@ -309,6 +312,22 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     if (this._getPathParamNumber(routePath, 1) !== 'pitaka') {
       dispatchCustomEvent(this, 'sc-navigate', { pathname: nav.url });
     }
+  }
+
+  _shouldInterceptClick(e) {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+      return false;
+    }
+
+    if (e.button !== 0) {
+      return false;
+    }
+
+    if (e.type !== 'click') {
+      return false;
+    }
+
+    return true;
   }
 
   _hideTopSheetsAndMenu() {
