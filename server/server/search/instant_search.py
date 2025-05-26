@@ -228,7 +228,10 @@ def simplify_results(hits):
             existing_index = seen_uids[uid]
             existing_hit = simplified_hits[existing_index]
 
-            if hit['is_bilara_text'] and not existing_hit['is_bilara_text']:
+            hit_is_bilara = hit.get('is_bilara_text', False)
+            existing_is_bilara = existing_hit.get('is_bilara_text', False)
+
+            if hit_is_bilara and not existing_is_bilara:
                 simplified_hits[existing_index] = hit
 
     return simplified_hits
