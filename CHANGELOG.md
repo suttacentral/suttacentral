@@ -1,5 +1,10 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.26
+
+- Fixed a Ctrl/Cmd Click issue reported on the discourse. 
+- Enhance: Hyphenation #1682 
+
 ## 2025.5.23
 
 - Improve the code of sc-site-layout.js and sc-navigation.js.
