@@ -126,8 +126,8 @@ export class SCNavigation extends LitLocalized(LitElement) {
             <a
               class="header-link"
               href=${this._genCurrentURL(child.uid, child.has_children)}
-              @click=${() =>
-                this._onCardClick({
+              @click=${(e) =>
+                this._onCardClick(e, {
                   childId: child.uid,
                   childName: child.acronym || child.translated_name || child.root_name,
                   dispatchState: true,
@@ -209,7 +209,10 @@ export class SCNavigation extends LitLocalized(LitElement) {
       : '';
   }
 
-  async _onCardClick(params) {
+  async _onCardClick(e, params) {
+    if (!this._shouldInterceptClick(e)) {
+      return;
+    }
     reduxActions.changeLinearProgressActiveState(true);
     fetch(this._computeMenuApiUrl(params.childId))
       .then(r => r.json())
@@ -232,6 +235,22 @@ export class SCNavigation extends LitLocalized(LitElement) {
         console.error(error);
       });
     reduxActions.changeLinearProgressActiveState(false);
+  }
+
+  _shouldInterceptClick(e) {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+      return false;
+    }
+
+    if (e.button !== 0) {
+      return false;
+    }
+
+    if (e.type !== 'click') {
+      return false;
+    }
+
+    return true;
   }
 
   _setToolbarTitle() {
