@@ -801,9 +801,6 @@ def run(no_pull=False):
     print_stage("Loading why_we_read from additional_info")
     homepage.load_why_we_read(db, additional_info_dir)
 
-    print_stage("Loading alias from additional_info")
-    process_alias(db, additional_info_dir)
-
     print_stage("Updating text_extra_info")
     update_text_extra_info()
 
