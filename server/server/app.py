@@ -56,6 +56,7 @@ from api.views import (
     NavigationData,
     DataForHomepage,
     ExtractSuttaFromRangeSutta,
+    Alias
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -145,6 +146,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(DataForHomepage, '/homepage_data')
     api.add_resource(FetchPossibleNames, '/possible_names/<string:lang>')
     api.add_resource(FulltextSearch, '/fulltextsearch/<string:query>')
+    api.add_resource(Alias, '/alias')
 
     app.register_blueprint(api_bp)
     register_extensions(app)
