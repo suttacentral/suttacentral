@@ -5,6 +5,7 @@ services:
   sc-flask:
     volumes:
       - ./server/:/opt/sc/sc-flask
+      - ./client/:/opt/sc/frontend
     env_file:
       - server/env/.test.env
     command: bash docker/entrypoint.test.sh
@@ -17,6 +18,8 @@ services:
   sc-arangodb:
     env_file:
       - server/env/.test.env
+    ports:
+      - '8529:8529'
 
   sc-frontend:
     command: npm run build

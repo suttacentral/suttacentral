@@ -1,5 +1,80 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.26
+
+- Fixed a Ctrl/Cmd Click issue reported on the discourse. 
+- Enhance: Hyphenation #1682 
+
+## 2025.5.23
+
+- Improve the code of sc-site-layout.js and sc-navigation.js.
+- Enhance: only return one translation of any given text with preference to segmented texts.
+
+## 2025.5.21
+
+- Fixed a problem where some static page titles were not localized in the breadcrumbs.
+- Fixed a problem where the author name of a suttaplex card was not displayed.
+
+## 2025.5.20
+
+- Enhance: enable transition between traditional and simplified Chinese.
+
+## 2025.5.19
+
+- Modify the lit components code to avoid cyclic updates. 
+
+## 2025.5.16
+
+- Increase test coverage for TextInfoModel.
+
+## 2025.5.15
+
+- Enhance: ability to select only the translation text when root texts visible.
+
+## 2025.5.13
+
+- Fixed a navigation bar flickering problem, upgrade the dependencies.
+
+## 2025.5.7
+
+- Tests written and type hints added for TextInfoModel class. 
+
+## 2025.4.23
+
+- Delete dead code from sc_html.py.
+- Delete failing tests for removed methods.
+
+## 2025.4.10
+
+- StagePrinter writes clock and cpu time to CSV.
+
+## 2025.3.28
+
+- Rewrote generate_aql_for_multi_keyword.
+
+## 2025.3.27
+
+- Entire data load process runs in pytest.
+- Remove the language badge in the suttaplex cards. 
+
+## 2025.3.26
+
+- A start on running the data load process in pytest.
+- Added suttas accessibility test.
+
+## 2025.3.25
+
+- Wrote more detailed tests for the API. 
+
+## 2025.3.24
+
+- Add localization support for 'kan' language. 
+
+## 2025.3.20
+
+- Rewrite generate_aql_for_and_operator function to optimize search speed.
+- Adjust the priority of the sutta title. 
+
 ## 2025.3.19
 
 - Optimize search sorting. 
