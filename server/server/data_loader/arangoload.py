@@ -318,6 +318,14 @@ def process_difficulty(db, additional_info_dir):
     db.collection('difficulties').import_bulk_logged(docs, wipe=True)
 
 
+def process_alias(db, additional_info_dir):
+    print('Loading alias')
+    alias_file = additional_info_dir / 'alias.json'
+    alias_info = json_load(alias_file)
+    db['alias'].truncate()
+    db.collection('alias').import_bulk_logged(alias_info, wipe=True)
+
+
 def process_prioritize(db, additional_info_dir):
     print('Loading prioritize')
     prioritize_file = additional_info_dir / 'prioritize.json'
@@ -765,6 +773,9 @@ def run(no_pull=False):
 
     print_stage("Loading prioritize from additional_info")
     process_prioritize(db, additional_info_dir)
+
+    print_stage("Loading alias from additional_info")
+    process_alias(db, additional_info_dir)
 
     print_stage("Loading creator bio from additional_info")
     process_creator_bio(db, additional_info_dir)

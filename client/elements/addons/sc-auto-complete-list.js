@@ -37,6 +37,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     siteLanguage: { type: String },
     loadingData: { type: Boolean },
     displayedLanguages: { type: Array },
+    aliasData: { type: Array },
   };
 
   constructor() {
@@ -54,6 +55,12 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     this.displayedLanguagesCheckedCount = this.displayedLanguages.filter(item => item.checked === true).length;
     this.loadingData = false;
     this.searchResult = [];
+    this.aliasData = [];
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#fetchAliasData();
   }
 
   stateChanged(state) {
@@ -394,6 +401,32 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
     }
   }
 
+  #searchInAliasData() {
+    if (!this.aliasData.length) {
+      return;
+    }
+    if (!this.searchQuery) {
+      return;
+    }
+    this.items = this.items.filter(item => !item.title?.includes('Alias:'));
+    for (const item of this.aliasData) {
+      for (const alias of item.alias) {
+        if (alias.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+          this.items.unshift({
+            uid: item.uid,
+            highlight_uid: item.uid,
+            title: 'Alias: ' + this.#highlight(item.alias.join(', '), this.searchQuery),
+            isRoot: true,
+            nodeType: 'branch',
+            lang: '',
+            author_uid: '',
+          });
+          break;
+        }
+      }
+    }
+  }
+
   async #instantSearch() {
     if (this.searchQuery?.length >= 2) {
       this.#fulltextSearchByAlgolia();
@@ -501,6 +534,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
           });
         }
         this.items = this.searchResult;
+        this.#searchInAliasData();
         if (this.items.length === 0) {
           this.searchResult.length = 0;
           this.#searchByOrama();
@@ -598,6 +632,12 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
             return acc;
           }, {})
         );
+  }
+
+  async #fetchAliasData() {
+    this.aliasData = await (
+      await fetch(`${API_ROOT}/alias`)
+    ).json();
   }
 }
 

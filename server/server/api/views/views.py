@@ -1597,6 +1597,14 @@ class PublicationInfo(Resource):
         return publication_info or ({'error': 'Not Found'}, 404)
 
 
+class Alias(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        data = db.collection('alias').all()
+        return list(data), 200
+
+
 class AvailableVoices(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
     def get(self, uid):

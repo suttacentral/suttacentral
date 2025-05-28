@@ -47,5 +47,6 @@ from .views import (
     MapData,
     NavigationData,
     DataForHomepage,
-    ExtractSuttaFromRangeSutta
+    ExtractSuttaFromRangeSutta,
+    Alias
 )

@@ -168,7 +168,7 @@ export class SCTextLegacy extends SCTextCommon {
     if (changedProperties.has('sutta')) {
       this.author = this.sutta?.author;
       this.lang = this.sutta?.lang;
-      this.isTraditionalChinese = this.lang === 'lzh';
+      this.isTraditionalChinese = this.lang === 'lzh' || this.lang === 'zh';
     }
   }
 
