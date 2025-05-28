@@ -55,19 +55,15 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
     this.actions.changeLinearProgressActiveState(false);
+    this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
+    this.authorUid = store.getState().currentRoute.params.authorUid;
+    this.suttaId = store.getState().currentRoute.params?.suttaId;
     this.SuttaParallelsDisplayed = false;
     this.#redirectWhenSuttaIsFallenLeaf();
   }
 
   createRenderRoot() {
     return this;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
-    this.authorUid = store.getState().currentRoute.params.authorUid;
-    this.suttaId = store.getState().currentRoute.params?.suttaId;
   }
 
   render() {
@@ -159,6 +155,10 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
         `;
   }
 
+  firstUpdated() {
+    this._refreshData();
+  }
+
   _refreshData() {
     this._paramChanged();
     this.refreshing = true;
@@ -237,6 +237,13 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.actions.setNavigation(this.navArray);
   }
 
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('responseData')) {
+      this._onResponse();
+    }
+  }
+
   stateChanged(state) {
     super.stateChanged(state);
     if (
@@ -256,11 +263,11 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     if (state.currentRoute.params.suttaId !== this.suttaId && state.currentRoute.params.suttaId) {
       this.suttaId = state.currentRoute.params.suttaId;
       this.isRangeSutta = false;
-      this._refreshData(false);
+      this._refreshData();
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
-      this._refreshData(true);
+      this._refreshData();
     }
   }
 
@@ -475,7 +482,6 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.actions.changeLinearProgressActiveState(true);
     try {
       this.responseData = await (await fetch(this._getSuttaTextUrl())).json();
-      this._onResponse();
     } catch (error) {
       this.lastError = error;
     }
