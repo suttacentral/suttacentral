@@ -164,14 +164,6 @@ export class SCTextLegacy extends SCTextCommon {
     window.removeEventListener('hashchange', this._hashChangeHandler);
   }
 
-  willUpdate(changedProperties) {
-    if (changedProperties.has('sutta')) {
-      this.author = this.sutta?.author;
-      this.lang = this.sutta?.lang;
-      this.isTraditionalChinese = this.lang === 'lzh' || this.lang === 'zh';
-    }
-  }
-
   updated(changedProps) {
     if (changedProps.has('sutta')) {
       this._updateView();
@@ -245,6 +237,7 @@ export class SCTextLegacy extends SCTextCommon {
   }
 
   _updateView() {
+    this._setAttributes();
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.actions.changeSuttaMetaText(this._computeMeta());
@@ -272,6 +265,15 @@ export class SCTextLegacy extends SCTextCommon {
     });
     arrayTOC = arrayTOC.filter(Boolean);
     this.actions.showToc(arrayTOC);
+  }
+
+  _setAttributes() {
+    if (!this.sutta) {
+      return;
+    }
+    this.author = this.sutta.author;
+    this.lang = this.sutta.lang;
+    this.isTraditionalChinese = this.lang === 'lzh' || this.lang === 'zh';
   }
 
   _extractSuttaText() {
