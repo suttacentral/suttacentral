@@ -452,6 +452,22 @@ export const SCFontStyles = css`
   }
 
   @font-face {
+    font-family: 'Source Han Serif TC VF';
+    src: url('/files/fonts/SourceHanSerifTC-VF.otf.woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'IPAM';
+    src: url('/files/fonts/ipam.woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
     font-family: 'Noto Serif Ahom';
     src: url('/files/fonts/NotoSerifAhom-Regular.woff2');
     font-weight: normal;
@@ -1337,11 +1353,11 @@ export const SCFontStyles = css`
 
     --sc-tibetan-font: 'Noto Sans Tibetan', 'Noto Sans', sans-serif;
 
-    --sc-japanese-font: 'Noto Sans CJK JP', 'Noto Sans', sans-serif;
+    --sc-japanese-font: 'IPAM', 'Noto Sans CJK JP', 'Noto Sans', sans-serif;
 
     --sc-korean-font: 'Noto Sans CJK KR', 'Noto Sans', sans-serif;
 
-    --sc-traditional-chinese-font: 'Noto Sans CJK TC', 'Noto Sans', sans-serif;
+    --sc-traditional-chinese-font: 'Source Han Serif TC VF', 'Noto Sans CJK TC', 'Noto Sans', sans-serif;
 
     --sc-simple-chinese-font: 'Noto Sans CJK SC', 'Noto Sans', sans-serif;
 
