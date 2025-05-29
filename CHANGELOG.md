@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.28
+
+- Enhance: Alias popular queries #1581
+
 ## 2025.5.26
 
 - Fixed a Ctrl/Cmd Click issue reported on the discourse. 
