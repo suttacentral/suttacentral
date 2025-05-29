@@ -1,4 +1,4 @@
-aksharamukha==2.2.2
+aksharamukha==2.3
 algoliasearch==3.0.0
 alabaster==0.7.12
 aniso8601==9.0.1
