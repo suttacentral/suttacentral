@@ -1,5 +1,10 @@
 # SuttaCentral ChangeLog
 
+## 2025.5.29
+
+- Enhance: Switch to serif version of Chinese and Japanese fonts.
+- Upgrade the Aksharamukha to latest version and test.
+
 ## 2025.5.28
 
 - Enhance: Alias popular queries #1581
