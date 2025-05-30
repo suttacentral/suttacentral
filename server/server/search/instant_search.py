@@ -182,13 +182,13 @@ def process_search_results(
     total,
     selected_languages
 ):
-    hits = simplify_results(hits)
     if total == 0:
         total = len(hits)
     if matchpartial == 'true':
         hits = sorted(hits, key=lambda item: item.get('segmented_uid') or '')
         hits = crop_hits(hits)
     if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
+        hits = simplify_results(hits)
         highlight_keyword(hits, query)
     if matchpartial == 'true':
         hits = merge_duplicate_hits(hits)
