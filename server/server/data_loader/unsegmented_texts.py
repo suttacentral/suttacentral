@@ -8,8 +8,7 @@ from data_loader import sc_html
 logger = logging.getLogger(__name__)
 
 class UnsegmentedText:
-    def __init__(self, file: Path, html: str, lang_uid: str):
-        self._file = file
+    def __init__(self, html: str, lang_uid: str):
         self._html = html
         self._lang_uid = lang_uid
         self._root = sc_html.fromstring(html)
@@ -25,8 +24,6 @@ class UnsegmentedText:
             if e:
                 author = e.attrib['content']
 
-        if not author:
-            logging.critical(f'Author not found: {str(self._file)}')
         return author
 
     def publication_date(self):
@@ -36,16 +33,14 @@ class UnsegmentedText:
 
         return None
 
-    def title(self):
+    def title(self) -> str:
         root = self._root
         header = root.select_one('header')
         if not header:
-            logger.error(f'No header found in {str(self._file)}')
             return ''
 
         h1 = header.select_one('h1')
         if not h1:
-            logger.error(f'No h1 found in {str(self._file)}')
             return ''
 
         if self._lang_uid == 'lzh':

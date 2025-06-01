@@ -58,11 +58,16 @@ class TextInfoModel:
         with html_file.open('r', encoding='utf8') as f:
             text = f.read()
 
-        text = UnsegmentedText(html_file, text, lang_uid)
+        text = UnsegmentedText(text, lang_uid)
 
         text.extract_unicode_points(unicode_points)
 
-        author_data = self.get_author_by_name(text.authors_long_name(), html_file)
+        author_long_name = text.authors_long_name()
+
+        if not author_long_name:
+            logging.critical(f'Author not found: {str(html_file)}')
+
+        author_data = self.get_author_by_name(author_long_name, html_file)
 
         if author_data:
             author_uid = author_data['uid']
@@ -75,12 +80,17 @@ class TextInfoModel:
         else:
             path = f'{lang_uid}/{uid}'
 
+        title = text.title()
+
+        if title == '':
+            logger.error(f'Could not find title for text in file: {str(html_file)}')
+
         document = {
             "uid": uid,
             "lang": lang_uid,
             "path": path,
-            "name": text.title(),
-            "author": text.authors_long_name(),
+            "name": title,
+            "author": author_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
             "publication_date": text.publication_date(),
