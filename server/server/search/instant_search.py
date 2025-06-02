@@ -118,6 +118,7 @@ def instant_search_query(
     db = get_db()
     query = query.strip()
     query = sanitize_quoted_query(query)
+    query = normalize_filter_commands(query)
     hits = []
     total = 0
     original_query = query
@@ -206,6 +207,32 @@ def process_search_results(
     if original_query != constant.CMD_LIST_AUTHORS and not original_query.startswith(constant.CMD_LIST):
         sort_highlight_clips(hits)
     return fuzzy_dictionary_entries, hits, suttaplexs, total
+
+
+def normalize_filter_commands(query):
+    """
+    Convert filter commands in queries to lowercase to make them case insensitive
+
+    Args:
+        query (str): Raw query string
+
+    Returns:
+        str: Normalized query string
+    """
+    # Defines all supported filter commands
+    filter_commands = [
+        'VOLPAGE:', 'AUTHOR:', 'BY:', 'TITLE:', 'LANG:',
+        'REF:', 'IN:'
+    ]
+
+    normalized_query = query
+
+    for cmd in filter_commands:
+        # Use regular expressions to perform case-insensitive replacement
+        pattern = re.compile(re.escape(cmd), re.IGNORECASE)
+        normalized_query = pattern.sub(cmd.lower(), normalized_query)
+
+    return normalized_query
 
 
 def simplify_results(hits):

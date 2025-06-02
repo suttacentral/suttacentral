@@ -8,7 +8,8 @@ from search.instant_search import (
     extract_not_param,
     search_string,
     normalize_string,
-    sanitize_quoted_query
+    sanitize_quoted_query,
+    normalize_filter_commands
 )
 
 from urllib.parse import quote
@@ -194,3 +195,110 @@ def test_sanitize_quoted_query():
     assert sanitize_quoted_query("〈苦的根源〉") == "苦的根源"
     assert sanitize_quoted_query("《root of suffering》") == "root of suffering"
     assert sanitize_quoted_query("﴾root of suffering﴿") == "root of suffering"
+
+
+def test_normalize_filter_commands():
+    # Basic Functionality Test - Single Filter Command
+    assert normalize_filter_commands('IN:sn author:sujato cat') == 'in:sn author:sujato cat'
+    assert normalize_filter_commands('AUTHOR:sujato root of suffering') == 'author:sujato root of suffering'
+    assert normalize_filter_commands('BY:sujato meditation') == 'by:sujato meditation'
+    assert normalize_filter_commands('VOLPAGE:SN II') == 'volpage:SN II'
+    assert normalize_filter_commands('TITLE:SUFFER') == 'title:SUFFER'
+    assert normalize_filter_commands('LANG:en four noble truths') == 'lang:en four noble truths'
+    assert normalize_filter_commands('REF:SN11') == 'ref:SN11'
+
+    # Mixed case test
+    assert normalize_filter_commands('In:sn AuThOr:sujato cat') == 'in:sn author:sujato cat'
+    assert normalize_filter_commands('VOLPAGE:sn BY:SUJATO') == 'volpage:sn by:SUJATO'
+    assert normalize_filter_commands('TiTlE:meditation') == 'title:meditation'
+    assert normalize_filter_commands('LaNg:EN REF:an1') == 'lang:EN ref:an1'
+
+    # Multiple filter combination testing
+    assert normalize_filter_commands('IN:SN LANG:en AUTHOR:sujato') == 'in:SN lang:en author:sujato'
+    assert normalize_filter_commands('VOLPAGE:D I BY:sujato TITLE:noble') == 'volpage:D I by:sujato title:noble'
+    assert normalize_filter_commands('LANG:pli IN:mn REF:mn1 suffering') == 'lang:pli in:mn ref:mn1 suffering'
+
+    # Already lowercase (should not be changed)
+    assert normalize_filter_commands('in:sn author:sujato root of suffering') == 'in:sn author:sujato root of suffering'
+    assert normalize_filter_commands('volpage:a i 1 by:sujato') == 'volpage:a i 1 by:sujato'
+    assert normalize_filter_commands('title:meditation lang:en') == 'title:meditation lang:en'
+
+    # Edge Case Testing
+    assert normalize_filter_commands('') == ''
+    assert normalize_filter_commands('   ') == '   '
+    assert normalize_filter_commands('meditation without filters') == 'meditation without filters'
+    assert normalize_filter_commands('just some text') == 'just some text'
+
+    # Colon Separator Test
+    assert normalize_filter_commands('IN:') == 'in:'
+    assert normalize_filter_commands('AUTHOR:') == 'author:'
+    assert normalize_filter_commands('VOLPAGE:   ') == 'volpage:   '
+
+    # Testing for special characters and spaces
+    assert normalize_filter_commands('IN:sn  AUTHOR:sujato   cat') == 'in:sn  author:sujato   cat'
+    assert normalize_filter_commands('VOLPAGE:SN II 123 TITLE:noble truth') == 'volpage:SN II 123 title:noble truth'
+    assert normalize_filter_commands('IN:dn-sutta AUTHOR:sujato-translator') == 'in:dn-sutta author:sujato-translator'
+
+    # Chinese content test
+    assert normalize_filter_commands('IN:sa LANG:zh 四念处') == 'in:sa lang:zh 四念处'
+    assert normalize_filter_commands('TITLE:八正道 AUTHOR:玄奘') == 'title:八正道 author:玄奘'
+
+    # Quotation content test
+    assert normalize_filter_commands('IN:sn "root of suffering"') == 'in:sn "root of suffering"'
+    assert normalize_filter_commands('AUTHOR:sujato "noble eightfold path"') == 'author:sujato "noble eightfold path"'
+    assert normalize_filter_commands('TITLE:"Four Noble Truths"') == 'title:"Four Noble Truths"'
+
+    # Repeat filter test
+    assert normalize_filter_commands('IN:sn IN:an meditation') == 'in:sn in:an meditation'
+    assert normalize_filter_commands('AUTHOR:sujato AUTHOR:brahm') == 'author:sujato author:brahm'
+
+    # Filters tested in different locations
+    assert normalize_filter_commands('meditation IN:sn AUTHOR:sujato') == 'meditation in:sn author:sujato'
+    assert normalize_filter_commands('AUTHOR:sujato meditation VOLPAGE:SN II') == 'author:sujato meditation volpage:SN II'
+    assert normalize_filter_commands('suffering LANG:en IN:dn TITLE:truth') == 'suffering lang:en in:dn title:truth'
+
+    # Continuous filter testing
+    assert normalize_filter_commands('IN:snVOLPAGE:SN') == 'in:snvolpage:SN'
+    assert normalize_filter_commands('AUTHOR:sujatoBY:brahm') == 'author:sujatoby:brahm'
+
+    # Tests for numbers and special identifiers
+    assert normalize_filter_commands('VOLPAGE:SN 1.1 REF:an10.1') == 'volpage:SN 1.1 ref:an10.1'
+    assert normalize_filter_commands('IN:mn123 AUTHOR:sujato-en') == 'in:mn123 author:sujato-en'
+
+    # Boolean operator combination test
+    assert normalize_filter_commands('IN:sn meditation AND mindfulness') == 'in:sn meditation AND mindfulness'
+    assert normalize_filter_commands('AUTHOR:sujato cat OR dog') == 'author:sujato cat OR dog'
+    assert normalize_filter_commands('VOLPAGE:SN II NOT suffering') == 'volpage:SN II NOT suffering'
+
+    # Complex query test
+    assert normalize_filter_commands('IN:dn AUTHOR:sujato LANG:en TITLE:noble VOLPAGE:D I suffering AND meditation') == \
+           'in:dn author:sujato lang:en title:noble volpage:D I suffering AND meditation'
+
+    # Incomplete filter test (should still convert）
+    assert normalize_filter_commands('IN meditation') == 'IN meditation'
+    assert normalize_filter_commands('IN: meditation') == 'in: meditation'
+    assert normalize_filter_commands(':sn meditation') == ':sn meditation'
+
+    # Mixed case complications
+    assert normalize_filter_commands('iN:SN AuThOr:SuJaTo LaNg:En TiTlE:NoBlE meditation') == \
+           'in:SN author:SuJaTo lang:En title:NoBlE meditation'
+
+    # Unicode and Special Characters
+    assert normalize_filter_commands('IN:sa-unicode AUTHOR:सुजातो TITLE:धर्म') == 'in:sa-unicode author:सुजातो title:धर्म'
+    assert normalize_filter_commands('VOLPAGE:SN II 123 TITLE:nirvāṇa') == 'volpage:SN II 123 title:nirvāṇa'
+
+    # Performance test case (long string)
+    long_query = 'IN:sn ' + 'meditation ' * 100 + 'AUTHOR:sujato'
+    expected = 'in:sn ' + 'meditation ' * 100 + 'author:sujato'
+    assert normalize_filter_commands(long_query) == expected
+
+    # Misspelled filter (should not be converted)
+    assert normalize_filter_commands('INN:sn AUTHRO:sujato') == 'INN:sn AUTHRO:sujato'
+    assert normalize_filter_commands('VOLPAG:SN II TITL:noble') == 'VOLPAG:SN II TITL:noble'
+
+    # When the filter value is empty
+    assert normalize_filter_commands('IN: AUTHOR: VOLPAGE:') == 'in: author: volpage:'
+
+    # Special symbols as filter values
+    assert normalize_filter_commands('TITLE:@#$% IN:sn!@#') == 'title:@#$% in:sn!@#'
+    assert normalize_filter_commands('AUTHOR:sujato-123 VOLPAGE:SN-II-456') == 'author:sujato-123 volpage:SN-II-456'
