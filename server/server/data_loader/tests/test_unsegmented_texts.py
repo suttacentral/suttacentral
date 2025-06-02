@@ -1,8 +1,3 @@
-import logging
-from pathlib import Path
-
-import pytest
-
 from data_loader.unsegmented_texts import UnsegmentedText
 
 
