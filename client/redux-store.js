@@ -35,6 +35,7 @@ const initialState = {
     noteDisplayType: 'asterisk',
     showHighlighting: false,
     displayedReferences: [],
+    rootTextFirst: false,
   },
   colorTheme: 'light',
   selectedNavigationMenuItemId: '',
@@ -201,6 +202,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         textOptions: { ...state.textOptions, showHighlighting: action.showHighlighting },
+      };
+    case 'SET_ROOT_TEXT_FIRST':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, rootTextFirst: action.rootTextFirst },
       };
     case 'SET_NAVIGATION':
       return { ...state, navigationArray: action.navigationArray };
