@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.2
+
+- Enhance: Search filters must be case insensitive #2968 
+
 ## 2025.5.29
 
 - Enhance: Switch to serif version of Chinese and Japanese fonts.
