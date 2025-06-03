@@ -40,6 +40,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     references: { type: Array },
     noteDisplayTypeArray: { type: Array },
     textViewArray: { type: Array },
+    rootTextFirst: { type: Boolean },
   };
 
   static styles = [
@@ -278,6 +279,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this.selectedNoteDisplayType = textOptions.noteDisplayType;
     this.showHighlighting = textOptions.showHighlighting;
     this.displayedReferences = textOptions.displayedReferences;
+    this.rootTextFirst = textOptions.rootTextFirst || false;
   }
 
   stateChanged(state) {
@@ -462,6 +464,18 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                       @change=${this._onTextViewChanged}
                     ></md-radio>
                     ${this.localize(`viewoption:${item.textViewLabel}`)}
+
+                    ${item.textView === 'linebyline' ? html`
+                      <div style="margin-left: 20px; margin-top: 8px;">
+                        <label>
+                        <md-checkbox
+                          ?checked=${this.rootTextFirst || false}
+                          @change=${this._onRootOrderChanged}
+                        ></md-checkbox>
+                        Root text first
+                        </label>
+                      </div>
+                    ` : ''}
                   </label>
                 `
               )}
@@ -868,6 +882,12 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
           showHighlighting,
         });
       },
+      setRootTextFirst(rootTextFirst) {
+        store.dispatch({
+          type: 'SET_ROOT_TEXT_FIRST',
+          rootTextFirst,
+        });
+      },
       setDisplayedReferences(displayedReferences) {
         store.dispatch({
           type: 'SET_REFERENCE_DISPLAY_TYPE_ARRAY',
@@ -908,6 +928,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         break;
       }
     }
+  }
+
+  _onRootOrderChanged(e) {
+    this.actions.setRootTextFirst(e.target.checked);
   }
 }
 

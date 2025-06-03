@@ -26,7 +26,8 @@ import {
   showAsterisk,
   rootPlainPlusStyles,
   userSelectStyleForTranslation,
-  userSelectStyleForRoot
+  userSelectStyleForRoot,
+  lineByLineRootTextFirstStyles
 } from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
@@ -59,6 +60,8 @@ export class SCTextBilara extends SCTextCommon {
     localizedStringsPath: { type: String },
     currentStyles: { type: Object },
     userSelectStyles: { type: Object },
+    rootTextFirst: { type: Boolean },
+    lineByLineRootTextFirstStyles: { type: Object },
     referencesDisplayStyles: { type: Object },
     notesDisplayStyles: { type: Object },
     showHighlighting: { type: Boolean },
@@ -76,6 +79,7 @@ export class SCTextBilara extends SCTextCommon {
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptions.chineseLookupActivated;
+    this.rootTextFirst = textOptions.rootTextFirst;
     this.hasScriptBeenChanged = false;
     this.localizedStringsPath = '/localization/elements/interface';
     this.commentSpanRectInfo = new Map();
@@ -112,6 +116,7 @@ export class SCTextBilara extends SCTextCommon {
     ]);
     this.isMultiSutta = false;
     this.isTraditionalChinese = false;
+    this.lineByLineRootTextFirstStyles = '';
   }
 
   createRenderRoot() {
@@ -130,6 +135,7 @@ export class SCTextBilara extends SCTextCommon {
       ${this.referencesDisplayStyles}
       ${this.notesDisplayStyles}
       ${this.userSelectStyles}
+      ${this.lineByLineRootTextFirstStyles}
 
       <main>
         <div id="segmented_text_content" class="html-text-content">
@@ -537,6 +543,9 @@ export class SCTextBilara extends SCTextCommon {
         this._resetCommentSpan();
       }
     }
+    if (changedProps.has('rootTextFirst') && this.chosenTextView === 'linebyline') {
+      this._updateView();
+    }
 
     if (shouldChangeTextView) {
       this._updateTextViewStylesBasedOnState();
@@ -779,6 +788,11 @@ export class SCTextBilara extends SCTextCommon {
     }
 
     this.notesDisplayStyles = this.mapNoteDisplayStyles.get(this.chosenNoteDisplayType);
+    if (this.chosenTextView === 'linebyline' && this.rootTextFirst) {
+      this.lineByLineRootTextFirstStyles = lineByLineRootTextFirstStyles;
+    } else {
+      this.lineByLineRootTextFirstStyles = '';
+    }
   }
 
   stateChanged(state) {
@@ -806,6 +820,9 @@ export class SCTextBilara extends SCTextCommon {
     }
     if (this.showHighlighting !== state.textOptions.showHighlighting && this.shouldRestoreUserSettings) {
       this.showHighlighting = state.textOptions.showHighlighting;
+    }
+    if (this.rootTextFirst !== state.textOptions.rootTextFirst) {
+      this.rootTextFirst = state.textOptions.rootTextFirst;
     }
   }
 
