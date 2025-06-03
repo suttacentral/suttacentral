@@ -61,24 +61,3 @@ class UnsegmentedText:
                 return
             return '{}'.format(e.attrib['id']).replace('t', 'T ')
         return None
-
-    def extract_unicode_points(self, unicode_points):
-        root = self._root
-        _stack = [root]
-        while _stack:
-            e = _stack.pop()
-            if self.is_bold(self._lang_uid, e):
-                unicode_points['bold'].update(e.text_content())
-            elif self.is_italic(e):
-                unicode_points['italic'].update(e.text_content())
-            else:
-                _stack.extend(e)
-        unicode_points['normal'].update(root.text_content())
-
-    def is_bold(self, lang, element):
-        if element.tag in {'b', 'strong'}:
-            return True
-        return lang in {'lzh', 'ko', 'jp', 'tw'} and element.tag in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
-
-    def is_italic(self, element):
-        return element.tag in {'i', 'em'}

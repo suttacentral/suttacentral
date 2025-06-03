@@ -19,17 +19,12 @@ class TextInfoModel:
     def add_document(self, doc):
         raise NotImplementedError
 
-    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool) -> None:
-        raise NotImplementedError
-
     def process_lang_dir(self,
             lang_dir: Path,
             data_dir: Path = None,
             files_to_process: dict[str, int] | None = None,
             force: bool = False
     ):
-        unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
-
         lang_uid = lang_dir.stem
 
         files = self._files_for_language(lang_dir)
@@ -40,7 +35,7 @@ class TextInfoModel:
                     continue
 
                 logger.info('Adding file: {!s}'.format(html_file))
-                document = self.create_document(html_file, lang_uid, unicode_points)
+                document = self.create_document(html_file, lang_uid)
 
                 self.add_document(document)
 
@@ -48,19 +43,13 @@ class TextInfoModel:
                 print('An exception occurred: {!s}'.format(html_file))
                 raise
 
-        self.update_code_points(
-            unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
-        )
-
-    def create_document(self, html_file, lang_uid, unicode_points):
+    def create_document(self, html_file, lang_uid):
         uid = html_file.stem
 
         with html_file.open('r', encoding='utf8') as f:
             text = f.read()
 
         text = UnsegmentedText(text, lang_uid)
-
-        text.extract_unicode_points(unicode_points)
 
         author_long_name = text.authors_long_name()
 

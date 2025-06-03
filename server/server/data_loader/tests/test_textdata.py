@@ -7,13 +7,6 @@ import pytest
 from data_loader.textdata import TextInfoModel
 
 
-@dataclass
-class CodePoints:
-    lang_uid: str
-    unicode_points: dict
-    force: bool
-
-
 class TextInfoModelSpy(TextInfoModel):
     """
     TextInfoModel uses the template method design pattern giving us a
@@ -23,7 +16,6 @@ class TextInfoModelSpy(TextInfoModel):
     def __init__(self):
         super().__init__()
         self.added_documents = []
-        self.added_code_points: list[CodePoints] = []
 
     def get_author_by_name(self, name, file) -> dict | None:
         if name == "Bhikkhu Bodhi":
@@ -52,10 +44,6 @@ class TextInfoModelSpy(TextInfoModel):
 
     def add_document(self, doc):
         self.added_documents.append(doc)
-
-    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool) -> None:
-        self.added_code_points.append(CodePoints(lang_uid, unicode_points, force))
-
 
 def add_html_file(path: Path, html: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -326,22 +314,6 @@ class TestTextInfoModel:
 
         assert text_info.added_documents[0]['mtime'] == sutta_path.stat().st_mtime
 
-    def test_update_code_points(self, text_info, base_path, language_path, sutta_path, files_to_process):
-        html = """
-        <html>
-        <head><meta author='Bhikkhu Bodhi'></head>
-        <body><b>abcd</b><em>wxyz</em></body>
-        </html>
-        """
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-        assert text_info.added_code_points[0].lang_uid == "en"
-        assert text_info.added_code_points[0].force is False
-        assert text_info.added_code_points[0].unicode_points == {
-            'normal' : {' ', '\n', 'a', 'b', 'c', 'd', 'w', 'x', 'y', 'z'},
-            'bold' : {'a', 'b', 'c', 'd'},
-            'italic' : {'w', 'x', 'y', 'z'},
-        }
 
     def test_multiple_files_added(self, text_info, base_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
