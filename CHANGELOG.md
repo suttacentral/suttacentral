@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.3
+
+- Enhance: In linebyline mode, allows switching the position of the root text line and the translation text line.
+
 ## 2025.6.2
 
 - Enhance: Search filters must be case insensitive #2968 
