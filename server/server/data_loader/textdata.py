@@ -3,8 +3,8 @@ from pathlib import Path
 
 from arango.exceptions import DocumentReplaceError
 
-from . import util
-from .unsegmented_texts import UnsegmentedText
+from data_loader import util
+from data_loader.unsegmented_texts import extract_details
 
 logger = logging.getLogger(__name__)
 
@@ -47,11 +47,11 @@ class TextInfoModel:
         uid = html_file.stem
 
         with html_file.open('r', encoding='utf8') as f:
-            text = f.read()
+            html = f.read()
 
-        text = UnsegmentedText(text, lang_uid)
+        text_details = extract_details(html, lang_uid)
 
-        author_long_name = text.authors_long_name()
+        author_long_name = text_details.authors_long_name
 
         if not author_long_name:
             logging.critical(f'Author not found: {str(html_file)}')
@@ -69,21 +69,19 @@ class TextInfoModel:
         else:
             path = f'{lang_uid}/{uid}'
 
-        title = text.title()
-
-        if title == '':
-            logger.error(f'Could not find title for text in file: {str(html_file)}')
+        if not text_details.has_title_tags:
+            logger.error(f'Could not find title in file: {str(html_file)}')
 
         document = {
             "uid": uid,
             "lang": lang_uid,
             "path": path,
-            "name": title,
+            "name": text_details.title,
             "author": author_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
-            "publication_date": text.publication_date(),
-            "volpage": text.volpage(),
+            "publication_date": text_details.publication_date,
+            "volpage": text_details.volume_page,
             "mtime": self.last_modified(html_file),
             "file_path": str(html_file.resolve()),
         }

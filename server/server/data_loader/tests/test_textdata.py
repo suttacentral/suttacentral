@@ -255,7 +255,7 @@ class TestTextInfoModel:
         add_html_file(sutta_path, html)
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert caplog.records[0].levelno == logging.ERROR
-        assert caplog.records[0].message == f"Could not find title for text in file: {str(sutta_path)}"
+        assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
     def test_logs_missing_title_when_there_is_no_h1_tag(
                 self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
@@ -270,7 +270,19 @@ class TestTextInfoModel:
             add_html_file(sutta_path, html)
             text_info.process_lang_dir(language_path, base_path, files_to_process)
             assert caplog.records[0].levelno == logging.ERROR
-            assert caplog.records[0].message == f"Could not find title for text in file: {str(sutta_path)}"
+            assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
+
+    def test_does_not_log_missing_title_when_it_is_an_empty_string(
+            self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
+    ):
+        html = ("<html>"
+                "<head><meta author='Bhikkhu Bodhi'><head>"
+                "<body><header><h1></h1></header></body>"
+                "</html>")
+
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        assert not caplog.records
 
     def test_extracts_chinese_volpage(self, text_info, base_path):
         sutta_relative = 'html_text/lzh/sutta/ma/ma43.html'
