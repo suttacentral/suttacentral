@@ -675,3 +675,24 @@ export const userSelectStyleForRoot = html`
     }
   </style>
 `;
+
+export const lineByLineRootTextFirstStyles = html`
+  <style>
+    .root {
+      order: 1;
+    }
+
+    .translation {
+      order: 2;
+    }
+
+    .root .text {
+      color: var(--sc-on-primary-primary-text-color);
+    }
+
+    .translation .text {
+      color: var(--sc-on-primary-secondary-text-color);
+      font-family: var(--sc-sans-font);
+    }
+  </style>
+`;
