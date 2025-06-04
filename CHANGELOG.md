@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.4
+
+- Fix: Maps should not zoom when you just scroll over them #2825
+
 ## 2025.6.3
 
 - Enhance: In linebyline mode, allows switching the position of the root text line and the translation text line.
