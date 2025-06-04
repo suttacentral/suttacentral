@@ -121,7 +121,9 @@ export class SCMap extends LitLocalized(LitElement) {
   ];
 
   firstUpdated() {
-    this.map = L.map(this.shadowRoot.getElementById(this.mapElementID));
+    this.map = L.map(this.shadowRoot.getElementById(this.mapElementID), {
+      scrollWheelZoom: false
+    });
 
     this.map.addLayer(
       L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -165,6 +167,32 @@ export class SCMap extends LitLocalized(LitElement) {
     });
 
     this.getRootNode().addEventListener('keydown', e => this._keydownHandler(e));
+    this._setupCtrlZoom();
+  }
+
+  _setupCtrlZoom() {
+    const mapContainer = this.shadowRoot.getElementById(this.mapElementID);
+
+    mapContainer.addEventListener('wheel', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        const zoomDelta = e.deltaY > 0 ? -1 : 1;
+        const currentZoom = this.map.getZoom();
+        const newZoom = Math.max(
+          this.map.getMinZoom(),
+          Math.min(this.map.getMaxZoom(), currentZoom + zoomDelta)
+        );
+        const rect = mapContainer.getBoundingClientRect();
+        const point = L.point(
+          e.clientX - rect.left,
+          e.clientY - rect.top
+        );
+        this.map.setZoomAround(
+          this.map.containerPointToLatLng(point),
+          newZoom
+        );
+      }
+    }, { passive: false });
   }
 
   _getLocalizedTextByLayerName(text) {
