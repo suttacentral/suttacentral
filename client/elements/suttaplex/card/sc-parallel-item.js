@@ -1,4 +1,5 @@
 import { html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { icon } from '../../../img/sc-icon';
 import {
   getParagraphRange,
@@ -99,6 +100,11 @@ export class SCParallelItem extends LitLocalized(LitElement) {
     return '';
   }
 
+  _computeValidUrl() {
+    const url = this.parallelUrl;
+    return url && !url.includes('null') ? url : undefined;
+  }
+
   get volpagesAvailable() {
     return !!this.parallelItem.volpages;
   }
@@ -187,7 +193,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
   normalViewTemplate() {
     return html`
       <a
-        href=${this.parallelUrl}
+        href=${ifDefined(this._computeValidUrl())}
         class=${this.parallelUrl ? '' : 'disabled'}
         @click=${this.parallelUrl ? this.#hideTopSheets : null}
       >

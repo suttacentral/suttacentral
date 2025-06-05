@@ -1,4 +1,5 @@
 import { html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { API_ROOT } from '../../../constants';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/sc-localization-mixin';
@@ -103,6 +104,17 @@ export class SCParallels extends LitLocalized(LitElement) {
     return `/${this.itemUid}/${this.rootLang}/${authorUid}${getParagraphRange(rootId, true)}`;
   }
 
+  _computeValidUrl(rootId) {
+    const url = this.computeUrl(rootId);
+    return url && !url.includes('null') ? url : undefined;
+  }
+
+  _shouldDisable() {
+    if (!this.rootLang) {
+      return true;
+    }
+  }
+
   get actions() {
     return {
       changeLinearProgressActiveState(active) {
@@ -130,14 +142,16 @@ export class SCParallels extends LitLocalized(LitElement) {
                           class="parallels-root-cell parallels-table-cell"
                           rowspan=${this.getRowspan(rootId)}
                         >
-                          <a class="root-link" href=${this.computeUrl(rootId)}>
+                          <a class="root-link ${this._shouldDisable() ? 'disabled' : ''}"
+                              href=${ifDefined(this._computeValidUrl(rootId))}
+                          >
                             <div
                               class="parallels-root-id root"
                               title=${this.localize('suttaplex:suttaCentralID')}
                             >
                               ${transformId(rootId, this.expansionData)}
                             </div>
-                            <md-ripple></md-ripple>
+                            ${this._shouldDisable() ? '' : html`<md-ripple></md-ripple>`}
                           </a>
                         </td>
                         <td
