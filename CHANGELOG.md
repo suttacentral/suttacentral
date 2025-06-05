@@ -1,5 +1,26 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.4
+
+- Fix: Maps should not zoom when you just scroll over them #2825
+
+## 2025.6.3
+
+- Enhance: In linebyline mode, allows switching the position of the root text line and the translation text line.
+
+## 2025.6.2
+
+- Enhance: Search filters must be case insensitive #2968 
+
+## 2025.5.29
+
+- Enhance: Switch to serif version of Chinese and Japanese fonts.
+- Upgrade the Aksharamukha to latest version and test.
+
+## 2025.5.28
+
+- Enhance: Alias popular queries #1581
+
 ## 2025.5.26
 
 - Fixed a Ctrl/Cmd Click issue reported on the discourse. 
