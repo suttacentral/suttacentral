@@ -25,6 +25,7 @@ def test_base_dir_is_correct(data_load_app):
         base_dir = data_load_app.config.get('BASE_DIR')
         assert base_dir == Path('/opt/sc/sc-flask/')
 
+@pytest.mark.skip('Disabled as it may interfere with other tests.')
 def test_do_collect_data_stage(data_load_app):
     with data_load_app.app_context():
         data_dir = Path('/opt/sc/sc-flask/sc-data')

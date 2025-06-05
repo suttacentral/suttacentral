@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -161,6 +162,15 @@ class TestTextInfoModel:
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['author'] == author_long_name
 
+    def test_logs_missing_authors_long_name(
+            self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
+    ):
+        html = "<html></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        assert caplog.records[0].levelno == logging.CRITICAL
+        assert caplog.records[0].message == f"Author not found: {str(sutta_path)}"
+
     def test_retrieves_author_short_name(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
         add_html_file(sutta_path, html)
@@ -211,7 +221,7 @@ class TestTextInfoModel:
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['publication_date'] is None
 
-    def test_extracts_english_text_name(self, text_info, base_path, language_path, sutta_path, files_to_process):
+    def test_extracts_english_title(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
         <html>
         <head><meta author='Bhikkhu Bodhi'></head>
@@ -222,7 +232,7 @@ class TestTextInfoModel:
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['name'] == 'The Root of All Things'
 
-    def test_extracts_chinese_text_name(self, text_info, base_path, language_path, sutta_path, files_to_process):
+    def test_extracts_chinese_title(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """
         <html>
         <head><meta name='author' content='Taishō Tripiṭaka'></head>
@@ -233,7 +243,7 @@ class TestTextInfoModel:
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['name'] == '解脫戒經'
 
-    def test_extracts_chinese_mirrored_text_name(self, text_info, base_path):
+    def test_extracts_chinese_mirrored_title(self, text_info, base_path):
         sutta_relative = 'html_text/lzh/sutta/ma/ma43.html'
         sutta_path = base_path / sutta_relative
         language_path = base_path / 'html_text/lzh/'
@@ -249,6 +259,30 @@ class TestTextInfoModel:
         text_info.process_lang_dir(language_path, base_path, files_to_process)
 
         assert text_info.added_documents[0]['name'] == '（四三）不思經 (43. No Need for Thought)'
+
+    def test_logs_missing_title_when_there_is_no_header_tag(
+            self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
+    ):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        assert caplog.records[0].levelno == logging.ERROR
+        assert caplog.records[0].message == f"Could not find title for text in file: {str(sutta_path)}"
+
+    def test_logs_missing_title_when_there_is_no_h1_tag(
+                self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
+        ):
+            html = (
+                "<html>"
+                "<head><meta author='Bhikkhu Bodhi'>"
+                "</head>"
+                "<body><header></header</body>"
+                "</html>"
+            )
+            add_html_file(sutta_path, html)
+            text_info.process_lang_dir(language_path, base_path, files_to_process)
+            assert caplog.records[0].levelno == logging.ERROR
+            assert caplog.records[0].message == f"Could not find title for text in file: {str(sutta_path)}"
 
     def test_extracts_chinese_volpage(self, text_info, base_path):
         sutta_relative = 'html_text/lzh/sutta/ma/ma43.html'
@@ -308,3 +342,70 @@ class TestTextInfoModel:
             'bold' : {'a', 'b', 'c', 'd'},
             'italic' : {'w', 'x', 'y', 'z'},
         }
+
+    def test_multiple_files_added(self, text_info, base_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+
+        paths = [
+            Path('html_text/en/pli/sutta/mn/mn1.html'),
+            Path('html_text/en/pli/sutta/mn/mn2.html'),
+            Path('html_text/en/pli/sutta/mn/mn3.html'),
+        ]
+
+        files_to_process = dict()
+        for path in paths:
+            files_to_process[str(path)] = 0
+            add_html_file(base_path / path, html)
+
+        language_path = base_path / 'html_text/en'
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        assert len(text_info.added_documents) == 3
+
+    def test_files_not_in_files_to_process_are_skipped(self, text_info, base_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+
+        paths = [
+            Path('html_text/en/pli/sutta/mn/mn1.html'),
+            Path('html_text/en/pli/sutta/mn/mn2.html'),
+            Path('html_text/en/pli/sutta/mn/mn3.html'),
+        ]
+
+        for path in paths:
+            add_html_file(base_path / path, html)
+
+        files_to_process = {
+            'html_text/en/pli/sutta/mn/mn1.html' : 0,
+            'html_text/en/pli/sutta/mn/mn3.html' : 0,
+        }
+
+        language_path = base_path / 'html_text/en'
+        text_info.process_lang_dir(language_path, base_path, files_to_process)
+
+        file_names = [Path(document['file_path']).name
+                 for document in text_info.added_documents]
+
+        assert file_names == ['mn1.html', 'mn3.html']
+
+    def test_force_flag_causes_all_files_to_be_added(self, text_info, base_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+
+        paths = [
+            Path('html_text/en/pli/sutta/mn/mn1.html'),
+            Path('html_text/en/pli/sutta/mn/mn2.html'),
+        ]
+
+        for path in paths:
+            add_html_file(base_path / path, html)
+
+        files_to_process = {
+            'html_text/en/pli/sutta/mn/mn1.html': 0,
+        }
+
+        language_path = base_path / 'html_text/en'
+        text_info.process_lang_dir(language_path, base_path, files_to_process, force=True)
+
+        file_names = [Path(document['file_path']).name
+                      for document in text_info.added_documents]
+
+        assert file_names == ['mn1.html', 'mn2.html']
