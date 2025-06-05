@@ -535,6 +535,12 @@ export const parallelsListCss = css`
     align-items: center;
     justify-content: center;
   }
+
+  .disabled {
+    cursor: default;
+
+    background-color: var(--sc-tertiary-background-color);
+  }
 `;
 
 export const parallelItemCss = css`
