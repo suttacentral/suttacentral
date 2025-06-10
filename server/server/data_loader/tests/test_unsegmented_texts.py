@@ -24,11 +24,12 @@ class TestExtractDetails:
         assert details.title == "Don't Think"
 
     def test_extracts_chinese_title(self):
-        html = ("<html><head><meta name='author' content='Taishō Tripiṭaka'></head><body><header>"
+        html = ("<html><body><header>"
                 "<h1 class='mirror-row'>"
                 "<span class='mirror-left latin'>43. No Need for Thought</span>"
                 "<span class='mirror-right'>（四三）不思經</span>"
-                "</h1></header></body></html>")
+                "</h1>"
+                "</header></body></html>")
 
         details = extract_details(html, is_chinese_root=True)
 
