@@ -1,5 +1,13 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.10
+
+- Remove unicode points and refactor unsegmented text titles. 
+
+## 2025.6.5
+
+- Fix: parallel root text linking to a 404 page.
+
 ## 2025.6.4
 
 - Fix: Maps should not zoom when you just scroll over them #2825
