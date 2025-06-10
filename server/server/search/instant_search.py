@@ -6,6 +6,7 @@ from search import dictionaries, constant
 from unidecode import unidecode
 import unicodedata
 import string
+from search.validate_filter import validate_filter_commands
 
 INSTANT_SEARCH_VIEW = 'instant_search'
 AQL_INSTANT_SEARCH_FIRST_PART = 'FOR d IN instant_search '
@@ -118,6 +119,21 @@ def instant_search_query(
     db = get_db()
     query = query.strip()
     query = sanitize_quoted_query(query)
+
+    validation_result = validate_filter_commands(query)
+    if not validation_result['is_valid']:
+        return {
+            'total': 0,
+            'hits': [],
+            'suttaplex': [],
+            'fuzzy_dictionary': [],
+            'error': {
+                'type': validation_result['error_type'],
+                'message': validation_result['error_message'],
+                'suggestions': validation_result['suggestions']
+            }
+        }
+
     query = normalize_filter_commands(query)
     hits = []
     total = 0
