@@ -59,15 +59,25 @@ def extract_title(title_tag: HtHtmlElement | None, is_chinese_root: bool) -> str
         return ''
 
     if is_chinese_root:
-        left_side = title_tag.select_one('.mirror-left')
-        right_side = title_tag.select_one('.mirror-right')
-        if left_side and right_side:
-            right_text = right_side.text_content()
-            left_text = left_side.text_content()
-            mirrored_title = f'{right_text} ({left_text})'
-            return mirrored_title
+        title = extract_side_by_side_title(title_tag)
+
+        if title:
+            return title
 
     return normalise_title(title_tag.text_content())
+
+
+def extract_side_by_side_title(title_tag: HtHtmlElement) -> str | None:
+    left_side = title_tag.select_one('.mirror-left')
+    right_side = title_tag.select_one('.mirror-right')
+
+    if not (left_side and right_side):
+        return None
+
+    left_text = left_side.text_content()
+    right_text = right_side.text_content()
+
+    return f'{right_text} ({left_text})'
 
 
 def find_title_tag(root: HtHtmlElement) -> HtHtmlElement | None:
