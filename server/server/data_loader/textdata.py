@@ -52,6 +52,9 @@ class TextInfoModel:
         is_chinese_root = (lang_uid == 'lzh')
         text_details = extract_details(html, is_chinese_root=is_chinese_root)
 
+        if not text_details.has_title_tags:
+            logger.error(f'Could not find title in file: {str(html_file)}')
+
         author_long_name = text_details.authors_long_name
 
         if not author_long_name:
@@ -70,8 +73,7 @@ class TextInfoModel:
         else:
             path = f'{lang_uid}/{uid}'
 
-        if not text_details.has_title_tags:
-            logger.error(f'Could not find title in file: {str(html_file)}')
+
 
         document = {
             "uid": uid,

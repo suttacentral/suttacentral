@@ -153,7 +153,7 @@ class TestTextInfoModel:
     def test_logs_missing_authors_long_name(
             self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
     ):
-        html = "<html></html>"
+        html = "<html><body><header><h1></h1></header></body></html>"
         add_html_file(sutta_path, html)
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert caplog.records[0].levelno == logging.CRITICAL
