@@ -157,7 +157,7 @@ class TestTextInfoModel:
         add_html_file(sutta_path, html)
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f"Author not found: {str(sutta_path)}"
+        assert caplog.records[0].message == f"Could not find author in file: {str(sutta_path)}"
 
     def test_retrieves_author_short_name(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""

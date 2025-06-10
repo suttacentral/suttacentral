@@ -49,18 +49,15 @@ class TextInfoModel:
         with html_file.open('r', encoding='utf8') as f:
             html = f.read()
 
-        is_chinese_root = (lang_uid == 'lzh')
-        text_details = extract_details(html, is_chinese_root=is_chinese_root)
+        text_details = extract_details(html, is_chinese_root=(lang_uid == 'lzh'))
 
         if not text_details.has_title_tags:
             logger.error(f'Could not find title in file: {str(html_file)}')
 
-        author_long_name = text_details.authors_long_name
+        if not text_details.authors_long_name:
+            logging.critical(f'Could not find author in file: {str(html_file)}')
 
-        if not author_long_name:
-            logging.critical(f'Author not found: {str(html_file)}')
-
-        author_data = self.get_author_by_name(author_long_name, html_file)
+        author_data = self.get_author_by_name(text_details.authors_long_name, html_file)
 
         if author_data:
             author_uid = author_data['uid']
@@ -73,13 +70,11 @@ class TextInfoModel:
         else:
             path = f'{lang_uid}/{uid}'
 
-
-
         document = {
             "uid": uid,
             "lang": lang_uid,
             "path": path,
-            "author": author_long_name,
+            "author": text_details.authors_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
             "mtime": self.last_modified(html_file),
