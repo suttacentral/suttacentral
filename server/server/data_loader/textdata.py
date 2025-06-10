@@ -138,28 +138,6 @@ class ArangoTextInfoModel(TextInfoModel):
             self.db['html_text'].import_bulk_logged(self.queue)
             self.queue.clear()
 
-    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool = False) -> None:
-        keys = ('normal', 'bold', 'italic')
-        try:
-            existing = self.db['unicode_points'].get(lang_uid)
-            if existing and not force:
-                for key in keys:
-                    unicode_points[key].update(existing.get(key, []))
-
-            doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
-            doc['_key'] = lang_uid
-        except Exception as e:
-            print(unicode_points)
-            raise e
-
-        if existing or force:
-            try:
-                self.db['unicode_points'].replace(doc)
-            except DocumentReplaceError:
-                self.db['unicode_points'].insert(doc)
-        else:
-            self.db['unicode_points'].insert(doc)
-
     def __enter__(self):
         return self
 
