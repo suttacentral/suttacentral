@@ -12,6 +12,8 @@ from search.instant_search import (
     normalize_filter_commands
 )
 
+from search.validate_filter import validate_filter_commands
+
 from urllib.parse import quote
 from app import app
 client = app.test_client()
@@ -302,3 +304,56 @@ def test_normalize_filter_commands():
     # Special symbols as filter values
     assert normalize_filter_commands('TITLE:@#$% IN:sn!@#') == 'title:@#$% in:sn!@#'
     assert normalize_filter_commands('AUTHOR:sujato-123 VOLPAGE:SN-II-456') == 'author:sujato-123 volpage:SN-II-456'
+
+
+def test_validate_filter_commands():
+    """Test filter validation functionality"""
+    # Testing effective filters
+    assert validate_filter_commands('author:sujato meditation')['is_valid'] is True
+    assert validate_filter_commands('in:sn title:noble')['is_valid'] is True
+    assert validate_filter_commands('lang:en volpage:SN I 123')['is_valid'] is True
+
+    # Testing for duplicate filter errors
+    result = validate_filter_commands('in:sn in:an meditation')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'duplicate_filter'
+    assert 'in:' in result['error_message']
+
+    result = validate_filter_commands('in:in:pli-tv-ab')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'duplicate_filter'
+    assert 'in:' in result['error_message']
+
+    # Testing for consecutive colon errors
+    result = validate_filter_commands('in:lang:pli-tv-ab')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'syntax_error'
+    assert 'in:' in result['error_message']
+
+    # Testing for null errors
+    result = validate_filter_commands('author: meditation')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'empty_value'
+
+    # Testing unknown filters
+    result = validate_filter_commands('invalid_filter:value')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'unknown_filter'
+
+    # Testing for invalid language codes
+    result = validate_filter_commands('lang:invalid123')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'invalid_language'
+
+    # Testing for conflicting filters
+    result = validate_filter_commands('author:sujato by:brahm')
+    assert result['is_valid'] is False
+    assert result['error_type'] == 'conflicting_filters'
+
+    # Test for common spelling errors
+    result = validate_filter_commands('autor:sujato')
+    assert result['is_valid'] is False
+    assert 'author:' in result['suggestions'][1]
+
+    # Testing complex valid queries
+    assert validate_filter_commands('in:sn author:sujato lang:en meditation AND mindfulness')['is_valid'] is True
