@@ -50,12 +50,7 @@ class TextInfoModel:
             html = f.read()
 
         text_details = extract_details(html, is_chinese_root=(lang_uid == 'lzh'))
-
-        if not text_details.has_title_tags:
-            logger.error(f'Could not find title in file: {str(html_file)}')
-
-        if not text_details.authors_long_name:
-            logging.critical(f'Could not find author in file: {str(html_file)}')
+        log_missing_details(text_details, str(html_file))
 
         author_data = self.get_author_by_name(text_details.authors_long_name, html_file)
 
@@ -99,6 +94,13 @@ class TextInfoModel:
             f for f in all_files if f.stem != 'metadata'
         ]
         return files
+
+
+def log_missing_details(details: TextDetails, file_name: str) -> None:
+    if not details.has_title_tags:
+        logger.error(f'Could not find title in file: {file_name}')
+    if not details.authors_long_name:
+        logging.critical(f'Could not find author in file: {file_name}')
 
 
 def add_text_details(document: dict, details: TextDetails) -> None:
