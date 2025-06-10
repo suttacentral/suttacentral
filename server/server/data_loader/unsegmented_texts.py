@@ -18,10 +18,10 @@ class TextDetails:
     volume_page: str | None
 
 
-def extract_details(html: str, language: str) -> TextDetails:
+def extract_details(html: str, language: str = 'en', is_chinese_root: bool = False) -> TextDetails:
     root = sc_html.fromstring(html)
     title_tag = find_title_tag(root)
-    title = extract_title(title_tag, language)
+    title = extract_title(title_tag, is_chinese_root)
 
     return TextDetails(
         title=title,
@@ -54,11 +54,11 @@ def extract_publication_date(root) -> str | None:
     return None
 
 
-def extract_title(title_tag: HtHtmlElement | None, language: str) -> str:
+def extract_title(title_tag: HtHtmlElement | None, is_chinese_root: bool) -> str:
     if title_tag is None:
         return ''
 
-    if language == 'lzh':
+    if is_chinese_root:
         left_side = title_tag.select_one('.mirror-left')
         right_side = title_tag.select_one('.mirror-right')
         if left_side and right_side:
