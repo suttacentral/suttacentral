@@ -49,7 +49,8 @@ class TextInfoModel:
         with html_file.open('r', encoding='utf8') as f:
             html = f.read()
 
-        text_details = extract_details(html, lang_uid, is_chinese_root=(lang_uid == 'lzh'))
+        is_chinese_root = (lang_uid == 'lzh')
+        text_details = extract_details(html, is_chinese_root=is_chinese_root)
 
         author_long_name = text_details.authors_long_name
 

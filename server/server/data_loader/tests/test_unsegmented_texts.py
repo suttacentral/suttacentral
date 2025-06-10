@@ -57,7 +57,7 @@ class TestExtractDetails:
                 "<a class='ref t' id='t0485b21' href='#t0485b21'>T 0485b21</a>"
                 "</h1></header></body></html>")
 
-        details = extract_details(html, language='lzh')
+        details = extract_details(html, is_chinese_root=True)
         assert details.volume_page == 'T 0485b21'
 
     def test_volpage_is_none_when_not_chinese_root(self):

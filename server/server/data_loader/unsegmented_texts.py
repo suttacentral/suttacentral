@@ -18,7 +18,7 @@ class TextDetails:
     volume_page: str | None
 
 
-def extract_details(html: str, language: str = 'en', is_chinese_root: bool = False) -> TextDetails:
+def extract_details(html: str, is_chinese_root: bool = False) -> TextDetails:
     root = sc_html.fromstring(html)
     title_tag = find_title_tag(root)
     title = extract_title(title_tag, is_chinese_root)
@@ -28,7 +28,7 @@ def extract_details(html: str, language: str = 'en', is_chinese_root: bool = Fal
         has_title_tags=bool(title_tag),
         authors_long_name=extract_authors_long_name(root),
         publication_date=extract_publication_date(root),
-        volume_page=extract_volpage(root, language)
+        volume_page=extract_volpage(root, is_chinese_root)
     )
 
 
@@ -85,8 +85,8 @@ def normalise_title(title: str) -> str:
     return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
 
 
-def extract_volpage(root, language: str) -> str | None:
-    if language == 'lzh':
+def extract_volpage(root: HtHtmlElement, is_chinese_root: bool) -> str | None:
+    if is_chinese_root:
         e = root.next_in_order()
         while e is not None:
             if e.tag == 'a' and e.select_one('.t'):
