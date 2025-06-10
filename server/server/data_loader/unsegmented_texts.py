@@ -64,7 +64,7 @@ def extract_title(title_tag: HtHtmlElement | None, language: str) -> str:
         if left_side and right_side:
             return right_side.text_content() + ' (' + left_side.text_content() + ')'
 
-    return regex.sub(r'[\d\.\{\} –-]*', '', title_tag.text_content(), 1)
+    return normalise_title(title_tag.text_content())
 
 
 def find_title_tag(root: HtHtmlElement) -> HtHtmlElement | None:
@@ -78,6 +78,11 @@ def find_title_tag(root: HtHtmlElement) -> HtHtmlElement | None:
         return None
 
     return h1
+
+
+def normalise_title(title: str) -> str:
+    # This may return an empty string e.g. when given a title like "11.358–405"
+    return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
 
 
 def extract_volpage(root, language: str) -> str | None:
