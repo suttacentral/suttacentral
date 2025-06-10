@@ -59,9 +59,7 @@ def extract_title(title_tag: HtHtmlElement | None, is_chinese_root: bool) -> str
         return ''
 
     if is_chinese_root:
-        title = extract_side_by_side_title(title_tag)
-
-        if title:
+        if title := extract_side_by_side_title(title_tag):
             return title
 
     return normalise_title(title_tag.text_content())
