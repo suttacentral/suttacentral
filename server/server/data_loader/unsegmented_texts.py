@@ -62,7 +62,10 @@ def extract_title(title_tag: HtHtmlElement | None, is_chinese_root: bool) -> str
         left_side = title_tag.select_one('.mirror-left')
         right_side = title_tag.select_one('.mirror-right')
         if left_side and right_side:
-            return right_side.text_content() + ' (' + left_side.text_content() + ')'
+            right_text = right_side.text_content()
+            left_text = left_side.text_content()
+            chinese_title = f'{right_text} ({left_text})'
+            return chinese_title
 
     return normalise_title(title_tag.text_content())
 
