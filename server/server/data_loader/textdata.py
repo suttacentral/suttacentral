@@ -4,7 +4,7 @@ from pathlib import Path
 from arango.exceptions import DocumentReplaceError
 
 from data_loader import util
-from data_loader.unsegmented_texts import extract_details
+from data_loader.unsegmented_texts import extract_details, TextDetails
 
 logger = logging.getLogger(__name__)
 
@@ -77,15 +77,14 @@ class TextInfoModel:
             "uid": uid,
             "lang": lang_uid,
             "path": path,
-            "name": text_details.title,
             "author": author_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
-            "publication_date": text_details.publication_date,
-            "volpage": text_details.volume_page,
             "mtime": self.last_modified(html_file),
             "file_path": str(html_file.resolve()),
         }
+
+        add_text_details(document, text_details)
 
         return document
 
@@ -103,6 +102,12 @@ class TextInfoModel:
             f for f in all_files if f.stem != 'metadata'
         ]
         return files
+
+
+def add_text_details(document: dict, details: TextDetails) -> None:
+    document['name'] = details.title
+    document['publication_date'] = details.publication_date
+    document['volpage'] = details.volume_page
 
 
 class ArangoTextInfoModel(TextInfoModel):
