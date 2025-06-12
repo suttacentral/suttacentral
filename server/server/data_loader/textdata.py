@@ -30,18 +30,12 @@ class TextInfoModel:
         files = self._files_for_language(lang_dir)
 
         for html_file in files:
-            try:
-                if should_not_process_file(data_dir, files_to_process, force, html_file):
-                    continue
+            if should_not_process_file(data_dir, files_to_process, force, html_file):
+                continue
 
-                logger.info('Adding file: {!s}'.format(html_file))
-                document = self.create_document(html_file, lang_uid)
-
-                self.add_document(document)
-
-            except Exception as e:
-                print('An exception occurred: {!s}'.format(html_file))
-                raise
+            logger.info('Adding file: {!s}'.format(html_file))
+            document = self.create_document(html_file, lang_uid)
+            self.add_document(document)
 
     def create_document(self, html_file, lang_uid):
         uid = html_file.stem
