@@ -299,17 +299,25 @@ class TestTextInfoModel:
         assert file_names == ['mn1.html', 'mn2.html']
 
 
-class TestShouldNotProcessFile:
-    def test_single_file_no_force(self, base_path):
-        html_file = Path(base_path / 'html_text/en/pli/sutta/mn/mn1.html')
-        add_html_file(html_file, "<html/>")
+class TestShouldProcessFile:
+    def test_file_should_be_processed_when_in_files_to_process(self, base_path):
+        relative_path = Path('abc.html')
+        absolute_path = base_path / relative_path
+        absolute_path.touch()
+        files_to_process = {'abc.html' : 0}
+        assert should_process_file(base_path, files_to_process, False, absolute_path)
 
-        files_to_process = {'html_text/en/pli/sutta/mn/mn1.html': 0}
+    def test_file_should_not_be_processed_when_not_in_files_to_process(self, base_path):
+        relative_path = Path('abc.html')
+        absolute_path = base_path / relative_path
+        absolute_path.touch()
+        files_to_process = {'xyz.html' : 0,}
+        assert not should_process_file(base_path, files_to_process, False, absolute_path)
 
-        should = should_process_file(
-            data_dir=base_path,
-            files_to_process=files_to_process,
-            force=False,
-            html_file=html_file)
+    def test_file_should_be_processed_when_forced(self, base_path):
+        relative_path = Path('abc.html')
+        absolute_path = base_path / relative_path
+        absolute_path.touch()
+        files_to_process = {'xyz.html' : 0,}
+        assert should_process_file(base_path, files_to_process, True, absolute_path)
 
-        assert should
