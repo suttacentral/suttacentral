@@ -30,12 +30,10 @@ class TextInfoModel:
         files = self._files_for_language(lang_dir)
 
         for html_file in files:
-            if not should_process_file(data_dir, files_to_process, force, html_file):
-                continue
-
-            logger.info('Adding file: {!s}'.format(html_file))
-            document = self.create_document(html_file, lang_uid)
-            self.add_document(document)
+            if should_process_file(data_dir, files_to_process, force, html_file):
+                logger.info('Adding file: {!s}'.format(html_file))
+                document = self.create_document(html_file, lang_uid)
+                self.add_document(document)
 
     def create_document(self, html_file, lang_uid):
         uid = html_file.stem
@@ -88,8 +86,9 @@ class TextInfoModel:
 
 
 def should_process_file(data_dir, files_to_process, force, html_file):
-    should_not = not force and str(html_file.relative_to(data_dir)) not in files_to_process
-    return not should_not
+    if force:
+        return True
+    return str(html_file.relative_to(data_dir)) in files_to_process
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:
     if not details.has_title_tags:
