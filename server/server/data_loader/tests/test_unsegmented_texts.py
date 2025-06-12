@@ -82,7 +82,7 @@ class TestExtractDetails:
         assert details.publication_date is None
 
     def test_extracts_volpage_from_chinese_root(self):
-        html = ("<html><head><meta name='author' content='Taishō Tripiṭaka'></head><body><header>"
+        html = ("<html></head><body><header><h1>"
                 "<a class='ref t' id='t0485b21' href='#t0485b21'>T 0485b21</a>"
                 "</h1></header></body></html>")
 
@@ -90,7 +90,7 @@ class TestExtractDetails:
         assert details.volume_page == 'T 0485b21'
 
     def test_volpage_is_none_when_not_chinese_root(self):
-        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        html = "<html/>"
         details = extract_details(html)
         assert details.volume_page is None
 
