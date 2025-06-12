@@ -19,18 +19,13 @@ class TextInfoModel:
     def add_document(self, doc):
         raise NotImplementedError
 
-    def process_lang_dir(self,
-            lang_dir: Path,
-            data_dir: Path = None,
-            files_to_process: dict[str, int] | None = None,
-            force: bool = False
-    ):
+    def process_lang_dir(self, lang_dir: Path, data_dir: Path = None, files_to_process: dict[str, int] | None = None):
         lang_uid = lang_dir.stem
 
         files = self._files_for_language(lang_dir)
 
         for html_file in files:
-            if should_process_file(data_dir, files_to_process, force, html_file):
+            if should_process_file(data_dir, files_to_process, html_file):
                 logger.info('Adding file: {!s}'.format(html_file))
                 document = self.create_document(html_file, lang_uid)
                 self.add_document(document)
@@ -85,9 +80,7 @@ class TextInfoModel:
         return files
 
 
-def should_process_file(data_dir, files_to_process, force, html_file):
-    if force:
-        return True
+def should_process_file(data_dir, files_to_process, html_file):
     return str(html_file.relative_to(data_dir)) in files_to_process
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:

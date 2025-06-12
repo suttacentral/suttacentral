@@ -265,25 +265,11 @@ def load_map_data(additional_info_dir, db):
 
 def load_html_texts(change_tracker: ChangeTracker, data_dir: Path, db: Database, html_dir: Path):
     print('Loading HTML texts')
-
-    force = change_tracker.is_any_function_changed(
-        [textdata.TextInfoModel, textdata.ArangoTextInfoModel]
-    )
-
-    if force:
-        print('This might take a while')
-        db['html_text'].truncate()
-
     with textdata.ArangoTextInfoModel(db=db) as tim:
         for lang_dir in tqdm(html_dir.glob('*')):
             if not lang_dir.is_dir:
                 continue
-            tim.process_lang_dir(
-                lang_dir=lang_dir,
-                data_dir=data_dir,
-                files_to_process=change_tracker.changed_or_new,
-                force=force,
-            )
+            tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir, files_to_process=change_tracker.changed_or_new)
 
 
 def load_json_file(db, change_tracker, json_file):

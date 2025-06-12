@@ -109,30 +109,18 @@ class TestTextInfoModel:
 
     def test_file_not_in_files_to_process_does_not_add_text_info(self, text_info, base_path, language_path, sutta_path):
         add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
-        text_info.process_lang_dir(
-            lang_dir=language_path,
-            data_dir=base_path,
-            files_to_process={}
-        )
+        text_info.process_lang_dir(lang_dir=language_path, data_dir=base_path, files_to_process={})
         assert not text_info.added_documents
 
     def test_type_error_raised_when_files_to_process_is_none(self, text_info, base_path, language_path, sutta_path):
         add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
         with pytest.raises(TypeError):
-            text_info.process_lang_dir(
-                lang_dir=language_path,
-                data_dir=base_path,
-                files_to_process=None
-            )
+            text_info.process_lang_dir(lang_dir=language_path, data_dir=base_path, files_to_process=None)
 
     def test_type_error_when_data_dir_is_none(self, text_info, language_path, sutta_path, files_to_process):
         add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
         with pytest.raises(TypeError):
-            text_info.process_lang_dir(
-                lang_dir=language_path,
-                data_dir=None,
-                files_to_process=files_to_process
-            )
+            text_info.process_lang_dir(lang_dir=language_path, data_dir=None, files_to_process=files_to_process)
 
     def test_logs_missing_authors_long_name(
             self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
@@ -275,29 +263,6 @@ class TestTextInfoModel:
 
         assert file_names == ['mn1.html', 'mn3.html']
 
-    def test_force_flag_causes_all_files_to_be_added(self, text_info, base_path):
-        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
-
-        paths = [
-            Path('html_text/en/pli/sutta/mn/mn1.html'),
-            Path('html_text/en/pli/sutta/mn/mn2.html'),
-        ]
-
-        for path in paths:
-            add_html_file(base_path / path, html)
-
-        files_to_process = {
-            'html_text/en/pli/sutta/mn/mn1.html': 0,
-        }
-
-        language_path = base_path / 'html_text/en'
-        text_info.process_lang_dir(language_path, base_path, files_to_process, force=True)
-
-        file_names = [Path(document['file_path']).name
-                      for document in text_info.added_documents]
-
-        assert file_names == ['mn1.html', 'mn2.html']
-
 
 class TestShouldProcessFile:
     def test_file_should_be_processed_when_in_files_to_process(self, base_path):
@@ -305,19 +270,11 @@ class TestShouldProcessFile:
         absolute_path = base_path / relative_path
         absolute_path.touch()
         files_to_process = {'abc.html' : 0}
-        assert should_process_file(base_path, files_to_process, False, absolute_path)
+        assert should_process_file(base_path, files_to_process, absolute_path)
 
     def test_file_should_not_be_processed_when_not_in_files_to_process(self, base_path):
         relative_path = Path('abc.html')
         absolute_path = base_path / relative_path
         absolute_path.touch()
         files_to_process = {'xyz.html' : 0,}
-        assert not should_process_file(base_path, files_to_process, False, absolute_path)
-
-    def test_file_should_be_processed_when_forced(self, base_path):
-        relative_path = Path('abc.html')
-        absolute_path = base_path / relative_path
-        absolute_path.touch()
-        files_to_process = {'xyz.html' : 0,}
-        assert should_process_file(base_path, files_to_process, True, absolute_path)
-
+        assert not should_process_file(base_path, files_to_process, absolute_path)
