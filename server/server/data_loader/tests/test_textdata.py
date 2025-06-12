@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from data_loader.textdata import TextInfoModel
+from data_loader.textdata import TextInfoModel, should_not_process_file
 
 
 class TextInfoModelSpy(TextInfoModel):
@@ -297,3 +297,19 @@ class TestTextInfoModel:
                       for document in text_info.added_documents]
 
         assert file_names == ['mn1.html', 'mn2.html']
+
+
+class TestShouldNotProcessFile:
+    def test_single_file_no_force(self, base_path):
+        html_file = Path(base_path / 'html_text/en/pli/sutta/mn/mn1.html')
+        add_html_file(html_file, "<html/>")
+
+        files_to_process = {'html_text/en/pli/sutta/mn/mn1.html': 0}
+
+        should_not = should_not_process_file(
+            data_dir=base_path,
+            files_to_process=files_to_process,
+            force=False,
+            html_file=html_file)
+
+        assert not should_not

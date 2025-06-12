@@ -31,7 +31,7 @@ class TextInfoModel:
 
         for html_file in files:
             try:
-                if should_process_file(data_dir, files_to_process, force, html_file):
+                if should_not_process_file(data_dir, files_to_process, force, html_file):
                     continue
 
                 logger.info('Adding file: {!s}'.format(html_file))
@@ -93,7 +93,7 @@ class TextInfoModel:
         return files
 
 
-def should_process_file(data_dir, files_to_process, force, html_file):
+def should_not_process_file(data_dir, files_to_process, force, html_file):
     return not force and str(html_file.relative_to(data_dir)) not in files_to_process
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:
