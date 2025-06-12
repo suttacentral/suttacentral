@@ -19,27 +19,23 @@ class TestExtractDetails:
         assert details.authors_long_name is None
 
     def test_extracts_title(self):
-        html = "<html><body><header><h1>Don't Think</h1></header></body></html>"
+        html = "<html><body><header><h1>1. The Root of All Things</h1></header></body></html>"
         details = extract_details(html)
-        assert details.title == "Don't Think"
+        assert details.title == 'The Root of All Things'
 
     def test_extracts_chinese_title(self):
-        html = ("<html><body><header>"
-                "<h1 class='mirror-row'>"
+        html = ("<html><body><header><h1 class='mirror-row'>"
                 "<span class='mirror-left latin'>43. No Need for Thought</span>"
                 "<span class='mirror-right'>（四三）不思經</span>"
-                "</h1>"
-                "</header></body></html>")
+                "</h1></header></body></html>")
 
         details = extract_details(html, is_chinese_root=True)
 
         assert details.title == '（四三）不思經 (43. No Need for Thought)'
 
     def test_chinese_title_only_has_right_hand_side(self):
-        html = ("<html><body><header>"
-                "<h1 class='mirror-row'>"
-                "<span class='mirror-right'>（四三）不思經</span>"
-                "</h1>"
+        html = ("<html><body><header><h1 class='mirror-row'>"
+                "<span class='mirror-right'>（四三）不思經</span></h1>"
                 "</header></body></html>")
 
         details = extract_details(html, is_chinese_root=True)
@@ -47,11 +43,9 @@ class TestExtractDetails:
         assert details.title == '（四三）不思經'
 
     def test_chinese_title_only_has_left_hand_side(self):
-        html = ("<html><body><header>"
-                "<h1 class='mirror-row'>"
+        html = ("<html><body><header><h1 class='mirror-row'>"
                 "<span class='mirror-left latin'>43. No Need for Thought</span>"
-                "</h1>"
-                "</header></body></html>")
+                "</h1></header></body></html>")
 
         details = extract_details(html, is_chinese_root=True)
 

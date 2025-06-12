@@ -176,45 +176,6 @@ class TestTextInfoModel:
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['path'] == path
 
-    def test_extracts_english_title(self, text_info, base_path, language_path, sutta_path, files_to_process):
-        html = """
-        <html>
-        <head><meta author='Bhikkhu Bodhi'></head>
-        <body><header><h1>1. The Root of All Things</h1></header></body>
-        </html>
-        """
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-        assert text_info.added_documents[0]['name'] == 'The Root of All Things'
-
-    def test_extracts_chinese_title(self, text_info, base_path, language_path, sutta_path, files_to_process):
-        html = """
-        <html>
-        <head><meta name='author' content='Taishō Tripiṭaka'></head>
-        <body><header><h1><span class='t-headname'>解脫戒經</span></h1></header></body>
-        </html>
-        """
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-        assert text_info.added_documents[0]['name'] == '解脫戒經'
-
-    def test_extracts_chinese_mirrored_title(self, text_info, base_path):
-        sutta_relative = 'html_text/lzh/sutta/ma/ma43.html'
-        sutta_path = base_path / sutta_relative
-        language_path = base_path / 'html_text/lzh/'
-        files_to_process = {str(sutta_relative): 0}
-
-        html = ("<html><head><meta name='author' content='Taishō Tripiṭaka'></head><body><header>"
-                "<h1 class='mirror-row'>"
-                "<span class='mirror-left latin'>43. No Need for Thought</span>"
-                "<span class='mirror-right'>（四三）不思經</span>"
-                "</h1></header></body></html>")
-
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-
-        assert text_info.added_documents[0]['name'] == '（四三）不思經 (43. No Need for Thought)'
-
     def test_logs_missing_title_when_there_is_no_header_tag(
             self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
     ):
@@ -250,21 +211,6 @@ class TestTextInfoModel:
         add_html_file(sutta_path, html)
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert not caplog.records
-
-    def test_extracts_chinese_volpage(self, text_info, base_path):
-        sutta_relative = 'html_text/lzh/sutta/ma/ma43.html'
-        sutta_path = base_path / sutta_relative
-        language_path = base_path / 'html_text/lzh/'
-        files_to_process = {str(sutta_relative): 0}
-
-        html = ("<html><head><meta name='author' content='Taishō Tripiṭaka'></head><body><header>"
-                "<a class='ref t' id='t0485b21' href='#t0485b21'>T 0485b21</a>"
-                "</h1></header></body></html>")
-
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-
-        assert text_info.added_documents[0]['volpage'] == 'T 0485b21'
 
     def test_volpage_none_when_legacy_translation(
             self, text_info, base_path, language_path, sutta_path, files_to_process
