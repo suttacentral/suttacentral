@@ -31,7 +31,7 @@ class TextInfoModel:
 
         for html_file in files:
             try:
-                if self._should_process_file(data_dir, files_to_process, force, html_file):
+                if should_process_file(data_dir, files_to_process, force, html_file):
                     continue
 
                 logger.info('Adding file: {!s}'.format(html_file))
@@ -83,9 +83,6 @@ class TextInfoModel:
     def last_modified(self, html_file):
         return html_file.stat().st_mtime
 
-    def _should_process_file(self, data_dir, files_to_process, force, html_file):
-        return not force and str(html_file.relative_to(data_dir)) not in files_to_process
-
     def _files_for_language(self, lang_dir):
         all_files = sorted(
             lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
@@ -95,6 +92,9 @@ class TextInfoModel:
         ]
         return files
 
+
+def should_process_file(data_dir, files_to_process, force, html_file):
+    return not force and str(html_file.relative_to(data_dir)) not in files_to_process
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:
     if not details.has_title_tags:
