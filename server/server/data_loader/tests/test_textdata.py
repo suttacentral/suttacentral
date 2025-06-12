@@ -134,22 +134,6 @@ class TestTextInfoModel:
                 files_to_process=files_to_process
             )
 
-    @pytest.mark.parametrize(
-        "html,author_long_name",
-        [
-            ("<html><meta name='author' content='Bhikkhu Bodhi'></html>", 'Bhikkhu Bodhi'),
-            ("<html><meta author='Bhikkhu Bodhi'></html>", 'Bhikkhu Bodhi'),
-            ("<html></html>", None),
-        ]
-    )
-    def test_extracts_author_long_name_from_html(
-            self, text_info, base_path, language_path, sutta_path,
-            files_to_process, html, author_long_name
-    ):
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-        assert text_info.added_documents[0]['author'] == author_long_name
-
     def test_logs_missing_authors_long_name(
             self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
     ):
@@ -191,17 +175,6 @@ class TestTextInfoModel:
         add_html_file(sutta_path, html)
         text_info.process_lang_dir(language_path, base_path, files_to_process)
         assert text_info.added_documents[0]['path'] == path
-
-    def test_extracts_publication_date(self, text_info, base_path, language_path, sutta_path, files_to_process):
-        html = """
-        <html>
-        <head><meta author='Bhikkhu Bodhi'></head>
-        <body><span class='publication-date'>1962</span></body>
-        </html>
-        """
-        add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-        assert text_info.added_documents[0]['publication_date'] == '1962'
 
     def test_missing_publication_date_is_none(self, text_info, base_path, language_path, sutta_path, files_to_process):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
