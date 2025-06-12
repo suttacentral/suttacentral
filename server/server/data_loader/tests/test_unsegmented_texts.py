@@ -78,13 +78,14 @@ class TestExtractDetails:
         assert details.has_title_tags is False
 
     def test_extracts_publication_date(self):
-        html = ("<html>"
-                "<head><meta author='Bhikkhu Bodhi'></head>"
-                "<body><span class='publication-date'>1962</span></body>"
-                "</html>")
-
+        html = "<html><body><span class='publication-date'>1962</span></body></html>"
         details = extract_details(html)
         assert details.publication_date == '1962'
+
+    def test_publication_date_is_none_when_missing(self):
+        html = '<html/>'
+        details = extract_details(html)
+        assert details.publication_date is None
 
     def test_extracts_volpage_from_chinese_root(self):
         html = ("<html><head><meta name='author' content='Taishō Tripiṭaka'></head><body><header>"
