@@ -1,5 +1,10 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.16
+
+- Refactoring and fix for forced updates.
+- Fix: Report an error if an invalid parameter is used on a filter, or an invalid filter is used. #2978 
+
 ## 2025.6.10
 
 - Remove unicode points and refactor unsegmented text titles. 
