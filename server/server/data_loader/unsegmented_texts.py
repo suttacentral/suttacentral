@@ -18,17 +18,17 @@ class TextDetails:
     volume_page: str | None
 
 
-def extract_details(html: str, language: str) -> TextDetails:
+def extract_details(html: str, is_chinese_root: bool = False) -> TextDetails:
     root = sc_html.fromstring(html)
     title_tag = find_title_tag(root)
-    title = extract_title(title_tag, language)
+    title = extract_title(title_tag, is_chinese_root)
 
     return TextDetails(
         title=title,
         has_title_tags=bool(title_tag),
         authors_long_name=extract_authors_long_name(root),
         publication_date=extract_publication_date(root),
-        volume_page=extract_volpage(root, language)
+        volume_page=extract_volpage(root, is_chinese_root)
     )
 
 
@@ -54,17 +54,28 @@ def extract_publication_date(root) -> str | None:
     return None
 
 
-def extract_title(title_tag: HtHtmlElement | None, language: str) -> str:
+def extract_title(title_tag: HtHtmlElement | None, is_chinese_root: bool) -> str:
     if title_tag is None:
         return ''
 
-    if language == 'lzh':
-        left_side = title_tag.select_one('.mirror-left')
-        right_side = title_tag.select_one('.mirror-right')
-        if left_side and right_side:
-            return right_side.text_content() + ' (' + left_side.text_content() + ')'
+    if is_chinese_root:
+        if title := extract_side_by_side_title(title_tag):
+            return title
 
-    return regex.sub(r'[\d\.\{\} –-]*', '', title_tag.text_content(), 1)
+    return normalise_title(title_tag.text_content())
+
+
+def extract_side_by_side_title(title_tag: HtHtmlElement) -> str | None:
+    left_side = title_tag.select_one('.mirror-left')
+    right_side = title_tag.select_one('.mirror-right')
+
+    if not (left_side and right_side):
+        return None
+
+    left_text = left_side.text_content()
+    right_text = right_side.text_content()
+
+    return f'{right_text} ({left_text})'
 
 
 def find_title_tag(root: HtHtmlElement) -> HtHtmlElement | None:
@@ -80,8 +91,13 @@ def find_title_tag(root: HtHtmlElement) -> HtHtmlElement | None:
     return h1
 
 
-def extract_volpage(root, language: str) -> str | None:
-    if language == 'lzh':
+def normalise_title(title: str) -> str:
+    # This may return an empty string e.g. when given a title like "11.358–405"
+    return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
+
+
+def extract_volpage(root: HtHtmlElement, is_chinese_root: bool) -> str | None:
+    if is_chinese_root:
         e = root.next_in_order()
         while e is not None:
             if e.tag == 'a' and e.select_one('.t'):
