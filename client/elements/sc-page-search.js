@@ -141,7 +141,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const { displayedLanguages } = store.getState().searchOptions;
     const selectedLangs = displayedLanguages.filter(item => item.checked);
     if (!selectedLangs.some(item => item.uid === this.siteLanguage)) {
-      
+
       return html`
         <p>
           <a class="search-result-link search-again-link" @click=${this.handleClickEvent}>Search again including ${this.fullSiteLanguageName}.</a>
@@ -149,7 +149,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         </p>
       `;
     }
-    
+
     return html`<p class="no-result-prompt">${unsafeHTML(this.localizeEx('search:noResult', 'searchTerm', this.searchQuery))}</p>`;
   }
 
@@ -302,7 +302,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     return this.loadingResults
       ? ''
       : html`
-          <section class="search-result-head">${this.searchResultHeadTemplate}${this.noResultTemplate()}</section>
+          <section class="search-result-head">${this.searchResultHeadTemplate}${this.#searchFilterErrorTemplate()}${this.noResultTemplate()}</section>
           <div class="all-search-results">
             <section class="primary-search-results">
               ${this.searchResultListTemplate} ${this.loadMoreButtonTemplate}
@@ -831,6 +831,24 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       : '';
   }
 
+  #searchFilterErrorTemplate() {
+    if (!this.searchResultError) {
+      return '';
+    }
+    return html`
+        <div class="search-error">
+            <h4>Search format error</h4>
+            <p>${this.searchResultError.message}</p>
+            <div class="suggestions">
+                <h5>suggestion:</h5>
+                <ul>
+                    ${unsafeHTML(this.searchResultError.suggestions.map(s => `<li>${s}</li>`).join(''))}
+                </ul>
+            </div>
+        </div>
+    `;
+  }
+
   #onAuthorNameClick(authorUid) {
     dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=author:${authorUid}` });
   }
@@ -1003,6 +1021,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           body: JSON.stringify(selectedLangs),
         })
       ).json();
+      this.searchResultError = searchResult.error;
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
     } catch (error) {
