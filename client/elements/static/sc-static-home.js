@@ -9,7 +9,6 @@ import { API_ROOT } from '../../constants';
 import '../navigation/sc-navigation-tipitaka';
 import { icon } from '../../img/sc-icon';
 import { staticHomeStyles } from '../styles/sc-static-home-styles';
-import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
 import { store } from '../../redux-store';
 import { reduxActions } from '../addons/sc-redux-actions';
 
@@ -74,20 +73,18 @@ export class SCStaticHomePage extends SCStaticPage {
   }
 
   #publicationEditionsPictureTemplate() {
-    return isMobileBrowser()
-      ? ''
-      : html`
-          <figure>
-            <picture>
-              <source srcset="/img/home-page/editions2.avif" type="image/avif" />
-              <img
-                src="/img/home-page/editions.jpg"
-                alt="SuttaCentral editions covers"
-                style="width:100%"
-              />
-            </picture>
-          </figure>
-        `;
+    return html`
+      <figure>
+        <picture>
+          <source srcset="/img/home-page/editions2.avif" type="image/avif" />
+          <img
+            src="/img/home-page/editions.jpg"
+            alt="SuttaCentral editions covers"
+            style="width:100%"
+          />
+        </picture>
+      </figure>
+    `;
   }
 
   #tipitakaSectionTemplate() {

@@ -1294,6 +1294,7 @@ export const SCFontStyles = css`
     font-family: 'Noto Sans Ugaritic';
     src: url('/files/fonts/NotoSansUgaritic-Regular.woff2');
   }
+
   html {
     --sc-skolar-font-scale: 1.13;
 
