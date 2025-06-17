@@ -7,6 +7,8 @@ import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
 import { reduxActions } from '../addons/sc-redux-actions';
 
+import { getBrowserLanguages, shouldAutoCheckLanguage } from '../addons/sc-search-utils';
+
 export class SCStaticSearchOptions extends SCStaticPage {
   static properties = {
     displayedLanguages: { type: Array },
@@ -140,11 +142,19 @@ export class SCStaticSearchOptions extends SCStaticPage {
   }
 
   async #fetchLanguageList() {
-    this.languageList = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
-    this.languageList.forEach(item => {
-      item.checked = !!(item.uid === store.getState().siteLanguage || item.is_root);
-    });
-    reduxActions.setSearchDisplayLanguage(this.languageList);
+    try {
+      this.languageList = await (await fetch(`${API_ROOT}/languages?all=true`)).json();
+      const browserLanguages = getBrowserLanguages();
+      const siteLanguage = store.getState().siteLanguage;
+      this.languageList.forEach(item => {
+        item.checked = shouldAutoCheckLanguage(item, browserLanguages, siteLanguage);
+      });
+      reduxActions.setSearchDisplayLanguage(this.languageList);
+    } catch (error) {
+      console.error('Failed to fetch language list:', error);
+      this.languageList = [];
+      reduxActions.setSearchDisplayLanguage([]);
+    }
   }
 
   #rootLanguagesListTemplate() {
