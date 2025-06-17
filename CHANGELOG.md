@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.17
+
+- Enhance: Set default search document language for new users #2974
+
 ## 2025.6.16
 
 - Refactoring and fix for forced updates.
