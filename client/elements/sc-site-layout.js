@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { BrowserMicroSentryClient } from '@micro-sentry/browser';
 
-import { icon } from '../img/sc-icon';
+import { icon } from '../img/sc-icon-home';
 import './sc-page-selector';
 import './navigation/sc-navigation-linden-leaves';
 import './addons/sc-progress';
@@ -13,7 +13,7 @@ import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
-import { SCFontStyles } from './styles/sc-font-styles';
+import { SCCriticalFontStyles } from './styles/sc-home-font-styles';
 import rafThrottle from '../utils/rafThrottle';
 import { getURLParam } from './addons/sc-functions-miscellaneous';
 import { reduxActions } from './addons/sc-redux-actions';
@@ -318,7 +318,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     window.addEventListener('load', () => {
       this.pageLoaded = true;
       this._createGlobalStylesheet(SCUtilityStyles);
-      this._createGlobalStylesheet(SCFontStyles);
+      this._createGlobalStylesheet(SCCriticalFontStyles);
       this._calculateScrollbarWidth();
     });
   }

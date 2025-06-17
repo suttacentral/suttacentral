@@ -13,6 +13,8 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 import { allEditions, coverImage, creatorBio } from '../publication/sc-publication-common';
 import { reduxActions } from '../addons/sc-redux-actions';
 
+import { fontLazyLoader } from '../../utils/sc-font-lazy-loader';
+
 export class SCNavigation extends LitLocalized(LitElement) {
   static properties = {
     isCompactMode: { type: String, state: true },
@@ -39,6 +41,18 @@ export class SCNavigation extends LitLocalized(LitElement) {
     this.currentMenuData = [];
     this.currentUid = this._getRoutePathLastItem();
     this.creatorOfPublications = new Map();
+    this.fontsLoaded = false;
+    this.loadFontsAsync();
+  }
+
+  async loadFontsAsync() {
+    await this.updateComplete;
+    // Wait one more RAF cycle to ensure first render
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    // It is now safe to load fonts
+    await fontLazyLoader.loadFontsWhenIdle();
+    this.fontsLoaded = true;
+    this.requestUpdate();
   }
 
   connectedCallback() {

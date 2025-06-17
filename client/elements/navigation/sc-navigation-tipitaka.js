@@ -4,7 +4,6 @@ import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { navigationNormalModeStyles } from './sc-navigation-styles';
-import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
 
 export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   static styles = css`
@@ -102,9 +101,7 @@ export class SCNavigationTipitaka extends LitLocalized(LitElement) {
   }
 
   blurbTemplate(menuItem) {
-    return isMobileBrowser()
-      ? ''
-      : html` <div class="blurb" id="${menuItem.root_name}_blurb">${menuItem.blurb}</div> `;
+    return html` <div class="blurb" id="${menuItem.root_name}_blurb">${menuItem.blurb}</div> `;
   }
 
   render() {
