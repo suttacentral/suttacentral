@@ -3,8 +3,8 @@ from pathlib import Path
 
 from arango.exceptions import DocumentReplaceError
 
-from . import util
-from .unsegmented_texts import UnsegmentedText
+from data_loader import util
+from data_loader.unsegmented_texts import extract_details, TextDetails
 
 logger = logging.getLogger(__name__)
 
@@ -19,55 +19,27 @@ class TextInfoModel:
     def add_document(self, doc):
         raise NotImplementedError
 
-    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool) -> None:
-        raise NotImplementedError
-
-    def process_lang_dir(self,
-            lang_dir: Path,
-            data_dir: Path = None,
-            files_to_process: dict[str, int] | None = None,
-            force: bool = False
-    ):
-        unicode_points = {'normal': set(), 'bold': set(), 'italic': set()}
-
+    def process_lang_dir(self, lang_dir: Path, data_dir: Path = None, files_to_process: dict[str, int] | None = None):
         lang_uid = lang_dir.stem
 
         files = self._files_for_language(lang_dir)
 
         for html_file in files:
-            try:
-                if self._should_process_file(data_dir, files_to_process, force, html_file):
-                    continue
-
+            if should_process_file(data_dir, files_to_process, html_file):
                 logger.info('Adding file: {!s}'.format(html_file))
-                document = self.create_document(html_file, lang_uid, unicode_points)
-
+                document = self.create_document(html_file, lang_uid)
                 self.add_document(document)
 
-            except Exception as e:
-                print('An exception occurred: {!s}'.format(html_file))
-                raise
-
-        self.update_code_points(
-            unicode_points=unicode_points, lang_uid=lang_dir.stem, force=force
-        )
-
-    def create_document(self, html_file, lang_uid, unicode_points):
+    def create_document(self, html_file, lang_uid):
         uid = html_file.stem
 
         with html_file.open('r', encoding='utf8') as f:
-            text = f.read()
+            html = f.read()
 
-        text = UnsegmentedText(text, lang_uid)
+        text_details = extract_details(html, is_chinese_root=(lang_uid == 'lzh'))
+        log_missing_details(text_details, str(html_file))
 
-        text.extract_unicode_points(unicode_points)
-
-        author_long_name = text.authors_long_name()
-
-        if not author_long_name:
-            logging.critical(f'Author not found: {str(html_file)}')
-
-        author_data = self.get_author_by_name(author_long_name, html_file)
+        author_data = self.get_author_by_name(text_details.authors_long_name, html_file)
 
         if author_data:
             author_uid = author_data['uid']
@@ -80,32 +52,23 @@ class TextInfoModel:
         else:
             path = f'{lang_uid}/{uid}'
 
-        title = text.title()
-
-        if title == '':
-            logger.error(f'Could not find title for text in file: {str(html_file)}')
-
         document = {
             "uid": uid,
             "lang": lang_uid,
             "path": path,
-            "name": title,
-            "author": author_long_name,
+            "author": text_details.authors_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
-            "publication_date": text.publication_date(),
-            "volpage": text.volpage(),
             "mtime": self.last_modified(html_file),
             "file_path": str(html_file.resolve()),
         }
+
+        add_text_details(document, text_details)
 
         return document
 
     def last_modified(self, html_file):
         return html_file.stat().st_mtime
-
-    def _should_process_file(self, data_dir, files_to_process, force, html_file):
-        return not force and str(html_file.relative_to(data_dir)) not in files_to_process
 
     def _files_for_language(self, lang_dir):
         all_files = sorted(
@@ -115,6 +78,22 @@ class TextInfoModel:
             f for f in all_files if f.stem != 'metadata'
         ]
         return files
+
+
+def should_process_file(data_dir, files_to_process, html_file):
+    return str(html_file.relative_to(data_dir)) in files_to_process
+
+def log_missing_details(details: TextDetails, file_name: str) -> None:
+    if not details.has_title_tags:
+        logger.error(f'Could not find title in file: {file_name}')
+    if not details.authors_long_name:
+        logging.critical(f'Could not find author in file: {file_name}')
+
+
+def add_text_details(document: dict, details: TextDetails) -> None:
+    document['name'] = details.title
+    document['publication_date'] = details.publication_date
+    document['volpage'] = details.volume_page
 
 
 class ArangoTextInfoModel(TextInfoModel):
@@ -149,28 +128,6 @@ class ArangoTextInfoModel(TextInfoModel):
             print('\033[2K\r' + self.queue[-1]['path'], end='')
             self.db['html_text'].import_bulk_logged(self.queue)
             self.queue.clear()
-
-    def update_code_points(self, lang_uid: str, unicode_points: dict[str, set[str]], force: bool = False) -> None:
-        keys = ('normal', 'bold', 'italic')
-        try:
-            existing = self.db['unicode_points'].get(lang_uid)
-            if existing and not force:
-                for key in keys:
-                    unicode_points[key].update(existing.get(key, []))
-
-            doc = {key: ''.join(sorted(set(unicode_points[key]))) for key in keys}
-            doc['_key'] = lang_uid
-        except Exception as e:
-            print(unicode_points)
-            raise e
-
-        if existing or force:
-            try:
-                self.db['unicode_points'].replace(doc)
-            except DocumentReplaceError:
-                self.db['unicode_points'].insert(doc)
-        else:
-            self.db['unicode_points'].insert(doc)
 
     def __enter__(self):
         return self

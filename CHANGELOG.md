@@ -1,5 +1,22 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.17
+
+- Enhance: Set default search document language for new users #2974
+
+## 2025.6.16
+
+- Refactoring and fix for forced updates.
+- Fix: Report an error if an invalid parameter is used on a filter, or an invalid filter is used. #2978 
+
+## 2025.6.10
+
+- Remove unicode points and refactor unsegmented text titles. 
+
+## 2025.6.5
+
+- Fix: parallel root text linking to a 404 page.
+
 ## 2025.6.4
 
 - Fix: Maps should not zoom when you just scroll over them #2825
