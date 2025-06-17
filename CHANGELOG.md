@@ -3,6 +3,7 @@
 ## 2025.6.17
 
 - Enhance: Set default search document language for new users #2974
+- Fix High LCP and Time to Interactive in mobile. #2174
 
 ## 2025.6.16
 
