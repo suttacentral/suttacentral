@@ -31,7 +31,7 @@ class TextInfoModel:
                 self.add_document(document)
 
     def create_document(self, html_file, language_code):
-        uid = html_file.stem
+        sutta_uid = html_file.stem
 
         with html_file.open('r', encoding='utf8') as f:
             html = f.read()
@@ -48,12 +48,12 @@ class TextInfoModel:
             author_uid = None
             author_short = None
         if author_uid:
-            path = f'{language_code}/{uid}/{author_uid}'
+            path = f'{language_code}/{sutta_uid}/{author_uid}'
         else:
-            path = f'{language_code}/{uid}'
+            path = f'{language_code}/{sutta_uid}'
 
         document = {
-            "uid": uid,
+            "uid": sutta_uid,
             "lang": language_code,
             "path": path,
             "author": text_details.authors_long_name,
