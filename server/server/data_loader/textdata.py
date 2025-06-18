@@ -20,23 +20,23 @@ class TextInfoModel:
         raise NotImplementedError
 
     def process_lang_dir(self, lang_dir: Path, data_dir: Path = None, files_to_process: dict[str, int] | None = None):
-        lang_uid = lang_dir.stem
+        language_code = lang_dir.stem
 
         files = files_for_language(lang_dir)
 
         for html_file in files:
             if should_process_file(data_dir, files_to_process, html_file):
                 logger.info('Adding file: {!s}'.format(html_file))
-                document = self.create_document(html_file, lang_uid)
+                document = self.create_document(html_file, language_code)
                 self.add_document(document)
 
-    def create_document(self, html_file, lang_uid):
+    def create_document(self, html_file, language_code):
         uid = html_file.stem
 
         with html_file.open('r', encoding='utf8') as f:
             html = f.read()
 
-        text_details = extract_details(html, is_chinese_root=(lang_uid == 'lzh'))
+        text_details = extract_details(html, is_chinese_root=(language_code == 'lzh'))
         log_missing_details(text_details, str(html_file))
 
         author_data = self.get_author_by_name(text_details.authors_long_name, html_file)
@@ -48,13 +48,13 @@ class TextInfoModel:
             author_uid = None
             author_short = None
         if author_uid:
-            path = f'{lang_uid}/{uid}/{author_uid}'
+            path = f'{language_code}/{uid}/{author_uid}'
         else:
-            path = f'{lang_uid}/{uid}'
+            path = f'{language_code}/{uid}'
 
         document = {
             "uid": uid,
-            "lang": lang_uid,
+            "lang": language_code,
             "path": path,
             "author": text_details.authors_long_name,
             "author_short": author_short,
