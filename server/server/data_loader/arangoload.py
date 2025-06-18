@@ -267,9 +267,12 @@ def load_html_texts(change_tracker: ChangeTracker, data_dir: Path, db: Database,
     print('Loading HTML texts')
     with textdata.ArangoTextInfoModel(db=db) as tim:
         for lang_dir in tqdm(html_dir.glob('*')):
-            if not lang_dir.is_dir:
-                continue
-            tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir, files_to_process=change_tracker.changed_or_new)
+            if lang_dir.is_dir:
+                tim.process_lang_dir(
+                    lang_dir=lang_dir,
+                    data_dir=data_dir,
+                    files_to_process=change_tracker.changed_or_new
+                )
 
 
 def load_json_file(db, change_tracker, json_file):
