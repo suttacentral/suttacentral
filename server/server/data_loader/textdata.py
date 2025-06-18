@@ -71,7 +71,7 @@ class TextInfoModel:
         return html_file.stat().st_mtime
 
 
-def files_for_language(lang_dir: Path):
+def files_for_language(lang_dir: Path) -> list[Path]:
     all_files = sorted(
         lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
     )

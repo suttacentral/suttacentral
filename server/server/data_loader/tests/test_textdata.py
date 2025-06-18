@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from data_loader.textdata import TextInfoModel, should_process_file
+from data_loader.textdata import TextInfoModel, should_process_file, files_for_language
 
 
 class TextInfoModelSpy(TextInfoModel):
@@ -278,3 +278,15 @@ class TestShouldProcessFile:
         absolute_path.touch()
         files_to_process = {'xyz.html' : 0,}
         assert not should_process_file(base_path, files_to_process, absolute_path)
+
+
+class TestFilesForLanguage:
+    @pytest.fixture
+    def lang_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    def test_one_html_file(self, lang_dir):
+        html_file = lang_dir / 'abc.html'
+        html_file.touch()
+        files = files_for_language(lang_dir)
+        assert files[0] == html_file
