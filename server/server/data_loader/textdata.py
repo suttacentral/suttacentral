@@ -22,7 +22,7 @@ class TextInfoModel:
     def process_lang_dir(self, lang_dir: Path, data_dir: Path = None, files_to_process: dict[str, int] | None = None):
         lang_uid = lang_dir.stem
 
-        files = self._files_for_language(lang_dir)
+        files = files_for_language(lang_dir)
 
         for html_file in files:
             if should_process_file(data_dir, files_to_process, html_file):
@@ -70,18 +70,20 @@ class TextInfoModel:
     def last_modified(self, html_file):
         return html_file.stat().st_mtime
 
-    def _files_for_language(self, lang_dir):
-        all_files = sorted(
-            lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
-        )
-        files = [f for f in all_files if f.stem == 'metadata'] + [
-            f for f in all_files if f.stem != 'metadata'
-        ]
-        return files
+
+def files_for_language(lang_dir: Path):
+    all_files = sorted(
+        lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
+    )
+    files = [f for f in all_files if f.stem == 'metadata'] + [
+        f for f in all_files if f.stem != 'metadata'
+    ]
+    return files
 
 
 def should_process_file(data_dir, files_to_process, html_file):
     return str(html_file.relative_to(data_dir)) in files_to_process
+
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:
     if not details.has_title_tags:
