@@ -289,4 +289,12 @@ class TestFilesForLanguage:
         html_file = lang_dir / 'abc.html'
         html_file.touch()
         files = files_for_language(lang_dir)
-        assert files[0] == html_file
+        assert files == [html_file]
+
+    def test_metadata_is_after_normal_file(self, lang_dir):
+        html_file = lang_dir / 'abc.html'
+        html_file.touch()
+        metadata_file = lang_dir / 'metadata.html'
+        metadata_file.touch()
+        files = files_for_language(lang_dir)
+        assert files == [metadata_file, html_file]
