@@ -1,9 +1,6 @@
 import logging
 from pathlib import Path
 
-from arango.exceptions import DocumentReplaceError
-
-from data_loader import util
 from data_loader.unsegmented_texts import extract_details, TextDetails
 
 logger = logging.getLogger(__name__)
@@ -21,10 +18,9 @@ class TextInfoModel:
 
     def process_lang_dir(self, lang_dir: Path, data_dir: Path = None, files_to_process: dict[str, int] | None = None):
         language_code = lang_dir.stem
+        html_files = lang_dir.glob('**/*.html')
 
-        files = files_for_language(lang_dir)
-
-        for html_file in files:
+        for html_file in html_files:
             if should_process_file(data_dir, files_to_process, html_file):
                 logger.info('Adding file: {!s}'.format(html_file))
                 document = self.create_document(html_file, language_code)
@@ -69,14 +65,6 @@ class TextInfoModel:
 
     def last_modified(self, html_file):
         return html_file.stat().st_mtime
-
-
-def files_for_language(lang_dir: Path) -> list[Path]:
-    all_files = list(lang_dir.glob('**/*.html'))
-    files = [f for f in all_files if f.stem == 'metadata'] + [
-        f for f in all_files if f.stem != 'metadata'
-    ]
-    return files
 
 
 def should_process_file(data_dir, files_to_process, html_file):
