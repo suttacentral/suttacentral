@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -27,11 +27,6 @@ services:
     ports:
       - '8080:8080'
 
-  sc-elasticsearch:
-    ports:
-    - '9200:9200'
-    - '9300:9300'
-
   sc-frontend:
     command: npm run dev
     volumes:
@@ -41,12 +36,8 @@ services:
       - ./client/localization:/opt/sc/frontend/localization
       - ./client/index.html:/opt/sc/frontend/index.html
       - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
-      - ./client/sentry.js:/opt/sc/frontend/sentry.js
       - ./client/webpack.config.js:/opt/sc/frontend/webpack.config.js
       - ./client/localization/elements:/opt/sc/frontend/localization/elements
     ports:
       - '3000:3000'
 
-  sc-chrome-headless:
-    ports:
-      - '9222:9222'

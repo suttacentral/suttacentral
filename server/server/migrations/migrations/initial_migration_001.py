@@ -10,12 +10,7 @@ class InitialMigration(Migration):
         db = get_db()
 
         collections = [
-            ('grouping', False),
             ('language', False),
-            ('pitaka', False),
-            ('sect', False),
-            ('root', False),
-            ('root_edges', True),
             ('relationship', True),
             ('html_text', False),
             ('unicode_points', False),
@@ -26,8 +21,6 @@ class InitialMigration(Migration):
             db.create_collection(name=name, edge=edge)
 
         # create indexes
-
         db['html_text'].add_hash_index(fields=["uid"], unique=False)
         db['html_text'].add_hash_index(fields=["author_uid"], unique=False)
         db['html_text'].add_hash_index(fields=["lang"], unique=False)
-        db['root'].add_hash_index(fields=["uid"], unique=False)

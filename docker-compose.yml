@@ -1,7 +1,6 @@
-version: '2'
+version: '3'
 
 services:
-
   sc-flask:
     build:
       context: ./server/
@@ -17,14 +16,14 @@ services:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
       - working-storage-volume:/opt/sc/storage
-      - ./pootle/po:/srv/pootle/po
+      - sc-data-volume:/opt/sc/sc-flask/sc-data
     expose:
       - '5000'
     depends_on:
       - sc-arangodb
 
   sc-arangodb:
-    image: arangodb/arangodb:3.4.1
+    image: arangodb/arangodb:3.11.3
     container_name: 'sc-arangodb'
     env_file:
       - server/env/.base.env
@@ -44,10 +43,10 @@ services:
       application: 'sc-nginx'
     volumes:
       - ./nginx/conf.d:/etc/nginx/configurations
-      - nginx-data-volume:/opt/sc/logs/nginx
+      - nginx-logs:/opt/sc/logs/nginx
       - socket-volume:/opt/sc/sockets
       - l10n-ter:/l10n_ter
-      - ./pootle/assets:/opt/sc/pootle/assets
+      - nginx-cache:/etc/nginx/cache
     ports:
       - '80:80'
       - '443:443'
@@ -55,22 +54,6 @@ services:
       - '2052:2052'
     depends_on:
       - sc-flask
-
-  sc-elasticsearch:
-    build:
-      context: ./elasticsearch/
-      dockerfile: Dockerfile-elasticsearch
-    container_name: 'sc-elasticsearch'
-    labels:
-      application: 'sc-elasticsearch'
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    mem_limit: 2g
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    expose:
-      - '9200'
-      - '9300'
 
   sc-swagger:
     image: swaggerapi/swagger-ui:latest
@@ -89,33 +72,10 @@ services:
     container_name: 'sc-frontend'
     labels:
       application: 'sc-frontend'
-    working_dir: /opt/sc/frontend
-
-  sc-pootle-pipeline:
-    build:
-      context: ./pootle_pipeline/
-      dockerfile: Dockerfile-pootle-pipeline
-    container_name: 'sc-pootle-pipeline'
-    labels:
-      application: 'sc-pootle-pipeline'
     volumes:
-      - ./pootle/po/:/srv/pootle/po/
-      - ./server/server/:/opt/sc/server/
-      - ./client/:/opt/sc/frontend/
-      - ./pootle_pipeline/:/opt/sc/po_files/
-      
-  sc-chrome-headless:
-    build:
-      context: ./server/docker/
-      dockerfile: Dockerfile-chrome-headless
-    container_name: 'sc-chrome-headless'
-    labels:
-      application: 'sc-chrome-headless'
-    expose:
-      - '9222'
-    cap_add:
-      - SYS_ADMIN
-      
+      - sc-data-volume:/opt/sc/sc-data
+    working_dir: /opt/sc/frontend
+     
   sc-api-tester:
     build:
       context: ./server/api-tester/
@@ -134,8 +94,9 @@ networks:
 
 volumes:
   db-data-volume:
-  nginx-data-volume:
+  nginx-logs:
+  sc-data-volume:
   working-storage-volume:
   socket-volume:
-  elasticsearch-data:
   l10n-ter:
+  nginx-cache:

@@ -1,45 +1,101 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html, css } from 'lit';
 
-class SCBadge extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
-      .badge {
-        position: relative;
-        background-color: var(--sc-primary-accent-color);;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        top: -3px;
-        left: 25px
-      }
+import { LitLocalized } from './sc-localization-mixin';
 
-      .badge-number {
-        @apply --sc-skolar-font-size-xs;
-        text-align: center;
-        color: var(--sc-tertiary-text-color);
-        position: relative;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
+export class SCBadge extends LitLocalized(LitElement) {
+  static properties = {
+    text: { type: String },
+    color: { type: String },
+    background: { type: String },
+    visible: { type: String },
+  };
 
-    <div class="badge">
-      <div class="badge-number">[[number]]</div>
-    </div>`;
+  constructor() {
+    super();
+    this.localizedStringsPath = '/localization/elements/interface';
+    this.text = '';
+    this.color = 'primary';
+    this.background = '';
+    this.visible = 'true';
   }
 
-  static get is() {
-      return ;
-  }
-
-  static get properties() {
-    return {
-      number: {
-        type: Number
-      }
+  static styles = css`
+    :host {
+      padding: 0.25em 0.75em;
+      font-size: var(--sc-font-size-xs);
+      font-weight: 550;
+      font-stretch: condensed;
+      line-height: 1;
+      color: #fff;
+      white-space: nowrap;
+      border-radius: 0.6rem;
     }
+
+    :host([color='primary']) {
+      background-color: var(--sc-primary-color);
+    }
+
+    :host([color='secondary']) {
+      background-color: var(--sc-primary-accent-color);
+    }
+
+    :host([color='success']) {
+      background-color: var(--sc-toast-success-color);
+    }
+
+    :host([color='danger']) {
+      background-color: var(--sc-toast-error-color);
+    }
+
+    :host([color='warning']) {
+      background-color: var(--sc-primary-color-dark);
+    }
+
+    :host([color='info']) {
+      background-color: #17a2b8;
+    }
+
+    :host([color='light']) {
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    :host([color='dark']) {
+      background-color: #343a40;
+    }
+
+    :host([color='gray']) {
+      color: var(--sc-on-primary-secondary-text-color);
+      border: 1px solid var(--sc-border-color);
+    }
+
+    :host([color='language']) {
+      background-color: gray;
+      font-weight: 700;
+      font-size: var(--sc-font-size-xs);
+    }
+
+    :host([text='aligned']):before {
+      content: '✓ ';
+      color: var(--sc-primary-accent-color);
+    }
+
+    :host([text='annotated']):before {
+      content: '✓ ';
+      color: var(--sc-primary-accent-color);
+    }
+
+    :host([visible='false']) {
+      display: none;
+    }
+  `;
+
+  render() {
+    const localizeString = this.localize(`badge:${this.text.toLowerCase()}`);
+    if (localizeString.includes('badge:')) {
+      return html` ${this.text} `;
+    }
+    return html` ${localizeString} `;
   }
 }
 

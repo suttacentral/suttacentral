@@ -1,49 +1,76 @@
-import { LitElement, html } from "@polymer/lit-element";
-
-import { LitLocalized } from './localization-mixin';
+import { LitElement, html, css } from 'lit';
+import { LitLocalized } from './sc-localization-mixin';
+import { icon } from '../../img/sc-icon';
 
 export class SCErrorIcon extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      type: String
-    };
-  }
+  static properties = {
+    messages: { type: String },
+    type: { type: String },
+  };
+
+  static styles = css`
+    .error {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2em;
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-xxxl);
+      color: var(--sc-on-primary-secondary-text-color);
+      text-align: center;
+    }
+
+    .icon {
+      width: var(--sc-size-xxl);
+      height: var(--sc-size-xxl);
+    }
+  `;
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-error-icon';
+    this.localizedStringsPath = '/localization/elements/interface';
 
     this.messages = {
-      "no-network": {
-        icon: '/img/nonetwork.svg',
+      'no-network': {
+        image: 'nonetwork',
         title: 'networkError',
-        message: 'offline'
-      }
+        message: 'offline',
+      },
+      'general-error': {
+        image: 'generalerror',
+        title: 'generalError',
+        message: 'generalError',
+      },
+      'page-not-found': {
+        image: 'pagenotfound',
+        title: 'pageNotFound',
+        message: 'pageNotFound',
+      },
+      'data-load-error': {
+        image: 'dataloaderror',
+        title: 'dataLoadError',
+        message: 'dataLoadError',
+      },
+      'connect-to-internet': {
+        image: 'connecttointernet',
+        title: 'connectToInternet',
+        message: 'connectToInternet',
+      },
+      'translation-text-load-error': {
+        image: 'dataloaderror',
+        title: 'dataLoadError',
+        message: 'translationDataLoadError',
+      },
     };
   }
 
   render() {
-    const { icon, title, message } = this.messages[this.type];
-
+    const { image, message } = this.messages[this.type];
     return html`
-      <style>
-        .error {
-          @apply --center;
-          @apply --sc-sans-font;
-          @apply --sc-skolar-font-size-static-subtitle;
-          color: var(--sc-secondary-text-color);
-          text-align: center;
-        }
-
-        .icon {
-          width: var(--sc-size-xxl);
-          height: var(--sc-size-xxl);
-        }
-      </style>
-
       <div class="error">
-        <iron-icon src="${icon}" class="icon" title="${this.localize(title)}"></iron-icon>
-        <div>${this.localize(message)}</div>
+        ${icon[image]}
+        <div>${this.localize(`error:${message}`)}</div>
       </div>
     `;
   }

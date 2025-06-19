@@ -1,0 +1,29 @@
+name: SuttaCentral CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  SuttaCentral-CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master repo
+        uses: actions/checkout@v3
+
+      - name: Initialize docker
+        uses: docker/setup-docker-action@v4.1.0
+        
+      - name: Build
+        run: |
+          make prepare-tests
+          # docker wait sc-frontend
+          docker compose logs
+          docker ps
+
+      # - name: Test
+      #   run: make test
+       

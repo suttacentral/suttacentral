@@ -19,6 +19,7 @@ class Migration:
         7. You are good to go just remember to never change the 'migration_id'
         otherwise your migrations might fail.
     """
+
     migration_id = None
     tasks = None
     migrations_collection = 'migrations'
@@ -50,7 +51,4 @@ class Migration:
         """
         db = get_db()
         migrations = db.collection(self.migrations_collection)
-        migrations.insert({
-            '_key': self.migration_id,
-            'date': str(datetime.now())
-        })
+        migrations.insert({'_key': self.migration_id, 'date': str(datetime.now())})

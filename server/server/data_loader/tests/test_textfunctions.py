@@ -1,11 +1,6 @@
-
-import pytest
-
-from data_loader.textfunctions import pali_sort_key, asciify_roman
-
 from random import Random
 
-
+from data_loader.textfunctions import pali_sort_key, asciify_roman
 
 # A random selection of pali words, in proper alphabetical order
 pali_words = [
@@ -50,8 +45,9 @@ pali_words = [
     'sayha',
     'sikhara',
     'sukkha',
-    'horā'
+    'horā',
 ]
+
 
 def test_data_sanity():
     # make sure each word is unique
@@ -59,21 +55,25 @@ def test_data_sanity():
     # and the data sorts differently unicode-wise
     assert pali_words != sorted(pali_words)
 
+
 def test_uniqueness():
     # check that the function returns a unique value for each pali word
     # (this is not guaranteed for non pali words!)
     assert len(pali_words) == len({pali_sort_key(word) for word in pali_words})
 
+
 def test_pali_sort_order():
     random = Random(42)
     shuffled = random.sample(pali_words, k=len(pali_words))
     assert pali_words == sorted(shuffled, key=pali_sort_key)
-    
+
+
 def test_pali_sort_order_upper():
     random = Random(42)
     upper_words = [word.upper() for word in pali_words]
     shuffled = random.sample(upper_words, k=len(upper_words))
     assert upper_words == sorted(shuffled, key=pali_sort_key)
-    
+
+
 def test_asciify_roman():
     assert asciify_roman('saṃsāra') == 'samsara'

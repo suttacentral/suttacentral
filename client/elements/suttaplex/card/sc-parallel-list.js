@@ -1,36 +1,33 @@
-import '@polymer/iron-ajax/iron-ajax.js';
-import { html, LitElement } from '@polymer/lit-element';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
-import { API_ROOT } from '../../../constants.js';
+import { html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { API_ROOT } from '../../../constants';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
-import { LitLocalized } from '../../addons/localization-mixin';
+import { LitLocalized } from '../../addons/sc-localization-mixin';
+import { icon } from '../../../img/sc-icon';
+import { store } from '../../../redux-store';
 
-import './sc-parallel-item.js';
+import './sc-parallel-item';
 import { parallelsListCss } from './sc-suttaplex-css';
 
-class SCParallels extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      itemUid: String,
-      rootKeys: Array,
-      originalLanguage: String,
-      inputLanguage: String,
-      inputUrl: String,
-      loadingResults: Boolean,
-      rootLang: String,
-      responseData: Boolean,
-      error: Boolean,
-      rootText: Object,
-      localizedStringsPath: String,
-      expansionData: Array
-    }
-  }
+export class SCParallels extends LitLocalized(LitElement) {
+  static properties = {
+    itemUid: { type: String },
+    rootKeys: { type: Array },
+    originalLanguage: { type: String },
+    inputLanguage: { type: String },
+    inputUrl: { type: String },
+    loadingResults: { type: Boolean },
+    rootLang: { type: String },
+    responseData: { type: Boolean },
+    error: { type: Boolean },
+    rootText: { type: Object },
+    localizedStringsPath: { type: String },
+    expansionData: { type: Array },
+  };
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-parallel-list';
+    this.localizedStringsPath = '/localization/elements/suttaplex';
   }
 
   shouldUpdate(changedProperties) {
@@ -61,13 +58,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return 'sc-iron-icons:compare-arrows';
+          return icon.compare_arrows;
         }
-        return 'sc-iron-icons:swap-horiz';
+        return icon.swap_horiz;
       case 'retelling':
-        return 'sc-iron-icons:cached';
+        return icon.cached;
       case 'mention':
-        return 'sc-iron-icons:format-quote';
+        return icon.format_quote;
       default:
         return '';
     }
@@ -80,13 +77,13 @@ class SCParallels extends LitLocalized(LitElement) {
     switch (item.type) {
       case 'full':
         if (item.resembling) {
-          return this.localize('ResemblingParallel');
+          return this.localize('suttaplex:resemblingParallel');
         }
-        return this.localize('FullParallel');
+        return this.localize('suttaplex:fullParallel');
       case 'retelling':
-        return this.localize('RetellingParallel');
+        return this.localize('suttaplex:retellingParallel');
       case 'mention':
-        return this.localize('Mention');
+        return this.localize('suttaplex:mention');
     }
   }
 
@@ -107,61 +104,107 @@ class SCParallels extends LitLocalized(LitElement) {
     return `/${this.itemUid}/${this.rootLang}/${authorUid}${getParagraphRange(rootId, true)}`;
   }
 
+  _computeValidUrl(rootId) {
+    const url = this.computeUrl(rootId);
+    return url && !url.includes('null') ? url : undefined;
+  }
+
+  _shouldDisable() {
+    if (!this.rootLang) {
+      return true;
+    }
+  }
+
+  get actions() {
+    return {
+      changeLinearProgressActiveState(active) {
+        store.dispatch({
+          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
+          linearProgressActive: active,
+        });
+      },
+    };
+  }
+
+  static styles = [parallelsListCss];
+
   render() {
     return html`
-    ${parallelsListCss}
-    <div>
-      ${this.loadingResults ? html`
-        <paper-spinner-lite class="paper-spinner" .active="${this.loadingResults}"></paper-spinner-lite>
-      ` : ''}
+      <div>
+        ${this.rootKeys
+          ? html`
+              <table class="parallels-table">
+                ${this.rootKeys.map(
+                  rootId => html`
+                    <tbody class="parallels-table-body">
+                      <tr class="parallels-row">
+                        <td
+                          class="parallels-root-cell parallels-table-cell"
+                          rowspan=${this.getRowspan(rootId)}
+                        >
+                          <a class="root-link ${this._shouldDisable() ? 'disabled' : ''}"
+                              href=${ifDefined(this._computeValidUrl(rootId))}
+                          >
+                            <div
+                              class="parallels-root-id root"
+                              title=${this.localize('suttaplex:suttaCentralID')}
+                            >
+                              ${transformId(rootId, this.expansionData)}
+                            </div>
+                            ${this._shouldDisable() ? '' : html`<md-ripple></md-ripple>`}
+                          </a>
+                        </td>
+                        <td
+                          class="parallels-relation-cell"
+                          title=${this.getFirstParallelIconTitle(rootId)}
+                        >
+                          ${this.getFirstParallelIcon(rootId)}
+                        </td>
+                        <td class="parallels-parallel-cell">
+                          <sc-parallel-item
+                            .parallelItem=${this.getFirstParallelItem(rootId)}
+                            .remark=${this.getFirstParallelRemark(rootId)}
+                            .expansionData=${this.expansionData}
+                          ></sc-parallel-item>
+                        </td>
+                      </tr>
 
-      ${this.rootKeys ? html`
-        <table class="parallels-table">
-          ${this.rootKeys.map(rootId => html`
-            <tbody class="parallels-table-body">
-              <tr class="parallels-row">
-                <td class="parallels-root-cell parallels-table-cell paper-lift" rowspan="${this.getRowspan(rootId)}">
-                  <a class="root-link" href="${this.computeUrl(rootId)}">
-                    <paper-ripple></paper-ripple>
-                    <div class="parallels-root-id root" title="${this.localize('suttaCentralID')}">
-                      ${transformId(rootId, this.expansionData)}
-                    </div>
-                  </a>
-                </td>
-                <td class="parallels-relation-cell">
-                  <iron-icon class="grey-icon" .icon="${this.getFirstParallelIcon(rootId)}" title="${this.getFirstParallelIconTitle(rootId)}"></iron-icon>
-                </td>
-                <td class="parallels-parallel-cell paper-lift">
-                  <sc-parallel-item 
-                    .parallelItem="${this.getFirstParallelItem(rootId)}" 
-                    .remark="${this.getFirstParallelRemark(rootId)}" 
-                    .expansionData="${this.expansionData}"
-                  ></sc-parallel-item>
-                </td>
-              </tr>
-    
-              ${this.getOtherParallels(rootId).map(item => html`
-                <tr>
-                  <td class="parallels-relation-cell">
-                    <iron-icon class="grey-icon" .icon="${this.getParallelIcon(item)}" title="${this.computeIconTitle(item)}"></iron-icon>
-                  </td>
-                  <td class="parallels-parallel-cell paper-lift">
-                    <sc-parallel-item .parallelItem="${item.to}" .remark="${item.remark}" .expansionData="${this.expansionData}"></sc-parallel-item>
-                  </td>
-                </tr>
-              `)}
-            </tbody>
-          `)}
-        </table>
-      ` : ''}
-    </div>`;
+                      ${this.getOtherParallels(rootId).map(
+                        item => html`
+                          <tr>
+                            <td
+                              class="parallels-relation-cell"
+                              title=${this.computeIconTitle(item)}
+                            >
+                              ${this.getParallelIcon(item)}
+                            </td>
+                            <td class="parallels-parallel-cell">
+                              <sc-parallel-item
+                                .parallelItem=${item.to}
+                                .remark=${item.remark}
+                                .expansionData=${this.expansionData}
+                              ></sc-parallel-item>
+                            </td>
+                          </tr>
+                        `
+                      )}
+                    </tbody>
+                  `
+                )}
+              </table>
+            `
+          : ''}
+      </div>
+    `;
   }
 
   async _loadData() {
     this.loadingResults = true;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
     this.responseData = await (await fetch(this._getAPIEndpoint(this.itemUid))).json();
     await this._didRespond();
     this.loadingResults = false;
+    this.actions.changeLinearProgressActiveState(this.loadingResults);
   }
 
   _didRespond() {
@@ -176,8 +219,9 @@ class SCParallels extends LitLocalized(LitElement) {
     };
 
     let rootKeys = Object.keys(this.responseData);
-    if (rootKeys[0].substring(0, 3) === "sag") {
-      this.rootKeys = rootKeys.map(item => item.match(/\d{1,4}/g).map(Number))
+    if (rootKeys[0].substring(0, 3) === 'sag') {
+      this.rootKeys = rootKeys
+        .map(item => item.match(/\d{1,4}/g).map(Number))
         .sort(compareArray)
         .map(item => {
           if (item.length === 1) {
@@ -189,11 +233,12 @@ class SCParallels extends LitLocalized(LitElement) {
           }
         });
     } else if (rootKeys[0].match(/dhp/)) {
-      this.rootKeys = rootKeys.map(item => {
-        const dhpNumber = this.responseData[item][0].enumber;
+      this.rootKeys = rootKeys
+        .map(item => {
+          const dhpNumber = this.responseData[item][0].enumber;
 
-        return [dhpNumber, item];
-      })
+          return [dhpNumber, item];
+        })
         .sort(compareArray)
         .map(item => item[1]);
     } else {

@@ -1,7 +1,7 @@
-import re
-from typing import Callable, Dict, List
-from collections import defaultdict
 import itertools
+from typing import Callable, Dict, List
+
+import re
 
 import decorator
 
@@ -12,6 +12,7 @@ from migrations.runner import run_migrations
 
 def current_app():
     from app import app_factory
+
     api, app = app_factory()
     return app
 
@@ -20,15 +21,20 @@ def remove_test_db():
     """
     Delete the test db.
     """
-    get_system_db().delete_database(current_app().config.get('ARANGO_DB'), ignore_missing=True)
+    get_system_db().delete_database(
+        current_app().config.get('ARANGO_DB'), ignore_missing=True
+    )
+
 
 def app_context(func: Callable):
     """
     Run function in flask's app context.
     """
+
     def wrapper(func: Callable, *args, **kwargs):
         with current_app().app_context():
             return func(*args, **kwargs)
+
     return decorator.decorator(wrapper, func)
 
 
@@ -36,6 +42,7 @@ def empty_arango(func: Callable):
     """
     Decorator that removes arango test database before running the test and re-create it after.
     """
+
     def remove_existing_database(func: Callable, *args, **kwargs):
 
         with current_app().app_context():
@@ -67,12 +74,12 @@ def generate_languages(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Language)
 
 
-def generate_roots(amount=5) -> models.ModelList:
-    return _generate_models(amount, models.Root)
+def generate_navigation_docs(amount=5) -> models.ModelList:
+    return _generate_models(amount, models.NavigationDetailDoc)
 
 
-def generate_root_edges(roots: List[models.Root]) -> models.ModelList:
-    return models.RootEdges.generate(roots)
+def generate_navigation_edges(nav_docs: List[models.NavigationDetailDoc]) -> models.ModelList:
+    return models.SuperNavigationEdge.generate(nav_docs)
 
 
 def generate_html_text(amount=5) -> models.ModelList:
@@ -83,65 +90,26 @@ def generate_blurb(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Blurb)
 
 
-def generate_po_markup(amount=5) -> models.ModelList:
-    return _generate_models(amount, models.PoMarkup)
-
-
-def generate_po_string(amount=5) -> models.ModelList:
-    return _generate_models(amount, models.PoString)
-
-
 def generate_difficulty(amount=5) -> models.ModelList:
     return _generate_models(amount, models.Difficulty)
 
 
-def generate_relationships(roots: List[models.Root]) -> models.ModelList:
-    return models.Relationship.generate(roots)
+def generate_relationships(nav_docs: List[models.NavigationDetailDoc]) -> models.ModelList:
+    return models.Relationship.generate(nav_docs)
 
 
 def generate_lookup_dict(_from, to):
     db = get_db()
-    db['dictionaries'].insert({
-        'from': _from,
-        'to': to,
-        'dictionary': [],
-        'lookup': True,
-        'main': True,
-        'type': 'maindata'
-    })
-
-
-def uid_sort_key(string, reg=re.compile(r'\d+')):
-    """ Properly sorts UIDs
-    Examples:
-        >>> sorted(['dn1.1', 'dn1', 'dn2', 'dn1.2'], key=uid_sort_key)
-        ['dn1', 'dn1.1', 'dn1.2', 'dn2']
-    """
-    # With split, every second element will be the one in the capturing group.
-    return [int(x) for x in reg.findall(string)]
-
-
-def recursive_sort(data: List[Dict], sort_by: str, children='children', key: Callable=lambda x: x) -> List[Dict]:
-    """Sorts data in tree structure recursively and inplace.
-
-    Args:
-        data: Data to be sorted. List of dicts...
-        sort_by: By which key in the dictionary it should be sorted.
-        children: Key with children list.
-        key: Function to use as a sort key.
-
-    Returns:
-        data
-    """
-    def r_sort(data: List[Dict]):
-        data.sort(key=lambda x: key(x[sort_by]))
-
-        for entry in data:
-            if children in entry:
-                r_sort(entry[children])
-    r_sort(data)
-
-    return data
+    db['dictionaries_simple'].insert(
+        {
+            'from': _from,
+            'to': to,
+            'dictname': 'test',
+            'entry': 'test',
+            'grammar': 'test',
+            'definition': 'test',
+        }
+    )
 
 
 def flat_tree(data: List[Dict], children='children') -> List[Dict]:
@@ -210,26 +178,15 @@ def sort_parallels_type_key(x):
         p_type = 'resembling'
     else:
         p_type = x['type']
-    values = {
-        'full': 1,
-        'resembling': 2,
-        'mention': 3,
-        'retelling': 4,
-    }
+    values = {'full': 1, 'resembling': 2, 'mention': 3, 'retelling': 4}
     return values[p_type], x['to']['to']
 
 
-def groupby_unsorted(seq, key=lambda x: x):
-    seq = list(seq)
-    indexes = defaultdict(list)
-    for i, elem in enumerate(seq):
-        indexes[key(elem)].append(i)
-    for k, idxs in indexes.items():
-        yield k, (seq[i] for i in idxs)
-
 def chunks(iterable, chunk_size):
     if isinstance(iterable, list):
-        yield from (iterable[i:i+chunk_size] for i in range(0, len(iterable), chunk_size))
+        yield from (
+            iterable[i: i + chunk_size] for i in range(0, len(iterable), chunk_size)
+        )
     else:
         iterator = iter(iterable)
         while True:
@@ -238,3 +195,10 @@ def chunks(iterable, chunk_size):
                 yield r
             else:
                 break
+
+
+def get_possible_parent_uid(uid):
+    if uid is None:
+        return ''
+    else:
+        return re.sub(r'([a-z]+(?:-[a-z]+)*)(?:-\d|\d).*', r'\1', uid)

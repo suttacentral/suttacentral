@@ -6,8 +6,7 @@ from pathlib import Path
 from arango.exceptions import CollectionCreateError
 from flask import current_app
 
-from common.arangodb import get_client, get_db, get_system_db
-
+from common.arangodb import get_db, get_system_db
 from .base import Migration
 
 MIGRATIONS_FOLDER = 'migrations'
@@ -45,13 +44,19 @@ def _import_migration_class(file_path: Path):
     # Remove .py extension from file name
     module_name = file_path.name.rstrip(file_path.suffix)
     # Import migration file/module
-    migrations = importlib.import_module(f'migrations.{MIGRATIONS_FOLDER}.{module_name}')
+    migrations = importlib.import_module(
+        f'migrations.{MIGRATIONS_FOLDER}.{module_name}'
+    )
     # Get class that inherits from Migration class
-    migration_classes = getmembers(migrations,
-                                   lambda cls: isclass(cls) and issubclass(cls, Migration))
+    migration_classes = getmembers(
+        migrations, lambda cls: isclass(cls) and issubclass(cls, Migration)
+    )
     # filter out base class from results and get class object
-    migration_class = [migration_cls for migration_cls in migration_classes if
-                       migration_cls[0] != 'Migration'][0][1]
+    migration_class = [
+        migration_cls
+        for migration_cls in migration_classes
+        if migration_cls[0] != 'Migration'
+    ][0][1]
     return migration_class
 
 

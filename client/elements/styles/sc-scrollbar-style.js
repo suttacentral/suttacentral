@@ -1,7 +1,6 @@
-import { html } from '@polymer/polymer/polymer-element.js';
+import { css } from 'lit';
 
-export const scrollbarStyle = html`
-<style>
+export const scrollbarStyle = css`
   .sc-scrollbar::-webkit-scrollbar {
     width: var(--sc-size-sm);
     height: var(--sc-size-sm);
@@ -12,11 +11,13 @@ export const scrollbarStyle = html`
     width: 0;
   }
 
-  .sc-scrollbar::-webkit-scrollbar-button:start:decrement, .sc-scrollbar::-webkit-scrollbar-button:end:decrement {
+  .sc-scrollbar::-webkit-scrollbar-button:start:decrement,
+  .sc-scrollbar::-webkit-scrollbar-button:end:decrement {
     display: block;
   }
 
-  .sc-scrollbar::-webkit-scrollbar-button:start:increment, .sc-scrollbar::-webkit-scrollbar-button:end:increment {
+  .sc-scrollbar::-webkit-scrollbar-button:start:increment,
+  .sc-scrollbar::-webkit-scrollbar-button:end:increment {
     display: block;
   }
 
@@ -54,15 +55,15 @@ export const scrollbarStyle = html`
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb {
-    background-color: var(--sc-disabled-text-color);
+    background-color: var(--sc-icon-color);
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: var(--sc-paper-tooltip-color);
+    background-color: var(--sc-inverted-text-color);
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:active {
-    background-color: var(--sc-secondary-text-color);
+    background-color: var(--sc-on-primary-secondary-text-color);
   }
 
   .sc-scrollbar::-webkit-scrollbar-thumb:vertical {
@@ -74,4 +75,4 @@ export const scrollbarStyle = html`
     border-width: 5px 0 0 0;
     padding-left: 100px;
   }
-</style>`;
+`;

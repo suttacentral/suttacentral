@@ -1,15 +1,17 @@
 # SuttaCentral server and client repository
-[![Build Status](https://travis-ci.org/suttacentral/suttacentral.svg?branch=development)](https://travis-ci.org/suttacentral/suttacentral)
 
+SuttaCentral is a Python Flask server which serves a Progressive Web App (`client`) and its associated JSON API (`server`).
 
-# Deploying
+The API pulls its data in real time from an ArangoDB instance populated periodically with data from the `sc-data` repository.
+
+# Deploying for production
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
 2. `$ cd suttacentral`
 3. `$ git checkout production`
 4. `$ make prepare-host`
 5. `$ make run-production-env` -> Supply needed env variables, 
 if you chose random you will be prompted back with generated values.
-Remember them! You will use some of them to access admin services, eg. Pootle.
+Remember them! You will use some of them to access admin services.
 6. Done
 
 ## Or updating in individual steps
@@ -21,7 +23,7 @@ Remember them! You will use some of them to access admin services, eg. Pootle.
 5. `make delete-database` -> OPTIONAL: Skip this if data hasn't seriously changed (do it, if texts have been deleted or renamed)
 6. `make migrate` -> only needed for delete-database, but harmless to run anyway
 7. `make load-data` -> load data into arangodb
-8. `make index-elasticsearch` -> load data into elasticsearch
+8. `make index-arangosearch` -> index arangosearch
 9. `make reload-uwsgi` -> make sure flask server is not serving cached stale data
 
 ### Minimally disruptive update
@@ -30,10 +32,10 @@ If no containers need to be rebuilt then this is all that needs to be run:
 
 1. `cd /opt/suttacentral`
 2. `git pull`
-3. `run frontend-builder`
-4. `make load-data`
-5. `make reload-uwsgi`
-6. `make index-elasticsearch`
+3. `make load-data`
+4. `make reload-uwsgi`
+5. `make index-arangosearch`
+6. `make rebuild-frontend`
 
 ### Changing the branch(s) the server, or staging server, uses
 
@@ -41,38 +43,31 @@ If no containers need to be rebuilt then this is all that needs to be run:
 2. `git checkout <code-branch>`
 3. `cd server/sc-data`
 4. `git checkout <data-branch>`
-5. `cd po_text`
-6. `git checkout <po-branch>`
 
 Then run the commands for updating, probably including the `make delete-database` step.
-
-# Working with pootle
-  * In order to load data to pootle run `make load-to-pootle`.
-  * To load data from pootle to server/client run `make load-from-pootle`.
-  
-To access pootle in dev mode go to `pootle.localhost`,
-default credentials in dev mode are:
-* login: `admin`
-* password: `password`
-
 
 # Development
 ## 1. Server
 
-### 1.1 Running the project
-0. Install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
+### 1.0 Setting up the project and *first run*
+0. Install [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/).
 1. Clone the repo `git clone git@github.com:suttacentral/suttacentral.git`.
 2. Cd into the repo `cd suttacentral`.
-3. run `make prepare-host` in order to make some small adjustment on the host machine so that we can run ElasticSearch.
-4.  * 1st time run: run `make run-preview-env` - Build images, load data, index-elasticsearch and more.
-	* normal run: run `make run-dev`.
+3. run `make prepare-host` in order to make some small adjustment on the host machine.
+4. run `make run-preview-env` - Build images, load data, index-arangosearch and more. This will run the project for the first time.
+
+### 1.1 Running the project
+
+1. run `make run-dev`.
 
 ### 1.2 Loading the data
+When changes are made on `bilara-data` and `sc-data`, they do not automatically get updated in `suttacentral`. During initial setup in step 1.0.4 above, the raw data from those repositories is brought into `suttacentral` and added to the database. So if you make changes in `bilara-data` and `sc-data` you must run the steps below to see them in the build.
+
 0. ensure server is up and run `make load-data`.
-1. To index elasticsearch run `make index-elasticsearch`.
+1. To index arangosearch run `make index-arangosearch`.
 
 ### 1.3 Docs
-API documentation is available at `/api/docs`.
+API documentation is available at `suttacentral.net/api/docs`.
 
 Swagger documentation is generated from doc strings in api methods. The docstring should use 
 [OpenAPI specification 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object) yaml format. 
@@ -81,11 +76,11 @@ This yaml docstring will be interpreted as OpenAPI's Operation Object.
 #### Development
 In this mode server, nignx, client dirs are mounted in Docker's containers so that any local changes take place in the container as well.
 
-In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529` and elasticsearch ports `9200` and `9300`.
+In addition `Uwsgi+Flask` expose port `5001` on local host, arangodb port `8529`.
 
 ### 1.4 Makefile
 There is a Makefile with following commands:
-* `prepare-host` - Set `vm.max_map_count` to `262144` because otherwise ElasticSearch won't work.
+* `prepare-host` - Setup client git-hooks.
 * `run-dev` - Run containers in development mode.
 * `run-dev-no-logs` - Run containers in development mode without output to the console.
 * `run-prod` - Run containers in production mode.
@@ -99,23 +94,23 @@ There is a Makefile with following commands:
 * `test-client` - Run only frontend tests.
 * `test-server` - Run only server test.
 * `load-data` - Pulls most recent data from github and loads it from `server/sc-data` folder to the db.
-* `delete-databse` - Delete database from ArangoDB.
-* `index-elasticsearch` - Index ElasticSearch with data from the db.
+* `delete-database` - Delete database from ArangoDB.
+* `index-arangosearch` - Index ArangoSearch with data from the db.
 * `run-preview-env` - Fully rebuild and run most recent development version.
-* `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ElasticSearch.
+* `run-preview-env-no-search` - Fully rebuild and run most recent development version but does not index ArangoSearch.
 * `run-production-env` - Fully rebuild and run most recent production version. You will be prompted with questions regarding env variables.
-* `generate-env-vairables` - Runs env_variables_setup.py script and generate env variables for production version.
-* `generate-server-po-files` - Generates needed po files from database.
-* `load-server-po-files` - Loads data from po files to database.
-* `load-to-pootle` - Generate needed po files and loads them to the Pootle.
-* `load-from-pootle` - Load data from pootle to ArangoDB and client.
+* `generate-env-variables` - Runs env_variables_setup.py script and generate env variables for production version.
 
+In addition, the following rebuilds the front end. 
+
+* `docker-compose build sc-frontend`
+* then `make run-dev`
 
 ### 1.5 Working with ArangoDB
 Our project is using [ArangoDB](https://www.arangodb.com/) on the back-end. In the development mode it exposes port 8529 on the localhost.
-You can access it's web interface on <http://127.0.0.1:8529>.
+You can access its web interface on <http://127.0.0.1:8529>.
 
-In the code that is running in the docker containers you can access the database on the adress `sc-arangodb` on the same port.
+In the code that is running in the docker containers you can access the database on the address `sc-arangodb` on the same port.
 
 In the development mode:
     
@@ -128,11 +123,8 @@ In order to change password you have to change `ARANGO_ROOT_PASSWORD` in env's `
 ### 1.6 Nginx proxy
 Our project is using nginx as a HTTP reverse proxy. It is responsible for serving static files and passing `/api/*` endpoints to the uwsgi+flask server.
 
-### 1.7 Working with elasticsearch
-Expose ports `9200` and `9300`.
-
-### 1.8 Flask + uWSGI
-Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The socket file (`uwsgi.sock`) is in `socket-volume` shared beetwen `nginx` and `flask+uwsgi`
+### 1.7 Flask + uWSGI
+Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The socket file (`uwsgi.sock`) is in `socket-volume` shared between `nginx` and `flask+uwsgi`
 
 #### Creating db migrations
 In order to create database migration in out app you have to follow those simple steps:
@@ -173,11 +165,6 @@ class InitialMigration(Migration):
 1. `python manage.py migrate` - Run migrations.
 2. `python manage.py list_routes` - Lists all available routes/URLs.
 
-
-### 1.9 Pootle
-1. Load data from client and database to pootle - `make load-to-pootle`.
-2. Load data to client and database from pootle - `make load-from-pootle`.
-
 ### 1.10 Style guidelines
 * Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code.
 
@@ -202,7 +189,6 @@ class InitialMigration(Migration):
 ### 2.1 Style guidelines
 
 - Based on the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) for JS code...
-- ...and [Polymer Elements Style Guide](https://polymerelements.github.io/style-guide/) for Polymer components.
 
 #### General considerations:
 

@@ -1,6 +1,7 @@
 from common.arangodb import get_db
 from migrations.base import Migration
 
+
 class SecondMigration(Migration):
     migration_id = 'add_text_search_view_025'
     tasks = ['create_view']
@@ -14,24 +15,10 @@ class SecondMigration(Migration):
                 'links': {
                     'html_text': {
                         'fields': {
-                            'uid': {
-                                'analyzers': ['identity']
-                            },
-                            'lang': {
-                                'analyzers': ['identity']
-                            }
+                            'uid': {'analyzers': ['identity']},
+                            'lang': {'analyzers': ['identity']},
                         }
                     },
-                    'po_strings': {
-                        'fields': {
-                            'uid': {
-                                'analyzers': ['identity']
-                            },
-                            'lang': {
-                                'analyzers': ['identity']
-                            }
-                        }
-                    }
                 }
-            }
+            },
         )

@@ -1,153 +1,313 @@
-/*
- This element creates and describes the redux store.
- ---
- Redux introduction: http://redux.js.org/docs/introduction/
- Polymer-redux docs: https://tur-nr.github.io/polymer-redux/
- */
-import { compose, createStore } from "redux";
-import PolymerRedux from "polymer-redux";
-
+import { compose, createStore } from 'redux';
 
 const initialState = {
-    currentRoute: {
-        name: 'HOME',
-        path: '/',
-        prefix: '',
-        __queryParams: {}
+  currentRoute: {
+    name: 'home',
+    path: '/',
+    params: {},
+  },
+  dialog: undefined,
+  siteLanguage: 'en',
+  temporarySiteLanguage: 'en',
+  fullSiteLanguageName: 'English',
+  toolbarOptions: {
+    title: '',
+  },
+  searchParams: {},
+  searchOptions: {
+    displayedLanguages: [],
+    matchPartial: false,
+  },
+  suttaMetaText: '',
+  suttaPublicationInfo: {},
+  textOptions: {
+    paragraphsEnabled: false,
+    paragraphDescriptions: [],
+    segmentedSuttaTextView: 'plain',
+    script: 'latin',
+    paliLookupActivated: false,
+    paliLookupTargetDictRepr: 'None',
+    paliLookupTargetLanguage: '',
+    chineseLookupActivated: false,
+    chineseLookupTargetDictRepr: 'None',
+    chineseLookupTargetLanguage: '',
+    referenceDisplayType: 'none',
+    noteDisplayType: 'asterisk',
+    showHighlighting: false,
+    displayedReferences: [],
+    rootTextFirst: false,
+  },
+  colorTheme: 'light',
+  selectedNavigationMenuItemId: '',
+  donationSuccessData: {},
+  downloadedUrls: {},
+  downloadedPWASettings: {
+    languages: {},
+    lookups: {
+      pali: {},
+      chinese: {},
     },
-    dialog: undefined,
-    siteLanguage: 'en',
-    fullSiteLanguageName: '',
-    toolbarOptions: {
-        title: '',
+  },
+  suttaplexListDisplay: false,
+  isOnline: true,
+  showedLanguagePrompt: false,
+  toolbarTitle: '',
+  navigationArray: [
+    {
+      uid: 'home',
+      title: 'home',
+      url: '/',
+      type: 'home',
+      index: 0,
     },
-    searchParams: {},
-    suttaText: {},
-    suttaMetaText: '',
-    textOptions: {
-        paragraphsEnabled: false,
-        paragraphDescriptions: [],
-        segmentedSuttaTextView: 'none',
-        script: 'latin',
-        paliLookupActivated: false,
-        paliLookupTargetDictRepr: 'None',
-        paliLookupTargetLanguage: '',
-        chineseLookupActivated: false,
-        chineseLookupTargetDictRepr: 'None',
-        chineseLookupTargetLanguage: ''
-    },
-    colorTheme: 'light',
-    selectedNavigationMenuItemId: '',
-    donationSuccessData: {},
-    downloadedUrls: {},
-    downloadedPWASettings: {
-        languages: {},
-        lookups: {
-            pali: {},
-            chinese: {}
-        }
-    },
-    suttaplexListDisplay: false,
-    isOnline: true,
-    showedLanguagePrompt: false,
+  ],
+  displaySettingMenu: false,
+  displayToolButton: false,
+  displayInfoButton: false,
+  displayViewModeButton: true,
+  displaySuttaParallels: false,
+  displaySuttaInfo: false,
+  displayParallelTableView: false,
+  displaySearchOptionsButton: false,
+  displayChineseConverterButton: false,
+  tableOfContents: {
+    items: [],
+    disableToCListStyle: false,
+  },
+  alwaysShowUniversalToolbar: false,
+  staticPagesToolbarDisplayState: {
+    displayFirstToolbar: true,
+    displaySecondToolbar: false,
+    displayTipitakaToolbar: false,
+    displayAcademicToolbar: false,
+    displayOrganizationalToolbar: false,
+    displayGuidesToolbar: false,
+    displayPublicationToolbar: false,
+  },
+  linearProgressActive: false,
+  toolbarPosition: {
+    scrollForToolbar: true,
+    fixedToolbar: false,
+    toolbarAtTop: false,
+  },
+  currentEditionId: '',
+  currentEditionHomeInfo: {
+    title: '',
+    url: '',
+    root_title: '',
+  },
+  instantSearch: {
+    lastUpdatedDate: '2023-09-22T00:00:00.000Z',
+    language: 'en',
+    data: [],
+  },
+  displayDonationBanner: true,
+  firstLoad: true,
 };
 
 // The reducer accepts the current state and an action and returns a new state object
 // (note that the old state object is unmodified).
 const reducer = (state, action) => {
-    switch (action.type) {
-        case 'CHANGE_ROUTE':
-            return Object.assign({}, state, { currentRoute: action.route });
-        case 'CHANGE_SITE_LANGUAGE':
-            return Object.assign({}, state, { siteLanguage: action.language, fullSiteLanguageName: action.fullName });
-        case 'CHANGE_TOOLBAR_TITLE':
-            return Object.assign({}, state,
-                { toolbarOptions: Object.assign({}, state.toolbarOptions, { title: action.title }) });
-        case 'INITIATE_SEARCH':
-            return Object.assign({}, state, { searchParams: action.params });
-        case 'DOWNLOAD_SUTTA_TEXT':
-            return Object.assign({}, state, { suttaText: action.text });
-        case 'CHANGE_SUTTA_META_TEXT':
-            return Object.assign({}, state, { suttaMetaText: action.metaText });
-        case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
-            return Object.assign({}, state,
-                { textOptions: Object.assign({}, state.textOptions, { paragraphDescriptions: action.descriptions }) });
-        case 'TOGGLE_TEXTUAL_INFORMATION_ENABLED':
-            return Object.assign({}, state,
-                { textOptions: Object.assign({}, state.textOptions, { paragraphsEnabled: action.enabled }) });
-        case 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW':
-            return Object.assign({}, state,
-                { textOptions: Object.assign({}, state.textOptions, { segmentedSuttaTextView: action.view }) });
-        case 'CHOOSE_PALI_TEXT_SCRIPT':
-            return Object.assign({}, state,
-                { textOptions: Object.assign({}, state.textOptions, { script: action.script }) });
-        case 'ACTIVATE_PALI_LOOKUP':
-            return Object.assign({}, state, {
-                textOptions: Object.assign({}, state.textOptions, {
-                    paliLookupActivated: action.paliLookupActivated,
-                    paliLookupTargetLanguage: action.paliLookupTargetLanguage,
-                    paliLookupTargetDictRepr: action.paliLookupTargetDictRepr
-                })
-            });
-        case 'ACTIVATE_CHINESE_LOOKUP':
-            return Object.assign({}, state, {
-                textOptions: Object.assign({}, state.textOptions, {
-                    chineseLookupActivated: action.chineseLookupActivated,
-                    chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
-                    chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr
-                })
-            });
-        case 'SELECT_NAVIGATION_MENU_ITEM':
-            return Object.assign({}, state, { selectedNavigationMenuItemId: action.id });
-        case 'CHANGE_COLOR_THEME':
-            return Object.assign({}, state, { colorTheme: action.theme });
-        case 'CHANGE_DONATION_SUCCESS':
-            return Object.assign({}, state, { donationSuccessData: action.donationSuccessData });
-        case 'SAVE_DOWNLOADED_URLS':
-            return Object.assign({}, state, { downloadedUrls: action.downloadedUrls });
-        case 'SAVE_DOWNLOADED_PWA_SETTINGS':
-            return Object.assign({}, state, { downloadedPWASettings: action.downloadedPWASettings });
-        case 'SUTTPLEX_LIST_DISPLAY':
-            return Object.assign({}, state, { suttaplexListDisplay: action.suttaplexdisplay });
-        case 'SET_ONLINE_STATUS':
-            return Object.assign({}, state, { isOnline: action.isOnline });
-        case 'SET_SHOWED_LANGUAGE_PROMPT':
-            return Object.assign({}, state, { showedLanguagePrompt: action.showedLanguagePrompt });
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case 'CHANGE_ROUTE':
+      const { name, params, path } = action.payload;
+      return {
+        ...state,
+        currentRoute: { name, params, path },
+      };
+    case 'CHANGE_CURRENT_EDITION_ID':
+      return { ...state, currentEditionId: action.currentEditionId };
+    case 'CHANGE_CURRENT_EDITION_HOME_INFO':
+      return { ...state, currentEditionHomeInfo: action.currentEditionHomeInfo };
+    case 'CHANGE_SITE_LANGUAGE':
+      return { ...state, siteLanguage: action.language, fullSiteLanguageName: action.fullName };
+    case 'CHANGE_TEMPORARY_SITE_LANGUAGE':
+      return { ...state, temporarySiteLanguage: action.temporarySiteLanguage};
+    case 'CHANGE_TOOLBAR_TITLE':
+      return { ...state, toolbarOptions: { ...state.toolbarOptions, title: action.title } };
+    case 'SAVE_TOOLBAR_TITLE':
+      return { ...state, toolbarTitle: action.toolbarTitle };
+    case 'INITIATE_SEARCH':
+      return { ...state, searchParams: action.params };
+    case 'CHANGE_SEARCH_':
+      return { ...state, searchParams: action.params };
+    case 'CHANGE_SUTTA_META_TEXT':
+      return { ...state, suttaMetaText: action.metaText };
+    case 'CHANGE_SUTTA_PUBLICATION_INFO':
+      return { ...state, suttaPublicationInfo: action.suttaPublicationInfo };
+    case 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, paragraphDescriptions: action.descriptions },
+      };
+    case 'TOGGLE_TEXTUAL_INFORMATION_ENABLED':
+      return { ...state, textOptions: { ...state.textOptions, paragraphsEnabled: action.enabled } };
+    case 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, segmentedSuttaTextView: action.view },
+      };
+    case 'CHOOSE_PALI_TEXT_SCRIPT':
+      return { ...state, textOptions: { ...state.textOptions, script: action.script } };
+    case 'ACTIVATE_PALI_LOOKUP':
+      return {
+        ...state,
+        textOptions: {
+          ...state.textOptions,
+          paliLookupActivated: action.paliLookupActivated,
+          paliLookupTargetLanguage: action.paliLookupTargetLanguage,
+          paliLookupTargetDictRepr: action.paliLookupTargetDictRepr,
+        },
+      };
+    case 'ACTIVATE_CHINESE_LOOKUP':
+      return {
+        ...state,
+        textOptions: {
+          ...state.textOptions,
+          chineseLookupActivated: action.chineseLookupActivated,
+          chineseLookupTargetLanguage: action.chineseLookupTargetLanguage,
+          chineseLookupTargetDictRepr: action.chineseLookupTargetDictRepr,
+        },
+      };
+    case 'CHANGE_COLOR_THEME':
+      return { ...state, colorTheme: action.theme };
+    case 'CHANGE_DONATION_SUCCESS':
+      return { ...state, donationSuccessData: action.donationSuccessData };
+    case 'SAVE_DOWNLOADED_URLS':
+      return { ...state, downloadedUrls: action.downloadedUrls };
+    case 'SAVE_DOWNLOADED_PWA_SETTINGS':
+      return { ...state, downloadedPWASettings: action.downloadedPWASettings };
+    case 'SUTTPLEX_LIST_DISPLAY':
+      return { ...state, suttaplexListDisplay: action.suttaplexdisplay };
+    case 'SET_ONLINE_STATUS':
+      return { ...state, isOnline: action.isOnline };
+    case 'SET_SHOWED_LANGUAGE_PROMPT':
+      return { ...state, showedLanguagePrompt: action.showedLanguagePrompt };
+    case 'SET_REFERENCE_DISPLAY_TYPE':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, referenceDisplayType: action.referenceDisplayType },
+      };
+    case 'SET_REFERENCE_DISPLAY_TYPE_ARRAY':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, displayedReferences: action.displayedReferences },
+      };
+    case 'SET_NOTE_DISPLAY_TYPE':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, noteDisplayType: action.noteDisplayType },
+      };
+    case 'SET_SHOW_HIGHLIGHTING':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, showHighlighting: action.showHighlighting },
+      };
+    case 'SET_ROOT_TEXT_FIRST':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, rootTextFirst: action.rootTextFirst },
+      };
+    case 'SET_NAVIGATION':
+      return { ...state, navigationArray: action.navigationArray };
+    case 'CHANGE_DISPLAY_SETTING_MENU_STATE':
+      return { ...state, displaySettingMenu: action.displaySettingMenu };
+    case 'CHANGE_DISPLAY_TOOL_BUTTON_STATE':
+      return { ...state, displayToolButton: action.displayToolButton };
+    case 'CHANGE_DISPLAY_INFO_BUTTON_STATE':
+      return { ...state, displayInfoButton: action.displayInfoButton };
+    case 'CHANGE_DISPLAY_TOC_BUTTON_STATE':
+      return {
+        ...state,
+        tableOfContents: {
+          items: action.payload.tableOfContents,
+          disableToCListStyle: action.payload.disableToCListStyle,
+        },
+      };
+    case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
+      return { ...state, displayViewModeButton: action.displayViewModeButton };
+    case 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE':
+      return { ...state, displaySuttaParallels: action.displaySuttaParallels };
+    case 'CHANGE_DISPLAY_SUTTA_TOC_STATE':
+      return { ...state, displaySuttaToC: action.displaySuttaToC };
+    case 'CHANGE_DISPLAY_SUTTA_INFO_STATE':
+      return { ...state, displaySuttaInfo: action.displaySuttaInfo };
+    case 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE':
+      return { ...state, displayParallelTableView: action.displayParallelTableView };
+    case 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE':
+      return { ...state, staticPagesToolbarDisplayState: action.staticPagesToolbarDisplayState };
+    case 'CHANGE_TOOLBAR_POSITION':
+      return { ...state, toolbarPosition: action.toolbarPosition };
+    case 'CHANGE_ALWAYS_SHOW_UNIVERSAL_TOOLBAR_STATE':
+      return { ...state, alwaysShowUniversalToolbar: action.alwaysShowUniversalToolbar };
+    case 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE':
+      return { ...state, languageMenuVisibility: action.languageMenuVisibility };
+    case 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE':
+      return { ...state, linearProgressActive: action.linearProgressActive };
+    case 'CHANGE_DISPLAY_SEARCH_OPTIONS_BUTTON_STATE':
+      return { ...state, displaySearchOptionsButton: action.displaySearchOptionsButton };
+    case 'CHANGE_DISPLAY_CHINESE_CONVERTER_BUTTON_STATE':
+      return { ...state, displayChineseConverterButton: action.displayChineseConverterButton };
+    case 'SET_SEARCH_DISPLAY_LANGUAGES_ARRAY':
+      return {
+        ...state,
+        searchOptions: { ...state.searchOptions, displayedLanguages: action.displayedLanguages },
+      };
+    case 'SET_SEARCH_MATCH_TYPE':
+      return {
+        ...state,
+        searchOptions: { ...state.searchOptions, matchPartial: action.matchPartial },
+      };
+    case 'SET_INSTANT_SEARCH_DATA':
+      return {
+        ...state,
+        instantSearch: { ...state.instantSearch, data: action.instantSearchData },
+      };
+    case 'SET_INSTANT_SEARCH_DATA_LAST_UPDATED_DATE':
+      return {
+        ...state,
+        instantSearch: { ...state.instantSearch, lastUpdatedDate: action.lastUpdatedDate },
+      };
+    case 'SET_INSTANT_SEARCH_DATA_LANGUAGE':
+      return {
+        ...state,
+        instantSearch: { ...state.instantSearch, language: action.language },
+      };
+    case 'CHANGE_DONATION_BANNER_STATE':
+      return { ...state, displayDonationBanner: action.displayDonationBanner };
+    case 'CHANGE_FIRST_LOAD_STATE':
+      return { ...state, firstLoad: action.firstLoad };
+    default:
+      return state;
+  }
 };
 
 // Before creating the store, check if it's saved in LocalStorage:
 const persistedState = localStorage.getItem('reduxState');
-const rememberButtonEnabled = localStorage.getItem('rememberTextSettings') === 'true';
-if (rememberButtonEnabled === 'false') {
-    localStorage.removeItem('rememberTextSettings');
-}
-const state = (persistedState && rememberButtonEnabled) ? parsePersistedState(persistedState) : initialState;
+const state = persistedState ? parsePersistedState(persistedState) : initialState;
 
 export const store = createStore(
-    reducer,
-    state,
-    // Enable redux dev tools extension:
-    compose(window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : v => v)
+  reducer,
+  state,
+  // Enable redux dev tools extension:
+  compose(window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : v => v)
 );
 
 // Persist the store in localStorage:
 store.subscribe(() => {
-    if (localStorage.getItem('rememberTextSettings') === 'true') {
-        localStorage.setItem('reduxState', JSON.stringify(store.getState()));
-    }
+  localStorage.setItem('reduxState', JSON.stringify(store.getState()));
 });
 
 // Helper function
 function parsePersistedState(state) {
-    const parsedState = JSON.parse(state);
-    // Reset some state variables:
-    parsedState.selectedNavigationMenuItemId = initialState.selectedNavigationMenuItemId;
-    parsedState.toolbarOptions = initialState.toolbarOptions;
-    parsedState.donationSuccessData = initialState.donationSuccessData;
-    return parsedState;
-}
+  const parsedState = JSON.parse(state);
+  const { donationSuccessData, tableOfContents } = initialState;
 
-export const ReduxMixin = PolymerRedux(store);
+  return {
+    ...initialState,
+    ...parsedState,
+    // Reset some state variables:
+    donationSuccessData,
+    tableOfContents,
+  };
+}

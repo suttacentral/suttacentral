@@ -1,27 +1,37 @@
-import { html } from '@polymer/polymer/polymer-element.js';
+import { css } from 'lit';
 
-export const dictStyles = html`
-<style>
+export const dictStyles = css`
   dl {
     margin-top: var(--sc-size-sm);
   }
 
   dd {
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-font-size-md);
+    font-weight: 400;
+    line-height: 1.5;
+
     margin: 0;
-    @apply --sc-paper-font-body;
-    @apply --sc-serif-font;
   }
 
   dd > p {
-    margin-top: 0;
+    margin: 0 0 0.5rem 0;
+  }
+
+  dd + dt {
+    margin-top: 1rem;
   }
 
   dfn {
-    @apply --paper-font-headline;
+    font-family: var(--sc-serif-font);
+    font-size: var(--sc-font-size-xxxl);
+    font-weight: 400;
     font-style: normal;
+    line-height: 32px;
+
     text-transform: lowercase;
+
     color: var(--sc-primary-accent-color);
-    @apply --sc-serif-font;
   }
 
   .dppn-entry dfn {
@@ -29,32 +39,46 @@ export const dictStyles = html`
   }
 
   .case {
-    @apply --sc-all-small-caps;
-    color: var(--sc-secondary-text-color);
-    @apply --sc-sans-font;
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+    font-weight: 400;
+    line-height: 24px;
+
     display: block;
-    @apply --paper-font-body2;
-    white-space: nowrap;
     overflow: hidden;
+
+    white-space: nowrap;
+    letter-spacing: var(--sc-caps-letter-spacing);
+
+    color: var(--sc-on-primary-secondary-text-color);
+
+    font-variant-caps: all-small-caps;
   }
 
   dd .ref {
-    @apply --sc-sans-font;
-    @apply --sc-skolar-font-size-s;
-    color: var(--sc-secondary-text-color);
-    background-color: var(--sc-textual-info-background-color);
-    border-radius: var(--sc-size-xxs);
-    padding: var(--sc-size-xs) var(--sc-size-sm) var(--sc-size-xxs);
+    font-family: var(--sc-sans-font);
+    font-weight: 600;
+    font-style: normal;
+
     white-space: nowrap;
+    letter-spacing: normal;
+
+    color: var(--sc-on-primary-secondary-text-color);
+
+    font-variant-caps: normal;
   }
 
   dd .author {
-    @apply --sc-mixed-small-caps
+    letter-spacing: var(--sc-caps-letter-spacing);
+
+    font-variant-caps: all-small-caps;
   }
 
   dd .eti {
-    color: var(--sc-secondary-text-color);
-    @apply --paper-font-body1
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
+
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   dd .term {
@@ -62,36 +86,54 @@ export const dictStyles = html`
   }
 
   dd .abbr {
-    @apply --sc-skolar-font-size-s;
-    @apply --sc-sans-font;
-    background-color: var(--sc-paper-tooltip-color);
-    color: var(--sc-tertiary-text-color);
+    font-family: var(--sc-sans-font);
+    font-size: var(--sc-font-size-s);
     font-weight: bold;
-    border-radius: var(--sc-size-xxs);
+
     padding: var(--sc-size-xs) var(--sc-size-sm);
+
+    color: var(--sc-inverted-text-color);
+    border-radius: var(--sc-size-xxs);
+    background-color: var(--sc-inverted-text-color);
   }
 
   dd .inline-li {
-    @apply --sc-sans-font;
-    color: var(--sc-secondary-text-color);
+    font-family: var(--sc-sans-font);
     font-weight: bold;
+
     padding: 0 8px;
+
+    color: var(--sc-on-primary-secondary-text-color);
   }
 
   dd .square {
-    color: var(--sc-disabled-text-color);
+    font-size: 2.4em;
+    line-height: 0;
+    display: inline-block;
+
+    margin-left: -8px;
+
+    vertical-align: middle;
+
+    color: var(--sc-icon-color);
   }
 
   dd ol {
-    list-style-type: none;
-    counter-reset: step-counter;
-    margin: 0 0 0 32px;
-    padding: 0;
-
+    margin: 0;
+    padding: 0 0 0 1rem;
   }
 
-  dd ol ul {
-    counter-reset: step-counter;
+  dd li {
+    padding-left: clamp(0rem, 3vw, 1rem);
+  }
+
+  li::marker {
+    color: var(--sc-icon-color);
+    font-family: var(--sc-sans-font);
+
+    font-weight: 600;
+
+    font-feature-settings: 'tnum', 'onum';
   }
 
   .little {
@@ -99,12 +141,12 @@ export const dictStyles = html`
   }
 
   .little li {
-    margin: 0 0 0 0
+    margin: 0 0 0 0;
   }
 
   dd ul {
+    margin: 0 0 var(--sc-size-sm) var(--sc-size-md-larger) !important;
     list-style-type: disc;
-    margin: 0 0 var(--sc-size-sm) var(--sc-size-md-larger) !important
   }
 
   dd ol + ul.compounds {
@@ -112,88 +154,105 @@ export const dictStyles = html`
   }
 
   dd ol li {
-    counter-increment: step-counter;
     margin: var(--sc-size-xs) 0 0 0;
-
   }
 
   .compounds {
     margin-left: var(--sc-size-md-larger) !important;
+
     list-style-type: none;
   }
 
-  dd ol + li {
-    counter-increment: step-counter !important;
-  }
-
-  .lower-latin > li::before {
-    content: counter(step-counter, lower-latin);
-  }
-
-  .upper-latin > li::before {
-    content: counter(step-counter, upper-latin);
-  }
-
-  .decimal > li::before {
-    content: counter(step-counter, decimal);
-  }
-
-  .upper-roman > li::before {
-    content: counter(step-counter, upper-roman);
-  }
-
-  .lower-roman > li::before {
-    content: counter(step-counter, lower-roman);
-  }
-
-  .lower-greek > li::before {
-    content: counter(step-counter, lower-greek);
+  .lower-greek {
+    list-style-type: lower-greek;
   }
 
   .compounds > li::before {
-    color: var(--sc-disabled-text-color);
-    content: "◦";
     margin-left: -12px;
-  }
 
-  dd li::before {
-    @apply --sc-sans-font;
-    color: var(--sc-secondary-text-color);
-    font-weight: bold;
-    position: absolute;
-    text-align: right;
-    margin-left: -32px;
-  }
+    content: '◦';
 
-  .google-maps {
-    @apply --vertical-margin-md;
-    height: 480px;
-  }
-
-  .google-maps iframe {
-    height: 480px;
-    width: 100%;
-    border: none;
+    color: var(--sc-icon-color);
   }
 
   .info {
     display: none;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    text-align: left;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-weight: normal;
+
+    text-align: left;
   }
 
-  dd a {
-    @apply --sc-inline-link;
+  /* inline links */
+
+  p a,
+  li a,
+  dl a,
+  table a {
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.15em;
   }
 
-  dd a:hover {
-    @apply --sc-inline-link-hover;
+  p a:hover,
+  li a:hover,
+  dl a:hover,
+  table a:hover {
+    transition: var(--sc-link-transition);
+    text-decoration: underline;
+
+    color: inherit;
+
+    text-decoration-color: var(--sc-primary-color-light);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 0.15em;
   }
 
-  dd a:visited {
-    @apply --sc-inline-link-visited;
+  p a:active,
+  li a:active,
+  dl a:active,
+  table a:active {
+    text-decoration-color: var(--sc-primary-color);
   }
-</style>`;
+
+  p a:visited,
+  li a:visited,
+  dl a:visited,
+  table a:visited {
+    text-decoration-color: var(--sc-primary-color-dark);
+  }
+
+  /* block links */
+
+  .block-link {
+    transition: var(--sc-link-transition);
+    text-decoration: none;
+
+    color: inherit;
+    background-color: inherit;
+  }
+
+  .block-link:hover {
+    transition: var(--sc-link-transition);
+
+    text-decoration: none;
+
+    background-color: var(--sc-primary-color-light-transparent);
+  }
+
+  .block-link:active {
+    background-color: var(--sc-primary-color-light);
+  }
+`;

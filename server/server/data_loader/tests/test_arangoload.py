@@ -1,18 +1,43 @@
-from typing import List
+from pathlib import Path
 
 import pytest
-from arango import ArangoClient
-from flask import Flask
 
-from common.utils import app_context, empty_arango
+from common.arangodb import get_db, delete_db
+from common.utils import current_app
 from data_loader import arangoload
+from data_loader.observability import save_as_csv
+from migrations.runner import run_migrations
 
 
-def test_print_once(capsys):
-    was = set()
-    msgs = ['test', 'test2', 'test2', 'test3']
-    expected = set(msgs)
-    for msg in msgs:
-        arangoload.print_once(msg, was)
-    out, err = capsys.readouterr()
-    assert set(out.split()) == expected
+@pytest.fixture
+def data_load_app(app):
+    app = current_app()
+    app.config['ARANGO_DB'] = 'suttacentral_data_load_tests'
+    app.config['BASE_DIR'] = Path('/opt/sc/sc-flask/')
+    return app
+
+def test_set_db_name(data_load_app):
+    with data_load_app.app_context():
+        assert get_db().name == 'suttacentral_data_load_tests'
+
+def test_base_dir_is_correct(data_load_app):
+    with data_load_app.app_context():
+        base_dir = data_load_app.config.get('BASE_DIR')
+        assert base_dir == Path('/opt/sc/sc-flask/')
+
+@pytest.mark.skip('Disabled as it may interfere with other tests.')
+def test_do_collect_data_stage(data_load_app):
+    with data_load_app.app_context():
+        data_dir = Path('/opt/sc/sc-flask/sc-data')
+        git_repository = data_load_app.config.get('DATA_REPO')
+        arangoload.collect_data(data_dir, git_repository)
+
+@pytest.mark.skip('Long running test.')
+def test_do_entire_run(data_load_app):
+    with data_load_app.app_context():
+        db = get_db()
+        delete_db(db)
+        run_migrations()
+        printer = arangoload.run(no_pull=False)
+        assert len(printer.stages) == 51
+        save_as_csv(printer.stages, "load-data-run.csv")

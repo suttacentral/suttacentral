@@ -1,8 +1,8 @@
 *~
 __pycache__
-.python-version
 data/segmented_texts
 .vscode/
+.venv/
 *.sqlite3
 .idea
 .cache
@@ -21,3 +21,8 @@ generatedPoFiles/
 /pootle/log/*
 .prod.env
 environment_prod.yml
+.history
+client/.eslintrc.json
+client/.eslintrc.js
+client/.prettierrc
+client/files/fonts/woff2_compress

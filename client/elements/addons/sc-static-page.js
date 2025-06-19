@@ -1,19 +1,22 @@
-import { LitElement } from "@polymer/lit-element/lit-element.js";
+import { LitElement } from 'lit';
 
-import { LitLocalized } from "./localization-mixin.js";
+import { LitLocalized } from './sc-localization-mixin';
+import { store } from '../../redux-store';
+import { reduxActions } from './sc-redux-actions';
 
 export class SCStaticPage extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      currentId: {
-        type: String,
-        value: ''
-      }
-    }
+  static properties = {
+    currentId: { type: String },
+    siteLanguage: { type: String },
+  };
+
+  constructor() {
+    super();
+    this.siteLanguage = store.getState().siteLanguage;
   }
 
-  firstUpdated(props) {
-    const targetMainElement = this.shadowRoot.querySelector('main');
+  firstUpdated() {
+    const targetMainElement = this.querySelector('main') || this.shadowRoot?.querySelector('main');
 
     if (targetMainElement) {
       targetMainElement.addEventListener('click', () => {
@@ -23,8 +26,6 @@ export class SCStaticPage extends LitLocalized(LitElement) {
       });
     }
 
-    // since url navigation is using pushState, hashchange event fires only when
-    // using browser's back/forward functionality, and not when clicking a link
     window.addEventListener('hashchange', () => {
       setTimeout(() => {
         this.currentId = this._scrollToSection(window.location.hash, this.currentId);
@@ -32,19 +33,54 @@ export class SCStaticPage extends LitLocalized(LitElement) {
     });
 
     this.currentId = this._scrollToSection(window.location.hash, this.currentId);
+
+    this.#loadTempLocaleIfNeeded();
+  }
+
+  #loadTempLocaleIfNeeded() {
+    if (store.getState().firstLoad && store.getState().currentRoute.name === 'home') {
+      reduxActions.changeFirstLoadState(false);
+      return;
+    }
+    if (store.getState().currentRoute.name === 'home') {
+      return;
+    }
+    this.temporarySiteLanguage = store.getState().temporarySiteLanguage;
+    if (this.temporarySiteLanguage && this.temporarySiteLanguage !== this.siteLanguage) {
+      this.loadTemporaryLocalization(this.temporarySiteLanguage);
+      window.history.replaceState(null, null, `?lang=${this.temporarySiteLanguage || this.siteLanguage}`);
+      this.requestUpdate();
+      reduxActions.changeTemporarySiteLanguage(this.siteLanguage);
+    }
+  }
+
+  stateChanged(state) {
+    super.stateChanged(state);
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+    }
   }
 
   _scrollToSection(sectionId, currentId) {
     if (!sectionId || currentId === sectionId) {
       return currentId;
     }
-    const firstSection = this.shadowRoot.querySelector(sectionId);
-    if (firstSection) {
-      firstSection.scrollIntoView({
-        behavior: 'instant',
-        block: 'start',
-        inline: 'nearest'
-      });
+    const { currentRoute } = store.getState();
+    if (currentRoute && currentRoute.params && currentRoute.params.suttaId) {
+      return currentId;
+    }
+    try {
+      const firstSection =
+        this.querySelector(sectionId) || this.shadowRoot?.querySelector(sectionId);
+      if (firstSection) {
+        firstSection.scrollIntoView({
+          behavior: 'instant',
+          block: 'start',
+          inline: 'nearest',
+        });
+      }
+    } catch (err) {
+      console.error(err);
     }
     return sectionId;
   }

@@ -1,34 +1,43 @@
-from pathlib import Path
-
-from flask_script import Manager
-
-from app import app
+from flask.cli import FlaskGroup
 from common import arangodb
+import click
 from migrations.runner import run_migrations
 
-manager = Manager(app)
+from app import app
+cli = FlaskGroup(app)
 
 
-@manager.command
+@app.cli.command('load_data')
+@click.option('--no_pull')
+def load_data(no_pull=False):
+    """
+    Loads data from the data repo to database.
+    """
+    from data_loader.arangoload import run
+
+    run(no_pull=no_pull)
+
+
+@app.cli.command('migrate')
 def migrate():
+    """
+    Initialize the database structure.
+    """
     print('Running migrations')
     run_migrations()
     print('DONE')
 
 
-@manager.command
+@app.cli.command('list_routes')
 def list_routes():
     """
     Lists all available routes/URLs.
     """
     import urllib
+
     output = []
     for rule in app.url_map.iter_rules():
-
-        options = {}
-        for arg in rule.arguments:
-            options[arg] = "[{0}]".format(arg)
-
+        options = {arg: "[{0}]".format(arg) for arg in rule.arguments}
         methods = ','.join(rule.methods)
         line = urllib.parse.unquote("{:50s} {:20s} {}".format(rule.endpoint, methods, rule))
         output.append(line)
@@ -37,49 +46,58 @@ def list_routes():
         print(line)
 
 
-@manager.command
-def load_data(no_pull=False):
-    """
-    Loads data from the data repo to database.
-    """
-    from data_loader.arangoload import run
-    run(no_pull=no_pull)
-
-
-@manager.command
+@app.cli.command('delete_db')
 def delete_db():
+    """
+    Clear database data.
+    """
     arangodb.delete_db(arangodb.get_db())
     from flask import current_app
+
     storage_dir = current_app.config.get('STORAGE_DIR')
     for file_path in storage_dir.glob('.*'):
         file_path.unlink()
 
 
-@manager.command
-def index_elasticsearch():
-    from search.texts import update
-    update()
+@app.cli.command('index_arangosearch')
+def index_arangosearch():
+    """
+    Create ArangoSearch index.
+    """
+    from search.texts import import_texts_to_arangodb
+
+    import_texts_to_arangodb()
 
 
-@manager.command
-def generate_po_files():
-    from internationalization import generate_pootle
-    generate_pootle.run()
+@app.cli.command('index_algoliasearch')
+def index_algoliasearch():
+    """
+    Create AlgoliaSearch index.
+    """
+    from search.algolia_texts import import_texts_to_algolia
+
+    import_texts_to_algolia()
 
 
-@manager.option('-p', '--path', default=None)
-def load_po_files(path):
-    from internationalization import load_pootle
-    if path:
-        load_pootle.GENERATED_PO_FILES_DIR = Path(path)
-    load_pootle.run()
-
-
-@manager.command
+@app.cli.command('calculate_download_sizes')
 def calculate_download_sizes():
+    """
+    Calculate download sizes.
+    """
     from tools.calculate_download_size import run
+
     run()
 
 
+@app.cli.command('hyphenate')
+def hyphenate():
+    """
+    Hyphenate pali and san
+    """
+    from data_loader.arangoload import hyphenate_pali_and_san
+
+    hyphenate_pali_and_san()
+
+
 if __name__ == '__main__':
-    manager.run()
+    cli()

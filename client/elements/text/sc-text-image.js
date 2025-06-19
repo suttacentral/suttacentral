@@ -1,61 +1,62 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import '@polymer/iron-ajax/iron-ajax.js';
+import { LitElement, html, css } from 'lit';
 import Viewer from 'viewerjs';
 
-import { API_ROOT, IMAGES_ROOT } from '../../constants.js';
-
+import { API_ROOT, IMAGES_ROOT } from '../../constants';
 
 const style = document.createElement('template');
 style.innerHTML = '<link href="/node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">';
 document.head.appendChild(style.content);
 
+export class SCTextImage extends LitElement {
+  static properties = {
+    division: { type: String },
+    vol: { type: String },
+    pageNumber: { type: Number },
+    isLoading: { type: Boolean },
+    lastError: { type: Object },
+    imageData: { type: Array },
+    viewer: { type: Object },
+    lastDetail: { type: Object },
+  };
 
-class SCTextImage extends PolymerElement {
-  static get template() {
-    return html`
-    <style>
-      .hide {
-        display: none;
-      }
-    </style>
+  static styles = css`
+    .hide {
+      display: none;
+    }
+  `;
 
-    <iron-ajax id="ajax" debounce-duration="500" handle-as="json" loading="{{isLoading}}" last-error="{{lastError}}" last-response="{{imageData}}" on-response="_handleResponse"></iron-ajax>
-
-    <ul id="images" class="hide">
-      <template is="dom-repeat" items="[[imageData]]" as="image">
-        <li><img class="image" data-url="[[_getImageUrl(image.name)]]" alt="[[image.name]]"></li>
-      </template>
-    </ul>`;
+  constructor() {
+    super();
+    this.division = '';
+    this.vol = '';
+    this.pageNumber = 0;
+    this.isLoading = false;
+    this.lastError = {};
+    this.imageData = [];
+    this.viewer = {};
+    this.lastDetail = {};
   }
 
-  static get properties() {
-    return {
-      division: {
-        type: String
-      },
-      vol: {
-        type: String
-      },
-      pageNumber: {
-        type: Number
-      },
-      isLoading: {
-        type: Boolean,
-        value: false
-      },
-      lastError: {
-        type: Object
-      },
-      imageData: {
-        type: Array
-      },
-      viewer: {
-        type: Object
-      },
-      lastDetail: {
-        type: Object
-      }
-    }
+  render() {
+    return html`
+      <ul id="images" class="hide">
+        ${this.imageData
+          ? html`
+              ${this.imageData.map(
+                image => html`
+                  <li>
+                    <img
+                      class="image"
+                      data-url=${this._getImageUrl(image.name)}
+                      alt=${image.name}
+                    />
+                  </li>
+                `
+              )}
+            `
+          : ''}
+      </ul>
+    `;
   }
 
   showImage(detail) {
@@ -66,15 +67,27 @@ class SCTextImage extends PolymerElement {
     this.division = detail.division;
     this.vol = detail.vol;
     this.pageNumber = detail.pageNumber;
-    this.$.ajax.url = this._getUrl();
-    this.$.ajax.generateRequest();
+    this._fetchImageData();
+  }
+
+  async _fetchImageData() {
+    this.isLoading = true;
+    try {
+      this.imageData = await (await fetch(this._getUrl())).json();
+      this._handleResponse();
+    } catch (error) {
+      this.lastError = error;
+    }
+    this.isLoading = false;
   }
 
   _didDetailChange(detail) {
-    return !!(this.lastDetail &&
+    return !!(
+      this.lastDetail &&
       detail.vol === this.lastDetail.vol &&
       detail.division === this.lastDetail.division &&
-      detail.pageNumber === this.lastDetail.pageNumber);
+      detail.pageNumber === this.lastDetail.pageNumber
+    );
   }
 
   _getUrl() {
@@ -99,7 +112,7 @@ class SCTextImage extends PolymerElement {
     }
     requestAnimationFrame(() => {
       const options = {
-        url: (e) => e.dataUrl,
+        url: e => e.dataUrl,
         navbar: false,
         transition: false,
         toolbar: {
@@ -114,12 +127,12 @@ class SCTextImage extends PolymerElement {
           rotateRight: 0,
           flipHorizontal: 0,
           flipVertical: 0,
-        }
+        },
       };
       if (this.viewer) {
         this.viewer.update();
       } else {
-        this.viewer = new Viewer(this.$.images, options);
+        this.viewer = new Viewer(this.shadowRoot.getElementById('images'), options);
       }
       this.viewer.index = viewerIndex;
       this.viewer.show();

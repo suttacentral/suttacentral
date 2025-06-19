@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -33,18 +33,7 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - "API_URL=https://suttacentral.net/api/swagger.json"
-
-  sc-elasticsearch:
-    restart: always
-    ports:
-    - '9200:9200'
-    - '9300:9300'
-    
-  sc-chrome-headless:
-    restart: always
-    ports:
-     - '9222:9222'
+      - "API_URL=https://suttacentral.net/api/spec"
 
   sc-frontend:
     command: npm run build

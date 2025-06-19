@@ -1,61 +1,95 @@
-import '@polymer/iron-icon/iron-icon.js';
-import { html, LitElement } from '@polymer/lit-element';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-menu-button/paper-menu-button.js';
-import '@polymer/paper-styles/paper-styles.js';
+import { html, LitElement } from 'lit';
 import { API_ROOT, SUTTACENTRAL_VOICE_URL } from '../../../constants';
-import '../../../img/sc-svg-icons.js';
-import { transformId } from '../../../utils/suttaplex';
-import { LitLocalized } from '../../addons/localization-mixin';
-import '../../menus/sc-suttaplex-share-menu.js';
-import './sc-parallel-list.js';
+import { icon } from '../../../img/sc-icon';
+import {
+  transformId,
+  pickVolPage,
+  hasTwoPTSEditions,
+  formatVolPages,
+} from '../../../utils/suttaplex';
+import { LitLocalized } from '../../addons/sc-localization-mixin';
+import '../../menus/sc-menu-suttaplex-share';
+import './sc-parallel-list';
 import { suttaplexCss } from './sc-suttaplex-css';
-import './sc-suttaplex-tx.js';
+import './sc-suttaplex-tx';
 
 let expansionDataCache;
 
-class SCSuttaplex extends LitLocalized(LitElement) {
-  static get properties() {
-    return {
-      suttaplexListStyle: String,
-      item: Object,
-      localizedStringsPath: String,
-      difficulty: String,
-      expansionData: Array,
-      parallelsOpened: Boolean,
-      translationsOpened: Boolean,
-      rootTextsOpened: Boolean,
-      compactToggle: Boolean,
-    }
-  }
+export class SCSuttaplex extends LitLocalized(LitElement) {
+  static properties = {
+    suttaplexListStyle: { type: String },
+    item: { type: Object },
+    localizedStringsPath: { type: String },
+    difficulty: { type: String },
+    expansionData: { type: Array },
+    parallelsOpened: { type: Boolean },
+    translationsOpened: { type: Boolean },
+    rootTextsOpened: { type: Boolean },
+    compactToggle: { type: Boolean },
+    hasVoice: { type: Boolean },
+    isPatimokkha: { type: Boolean },
+    isPatimokkhaDetails: { type: Boolean },
+    isSuttaInRangeSutta: { type: Boolean },
+    inRangeSuttaId: { type: String },
+    priorityAuthorUid: { type: String },
+    isFallenLeaf: { type: Boolean },
+  };
 
   constructor() {
     super();
-    this.localizedStringsPath = '/localization/elements/sc-suttaplex';
+    this.localizedStringsPath = '/localization/elements/suttaplex';
+    this.hasVoice = false;
   }
 
   connectedCallback() {
     super.connectedCallback();
 
     this._fetchExpansionData();
-
     setTimeout(() => {
       const copyMenu = this.shadowRoot.querySelector('#copy-menu');
       if (copyMenu) {
         this.addEventListener('par-menu-copied', () => {
-          copyMenu.opened = false;
+          copyMenu.open = '';
         });
-
-        copyMenu.addEventListener('opened-changed', (e) => {
-          const open = e.detail.value;
-          if (open) {
-            this.shadowRoot.querySelector('#more_par_menu')._sendRequest();
-          }
-        })
       }
     }, 1000);
+  }
+
+  updated(changedProps) {
+    super.update(changedProps);
+    if (changedProps.has('item')) {
+      this._fetchAvailableVoice();
+    }
+  }
+
+  firstUpdated() {
+    this._fetchAvailableVoice();
+  }
+
+  prioritizeTranslationsByTranslator(translations) {
+    this.sortTranslationsBySegmentationStatus();
+    if (this.priorityAuthorUid) {
+      const priorityTranslationItemIndex = translations.findIndex(
+        item =>
+          item.author_uid === this.priorityAuthorUid ||
+          this.priorityAuthorUid.includes(item.author_uid)
+      );
+      if (priorityTranslationItemIndex !== -1) {
+        translations.unshift(translations.splice(priorityTranslationItemIndex, 1)[0]);
+      }
+    }
+  }
+
+  sortTranslationsBySegmentationStatus() {
+    this._translationsInUserLanguage.sort((a, b) => {
+      if (a.segmented && !b.segmented) {
+        return -1;
+      }
+      if (!a.segmented && b.segmented) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   shouldUpdate(changedProperties) {
@@ -63,7 +97,10 @@ class SCSuttaplex extends LitLocalized(LitElement) {
       const translations = (this.item || {}).translations || [];
       const lang = this.language;
       this._translationsInUserLanguage = translations.filter(item => item.lang === lang);
-      this.translationsInModernLanguages = translations.filter(item => !item.is_root && item.lang !== lang);
+      this.prioritizeTranslationsByTranslator(this._translationsInUserLanguage);
+      this.translationsInModernLanguages = translations.filter(
+        item => !item.is_root && item.lang !== lang
+      );
       this.rootTexts = translations.filter(item => item.is_root);
       this.hasSegmentedTexts = translations.filter(item => item.segmented).length > 0;
     }
@@ -76,11 +113,13 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get translationsInUserLanguage() {
-    return this.isCompact ? this._translationsInUserLanguage.slice(0, 1) : this._translationsInUserLanguage
+    return this.isCompact
+      ? this._translationsInUserLanguage.slice(0, 1)
+      : this._translationsInUserLanguage;
   }
 
   get difficultyLevelIconName() {
-    return `sc-svg-icons:${this.difficulty}`;
+    return icon[this.difficulty];
   }
 
   get areParallelsAvailable() {
@@ -91,39 +130,42 @@ class SCSuttaplex extends LitLocalized(LitElement) {
     if (!this.item) {
       return '';
     }
-
-    if (this.item.translated_title) {
-      return this.item.translated_title;
-    } else if (this.item.original_title) {
-      return this.item.original_title;
-    } else {
-      return this.acronymOrUid;
+    if (this.isSuttaInRangeSutta) {
+      return (
+        this.item.title ||
+        this.item.translated_title ||
+        this.item.original_title ||
+        this.acronymOrUid
+      );
     }
+    return this.item.translated_title || this.item.original_title || this.acronymOrUid;
   }
 
   get mainHeadingTitle() {
     if (!this.item || this.item.translated_title || this.item.original_title) {
       return '';
-    } else {
-      return this.acronymTitle;
     }
+    return this.acronymTitle;
   }
 
   get acronymOrUid() {
     if (this.item.acronym) {
       return this.item.acronym.split('//')[0];
-    } else {
-      return transformId(this.item.uid, this.expansionData);
     }
+    return transformId(this.item.uid, this.expansionData);
   }
 
   get acronymTitle() {
-    let scAcronymTitle = this.localize('suttaCentralID');
-    if (this.item && this.item.acronym) {
+    let scAcronymTitle = this.localize('suttaplex:suttaCentralID');
+    if (this.item?.acronym) {
       const altNumber = this.item.acronym.split('//')[1];
       if (altNumber) {
-        const book = (altNumber[0] === 'T') ? 'Taishō' : 'PTS';
-        scAcronymTitle += `\n${this.localize('alternateText', 'book', book)} ${altNumber}`;
+        const book = altNumber[0] === 'T' ? 'Taishō' : 'PTS';
+        scAcronymTitle += `\n${this.localize(
+          'suttaplex:alternateText',
+          'book',
+          book
+        )} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -134,35 +176,38 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get volPage() {
-    const volPages = this.item.volpages.split('//');
-    return volPages[1] ? volPages[1] : this.item.volpages;
+    return pickVolPage(this.item.volpages);
+  }
+
+  get briefVolPage() {
+    const volpages = this.item.volpages.split(',');
+    if (this.item.volpages && volpages.length > 1) {
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
+    }
+    return this.item.volpages;
+  }
+
+  get altVolPage() {
+    if (this.item.alt_volpages === this.item.volpages) {
+      return '';
+    }
+    return pickVolPage(this.item.alt_volpages);
+  }
+
+  get briefAltVolPage() {
+    const volpages = this.item.alt_volpages.split(',');
+    if (this.item.alt_volpages && volpages.length > 1) {
+      const volPagesEnd = formatVolPages(volpages[volpages.length - 1]);
+      return `${volpages[0]}–${volPagesEnd.trim()}`;
+    }
+    return this.item.alt_volpages;
   }
 
   get volPageTitle() {
-    const volPages = this.item.volpages.split('//');
-    if (volPages[1] && (volPages[0] !== volPages[1])) {
-      return this.localize('volumeAndPagePTS1', { 'pts1': volPages[0], 'pts2': volPages[1] });
-    } else {
-      return this.localize('volumeAndPage');
-    }
-  }
-
-  revealHiddenNerdyRowContent() {
-    const detailsElement = this.shadowRoot.querySelector('.volpage-biblio-info');
-    const nerdyRow = this.shadowRoot.querySelector('.suttaplex-nerdy-row');
-    const popup = this.shadowRoot.querySelector('#hidden-nerdy-row');
-    const widthReduction = 16;
-
-    if (nerdyRow.clientWidth < nerdyRow.scrollWidth) {
-      popup.classList.toggle("show");
-      popup.style.width = nerdyRow.clientWidth - widthReduction;
-      popup.style.marginLeft = `-${nerdyRow.scrollWidth}px`;
-      if (detailsElement) {
-        detailsElement.style.display = 'none';
-      }
-    } else if (detailsElement) {
-      detailsElement.style.display = null;
-    }
+    return hasTwoPTSEditions(this.item.volpages)
+      ? this.localize('suttaplex:volumeAndPagePTS1', this.item.volpages)
+      : this.localize('suttaplex:volumeAndPage');
   }
 
   get isCompact() {
@@ -170,234 +215,395 @@ class SCSuttaplex extends LitLocalized(LitElement) {
   }
 
   get listenUrl() {
-    return `${SUTTACENTRAL_VOICE_URL}scv/#/?search=${this.item.uid}&lang=${this.language}`;
+    return `https://www.api.sc-voice.net/scv/ebt-site/${this.item.uid}/${this.language}`;
   }
 
+  static styles = [suttaplexCss];
+
   render() {
-    if (!this.item || !this.item.uid) {
+    if (!this.item?.uid) {
       return '';
     }
 
     return html`
-      ${suttaplexCss}
-      
-      <paper-card class="suttaplex" id="${this.item.uid}" elevation="1">
+      <article class="suttaplex ${this.suttaplexListStyle}" id=${this.item.uid}>
         <div>
           <div class="top-row">
-            <h1 class="${this.suttaplexListStyle}" title="${this.mainHeadingTitle}" @click="${this.toggleCompact}">
+            <h1
+              class=${this.suttaplexListStyle}
+              title=${this.mainHeadingTitle}
+              @click=${this.toggleCompact}
+            >
               ${this.mainHeading}
             </h1>
-    
             ${this.topRowIconsTemplate}
           </div>
-    
-          ${this.nerdyRowTemplate}
+          ${this.isSuttaInRangeSutta ? '' : this.nerdyRowTemplate}
         </div>
+        ${this.#blurbTemplate()}
+        ${this.#shouldShowUserLangTranslations() ? this.userLanguageTranslationsTemplate : ''}
+        ${!this.isCompact
+          ? html`
+              ${this.rootTextsTemplate}
+              ${this.modernLanguageTranslationsTemplate}
+              ${this.parallelsTemplate}
+            `
+          : ''}
+        ${this.isCompact && this.isFallenLeaf ? this.parallelsTemplate : ''}
+      </article>
+    `;
+  }
 
-        ${!this.isCompact ? html`
-          ${this.item.blurb && html`<div class="blurb" title="${this.localize('blurb')}" .innerHTML="${this.item.blurb}"/>`}
-        ` : ''}
+  #blurbTemplate() {
+    return !this.isCompact
+      ? html`
+          ${this.item.blurb &&
+          html`
+            <div
+              class="blurb"
+              .innerHTML=${this.item.blurb}
+            ></div>
+          `}
+        `
+      : '';
+  }
 
-        ${this.userLanguageTranslationsTemplate}
+  #isFallenLeafRangeSutta(uid, hasFallenLeaves) {
+    const lastDash = uid.lastIndexOf('-');
+    if (lastDash !== -1) {
+      const lastDashLeft = uid.substring(lastDash - 1, lastDash);
+      const lastDashRight = uid.substring(lastDash + 1, lastDash + 2);
+      const isLastDashDigits = !isNaN(lastDashLeft) && !isNaN(lastDashRight);
+      if (hasFallenLeaves && isLastDashDigits) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-        ${!this.isCompact ? html`
-          ${this.modernLanguageTranslationsTemplate}
-          ${this.rootTextsTemplate}
-          ${this.parallelsTemplate}
-        ` : ''}
-      </paper-card>`;
+  #shouldShowUserLangTranslations() {
+    return (
+      !this.isPatimokkhaDetails && !this.isFallenLeaf
+    );
+  }
+
+  #shouldShowRootTexts() {
+    return !this.isPatimokkhaDetails && !this.isFallenLeaf && this.rootTexts.length > 0;
+  }
+
+  #shouldShowModernLangTranslations() {
+    return (
+      !this.isPatimokkhaDetails &&
+      !this.isFallenLeaf &&
+      this.translationsInModernLanguages.length > 0
+    );
+  }
+
+  #shouldHideParallels() {
+    return (
+      (this.isPatimokkha && !this.isPatimokkhaDetails) ||
+      this.isSuttaInRangeSutta ||
+      this.#isFallenLeafRangeSutta(this.item.uid, this.item.hasFallenLeaves)
+    );
   }
 
   get topRowIconsTemplate() {
     return html`
       <div class="top-row-icons">
-        ${this.difficulty ? html` 
-          <iron-icon 
-              id="difficulty-icon" 
-              class="tx-level-icon primary-accent-icon"
-              .icon="${this.difficultyLevelIconName}"
-              title="${this.localize(this.difficulty)}"
-           ></iron-icon>
-        ` : ''}
+        ${this.difficulty
+          ? html`
+              <span class="difficulty_icon" title=${this.localize(`suttaplex:${this.difficulty}`)}>
+                ${this.difficultyLevelIconName}
+              </span>
+            `
+          : ''}
+        ${this.hasSegmentedTexts && this.hasVoice
+          ? html`
+              <a
+                class="top-menu-button"
+                href=${this.listenUrl}
+                target="_blank"
+                title=${this.localize('suttaplex:listenSutta')}
+                aria-label=${this.localize('suttaplex:listenSutta')}
+                rel="noopener noreferrer"
+              >
+                ${icon.speaker}
+              </a>
+            `
+          : ''}
 
-      ${this.hasSegmentedTexts ? html`
-        <a class="top-menu-button" role="group" aria-haspopup="true" href="${this.listenUrl}" target="_blank"
-          aria-disabled="false" title="Listen to this sutta" rel="noopener noreferrer">
-          <paper-icon-button class="btn-speaker" slot="dropdown-trigger" aria-label="${this.localize('listenSutta')}"
-             icon="sc-svg-icons:speaker" role="button" tabindex="0" aria-disabled="false">
-          </paper-icon-button>
-        </a>
-      ` : ''}
+        <details id="copy-menu" class="top-menu-button" title=${this.localize('suttaplex:shareThisSutta')}>
+          <summary class="ripple">${icon.share}</summary>
+          <ul class="suttaplex-share-menu-list">
+            <sc-menu-suttaplex-share
+              id="suttaplex_share_menu"
+              tabIndex="0"
+              .item=${this.item}
+            ></sc-menu-suttaplex-share>
+          </ul>
+        </details>
+      </div>
+    `;
+  }
 
-      <paper-menu-button id="copy-menu" class="top-menu-button" horizontal-align="right" role="group"
-        aria-haspopup="true" aria-disabled="false" vertical-align="auto">
-        <paper-icon-button class="btn-share" slot="dropdown-trigger" aria-label="${this.localize('share')}"
-          icon="sc-svg-icons:share" role="button" tabindex="0" aria-disabled="false">
-        </paper-icon-button>
-  
-        <paper-listbox class="more-par-listbox menu-listbox" slot="dropdown-content" tabindex="0" role="listbox">
-          <sc-suttaplex-share-menu id="more_par_menu" tabindex="0" .item="${this.item}"></sc-suttaplex-share-menu>
-        </paper-listbox>
-      </paper-menu-button>
-      </div>`;
+  get volPageTemplate() {
+    return html`
+      <span class="vol-page nerdy-row-element" title=${this.volPageTitle}>
+        ${icon.book}
+        <span class="visible">${this.briefVolPage}</span>
+        <span class="hidden" aria-hidden="true">${this.volPage}</span>
+      </span>
+      ${this.altVolPage && this.altVolPage !== this.volPage
+        ? html`
+            <span class="vol-page nerdy-row-element" title=${this.volPageTitle}>
+              ${icon.book}
+              <span class="visible">${this.briefAltVolPage}</span>
+              <span class="hidden" aria-hidden="true">${this.altVolPage}</span>
+            </span>
+          `
+        : ''}
+    `;
   }
 
   get nerdyRowTemplate() {
     return html`
-      <div class="suttaplex-nerdy-row" @tap="${this.revealHiddenNerdyRowContent}">
-        ${this.item.translated_title && this.item.original_title && html`
-          <span title="${this.localize('originalTitle')}" class="nerdy-row-element">
-            ${this.item.original_title}
-          </span>
-        `}
+      <div class="suttaplex-nerdy-row">
+        ${this.#nerdyRowOriginalTitleTemplate()} ${this.#nerdyRowAcronymTemplate()}
+        ${this.#nerdyRowVolpageTemplate()} ${this.#nerdyRowVerseTemplate()}
+      </div>
+    `;
+  }
 
-        ${(this.item.translated_title || this.item.original_title) && html`
-          <span title="${this.acronymTitle}" class="nerdy-row-element">${this.acronymOrUid}</span>
-        `}
-
-        ${this.item.volpages && html`
-          ${!this.item.biblio ? html`
-            <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
-            <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-              ${this.volPage}
-            </span>
-          ` : ''}
-
-          ${this.item.biblio && html`
-            <details class="suttaplex-details">
-              <summary>
-                <iron-icon icon="sc-iron-icons:book"></iron-icon>
-                <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-                  ${this.volPage}
-                </span>
-              </summary>
-              <p class="volpage-biblio-info" .innerHTML="${this.item.biblio}"></p>
-            </details>
-          `}
-        `}
-
-        <span class="popuptext" id="hidden-nerdy-row">
-          ${this.item.translated_title && this.item.original_title && html`
-            <span title="${this.localize('originalTitle')}" class="nerdy-row-element">
-              ${this.item.original_title}<br>
-            </span>
-          `}
-          ${(this.item.translated_title || this.item.original_title) && html`
-            <span title="${this.acronymTitle}" class="nerdy-row-element">
-              ${this.acronymOrUid}<br>
-            </span>
-          `}
-
-          ${this.item.volpages && html`
-            <span class="book no-margin">
-              <iron-icon class="small-icon" icon="sc-iron-icons:book"></iron-icon>
-            </span>
-            <span class="vol-page nerdy-row-element" title="${this.volPageTitle}">
-              ${this.volPage}
-            </span>
-          `}
+  #nerdyRowOriginalTitleTemplate() {
+    return (
+      this.item.translated_title &&
+      this.item.original_title &&
+      html`
+        <span title=${this.localize('suttaplex:originalTitle')} class="nerdy-row-element subTitle">
+          ${this.item.original_title}
         </span>
-      </div>`;
+      `
+    );
+  }
+
+  #nerdyRowAcronymTemplate() {
+    return (
+      (this.item.translated_title || this.item.original_title) &&
+      html`<span title=${this.acronymTitle} class="nerdy-row-element">${this.acronymOrUid}</span>`
+    );
+  }
+
+  #nerdyRowVolpageTemplate() {
+    return (
+      this.item.volpages &&
+      html`
+        ${this.item.biblio ? '' : this.volPageTemplate}
+        ${this.item.biblio &&
+        html`
+          <details class="suttaplex-details">
+            <summary>${this.volPageTemplate}</summary>
+            <p class="volpage-biblio-info" .innerHTML=${this.item.biblio}></p>
+          </details>
+        `}
+      `
+    );
+  }
+
+  #nerdyRowVerseTemplate() {
+    return html`
+      <span title=${this.item.verseNo} class="nerdy-row-element">${this.item.verseNo}</span>
+    `;
   }
 
   get userLanguageTranslationsTemplate() {
-    const translationKey = this.translationsInUserLanguage.length === 1 ? 'translationIn' : 'translationsIn';
+    const userLangTransCount = this.translationsInUserLanguage.length;
+    const translationKey = userLangTransCount === 1 ? 'translationIn' : 'translationsIn';
     return html`
       <div class="section-details main-translations">
-        ${!this.isCompact ? html`<h3>
-            <b>
-               ${this.translationsInUserLanguage.length} ${this.localize(translationKey, { lang: this.fullSiteLanguageName })}
-            </b>
-          </h3>
-        ` : ''}
+        ${!this.isCompact
+          ? html`
+              <details>
+                <summary>
+                  <h3>
+                    <b>
+                      ${this.localize(`suttaplex:${translationKey}`, {
+                        lang: this.fullSiteLanguageName,
+                      })}
+                    </b>
+                    ${this.localize('suttaplex:inYourLanguage')}
+                    ${userLangTransCount === 0 ? html`<b>(${userLangTransCount})</b>` : ''}
+                  </h3>
+                </summary>
+                <ul>
+                  <li>
+                    <b>${this.localize(`suttaplex:aligned`)}</b> ${this.localize(`suttaplex:alignedDescription`)}
+                    <br /><small
+                      ><i
+                        >${this.localize(`suttaplex:alignedOperationGuide`)}</i
+                      ></small
+                    >
+                  </li>
+                  <li>
+                    <b>${this.localize(`suttaplex:annotated`)}</b> ${this.localize(`suttaplex:annotatedDescription`)}
+                    <br /><small
+                      ><i
+                        >${this.localize(`suttaplex:annotatedOperationGuide`)}</i
+                      ></small
+                    >
+                  </li>
+                  <li>
+                    <b>${this.localize(`suttaplex:legacy`)}</b> ${this.localize(`suttaplex:legacyDescription`)}
+                  </li>
+                </ul>
+              </details>
+            `
+          : ''}
         <div>
-          ${this.translationsInUserLanguage.map((translation) => html`
-            <sc-suttaplex-tx .item="${this.item}" .translation="${translation}" .isCompact="${this.isCompact}"></sc-suttaplex-tx>
-          `)}
+          ${this.translationsInUserLanguage.map(
+            translation => html`
+              <sc-suttaplex-tx
+                .item=${this.item}
+                .translation=${translation}
+                .isCompact=${this.isCompact}
+                .isSuttaInRangeSutta=${this.isSuttaInRangeSutta}
+                .inRangeSuttaId=${this.inRangeSuttaId}
+              ></sc-suttaplex-tx>
+            `
+          )}
+        </div>
+      </div>
+    `;
+  }
+
+
+  get rootTextsTemplate() {
+    if (!this.#shouldShowRootTexts()) {
+      return '';
+    }
+    const translationKey = this.rootTexts.length === 1 ? 'edition' : 'editions';
+    return html`
+      <div class="section-details">
+        ${!this.isCompact
+          ? html`
+              <h3>
+                <b>${this.localize(`suttaplex:${translationKey}`)}</b>
+                ${this.localize('suttaplex:ofRootText')}
+              </h3>
+            `
+          : ''}
+        <div>
+          ${this.rootTexts.map(
+            translation => html`
+              <sc-suttaplex-tx
+                .item=${this.item}
+                .translation=${translation}
+                .isRoot=${true}
+              ></sc-suttaplex-tx>
+            `
+          )}
         </div>
       </div>
     `;
   }
 
   get modernLanguageTranslationsTemplate() {
-    const translationKey = this.translationsInModernLanguages.length === 1 ? 'translation' : 'translations';
+    if (!this.#shouldShowModernLangTranslations()) {
+      return '';
+    }
+    const translationKey =
+      this.translationsInModernLanguages.length === 1 ? 'translation' : 'translations';
 
     return html`
-      <details 
+      <details
         class="section-details"
-        ?open="${this.translationsOpened}"
-        @toggle="${(e) => this.translationsOpened = e.target.open}"
+        ?open=${this.translationsOpened}
+        @toggle=${e => (this.translationsOpened = e.target.open)}
       >
         <summary>
           <h3>
-            <b>${this.translationsInModernLanguages.length} ${this.localize(translationKey)}</b>
-            ${this.localize('inModernLanguages')}
+            <b> ${this.localize(`suttaplex:${translationKey}`)}</b>
+            ${this.localize('suttaplex:inModernLanguages')}
+            <b>(${this.translationsInModernLanguages.length})</b>
           </h3>
         </summary>
-        ${this.translationsOpened ? this.translationsInModernLanguages.map((translation) => html`
-          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
-        `) : ''}
-      </details>
-    `;
-  }
-
-  get rootTextsTemplate() {
-    const translationKey = this.rootTexts.length === 1 ? 'edition' : 'editions';
-
-    return html`
-      <details 
-        class="section-details"
-        ?open="${this.rootTextsOpened}"
-        @toggle="${(e) => this.rootTextsOpened = e.target.open}"
-      >
-        <summary>
-          <h3><b>${this.rootTexts.length} ${this.localize(translationKey)}</b> ${this.localize('ofRootText')}</h3>
-        </summary>
-        ${this.rootTextsOpened ? this.rootTexts.map((translation) => html`
-          <sc-suttaplex-tx .item="${this.item}" .translation="${translation}"></sc-suttaplex-tx>
-        `) : ''}
+        ${this.translationsOpened
+          ? this.translationsInModernLanguages.map(
+              translation => html`
+                <sc-suttaplex-tx .item=${this.item} .translation=${translation}></sc-suttaplex-tx>
+              `
+            )
+          : ''}
       </details>
     `;
   }
 
   get parallelsTemplate() {
     const translationKey = this.item.parallel_count === 1 ? 'countParallel' : 'countParallels';
-
     return html`
       <details
-        class="section-details" 
-        ?open="${this.parallelsOpened}"
-        @toggle="${(e) => this.parallelsOpened = e.target.open}"
+        class="section-details"
+        ?open=${this.parallelsOpened}
+        @toggle=${e => (this.parallelsOpened = e.target.open)}
       >
         <summary>
           <h3>
-            <b>${this.localize(translationKey, { count: this.item.parallel_count })}</b> 
-            ${this.localize('inAncientTexts')}
+            <b>${this.localize(`suttaplex:${translationKey}`, { count: '' })}</b>
+            ${this.localize('suttaplex:inAncientTexts')}
+            <b>(${this.item.parallel_count})</b>
           </h3>
         </summary>
-        
-        ${this.areParallelsAvailable ? html`
-          <sc-parallel-list 
-            .rootLang="${this.item.root_lang}" 
-            .itemUid="${this.item.uid}" 
-            .rootText="${this.rootLangText}" 
-            .expansionData="${this.expansionData}"
-          >
-          </sc-parallel-list>
-        ` : ''}
-        
-        ${!this.item.parallel_count ? html`<h3>${this.localize('hasNoParallels')}</h3>` : ''}
-        </template>
+
+        ${this.areParallelsAvailable
+          ? html`
+              <sc-parallel-list
+                .rootLang=${this.item.root_lang}
+                .itemUid=${this.item.uid}
+                .rootText=${this.rootLangText}
+                .expansionData=${this.expansionData}
+              ></sc-parallel-list>
+            `
+          : ''}
+        ${this.item.parallel_count
+          ? ''
+          : html` <h3>${this.localize('suttaplex:hasNoParallels')}</h3> `}
       </details>
     `;
   }
 
   async _fetchExpansionData() {
+    if (this.expansionData) {
+      return;
+    }
     if (!expansionDataCache) {
-      expansionDataCache = fetch(`${API_ROOT}/expansion`).then((r) => r.json());
+      expansionDataCache = fetch(`${API_ROOT}/expansion`).then(r => r.json());
     }
 
     this.expansionData = await expansionDataCache;
+  }
+
+  async _fetchAvailableVoice() {
+    if (!this.item?.uid) {
+      return;
+    }
+
+    this.hasVoice = false;
+    const voiceApi = `${API_ROOT}/available_voices/${this.item?.uid}`;
+    const voices = await fetch(voiceApi).then(r => r.json());
+    const VINAYA = 'vinaya';
+    const PLI = 'pli';
+    const MS = 'ms';
+
+    if (voices?.length > 0) {
+      this.hasVoice = Object.entries(voices[0].voices).some(([key, value]) => {
+        const voiceKeyInfo = key.split('/');
+        const voiceValueInfo = value.split('/');
+
+        const excludeVinaya = !voiceValueInfo.includes(VINAYA);
+        const isLanguageOrPliAndMs = voiceKeyInfo.includes(this.language) || (voiceKeyInfo.includes(PLI) && voiceKeyInfo.includes(MS));
+
+        return excludeVinaya && isLanguageOrPliAndMs;
+      });
+    }
   }
 }
 
