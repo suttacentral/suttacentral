@@ -725,7 +725,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     )
 
     printer.print_stage("Loading html_text")
-    load_html_texts(change_tracker, data_dir, db, html_dir)
+    load_html_texts(change_tracker, db, html_dir)
 
     printer.print_stage('Make yellow brick road')
     make_yellow_brick_road(db)

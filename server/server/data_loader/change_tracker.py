@@ -1,7 +1,7 @@
 import gc
 import hashlib
 import inspect
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Callable
 
@@ -62,6 +62,11 @@ class ChangeTracker:
         if check_calling_function and self.is_function_changed(who_is_calling()):
             return True
         return any(self.is_file_new_or_changed(file, False) for file in files)
+
+    def changed_files(self, paths: Iterable[Path]) -> Iterator[Path]:
+        for path in paths:
+            if self.is_file_new_or_changed(path, check_calling_function=False):
+                yield path
 
     def is_any_function_changed(self, functions: Iterable[Callable]) -> bool:
         return any(self.is_function_changed(function) for function in functions)

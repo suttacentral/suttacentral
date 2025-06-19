@@ -1,5 +1,7 @@
 import logging
+from collections.abc import Iterator, Iterable
 from pathlib import Path
+from typing import Callable
 
 from arango.database import Database
 from tqdm import tqdm
@@ -20,21 +22,15 @@ class TextInfoModel:
     def add_document(self, doc):
         raise NotImplementedError
 
-    def process_lang_dir(self, lang_dir: Path, data_dir: Path = None, files_to_process: dict[str, int] | None = None):
-        language_code = lang_dir.stem
-        html_files = lang_dir.glob('**/*.html')
+    def load_language(self, files: Iterable[Path], language_code: str):
+        for file in files:
+            document = self.create_document(file, language_code)
+            self.add_document(document)
 
-        for html_file in html_files:
-            if should_process_file(data_dir, files_to_process, html_file):
-                logger.info('Adding file: {!s}'.format(html_file))
-                document = self.create_document(html_file, language_code)
-                self.add_document(document)
-
-    def create_document(self, html_file, language_code):
+    def create_document(self, html_file: Path, language_code: str):
         sutta_uid = html_file.stem
 
-        with html_file.open('r', encoding='utf8') as f:
-            html = f.read()
+        html = html_file.read_text()
 
         text_details = extract_details(html, is_chinese_root=(language_code == 'lzh'))
         log_missing_details(text_details, str(html_file))
@@ -69,10 +65,6 @@ class TextInfoModel:
 
     def last_modified(self, html_file):
         return html_file.stat().st_mtime
-
-
-def should_process_file(data_dir, files_to_process, html_file):
-    return str(html_file.relative_to(data_dir)) in files_to_process
 
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:
@@ -117,7 +109,6 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def flush_documents(self):
         if len(self.queue) > 0:
-            print('\033[2K\r' + self.queue[-1]['path'], end='')
             self.db['html_text'].import_bulk_logged(self.queue)
             self.queue.clear()
 
@@ -128,13 +119,19 @@ class ArangoTextInfoModel(TextInfoModel):
         self.flush_documents()
 
 
-def load_html_texts(change_tracker: ChangeTracker, data_dir: Path, db: Database, html_dir: Path):
-    print('Loading HTML texts')
+def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
     with ArangoTextInfoModel(db=db) as tim:
-        for lang_dir in tqdm(html_dir.glob('*')):
-            if lang_dir.is_dir:
-                tim.process_lang_dir(
-                    lang_dir=lang_dir,
-                    data_dir=data_dir,
-                    files_to_process=change_tracker.changed_or_new
-                )
+        directories = language_directories(html_dir)
+
+        for directory in tqdm(directories):
+            files = html_files(directory, change_tracker)
+            tim.load_language(files, directory.stem)
+
+
+def language_directories(html_dir: Path) -> list[Path]:
+    return [path for path in html_dir.glob('*') if path.is_dir()]
+
+
+def html_files(language_directory: Path, change_tracker: ChangeTracker) -> Iterator[Path]:
+    paths = language_directory.glob('**/*.html')
+    yield from change_tracker.changed_files(paths)
