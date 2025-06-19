@@ -72,9 +72,7 @@ class TextInfoModel:
 
 
 def files_for_language(lang_dir: Path) -> list[Path]:
-    all_files = sorted(
-        lang_dir.glob('**/*.html'), key=lambda f: util.numericsortkey(f.stem)
-    )
+    all_files = list(lang_dir.glob('**/*.html'))
     files = [f for f in all_files if f.stem == 'metadata'] + [
         f for f in all_files if f.stem != 'metadata'
     ]

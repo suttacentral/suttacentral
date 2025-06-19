@@ -261,7 +261,7 @@ class TestTextInfoModel:
         file_names = [Path(document['file_path']).name
                  for document in text_info.added_documents]
 
-        assert file_names == ['mn1.html', 'mn3.html']
+        assert sorted(file_names) == sorted(['mn1.html', 'mn3.html'])
 
 
 class TestShouldProcessFile:
