@@ -1,6 +1,10 @@
 import logging
 from pathlib import Path
 
+from arango.database import Database
+from tqdm import tqdm
+
+from data_loader.change_tracker import ChangeTracker
 from data_loader.unsegmented_texts import extract_details, TextDetails
 
 logger = logging.getLogger(__name__)
@@ -122,3 +126,15 @@ class ArangoTextInfoModel(TextInfoModel):
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.flush_documents()
+
+
+def load_html_texts(change_tracker: ChangeTracker, data_dir: Path, db: Database, html_dir: Path):
+    print('Loading HTML texts')
+    with ArangoTextInfoModel(db=db) as tim:
+        for lang_dir in tqdm(html_dir.glob('*')):
+            if lang_dir.is_dir:
+                tim.process_lang_dir(
+                    lang_dir=lang_dir,
+                    data_dir=data_dir,
+                    files_to_process=change_tracker.changed_or_new
+                )
