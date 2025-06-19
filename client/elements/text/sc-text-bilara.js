@@ -51,7 +51,8 @@ export class SCTextBilara extends SCTextCommon {
     displayedReferences: { type: Array },
     chosenNoteDisplayType: { type: String },
     paliScript: { type: String },
-    markup: { type: String },
+    bilaraSuttaMarkup: { type: Object },
+    bilaraSuttaKeysOrder: { type: Array },
     isPaliLookupEnabled: { type: Boolean },
     spansForWordsGenerated: { type: Boolean },
     spansForGraphsGenerated: { type: Boolean },
@@ -139,7 +140,18 @@ export class SCTextBilara extends SCTextCommon {
 
       <main>
         <div id="segmented_text_content" class="html-text-content">
-          ${unsafeHTML(this.markup || ' ')}
+          ${this.bilaraSuttaKeysOrder?.map(key => {
+            let htmlSegment = this.bilaraSuttaMarkup ? this.bilaraSuttaMarkup[key] || '' : '';
+            if (key !== '~') {
+              const segmentSpan = `<span class="segment" id="${key}"></span>`;
+              if (htmlSegment.includes('{}')) {
+                htmlSegment = htmlSegment.replace('{}', segmentSpan);
+              } else {
+                htmlSegment += segmentSpan;
+              }
+            }
+            return unsafeHTML(htmlSegment);
+          })}
         </div>
       </main>
 
@@ -235,6 +247,7 @@ export class SCTextBilara extends SCTextCommon {
       }
       this._addVariantText();
       this._addCommentText();
+      this._addCommentSpanId();
       this._paliLookupStateChanged();
       this._chineseLookupStateChanged();
       this._showHighlightingChanged();
@@ -516,7 +529,7 @@ export class SCTextBilara extends SCTextCommon {
     if (changedProps.has('isChineseLookupEnabled')) {
       this._chineseLookupStateChanged();
     }
-    if (changedProps.has('markup')) {
+    if (changedProps.has('bilaraSuttaMarkup') || changedProps.has('bilaraSuttaKeysOrder')) {
       this._updateView();
     }
     if (changedProps.has('displayedReferences')) {
@@ -838,13 +851,30 @@ export class SCTextBilara extends SCTextCommon {
       this.actions.showToc([]);
       return;
     }
-    const dummyElement = document.createElement('template');
-    dummyElement.innerHTML = this.markup?.trim();
-    let arrayTOC = Array.from(dummyElement.content.querySelectorAll('h2')).map(elem => {
-      const id = elem.firstElementChild ? elem.firstElementChild.id : null;
-      if (sutta[id]) {
+    // Query the live DOM for h2 elements within the rendered content
+    const renderedContent = this.querySelector('#segmented_text_content');
+    if (!renderedContent) {
+      this.actions.showToc([]);
+      return;
+    }
+    let arrayTOC = Array.from(renderedContent.querySelectorAll('h2')).map(elem => {
+      // Assuming h2 elements might have a child span with the ID, or the h2 itself has an ID
+      // that corresponds to a key in the 'sutta' object (bilaraTranslatedSutta or bilaraRootSutta).
+      // The original logic was `elem.firstElementChild ? elem.firstElementChild.id : null;`
+      // This needs to align with how IDs are structured in the bilaraSuttaMarkup for h2s.
+      // For now, let's assume the h2 itself or its first child might have the relevant ID.
+      let id = elem.id;
+      if (!id && elem.firstElementChild) {
+        id = elem.firstElementChild.id;
+      }
+
+      if (id && sutta[id]) {
         return { link: id, name: this._stripLeadingOrdering(sutta[id]) };
       }
+      // Fallback or alternative: if h2s don't have direct IDs corresponding to sutta keys,
+      // but their content is derived from a segment key, this logic might need more refinement.
+      // The original code implies that h2 elements (or their children) have IDs that are keys in the sutta object.
+      return null;
     });
     arrayTOC = arrayTOC.filter(Boolean);
 

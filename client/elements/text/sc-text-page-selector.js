@@ -35,7 +35,6 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     suttaReference: { type: Object, state: true },
     suttaComment: { type: Object, state: true },
     suttaVariant: { type: Object, state: true },
-    suttaMarkup: { type: String, state: true },
     markup: { type: String, state: true },
     bilaraSuttaMarkup: { type: String, state: true },
     localizedStringsPath: { type: String, state: true },
@@ -520,25 +519,8 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!this.bilaraSuttaMarkup) {
       return;
     }
-
-    let suttaMarkup = '';
-
-    this.bilaraSuttaKeysOrder.forEach(key => {
-      const value = this.bilaraSuttaMarkup[key];
-      if (key !== '~') {
-        if (value.includes('{}')) {
-          suttaMarkup += value.replace(/{}/, `<span class="segment" id="${key}"></span>`);
-        } else {
-          suttaMarkup += `${value}<span class="segment" id="${key}"></span>`;
-        }
-      } else {
-        suttaMarkup += value;
-      }
-    });
-    suttaMarkup = suttaMarkup.replace(/<article>/, '<article><header>');
-    suttaMarkup = suttaMarkup.replace(/<\/h1><\/div>/, '</h1></div></header>');
-    suttaMarkup = suttaMarkup.replace(/{}/g, '');
-    this.suttaMarkup = suttaMarkup;
+    // All logic for creating the 'suttaMarkup' string variable has been removed.
+    // The line 'this.suttaMarkup = suttaMarkup;' has been removed.
   }
 
   _getExpansionUrl() {
