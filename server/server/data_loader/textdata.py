@@ -2,7 +2,6 @@ import logging
 from collections.abc import Iterator, Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 from arango.database import Database
 from tqdm import tqdm
@@ -77,14 +76,15 @@ class TextInfoModel:
             "uid": file_details.sutta_uid,
             "lang": language_code,
             "path": path,
+            "name": text_details.title,
             "author": text_details.authors_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
+            "publication_date": text_details.publication_date,
+            "volpage": text_details.volume_page,
             "mtime": file_details.last_modified,
             "file_path": file_details.path,
         }
-
-        add_text_details(document, text_details)
 
         return document
 
@@ -94,12 +94,6 @@ def log_missing_details(details: TextDetails, file_name: str) -> None:
         logger.error(f'Could not find title in file: {file_name}')
     if not details.authors_long_name:
         logging.critical(f'Could not find author in file: {file_name}')
-
-
-def add_text_details(document: dict, details: TextDetails) -> None:
-    document['name'] = details.title
-    document['publication_date'] = details.publication_date
-    document['volpage'] = details.volume_page
 
 
 class ArangoTextInfoModel(TextInfoModel):
