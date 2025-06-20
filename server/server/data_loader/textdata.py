@@ -1,5 +1,6 @@
 import logging
 from collections.abc import Iterator, Iterable
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
@@ -10,6 +11,28 @@ from data_loader.change_tracker import ChangeTracker
 from data_loader.unsegmented_texts import extract_details, TextDetails
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True)
+class FileDetails:
+    path: str
+    sutta_uid: str
+    html: str
+    last_modified: float
+
+
+def extract_file_details(file: Path) -> FileDetails:
+    path = str(file.resolve())
+    sutta_uid = file.stem
+    html = file.read_text()
+    last_modified = file.stat().st_mtime
+
+    return FileDetails(
+        path=path,
+        sutta_uid=sutta_uid,
+        html=html,
+        last_modified=last_modified,
+    )
 
 
 class TextInfoModel:
@@ -28,12 +51,14 @@ class TextInfoModel:
             self.add_document(document)
 
     def create_document(self, html_file: Path, language_code: str):
-        sutta_uid = html_file.stem
+        file_details = extract_file_details(html_file)
 
-        html = html_file.read_text()
+        text_details = extract_details(
+            file_details.html,
+            is_chinese_root=(language_code == 'lzh')
+        )
 
-        text_details = extract_details(html, is_chinese_root=(language_code == 'lzh'))
-        log_missing_details(text_details, str(html_file))
+        log_missing_details(text_details, file_details.path)
 
         author_data = self.get_author_by_name(text_details.authors_long_name, html_file)
 
@@ -44,27 +69,24 @@ class TextInfoModel:
             author_uid = None
             author_short = None
         if author_uid:
-            path = f'{language_code}/{sutta_uid}/{author_uid}'
+            path = f'{language_code}/{file_details.sutta_uid}/{author_uid}'
         else:
-            path = f'{language_code}/{sutta_uid}'
+            path = f'{language_code}/{file_details.sutta_uid}'
 
         document = {
-            "uid": sutta_uid,
+            "uid": file_details.sutta_uid,
             "lang": language_code,
             "path": path,
             "author": text_details.authors_long_name,
             "author_short": author_short,
             "author_uid": author_uid,
-            "mtime": self.last_modified(html_file),
-            "file_path": str(html_file.resolve()),
+            "mtime": file_details.last_modified,
+            "file_path": file_details.path,
         }
 
         add_text_details(document, text_details)
 
         return document
-
-    def last_modified(self, html_file):
-        return html_file.stat().st_mtime
 
 
 def log_missing_details(details: TextDetails, file_name: str) -> None:

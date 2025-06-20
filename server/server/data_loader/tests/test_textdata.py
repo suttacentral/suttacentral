@@ -6,7 +6,7 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import TextInfoModel, load_html_texts, language_directories, html_files
+from data_loader.textdata import TextInfoModel, load_html_texts, language_directories, html_files, extract_file_details
 
 
 class TextInfoModelSpy(TextInfoModel):
@@ -373,3 +373,23 @@ class TestHtmlFiles:
         files.append(new_file)
 
         assert sorted(html_files(language_directory, tracker)) == [new_file]
+
+
+class TestExtractFileDetails:
+    @pytest.fixture
+    def sutta_file(self, tmp_path) -> Path:
+        file = tmp_path / 'mn1.html'
+        file.write_text('<html/>')
+        return file
+
+    def test_get_sutta_uid(self, sutta_file):
+        assert extract_file_details(sutta_file).sutta_uid == 'mn1'
+
+    def test_get_html(self, sutta_file):
+        assert extract_file_details(sutta_file).html == '<html/>'
+
+    def test_get_path_as_string(self, sutta_file):
+        assert extract_file_details(sutta_file).path == str(sutta_file)
+
+    def test_get_last_modified(self, sutta_file):
+        assert extract_file_details(sutta_file).last_modified == sutta_file.stat().st_mtime
