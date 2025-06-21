@@ -41,3 +41,5 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+

@@ -36,7 +36,6 @@ from . import (
     currencies,
     dictionaries,
     paragraphs,
-    textdata,
     homepage,
     languages,
     order,
@@ -49,6 +48,7 @@ from . import (
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
 from .observability import StagePrinter
+from .textdata import load_html_texts
 from .util import json_load
 import re
 from data_loader.extra_info import process_extra_info_file
@@ -261,15 +261,6 @@ def load_map_data(additional_info_dir, db):
     ]
     db['map_data'].truncate()
     db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
-
-
-def load_html_texts(change_tracker: ChangeTracker, data_dir: Path, db: Database, html_dir: Path):
-    print('Loading HTML texts')
-    with textdata.ArangoTextInfoModel(db=db) as tim:
-        for lang_dir in tqdm(html_dir.glob('*')):
-            if not lang_dir.is_dir:
-                continue
-            tim.process_lang_dir(lang_dir=lang_dir, data_dir=data_dir, files_to_process=change_tracker.changed_or_new)
 
 
 def load_json_file(db, change_tracker, json_file):
@@ -742,7 +733,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     )
 
     printer.print_stage("Loading html_text")
-    load_html_texts(change_tracker, data_dir, db, html_dir)
+    load_html_texts(change_tracker, db, html_dir)
 
     printer.print_stage('Make yellow brick road')
     make_yellow_brick_road(db)

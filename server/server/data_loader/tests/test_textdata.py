@@ -1,10 +1,12 @@
 import logging
-from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
 
-from data_loader.textdata import TextInfoModel, should_process_file
+from common.arangodb import get_db
+from common.utils import current_app
+from data_loader.change_tracker import ChangeTracker
+from data_loader.textdata import TextInfoModel, load_html_texts, language_directories, html_files
 
 
 class TextInfoModelSpy(TextInfoModel):
@@ -47,8 +49,7 @@ class TextInfoModelSpy(TextInfoModel):
 
 def add_html_file(path: Path, html: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('w') as f:
-        path.write_text(html)
+    path.write_text(html)
 
 
 @pytest.fixture
@@ -92,49 +93,18 @@ def sutta_path(base_path, sutta_relative) -> Path:
     return base_path / sutta_relative
 
 
-@pytest.fixture
-def files_to_process(sutta_relative) -> dict[str, int]:
-    return {str(sutta_relative): 0}
-
-
 class TestTextInfoModel:
-    def test_empty_lang_dir_does_not_add_text_info(self, text_info, tmp_path):
-        text_info.process_lang_dir(lang_dir=tmp_path)
-        assert not text_info.added_documents
-
-    def test_lang_dir_with_empty_language_does_not_add_text_info(self, text_info, collection_path):
-        collection_path.mkdir(parents=True)
-        text_info.process_lang_dir(collection_path)
-        assert not text_info.added_documents
-
-    def test_file_not_in_files_to_process_does_not_add_text_info(self, text_info, base_path, language_path, sutta_path):
-        add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
-        text_info.process_lang_dir(lang_dir=language_path, data_dir=base_path, files_to_process={})
-        assert not text_info.added_documents
-
-    def test_type_error_raised_when_files_to_process_is_none(self, text_info, base_path, language_path, sutta_path):
-        add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
-        with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir=language_path, data_dir=base_path, files_to_process=None)
-
-    def test_type_error_when_data_dir_is_none(self, text_info, language_path, sutta_path, files_to_process):
-        add_html_file(sutta_path, "<html><meta name='author' content='Bhikkhu Bodhi'></html>")
-        with pytest.raises(TypeError):
-            text_info.process_lang_dir(lang_dir=language_path, data_dir=None, files_to_process=files_to_process)
-
-    def test_logs_missing_authors_long_name(
-            self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
-    ):
+    def test_logs_missing_authors_long_name(self, text_info, sutta_path, caplog):
         html = "<html><body><header><h1></h1></header></body></html>"
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
         assert caplog.records[0].levelno == logging.CRITICAL
         assert caplog.records[0].message == f"Could not find author in file: {str(sutta_path)}"
 
-    def test_retrieves_author_short_name(self, text_info, base_path, language_path, sutta_path, files_to_process):
+    def test_retrieves_author_short_name(self, text_info, sutta_path):
         html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
 
     @pytest.mark.parametrize(
         "author,author_uid",
@@ -143,12 +113,10 @@ class TestTextInfoModel:
             ('No such author', None),
          ]
     )
-    def test_retrieves_author_uid(
-            self, text_info, base_path, language_path, sutta_path, files_to_process, author, author_uid
-    ):
+    def test_retrieves_author_uid(self, text_info, sutta_path, author, author_uid):
         html = f"<html><head><meta author='{author}'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
         assert text_info.added_documents[0]['author_uid'] == author_uid
 
     @pytest.mark.parametrize(
@@ -158,24 +126,20 @@ class TestTextInfoModel:
             ('No such author', 'en/mn1'),
         ]
     )
-    def test_generates_path(self, text_info, base_path, language_path, sutta_path, files_to_process, author, path):
+    def test_generates_path(self, text_info, sutta_path, author, path):
         html = f"<html><head><meta author='{author}'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
         assert text_info.added_documents[0]['path'] == path
 
-    def test_logs_missing_title_when_there_is_no_header_tag(
-            self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
-    ):
+    def test_logs_missing_title_when_there_is_no_header_tag(self, text_info, sutta_path, caplog):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
         assert caplog.records[0].levelno == logging.ERROR
         assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
-    def test_logs_missing_title_when_there_is_no_h1_tag(
-                self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
-        ):
+    def test_logs_missing_title_when_there_is_no_h1_tag(self, text_info, sutta_path, caplog):
             html = (
                 "<html>"
                 "<head><meta author='Bhikkhu Bodhi'>"
@@ -184,12 +148,12 @@ class TestTextInfoModel:
                 "</html>"
             )
             add_html_file(sutta_path, html)
-            text_info.process_lang_dir(language_path, base_path, files_to_process)
+            text_info.load_language([sutta_path], 'en')
             assert caplog.records[0].levelno == logging.ERROR
             assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
     def test_does_not_log_missing_title_when_it_is_an_empty_string(
-            self, text_info, sutta_path, language_path, base_path, files_to_process, caplog
+            self, text_info, sutta_path, caplog
     ):
         html = ("<html>"
                 "<head><meta author='Bhikkhu Bodhi'><head>"
@@ -197,24 +161,20 @@ class TestTextInfoModel:
                 "</html>")
 
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
         assert not caplog.records
 
-    def test_sets_file_path(
-            self, text_info, base_path, language_path, sutta_path, files_to_process
-    ):
+    def test_sets_file_path(self, text_info, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
 
         assert text_info.added_documents[0]['file_path'] == str(sutta_path)
 
-    def test_sets_last_modified(
-            self, text_info, base_path, language_path, sutta_path, files_to_process
-    ):
+    def test_sets_last_modified(self, text_info, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language([sutta_path], 'en')
 
         assert text_info.added_documents[0]['mtime'] == sutta_path.stat().st_mtime
 
@@ -223,58 +183,193 @@ class TestTextInfoModel:
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
 
         paths = [
-            Path('html_text/en/pli/sutta/mn/mn1.html'),
-            Path('html_text/en/pli/sutta/mn/mn2.html'),
-            Path('html_text/en/pli/sutta/mn/mn3.html'),
+            base_path / Path('html_text/en/pli/sutta/mn/mn1.html'),
+            base_path / Path('html_text/en/pli/sutta/mn/mn2.html'),
+            base_path / Path('html_text/en/pli/sutta/mn/mn3.html'),
         ]
 
-        files_to_process = dict()
         for path in paths:
-            files_to_process[str(path)] = 0
-            add_html_file(base_path / path, html)
+            add_html_file(path, html)
 
-        language_path = base_path / 'html_text/en'
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
+        text_info.load_language(paths, 'en')
 
         assert len(text_info.added_documents) == 3
 
-    def test_files_not_in_files_to_process_are_skipped(self, text_info, base_path):
-        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
 
-        paths = [
-            Path('html_text/en/pli/sutta/mn/mn1.html'),
-            Path('html_text/en/pli/sutta/mn/mn2.html'),
-            Path('html_text/en/pli/sutta/mn/mn3.html'),
+@pytest.fixture
+def database():
+    app_ = current_app()
+    app_.config['ARANGO_DB'] = 'suttacentral_data_load_tests'
+
+    with app_.app_context():
+        db = get_db()
+        db.collection('mtimes').truncate()
+        db.collection('html_text').truncate()
+        yield db
+
+
+class TestLoadHtmlTexts:
+    @pytest.fixture
+    def sc_data_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def html_dir(self, sc_data_dir) -> Path:
+        path = sc_data_dir / 'html_text'
+        path.mkdir()
+        return path
+
+    @pytest.fixture
+    def html(self) -> str:
+        return (
+        "<html>"
+        "<head>"
+        "<meta author='Bhikkhu Bodhi'>"
+        "</head>"
+        "<body>"
+        "<header><h1>1. The Root of All Things</h1></header>"
+        "<span class='publication-date'>2009</span>"
+        "</body>"
+        "</html>"
+    )
+
+    @pytest.fixture
+    def tracker(self, sc_data_dir, database):
+        return ChangeTracker(base_dir=sc_data_dir, db=database)
+
+    @pytest.mark.skip('Long running test.')
+    def test_load_from_repository(self, database):
+        sc_data_dir = Path('/opt/sc/sc-flask/sc-data/')
+        html_dir = Path('/opt/sc/sc-flask/sc-data/html_text')
+        tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+
+    def test_load_empty_html_dir(self, tracker, database, sc_data_dir, html_dir):
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        assert database.collection('html_text').count() == 0
+
+    def test_load_empty_language_dir(self, tracker, database, sc_data_dir, html_dir):
+        language_dir = html_dir / 'en'
+        language_dir.mkdir()
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        assert database.collection('html_text').count() == 0
+
+    def test_load_one_text(self, database, sc_data_dir, html_dir, html):
+        language_dir = html_dir / 'en'
+        language_dir.mkdir()
+
+        sutta_path = language_dir / 'mn1.html'
+        sutta_path.write_text(html)
+
+        tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+
+        assert database.collection('html_text').count() == 1
+
+    def test_skip_unmodified_text(self, database, sc_data_dir, html_dir, html):
+        language_dir = html_dir / 'en'
+        language_dir.mkdir()
+
+        sutta_path = language_dir / 'mn1.html'
+        sutta_path.write_text(html)
+
+        tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
+        tracker.update_mtimes()
+        tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
+
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+
+        assert database.collection('html_text').count() == 0
+
+    def test_skip_files_not_in_language_subdirectories(self, database, sc_data_dir, html_dir, html):
+        skip_path = html_dir / 'skip_me.html'
+        skip_path.write_text(html)
+
+        language_dir = html_dir / 'en'
+        language_dir.mkdir()
+        ok_path = language_dir / 'mn1.html'
+        ok_path.write_text(html)
+
+        tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+
+        assert database.collection('html_text').count() == 1
+
+    def test_load_files_in_subdirectories(self, database, sc_data_dir, html_dir, html):
+        language_dir = html_dir / 'en'
+        language_dir.mkdir()
+
+        collection_dir = language_dir / 'mn'
+        collection_dir.mkdir()
+
+        sutta_path = collection_dir / 'mn1.html'
+        sutta_path.write_text(html)
+
+        tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
+        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+
+        assert database.collection('html_text').count() == 1
+
+
+class TestLanguageDirectories:
+    def test_empty_html_directory(self, tmp_path):
+        assert not language_directories(html_dir=tmp_path)
+
+    def test_with_language_directory(self, tmp_path):
+        directories = [
+            tmp_path / 'en',
+            tmp_path / 'lzh',
         ]
 
-        for path in paths:
-            add_html_file(base_path / path, html)
+        for directory in directories:
+            directory.mkdir()
 
-        files_to_process = {
-            'html_text/en/pli/sutta/mn/mn1.html' : 0,
-            'html_text/en/pli/sutta/mn/mn3.html' : 0,
-        }
+        assert language_directories(html_dir=tmp_path) == directories
 
-        language_path = base_path / 'html_text/en'
-        text_info.process_lang_dir(language_path, base_path, files_to_process)
-
-        file_names = [Path(document['file_path']).name
-                 for document in text_info.added_documents]
-
-        assert file_names == ['mn1.html', 'mn3.html']
+    def test_only_return_directories(self, tmp_path):
+        directory = tmp_path / 'en'
+        directory.mkdir()
+        file = tmp_path / 'abc.txt'
+        file.touch()
+        assert language_directories(html_dir=tmp_path) == [directory]
 
 
-class TestShouldProcessFile:
-    def test_file_should_be_processed_when_in_files_to_process(self, base_path):
-        relative_path = Path('abc.html')
-        absolute_path = base_path / relative_path
-        absolute_path.touch()
-        files_to_process = {'abc.html' : 0}
-        assert should_process_file(base_path, files_to_process, absolute_path)
+class TestHtmlFiles:
+    @pytest.fixture
+    def language_directory(self, tmp_path):
+        return tmp_path
 
-    def test_file_should_not_be_processed_when_not_in_files_to_process(self, base_path):
-        relative_path = Path('abc.html')
-        absolute_path = base_path / relative_path
-        absolute_path.touch()
-        files_to_process = {'xyz.html' : 0,}
-        assert not should_process_file(base_path, files_to_process, absolute_path)
+    def test_all_files_changed(self, language_directory, database):
+        files = [
+            language_directory / 'abc.html',
+            language_directory / 'def.html',
+            language_directory / 'hij.html',
+        ]
+
+        for file in files:
+            file.touch()
+
+        tracker = ChangeTracker(language_directory, database)
+
+        assert sorted(html_files(language_directory, tracker)) == files
+
+    def test_one_new_file(self, language_directory, database):
+        files = [
+            language_directory / 'abc.html',
+            language_directory / 'def.html',
+        ]
+
+        for file in files:
+            file.touch()
+
+        tracker = ChangeTracker(language_directory, database)
+        tracker.update_mtimes()
+
+        new_file = language_directory / 'hij.html'
+        new_file.touch()
+
+        tracker = ChangeTracker(language_directory, database)
+
+        files.append(new_file)
+
+        assert sorted(html_files(language_directory, tracker)) == [new_file]
