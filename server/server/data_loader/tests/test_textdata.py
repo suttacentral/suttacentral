@@ -6,7 +6,8 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import TextInfoModel, load_html_texts, language_directories, html_files, extract_file_details
+from data_loader.textdata import TextInfoModel, ArangoTextInfoModel
+from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
 
 
 class TextInfoModelSpy(TextInfoModel):
@@ -393,3 +394,99 @@ class TestExtractFileDetails:
 
     def test_get_last_modified(self, sutta_file):
         assert extract_file_details(sutta_file).last_modified == sutta_file.stat().st_mtime
+
+
+class TestArangoTextInfoModel:
+    @pytest.fixture
+    def database(self, database):
+        database['author_edition'].truncate()
+        database['html_text'].truncate()
+        return database
+
+
+    @pytest.fixture
+    def author_edition_doc(self):
+        return {
+            "_key": "9944698",
+            "_id": "author_edition/9944698",
+            "_rev": "_j2q8z9W--J",
+            "type": "author",
+            "uid": "bodhi",
+            "short_name": "Bodhi",
+            "long_name": "Bhikkhu Bodhi"
+        }
+
+    @pytest.fixture
+    def html_text_doc(self):
+        return {
+            "uid": "mn1",
+            "lang": "en",
+            "path": "en/mn1/bodhi",
+            "name": "The Root of All Things",
+            "author": "Bhikkhu Bodhi",
+            "author_short": "Bodhi",
+            "author_uid": "bodhi",
+            "publication_date": "2009",
+            "volpage": None,
+            "mtime": 1749975302.2834718,
+            "file_path": "/opt/sc/sc-flask/sc-data/html_text/en/pli/sutta/mn/mn1.html",
+        }
+
+    def test_author_is_none_when_database_has_none(self, database):
+        model = ArangoTextInfoModel(database)
+        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html')) is None
+
+    def test_logs_missing_author(self, database, caplog):
+        model = ArangoTextInfoModel(database)
+        _ = model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))
+        assert caplog.records[0].levelno == logging.CRITICAL
+        assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Bodhi" ( mn1.html )'
+
+    def test_retrieves_author_when_in_database(self, database, author_edition_doc):
+        database['author_edition'].insert(author_edition_doc)
+
+        model = ArangoTextInfoModel(database)
+        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))['uid'] == 'bodhi'
+
+    def test_add_document_is_queued_before_exiting_context_manager(self, database, html_text_doc):
+        with ArangoTextInfoModel(database) as model:
+            model.add_document(html_text_doc)
+            assert database['html_text'].count() == 0
+            assert len(model.queue) == 1
+
+    def test_queue_is_flushed_after_exiting_context_manager(self, database, html_text_doc):
+        with ArangoTextInfoModel(database) as model:
+            model.add_document(html_text_doc)
+
+        assert database['html_text'].count() == 1
+        assert len(model.queue) == 0
+
+    def test_queue_is_not_flushed_up_to_maximum_size(self, database, html_text_doc):
+        max_size = 100
+        with ArangoTextInfoModel(database) as model:
+            for i in range(max_size):
+                next_doc = html_text_doc.copy()
+                next_doc['path'] = f'en/mn{i}/bodhi'
+                model.add_document(next_doc)
+
+            assert len(model.queue) == max_size
+            assert database['html_text'].count() == 0
+
+    def test_queue_is_flushed_after_maximum_size(self, database, html_text_doc):
+        max_size = 100
+        with (ArangoTextInfoModel(database) as model):
+            for i in range(max_size + 1):
+                next_doc = html_text_doc.copy()
+                next_doc['path'] = f'en/mn{i}/bodhi'
+                model.add_document(next_doc)
+
+            assert len(model.queue) == 0
+            assert database['html_text'].count() == max_size + 1
+
+    def test_key_is_constructed_from_path(self, database, html_text_doc):
+        with (ArangoTextInfoModel(database) as model):
+            html_text_doc['path'] = 'abc/def'
+            model.add_document(html_text_doc)
+
+        doc = database['html_text'].get('html_text/abc_def')
+        assert doc['_key'] == 'abc_def'
