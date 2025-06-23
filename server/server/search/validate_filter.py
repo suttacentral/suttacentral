@@ -35,11 +35,6 @@ def validate_filter_commands(query):
     if value_errors['has_error']:
         return value_errors
 
-    # Check the validity of the filter combination
-    combination_errors = _check_filter_combinations(query)
-    if combination_errors['has_error']:
-        return combination_errors
-
     return {
         'is_valid': True,
         'error_message': '',
@@ -137,23 +132,6 @@ def _check_filter_values(query, valid_filters):
                     'Common language codes: en (English), pli (Pali), zh (Chinese), de (German)'
                 ]
             }
-    return {'has_error': False}
-
-
-def _check_filter_combinations(query):
-    """Check the validity of the filter combination"""
-    # Check for conflicting filter combinations
-    if 'author:' in query.lower() and 'by:' in query.lower():
-        return {
-            'has_error': True,
-            'is_valid': False,
-            'error_message': 'The author: and by: filters cannot be used at the same time, they are synonymous',
-            'error_type': 'conflicting_filters',
-            'suggestions': [
-                'Please use only one of author: or by:',
-                'author: and by: have the same function, both are used to filter by author'
-            ]
-        }
     return {'has_error': False}
 
 

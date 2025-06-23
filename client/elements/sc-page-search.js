@@ -750,7 +750,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
           <div class="search-results-container">
             <main class="search-results-main">
               ${this.searchResultHeadTemplate}
-              <p>Click the Author ID below to see all texts by a single author. Or use the ID to limit search results to a single author, e.g. <code>author:sujato</code></p>
+              <p>Click the Author ID below to see all texts by a single author. Or use the ID to limit search results to a single author, e.g. <code>by:sujato</code></p>
               <div class="search-results-table listauthorsResult">
                 <div class="search-results-table-header">
                   <div class="search-results-table-column font-weight-bold">Author ID</div>
@@ -760,7 +760,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
                   item => html`
                     <a
                       class="uid"
-                      href="/search?query=author:${item.author_uid}"
+                      href="/search?query=by:${item.author_uid}"
                       @click=${() => this.#onAuthorNameClick(item.author_uid)}
                     >
                       <div class="search-results-table-item authorInfo">
@@ -850,7 +850,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   #onAuthorNameClick(authorUid) {
-    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=author:${authorUid}` });
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=by:${authorUid}` });
   }
 
   connectedCallback() {
@@ -1280,7 +1280,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   #isSearchByAuthor() {
     return (
-      this.searchQuery?.includes('author:') &&
+      this.searchQuery?.includes('by:') &&
       !this.searchQuery?.includes('in:') &&
       !this.searchQuery?.includes(' ')
     );
@@ -1293,7 +1293,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   #isSearchByCollection() {
     return (
       this.searchQuery?.includes('in:') &&
-      !this.searchQuery?.includes('author:') &&
+      !this.searchQuery?.includes('by:') &&
       !this.searchQuery?.includes(' ')
     );
   }
