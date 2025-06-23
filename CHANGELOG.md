@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.23
+
+- Remove support for filter author: in search function.
+
 ## 2025.6.17
 
 - Enhance: Set default search document language for new users #2974
