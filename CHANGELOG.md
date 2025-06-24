@@ -2,7 +2,7 @@
 
 ## 2025.6.24
 
-- Fix High LCP and Time to Interactive in mobile. #2174
+- Enhance: Reduce CLS on segmented pages #2360
 
 ## 2025.6.23
 
