@@ -1,5 +1,9 @@
 # SuttaCentral ChangeLog
 
+## 2025.6.24
+
+- Fix High LCP and Time to Interactive in mobile. #2174
+
 ## 2025.6.23
 
 - Remove support for filter author: in search function.
