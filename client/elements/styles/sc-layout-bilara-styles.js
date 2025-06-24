@@ -63,6 +63,10 @@ export const commonStyles = css`
   .sutta-title {
     word-break: break-word;
   }
+
+  #segmented_text_content {
+    min-height: 70vh;
+  }
 `;
 
 export const plainStyles = html`
