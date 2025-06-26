@@ -113,6 +113,8 @@ export class SCTextBilara extends SCTextCommon {
     this.isMultiSutta = false;
     this.isTraditionalChinese = false;
     this.lineByLineRootTextFirstStyles = '';
+    this._selectionEventsActive = false;
+    this._handleContentMouseOver = null;
   }
 
   createRenderRoot() {
@@ -164,24 +166,37 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _setupSelectionEvents() {
-    this.querySelector('#segmented_text_content')?.removeEventListener('mousedown', this._handleContentMouseOver);
+    this._cleanupSelectionEvents();
+    if (this.chosenTextView !== 'sidebyside') {
+      return;
+    }
 
     const contentElement = this.querySelector('#segmented_text_content');
     if (contentElement) {
       this._handleContentMouseOver = (e) => {
         const translationElement = e.target.closest('.translation');
         const rootElement = e.target.closest('.root');
-
         if (translationElement && this.userSelectStyles !== userSelectStyleForTranslation) {
           this.userSelectStyles = userSelectStyleForTranslation;
         } else if (rootElement && this.userSelectStyles !== userSelectStyleForRoot) {
           this.userSelectStyles = userSelectStyleForRoot;
         }
       };
-
       contentElement.addEventListener('mousedown', this._handleContentMouseOver);
+      this._selectionEventsActive = true;
     }
-}
+  }
+
+  _cleanupSelectionEvents() {
+    const contentElement = this.querySelector('#segmented_text_content');
+    if (contentElement && this._handleContentMouseOver) {
+      contentElement.removeEventListener('mousedown', this._handleContentMouseOver);
+    }
+    if (this.chosenTextView !== 'sidebyside') {
+      this.userSelectStyles = null;
+    }
+    this._selectionEventsActive = false;
+  }
 
   checkIfMultiSutta(suttaId) {
     if (!suttaId || typeof suttaId !== 'string') {
