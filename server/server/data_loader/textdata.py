@@ -2,6 +2,7 @@ import logging
 from collections.abc import Iterator, Iterable
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Protocol
 
 from arango.database import Database
 from tqdm import tqdm
@@ -34,15 +35,21 @@ def extract_file_details(file: Path) -> FileDetails:
     )
 
 
+class ReaderWriter(Protocol):
+    def get_author_by_name(self, name: str, file: Path) -> dict: ...
+
+    def add_document(self, doc: dict) -> None: ...
+
+
 class TextInfoModel:
-    def __init__(self):
-        pass
+    def __init__(self, reader_writer: ReaderWriter):
+        self.reader_writer = reader_writer
 
-    def get_author_by_name(self, name, file):
-        raise NotImplementedError
+    def get_author_by_name(self, name: str, file: Path) -> dict:
+        return self.reader_writer.get_author_by_name(name, file)
 
-    def add_document(self, doc):
-        raise NotImplementedError
+    def add_document(self, doc: dict) -> None:
+        self.reader_writer.add_document(doc)
 
     def load_language(self, files: Iterable[Path], language_code: str):
         for file in files:
@@ -96,12 +103,11 @@ def log_missing_details(details: TextDetails, file_name: str) -> None:
         logging.critical(f'Could not find author in file: {file_name}')
 
 
-class ArangoTextInfoModel(TextInfoModel):
+class ArangoReaderWriter:
     def __init__(self, db):
-        super().__init__()
         self.db = db
         self.queue = []
-        self._author_cache = dict(
+        self._author_cache: dict = dict(
             db.aql.execute(
                 '''
             RETURN MERGE(
@@ -111,13 +117,13 @@ class ArangoTextInfoModel(TextInfoModel):
             ).next()
         )
 
-    def get_author_by_name(self, name, file):
+    def get_author_by_name(self, name: str, file: Path) -> dict:
         author = self._author_cache.get(name)
         if author is None:
             logging.critical(f'Author data not defined for "{name}" ( {str(file)} )')
         return author
 
-    def add_document(self, doc):
+    def add_document(self, doc: dict) -> None:
         doc['_key'] = doc['path'].replace('/', '_')
         self.queue.append(doc)
         if len(self.queue) > 100:
@@ -136,7 +142,8 @@ class ArangoTextInfoModel(TextInfoModel):
 
 
 def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
-    with ArangoTextInfoModel(db=db) as tim:
+    with ArangoReaderWriter(db=db) as reader_writer:
+        tim = TextInfoModel(reader_writer)
         directories = language_directories(html_dir)
 
         for directory in tqdm(directories):
