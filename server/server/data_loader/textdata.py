@@ -44,14 +44,14 @@ class Writer(Protocol):
 
 
 class TextInfoModel:
-    def __init__(self, reader: Reader, writer: Writer):
-        self.reader = reader
-        self.writer = writer
+    def __init__(self, authors: Reader, html_text_writer: Writer):
+        self.authors = authors
+        self.html_text_writer = html_text_writer
 
     def load_language(self, files: Iterable[Path], language_code: str):
         for file in files:
             document = self.create_document(file, language_code)
-            self.writer.add_document(document)
+            self.html_text_writer.add_document(document)
 
     def create_document(self, html_file: Path, language_code: str):
         file_details = extract_file_details(html_file)
@@ -63,7 +63,7 @@ class TextInfoModel:
 
         log_missing_details(text_details, file_details.path)
 
-        author_data = self.reader.get_author_by_name(text_details.authors_long_name, html_file)
+        author_data = self.authors.get_author_by_name(text_details.authors_long_name, html_file)
 
         if author_data:
             author_uid = author_data['uid']
