@@ -109,10 +109,10 @@ export class SCStaticSearchFilter extends SCStaticPage {
             </tr>
             <tr>
               <td>Filter results by <code>author</code>.</td>
-              <td>author:sujato cat<br>
-                  author:sujato Katze<br>
-                  author:sujato Buddha OR Sāvatthī<br>
-                  author:sujato Buddha AND Sāvatthī
+              <td>by:sujato cat<br>
+                  by:sujato Katze<br>
+                  by:sujato Buddha OR Sāvatthī<br>
+                  by:sujato Buddha AND Sāvatthī
               </td>
             </tr>
 
@@ -206,8 +206,8 @@ export class SCStaticSearchFilter extends SCStaticPage {
             <tr>
             <td>Use multiple filters.</td>
               <td colspan="2">
-                in:mn author:sujato Buddha OR Monastery<br>
-                in:mn author:sujato Buddha AND Monastery
+                in:mn by:sujato Buddha OR Monastery<br>
+                in:mn by:sujato Buddha AND Monastery
               </td>
             </tr>
 

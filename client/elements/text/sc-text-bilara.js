@@ -6,10 +6,6 @@ import { API_ROOT } from '../../constants';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { getURLParam, isChinese } from '../addons/sc-functions-miscellaneous';
 import { SCTextCommon } from './sc-text-common';
-import '../lookups/sc-lookup-pli';
-import '../lookups/sc-lookup-lzh2en';
-import '../addons/sc-bottom-sheet';
-
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles';
 import {
@@ -117,6 +113,8 @@ export class SCTextBilara extends SCTextCommon {
     this.isMultiSutta = false;
     this.isTraditionalChinese = false;
     this.lineByLineRootTextFirstStyles = '';
+    this._selectionEventsActive = false;
+    this._handleContentMouseOver = null;
   }
 
   createRenderRoot() {
@@ -143,10 +141,10 @@ export class SCTextBilara extends SCTextCommon {
         </div>
       </main>
 
-      <sc-pali-lookup id="pali_lookup"></sc-pali-lookup>
-      <sc-chinese-lookup id="chinese_lookup"></sc-chinese-lookup>
+      <slot name="pali_lookup"></slot>
+      <slot name="chinese_lookup"></slot>
       <slot></slot>
-      <sc-bottom-sheet></sc-bottom-sheet>
+      <slot name="bottom_sheet"></slot>
     `;
   }
 
@@ -168,24 +166,37 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _setupSelectionEvents() {
-    this.querySelector('#segmented_text_content')?.removeEventListener('mousedown', this._handleContentMouseOver);
+    this._cleanupSelectionEvents();
+    if (this.chosenTextView !== 'sidebyside') {
+      return;
+    }
 
     const contentElement = this.querySelector('#segmented_text_content');
     if (contentElement) {
       this._handleContentMouseOver = (e) => {
         const translationElement = e.target.closest('.translation');
         const rootElement = e.target.closest('.root');
-
         if (translationElement && this.userSelectStyles !== userSelectStyleForTranslation) {
           this.userSelectStyles = userSelectStyleForTranslation;
         } else if (rootElement && this.userSelectStyles !== userSelectStyleForRoot) {
           this.userSelectStyles = userSelectStyleForRoot;
         }
       };
-
       contentElement.addEventListener('mousedown', this._handleContentMouseOver);
+      this._selectionEventsActive = true;
     }
-}
+  }
+
+  _cleanupSelectionEvents() {
+    const contentElement = this.querySelector('#segmented_text_content');
+    if (contentElement && this._handleContentMouseOver) {
+      contentElement.removeEventListener('mousedown', this._handleContentMouseOver);
+    }
+    if (this.chosenTextView !== 'sidebyside') {
+      this.userSelectStyles = null;
+    }
+    this._selectionEventsActive = false;
+  }
 
   checkIfMultiSutta(suttaId) {
     if (!suttaId || typeof suttaId !== 'string') {
@@ -217,17 +228,21 @@ export class SCTextBilara extends SCTextCommon {
 
   _updateView() {
     reduxActions.changeLinearProgressActiveState(true);
-    setTimeout(() => {
+    try {
       this._addTranslationText();
-      if (this.paliScript === 'latin' || this.rootSutta.lang !== 'pli') {
-        this._addRootText();
-      } else {
-        this._setScript();
+      if (this._isBilingualView() || this._onlyRootTextVisible()) {
+        if (this.paliScript === 'latin' || this.rootSutta.lang !== 'pli') {
+          this._addRootText();
+        } else {
+          this._setScript();
+        }
       }
       if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
         this._deleteReference();
         this._addSCReference();
         this._addReferenceText();
+      } else {
+        this._deleteReference();
       }
       if (window.location.href.includes('#')) {
         this._deleteSCReference();
@@ -235,32 +250,45 @@ export class SCTextBilara extends SCTextCommon {
       }
       this._addVariantText();
       this._addCommentText();
+
+      this._updateTextViewStylesBasedOnState();
+      this._recalculateCommentSpanHeight();
+
+      this._scheduleNonCriticalUpdates();
+
+      this.actions.changeSuttaMetaText('');
+      if (!this.isRangeSutta) {
+        this.actions.changeSuttaPublicationInfo({
+          uid: this.suttaId,
+          lang: this.translatedSutta?.lang || 'en',
+          authorUid: this.translatedSutta?.author_uid,
+        });
+      }
+      this._serveRangeSuttasPerSutta();
+    } finally {
+      reduxActions.changeLinearProgressActiveState(false);
+    }
+  }
+
+  async _scheduleNonCriticalUpdates() {
+    requestIdleCallback(() => {
       this._paliLookupStateChanged();
       this._chineseLookupStateChanged();
       this._showHighlightingChanged();
       this._hashChangeHandler();
-    }, 100);
-    this._prepareNavigation();
-
-    setTimeout(() => {
-      this._updateTextViewStylesBasedOnState();
-      this._recalculateCommentSpanHeight();
-    }, 0);
-
-    setTimeout(() => {
+      this._prepareNavigation();
       this._setupSelectionEvents();
-    }, 100);
+      this._updateURLSearchParams();
+    });
+  }
 
-    this.actions.changeSuttaMetaText('');
-    if (!this.isRangeSutta) {
-      this.actions.changeSuttaPublicationInfo({
-        uid: this.suttaId,
-        lang: this.translatedSutta?.lang || 'en',
-        authorUid: this.translatedSutta?.author_uid,
-      });
-    }
-    this._serveRangeSuttasPerSutta();
-    reduxActions.changeLinearProgressActiveState(false);
+  _isBilingualView() {
+    return this.chosenTextView.includes('linebyline') ||
+          this.chosenTextView.includes('sidebyside');
+  }
+
+  _onlyRootTextVisible() {
+    return !this.bilaraTranslatedSutta && this.bilaraRootSutta;
   }
 
   toggleChineseConvert() {
@@ -422,7 +450,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _addCommentText() {
-    if (!this.suttaComment || this._articleElement().length === 0) {
+    if (!this.suttaComment || this._articleElement().length === 0 || this.chosenNoteDisplayType === 'none') {
       return;
     }
     Object.entries(this.suttaComment).forEach(([key, value]) => {
@@ -517,17 +545,10 @@ export class SCTextBilara extends SCTextCommon {
       this._chineseLookupStateChanged();
     }
     if (changedProps.has('markup')) {
-      this._updateView();
+      shouldChangeTextView = true;
     }
     if (changedProps.has('displayedReferences')) {
       shouldChangeTextView = true;
-      if (this.displayedReferences?.length > 0 && this.displayedReferences?.[0] !== 'none') {
-        this._deleteReference();
-        this._addSCReference();
-        this._addReferenceText();
-      } else {
-        this._deleteReference();
-      }
     }
     if (changedProps.has('chosenNoteDisplayType')) {
       shouldChangeTextView = true;
@@ -544,12 +565,11 @@ export class SCTextBilara extends SCTextCommon {
       }
     }
     if (changedProps.has('rootTextFirst') && this.chosenTextView === 'linebyline') {
-      this._updateView();
+      shouldChangeTextView = true;
     }
 
     if (shouldChangeTextView) {
-      this._updateTextViewStylesBasedOnState();
-      this._updateURLSearchParams();
+      this._updateView();
     }
   }
 
@@ -570,6 +590,7 @@ export class SCTextBilara extends SCTextCommon {
   _paliLookupStateChanged() {
     if (this.isPaliLookupEnabled && this.rootSutta.lang === 'pli') {
       this._enablePaliLookup();
+      this._loadSCBottomSheet();
     } else {
       this._disableLookup();
     }
@@ -581,6 +602,7 @@ export class SCTextBilara extends SCTextCommon {
       (this.rootSutta.lang === 'lzh' || this.translatedSutta.lang === 'lzh')
     ) {
       this._enableChineseLookup();
+      this._loadSCBottomSheet();
     } else {
       this._disableLookup();
     }
@@ -590,6 +612,17 @@ export class SCTextBilara extends SCTextCommon {
     this.querySelector('sc-bottom-sheet')?.hide?.();
     this._removeDefineFocusedClass();
     this._removeLookupEvent('.root .text .word');
+  }
+
+  async _loadSCBottomSheet() {
+    await import('../addons/sc-bottom-sheet.js');
+
+    if (!this.querySelector('sc-bottom-sheet')) {
+      const bottomSheet = document.createElement('sc-bottom-sheet');
+      bottomSheet.id = 'bottom_sheet';
+      bottomSheet.slot = 'bottom_sheet';
+      this.appendChild(bottomSheet);
+    }
   }
 
   _conditionallyPutIntoSpans(lang) {
@@ -1351,7 +1384,16 @@ export class SCTextBilara extends SCTextCommon {
     scBottomSheet.show();
   }
 
-  _enablePaliLookup() {
+  async _enablePaliLookup() {
+    await import('../lookups/sc-lookup-pli.js');
+
+    if (!this.querySelector('sc-pali-lookup')) {
+      const paliLookup = document.createElement('sc-pali-lookup');
+      paliLookup.id = 'pali_lookup';
+      paliLookup.slot = 'pali_lookup';
+      this.appendChild(paliLookup);
+    }
+
     if (!this.spansForWordsGenerated) {
       this._putWordsIntoSpans('.root .text', 'word');
     }
@@ -1361,7 +1403,16 @@ export class SCTextBilara extends SCTextCommon {
     }, 0);
   }
 
-  _enableChineseLookup() {
+  async _enableChineseLookup() {
+    await import('../lookups/sc-lookup-lzh2en.js');
+
+    if (!this.querySelector('sc-chinese-lookup')) {
+      const chineseLookup = document.createElement('sc-chinese-lookup');
+      chineseLookup.id = 'chinese_lookup';
+      chineseLookup.slot = 'chinese_lookup';
+      this.appendChild(chineseLookup);
+    }
+
     if (!this.spansForGraphsGenerated) {
       this._conditionallyPutIntoSpans('lzh');
     }

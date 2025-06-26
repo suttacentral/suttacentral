@@ -348,7 +348,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #isSpecialSearch(query) {
-    return /(author:|in:|title:|volpage:|ref:|lang:)/.test(query);
+    return /(by:|in:|title:|volpage:|ref:|lang:)/.test(query);
   }
 
   #removeSpecialKeywordsFromSearchTerms() {
@@ -377,7 +377,7 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
       return;
     }
 
-    if (/volpage:|author:|title:|list authors|in:/.test(this.searchQuery)) {
+    if (/volpage:|by:|title:|list authors|in:/.test(this.searchQuery)) {
       return;
     }
 
