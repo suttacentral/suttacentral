@@ -6,19 +6,11 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import TextInfoModel, ArangoReaderWriter
+from data_loader.textdata import TextInfoModel, AuthorsReader, HtmlTextWriter
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
 
 
-class ReaderWriter:
-    """
-    TextInfoModel uses the template method design pattern giving us a
-    handy way to interact with the TextInfoModel class without accessing
-    the database.
-    """
-    def __init__(self):
-        self.added_documents = []
-
+class FakeAuthors:
     def get_author_by_name(self, name, file) -> dict | None:
         if name == "Bhikkhu Bodhi":
             return {
@@ -44,8 +36,14 @@ class ReaderWriter:
 
         return None
 
+
+class FakeHtmlTextWriter:
+    def __init__(self):
+        self.added_documents = []
+
     def add_document(self, doc):
         self.added_documents.append(doc)
+
 
 def add_html_file(path: Path, html: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -53,12 +51,16 @@ def add_html_file(path: Path, html: str) -> None:
 
 
 @pytest.fixture
-def reader_writer():
-    return ReaderWriter()
+def reader():
+    return FakeAuthors()
 
 @pytest.fixture
-def text_info(reader_writer):
-    return TextInfoModel(reader_writer)
+def writer():
+    return FakeHtmlTextWriter()
+
+@pytest.fixture
+def text_info(reader, writer):
+    return TextInfoModel(reader, writer)
 
 
 @pytest.fixture
@@ -117,11 +119,11 @@ class TestTextInfoModel:
             ('No such author', None),
          ]
     )
-    def test_retrieves_author_uid(self, text_info, reader_writer, sutta_path, author, author_uid):
+    def test_retrieves_author_uid(self, text_info, writer, sutta_path, author, author_uid):
         html = f"<html><head><meta author='{author}'></head></html>"
         add_html_file(sutta_path, html)
         text_info.load_language([sutta_path], 'en')
-        assert reader_writer.added_documents[0]['author_uid'] == author_uid
+        assert writer.added_documents[0]['author_uid'] == author_uid
 
     @pytest.mark.parametrize(
         "author,path",
@@ -130,11 +132,11 @@ class TestTextInfoModel:
             ('No such author', 'en/mn1'),
         ]
     )
-    def test_generates_path(self, text_info, reader_writer, sutta_path, author, path):
+    def test_generates_path(self, text_info, writer, sutta_path, author, path):
         html = f"<html><head><meta author='{author}'></head></html>"
         add_html_file(sutta_path, html)
         text_info.load_language([sutta_path], 'en')
-        assert reader_writer.added_documents[0]['path'] == path
+        assert writer.added_documents[0]['path'] == path
 
     def test_logs_missing_title_when_there_is_no_header_tag(self, text_info, sutta_path, caplog):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
@@ -168,22 +170,22 @@ class TestTextInfoModel:
         text_info.load_language([sutta_path], 'en')
         assert not caplog.records
 
-    def test_sets_file_path(self, text_info, reader_writer, sutta_path):
+    def test_sets_file_path(self, text_info, writer, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
         text_info.load_language([sutta_path], 'en')
 
-        assert reader_writer.added_documents[0]['file_path'] == str(sutta_path)
+        assert writer.added_documents[0]['file_path'] == str(sutta_path)
 
-    def test_sets_last_modified(self, text_info, reader_writer, sutta_path):
+    def test_sets_last_modified(self, text_info, writer, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
         text_info.load_language([sutta_path], 'en')
 
-        assert reader_writer.added_documents[0]['mtime'] == sutta_path.stat().st_mtime
+        assert writer.added_documents[0]['mtime'] == sutta_path.stat().st_mtime
 
 
-    def test_multiple_files_added(self, text_info, reader_writer, base_path):
+    def test_multiple_files_added(self, text_info, writer, base_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
 
         paths = [
@@ -197,7 +199,7 @@ class TestTextInfoModel:
 
         text_info.load_language(paths, 'en')
 
-        assert len(reader_writer.added_documents) == 3
+        assert len(writer.added_documents) == 3
 
 
 @pytest.fixture
@@ -399,7 +401,7 @@ class TestExtractFileDetails:
         assert extract_file_details(sutta_file).last_modified == sutta_file.stat().st_mtime
 
 
-class TestArangoReaderWriter:
+class TestAuthors:
     @pytest.fixture
     def database(self, database):
         database['author_edition'].truncate()
@@ -419,6 +421,24 @@ class TestArangoReaderWriter:
             "long_name": "Bhikkhu Bodhi"
         }
 
+    def test_author_is_none_when_database_has_none(self, database):
+        model = AuthorsReader(database)
+        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html')) is None
+
+    def test_logs_missing_author(self, database, caplog):
+        model = AuthorsReader(database)
+        _ = model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))
+        assert caplog.records[0].levelno == logging.CRITICAL
+        assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Bodhi" ( mn1.html )'
+
+    def test_retrieves_author_when_in_database(self, database, author_edition_doc):
+        database['author_edition'].insert(author_edition_doc)
+
+        model = AuthorsReader(database)
+        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))['uid'] == 'bodhi'
+
+
+class TestHtmlTextWriter:
     @pytest.fixture
     def html_text_doc(self):
         return {
@@ -435,30 +455,14 @@ class TestArangoReaderWriter:
             "file_path": "/opt/sc/sc-flask/sc-data/html_text/en/pli/sutta/mn/mn1.html",
         }
 
-    def test_author_is_none_when_database_has_none(self, database):
-        model = ArangoReaderWriter(database)
-        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html')) is None
-
-    def test_logs_missing_author(self, database, caplog):
-        model = ArangoReaderWriter(database)
-        _ = model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))
-        assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Bodhi" ( mn1.html )'
-
-    def test_retrieves_author_when_in_database(self, database, author_edition_doc):
-        database['author_edition'].insert(author_edition_doc)
-
-        model = ArangoReaderWriter(database)
-        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))['uid'] == 'bodhi'
-
     def test_add_document_is_queued_before_exiting_context_manager(self, database, html_text_doc):
-        with ArangoReaderWriter(database) as model:
+        with HtmlTextWriter(database) as model:
             model.add_document(html_text_doc)
             assert database['html_text'].count() == 0
             assert len(model.queue) == 1
 
     def test_queue_is_flushed_after_exiting_context_manager(self, database, html_text_doc):
-        with ArangoReaderWriter(database) as model:
+        with HtmlTextWriter(database) as model:
             model.add_document(html_text_doc)
 
         assert database['html_text'].count() == 1
@@ -466,7 +470,7 @@ class TestArangoReaderWriter:
 
     def test_queue_is_not_flushed_up_to_maximum_size(self, database, html_text_doc):
         max_size = 100
-        with ArangoReaderWriter(database) as model:
+        with HtmlTextWriter(database) as model:
             for i in range(max_size):
                 next_doc = html_text_doc.copy()
                 next_doc['path'] = f'en/mn{i}/bodhi'
@@ -477,7 +481,7 @@ class TestArangoReaderWriter:
 
     def test_queue_is_flushed_after_maximum_size(self, database, html_text_doc):
         max_size = 100
-        with (ArangoReaderWriter(database) as model):
+        with HtmlTextWriter(database) as model:
             for i in range(max_size + 1):
                 next_doc = html_text_doc.copy()
                 next_doc['path'] = f'en/mn{i}/bodhi'
@@ -487,7 +491,7 @@ class TestArangoReaderWriter:
             assert database['html_text'].count() == max_size + 1
 
     def test_key_is_constructed_from_path(self, database, html_text_doc):
-        with (ArangoReaderWriter(database) as model):
+        with HtmlTextWriter(database) as model:
             html_text_doc['path'] = 'abc/def'
             model.add_document(html_text_doc)
 

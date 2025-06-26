@@ -35,26 +35,23 @@ def extract_file_details(file: Path) -> FileDetails:
     )
 
 
-class ReaderWriter(Protocol):
+class Reader(Protocol):
     def get_author_by_name(self, name: str, file: Path) -> dict: ...
 
+
+class Writer(Protocol):
     def add_document(self, doc: dict) -> None: ...
 
 
 class TextInfoModel:
-    def __init__(self, reader_writer: ReaderWriter):
-        self.reader_writer = reader_writer
-
-    def get_author_by_name(self, name: str, file: Path) -> dict:
-        return self.reader_writer.get_author_by_name(name, file)
-
-    def add_document(self, doc: dict) -> None:
-        self.reader_writer.add_document(doc)
+    def __init__(self, reader: Reader, writer: Writer):
+        self.reader = reader
+        self.writer = writer
 
     def load_language(self, files: Iterable[Path], language_code: str):
         for file in files:
             document = self.create_document(file, language_code)
-            self.add_document(document)
+            self.writer.add_document(document)
 
     def create_document(self, html_file: Path, language_code: str):
         file_details = extract_file_details(html_file)
@@ -66,7 +63,7 @@ class TextInfoModel:
 
         log_missing_details(text_details, file_details.path)
 
-        author_data = self.get_author_by_name(text_details.authors_long_name, html_file)
+        author_data = self.reader.get_author_by_name(text_details.authors_long_name, html_file)
 
         if author_data:
             author_uid = author_data['uid']
@@ -103,7 +100,7 @@ def log_missing_details(details: TextDetails, file_name: str) -> None:
         logging.critical(f'Could not find author in file: {file_name}')
 
 
-class ArangoReaderWriter:
+class AuthorsReader:
     def __init__(self, db):
         self.db = db
         self.queue = []
@@ -122,6 +119,12 @@ class ArangoReaderWriter:
         if author is None:
             logging.critical(f'Author data not defined for "{name}" ( {str(file)} )')
         return author
+
+
+class HtmlTextWriter:
+    def __init__(self, db):
+        self.db = db
+        self.queue = []
 
     def add_document(self, doc: dict) -> None:
         doc['_key'] = doc['path'].replace('/', '_')
@@ -142,8 +145,10 @@ class ArangoReaderWriter:
 
 
 def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
-    with ArangoReaderWriter(db=db) as reader_writer:
-        tim = TextInfoModel(reader_writer)
+    reader = AuthorsReader(db)
+
+    with HtmlTextWriter(db) as writer:
+        tim = TextInfoModel(reader, writer)
         directories = language_directories(html_dir)
 
         for directory in tqdm(directories):
