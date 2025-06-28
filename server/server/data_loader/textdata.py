@@ -1,5 +1,5 @@
 import logging
-from collections.abc import Iterator, Iterable
+from collections.abc import Iterator, Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
@@ -11,6 +11,54 @@ from data_loader.change_tracker import ChangeTracker
 from data_loader.unsegmented_texts import extract_details, TextDetails
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True)
+class AuthorDetails:
+    long_name: str
+    short_name: str | None
+    uid: str | None
+    missing: bool
+
+
+class Authors(Mapping[str, AuthorDetails]):
+    def __init__(self, db):
+        self.db = db
+        self.queue = []
+        self._author_cache: dict = dict(
+            db.aql.execute(
+                '''
+            RETURN MERGE(
+                FOR doc IN author_edition
+                    RETURN {[doc.long_name]: doc}
+            )'''
+            ).next()
+        )
+
+    def __getitem__(self, long_name: str) -> AuthorDetails:
+        author_data = self._author_cache.get(long_name)
+
+        if author_data:
+            short_name = author_data['short_name']
+            uid = author_data['uid']
+            missing = False
+        else:
+            short_name = None
+            uid = None
+            missing = True
+
+        return AuthorDetails(
+            long_name=long_name,
+            short_name=short_name,
+            uid=uid,
+            missing=missing,
+        )
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._author_cache.keys())
+
+    def __len__(self) -> int:
+        return len(self._author_cache)
 
 
 @dataclass(frozen=True)
@@ -35,16 +83,12 @@ def extract_file_details(file: Path) -> FileDetails:
     )
 
 
-class Reader(Protocol):
-    def get_author_by_name(self, name: str, file: Path) -> dict: ...
-
-
 class Writer(Protocol):
     def add_document(self, doc: dict) -> None: ...
 
 
 class TextInfoModel:
-    def __init__(self, authors: Reader, html_text_writer: Writer):
+    def __init__(self, authors: Mapping[str, AuthorDetails], html_text_writer: Writer):
         self.authors = authors
         self.html_text_writer = html_text_writer
 
@@ -61,18 +105,15 @@ class TextInfoModel:
             is_chinese_root=(language_code == 'lzh')
         )
 
+        author_details = self.authors[text_details.authors_long_name]
+
         log_missing_details(text_details, file_details.path)
 
-        author_data = self.authors.get_author_by_name(text_details.authors_long_name, html_file)
+        if author_details.missing:
+            logging.critical(f'Author data not defined for "{text_details.authors_long_name}" ( {str(html_file)} )')
 
-        if author_data:
-            author_uid = author_data['uid']
-            author_short = author_data['short_name']
-        else:
-            author_uid = None
-            author_short = None
-        if author_uid:
-            path = f'{language_code}/{file_details.sutta_uid}/{author_uid}'
+        if author_details.uid:
+            path = f'{language_code}/{file_details.sutta_uid}/{author_details.uid}'
         else:
             path = f'{language_code}/{file_details.sutta_uid}'
 
@@ -81,9 +122,9 @@ class TextInfoModel:
             "lang": language_code,
             "path": path,
             "name": text_details.title,
-            "author": text_details.authors_long_name,
-            "author_short": author_short,
-            "author_uid": author_uid,
+            "author": author_details.long_name,
+            "author_short": author_details.short_name,
+            "author_uid": author_details.uid,
             "publication_date": text_details.publication_date,
             "volpage": text_details.volume_page,
             "mtime": file_details.last_modified,
@@ -98,27 +139,6 @@ def log_missing_details(details: TextDetails, file_name: str) -> None:
         logger.error(f'Could not find title in file: {file_name}')
     if not details.authors_long_name:
         logging.critical(f'Could not find author in file: {file_name}')
-
-
-class AuthorsReader:
-    def __init__(self, db):
-        self.db = db
-        self.queue = []
-        self._author_cache: dict = dict(
-            db.aql.execute(
-                '''
-            RETURN MERGE(
-                FOR doc IN author_edition
-                    RETURN {[doc.long_name]: doc}
-            )'''
-            ).next()
-        )
-
-    def get_author_by_name(self, name: str, file: Path) -> dict:
-        author = self._author_cache.get(name)
-        if author is None:
-            logging.critical(f'Author data not defined for "{name}" ( {str(file)} )')
-        return author
 
 
 class HtmlTextWriter:
@@ -145,7 +165,7 @@ class HtmlTextWriter:
 
 
 def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
-    reader = AuthorsReader(db)
+    reader = Authors(db)
 
     with HtmlTextWriter(db) as writer:
         tim = TextInfoModel(reader, writer)

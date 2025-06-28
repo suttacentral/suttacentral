@@ -1,4 +1,5 @@
 import logging
+from collections.abc import Mapping, Iterator
 from pathlib import Path
 
 import pytest
@@ -6,35 +7,43 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import TextInfoModel, AuthorsReader, HtmlTextWriter
+from data_loader.textdata import TextInfoModel, Authors, HtmlTextWriter, AuthorDetails
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
 
 
-class FakeAuthors:
-    def get_author_by_name(self, name, file) -> dict | None:
-        if name == "Bhikkhu Bodhi":
-            return {
-                "_key" : "10318325",
-                "_id" : "author_edition/10318325",
-                "_rev" : "_jbu75VK--G",
-                "type" : "author",
-                "uid" : "bodhi",
-                "short_name" : "Bodhi",
-                "long_name" : "Bhikkhu Bodhi"
-            }
+class FakeAuthors(Mapping[str, AuthorDetails]):
+    def __init__(self):
+        self.authors: dict[str, AuthorDetails] = {
+            'Bhikkhu Bodhi': AuthorDetails(
+                long_name='Bhikkhu Bodhi',
+                short_name='Bodhi',
+                uid='bodhi',
+                missing=False
+            ),
+            'Taishō Tripiṭaka': AuthorDetails(
+                long_name= 'Taishō Tripiṭaka',
+                short_name='Taisho',
+                uid='taisho',
+                missing=False
+            )
+        }
 
-        if name == 'Taishō Tripiṭaka':
-            return {
-                "_key": "32799410",
-                "_id": "author_edition/32799410",
-                "_rev": "_jpgpp2u--k",
-                "type": "edition",
-                "uid": "taisho",
-                "short_name": "Taishō",
-                "long_name": "Taishō Tripiṭaka"
-            }
+    def __getitem__(self, long_name: str) -> AuthorDetails:
+        return self.authors.get(
+            long_name,
+            AuthorDetails(
+                long_name=long_name,
+                short_name=None,
+                uid=None,
+                missing=True
+            )
+        )
 
-        return None
+    def __iter__(self) -> Iterator[str]:
+        return iter(self.authors.keys())
+
+    def __len__(self) -> int:
+        return len(self.authors)
 
 
 class FakeHtmlTextWriter:
@@ -51,7 +60,7 @@ def add_html_file(path: Path, html: str) -> None:
 
 
 @pytest.fixture
-def reader():
+def authors():
     return FakeAuthors()
 
 @pytest.fixture
@@ -59,8 +68,8 @@ def writer():
     return FakeHtmlTextWriter()
 
 @pytest.fixture
-def text_info(reader, writer):
-    return TextInfoModel(reader, writer)
+def text_info(authors, writer):
+    return TextInfoModel(authors, writer)
 
 
 @pytest.fixture
@@ -101,7 +110,10 @@ def sutta_path(base_path, sutta_relative) -> Path:
 
 class TestTextInfoModel:
     def test_logs_missing_authors_long_name(self, text_info, sutta_path, caplog):
-        html = "<html><body><header><h1></h1></header></body></html>"
+        html = ("<html>"
+                "<header><h1>1. The Root of All Things</h1></header>"
+                "</html>")
+
         add_html_file(sutta_path, html)
         text_info.load_language([sutta_path], 'en')
         assert caplog.records[0].levelno == logging.CRITICAL
@@ -200,6 +212,18 @@ class TestTextInfoModel:
         text_info.load_language(paths, 'en')
 
         assert len(writer.added_documents) == 3
+
+    def test_logs_missing_author_when_not_in_document_store(self, text_info, sutta_path, caplog):
+        html = ("<html>"
+                "<head><meta author='Bhikkhu Nobody'><head>"
+                "<header><h1>1. The Root of All Things</h1></header>"
+                "</html>")
+
+        add_html_file(sutta_path, html)
+        text_info.load_language([sutta_path], 'en')
+        assert caplog.records[0].levelno == logging.CRITICAL
+        assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Nobody" ( {str(sutta_path)} )'
+
 
 
 @pytest.fixture
@@ -408,7 +432,6 @@ class TestAuthors:
         database['html_text'].truncate()
         return database
 
-
     @pytest.fixture
     def author_edition_doc(self):
         return {
@@ -421,21 +444,51 @@ class TestAuthors:
             "long_name": "Bhikkhu Bodhi"
         }
 
-    def test_author_is_none_when_database_has_none(self, database):
-        model = AuthorsReader(database)
-        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html')) is None
-
-    def test_logs_missing_author(self, database, caplog):
-        model = AuthorsReader(database)
-        _ = model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))
-        assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Bodhi" ( mn1.html )'
-
-    def test_retrieves_author_when_in_database(self, database, author_edition_doc):
+    def test_get_authors_long_name(self, database, author_edition_doc):
         database['author_edition'].insert(author_edition_doc)
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].long_name == 'Bhikkhu Bodhi'
 
-        model = AuthorsReader(database)
-        assert model.get_author_by_name('Bhikkhu Bodhi', Path('mn1.html'))['uid'] == 'bodhi'
+    def test_get_authors_short_name(self, database, author_edition_doc):
+        database['author_edition'].insert(author_edition_doc)
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].short_name == 'Bodhi'
+
+    def test_authors_short_name_is_none_when_missing(self, database):
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].short_name is None
+
+    def test_get_authors_uid(self, database, author_edition_doc):
+        database['author_edition'].insert(author_edition_doc)
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].uid == 'bodhi'
+
+    def test_authors_uid_is_none_when_missing(self, database):
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].short_name is None
+
+    def test_author_missing(self,database):
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].missing is True
+
+    def test_author_not_missing(self, database, author_edition_doc):
+        database['author_edition'].insert(author_edition_doc)
+        model = Authors(database)
+        assert model['Bhikkhu Bodhi'].missing is False
+
+    def test_iter(self, database, author_edition_doc):
+        database['author_edition'].insert(author_edition_doc)
+        model = Authors(database)
+        i = iter(model)
+        assert next(i) == 'Bhikkhu Bodhi'
+
+    def test_len(self, database, author_edition_doc):
+        model = Authors(database)
+        assert len(model) == 0
+
+        database['author_edition'].insert(author_edition_doc)
+        model = Authors(database)
+        assert len(model) == 1
 
 
 class TestHtmlTextWriter:
