@@ -83,6 +83,52 @@ def extract_file_details(file: Path) -> FileDetails:
     )
 
 
+@dataclass(frozen=True)
+class Document:
+    language_code: str
+    file: FileDetails
+    text: TextDetails
+    author: AuthorDetails
+
+    @property
+    def path(self) -> str:
+        if self.author.uid:
+            return f'{self.language_code}/{self.file.sutta_uid}/{self.author.uid}'
+        else:
+            return f'{self.language_code}/{self.file.sutta_uid}'
+
+    def as_dict(self):
+        return {
+        "uid": self.file.sutta_uid,
+        "lang": self.language_code,
+        "path": self.path,
+        "name": self.text.title,
+        "author": self.author.long_name,
+        "author_short": self.author.short_name,
+        "author_uid": self.author.uid,
+        "publication_date": self.text.publication_date,
+        "volpage": self.text.volume_page,
+        "mtime": self.file.last_modified,
+        "file_path": self.file.path,
+    }
+
+
+def create_document(language_code: str, file: Path, authors: Mapping[str, AuthorDetails]) -> Document:
+    file = extract_file_details(file)
+    text = extract_details(file.html, is_chinese_root=(language_code == 'lzh'))
+    author = authors[text.authors_long_name]
+    return Document(language_code, file, text, author)
+
+
+def log_missing_details(document: Document) -> None:
+    if not document.text.has_title_tags:
+        logger.error(f'Could not find title in file: {document.file.path}')
+    if not document.text.authors_long_name:
+        logging.critical(f'Could not find author in file: {document.file.path}')
+    if document.author.missing:
+        logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
+
+
 class Writer(Protocol):
     def add_document(self, doc: dict) -> None: ...
 
@@ -94,51 +140,10 @@ class TextInfoModel:
 
     def load_language(self, files: Iterable[Path], language_code: str):
         for file in files:
-            document = self.create_document(file, language_code)
+            details = create_document(language_code, file, self.authors)
+            log_missing_details(details)
+            document = details.as_dict()
             self.html_text_writer.add_document(document)
-
-    def create_document(self, html_file: Path, language_code: str):
-        file_details = extract_file_details(html_file)
-
-        text_details = extract_details(
-            file_details.html,
-            is_chinese_root=(language_code == 'lzh')
-        )
-
-        author_details = self.authors[text_details.authors_long_name]
-
-        log_missing_details(text_details, file_details.path)
-
-        if author_details.missing:
-            logging.critical(f'Author data not defined for "{text_details.authors_long_name}" ( {str(html_file)} )')
-
-        if author_details.uid:
-            path = f'{language_code}/{file_details.sutta_uid}/{author_details.uid}'
-        else:
-            path = f'{language_code}/{file_details.sutta_uid}'
-
-        document = {
-            "uid": file_details.sutta_uid,
-            "lang": language_code,
-            "path": path,
-            "name": text_details.title,
-            "author": author_details.long_name,
-            "author_short": author_details.short_name,
-            "author_uid": author_details.uid,
-            "publication_date": text_details.publication_date,
-            "volpage": text_details.volume_page,
-            "mtime": file_details.last_modified,
-            "file_path": file_details.path,
-        }
-
-        return document
-
-
-def log_missing_details(details: TextDetails, file_name: str) -> None:
-    if not details.has_title_tags:
-        logger.error(f'Could not find title in file: {file_name}')
-    if not details.authors_long_name:
-        logging.critical(f'Could not find author in file: {file_name}')
 
 
 class HtmlTextWriter:
