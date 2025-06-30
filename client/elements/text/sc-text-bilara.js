@@ -43,6 +43,7 @@ export class SCTextBilara extends SCTextCommon {
     suttaReference: { type: Object },
     suttaComment: { type: Object },
     suttaVariant: { type: Object },
+    suttaIllustrations: { type: Array },
     chosenTextView: { type: String },
     displayedReferences: { type: Array },
     chosenNoteDisplayType: { type: String },
@@ -250,6 +251,8 @@ export class SCTextBilara extends SCTextCommon {
       }
       this._addVariantText();
       this._addCommentText();
+
+      this._addIllustrations();
 
       this._updateTextViewStylesBasedOnState();
       this._recalculateCommentSpanHeight();
@@ -1172,6 +1175,39 @@ export class SCTextBilara extends SCTextCommon {
         refElement.appendChild(anchor);
       }
     });
+  }
+
+  async _addIllustrations() {
+    if (this.chosenTextView === 'sidebyside') {
+      this.querySelectorAll('sc-text-illustration').forEach(element => {
+        element.remove();
+      });
+      return;
+    }
+
+    await import('../text/sc-text-illustration.js');
+
+    if (!this.suttaIllustrations || this._articleElement().length === 0) {
+      return;
+    }
+    this.suttaIllustrations.forEach(illustration => {
+      this._addIllustrationMarkupToSpan(illustration);
+    });
+  }
+
+  _addIllustrationMarkupToSpan(illustration) {
+    const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
+    if (segmentElement) {
+      segmentElement.appendChild(this._addSCIllustrationElement(illustration));
+    }
+  }
+
+  _addSCIllustrationElement(illustration) {
+    const illustrationElement = document.createElement('sc-text-illustration');
+    illustrationElement.className = 'illustration';
+    illustrationElement.alt = illustration.alt || '';
+    illustrationElement.filename = illustration.filename || '';
+    return illustrationElement;
   }
 
   _initPtsReferenceAnchor(anchor, refStr) {
