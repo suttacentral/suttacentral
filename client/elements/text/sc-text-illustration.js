@@ -147,7 +147,7 @@ export class SCTextIllustration extends LitElement {
     this.isLoading = false;
     this.hasError = false;
     this.errorMessage = '';
-    this.showCaption = true;
+    this.showCaption = false;
     this.lazyLoad = true;
     this._imageLoaded = false;
   }
