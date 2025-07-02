@@ -92,7 +92,7 @@ def sutta_path(base_path, sutta_relative) -> Path:
     return base_path / sutta_relative
 
 
-class TestTextInfoModel:
+class TestLoadLanguage:
     def test_retrieves_author_long_name(self, authors, sutta_path):
         html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
         add_html_file(sutta_path, html)
