@@ -7,8 +7,10 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language, create_document
+from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language, create_document, Document, \
+    FileDetails
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
+from data_loader.unsegmented_texts import TextDetails
 
 
 class FakeAuthors(Mapping[str, AuthorDetails]):
@@ -538,10 +540,32 @@ class TestHtmlTextWriter:
             assert len(model.queue) == 0
             assert database['html_text'].count() == max_size + 1
 
-    def test_key_is_constructed_from_path(self, database, html_text_doc):
-        with HtmlTextWriter(database) as model:
-            html_text_doc['path'] = 'abc/def'
-            model.add_document(html_text_doc)
+    def test_document_is_stored_with_correct_key(self, database):
+        document = Document(
+            language_code='en',
+            author=AuthorDetails(
+                long_name='Bhikkhu Bodhi',
+                short_name='Bodhi',
+                uid='bodhi',
+                missing=False,
+            ),
+            text=TextDetails(
+                title='The Root of All Things',
+                has_title_tags=True,
+                authors_long_name='Bhikkhu Bodhi',
+                publication_date='2009',
+                volume_page=None,
+            ),
+            file=FileDetails(
+                sutta_uid='mn1',
+                last_modified=0.0,
+                path='/opt/sc/sc-flask/sc-data/html_text/en/pli/sutta/mn/mn1.html',
+                html='<html/>'
+            ),
+        )
 
-        doc = database['html_text'].get('html_text/abc_def')
-        assert doc['_key'] == 'abc_def'
+        with HtmlTextWriter(database) as model:
+            model.add_document(document.as_dict())
+
+        doc = database['html_text'].get('html_text/en_mn1_bodhi')
+        assert doc['name'] == 'The Root of All Things'
