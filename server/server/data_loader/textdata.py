@@ -129,21 +129,11 @@ def log_missing_details(document: Document) -> None:
         logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
 
 
-class Writer(Protocol):
-    def add_document(self, doc: dict) -> None: ...
-
-
-class TextInfoModel:
-    def __init__(self, authors: Mapping[str, AuthorDetails], html_text_writer: Writer):
-        self.authors = authors
-        self.html_text_writer = html_text_writer
-
-    def load_language(self, files: Iterable[Path], language_code: str):
-        for file in files:
-            details = create_document(language_code, file, self.authors)
-            log_missing_details(details)
-            document = details.as_dict()
-            self.html_text_writer.add_document(document)
+def load_language(authors: Mapping[str, AuthorDetails], files: Iterable[Path], language_code: str) -> Iterator[Document]:
+    for file in files:
+        document = create_document(language_code, file, authors)
+        log_missing_details(document)
+        yield document
 
 
 class HtmlTextWriter:
@@ -170,15 +160,15 @@ class HtmlTextWriter:
 
 
 def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
-    reader = Authors(db)
+    authors = Authors(db)
 
     with HtmlTextWriter(db) as writer:
-        tim = TextInfoModel(reader, writer)
         directories = language_directories(html_dir)
 
         for directory in tqdm(directories):
             files = html_files(directory, change_tracker)
-            tim.load_language(files, directory.stem)
+            for document in load_language(authors, files, directory.stem):
+                writer.add_document(document.as_dict())
 
 
 def language_directories(html_dir: Path) -> list[Path]:

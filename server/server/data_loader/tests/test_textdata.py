@@ -7,7 +7,7 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import TextInfoModel, Authors, HtmlTextWriter, AuthorDetails
+from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
 
 
@@ -46,14 +46,6 @@ class FakeAuthors(Mapping[str, AuthorDetails]):
         return len(self.authors)
 
 
-class FakeHtmlTextWriter:
-    def __init__(self):
-        self.added_documents = []
-
-    def add_document(self, doc):
-        self.added_documents.append(doc)
-
-
 def add_html_file(path: Path, html: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(html)
@@ -62,14 +54,6 @@ def add_html_file(path: Path, html: str) -> None:
 @pytest.fixture
 def authors():
     return FakeAuthors()
-
-@pytest.fixture
-def writer():
-    return FakeHtmlTextWriter()
-
-@pytest.fixture
-def text_info(authors, writer):
-    return TextInfoModel(authors, writer)
 
 
 @pytest.fixture
@@ -109,20 +93,20 @@ def sutta_path(base_path, sutta_relative) -> Path:
 
 
 class TestTextInfoModel:
-    def test_logs_missing_authors_long_name(self, text_info, sutta_path, caplog):
+    def test_logs_missing_authors_long_name(self, authors, sutta_path, caplog):
         html = ("<html>"
                 "<header><h1>1. The Root of All Things</h1></header>"
                 "</html>")
 
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        next(load_language(authors, [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.CRITICAL
         assert caplog.records[0].message == f"Could not find author in file: {str(sutta_path)}"
 
-    def test_retrieves_author_short_name(self, text_info, sutta_path):
+    def test_retrieves_author_short_name(self, authors, sutta_path):
         html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        assert next(load_language(authors, [sutta_path], 'en')).author.short_name == 'Bodhi'
 
     @pytest.mark.parametrize(
         "author,author_uid",
@@ -131,11 +115,10 @@ class TestTextInfoModel:
             ('No such author', None),
          ]
     )
-    def test_retrieves_author_uid(self, text_info, writer, sutta_path, author, author_uid):
+    def test_retrieves_author_uid(self, authors, sutta_path, author, author_uid):
         html = f"<html><head><meta author='{author}'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
-        assert writer.added_documents[0]['author_uid'] == author_uid
+        assert next(load_language(authors, [sutta_path], 'en')).author.uid == author_uid
 
     @pytest.mark.parametrize(
         "author,path",
@@ -144,20 +127,19 @@ class TestTextInfoModel:
             ('No such author', 'en/mn1'),
         ]
     )
-    def test_generates_path(self, text_info, writer, sutta_path, author, path):
+    def test_generates_path(self, authors, sutta_path, author, path):
         html = f"<html><head><meta author='{author}'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
-        assert writer.added_documents[0]['path'] == path
+        assert next(load_language(authors, [sutta_path], 'en')).path == path
 
-    def test_logs_missing_title_when_there_is_no_header_tag(self, text_info, sutta_path, caplog):
+    def test_logs_missing_title_when_there_is_no_header_tag(self, authors, sutta_path, caplog):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        _ = next(load_language(authors, [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.ERROR
         assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
-    def test_logs_missing_title_when_there_is_no_h1_tag(self, text_info, sutta_path, caplog):
+    def test_logs_missing_title_when_there_is_no_h1_tag(self, authors, sutta_path, caplog):
             html = (
                 "<html>"
                 "<head><meta author='Bhikkhu Bodhi'>"
@@ -166,38 +148,31 @@ class TestTextInfoModel:
                 "</html>"
             )
             add_html_file(sutta_path, html)
-            text_info.load_language([sutta_path], 'en')
+            _ = next(load_language(authors, [sutta_path], 'en'))
             assert caplog.records[0].levelno == logging.ERROR
             assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
-    def test_does_not_log_missing_title_when_it_is_an_empty_string(
-            self, text_info, sutta_path, caplog
-    ):
+    def test_does_not_log_missing_title_when_it_is_an_empty_string(self, authors, sutta_path, caplog):
         html = ("<html>"
                 "<head><meta author='Bhikkhu Bodhi'><head>"
                 "<body><header><h1></h1></header></body>"
                 "</html>")
 
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        _ = next(load_language(authors, [sutta_path], 'en'))
         assert not caplog.records
 
-    def test_sets_file_path(self, text_info, writer, sutta_path):
+    def test_sets_file_path(self, authors, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        assert next(load_language(authors, [sutta_path], 'en')).file.path == str(sutta_path)
 
-        assert writer.added_documents[0]['file_path'] == str(sutta_path)
-
-    def test_sets_last_modified(self, text_info, writer, sutta_path):
+    def test_sets_last_modified(self, authors, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        assert next(load_language(authors, [sutta_path], 'en')).file.last_modified == sutta_path.stat().st_mtime
 
-        assert writer.added_documents[0]['mtime'] == sutta_path.stat().st_mtime
-
-
-    def test_multiple_files_added(self, text_info, writer, base_path):
+    def test_multiple_files_added(self, authors, base_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
 
         paths = [
@@ -209,18 +184,18 @@ class TestTextInfoModel:
         for path in paths:
             add_html_file(path, html)
 
-        text_info.load_language(paths, 'en')
+        added = list(load_language(authors, paths, 'en'))
 
-        assert len(writer.added_documents) == 3
+        assert len(added) == 3
 
-    def test_logs_missing_author_when_not_in_document_store(self, text_info, sutta_path, caplog):
+    def test_logs_missing_author_when_not_in_document_store(self, authors, sutta_path, caplog):
         html = ("<html>"
                 "<head><meta author='Bhikkhu Nobody'><head>"
                 "<header><h1>1. The Root of All Things</h1></header>"
                 "</html>")
 
         add_html_file(sutta_path, html)
-        text_info.load_language([sutta_path], 'en')
+        _ = next(load_language(authors, [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.CRITICAL
         assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Nobody" ( {str(sutta_path)} )'
 
