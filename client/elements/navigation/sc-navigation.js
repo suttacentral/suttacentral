@@ -12,7 +12,7 @@ import { shortcuts, pitakaGuide, RefreshNavNew } from './sc-navigation-common';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import { allEditions, coverImage, creatorBio } from '../publication/sc-publication-common';
 import { reduxActions } from '../addons/sc-redux-actions';
-
+import { isMobileBrowser } from '../addons/sc-functions-miscellaneous';
 import { fontLazyLoader } from '../../utils/sc-font-lazy-loader';
 
 export class SCNavigation extends LitLocalized(LitElement) {
@@ -42,7 +42,9 @@ export class SCNavigation extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     this.creatorOfPublications = new Map();
     this.fontsLoaded = false;
-    this.loadFontsAsync();
+    if (isMobileBrowser) {
+      this.loadFontsAsync();
+    }
   }
 
   async loadFontsAsync() {
