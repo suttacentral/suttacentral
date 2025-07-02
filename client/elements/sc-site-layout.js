@@ -18,6 +18,8 @@ import rafThrottle from '../utils/rafThrottle';
 import { getURLParam } from './addons/sc-functions-miscellaneous';
 import { reduxActions } from './addons/sc-redux-actions';
 import { API_ROOT } from '../constants';
+import { isMobileBrowser } from './addons/sc-functions-miscellaneous';
+import { fontLazyLoader } from '../utils/sc-font-lazy-loader';
 
 import { typographyI18nStyles } from './styles/sc-typography-i18n-styles';
 
@@ -55,7 +57,21 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.toolbarPosition = storeState.toolbarPosition;
     this.pageLoaded = false;
     this.#checkAndChangeSiteLanguage();
+    this.fontsLoaded = false;
+    if (!isMobileBrowser()) {
+      this.loadFontsAsync();
+    }
   }
+
+  async loadFontsAsync() {
+    await this.updateComplete;
+    // Wait one more RAF cycle to ensure first render
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    // It is now safe to load fonts
+    await fontLazyLoader.loadFontsWhenIdle();
+    this.fontsLoaded = true;
+    this.requestUpdate();
+  }  
 
   #checkAndChangeSiteLanguage() {
     const { siteLanguage } = store.getState();
