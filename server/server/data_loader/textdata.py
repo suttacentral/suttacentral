@@ -2,7 +2,6 @@ import logging
 from collections.abc import Iterator, Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol
 
 from arango.database import Database
 from tqdm import tqdm
