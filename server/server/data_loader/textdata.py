@@ -96,6 +96,10 @@ class Document:
         else:
             return f'{self.language_code}/{self.file.sutta_uid}'
 
+    @property
+    def key(self) -> str:
+        return self.path.replace('/', '_')
+
     def as_dict(self):
         return {
         "uid": self.file.sutta_uid,

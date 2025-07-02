@@ -205,6 +205,21 @@ class TestCreateDocument:
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.file.last_modified == sutta_path.stat().st_mtime
 
+    def test_sets_key_with_author(self, sutta_path):
+        html = f"<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.key == 'en_mn1_bodhi'
+
+    def test_sets_key_with_missing_author(self, sutta_path):
+        html = f"<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.key == 'en_mn1'
+
+class TestLogMissingDetails:
+    pass
+
 
 @pytest.fixture
 def database():
