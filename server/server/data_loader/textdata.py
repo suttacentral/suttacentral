@@ -113,29 +113,6 @@ class Document:
     }
 
 
-def create_document(language_code: str, file: Path, authors: Mapping[str, AuthorDetails]) -> Document:
-    file = extract_file_details(file)
-    text = extract_details(file.html, is_chinese_root=(language_code == 'lzh'))
-    author = authors[text.authors_long_name]
-    return Document(language_code, file, text, author)
-
-
-def log_missing_details(document: Document) -> None:
-    if not document.text.has_title_tags:
-        logger.error(f'Could not find title in file: {document.file.path}')
-    if not document.text.authors_long_name:
-        logging.critical(f'Could not find author in file: {document.file.path}')
-    if document.author.missing:
-        logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
-
-
-def load_language(authors: Mapping[str, AuthorDetails], files: Iterable[Path], language_code: str) -> Iterator[Document]:
-    for file in files:
-        document = create_document(language_code, file, authors)
-        log_missing_details(document)
-        yield document
-
-
 class HtmlTextWriter:
     def __init__(self, db):
         self.db = db
@@ -178,3 +155,26 @@ def language_directories(html_dir: Path) -> list[Path]:
 def html_files(language_directory: Path, change_tracker: ChangeTracker) -> Iterator[Path]:
     paths = language_directory.glob('**/*.html')
     yield from change_tracker.changed_files(paths)
+
+
+def load_language(authors: Mapping[str, AuthorDetails], files: Iterable[Path], language_code: str) -> Iterator[Document]:
+    for file in files:
+        document = create_document(language_code, file, authors)
+        log_missing_details(document)
+        yield document
+
+
+def create_document(language_code: str, file: Path, authors: Mapping[str, AuthorDetails]) -> Document:
+    file = extract_file_details(file)
+    text = extract_details(file.html, is_chinese_root=(language_code == 'lzh'))
+    author = authors[text.authors_long_name]
+    return Document(language_code, file, text, author)
+
+
+def log_missing_details(document: Document) -> None:
+    if not document.text.has_title_tags:
+        logger.error(f'Could not find title in file: {document.file.path}')
+    if not document.text.authors_long_name:
+        logging.critical(f'Could not find author in file: {document.file.path}')
+    if document.author.missing:
+        logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
