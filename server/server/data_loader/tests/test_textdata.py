@@ -7,7 +7,7 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language
+from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language, create_document
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
 
 
@@ -88,51 +88,7 @@ def sutta_path(base_path, sutta_relative) -> Path:
 
 
 class TestLoadLanguage:
-    def test_retrieves_author_long_name(self, sutta_path):
-        html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
-        add_html_file(sutta_path, html)
-        assert next(load_language(FakeAuthors(), [sutta_path], 'en')).author.long_name == 'Bhikkhu Bodhi'
-
-    def test_retrieves_author_short_name(self, sutta_path):
-        html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
-        add_html_file(sutta_path, html)
-        assert next(load_language(FakeAuthors(), [sutta_path], 'en')).author.short_name == 'Bodhi'
-
-    @pytest.mark.parametrize(
-        "author,author_uid",
-        [
-            ('Bhikkhu Bodhi', 'bodhi'),
-            ('No such author', None),
-         ]
-    )
-    def test_retrieves_author_uid(self, sutta_path, author, author_uid):
-        html = f"<html><head><meta author='{author}'></head></html>"
-        add_html_file(sutta_path, html)
-        assert next(load_language(FakeAuthors(), [sutta_path], 'en')).author.uid == author_uid
-
-    @pytest.mark.parametrize(
-        "author,path",
-        [
-            ('Bhikkhu Bodhi', 'en/mn1/bodhi'),
-            ('No such author', 'en/mn1'),
-        ]
-    )
-    def test_generates_path(self, sutta_path, author, path):
-        html = f"<html><head><meta author='{author}'></head></html>"
-        add_html_file(sutta_path, html)
-        assert next(load_language(FakeAuthors(), [sutta_path], 'en')).path == path
-
-    def test_sets_file_path(self, sutta_path):
-        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
-        add_html_file(sutta_path, html)
-        assert next(load_language(FakeAuthors(), [sutta_path], 'en')).file.path == str(sutta_path)
-
-    def test_sets_last_modified(self, sutta_path):
-        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
-        add_html_file(sutta_path, html)
-        assert next(load_language(FakeAuthors(), [sutta_path], 'en')).file.last_modified == sutta_path.stat().st_mtime
-
-    def test_multiple_files_added(self, base_path):
+    def test_files_are_loaded(self, base_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
 
         paths = [
@@ -198,6 +154,56 @@ class TestLoadLanguage:
         _ = next(load_language(FakeAuthors(), [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.CRITICAL
         assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Nobody" ( {str(sutta_path)} )'
+
+
+class TestCreateDocument:
+    def test_sets_author_long_name(self, sutta_path):
+        html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.long_name == 'Bhikkhu Bodhi'
+
+    def test_sets_author_short_name(self, sutta_path):
+        html = """<html><head><meta author='Bhikkhu Bodhi'></head></html>"""
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.short_name == 'Bodhi'
+
+    def test_sets_author_uid(self, sutta_path):
+        html = f"<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.uid == 'bodhi'
+
+    def test_sets_missing_author_uid_to_none(self, sutta_path):
+        html = f"<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.uid is None
+
+    def test_generates_path_with_author(self, sutta_path):
+        html = f"<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.path == 'en/mn1/bodhi'
+
+    def test_generates_path_with_missing_author(self, sutta_path):
+        html = f"<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.path == 'en/mn1'
+
+    def test_sets_file_path(self, sutta_path):
+        html = "<html/>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.file.path == str(sutta_path)
+
+    def test_sets_last_modified(self, sutta_path):
+        html = "<html/>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.file.last_modified == sutta_path.stat().st_mtime
 
 
 @pytest.fixture
