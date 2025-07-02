@@ -7,9 +7,8 @@ import pytest
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
-from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language, create_document, Document
+from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language, create_document
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
-from data_loader.unsegmented_texts import TextDetails
 
 
 class FakeAuthors(Mapping[str, AuthorDetails]):
@@ -490,18 +489,8 @@ class TestAuthors:
 class TestHtmlTextWriter:
     @pytest.fixture
     def html_text_doc(self):
-        return Document(
-            AuthorDetails(
-                long_name='Bhikkhu Bodhi',
-                short_name='Bodhi',
-                uid='bodhi',
-            ),
-            TextDetails(
-
-            )
-        )
         return {
-            "uid": "en_mn1_bodhi",
+            "uid": "mn1",
             "lang": "en",
             "path": "en/mn1/bodhi",
             "name": "The Root of All Things",
@@ -548,3 +537,11 @@ class TestHtmlTextWriter:
 
             assert len(model.queue) == 0
             assert database['html_text'].count() == max_size + 1
+
+    def test_key_is_constructed_from_path(self, database, html_text_doc):
+        with HtmlTextWriter(database) as model:
+            html_text_doc['path'] = 'abc/def'
+            model.add_document(html_text_doc)
+
+        doc = database['html_text'].get('html_text/abc_def')
+        assert doc['_key'] == 'abc_def'
