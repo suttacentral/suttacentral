@@ -26,7 +26,6 @@ class FileDetails:
 class TextDetails:
     title: str
     has_title_tags: bool
-    authors_long_name: str | None
     publication_date: str | None
     volume_page: str | None
 
@@ -195,7 +194,6 @@ def extract_html_details(html: str, is_chinese_root: bool = False) -> tuple[Text
     text_details = TextDetails(
         title=title,
         has_title_tags=bool(title_tag),
-        authors_long_name=extract_authors_long_name(root),
         publication_date=extract_publication_date(root),
         volume_page=extract_volpage(root, is_chinese_root)
     )
@@ -283,7 +281,7 @@ def extract_volpage(root: HtHtmlElement, is_chinese_root: bool) -> str | None:
 def log_missing_details(document: Document) -> None:
     if not document.text.has_title_tags:
         logger.error(f'Could not find title in file: {document.file.path}')
-    if not document.text.authors_long_name:
+    if not document.author.long_name:
         logging.critical(f'Could not find author in file: {document.file.path}')
     if document.author.missing:
         logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')

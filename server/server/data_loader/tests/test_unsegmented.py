@@ -115,7 +115,6 @@ class TestDocuments:
 
         add_html_file(sutta_path, html)
         document = next(documents(FakeAuthors(), [sutta_path], 'en'))
-        assert document.text.authors_long_name is None
         assert document.author.long_name is None
 
     def test_missing_header_tag_in_html(self, sutta_path, caplog):
@@ -157,7 +156,6 @@ class TestDocuments:
 
         add_html_file(sutta_path, html)
         document = next(documents(FakeAuthors(), [sutta_path], 'en'))
-        assert document.text.authors_long_name == 'Bhikkhu Nobody'
         assert document.author.long_name == 'Bhikkhu Nobody'
         assert document.author.short_name is None
         assert document.author.uid is None
@@ -246,7 +244,6 @@ class TestLogMissingDetails:
             text=TextDetails(
                 title='The Root of All Things',
                 has_title_tags=True,
-                authors_long_name='Bhikkhu Bodhi',
                 publication_date='2009',
                 volume_page=None,
             ),
@@ -270,7 +267,7 @@ class TestLogMissingDetails:
         assert caplog.records[0].message == f"Could not find title in file: {document.file.path}"
 
     def test_logs_missing_authors_long_name(self, document, caplog):
-        document.text.authors_long_name = None
+        document.author.long_name = None
         log_missing_details(document)
         assert len(caplog.records) == 1
         assert caplog.records[0].levelno == logging.CRITICAL
@@ -618,7 +615,6 @@ class TestHtmlTextWriter:
             text=TextDetails(
                 title='The Root of All Things',
                 has_title_tags=True,
-                authors_long_name='Bhikkhu Bodhi',
                 publication_date='2009',
                 volume_page=None,
             ),
