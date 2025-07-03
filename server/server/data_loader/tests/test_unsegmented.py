@@ -108,24 +108,24 @@ class TestDocuments:
 
         assert len(added) == 3
 
-    def test_logs_missing_authors_long_name(self, sutta_path, caplog):
+    def test_missing_author_in_html(self, sutta_path, caplog):
         html = ("<html>"
                 "<header><h1>1. The Root of All Things</h1></header>"
                 "</html>")
 
         add_html_file(sutta_path, html)
-        next(documents(FakeAuthors(), [sutta_path], 'en'))
-        assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f"Could not find author in file: {str(sutta_path)}"
+        document = next(documents(FakeAuthors(), [sutta_path], 'en'))
+        assert document.text.authors_long_name is None
+        assert document.author.long_name is None
 
-    def test_logs_missing_title_when_there_is_no_header_tag(self, sutta_path, caplog):
+    def test_missing_header_tag_in_html(self, sutta_path, caplog):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
-        assert caplog.records[0].levelno == logging.ERROR
-        assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
+        document = next(documents(FakeAuthors(), [sutta_path], 'en'))
+        assert document.text.title == ''
+        assert document.text.has_title_tags is False
 
-    def test_logs_missing_title_when_there_is_no_h1_tag(self, sutta_path, caplog):
+    def test_missing_h1_tag_in_html(self, sutta_path, caplog):
             html = (
                 "<html>"
                 "<head><meta author='Bhikkhu Bodhi'>"
@@ -134,30 +134,35 @@ class TestDocuments:
                 "</html>"
             )
             add_html_file(sutta_path, html)
-            _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
-            assert caplog.records[0].levelno == logging.ERROR
-            assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
+            document = next(documents(FakeAuthors(), [sutta_path], 'en'))
+            assert document.text.title == ''
+            assert document.text.has_title_tags is False
 
-    def test_does_not_log_missing_title_when_it_is_an_empty_string(self, sutta_path, caplog):
+    def test_h1_tag_has_no_text(self, sutta_path, caplog):
         html = ("<html>"
                 "<head><meta author='Bhikkhu Bodhi'><head>"
                 "<body><header><h1></h1></header></body>"
                 "</html>")
 
         add_html_file(sutta_path, html)
-        _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
-        assert not caplog.records
+        document = next(documents(FakeAuthors(), [sutta_path], 'en'))
+        assert document.text.title == ''
+        assert document.text.has_title_tags is True
 
-    def test_logs_missing_author_when_not_in_document_store(self, sutta_path, caplog):
+    def test_author_not_in_collection(self, sutta_path, caplog):
         html = ("<html>"
                 "<head><meta author='Bhikkhu Nobody'><head>"
                 "<header><h1>1. The Root of All Things</h1></header>"
                 "</html>")
 
         add_html_file(sutta_path, html)
-        _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
-        assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Nobody" ( {str(sutta_path)} )'
+        document = next(documents(FakeAuthors(), [sutta_path], 'en'))
+        assert document.text.authors_long_name == 'Bhikkhu Nobody'
+        assert document.author.long_name == 'Bhikkhu Nobody'
+        assert document.author.short_name is None
+        assert document.author.uid is None
+        assert document.author.missing is True
+
 
 
 class TestCreateDocument:
