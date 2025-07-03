@@ -6,9 +6,6 @@ import regex
 from data_loader import sc_html
 from data_loader.sc_html import HtHtmlElement
 
-logger = logging.getLogger(__name__)
-
-
 @dataclass
 class TextDetails:
     title: str
