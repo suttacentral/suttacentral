@@ -3,13 +3,24 @@ from collections.abc import Iterator, Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
+import regex
 from arango.database import Database
 from tqdm import tqdm
 
+from data_loader import sc_html
 from data_loader.change_tracker import ChangeTracker
-from data_loader.unsegmented_texts import extract_details, TextDetails
+from data_loader.sc_html import HtHtmlElement
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class TextDetails:
+    title: str
+    has_title_tags: bool
+    authors_long_name: str | None
+    publication_date: str | None
+    volume_page: str | None
 
 
 @dataclass
@@ -181,3 +192,94 @@ def log_missing_details(document: Document) -> None:
         logging.critical(f'Could not find author in file: {document.file.path}')
     if document.author.missing:
         logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
+
+
+def extract_details(html: str, is_chinese_root: bool = False) -> TextDetails:
+    root = sc_html.fromstring(html)
+    title_tag = find_title_tag(root)
+    title = extract_title(title_tag, is_chinese_root)
+
+    return TextDetails(
+        title=title,
+        has_title_tags=bool(title_tag),
+        authors_long_name=extract_authors_long_name(root),
+        publication_date=extract_publication_date(root),
+        volume_page=extract_volpage(root, is_chinese_root)
+    )
+
+
+def extract_authors_long_name(root) -> str | None:
+    author = None
+    e = root.select_one('meta[author]')
+    if e:
+        author = e.attrib['author']
+
+    if not author:
+        e = root.select_one('meta[name=author]')
+        if e:
+            author = e.attrib['content']
+
+    return author
+
+
+def extract_publication_date(root) -> str | None:
+    e = root.select_one('.publication-date')
+    if e:
+        return e.text_content()
+
+    return None
+
+
+def extract_title(title_tag: HtHtmlElement | None, is_chinese_root: bool) -> str:
+    if title_tag is None:
+        return ''
+
+    if is_chinese_root:
+        if title := extract_side_by_side_title(title_tag):
+            return title
+
+    return normalise_title(title_tag.text_content())
+
+
+def extract_side_by_side_title(title_tag: HtHtmlElement) -> str | None:
+    left_side = title_tag.select_one('.mirror-left')
+    right_side = title_tag.select_one('.mirror-right')
+
+    if not (left_side and right_side):
+        return None
+
+    left_text = left_side.text_content()
+    right_text = right_side.text_content()
+
+    return f'{right_text} ({left_text})'
+
+
+def find_title_tag(root: HtHtmlElement) -> HtHtmlElement | None:
+    header = root.select_one('header')
+    if not header:
+        return None
+
+    h1 = header.select_one('h1')
+
+    if not h1:
+        return None
+
+    return h1
+
+
+def normalise_title(title: str) -> str:
+    # This may return an empty string e.g. when given a title like "11.358–405"
+    return regex.sub(r'[\d\.\{\} –-]*', '', title, 1)
+
+
+def extract_volpage(root: HtHtmlElement, is_chinese_root: bool) -> str | None:
+    if is_chinese_root:
+        e = root.next_in_order()
+        while e is not None:
+            if e.tag == 'a' and e.select_one('.t'):
+                break
+            e = e.next_in_order()
+        else:
+            return
+        return '{}'.format(e.attrib['id']).replace('t', 'T ')
+    return None

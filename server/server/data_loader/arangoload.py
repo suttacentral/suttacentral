@@ -48,10 +48,12 @@ from . import (
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
 from .observability import StagePrinter
-from .textdata import load_html_texts
 from .util import json_load
 import re
+
 from data_loader.extra_info import process_extra_info_file
+from data_loader.unsegmented import load_html_texts
+
 
 def collect_data(repo_dir: Path, repo_addr: str):
     """Ensure data is in data dir and update it if needed and if it's git repo.
