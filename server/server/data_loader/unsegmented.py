@@ -15,6 +15,14 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
+class FileDetails:
+    path: str
+    sutta_uid: str
+    html: str
+    last_modified: float
+
+
+@dataclass
 class TextDetails:
     title: str
     has_title_tags: bool
@@ -29,6 +37,40 @@ class AuthorDetails:
     short_name: str | None
     uid: str | None
     missing: bool
+
+
+@dataclass
+class Document:
+    language_code: str
+    file: FileDetails
+    text: TextDetails
+    author: AuthorDetails
+
+    @property
+    def path(self) -> str:
+        if self.author.uid:
+            return f'{self.language_code}/{self.file.sutta_uid}/{self.author.uid}'
+        else:
+            return f'{self.language_code}/{self.file.sutta_uid}'
+
+    @property
+    def key(self) -> str:
+        return self.path.replace('/', '_')
+
+    def as_dict(self):
+        return {
+        "uid": self.file.sutta_uid,
+        "lang": self.language_code,
+        "path": self.path,
+        "name": self.text.title,
+        "author": self.author.long_name,
+        "author_short": self.author.short_name,
+        "author_uid": self.author.uid,
+        "publication_date": self.text.publication_date,
+        "volpage": self.text.volume_page,
+        "mtime": self.file.last_modified,
+        "file_path": self.file.path,
+    }
 
 
 class Authors(Mapping[str, AuthorDetails]):
@@ -71,14 +113,6 @@ class Authors(Mapping[str, AuthorDetails]):
         return len(self._author_cache)
 
 
-@dataclass
-class FileDetails:
-    path: str
-    sutta_uid: str
-    html: str
-    last_modified: float
-
-
 def extract_file_details(file: Path) -> FileDetails:
     path = str(file.resolve())
     sutta_uid = file.stem
@@ -91,40 +125,6 @@ def extract_file_details(file: Path) -> FileDetails:
         html=html,
         last_modified=last_modified,
     )
-
-
-@dataclass
-class Document:
-    language_code: str
-    file: FileDetails
-    text: TextDetails
-    author: AuthorDetails
-
-    @property
-    def path(self) -> str:
-        if self.author.uid:
-            return f'{self.language_code}/{self.file.sutta_uid}/{self.author.uid}'
-        else:
-            return f'{self.language_code}/{self.file.sutta_uid}'
-
-    @property
-    def key(self) -> str:
-        return self.path.replace('/', '_')
-
-    def as_dict(self):
-        return {
-        "uid": self.file.sutta_uid,
-        "lang": self.language_code,
-        "path": self.path,
-        "name": self.text.title,
-        "author": self.author.long_name,
-        "author_short": self.author.short_name,
-        "author_uid": self.author.uid,
-        "publication_date": self.text.publication_date,
-        "volpage": self.text.volume_page,
-        "mtime": self.file.last_modified,
-        "file_path": self.file.path,
-    }
 
 
 class HtmlTextWriter:
