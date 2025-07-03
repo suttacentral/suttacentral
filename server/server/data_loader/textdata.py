@@ -12,7 +12,7 @@ from data_loader.unsegmented_texts import extract_details, TextDetails
 logger = logging.getLogger(__name__)
 
 
-@dataclass(frozen=True)
+@dataclass
 class AuthorDetails:
     long_name: str | None
     short_name: str | None
@@ -60,7 +60,7 @@ class Authors(Mapping[str, AuthorDetails]):
         return len(self._author_cache)
 
 
-@dataclass(frozen=True)
+@dataclass
 class FileDetails:
     path: str
     sutta_uid: str
@@ -82,7 +82,7 @@ def extract_file_details(file: Path) -> FileDetails:
     )
 
 
-@dataclass(frozen=True)
+@dataclass
 class Document:
     language_code: str
     file: FileDetails

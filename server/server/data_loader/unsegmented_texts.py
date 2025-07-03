@@ -9,7 +9,7 @@ from data_loader.sc_html import HtHtmlElement
 logger = logging.getLogger(__name__)
 
 
-@dataclass(frozen=True)
+@dataclass
 class TextDetails:
     title: str
     has_title_tags: bool
