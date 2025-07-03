@@ -168,8 +168,8 @@ def documents(authors: Mapping[str, AuthorDetails], files: Iterable[Path], langu
 
 def create_document(language_code: str, file: Path, authors: Mapping[str, AuthorDetails]) -> Document:
     file = extract_file_details(file)
-    text = extract_text_details(file.html, is_chinese_root=(language_code == 'lzh'))
-    author = authors[text.authors_long_name]
+    text, author_key = extract_html_details(file.html, is_chinese_root=(language_code == 'lzh'))
+    author = authors[author_key]
     return Document(language_code, file, text, author)
 
 
@@ -187,18 +187,20 @@ def extract_file_details(file: Path) -> FileDetails:
     )
 
 
-def extract_text_details(html: str, is_chinese_root: bool = False) -> TextDetails:
+def extract_html_details(html: str, is_chinese_root: bool = False) -> tuple[TextDetails, str | None]:
     root = sc_html.fromstring(html)
     title_tag = find_title_tag(root)
     title = extract_title(title_tag, is_chinese_root)
 
-    return TextDetails(
+    text_details = TextDetails(
         title=title,
         has_title_tags=bool(title_tag),
         authors_long_name=extract_authors_long_name(root),
         publication_date=extract_publication_date(root),
         volume_page=extract_volpage(root, is_chinese_root)
     )
+    author_key = extract_authors_long_name(root)
+    return text_details, author_key
 
 
 def extract_authors_long_name(root) -> str | None:
