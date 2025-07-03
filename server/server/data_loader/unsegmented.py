@@ -59,6 +59,7 @@ class Document:
 
     def as_dict(self):
         return {
+        "_key": self.key,
         "uid": self.file.sutta_uid,
         "lang": self.language_code,
         "path": self.path,
@@ -119,7 +120,6 @@ class HtmlTextWriter:
         self.queue = []
 
     def add_document(self, doc: dict) -> None:
-        doc['_key'] = doc['path'].replace('/', '_')
         self.queue.append(doc)
         if len(self.queue) > 100:
             self.flush_documents()
