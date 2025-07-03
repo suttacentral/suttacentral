@@ -146,7 +146,7 @@ def load_unsegmented_texts(change_tracker: ChangeTracker, db: Database, html_dir
 
         for directory in tqdm(directories):
             files = html_files(directory, change_tracker)
-            for document in load_language(authors, files, directory.stem):
+            for document in documents(authors, files, directory.stem):
                 writer.add_document(document.as_dict())
 
 
@@ -159,7 +159,7 @@ def html_files(language_directory: Path, change_tracker: ChangeTracker) -> Itera
     yield from change_tracker.changed_files(paths)
 
 
-def load_language(authors: Mapping[str, AuthorDetails], files: Iterable[Path], language_code: str) -> Iterator[Document]:
+def documents(authors: Mapping[str, AuthorDetails], files: Iterable[Path], language_code: str) -> Iterator[Document]:
     for file in files:
         document = create_document(language_code, file, authors)
         log_missing_details(document)

@@ -9,7 +9,7 @@ from common.utils import current_app
 from data_loader import sc_html
 from data_loader.change_tracker import ChangeTracker
 from data_loader.unsegmented import (
-    Authors, HtmlTextWriter, AuthorDetails, load_language, create_document, Document,
+    Authors, HtmlTextWriter, AuthorDetails, documents, create_document, Document,
     FileDetails, log_missing_details, TextDetails, extract_text_details, find_title_tag, load_unsegmented_texts,
     language_directories, html_files, extract_file_details
  )
@@ -91,7 +91,7 @@ def sutta_path(base_path, sutta_relative) -> Path:
     return base_path / sutta_relative
 
 
-class TestLoadLanguage:
+class TestDocuments:
     def test_files_are_loaded(self, base_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
 
@@ -104,7 +104,7 @@ class TestLoadLanguage:
         for path in paths:
             add_html_file(path, html)
 
-        added = list(load_language(FakeAuthors(), paths, 'en'))
+        added = list(documents(FakeAuthors(), paths, 'en'))
 
         assert len(added) == 3
 
@@ -114,14 +114,14 @@ class TestLoadLanguage:
                 "</html>")
 
         add_html_file(sutta_path, html)
-        next(load_language(FakeAuthors(), [sutta_path], 'en'))
+        next(documents(FakeAuthors(), [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.CRITICAL
         assert caplog.records[0].message == f"Could not find author in file: {str(sutta_path)}"
 
     def test_logs_missing_title_when_there_is_no_header_tag(self, sutta_path, caplog):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
-        _ = next(load_language(FakeAuthors(), [sutta_path], 'en'))
+        _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.ERROR
         assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
@@ -134,7 +134,7 @@ class TestLoadLanguage:
                 "</html>"
             )
             add_html_file(sutta_path, html)
-            _ = next(load_language(FakeAuthors(), [sutta_path], 'en'))
+            _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
             assert caplog.records[0].levelno == logging.ERROR
             assert caplog.records[0].message == f"Could not find title in file: {str(sutta_path)}"
 
@@ -145,7 +145,7 @@ class TestLoadLanguage:
                 "</html>")
 
         add_html_file(sutta_path, html)
-        _ = next(load_language(FakeAuthors(), [sutta_path], 'en'))
+        _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
         assert not caplog.records
 
     def test_logs_missing_author_when_not_in_document_store(self, sutta_path, caplog):
@@ -155,7 +155,7 @@ class TestLoadLanguage:
                 "</html>")
 
         add_html_file(sutta_path, html)
-        _ = next(load_language(FakeAuthors(), [sutta_path], 'en'))
+        _ = next(documents(FakeAuthors(), [sutta_path], 'en'))
         assert caplog.records[0].levelno == logging.CRITICAL
         assert caplog.records[0].message == f'Author data not defined for "Bhikkhu Nobody" ( {str(sutta_path)} )'
 
@@ -296,7 +296,7 @@ def database():
         yield db
 
 
-class TestLoadHtmlTexts:
+class TestLoadUnsegmentedTexts:
     @pytest.fixture
     def sc_data_dir(self, tmp_path) -> Path:
         return tmp_path
