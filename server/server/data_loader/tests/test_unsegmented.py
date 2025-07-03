@@ -149,7 +149,7 @@ class TestDocuments:
         assert document.text.title == ''
         assert document.text.has_title_tags is True
 
-    def test_author_not_in_collection(self, sutta_path, caplog):
+    def test_author_not_in_database(self, sutta_path, caplog):
         html = ("<html>"
                 "<head><meta author='Bhikkhu Nobody'><head>"
                 "<header><h1>1. The Root of All Things</h1></header>"
