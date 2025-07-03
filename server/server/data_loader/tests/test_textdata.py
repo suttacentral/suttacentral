@@ -8,7 +8,7 @@ from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.change_tracker import ChangeTracker
 from data_loader.textdata import Authors, HtmlTextWriter, AuthorDetails, load_language, create_document, Document, \
-    FileDetails
+    FileDetails, log_missing_details
 from data_loader.textdata import load_html_texts, language_directories, html_files, extract_file_details
 from data_loader.unsegmented_texts import TextDetails
 
@@ -226,7 +226,60 @@ class TestCreateDocument:
         assert document.key == 'en_mn1'
 
 class TestLogMissingDetails:
-    pass
+    @pytest.fixture
+    def document(self) -> Document:
+        return Document(
+            language_code='en',
+            author=AuthorDetails(
+                long_name='Bhikkhu Bodhi',
+                short_name='Bodhi',
+                uid='bodhi',
+                missing=False,
+            ),
+            text=TextDetails(
+                title='The Root of All Things',
+                has_title_tags=True,
+                authors_long_name='Bhikkhu Bodhi',
+                publication_date='2009',
+                volume_page=None,
+            ),
+            file=FileDetails(
+                sutta_uid='mn1',
+                last_modified=0.0,
+                path='/opt/sc/sc-flask/sc-data/html_text/en/pli/sutta/mn/mn1.html',
+                html='<html/>'
+            ),
+        )
+
+    def test_no_logs_when_document_complete(self, document, caplog):
+        log_missing_details(document)
+        assert not caplog.records
+
+    def test_logs_missing_title(self, document, caplog):
+        document.text.has_title_tags = False
+        log_missing_details(document)
+        assert len(caplog.records) == 1
+        assert caplog.records[0].levelno == logging.ERROR
+        assert caplog.records[0].message == f"Could not find title in file: {document.file.path}"
+
+    def test_logs_missing_authors_long_name(self, document, caplog):
+        document.text.authors_long_name = None
+        log_missing_details(document)
+        assert len(caplog.records) == 1
+        assert caplog.records[0].levelno == logging.CRITICAL
+        assert caplog.records[0].message == f"Could not find author in file: {document.file.path}"
+
+    def test_logs_missing_author(self, document, caplog):
+        document.text.authors_long_name = None
+        document.author.long_name = None
+        document.author.missing = True
+
+        log_missing_details(document)
+        assert len(caplog.records) == 2
+        assert caplog.records[0].levelno == logging.CRITICAL
+        assert caplog.records[0].message == f"Could not find author in file: {document.file.path}"
+        assert caplog.records[1].levelno == logging.CRITICAL
+        assert caplog.records[1].message == f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )'
 
 
 @pytest.fixture
