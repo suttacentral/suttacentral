@@ -113,20 +113,6 @@ class Authors(Mapping[str, AuthorDetails]):
         return len(self._author_cache)
 
 
-def extract_file_details(file: Path) -> FileDetails:
-    path = str(file.resolve())
-    sutta_uid = file.stem
-    html = file.read_text()
-    last_modified = file.stat().st_mtime
-
-    return FileDetails(
-        path=path,
-        sutta_uid=sutta_uid,
-        html=html,
-        last_modified=last_modified,
-    )
-
-
 class HtmlTextWriter:
     def __init__(self, db):
         self.db = db
@@ -148,6 +134,20 @@ class HtmlTextWriter:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.flush_documents()
+
+
+def extract_file_details(file: Path) -> FileDetails:
+    path = str(file.resolve())
+    sutta_uid = file.stem
+    html = file.read_text()
+    last_modified = file.stat().st_mtime
+
+    return FileDetails(
+        path=path,
+        sutta_uid=sutta_uid,
+        html=html,
+        last_modified=last_modified,
+    )
 
 
 def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
