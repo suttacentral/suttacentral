@@ -115,13 +115,15 @@ class Authors(Mapping[str, AuthorDetails]):
 
 
 class HtmlTextWriter:
+    QUEUE_SIZE = 100
+
     def __init__(self, db):
         self.db = db
         self.queue = []
 
     def add_document(self, doc: dict) -> None:
         self.queue.append(doc)
-        if len(self.queue) > 100:
+        if len(self.queue) > self.QUEUE_SIZE:
             self.flush_documents()
 
     def flush_documents(self):
