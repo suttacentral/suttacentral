@@ -32,10 +32,11 @@ class TextDetails:
 
 @dataclass
 class AuthorDetails:
+    in_html: bool
+    in_db: bool
     long_name: str | None
     short_name: str | None
     uid: str | None
-    missing: bool
 
 
 @dataclass
@@ -87,23 +88,24 @@ class Authors(Mapping[str, AuthorDetails]):
             ).next()
         )
 
-    def __getitem__(self, long_name: str | None) -> AuthorDetails:
+    def __getitem__(self, long_name: str) -> AuthorDetails:
         author_data = self._author_cache.get(long_name)
 
         if author_data:
             short_name = author_data['short_name']
             uid = author_data['uid']
-            missing = False
+            in_db = True
         else:
             short_name = None
             uid = None
-            missing = True
+            in_db = False
 
         return AuthorDetails(
+            in_html=True,
+            in_db=in_db,
             long_name=long_name,
             short_name=short_name,
             uid=uid,
-            missing=missing,
         )
 
     def __iter__(self) -> Iterator[str]:
@@ -168,7 +170,18 @@ def documents(authors: Mapping[str, AuthorDetails], files: Iterable[Path], langu
 def create_document(language_code: str, file: Path, authors: Mapping[str, AuthorDetails]) -> Document:
     file = extract_file_details(file)
     text, author_key = extract_html_details(file.html, is_chinese_root=(language_code == 'lzh'))
-    author = authors[author_key]
+
+    if author_key:
+        author = authors[author_key]
+    else:
+        author = AuthorDetails(
+            in_html=False,
+            in_db=False,
+            long_name=None,
+            short_name=None,
+            uid=None,
+        )
+
     return Document(language_code, file, text, author)
 
 
@@ -281,7 +294,7 @@ def extract_volpage(root: HtHtmlElement, is_chinese_root: bool) -> str | None:
 def log_missing_details(document: Document) -> None:
     if not document.text.has_title_tags:
         logger.error(f'Could not find title in file: {document.file.path}')
-    if not document.author.long_name:
-        logging.critical(f'Could not find author in file: {document.file.path}')
-    if document.author.missing:
-        logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
+    if not document.author.in_html:
+        logging.critical(f'Could not find author in html file: {document.file.path}')
+    if not document.author.in_db:
+        logging.critical(f'Author "{document.author.long_name}" in html file {document.file.path} not found in database')

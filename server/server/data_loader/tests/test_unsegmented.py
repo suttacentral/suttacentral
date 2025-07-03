@@ -19,28 +19,31 @@ class FakeAuthors(Mapping[str, AuthorDetails]):
     def __init__(self):
         self.authors: dict[str, AuthorDetails] = {
             'Bhikkhu Bodhi': AuthorDetails(
+                in_html=True,
+                in_db=True,
                 long_name='Bhikkhu Bodhi',
                 short_name='Bodhi',
                 uid='bodhi',
-                missing=False
             ),
             'Taishō Tripiṭaka': AuthorDetails(
+                in_html=True,
+                in_db=True,
                 long_name= 'Taishō Tripiṭaka',
                 short_name='Taisho',
                 uid='taisho',
-                missing=False
             )
         }
 
     def __getitem__(self, long_name: str) -> AuthorDetails:
+        missing = AuthorDetails(
+            in_html=True,
+            in_db=False,
+            long_name=long_name,
+            short_name=None,
+            uid=None, )
         return self.authors.get(
             long_name,
-            AuthorDetails(
-                long_name=long_name,
-                short_name=None,
-                uid=None,
-                missing=True
-            )
+            missing
         )
 
     def __iter__(self) -> Iterator[str]:
@@ -142,12 +145,12 @@ class TestAuthors:
 
     def test_author_missing(self,database):
         model = Authors(database)
-        assert model['Bhikkhu Bodhi'].missing is True
+        assert model['Bhikkhu Bodhi'].in_db is False
 
-    def test_author_not_missing(self, database, author_edition_doc):
+    def test_author_present(self, database, author_edition_doc):
         database['author_edition'].insert(author_edition_doc)
         model = Authors(database)
-        assert model['Bhikkhu Bodhi'].missing is False
+        assert model['Bhikkhu Bodhi'].in_db is True
 
     def test_iter(self, database, author_edition_doc):
         database['author_edition'].insert(author_edition_doc)
@@ -220,10 +223,11 @@ class TestHtmlTextWriter:
         document = Document(
             language_code='en',
             author=AuthorDetails(
+                in_html=True,
+                in_db=True,
                 long_name='Bhikkhu Bodhi',
                 short_name='Bodhi',
                 uid='bodhi',
-                missing=False,
             ),
             text=TextDetails(
                 title='The Root of All Things',
@@ -481,7 +485,6 @@ class TestDocuments:
         assert document.author.long_name == 'Bhikkhu Nobody'
         assert document.author.short_name is None
         assert document.author.uid is None
-        assert document.author.missing is True
 
 
 
@@ -497,6 +500,30 @@ class TestCreateDocument:
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.author.long_name is None
+
+    def test_author_in_html_false_when_missing(self, sutta_path):
+        html = "<html/>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.in_html is False
+
+    def test_author_in_html_true_when_present(self, sutta_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.in_html is True
+
+    def test_author_in_database_false_when_missing(self, sutta_path):
+        html = "<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.in_db is False
+
+    def test_author_in_database_false_when_present(self, sutta_path):
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.in_db is True
 
     def test_sets_author_short_name(self, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
@@ -552,16 +579,18 @@ class TestCreateDocument:
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.key == 'en_mn1'
 
+
 class TestLogMissingDetails:
     @pytest.fixture
     def document(self) -> Document:
         return Document(
             language_code='en',
             author=AuthorDetails(
+                in_html=True,
+                in_db=True,
                 long_name='Bhikkhu Bodhi',
                 short_name='Bodhi',
                 uid='bodhi',
-                missing=False,
             ),
             text=TextDetails(
                 title='The Root of All Things',
@@ -588,24 +617,19 @@ class TestLogMissingDetails:
         assert caplog.records[0].levelno == logging.ERROR
         assert caplog.records[0].message == f"Could not find title in file: {document.file.path}"
 
-    def test_logs_missing_authors_long_name(self, document, caplog):
-        document.author.long_name = None
+    def test_logs_author_not_in_html(self, document, caplog):
+        document.author.in_html = False
         log_missing_details(document)
         assert len(caplog.records) == 1
         assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f"Could not find author in file: {document.file.path}"
+        assert caplog.records[0].message == f"Could not find author in html file: {document.file.path}"
 
     def test_logs_missing_author(self, document, caplog):
-        document.text.authors_long_name = None
-        document.author.long_name = None
-        document.author.missing = True
-
+        document.author.in_db = False
         log_missing_details(document)
-        assert len(caplog.records) == 2
+        assert len(caplog.records) == 1
         assert caplog.records[0].levelno == logging.CRITICAL
-        assert caplog.records[0].message == f"Could not find author in file: {document.file.path}"
-        assert caplog.records[1].levelno == logging.CRITICAL
-        assert caplog.records[1].message == f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )'
+        assert caplog.records[0].message == f'Author "Bhikkhu Bodhi" in html file {document.file.path} not found in database'
 
 
 class TestExtractFileDetails:
