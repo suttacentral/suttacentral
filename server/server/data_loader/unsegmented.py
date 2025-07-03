@@ -136,6 +136,18 @@ class HtmlTextWriter:
         self.flush_documents()
 
 
+def load_unsegmented_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
+    authors = Authors(db)
+
+    with HtmlTextWriter(db) as writer:
+        directories = language_directories(html_dir)
+
+        for directory in tqdm(directories):
+            files = html_files(directory, change_tracker)
+            for document in load_language(authors, files, directory.stem):
+                writer.add_document(document.as_dict())
+
+
 def extract_file_details(file: Path) -> FileDetails:
     path = str(file.resolve())
     sutta_uid = file.stem
@@ -148,18 +160,6 @@ def extract_file_details(file: Path) -> FileDetails:
         html=html,
         last_modified=last_modified,
     )
-
-
-def load_html_texts(change_tracker: ChangeTracker, db: Database, html_dir: Path):
-    authors = Authors(db)
-
-    with HtmlTextWriter(db) as writer:
-        directories = language_directories(html_dir)
-
-        for directory in tqdm(directories):
-            files = html_files(directory, change_tracker)
-            for document in load_language(authors, files, directory.stem):
-                writer.add_document(document.as_dict())
 
 
 def language_directories(html_dir: Path) -> list[Path]:

@@ -52,7 +52,7 @@ from .util import json_load
 import re
 
 from data_loader.extra_info import process_extra_info_file
-from data_loader.unsegmented import load_html_texts
+from data_loader.unsegmented import load_unsegmented_texts
 
 
 def collect_data(repo_dir: Path, repo_addr: str):
@@ -726,8 +726,8 @@ def run(no_pull: bool = False) -> StagePrinter:
         change_tracker, relationship_dir, additional_info_dir, db
     )
 
-    printer.print_stage("Loading html_text")
-    load_html_texts(change_tracker, db, html_dir)
+    printer.print_stage("Loading unsegmented texts")
+    load_unsegmented_texts(change_tracker, db, html_dir)
 
     printer.print_stage('Make yellow brick road')
     make_yellow_brick_road(db)

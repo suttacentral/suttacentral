@@ -10,7 +10,7 @@ from data_loader import sc_html
 from data_loader.change_tracker import ChangeTracker
 from data_loader.unsegmented import (
     Authors, HtmlTextWriter, AuthorDetails, load_language, create_document, Document,
-    FileDetails, log_missing_details, TextDetails, extract_text_details, find_title_tag, load_html_texts,
+    FileDetails, log_missing_details, TextDetails, extract_text_details, find_title_tag, load_unsegmented_texts,
     language_directories, html_files, extract_file_details
  )
 
@@ -330,16 +330,16 @@ class TestLoadHtmlTexts:
         sc_data_dir = Path('/opt/sc/sc-flask/sc-data/')
         html_dir = Path('/opt/sc/sc-flask/sc-data/html_text')
         tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
 
     def test_load_empty_html_dir(self, tracker, database, sc_data_dir, html_dir):
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
         assert database.collection('html_text').count() == 0
 
     def test_load_empty_language_dir(self, tracker, database, sc_data_dir, html_dir):
         language_dir = html_dir / 'en'
         language_dir.mkdir()
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
         assert database.collection('html_text').count() == 0
 
     def test_load_one_text(self, database, sc_data_dir, html_dir, html):
@@ -350,7 +350,7 @@ class TestLoadHtmlTexts:
         sutta_path.write_text(html)
 
         tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
 
         assert database.collection('html_text').count() == 1
 
@@ -365,7 +365,7 @@ class TestLoadHtmlTexts:
         tracker.update_mtimes()
         tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
 
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
 
         assert database.collection('html_text').count() == 0
 
@@ -379,7 +379,7 @@ class TestLoadHtmlTexts:
         ok_path.write_text(html)
 
         tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
 
         assert database.collection('html_text').count() == 1
 
@@ -394,7 +394,7 @@ class TestLoadHtmlTexts:
         sutta_path.write_text(html)
 
         tracker = ChangeTracker(base_dir=sc_data_dir, db=database)
-        load_html_texts(change_tracker=tracker, db=database, html_dir=html_dir)
+        load_unsegmented_texts(change_tracker=tracker, db=database, html_dir=html_dir)
 
         assert database.collection('html_text').count() == 1
 
