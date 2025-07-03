@@ -180,7 +180,7 @@ def load_language(authors: Mapping[str, AuthorDetails], files: Iterable[Path], l
 
 def create_document(language_code: str, file: Path, authors: Mapping[str, AuthorDetails]) -> Document:
     file = extract_file_details(file)
-    text = extract_details(file.html, is_chinese_root=(language_code == 'lzh'))
+    text = extract_text_details(file.html, is_chinese_root=(language_code == 'lzh'))
     author = authors[text.authors_long_name]
     return Document(language_code, file, text, author)
 
@@ -194,7 +194,7 @@ def log_missing_details(document: Document) -> None:
         logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
 
 
-def extract_details(html: str, is_chinese_root: bool = False) -> TextDetails:
+def extract_text_details(html: str, is_chinese_root: bool = False) -> TextDetails:
     root = sc_html.fromstring(html)
     title_tag = find_title_tag(root)
     title = extract_title(title_tag, is_chinese_root)
