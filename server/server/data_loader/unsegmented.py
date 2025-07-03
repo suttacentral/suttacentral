@@ -148,20 +148,6 @@ def load_unsegmented_texts(change_tracker: ChangeTracker, db: Database, html_dir
                 writer.add_document(document.as_dict())
 
 
-def extract_file_details(file: Path) -> FileDetails:
-    path = str(file.resolve())
-    sutta_uid = file.stem
-    html = file.read_text()
-    last_modified = file.stat().st_mtime
-
-    return FileDetails(
-        path=path,
-        sutta_uid=sutta_uid,
-        html=html,
-        last_modified=last_modified,
-    )
-
-
 def language_directories(html_dir: Path) -> list[Path]:
     return [path for path in html_dir.glob('*') if path.is_dir()]
 
@@ -185,13 +171,18 @@ def create_document(language_code: str, file: Path, authors: Mapping[str, Author
     return Document(language_code, file, text, author)
 
 
-def log_missing_details(document: Document) -> None:
-    if not document.text.has_title_tags:
-        logger.error(f'Could not find title in file: {document.file.path}')
-    if not document.text.authors_long_name:
-        logging.critical(f'Could not find author in file: {document.file.path}')
-    if document.author.missing:
-        logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
+def extract_file_details(file: Path) -> FileDetails:
+    path = str(file.resolve())
+    sutta_uid = file.stem
+    html = file.read_text()
+    last_modified = file.stat().st_mtime
+
+    return FileDetails(
+        path=path,
+        sutta_uid=sutta_uid,
+        html=html,
+        last_modified=last_modified,
+    )
 
 
 def extract_text_details(html: str, is_chinese_root: bool = False) -> TextDetails:
@@ -283,3 +274,12 @@ def extract_volpage(root: HtHtmlElement, is_chinese_root: bool) -> str | None:
             return
         return '{}'.format(e.attrib['id']).replace('t', 'T ')
     return None
+
+
+def log_missing_details(document: Document) -> None:
+    if not document.text.has_title_tags:
+        logger.error(f'Could not find title in file: {document.file.path}')
+    if not document.text.authors_long_name:
+        logging.critical(f'Could not find author in file: {document.file.path}')
+    if document.author.missing:
+        logging.critical(f'Author data not defined for "{document.author.long_name}" ( {document.file.path} )')
