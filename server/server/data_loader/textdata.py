@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class AuthorDetails:
-    long_name: str
+    long_name: str | None
     short_name: str | None
     uid: str | None
     missing: bool
@@ -34,7 +34,7 @@ class Authors(Mapping[str, AuthorDetails]):
             ).next()
         )
 
-    def __getitem__(self, long_name: str) -> AuthorDetails:
+    def __getitem__(self, long_name: str | None) -> AuthorDetails:
         author_data = self._author_cache.get(long_name)
 
         if author_data:

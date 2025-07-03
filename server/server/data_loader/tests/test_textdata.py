@@ -165,6 +165,12 @@ class TestCreateDocument:
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.author.long_name == 'Bhikkhu Bodhi'
 
+    def test_sets_long_name_to_none_when_html_missing_author(self, sutta_path):
+        html = "<html/>"
+        add_html_file(sutta_path, html)
+        document = create_document('en', sutta_path, FakeAuthors())
+        assert document.author.long_name is None
+
     def test_sets_author_short_name(self, sutta_path):
         html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
