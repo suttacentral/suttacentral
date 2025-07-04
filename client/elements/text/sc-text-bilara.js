@@ -252,7 +252,6 @@ export class SCTextBilara extends SCTextCommon {
       this._addCommentText();
 
       this._updateTextViewStylesBasedOnState();
-      this._recalculateCommentSpanHeight();
 
       this._scheduleNonCriticalUpdates();
 
@@ -271,15 +270,26 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   async _scheduleNonCriticalUpdates() {
-    requestIdleCallback(() => {
-      this._paliLookupStateChanged();
-      this._chineseLookupStateChanged();
-      this._showHighlightingChanged();
-      this._hashChangeHandler();
-      this._prepareNavigation();
-      this._setupSelectionEvents();
-      this._updateURLSearchParams();
-    });
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        this._nonCriticalUpdates();
+      });
+    } else {
+      setTimeout(() => {
+        this._nonCriticalUpdates();
+      }, 100);
+    }
+  }
+
+  _nonCriticalUpdates() {
+    this._paliLookupStateChanged();
+    this._chineseLookupStateChanged();
+    this._showHighlightingChanged();
+    this._hashChangeHandler();
+    this._prepareNavigation();
+    this._setupSelectionEvents();
+    this._updateURLSearchParams();
+    this._recalculateCommentSpanHeight();
   }
 
   _isBilingualView() {
