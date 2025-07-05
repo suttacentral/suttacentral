@@ -231,6 +231,7 @@ export class SCTextBilara extends SCTextCommon {
     try {
       this._addTranslationText();
       if (this._isBilingualView() || this._onlyRootTextVisible()) {
+        this.spansForWordsGenerated = false;
         if (this.paliScript === 'latin' || this.rootSutta.lang !== 'pli') {
           this._addRootText();
         } else {
