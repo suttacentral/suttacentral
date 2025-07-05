@@ -228,4 +228,11 @@ export class reduxActions {
       displayChineseConverterButton,
     });
   }
+
+  static changeShowIllustrationsState(showIllustrations) {
+    store.dispatch({
+      type: 'SET_SHOW_ILLUSTRATIONS',
+      showIllustrations,
+    });
+  }
 }

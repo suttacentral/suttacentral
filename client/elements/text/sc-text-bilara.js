@@ -62,6 +62,7 @@ export class SCTextBilara extends SCTextCommon {
     referencesDisplayStyles: { type: Object },
     notesDisplayStyles: { type: Object },
     showHighlighting: { type: Boolean },
+    showIllustrations: { type: Boolean },
     rootEdition: { type: Array },
     isRangeSutta: { type: Boolean },
     transformedSuttaId: { type: String },
@@ -232,6 +233,7 @@ export class SCTextBilara extends SCTextCommon {
     try {
       this._addTranslationText();
       if (this._isBilingualView() || this._onlyRootTextVisible()) {
+        this.spansForWordsGenerated = false;
         if (this.paliScript === 'latin' || this.rootSutta.lang !== 'pli') {
           this._addRootText();
         } else {
@@ -252,10 +254,13 @@ export class SCTextBilara extends SCTextCommon {
       this._addVariantText();
       this._addCommentText();
 
-      this._addIllustrations();
+      this._checkAVIFSupport().then(supportsAVIF => {
+        if (supportsAVIF) {
+          this._addIllustrations();
+        }
+      });
 
       this._updateTextViewStylesBasedOnState();
-      this._recalculateCommentSpanHeight();
 
       this._scheduleNonCriticalUpdates();
 
@@ -274,15 +279,26 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   async _scheduleNonCriticalUpdates() {
-    requestIdleCallback(() => {
-      this._paliLookupStateChanged();
-      this._chineseLookupStateChanged();
-      this._showHighlightingChanged();
-      this._hashChangeHandler();
-      this._prepareNavigation();
-      this._setupSelectionEvents();
-      this._updateURLSearchParams();
-    });
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        this._nonCriticalUpdates();
+      });
+    } else {
+      setTimeout(() => {
+        this._nonCriticalUpdates();
+      }, 100);
+    }
+  }
+
+  _nonCriticalUpdates() {
+    this._paliLookupStateChanged();
+    this._chineseLookupStateChanged();
+    this._showHighlightingChanged();
+    this._hashChangeHandler();
+    this._prepareNavigation();
+    this._setupSelectionEvents();
+    this._updateURLSearchParams();
+    this._recalculateCommentSpanHeight();
   }
 
   _isBilingualView() {
@@ -570,6 +586,9 @@ export class SCTextBilara extends SCTextCommon {
     if (changedProps.has('rootTextFirst') && this.chosenTextView === 'linebyline') {
       shouldChangeTextView = true;
     }
+    if (changedProps.has('showIllustrations')) {
+      shouldChangeTextView = true;
+    }
 
     if (shouldChangeTextView) {
       this._updateView();
@@ -721,6 +740,7 @@ export class SCTextBilara extends SCTextCommon {
     this.chosenNoteDisplayType = textOptions.noteDisplayType;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
     this.showHighlighting = textOptions.showHighlighting;
+    this.showIllustrations = textOptions.showIllustrations;
     this.paliScript = textOptions.script;
     this.displayedReferences = textOptions.displayedReferences;
 
@@ -859,6 +879,9 @@ export class SCTextBilara extends SCTextCommon {
     }
     if (this.rootTextFirst !== state.textOptions.rootTextFirst) {
       this.rootTextFirst = state.textOptions.rootTextFirst;
+    }
+    if (this.showIllustrations !== state.textOptions.showIllustrations) {
+      this.showIllustrations = state.textOptions.showIllustrations;
     }
   }
 
@@ -1177,8 +1200,18 @@ export class SCTextBilara extends SCTextCommon {
     });
   }
 
+  _checkAVIFSupport() {
+    return new Promise((resolve) => {
+      const avifImage = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=';
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = avifImage;
+    });
+  }
+
   async _addIllustrations() {
-    if (this.chosenTextView === 'sidebyside') {
+    if (this.chosenTextView === 'sidebyside' || !this.showIllustrations) {
       this.querySelectorAll('sc-text-illustration').forEach(element => {
         element.remove();
       });
@@ -1196,10 +1229,20 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _addIllustrationMarkupToSpan(illustration) {
-    const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
+    let segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .translation .text`);
+    if (this._onlyRootTextVisible()) {
+      segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .root .text`);
+    }
+    // const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
     if (segmentElement) {
       segmentElement.appendChild(this._addSCIllustrationElement(illustration));
     }
+  }
+
+  _removeIllustrations() {
+    this.querySelectorAll('sc-text-illustration').forEach(element => {
+      element.remove();
+    });
   }
 
   _addSCIllustrationElement(illustration) {
@@ -1207,6 +1250,8 @@ export class SCTextBilara extends SCTextCommon {
     illustrationElement.className = 'illustration';
     illustrationElement.alt = illustration.alt || '';
     illustrationElement.filename = illustration.filename || '';
+    illustrationElement.creator = illustration.creator || '';
+    illustrationElement.creationDate = illustration.creation_date || '';
     return illustrationElement;
   }
 
@@ -1436,7 +1481,17 @@ export class SCTextBilara extends SCTextCommon {
     this._addWordSpanId('span.word');
     setTimeout(() => {
       this._addPaliLookupEvent('.root .text .word');
+      this._reloadIllustrations();
     }, 0);
+  }
+
+  _reloadIllustrations() {
+    this._removeIllustrations();
+    this._checkAVIFSupport().then(supportsAVIF => {
+      if (supportsAVIF) {
+        this._addIllustrations();
+      }
+    });
   }
 
   async _enableChineseLookup() {
@@ -1455,6 +1510,7 @@ export class SCTextBilara extends SCTextCommon {
     this._addWordSpanId('.root .text .word');
     setTimeout(() => {
       this._addChineseLookupEvent('.root .text .word');
+      this._reloadIllustrations();
     }, 0);
   }
 
