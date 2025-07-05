@@ -36,6 +36,7 @@ const initialState = {
     showHighlighting: false,
     displayedReferences: [],
     rootTextFirst: false,
+    showIllustrations: true,
   },
   colorTheme: 'light',
   selectedNavigationMenuItemId: '',
@@ -207,6 +208,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         textOptions: { ...state.textOptions, rootTextFirst: action.rootTextFirst },
+      };
+    case 'SET_SHOW_ILLUSTRATIONS':
+      return {
+        ...state,
+        textOptions: { ...state.textOptions, showIllustrations: action.showIllustrations },
       };
     case 'SET_NAVIGATION':
       return { ...state, navigationArray: action.navigationArray };

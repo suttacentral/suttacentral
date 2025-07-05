@@ -9,6 +9,7 @@ import { store } from '../../redux-store';
 import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
+import { reduxActions } from './sc-redux-actions';
 
 const DEFAULT_REFERENCE_OPTION = [
   {
@@ -66,7 +67,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         background-color: var(--sc-secondary-background-color);
         box-shadow: var(--sc-shadow-elevation-4dp);
 
-        grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
+        grid-template-columns: 240px 240px 360px 240px 240px 240px 240px 780px 360px;
       }
 
       .tools {
@@ -185,7 +186,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       label {
         color: var(--sc-on-tertiary-primary-text-color);
       }
-      
+
       kbd {
         padding: 3px 6px 2px;
         background-color: var(--sc-icon-color);
@@ -280,6 +281,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this.showHighlighting = textOptions.showHighlighting;
     this.displayedReferences = textOptions.displayedReferences;
     this.rootTextFirst = textOptions.rootTextFirst || false;
+    this.showIllustrations = textOptions.showIllustrations;
   }
 
   stateChanged(state) {
@@ -320,6 +322,9 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     }
     if (this.showHighlighting !== state.textOptions.showHighlighting) {
       this.showHighlighting = state.textOptions.showHighlighting;
+    }
+    if (this.showIllustrations !== state.textOptions.showIllustrations) {
+      this.showIllustrations = state.textOptions.showIllustrations;
     }
   }
 
@@ -436,7 +441,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       <section>
         ${this.noteDisplayTypeTemplate} ${this.textViewTemplate} ${this.paliLookupTemplate}
         ${this.chineseLookupTemplate} ${this.paliScriptsTemplate} ${this.showHighlightingTemplate}
-        ${this.referenceDisplayTypeTemplate}
+        ${this.showIllustrationsTemplate} ${this.referenceDisplayTypeTemplate}
       </section>
     `;
   }
@@ -778,6 +783,32 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   _onShowHighlightingChanged(e) {
     this.actions.setShowHighlighting(e.target.checked);
     const msg = e.target.checked ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
+    this._showToast(this.localize(`viewoption:${msg}`));
+  }
+
+  get showIllustrationsTemplate() {
+    return html`
+      <div class="tools">
+        <details>
+          <summary>${this.localize('viewoption:showIllustrations')}</summary>
+          <p>${this.localize('viewoption:showIllustrationsDescription')}</p>
+        </details>
+        <div class="form-controls">
+          <label>
+            <md-checkbox
+              ?checked=${this.showIllustrations}
+              @change=${this._onShowIllustrationsChanged}
+            ></md-checkbox>
+            ${this.localize('viewoption:showIllustrationsTitle')}
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  _onShowIllustrationsChanged(e) {
+    reduxActions.changeShowIllustrationsState(e.target.checked);
+    const msg = e.target.checked ? 'showIllustrationsEnabled' : 'showIllustrationsDisabled';
     this._showToast(this.localize(`viewoption:${msg}`));
   }
 
