@@ -48,6 +48,7 @@ export class SCTextIllustration extends LitElement {
     .illustration-container {
       position: relative;
       transition: opacity 0.3s ease;
+      margin: 0px -1em;
     }
 
     .illustration-container.loading {
@@ -57,14 +58,12 @@ export class SCTextIllustration extends LitElement {
     .illustration-wrapper {
       position: relative;
       overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      background: var(--sc-secondary-background-color, #f8f9fa);
     }
 
     .illustration-image {
-      width: 100%;
+      width: auto;
       height: auto;
+      max-height: 480px;
       display: block;
       transition: opacity 0.3s ease;
       cursor: pointer;
@@ -246,7 +245,8 @@ export class SCTextIllustration extends LitElement {
     }
 
     .illustration-wrapper picture {
-      display: block;
+      display: flex;
+      justify-content: center;
       margin: 0;
       padding: 0;
     }
@@ -263,12 +263,11 @@ export class SCTextIllustration extends LitElement {
 
     figcaption {
       margin: 0;
-      padding: 0.75rem;
-      font-size: var(--sc-font-size-xs, 0.875rem);
-      color: var(--sc-secondary-text-color, #666);
-      line-height: 1.4;
-      background: var(--sc-tertiary-background-color, #fff);
-      border-top: 1px solid var(--sc-border-color, #e0e0e0);
+      padding: .25rem 0.75rem;
+      text-align: center;
+      font-size: var(--sc-font-size-xs);
+      font-family: var(--sc-sans-font);
+      color: var(--sc-on-primary-secondary-text-color);
 
       user-select: none;
       -webkit-user-select: none;
@@ -284,12 +283,15 @@ export class SCTextIllustration extends LitElement {
 
     figcaption .creator {
       font-weight: 500;
-      color: var(--sc-primary-text-color, #333);
     }
 
     figcaption .creation_date {
-      color: var(--sc-tertiary-text-color, #888);
       font-style: italic;
+    }
+
+        figcaption .creation_date::before {
+      content: '• ';
+      color: var(--sc-on-primary-tertiary-text-color);
     }
 
     figcaption * {
