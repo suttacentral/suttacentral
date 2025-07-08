@@ -538,7 +538,7 @@ export class SCTextBilara extends SCTextCommon {
       element.onmouseover = e => {
         e.currentTarget.style.overflow = 'auto';
         e.currentTarget.style.height = 'auto';
-        e.currentTarget.style.zIndex = '1100';
+        e.currentTarget.style.zIndex = '99';
       };
       element.onmouseleave = e => {
         e.currentTarget.style.overflow = 'auto';

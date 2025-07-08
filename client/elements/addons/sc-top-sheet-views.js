@@ -67,7 +67,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         background-color: var(--sc-secondary-background-color);
         box-shadow: var(--sc-shadow-elevation-4dp);
 
-        grid-template-columns: 240px 240px 360px 240px 240px 240px 240px 780px 360px;
+        grid-template-columns: 240px 240px 360px 240px 240px 240px 780px 360px;
       }
 
       .tools {
@@ -441,7 +441,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       <section>
         ${this.noteDisplayTypeTemplate} ${this.textViewTemplate} ${this.paliLookupTemplate}
         ${this.chineseLookupTemplate} ${this.paliScriptsTemplate} ${this.showHighlightingTemplate}
-        ${this.showIllustrationsTemplate} ${this.referenceDisplayTypeTemplate}
+        ${this.referenceDisplayTypeTemplate}
       </section>
     `;
   }
@@ -484,6 +484,16 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
                   </label>
                 `
               )}
+
+              <div class="form-controls">
+                <label>
+                  <md-checkbox
+                    ?checked=${this.showIllustrations}
+                    @change=${this._onShowIllustrationsChanged}
+                  ></md-checkbox>
+                  ${this.localize('viewoption:showIllustrationsTitle')}
+                </label>
+              </div>
             </div>
           </div>
         `
@@ -784,26 +794,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this.actions.setShowHighlighting(e.target.checked);
     const msg = e.target.checked ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
     this._showToast(this.localize(`viewoption:${msg}`));
-  }
-
-  get showIllustrationsTemplate() {
-    return html`
-      <div class="tools">
-        <details>
-          <summary>${this.localize('viewoption:showIllustrations')}</summary>
-          <p>${this.localize('viewoption:showIllustrationsDescription')}</p>
-        </details>
-        <div class="form-controls">
-          <label>
-            <md-checkbox
-              ?checked=${this.showIllustrations}
-              @change=${this._onShowIllustrationsChanged}
-            ></md-checkbox>
-            ${this.localize('viewoption:showIllustrationsTitle')}
-          </label>
-        </div>
-      </div>
-    `;
   }
 
   _onShowIllustrationsChanged(e) {
