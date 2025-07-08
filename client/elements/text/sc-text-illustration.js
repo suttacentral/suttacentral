@@ -55,7 +55,7 @@ export class SCTextIllustration extends LitElement {
       opacity: 0.7;
     }
 
-    .illustration-wrapper {
+    .illustration-container {
       position: relative;
       overflow: hidden;
     }
@@ -92,8 +92,8 @@ export class SCTextIllustration extends LitElement {
       z-index: 10;
     }
 
-    .illustration-wrapper:hover .illustration-controls,
-    .illustration-wrapper:focus-within .illustration-controls {
+    .illustration-container:hover .illustration-controls,
+    .illustration-container:focus-within .illustration-controls {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
@@ -106,8 +106,8 @@ export class SCTextIllustration extends LitElement {
         transform: translateY(0);
       }
 
-      .illustration-wrapper:hover .illustration-controls,
-      .illustration-wrapper:focus-within .illustration-controls {
+      .illustration-container:hover .illustration-controls,
+      .illustration-container:focus-within .illustration-controls {
         opacity: 1;
       }
     }
@@ -239,12 +239,12 @@ export class SCTextIllustration extends LitElement {
       outline-offset: 2px;
     }
 
-    .illustration-wrapper figure {
+    .illustration-container figure {
       margin: 0;
       padding: 0;
     }
 
-    .illustration-wrapper picture {
+    .illustration-container picture {
       display: flex;
       justify-content: center;
       margin: 0;
@@ -330,43 +330,41 @@ export class SCTextIllustration extends LitElement {
     }
 
     return html`
-      <div class="illustration-wrapper">
-        <figure>
-          <picture>
-            <img
-              type="image/avif"
-              class="illustration-image ${this._imageLoaded ? 'loaded' : 'loading'}"
-              src="${this.imageUrl}"
-              alt="${this.alt || this.caption || 'Illustration'}"
-              width="${this.width || ''}"
-              height="${this.height || ''}"
-              loading="${this.lazyLoad ? 'lazy' : 'eager'}"
-              @load="${this._onImageLoad}"
-              @error="${this._onImageError}"
-              tabindex="0"
-              @keydown="${this._onImageKeydown}"
-            />
-          </picture>
-          <div class="illustration-controls">
-            <button 
-              class="control-symbol"
-              @click="${this._onControlClick}"
-              @touchstart="${this._onControlTouch}"
-              title="Image options"
-              aria-label="Image options"
-            >
-              ⛒
-            </button>
-          </div>
+      <figure>
+        <picture>
+          <img
+            type="image/avif"
+            class="illustration-image ${this._imageLoaded ? 'loaded' : 'loading'}"
+            src="${this.imageUrl}"
+            alt="${this.alt || this.caption || 'Illustration'}"
+            width="${this.width || ''}"
+            height="${this.height || ''}"
+            loading="${this.lazyLoad ? 'lazy' : 'eager'}"
+            @load="${this._onImageLoad}"
+            @error="${this._onImageError}"
+            tabindex="0"
+            @keydown="${this._onImageKeydown}"
+          />
+        </picture>
+        <div class="illustration-controls">
+          <button 
+            class="control-symbol"
+            @click="${this._onControlClick}"
+            @touchstart="${this._onControlTouch}"
+            title="Image options"
+            aria-label="Image options"
+          >
+            ⛒
+          </button>
+        </div>
 
-          ${this.showCaption && this.caption ? html`
-            <figcaption>
-              <span class='creator'>${this.creator}</span>
-              <span class='creation_date'>${this.creationDate}</span>
-            </figcaption>
-          ` : ''}
-        </figure>
-      </div>
+        ${this.showCaption && this.caption ? html`
+          <figcaption>
+            <span class='creator'>${this.creator}</span>
+            <span class='creation_date'>${this.creationDate}</span>
+          </figcaption>
+        ` : ''}
+      </figure>
     `;
   }
 
