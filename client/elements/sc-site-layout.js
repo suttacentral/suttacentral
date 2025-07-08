@@ -13,11 +13,14 @@ import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
-import { SCCriticalFontStyles } from './styles/sc-home-font-styles';
+// import { SCCriticalFontStyles } from './styles/sc-home-font-styles';
+import { SCFontStyles } from './styles/sc-font-styles';
 import rafThrottle from '../utils/rafThrottle';
 import { getURLParam } from './addons/sc-functions-miscellaneous';
 import { reduxActions } from './addons/sc-redux-actions';
 import { API_ROOT } from '../constants';
+import { isMobileBrowser } from './addons/sc-functions-miscellaneous';
+import { fontLazyLoader } from '../utils/sc-font-lazy-loader';
 
 import { typographyI18nStyles } from './styles/sc-typography-i18n-styles';
 
@@ -55,7 +58,21 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.toolbarPosition = storeState.toolbarPosition;
     this.pageLoaded = false;
     this.#checkAndChangeSiteLanguage();
+    this.fontsLoaded = false;
+    // if (!isMobileBrowser()) {
+    //   this.loadFontsAsync();
+    // }
   }
+
+  async loadFontsAsync() {
+    await this.updateComplete;
+    // Wait one more RAF cycle to ensure first render
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    // It is now safe to load fonts
+    await fontLazyLoader.loadFontsWhenIdle();
+    this.fontsLoaded = true;
+    this.requestUpdate();
+  }  
 
   #checkAndChangeSiteLanguage() {
     const { siteLanguage } = store.getState();
@@ -318,7 +335,8 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     window.addEventListener('load', () => {
       this.pageLoaded = true;
       this._createGlobalStylesheet(SCUtilityStyles);
-      this._createGlobalStylesheet(SCCriticalFontStyles);
+      this._createGlobalStylesheet(SCFontStyles);
+      // this._createGlobalStylesheet(SCCriticalFontStyles);
       this._calculateScrollbarWidth();
     });
   }
