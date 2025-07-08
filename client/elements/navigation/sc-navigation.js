@@ -42,9 +42,9 @@ export class SCNavigation extends LitLocalized(LitElement) {
     this.currentUid = this._getRoutePathLastItem();
     this.creatorOfPublications = new Map();
     this.fontsLoaded = false;
-    if (isMobileBrowser) {
-      this.loadFontsAsync();
-    }
+    // if (isMobileBrowser) {
+    //   this.loadFontsAsync();
+    // }
   }
 
   async loadFontsAsync() {
