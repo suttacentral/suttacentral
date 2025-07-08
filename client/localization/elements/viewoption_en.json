@@ -42,5 +42,10 @@
   "viewoption:textViewDescription": "Some texts on SuttaCentral are “segmented”; the original text and translation are approximately matched line by line. For such texts, see both root text and translation.",
   "viewoption:textViewDisabled": "Pali-English view is now disabled.",
   "viewoption:textViewEnabled": "{textView}-view is now enabled on applicable texts.",
-  "viewoption:viewRoot": "View root text with translation"
+  "viewoption:viewRoot": "View root text with translation",
+  "viewoption:showIllustrations": "Show Illustrations",
+  "viewoption:showIllustrationsDescription": "Displaying illustrations in segmented text pages.",
+  "viewoption:showIllustrationsDisabled": "Show Illustrations is now disabled.",
+  "viewoption:showIllustrationsEnabled": "Show Illustrations is now enabled.",
+  "viewoption:showIllustrationsTitle": "Show Illustrations"
 }

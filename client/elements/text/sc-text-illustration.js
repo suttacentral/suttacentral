@@ -15,7 +15,7 @@ export class SCTextIllustration extends LitElement {
     errorMessage: { type: String },
     lazyLoad: { type: Boolean },
     _imageLoaded: { type: Boolean, state: true },
-    _showControls: { type: Boolean, state: true }, // 新增：控制符号显示
+    _showControls: { type: Boolean, state: true },
     creator: { type: String },
     creationDate: { type: String },
   };
@@ -289,7 +289,7 @@ export class SCTextIllustration extends LitElement {
       font-style: italic;
     }
 
-        figcaption .creation_date::before {
+    figcaption .creation_date::before {
       content: '• ';
       color: var(--sc-on-primary-tertiary-text-color);
     }
@@ -414,6 +414,7 @@ export class SCTextIllustration extends LitElement {
     e.preventDefault();
     e.stopPropagation();
     this._showControls = true;
+    this.style.display = 'none';
     clearTimeout(this._hideControlsTimeout);
     this._hideControlsTimeout = setTimeout(() => {
       this._showControls = false;
