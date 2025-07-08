@@ -13,7 +13,8 @@ import { store } from '../redux-store';
 
 import { SCSiteLayoutStyles } from './styles/sc-site-layout-styles';
 import { SCUtilityStyles } from './styles/sc-utility-styles';
-import { SCCriticalFontStyles } from './styles/sc-home-font-styles';
+// import { SCCriticalFontStyles } from './styles/sc-home-font-styles';
+import { SCFontStyles } from './styles/sc-font-styles';
 import rafThrottle from '../utils/rafThrottle';
 import { getURLParam } from './addons/sc-functions-miscellaneous';
 import { reduxActions } from './addons/sc-redux-actions';
@@ -58,9 +59,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     this.pageLoaded = false;
     this.#checkAndChangeSiteLanguage();
     this.fontsLoaded = false;
-    if (!isMobileBrowser()) {
-      this.loadFontsAsync();
-    }
+    // if (!isMobileBrowser()) {
+    //   this.loadFontsAsync();
+    // }
   }
 
   async loadFontsAsync() {
@@ -334,7 +335,8 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     window.addEventListener('load', () => {
       this.pageLoaded = true;
       this._createGlobalStylesheet(SCUtilityStyles);
-      this._createGlobalStylesheet(SCCriticalFontStyles);
+      this._createGlobalStylesheet(SCFontStyles);
+      // this._createGlobalStylesheet(SCCriticalFontStyles);
       this._calculateScrollbarWidth();
     });
   }
