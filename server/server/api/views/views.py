@@ -1055,6 +1055,13 @@ class SegmentedSutta(Resource):
         data = {k: json_load(v) for k, v in result.items()}
         data['keys_order'] = list(data['html_text'].keys())
 
+        illustrations = db.aql.execute(
+            'FOR doc IN illustrations FILTER doc.uid == @uid RETURN doc',
+            bind_vars={'uid': uid}
+        )
+        if illustrations := list(illustrations):
+            data['illustrations'] = illustrations or {}
+
         return data, 200
 
 
