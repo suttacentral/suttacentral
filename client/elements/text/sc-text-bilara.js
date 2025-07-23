@@ -256,6 +256,10 @@ export class SCTextBilara extends SCTextCommon {
 
       this._scheduleNonCriticalUpdates();
 
+      setTimeout(() => {
+        this._recalculateCommentSpanHeight();
+      }, 0);
+
       this.actions.changeSuttaMetaText('');
       if (!this.isRangeSutta) {
         this.actions.changeSuttaPublicationInfo({
@@ -290,7 +294,7 @@ export class SCTextBilara extends SCTextCommon {
     this._prepareNavigation();
     this._setupSelectionEvents();
     this._updateURLSearchParams();
-    this._recalculateCommentSpanHeight();
+    // this._recalculateCommentSpanHeight();
   }
 
   _isBilingualView() {
