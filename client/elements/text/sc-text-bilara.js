@@ -252,11 +252,12 @@ export class SCTextBilara extends SCTextCommon {
       this._addVariantText();
       this._addCommentText();
 
-      this._updateTextViewStylesBasedOnState();
+      // this._updateTextViewStylesBasedOnState();
 
       this._scheduleNonCriticalUpdates();
 
       setTimeout(() => {
+        this._updateTextViewStylesBasedOnState();
         this._recalculateCommentSpanHeight();
       }, 0);
 
