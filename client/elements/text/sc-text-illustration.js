@@ -15,7 +15,6 @@ export class SCTextIllustration extends LitElement {
     errorMessage: { type: String },
     lazyLoad: { type: Boolean },
     _imageLoaded: { type: Boolean, state: true },
-    _showControls: { type: Boolean, state: true },
     creator: { type: String },
     creationDate: { type: String },
   };
@@ -34,7 +33,6 @@ export class SCTextIllustration extends LitElement {
     this.showCaption = true;
     this.lazyLoad = true;
     this._imageLoaded = false;
-    this._showControls = false;
     this.creator = '';
     this.creationDate = '';
   }
@@ -79,88 +77,6 @@ export class SCTextIllustration extends LitElement {
 
     .illustration-image.loaded {
       opacity: 1;
-    }
-
-    .illustration-controls {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      opacity: 0;
-      transform: translateY(-4px);
-      transition: all 0.2s ease-in-out;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .illustration-container:hover .illustration-controls,
-    .illustration-container:focus-within .illustration-controls {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    @media (hover: none) and (pointer: coarse) {
-      .illustration-controls {
-        opacity: 0.7;
-        pointer-events: auto;
-        transform: translateY(0);
-      }
-
-      .illustration-container:hover .illustration-controls,
-      .illustration-container:focus-within .illustration-controls {
-        opacity: 1;
-      }
-    }
-
-    .control-symbol {
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-    }
-
-    .control-symbol:hover {
-      background: rgba(0, 0, 0, 0.9);
-      transform: scale(1.05);
-    }
-
-    .control-symbol:focus {
-      outline: 2px solid var(--sc-primary-color, #1976d2);
-      outline-offset: 2px;
-    }
-
-    .control-symbol:active {
-      transform: scale(0.95);
-    }
-
-    @media (max-width: 768px) {
-      .control-symbol {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
-      }
-
-      .illustration-controls {
-        top: 12px;
-        right: 12px;
-      }
     }
 
     .illustration-skeleton {
@@ -255,10 +171,6 @@ export class SCTextIllustration extends LitElement {
       .illustration-container {
         break-inside: avoid;
       }
-
-      .illustration-controls {
-        display: none !important;
-      }
     }
 
     figcaption {
@@ -300,13 +212,6 @@ export class SCTextIllustration extends LitElement {
       -moz-user-select: none;
       -ms-user-select: none;
     }
-
-    .illustration-controls {
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-    }
   `;
 
   willUpdate(changedProperties) {
@@ -343,20 +248,8 @@ export class SCTextIllustration extends LitElement {
             @load="${this._onImageLoad}"
             @error="${this._onImageError}"
             tabindex="0"
-            @keydown="${this._onImageKeydown}"
           />
         </picture>
-        <div class="illustration-controls">
-          <button 
-            class="control-symbol"
-            @click="${this._onControlClick}"
-            @touchstart="${this._onControlTouch}"
-            title="Image options"
-            aria-label="Image options"
-          >
-            ⛒
-          </button>
-        </div>
 
         ${this.showCaption && this.caption ? html`
           <figcaption>
@@ -393,37 +286,6 @@ export class SCTextIllustration extends LitElement {
         ` : ''}
       </div>
     `;
-  }
-
-  _onControlClick(e) {
-    e.stopPropagation();
-    this.style.display = 'none';
-    this.dispatchEvent(new CustomEvent('illustration-control-click', {
-      detail: { 
-        filename: this.filename,
-        imageUrl: this.imageUrl
-      },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  _onControlTouch(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    this._showControls = true;
-    this.style.display = 'none';
-    clearTimeout(this._hideControlsTimeout);
-    this._hideControlsTimeout = setTimeout(() => {
-      this._showControls = false;
-    }, 3000);
-  }
-
-  _onImageKeydown(e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this._onControlClick(e);
-    }
   }
 
   disconnectedCallback() {
