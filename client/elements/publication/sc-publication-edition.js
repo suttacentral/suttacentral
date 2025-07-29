@@ -211,6 +211,19 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     return 'https://github.com/suttacentral/editions/tree/main';
   }
 
+  _createMetaData() {
+    const description = `${this.editionDetail[0].root_name} — ${this.editionInfo.publication?.creator_name}`;
+    document.dispatchEvent(
+      new CustomEvent('metadata', {
+        detail: {
+          pageTitle: description,
+          title: description,
+          description,
+        },
+      })
+    );
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -464,6 +477,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           <section>${this.#publicationDetailTemplate()}</section>
         </article>
       </main>
+      ${this._createMetaData()}
     `;
   }
 }
