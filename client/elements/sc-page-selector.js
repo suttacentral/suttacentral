@@ -749,6 +749,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
     this._setViewModeButtonDisplayState();
     this.#setSearchOptionsButtonDisplayState();
+    reduxActions.changeDisplayChineseConverterState(false);
     this._setActionItemsDisplayState();
     this._setTitleState();
   }
