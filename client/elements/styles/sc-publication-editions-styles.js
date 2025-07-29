@@ -146,10 +146,17 @@ export const SCPublicationEditionsStyles = css`
   .down-all {
     max-width: 360px;
     margin: 0;
+    margin-bottom: 1em;
     padding: 24px;
 
     border: 1px solid var(--sc-border-color);
     border-radius: 24px;
+  }
+
+  .link-button-container {
+    display: flex;
+    margin-top: 1em;
+    justify-content: center;
   }
 
   @media screen and (max-width: 1260px) {
