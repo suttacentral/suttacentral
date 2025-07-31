@@ -40,13 +40,12 @@ export class SCTextIllustration extends LitElement {
   static styles = css`
     :host {
       display: block;
-      margin: 1rem 0;
+      margin: 0;
     }
 
     .illustration-container {
       position: relative;
       transition: opacity 0.3s ease;
-      margin: 0px -1em;
     }
 
     .illustration-container.loading {
@@ -55,20 +54,23 @@ export class SCTextIllustration extends LitElement {
 
     .illustration-container {
       position: relative;
-      overflow: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    figure {
+      margin: 1.5rem 0;
+      width: fit-content;
     }
 
     .illustration-image {
       width: auto;
       height: auto;
       max-height: 480px;
+      max-width: calc(100% + 2rem);
+      margin: 0 -1rem;
       display: block;
       transition: opacity 0.3s ease;
-      cursor: pointer;
-    }
-
-    .illustration-image:hover {
-      opacity: 0.9;
     }
 
     .illustration-image.loading {
@@ -114,57 +116,6 @@ export class SCTextIllustration extends LitElement {
     .illustration-error-icon {
       margin-bottom: 0.5rem;
       opacity: 0.7;
-    }
-
-    :host([position="left"]) {
-      float: left;
-      margin-right: 1.5rem;
-      margin-bottom: 1rem;
-      max-width: 40%;
-    }
-
-    :host([position="right"]) {
-      float: right;
-      margin-left: 1.5rem;
-      margin-bottom: 1rem;
-      max-width: 40%;
-    }
-
-    :host([position="center"]) {
-      margin: 2rem auto;
-      text-align: center;
-      max-width: 80%;
-    }
-
-    :host([position="full"]) {
-      margin: 2rem 0;
-      width: 100%;
-    }
-
-    @media (max-width: 768px) {
-      :host([position="left"]),
-      :host([position="right"]) {
-        float: none;
-        margin: 1rem 0;
-        max-width: 100%;
-      }
-    }
-
-    .illustration-image:focus {
-      outline: 2px solid var(--sc-primary-color, #1976d2);
-      outline-offset: 2px;
-    }
-
-    .illustration-container figure {
-      margin: 0;
-      padding: 0;
-    }
-
-    .illustration-container picture {
-      display: flex;
-      justify-content: center;
-      margin: 0;
-      padding: 0;
     }
 
     @media print {
