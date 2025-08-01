@@ -17,6 +17,7 @@ export class SCTextIllustration extends LitElement {
     _imageLoaded: { type: Boolean, state: true },
     creator: { type: String },
     creationDate: { type: String },
+    _isPrintMode: { type: Boolean, state: true }
   };
 
   constructor() {
@@ -35,6 +36,7 @@ export class SCTextIllustration extends LitElement {
     this._imageLoaded = false;
     this.creator = '';
     this.creationDate = '';
+    this._isPrintMode = false;
   }
 
   static styles = css`
@@ -122,6 +124,17 @@ export class SCTextIllustration extends LitElement {
       .illustration-container {
         break-inside: avoid;
       }
+
+      .illustration-image {
+        opacity: 1 !important;
+        max-width: 100% !important;
+        height: auto !important;
+        page-break-inside: avoid;
+      }
+
+      .illustration-skeleton {
+        display: none !important;
+      }
     }
 
     figcaption {
@@ -195,7 +208,7 @@ export class SCTextIllustration extends LitElement {
             alt="${this.alt || this.caption || 'Illustration'}"
             width="${this.width || ''}"
             height="${this.height || ''}"
-            loading="${this.lazyLoad ? 'lazy' : 'eager'}"
+            loading="${this._shouldUseLazyLoading ? 'lazy' : 'eager'}"
             @load="${this._onImageLoad}"
             @error="${this._onImageError}"
             tabindex="0"
@@ -239,11 +252,44 @@ export class SCTextIllustration extends LitElement {
     `;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this._handleBeforePrint = this._handleBeforePrint.bind(this);
+    this._handleAfterPrint = this._handleAfterPrint.bind(this);
+
+    window.addEventListener('beforeprint', this._handleBeforePrint);
+    window.addEventListener('afterprint', this._handleAfterPrint);
+
+    this._printMediaQuery = window.matchMedia('print');
+    this._printMediaQuery.addListener(this._handlePrintMediaChange.bind(this));
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (this._hideControlsTimeout) {
-      clearTimeout(this._hideControlsTimeout);
+    window.removeEventListener('beforeprint', this._handleBeforePrint);
+    window.removeEventListener('afterprint', this._handleAfterPrint);
+    if (this._printMediaQuery) {
+      this._printMediaQuery.removeListener(this._handlePrintMediaChange.bind(this));
     }
+  }
+
+  _handleBeforePrint() {
+    this._isPrintMode = true;
+    this.requestUpdate();
+  }
+
+  _handleAfterPrint() {
+    this._isPrintMode = false;
+    this.requestUpdate();
+  }
+
+  _handlePrintMediaChange(e) {
+    this._isPrintMode = e.matches;
+    this.requestUpdate();
+  }
+
+  get _shouldUseLazyLoading() {
+    return this.lazyLoad && !this._isPrintMode;
   }
 
   _onImageLoad() {
