@@ -43,6 +43,7 @@ export class SCTextBilara extends SCTextCommon {
     suttaReference: { type: Object },
     suttaComment: { type: Object },
     suttaVariant: { type: Object },
+    suttaIllustrations: { type: Array },
     chosenTextView: { type: String },
     displayedReferences: { type: Array },
     chosenNoteDisplayType: { type: String },
@@ -61,6 +62,7 @@ export class SCTextBilara extends SCTextCommon {
     referencesDisplayStyles: { type: Object },
     notesDisplayStyles: { type: Object },
     showHighlighting: { type: Boolean },
+    showIllustrations: { type: Boolean },
     rootEdition: { type: Array },
     isRangeSutta: { type: Boolean },
     transformedSuttaId: { type: String },
@@ -251,6 +253,12 @@ export class SCTextBilara extends SCTextCommon {
       }
       this._addVariantText();
       this._addCommentText();
+
+      this._checkAVIFSupport().then(supportsAVIF => {
+        if (supportsAVIF) {
+          this._addIllustrations();
+        }
+      });
 
       // this._updateTextViewStylesBasedOnState();
 
@@ -535,7 +543,7 @@ export class SCTextBilara extends SCTextCommon {
       element.onmouseover = e => {
         e.currentTarget.style.overflow = 'auto';
         e.currentTarget.style.height = 'auto';
-        e.currentTarget.style.zIndex = '1100';
+        e.currentTarget.style.zIndex = '99';
       };
       element.onmouseleave = e => {
         e.currentTarget.style.overflow = 'auto';
@@ -581,6 +589,9 @@ export class SCTextBilara extends SCTextCommon {
       }
     }
     if (changedProps.has('rootTextFirst') && this.chosenTextView === 'linebyline') {
+      shouldChangeTextView = true;
+    }
+    if (changedProps.has('showIllustrations')) {
       shouldChangeTextView = true;
     }
 
@@ -734,6 +745,7 @@ export class SCTextBilara extends SCTextCommon {
     this.chosenNoteDisplayType = textOptions.noteDisplayType;
     this.chosenTextView = textOptions.segmentedSuttaTextView;
     this.showHighlighting = textOptions.showHighlighting;
+    this.showIllustrations = textOptions.showIllustrations;
     this.paliScript = textOptions.script;
     this.displayedReferences = textOptions.displayedReferences;
 
@@ -872,6 +884,9 @@ export class SCTextBilara extends SCTextCommon {
     }
     if (this.rootTextFirst !== state.textOptions.rootTextFirst) {
       this.rootTextFirst = state.textOptions.rootTextFirst;
+    }
+    if (this.showIllustrations !== state.textOptions.showIllustrations) {
+      this.showIllustrations = state.textOptions.showIllustrations;
     }
   }
 
@@ -1190,6 +1205,61 @@ export class SCTextBilara extends SCTextCommon {
     });
   }
 
+  _checkAVIFSupport() {
+    return new Promise((resolve) => {
+      const avifImage = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=';
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = avifImage;
+    });
+  }
+
+  async _addIllustrations() {
+    if (this.chosenTextView === 'sidebyside' || !this.showIllustrations) {
+      this.querySelectorAll('sc-text-illustration').forEach(element => {
+        element.remove();
+      });
+      return;
+    }
+
+    await import('../text/sc-text-illustration.js');
+
+    if (!this.suttaIllustrations || this._articleElement().length === 0) {
+      return;
+    }
+    this.suttaIllustrations.forEach(illustration => {
+      this._addIllustrationMarkupToSpan(illustration);
+    });
+  }
+
+  _addIllustrationMarkupToSpan(illustration) {
+    let segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .translation .text`);
+    if (this._onlyRootTextVisible()) {
+      segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .root .text`);
+    }
+    // const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
+    if (segmentElement) {
+      segmentElement.appendChild(this._addSCIllustrationElement(illustration));
+    }
+  }
+
+  _removeIllustrations() {
+    this.querySelectorAll('sc-text-illustration').forEach(element => {
+      element.remove();
+    });
+  }
+
+  _addSCIllustrationElement(illustration) {
+    const illustrationElement = document.createElement('sc-text-illustration');
+    illustrationElement.className = 'illustration';
+    illustrationElement.alt = illustration.alt || '';
+    illustrationElement.filename = illustration.filename || '';
+    illustrationElement.creator = illustration.creator || '';
+    illustrationElement.creationDate = illustration.creation_date || '';
+    return illustrationElement;
+  }
+
   _initPtsReferenceAnchor(anchor, refStr) {
     anchor.id = refStr;
     anchor.href = `#${refStr}`;
@@ -1416,7 +1486,17 @@ export class SCTextBilara extends SCTextCommon {
     this._addWordSpanId('span.word');
     setTimeout(() => {
       this._addPaliLookupEvent('.root .text .word');
+      this._reloadIllustrations();
     }, 0);
+  }
+
+  _reloadIllustrations() {
+    this._removeIllustrations();
+    this._checkAVIFSupport().then(supportsAVIF => {
+      if (supportsAVIF) {
+        this._addIllustrations();
+      }
+    });
   }
 
   async _enableChineseLookup() {
@@ -1435,6 +1515,7 @@ export class SCTextBilara extends SCTextCommon {
     this._addWordSpanId('.root .text .word');
     setTimeout(() => {
       this._addChineseLookupEvent('.root .text .word');
+      this._reloadIllustrations();
     }, 0);
   }
 

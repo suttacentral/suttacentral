@@ -151,6 +151,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
             .isRangeSutta=${this.isRangeSutta}
             .range_uid=${this.range_uid}
             .transformedSuttaId=${this.transformedSuttaId}
+            .suttaIllustrations=${this.suttaIllustrations}
           ></sc-text-bilara>
         `;
   }
@@ -504,6 +505,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       this.suttaReference = bilaraData.reference_text;
       this.suttaComment = bilaraData.comment_text;
       this.suttaVariant = bilaraData.variant_text;
+      this.suttaIllustrations = bilaraData.illustrations || [];
     } catch (error) {
       this.lastError = error;
     }

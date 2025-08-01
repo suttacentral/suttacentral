@@ -302,6 +302,14 @@ def process_alias(db, additional_info_dir):
     db.collection('alias').import_bulk_logged(alias_info, wipe=True)
 
 
+def process_illustrations(db, additional_info_dir):
+    print('Loading illustrations')
+    illustrations_file = additional_info_dir / 'illustrations.json'
+    illustrations_info = json_load(illustrations_file)
+    db['illustrations'].truncate()
+    db.collection('illustrations').import_bulk_logged(illustrations_info, wipe=True)
+
+
 def process_prioritize(db, additional_info_dir):
     print('Loading prioritize')
     prioritize_file = additional_info_dir / 'prioritize.json'
@@ -775,6 +783,9 @@ def run(no_pull: bool = False) -> StagePrinter:
 
     printer.print_stage("Loading alias from additional_info")
     process_alias(db, additional_info_dir)
+
+    printer.print_stage("Loading illustrations from additional_info")
+    process_illustrations(db, additional_info_dir)
 
     printer.print_stage("Updating text_extra_info")
     update_text_extra_info()
