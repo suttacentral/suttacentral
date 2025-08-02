@@ -517,7 +517,7 @@ export class SCTextBilara extends SCTextCommon {
       }
       this.commentSpanRectInfo.set(element.id, element.style.height);
     });
-    this._addCommentSpanMouseEvent();
+    // this._addCommentSpanMouseEvent();
   }
 
   _resetCommentSpan() {
