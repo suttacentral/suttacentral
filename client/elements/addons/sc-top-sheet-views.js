@@ -669,9 +669,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     const scTopsheetViews = document.querySelector('sc-site-layout').querySelector('#setting_menu');
     const selectedScript = scriptIdentifiers[e.currentTarget.selectedIndex].script;
     const selectedLanguage = scriptIdentifiers[e.currentTarget.selectedIndex].language;
-    const selPaliScriptsElement = scTopsheetViews.shadowRoot.querySelector('#selPaliScripts');
-    selPaliScriptsElement.classList.remove(...this.classList);
-    selPaliScriptsElement.classList.add(`${selectedScript.toLowerCase()}-script`);
     scTopsheetViews.actions.choosePaliTextScript(selectedScript);
     const scriptChangeMessage = scTopsheetViews.localizeEx(
       'viewoption:scriptChanged',
