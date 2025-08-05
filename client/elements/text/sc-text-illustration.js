@@ -180,7 +180,7 @@ export class SCTextIllustration extends LitElement {
 
   willUpdate(changedProperties) {
     if (changedProperties.has('filename')) {
-      this.imageUrl = "/img/illustrations/" + this.filename + '.avif';
+      this.imageUrl = "/img/optimized-illustrations/" + this.filename + '.avif';
       this.caption = this.alt || this.caption || '';
     }
   }

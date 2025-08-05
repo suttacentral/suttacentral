@@ -1231,15 +1231,23 @@ export class SCTextBilara extends SCTextCommon {
     this.suttaIllustrations.forEach(illustration => {
       this._addIllustrationMarkupToSpan(illustration);
     });
+
+    this._ensureIllustrationsAtEnd();
+  }
+
+  _ensureIllustrationsAtEnd() {
+    const illustrations = this.querySelectorAll('sc-text-illustration');
+    illustrations.forEach(illustration => {
+      const parent = illustration.parentElement;
+      if (parent && parent.lastElementChild !== illustration) {
+         parent.appendChild(illustration);
+      }
+    });
   }
 
   _addIllustrationMarkupToSpan(illustration) {
-    let segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .translation .text`);
-    if (this._onlyRootTextVisible()) {
-      segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .root .text`);
-    }
-    // const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
-    if (segmentElement) {
+    const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
+    if (segmentElement && !segmentElement.querySelector('sc-text-illustration')) {
       segmentElement.appendChild(this._addSCIllustrationElement(illustration));
     }
   }
