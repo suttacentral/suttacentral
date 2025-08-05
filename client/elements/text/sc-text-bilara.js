@@ -1231,6 +1231,18 @@ export class SCTextBilara extends SCTextCommon {
     this.suttaIllustrations.forEach(illustration => {
       this._addIllustrationMarkupToSpan(illustration);
     });
+
+    this._ensureIllustrationsAtEnd();
+  }
+
+  _ensureIllustrationsAtEnd() {
+    const illustrations = this.querySelectorAll('sc-text-illustration');
+    illustrations.forEach(illustration => {
+      const parent = illustration.parentElement;
+      if (parent && parent.lastElementChild !== illustration) {
+         parent.appendChild(illustration);
+      }
+    });
   }
 
   _addIllustrationMarkupToSpan(illustration) {
