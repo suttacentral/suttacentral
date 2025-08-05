@@ -1234,11 +1234,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _addIllustrationMarkupToSpan(illustration) {
-    let segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .translation .text`);
-    if (this._onlyRootTextVisible()) {
-      segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)} .root .text`);
-    }
-    // const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
+    const segmentElement = this.querySelector(`#${CSS.escape(illustration.segment)}`);
     if (segmentElement) {
       segmentElement.appendChild(this._addSCIllustrationElement(illustration));
     }
