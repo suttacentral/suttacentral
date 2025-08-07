@@ -563,6 +563,16 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _redirectFromLegacyLink() {
+    const path = this.router.location.pathname;
+    if (path === '/edition/' || path === '/edition') {
+      this.router.push('/editions');
+      return;
+    }
+    if (path === '/downloads/' || path === '/downloads') {
+      this.router.push('/editions');
+      return;
+    }
+
     const parts = this.router.location.pathname.split('/');
     const partsNewIsoCode = parts.map(x => x.replace('pi-', 'pli-').replace('skt-', 'san-'));
     partsNewIsoCode.forEach(item => {
@@ -575,6 +585,13 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _shouldRedirect() {
     const path = this.router.location.pathname;
+
+    if (path === '/edition/' || path === '/edition') {
+      return true;
+    }
+    if (path === '/downloads/' || path === '/downloads') {
+      return true;
+    }
 
     const langReg = isoCodes.join('|');
     const legacyLinkReg = new RegExp(`\/(${langReg})\/.*[0-9]`);
