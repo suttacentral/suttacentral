@@ -117,6 +117,7 @@ export class SCTextBilara extends SCTextCommon {
     this.lineByLineRootTextFirstStyles = '';
     this._selectionEventsActive = false;
     this._handleContentMouseOver = null;
+    this.viewCompose = '';
   }
 
   createRenderRoot() {
@@ -799,15 +800,15 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   _updateTextViewStylesBasedOnState() {
-    let viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
+    this.viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
     if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
       if (this.chosenNoteDisplayType === 'sidenotes') {
         viewCompose = 'sidenotes_root';
       } else {
-        viewCompose = 'pali';
+        this.viewCompose = 'pali';
       }
     }
-    this.currentStyles = this.mapStyles.get(viewCompose) || plainStyles;
+    this.currentStyles = this.mapStyles.get(this.viewCompose) || plainStyles;
 
     if (this.displayedReferences) {
       const isNone =
@@ -1216,7 +1217,7 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   async _addIllustrations() {
-    if (this.chosenTextView === 'sidebyside' || !this.showIllustrations) {
+    if (this.chosenTextView === 'sidebyside' || !this.showIllustrations || this.viewCompose.includes('sidenote')) {
       this.querySelectorAll('sc-text-illustration').forEach(element => {
         element.remove();
       });
