@@ -101,19 +101,13 @@ export const plainStyles = html`
 
       width: 1ex;
       height: 1em;
-      padding: 0 10px 0 0;
+      padding: 0 0 0 0;
       margin-left: -4px;
 
       white-space: nowrap;
 
       border: none;
       background-color: inherit;
-    }
-
-    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-    .comment[data-tooltip]:hover::after,
-    .variant[data-tooltip]:hover::after {
-      display: block;
     }
   </style>
 `;
@@ -151,11 +145,6 @@ export const plainPaliStyles = html`
 
       border: none;
       background-color: inherit;
-    }
-
-    .comment[data-tooltip]:hover::after,
-    .variant[data-tooltip]:hover::after {
-      display: block;
     }
   </style>
 `;
@@ -341,12 +330,6 @@ export const sideBySideStyles = html`
       background-color: inherit;
     }
 
-    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-    .comment[data-tooltip]:hover::after,
-    .variant[data-tooltip]:hover::after {
-      display: block;
-    }
-
     @media only screen and (max-width: 600px) {
       .segment,
       .translation,
@@ -524,12 +507,6 @@ export const lineByLineStyles = html`
       border: none;
       background-color: inherit;
     }
-
-    /* Show the tooltip. Note that using this technique it is not possible to use transition on the display.*/
-    .comment[data-tooltip]:hover::after,
-    .variant[data-tooltip]:hover::after {
-      display: block;
-    }
   </style>
 `;
 
@@ -700,3 +677,97 @@ export const lineByLineRootTextFirstStyles = html`
     }
   </style>
 `;
+
+export const floatingTooltipStyles = html`
+  <style>
+    /* Hide the actual content of the comment and variant, but keep the elements interactive */
+    .comment,
+    .variant {
+      position: relative;
+      display: inline;
+      cursor: help;
+
+      font-size: 0;
+      line-height: 0;
+      overflow: hidden;
+      white-space: nowrap;
+
+      /* Ensure the element can still receive mouse events */
+      min-width: 1em;
+      min-height: 1em;
+    }
+
+    /* Floating UI tooltip styles */
+    .floating-tooltip {
+      font-family: var(--sc-sans-font);
+      font-size: var(--sc-font-size-s);
+      font-weight: 400;
+      font-style: normal;
+      line-height: 1.3333;
+
+      max-width: 320px;
+      padding: 12px 16px;
+
+      color: var(--sc-on-primary-primary-text-color);
+      background-color: var(--sc-secondary-background-color);
+      border: 1px solid var(--sc-border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+      word-wrap: break-word;
+      word-break: break-word;
+
+      cursor: default;
+      user-select: text;
+
+      z-index: 10;
+
+      display: inline-block;
+
+      box-sizing: border-box;
+      padding: var(--sc-size-sm) var(--sc-size-md);
+
+      text-align: left;
+      text-indent: 0;
+      text-transform: none;
+      letter-spacing: normal;
+
+      color: var(--sc-on-tertiary-secondary-text-color);
+      border-radius: var(--sc-mid-border-radius);
+      background-color: var(--sc-tertiary-background-color);
+
+      font-variant-caps: normal;
+    }
+
+    .floating-tooltip a {
+      color: var(--sc-primary-color);
+      text-decoration: underline;
+    }
+
+    .floating-tooltip a:hover {
+      color: var(--sc-primary-color-dark);
+    }
+
+    .comment::before,
+    .variant::before {
+      font-size: var(--sc-font-size-md);
+      line-height: 1;
+      font-weight: 800;
+      vertical-align: super;
+      content: '* ';
+    }
+
+    .comment::before {
+      color: var(--sc-primary-accent-color-light);
+    }
+
+    .variant::before {
+      color: var(--sc-secondary-accent-color-light);
+    }
+
+    .floating-tooltip:hover::after {
+      opacity: 0.8;
+    }
+  </style>
+`;
+
