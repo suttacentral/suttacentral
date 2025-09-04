@@ -23,7 +23,8 @@ import {
   rootPlainPlusStyles,
   userSelectStyleForTranslation,
   userSelectStyleForRoot,
-  lineByLineRootTextFirstStyles
+  lineByLineRootTextFirstStyles,
+  floatingTooltipStyles
 } from '../styles/sc-layout-bilara-styles';
 
 import { scriptIdentifiers, paliScriptsStyles } from '../addons/sc-aksharamukha-converter';
@@ -118,6 +119,7 @@ export class SCTextBilara extends SCTextCommon {
     this._selectionEventsActive = false;
     this._handleContentMouseOver = null;
     this.viewCompose = '';
+    this.floatingTooltipStyles = '';
   }
 
   createRenderRoot() {
@@ -131,6 +133,7 @@ export class SCTextBilara extends SCTextCommon {
         ${typographyCommonStyles}
         ${typographyBilaraStyles}
         ${paliScriptsStyles}
+        ${this.floatingTooltipStyles}
       </style>
       ${this.currentStyles}
       ${this.referencesDisplayStyles}
@@ -222,11 +225,32 @@ export class SCTextBilara extends SCTextCommon {
     return false;
   }
 
+  async _initializeFloatingTooltips() {
+    if (this.chosenNoteDisplayType === 'none' || this.chosenNoteDisplayType === 'sidenotes') {
+      this.floatingTooltipStyles = '';
+      return;
+    }
+
+    this.floatingTooltipStyles = floatingTooltipStyles;
+
+    if (!this.commentManager) {
+      const { CommentTooltipManager } = await import('./sc-text-tooltip-manager.js');
+      this.commentManager = new CommentTooltipManager();
+    }
+
+    setTimeout(() => {
+      this.commentManager.initializeComments();
+    }, 100);
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('hashchange', this._hashChangeHandler);
     window.removeEventListener('click', this._onClickHandler);
     this.querySelector('#segmented_text_content')?.removeEventListener('mousedown', this._handleContentMouseOver);
+    if (this.commentManager) {
+      this.commentManager.cleanup();
+    }
   }
 
   _updateView() {
@@ -261,13 +285,10 @@ export class SCTextBilara extends SCTextCommon {
         }
       });
 
-      // this._updateTextViewStylesBasedOnState();
-
       this._scheduleNonCriticalUpdates();
 
       setTimeout(() => {
         this._updateTextViewStylesBasedOnState();
-        this._recalculateCommentSpanHeight();
       }, 0);
 
       this.actions.changeSuttaMetaText('');
@@ -304,7 +325,6 @@ export class SCTextBilara extends SCTextCommon {
     this._prepareNavigation();
     this._setupSelectionEvents();
     this._updateURLSearchParams();
-    // this._recalculateCommentSpanHeight();
   }
 
   _isBilingualView() {
@@ -482,12 +502,13 @@ export class SCTextBilara extends SCTextCommon {
       const translationSpan = this.querySelector(`#${CSS.escape(key)} .translation`);
       translationSpan?.appendChild(this._addCommentSpan(value));
     });
+
+    this._initializeFloatingTooltips();
   }
 
   _addCommentSpan(value) {
     const span = document.createElement('span');
     span.className = 'comment';
-    span.dataset.tooltip = this._stripHTML(value);
     span.innerHTML = value;
     return span;
   }
@@ -496,29 +517,6 @@ export class SCTextBilara extends SCTextCommon {
     const tmp = document.createElement('DIV');
     tmp.innerHTML = htmlText;
     return tmp.textContent || tmp.innerText || '';
-  }
-
-  _recalculateCommentSpanHeight() {
-    const gutterWidth = 5;
-    this.commentSpanRectInfo.clear();
-    const Comments = this.querySelectorAll('.comment');
-    Comments.forEach(element => {
-      const rect = element.getBoundingClientRect();
-      const elementNoId = element.id.slice(8); // id:comment_1 => get: 1
-      const nextComment = this.querySelector(`#comment_${parseInt(elementNoId, 10) + 1}`);
-      if (nextComment) {
-        const nextCommentTop = nextComment.getBoundingClientRect().top;
-        if (rect.top + rect.height > nextCommentTop) {
-          element.style.height = `${nextCommentTop - rect.top - gutterWidth}px`;
-          element.style.overflow = 'scroll';
-        }
-      } else if (rect.top + rect.height > this.parentNode.clientHeight) {
-        element.style.height = `${this.parentNode.clientHeight - rect.top}px`;
-        element.style.overflow = 'scroll';
-      }
-      this.commentSpanRectInfo.set(element.id, element.style.height);
-    });
-    // this._addCommentSpanMouseEvent();
   }
 
   _resetCommentSpan() {
@@ -535,22 +533,6 @@ export class SCTextBilara extends SCTextCommon {
     this.querySelectorAll('span.comment').forEach(word => {
       word.id = `comment_${wordIdSeed}`;
       wordIdSeed++;
-    });
-  }
-
-  _addCommentSpanMouseEvent() {
-    const Comments = this.querySelectorAll('.comment');
-    Comments.forEach(element => {
-      element.onmouseover = e => {
-        e.currentTarget.style.overflow = 'auto';
-        e.currentTarget.style.height = 'auto';
-        e.currentTarget.style.zIndex = '99';
-      };
-      element.onmouseleave = e => {
-        e.currentTarget.style.overflow = 'auto';
-        e.currentTarget.style.height = this.commentSpanRectInfo.get(e.currentTarget.id);
-        e.currentTarget.style.zIndex = '1';
-      };
     });
   }
 
@@ -583,9 +565,7 @@ export class SCTextBilara extends SCTextCommon {
       this._updateURLSearchParams();
     }
     if (changedProps.has('currentStyles')) {
-      if (this._isPlusStyle()) {
-        this._recalculateCommentSpanHeight();
-      } else {
+      if (!this._isPlusStyle()) {
         this._resetCommentSpan();
       }
     }
@@ -1130,13 +1110,14 @@ export class SCTextBilara extends SCTextCommon {
         rootSpan.appendChild(this._addVariantSpan(value));
       }
     });
+
+    this._initializeFloatingTooltips();
   }
 
   _addVariantSpan(value) {
     const variantText = `Variant: ${value}`;
     const span = document.createElement('span');
     span.className = 'variant';
-    span.dataset.tooltip = variantText;
     const text = document.createTextNode(variantText);
     span.appendChild(text);
     return span;
