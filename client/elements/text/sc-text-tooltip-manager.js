@@ -7,24 +7,90 @@ export class CommentTooltipManager {
     this.debounceTimer = null;
     this.hideTimer = null;
     this.isTooltipHovered = false;
+    this.isMobile = this._detectMobile();
+    this.lastTouchTime = 0;
+    this.activeElement = null;
+  }
+
+  _detectMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           ('ontouchstart' in window) ||
+           (navigator.maxTouchPoints > 0);
   }
 
   async initializeComments() {
     const commentElements = document.querySelectorAll('.comment, .variant');
     commentElements.forEach(element => {
       if (this._hasContent(element)) {
-        element.addEventListener('mouseenter', (e) => this._showTooltip(e.target));
-        element.addEventListener('mouseleave', (e) => this._scheduleHideTooltip(e));
-        element.addEventListener('focus', (e) => this._showTooltip(e.target));
-        element.addEventListener('blur', (e) => this._scheduleHideTooltip(e));
+        if (this.isMobile) {
+          this._addMobileEventListeners(element);
+        } else {
+          this._addDesktopEventListeners(element);
+        }
         element.setAttribute('tabindex', '0');
         element.style.cursor = 'help';
       }
     });
+
+    if (this.isMobile) {
+      document.addEventListener('touchstart', this._handleGlobalTouch.bind(this), true);
+      document.addEventListener('click', this._handleGlobalClick.bind(this), true);
+    }
+  }
+
+  _addMobileEventListeners(element) {
+    element.addEventListener('touchstart', (e) => this._handleMobileTouch(e), { passive: false });
+    element.addEventListener('click', (e) => this._handleMobileClick(e));
+
+    element.addEventListener('focus', (e) => this._showTooltip(e.target));
+    element.addEventListener('blur', (e) => this._scheduleHideTooltip(e));
+  }
+
+  _addDesktopEventListeners(element) {
+    element.addEventListener('mouseenter', (e) => this._showTooltip(e.target));
+    element.addEventListener('mouseleave', (e) => this._scheduleHideTooltip(e));
+    element.addEventListener('focus', (e) => this._showTooltip(e.target));
+    element.addEventListener('blur', (e) => this._scheduleHideTooltip(e));
+  }
+
+  _handleMobileTouch(e) {
+    e.preventDefault();
+    this.lastTouchTime = Date.now();
+
+    const targetElement = e.target.closest('.comment, .variant');
+    if (!targetElement) return;
+
+    if (this.activeElement === targetElement && this.activeTooltip) {
+      this._hideAllTooltips();
+      return;
+    }
+
+    this._showTooltip(targetElement);
+  }
+
+  _handleMobileClick(e) {
+    const now = Date.now();
+    if (now - this.lastTouchTime < 100) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  _handleGlobalTouch(e) {
+    const targetElement = e.target.closest('.comment, .variant, .floating-tooltip');
+    if (!targetElement && this.activeTooltip) {
+      this._hideAllTooltips();
+    }
+  }
+
+  _handleGlobalClick(e) {
+    const targetElement = e.target.closest('.comment, .variant, .floating-tooltip');
+    if (!targetElement && this.activeTooltip) {
+      setTimeout(() => this._hideAllTooltips(), 50);
+    }
   }
 
   _hasContent(element) {
-    // Checks if the element has text content (excluding the case where there is only a * symbol)
     const textContent = element.textContent || '';
     const cleanContent = textContent.replace(/^\*\s*/, '').trim();
     return cleanContent.length > 0;
@@ -34,13 +100,19 @@ export class CommentTooltipManager {
     clearTimeout(this.hideTimer);
     clearTimeout(this.debounceTimer);
 
+    const delay = this.isMobile ? 0 : 150;
+
     this.debounceTimer = setTimeout(async () => {
       await this._showTooltipImmediate(referenceElement);
-    }, 150);
+    }, delay);
   }
 
   _scheduleHideTooltip(e) {
-    // Delay hiding to give users time to move to the tooltip
+    if (this.isMobile) {
+      return;
+    }
+
+
     clearTimeout(this.hideTimer);
     this.hideTimer = setTimeout(() => {
       if (!this.isTooltipHovered) {
@@ -51,6 +123,7 @@ export class CommentTooltipManager {
 
   async _showTooltipImmediate(referenceElement) {
     this._hideTooltip();
+    this.activeElement = referenceElement;
 
     const tooltipContent = this._extractTooltipContent(referenceElement);
     if (!tooltipContent) return;
@@ -60,19 +133,18 @@ export class CommentTooltipManager {
 
     this._addTooltipEventListeners(tooltip);
 
-    // Positioning with Floating UI
-    const { x, y, placement, middlewareData } = await computePosition(referenceElement, tooltip, {
-      placement: 'top',
+    const placement = this.isMobile ? 'bottom' : 'top';
+    const { x, y } = await computePosition(referenceElement, tooltip, {
+      placement,
       middleware: [
-        offset(8),
+        offset(this.isMobile ? 12 : 8),
         flip({
-          fallbackPlacements: ['bottom', 'right', 'left'],
+          fallbackPlacements: this.isMobile ? ['top', 'bottom'] : ['bottom', 'right', 'left'],
         }),
         shift({ padding: 8 })
       ],
     });
 
-    // Apply position and animation
     Object.assign(tooltip.style, {
       left: `${x}px`,
       top: `${y}px`,
@@ -83,12 +155,11 @@ export class CommentTooltipManager {
 
     this.activeTooltip = tooltip;
 
-    // Automatically update position (handle scrolling, etc.)
     this.cleanup = autoUpdate(referenceElement, tooltip, async () => {
       if (this.activeTooltip) {
         const { x, y } = await computePosition(referenceElement, tooltip, {
-          placement: 'top',
-          middleware: [offset(11), flip(), shift({ padding: 8 })]
+          placement,
+          middleware: [offset(12), flip(), shift({ padding: 8 })]
         });
 
         Object.assign(tooltip.style, {
@@ -100,25 +171,33 @@ export class CommentTooltipManager {
   }
 
   _addTooltipEventListeners(tooltip) {
-    // When the mouse enters the tooltip, cancel hiding
-    tooltip.addEventListener('mouseenter', () => {
-      clearTimeout(this.hideTimer);
-      this.isTooltipHovered = true;
-    });
+    if (this.isMobile) {
+      tooltip.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        clearTimeout(this.hideTimer);
+        this.isTooltipHovered = true;
+      }, { passive: true });
 
-    // When the mouse leaves the tooltip, hide all tooltips immediately
-    tooltip.addEventListener('mouseleave', () => {
-      this.isTooltipHovered = false;
-      clearTimeout(this.hideTimer);
-      this._hideAllTooltips(); // Directly hide all tooltips
-    });
+      tooltip.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    } else {
+      tooltip.addEventListener('mouseenter', () => {
+        clearTimeout(this.hideTimer);
+        this.isTooltipHovered = true;
+      });
 
-    // Add click event to prevent propagation
-    tooltip.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
+      tooltip.addEventListener('mouseleave', () => {
+        this.isTooltipHovered = false;
+        clearTimeout(this.hideTimer);
+        this._hideAllTooltips();
+      });
 
-    // Add keyboard support - ESC key to close
+      tooltip.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+
     tooltip.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this._hideAllTooltips();
@@ -127,17 +206,15 @@ export class CommentTooltipManager {
   }
 
   _hideAllTooltips() {
-    // Clear all timers
     clearTimeout(this.debounceTimer);
     clearTimeout(this.hideTimer);
     this.isTooltipHovered = false;
+    this.activeElement = null;
 
-    // Hide the current active tooltip
     if (this.activeTooltip) {
       this._hideTooltip();
     }
 
-    // Ensure all possible floating-tooltip elements are removed
     const allTooltips = document.querySelectorAll('.floating-tooltip');
     allTooltips.forEach(tooltip => {
       tooltip.style.opacity = '0';
@@ -154,6 +231,7 @@ export class CommentTooltipManager {
     clearTimeout(this.debounceTimer);
     clearTimeout(this.hideTimer);
     this.isTooltipHovered = false;
+    this.activeElement = null;
 
     if (this.activeTooltip) {
       this.activeTooltip.style.opacity = '0';
@@ -174,21 +252,16 @@ export class CommentTooltipManager {
   }
 
   _extractTooltipContent(element) {
-    // Extract tooltip content from the element's content
     if (element.classList.contains('comment')) {
-      // For comments, use innerHTML directly (may contain formatted content)
       return element.innerHTML.replace(/^\*\s*/, '').trim();
     } else if (element.classList.contains('variant')) {
-      // For variants, get the text content
       const textContent = element.textContent || '';
       const cleanContent = textContent.replace(/^\*\s*/, '').trim();
-      // If there is no "Variant: " prefix, add it
       if (!cleanContent.toLowerCase().startsWith('variant:')) {
         return `Variant: ${cleanContent}`;
       }
       return cleanContent;
     }
-
     return element.innerHTML.replace(/^\*\s*/, '').trim();
   }
 
@@ -196,16 +269,18 @@ export class CommentTooltipManager {
     const tooltip = document.createElement('div');
     tooltip.className = 'floating-tooltip';
 
-    // Set different styles based on type
     if (referenceElement.classList.contains('comment')) {
       tooltip.classList.add('comment-tooltip');
     } else if (referenceElement.classList.contains('variant')) {
       tooltip.classList.add('variant-tooltip');
     }
 
+    if (this.isMobile) {
+      tooltip.classList.add('mobile-tooltip');
+    }
+
     tooltip.innerHTML = content;
 
-    // Initial Style - Important: Set pointerEvents to auto to allow interaction
     Object.assign(tooltip.style, {
       position: 'absolute',
       top: '0',
@@ -216,7 +291,11 @@ export class CommentTooltipManager {
       transition: 'opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease',
       zIndex: '9999',
       pointerEvents: 'auto',
-      cursor: 'default'
+      cursor: 'default',
+      ...(this.isMobile && {
+        maxWidth: '90vw',
+        fontSize: '16px',
+      })
     });
 
     return tooltip;
@@ -224,14 +303,18 @@ export class CommentTooltipManager {
 
   cleanup() {
     this._hideAllTooltips();
-    // Remove all event listeners
+
+    if (this.isMobile) {
+      document.removeEventListener('touchstart', this._handleGlobalTouch);
+      document.removeEventListener('click', this._handleGlobalClick);
+    }
+
     const commentElements = document.querySelectorAll('.comment, .variant');
     commentElements.forEach(element => {
-      // Arrow functions bound event listeners need special handling
-      // Here we simply remove all possible listeners
       const newElement = element.cloneNode(true);
-      element.parentNode.replaceChild(newElement, element);
-      // Clear attributes
+      if (element.parentNode) {
+        element.parentNode.replaceChild(newElement, element);
+      }
       newElement.removeAttribute('tabindex');
       newElement.style.cursor = '';
     });
