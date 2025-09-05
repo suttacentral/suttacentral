@@ -16,7 +16,6 @@ import {
   allEditions,
   collectionURL,
   editionsGithubUrl,
-  lastUpdatedDateOfCollections,
   publicationLastGeneratedDate,
 } from './sc-publication-common';
 
@@ -27,6 +26,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     editionId: { type: String },
     editionPaperbackId: { type: String },
     coverImage: { type: String },
+    publicationDownloadUrls: { type: Object }
   };
 
   static styles = [
@@ -43,7 +43,9 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     this.editionUid = store.getState().currentRoute.params.editionUid;
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.#fetchAllEditions();
-    this.#loadNewResult();
+    this.#initializeEditionData();
+    this.publicationDownloadUrls = {};
+    this.publicationType = ['tex', 'pdf', 'epub', 'html'];
   }
 
   firstUpdated() {
@@ -59,7 +61,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
 
     if (changedProps.has('editionId') && this.editionId) {
-      this.#loadNewResult();
+      this.#initializeEditionData();
     }
     if (changedProps.has('volumesInfoForDownloadMenu')) {
       this.requestUpdate();
@@ -72,16 +74,17 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     if (this.currentRoute !== state.currentRoute) {
       this.currentRoute = state.currentRoute;
       if (this.currentRoute.path.includes('/edition/') && this.editionId) {
-        this.#loadNewResult();
+        this.#initializeEditionData();
         this.#updateNav();
       }
     }
   }
 
-  async #loadNewResult() {
+  async #initializeEditionData() {
     await this.#fetchEditionDetails();
     await this.#fetchEditionInfo();
     this.#fetchCreatorDetail();
+    this.#fetchAllPublicationDownloadUrls();
     this.requestUpdate();
   }
 
@@ -176,39 +179,91 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     }
   }
 
-  #computeFileUrlByType(publicationType) {
-    let discoursesName = this.editionDetail[0].translated_name
-      ?.replace('Collection', '')
-      .trim()
-      .replace(/\s+/g, '-');
-
-    if (this.editionUid === 'pli-tv-vi') {
-      discoursesName = this.editionInfo.publication.translation_title.trim().replace(/\s+/g, '-');
+  async getGitHubDirectory(repoUrl, path = '', branch = 'main') {
+    try {
+      const response = await fetch(`/api/github-directory?repo_url=${encodeURIComponent(repoUrl)}&path=${encodeURIComponent(path)}&branch=${branch}`);
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error fetching GitHub directory:', error);
+      return null;
     }
+  }
 
+  async #fetchAllPublicationDownloadUrls() {
     const { authorUid, langIsoCode } = this.currentRoute.params;
+    const downloadPromises = this.publicationType.map(async type => {
+      let pubType = type;
+      if (pubType === 'pdf' || pubType === 'tex') {
+        pubType = 'paperback';
+      }
 
-    if (publicationType === 'tex') {
-      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publishedDate}-${publicationType}.zip`;
-    }
+      const repoUrl = 'https://github.com/suttacentral/editions';
+      const path = `${langIsoCode}/${authorUid}/${this.editionUid}/${pubType}`;
 
-    if (publicationType === 'pdf') {
-      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/paperback/${discoursesName}-${authorUid}-${publishedDate}.zip`;
-    }
+      try {
+        const relatedContents = await this.getGitHubDirectory(repoUrl, path);
+        if (relatedContents && relatedContents.contents) {
+          let discoursesName = this.editionDetail[0]?.translated_name
+            ?.replace('Collection', '')
+            .trim()
+            .replace(/\s+/g, '-');
 
-    if (publicationType === 'epub') {
-      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publishedDate}.${publicationType}`;
-    }
+          if (this.editionUid === 'pli-tv-vi' && this.editionInfo?.publication?.translation_title) {
+            discoursesName = this.editionInfo.publication.translation_title.trim().replace(/\s+/g, '-');
+          }
 
-    if (publicationType === 'html') {
-      const publishedDate = lastUpdatedDateOfCollections.get(`${this.editionUid}-${publicationType}`);
-      return `${editionsGithubUrl}/${langIsoCode}/${authorUid}/${this.editionUid}/${publicationType}/${discoursesName}-${authorUid}-${publishedDate}.${publicationType}`;
-    }
+          let targetFile = null;
 
-    return 'https://github.com/suttacentral/editions/tree/main';
+          switch (type) {
+            case 'tex':
+              targetFile = relatedContents.contents.find(file =>
+                file.name.includes('-tex.zip') || file.name.endsWith('-tex.zip')
+              );
+              break;
+            case 'pdf':
+              targetFile = relatedContents.contents.find(file =>
+                file.name.includes('.zip') &&
+                !file.name.includes('-cover.zip') &&
+                !file.name.includes('-tex.zip')
+              );
+              break;
+            case 'epub':
+              targetFile = relatedContents.contents.find(file =>
+                file.name.endsWith('.epub')
+              );
+              break;
+            case 'html':
+              targetFile = relatedContents.contents.find(file =>
+                file.name.endsWith('.html')
+              );
+              break;
+          }
+
+          if (targetFile) {
+            return { type, downloadUrl: targetFile.download_url };
+          }
+        }
+      } catch (error) {
+        console.error(`Error fetching ${type} files:`, error);
+      }
+
+      return { type, downloadUrl: null };
+    });
+
+    const results = await Promise.all(downloadPromises);
+    const newUrls = {};
+    results.forEach(({ type, downloadUrl }) => {
+      if (downloadUrl) {
+        newUrls[type] = downloadUrl;
+      }
+    });
+
+    this.publicationDownloadUrls = { ...this.publicationDownloadUrls, ...newUrls };
+  }
+
+  #getDownloadUrl(type) {
+    return this.publicationDownloadUrls[type];
   }
 
   _createMetaData() {
@@ -222,6 +277,17 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         },
       })
     );
+  }
+
+  async getGitHubDirectory(repoUrl, path = '', branch = 'main') {
+    try {
+      const response = await fetch(`/api/github-directory?repo_url=${encodeURIComponent(repoUrl)}&path=${encodeURIComponent(path)}&branch=${branch}`);
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error fetching GitHub directory:', error);
+      return null;
+    }
   }
 
   createRenderRoot() {
@@ -367,7 +433,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.epub} <span>Epub</span></td>
         <td>
-          <a class="link-button block-link download" href=${this.#computeFileUrlByType('epub')}>
+          <a class="link-button block-link download" href=${this.#getDownloadUrl('epub')}>
             ${icon.file_download} Download
           </a>
         </td>
@@ -380,7 +446,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.pdf} <span>Pdf</span></td>
         <td>
-          <a class="link-button block-link download" href=${this.#computeFileUrlByType('pdf')}>
+          <a class="link-button block-link download" href=${this.#getDownloadUrl('pdf')}>
             ${icon.file_download} Download
           </a>
         </td>
@@ -399,7 +465,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           </span>
         </td>
         <td>
-          <a class="link-button block-link download" href=${this.#computeFileUrlByType('html')}>
+          <a class="link-button block-link download" href=${this.#getDownloadUrl('html')}>
             ${icon.file_download} <span class="button-text"><span>Download</span> </span>
           </a>
         </td>
@@ -412,7 +478,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
       <tr>
         <td>${icon.latex} <span>TeX</span></td>
         <td>
-          <a class="link-button block-link download" href=${this.#computeFileUrlByType('tex')}>
+          <a class="link-button block-link download" href=${this.#getDownloadUrl('tex')}>
             ${icon.file_download} Download
           </a>
         </td>

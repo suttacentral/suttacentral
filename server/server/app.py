@@ -56,7 +56,8 @@ from api.views import (
     NavigationData,
     DataForHomepage,
     ExtractSuttaFromRangeSutta,
-    Alias
+    Alias,
+    GitHubDirectoryListing
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
@@ -147,6 +148,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(FetchPossibleNames, '/possible_names/<string:lang>')
     api.add_resource(FulltextSearch, '/fulltextsearch/<string:query>')
     api.add_resource(Alias, '/alias')
+    api.add_resource(GitHubDirectoryListing, '/github-directory')
 
     app.register_blueprint(api_bp)
     register_extensions(app)

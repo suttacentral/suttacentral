@@ -771,7 +771,7 @@ export const floatingTooltipStyles = html`
 
     .floating-tooltip.mobile-tooltip {
       max-width: 90vw;
-      font-size: 16px; /* 防止 iOS Safari 缩放 */
+      font-size: 16px;
       padding: 16px 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
       border-radius: 12px;
