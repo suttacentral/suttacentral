@@ -48,5 +48,6 @@ from .views import (
     NavigationData,
     DataForHomepage,
     ExtractSuttaFromRangeSutta,
-    Alias
+    Alias,
+    GitHubDirectoryListing
 )

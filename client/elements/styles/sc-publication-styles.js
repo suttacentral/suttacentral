@@ -107,6 +107,7 @@ export const SCPublicationStyles = css`
     height: 48px;
     padding-right: 4vw;
     padding-left: 4vw;
+    cursor: pointer;
   }
 
   .link-button + .link-button {

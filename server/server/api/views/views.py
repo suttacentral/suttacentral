@@ -3,6 +3,7 @@ import os
 import re
 from typing import List
 from urllib.parse import urlparse
+import requests
 
 import stripe
 from flask import current_app, request
@@ -1761,3 +1762,182 @@ class NavigationData(Resource):
 
     def is_patimokkha(self, uid):
         return uid.find('-pm') > -1
+
+
+class GitHubDirectoryListing(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        """
+        List contents of a GitHub repository directory
+        ---
+        parameters:
+           - in: query
+             name: repo_url
+             type: string
+             required: true
+             description: GitHub repository URL (e.g., https://github.com/user/repo)
+           - in: query
+             name: path
+             type: string
+             required: false
+             description: Directory path within the repo (default is root)
+           - in: query
+             name: branch
+             type: string
+             required: false
+             description: Branch name (default is main/master)
+        responses:
+            200:
+                description: Directory contents
+                schema:
+                    type: object
+                    properties:
+                        contents:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    name:
+                                        type: string
+                                    type:
+                                        type: string
+                                        enum: [file, dir]
+                                    size:
+                                        type: integer
+                                    download_url:
+                                        type: string
+                                    html_url:
+                                        type: string
+        """
+        try:
+            repo_url = request.args.get('repo_url')
+            if not repo_url:
+                return {'error': 'repo_url parameter is required'}, 400
+
+            path = request.args.get('path', '')
+            branch = request.args.get('branch', 'main')
+
+            repo_info = self._parse_github_url(repo_url)
+            if not repo_info:
+                return {'error': 'Invalid GitHub repository URL'}, 422
+
+            owner, repo = repo_info
+
+            api_url = f"https://api.github.com/repos/{owner}/{repo}/contents"
+            if path:
+                api_url += f"/{path}"
+
+            params = {'ref': branch}
+
+            response = requests.get(
+                api_url,
+                params=params,
+                headers={
+                    'Accept': 'application/vnd.github.v3+json',
+                    'User-Agent': 'SuttaCentral-DirectoryReader/1.0'
+                },
+                timeout=10
+            )
+
+            if response.status_code == 404:
+                return {'error': 'Repository, branch, or path not found'}, 404
+            elif response.status_code != 200:
+                return {'error': f'GitHub API error: {response.status_code}'}, 500
+
+            contents = response.json()
+
+            if isinstance(contents, dict):
+                return {'error': 'Path points to a file, not a directory'}, 400
+
+            formatted_contents = []
+            for item in contents:
+                formatted_item = {
+                    'name': item['name'],
+                    'type': item['type'],
+                    'size': item.get('size', 0),
+                    'download_url': item.get('download_url'),
+                    'html_url': item.get('html_url'),
+                    'path': item['path']
+                }
+                formatted_contents.append(formatted_item)
+
+            return {
+                'repo': f"{owner}/{repo}",
+                'path': path,
+                'branch': branch,
+                'contents': formatted_contents
+            }, 200
+
+        except requests.RequestException as e:
+            current_app.logger.error(f"GitHub API request failed: {str(e)}")
+            return {'error': 'Failed to fetch directory contents'}, 500
+        except Exception as e:
+            current_app.logger.error(f"Error fetching directory contents: {str(e)}")
+            return {'error': 'Internal server error'}, 500
+
+    def _parse_github_url(self, url):
+        """Parse GitHub URL and extract owner and repo information"""
+        try:
+            parsed = urlparse(url)
+            if parsed.netloc.lower() != 'github.com':
+                return None
+
+            path_parts = parsed.path.strip('/').split('/')
+            return (path_parts[0], path_parts[1]) if len(path_parts) >= 2 else None
+        except:
+            return None
+
+    def _get_directory_contents(self, owner, repo, path, branch, file_extensions):
+        api_url = f"https://api.github.com/repos/{owner}/{repo}/contents"
+        if path:
+            api_url += f"/{path}"
+
+        response = requests.get(
+            api_url,
+            params={'ref': branch},
+            headers={
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'SuttaCentral-DirectoryReader/1.0'
+            },
+            timeout=10
+        )
+
+        if response.status_code != 200:
+            return []
+
+        contents = response.json()
+        if isinstance(contents, dict):
+            return []
+
+        filtered_contents = []
+        for item in contents:
+            if file_extensions and item['type'] == 'file':
+                if not any(item['name'].endswith(ext) for ext in file_extensions):
+                    continue
+
+            formatted_item = {
+                'name': item['name'],
+                'type': item['type'],
+                'size': item.get('size', 0),
+                'download_url': item.get('download_url'),
+                'html_url': item.get('html_url'),
+                'path': item['path']
+            }
+            filtered_contents.append(formatted_item)
+
+        return filtered_contents
+
+    def _get_recursive_contents(self, owner, repo, path, branch, file_extensions):
+        all_contents = []
+
+        def fetch_directory(dir_path):
+            contents = self._get_directory_contents(owner, repo, dir_path, branch, file_extensions)
+
+            for item in contents:
+                all_contents.append(item)
+
+                if item['type'] == 'dir':
+                    fetch_directory(item['path'])
+
+        fetch_directory(path)
+        return all_contents
