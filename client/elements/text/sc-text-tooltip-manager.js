@@ -10,6 +10,7 @@ export class CommentTooltipManager {
     this.isMobile = this._detectMobile();
     this.lastTouchTime = 0;
     this.activeElement = null;
+    this.isRightClickActive = false;
   }
 
   _detectMobile() {
@@ -35,13 +36,16 @@ export class CommentTooltipManager {
     if (this.isMobile) {
       document.addEventListener('touchstart', this._handleGlobalTouch.bind(this), true);
       document.addEventListener('click', this._handleGlobalClick.bind(this), true);
+    } else {
+      document.addEventListener('click', this._handleGlobalClick.bind(this), true);
+      document.addEventListener('contextmenu', this._handleGlobalContextMenu.bind(this), true);
+      document.addEventListener('keydown', this._handleGlobalKeydown.bind(this), true);
     }
   }
 
   _addMobileEventListeners(element) {
     element.addEventListener('touchstart', (e) => this._handleMobileTouch(e), { passive: false });
     element.addEventListener('click', (e) => this._handleMobileClick(e));
-
     element.addEventListener('focus', (e) => this._showTooltip(e.target));
     element.addEventListener('blur', (e) => this._scheduleHideTooltip(e));
   }
@@ -51,6 +55,38 @@ export class CommentTooltipManager {
     element.addEventListener('mouseleave', (e) => this._scheduleHideTooltip(e));
     element.addEventListener('focus', (e) => this._showTooltip(e.target));
     element.addEventListener('blur', (e) => this._scheduleHideTooltip(e));
+    element.addEventListener('contextmenu', (e) => this._handleElementContextMenu(e));
+  }
+
+  _handleElementContextMenu(e) {
+    // When right-clicking on a comment/variant element, mark the right-click menu as active
+    this.isRightClickActive = true;
+    e.stopPropagation();
+
+    // Delay reset state to give the right-click menu time to display
+    setTimeout(() => {
+      this.isRightClickActive = false;
+    }, 300);
+  }
+
+  _handleGlobalContextMenu(e) {
+    const targetElement = e.target.closest('.comment, .variant, .floating-tooltip');
+
+    if (targetElement) {
+      // Right-clicking on the tooltip or related elements does not close the tooltip
+      this.isRightClickActive = true;
+      setTimeout(() => {
+        this.isRightClickActive = false;
+      }, 300);
+    } else if (this.activeTooltip) {
+      this._hideAllTooltips();
+    }
+  }
+
+  _handleGlobalKeydown(e) {
+    if (e.key === 'Escape' && this.activeTooltip) {
+      this._hideAllTooltips();
+    }
   }
 
   _handleMobileTouch(e) {
@@ -84,9 +120,17 @@ export class CommentTooltipManager {
   }
 
   _handleGlobalClick(e) {
+    if (this.isRightClickActive) {
+      return;
+    }
+
     const targetElement = e.target.closest('.comment, .variant, .floating-tooltip');
     if (!targetElement && this.activeTooltip) {
-      setTimeout(() => this._hideAllTooltips(), 50);
+      if (this.isMobile) {
+        this._hideAllTooltips();
+      } else {
+        setTimeout(() => this._hideAllTooltips(), 50);
+      }
     }
   }
 
@@ -112,10 +156,13 @@ export class CommentTooltipManager {
       return;
     }
 
+    if (this.isRightClickActive) {
+      return;
+    }
 
     clearTimeout(this.hideTimer);
     this.hideTimer = setTimeout(() => {
-      if (!this.isTooltipHovered) {
+      if (!this.isTooltipHovered && !this.isRightClickActive) {
         this._hideTooltip();
       }
     }, 200);
@@ -190,10 +237,35 @@ export class CommentTooltipManager {
       tooltip.addEventListener('mouseleave', () => {
         this.isTooltipHovered = false;
         clearTimeout(this.hideTimer);
-        this._hideAllTooltips();
+        if (!this.isRightClickActive) {
+          this._hideAllTooltips();
+        }
       });
 
       tooltip.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      tooltip.addEventListener('contextmenu', (e) => {
+        this.isRightClickActive = true;
+        e.stopPropagation();
+
+        setTimeout(() => {
+          this.isRightClickActive = false;
+        }, 300);
+      });
+
+      tooltip.addEventListener('selectstart', (e) => {
+        e.stopPropagation();
+      });
+
+      tooltip.addEventListener('mousedown', (e) => {
+        if (e.button === 0) {
+          e.stopPropagation();
+        }
+      });
+
+      tooltip.addEventListener('mouseup', (e) => {
         e.stopPropagation();
       });
     }
@@ -202,6 +274,7 @@ export class CommentTooltipManager {
       if (e.key === 'Escape') {
         this._hideAllTooltips();
       }
+      e.stopPropagation();
     });
   }
 
@@ -210,6 +283,7 @@ export class CommentTooltipManager {
     clearTimeout(this.hideTimer);
     this.isTooltipHovered = false;
     this.activeElement = null;
+    this.isRightClickActive = false;
 
     if (this.activeTooltip) {
       this._hideTooltip();
@@ -292,6 +366,7 @@ export class CommentTooltipManager {
       zIndex: '9999',
       pointerEvents: 'auto',
       cursor: 'default',
+      userSelect: 'text',
       ...(this.isMobile && {
         maxWidth: '90vw',
         fontSize: '16px',
@@ -307,6 +382,10 @@ export class CommentTooltipManager {
     if (this.isMobile) {
       document.removeEventListener('touchstart', this._handleGlobalTouch);
       document.removeEventListener('click', this._handleGlobalClick);
+    } else {
+      document.removeEventListener('click', this._handleGlobalClick);
+      document.removeEventListener('contextmenu', this._handleGlobalContextMenu);
+      document.removeEventListener('keydown', this._handleGlobalKeydown);
     }
 
     const commentElements = document.querySelectorAll('.comment, .variant');
