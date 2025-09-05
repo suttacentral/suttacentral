@@ -768,6 +768,29 @@ export const floatingTooltipStyles = html`
     .floating-tooltip:hover::after {
       opacity: 0.8;
     }
+
+    .floating-tooltip.mobile-tooltip {
+      max-width: 90vw;
+      font-size: 16px; /* 防止 iOS Safari 缩放 */
+      padding: 16px 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+    }
+
+    @media (pointer: coarse) {
+      .comment::before,
+      .variant::before {
+        padding: 4px;
+        margin: 0 2px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .floating-tooltip {
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
+      }
+    }
   </style>
 `;
 
