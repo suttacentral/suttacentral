@@ -117,6 +117,12 @@ export const plainPaliStyles = html`
     section,
     article {
       max-width: 720px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      word-break: break-word;
     }
 
     .verse-line .root {
