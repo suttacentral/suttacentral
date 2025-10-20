@@ -75,7 +75,6 @@ export class SCPaliLookup extends LitLocalized(LitElement) {
     const matches = []
 
     if (word in dpd_i2h) {
-      // matches.push(word);
       const dpd_i2h_t = this._dpdTransform(dpd_i2h[word].sort((a, b) => a - b)) // create array like below instead of simple enumeration of the dpd_i2h...
       for (const match of dpd_i2h_t) {
         for (const variation of match.vars) {
