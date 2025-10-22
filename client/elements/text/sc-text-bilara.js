@@ -728,6 +728,7 @@ export class SCTextBilara extends SCTextCommon {
     this.showHighlighting = textOptions.showHighlighting;
     this.showIllustrations = textOptions.showIllustrations;
     this.paliScript = textOptions.script;
+    this.paliScriptOptions = scriptIdentifiers.find(x => x.script === this.paliScript).postoptions || 'null';
     this.displayedReferences = textOptions.displayedReferences;
 
     const params = ['notes', 'layout', 'script', 'highlight', 'reference'];
@@ -764,6 +765,7 @@ export class SCTextBilara extends SCTextCommon {
 
     if (script && scriptIdentifiers.find(x => x.script === script)) {
       this.paliScript = script;
+      this.paliScriptOptions = scriptIdentifiers.find(x => x.script === this.paliScript).postoptions || 'null';
     }
 
     if (reference) {
@@ -844,6 +846,7 @@ export class SCTextBilara extends SCTextCommon {
     }
     if (this.paliScript !== state.textOptions.script && this.shouldRestoreUserSettings) {
       this.paliScript = state.textOptions.script;
+      this.paliScriptOptions = scriptIdentifiers.find(x => x.script === this.paliScript ).postoptions || 'null';
       this.hasScriptBeenChanged = true;
     }
     if (this.isPaliLookupEnabled !== state.textOptions.paliLookupActivated) {
@@ -1558,7 +1561,7 @@ export class SCTextBilara extends SCTextCommon {
     if (!uid || !target) {
       return;
     }
-    const converterApi = `${API_ROOT}/transliterated_sutta/${uid}/${target}`;
+    const converterApi = `${API_ROOT}/transliterated_sutta/${uid}/${target}/${this.paliScriptOptions || 'null'}`;
     try {
       this.transliteratedRootSutta = await (await fetch(converterApi)).json();
     } catch (error) {

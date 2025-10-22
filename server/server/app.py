@@ -122,7 +122,7 @@ def app_factory() -> Tuple[Api, Flask]:
         Transliterate, '/transliterate/<string:target>/<string:text>'
     )
     api.add_resource(
-        TransliteratedSutta, '/transliterated_sutta/<string:uid>/<string:target>'
+        TransliteratedSutta, '/transliterated_sutta/<string:uid>/<string:target>/<string:post_options>'
     )
     api.add_resource(Publication, '/publication')
     api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')

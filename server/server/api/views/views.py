@@ -1537,7 +1537,7 @@ class Transliterate(Resource):
 
 class TransliteratedSutta(Resource):
     @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
-    def get(self, uid, target):
+    def get(self, uid, target, post_options):
         db = get_db()
 
         results = db.aql.execute(SUTTA_SINGLE_PALI_TEXT, bind_vars={'uid': uid})
@@ -1551,6 +1551,7 @@ class TransliteratedSutta(Resource):
                 'ISOPali',
                 target,
                 value,
+                post_options=[post_options] if post_options != 'null' else []
             )
 
         return sutta_texts[uid]
