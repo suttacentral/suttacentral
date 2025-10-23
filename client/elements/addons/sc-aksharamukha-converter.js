@@ -1053,7 +1053,8 @@ export const scriptIdentifiers = [
   },
   {
     script: 'Sinhala',
-    language: 'Sinhala',
+    language: 'Sinhala (modern)',
+    postoptions: 'SinhalaPali',
   },
   {
     script: 'Sogd',
