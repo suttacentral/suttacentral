@@ -1054,7 +1054,7 @@ export const scriptIdentifiers = [
   {
     script: 'Sinhala',
     language: 'Sinhala (modern)',
-    postoptions: 'SinhalaPali',
+    postoptions: 'SinhalaPali, SinhalaConjuncts',
   },
   {
     script: 'Sogd',
