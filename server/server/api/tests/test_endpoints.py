@@ -809,6 +809,15 @@ class TestTransliteratedSutta:
         assert 'sn1.1:0.1' in data
         assert 'sn1.1:0.2' in data
 
+    def test_transliterated_sutta_with_multiple_postoptions_via_query_params(self, client):
+        url = "/transliterated_sutta/sn1.1/Sinhala/SinhalaPali, SinhalaConjuncts"
+        response = client.get(url)
+
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert isinstance(data, dict)
+        assert 'sn1.1:0.1' in data
+        assert 'sn1.1:0.2' in data
 
 class TestPaliReferenceEdition:
     @pytest.fixture

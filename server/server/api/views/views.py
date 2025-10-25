@@ -1546,12 +1546,20 @@ class TransliteratedSutta(Resource):
             return {'error': 'Not Found'}, 404
 
         sutta_texts = {k: json_load(v) for k, v in result.items()}
+
+        processed_post_options = []
+        if post_options and post_options != 'null':
+            if isinstance(post_options, str):
+                processed_post_options = [opt.strip() for opt in post_options.split(',')]
+            elif isinstance(post_options, list):
+                processed_post_options = post_options
+
         for key, value in sutta_texts[uid].items():
             sutta_texts[uid][key] = transliterate.process(
                 'ISOPali',
                 target,
                 value,
-                post_options=[post_options] if post_options != 'null' else []
+                post_options=processed_post_options if processed_post_options else []
             )
 
         return sutta_texts[uid]
