@@ -28,13 +28,13 @@ class TestElement extends LitElement {
 customElements.define('test-element', TestElement);
 
 describe('TestElement', () => {
-  it('Should initialise string_property on construction', () => {
-    let sut = new TestElement();
-    assert.equal(sut.string_property, 'Initial value');
+  it('Should initialise string_property on construction', async () => {
+    const element = await fixture(htmlTesting`<test-element></test-element>`);
+    assert.equal(element.string_property, 'Initial value');
   });
 
   it('Should call connectedCallback() when attached to DOM', async () => {
-    const element = await fixture(htmlTesting`<test-element></test-element>`)
+    const element = await fixture(htmlTesting`<test-element></test-element>`);
     assert(element.calledConnectedCallback);
   });
 })
