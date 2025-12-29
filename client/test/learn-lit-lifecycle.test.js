@@ -1,6 +1,6 @@
 // These tests are for learning only and do not test any SuttaCentral code.
 
-import { expect } from '@esm-bundle/chai';
+import { assert } from '@esm-bundle/chai';
 
 import { html, LitElement } from "lit";
 
@@ -23,7 +23,6 @@ customElements.define('test-element', TestElement);
 describe('TestElement', () => {
   it('Should set the string property when constructed', () => {
     let sut = new TestElement();
-    expect(sut.string_property).to.equal('Initial value');
+    assert.equal(sut.string_property, 'Initial value');
   });
-
 })
