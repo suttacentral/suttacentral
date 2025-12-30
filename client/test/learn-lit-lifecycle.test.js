@@ -14,11 +14,23 @@ class LifecycleElement extends LitElement {
     super();
     this.string_property = 'Initial value';
     this.calledConnectedCallback = false;
+    this.calledPerformUpdate = false;
+    this.calledShouldUpdate = false;
   }
 
   connectedCallback() {
     this.calledConnectedCallback = true;
     super.connectedCallback();
+  }
+
+  performUpdate() {
+    this.calledPerformUpdate = true;
+    super.performUpdate();
+  }
+
+  shouldUpdate(_changedProperties) {
+    this.calledShouldUpdate = true;
+    return super.shouldUpdate(_changedProperties);
   }
 
   render() {
@@ -35,6 +47,16 @@ describe('LifecycleElement', () => {
 
   it('Should call connectedCallback() when attached to DOM', async () => {
     const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert(element.calledConnectedCallback);
+    assert.isTrue(element.calledConnectedCallback);
+  });
+
+  it('Should call performUpdate() when attached to DOM', async () => {
+    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
+    assert.isTrue(element.calledPerformUpdate);
+  });
+
+  it('Should call shouldUpdate() when attached to DOM', async () => {
+    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
+    assert.isTrue(element.calledShouldUpdate);
   });
 })
