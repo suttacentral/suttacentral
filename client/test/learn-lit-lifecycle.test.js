@@ -42,6 +42,11 @@ class LifecycleElement extends LitElement {
     this.callbackLog.push("render")
     return html`<p>string_property is ${this.string_property}</p>`
   }
+
+  firstUpdated(_changedProperties) {
+    this.callbackLog.push("firstUpdated")
+    super.firstUpdated(_changedProperties);
+  }
 }
 customElements.define('lifecycle-element', LifecycleElement);
 
@@ -58,7 +63,8 @@ describe('LifecycleElement', () => {
       "performUpdate",
       "shouldUpdate",
       "willUpdate",
-      "render"
+      "render",
+      "firstUpdated"
     ]);
   });
 })
