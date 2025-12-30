@@ -1,7 +1,7 @@
 // These tests are for learning only and do not test any SuttaCentral code.
 
 import { html as htmlTesting, fixture } from '@open-wc/testing';
-import { assert } from '@esm-bundle/chai';
+import { assert, expect } from '@esm-bundle/chai';
 
 import { html, LitElement } from "lit";
 
@@ -14,7 +14,6 @@ class LifecycleElement extends LitElement {
     super();
     this.string_property = 'Initial value';
     this.eventLog = [];
-    this.calledConnectedCallback = false;
     this.calledPerformUpdate = false;
     this.calledShouldUpdate = false;
     this.calledWillUpdate = false;
@@ -22,13 +21,13 @@ class LifecycleElement extends LitElement {
   }
 
   connectedCallback() {
-    this.calledConnectedCallback = true;
     this.eventLog.push("connectedCallback") ;
     super.connectedCallback();
   }
 
   performUpdate() {
     this.calledPerformUpdate = true;
+    this.eventLog.push("performUpdate") ;
     super.performUpdate();
   }
 
@@ -57,12 +56,13 @@ describe('LifecycleElement', () => {
 
   it('Should call connectedCallback() when attached to DOM', async () => {
     const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.equal(element.eventLog[0], "connectedCallback");
+    assert.deepEqual(element.eventLog, ["connectedCallback", "performUpdate"]);
   });
 
   it('Should call performUpdate() when attached to DOM', async () => {
     const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.isTrue(element.calledPerformUpdate);
+    assert.equal(element.eventLog[0], "connectedCallback");
+    assert.equal(element.eventLog[1], "performUpdate");
   });
 
   it('Should call shouldUpdate() when attached to DOM', async () => {
