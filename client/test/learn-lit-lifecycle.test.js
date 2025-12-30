@@ -34,7 +34,7 @@ class LifecycleElement extends LitElement {
   }
 
   willUpdate(_changedProperties) {
-
+    this.callbackLog.push("willUpdate");
     super.willUpdate(_changedProperties);
   }
 
@@ -55,7 +55,8 @@ describe('LifecycleElement', () => {
     assert.deepEqual(element.callbackLog, [
       "connectedCallback",
       "performUpdate",
-      "shouldUpdate"
+      "shouldUpdate",
+      "willUpdate"
     ]);
   });
 })
