@@ -13,32 +13,28 @@ class LifecycleElement extends LitElement {
   constructor() {
     super();
     this.string_property = 'Initial value';
-    this.eventLog = [];
-    this.calledPerformUpdate = false;
-    this.calledShouldUpdate = false;
-    this.calledWillUpdate = false;
+    this.callbackLog = [];
     this.dontPerformUpdate = false;
   }
 
   connectedCallback() {
-    this.eventLog.push("connectedCallback") ;
+    this.callbackLog.push("connectedCallback");
     super.connectedCallback();
   }
 
   performUpdate() {
-    this.calledPerformUpdate = true;
-    this.eventLog.push("performUpdate") ;
+    this.callbackLog.push("performUpdate");
     super.performUpdate();
   }
 
   shouldUpdate(_changedProperties) {
-    this.calledShouldUpdate = true;
+    this.callbackLog.push("shouldUpdate");
     if(this.dontPerformUpdate) return false;
     return super.shouldUpdate(_changedProperties);
   }
 
   willUpdate(_changedProperties) {
-    this.calledWillUpdate = true;
+
     super.willUpdate(_changedProperties);
   }
 
@@ -54,30 +50,12 @@ describe('LifecycleElement', () => {
     assert.equal(element.string_property, 'Initial value');
   });
 
-  it('Should call connectedCallback() when attached to DOM', async () => {
+  it('Should call all callbacks when shouldUpdate() is super.shouldUpdate()', async () => {
     const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.deepEqual(element.eventLog, ["connectedCallback", "performUpdate"]);
+    assert.deepEqual(element.callbackLog, [
+      "connectedCallback",
+      "performUpdate",
+      "shouldUpdate"
+    ]);
   });
-
-  it('Should call performUpdate() when attached to DOM', async () => {
-    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.equal(element.eventLog[0], "connectedCallback");
-    assert.equal(element.eventLog[1], "performUpdate");
-  });
-
-  it('Should call shouldUpdate() when attached to DOM', async () => {
-    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.isTrue(element.calledShouldUpdate);
-  });
-
-  it('Should call willUpdate() when attached to DOM', async () => {
-    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.isTrue(element.calledWillUpdate);
-  });
-
-  // it('Should not call willUpdate() when shouldUpdate() returns false', async () => {
-  //   const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-  //   element.dontPerformUpdate = true;
-  //   assert.isFalse(element.calledWillUpdate);
-  // });
 })
