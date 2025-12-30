@@ -13,14 +13,17 @@ class LifecycleElement extends LitElement {
   constructor() {
     super();
     this.string_property = 'Initial value';
+    this.eventLog = [];
     this.calledConnectedCallback = false;
     this.calledPerformUpdate = false;
     this.calledShouldUpdate = false;
     this.calledWillUpdate = false;
+    this.dontPerformUpdate = false;
   }
 
   connectedCallback() {
     this.calledConnectedCallback = true;
+    this.eventLog.push("connectedCallback") ;
     super.connectedCallback();
   }
 
@@ -31,6 +34,7 @@ class LifecycleElement extends LitElement {
 
   shouldUpdate(_changedProperties) {
     this.calledShouldUpdate = true;
+    if(this.dontPerformUpdate) return false;
     return super.shouldUpdate(_changedProperties);
   }
 
@@ -53,7 +57,7 @@ describe('LifecycleElement', () => {
 
   it('Should call connectedCallback() when attached to DOM', async () => {
     const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
-    assert.isTrue(element.calledConnectedCallback);
+    assert.equal(element.eventLog[0], "connectedCallback");
   });
 
   it('Should call performUpdate() when attached to DOM', async () => {
@@ -70,4 +74,10 @@ describe('LifecycleElement', () => {
     const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
     assert.isTrue(element.calledWillUpdate);
   });
+
+  // it('Should not call willUpdate() when shouldUpdate() returns false', async () => {
+  //   const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
+  //   element.dontPerformUpdate = true;
+  //   assert.isFalse(element.calledWillUpdate);
+  // });
 })
