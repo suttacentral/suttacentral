@@ -1,9 +1,9 @@
 // These tests are for learning only and do not test any SuttaCentral code.
 
-import { html as htmlTesting, fixture } from '@open-wc/testing';
-import { assert, expect } from '@esm-bundle/chai';
+import {fixture, html as htmlTesting} from '@open-wc/testing';
+import {assert} from '@esm-bundle/chai';
 
-import { html, LitElement } from "lit";
+import {html, LitElement} from "lit";
 
 class LifecycleElement extends LitElement {
   static properties = {
