@@ -39,6 +39,7 @@ class LifecycleElement extends LitElement {
   }
 
   render() {
+    this.callbackLog.push("render")
     return html`<p>string_property is ${this.string_property}</p>`
   }
 }
@@ -56,7 +57,8 @@ describe('LifecycleElement', () => {
       "connectedCallback",
       "performUpdate",
       "shouldUpdate",
-      "willUpdate"
+      "willUpdate",
+      "render"
     ]);
   });
 })
