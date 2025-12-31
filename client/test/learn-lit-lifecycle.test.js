@@ -1,20 +1,21 @@
 // These tests are for learning only and do not test any SuttaCentral code.
 
-import {fixture, html as htmlTesting} from '@open-wc/testing';
-import {assert} from '@esm-bundle/chai';
-
 import {html, LitElement} from "lit";
+import {elementUpdated, fixture} from '@open-wc/testing';
+import {assert} from '@esm-bundle/chai';
 
 class LifecycleElement extends LitElement {
   static properties = {
-    string_property: { type: String }
+    string_property: { type: String },
+    callbackLog: { type: Array },
+    skipUpdate: { type: Boolean },
   };
 
   constructor() {
     super();
     this.string_property = 'Initial value';
     this.callbackLog = [];
-    this.dontPerformUpdate = false;
+    this.skipUpdate = false;
   }
 
   connectedCallback() {
@@ -29,7 +30,11 @@ class LifecycleElement extends LitElement {
 
   shouldUpdate(_changedProperties) {
     this.callbackLog.push("shouldUpdate");
-    if(this.dontPerformUpdate) return false;
+
+    if(this.skipUpdate) {
+      return false;
+    }
+
     return super.shouldUpdate(_changedProperties);
   }
 
@@ -57,12 +62,12 @@ customElements.define('lifecycle-element', LifecycleElement);
 
 describe('LifecycleElement', () => {
   it('Should initialise string_property on construction', async () => {
-    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
+    const element = await fixture(html`<lifecycle-element></lifecycle-element>`);
     assert.equal(element.string_property, 'Initial value');
   });
 
   it('Should call all callbacks when shouldUpdate() is super.shouldUpdate()', async () => {
-    const element = await fixture(htmlTesting`<lifecycle-element></lifecycle-element>`);
+    const element = await fixture(html`<lifecycle-element></lifecycle-element>`);
     assert.deepEqual(element.callbackLog, [
       "connectedCallback",
       "performUpdate",
@@ -70,7 +75,19 @@ describe('LifecycleElement', () => {
       "willUpdate",
       "render",
       "firstUpdated",
-      "updated"
+      "updated",
+    ]);
+  });
+
+  it('Should not call callbacks when shouldUpdate is false', async () => {
+    const element = await fixture(html`<lifecycle-element></lifecycle-element>`);
+    element.skipUpdate = true;
+    element.callbackLog = [];
+    element.string_property = "New value";
+    await elementUpdated(element);
+    assert.deepEqual(element.callbackLog, [
+      "performUpdate",
+      "shouldUpdate",
     ]);
   });
 })
