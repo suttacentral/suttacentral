@@ -990,7 +990,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     }
     reduxActions.changeLinearProgressActiveState(true);
     this.#fetchExpansion();
-    this.#fetchSearchResult();
+    this.fetchSearchResult();
     this.#updateNav();
   }
 
@@ -1003,7 +1003,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  async #fetchSearchResult() {
+  async fetchSearchResult() {
     let requestUrl = this.#getUrl() || '';
     const bindingChar = requestUrl.indexOf('?') >= 0 ? '&' : '?';
     requestUrl = requestUrl + bindingChar + this.#getQueryString();
