@@ -1053,7 +1053,7 @@ export const SCFontStyles = css`
 
   @font-face {
     font-family: 'Khamti Regular';
-    src: url('/files/fonts/Khamti-Regular.woff2');
+    src: url('/files/fonts/TaiKhamti2025.woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
