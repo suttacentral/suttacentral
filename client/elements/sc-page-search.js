@@ -1012,15 +1012,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         .getState()
         .searchOptions.displayedLanguages.filter(item => item.checked);
       selectedLangs = selectedLangs.map(item => item.uid);
-      const searchResult = await (
-        await fetch(requestUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedLangs),
-        })
-      ).json();
+      const searchResult = await this.getSearchResponse(requestUrl, selectedLangs);
       this.searchResultError = searchResult.error;
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
@@ -1028,6 +1020,18 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       this.lastError = error;
       console.error(error);
     }
+  }
+
+  async getSearchResponse(requestUrl, selectedLanguages) {
+    return await (
+      await fetch(requestUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedLanguages),
+      })
+    ).json();
   }
 
   updated(changedProps) {
