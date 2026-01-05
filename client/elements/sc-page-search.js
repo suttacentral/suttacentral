@@ -11,7 +11,7 @@ import './addons/sc-error-icon';
 import './addons/sc-progress';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
-import { LitLocalized } from './addons/sc-localization-mixin';
+import { LitLocalized} from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
@@ -989,12 +989,12 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       return;
     }
     reduxActions.changeLinearProgressActiveState(true);
-    this.#fetchExpansion();
+    this.fetchExpansion();
     this.fetchSearchResult();
     this.#updateNav();
   }
 
-  async #fetchExpansion() {
+  async fetchExpansion() {
     try {
       this.expansionReturns = await (await fetch(this.#getExpansionUrl())).json();
     } catch (error) {

@@ -86,7 +86,6 @@
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-unused-imports": "^3.0.0",
     "eslint-plugin-wc": "^2.0.4",
-    "fetch-mock": "^12.6.0",
     "file-loader": "6.2.0",
     "html-webpack-plugin": "5.5.0",
     "htmlparser2": "9.0.0",
