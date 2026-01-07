@@ -989,12 +989,12 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       return;
     }
     reduxActions.changeLinearProgressActiveState(true);
-    this.fetchExpansion();
+    this.#fetchExpansion();
     this.fetchSearchResult();
     this.#updateNav();
   }
 
-  async fetchExpansion() {
+  async #fetchExpansion() {
     try {
       this.expansionReturns = await this.getExpansionResponse();
     } catch (error) {
