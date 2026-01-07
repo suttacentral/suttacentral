@@ -1004,8 +1004,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   async getExpansionResponse() {
-    let response = await fetch(this.#getExpansionUrl());
-    return await response.json();
+    return await fetch(this.#getExpansionUrl())
+      .then((response) => response.json());
   }
 
   async fetchSearchResult() {
