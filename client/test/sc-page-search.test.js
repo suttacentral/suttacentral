@@ -58,10 +58,11 @@ class SCPageSearchSpy extends SCPageSearch {
     return GENERAL_SEARCH_RESPONSE;
   }
 
-  async fetchExpansion() {
-    this.expansionReturns = EXPANSION_RESPONSE;
+  async getExpansionResponse() {
+    return EXPANSION_RESPONSE;
   }
 }
+
 customElements.define('sc-page-search-spy', SCPageSearchSpy);
 
 

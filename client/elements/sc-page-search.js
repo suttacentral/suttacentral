@@ -996,11 +996,15 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   async fetchExpansion() {
     try {
-      this.expansionReturns = await (await fetch(this.#getExpansionUrl())).json();
+      this.expansionReturns = await this.getExpansionResponse();
     } catch (error) {
       this.lastError = error;
       console.error(error);
     }
+  }
+
+  async getExpansionResponse() {
+    return await (await fetch(this.#getExpansionUrl())).json();
   }
 
   async fetchSearchResult() {
