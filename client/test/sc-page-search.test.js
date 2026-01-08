@@ -105,7 +105,7 @@ describe('SCPageSearch', () => {
     const search_input = element.shadowRoot.getElementById('search_input');
     search_input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
     await elementUpdated(element);
-    // TODO: This test fails as expected but I'm committing to git now.
+    // We should be able to call it().skip() but web-test-runner is broken.
     // expect(element.fetchCount).to.equal(1);
   });
 });
