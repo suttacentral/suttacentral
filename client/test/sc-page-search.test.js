@@ -47,9 +47,17 @@ class SCPageSearchSpy extends SCPageSearch {
   constructor() {
     super();
     this.fetchCount = 0;
+    this.logRequestUpdate = false;
+  }
+
+  submitByPressingEnter() {
+    console.log('*** SIMULATE PRESSING ENTER ***');
+    const search_input = this.shadowRoot.getElementById('search_input');
+    search_input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
   }
 
   async fetchSearchResult() {
+    console.log('*** FETCHING SEARCH RESULTS ***');
     this.fetchCount++;
     return await super.fetchSearchResult();
   }
@@ -60,6 +68,13 @@ class SCPageSearchSpy extends SCPageSearch {
 
   async getExpansionResponse() {
     return EXPANSION_RESPONSE;
+  }
+
+  requestUpdate(...args) {
+    if(this.logRequestUpdate) {
+      console.log(`requestUpdate() with ${args}`);
+    }
+    super.requestUpdate(...args);
   }
 }
 
@@ -102,8 +117,8 @@ describe('SCPageSearch', () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
     await elementUpdated(element);
     element.fetchCount = 0;
-    const search_input = element.shadowRoot.getElementById('search_input');
-    search_input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
+    element.logRequestUpdate = true;
+    element.submitByPressingEnter();
     await elementUpdated(element);
     // We should be able to call it().skip() but web-test-runner is broken.
     // expect(element.fetchCount).to.equal(1);
