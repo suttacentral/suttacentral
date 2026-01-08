@@ -868,6 +868,20 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     return true;
   }
 
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('lastSearchResults')) {
+      this.requestUpdate();
+      this.#createMetaData();
+    }
+    const searchInput = this.shadowRoot.querySelector('#search_input');
+    if (searchInput?.value === '') {
+      searchInput.value = this.searchQuery;
+    }
+
+    this.#changeSearchResultsLayout();
+  }
+
   stateChanged(state) {
     super.stateChanged(state);
     if (this.searchQuery !== state.currentRoute.params.query) {
@@ -1037,20 +1051,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         body: JSON.stringify(selectedLanguages),
       })
     ).json();
-  }
-
-  updated(changedProps) {
-    super.updated(changedProps);
-    if (changedProps.has('lastSearchResults')) {
-      this.requestUpdate();
-      this.#createMetaData();
-    }
-    const searchInput = this.shadowRoot.querySelector('#search_input');
-    if (searchInput?.value === '') {
-      searchInput.value = this.searchQuery;
-    }
-
-    this.#changeSearchResultsLayout();
   }
 
   #didRespond(searchResult) {
