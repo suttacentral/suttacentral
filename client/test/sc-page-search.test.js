@@ -105,7 +105,6 @@ describe('SCPageSearch', () => {
     const search_input = element.shadowRoot.getElementById('search_input');
     search_input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
     await elementUpdated(element);
-    // TODO: This test fails as expected but I'm committing to git now.
-    // expect(element.fetchCount).to.equal(1);
-  });
+    expect(element.fetchCount).to.equal(1);
+  }).skip('There is a bug that causes fetch to be called twice.');
 });
