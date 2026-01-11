@@ -123,4 +123,9 @@ describe('SCPageSearch', () => {
     // We should be able to call it().skip() but web-test-runner is broken.
     // expect(element.fetchCount).to.equal(1);
   });
+
+  it('should set fetch flag when element created', async () => {
+    const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
+    expect(element.fetchOnNextUpdate).to.be.true;
+  })
 });

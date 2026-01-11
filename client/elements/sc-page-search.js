@@ -69,6 +69,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     matchPartial: { type: Boolean },
     priorityAuthors: { type: Object },
     isCompactMode: { type: String },
+    fetchOnThisUpdate: { type: Boolean },
   };
 
   constructor() {
@@ -114,6 +115,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     this.priorityAuthors = new Map([['en', 'sujato'], ['de', 'sabbamitta']]);
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.matchPartial = store.getState().searchOptions.matchPartial;
+
+    this.fetchOnNextUpdate = true;
 
     this._fetchLanguageIsoCodes();
   }
