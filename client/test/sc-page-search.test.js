@@ -103,7 +103,7 @@ describe('SCPageSearch', () => {
     expect(element.fetchCount).to.equal(1);
   });
 
-  it('should call fetchSearchResult once when clicked', async () => {
+  it('should call fetchSearchResult once when enter pressed', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
     await elementUpdated(element);
     element.fetchCount = 0;
@@ -120,8 +120,9 @@ describe('SCPageSearch', () => {
     expect(element.fetchOnNextUpdate).to.be.true;
   });
 
-  it('should have false searchQueryActuallyHasChanged property after construction', async () => {
-    let instance = new SCPageSearch();
-    expect(instance.searchQueryHasActuallyChanged).to.be.false;
+  it('should know the search query was set by Redux CHANGE_ROUTE action', async () => {
+    const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
+    await elementUpdated(element);
+    expect(element.queryHasChanged).to.be.true;
   });
 });
