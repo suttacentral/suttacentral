@@ -119,4 +119,9 @@ describe('SCPageSearch', () => {
     await elementUpdated(element);
     expect(element.fetchOnNextUpdate).to.be.true;
   });
+
+  it('should have false searchQueryActuallyHasChanged property after construction', async () => {
+    let instance = new SCPageSearch();
+    expect(instance.searchQueryHasActuallyChanged).to.be.false;
+  });
 });

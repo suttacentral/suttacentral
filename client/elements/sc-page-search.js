@@ -44,6 +44,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         }
       },
     },
+    searchQueryHasActuallyChanged: { type: Boolean },
     // The actual query parameters of the search
     searchParams: { type: Object },
     lastSearchResults: { type: Array },
@@ -76,6 +77,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.searchQuery = store.getState().currentRoute.params.query;
+    this.searchQueryHasActuallyChanged = false;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
     this.originLastSearchResults = [];
