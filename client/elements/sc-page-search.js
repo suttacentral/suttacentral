@@ -861,17 +861,25 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     this.addEventListener('search-filter-changed', this.#calculateCurrentFilter);
   }
 
+  // Lifecycle callbacks implemented here. See the Lit documentation:
+  // https://lit.dev/docs/components/lifecycle/
+
   shouldUpdate(prevProps) {
+    // shouldUpdate() is intended to be a check whether we update or not.
+    // TODO: Move this code into willUpdate()
     if (prevProps.has('searchQuery')) {
       this.#startNewSearchWithNewWord();
     }
     if (prevProps.has('lastSearchResults')) {
       this.#populateList();
     }
+    // Do we always need to update?
+    // Returning true means we will do so every time.
     return true;
   }
 
   updated(changedProps) {
+    // According to the documentation we should not need to implement updated().
     super.updated(changedProps);
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
