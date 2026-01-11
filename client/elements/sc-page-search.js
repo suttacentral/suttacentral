@@ -46,7 +46,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     },
     previousSearchQuery: { type: String },
     queryHasChanged: { type: Boolean },
-    searchQueryHasActuallyChanged: { type: Boolean },
+    newFetchIsRequired: {type: Boolean },
     // The actual query parameters of the search
     searchParams: { type: Object },
     lastSearchResults: { type: Array },
@@ -73,13 +73,13 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     matchPartial: { type: Boolean },
     priorityAuthors: { type: Object },
     isCompactMode: { type: String },
-    fetchOnThisUpdate: { type: Boolean },
   };
 
   constructor() {
     super();
     this.searchQuery = store.getState().currentRoute.params.query;
     this.queryHasChanged = false;
+    this.newFetchIsRequired = true;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
     this.originLastSearchResults = [];

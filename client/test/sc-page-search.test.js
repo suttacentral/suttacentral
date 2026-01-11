@@ -114,15 +114,13 @@ describe('SCPageSearch', () => {
     // expect(element.fetchCount).to.equal(1);
   });
 
-  it('should set fetch flag when element created', async () => {
-    const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
-    await elementUpdated(element);
-    expect(element.fetchOnNextUpdate).to.be.true;
+  it('should indicate that fetch is required when constructed', async () => {
+    const instance = new SCPageSearch();
+    expect(instance.newFetchIsRequired).to.be.true;
   });
 
-  it('should know the search query was set by Redux CHANGE_ROUTE action', async () => {
+  it('should indicate that fetch is required after element first created', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
-    await elementUpdated(element);
-    expect(element.queryHasChanged).to.be.true;
+    expect(element.newFetchIsRequired).to.be.true;
   });
 });
