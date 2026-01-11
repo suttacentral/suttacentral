@@ -116,6 +116,7 @@ describe('SCPageSearch', () => {
 
   it('should set fetch flag when element created', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
+    await elementUpdated(element);
     expect(element.fetchOnNextUpdate).to.be.true;
-  })
+  });
 });

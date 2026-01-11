@@ -34,7 +34,8 @@ import(
 
 export class SCPageSearch extends LitLocalized(LitElement) {
   static properties = {
-    // The query to search for
+    // The update cycle will always see searchQuery as changed
+    // unless it is falsy.
     searchQuery: {
       type: String,
       hasChanged(newVal) {
@@ -876,6 +877,12 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     // Do we always need to update?
     // Returning true means we will do so every time.
     return true;
+  }
+
+  willUpdate(changedProps) {
+    if(changedProps.has('searchQuery')) {
+      console.log(`willUpdate() sees that searchQuery has changed to ${this.searchQuery}`);
+    }
   }
 
   updated(changedProps) {
