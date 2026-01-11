@@ -47,17 +47,14 @@ class SCPageSearchSpy extends SCPageSearch {
   constructor() {
     super();
     this.fetchCount = 0;
-    this.logRequestUpdate = false;
   }
 
   submitByPressingEnter() {
-    console.log('*** SIMULATE PRESSING ENTER ***');
     const search_input = this.shadowRoot.getElementById('search_input');
     search_input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
   }
 
   async fetchSearchResult() {
-    console.log('*** FETCHING SEARCH RESULTS ***');
     this.fetchCount++;
     return await super.fetchSearchResult();
   }
@@ -68,13 +65,6 @@ class SCPageSearchSpy extends SCPageSearch {
 
   async getExpansionResponse() {
     return EXPANSION_RESPONSE;
-  }
-
-  requestUpdate(...args) {
-    if(this.logRequestUpdate) {
-      console.log(`requestUpdate() with ${args}`);
-    }
-    super.requestUpdate(...args);
   }
 }
 
