@@ -1062,6 +1062,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       this.lastError = error;
       console.error(error);
     }
+    this.newFetchIsRequired = false;
   }
 
   async getSearchResponse(requestUrl, selectedLanguages) {

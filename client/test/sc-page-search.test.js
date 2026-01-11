@@ -119,8 +119,9 @@ describe('SCPageSearch', () => {
     expect(instance.newFetchIsRequired).to.be.true;
   });
 
-  it('should indicate that fetch is required after element first created', async () => {
+  it('should indicated that fetch is not required once lifecycle is complete with a single fetch', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
-    expect(element.newFetchIsRequired).to.be.true;
+    await elementUpdated(element);
+    expect(element.newFetchIsRequired).to.be.false;
   });
 });
