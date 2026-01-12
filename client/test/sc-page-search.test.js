@@ -4,6 +4,7 @@ import {html, LitElement} from "lit";
 import {elementUpdated, fixture} from '@open-wc/testing';
 import { expect } from '@esm-bundle/chai';
 import {store} from "../redux-store";
+import {SCSearchController} from "../elements/sc-search-controller";
 
 const GENERAL_SEARCH_RESPONSE = {
   "hits": [
@@ -43,10 +44,22 @@ const GENERAL_SEARCH_RESPONSE = {
 
 const EXPANSION_RESPONSE = [{"pli": ["Pli", "Pāli"]}];
 
+class FakeSearchController extends SCSearchController {
+
+  constructor() {
+    super()
+    this.fetchCount = 0;
+  }
+
+  async fetchResult(requestUrl, selectedLanguages) {
+    this.fetchCount++;
+    return GENERAL_SEARCH_RESPONSE;
+  }
+}
+
 class SCPageSearchSpy extends SCPageSearch {
   constructor() {
-    super();
-    this.fetchCount = 0;
+    super(new FakeSearchController());
   }
 
   submitByPressingEnter() {
@@ -59,20 +72,10 @@ class SCPageSearchSpy extends SCPageSearch {
     search_input.value = value;
   }
 
-  async fetchSearchResult() {
-    this.fetchCount++;
-    return await super.fetchSearchResult();
-  }
-
-  async getSearchResponse(requestUrl, selectedLanguages) {
-    return GENERAL_SEARCH_RESPONSE;
-  }
-
   async getExpansionResponse() {
     return EXPANSION_RESPONSE;
   }
 }
-
 customElements.define('sc-page-search-spy', SCPageSearchSpy);
 
 
@@ -105,7 +108,7 @@ describe('SCPageSearch', () => {
   it('should call fetchSearchResult once when created', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
     await elementUpdated(element);
-    expect(element.fetchCount).to.equal(1);
+    expect(element.searchController.fetchCount).to.equal(1);
   });
 
   it('should change the search query but it is overwritten', async () => {

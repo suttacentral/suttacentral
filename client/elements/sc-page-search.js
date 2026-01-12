@@ -72,9 +72,9 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     isCompactMode: { type: String },
   };
 
-  constructor() {
+  constructor(searchController = new SCSearchController()) {
     super();
-    this.searchController = new SCSearchController();
+    this.searchController = searchController;
     this.searchQuery = store.getState().currentRoute.params.query;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
