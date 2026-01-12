@@ -11,5 +11,12 @@ describe('SCSearchController', () => {
       `['en', 'pli']`
     );
     assert.equal(result, 'some response');
+  });
+
+  it(`should fetch first time`, async () => {
+    let controller = new SCSearchController();
+    controller.stubbedResult('first response');
+    let result = await controller.fetchResult(`http://example.com/api/abc`, `['en']`);
+    assert.equal(result, 'first response');
   })
 });
