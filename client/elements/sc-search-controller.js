@@ -7,19 +7,22 @@ export class SCSearchController {
     this._stubbedResult = value;
   }
 
+  async response(requestUrl, selectedLanguages) {
+    return await fetch(requestUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(selectedLanguages),
+    });
+  }
+
   async fetchResult(requestUrl, selectedLanguages) {
     if(this._stubbedResult) {
       return this._stubbedResult
     }
 
-    return await (
-      await fetch(requestUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedLanguages),
-      })
-    ).json();
+    let response = await this.response(requestUrl, selectedLanguages);
+    return await response.json();
   }
 }
