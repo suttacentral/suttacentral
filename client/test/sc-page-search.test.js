@@ -47,7 +47,7 @@ const EXPANSION_RESPONSE = [{"pli": ["Pli", "Pāli"]}];
 class FakeSearchController extends SCSearchController {
 
   constructor() {
-    super()
+    super();
     this.fetchCount = 0;
   }
 
@@ -57,7 +57,7 @@ class FakeSearchController extends SCSearchController {
   }
 }
 
-class SCPageSearchSpy extends SCPageSearch {
+class SCPageSearchTesting extends SCPageSearch {
   constructor() {
     super(new FakeSearchController());
   }
@@ -76,7 +76,7 @@ class SCPageSearchSpy extends SCPageSearch {
     return EXPANSION_RESPONSE;
   }
 }
-customElements.define('sc-page-search-spy', SCPageSearchSpy);
+customElements.define('sc-page-search-spy', SCPageSearchTesting);
 
 
 describe('SCPageSearch', () => {
