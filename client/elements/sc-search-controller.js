@@ -1,6 +1,9 @@
 export class SCSearchController {
   constructor() {
     this._stubbedResponse = null;
+    this._lastRequestUrl = null;
+    this._lastSelectedLanguages = null;
+    this._cachedResult = null;
   }
 
   stubbedResponse(response) {
@@ -22,7 +25,17 @@ export class SCSearchController {
   }
 
   async fetchResult(requestUrl, selectedLanguages) {
+    if(requestUrl === this._lastRequestUrl && selectedLanguages === this._lastSelectedLanguages) {
+      return this._cachedResult;
+    }
+
     let response = await this.response(requestUrl, selectedLanguages);
-    return await response.json();
+    let result =  await response.json();
+
+    this._lastRequestUrl = requestUrl;
+    this._lastSelectedLanguages = selectedLanguages;
+    this._cachedResult = result;
+
+    return result;
   }
 }
