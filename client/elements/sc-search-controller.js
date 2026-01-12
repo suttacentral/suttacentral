@@ -25,7 +25,7 @@ export class SCSearchController {
   }
 
   async fetchResult(requestUrl, selectedLanguages) {
-    if(requestUrl === this._lastRequestUrl && selectedLanguages === this._lastSelectedLanguages) {
+    if(!this.requestHasChanged(requestUrl, selectedLanguages)) {
       return this._cachedResult;
     }
 
@@ -37,5 +37,13 @@ export class SCSearchController {
     this._cachedResult = result;
 
     return result;
+  }
+
+  requestHasChanged(requestUrl, selectedLanguages) {
+    if(!requestUrl) return true;
+    if(!selectedLanguages) return true;
+    let requestUrlChanged = (requestUrl !== this._lastRequestUrl);
+    let selectedLanguagesChanged = (JSON.stringify(selectedLanguages) !== JSON.stringify(this._lastSelectedLanguages));
+    return requestUrlChanged || selectedLanguagesChanged;
   }
 }
