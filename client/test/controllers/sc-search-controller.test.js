@@ -1,4 +1,4 @@
-import { SCSearchController} from "../../controllers/sc-search-controller";
+import { SCSearchController} from "../../elements/sc-search-controller";
 
 import { assert } from '@esm-bundle/chai';
 

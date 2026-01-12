@@ -19,6 +19,7 @@ import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
 import { reduxActions } from './addons/sc-redux-actions';
 import { extractSelectedLangsName } from './addons/sc-functions-miscellaneous';
+import {SCSearchController} from "./sc-search-controller";
 
 import(
   /* webpackMode: "lazy" */
@@ -73,6 +74,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   constructor() {
     super();
+    this.searchController = new SCSearchController();
     this.searchQuery = store.getState().currentRoute.params.query;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
@@ -1028,15 +1030,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   async getSearchResponse(requestUrl, selectedLanguages) {
-    return await (
-      await fetch(requestUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedLanguages),
-      })
-    ).json();
+    return await this.searchController.fetchResult(requestUrl, selectedLanguages);
   }
 
   updated(changedProps) {
