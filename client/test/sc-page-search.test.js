@@ -54,6 +54,11 @@ class SCPageSearchSpy extends SCPageSearch {
     search_input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
   }
 
+  setSearchInputValue(value) {
+    const search_input = this.shadowRoot.getElementById('search_input');
+    search_input.value = value;
+  }
+
   async fetchSearchResult() {
     this.fetchCount++;
     return await super.fetchSearchResult();
@@ -103,25 +108,24 @@ describe('SCPageSearch', () => {
     expect(element.fetchCount).to.equal(1);
   });
 
-  it('should call fetchSearchResult once when enter pressed', async () => {
+  it('should change the search query but it is overwritten', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
     await elementUpdated(element);
-    element.fetchCount = 0;
-    element.logRequestUpdate = true;
+    element.setSearchInputValue('quails')
     element.submitByPressingEnter();
     await elementUpdated(element);
-    // We should be able to call it().skip() but web-test-runner is broken.
-    // expect(element.fetchCount).to.equal(1);
+    expect(element.searchQuery).to.equal('the metta sutta');
   });
 
-  it('should indicate that fetch is required when constructed', async () => {
-    const instance = new SCPageSearch();
-    expect(instance.newFetchIsRequired).to.be.true;
-  });
-
-  it('should indicated that fetch is not required once lifecycle is complete with a single fetch', async () => {
+  it('actually gets changed via redux', async () => {
     const element = await fixture(html`<sc-page-search-spy></sc-page-search-spy>`);
     await elementUpdated(element);
-    expect(element.newFetchIsRequired).to.be.false;
+    expect(element.searchQuery).to.equal('the metta sutta');
+    store.dispatch({
+      type: 'CHANGE_ROUTE',
+      payload: { name: 'search', params: { query: 'quails'}, path: '/search'},
+    });
+    await elementUpdated(element);
+    expect(element.searchQuery).to.equal('quails');
   });
 });
