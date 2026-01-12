@@ -44,9 +44,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         }
       },
     },
-    previousSearchQuery: { type: String },
-    queryHasChanged: { type: Boolean },
-    newFetchIsRequired: {type: Boolean },
     // The actual query parameters of the search
     searchParams: { type: Object },
     lastSearchResults: { type: Array },
@@ -78,8 +75,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.searchQuery = store.getState().currentRoute.params.query;
-    this.queryHasChanged = false;
-    this.newFetchIsRequired = true;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
     this.originLastSearchResults = [];
@@ -120,8 +115,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     this.priorityAuthors = new Map([['en', 'sujato'], ['de', 'sabbamitta']]);
     this.isCompactMode = store.getState().suttaplexListDisplay;
     this.matchPartial = store.getState().searchOptions.matchPartial;
-
-    this.fetchOnNextUpdate = true;
 
     this._fetchLanguageIsoCodes();
   }
@@ -871,16 +864,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   // shouldUpdate() is intended to be a check whether we update or not.
   // TODO: Move this code into willUpdate()
-  shouldUpdate(prevProps) {
-    if(this.previousSearchQuery !== this.searchQuery) {
-      this.queryHasChanged = true;
-    }
-    this.previousSearchQuery = this.searchQuery;
-
-    if (prevProps.has('searchQuery')) {
+  shouldUpdate(changedProps) {
+    if (changedProps.has('searchQuery')) {
       this.#startNewSearchWithNewWord();
     }
-    if (prevProps.has('lastSearchResults')) {
+    if (changedProps.has('lastSearchResults')) {
       this.#populateList();
     }
     // Do we always need to update?
@@ -1060,7 +1048,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       this.lastError = error;
       console.error(error);
     }
-    this.newFetchIsRequired = false;
   }
 
   async getSearchResponse(requestUrl, selectedLanguages) {
