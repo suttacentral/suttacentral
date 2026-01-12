@@ -1,13 +1,17 @@
 export class SCSearchController {
   constructor() {
-    this._stubbedResult = null;
+    this._stubbedResponse = null;
   }
 
-  stubbedResult(value) {
-    this._stubbedResult = value;
+  stubbedResponse(response) {
+    this._stubbedResponse = response;
   }
 
   async response(requestUrl, selectedLanguages) {
+    if(this._stubbedResponse) {
+      return await this._stubbedResponse
+    }
+
     return await fetch(requestUrl, {
       method: 'POST',
       headers: {
@@ -18,10 +22,6 @@ export class SCSearchController {
   }
 
   async fetchResult(requestUrl, selectedLanguages) {
-    if(this._stubbedResult) {
-      return this._stubbedResult
-    }
-
     let response = await this.response(requestUrl, selectedLanguages);
     return await response.json();
   }
