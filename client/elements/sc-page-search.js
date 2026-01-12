@@ -1019,7 +1019,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         .getState()
         .searchOptions.displayedLanguages.filter(item => item.checked);
       selectedLangs = selectedLangs.map(item => item.uid);
-      const searchResult = await this.getSearchResponse(requestUrl, selectedLangs);
+      const searchResult = await this.searchController.fetchResult(requestUrl, selectedLangs);
       this.searchResultError = searchResult.error;
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
@@ -1029,9 +1029,6 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     }
   }
 
-  async getSearchResponse(requestUrl, selectedLanguages) {
-    return await this.searchController.fetchResult(requestUrl, selectedLanguages);
-  }
 
   updated(changedProps) {
     super.updated(changedProps);
