@@ -34,8 +34,7 @@ import(
 
 export class SCPageSearch extends LitLocalized(LitElement) {
   static properties = {
-    // The update cycle will always see searchQuery as changed
-    // unless it is falsy.
+    // The query to search for
     searchQuery: {
       type: String,
       hasChanged(newVal) {
@@ -859,36 +858,14 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     this.addEventListener('search-filter-changed', this.#calculateCurrentFilter);
   }
 
-  // Lifecycle callbacks implemented here. See the Lit documentation:
-  // https://lit.dev/docs/components/lifecycle/
-
-  // shouldUpdate() is intended to be a check whether we update or not.
-  // TODO: Move this code into willUpdate()
-  shouldUpdate(changedProps) {
-    if (changedProps.has('searchQuery')) {
+  shouldUpdate(prevProps) {
+    if (prevProps.has('searchQuery')) {
       this.#startNewSearchWithNewWord();
     }
-    if (changedProps.has('lastSearchResults')) {
+    if (prevProps.has('lastSearchResults')) {
       this.#populateList();
     }
-    // Do we always need to update?
-    // Returning true means we will do so every time.
     return true;
-  }
-
-  updated(changedProps) {
-    // According to the documentation we should not need to implement updated().
-    super.updated(changedProps);
-    if (changedProps.has('lastSearchResults')) {
-      this.requestUpdate();
-      this.#createMetaData();
-    }
-    const searchInput = this.shadowRoot.querySelector('#search_input');
-    if (searchInput?.value === '') {
-      searchInput.value = this.searchQuery;
-    }
-
-    this.#changeSearchResultsLayout();
   }
 
   stateChanged(state) {
@@ -1027,8 +1004,8 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   }
 
   async getExpansionResponse() {
-    return await fetch(this.#getExpansionUrl())
-      .then((response) => response.json());
+    let response = await fetch(this.#getExpansionUrl());
+    return await response.json();
   }
 
   async fetchSearchResult() {
@@ -1060,6 +1037,20 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         body: JSON.stringify(selectedLanguages),
       })
     ).json();
+  }
+
+  updated(changedProps) {
+    super.updated(changedProps);
+    if (changedProps.has('lastSearchResults')) {
+      this.requestUpdate();
+      this.#createMetaData();
+    }
+    const searchInput = this.shadowRoot.querySelector('#search_input');
+    if (searchInput?.value === '') {
+      searchInput.value = this.searchQuery;
+    }
+
+    this.#changeSearchResultsLayout();
   }
 
   #didRespond(searchResult) {
