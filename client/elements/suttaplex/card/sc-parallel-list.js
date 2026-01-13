@@ -225,11 +225,11 @@ export class SCParallels extends LitLocalized(LitElement) {
         .sort(compareArray)
         .map(item => {
           if (item.length === 1) {
-            return `sag#${item[0].toString()}`;
+            return `sag#sag${item[0].toString()}`;
           } else if (item.length === 2) {
-            return `sag#${item[0].toString()}.${item[1].toString()}`;
+            return `sag#sag${item[0].toString()}.${item[1].toString()}`;
           } else {
-            return `sag#${item[0].toString()}.${item[1].toString()}-#${item[2].toString()}.${item[3].toString()}`;
+            return `sag#sag${item[0].toString()}.${item[1].toString()}-#sag${item[2].toString()}.${item[3].toString()}`;
           }
         });
     } else if (rootKeys[0].match(/dhp/)) {
