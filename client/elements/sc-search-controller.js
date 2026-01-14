@@ -1,13 +1,3 @@
-async function* responseGenerator(requestUrl, selectedLanguages) {
-  yield await fetch(requestUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(selectedLanguages),
-  });
-}
-
 async function requestSearchResults(requestUrl, selectedLanguages) {
   return await fetch(requestUrl, {
     method: 'POST',
