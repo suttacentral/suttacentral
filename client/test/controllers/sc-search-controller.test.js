@@ -5,15 +5,19 @@ import {assert} from '@esm-bundle/chai';
 const FIRST_RESPONSE = Response.json({ response_num: 1 });
 
 function* jsonGenerator() {
-  yield `{ id: 1 }`;
-  yield `{ id: 2 }`;
-  yield `{ id: 3 }`;
+  let id = 1;
+  while(true) {
+    yield `{ id: ${ id } }`;
+    id++;
+  }
 }
 
 describe(`jsonGenerator()`, () => {
   it(`should generate sequence of json strings with incrementing id`,  () => {
     let json = jsonGenerator();
     assert.equal(json.next().value, `{ id: 1 }`);
+    assert.equal(json.next().value, `{ id: 2 }`);
+    assert.equal(json.next().value, `{ id: 3 }`);
   });
 });
 
