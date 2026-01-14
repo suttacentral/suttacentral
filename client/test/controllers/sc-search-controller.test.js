@@ -4,6 +4,19 @@ import {assert} from '@esm-bundle/chai';
 
 const FIRST_RESPONSE = Response.json({ response_num: 1 });
 
+function* jsonGenerator() {
+  yield `{ id: 1 }`;
+  yield `{ id: 2 }`;
+  yield `{ id: 3 }`;
+}
+
+describe(`jsonGenerator()`, () => {
+  it(`should generate sequence of json strings with incrementing id`,  () => {
+    let json = jsonGenerator();
+    assert.equal(json.next().value, `{ id: 1 }`);
+  });
+});
+
 describe('SCSearchController', () => {
   it(`should fetch first time`, async () => {
     let controller = new SCSearchController();
@@ -47,4 +60,15 @@ describe('SCSearchController', () => {
     let result_two = await controller.fetchResult(`http://example.com/api/abc`, ['en']);
     assert.equal(result_two['response_num'], 1);
   });
+
+  // it(`should fetch after cached result returned when requestUrl changed`, async () => {
+  //   let controller = new SCSearchController();
+  //   controller.stubbedResponse(Response.json({response_num: 1}));
+  //   let result_one = await controller.fetchResult(`http://example.com/api/abc`, ['en']);
+  //   controller.stubbedResponse(Response.json({response_num: 2}));
+  //   let result_two = await controller.fetchResult(`http://example.com/api/abc`, ['en']);
+  //   controller.stubbedResponse(Response.json({response_num: 3}));
+  //   let result_three = await controller.fetchResult(`http://example.com/api/def`, ['en']);
+  //   assert.equal(result_two['response_num'], 3);
+  // });
 });
