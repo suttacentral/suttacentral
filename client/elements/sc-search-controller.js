@@ -1,16 +1,13 @@
 export class SCSearchController {
   constructor() {
     this._stubbedResponse = null;
-    this._lastRequestUrl = null;
-    this._lastSelectedLanguages = null;
-    this._cachedResult = null;
   }
 
   stubbedResponse(response) {
     this._stubbedResponse = response;
   }
 
-  async response(requestUrl, selectedLanguages) {
+  async #response(requestUrl, selectedLanguages) {
     if(this._stubbedResponse) {
       return await this._stubbedResponse
     }
@@ -25,25 +22,7 @@ export class SCSearchController {
   }
 
   async fetchResult(requestUrl, selectedLanguages) {
-    if(!this.requestHasChanged(requestUrl, selectedLanguages)) {
-      return this._cachedResult;
-    }
-
-    let response = await this.response(requestUrl, selectedLanguages);
-    let result =  await response.json();
-
-    this._lastRequestUrl = requestUrl;
-    this._lastSelectedLanguages = selectedLanguages;
-    this._cachedResult = result;
-
-    return result;
-  }
-
-  requestHasChanged(requestUrl, selectedLanguages) {
-    if(!requestUrl) return true;
-    if(!selectedLanguages) return true;
-    let requestUrlChanged = (requestUrl !== this._lastRequestUrl);
-    let selectedLanguagesChanged = (JSON.stringify(selectedLanguages) !== JSON.stringify(this._lastSelectedLanguages));
-    return requestUrlChanged || selectedLanguagesChanged;
+    let response = await this.#response(requestUrl, selectedLanguages);
+    return await response.json();
   }
 }
