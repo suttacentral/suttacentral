@@ -3,18 +3,6 @@ export class SCSearchController {
     this._cannedResponses = cannedResponses;
   }
 
-  async #requestSearchResults(requestUrl, selectedLanguages) {
-    let request = new Request(requestUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(selectedLanguages),
-    });
-
-    return await fetch(request);
-  }
-
   async fetchResult(requestUrl, selectedLanguages) {
     let response;
 
@@ -25,5 +13,20 @@ export class SCSearchController {
     }
 
     return await response.json();
+  }
+
+  async #requestSearchResults(requestUrl, selectedLanguages) {
+    let request = this.#createRequest(requestUrl, selectedLanguages);
+    return await fetch(request);
+  }
+
+  #createRequest(requestUrl, selectedLanguages) {
+    return new Request(requestUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(selectedLanguages),
+    });
   }
 }
