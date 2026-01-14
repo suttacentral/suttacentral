@@ -121,7 +121,9 @@ export default class RoutingService {
           const lastUrlPath = window.location.pathname.split('/');
           let newPath = url.pathname + (url.search || "")
           const urlPath  = url.pathname.split('/');
-          if (lastUrlPath.length > 3 && urlPath.length > 3 && lastUrlPath[1] === urlPath[1]) {
+          if (url.hash) {
+            newPath += url.hash;
+          } else if (lastUrlPath.length > 3 && urlPath.length > 3 && lastUrlPath[1] === urlPath[1]) {
             newPath += this.location.hash || "";
           }
           this.push(newPath);
