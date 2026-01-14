@@ -8,10 +8,6 @@ export class SCSearchController {
   }
 
   async #response(requestUrl, selectedLanguages) {
-    if(this._stubbedResponse) {
-      return await this._stubbedResponse
-    }
-
     return await fetch(requestUrl, {
       method: 'POST',
       headers: {
@@ -22,7 +18,14 @@ export class SCSearchController {
   }
 
   async fetchResult(requestUrl, selectedLanguages) {
-    let response = await this.#response(requestUrl, selectedLanguages);
+    let response;
+
+    if(this._stubbedResponse) {
+      response = await this._stubbedResponse
+    } else {
+      response = await this.#response(requestUrl, selectedLanguages);
+    }
+
     return await response.json();
   }
 }
