@@ -2,25 +2,6 @@ import {SCSearchController} from "../../elements/sc-search-controller";
 
 import {assert} from '@esm-bundle/chai';
 
-const FIRST_RESPONSE = Response.json({ response_num: 1 });
-
-function* jsonGenerator() {
-  let id = 1;
-  while(true) {
-    yield `{ id: ${ id } }`;
-    id++;
-  }
-}
-
-describe(`jsonGenerator()`, () => {
-  it(`should generate sequence of json strings with incrementing id`,  () => {
-    let json = jsonGenerator();
-    assert.equal(json.next().value, `{ id: 1 }`);
-    assert.equal(json.next().value, `{ id: 2 }`);
-    assert.equal(json.next().value, `{ id: 3 }`);
-  });
-});
-
 describe('SCSearchController', () => {
   it(`should fetch first time`, async () => {
     let controller = new SCSearchController();
