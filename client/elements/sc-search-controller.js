@@ -1,10 +1,6 @@
 export class SCSearchController {
-  constructor() {
-    this._stubbedResponse = null;
-  }
-
-  stubbedResponse(response) {
-    this._stubbedResponse = response;
+  constructor(cannedResponses = null) {
+    this._cannedResponses = cannedResponses;
   }
 
   async #requestSearchResults(requestUrl, selectedLanguages) {
@@ -20,8 +16,8 @@ export class SCSearchController {
   async fetchResult(requestUrl, selectedLanguages) {
     let response;
 
-    if(this._stubbedResponse) {
-      response = await this._stubbedResponse
+    if(this._cannedResponses) {
+      response = await this._cannedResponses.pop();
     } else {
       response = await this.#requestSearchResults(requestUrl, selectedLanguages);
     }
