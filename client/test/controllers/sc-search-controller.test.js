@@ -2,6 +2,23 @@ import {SCSearchController} from "../../elements/sc-search-controller";
 
 import {assert} from '@esm-bundle/chai';
 
+function makeResponses() {
+  let responses = [];
+  for (let id = 10; id > 0; id--) {
+    responses.push(Response.json({ id: id }))
+  }
+  return responses;
+}
+
+describe(`makeResponses()`, () => {
+  it(`should return an id of 1 when first popped`, async () => {
+    let responses = makeResponses();
+    let first_response = responses.pop();
+    let as_object = await first_response.json();
+    assert.equal(as_object['id'], 1);
+  })
+});
+
 describe('SCSearchController', () => {
   it(`should fetch first time`, async () => {
     let controller = new SCSearchController([Response.json({response_num: 1})]);
