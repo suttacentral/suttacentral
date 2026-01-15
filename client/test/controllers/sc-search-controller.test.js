@@ -54,34 +54,34 @@ describe('SCSearchController', () => {
     // TODO: make this assertion pass
     // assert.equal(result['id'], 1);
   });
+});
 
-  describe(`RequestData`, () => {
-    it(`should be equal if url and languages are the same`, () => {
-      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-      let rhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-      assert.isTrue(lhs.equals(rhs));
-    });
+describe(`RequestData`, () => {
+  it(`should be equal if url and languages are the same`, () => {
+    let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let rhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    assert.isTrue(lhs.equals(rhs));
+  });
 
-    it(`should not be equal if url changes`, () => {
-      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-      let rhs = new RequestData(`http://example.com/def`, `['en', 'pli']`);
-      assert.isFalse(lhs.equals(rhs));
-    });
+  it(`should not be equal if url changes`, () => {
+    let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let rhs = new RequestData(`http://example.com/def`, `['en', 'pli']`);
+    assert.isFalse(lhs.equals(rhs));
+  });
 
-    it(`should not be equal if languages change`, () => {
-      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-      let rhs = new RequestData(`http://example.com/abc`, `['de', 'pli']`);
-      assert.isFalse(lhs.equals(rhs));
-    });
+  it(`should not be equal if languages change`, () => {
+    let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let rhs = new RequestData(`http://example.com/abc`, `['de', 'pli']`);
+    assert.isFalse(lhs.equals(rhs));
+  });
 
-    it(`should not be equal if both change`, () => {
-      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-      let rhs = new RequestData(`http://example.com/def`, `['de', 'pli']`);
-      assert.isFalse(lhs.equals(rhs));
-    });
-    it(`should not be equal if right hand side is falsey`, () => {
-      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-      assert.isFalse(lhs.equals(null));
-    });
+  it(`should not be equal if both change`, () => {
+    let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let rhs = new RequestData(`http://example.com/def`, `['de', 'pli']`);
+    assert.isFalse(lhs.equals(rhs));
+  });
+  it(`should not be equal if right hand side is falsey`, () => {
+    let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    assert.isFalse(lhs.equals(null));
   });
 });
