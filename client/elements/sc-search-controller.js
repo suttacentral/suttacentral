@@ -4,15 +4,15 @@ export class SCSearchController {
   }
 
   async fetchResult(requestUrl, selectedLanguages) {
-    let response = await this.#makeRequest(requestUrl, selectedLanguages);
+    let request = this.#createRequest(requestUrl, selectedLanguages);
+    let response = await this.#makeRequest(request);
     return await response.json();
   }
 
-  async #makeRequest(requestUrl, selectedLanguages) {
+  async #makeRequest(request) {
     if(this._cannedResponses) {
       return await this._cannedResponses.pop();
     } else {
-      let request = this.#createRequest(requestUrl, selectedLanguages);
       return await fetch(request);
     }
   }
