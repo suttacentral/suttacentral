@@ -5,6 +5,7 @@ export class RequestData {
   }
 
   equals(other) {
+    if(!other) return false;
     return (this.url === other.url) && (this.body === other.body)
   }
 }
