@@ -1,4 +1,4 @@
-import {RequestData, SCSearchController} from "../../elements/sc-search-controller";
+import {RequestChecker, RequestData, SCSearchController} from "../../elements/sc-search-controller";
 
 import {assert} from '@esm-bundle/chai';
 
@@ -83,5 +83,14 @@ describe(`RequestData`, () => {
   it(`should not be equal if right hand side is falsey`, () => {
     let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
     assert.isFalse(lhs.equals(null));
+  });
+});
+
+describe(`RequestChecker`, () => {
+  it(`should flag first request as changed`, () => {
+    let checker = new RequestChecker();
+    let requestData = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    checker.check(requestData);
+    assert.isTrue(checker.hasChanged());
   });
 });

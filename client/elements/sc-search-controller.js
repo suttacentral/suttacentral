@@ -10,6 +10,18 @@ export class RequestData {
   }
 }
 
+export class RequestChecker {
+  constructor() {
+  }
+
+  check(requestData) {
+  }
+
+  hasChanged() {
+    return true;
+  }
+}
+
 export class SCSearchController {
   constructor(cannedResponses = null) {
     this._cannedResponses = cannedResponses;
