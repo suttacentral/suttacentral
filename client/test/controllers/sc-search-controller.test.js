@@ -51,8 +51,7 @@ describe('SCSearchController', () => {
     let controller = new SCSearchController(makeResponses());
     await controller.fetchResult(`http://example.com/api/abc`, ['en']);
     let result = await controller.fetchResult(`http://example.com/api/abc`, ['en']);
-    // TODO: make this assertion pass
-    // assert.equal(result['id'], 1);
+    assert.equal(result['id'], 1);
   });
 });
 

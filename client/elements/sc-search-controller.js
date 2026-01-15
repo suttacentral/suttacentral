@@ -29,12 +29,23 @@ export class RequestChecker {
 export class SCSearchController {
   constructor(cannedResponses = null) {
     this._cannedResponses = cannedResponses;
+    this._requestChecker = new RequestChecker();
+    this._previousResponse = null;
   }
 
   async fetchResult(url, selectedLanguages) {
     let requestData = new RequestData(url, selectedLanguages);
-    let request = this.#createRequest(requestData);
-    let response = await this.#getResponse(request);
+    this._requestChecker.check(requestData);
+
+    let response;
+    if(this._requestChecker.hasChanged()) {
+      let request = this.#createRequest(requestData);
+      response = await this.#getResponse(request);
+    } else {
+      response = this._previousResponse;
+    }
+
+    this._previousResponse = response.clone();
     return await response.json();
   }
 
