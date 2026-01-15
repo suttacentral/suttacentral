@@ -111,4 +111,15 @@ describe(`RequestChecker`, () => {
     checker.check(request_two);
     assert.isFalse(checker.hasChanged());
   });
+
+  it(`should show request has changed when previously it hadn't`, () => {
+    let checker = new RequestChecker();
+    let first =     new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let unchanged = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let changed =   new RequestData(`http://example.com/def`, `['en', 'pli']`);
+    checker.check(first);
+    checker.check(unchanged);
+    checker.check(changed);
+    assert.isTrue(checker.hasChanged());
+  });
 });
