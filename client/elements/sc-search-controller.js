@@ -4,17 +4,20 @@ export class SCSearchController {
   }
 
   async fetchResult(url, selectedLanguages) {
-    let body = JSON.stringify(selectedLanguages);
-    let request = this.#createRequest(url, body);
+    let requestData = {
+      url: url,
+      body: JSON.stringify(selectedLanguages),
+    }
+    let request = this.#createRequest(requestData);
     let response = await this.#getResponse(request);
     return await response.json();
   }
 
-  #createRequest(url, body) {
-    return new Request(url, {
+  #createRequest(requestData) {
+    return new Request(requestData.url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: body,
+      body: requestData.body,
     });
   }
 
