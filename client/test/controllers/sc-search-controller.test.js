@@ -79,5 +79,9 @@ describe('SCSearchController', () => {
       let rhs = new RequestData(`http://example.com/def`, `['de', 'pli']`);
       assert.isFalse(lhs.equals(rhs));
     });
+    it(`should not be equal if right hand side is falsey`, () => {
+      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+      assert.isFalse(lhs.equals(null));
+    });
   });
 });
