@@ -1,7 +1,11 @@
-class RequestData {
+export class RequestData {
   constructor(url, selectedLanguages) {
     this.url = url;
     this.body = JSON.stringify(selectedLanguages);
+  }
+
+  equals(other) {
+    return (this.url === other.url) && (this.body === other.body)
   }
 }
 

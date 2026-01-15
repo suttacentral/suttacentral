@@ -1,4 +1,4 @@
-import {SCSearchController} from "../../elements/sc-search-controller";
+import {RequestData, SCSearchController} from "../../elements/sc-search-controller";
 
 import {assert} from '@esm-bundle/chai';
 
@@ -53,5 +53,13 @@ describe('SCSearchController', () => {
     let result = await controller.fetchResult(`http://example.com/api/abc`, ['en']);
     // TODO: make this assertion pass
     // assert.equal(result['id'], 1);
+  });
+
+  describe(`RequestData`, () => {
+    it(`should indicate equality`, () => {
+      let lhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+      let rhs = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+      assert.isTrue(lhs.equals(rhs));
+    });
   });
 });
