@@ -12,13 +12,17 @@ export class RequestData {
 
 export class RequestChecker {
   constructor() {
+    this._previousRequestData = null;
+    this._hasChanged = false;
   }
 
   check(requestData) {
+    this._hasChanged = !requestData.equals(this._previousRequestData);
+    this._previousRequestData = requestData;
   }
 
   hasChanged() {
-    return true;
+    return this._hasChanged;
   }
 }
 

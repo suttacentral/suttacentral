@@ -102,4 +102,13 @@ describe(`RequestChecker`, () => {
     checker.check(request_two);
     assert.isTrue(checker.hasChanged());
   });
+
+  it(`should show same request as not changed`, () => {
+    let checker = new RequestChecker();
+    let request_one = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let request_two = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    checker.check(request_one);
+    checker.check(request_two);
+    assert.isFalse(checker.hasChanged());
+  });
 });
