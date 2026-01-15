@@ -87,10 +87,19 @@ describe(`RequestData`, () => {
 });
 
 describe(`RequestChecker`, () => {
-  it(`should flag first request as changed`, () => {
+  it(`should show first request has changed`, () => {
     let checker = new RequestChecker();
-    let requestData = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
-    checker.check(requestData);
+    let request = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    checker.check(request);
+    assert.isTrue(checker.hasChanged());
+  });
+
+  it(`should show different request as changed`, () => {
+    let checker = new RequestChecker();
+    let request_one = new RequestData(`http://example.com/abc`, `['en', 'pli']`);
+    let request_two = new RequestData(`http://example.com/def`, `['en', 'pli']`);
+    checker.check(request_one);
+    checker.check(request_two);
     assert.isTrue(checker.hasChanged());
   });
 });
