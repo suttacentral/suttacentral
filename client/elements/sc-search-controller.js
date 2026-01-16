@@ -1,3 +1,11 @@
+// The SCSearchController class and it's helpers only exist because
+// the SCPageSearch component needs to be reworked. Here we provide
+// a way to cache the previous response and only request a new one
+// from the search API if the request has changed. This should really
+// be handled via the component lifecycle of the <sc-page-search>
+// element. If we get around to sorting that out we can delete
+// this module.
+
 export class RequestData {
   constructor(url, selectedLanguages) {
     this.url = url;
