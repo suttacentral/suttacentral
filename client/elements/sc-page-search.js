@@ -11,7 +11,7 @@ import './addons/sc-error-icon';
 import './addons/sc-progress';
 import { icon } from '../img/sc-icon';
 import { store } from '../redux-store';
-import { LitLocalized } from './addons/sc-localization-mixin';
+import { LitLocalized} from './addons/sc-localization-mixin';
 import { API_ROOT } from '../constants';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { SCPageSearchStyles, searchResultTableViewStyles } from './styles/sc-page-search-styles';
@@ -19,6 +19,7 @@ import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { dispatchCustomEvent } from '../utils/customEvent';
 import { reduxActions } from './addons/sc-redux-actions';
 import { extractSelectedLangsName } from './addons/sc-functions-miscellaneous';
+import {SCSearchController} from "./sc-search-controller";
 
 import(
   /* webpackMode: "lazy" */
@@ -71,8 +72,9 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     isCompactMode: { type: String },
   };
 
-  constructor() {
+  constructor(searchController = new SCSearchController()) {
     super();
+    this.searchController = searchController;
     this.searchQuery = store.getState().currentRoute.params.query;
     this.searchParams = store.getState().searchParams;
     this.lastSearchResults = [];
@@ -996,11 +998,16 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   async #fetchExpansion() {
     try {
-      this.expansionReturns = await (await fetch(this.#getExpansionUrl())).json();
+      this.expansionReturns = await this.getExpansionResponse();
     } catch (error) {
       this.lastError = error;
       console.error(error);
     }
+  }
+
+  async getExpansionResponse() {
+    let response = await fetch(this.#getExpansionUrl());
+    return await response.json();
   }
 
   async #fetchSearchResult() {
@@ -1012,15 +1019,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
         .getState()
         .searchOptions.displayedLanguages.filter(item => item.checked);
       selectedLangs = selectedLangs.map(item => item.uid);
-      const searchResult = await (
-        await fetch(requestUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedLangs),
-        })
-      ).json();
+      const searchResult = await this.searchController.fetchResult(requestUrl, selectedLangs);
       this.searchResultError = searchResult.error;
       this.#didRespond(searchResult);
       this.#setProperties(searchResult);
@@ -1029,6 +1028,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
       console.error(error);
     }
   }
+
 
   updated(changedProps) {
     super.updated(changedProps);
