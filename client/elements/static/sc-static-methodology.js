@@ -308,6 +308,7 @@ export class SCStaticMethodologyPage extends SCStaticPage {
             <li>${unsafeHTML(this.localize('methodology:258'))}</li>
             <li>${unsafeHTML(this.localize('methodology:259'))}</li>
             <li>${unsafeHTML(this.localize('methodology:260'))}</li>
+            <li>${unsafeHTML(this.localize('methodology:303'))}</li>
             <li>${unsafeHTML(this.localize('methodology:261'))}</li>
             <li>${unsafeHTML(this.localize('methodology:262'))}</li>
             <li>${unsafeHTML(this.localize('methodology:263'))}</li>
