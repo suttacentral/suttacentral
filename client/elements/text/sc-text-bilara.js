@@ -87,7 +87,8 @@ export class SCTextBilara extends SCTextCommon {
 
     this._hashChangeHandler = () => {
       setTimeout(() => {
-        this._scrollToSection(window.location.hash.slice(1));
+        const hash = window.location.hash.slice(1).split('--')[0];
+        this._scrollToSection(hash);
       }, 0);
     };
 
@@ -275,6 +276,7 @@ export class SCTextBilara extends SCTextCommon {
       if (window.location.href.includes('#')) {
         this._deleteSCReference();
         this._addSCReference();
+        this._addReferenceText();
       }
       this._addVariantText();
       this._addCommentText();
@@ -808,6 +810,14 @@ export class SCTextBilara extends SCTextCommon {
 
             .reference a {
               display: none;
+            }
+
+            .reference:has(:target) {
+              display: inline !important;
+            }
+
+            .reference a:target {
+              display: inline !important;
             }
 
             ${isMain
