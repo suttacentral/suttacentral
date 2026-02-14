@@ -10,8 +10,6 @@ services:
       application: 'sc-flask'
     env_file:
       - server/env/.base.env
-    environment:
-      - FLASK_APP=server/app.py
     volumes:
       - socket-volume:/opt/sc/sockets
       - ./server/:/opt/sc/sc-flask
