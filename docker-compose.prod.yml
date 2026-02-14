@@ -4,7 +4,7 @@ services:
 
   sc-flask:
     restart: always
-    command: bash docker/entrypoint.sh
+    command: bash entrypoint.sh
     env_file:
       - server/env/.prod.env
     volumes:
