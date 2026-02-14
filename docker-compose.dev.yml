@@ -3,7 +3,7 @@ version: '3'
 services:
 
   sc-flask:
-    command: bash docker/entrypoint.dev.sh
+    command: bash docker/entrypoint.sh
     env_file:
       - server/env/.dev.env
     volumes:
