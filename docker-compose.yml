@@ -4,7 +4,7 @@ services:
   sc-flask:
     build:
       context: ./server/
-      dockerfile: docker/Dockerfile-flask
+      dockerfile: Dockerfile-flask
     container_name: 'sc-flask'
     labels:
       application: 'sc-flask'
