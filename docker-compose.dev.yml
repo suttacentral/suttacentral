@@ -1,7 +1,4 @@
-version: '3'
-
 services:
-
   sc-flask:
     env_file:
       - server/env/.dev.env

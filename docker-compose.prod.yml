@@ -1,7 +1,4 @@
-version: '3'
-
 services:
-
   sc-flask:
     restart: always
     env_file:
