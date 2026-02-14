@@ -42,11 +42,9 @@ clean-all:
 # Only in dev mode local changes will be used after the reload
 reload-nginx:
 	@docker exec sc-nginx nginx -s reload
+
 reload-uwsgi:
 	@docker exec sc-flask uwsgi --reload /tmp/uwsgi.pid
-install-requirements:
-	@docker exec sc-flask pip install -r requirements.txt
-	@make reload-uwsgi
 
 # Tests.
 # Starts containers so that we are ready to run tests in them.
