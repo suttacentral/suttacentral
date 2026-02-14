@@ -3,7 +3,6 @@ version: '3'
 services:
 
   sc-flask:
-    command: bash entrypoint.sh
     env_file:
       - server/env/.dev.env
     volumes:

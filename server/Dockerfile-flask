@@ -18,3 +18,5 @@ ENV PATH="/opt/sc/venv/.venv/bin:$PATH"
 # The application source code will be here when
 # we mount it in the docker compose files.
 WORKDIR /opt/sc/sc-flask
+
+CMD bash entrypoint.sh

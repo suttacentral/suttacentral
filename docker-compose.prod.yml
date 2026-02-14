@@ -4,7 +4,6 @@ services:
 
   sc-flask:
     restart: always
-    command: bash entrypoint.sh
     env_file:
       - server/env/.prod.env
     volumes:

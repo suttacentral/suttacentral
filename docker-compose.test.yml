@@ -8,7 +8,6 @@ services:
       - ./client/:/opt/sc/frontend
     env_file:
       - server/env/.test.env
-    command: bash entrypoint.sh
 
   sc-nginx:
     volumes:
