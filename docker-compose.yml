@@ -10,7 +10,6 @@ services:
       - server/env/.base.env
     volumes:
       - socket-volume:/opt/sc/sockets
-      - ./server/:/opt/sc/sc-flask
       - working-storage-volume:/opt/sc/storage
       - sc-data-volume:/opt/sc/sc-flask/sc-data
     expose:

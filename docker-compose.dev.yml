@@ -3,7 +3,6 @@ services:
     env_file:
       - server/env/.dev.env
     volumes:
-      - ./server/:/opt/sc/sc-flask
       - ./client/:/opt/sc/frontend
     ports:
       - '5001:5000'
