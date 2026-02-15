@@ -6,15 +6,14 @@ RUN apt-get update && apt-get install -y pngnq && apt-get install -y python3-enc
 RUN mkdir -p /opt/sc/sockets
 RUN mkdir -p /opt/sc/sc-flask
 
-# Create a new virtual environment with uv
-RUN mkdir -p /opt/sc/venv
-WORKDIR /opt/sc/venv
+WORKDIR /opt/sc/sc-flask
+
+# Setup virtual environment with uv
 COPY pyproject.toml uv.lock .python-version ./
 RUN uv sync --locked
-ENV PATH="/opt/sc/venv/.venv/bin:$PATH"
+ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
 
-# Copy the remaining application files
-WORKDIR /opt/sc/sc-flask
+# Copy over remaining project files.
 COPY __init__.py entrypoint.sh uwsgi.ini ./
 COPY server/ ./server
 
