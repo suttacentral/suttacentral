@@ -16,7 +16,6 @@ ENV PATH="/opt/sc/venv/.venv/bin:$PATH"
 # Copy the remaining application files
 WORKDIR /opt/sc/sc-flask
 COPY __init__.py entrypoint.sh uwsgi.ini ./
-COPY env/ ./env
 COPY server/ ./server
 
 CMD bash entrypoint.sh
