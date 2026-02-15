@@ -9,9 +9,7 @@ RUN mkdir -p /opt/sc/sc-flask
 # Create a new virtual environment with uv
 RUN mkdir -p /opt/sc/venv
 WORKDIR /opt/sc/venv
-COPY pyproject.toml ./
-COPY uv.lock ./
-COPY .python-version ./
+COPY pyproject.toml uv.lock .python-version ./
 RUN uv sync --locked
 ENV PATH="/opt/sc/venv/.venv/bin:$PATH"
 
