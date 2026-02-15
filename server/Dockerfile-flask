@@ -13,8 +13,7 @@ COPY pyproject.toml uv.lock .python-version ./
 RUN uv sync --locked
 ENV PATH="/opt/sc/venv/.venv/bin:$PATH"
 
-# The application source code will be here when
-# we mount it in the docker compose files.
+# Copy the remaining application files
 WORKDIR /opt/sc/sc-flask
 COPY __init__.py entrypoint.sh uwsgi.ini ./
 COPY env/ ./env
