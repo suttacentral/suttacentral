@@ -13,7 +13,7 @@ COPY pyproject.toml uv.lock .python-version ./
 RUN uv sync --locked
 
 # Copy over remaining project files.
-COPY __init__.py entrypoint.sh uwsgi.ini ./
+COPY entrypoint.sh uwsgi.ini ./
 COPY server/ ./server
 
 CMD bash entrypoint.sh
