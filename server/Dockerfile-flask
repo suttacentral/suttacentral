@@ -11,7 +11,6 @@ WORKDIR /opt/sc/sc-flask
 # Setup virtual environment with uv
 COPY pyproject.toml uv.lock .python-version ./
 RUN uv sync --locked
-ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
 
 # Copy over remaining project files.
 COPY __init__.py entrypoint.sh uwsgi.ini ./
