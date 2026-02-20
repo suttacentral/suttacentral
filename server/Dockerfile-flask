@@ -45,6 +45,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 >>>>>>> theirs
 
 # Copy over remaining project files.
+ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
+
 COPY entrypoint.sh uwsgi.ini ./
 COPY server/ ./server
 
