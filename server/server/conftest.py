@@ -1,12 +1,8 @@
 import os
-import sys
 
 import pytest
 from arango import ArangoClient
 from flask import Flask
-
-myPath = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(myPath)
 
 from app import app_factory  # isort:skip
 from common.arangodb import get_client  # isort:skip
