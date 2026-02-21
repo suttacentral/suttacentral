@@ -67,30 +67,30 @@ test-api:
 	docker compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
 migrate:
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py migrate"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage migrate"
 
 load-data:
 	@make migrate
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py load_data"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage load_data"
 
 load-data-no-pull:
 	@make migrate
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py load_data --no_pull=true"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage load_data --no_pull=true"
 
 delete-database:
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py delete_db"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage delete_db"
 
 index-arangosearch:
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py index_arangosearch"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage index_arangosearch"
 
 index-algoliasearch:
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py index_algoliasearch"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage index_algoliasearch"
 
 hyphenate:
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py hyphenate"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage hyphenate"
 
 list-routes:
-	@docker exec -t sc-flask bash -c "cd server && uv run manage.py list_routes"
+	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage list_routes"
 
 rebuild-frontend:
 	docker compose run sc-frontend npm run build
