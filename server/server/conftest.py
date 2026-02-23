@@ -4,7 +4,7 @@ import pytest
 from arango import ArangoClient
 from flask import Flask
 
-from app import app_factory  # isort:skip
+from sc_flask.app import app_factory  # isort:skip
 from common.arangodb import get_client  # isort:skip
 from common.utils import remove_test_db, app_context  # isort:skip
 from migrations.runner import run_migrations  # isort:skip
