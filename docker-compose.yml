@@ -6,6 +6,8 @@ services:
     container_name: 'sc-flask'
     labels:
       application: 'sc-flask'
+    environment:
+      - FLASK_APP=sc_flask.wsgi:app
     env_file:
       - server/env/.base.env
     volumes:
