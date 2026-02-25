@@ -51,4 +51,6 @@ ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
 COPY entrypoint.sh uwsgi.ini ./
 COPY server/ ./server
 
+ENV FLASK_APP="sc_flask.wsgi:app"
+
 CMD ["bash", "entrypoint.sh"]
