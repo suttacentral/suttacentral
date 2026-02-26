@@ -100,9 +100,6 @@ rebuild-frontend:
 bundle-analyzer:
 	docker compose run sc-frontend npm run build --report
 
-rebuild-static-pages:
-	cd client && npm run extract-static-strings
-
 run-preview-env:
 	@make clean-all
 	@make create-network
