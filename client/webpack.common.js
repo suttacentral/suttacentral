@@ -91,13 +91,7 @@ module.exports = {
           options: {
             presets: [['@babel/preset-env', { targets: 'defaults' }]],
             plugins: [
-              ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
               ['@babel/plugin-transform-runtime'],
-              ['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],
-              ['@babel/plugin-proposal-function-bind'],
-              ['@babel/plugin-proposal-do-expressions'],
-              ['@babel/plugin-proposal-throw-expressions'],
-              ['@babel/plugin-proposal-async-do-expressions'],
               ['@babel/plugin-transform-class-properties'],
               ['@babel/plugin-transform-private-methods'],
             ],

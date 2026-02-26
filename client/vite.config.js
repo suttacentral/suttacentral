@@ -46,13 +46,7 @@ export default defineConfig({
     plugins: [
       babel({
         plugins: [
-          ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
           ['@babel/plugin-transform-runtime'],
-          ['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],
-          ['@babel/plugin-proposal-function-bind'],
-          ['@babel/plugin-proposal-do-expressions'],
-          ['@babel/plugin-proposal-throw-expressions'],
-          ['@babel/plugin-proposal-async-do-expressions'],
         ],
       }),
     ],
