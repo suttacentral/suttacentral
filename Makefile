@@ -100,8 +100,11 @@ rebuild-frontend:
 bundle-analyzer:
 	docker compose run sc-frontend npm run build --report
 
-rebuild-static-pages:
-	cd client && npm run extract-static-strings
+lint-client:
+	docker compose run sc-frontend npm run lint
+
+test-client:
+	docker compose run sc-frontend npm run test
 
 run-preview-env:
 	@make clean-all
