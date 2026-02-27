@@ -374,6 +374,8 @@ export const staticHomeStyles = css`
     color: var(--sc-on-primary-primary-text-color);
 
     flex: 1;
+    min-width: 292px;
+    max-width: 400px;
   }
 
   .sc-related article header {
@@ -535,6 +537,7 @@ export const staticHomeStyles = css`
   @media (max-width: 1120px) {
     .sc-related article {
       min-width: 40%;
+      max-width: initial;
     }
   }
 
