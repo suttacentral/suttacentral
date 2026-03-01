@@ -1,20 +1,15 @@
-version: '3'
-
 services:
   sc-flask:
     build:
       context: ./server/
-      dockerfile: docker/Dockerfile-flask
+      dockerfile: Dockerfile-flask
     container_name: 'sc-flask'
     labels:
       application: 'sc-flask'
     env_file:
       - server/env/.base.env
-    environment:
-      - FLASK_APP=server/app.py
     volumes:
       - socket-volume:/opt/sc/sockets
-      - ./server/:/opt/sc/sc-flask
       - working-storage-volume:/opt/sc/storage
       - sc-data-volume:/opt/sc/sc-flask/sc-data
     expose:
@@ -78,19 +73,20 @@ services:
      
   sc-api-tester:
     build:
-      context: ./server/api-tester/
+      context: api-tester/
       dockerfile: Dockerfile-api-tester
     container_name: 'sc-api-tester'
     network_mode: "host"
     labels:
       application: 'sc-api-tester'
     volumes:
-      - ./server/api-tester/:/opt/sc/api-tester/
+      - ./api-tester/:/opt/sc/api-tester/
       
 networks:
   default:
-    external:
-      name: nginx-proxy
+    name: nginx-proxy
+    external: true
+
 
 volumes:
   db-data-volume:

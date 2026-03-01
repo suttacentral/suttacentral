@@ -42,11 +42,9 @@ clean-all:
 # Only in dev mode local changes will be used after the reload
 reload-nginx:
 	@docker exec sc-nginx nginx -s reload
+
 reload-uwsgi:
-	@docker exec sc-flask uwsgi --reload /tmp/uwsgi.pid
-install-requirements:
-	@docker exec sc-flask pip install -r requirements.txt
-	@make reload-uwsgi
+	@docker exec sc-flask uv run uwsgi --reload /tmp/uwsgi.pid
 
 # Tests.
 # Starts containers so that we are ready to run tests in them.
@@ -60,39 +58,39 @@ test:
 	@make test-server
 
 test-server:
-	@docker exec -t sc-flask pytest -s --ignore server/data_loader/ server/
+	@docker exec -t sc-flask uv run pytest -s --ignore server/data_loader/ server/
 
 test-load-data:
-	@docker exec -t sc-flask pytest -v server/data_loader/
+	@docker exec -t sc-flask uv run pytest -v server/data_loader/
 
 test-api:
 	docker compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
 migrate:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py migrate"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py migrate"
 
 load-data:
 	@make migrate
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py load_data"
 
 load-data-no-pull:
 	@make migrate
-	@docker exec -t sc-flask bash -c "cd server && python manage.py load_data --no_pull=true"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py load_data --no_pull=true"
 
 delete-database:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py delete_db"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py delete_db"
 
 index-arangosearch:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py index_arangosearch"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py index_arangosearch"
 
 index-algoliasearch:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py index_algoliasearch"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py index_algoliasearch"
 
 hyphenate:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py hyphenate"
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py hyphenate"
 
-list_routes:
-	@docker exec -t sc-flask bash -c "cd server && python manage.py list_routes"
+list-routes:
+	@docker exec -t sc-flask bash -c "cd server && uv run manage.py list_routes"
 
 rebuild-frontend:
 	docker compose run sc-frontend npm run build

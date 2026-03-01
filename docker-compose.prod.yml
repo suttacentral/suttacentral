@@ -1,14 +1,9 @@
-version: '3'
-
 services:
-
   sc-flask:
     restart: always
-    command: bash docker/entrypoint.prod.sh
     env_file:
       - server/env/.prod.env
     volumes:
-      - ./server/:/opt/sc/sc-flask
       - ./client/:/opt/sc/frontend
     ports:
       - '5001:5000'

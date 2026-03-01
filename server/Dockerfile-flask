@@ -1,0 +1,19 @@
+FROM python:3.11.3
+COPY --from=ghcr.io/astral-sh/uv:0.9.30 /uv /uvx /bin/
+
+RUN apt-get update && apt-get install -y pngnq && apt-get install -y python3-enchant
+
+RUN mkdir -p /opt/sc/sockets
+RUN mkdir -p /opt/sc/sc-flask
+
+WORKDIR /opt/sc/sc-flask
+
+# Setup virtual environment with uv
+COPY pyproject.toml uv.lock .python-version ./
+RUN uv sync --locked
+
+# Copy over remaining project files.
+COPY entrypoint.sh uwsgi.ini ./
+COPY server/ ./server
+
+CMD bash entrypoint.sh
