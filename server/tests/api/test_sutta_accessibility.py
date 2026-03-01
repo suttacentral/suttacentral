@@ -2,12 +2,10 @@ import pytest
 import json
 import os.path
 
-from app import api, app
-from flask import current_app
+from sc_flask.app import app
 
 from tqdm import tqdm
 
-from common.utils import app_context
 from common.arangodb import get_db
 
 

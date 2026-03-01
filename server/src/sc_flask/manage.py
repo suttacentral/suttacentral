@@ -3,7 +3,7 @@ from common import arangodb
 import click
 from migrations.runner import run_migrations
 
-from app import app
+from sc_flask.app import app
 cli = FlaskGroup(app)
 
 

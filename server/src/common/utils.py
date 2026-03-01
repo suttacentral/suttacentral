@@ -11,7 +11,7 @@ from migrations.runner import run_migrations
 
 
 def current_app():
-    from app import app_factory
+    from sc_flask.app import app_factory
 
     api, app = app_factory()
     return app

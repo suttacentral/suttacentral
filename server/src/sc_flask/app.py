@@ -61,7 +61,7 @@ from api.views import (
 )
 from common.arangodb import ArangoDB
 from common.extensions import cache
-from config import app_config, swagger_config, swagger_template
+from sc_flask.config import app_config, swagger_config, swagger_template
 from search.view import InstantSearch, FetchPossibleNames, FulltextSearch
 from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
 

@@ -6,6 +6,10 @@ services:
       - ./client/:/opt/sc/frontend
     ports:
       - '5001:5000'
+    develop:
+      watch:
+        - action: rebuild
+          path: .
 
   sc-nginx:
     volumes:
