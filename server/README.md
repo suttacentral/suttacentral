@@ -4,13 +4,16 @@ This part of the project contains the various files needed to create the `sc-fla
 
 ## Python Packaging
 
+There are several Python packages contained in the `src/` directory. These are installed into a virtual environment 
+via `uv` and the `Dockerfile-flask` script. Unit and integration tests can be found in `tests/`. Our virtual environment
+is made available on `PATH` and is automatically activated within the container. 
 There are several Python packages contained in the `src/` directory. These are installed into a virtual environment via `uv` and the `Dockerfile-flask` script. Unit and integration tests can be found in `tests/`. Our virtual environment is made available on the PATH and is automatically activated within the container. 
 
 ## Native Development Outside the Container
 
 Our application can be run outside the container and this is often the best place for development.   
 
-Within the `server/` directory we can create a new virtual environment:
+Within the `server/` directory, we can create a new virtual environment:
 
 ```bash
 uv sync
