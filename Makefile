@@ -27,6 +27,9 @@ run-dev-no-logs:
 run-dev-rebuild:
 	@$(COMPOSEDEV) up --build --remove-orphans -d $(SERVICES)
 
+run-dev-arangodb-only:
+	@$(COMPOSEDEV) up --build --remove-orphans -d sc-arangodb
+
 run-prod:
 	@$(COMPOSEPROD) up $(SERVICES)
 

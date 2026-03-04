@@ -18,10 +18,10 @@ uv sync
 
 This is fast, and even faster once the dependencies are cached.
 
-We then need to make sure ArangoDB is running, usually by bringing up the whole stack:
+We only rely on the `sc-arangodb` container to be available. This can be run by itself:
 
 ```bash
-make run-dev 
+make run-dev-arangodb-only 
 ```
 
 Back in `server/` we can run our application locally. Running the database migrations for instance:
