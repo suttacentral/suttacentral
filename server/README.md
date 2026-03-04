@@ -24,7 +24,7 @@ We only rely on the `sc-arangodb` container to be available. This can be run by 
 make run-dev-arangodb-only 
 ```
 
-Back in `server/` we can run our application locally. Running the database migrations for instance:
+Back in `server/`, we can run our application locally. Running the database migrations for instance:
 
 ```bash
 uv run --env-file env/.local.dev.env python -m sc_flask.manage migrate
@@ -42,7 +42,7 @@ The image can be rebuilt while the stack is running, or before bringing it up:
 make run-dev-rebuild
 ```
 
-Alternatively docker's `watch` mode can be activated by bringing up the stack normally
+Alternatively, Docker Compose's `watch` mode can be activated by bringing up the stack normally
 
 ```bash
 make run-dev
@@ -54,7 +54,7 @@ This will cause the `sc-flask` image to  be rebuilt and restarted.
 
 ## Working with UV
 
-If we need to add, update or remove packages we can do so using `uv`:
+If we need to add, update, or remove packages, we can do so using `uv`:
 
 ```bash
 $ uv add pycowsay
@@ -82,7 +82,7 @@ $ uv run pycowsay "Anumodana!"
            ||     ||
 ```
 
-If we're happy with the changes we can update the lock file:
+If we're happy with the changes, we can update the lock file:
 
 ```bash
 $ uv lock
@@ -111,4 +111,6 @@ Bytecode compiled 3937 files in 103ms
            ||     ||
 ```
 
-At this point we can commit our changes, or roll back in git, sync and rebuild.
+At this point we can commit our changes.
+Or roll them back, re-sync, and rebuild.
+
