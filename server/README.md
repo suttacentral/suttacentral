@@ -1,14 +1,10 @@
 # SuttaCentral Flask Server
 
-This part of the project contains the various files needed to create the `sc-flask` docker image. Our Python code is 
-managed by `uv` and implements the backend API for the main [SuttaCentral.net](SuttaCentral.net) website. There are also
-some administrative tools and the ETL system that loads data into the ArangoDB server.
+This part of the project contains the various files needed to create the `sc-flask` docker image. Our Python code is managed by `uv` and implements the backend API for the main [SuttaCentral.net](SuttaCentral.net) website. There are also some administrative tools and the ETL system that loads data into the ArangoDB server.
 
 ## Python Packaging
 
-There are several Python packages contained in the `src/` directory. These are installed into a virtual environment 
-via `uv` and the `Dockerfile-flask` script. Unit and integration tests can be found in `tests/`. Our virtual environment
-is made available on the PATH and is automatically activated within the container. 
+There are several Python packages contained in the `src/` directory. These are installed into a virtual environment via `uv` and the `Dockerfile-flask` script. Unit and integration tests can be found in `tests/`. Our virtual environment is made available on the PATH and is automatically activated within the container. 
 
 ## Native Development Outside the Container
 
@@ -17,7 +13,7 @@ Our application can be run outside the container and this is often the best plac
 Within the `server/` directory we can create a new virtual environment:
 
 ```bash
-$ uv sync
+uv sync
 ```
 
 This is fast, and even faster once the dependencies are cached.
@@ -25,13 +21,13 @@ This is fast, and even faster once the dependencies are cached.
 We then need to make sure ArangoDB is running, usually by bringing up the whole stack:
 
 ```bash
-$ make run-dev 
+make run-dev 
 ```
 
 Back in `server/` we can run our application locally. Running the database migrations for instance:
 
 ```bash
-$ uv run --env-file env/.local.dev.env python -m sc_flask.manage migrate
+uv run --env-file env/.local.dev.env python -m sc_flask.manage migrate
 ```
 
 Note that the `ARANGO_HOST` environment variable will need to point to `localhost` outside the container.
@@ -43,13 +39,13 @@ Debugging and unit test integration is now available with your IDE of choice.
 The image can be rebuilt while the stack is running, or before bringing it up:
 
 ```bash
-$ make run-dev-rebuild
+make run-dev-rebuild
 ```
 
 Alternatively docker's `watch` mode can be activated by bringing up the stack normally
 
 ```bash
-$ make run-dev
+make run-dev
 ```
 
 and then pressing `w` to activate and deactivate watch mode. 
