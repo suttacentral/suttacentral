@@ -8,7 +8,7 @@ some administrative tools and the ETL system that loads data into the ArangoDB s
 
 There are several Python packages contained in the `src/` directory. These are installed into a virtual environment 
 via `uv` and the `Dockerfile-flask` script. Unit and integration tests can be found in `tests/`. Our virtual environment
-is made available on the PATH and is automatically activated within the container. 
+is made available on `PATH` and is automatically activated within the container. 
 
 ## Native Development Outside the Container
 
