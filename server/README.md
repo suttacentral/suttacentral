@@ -14,7 +14,7 @@ is made available on `PATH` and is automatically activated within the container.
 
 Our application can be run outside the container and this is often the best place for development.   
 
-Within the `server/` directory we can create a new virtual environment:
+Within the `server/` directory, we can create a new virtual environment:
 
 ```bash
 $ uv sync
