@@ -60,6 +60,7 @@ class TextLoader:
         self.import_html_texts()
         self.import_segmented_texts()
         self.import_text_references()
+        self.separate_and_import_html_texts()
 
     def fix_text(self, string):
         """ Removes repeated whitespace and numbers.
@@ -328,6 +329,60 @@ class TextLoader:
                 'subhead': [e.text_content().strip() for e in others],
             },
         }
+
+    def separate_and_import_html_texts(self):
+        html_texts = list(
+            get_db().aql.execute(
+                TEXTS_BY_LANG_FOR_SEARCH, bind_vars={'lang': self.lang}
+            )
+        )
+        if not html_texts:
+            return
+
+        legacy_texts = []
+        for text in html_texts:
+            uid = text['uid']
+            author_uid = text['author_uid']
+            try:
+                with open(text['file_path'], 'rb') as f:
+                    html_bytes = f.read()
+
+                extracted_content = self.extract_fields_from_html(html_bytes)
+                content = extracted_content['content']
+                segmented_content = content.split('\n\n')
+
+                for segment in enumerate(segmented_content):
+                    if segment:
+                        root_lang = text['root_lang']
+                        text_info = {
+                            'acronym': text['acronym'],
+                            'uid': uid,
+                            'name': extracted_content['name'],
+                            'lang': text['lang'],
+                            'full_lang': text['full_lang'],
+                            'root_lang': root_lang,
+                            'author': text['author'],
+                            'author_uid': author_uid,
+                            'author_short': text['author_short'],
+                            'is_root': self.lang == root_lang,
+                            'is_segmented': True,
+                            'is_legacy_text': True,
+                            'is_ebt': self.is_ebt(text['root_uid']),
+                            'is_ebs': self.is_ebs(text['root_uid']),
+                            'is_ebct': self.is_ebct(text['root_uid']),
+                            'root_uid': text['root_uid'],
+                            'full_path': text['full_path'],
+                            'segmented_uid': f'{uid}:sc{segment[0]}',
+                            'segmented_text': segment[1],
+                            'content': '',
+                            'heading': {'title': (extracted_content['name'])},
+                        }
+                        legacy_texts.append(text_info)
+                if legacy_texts:
+                    get_db().collection('segmented_text_contents').import_bulk(legacy_texts)
+                    legacy_texts = []
+            except (ValueError, IndexError) as e:
+                logger.exception(f'{text["uid"]}, {e}')
 
 
 def import_texts_to_arangodb():
