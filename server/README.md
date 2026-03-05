@@ -1,10 +1,15 @@
 # SuttaCentral Flask Server
 
-This part of the project contains the various files needed to create the `sc-flask` docker image. Our Python code is managed by `uv` and implements the backend API for the main [SuttaCentral.net](SuttaCentral.net) website. There are also some administrative tools and the ETL system that loads data into the ArangoDB server.
+This part of the project contains the various files needed to create the `sc-flask` docker image.
+Our Python code is managed by `uv` and implements the backend API for the main [SuttaCentral.net](SuttaCentral.net) website.
+There are also some administrative tools and the ETL system that loads data into the ArangoDB server.
 
 ## Python Packaging
 
-There are several Python packages contained in the `src/` directory. These are installed into a virtual environment via `uv` and the `Dockerfile-flask` script. Unit and integration tests can be found in `tests/`. Our virtual environment is made available on `PATH` and is automatically activated within the container. 
+There are several Python packages contained in the `src/` directory.
+These are installed into a virtual environment via `uv` and the `Dockerfile-flask` script.
+Unit and integration tests can be found in `tests/`.
+Our virtual environment is made available on `PATH` and is automatically activated within the container.
 
 ## Native Development Outside the Container
 
