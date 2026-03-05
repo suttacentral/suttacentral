@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Make our uv managed .venv the default Python to avoid confusion
 # with the system environment provided by the docker image.
-# If you run python in the docker container without uv run it
+# If you run python in the docker container without `uv run` it
 # will still use the .venv
 ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
 
