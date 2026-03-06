@@ -9,6 +9,7 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles';
 import { typographyI18nStyles } from '../styles/sc-typography-i18n-styles';
 import '../lookups/sc-lookup-lzh2en';
+import '../addons/sc-bottom-sheet.js';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
@@ -665,7 +666,7 @@ export class SCTextLegacy extends SCTextCommon {
 
   _setSCBottomSheet(scBottomSheet, word, chineseLookup, currentTarget) {
     scBottomSheet.currentTarget = currentTarget;
-    const keyword = scBottomSheet.getSentenceText() || word.dataset.latin_text || word.textContent;
+    const keyword = scBottomSheet?.getSentenceText() || word.dataset.latin_text || word.textContent;
     scBottomSheet.currentDefine = keyword;
     const lookupResult = chineseLookup.lookupWord(keyword);
     scBottomSheet.currentDefineDetail = lookupResult.html;
