@@ -129,7 +129,7 @@ Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The
 
 #### Creating db migrations
 In order to create database migration in out app you have to follow those simple steps:
-1. in `server/server/migrations/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`.
+1. in `server/src/migrations/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`.
 2. Add this line at the top of the file: `from ._base import Migration`.
 3. Create class that inherits from `Migration` class.
 4. Set `migration_id` class attribute to match the file name.
@@ -163,8 +163,8 @@ class InitialMigration(Migration):
 ```
 
 #### Flask manage tasks
-1. `python manage.py migrate` - Run migrations.
-2. `python manage.py list_routes` - Lists all available routes/URLs.
+1. `uv run python -m sc_flask.manage migrate` - Run migrations.
+2. `uv run python -m sc_flask.manage list_routes` - Lists all available routes/URLs.
 
 ### 1.10 Style guidelines
 * Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code.
