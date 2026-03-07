@@ -23,12 +23,14 @@ ENV UV_LINK_MODE=copy
 # Omit development dependencies
 ENV UV_NO_DEV=1
 
-# Copy the python project files
+# Copy dependency manifests and install them into a virtual environment
 COPY pyproject.toml uv.lock README.md ./
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project
+    
+# Copy source code and editable install packages into the .venv
 COPY src/ ./src
 COPY tests/ ./tests
-
-# Create a .venv with dependencies and the packages in src/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
