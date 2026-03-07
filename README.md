@@ -83,6 +83,7 @@ There is a Makefile with following commands:
 * `prepare-host` - Setup client git-hooks.
 * `run-dev` - Run containers in development mode.
 * `run-dev-no-logs` - Run containers in development mode without output to the console.
+* `run-dev-arangodb-only` - Run just the `sc-arangodb` container in development mode.
 * `run-prod` - Run containers in production mode.
 * `run-prod-no-logs` - Run containers in production mode without output to the console.
 * `migrate` - Run migrations in flask container.
