@@ -183,7 +183,7 @@ class InitialMigration(Migration):
 
 * Names, variables, docstring, comments, etc. should be written in english.
 
-* Test files should be placed in `tests` dir in directory where tested file is.
+* Test files should be placed in `tests` directory and reflect the module structure of `src/`.
 
 ## 2. Client
 
