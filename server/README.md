@@ -119,3 +119,6 @@ Bytecode compiled 3937 files in 103ms
 At this point we can commit our changes.
 Or roll them back, re-sync, and rebuild.
 
+## Note on `sc_flask` package
+
+Due to some difficulties with the `uv` build backend, it is difficult to have modules in `src/` that aren't in a package. The modules in `sc_flask` should be at the top level of `src/`. The problem might be solved by removing the editable installation. See issue #3583.
