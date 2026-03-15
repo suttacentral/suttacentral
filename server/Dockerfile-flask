@@ -1,14 +1,16 @@
-# Using the python image is redundant now that we have a setup with uv.
-# Perhaps we should update to something else such as the astral images:
+# TODO: Use distroless uv image
 # https://docs.astral.sh/uv/guides/integration/docker/
-FROM python:3.11.3
+# Create the production image
+FROM python:3.11.3 AS prod
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:0.9.30 /uv /uvx /bin/
 
+# Create required directories
 RUN mkdir -p /opt/sc/sockets
 RUN mkdir -p /opt/sc/sc-flask
 
+# Application code will be installed here.
 WORKDIR /opt/sc/sc-flask
 
 # Enable bytecode compilation for better start-up performance at the cost of longer build time
@@ -17,7 +19,7 @@ ENV UV_COMPILE_BYTECODE=1
 # Copy from the cache instead of hard linking due to the cache mount
 ENV UV_LINK_MODE=copy
 
-# Omit development dependencies
+# Omit development dependencies for production
 ENV UV_NO_DEV=1
 
 # Copy dependency manifests and install them into a virtual environment
@@ -27,7 +29,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     
 # Copy source code and editable install packages into the .venv
 COPY src/ ./src
-COPY tests/ ./tests
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
@@ -45,3 +46,19 @@ COPY entrypoint.sh uwsgi.ini ./
 ENV FLASK_APP="sc_flask.wsgi:app"
 
 CMD ["bash", "entrypoint.sh"]
+
+# Create a test environment based on production.
+FROM prod AS test
+
+# Install development dependencies in .venv
+ENV UV_NO_DEV=0
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project
+
+# Make our unit and integration tests available
+COPY tests/ ./tests
+
+# Create a dev environment based on test.
+FROM test as dev
+
+# TODO: Install anything extra that dev may require.
