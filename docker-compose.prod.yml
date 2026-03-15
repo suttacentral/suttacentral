@@ -1,5 +1,7 @@
 services:
   sc-flask:
+    build:
+      target: prod
     restart: always
     env_file:
       - server/env/.prod.env
