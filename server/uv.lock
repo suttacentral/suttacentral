@@ -527,17 +527,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyenchant"
-version = "3.2.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b1/a3/86763b6350727ca81c8fcc5bb5bccee416e902e0085dc7a902c81233717e/pyenchant-3.2.2.tar.gz", hash = "sha256:1cf830c6614362a78aab78d50eaf7c6c93831369c52e1bb64ffae1df0341e637", size = 49580, upload-time = "2021-10-05T17:25:25.553Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/4c/a741dddab6ad96f257d90cb4d23067ffadac526c9cab3a99ca6ce3c05477/pyenchant-3.2.2-py3-none-any.whl", hash = "sha256:5facc821ece957208a81423af7d6ec7810dad29697cb0d77aae81e4e11c8e5a6", size = 55660, upload-time = "2021-10-05T17:25:19.548Z" },
-    { url = "https://files.pythonhosted.org/packages/01/44/1e9a273d230abf5c961750a75e42b449adfb61eb446f80b6523955d2a4a2/pyenchant-3.2.2-py3-none-win32.whl", hash = "sha256:5a636832987eaf26efe971968f4d1b78e81f62bca2bde0a9da210c7de43c3bce", size = 11884084, upload-time = "2021-10-05T17:25:23.844Z" },
-    { url = "https://files.pythonhosted.org/packages/49/96/2087455de16b08e86fa7ce70b53ddac5fcc040c899d9ebad507a0efec52d/pyenchant-3.2.2-py3-none-win_amd64.whl", hash = "sha256:6153f521852e23a5add923dbacfbf4bebbb8d70c4e4bad609a8e0f9faeb915d1", size = 11890882, upload-time = "2021-10-05T17:25:17.013Z" },
-]
-
-[[package]]
 name = "pygments"
 version = "2.13.0"
 source = { registry = "https://pypi.org/simple" }
@@ -798,7 +787,6 @@ dependencies = [
     { name = "pluggy" },
     { name = "py" },
     { name = "pyee" },
-    { name = "pyenchant" },
     { name = "pygments" },
     { name = "pyjwt" },
     { name = "pykakasi" },
@@ -892,7 +880,6 @@ requires-dist = [
     { name = "pluggy", specifier = "==1.0.0" },
     { name = "py", specifier = "==1.11.0" },
     { name = "pyee", specifier = "==8.2.2" },
-    { name = "pyenchant", specifier = "==3.2.2" },
     { name = "pygments", specifier = "==2.13.0" },
     { name = "pyjwt", specifier = "==2.6.0" },
     { name = "pykakasi", specifier = "==2.2.1" },
