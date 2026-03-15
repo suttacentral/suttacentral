@@ -83,6 +83,7 @@ There is a Makefile with following commands:
 * `prepare-host` - Setup client git-hooks.
 * `run-dev` - Run containers in development mode.
 * `run-dev-no-logs` - Run containers in development mode without output to the console.
+* `run-dev-arangodb-only` - Run just the `sc-arangodb` container in development mode.
 * `run-prod` - Run containers in production mode.
 * `run-prod-no-logs` - Run containers in production mode without output to the console.
 * `migrate` - Run migrations in flask container.
@@ -128,7 +129,7 @@ Flask is hidden behind uWSGI. uWsgi communicate with nignx with unix socket. The
 
 #### Creating db migrations
 In order to create database migration in out app you have to follow those simple steps:
-1. in `server/server/migrations/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`.
+1. in `server/src/migrations/migrations` folder create file with name `<migration_name>_<id of the last migration + 1>.py`.
 2. Add this line at the top of the file: `from ._base import Migration`.
 3. Create class that inherits from `Migration` class.
 4. Set `migration_id` class attribute to match the file name.
@@ -162,8 +163,8 @@ class InitialMigration(Migration):
 ```
 
 #### Flask manage tasks
-1. `python manage.py migrate` - Run migrations.
-2. `python manage.py list_routes` - Lists all available routes/URLs.
+1. `uv run python -m sc_flask.manage migrate` - Run migrations.
+2. `uv run python -m sc_flask.manage list_routes` - Lists all available routes/URLs.
 
 ### 1.10 Style guidelines
 * Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code.
@@ -182,7 +183,7 @@ class InitialMigration(Migration):
 
 * Names, variables, docstring, comments, etc. should be written in english.
 
-* Test files should be placed in `tests` dir in directory where tested file is.
+* Test files should be placed in `tests` directory and reflect the module structure of `src/`.
 
 ## 2. Client
 

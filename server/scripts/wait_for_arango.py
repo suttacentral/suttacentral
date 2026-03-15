@@ -18,7 +18,7 @@ def connect():
         verify=True,
     )
 
-
+print("Waiting for arango to start")
 while True:
     try:
         connect()

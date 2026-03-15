@@ -6,6 +6,30 @@ services:
       - ./client/:/opt/sc/frontend
     ports:
       - '5001:5000'
+    develop:
+      # Create a `watch` configuration to update the app
+      # https://docs.docker.com/compose/file-watch/#compose-watch-versus-bind-mounts
+      watch:
+        # Sync the local pyproject.toml file with the container
+        - action: sync
+          path: ./server/pyproject.toml
+          target: /opt/sc/sc-flask/pyproject.toml
+
+        # Sync the local project source directory with the container
+        - action: sync
+          path: ./server/src
+          target: /opt/sc/sc-flask/src
+
+        # Sync the local project tests directory with the container
+        - action: sync
+          path: ./server/tests
+          target: /opt/sc/sc-flask/tests
+
+        # Rebuild the image if dependencies change by checking uv.lock
+        - action: rebuild
+          path: ./server/uv.lock
+
+
 
   sc-nginx:
     volumes:

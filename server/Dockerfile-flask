@@ -1,5 +1,11 @@
+# Using the python image is redundant now that we have a setup with uv.
+# Perhaps we should update to something else such as the astral images:
+# https://docs.astral.sh/uv/guides/integration/docker/
 FROM python:3.11.3
+
+# Install uv
 COPY --from=ghcr.io/astral-sh/uv:0.9.30 /uv /uvx /bin/
+
 
 RUN apt-get update && apt-get install -y pngnq && apt-get install -y python3-enchant
 
@@ -8,12 +14,38 @@ RUN mkdir -p /opt/sc/sc-flask
 
 WORKDIR /opt/sc/sc-flask
 
-# Setup virtual environment with uv
-COPY pyproject.toml uv.lock .python-version ./
-RUN uv sync --locked
+# Enable bytecode compilation for better start-up performance at the cost of longer build time
+ENV UV_COMPILE_BYTECODE=1
 
-# Copy over remaining project files.
+# Copy from the cache instead of hard linking due to the cache mount
+ENV UV_LINK_MODE=copy
+
+# Omit development dependencies
+ENV UV_NO_DEV=1
+
+# Copy dependency manifests and install them into a virtual environment
+COPY pyproject.toml uv.lock README.md ./
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project
+    
+# Copy source code and editable install packages into the .venv
+COPY src/ ./src
+COPY tests/ ./tests
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
+
+# Make our uv managed .venv the default Python to avoid confusion
+# with the system environment provided by the docker image.
+# If you run python in the docker container without `uv run` it
+# will still use the .venv
+ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
+
+# Copy over the remaining files required to run the application.
+COPY scripts/ ./scripts
 COPY entrypoint.sh uwsgi.ini ./
-COPY server/ ./server
 
-CMD bash entrypoint.sh
+# Some commands such as sc_flask.manage require FLASK_APP to be set.
+# Flask and uwsgi do not.
+ENV FLASK_APP="sc_flask.wsgi:app"
+
+CMD ["bash", "entrypoint.sh"]
