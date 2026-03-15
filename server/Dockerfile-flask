@@ -41,6 +41,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/opt/sc/sc-flask/.venv/bin:$PATH"
 
 # Copy over the remaining files required to run the application.
+COPY scripts/ ./scripts
 COPY entrypoint.sh uwsgi.ini ./
 
 # Some commands such as sc_flask.manage require FLASK_APP to be set.
