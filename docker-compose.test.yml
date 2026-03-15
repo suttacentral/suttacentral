@@ -1,5 +1,7 @@
 services:
   sc-flask:
+    build:
+      target: test
     volumes:
       - ./client/:/opt/sc/frontend
     env_file:
