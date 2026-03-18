@@ -1,0 +1,11 @@
+services:
+  sc-arango-tester:
+    build:
+      context: ./server/arango-tester/
+      dockerfile: Dockerfile-arango-tester
+    container_name: 'sc-arango-tester'
+    env_file:
+      - server/env/.base.env
+    depends_on:
+      sc-arangodb:
+        condition: service_healthy
