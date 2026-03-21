@@ -26,7 +26,7 @@ ENV UV_NO_DEV=1
 COPY pyproject.toml uv.lock README.md ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
-    
+
 # Copy source code and editable install packages into the .venv
 COPY src/ ./src
 RUN --mount=type=cache,target=/root/.cache/uv \

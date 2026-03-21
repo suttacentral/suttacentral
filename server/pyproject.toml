@@ -45,7 +45,6 @@ dependencies = [
     "pluggy==1.0.0",
     "py==1.11.0",
     "pyee==8.2.2",
-    "pyenchant==3.2.2",
     "pyjwt==2.6.0",
     "pykakasi==2.2.1",
     "pyparsing==3.0.9",
