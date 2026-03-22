@@ -60,6 +60,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY tests/ ./tests
 
 # Create a dev environment based on test.
-FROM test as dev
+FROM test AS dev
 
 # TODO: Install anything extra that dev may require.
