@@ -32,6 +32,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "fawltydeps>=0.20.0,<0.21.0",
     "pytest==7.2.0",
     "pytest-flask==1.2.0",
     "pytest-sugar==0.9.6",
@@ -40,6 +41,18 @@ dev = [
 [build-system]
 requires = ["uv_build>=0.10.4,<0.11.0"]
 build-backend = "uv_build"
+
+[tool.fawltydeps]
+ignore_undeclared = [
+    "sc_flask" # ignore self-reference, name of our package
+]
+# ignore deps that are not directly imported
+ignore_unused = [
+    "fawltydeps", # used as CLI in `Makefile`
+    "pytest-flask", # used within `@pytest.fixture`, such as in `conftest.py`
+    "pytest-sugar", # modifies pytest output automatically
+    "uwsgi", # used as CLI in `Makefile`, `entrypoint.sh`
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
