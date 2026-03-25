@@ -76,8 +76,10 @@ lint: lint-server
 .PHONY: lint-server
 lint-server: lint-server-deps
 
+# check for a synced lockfile and no unused or undeclared deps
 .PHONY: lint-server-deps
 lint-server-deps:
+	@docker exec -t sc-flask uv lock --check
 	@docker exec -t sc-flask uv run fawltydeps
 
 migrate:
