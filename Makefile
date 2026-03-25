@@ -69,6 +69,17 @@ test-load-data:
 test-api:
 	docker compose run --entrypoint "python /opt/sc/api-tester/run-tests.py" sc-api-tester
 
+### linting
+.PHONY: lint
+lint: lint-server
+
+.PHONY: lint-server
+lint-server: lint-server-deps
+
+.PHONY: lint-server-deps
+lint-server-deps:
+	@docker exec -t sc-flask uv run fawltydeps
+
 migrate:
 	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage migrate"
 
