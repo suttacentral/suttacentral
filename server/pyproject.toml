@@ -19,9 +19,6 @@ dependencies = [
     "fonttools==4.38.0",
     "jinja2==3.1.2",
     "lxml[cssselect]==4.9.1",
-    "pytest==7.2.0",
-    "pytest-flask==1.2.0",
-    "pytest-sugar==0.9.6",
     "python-arango==7.5.3",
     "regex==2022.10.31",
     "requests==2.31.0",
@@ -31,6 +28,13 @@ dependencies = [
     "unidecode==1.3.7",
     "uwsgi==2.0.21",
     "zhconv==1.4.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==7.2.0",
+    "pytest-flask==1.2.0",
+    "pytest-sugar==0.9.6",
 ]
 
 [build-system]
