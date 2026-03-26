@@ -10,7 +10,7 @@ DBNAME=$(arangosh --server.database "$ARANGO_BASE_DB_NAME" \
 
 # The exit code is 0 if the database name returned is
 # the same as specified in the environment variable
-if [ $DBNAME = $ARANGO_BASE_DB_NAME ]; then
+if [ "$DBNAME" = "$ARANGO_BASE_DB_NAME" ]; then
   return 0;
 else
   return 1;
