@@ -26,12 +26,12 @@ ENV UV_NO_DEV=1
 # Copy dependency manifests and install them into a virtual environment
 COPY pyproject.toml uv.lock README.md ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project
+    ["/bin/uv", "sync", "--locked", "--no-install-project"]
     
 # Copy source code and editable install packages into the .venv
 COPY src/ ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked
+    ["/bin/uv", "sync", "--locked"]
 
 # Make our uv managed .venv the default Python to avoid confusion
 # with the system environment provided by the docker image.
@@ -55,7 +55,7 @@ FROM prod AS test
 # Install development dependencies in .venv
 ENV UV_NO_DEV=0
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project
+    ["/bin/uv", "sync", "--locked", "--no-install-project"]
 
 # Make our unit and integration tests available
 COPY tests/ ./tests
