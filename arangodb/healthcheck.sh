@@ -1,4 +1,5 @@
-# Health check script to be used in conjuction with docker compose.
+#!/usr/bin/sh
+# Health check script to be used in conjunction with docker compose.
 
 # Whilst in the container, run the `arangosh` command and obtain the
 # name of the database
