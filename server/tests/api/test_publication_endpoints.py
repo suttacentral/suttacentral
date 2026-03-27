@@ -1,6 +1,6 @@
 import pytest
 import json
-from app import api, app
+from sc_flask.app import app
 
 
 class TestPublication:

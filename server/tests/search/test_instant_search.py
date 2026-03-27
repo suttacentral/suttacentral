@@ -15,7 +15,7 @@ from search.instant_search import (
 from search.validate_filter import validate_filter_commands
 
 from urllib.parse import quote
-from app import app
+from sc_flask.app import app
 client = app.test_client()
 
 

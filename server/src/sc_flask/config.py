@@ -25,7 +25,7 @@ class Config:
         'password': os.getenv('ARANGO_ROOT_PASSWORD', None),
     }
 
-    BASE_DIR = Path('../').resolve()
+    BASE_DIR = Path('/opt/sc/sc-flask/')
     STORAGE_DIR = Path('/opt/sc/storage/')
     ASSETS_DIR = Path('/opt/sc/frontend/')
     DATA_REP_DIR = Path('/opt/sc/sc-flask/sc-data')

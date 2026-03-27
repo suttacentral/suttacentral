@@ -1,5 +1,4 @@
 from api.views import (
-    Languages,
     LookupDictionaries,
     Menu,
     Parallels,
@@ -14,17 +13,15 @@ from api.views import (
     Shortcuts,
     Guides,
     RootEdition,
-    AvailableVoices,
-    RangeSuttaplexList
+    AvailableVoices
 )
 
-from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
+from api.views.publication_v2 import Edition, Editions
 
-from app import api
+from sc_flask.app import api
 from common import utils
-import json
 
-from app import app
+from sc_flask.app import app
 test_client = app.test_client()
 
 

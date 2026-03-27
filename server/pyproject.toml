@@ -1,5 +1,5 @@
 [project]
-name = "sc-server"
+name = "sc-flask"
 version = "0.1.0"
 description = "The backend python implementation for SuttaCentral.net"
 readme = "README.md"
@@ -96,3 +96,10 @@ dependencies = [
     "zhconv==1.4.3",
     "zipp==3.11.0",
 ]
+
+[build-system]
+requires = ["uv_build>=0.10.4,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
