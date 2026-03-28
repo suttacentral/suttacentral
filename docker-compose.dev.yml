@@ -1,7 +1,5 @@
 services:
   sc-flask:
-    build:
-      target: dev
     env_file:
       - server/env/.dev.env
     volumes:
