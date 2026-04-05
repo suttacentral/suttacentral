@@ -61,7 +61,7 @@ test:
 	@make test-server
 
 test-server:
-	@docker exec -t sc-flask uv run pytest -s --ignore tests/data_loader/ src/
+	@docker exec -t sc-flask uv run pytest -s --ignore tests/data_loader/ tests/
 
 test-load-data:
 	@docker exec -t sc-flask uv run pytest -v tests/data_loader/
