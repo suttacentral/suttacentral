@@ -1684,7 +1684,6 @@ RANGE_UIDS = '''
 FOR n IN names
     FILTER n.is_root == true AND REGEX_TEST(n.uid, "\\\\d+-\\\\d+")
         AND n.uid NOT LIKE '%sa%'
-        AND n.uid NOT LIKE '%pdhp%'
         AND n.uid NOT LIKE '%gdhp%'
         AND n.uid NOT LIKE '%g3dhp%'
     RETURN n.uid

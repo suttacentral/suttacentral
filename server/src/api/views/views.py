@@ -599,10 +599,12 @@ class RangeSuttaplexList(Resource):
             result['translations'] = sorted(
                 result['translations'], key=language_sort(result['root_lang'])
             )
-            if uid[:3].lower() == 'dhp':
-                result['title'] = uid.replace('dhp', 'Dhammapada ')
+            if result['uid'][:4].lower() == 'pdhp':
+                result['title'] = result['uid'].replace('pdhp', 'Patna Dhammapada ')
+            elif result['uid'][:3].lower() == 'dhp':
+                result['title'] = result['uid'].replace('dhp', 'Dhammapada ')
             else:
-                result['title'] = uid
+                result['title'] = result['uid']
 
             if parent:
                 try:
@@ -616,20 +618,22 @@ class RangeSuttaplexList(Resource):
 
     def get_suttaplex_list_by_uid(self, db, language, uid):
         results = {}
-        if uid[:3].lower() == 'dhp' and uid.count('-') == 0:
+        dhp_match = re.match(r'^(p?dhp)(\d+)$', uid, re.IGNORECASE)
+        if dhp_match and '-' not in uid:
+            vagga_prefix = dhp_match.group(1)   # 'dhp' or 'pdhp'
+            sutta_number = int(dhp_match.group(2))
             vagga_children_uids = list(
                 db.aql.execute(
                     VAGGA_CHILDREN,
-                    bind_vars={'uid': 'dhp'}
+                    bind_vars={'uid': vagga_prefix}
                 )
             )
             for child_uid in vagga_children_uids:
-                if child_uid.count('-'):
-                    sutta_number = uid.strip('dhp')
-                    child_range = child_uid.strip('dhp')
-                    range_begin = child_range[:child_range.find('-')]
-                    range_end = child_range[child_range.find('-') + 1:]
-                    if int(range_begin) <= int(sutta_number) <= int(range_end):
+                range_match = re.search(r'(\d+)-(\d+)$', child_uid)
+                if range_match:
+                    range_begin = int(range_match.group(1))
+                    range_end = int(range_match.group(2))
+                    if range_begin <= sutta_number <= range_end:
                         results = db.aql.execute(
                             SUTTAPLEX_LIST,
                             bind_vars={
@@ -637,6 +641,7 @@ class RangeSuttaplexList(Resource):
                                 'uid': child_uid
                             }
                         )
+                        break
         elif uid.count('.') == 1 and uid.count('-') == 0:
             vagga_uid = uid[:uid.find('.')]
             sutta_number = uid[uid.find('.') + 1:]
@@ -909,21 +914,23 @@ class Sutta(Resource):
                         vagga_children_uids
                     )
 
+        dhp_uid_match = re.match(r'^(p?dhp)(\d+)$', uid, re.IGNORECASE)
         if (
             result['root_text'] is None
             and result['translation'] is None
-            and uid[:3].lower() == 'dhp'
+            and dhp_uid_match
         ):
-            sutta_number = uid.strip('dhp')
+            prefix = dhp_uid_match.group(1).lower()  # 'dhp' or 'pdhp'
+            sutta_number = dhp_uid_match.group(2)
             vagga_children_uids = list(
                 db.aql.execute(
                     VAGGA_CHILDREN,
-                    bind_vars={'uid': 'dhp'}
+                    bind_vars={'uid': prefix}
                 )
             )
             for child_uid in vagga_children_uids:
                 if child_uid.count('-'):
-                    child_range = child_uid.strip('dhp')
+                    child_range = child_uid[len(prefix):]
                     result = self.get_sutta_view(
                         author_uid,
                         child_range,
