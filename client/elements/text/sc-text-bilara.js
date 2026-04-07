@@ -787,7 +787,7 @@ export class SCTextBilara extends SCTextCommon {
     this.viewCompose = `${this.chosenNoteDisplayType}_${this.chosenTextView}`;
     if (!this.bilaraTranslatedSutta && this.bilaraRootSutta) {
       if (this.chosenNoteDisplayType === 'sidenotes') {
-        viewCompose = 'sidenotes_root';
+        this.viewCompose = 'sidenotes_root';
       } else {
         this.viewCompose = 'pali';
       }

@@ -79,7 +79,11 @@ module.exports = {
       navigateFallbackDenylist: [/^\/img\/.*/, /^\/ebook\/.*/, /^\/api\/.*/, /^\/files\/.*/],
       exclude: [/\.(woff(2)?|ttf|epub|otf)$/, /node_modules\//, /img\/.*(?<!\.svg)$/],
     }),
-    new BundleAnalyzerPlugin(),
+    // Use static report mode so build process can exit cleanly.
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+    }),
   ],
   module: {
     rules: [
