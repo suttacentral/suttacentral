@@ -580,6 +580,14 @@ class RangeSuttaplexList(Resource):
 
         difficulties = {3: 'advanced', 2: 'intermediate', 1: 'beginner'}
 
+        _DHP_NAMES = {'dhp': 'Dhammapada', 'pdhp': 'Patna Dhammapada'}
+        dhp_uid_match = re.match(r'^(p?dhp)(\d+)$', uid, re.IGNORECASE)
+        dhp_title = (
+            f"{_DHP_NAMES[dhp_uid_match.group(1).lower()]} {dhp_uid_match.group(2)}"
+            if dhp_uid_match
+            else None
+        )
+
         data = []
         edges = {}
         for result in results:
@@ -599,12 +607,7 @@ class RangeSuttaplexList(Resource):
             result['translations'] = sorted(
                 result['translations'], key=language_sort(result['root_lang'])
             )
-            if result['uid'][:4].lower() == 'pdhp':
-                result['title'] = result['uid'].replace('pdhp', 'Patna Dhammapada ')
-            elif result['uid'][:3].lower() == 'dhp':
-                result['title'] = result['uid'].replace('dhp', 'Dhammapada ')
-            else:
-                result['title'] = result['uid']
+            result['title'] = dhp_title if dhp_title is not None else uid
 
             if parent:
                 try:
