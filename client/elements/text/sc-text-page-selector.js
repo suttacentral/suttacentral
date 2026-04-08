@@ -418,23 +418,25 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       this._setPreviousSuttaInfo('pli-tv-bi-vb-sk1', 'pli-tv-bi-vb-sk1');
     }
 
-    if (this.suttaId.indexOf('dhp') !== -1) {
-      const previousNo = parseInt(this.suttaId.replace('dhp', ''), 10) - 1;
-      const nextNo = parseInt(this.suttaId.replace('dhp', ''), 10) + 1;
+    const dhpPrefixMatch = this.suttaId.match(/^(p?dhp)/);
+    if (dhpPrefixMatch) {
+      const dhpPrefix = dhpPrefixMatch[1];
+      const previousNo = parseInt(this.suttaId.replace(dhpPrefix, ''), 10) - 1;
+      const nextNo = parseInt(this.suttaId.replace(dhpPrefix, ''), 10) + 1;
       const dhpBeginNo = parseInt(
-        this.responseData.vaggaBegin.replace('dhp', '').split('-')[0],
+        this.responseData.vaggaBegin.replace(dhpPrefix, '').split('-')[0],
         10
       );
-      const dhpEndNo = parseInt(this.responseData.vaggaEnd.replace('dhp', '').split('-')[1], 10);
+      const dhpEndNo = parseInt(this.responseData.vaggaEnd.replace(dhpPrefix, '').split('-')[1], 10);
       if (previousNo >= dhpBeginNo) {
-        const previousUid = `dhp${previousNo}`;
+        const previousUid = `${dhpPrefix}${previousNo}`;
         this._setPreviousSuttaInfo(
           previousUid,
           this._transformId(previousUid, this.expansionReturns)
         );
       }
       if (nextNo <= dhpEndNo) {
-        const nextUid = `dhp${nextNo}`;
+        const nextUid = `${dhpPrefix}${nextNo}`;
         this._setNextSuttaInfo(nextUid, this._transformId(nextUid, this.expansionReturns));
       }
     }

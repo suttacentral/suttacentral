@@ -375,14 +375,14 @@ export class SCTextBilara extends SCTextCommon {
     if (this.isRangeSutta) {
       const UIDS = [];
       const allArticle = this.querySelectorAll('article');
-      if (this.suttaId.indexOf('dhp') < 0) {
+      if (!/^(p?dhp)/.test(this.suttaId)) {
         allArticle.forEach(item => {
           UIDS.push(item.id);
           item.style.display = 'none';
         });
       }
 
-      if (this.suttaId.indexOf('dhp') !== -1) {
+      if (/^(p?dhp)/.test(this.suttaId)) {
         const dhpVerses = this.querySelectorAll('article span.segment');
         for (const verse of dhpVerses) {
           if (verse.id.split(':')[0].toLowerCase() !== this.suttaId.toLowerCase()) {
@@ -425,7 +425,7 @@ export class SCTextBilara extends SCTextCommon {
       }
 
       setTimeout(() => {
-        if (this.suttaId.indexOf('dhp') === -1) {
+        if (!/^(p?dhp)/.test(this.suttaId)) {
           const suttaTitle = this.suttaId.split('.')[1];
           this._updateSuttaTitle('.range-title .root .text', suttaTitle);
           this._updateSuttaTitle('.range-title .translation .text', suttaTitle);
