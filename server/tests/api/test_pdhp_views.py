@@ -64,7 +64,7 @@ def test_range_suttaplex_list_resolves_pdhp_uid(monkeypatch):
 
     assert status == 200
     assert data[0]['uid'] == 'pdhp1-13'
-    assert data[0]['title'] == 'Patna Dhammapada 1-13'
+    assert data[0]['title'] == 'Patna Dhammapada 1'
     assert fake_db.aql.calls[0]['bind_vars'] == {'uid': 'pdhp'}
     assert fake_db.aql.calls[1]['bind_vars'] == {
         'language': 'en',
