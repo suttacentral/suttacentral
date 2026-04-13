@@ -837,6 +837,24 @@ class TestPaliReferenceEdition:
         assert len(data) > 0
 
 
+class TestLzhReferenceEdition:
+    @pytest.fixture
+    def client(self):
+        app.config['TESTING'] = True
+        with app.test_client() as client:
+            with app.app_context():
+                yield client
+
+    def test_lzh_reference_edition(self, client):
+        url = "/lzh_reference_edition"
+        response = client.get(url)
+
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert isinstance(data, list)
+        assert len(data) > 0
+
+
 class TestAvailableVoices:
     @pytest.fixture
     def client(self):

@@ -41,6 +41,7 @@ from common.queries import (
     SUTTA_PATH,
     ALL_DOC_UID_BY_ROOT_UID,
     SUTTA_PALI_REFERENCE,
+    SUTTA_LZH_REFERENCE,
     SUTTA_PUBLICATION_INFO,
     PLI_SUTTA_PUBLICATION_INFO,
     AVAILABLE_VOICES,
@@ -1601,6 +1602,14 @@ class PaliReferenceEdition(Resource):
         db = get_db()
         pali_references = list(db.aql.execute(SUTTA_PALI_REFERENCE))
         return pali_references or ({'error': 'Not Found'}, 404)
+
+
+class LzhReferenceEdition(Resource):
+    @cache.cached(key_prefix=make_cache_key, timeout=default_cache_timeout)
+    def get(self):
+        db = get_db()
+        lzh_references = list(db.aql.execute(SUTTA_LZH_REFERENCE))
+        return lzh_references or ({'error': 'Not Found'}, 404)
 
 
 class PublicationInfo(Resource):

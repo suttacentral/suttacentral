@@ -41,6 +41,7 @@ from api.views import (
     TransliteratedSutta,
     SuttaFullPath,
     PaliReferenceEdition,
+    LzhReferenceEdition,
     PublicationInfo,
     AvailableVoices,
     RootEdition,
@@ -127,6 +128,7 @@ def app_factory() -> Tuple[Api, Flask]:
     api.add_resource(Publication, '/publication')
     api.add_resource(SuttaFullPath, '/suttafullpath/<string:uid>')
     api.add_resource(PaliReferenceEdition, '/pali_reference_edition')
+    api.add_resource(LzhReferenceEdition, '/lzh_reference_edition')
     api.add_resource(PublicationInfo, '/publication_info/<string:uid>/<string:lang>/<string:author_uid>')
     api.add_resource(AvailableVoices, '/available_voices/<string:uid>')
     api.add_resource(RootEdition, '/root_edition')

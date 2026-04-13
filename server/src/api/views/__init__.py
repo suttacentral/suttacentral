@@ -33,6 +33,7 @@ from .views import (
     TransliteratedSutta,
     SuttaFullPath,
     PaliReferenceEdition,
+    LzhReferenceEdition,
     PublicationInfo,
     AvailableVoices,
     RootEdition,

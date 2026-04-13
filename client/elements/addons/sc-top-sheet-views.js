@@ -406,10 +406,15 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _fetchReferenceDisplayType() {
-    fetch(`${API_ROOT}/pali_reference_edition`)
-      .then(r => r.json())
-      .then(data => {
-        this.references = DEFAULT_REFERENCE_OPTION.concat(data).map(item => {
+    Promise.all([
+      fetch(`${API_ROOT}/pali_reference_edition`).then(r => r.json()),
+      fetch(`${API_ROOT}/lzh_reference_edition`).then(r => r.json()),
+    ])
+      .then(([paliData, lzhData]) => {
+        const combined = [...paliData, ...lzhData].filter(
+          (item, index, arr) => arr.findIndex(x => x.edition_set === item.edition_set) === index
+        );
+        this.references = DEFAULT_REFERENCE_OPTION.concat(combined).map(item => {
           return item.checked ? item : { ...item, checked: false };
         });
         const {
