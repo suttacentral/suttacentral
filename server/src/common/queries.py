@@ -1572,6 +1572,15 @@ FOR pali IN pali_reference_edition
     }
 '''
 
+SUTTA_LZH_REFERENCE = '''
+FOR lzh IN lzh_reference_edition
+    COLLECT edition_set = lzh.edition_set, name = lzh.name, short_name = lzh.short_name
+    RETURN {
+        edition_set: edition_set,
+        name: NOT_NULL(name, short_name)
+    }
+'''
+
 ALL_TEXTS_BY_LANGUAGES = '''
 FOR doc IN v_text
     SEARCH doc.lang IN @languages
