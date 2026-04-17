@@ -106,6 +106,9 @@ def generate_relationship_edges(
 ):
     relationship_files = list(relationship_dir.glob('*.json'))
 
+    # It's hard to say if this check ever worked or whether this conditional
+    # was always false. Now that I've removed the function hash check in
+    # ChangeTracker this might exit here when it did not before.
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
         return
 
@@ -712,7 +715,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_fallen_leaves_files(db, structure_dir / 'fallen-leaves')
 
     printer.print_stage("Building and loading navigation from structure_dir")
-    navigation.add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)
+    navigation.add_navigation_docs_and_edges(db, structure_dir, sc_bilara_data_dir)
 
     printer.print_stage("Loading child ranges from structure_dir")
     load_child_range(db, structure_dir)

@@ -10,7 +10,7 @@ from data_loader.extra_info import process_extra_info_file
 from data_loader.util import json_load
 
 
-def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir):
+def add_navigation_docs_and_edges(db, structure_dir, sc_bilara_data_dir):
     tree_dir = structure_dir / 'tree'
 
     names_files = sorted((sc_bilara_data_dir / 'root' / 'misc' / 'site' / 'name').glob('**/*.json'))
@@ -22,23 +22,20 @@ def add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_d
     super_extra_info = process_extra_info_file(structure_dir / 'super_extra_info.json')
     text_extra_info = process_extra_info_file(structure_dir / 'text_extra_info.json')
 
-    if change_tracker.is_any_function_changed(
-            [_perform_update_queries, _process_super_tree_file, _process_tree_files, _process_names_files]
-    ):
-        nav_details_docs = _process_names_files(names_files, root_languages, super_extra_info, text_extra_info)
+    nav_details_docs = _process_names_files(names_files, root_languages, super_extra_info, text_extra_info)
 
-        nav_details_edges = _process_tree_files(tree_files) + _process_super_tree_file(super_tree_file)
+    nav_details_edges = _process_tree_files(tree_files) + _process_super_tree_file(super_tree_file)
 
-        db['super_nav_details'].truncate()
-        db['super_nav_details_edges'].truncate()
-        db['super_nav_details'].import_bulk(nav_details_docs)
-        db['super_nav_details_edges'].import_bulk(
-            nav_details_edges,
-            from_prefix='super_nav_details',
-            to_prefix='super_nav_details',
-        )
+    db['super_nav_details'].truncate()
+    db['super_nav_details_edges'].truncate()
+    db['super_nav_details'].import_bulk(nav_details_docs)
+    db['super_nav_details_edges'].import_bulk(
+        nav_details_edges,
+        from_prefix='super_nav_details',
+        to_prefix='super_nav_details',
+    )
 
-        _perform_update_queries(db)
+    _perform_update_queries(db)
 
 
 def _perform_update_queries(db):
