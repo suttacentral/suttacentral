@@ -172,7 +172,7 @@ class TestIsFileNewOrChanged:
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         tracker.update_mtimes()
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert not tracker.is_file_new_or_changed(path=new_file)
+        assert not tracker.is_file_new_or_changed(path=new_file, check_calling_function=False)
 
 
 class TestIsAnyFileNewOrChanged:
@@ -199,4 +199,4 @@ class TestIsAnyFileNewOrChanged:
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         tracker.update_mtimes()
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert not tracker.is_any_file_new_or_changed(files=[new_file])
+        assert not tracker.is_any_file_new_or_changed(files=[new_file], check_calling_function=False)
