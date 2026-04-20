@@ -206,6 +206,11 @@ def changeable_function():
     i = 1
 
 class TestIsFunctionChanged:
+    def test_function_changed_when_hashes_collection_empty(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert tracker.is_function_changed(changeable_function)
+
     def test_function_unchanged(self, mtimes_db, tmp_path):
         mtimes_db.collection('function_hashes').truncate()
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
