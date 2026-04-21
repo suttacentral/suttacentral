@@ -623,6 +623,15 @@ def generate_uids(prefix, start, end):
 def insert_uids(db, range_uid, uids):
     db['expanded_sutta_uids'].insert({'range_uid': range_uid, 'expanded_uids': uids})
 
+def changeable_function():
+    i = 2
+
+def function_change_check(tracker: ChangeTracker):
+    changed = tracker.is_function_changed(changeable_function)
+    print("******************************************")
+    print(f"is_function_changed() returned {changed}")
+    print("******************************************")
+
 
 def run(no_pull: bool = False) -> StagePrinter:
     """Runs data load.
@@ -668,6 +677,9 @@ def run(no_pull: bool = False) -> StagePrinter:
 
     printer.print_stage("Loading ChangeTracker")
     change_tracker = ChangeTracker(data_dir, db)
+
+    printer.print_stage("Running function change test")
+    function_change_check(change_tracker)
 
     printer.print_stage("Loading uid_expansion.json")
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
