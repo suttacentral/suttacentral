@@ -25,7 +25,6 @@ export class SCSuttaplexTx extends LitElement {
 
   constructor() {
     super();
-    this.editionsDetails = new Map([['sct', 'SuttaCentral Taishō']]);
   }
 
   render() {
@@ -40,7 +39,7 @@ export class SCSuttaplexTx extends LitElement {
             <div class="tx-details">
               <span class="tx-creator">
                   ${this.translation?.author ||
-                    (this.translation?.author_uid && this.editionsDetails.get(this.translation.author_uid)) ||
+                    (this.translation?.author_uid) ||
                     this.translation?.author_uid ||
                     ''}
               </span>
