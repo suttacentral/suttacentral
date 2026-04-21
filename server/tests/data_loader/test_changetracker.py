@@ -174,8 +174,6 @@ class TestIsFileNewOrChanged:
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         assert not tracker.is_file_new_or_changed(path=new_file, check_calling_function=False)
 
-
-
 class TestIsAnyFileNewOrChanged:
     def test_true_when_one_new(self, mtimes_db, tmp_path):
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
@@ -218,3 +216,18 @@ class TestIsFunctionChanged:
         tracker.update_mtimes()
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         assert not tracker.is_function_changed(changeable_function)
+
+    def test_is_file_new_or_changed_when_file_is_new_and_we_run_twice(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+
+        new_file = tmp_path / 'new_file.txt'
+        new_file.touch()
+
+        # First run of ETL
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert tracker.is_file_new_or_changed(path=new_file, check_calling_function=True)
+        tracker.update_mtimes()
+
+        # Second run of ETL
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert not tracker.is_file_new_or_changed(path=new_file, check_calling_function=True)
