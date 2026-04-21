@@ -1189,7 +1189,7 @@ export class SCTextBilara extends SCTextCommon {
           className = 'csp';
         } else if (item.length >= 2 && item.substring(0, 2) === 'sc') {
           className = 'sc';
-        } else if (/^t\d{2,3}\./.test(item)) {
+        } else if (/^t\d{2,3}\.|^t\d{4}[a-z]\d{2}/.test(item)) {
           className = 'taisho';
         } else {
           className = editionInfo?.uid;
