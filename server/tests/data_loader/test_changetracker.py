@@ -247,3 +247,19 @@ class TestIsFunctionChanged:
         tracker.update_mtimes()
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         assert not tracker.is_function_changed(changeable_function)
+
+def another_changeable_function():
+    i = 2
+
+class TestIsAnyFunctionChanged:
+    def test_all_functions_unchanged(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+
+        # First run of ETL
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        tracker.is_any_function_changed([changeable_function, another_changeable_function])
+        tracker.update_mtimes()
+
+        # Second run of ETL
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert not tracker.is_any_function_changed([changeable_function, another_changeable_function])
