@@ -231,28 +231,29 @@ class TestIsAnyFileNewOrChanged:
         assert not tracker.is_any_file_new_or_changed(files=[new_file], check_calling_function=True)
 
 
-def changeable_function():
+def first_changeable_function():
     i = 1
-
-class TestIsFunctionChanged:
-    def test_function_changed_when_hashes_collection_empty(self, mtimes_db, tmp_path):
-        mtimes_db.collection('function_hashes').truncate()
-        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert tracker.is_function_changed(changeable_function)
-
-    def test_function_unchanged(self, mtimes_db, tmp_path):
-        mtimes_db.collection('function_hashes').truncate()
-        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        tracker.is_function_changed(changeable_function)
-        tracker.update_mtimes()
-        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert not tracker.is_function_changed(changeable_function)
 
 def second_changeable_function():
     i = 2
 
 def third_changeable_function():
     i = 3
+
+
+class TestIsFunctionChanged:
+    def test_function_changed_when_hashes_collection_empty(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert tracker.is_function_changed(first_changeable_function)
+
+    def test_function_unchanged(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        tracker.is_function_changed(first_changeable_function)
+        tracker.update_mtimes()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert not tracker.is_function_changed(first_changeable_function)
 
 
 class TestIsAnyFunctionChanged:
@@ -264,7 +265,7 @@ class TestIsAnyFunctionChanged:
 
         assert tracker.is_any_function_changed(
             [
-                changeable_function,
+                first_changeable_function,
                 second_changeable_function,
                 third_changeable_function
             ]
@@ -277,7 +278,7 @@ class TestIsAnyFunctionChanged:
 
         assert not tracker.is_any_function_changed(
             [
-                changeable_function,
+                first_changeable_function,
                 second_changeable_function,
                 third_changeable_function
             ]
