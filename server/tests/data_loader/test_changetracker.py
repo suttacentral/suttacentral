@@ -241,6 +241,14 @@ def third_changeable_function():
     i = 3
 
 
+class FirstChangeableClass():
+    def method_a(self):
+        i = 4
+
+    def method_b(self):
+        i = 5
+
+
 class TestIsFunctionChanged:
     def test_function_changed_when_hashes_collection_empty(self, mtimes_db, tmp_path):
         mtimes_db.collection('function_hashes').truncate()
@@ -255,6 +263,13 @@ class TestIsFunctionChanged:
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         assert not tracker.is_function_changed(first_changeable_function)
 
+    def test_class_changes(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        tracker.is_function_changed(FirstChangeableClass)
+        tracker.update_mtimes()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert not tracker.is_function_changed(FirstChangeableClass)
 
 class TestIsAnyFunctionChanged:
     def test_returns_false_when_functions_are_the_same(self, mtimes_db, tmp_path):
