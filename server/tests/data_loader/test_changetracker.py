@@ -3,7 +3,7 @@ import pytest
 import common.utils
 from common import arangodb
 from data_loader.change_tracker import whoami, who_is_calling, function_source, ChangeTracker
-
+import changeable_classes
 
 def test_whomai():
     assert whoami() == test_whomai
@@ -270,6 +270,15 @@ class TestIsFunctionChanged:
         tracker.update_mtimes()
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         assert not tracker.is_function_changed(FirstChangeableClass)
+
+    def test_class_in_separate_module_changes(self, mtimes_db, tmp_path):
+        mtimes_db.collection('function_hashes').truncate()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        tracker.is_function_changed(changeable_classes.ChangeableClassInModule)
+        tracker.update_mtimes()
+        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
+        assert not tracker.is_function_changed(changeable_classes.ChangeableClassInModule)
+
 
 class TestIsAnyFunctionChanged:
     def test_returns_false_when_functions_are_the_same(self, mtimes_db, tmp_path):
