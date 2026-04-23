@@ -248,23 +248,40 @@ class TestIsFunctionChanged:
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
         assert not tracker.is_function_changed(changeable_function)
 
-def another_changeable_function():
+def second_changeable_function():
     i = 2
 
+def third_changeable_function():
+    i = 3
+
+
 class TestIsAnyFunctionChanged:
-    def test_returns_false_when_called_one_more_time_than_list_length(self, mtimes_db, tmp_path):
+    def test_returns_false_when_functions_are_the_same(self, mtimes_db, tmp_path):
         mtimes_db.collection('function_hashes').truncate()
 
         # First run of ETL
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert tracker.is_any_function_changed([changeable_function, another_changeable_function])
+
+        assert tracker.is_any_function_changed(
+            [
+                changeable_function,
+                second_changeable_function,
+                third_changeable_function
+            ]
+        )
+
         tracker.update_mtimes()
 
         # Second run of ETL
         tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert tracker.is_any_function_changed([changeable_function, another_changeable_function])
+
+        assert not tracker.is_any_function_changed(
+            [
+                changeable_function,
+                second_changeable_function,
+                third_changeable_function
+            ]
+        )
+
         tracker.update_mtimes()
 
-        # Third run of ETL
-        tracker = ChangeTracker(base_dir=tmp_path, db=mtimes_db)
-        assert not tracker.is_any_function_changed([changeable_function, another_changeable_function])

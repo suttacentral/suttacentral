@@ -69,7 +69,8 @@ class ChangeTracker:
                 yield path
 
     def is_any_function_changed(self, functions: Iterable[Callable]) -> bool:
-        return any(self.is_function_changed(function) for function in functions)
+        changed = [self.is_function_changed(function) for function in functions]
+        return any(changed)
 
     def is_function_changed(self, function: Callable | None) -> bool:
         key = f'{function.__module__}.{function.__qualname__}'
