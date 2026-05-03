@@ -37,13 +37,11 @@ def explain_error(coll, e, docs, kwargs):
 
 
 def import_bulk_logged(self, docs, wipe=False, *args, **kwargs):
-    if 'overwrite' in args:
+    if 'overwrite' in kwargs:
         raise ValueError('Overwrite not allowed as it is ambiguous, use "wipe=True" to clear collection')
     try:
-        results = self.import_bulk(docs, overwrite=wipe, *args, **kwargs)
+        _ = self.import_bulk(docs, overwrite=wipe, *args, **kwargs)
     except DocumentInsertError as e:
-        logging.error(kwargs)
-
         explained = explain_error(self, e, docs, kwargs)
         if not explained:
             logging.error(
@@ -53,16 +51,6 @@ def import_bulk_logged(self, docs, wipe=False, *args, **kwargs):
     except Exception as e:
         logging.error(f'{self.name}: error inserting documents: {e}: {docs}')
         raise
-
-    for outcome, doc in zip(results, docs):
-        if isinstance(outcome, Exception):
-            if '_key' in doc:
-                if doc["_key"] in outcome.error_message:
-                    logging.error(f'Error inserting document: {outcome.error_message}')
-                else:
-                    logging.error(f'Error inserting document: {outcome.error_message}; key: {doc["_key"]}')
-            else:
-                logging.error(f'Error inserting document: {outcome.error_message}, {doc}')
 
 
 StandardCollection.import_bulk_logged = import_bulk_logged

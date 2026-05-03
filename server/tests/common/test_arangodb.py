@@ -84,18 +84,13 @@ def duplicates() -> list[dict]:
     ]
 
 
-@pytest.fixture
-def bad_attribute_name() -> dict:
-    return {'_key': 'jude-the-obscure', 'name': 'Jude the Obscure', 'colour': 'apricot'}
-
-
 class TestImportBulkLogged:
     def test_can_import_valid_documents(self, collection, two_documents):
         collection.import_bulk_logged(two_documents)
         assert collection.count() == 2
 
     def test_passing_overwrite_results_in_type_error(self, collection, two_documents):
-        with pytest.raises(TypeError):
+        with pytest.raises(ValueError, match='Overwrite not allowed'):
             collection.import_bulk_logged(two_documents, overwrite=True)
 
     def test_does_not_delete_existing_documents_by_default(self, collection, two_documents, one_document):
@@ -114,8 +109,7 @@ class TestImportBulkLogged:
         with pytest.raises(DocumentInsertError):
             collection.import_bulk_logged(bad_key)
 
-        assert caplog.messages[0] == "{}"
-        assert "contains illegal characters" in caplog.messages[1]
+        assert "contains illegal characters" in caplog.messages[0]
 
     def test_explains_unique_constraint_violated(self, collection, duplicates, caplog):
         duplicates = [
@@ -126,8 +120,7 @@ class TestImportBulkLogged:
         with pytest.raises(DocumentInsertError):
             collection.import_bulk_logged(duplicates)
 
-        assert caplog.messages[0] == "{}"
-        assert "unique constraint violated" in caplog.messages[1]
+        assert "unique constraint violated" in caplog.messages[0]
 
     def test_explains_already_in_collection(self, collection, two_documents, caplog):
         collection.import_bulk_logged(two_documents)
@@ -135,12 +128,11 @@ class TestImportBulkLogged:
         with pytest.raises(DocumentInsertError):
             collection.import_bulk_logged(two_documents)
 
-        assert caplog.messages[0] == "{}"
-        assert "already in the collection" in caplog.messages[1]
+        assert "already in the collection" in caplog.messages[0]
 
-    def test_cant_explain_bad_attribute_name(self, collection, bad_attribute_name, caplog):
+    def test_cant_explain_bad_attribute_name(self, collection, caplog):
+        bad_attribute_name = {'_key': 'jude-the-obscure', 'name': 'Jude the Obscure', 'colour': 'apricot'}
         with pytest.raises(DocumentInsertError):
             collection.import_bulk_logged(bad_attribute_name)
 
-        assert caplog.messages[0] == "{}"
-        assert "you may proceed to panic and/or despair" in caplog.messages[1]
+        assert "you may proceed to panic and/or despair" in caplog.messages[0]
