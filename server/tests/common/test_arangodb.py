@@ -76,14 +76,6 @@ def two_documents() -> list[dict]:
     ]
 
 
-@pytest.fixture
-def duplicates() -> list[dict]:
-    return [
-        {'_key': 'mr-lincoln', 'name': 'Mr Lincoln', 'colour': 'red'},
-        {'_key': 'mr-lincoln', 'name': 'Mr Lincoln', 'colour': 'red'},
-    ]
-
-
 class TestImportBulkLogged:
     def test_can_import_no_documents(self, collection):
         collection.import_bulk_logged([])
@@ -114,7 +106,7 @@ class TestImportBulkLogged:
 
         assert "contains illegal characters" in caplog.messages[0]
 
-    def test_explains_unique_constraint_violated(self, collection, duplicates, caplog):
+    def test_explains_unique_constraint_violated(self, collection, caplog):
         duplicates = [
             {'_key': 'mr-lincoln', 'name': 'Mr Lincoln', 'colour': 'red'},
             {'_key': 'mr-lincoln', 'name': 'Mr Lincoln', 'colour': 'red'},
