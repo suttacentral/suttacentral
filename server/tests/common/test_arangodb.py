@@ -85,6 +85,9 @@ def duplicates() -> list[dict]:
 
 
 class TestImportBulkLogged:
+    def test_can_import_no_documents(self, collection):
+        collection.import_bulk_logged([])
+
     def test_can_import_valid_documents(self, collection, two_documents):
         collection.import_bulk_logged(two_documents)
         assert collection.count() == 2
