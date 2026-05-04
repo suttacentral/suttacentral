@@ -125,9 +125,8 @@ class TestImportBulkLogged:
 
         assert "already in the collection" in caplog.messages[0]
 
-    def test_cant_explain_bad_attribute_name(self, collection, caplog):
-        bad_attribute_name = {'_key': 'jude-the-obscure', 'name': 'Jude the Obscure', 'colour': 'apricot'}
+    def test_cant_explain_single_document_instead_of_list(self, collection, one_document, caplog):
         with pytest.raises(DocumentInsertError):
-            collection.import_bulk_logged(bad_attribute_name)
+            collection.import_bulk_logged(one_document)
 
         assert "you may proceed to panic and/or despair" in caplog.messages[0]
