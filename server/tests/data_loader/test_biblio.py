@@ -1,10 +1,9 @@
 import json
-from bisect import bisect_left
 from pathlib import Path
 
 import pytest
 
-from common.collections import database, Collection
+from common.collections import Collection
 from data_loader.biblio import load_biblios
 
 
@@ -36,5 +35,5 @@ def biblios_data(tmp_path) -> Path:
 
 
 def test_load_biblios(biblios_data):
-    load_biblios(database(), biblios_data)
+    load_biblios(biblios_data)
     assert len(Collection('biblios')) == 3
