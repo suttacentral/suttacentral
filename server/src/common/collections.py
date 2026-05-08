@@ -1,4 +1,4 @@
-from collections.abc import Sequence
+from collections.abc import Sequence, Iterator
 from typing import Any
 
 from arango.collection import StandardCollection
@@ -31,5 +31,5 @@ class Collection:
     def __len__(self) -> int:
         return len(self._collection)
 
-    def keys(self):
-        return self._collection.keys()
+    def keys(self) -> Iterator[str]:
+        yield from (str(key) for key in self._collection.keys())
