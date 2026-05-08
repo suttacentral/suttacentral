@@ -33,13 +33,13 @@ class TestCollection:
 
     def test_recreate_adds_documents(self):
         collection = Collection(COLLECTION_NAME)
-        collection.recreate([BLUE_MOON, BRASS_BAND, CHINA_DOLL])
-        expected_keys = {BLUE_MOON['_key'], BRASS_BAND['_key'], CHINA_DOLL['_key']}
-        assert expected_keys == set(collection.keys())
+        documents = [BLUE_MOON, BRASS_BAND, CHINA_DOLL]
+        collection.recreate(documents)
+        assert set(doc['_key'] for doc in documents) == set(collection.keys())
 
     def test_recreate_replaces_documents(self):
         collection = Collection(COLLECTION_NAME)
         collection.recreate([GOLD_BUNNY])
-        collection.recreate([BLUE_MOON, BRASS_BAND, CHINA_DOLL])
-        expected_keys = {BLUE_MOON['_key'], BRASS_BAND['_key'], CHINA_DOLL['_key']}
-        assert expected_keys == set(collection.keys())
+        documents = [BLUE_MOON, BRASS_BAND, CHINA_DOLL]
+        collection.recreate(documents)
+        assert set(doc['_key'] for doc in documents) == set(collection.keys())
