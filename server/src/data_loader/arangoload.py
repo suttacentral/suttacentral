@@ -780,7 +780,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     paragraphs.load_paragraphs(db, additional_info_dir)
 
     printer.print_stage("Loading biblio from additional_info")
-    biblio.load_biblios(db, additional_info_dir)
+    biblio.load_biblios(additional_info_dir)
 
     printer.print_stage("Loading epigraphs from additional_info")
     homepage.load_epigraphs(db, additional_info_dir)
