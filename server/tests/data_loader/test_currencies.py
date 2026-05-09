@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from common.collections import database, Collection
+from common.collections import Collection
 from data_loader.currencies import load_currencies
 
 AUD = {
@@ -53,20 +53,17 @@ def three_currencies(tmp_path) -> Path:
 
 class TestLoadCurrencies:
     def test_currencies_are_loaded(self, three_currencies):
-        db = database()
-        load_currencies(db, three_currencies)
+        load_currencies(three_currencies)
         symbols = [doc['symbol'] for doc in Collection('currencies').documents()]
         assert sorted(symbols) == ['AUD', 'BOB', 'COP']
 
     def test_currency_names_are_loaded(self, three_currencies):
-        db = database()
-        load_currencies(db, three_currencies)
+        load_currencies(three_currencies)
         symbols = [doc['symbol'] for doc in Collection('currency_names').documents()]
         assert sorted(symbols) == ['AUD', 'BOB', 'COP']
 
     def test_transform_currency_to_currency_name(self, one_currency):
-        db = database()
-        load_currencies(db, one_currency)
+        load_currencies(one_currency)
         document = next(Collection('currency_names').documents())
         assert document['_key'] == 'AUD_en'
         assert document['name'] == 'Australian Dollar'
