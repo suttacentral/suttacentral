@@ -8,6 +8,9 @@ from data_loader.util import json_load
 def load_currencies(additional_info_dir: Path):
     currencies = json_load(additional_info_dir / 'currencies.json')
     Collection('currencies').recreate(currencies)
+
+    # currency_names appears to be the result of an aborted
+    # attempt at internationalization. It only contains english.
     currency_names = [to_currency_name(currency) for currency in currencies]
     Collection('currency_names').recreate(currency_names)
 
