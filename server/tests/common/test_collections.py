@@ -43,3 +43,10 @@ class TestCollection:
         documents = [BLUE_MOON, BRASS_BAND, CHINA_DOLL]
         collection.recreate(documents)
         assert set(doc['_key'] for doc in documents) == set(collection.keys())
+
+    def test_documents_are_retrievable(self):
+        collection = Collection(COLLECTION_NAME)
+        documents = [BLUE_MOON, BRASS_BAND, CHINA_DOLL]
+        collection.recreate(documents)
+        assert {doc['name'] for doc in collection.documents()} == {doc['name'] for doc in documents}
+        assert {doc['colour'] for doc in collection.documents()} == {doc['colour'] for doc in documents}
