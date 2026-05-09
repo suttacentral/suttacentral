@@ -1,22 +1,21 @@
 from pathlib import Path
+from typing import Any
 
 from common.collections import Collection
-from .util import json_load
+from data_loader.util import json_load
 
 
 def load_currencies(additional_info_dir: Path):
-    currency_data = json_load(additional_info_dir / 'currencies.json')
-    Collection('currencies').recreate(currency_data)
+    currencies = json_load(additional_info_dir / 'currencies.json')
+    Collection('currencies').recreate(currencies)
+    currency_names = [to_currency_name(currency) for currency in currencies]
+    Collection('currency_names').recreate(currency_names)
 
-    name_data = []
-    for entry in currency_data:
-        name_data.append(
-            {
-                'name': entry.pop('name'),
-                'symbol': entry['symbol'],
-                'lang': 'en',
-                '_key': f'{entry["symbol"]}_en',
-            }
-        )
 
-    Collection('currency_names').recreate(name_data)
+def to_currency_name(currency: Any) -> Any:
+    return {
+        '_key': f'{currency["symbol"]}_en',
+        'name': currency['name'],
+        'symbol': currency['symbol'],
+        'lang': 'en',
+    }
