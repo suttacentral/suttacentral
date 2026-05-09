@@ -33,3 +33,6 @@ class Collection:
 
     def keys(self) -> Iterator[str]:
         yield from (str(key) for key in self._collection.keys())
+
+    def documents(self) -> Iterator[Any]:
+        yield from (doc for doc in self._collection.all())
