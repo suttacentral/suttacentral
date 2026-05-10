@@ -777,7 +777,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     currencies.load_currencies(db, additional_info_dir)
 
     printer.print_stage("Loading paragraphs from additional_info")
-    paragraphs.load_paragraphs(db, additional_info_dir)
+    paragraphs.load_paragraphs(additional_info_dir)
 
     printer.print_stage("Loading biblio from additional_info")
     biblio.load_biblios(additional_info_dir)

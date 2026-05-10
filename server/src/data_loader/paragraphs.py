@@ -1,11 +1,9 @@
 from pathlib import Path
 
-from .util import json_load
+from common.collections import Collection
+from data_loader.util import json_load
 
 
-def load_paragraphs(db, additional_info_dir: Path):
-    print('Loading paragraphs')
-
-    paragraphs_collection = db['paragraphs']
+def load_paragraphs(additional_info_dir: Path):
     data = json_load(additional_info_dir / 'paragraphs.json')
-    paragraphs_collection.import_bulk_logged(data, wipe=True)
+    Collection('paragraphs').recreate(data)

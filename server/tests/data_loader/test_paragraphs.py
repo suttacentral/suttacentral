@@ -50,13 +50,13 @@ class TestLoadParagraphs:
         db = database()
         paragraphs = Collection('paragraphs')
         paragraphs.clear()
-        load_paragraphs(db, two_records)
+        load_paragraphs(two_records)
         assert sorted(["Acip-vp", "Adhik-v"]) == sorted(doc['acronym'] for doc in paragraphs.documents())
 
     def test_deletes_existing_records_before_populating(self, one_record, two_records):
         db = database()
         paragraphs = Collection('paragraphs')
         paragraphs.clear()
-        load_paragraphs(db, one_record)
-        load_paragraphs(db, two_records)
+        load_paragraphs(one_record)
+        load_paragraphs(two_records)
         assert sorted(["Acip-vp", "Adhik-v"]) == sorted(doc['acronym'] for doc in paragraphs.documents())
