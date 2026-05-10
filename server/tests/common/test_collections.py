@@ -50,3 +50,16 @@ class TestCollection:
         collection.recreate(documents)
         assert {doc['name'] for doc in collection.documents()} == {doc['name'] for doc in documents}
         assert {doc['colour'] for doc in collection.documents()} == {doc['colour'] for doc in documents}
+
+    def test_clear_empty_collection(self):
+        collection = Collection(COLLECTION_NAME)
+        collection.clear()
+        assert len(collection) == 0
+
+    def test_clear_populated_collection(self):
+        collection = Collection(COLLECTION_NAME)
+        documents = [BLUE_MOON, BRASS_BAND, CHINA_DOLL]
+        collection.recreate(documents)
+        collection.clear()
+        assert len(collection) == 0
+
