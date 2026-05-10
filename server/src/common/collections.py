@@ -36,3 +36,6 @@ class Collection:
 
     def documents(self) -> Iterator[Any]:
         yield from (doc for doc in self._collection.all())
+
+    def clear(self) -> None:
+        self._collection.truncate()
