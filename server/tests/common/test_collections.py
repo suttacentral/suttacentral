@@ -62,4 +62,3 @@ class TestCollection:
         collection.recreate(documents)
         collection.clear()
         assert len(collection) == 0
-
