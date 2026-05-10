@@ -112,6 +112,15 @@ wheels = [
 ]
 
 [[package]]
+name = "cssselect"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/2e/cdfd8b01c37cbf4f9482eefd455853a3cf9c995029a46acd31dfaa9c1dd6/cssselect-1.4.0.tar.gz", hash = "sha256:fdaf0a1425e17dfe8c5cf66191d211b357cf7872ae8afc4c6762ddd8ac47fc92", size = 40589, upload-time = "2026-01-29T07:00:26.701Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/0c/7bb51e3acfafd16c48875bf3db03607674df16f5b6ef8d056586af7e2b8b/cssselect-1.4.0-py3-none-any.whl", hash = "sha256:c0ec5c0191c8ee39fcc8afc1540331d8b55b0183478c50e9c8a79d44dbceb1d8", size = 18540, upload-time = "2026-01-29T07:00:24.994Z" },
+]
+
+[[package]]
 name = "decorator"
 version = "5.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -313,6 +322,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/2c/54/224c8c8efd36cbf292ee678161e75be34fb547a43ff6c7c5ae6d49a125fa/lxml-4.9.1-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_24_i686.whl", hash = "sha256:be9eb06489bc975c38706902cbc6888f39e946b81383abc2838d186f0e8b6a9d", size = 7046509, upload-time = "2022-07-01T20:10:53.982Z" },
     { url = "https://files.pythonhosted.org/packages/d1/71/c865c165583aff2d2806e2bce886d580aa513bb0e5d5d3a5aec7fc57d40c/lxml-4.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:f1be258c4d3dc609e654a1dc59d37b17d7fef05df912c01fc2e15eb43a9735f3", size = 6972204, upload-time = "2022-07-01T20:11:00.594Z" },
     { url = "https://files.pythonhosted.org/packages/51/3a/372f8bc6e6a16dea6c63bd89b471864322816b522ccd1e5dc077ff07750b/lxml-4.9.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:927a9dd016d6033bc12e0bf5dee1dde140235fc8d0d51099353c76081c03dc29", size = 7588387, upload-time = "2022-07-01T20:11:05.763Z" },
+]
+
+[package.optional-dependencies]
+cssselect = [
+    { name = "cssselect" },
 ]
 
 [[package]]
@@ -574,7 +588,7 @@ dependencies = [
     { name = "flask-restful" },
     { name = "fonttools" },
     { name = "jinja2" },
-    { name = "lxml" },
+    { name = "lxml", extra = ["cssselect"] },
     { name = "pytest" },
     { name = "pytest-flask" },
     { name = "pytest-sugar" },
@@ -604,7 +618,7 @@ requires-dist = [
     { name = "flask-restful", specifier = "==0.3.9" },
     { name = "fonttools", specifier = "==4.38.0" },
     { name = "jinja2", specifier = "==3.1.2" },
-    { name = "lxml", specifier = "==4.9.1" },
+    { name = "lxml", extras = ["cssselect"], specifier = "==4.9.1" },
     { name = "pytest", specifier = "==7.2.0" },
     { name = "pytest-flask", specifier = "==1.2.0" },
     { name = "pytest-sugar", specifier = "==0.9.6" },
