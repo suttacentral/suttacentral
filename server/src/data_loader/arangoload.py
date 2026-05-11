@@ -742,7 +742,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     update_root_title()
 
     printer.print_stage('Load bilara_author_edition from sc_bilara_data')
-    sc_bilara_data.load_bilara_author_edition(db, sc_bilara_data_dir)
+    sc_bilara_data.load_bilara_author_edition(sc_bilara_data_dir)
 
     printer.print_stage("Generating and loading relationships")
     generate_relationship_edges(

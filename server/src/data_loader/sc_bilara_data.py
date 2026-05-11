@@ -4,6 +4,7 @@ from typing import Dict, Set, List
 
 from arango.database import Database
 
+from common.collections import Collection
 from data_loader.languages import process_languages
 from data_loader.util import json_load
 import shutil
@@ -145,7 +146,7 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     docs = []
     lang_folder_idx = len(sc_bilara_data_dir.parts) + 1
 
-    folders: List[Path] = {folder for folder in sc_bilara_data_dir.glob('*') 
+    folders: List[Path] = {folder for folder in sc_bilara_data_dir.glob('*')
                            if not folder.name.startswith(('_', '.')) and not folder.name in {'name', 'blurb'}}
 
     files: List[Path] = []
@@ -177,14 +178,13 @@ def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
     db['sc_bilara_texts'].import_bulk(valid_texts)
 
 
-def load_bilara_author_edition(db: Database, sc_bilara_data_dir: Path) -> None:
-    db['bilara_author_edition'].truncate()
-    docs = load_bilara_author(db, sc_bilara_data_dir) + \
-        load_bilara_edition(db, sc_bilara_data_dir)
-    db.collection('bilara_author_edition').import_bulk_logged(docs, wipe=True)
+def load_bilara_author_edition(sc_bilara_data_dir: Path) -> None:
+    authors = load_bilara_author(sc_bilara_data_dir)
+    editions = load_bilara_edition(sc_bilara_data_dir)
+    Collection('bilara_author_edition').recreate(authors + editions)
 
 
-def load_bilara_author(db: Database, sc_bilara_data_dir: Path) -> List[dict]:
+def load_bilara_author(sc_bilara_data_dir: Path) -> List[dict]:
     author_file = sc_bilara_data_dir / '_author.json'
     authors: Dict[str, dict] = json_load(author_file)
 
@@ -196,7 +196,7 @@ def load_bilara_author(db: Database, sc_bilara_data_dir: Path) -> List[dict]:
     } for key, value in authors.items()]
 
 
-def load_bilara_edition(db: Database, sc_bilara_data_dir: Path) -> List[dict]:
+def load_bilara_edition(sc_bilara_data_dir: Path) -> List[dict]:
     edition_file = sc_bilara_data_dir / '_edition.json'
     editions: Dict[str, dict] = json_load(edition_file)
 
