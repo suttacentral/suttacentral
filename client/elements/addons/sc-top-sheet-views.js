@@ -230,6 +230,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         dict: 'pli2nl',
         language: 'Nederlands',
       },
+      {
+        dict: 'pli2ru',
+        language: 'Русский',
+      },
     ];
     this.paliLookupLanguage = textOptions.paliLookupTargetDictRepr;
     this.chineseLookupArray = [
@@ -358,7 +362,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   // M Toggles the "main" references
   _handleMKeydown() {
     const is_main_checked = this.references.find(item => item.edition_set === "main").checked;
-    this._onReferenceDisplayTypeChanged({ target: { checked: !is_main_checked, value: "main" }});  
+    this._onReferenceDisplayTypeChanged({ target: { checked: !is_main_checked, value: "main" }});
   }
 
   // N cycles through the note display types (none, asterisk, sidenotes)
@@ -811,7 +815,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   changeNoteDisplayType(selectedNoteDisplayType) {
     this.selectedNoteDisplayType = selectedNoteDisplayType;
     this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
-    this._showToast(this.localize('viewoption:noteDisplayTypeToast' + 
+    this._showToast(this.localize('viewoption:noteDisplayTypeToast' +
       this.selectedNoteDisplayType.charAt(0).toUpperCase() + this.selectedNoteDisplayType.slice(1)
     ));
   }
