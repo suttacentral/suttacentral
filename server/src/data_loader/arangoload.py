@@ -1,11 +1,12 @@
 import json
 import logging
 import pathlib
+import re
+import subprocess
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
 from typing import Dict
-import subprocess
 
 import regex
 from arango.database import Database
@@ -31,7 +32,13 @@ from common.queries import (
 )
 from common.uid_matcher import UidMatcher
 from common.utils import chunks
-from . import (
+from data_loader.change_tracker import ChangeTracker
+from data_loader.extra_info import process_extra_info_file
+from data_loader.generate_sitemap import generate_sitemap
+from data_loader.observability import StagePrinter
+from data_loader.unsegmented import load_unsegmented_texts
+from data_loader.util import json_load
+from data_loader import (
     biblio,
     currencies,
     dictionaries,
@@ -43,16 +50,8 @@ from . import (
     sc_bilara_data,
     navigation,
     hyphenation,
-    copy_localization,
+    copy_localization
 )
-from .change_tracker import ChangeTracker
-from .generate_sitemap import generate_sitemap
-from .observability import StagePrinter
-from .util import json_load
-import re
-
-from data_loader.extra_info import process_extra_info_file
-from data_loader.unsegmented import load_unsegmented_texts
 
 
 def collect_data(repo_dir: Path, repo_addr: str):
