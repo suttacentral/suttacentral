@@ -68,7 +68,6 @@ def collect_data(repo_dir: Path, repo_addr: str):
         subprocess.run(['git', 'pull'], cwd=repo_dir)
 
 
-
 def load_child_range(db: Database, structure_dir: Path) -> None:
     """
     Load child range data from structure_dir/child_range.json file
@@ -342,10 +341,12 @@ def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: 
     db['pali_reference_edition'].truncate()
     db.collection('pali_reference_edition').import_bulk(pali_reference_content)
 
+
 def load_lzh_reference_edition_file(db: Database, lzh_reference_edition_file: Path):
     lzh_reference_content = json_load(lzh_reference_edition_file)
     db['lzh_reference_edition'].truncate()
-    db.collection('lzh_reference_edition').import_bulk(lzh_reference_content)    
+    db.collection('lzh_reference_edition').import_bulk(lzh_reference_content)
+
 
 def load_root_edition_file(db: Database, root_edition_file: Path):
     root_edition_content = json_load(root_edition_file)
@@ -439,7 +440,7 @@ def upsert_text_acronym(structure_dir):
                     acronym_with_path_replaced = uid.replace(path, replacement)
                     acronym = acronym_with_path_replaced.replace('-', '–')
                     if acronym.find(
-                        sutta_superior_path['acronym'] + ' –'
+                            sutta_superior_path['acronym'] + ' –'
                     ) != -1:
                         old = sutta_superior_path['acronym'] + ' –'
                         new = sutta_superior_path['acronym'] + ' '
@@ -467,9 +468,9 @@ def upsert_text_acronym(structure_dir):
                             sutta_name_subsection
                         ).strip()
                         acronym = (
-                            sutta_superior_path['acronym']
-                            + ' '
-                            + sutta_name_subsection
+                                sutta_superior_path['acronym']
+                                + ' '
+                                + sutta_name_subsection
                         )
                     else:
                         acronym = uid.replace(
@@ -517,10 +518,10 @@ def update_translated_title():
                 break
 
         if (
-            title is not None
-            and title.find('.') != -1
-            and len(title.split('.')) == 2
-            and title.find('Etc.') == -1
+                title is not None
+                and title.find('.') != -1
+                and len(title.split('.')) == 2
+                and title.find('Etc.') == -1
         ):
             title = title.split('.')[1].strip()
 
@@ -823,6 +824,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     printer.print_stage('All done')
 
     return printer
+
 
 def hyphenate_pali_and_san():
     db = arangodb.get_db()
