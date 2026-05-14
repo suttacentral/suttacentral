@@ -1,6 +1,5 @@
 import csv
 import time
-from collections.abc import Iterator
 from dataclasses import dataclass
 from itertools import count
 from typing import Callable

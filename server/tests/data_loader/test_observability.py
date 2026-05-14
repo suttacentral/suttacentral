@@ -1,6 +1,5 @@
 from collections.abc import Iterator
 
-import pytest
 
 from data_loader.observability import StagePrinter, RunTime
 
