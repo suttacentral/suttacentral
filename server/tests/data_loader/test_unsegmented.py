@@ -532,25 +532,25 @@ class TestCreateDocument:
         assert document.author.short_name == 'Bodhi'
 
     def test_sets_author_uid(self, sutta_path):
-        html = f"<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.author.uid == 'bodhi'
 
     def test_sets_missing_author_uid_to_none(self, sutta_path):
-        html = f"<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        html = "<html><head><meta author='Bhikkhu Nobody'></head></html>"
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.author.uid is None
 
     def test_generates_path_with_author(self, sutta_path):
-        html = f"<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.path == 'en/mn1/bodhi'
 
     def test_generates_path_with_missing_author(self, sutta_path):
-        html = f"<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        html = "<html><head><meta author='Bhikkhu Nobody'></head></html>"
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.path == 'en/mn1'
@@ -568,13 +568,13 @@ class TestCreateDocument:
         assert document.file.last_modified == sutta_path.stat().st_mtime
 
     def test_sets_key_with_author(self, sutta_path):
-        html = f"<html><head><meta author='Bhikkhu Bodhi'></head></html>"
+        html = "<html><head><meta author='Bhikkhu Bodhi'></head></html>"
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.key == 'en_mn1_bodhi'
 
     def test_sets_key_with_missing_author(self, sutta_path):
-        html = f"<html><head><meta author='Bhikkhu Nobody'></head></html>"
+        html = "<html><head><meta author='Bhikkhu Nobody'></head></html>"
         add_html_file(sutta_path, html)
         document = create_document('en', sutta_path, FakeAuthors())
         assert document.key == 'en_mn1'

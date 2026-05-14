@@ -7,8 +7,6 @@ from tqdm import tqdm
 
 from common.arangodb import get_db
 from common.queries import (
-    CURRENT_MTIMES,
-    CURRENT_BILARA_MTIMES,
     TEXTS_BY_LANG_FOR_SEARCH,
     BILARA_TEXT_BY_LANG_FOR_SEARCH,
     TEXT_REFERENCES

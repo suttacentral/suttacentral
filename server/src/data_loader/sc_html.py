@@ -15,7 +15,6 @@ may change again so don't write comments like this.
 import itertools
 
 import lxml.html as _html
-import regex
 from lxml.html import defs
 
 defs.html5_tags = frozenset({'section', 'article', 'header'})

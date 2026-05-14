@@ -1,10 +1,8 @@
-import os
 import logging
 import json
 import time
 import lxml.html
 import regex
-import sys
 from tqdm import tqdm
 
 from algoliasearch.search_client import SearchClient

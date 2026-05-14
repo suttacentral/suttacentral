@@ -1,4 +1,4 @@
-from flask import request, current_app
+from flask import request
 from flask_restful import Resource
 
 from common.extensions import cache, make_cache_key
