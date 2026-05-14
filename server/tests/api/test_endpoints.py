@@ -562,7 +562,7 @@ class TestParagraphs:
             assert 'description' in item
 
 
-class TestParagraphs:
+class TestEpigraphs:
     @pytest.fixture
     def client(self):
         app.config['TESTING'] = True
@@ -570,7 +570,7 @@ class TestParagraphs:
             with app.app_context():
                 yield client
 
-    def test_basic_paragraphs(self, client):
+    def test_basic_epigraphs(self, client):
         url = "/epigraphs"
         response = client.get(url)
 

@@ -1,3 +1,4 @@
+# ruff: noqa F401 -- allow unused imports here as they are re-exports
 from .dictionary import (
     DictionaryFull,
     LookupDictionaries,
