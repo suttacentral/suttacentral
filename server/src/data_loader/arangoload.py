@@ -9,11 +9,12 @@ from pathlib import Path
 from typing import Dict
 
 import regex
-from arango.database import Database
+from arango.database import Database, StandardDatabase
 from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -36,6 +37,7 @@ from data_loader.change_tracker import ChangeTracker
 from data_loader.extra_info import process_extra_info_file
 from data_loader.generate_sitemap import generate_sitemap
 from data_loader.observability import StagePrinter
+from data_loader.ports import FileChangeTracker
 from data_loader.unsegmented import load_unsegmented_texts
 from data_loader.util import json_load
 from data_loader import (
@@ -237,12 +239,11 @@ def generate_relationship_edges(
         db['relationship'].import_bulk_logged(chunk, from_prefix='super_nav_details', to_prefix='super_nav_details')
 
 
-def load_author_edition(change_tracker, additional_info_dir, db):
+def load_author_edition(change_tracker: FileChangeTracker, additional_info_dir: Path):
     author_file = additional_info_dir / 'author_edition.json'
     if change_tracker.is_file_new_or_changed(author_file):
-        with author_file.open('r', encoding='utf-8') as authorf:
-            authors = json.load(authorf)
-        db['author_edition'].import_bulk_logged(authors, wipe=True)
+        authors = json_load(author_file)
+        Collection('author_edition').recreate(authors)
 
 
 def load_available_voices(change_tracker, additional_info_dir, db):
@@ -682,7 +683,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_json_file(db, change_tracker, misc_dir / 'uid_expansion_school.json')
 
     printer.print_stage("Loading author_edition.json")
-    load_author_edition(change_tracker, additional_info_dir, db)
+    load_author_edition(change_tracker, additional_info_dir)
 
     printer.print_stage("Loading available_voices.json")
     load_available_voices(change_tracker, additional_info_dir, db)
