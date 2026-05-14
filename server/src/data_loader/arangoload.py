@@ -6,7 +6,7 @@ import subprocess
 from collections import defaultdict
 from itertools import product
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Any
 
 import regex
 from arango.database import Database
@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -245,12 +246,15 @@ def load_author_edition(change_tracker, additional_info_dir, db):
         db['author_edition'].import_bulk_logged(authors, wipe=True)
 
 
-def load_available_voices(change_tracker, additional_info_dir, db):
-    voices_file = additional_info_dir / 'available_voices.json'
-    voices_info = json_load(voices_file)
-    docs = [{'uid': key, 'voices': value} for key, value in voices_info.items()]
-    db['available_voices'].truncate()
-    db.collection('available_voices').import_bulk_logged(docs, wipe=True)
+def load_available_voices(additional_info_dir: Path) -> None:
+    file = additional_info_dir / 'available_voices.json'
+    data = json_load(file)
+    docs = transform_available_voices(data)
+    Collection('available_voices').recreate(docs)
+
+
+def transform_available_voices(source_data: dict) -> list[dict[str, Any]]:
+    return [{'uid': key, 'voices': value} for key, value in source_data.items()]
 
 
 def load_map_data(additional_info_dir, db):
@@ -685,7 +689,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_author_edition(change_tracker, additional_info_dir, db)
 
     printer.print_stage("Loading available_voices.json")
-    load_available_voices(change_tracker, additional_info_dir, db)
+    load_available_voices(additional_info_dir)
 
     printer.print_stage("Loading map_data.json")
     load_map_data(additional_info_dir, db)
