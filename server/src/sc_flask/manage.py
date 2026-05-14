@@ -37,7 +37,6 @@ def list_routes():
 
     output = []
     for rule in app.url_map.iter_rules():
-        options = {arg: "[{0}]".format(arg) for arg in rule.arguments}
         methods = ','.join(rule.methods)
         line = urllib.parse.unquote("{:50s} {:20s} {}".format(rule.endpoint, methods, rule))
         output.append(line)

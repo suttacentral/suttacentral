@@ -266,7 +266,6 @@ class Difficulty(Model):
         Returns:
             Generated object.
         """
-        fake = Faker()
         difficulty = randint(1, 3)
         uid = generate_uid()
         return cls(difficulty, uid)
