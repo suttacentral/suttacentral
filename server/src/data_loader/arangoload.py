@@ -104,7 +104,7 @@ def get_uid_matcher(db):
 def generate_relationship_edges(
         change_tracker, relationship_dir, additional_info_dir, db
 ):
-    relationship_files = list(relationship_dir.glob('*.json'))
+    relationship_files = [relationship_dir / Path('parallels.json')]
 
     if not change_tracker.is_any_file_new_or_changed(relationship_files):
         return
