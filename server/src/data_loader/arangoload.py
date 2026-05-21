@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -253,14 +254,14 @@ def load_available_voices(change_tracker, additional_info_dir, db):
     db.collection('available_voices').import_bulk_logged(docs, wipe=True)
 
 
-def load_map_data(additional_info_dir, db):
+def load_map_data(additional_info_dir):
+    # Note: we're just taking the file contents and inserting it
+    # as a single document in the map_data collection.
+    # Since the data is then served as is, it might make sense to
+    # just serve the JSON as a static file.
     map_file = additional_info_dir / 'map_data.json'
     map_data = json_load(map_file)
-    map_doc = [
-        {'type': map_data['type'], 'features': map_data['features']}
-    ]
-    db['map_data'].truncate()
-    db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
+    Collection('map_data').recreate([map_data])
 
 
 def load_json_file(db, change_tracker, json_file):
@@ -688,7 +689,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_available_voices(change_tracker, additional_info_dir, db)
 
     printer.print_stage("Loading map_data.json")
-    load_map_data(additional_info_dir, db)
+    load_map_data(additional_info_dir)
 
     printer.print_stage('Loading guides.json')
     load_guides_file(db, structure_dir / 'guides.json')

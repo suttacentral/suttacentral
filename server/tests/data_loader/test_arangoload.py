@@ -122,17 +122,17 @@ class TestLoadMapData:
             json.dump(data, f)
 
     def test_adds_single_document_to_empty_collection(self, empty_collection, with_data, additional_info_dir):
-        load_map_data(additional_info_dir, database())
+        load_map_data(additional_info_dir)
         assert len(empty_collection) == 1
 
     def test_replaces_single_document(self, with_existing_document, with_data, additional_info_dir):
-        load_map_data(additional_info_dir, database())
+        load_map_data(additional_info_dir)
         assert len(with_existing_document) == 1
 
     def test_document_has_type(self, empty_collection, data, with_data, additional_info_dir):
-        load_map_data(additional_info_dir, database())
+        load_map_data(additional_info_dir)
         assert next(empty_collection.documents())['type'] == data['type']
 
     def test_document_has_features(self, empty_collection, data, with_data, additional_info_dir):
-        load_map_data(additional_info_dir, database())
+        load_map_data(additional_info_dir)
         assert next(empty_collection.documents())['features'] == data['features']
