@@ -254,7 +254,7 @@ def load_available_voices(change_tracker, additional_info_dir, db):
     db.collection('available_voices').import_bulk_logged(docs, wipe=True)
 
 
-def load_map_data(additional_info_dir):
+def load_map_data(additional_info_dir: Path) -> None:
     # Note: we're just taking the file contents and inserting it
     # as a single document in the map_data collection.
     # Since the data is then served as is, it might make sense to
