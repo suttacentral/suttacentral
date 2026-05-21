@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import load_map_data
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,90 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestLoadMapData:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('map_data')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    "type": "Feature",
+                    "geometry": {"type": "Point", "coordinates": [85.10951, 26.014521]},
+                    "properties": {
+                        "layer": "Capital cities",
+                        "name": "Vesāli",
+                        "icon": "building",
+                        "id": "vesāli",
+                        "define": "vesāli"
+                    }
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def additional_info_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, additional_info_dir) -> Path:
+        return additional_info_dir / Path('map_data.json')
+
+    @pytest.fixture
+    def data(self) -> dict:
+        return {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {"type": "Point", "coordinates": [83.062961, 27.5498798]},
+                    "properties": {
+                        "layer": "Capital cities",
+                        "name": "Kapilavatthu",
+                        "icon": "building",
+                        "id": "kapilavatthu",
+                        "define": "kapilavatthu"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {"type": "Point", "coordinates": [85.42, 25.03]},
+                    "properties": {
+                        "layer": "Capital cities",
+                        "name": "Rājagaha",
+                        "icon": "building",
+                        "id": "rājagaha",
+                        "define": "rājagaha"
+                    }
+                },
+            ]
+        }
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_adds_single_document_to_empty_collection(self, empty_collection, with_data, additional_info_dir):
+        load_map_data(additional_info_dir, database())
+        assert len(empty_collection) == 1
+
+    def test_replaces_single_document(self, with_existing_document, with_data, additional_info_dir):
+        load_map_data(additional_info_dir, database())
+        assert len(with_existing_document) == 1
+
+    def test_document_has_type(self, empty_collection, data, with_data, additional_info_dir):
+        load_map_data(additional_info_dir, database())
+        assert next(empty_collection.documents())['type'] == data['type']
+
+    def test_document_has_features(self, empty_collection, data, with_data, additional_info_dir):
+        load_map_data(additional_info_dir, database())
+        assert next(empty_collection.documents())['features'] == data['features']
