@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import load_json_file
+from data_loader.arangoload import load_uid_expansion
 from fakes import FakeFileChangeTracker
 from data_loader.observability import save_as_csv
 from data_loader.ports import FileChangeTracker
@@ -102,19 +102,19 @@ class TestLoadJsonFile:
         return tracker
 
     def test_collection_named_with_file_stem(self, empty_collection, with_data, file_is_changed, file_location):
-        load_json_file(database(), file_is_changed, file_location)
+        load_uid_expansion(file_is_changed, file_location)
         assert len(Collection(file_location.stem)) == 2
 
     def test_uids_are_assigned_to_keys(self, empty_collection, with_data, file_is_changed, file_location):
-        load_json_file(database(), file_is_changed, file_location)
+        load_uid_expansion(file_is_changed, file_location)
         assert sorted(list(Collection('hobbits').keys())) == ['bilbo', 'frodo']
 
     def test_recreates_collection(self, with_existing_document, with_data, file_is_changed, file_location):
-        load_json_file(database(), file_is_changed, file_location)
+        load_uid_expansion(file_is_changed, file_location)
         assert sorted(list(Collection('hobbits').keys())) == ['bilbo', 'frodo']
 
     def test_collection_unchanged_if_file_unchanged(self, with_existing_document, with_data, file_is_not_changed, file_location):
-        load_json_file(database(), file_is_not_changed, file_location)
+        load_uid_expansion(file_is_not_changed, file_location)
         assert sorted(list(Collection('hobbits').keys())) == ['pippin']
 
     @pytest.fixture
@@ -128,7 +128,7 @@ class TestLoadJsonFile:
             json.dump(data, f)
 
     def test_collection_unchanged_when_first_record_missing_uid(self, with_existing_document, with_first_uid_missing, file_is_changed, file_location):
-        load_json_file(database(), file_is_changed, file_location)
+        load_uid_expansion(file_is_changed, file_location)
         assert sorted(list(Collection('hobbits').keys())) == ['pippin']
 
     @pytest.fixture
@@ -143,4 +143,4 @@ class TestLoadJsonFile:
 
     def test_key_error_when_second_record_missing_uid(self, empty_collection, with_second_uid_missing, file_is_changed, file_location):
         with pytest.raises(KeyError):
-            load_json_file(database(), file_is_changed, file_location)
+            load_uid_expansion(file_is_changed, file_location)

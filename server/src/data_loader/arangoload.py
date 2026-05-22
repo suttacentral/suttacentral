@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -36,6 +37,7 @@ from data_loader.change_tracker import ChangeTracker
 from data_loader.extra_info import process_extra_info_file
 from data_loader.generate_sitemap import generate_sitemap
 from data_loader.observability import StagePrinter
+from data_loader.ports import FileChangeTracker
 from data_loader.unsegmented import load_unsegmented_texts
 from data_loader.util import json_load
 from data_loader import (
@@ -263,18 +265,17 @@ def load_map_data(additional_info_dir, db):
     db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
 
 
-def load_json_file(db, change_tracker, json_file):
+def load_uid_expansion(change_tracker: FileChangeTracker, json_file: Path) -> None:
     if not change_tracker.is_file_new_or_changed(json_file):
         return
-    collection_name = json_file.stem
 
     data = json_load(json_file)
 
     if 'uid' in data[0]:
         for d in data:
             d['_key'] = d['uid']
-        db[collection_name].truncate()
-        db[collection_name].import_bulk_logged(data)
+
+        Collection(json_file.stem).recreate(data)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -670,16 +671,16 @@ def run(no_pull: bool = False) -> StagePrinter:
     change_tracker = ChangeTracker(data_dir, db)
 
     printer.print_stage("Loading uid_expansion.json")
-    load_json_file(db, change_tracker, misc_dir / 'uid_expansion.json')
+    load_uid_expansion(change_tracker, misc_dir / 'uid_expansion.json')
 
     printer.print_stage("Loading uid_expansion_edition.json")
-    load_json_file(db, change_tracker, misc_dir / 'uid_expansion_edition.json')
+    load_uid_expansion(change_tracker, misc_dir / 'uid_expansion_edition.json')
 
     printer.print_stage("Loading uid_expansion_language.json")
-    load_json_file(db, change_tracker, misc_dir / 'uid_expansion_language.json')
+    load_uid_expansion(change_tracker, misc_dir / 'uid_expansion_language.json')
 
     printer.print_stage("Loading uid_expansion_school.json")
-    load_json_file(db, change_tracker, misc_dir / 'uid_expansion_school.json')
+    load_uid_expansion(change_tracker, misc_dir / 'uid_expansion_school.json')
 
     printer.print_stage("Loading author_edition.json")
     load_author_edition(change_tracker, additional_info_dir, db)
