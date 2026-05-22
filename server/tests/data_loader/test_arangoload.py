@@ -53,7 +53,7 @@ def test_do_entire_run(data_load_app):
         save_as_csv(printer.stages, "load-data-run.csv")
 
 
-class TestLoadJsonFile:
+class TestLoadUidExpansion:
     @pytest.fixture
     def with_collection(self):
         db = database()
