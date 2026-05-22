@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -292,12 +293,10 @@ def process_difficulty(db, additional_info_dir):
     db.collection('difficulties').import_bulk_logged(docs, wipe=True)
 
 
-def process_alias(db, additional_info_dir):
-    print('Loading alias')
+def load_aliases(additional_info_dir: Path) -> None:
     alias_file = additional_info_dir / 'alias.json'
-    alias_info = json_load(alias_file)
-    db['alias'].truncate()
-    db.collection('alias').import_bulk_logged(alias_info, wipe=True)
+    docs = json_load(alias_file)
+    Collection('alias').recreate(docs)
 
 
 def process_illustrations(db, additional_info_dir):
@@ -789,7 +788,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     homepage.load_why_we_read(db, additional_info_dir)
 
     printer.print_stage("Loading alias from additional_info")
-    process_alias(db, additional_info_dir)
+    load_aliases(additional_info_dir)
 
     printer.print_stage("Loading illustrations from additional_info")
     process_illustrations(db, additional_info_dir)

@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import process_alias
+from data_loader.arangoload import load_aliases
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -51,7 +51,7 @@ def test_do_entire_run(data_load_app):
         save_as_csv(printer.stages, "load-data-run.csv")
 
 
-class TestProcessAlias:
+class TestLoadAliases:
     @pytest.fixture
     def empty_collection(self) -> Generator[Collection, None, None]:
         coll = Collection('alias')
@@ -107,10 +107,10 @@ class TestProcessAlias:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
-        process_alias(database(), additional_info_dir)
+        load_aliases(additional_info_dir)
         assert sorted([doc['uid'] for doc in Collection('alias').documents()]) == ['sa1', 'snp1.8']
 
     def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
         assert sorted([doc['uid'] for doc in Collection('alias').documents()]) == ['mn1']
-        process_alias(database(), additional_info_dir)
+        load_aliases(additional_info_dir)
         assert sorted([doc['uid'] for doc in Collection('alias').documents()]) == ['sa1', 'snp1.8']
