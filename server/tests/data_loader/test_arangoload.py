@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import process_difficulty
+from data_loader.arangoload import load_difficulties
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -51,7 +51,7 @@ def test_do_entire_run(data_load_app):
         save_as_csv(printer.stages, "load-data-run.csv")
 
 
-class TestProcessDifficulty:
+class TestLoadDifficulties:
     @pytest.fixture
     def empty_collection(self) -> Generator[Collection, None, None]:
         coll = Collection('difficulties')
@@ -100,10 +100,10 @@ class TestProcessDifficulty:
         return sorted(difficulties, key=lambda pair: pair[0])
 
     def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
-        process_difficulty(database(), additional_info_dir)
+        load_difficulties(additional_info_dir)
         assert self.get_difficulties() == [('dn1', 3), ('mn1', 3)]
 
     def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
         assert self.get_difficulties() == [('dn3', 2)]
-        process_difficulty(database(), additional_info_dir)
+        load_difficulties(additional_info_dir)
         assert self.get_difficulties() == [('dn1', 3), ('mn1', 3)]

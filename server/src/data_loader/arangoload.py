@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -277,10 +278,8 @@ def load_json_file(db, change_tracker, json_file):
         db[collection_name].import_bulk_logged(data)
 
 
-def process_difficulty(db, additional_info_dir):
-    print('Loading difficulties')
+def load_difficulties(additional_info_dir: Path) -> None:
     difficulty_file = additional_info_dir / 'difficulties.json'
-
     difficulty_info = json_load(difficulty_file)
 
     docs = [
@@ -289,7 +288,7 @@ def process_difficulty(db, additional_info_dir):
         for uid, lvl in tqdm(x.items())
     ]
 
-    db.collection('difficulties').import_bulk_logged(docs, wipe=True)
+    Collection('difficulties').recreate(docs)
 
 
 def process_alias(db, additional_info_dir):
@@ -756,7 +755,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     make_yellow_brick_road(db)
 
     printer.print_stage("Loading difficulty from additional_info")
-    process_difficulty(db, additional_info_dir)
+    load_difficulties(additional_info_dir)
 
     printer.print_stage("Loading prioritize from additional_info")
     process_prioritize(db, additional_info_dir)
