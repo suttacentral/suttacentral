@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import process_illustrations
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,71 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestProcessIllustrations:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('illustrations')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    "uid": "mn123",
+                    "segment": "mn123:3.2",
+                    "filename": "bodhisatta-tusita",
+                    "creator": "Yanagi Cittakārā for Ehipassiko Foundation",
+                    "creation_date": "May 2025",
+                    "alt": "The Bodhisatta, regal in Tusita Heaven. Stylised gold leaf illustration."
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def additional_info_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, additional_info_dir) -> Path:
+        return additional_info_dir / Path('illustrations.json')
+
+    @pytest.fixture
+    def data(self) -> list[dict]:
+        return [
+            {
+                "uid": "mn123",
+                "segment": "mn123:6.2",
+                "filename": "bodhisatta-entering-womb",
+                "creator": "Yanagi Cittakārā for Ehipassiko Foundation",
+                "creation_date": "May 2025",
+                "alt": "The Bodhisatta entering his mother’s womb. Stylised gold leaf illustration."
+            },
+            {
+                "uid": "mn123",
+                "segment": "mn123:9.2",
+                "filename": "bodhisatta-mata",
+                "creator": "Yanagi Cittakārā for Ehipassiko Foundation",
+                "creation_date": "May 2025",
+                "alt": "The Bodhisatta’s mother walking while pregnant. Stylised gold leaf illustration."
+            },
+        ]
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
+        process_illustrations(database(), additional_info_dir)
+        assert sorted([doc['segment'] for doc in Collection('illustrations').documents()]) == ['mn123:6.2', 'mn123:9.2']
+
+    def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
+        assert sorted([doc['segment'] for doc in Collection('illustrations').documents()]) == ['mn123:3.2']
+        process_illustrations(database(), additional_info_dir)
+        assert sorted([doc['segment'] for doc in Collection('illustrations').documents()]) == ['mn123:6.2', 'mn123:9.2']
