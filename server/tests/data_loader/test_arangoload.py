@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import process_illustrations
+from data_loader.arangoload import load_illustrations
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -51,7 +51,7 @@ def test_do_entire_run(data_load_app):
         save_as_csv(printer.stages, "load-data-run.csv")
 
 
-class TestProcessIllustrations:
+class TestLoadIllustrations:
     @pytest.fixture
     def empty_collection(self) -> Generator[Collection, None, None]:
         coll = Collection('illustrations')
@@ -110,10 +110,10 @@ class TestProcessIllustrations:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
-        process_illustrations(database(), additional_info_dir)
+        load_illustrations(additional_info_dir)
         assert sorted([doc['segment'] for doc in Collection('illustrations').documents()]) == ['mn123:6.2', 'mn123:9.2']
 
     def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
         assert sorted([doc['segment'] for doc in Collection('illustrations').documents()]) == ['mn123:3.2']
-        process_illustrations(database(), additional_info_dir)
+        load_illustrations(additional_info_dir)
         assert sorted([doc['segment'] for doc in Collection('illustrations').documents()]) == ['mn123:6.2', 'mn123:9.2']

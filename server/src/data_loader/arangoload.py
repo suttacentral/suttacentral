@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -300,12 +301,10 @@ def process_alias(db, additional_info_dir):
     db.collection('alias').import_bulk_logged(alias_info, wipe=True)
 
 
-def process_illustrations(db, additional_info_dir):
-    print('Loading illustrations')
-    illustrations_file = additional_info_dir / 'illustrations.json'
-    illustrations_info = json_load(illustrations_file)
-    db['illustrations'].truncate()
-    db.collection('illustrations').import_bulk_logged(illustrations_info, wipe=True)
+def load_illustrations(additional_info_dir: Path) -> None:
+    file = additional_info_dir / 'illustrations.json'
+    docs = json_load(file)
+    Collection('illustrations').recreate(docs)
 
 
 def process_prioritize(db, additional_info_dir):
@@ -792,7 +791,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     process_alias(db, additional_info_dir)
 
     printer.print_stage("Loading illustrations from additional_info")
-    process_illustrations(db, additional_info_dir)
+    load_illustrations(additional_info_dir)
 
     printer.print_stage("Updating text_extra_info")
     update_text_extra_info()
