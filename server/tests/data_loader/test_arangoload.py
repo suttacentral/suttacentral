@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import process_prioritize
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,68 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestProcessPrioritize:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('prioritize')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    "translation_lang": "en",
+                    "root_lang": "pli",
+                    "tree": "sutta",
+                    "creator": "sujato"
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def additional_info_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, additional_info_dir) -> Path:
+        return additional_info_dir / Path('prioritize.json')
+
+    @pytest.fixture
+    def data(self) -> list[dict]:
+        return [
+            {
+                "translation_lang": "en",
+                "root_lang": "pli",
+                "tree": "vinaya",
+                "creator": [
+                    "brahmali",
+                    "sujato"
+                ]
+            },
+            {
+                "translation_lang": "en",
+                "root_lang": "lzh",
+                "tree": "sutta",
+                "creator": "patton"
+            }
+        ]
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
+        process_prioritize(database(), additional_info_dir)
+        assert sorted([doc['root_lang'] for doc in Collection('prioritize').documents()]) == ['lzh', 'pli']
+
+    def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
+        assert sorted([doc['root_lang'] for doc in Collection('prioritize').documents()]) == ['pli']
+        process_prioritize(database(), additional_info_dir)
+        assert sorted([doc['root_lang'] for doc in Collection('prioritize').documents()]) == ['lzh', 'pli']
