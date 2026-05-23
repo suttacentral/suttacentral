@@ -5,10 +5,10 @@ from typing import Generator
 import pytest
 
 from common.arangodb import get_db, delete_db
-from common.collections import Collection, database
+from common.collections import Collection
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import process_prioritize
+from data_loader.arangoload import load_prioritization
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -51,7 +51,7 @@ def test_do_entire_run(data_load_app):
         save_as_csv(printer.stages, "load-data-run.csv")
 
 
-class TestProcessPrioritize:
+class TestLoadPrioritization:
     @pytest.fixture
     def empty_collection(self) -> Generator[Collection, None, None]:
         coll = Collection('prioritize')
@@ -107,10 +107,10 @@ class TestProcessPrioritize:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
-        process_prioritize(database(), additional_info_dir)
+        load_prioritization(additional_info_dir)
         assert sorted([doc['root_lang'] for doc in Collection('prioritize').documents()]) == ['lzh', 'pli']
 
     def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
         assert sorted([doc['root_lang'] for doc in Collection('prioritize').documents()]) == ['pli']
-        process_prioritize(database(), additional_info_dir)
+        load_prioritization(additional_info_dir)
         assert sorted([doc['root_lang'] for doc in Collection('prioritize').documents()]) == ['lzh', 'pli']

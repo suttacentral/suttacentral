@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -308,12 +309,10 @@ def process_illustrations(db, additional_info_dir):
     db.collection('illustrations').import_bulk_logged(illustrations_info, wipe=True)
 
 
-def process_prioritize(db, additional_info_dir):
-    print('Loading prioritize')
-    prioritize_file = additional_info_dir / 'prioritize.json'
-    prioritize_info = json_load(prioritize_file)
-    db['prioritize'].truncate()
-    db.collection('prioritize').import_bulk_logged(prioritize_info, wipe=True)
+def load_prioritization(additional_info_dir: Path) -> None:
+    file = additional_info_dir / 'prioritize.json'
+    docs = json_load(file)
+    Collection('prioritize').recreate(docs)
 
 
 def process_creator_bio(db, additional_info_dir):
@@ -759,7 +758,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     process_difficulty(db, additional_info_dir)
 
     printer.print_stage("Loading prioritize from additional_info")
-    process_prioritize(db, additional_info_dir)
+    load_prioritization(additional_info_dir)
 
     printer.print_stage("Loading creator bio from additional_info")
     process_creator_bio(db, additional_info_dir)
