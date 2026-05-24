@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import load_shortcuts_file
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,59 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestLoadShortcuts:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('shortcuts')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    'shortcuts': [
+                        'dn',
+                        'mn',
+                        'sn1',
+                    ]
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def structure_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, structure_dir) -> Path:
+        return structure_dir / Path('shortcuts.json')
+
+    @pytest.fixture
+    def data(self) -> dict[str, list[str]]:
+        return {'shortcuts': ['sn2', 'sn3', 'sn4']}
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_populates_empty_collection(self, empty_collection, with_data, file_location):
+        load_shortcuts_file(database(), file_location)
+        assert next(Collection('shortcuts').documents())['shortcuts'] == ['sn2', 'sn3', 'sn4']
+
+    def test_doesnt_recreates_collection(self, with_existing_document, with_data, file_location):
+        assert next(Collection('shortcuts').documents())['shortcuts'] == ['dn', 'mn', 'sn1']
+        load_shortcuts_file(database(), file_location)
+        assert next(Collection('shortcuts').documents())['shortcuts'] == ['dn', 'mn', 'sn1']
+
+    def test_fails_silently(self, with_existing_document, with_data, file_location, caplog):
+        load_shortcuts_file(database(), file_location)
+        load_shortcuts_file(database(), file_location)
+        assert not caplog.messages
+        
