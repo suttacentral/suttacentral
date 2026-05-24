@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import process_prioritize, process_creator_bio
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,59 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestProcessCreatorBio:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('creator_bio')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    'creator_uid': 'bloggs',
+                    'creator_biography': 'A fine Joe.'
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def additional_info_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, additional_info_dir) -> Path:
+        return additional_info_dir / Path('creator_bio.json')
+
+    @pytest.fixture
+    def data(self) -> list[dict]:
+        return [
+            {
+                'creator_uid': 'sujato',
+                'creator_biography': 'Mostly harmless',
+            },
+            {
+                'creator_uid': 'brahmali',
+                'creator_biography': 'Inimitable',
+            },
+        ]
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_populates_empty_collection(self, empty_collection, with_data, additional_info_dir):
+        process_creator_bio(database(), additional_info_dir)
+        assert sorted([doc['creator_uid'] for doc in Collection('creator_bio').documents()]) == ['brahmali', 'sujato']
+
+    def test_recreates_collection(self, with_existing_document, with_data, additional_info_dir):
+        assert sorted([doc['creator_uid'] for doc in Collection('creator_bio').documents()]) == ['bloggs']
+        process_creator_bio(database(), additional_info_dir)
+        assert sorted([doc['creator_uid'] for doc in Collection('creator_bio').documents()]) == ['brahmali', 'sujato']
