@@ -361,8 +361,8 @@ def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
     db.collection('text_extra_info').import_bulk(text_extra_info_content)
 
 
-def load_shortcuts_file(db: Database, shortcuts_file: Path):
-    shortcuts: Dict[str, dict] = json_load(shortcuts_file)
+def load_shortcuts(file: Path) -> None:
+    shortcuts: dict[str, list[str]] = json_load(file)
     docs = [{'uid': key, 'shortcuts': value, } for key, value in shortcuts.items()]
     Collection('shortcuts').recreate(docs)
 
@@ -707,7 +707,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
 
     printer.print_stage('Loading shortcuts.json')
-    load_shortcuts_file(db, structure_dir / 'shortcuts.json')
+    load_shortcuts(structure_dir / 'shortcuts.json')
 
     printer.print_stage('Loading fallen-leaves files')
     load_fallen_leaves_files(db, structure_dir / 'fallen-leaves')
