@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -366,14 +367,13 @@ def load_shortcuts_file(db: Database, shortcuts_file: Path):
     db.collection('shortcuts').import_bulk(docs)
 
 
-def load_fallen_leaves_files(db: Database, fallen_leaves_file_dir: Path):
+def load_fallen_leaves(fallen_leaves_dir: Path) -> None:
     fallen_leaves = []
-    for fallen_leaves_file in fallen_leaves_file_dir.glob('*.json'):
+    for fallen_leaves_file in fallen_leaves_dir.glob('*.json'):
         leaves: Dict[str, dict] = json_load(fallen_leaves_file)
         docs = [{'uid': key, 'fallen_leaves': value, } for key, value in leaves.items()]
         fallen_leaves.extend(docs)
-    db['fallen_leaves'].truncate()
-    db.collection('fallen_leaves').import_bulk(fallen_leaves)
+    Collection('fallen_leaves').recreate(fallen_leaves)
 
 
 def update_text_extra_info():
@@ -709,7 +709,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
 
     printer.print_stage('Loading fallen-leaves files')
-    load_fallen_leaves_files(db, structure_dir / 'fallen-leaves')
+    load_fallen_leaves(structure_dir / 'fallen-leaves')
 
     printer.print_stage("Building and loading navigation from structure_dir")
     navigation.add_navigation_docs_and_edges(change_tracker, db, structure_dir, sc_bilara_data_dir)

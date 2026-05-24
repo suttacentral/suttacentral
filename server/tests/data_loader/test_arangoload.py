@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import load_fallen_leaves_files
+from data_loader.arangoload import load_fallen_leaves
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -115,10 +115,10 @@ class TestLoadFallenLeaves:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_file_one, with_file_two, fallen_leaves_dir):
-        load_fallen_leaves_files(database(), fallen_leaves_dir)
+        load_fallen_leaves(fallen_leaves_dir)
         assert sorted([doc['uid'] for doc in Collection('fallen_leaves').documents()]) == ['pli-tv-bi-vb', 'pli-tv-bu-vb']
 
     def test_recreates_collection(self, with_existing_document, with_file_one, with_file_two, fallen_leaves_dir):
         assert sorted([doc['uid'] for doc in Collection('fallen_leaves').documents()]) == ['abc123']
-        load_fallen_leaves_files(database(), fallen_leaves_dir)
+        load_fallen_leaves(fallen_leaves_dir)
         assert sorted([doc['uid'] for doc in Collection('fallen_leaves').documents()]) == ['pli-tv-bi-vb', 'pli-tv-bu-vb']
