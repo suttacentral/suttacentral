@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -348,10 +349,9 @@ def load_lzh_reference_edition_file(db: Database, lzh_reference_edition_file: Pa
     db.collection('lzh_reference_edition').import_bulk(lzh_reference_content)
 
 
-def load_root_edition_file(db: Database, root_edition_file: Path):
-    root_edition_content = json_load(root_edition_file)
-    db['root_edition'].truncate()
-    db.collection('root_edition').import_bulk(root_edition_content)
+def load_root_edition(file: Path) -> None:
+    docs = json_load(file)
+    Collection('root_edition').recreate(docs)
 
 
 def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
@@ -700,7 +700,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_lzh_reference_edition_file(db, misc_dir / 'lzh_reference_edition.json')
 
     printer.print_stage('Loading root_edition.json')
-    load_root_edition_file(db, misc_dir / 'root_edition.json')
+    load_root_edition(misc_dir / 'root_edition.json')
 
     printer.print_stage('Loading text_extra_info.json')
     load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')

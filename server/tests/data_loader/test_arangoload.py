@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import load_root_edition_file
+from data_loader.arangoload import load_root_edition
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -104,10 +104,10 @@ class TestLoadRootEdition:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, file_location):
-        load_root_edition_file(database(), file_location)
+        load_root_edition(file_location)
         assert sorted([doc['uid'] for doc in Collection('root_edition').documents()]) == ['ms', 'si']
 
     def test_recreates_collection(self, with_existing_document, with_data, file_location):
         assert sorted([doc['uid'] for doc in Collection('root_edition').documents()]) == ['cbeta']
-        load_root_edition_file(database(), file_location)
+        load_root_edition(file_location)
         assert sorted([doc['uid'] for doc in Collection('root_edition').documents()]) == ['ms', 'si']
