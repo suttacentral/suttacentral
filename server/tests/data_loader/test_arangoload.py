@@ -5,10 +5,10 @@ from typing import Generator
 import pytest
 
 from common.arangodb import get_db, delete_db
-from common.collections import Collection, database
+from common.collections import Collection
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import load_pali_reference_edition_file
+from data_loader.arangoload import load_pali_reference_edition
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -108,10 +108,10 @@ class TestLoadPaliReferenceEdition:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, file_location):
-        load_pali_reference_edition_file(database(), file_location)
+        load_pali_reference_edition(file_location)
         assert sorted([doc['edition_set'] for doc in Collection('pali_reference_edition').documents()]) == ['km', 'pts']
 
     def test_recreates_collection(self, with_existing_document, with_data, file_location):
         assert sorted([doc['edition_set'] for doc in Collection('pali_reference_edition').documents()]) == ['ms']
-        load_pali_reference_edition_file(database(), file_location)
+        load_pali_reference_edition(file_location)
         assert sorted([doc['edition_set'] for doc in Collection('pali_reference_edition').documents()]) == ['km', 'pts']
