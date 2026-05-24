@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -330,10 +331,9 @@ def make_yellow_brick_road(db: Database):
     db.aql.execute(COUNT_YELLOW_BRICK_ROAD)
 
 
-def load_guides_file(db: Database, guides_file: Path):
-    guides_content = json_load(guides_file)
-    db['guides'].truncate()
-    db.collection('guides').import_bulk(guides_content)
+def load_guides(file: Path) -> None:
+    docs = json_load(file)
+    Collection('guides').recreate(docs)
 
 
 def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: Path):
@@ -691,7 +691,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_map_data(additional_info_dir, db)
 
     printer.print_stage('Loading guides.json')
-    load_guides_file(db, structure_dir / 'guides.json')
+    load_guides(structure_dir / 'guides.json')
 
     printer.print_stage('Loading pali_reference_edition.json')
     load_pali_reference_edition_file(db, misc_dir / 'pali_reference_edition.json')

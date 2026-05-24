@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import load_guides_file
+from data_loader.arangoload import load_guides
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -101,10 +101,10 @@ class TestLoadGuidesFile:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, file_location):
-        load_guides_file(database(), file_location)
+        load_guides(file_location)
         assert sorted([doc['guide_uid'] for doc in Collection('guides').documents()]) == ['abhidhamma-guide-sujato', 'vinaya-guide-brahmali']
 
     def test_recreates_collection(self, with_existing_document, with_data, file_location):
         assert sorted([doc['guide_uid'] for doc in Collection('guides').documents()]) == ['discourses-guide-sujato']
-        load_guides_file(database(), file_location)
+        load_guides(file_location)
         assert sorted([doc['guide_uid'] for doc in Collection('guides').documents()]) == ['abhidhamma-guide-sujato', 'vinaya-guide-brahmali']
