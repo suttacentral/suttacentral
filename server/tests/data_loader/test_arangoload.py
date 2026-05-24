@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import load_root_edition_file
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,65 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestLoadRootEdition:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('root_edition')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    'uid': 'cbeta',
+                    'acronym': 'CBETA',
+                    'short_name': '',
+                    'long_name': 'Chinese Buddhist Electronic Text Association',
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def misc_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, misc_dir) -> Path:
+        return misc_dir / Path('root_edition.json')
+
+    @pytest.fixture
+    def data(self) -> list[dict]:
+        return [
+            {
+                'uid': 'ms',
+                'acronym': 'Ms',
+                'short_name': 'Mahasaṅgīti',
+                'long_name': 'Mahasaṅgīti Tipiṭaka Buddhavasse 2500',
+            },
+            {
+                'uid': 'si',
+                'acronym': 'Si',
+                'short_name': 'Sinhala',
+                'long_name': 'Sinhala Tipiṭaka',
+            },
+        ]
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_populates_empty_collection(self, empty_collection, with_data, file_location):
+        load_root_edition_file(database(), file_location)
+        assert sorted([doc['uid'] for doc in Collection('root_edition').documents()]) == ['ms', 'si']
+
+    def test_recreates_collection(self, with_existing_document, with_data, file_location):
+        assert sorted([doc['uid'] for doc in Collection('root_edition').documents()]) == ['cbeta']
+        load_root_edition_file(database(), file_location)
+        assert sorted([doc['uid'] for doc in Collection('root_edition').documents()]) == ['ms', 'si']
