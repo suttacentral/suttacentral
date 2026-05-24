@@ -8,7 +8,7 @@ from common.arangodb import get_db, delete_db
 from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
-from data_loader.arangoload import load_text_extra_info_file
+from data_loader.arangoload import load_text_extra_info
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -113,10 +113,10 @@ class TestTextExtraInfo:
             json.dump(data, f)
 
     def test_populates_empty_collection(self, empty_collection, with_data, file_location):
-        load_text_extra_info_file(database(), file_location)
+        load_text_extra_info(file_location)
         assert sorted([doc['uid'] for doc in Collection('text_extra_info').documents()]) == ['dn1', 'dn2']
 
     def test_recreates_collection(self, with_existing_document, with_data, file_location):
         assert sorted([doc['uid'] for doc in Collection('text_extra_info').documents()]) == ['mn92']
-        load_text_extra_info_file(database(), file_location)
+        load_text_extra_info(file_location)
         assert sorted([doc['uid'] for doc in Collection('text_extra_info').documents()]) == ['dn1', 'dn2']

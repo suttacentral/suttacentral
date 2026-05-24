@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -354,10 +355,9 @@ def load_root_edition_file(db: Database, root_edition_file: Path):
     db.collection('root_edition').import_bulk(root_edition_content)
 
 
-def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
+def load_text_extra_info(text_extra_info_file: Path) -> None:
     text_extra_info_content = json_load(text_extra_info_file)
-    db['text_extra_info'].truncate()
-    db.collection('text_extra_info').import_bulk(text_extra_info_content)
+    Collection('text_extra_info').recreate(text_extra_info_content)
 
 
 def load_shortcuts_file(db: Database, shortcuts_file: Path):
@@ -703,7 +703,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     load_root_edition_file(db, misc_dir / 'root_edition.json')
 
     printer.print_stage('Loading text_extra_info.json')
-    load_text_extra_info_file(db, structure_dir / 'text_extra_info.json')
+    load_text_extra_info(structure_dir / 'text_extra_info.json')
 
     printer.print_stage('Loading shortcuts.json')
     load_shortcuts_file(db, structure_dir / 'shortcuts.json')
