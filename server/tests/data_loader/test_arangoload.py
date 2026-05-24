@@ -1,10 +1,14 @@
+import json
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
 from common.arangodb import get_db, delete_db
+from common.collections import Collection, database
 from common.utils import current_app
 from data_loader import arangoload
+from data_loader.arangoload import load_pali_reference_edition_file
 from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
@@ -45,3 +49,69 @@ def test_do_entire_run(data_load_app):
         printer = arangoload.run(no_pull=False)
         assert len(printer.stages) == 51
         save_as_csv(printer.stages, "load-data-run.csv")
+
+
+class TestLoadPaliReferenceEdition:
+    @pytest.fixture
+    def empty_collection(self) -> Generator[Collection, None, None]:
+        coll = Collection('pali_reference_edition')
+        coll.clear()
+        yield coll
+        coll.clear()
+
+    @pytest.fixture
+    def with_existing_document(self, empty_collection):
+        empty_collection.recreate(
+            [
+                {
+                    'edition_set': 'ms',
+                    'includes': 'ms',
+                    'name': 'Mahasaṅgīti Tipiṭaka, 2010'
+                },
+            ]
+        )
+        return empty_collection
+
+    @pytest.fixture
+    def misc_dir(self, tmp_path) -> Path:
+        return tmp_path
+
+    @pytest.fixture
+    def file_location(self, misc_dir) -> Path:
+        return misc_dir / Path('pali_reference_edition.json')
+
+    @pytest.fixture
+    def data(self) -> list[dict]:
+        return [
+            {
+                'edition_set': 'km',
+                'includes': 'km',
+                'name': 'Phratraipiṭakapāḷi (Cambodia), 1958–1969'
+            },
+            {
+                'edition_set': 'pts',
+                'includes': [
+                    'pts-cs',
+                    'pts-vp-pli',
+                    'pts-vp-pli1ed',
+                    'pts-vp-pli2ed',
+                    'pts-vp-en',
+                    'vnp'
+                ],
+                'name': 'Pali Text Society'
+            },
+        ]
+
+    @pytest.fixture
+    def with_data(self, file_location, data):
+        with file_location.open("w") as f:
+            json.dump(data, f)
+
+    def test_populates_empty_collection(self, empty_collection, with_data, file_location):
+        load_pali_reference_edition_file(database(), file_location)
+        assert sorted([doc['edition_set'] for doc in Collection('pali_reference_edition').documents()]) == ['km', 'pts']
+
+    def test_recreates_collection(self, with_existing_document, with_data, file_location):
+        assert sorted([doc['edition_set'] for doc in Collection('pali_reference_edition').documents()]) == ['ms']
+        load_pali_reference_edition_file(database(), file_location)
+        assert sorted([doc['edition_set'] for doc in Collection('pali_reference_edition').documents()]) == ['km', 'pts']
