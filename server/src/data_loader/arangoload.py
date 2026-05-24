@@ -14,6 +14,7 @@ from flask import current_app
 from tqdm import tqdm
 
 from common import arangodb
+from common.collections import Collection
 from common.queries import (
     BUILD_YELLOW_BRICK_ROAD,
     COUNT_YELLOW_BRICK_ROAD,
@@ -363,7 +364,7 @@ def load_text_extra_info_file(db: Database, text_extra_info_file: Path):
 def load_shortcuts_file(db: Database, shortcuts_file: Path):
     shortcuts: Dict[str, dict] = json_load(shortcuts_file)
     docs = [{'uid': key, 'shortcuts': value, } for key, value in shortcuts.items()]
-    db.collection('shortcuts').import_bulk(docs)
+    Collection('shortcuts').recreate(docs)
 
 
 def load_fallen_leaves_files(db: Database, fallen_leaves_file_dir: Path):

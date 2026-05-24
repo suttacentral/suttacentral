@@ -95,13 +95,7 @@ class TestLoadShortcuts:
         load_shortcuts_file(database(), file_location)
         assert next(Collection('shortcuts').documents())['shortcuts'] == ['sn2', 'sn3', 'sn4']
 
-    def test_doesnt_recreates_collection(self, with_existing_document, with_data, file_location):
+    def test_recreates_collection(self, with_existing_document, with_data, file_location):
         assert next(Collection('shortcuts').documents())['shortcuts'] == ['dn', 'mn', 'sn1']
         load_shortcuts_file(database(), file_location)
-        assert next(Collection('shortcuts').documents())['shortcuts'] == ['dn', 'mn', 'sn1']
-
-    def test_fails_silently(self, with_existing_document, with_data, file_location, caplog):
-        load_shortcuts_file(database(), file_location)
-        load_shortcuts_file(database(), file_location)
-        assert not caplog.messages
-        
+        assert next(Collection('shortcuts').documents())['shortcuts'] == ['sn2', 'sn3', 'sn4']
