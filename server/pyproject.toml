@@ -54,5 +54,12 @@ ignore_unused = [
     "uwsgi", # used as CLI in `Makefile`, `entrypoint.sh`
 ]
 
+[tool.ruff.lint]
+# add to the default lint rules
+extend-select = [
+    "A", # no shadowing built-ins
+    "T100", # no debugger statements
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
