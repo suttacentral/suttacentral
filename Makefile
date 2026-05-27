@@ -49,19 +49,29 @@ reload-nginx:
 reload-uwsgi:
 	@docker exec sc-flask uv run uwsgi --reload /tmp/uwsgi.pid
 
+
 # Tests.
+
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
 	@make create-network
 	-@docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
+	@make prepare-test-load-data
+
+prepare-test-load-data:
+	@docker exec -t sc-flask uv run scripts/prepare_data_loader_tests.py
+
 # Run tests
 test:
 	@make test-server
 
 test-server:
 	@docker exec -t sc-flask uv run pytest -s --ignore tests/data_loader/ tests/
+
+test-server-ci:
+	@docker exec -t sc-flask uv run pytest -s --ignore tests/api/ tests/
 
 test-load-data:
 	@docker exec -t sc-flask uv run pytest -v tests/data_loader/
