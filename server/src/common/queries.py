@@ -1658,6 +1658,7 @@ UPSERT_NAMES = '''
 UPSERT { uid: @uid, lang: @lang }
 INSERT { name: @name, is_root: false, lang: @lang, uid: @uid }
 UPDATE {
+    name: OLD.name == null || OLD.name == '' ? @name : OLD.name
 } IN names
 '''
 

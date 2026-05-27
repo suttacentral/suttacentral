@@ -346,7 +346,7 @@ def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: 
 def load_lzh_reference_edition_file(db: Database, lzh_reference_edition_file: Path):
     lzh_reference_content = json_load(lzh_reference_edition_file)
     db['lzh_reference_edition'].truncate()
-    db.collection('lzh_reference_edition').import_bulk(lzh_reference_content)    
+    db.collection('lzh_reference_edition').import_bulk(lzh_reference_content)
 
 def load_root_edition_file(db: Database, root_edition_file: Path):
     root_edition_content = json_load(root_edition_file)
@@ -495,6 +495,14 @@ def get_pts_ref(ref):
     return [ref for ref in arr if ref.find('pts-vp-pli') != -1]
 
 
+def _normalize_translated_title(title):
+    if title is None:
+        return None
+
+    match = re.match(r'^\d+\.\s+(.*\S)\s*$', title)
+    return match[1] if match else title
+
+
 def update_translated_title():
     """Format translated title and upsert to ArangoDB
     """
@@ -506,24 +514,18 @@ def update_translated_title():
             "RETURN trans"
         )
     )
-    title_index = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
     for translation in tqdm(translations):
         trans = json_load(translation['file_path'])
-        title = ''
-        for i in reversed(title_index):
+        title = None
+        for i in range(9, 0, -1):
             title = trans.get(translation['uid'] + ':0.' + str(i))
             if title is None and translation['uid'].find('-') != -1:
                 title = trans.get(translation['uid'].split('-')[0] + ':0.' + str(i))
             if title is not None:
                 break
 
-        if (
-            title is not None
-            and title.find('.') != -1
-            and len(title.split('.')) == 2
-            and title.find('Etc.') == -1
-        ):
-            title = title.split('.')[1].strip()
+        title = _normalize_translated_title(title)
 
         db.aql.execute(
             UPSERT_NAMES,
