@@ -90,7 +90,7 @@ lint-server: lint-server-deps
 .PHONY: lint-server-deps
 lint-server-deps:
 	@docker exec -t sc-flask uv lock --check
-	@docker exec -t sc-flask uv run fawltydeps --exclude scripts/
+	@docker exec -t sc-flask uv run fawltydeps
 
 migrate:
 	@docker exec -t sc-flask bash -c "uv run python -m sc_flask.manage migrate"
