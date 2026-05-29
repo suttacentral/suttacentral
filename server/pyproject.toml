@@ -43,9 +43,7 @@ requires = ["uv_build>=0.10.4,<0.11.0"]
 build-backend = "uv_build"
 
 [tool.fawltydeps]
-ignore_undeclared = [
-    "sc_flask" # ignore self-reference, name of our package
-]
+base_dir = "src/"
 # ignore deps that are not directly imported
 ignore_unused = [
     "fawltydeps", # used as CLI in `Makefile`
