@@ -149,12 +149,14 @@ def test_when_related_remark_exists(file_changed, relationship_dir, additional_i
 
 def test_error_when_retells_first(file_changed, relationship_dir, additional_info_dir, parallels_file,
                                   notes_file, database, super_nav_details, relationship):
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
+    super_nav_details.insert({'uid': 'parallel123'})
+    super_nav_details.insert({'uid': 'parallel321'})
+    super_nav_details.insert({'uid': 'retell123'})
+    super_nav_details.insert({'uid': 'retell321'})
     create_file(notes_file, [])
     create_file(parallels_file, [
-        {'retells': ['abc123', 'xyz321']},
-        {'parallels': ['abc123', 'xyz321']},
+        {'retells': ['retell123', 'retell321']},
+        {'parallels': ['parallel123', 'parallel321']},
     ])
 
     create_file(notes_file, [])
@@ -342,3 +344,163 @@ def test_not_resembling_when_other_type_and_partial_to(file_changed, relationshi
     docs = tidy_relationship_docs(relationship)
     resembling = [doc for doc in docs if doc['resembling']]
     assert len(resembling) == 0
+
+
+def test_value_error_when_unknown_type(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                       notes_file, database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [
+        {'extrudes': ['abc123', 'xyz321']},
+    ])
+
+    create_file(notes_file, [])
+    with pytest.raises(ValueError, match='Invalid relationship type "extrudes"'):
+        generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+
+
+def test_first_retell_uid_is_resembling(file_changed, relationship_dir, additional_info_dir,
+                                        parallels_file, notes_file, database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    super_nav_details.insert({'uid': 'pqrs'})
+    super_nav_details.insert({'uid': 'lmno'})
+
+    create_file(notes_file, [])
+    create_file(parallels_file, [
+        {'parallels': ['abc123', 'xyz321']},
+        {'retells': ['~pqrs', 'lmno']},
+    ])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    resembling = sorted([(doc['to'], doc['from']) for doc in docs if doc['resembling']])
+
+    assert resembling == [('lmno', 'pqrs'), ('pqrs', 'lmno')]
+
+
+def test_bad_edges_when_second_retell_uid_is_resembling(file_changed, relationship_dir, additional_info_dir,
+                                                        parallels_file, notes_file, database, super_nav_details,
+                                                        relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    super_nav_details.insert({'uid': 'pqrs'})
+    super_nav_details.insert({'uid': 'lmno'})
+
+    create_file(notes_file, [])
+    create_file(parallels_file, [
+        {'parallels': ['abc123', 'xyz321']},
+        {'retells': ['pqrs', '~lmno']},
+    ])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    docs = [doc for doc in docs if doc['type'] == 'retelling']
+    assert docs == [
+        {
+            '_from': 'super_nav_details/lmno',
+            '_to': 'super_nav_details/pqrs',
+            'from': '~lmno',
+            'number': 0,
+            'remark': None,
+            'resembling': False,
+            'to': 'pqrs',
+            'type': 'retelling'
+        },
+        {
+            '_from': 'super_nav_details/pqrs',
+            '_to': 'super_nav_details/lmno',
+            'from': 'pqrs',
+            'number': 0,
+            'remark': None,
+            'resembling': False,
+            'to': '~lmno',
+            'type': 'retelling'
+        }
+    ]
+
+
+def test_three_parallels(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file, database,
+                         super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    super_nav_details.insert({'uid': 'hij678'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{'parallels': ['abc123', 'xyz321', 'hij678']}])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    to_from = sorted([(doc['to'], doc['from']) for doc in docs])
+    assert to_from == [
+        ('abc123', 'hij678'),
+        ('abc123', 'xyz321'),
+        ('hij678', 'abc123'),
+        ('hij678', 'xyz321'),
+        ('xyz321', 'abc123'),
+        ('xyz321', 'hij678'),
+    ]
+
+
+def test_two_full_one_resembling(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                                 database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    super_nav_details.insert({'uid': 'hij678'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{'parallels': ['abc123', 'xyz321', '~hij678']}])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    to_from = sorted([(doc['to'], doc['from']) for doc in docs])
+    assert to_from == [
+        ('abc123', 'xyz321'),
+        ('hij678', 'abc123'),
+        ('hij678', 'xyz321'),
+        ('xyz321', 'abc123')
+    ]
+
+
+def test_two_full_one_resembling_first(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                                       database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    super_nav_details.insert({'uid': 'hij678'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{'parallels': ['~hij678', 'abc123', 'xyz321']}])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    to_from = sorted([(doc['to'], doc['from']) for doc in docs])
+    assert to_from == [
+        ('abc123', 'xyz321'),
+        ('hij678', 'abc123'),
+        ('hij678', 'xyz321'),
+        ('xyz321', 'abc123')
+    ]
+
+
+def test_partials(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                  database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'ja539'})
+    super_nav_details.insert({'uid': 'thag1.97'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{'parallels': ['ja539#127', 'thag1.97']}])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    assert docs == [
+        {'_from': 'super_nav_details/ja539',
+         '_to': 'super_nav_details/thag1.97',
+         'from': 'ja539#127',
+         'number': 127,
+         'remark': None,
+         'resembling': False,
+         'to': 'thag1.97',
+         'type': 'full'
+         },
+        {
+            '_from': 'super_nav_details/thag1.97',
+            '_to': 'super_nav_details/ja539',
+            'from': 'thag1.97',
+            'number': 97,
+            'remark': None,
+            'resembling': False,
+            'to': 'ja539#127',
+            'type': 'full'
+        }
+    ]
