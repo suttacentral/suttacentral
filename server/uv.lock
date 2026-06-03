@@ -1,6 +1,6 @@
 version = 1
 revision = 3
-requires-python = "==3.11.3"
+requires-python = ">=3.11.3, <3.12"
 
 [[package]]
 name = "aksharamukha"
@@ -677,37 +677,37 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aksharamukha", specifier = "==2.3" },
-    { name = "algoliasearch", specifier = "==3.0.0" },
-    { name = "beautifulsoup4", specifier = "==4.11.1" },
-    { name = "click", specifier = "==8.1.3" },
-    { name = "decorator", specifier = "==5.1.1" },
-    { name = "faker", specifier = "==15.3.4" },
-    { name = "flasgger", specifier = "==0.9.5" },
-    { name = "flask", specifier = "==2.2.5" },
-    { name = "flask-caching", specifier = "==2.0.1" },
-    { name = "flask-cors", specifier = "==3.0.10" },
-    { name = "flask-restful", specifier = "==0.3.9" },
-    { name = "fonttools", specifier = "==4.38.0" },
-    { name = "jinja2", specifier = "==3.1.2" },
-    { name = "lxml", extras = ["cssselect"], specifier = "==4.9.1" },
-    { name = "python-arango", specifier = "==7.5.3" },
+    { name = "aksharamukha", specifier = ">=2.3,<3" },
+    { name = "algoliasearch", specifier = ">=3.0.0,<4" },
+    { name = "beautifulsoup4", specifier = ">=4.11.1,<5" },
+    { name = "click", specifier = ">=8.1.3,<9" },
+    { name = "decorator", specifier = ">=5.1.1,<6" },
+    { name = "faker", specifier = ">=15.3.4,<16" },
+    { name = "flasgger", specifier = ">=0.9.5,<0.10" },
+    { name = "flask", specifier = ">=2.2.5,<3" },
+    { name = "flask-caching", specifier = ">=2.0.1,<3" },
+    { name = "flask-cors", specifier = ">=3.0.10,<4" },
+    { name = "flask-restful", specifier = ">=0.3.9,<0.4" },
+    { name = "fonttools", specifier = ">=4.38.0,<5" },
+    { name = "jinja2", specifier = ">=3.1.2,<4" },
+    { name = "lxml", extras = ["cssselect"], specifier = ">=4.9.1,<5" },
+    { name = "python-arango", specifier = ">=7.5.3,<8" },
     { name = "regex", specifier = "==2022.10.31" },
-    { name = "requests", specifier = "==2.31.0" },
-    { name = "sortedcontainers", specifier = "==2.4.0" },
-    { name = "stripe", specifier = "==6.4.0" },
-    { name = "tqdm", specifier = "==4.64.1" },
-    { name = "unidecode", specifier = "==1.3.7" },
-    { name = "uwsgi", specifier = "==2.0.21" },
-    { name = "zhconv", specifier = "==1.4.3" },
+    { name = "requests", specifier = ">=2.31.0,<3" },
+    { name = "sortedcontainers", specifier = ">=2.4.0,<3" },
+    { name = "stripe", specifier = ">=6.4.0,<7" },
+    { name = "tqdm", specifier = ">=4.64.1,<5" },
+    { name = "unidecode", specifier = ">=1.3.7,<2" },
+    { name = "uwsgi", specifier = ">=2.0.21,<3" },
+    { name = "zhconv", specifier = ">=1.4.3,<2" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "fawltydeps", specifier = ">=0.20.0,<0.21.0" },
-    { name = "pytest", specifier = "==7.2.0" },
-    { name = "pytest-flask", specifier = "==1.2.0" },
-    { name = "pytest-sugar", specifier = "==0.9.6" },
+    { name = "fawltydeps", specifier = ">=0.20.0,<0.21" },
+    { name = "pytest", specifier = ">=7.2.0,<8" },
+    { name = "pytest-flask", specifier = ">=1.2.0,<2" },
+    { name = "pytest-sugar", specifier = ">=0.9.6,<0.10" },
 ]
 
 [[package]]
