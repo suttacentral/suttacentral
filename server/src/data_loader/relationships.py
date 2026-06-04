@@ -147,12 +147,10 @@ def handle_other_parallels(from_uid, ll_edges: list[Any], r_type: str | Any, rem
                     '_from': true_first_uid,
                     '_to': true_from_uid,
                     'from': first_uid.lstrip('~'),
-                    'to': to_uid,
+                    'to': to_uid.lstrip('~'),
                     'number': from_nr,
                     'type': r_type,
-                    'resembling': any(
-                        x.startswith('~') for x in [first_uid, from_uid]
-                    ),
+                    'resembling': any(x.startswith('~') for x in [first_uid, to_uid]),
                     'remark': remark,
                 }
             )
@@ -161,13 +159,11 @@ def handle_other_parallels(from_uid, ll_edges: list[Any], r_type: str | Any, rem
                 {
                     '_from': true_from_uid,
                     '_to': true_first_uid,
-                    'from': to_uid,
+                    'from': to_uid.lstrip('~'),
                     'to': first_uid.lstrip('~'),
                     'number': to_nr,
                     'type': r_type,
-                    'resembling': any(
-                        x.startswith('~') for x in [first_uid, from_uid]
-                    ),
+                    'resembling': any(x.startswith('~') for x in [first_uid, to_uid]),
                     'remark': remark,
                 }
             )
