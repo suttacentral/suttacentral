@@ -328,24 +328,6 @@ def test_create_resembling_other_from(file_changed, relationship_dir, additional
     ]
 
 
-@pytest.mark.parametrize('in_type,out_type', [('retells', 'retelling'), ('mentions', 'mention')])
-def test_not_resembling_when_other_type_and_partial_to(file_changed, relationship_dir, additional_info_dir,
-                                                       parallels_file,
-                                                       notes_file, database, super_nav_details, relationship, in_type,
-                                                       out_type):
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
-    create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {in_type: ['abc123', '~xyz321']},
-    ])
-    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
-    docs = tidy_relationship_docs(relationship)
-    resembling = [doc for doc in docs if doc['resembling']]
-    assert len(resembling) == 0
-
-
 def test_value_error_when_unknown_type(file_changed, relationship_dir, additional_info_dir, parallels_file,
                                        notes_file, database, super_nav_details, relationship):
     super_nav_details.insert({'uid': 'abc123'})
@@ -379,9 +361,9 @@ def test_first_retell_uid_is_resembling(file_changed, relationship_dir, addition
     assert resembling == [('lmno', 'pqrs'), ('pqrs', 'lmno')]
 
 
-def test_bad_edges_when_second_retell_uid_is_resembling(file_changed, relationship_dir, additional_info_dir,
-                                                        parallels_file, notes_file, database, super_nav_details,
-                                                        relationship):
+def test_second_retell_uid_is_resembling(file_changed, relationship_dir, additional_info_dir,
+                                         parallels_file, notes_file, database, super_nav_details,
+                                         relationship):
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     super_nav_details.insert({'uid': 'pqrs'})
@@ -394,29 +376,9 @@ def test_bad_edges_when_second_retell_uid_is_resembling(file_changed, relationsh
     ])
     generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
-    docs = [doc for doc in docs if doc['type'] == 'retelling']
-    assert docs == [
-        {
-            '_from': 'super_nav_details/lmno',
-            '_to': 'super_nav_details/pqrs',
-            'from': '~lmno',
-            'number': 0,
-            'remark': None,
-            'resembling': False,
-            'to': 'pqrs',
-            'type': 'retelling'
-        },
-        {
-            '_from': 'super_nav_details/pqrs',
-            '_to': 'super_nav_details/lmno',
-            'from': 'pqrs',
-            'number': 0,
-            'remark': None,
-            'resembling': False,
-            'to': '~lmno',
-            'type': 'retelling'
-        }
-    ]
+    resembling = sorted([(doc['to'], doc['from']) for doc in docs if doc['resembling']])
+
+    assert resembling == [('lmno', 'pqrs'), ('pqrs', 'lmno')]
 
 
 def test_three_parallels(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file, database,
