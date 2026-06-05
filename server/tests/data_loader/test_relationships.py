@@ -147,8 +147,8 @@ def test_when_related_remark_exists(file_changed, relationship_dir, additional_i
     assert docs[1]['remark'] == "Remarkable"
 
 
-def test_error_when_retells_first(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                  notes_file, database, super_nav_details, relationship):
+def test_no_error_when_retells_first(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                     notes_file, database, super_nav_details, relationship):
     super_nav_details.insert({'uid': 'parallel123'})
     super_nav_details.insert({'uid': 'parallel321'})
     super_nav_details.insert({'uid': 'retell123'})
@@ -160,8 +160,8 @@ def test_error_when_retells_first(file_changed, relationship_dir, additional_inf
     ])
 
     create_file(notes_file, [])
-    with pytest.raises(UnboundLocalError, match="cannot access local variable 'from_uid'"):
-        generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    # This previously gave an UnboundLocalError
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
 
 
 @pytest.mark.parametrize('in_type,out_type', [('retells', 'retelling'), ('mentions', 'mention')])
@@ -466,3 +466,16 @@ def test_partials(file_changed, relationship_dir, additional_info_dir, parallels
             'type': 'full'
         }
     ]
+
+
+def test_branch_where_true_from_uids_has_no_match(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                                  notes_file, database, super_nav_details, relationship, caplog):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [
+        {'parallels': ['abc123', 'xyz321']},
+        {'retells': ['abc123', 'no_such']},
+    ])
+    generate_relationship_edges(file_changed, relationship_dir, additional_info_dir, database)
+    assert caplog.messages == ['Relationship from uid could not be matched: no_such (dropped)']

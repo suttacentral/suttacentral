@@ -50,9 +50,9 @@ def generate_relationship_edges(
             r_type = relationship_type(entry_type)
 
             if r_type == 'full':
-                from_uid = handle_full_parallels(ll_edges, r_type, remarks, uid_matcher, uids)
+                handle_full_parallels(ll_edges, r_type, remarks, uid_matcher, uids)
             else:
-                handle_other_parallels(from_uid, ll_edges, r_type, remarks, uid_matcher, uids)
+                handle_other_parallels(ll_edges, r_type, remarks, uid_matcher, uids)
 
     # Because there are many edges (nearly 400k at last count) chunk the import
     db['relationship'].truncate()
@@ -83,7 +83,7 @@ def get_remarks(additional_info_dir: Path) -> defaultdict[Any, dict]:
 
 
 def handle_full_parallels(ll_edges: list[Any], r_type: Literal['full'], remarks: defaultdict[Any, dict],
-                          uid_matcher: UidMatcher, uids) -> Any:
+                          uid_matcher: UidMatcher, uids) -> None:
     full = [uid for uid in uids if not uid.startswith('~')]
     partial = [uid for uid in uids if uid.startswith('~')]
     for from_uid in full:
@@ -123,19 +123,19 @@ def handle_full_parallels(ll_edges: list[Any], r_type: Literal['full'], remarks:
                                 'remark': remark,
                             }
                         )
-    return from_uid
 
 
-def handle_other_parallels(from_uid, ll_edges: list[Any], r_type: str | Any, remarks: defaultdict[Any, dict],
-                           uid_matcher: UidMatcher, uids):
+def handle_other_parallels(ll_edges: list[Any], r_type: str | Any, remarks: defaultdict[Any, dict],
+                           uid_matcher: UidMatcher, uids) -> None:
     first_uid = uids[0]
     from_nr = uid_number(first_uid)
     true_first_uids = uid_matcher.get_matching_uids(first_uid)
     for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
+        # Legacy code mystery: Why does true_from_ids come from to_uid?
         true_from_uids = uid_matcher.get_matching_uids(to_uid)
-        if not true_from_uids and ' ' not in from_uid:
+        if not true_from_uids and ' ' not in to_uid:
             logging.error(
-                f'Relationship from uid could not be matched: {from_uid} (dropped)'
+                f'Relationship from uid could not be matched: {to_uid} (dropped)'
             )
             continue
         for true_from_uid in true_from_uids:
