@@ -42,7 +42,7 @@ from . import (
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
 from .observability import StagePrinter
-from .relationships import generate_relationship_edges
+from .relationships import load_relationships
 from .util import json_load
 import re
 
@@ -592,7 +592,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     sc_bilara_data.load_bilara_author_edition(db, sc_bilara_data_dir)
 
     printer.print_stage("Generating and loading relationships")
-    generate_relationship_edges(
+    load_relationships(
         change_tracker, relationship_dir, additional_info_dir, db
     )
 

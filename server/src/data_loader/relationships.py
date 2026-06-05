@@ -1,8 +1,10 @@
 import logging
 from collections import defaultdict
+from collections.abc import Iterator, Iterable
+from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
-from typing import Any, Literal
+from typing import Self
 
 import regex
 from arango.database import StandardDatabase
@@ -14,8 +16,52 @@ from data_loader.ports import FileChangeTracker
 from data_loader.util import json_load
 
 
-def get_uid_matcher(db: StandardDatabase) -> UidMatcher:
-    all_uids = set(
+class Encoding:
+    all_uids: set[str] = set()
+
+    def __init__(self, encoding: str):
+        self._matcher = UidMatcher(self.all_uids)
+        self._encoding = encoding
+
+    def __str__(self) -> str:
+        return self._encoding
+
+    def __eq__(self, other: Self) -> bool:
+        return self._encoding == other._encoding
+
+    def matching_uids(self) -> list[str]:
+        return self._matcher.get_matching_uids(self._encoding)
+
+    def is_resembling(self) -> bool:
+        return self._encoding.startswith('~')
+
+    def is_external(self) -> bool:
+        return ' ' in self._encoding
+
+    def has_matching_uid(self) -> bool:
+        if self.is_external():
+            return True
+        if self.matching_uids():
+            return True
+        return False
+
+    def number(self) -> int:
+        m = regex.search('[0-9]+$', self._encoding)
+        if m:
+            from_nr = int(m[0])
+        else:
+            from_nr = 0
+        return from_nr
+
+    def strip_resembling(self) -> str:
+        return self._encoding.lstrip('~')
+
+    def first_part(self) -> str:
+        return self._encoding.lstrip('~').split('-')[0]
+
+
+def all_uids(db: StandardDatabase) -> set[str]:
+    return set(
         db.aql.execute(
             '''
             FOR doc IN super_nav_details
@@ -24,35 +70,65 @@ def get_uid_matcher(db: StandardDatabase) -> UidMatcher:
         )
     )
 
-    return UidMatcher(all_uids)
+
+@dataclass
+class Entry:
+    entry_type: str
+    relationship_type: str
+    encodings: list[Encoding]
 
 
-def generate_relationship_edges(
-        change_tracker: FileChangeTracker, relationship_dir: Path, additional_info_dir: Path, db: StandardDatabase
-) -> None:
-    relationship_files = [relationship_dir / Path('parallels.json')]
+def entries(relationship_file: Path) -> Iterator[Entry]:
+    relationship_data = json_load(relationship_file)
 
-    if not change_tracker.is_any_file_new_or_changed(relationship_files):
+    relationship_types = {
+        'retells': 'retelling',
+        'mentions': 'mention',
+        'parallels': 'full',
+    }
+
+    for entry_data in relationship_data:
+        entry_data.pop('remarks', None)
+        for entry_type, encodings in entry_data.items():
+            yield Entry(
+                entry_type=entry_type,
+                relationship_type=relationship_types[entry_type],
+                encodings=[Encoding(encoding) for encoding in encodings]
+            )
+
+
+class Remarks:
+    _remarks = defaultdict(dict)
+
+    @classmethod
+    def load(cls, notes_file: Path):
+        cls._remarks = defaultdict(dict)
+        data = json_load(notes_file)
+        for remark in data:
+            uids = remark['relations']
+            remark_text = remark['remark']
+            cls._remarks[frozenset(uids)] = remark_text
+
+    @classmethod
+    def lookup(cls, from_uid: str, to_uid: str) -> str | None:
+        return cls._remarks.get(frozenset([from_uid, to_uid]), None)
+
+
+def load_relationships(change_tracker: FileChangeTracker, relationship_dir: Path, additional_info_dir: Path,
+                       db: StandardDatabase) -> None:
+    relationship_file = relationship_dir / Path('parallels.json')
+    if not change_tracker.is_file_new_or_changed(relationship_file):
         return
 
-    print('Generating Parallels')
-    relationship_data = []
-    for relationship_file in relationship_files:
-        relationship_data.extend(json_load(relationship_file))
-
-    uid_matcher = get_uid_matcher(db)
-    remarks = get_remarks(additional_info_dir)
+    Encoding.all_uids = all_uids(db)
+    Remarks.load(additional_info_dir / Path('notes.json'))
 
     ll_edges = []
-    for entry in tqdm(relationship_data):
-        entry.pop('remarks', None)
-        for entry_type, uids in entry.items():
-            r_type = relationship_type(entry_type)
-
-            if r_type == 'full':
-                handle_full_parallels(ll_edges, r_type, remarks, uid_matcher, uids)
-            else:
-                handle_other_parallels(ll_edges, r_type, remarks, uid_matcher, uids)
+    for entry in tqdm(entries(relationship_file)):
+        if entry.entry_type == 'parallels':
+            ll_edges.extend(parallels_edges(entry))
+        else:
+            ll_edges.extend(other_edges(entry))
 
     # Because there are many edges (nearly 400k at last count) chunk the import
     db['relationship'].truncate()
@@ -60,119 +136,111 @@ def generate_relationship_edges(
         db['relationship'].import_bulk_logged(chunk, from_prefix='super_nav_details', to_prefix='super_nav_details')
 
 
-def relationship_type(entry_type: str) -> str:
-    if entry_type == 'retells':
-        return 'retelling'
-    elif entry_type == 'mentions':
-        return 'mention'
-    elif entry_type == 'parallels':
-        return 'full'
-    raise ValueError(f'Invalid relationship type "{entry_type}"')
+@dataclass
+class ParallelsEdgeData:
+    to_encoding: Encoding
+    from_encoding: Encoding
+    relationship_type: str
 
 
-def get_remarks(additional_info_dir: Path) -> defaultdict[Any, dict]:
-    remarks_data = json_load(additional_info_dir / 'notes.json')
+def parallels_edges(entry: Entry, ) -> Iterator[dict]:
+    full_encodings = [encoding for encoding in entry.encodings if not encoding.is_resembling()]
 
-    remarks = defaultdict(dict)
+    for from_encoding in drop_when_no_match(full_encodings):
+        to_encodings = [encoding for encoding in entry.encodings if encoding != from_encoding]
 
-    for remark in remarks_data:
-        uids = remark['relations']
-        remark_text = remark['remark']
-        remarks[frozenset(uids)] = remark_text
-    return remarks
-
-
-def handle_full_parallels(ll_edges: list[Any], r_type: Literal['full'], remarks: defaultdict[Any, dict],
-                          uid_matcher: UidMatcher, uids) -> None:
-    full = [uid for uid in uids if not uid.startswith('~')]
-    partial = [uid for uid in uids if uid.startswith('~')]
-    for from_uid in full:
-        from_nr = uid_number(from_uid)
-        true_from_uids = uid_matcher.get_matching_uids(from_uid)
-        if not true_from_uids and ' ' not in from_uid:
-            logging.error(
-                f'Relationship from uid could not be matched: {from_uid} (dropped)'
+        for to_encoding in to_encodings:
+            edge_data = ParallelsEdgeData(
+                to_encoding=to_encoding,
+                from_encoding=from_encoding,
+                relationship_type=entry.relationship_type
             )
-            continue
+            yield from create_parallel_edges(edge_data)
 
-        for to_uids, is_resembling in ((full, False), (partial, True)):
-            for to_uid in to_uids:
-                if to_uid == from_uid:
-                    continue
-                true_to_uids = uid_matcher.get_matching_uids(to_uid)
-                if not true_to_uids:
-                    logging.info(
-                        f'Relationship to uid could not be matched: {to_uid} (appears as orphan)'
+
+def create_parallel_edges(edge_data: ParallelsEdgeData) -> Iterator[dict]:
+    from_uids = edge_data.from_encoding.matching_uids()
+    to_uids = edge_data.to_encoding.matching_uids()
+
+    if not to_uids:
+        to_uids = ['orphan']
+        logging.info(f'Relationship to encoding could not be matched: {edge_data.to_encoding} (appears as orphan)')
+
+    for from_uid, to_uid in product(from_uids, to_uids):
+        yield {
+            '_from': from_uid,
+            '_to': to_uid,
+            'from': str(edge_data.from_encoding),
+            'number': edge_data.from_encoding.number(),
+            'to': edge_data.to_encoding.first_part(),
+            'type': edge_data.relationship_type,
+            'resembling': edge_data.to_encoding.is_resembling(),
+            'remark': Remarks.lookup(from_uid, to_uid),
+        }
+
+
+@dataclass
+class OtherEdgeData:
+    first_encoding: Encoding
+    second_encoding: Encoding
+    first_uid: str
+    second_uid: str
+    relationship_type: str
+    remark: str
+
+    @property
+    def is_resembling(self) -> bool:
+        return self.first_encoding.is_resembling() or self.second_encoding.is_resembling()
+
+
+def other_edges(entry: Entry) -> Iterator[dict]:
+    first_encoding = entry.encodings[0]
+    second_encodings = drop_when_no_match(entry.encodings[1:])
+
+    for first_uid in first_encoding.matching_uids():
+        for second_encoding in second_encodings:
+            for second_uid in second_encoding.matching_uids():
+                yield from create_other_edges(
+                    OtherEdgeData(
+                        first_encoding=first_encoding,
+                        second_encoding=second_encoding,
+                        first_uid=first_uid,
+                        second_uid=second_uid,
+                        relationship_type=entry.relationship_type,
+                        remark=Remarks.lookup(second_uid, first_uid)
                     )
-                    true_to_uids = ['orphan']
-
-                for true_from_uid in true_from_uids:
-                    for true_to_uid in true_to_uids:
-                        remark = remarks.get(
-                            frozenset([true_from_uid, true_to_uid]), None
-                        )
-                        ll_edges.append(
-                            {
-                                '_from': true_from_uid,
-                                '_to': true_to_uid,
-                                'from': from_uid,
-                                'number': from_nr,
-                                'to': to_uid.lstrip('~').split('-')[0],
-                                'type': r_type,
-                                'resembling': is_resembling,
-                                'remark': remark,
-                            }
-                        )
+                )
 
 
-def handle_other_parallels(ll_edges: list[Any], r_type: str | Any, remarks: defaultdict[Any, dict],
-                           uid_matcher: UidMatcher, uids) -> None:
-    first_uid = uids[0]
-    from_nr = uid_number(first_uid)
-    true_first_uids = uid_matcher.get_matching_uids(first_uid)
-    for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
-        # Legacy code mystery: Why does true_from_ids come from to_uid?
-        true_from_uids = uid_matcher.get_matching_uids(to_uid)
-        if not true_from_uids and ' ' not in to_uid:
-            logging.error(
-                f'Relationship from uid could not be matched: {to_uid} (dropped)'
-            )
-            continue
-        for true_from_uid in true_from_uids:
-            remark = remarks.get(
-                frozenset([true_from_uid, true_first_uid]), None
-            )
-            ll_edges.append(
-                {
-                    '_from': true_first_uid,
-                    '_to': true_from_uid,
-                    'from': first_uid.lstrip('~'),
-                    'to': to_uid.lstrip('~'),
-                    'number': from_nr,
-                    'type': r_type,
-                    'resembling': any(x.startswith('~') for x in [first_uid, to_uid]),
-                    'remark': remark,
-                }
-            )
-            to_nr = uid_number(to_uid)
-            ll_edges.append(
-                {
-                    '_from': true_from_uid,
-                    '_to': true_first_uid,
-                    'from': to_uid.lstrip('~'),
-                    'to': first_uid.lstrip('~'),
-                    'number': to_nr,
-                    'type': r_type,
-                    'resembling': any(x.startswith('~') for x in [first_uid, to_uid]),
-                    'remark': remark,
-                }
-            )
+def drop_when_no_match(encodings: Iterable[Encoding]) -> Iterator[Encoding]:
+    for encoding in encodings:
+        if encoding.has_matching_uid():
+            yield encoding
+        else:
+            logging.error(f'Relationship encoding has no matching uids: {encoding} (dropped)')
 
 
-def uid_number(first_uid) -> int:
-    m = regex.search('[0-9]+$', first_uid)
-    if m:
-        from_nr = int(m[0])
-    else:
-        from_nr = 0
-    return from_nr
+def create_other_edges(edge_data: OtherEdgeData):
+    first_edge = {
+        '_from': edge_data.first_uid,
+        '_to': edge_data.second_uid,
+        'from': edge_data.first_encoding.strip_resembling(),
+        'to': edge_data.second_encoding.strip_resembling(),
+        'number': edge_data.first_encoding.number(),
+        'type': edge_data.relationship_type,
+        'resembling': edge_data.is_resembling,
+        'remark': edge_data.remark,
+    }
+
+    second_edge = {
+        '_from': edge_data.second_uid,
+        '_to': edge_data.first_uid,
+        'from': edge_data.second_encoding.strip_resembling(),
+        'to': edge_data.first_encoding.strip_resembling(),
+        'number': edge_data.second_encoding.number(),
+        'type': edge_data.relationship_type,
+        'resembling': edge_data.is_resembling,
+        'remark': edge_data.remark,
+    }
+
+    return first_edge, second_edge
