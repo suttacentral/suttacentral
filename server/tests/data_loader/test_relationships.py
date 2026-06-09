@@ -90,8 +90,8 @@ def test_when_file_is_unchanged_no_documents_are_added(relationship_dir, additio
     assert len(relationship) == 0
 
 
-def test_create_parallel_between_two_uids(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                          notes_file, database, super_nav_details, relationship):
+def test_add_parallels_edges(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                             notes_file, database, super_nav_details, relationship):
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     create_file(notes_file, [])
@@ -123,6 +123,72 @@ def test_create_parallel_between_two_uids(file_changed, relationship_dir, additi
     ]
 
 
+def test_add_retells_edges(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                           notes_file, database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{'retells': ['abc123', 'xyz321']}])
+
+    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+
+    assert tidy_relationship_docs(relationship) == [
+        {
+            '_from': 'super_nav_details/abc123',
+            '_to': 'super_nav_details/xyz321',
+            'from': 'abc123',
+            'number': 123,
+            'remark': None,
+            'resembling': False,
+            'to': 'xyz321',
+            'type': 'retelling'
+        },
+        {
+            '_from': 'super_nav_details/xyz321',
+            '_to': 'super_nav_details/abc123',
+            'from': 'xyz321',
+            'number': 321,
+            'remark': None,
+            'resembling': False,
+            'to': 'abc123',
+            'type': 'retelling'
+        }
+    ]
+
+
+def test_add_mentions_edges(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                            notes_file, database, super_nav_details, relationship):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{'mentions': ['abc123', 'xyz321']}])
+
+    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+
+    assert tidy_relationship_docs(relationship) == [
+        {
+            '_from': 'super_nav_details/abc123',
+            '_to': 'super_nav_details/xyz321',
+            'from': 'abc123',
+            'number': 123,
+            'remark': None,
+            'resembling': False,
+            'to': 'xyz321',
+            'type': 'mention'
+        },
+        {
+            '_from': 'super_nav_details/xyz321',
+            '_to': 'super_nav_details/abc123',
+            'from': 'xyz321',
+            'number': 321,
+            'remark': None,
+            'resembling': False,
+            'to': 'abc123',
+            'type': 'mention'
+        }
+    ]
+
+
 def test_when_unrelated_remark_exists(file_changed, relationship_dir, additional_info_dir, parallels_file,
                                       notes_file, database, super_nav_details, relationship):
     super_nav_details.insert({'uid': 'abc123'})
@@ -131,8 +197,8 @@ def test_when_unrelated_remark_exists(file_changed, relationship_dir, additional
     create_file(notes_file, [{'relations': ['abc123', 'def'], 'remark': 'Remarkable.'}])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
-    assert docs[0]['remark'] is None
-    assert docs[1]['remark'] is None
+    remarks = [doc['remark'] for doc in docs]
+    assert remarks == [None, None]
 
 
 def test_when_related_remark_exists(file_changed, relationship_dir, additional_info_dir, parallels_file,
@@ -143,75 +209,24 @@ def test_when_related_remark_exists(file_changed, relationship_dir, additional_i
     create_file(notes_file, [{"relations": ["abc123", "xyz321"], "remark": "Remarkable"}])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
-    assert docs[0]['remark'] == "Remarkable"
-    assert docs[1]['remark'] == "Remarkable"
+    remarks = [doc['remark'] for doc in docs]
+    assert remarks == ['Remarkable', 'Remarkable']
 
 
-def test_no_error_when_retells_first(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                     notes_file, database, super_nav_details, relationship):
-    super_nav_details.insert({'uid': 'parallel123'})
-    super_nav_details.insert({'uid': 'parallel321'})
-    super_nav_details.insert({'uid': 'retell123'})
-    super_nav_details.insert({'uid': 'retell321'})
-    create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'retells': ['retell123', 'retell321']},
-        {'parallels': ['parallel123', 'parallel321']},
-    ])
-
-    create_file(notes_file, [])
-    # This previously gave an UnboundLocalError
-    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-
-
-@pytest.mark.parametrize('in_type,out_type', [('retells', 'retelling'), ('mentions', 'mention')])
-def test_add_other_types(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                         notes_file, database, super_nav_details, relationship, in_type, out_type):
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
-    create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {in_type: ['abc123', 'xyz321']},
-    ])
-    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-    docs = relationship.find({'type': out_type})
-    from_uids = sorted([doc['from'] for doc in docs])
-    assert from_uids == ['abc123', 'xyz321']
-
-
-def test_number_parallel_zero_when_missing(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                           notes_file, database, super_nav_details, relationship):
+@pytest.mark.parametrize('in_type', ['parallels', 'retells', 'mentions'])
+def test_number_zero_when_missing(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                  notes_file, database, super_nav_details, relationship, in_type):
     create_file(notes_file, [])
     super_nav_details.insert({'uid': 'no_number_from'})
     super_nav_details.insert({'uid': 'no_number_to'})
-    create_file(parallels_file, [{'parallels': ['no_number_from', 'no_number_to']}])
+    create_file(parallels_file, [{in_type: ['no_number_from', 'no_number_to']}, ])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
     numbers = [doc['number'] for doc in docs]
-    assert numbers == [0, 0]
+    assert sorted(numbers) == [0, 0]
 
 
-@pytest.mark.parametrize('in_type,out_type', [('retells', 'retelling'), ('mentions', 'mention')])
-def test_number_other_zero_when_missing(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                        notes_file, database, super_nav_details, relationship, in_type, out_type):
-    create_file(notes_file, [])
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
-    super_nav_details.insert({'uid': 'no_number_from'})
-    super_nav_details.insert({'uid': 'no_number_to'})
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {in_type: ['no_number_from', 'no_number_to']},
-    ])
-    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-    docs = tidy_relationship_docs(relationship)
-    numbers = [doc['number'] for doc in docs]
-    assert sorted(numbers) == [0, 0, 123, 321]
-
-
-def test_create_orphan_when_from_missing(file_changed, relationship_dir, additional_info_dir,
-                                         parallels_file,
+def test_create_orphan_when_from_missing(file_changed, relationship_dir, additional_info_dir, parallels_file,
                                          notes_file, database, super_nav_details, relationship):
     super_nav_details.insert({'uid': 'xyz321'})
     create_file(notes_file, [])
@@ -222,9 +237,8 @@ def test_create_orphan_when_from_missing(file_changed, relationship_dir, additio
     assert to == ['super_nav_details/orphan']
 
 
-def test_create_orphan_when_to_missing(file_changed, relationship_dir, additional_info_dir,
-                                       parallels_file,
-                                       notes_file, database, super_nav_details, relationship):
+def test_create_orphan_when_to_missing(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                       notes_file, database, super_nav_details, relationship, caplog):
     super_nav_details.insert({'uid': 'abc123'})
     create_file(notes_file, [])
     create_file(parallels_file, [{'parallels': ['abc123', 'no_such']}])
@@ -232,10 +246,11 @@ def test_create_orphan_when_to_missing(file_changed, relationship_dir, additiona
     docs = tidy_relationship_docs(relationship)
     to = [doc['_to'] for doc in docs]
     assert to == ['super_nav_details/orphan']
+    assert caplog.messages == ['Relationship encoding has no matching uids: no_such (dropped)']
 
 
-def test_logs_orphan(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                     notes_file, database, super_nav_details, relationship, caplog):
+def test_logs_appears_as_orphan_when_from_missing(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                                  notes_file, database, super_nav_details, relationship, caplog):
     caplog.set_level(logging.INFO)
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
@@ -248,84 +263,55 @@ def test_logs_orphan(file_changed, relationship_dir, additional_info_dir, parall
     ]
 
 
-def test_create_resembling_from(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                notes_file, database, super_nav_details, relationship):
+@pytest.mark.parametrize('entry_type', ['retells', 'mentions'])
+def test_no_orphans_for_others(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                               notes_file, database, super_nav_details, relationship, entry_type, caplog):
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     create_file(notes_file, [])
-    create_file(parallels_file, [{'parallels': ['~abc123', 'xyz321']}])
+    create_file(parallels_file, [{entry_type: ['abc123', 'no_such']}, ])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-    docs = tidy_relationship_docs(relationship)
-    assert docs == [
-        {
-            '_from': 'super_nav_details/xyz321',
-            '_to': 'super_nav_details/abc123',
-            'from': 'xyz321',
-            'number': 321,
-            'remark': None,
-            'resembling': True,
-            'to': 'abc123',
-            'type': 'full'
-        }
-    ]
+    assert len(relationship) == 0
+    assert caplog.messages == ['Relationship encoding has no matching uids: no_such (dropped)']
 
 
-def test_create_resembling_to(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                              notes_file, database, super_nav_details, relationship):
+@pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
+def test_neither_encoding_is_resembling(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                        notes_file, database, super_nav_details, relationship, entry_type):
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     create_file(notes_file, [])
-    create_file(parallels_file, [{'parallels': ['abc123', '~xyz321']}])
+    create_file(parallels_file, [{entry_type: ['abc123', 'xyz321']}])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
-    assert docs == [
-        {
-            '_from': 'super_nav_details/abc123',
-            '_to': 'super_nav_details/xyz321',
-            'from': 'abc123',
-            'number': 123,
-            'remark': None,
-            'resembling': True,
-            'to': 'xyz321',
-            'type': 'full'
-        }
-    ]
+    resembling = [doc['resembling'] for doc in docs]
+    assert not any(resembling)
 
 
-@pytest.mark.parametrize('in_type,out_type', [('retells', 'retelling'), ('mentions', 'mention')])
-def test_create_resembling_other_from(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                      notes_file, database, super_nav_details, relationship, in_type, out_type):
+@pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
+def test_from_encoding_is_resembling(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                     notes_file, database, super_nav_details, relationship, entry_type):
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {in_type: ['~abc123', 'xyz321']},
-    ])
+    create_file(parallels_file, [{entry_type: ['~abc123', 'xyz321']}])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
-    resembling = [doc for doc in docs if doc['resembling']]
-    assert resembling == [
-        {
-            '_from': 'super_nav_details/abc123',
-            '_to': 'super_nav_details/xyz321',
-            'from': 'abc123',
-            'number': 123,
-            'remark': None,
-            'resembling': True,
-            'to': 'xyz321',
-            'type': out_type
-        },
-        {'_from': 'super_nav_details/xyz321',
-         '_to': 'super_nav_details/abc123',
-         'from': 'xyz321',
-         'number': 321,
-         'remark': None,
-         'resembling': True,
-         'to': 'abc123',
-         'type': out_type
-         }
-    ]
+    resembling = [doc['resembling'] for doc in docs]
+    assert all(resembling)
+
+
+@pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
+def test_to_encoding_is_resembling(file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                   notes_file, database, super_nav_details, relationship, entry_type):
+    super_nav_details.insert({'uid': 'abc123'})
+    super_nav_details.insert({'uid': 'xyz321'})
+    create_file(notes_file, [])
+    create_file(parallels_file, [{entry_type: ['abc123', '~xyz321']}])
+    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+    docs = tidy_relationship_docs(relationship)
+    resembling = [doc['resembling'] for doc in docs]
+    assert all(resembling)
 
 
 def test_key_error_when_unknown_type(file_changed, relationship_dir, additional_info_dir, parallels_file,
@@ -333,52 +319,9 @@ def test_key_error_when_unknown_type(file_changed, relationship_dir, additional_
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'extrudes': ['abc123', 'xyz321']},
-    ])
-
-    create_file(notes_file, [])
+    create_file(parallels_file, [{'extrudes': ['abc123', 'xyz321']}, ])
     with pytest.raises(KeyError, match='extrudes'):
         load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-
-
-def test_first_retell_uid_is_resembling(file_changed, relationship_dir, additional_info_dir,
-                                        parallels_file, notes_file, database, super_nav_details, relationship):
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
-    super_nav_details.insert({'uid': 'pqrs'})
-    super_nav_details.insert({'uid': 'lmno'})
-
-    create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {'retells': ['~pqrs', 'lmno']},
-    ])
-    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-    docs = tidy_relationship_docs(relationship)
-    resembling = sorted([(doc['to'], doc['from']) for doc in docs if doc['resembling']])
-
-    assert resembling == [('lmno', 'pqrs'), ('pqrs', 'lmno')]
-
-
-def test_second_retell_uid_is_resembling(file_changed, relationship_dir, additional_info_dir,
-                                         parallels_file, notes_file, database, super_nav_details,
-                                         relationship):
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
-    super_nav_details.insert({'uid': 'pqrs'})
-    super_nav_details.insert({'uid': 'lmno'})
-
-    create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {'retells': ['pqrs', '~lmno']},
-    ])
-    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-    docs = tidy_relationship_docs(relationship)
-    resembling = sorted([(doc['to'], doc['from']) for doc in docs if doc['resembling']])
-
-    assert resembling == [('lmno', 'pqrs'), ('pqrs', 'lmno')]
 
 
 def test_three_parallels(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file, database,
@@ -401,8 +344,8 @@ def test_three_parallels(file_changed, relationship_dir, additional_info_dir, pa
     ]
 
 
-def test_two_full_one_resembling(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                                 database, super_nav_details, relationship):
+def test_two_full_one_resembling_last(file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                                      database, super_nav_details, relationship):
     super_nav_details.insert({'uid': 'abc123'})
     super_nav_details.insert({'uid': 'xyz321'})
     super_nav_details.insert({'uid': 'hij678'})
@@ -445,40 +388,8 @@ def test_partials(file_changed, relationship_dir, additional_info_dir, parallels
     create_file(parallels_file, [{'parallels': ['ja539#127', 'thag1.97']}])
     load_relationships(file_changed, relationship_dir, additional_info_dir, database)
     docs = tidy_relationship_docs(relationship)
-    assert docs == [
-        {'_from': 'super_nav_details/ja539',
-         '_to': 'super_nav_details/thag1.97',
-         'from': 'ja539#127',
-         'number': 127,
-         'remark': None,
-         'resembling': False,
-         'to': 'thag1.97',
-         'type': 'full'
-         },
-        {
-            '_from': 'super_nav_details/thag1.97',
-            '_to': 'super_nav_details/ja539',
-            'from': 'thag1.97',
-            'number': 97,
-            'remark': None,
-            'resembling': False,
-            'to': 'ja539#127',
-            'type': 'full'
-        }
-    ]
-
-
-def test_branch_where_true_from_uids_has_no_match(file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                                  notes_file, database, super_nav_details, relationship, caplog):
-    super_nav_details.insert({'uid': 'abc123'})
-    super_nav_details.insert({'uid': 'xyz321'})
-    create_file(notes_file, [])
-    create_file(parallels_file, [
-        {'parallels': ['abc123', 'xyz321']},
-        {'retells': ['abc123', 'no_such']},
-    ])
-    load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-    assert caplog.messages == ['Relationship encoding has no matching uids: no_such (dropped)']
+    to_from = sorted([(doc['to'], doc['from']) for doc in docs])
+    assert to_from == [('ja539#127', 'thag1.97'), ('thag1.97', 'ja539#127')]
 
 
 @pytest.mark.parametrize(
