@@ -17,10 +17,9 @@ from data_loader.util import json_load
 
 
 class Encoding:
-    all_uids: set[str] = set()
+    matcher: UidMatcher = UidMatcher(set())
 
     def __init__(self, encoding: str):
-        self._matcher = UidMatcher(self.all_uids)
         self._encoding = encoding
 
     def __str__(self) -> str:
@@ -30,7 +29,7 @@ class Encoding:
         return self._encoding == other._encoding
 
     def matching_uids(self) -> list[str]:
-        return self._matcher.get_matching_uids(self._encoding)
+        return self.matcher.get_matching_uids(self._encoding)
 
     def is_resembling(self) -> bool:
         return self._encoding.startswith('~')
@@ -120,7 +119,7 @@ def load_relationships(change_tracker: FileChangeTracker, relationship_dir: Path
     if not change_tracker.is_file_new_or_changed(relationship_file):
         return
 
-    Encoding.all_uids = all_uids(db)
+    Encoding.matcher = UidMatcher(all_uids(db))
     Remarks.load(additional_info_dir / Path('notes.json'))
 
     ll_edges = []
