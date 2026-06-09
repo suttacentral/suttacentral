@@ -8,6 +8,7 @@ from arango.collection import StandardCollection
 from arango.database import StandardDatabase
 
 from common.arangodb import get_db
+from common.uid_matcher import UidMatcher
 from common.utils import current_app
 from data_loader.ports import FileChangeTracker
 from data_loader.relationships import load_relationships, Remarks, Encoding
@@ -461,7 +462,7 @@ class TestRemarks:
 class TestEncoding:
     @pytest.fixture
     def with_uids(self):
-        Encoding.all_uids = {'abc123'}
+        Encoding.matcher = UidMatcher({'abc123'})
 
     def test_to_string(self, with_uids):
         assert str(Encoding('~abc123')) == '~abc123'
