@@ -19,8 +19,8 @@ jobs:
 
       - name: Build
         run: |
+          docker wait sc-flask
           make prepare-tests
-          # docker wait sc-frontend
 
       # split debug logging into separate steps so that it is in its own sections and easier to read and parse
       - name: Debug log - compose logs
