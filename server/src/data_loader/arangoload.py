@@ -382,12 +382,12 @@ def update_text_extra_info():
     db = arangodb.get_db()
     bilara_references = list(db.aql.execute(BILARA_REFERENCES))
     for reference in tqdm(bilara_references):
-        refs = json_load(reference['file_path'])
+        reference_map = json_load(reference['file_path'])
         pts_refs_1st = []
         pts_refs_2nd = []
-        for uid, ref in refs.items():
-            refs = get_pts_ref(ref)
-            for pts_ref in refs:
+        for uid, ref in reference_map.items():
+            pts_refs = get_pts_ref(ref)
+            for pts_ref in pts_refs:
                 if pts_ref.find('pts-vp-pli2ed') != -1:
                     pts_refs_2nd.append(
                         pts_ref.replace('pts-vp-pli2ed', 'PTS (2nd ed) ')

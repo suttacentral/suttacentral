@@ -1636,7 +1636,12 @@ UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE = '''
 UPSERT { uid: @uid }
 INSERT { uid: @uid, acronym: null, alt_acronym: null, volpage: null, alt_volpage: @ref, alt_name: null, biblio_uid: null }
 UPDATE {
-    alt_volpage: @ref
+    alt_volpage: CONCAT_SEPARATOR(
+        ',',
+        OLD.alt_volpage != null && OLD.alt_volpage != ''
+            ? APPEND(SPLIT(OLD.alt_volpage, ','), SPLIT(@ref, ','), true)
+            : SPLIT(@ref, ',')
+    )
 } IN text_extra_info
 '''
 
