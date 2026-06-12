@@ -10,6 +10,21 @@ from data_loader.observability import save_as_csv
 from migrations.runner import run_migrations
 
 
+SN11_25_REFERENCE_DOC = {
+    'uid': 'sn11.25',
+    'file_path': '/tmp/sn11.25_reference.json',
+}
+
+SN11_25_REFERENCE_TEXT = {
+    'sn11.25:1.1': 'ms12S1_1697, msdiv271',
+    'sn11.25:2.1': (
+        'csp1ed12.242, csp2ed12.242, ms12S1_1698, pts-vp-pli2ed1.515'
+    ),
+    'sn11.25:3.1': 'bj13.428, dr15.334, ms12S1_1701, vri23.278',
+    'sn11.25:4.1': 'ms12S1_1705, pts-vp-pli2ed1.516, sya15.353',
+}
+
+
 @pytest.fixture
 def data_load_app(app):
     app = current_app()
@@ -78,6 +93,96 @@ def test_update_translated_title_keeps_etc_titles(monkeypatch):
 
     arangoload.update_translated_title()
 
-    assert execute.call_args_list[1].kwargs['bind_vars']['name'] == 'This Is Mine, etc. '
+    assert (
+        execute.call_args_list[1].kwargs['bind_vars']['name']
+        == 'This Is Mine, etc. '
+    )
 
+
+def test_update_text_extra_info_formats_pts_references(monkeypatch):
+    execute = Mock(side_effect=[[SN11_25_REFERENCE_DOC], None])
+    fake_db = Mock()
+    fake_db.aql.execute = execute
+
+    monkeypatch.setattr(arangoload.arangodb, 'get_db', lambda: fake_db)
+    monkeypatch.setattr(arangoload, 'json_load', lambda _: SN11_25_REFERENCE_TEXT)
+    monkeypatch.setattr(arangoload, 'tqdm', lambda items: items)
+
+    arangoload.update_text_extra_info()
+
+    assert len(execute.call_args_list) == 2
+    assert execute.call_args_list[1].args[0] == (
+        arangoload.UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE
+    )
+    assert execute.call_args_list[1].kwargs['bind_vars'] == {
+        'uid': 'sn11.25',
+        'ref': ' PTS (2nd ed) 1.515, PTS (2nd ed) 1.516',
+    }
+
+
+def test_update_text_extra_info_appends_alt_volpage(
+    data_load_app, monkeypatch
+):
+    with data_load_app.app_context():
+        run_migrations()
+        db = get_db()
+        collection = db.collection('text_extra_info')
+        collection.truncate()
+
+        try:
+            collection.insert({
+                'uid': 'sn11.25',
+                'acronym': None,
+                'alt_acronym': None,
+                'volpage': None,
+                'alt_volpage': 'PTS (2nd ed) SN i 514',
+                'alt_name': None,
+                'biblio_uid': None,
+            })
+
+            real_execute = db.aql.execute
+            fake_db = Mock()
+
+            def execute(query, *args, **kwargs):
+                if query == arangoload.BILARA_REFERENCES:
+                    return [SN11_25_REFERENCE_DOC]
+                return real_execute(query, *args, **kwargs)
+
+            fake_db.aql.execute = Mock(side_effect=execute)
+
+            monkeypatch.setattr(arangoload.arangodb, 'get_db', lambda: fake_db)
+            monkeypatch.setattr(
+                arangoload,
+                'json_load',
+                lambda _: SN11_25_REFERENCE_TEXT,
+            )
+            monkeypatch.setattr(arangoload, 'tqdm', lambda items: items)
+
+            arangoload.update_text_extra_info()
+
+            result = list(db.aql.execute(
+                'FOR doc IN text_extra_info '
+                'FILTER doc.uid == @uid '
+                'RETURN doc.alt_volpage',
+                bind_vars={'uid': 'sn11.25'}
+            ))
+
+            assert result == [
+                'PTS (2nd ed) SN i 514, PTS (2nd ed) 1.515, PTS (2nd ed) 1.516'
+            ]
+        finally:
+            collection.truncate()
+
+
+def test_alt_volpage_upsert_appends_refs_without_duplicates():
+    query = ' '.join(
+        arangoload.UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE.split()
+    )
+
+    assert 'OLD.alt_volpage' in query
+    assert (
+        "APPEND(SPLIT(OLD.alt_volpage, ','), SPLIT(@ref, ','), true)"
+        in query
+    )
+    assert "CONCAT_SEPARATOR( ',', OLD.alt_volpage" in query
 
