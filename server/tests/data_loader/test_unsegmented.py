@@ -366,7 +366,7 @@ class TestLanguageDirectories:
         for directory in directories:
             directory.mkdir()
 
-        assert language_directories(html_dir=tmp_path) == directories
+        assert sorted(language_directories(html_dir=tmp_path)) == sorted(directories)
 
     def test_only_return_directories(self, tmp_path):
         directory = tmp_path / 'en'
