@@ -214,7 +214,7 @@ class OtherEdges(Iterable):
 
     def edges(self) -> Iterator[dict]:
         first_encoding = self._entry.encodings[0]
-        second_encodings = drop_when_no_match(self._entry.encodings[1:])
+        second_encodings = list(drop_when_no_match(self._entry.encodings[1:]))
 
         for first_uid in first_encoding.matching_uids():
             for second_encoding in second_encodings:
