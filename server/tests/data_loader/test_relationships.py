@@ -117,8 +117,7 @@ class TestLoadRelationships:
         ('parallels', 'full'),
         ('retells', 'retelling'),
         ('mentions', 'mention'),
-    ]
-    )
+    ])
     def test_sets_edge_type(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
                             database, super_nav_details, relationship, entry_type, edge_type):
         super_nav_details.insert({'uid': 'abc123'})
@@ -129,6 +128,33 @@ class TestLoadRelationships:
         tracker.change_file(parallels_file)
         load_relationships(tracker, relationship_dir, additional_info_dir, database)
         assert next(relationship.all())['type'] == edge_type
+
+    @pytest.mark.parametrize('entry_type', ['retells', 'mentions'])
+    def test_expands_uid_range(self, file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file, database,
+                               super_nav_details, relationship, entry_type):
+        super_nav_details.insert({'uid': 'abc123'})
+        super_nav_details.insert({'uid': 'xyz321'})
+        super_nav_details.insert({'uid': 'an7.75'})
+        super_nav_details.insert({'uid': 'an7.76'})
+        super_nav_details.insert({'uid': 'pli-tv-pvr7'})
+        create_file(notes_file, [])
+
+        create_file(parallels_file, [
+            {'parallels': ['abc123', 'xyz321']},
+            {entry_type: ['an7.75-76', 'pli-tv-pvr7#97.1-#98.1']},
+        ])
+
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+        docs = tidy_relationship_docs(relationship)
+
+        assert [doc['_from'] for doc in docs] == [
+            'super_nav_details/abc123',
+            'super_nav_details/an7.75',
+            'super_nav_details/an7.76',
+            'super_nav_details/pli-tv-pvr7',
+            'super_nav_details/pli-tv-pvr7',
+            'super_nav_details/xyz321'
+        ]
 
 
 @pytest.mark.parametrize(
@@ -306,6 +332,12 @@ class TestParallelsEdges:
         edges = ParallelsEdges(entry, Remarks([]))
         assert [(edge['to'], edge['from']) for edge in edges] == [('has space', 'abc123')]
 
+    def test_expands_uid_range(self):
+        Encoding.load_uids({'an7.75', 'an7.76', 'pli-tv-pvr7'})
+        entry = Entry(EntryType.PARALLELS, ['an7.75-76', 'pli-tv-pvr7#97.1-#98.1'])
+        edges = ParallelsEdges(entry, Remarks([]))
+        assert [edge['_from'] for edge in edges] == ['an7.75', 'an7.76', 'pli-tv-pvr7', 'pli-tv-pvr7']
+
 
 class TestOtherEdges:
     @pytest.mark.parametrize('entry_type,edge_type', [
@@ -460,6 +492,13 @@ class TestOtherEdges:
     def test_external_uid(self, with_uids, entry, to_from):
         edges = OtherEdges(entry, Remarks([]))
         assert [(edge['to'], edge['from']) for edge in edges] == to_from
+
+    @pytest.mark.parametrize('entry_type', [EntryType.MENTIONS, EntryType.RETELLS])
+    def test_expands_uid_range(self, entry_type):
+        Encoding.load_uids({'an7.75', 'an7.76', 'pli-tv-pvr7'})
+        entry = Entry(entry_type, ['an7.75-76', 'pli-tv-pvr7#97.1-#98.1'])
+        edges = OtherEdges(entry, Remarks([]))
+        assert [edge['_from'] for edge in edges] == ['an7.75', 'pli-tv-pvr7', 'an7.76', 'pli-tv-pvr7']
 
 
 class TestRelationshipType:
