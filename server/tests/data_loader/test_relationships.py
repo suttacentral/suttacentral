@@ -10,8 +10,8 @@ from arango.database import StandardDatabase
 from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.ports import FileChangeTracker
-from data_loader.relationships import load_relationships, Encoding, Edge, ParallelsEdges, Entry, \
-    EntryType, EdgeType, to_edge_type, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched
+from data_loader.relationships import load_relationships, Encoding, Edge, Entry, \
+    EntryType, EdgeType, to_edge_type, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched, ParallelsEdges
 from fakes import FakeFileChangeTracker
 
 
@@ -416,7 +416,7 @@ class TestParallelsEdges:
     ])
     def test_encoding_combinations_give_from_uids(self, with_uids, entry, from_uids):
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
-        assert [edge['_from'] for edge in edges] == from_uids
+        assert sorted([edge['_from'] for edge in edges]) == sorted(from_uids)
 
     @pytest.mark.parametrize('entry,to_uids', [
         (Entry(EntryType.PARALLELS, ['abc123', 'xyz321', 'pqr777']),
@@ -427,7 +427,7 @@ class TestParallelsEdges:
     ])
     def test_encoding_combinations_give_to_uids(self, with_uids, entry, to_uids):
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
-        assert [edge['_to'] for edge in edges] == to_uids
+        assert sorted([edge['_to'] for edge in edges]) == sorted(to_uids)
 
     @pytest.mark.parametrize('entry,to_encoding,from_encoding', [
         (Entry(EntryType.PARALLELS, ['abc123', 'xyz321#654']), 'xyz321#654', 'abc123'),
@@ -498,6 +498,49 @@ class TestParallelsEdges:
         unmatched = Unmatched()
         _ = list(ParallelsEdges(entry, unmatched))
         assert unmatched.orphans == [Encoding('no_such_uid')]
+
+    @pytest.mark.parametrize('encodings,from_to', [
+        (
+                ['abc123', 'xyz321'],
+                [
+                    ('abc123', 'xyz321'), ('xyz321', 'abc123')
+                ]
+        ),
+        (
+                ['abc123', 'xyz321', 'pqr777'],
+                [
+                    ('abc123', 'xyz321'), ('abc123', 'pqr777'), ('xyz321', 'abc123'),
+                    ('xyz321', 'pqr777'), ('pqr777', 'abc123'), ('pqr777', 'xyz321'),
+                ]),
+    ])
+    def test_full_to_full_encodings(self, with_uids, encodings, from_to):
+        entry = Entry(EntryType.PARALLELS, encodings)
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
+
+    @pytest.mark.parametrize('encodings,from_to', [
+        (['abc123', '~xyz321'], [('abc123', 'xyz321')]),
+        (
+                ['abc123', 'xyz321', '~pqr777'],
+                [('abc123', 'xyz321'), ('abc123', 'pqr777'), ('xyz321', 'abc123'), ('xyz321', 'pqr777')],
+        ),
+        (
+                ['abc123', '~xyz321', '~pqr777'],
+                [('abc123', 'xyz321'), ('abc123', 'pqr777')],
+        ),
+    ])
+    def test_full_to_resembling_encodings(self, with_uids, encodings, from_to):
+        entry = Entry(EntryType.PARALLELS, encodings)
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
+
+    @pytest.mark.parametrize('entry, from_to', [
+        (Entry(EntryType.PARALLELS, ['abc123', 'no_such_uid']), [('abc123', 'no_such_uid')]),
+        (Entry(EntryType.PARALLELS, ['no_such_uid', 'abc123']), [('abc123', 'no_such_uid')]),
+    ])
+    def test_drops_unmatched_from_encodings(self, with_uids, entry, from_to):
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
 
 
 class TestOtherEdges:
