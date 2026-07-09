@@ -32,6 +32,9 @@ class Encoding:
     def __eq__(self, other: Self) -> bool:
         return self._encoding == other._encoding
 
+    def __hash__(self) -> int:
+        return hash(self._encoding)
+
     def matching_uids(self) -> list[str]:
         return self._matcher.get_matching_uids(self._encoding)
 
@@ -183,22 +186,22 @@ class Edge:
 
 class Unmatched:
     def __init__(self):
-        self._dropped: list[Encoding] = []
-        self._orphans: list[Encoding] = []
+        self._dropped: set[Encoding] = set()
+        self._orphans: set[Encoding] = set()
 
     @property
-    def dropped(self) -> list[Encoding]:
+    def dropped(self) -> set[Encoding]:
         return self._dropped
 
     @property
-    def orphans(self) -> list[Encoding]:
+    def orphans(self) -> set[Encoding]:
         return self._orphans
 
     def add_dropped(self, encoding: Encoding) -> None:
-        self._dropped.append(encoding)
+        self._dropped.add(encoding)
 
     def add_orphan(self, encoding: Encoding) -> None:
-        self._orphans.append(encoding)
+        self._orphans.add(encoding)
 
     def log(self) -> None:
         for encoding in self._dropped:
