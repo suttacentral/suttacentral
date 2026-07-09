@@ -488,7 +488,7 @@ class TestParallelsEdges:
     def test_stores_dropped_encodings(self, with_uids, entry):
         unmatched = Unmatched()
         _ = list(ParallelsEdges(entry, unmatched))
-        assert unmatched.dropped == [Encoding('no_such_uid')]
+        assert unmatched.dropped == {Encoding('no_such_uid')}
 
     @pytest.mark.parametrize('entry', [
         (Entry(EntryType.PARALLELS, ['abc123', 'no_such_uid'])),
@@ -497,7 +497,7 @@ class TestParallelsEdges:
     def test_stores_orphan_encodings(self, with_uids, entry):
         unmatched = Unmatched()
         _ = list(ParallelsEdges(entry, unmatched))
-        assert unmatched.orphans == [Encoding('no_such_uid')]
+        assert unmatched.orphans == {Encoding('no_such_uid')}
 
     @pytest.mark.parametrize('encodings,from_to', [
         (
@@ -695,7 +695,7 @@ class TestOtherEdges:
     def test_stores_dropped_encodings(self, with_uids, entry):
         unmatched = Unmatched()
         _ = list(OtherEdges(entry, unmatched))
-        assert unmatched.dropped == [Encoding('no_such_uid')]
+        assert unmatched.dropped == {Encoding('no_such_uid')}
 
 
 class TestEntry:
