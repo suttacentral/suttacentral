@@ -66,32 +66,30 @@ class Encoding:
         return self._encoding.lstrip('~').split('-')[0]
 
 
-class EntryType(StrEnum):
-    PARALLELS = 'parallels'
-    MENTIONS = 'mentions'
-    RETELLS = 'retells'
-
-
 class EdgeType(StrEnum):
     FULL = 'full'
     MENTION = 'mention'
     RETELLING = 'retelling'
 
 
-def to_edge_type(entry_type: EntryType) -> EdgeType:
-    edge_types = {
-        EntryType.PARALLELS: EdgeType.FULL,
-        EntryType.MENTIONS: EdgeType.MENTION,
-        EntryType.RETELLS: EdgeType.RETELLING,
-    }
+class EntryType(StrEnum):
+    PARALLELS = 'parallels'
+    MENTIONS = 'mentions'
+    RETELLS = 'retells'
 
-    return edge_types[entry_type]
+    def to_edge_type(self) -> EdgeType:
+        edge_types = {
+            EntryType.PARALLELS: EdgeType.FULL,
+            EntryType.MENTIONS: EdgeType.MENTION,
+            EntryType.RETELLS: EdgeType.RETELLING,
+        }
+
+        return edge_types[self]
 
 
 class Entry:
     def __init__(self, entry_type: str, encodings: list[str]):
         self._entry_type = EntryType(entry_type)
-        self._edge_type = to_edge_type(self._entry_type)
         self._encodings = [Encoding(encoding) for encoding in encodings]
 
     @property
@@ -100,7 +98,7 @@ class Entry:
 
     @property
     def edge_type(self) -> EdgeType:
-        return self._edge_type
+        return self.entry_type.to_edge_type()
 
     @property
     def encodings(self) -> list[Encoding]:
