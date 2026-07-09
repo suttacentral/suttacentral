@@ -98,150 +98,102 @@ def with_remarks():
     Edge.load_remarks([])
 
 
-class TestUnmatched:
-    def test_logs_dropped(self, caplog):
-        unmatched = Unmatched()
-        unmatched.add_dropped(Encoding('abc123'))
-        unmatched.log()
-        assert caplog.messages == ['Relationship encoding has no matching uids: abc123 (dropped)']
+class TestEncoding:
+    @pytest.fixture
+    def with_uids(self):
+        Encoding.load_uids({'abc123'})
 
-    def test_logs_orphans(self, caplog):
-        caplog.set_level(logging.INFO)
-        unmatched = Unmatched()
-        unmatched.add_orphan(Encoding('abc123'))
-        unmatched.log()
-        assert caplog.messages == ['Relationship to encoding could not be matched: abc123 (appears as orphan)']
+    def test_to_string(self, with_uids):
+        assert str(Encoding('~abc123')) == '~abc123'
 
+    def test_has_matching_uids(self, with_uids):
+        encoding = Encoding('abc123')
+        assert encoding.matching_uids() == ['abc123']
 
-class TestLoadRelationships:
-    def test_skip_when_files_unchanged(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                                       database, super_nav_details, relationship):
-        tracker = FakeFileChangeTracker()
-        load_relationships(tracker, relationship_dir, additional_info_dir, database)
-        assert len(relationship) == 0
+    @pytest.mark.parametrize('encoding,is_resembling', [('abc123', False), ('~abc123', True)])
+    def test_not_resembling(self, with_uids, encoding, is_resembling):
+        assert Encoding(encoding).is_resembling() == is_resembling
 
-    def test_load_when_parallels_have_changed(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                                              database, super_nav_details, relationship):
-        super_nav_details.insert({'uid': 'abc123'})
-        super_nav_details.insert({'uid': 'xyz321'})
-        create_file(notes_file, [])
-        create_file(parallels_file, [{'parallels': ['abc123', 'xyz321']}])
-        tracker = FakeFileChangeTracker()
-        tracker.change_file(parallels_file)
-        load_relationships(tracker, relationship_dir, additional_info_dir, database)
-        assert len(relationship) == 2
+    @pytest.mark.parametrize('encoding,is_external', [('abc123', False), ('Has space', True)])
+    def test_not_resembling(self, with_uids, encoding, is_external):
+        assert Encoding(encoding).is_external() == is_external
 
-    def test_load_when_notes_have_changed(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                                          database, super_nav_details, relationship):
-        super_nav_details.insert({'uid': 'abc123'})
-        super_nav_details.insert({'uid': 'xyz321'})
-        create_file(notes_file, [])
-        create_file(parallels_file, [{'parallels': ['abc123', 'xyz321']}])
-        tracker = FakeFileChangeTracker()
-        tracker.change_file(notes_file)
-        load_relationships(tracker, relationship_dir, additional_info_dir, database)
-        assert len(relationship) == 2
+    @pytest.mark.parametrize('encoding,number', [('abc123', 123), ('abc', 0)])
+    def test_number(self, encoding, number):
+        assert Encoding(encoding).number() == number
 
-    @pytest.mark.parametrize('entry_type,edge_type', [
-        ('parallels', 'full'),
-        ('retells', 'retelling'),
-        ('mentions', 'mention'),
-    ])
-    def test_sets_edge_type(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                            database, super_nav_details, relationship, entry_type, edge_type):
-        super_nav_details.insert({'uid': 'abc123'})
-        super_nav_details.insert({'uid': 'xyz321'})
-        create_file(notes_file, [])
-        create_file(parallels_file, [{entry_type: ['abc123', 'xyz321']}])
-        tracker = FakeFileChangeTracker()
-        tracker.change_file(parallels_file)
-        load_relationships(tracker, relationship_dir, additional_info_dir, database)
-        assert next(relationship.all())['type'] == edge_type
+    @pytest.mark.parametrize('encoding,stripped', [('abc123', 'abc123'), ('~abc123', 'abc123')])
+    def test_strip_resembling(self, encoding, stripped):
+        assert Encoding(encoding).strip_resembling() == stripped
 
-    @pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
-    def test_expands_uid_range(self, file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                               database,
-                               super_nav_details, relationship, entry_type):
-        super_nav_details.insert({'uid': 'an7.75'})
-        super_nav_details.insert({'uid': 'an7.76'})
-        super_nav_details.insert({'uid': 'pli-tv-pvr7'})
-        create_file(notes_file, [])
-
-        create_file(parallels_file, [
-            {entry_type: ['an7.75-76', 'pli-tv-pvr7#97.1-#98.1']},
+    @pytest.mark.parametrize(
+        'encoding,first_part',
+        [
+            ('abc123', 'abc123'),
+            ('~abc123', 'abc123'),
+            ('abc-123', 'abc'),
+            ('~abc-123', 'abc'),
         ])
+    def test_first_part(self, encoding, first_part):
+        assert Encoding(encoding).first_part() == first_part
 
-        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-        docs = tidy_relationship_docs(relationship)
-
-        assert [doc['_from'] for doc in docs] == [
-            'super_nav_details/an7.75',
-            'super_nav_details/an7.76',
-            'super_nav_details/pli-tv-pvr7',
-            'super_nav_details/pli-tv-pvr7'
+    @pytest.mark.parametrize(
+        'encoding,has_matching_uid',
+        [
+            ('abc123', True),
+            ('xyz321', False),
+            ('contains space', True),
         ]
+    )
+    def test_has_matching_uid(self, encoding, has_matching_uid):
+        assert Encoding(encoding).has_matching_uid() is has_matching_uid
 
-    @pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
-    def test_adds_remarks(self, file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
-                          database, super_nav_details, relationship, entry_type):
-        super_nav_details.insert({'uid': 'abc123'})
-        super_nav_details.insert({'uid': 'xyz321'})
-        create_file(notes_file, [{'relations': ['abc123', 'xyz321'], 'remark': 'Remarkable'}])
-        create_file(parallels_file, [{entry_type: ['abc123', 'xyz321']}])
-        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-        docs = tidy_relationship_docs(relationship)
-        assert [doc['remark'] for doc in docs] == ['Remarkable', 'Remarkable']
 
-    @pytest.mark.parametrize('entry_data', [
-        [{"parallels": ['abc123', 'no_such_uid']}],
-        [{"parallels": ['no_such_uid', 'abc321']}],
+class TestToEdgeType:
+    @pytest.mark.parametrize('entry,relationship', [
+        (EntryType.PARALLELS, EdgeType.FULL),
+        (EntryType.MENTIONS, EdgeType.MENTION),
+        (EntryType.RETELLS, EdgeType.RETELLING),
     ])
-    def test_logs_parallels_unmatched_encodings(self, file_changed, relationship_dir, additional_info_dir,
-                                                parallels_file, notes_file, database, super_nav_details, relationship,
-                                                entry_data, caplog):
-        caplog.set_level(logging.INFO)
-        super_nav_details.insert({'uid': 'abc123'})
-        create_file(notes_file, [])
-        create_file(parallels_file, entry_data)
-        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+    def test_converts_types(self, entry, relationship):
+        assert to_edge_type(entry) == relationship
 
-        # We get two messages because we create two edges. Where the from encoding
-        # has no matching uids we drop it, for the to encoding we create an orphan.
-        assert sorted(caplog.messages) == sorted([
-            'Relationship encoding has no matching uids: no_such_uid (dropped)',
-            'Relationship to encoding could not be matched: no_such_uid (appears as orphan)'
-        ])
 
-    @pytest.mark.parametrize('entry_data', [
-        [{"mentions": ['abc123', 'no_such_uid']}],
-        [{"retells": ['abc123', 'no_such_uid']}],
+class TestEntry:
+    def test_entry_type(self):
+        assert Entry('parallels', ['abc123', 'xyz321']).entry_type == 'parallels'
+
+    def test_edge_type(self):
+        assert Entry('parallels', ['abc123', 'xyz321']).edge_type == 'full'
+
+    def test_encodings(self):
+        assert Entry('parallels', ['abc123', 'xyz321']).encodings == [Encoding('abc123'), Encoding('xyz321')]
+
+    def test_invalid_entry_type(self):
+        with pytest.raises(ValueError, match='extrudes'):
+            _ = Entry('extrudes', ['abc123', 'xyz321'])
+
+
+class TestRemarks:
+    def test_no_remark_when_both_missing(self):
+        remarks = Remarks([])
+        assert remarks.lookup(('abc123', 'xyz321')) is None
+
+    def test_get_remark_for_relation(self):
+        remarks = Remarks([{'relations': ['abc123', 'xyz321'], 'remark': 'Remarkable'}])
+        assert remarks.lookup(('abc123', 'xyz321')) == 'Remarkable'
+
+    def test_reverse_order_of_uid_retrieves_remark(self):
+        remarks = Remarks([{'relations': ['abc123', 'xyz321'], 'remark': 'Remarkable'}])
+        assert remarks.lookup(('xyz321', 'abc123')) == 'Remarkable'
+
+    @pytest.mark.parametrize('data', [
+        [{'relations': ['abc123', 'unrelated'], 'remark': 'Remarkable.'}],
+        [{'relations': ['unrelated', 'xyz123'], 'remark': 'Remarkable.'}],
     ])
-    def test_logs_other_unmatched_encodings(self, file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                            notes_file, database, super_nav_details, relationship, entry_data, caplog):
-        caplog.set_level(logging.INFO)
-        super_nav_details.insert({'uid': 'abc123'})
-        create_file(notes_file, [])
-        create_file(parallels_file, entry_data)
-        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-
-        assert sorted(caplog.messages) == sorted([
-            'Relationship encoding has no matching uids: no_such_uid (dropped)',
-        ])
-
-    def test_empties_collection_before_load(self, file_changed, relationship_dir, additional_info_dir, parallels_file,
-                                            notes_file, database, super_nav_details, relationship):
-        super_nav_details.insert({'uid': 'abc123'})
-        super_nav_details.insert({'uid': 'xyz321'})
-        super_nav_details.insert({'uid': 'pqr777'})
-        super_nav_details.insert({'uid': 'stu888'})
-        create_file(notes_file, [])
-        create_file(parallels_file, [{'parallels': ['abc123', 'xyz321']}])
-        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-        create_file(parallels_file, [{'parallels': ['pqr777', 'stu888']}])
-        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
-        docs = tidy_relationship_docs(relationship)
-        from_to = [(doc['from'], doc['to']) for doc in docs]
-        assert from_to == [('pqr777', 'stu888'), ('stu888', 'pqr777')]
+    def test_unrelated_remarks_not_retrieved(self, data):
+        remarks = Remarks(data)
+        assert remarks.lookup(('abc123', 'xyz123')) is None
 
 
 class TestEdge:
@@ -344,6 +296,21 @@ class TestEdge:
         uids = EdgeUids(from_uid, to_uid)
         encodings = EdgeEncodings(Encoding('abc123'), Encoding('xyz321'))
         assert Edge(edge_type, encodings, uids).as_dict()['remark'] == remark
+
+
+class TestUnmatched:
+    def test_logs_dropped(self, caplog):
+        unmatched = Unmatched()
+        unmatched.add_dropped(Encoding('abc123'))
+        unmatched.log()
+        assert caplog.messages == ['Relationship encoding has no matching uids: abc123 (dropped)']
+
+    def test_logs_orphans(self, caplog):
+        caplog.set_level(logging.INFO)
+        unmatched = Unmatched()
+        unmatched.add_orphan(Encoding('abc123'))
+        unmatched.log()
+        assert caplog.messages == ['Relationship to encoding could not be matched: abc123 (appears as orphan)']
 
 
 class TestParallelsEdges:
@@ -698,99 +665,132 @@ class TestOtherEdges:
         assert unmatched.dropped == {Encoding('no_such_uid')}
 
 
-class TestEntry:
-    def test_entry_type(self):
-        assert Entry('parallels', ['abc123', 'xyz321']).entry_type == 'parallels'
+class TestLoadRelationships:
+    def test_skip_when_files_unchanged(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                                       database, super_nav_details, relationship):
+        tracker = FakeFileChangeTracker()
+        load_relationships(tracker, relationship_dir, additional_info_dir, database)
+        assert len(relationship) == 0
 
-    def test_edge_type(self):
-        assert Entry('parallels', ['abc123', 'xyz321']).edge_type == 'full'
+    def test_load_when_parallels_have_changed(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                                              database, super_nav_details, relationship):
+        super_nav_details.insert({'uid': 'abc123'})
+        super_nav_details.insert({'uid': 'xyz321'})
+        create_file(notes_file, [])
+        create_file(parallels_file, [{'parallels': ['abc123', 'xyz321']}])
+        tracker = FakeFileChangeTracker()
+        tracker.change_file(parallels_file)
+        load_relationships(tracker, relationship_dir, additional_info_dir, database)
+        assert len(relationship) == 2
 
-    def test_encodings(self):
-        assert Entry('parallels', ['abc123', 'xyz321']).encodings == [Encoding('abc123'), Encoding('xyz321')]
+    def test_load_when_notes_have_changed(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                                          database, super_nav_details, relationship):
+        super_nav_details.insert({'uid': 'abc123'})
+        super_nav_details.insert({'uid': 'xyz321'})
+        create_file(notes_file, [])
+        create_file(parallels_file, [{'parallels': ['abc123', 'xyz321']}])
+        tracker = FakeFileChangeTracker()
+        tracker.change_file(notes_file)
+        load_relationships(tracker, relationship_dir, additional_info_dir, database)
+        assert len(relationship) == 2
 
-    def test_invalid_entry_type(self):
-        with pytest.raises(ValueError, match='extrudes'):
-            _ = Entry('extrudes', ['abc123', 'xyz321'])
+    @pytest.mark.parametrize('entry_type,edge_type', [
+        ('parallels', 'full'),
+        ('retells', 'retelling'),
+        ('mentions', 'mention'),
+    ])
+    def test_sets_edge_type(self, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                            database, super_nav_details, relationship, entry_type, edge_type):
+        super_nav_details.insert({'uid': 'abc123'})
+        super_nav_details.insert({'uid': 'xyz321'})
+        create_file(notes_file, [])
+        create_file(parallels_file, [{entry_type: ['abc123', 'xyz321']}])
+        tracker = FakeFileChangeTracker()
+        tracker.change_file(parallels_file)
+        load_relationships(tracker, relationship_dir, additional_info_dir, database)
+        assert next(relationship.all())['type'] == edge_type
 
+    @pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
+    def test_expands_uid_range(self, file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                               database,
+                               super_nav_details, relationship, entry_type):
+        super_nav_details.insert({'uid': 'an7.75'})
+        super_nav_details.insert({'uid': 'an7.76'})
+        super_nav_details.insert({'uid': 'pli-tv-pvr7'})
+        create_file(notes_file, [])
 
-class TestEncoding:
-    @pytest.fixture
-    def with_uids(self):
-        Encoding.load_uids({'abc123'})
-
-    def test_to_string(self, with_uids):
-        assert str(Encoding('~abc123')) == '~abc123'
-
-    def test_has_matching_uids(self, with_uids):
-        encoding = Encoding('abc123')
-        assert encoding.matching_uids() == ['abc123']
-
-    @pytest.mark.parametrize('encoding,is_resembling', [('abc123', False), ('~abc123', True)])
-    def test_not_resembling(self, with_uids, encoding, is_resembling):
-        assert Encoding(encoding).is_resembling() == is_resembling
-
-    @pytest.mark.parametrize('encoding,is_external', [('abc123', False), ('Has space', True)])
-    def test_not_resembling(self, with_uids, encoding, is_external):
-        assert Encoding(encoding).is_external() == is_external
-
-    @pytest.mark.parametrize('encoding,number', [('abc123', 123), ('abc', 0)])
-    def test_number(self, encoding, number):
-        assert Encoding(encoding).number() == number
-
-    @pytest.mark.parametrize('encoding,stripped', [('abc123', 'abc123'), ('~abc123', 'abc123')])
-    def test_strip_resembling(self, encoding, stripped):
-        assert Encoding(encoding).strip_resembling() == stripped
-
-    @pytest.mark.parametrize(
-        'encoding,first_part',
-        [
-            ('abc123', 'abc123'),
-            ('~abc123', 'abc123'),
-            ('abc-123', 'abc'),
-            ('~abc-123', 'abc'),
+        create_file(parallels_file, [
+            {entry_type: ['an7.75-76', 'pli-tv-pvr7#97.1-#98.1']},
         ])
-    def test_first_part(self, encoding, first_part):
-        assert Encoding(encoding).first_part() == first_part
 
-    @pytest.mark.parametrize(
-        'encoding,has_matching_uid',
-        [
-            ('abc123', True),
-            ('xyz321', False),
-            ('contains space', True),
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+        docs = tidy_relationship_docs(relationship)
+
+        assert [doc['_from'] for doc in docs] == [
+            'super_nav_details/an7.75',
+            'super_nav_details/an7.76',
+            'super_nav_details/pli-tv-pvr7',
+            'super_nav_details/pli-tv-pvr7'
         ]
-    )
-    def test_has_matching_uid(self, encoding, has_matching_uid):
-        assert Encoding(encoding).has_matching_uid() is has_matching_uid
 
+    @pytest.mark.parametrize('entry_type', ['parallels', 'retells', 'mentions'])
+    def test_adds_remarks(self, file_changed, relationship_dir, additional_info_dir, parallels_file, notes_file,
+                          database, super_nav_details, relationship, entry_type):
+        super_nav_details.insert({'uid': 'abc123'})
+        super_nav_details.insert({'uid': 'xyz321'})
+        create_file(notes_file, [{'relations': ['abc123', 'xyz321'], 'remark': 'Remarkable'}])
+        create_file(parallels_file, [{entry_type: ['abc123', 'xyz321']}])
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+        docs = tidy_relationship_docs(relationship)
+        assert [doc['remark'] for doc in docs] == ['Remarkable', 'Remarkable']
 
-class TestRemarks:
-    def test_no_remark_when_both_missing(self):
-        remarks = Remarks([])
-        assert remarks.lookup(('abc123', 'xyz321')) is None
-
-    def test_get_remark_for_relation(self):
-        remarks = Remarks([{'relations': ['abc123', 'xyz321'], 'remark': 'Remarkable'}])
-        assert remarks.lookup(('abc123', 'xyz321')) == 'Remarkable'
-
-    def test_reverse_order_of_uid_retrieves_remark(self):
-        remarks = Remarks([{'relations': ['abc123', 'xyz321'], 'remark': 'Remarkable'}])
-        assert remarks.lookup(('xyz321', 'abc123')) == 'Remarkable'
-
-    @pytest.mark.parametrize('data', [
-        [{'relations': ['abc123', 'unrelated'], 'remark': 'Remarkable.'}],
-        [{'relations': ['unrelated', 'xyz123'], 'remark': 'Remarkable.'}],
+    @pytest.mark.parametrize('entry_data', [
+        [{"parallels": ['abc123', 'no_such_uid']}],
+        [{"parallels": ['no_such_uid', 'abc321']}],
     ])
-    def test_unrelated_remarks_not_retrieved(self, data):
-        remarks = Remarks(data)
-        assert remarks.lookup(('abc123', 'xyz123')) is None
+    def test_logs_parallels_unmatched_encodings(self, file_changed, relationship_dir, additional_info_dir,
+                                                parallels_file, notes_file, database, super_nav_details, relationship,
+                                                entry_data, caplog):
+        caplog.set_level(logging.INFO)
+        super_nav_details.insert({'uid': 'abc123'})
+        create_file(notes_file, [])
+        create_file(parallels_file, entry_data)
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
 
+        # We get two messages because we create two edges. Where the from encoding
+        # has no matching uids we drop it, for the to encoding we create an orphan.
+        assert sorted(caplog.messages) == sorted([
+            'Relationship encoding has no matching uids: no_such_uid (dropped)',
+            'Relationship to encoding could not be matched: no_such_uid (appears as orphan)'
+        ])
 
-class TestRelationshipType:
-    @pytest.mark.parametrize('entry,relationship', [
-        (EntryType.PARALLELS, EdgeType.FULL),
-        (EntryType.MENTIONS, EdgeType.MENTION),
-        (EntryType.RETELLS, EdgeType.RETELLING),
+    @pytest.mark.parametrize('entry_data', [
+        [{"mentions": ['abc123', 'no_such_uid']}],
+        [{"retells": ['abc123', 'no_such_uid']}],
     ])
-    def test_converts_types(self, entry, relationship):
-        assert to_edge_type(entry) == relationship
+    def test_logs_other_unmatched_encodings(self, file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                            notes_file, database, super_nav_details, relationship, entry_data, caplog):
+        caplog.set_level(logging.INFO)
+        super_nav_details.insert({'uid': 'abc123'})
+        create_file(notes_file, [])
+        create_file(parallels_file, entry_data)
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+
+        assert sorted(caplog.messages) == sorted([
+            'Relationship encoding has no matching uids: no_such_uid (dropped)',
+        ])
+
+    def test_empties_collection_before_load(self, file_changed, relationship_dir, additional_info_dir, parallels_file,
+                                            notes_file, database, super_nav_details, relationship):
+        super_nav_details.insert({'uid': 'abc123'})
+        super_nav_details.insert({'uid': 'xyz321'})
+        super_nav_details.insert({'uid': 'pqr777'})
+        super_nav_details.insert({'uid': 'stu888'})
+        create_file(notes_file, [])
+        create_file(parallels_file, [{'parallels': ['abc123', 'xyz321']}])
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+        create_file(parallels_file, [{'parallels': ['pqr777', 'stu888']}])
+        load_relationships(file_changed, relationship_dir, additional_info_dir, database)
+        docs = tidy_relationship_docs(relationship)
+        from_to = [(doc['from'], doc['to']) for doc in docs]
+        assert from_to == [('pqr777', 'stu888'), ('stu888', 'pqr777')]
