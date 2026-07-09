@@ -210,55 +210,34 @@ class Unmatched:
 
 class ParallelsEdges(Iterable):
     def __init__(self, entry: Entry, unmatched: Unmatched):
-        self._entry = entry
+        self._edge_type = entry.edge_type
+        self._full_encodings = [encoding for encoding in entry.encodings if not encoding.is_resembling()]
+        self._resembling_encodings = [encoding for encoding in entry.encodings if encoding.is_resembling()]
         self._unmatched = unmatched
 
     def __iter__(self) -> Iterator[Edge]:
-        return self._all_edges()
+        return (
+            Edge(self._edge_type, edge_encodings, edge_uids)
+            for edge_encodings in drop_unmatched_from(self._edge_encodings(), self._unmatched)
+            for edge_uids in self._uids(edge_encodings)
+        )
 
-    def _all_edges(self) -> Iterator[Edge]:
-        filtered = self._drop_unmatched(self._all_edge_encodings())
-        for edge_encodings in filtered:
-            for edge_uids in self._uids(edge_encodings):
-                yield Edge(self._entry.edge_type, edge_encodings, edge_uids)
-
-    def _drop_unmatched(self, edge_encodings: Iterable[EdgeEncodings]) -> Iterator[EdgeEncodings]:
-        for encodings in edge_encodings:
-            if encodings.from_.has_matching_uid():
-                yield encodings
-            else:
-                self._unmatched.add_dropped(encodings.from_)
-
-    def _all_edge_encodings(self) -> Iterator[EdgeEncodings]:
+    def _edge_encodings(self) -> Iterator[EdgeEncodings]:
         yield from self._full_to_full()
         yield from self._full_to_full_reversed()
         yield from self._full_to_resembling()
 
     def _full_to_full(self) -> Iterator[EdgeEncodings]:
-        return (
-            EdgeEncodings(from_, to)
-            for from_, to in combinations(self._full_encodings(), 2)
-        )
+        return (EdgeEncodings(from_, to) for from_, to in combinations(self._full_encodings, 2))
 
     def _full_to_full_reversed(self) -> Iterator[EdgeEncodings]:
-        for edge_encodings in self._full_to_full():
-            yield edge_encodings.reversed()
+        return (edge_encodings.reversed() for edge_encodings in self._full_to_full())
 
     def _full_to_resembling(self) -> Iterator[EdgeEncodings]:
-        for from_ in self._full_encodings():
-            for to in self._resembling_encodings():
-                yield EdgeEncodings(from_, to)
-
-    def _full_encodings(self) -> Iterator[Encoding]:
         return (
-            encoding for encoding in self._entry.encodings
-            if not encoding.is_resembling()
-        )
-
-    def _resembling_encodings(self) -> Iterator[Encoding]:
-        return (
-            encoding for encoding in self._entry.encodings
-            if encoding.is_resembling()
+            EdgeEncodings(from_, to)
+            for from_ in self._full_encodings
+            for to in self._resembling_encodings
         )
 
     def _uids(self, encodings: EdgeEncodings) -> Iterator[EdgeUids]:
@@ -270,6 +249,14 @@ class ParallelsEdges(Iterable):
             to_uids = ['orphan']
 
         return (EdgeUids(*uids) for uids in product(from_uids, to_uids))
+
+
+def drop_unmatched_from(edge_encodings: Iterable[EdgeEncodings], unmatched: Unmatched) -> Iterator[EdgeEncodings]:
+    for encodings in edge_encodings:
+        if encodings.from_.has_matching_uid():
+            yield encodings
+        else:
+            unmatched.add_dropped(encodings.from_)
 
 
 class OtherEdges(Iterable):
