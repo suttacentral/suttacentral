@@ -11,7 +11,7 @@ from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.ports import FileChangeTracker
 from data_loader.relationships import load_relationships, Encoding, Edge, Entry, \
-    EntryType, EdgeType, to_edge_type, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched, ParallelsEdges
+    EntryType, EdgeType, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched, ParallelsEdges
 from fakes import FakeFileChangeTracker
 
 
@@ -149,14 +149,14 @@ class TestEncoding:
         assert Encoding(encoding).has_matching_uid() is has_matching_uid
 
 
-class TestToEdgeType:
+class TestEntryType:
     @pytest.mark.parametrize('entry,relationship', [
         (EntryType.PARALLELS, EdgeType.FULL),
         (EntryType.MENTIONS, EdgeType.MENTION),
         (EntryType.RETELLS, EdgeType.RETELLING),
     ])
     def test_converts_types(self, entry, relationship):
-        assert to_edge_type(entry) == relationship
+        assert entry.to_edge_type() == relationship
 
 
 class TestEntry:
