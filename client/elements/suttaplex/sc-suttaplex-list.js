@@ -121,11 +121,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   }
 
   isPatimokkha() {
-    return this.categoryId?.endsWith('-pm');
+    return this.categoryId?.endsWith('-pm') || this.categoryId?.endsWith('-pm-2');
   }
 
   isPatimokkhaRuleCategory(uid) {
-    return uid?.includes('-pm-');
+    return uid?.includes('-pm-') && !uid?.endsWith('-pm-2');
   }
 
   shouldExpandAll() {
@@ -554,11 +554,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
   _correctAndRedirectRootURL() {
     ['sutta', 'vinaya', 'abhidhamma'].forEach(this._redirectToPitaka.bind(this));
   }
-  
+
   _redirectToPitaka(section) {
     const currentUrl = window.location.href;
     const domain = window.location.origin;
-  
+
     if (currentUrl.includes(`${domain}/${section}`) && !currentUrl.includes(`${domain}/pitaka/${section}`)) {
       const link = currentUrl.replace(`${domain}/${section}`, `${domain}/pitaka/${section}`);
       dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
