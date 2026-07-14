@@ -1,5 +1,6 @@
 import json
 import logging
+from itertools import repeat
 from pathlib import Path
 from typing import Any
 
@@ -11,7 +12,7 @@ from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.ports import FileChangeTracker
 from data_loader.relationships import load_relationships, Encoding, Edge, Entry, \
-    EntryType, EdgeType, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched, ParallelsEdges
+    EntryType, EdgeType, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched, ParallelsEdges, entries_to_edges
 from fakes import FakeFileChangeTracker
 
 
@@ -794,3 +795,17 @@ class TestLoadRelationships:
         docs = tidy_relationship_docs(relationship)
         from_to = [(doc['from'], doc['to']) for doc in docs]
         assert from_to == [('pqr777', 'stu888'), ('stu888', 'pqr777')]
+
+
+class TestEntriesToEdges:
+    def test_one_entry(self):
+        entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
+        edges = [edge.as_dict() for edge in entries_to_edges([entry], Unmatched())]
+        from_to = [(edge['from'], edge['to']) for edge in edges]
+        assert from_to == [('abc123', 'xyz321'), ('xyz321', 'abc123')]
+
+    def test_yields_right_number_of_edges(self):
+        two_edge_entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
+        entries = repeat(two_edge_entry, 5)
+        edges = list(entries_to_edges(entries, Unmatched()))
+        assert len(edges) == 10

@@ -330,24 +330,12 @@ def load_relationships(change_tracker: FileChangeTracker, relationship_dir: Path
 
 def import_entries(db: StandardDatabase, entries: list[Entry], unmatched: Unmatched) -> None:
     db['relationship'].truncate()
-    for entry in tqdm(entries):
-        edges = edges_for_entry(entry, unmatched)
-        for chunk in edge_chunks(edges):
-            write_chunk(db, chunk)
+    edges = entries_to_edges(tqdm(entries), unmatched)
+    for chunk in edge_chunks(edges):
+        write_chunk(db, chunk)
 
 
-def all_uids(db: StandardDatabase) -> set[str]:
-    return set(
-        db.aql.execute(
-            '''
-            FOR doc IN super_nav_details
-                RETURN doc.uid
-            '''
-        )
-    )
-
-
-def all_entries(relationship_data) -> list[Entry]:
+def all_entries(relationship_data: list[dict]) -> list[Entry]:
     return [
         Entry(entry_type, encodings)
         for entry_data in relationship_data
@@ -355,7 +343,12 @@ def all_entries(relationship_data) -> list[Entry]:
     ]
 
 
-def edges_for_entry(entry, unmatched):
+def entries_to_edges(entries: Iterable[Entry], unmatched: Unmatched) -> Iterator[Edge]:
+    for entry in entries:
+        yield from edges_for_entry(entry, unmatched)
+
+
+def edges_for_entry(entry: Entry, unmatched: Unmatched) -> Iterator[Edge]:
     if entry.entry_type == EntryType.PARALLELS:
         yield from ParallelsEdges(entry, unmatched)
     else:
@@ -373,4 +366,15 @@ def write_chunk(db: StandardDatabase, chunk: list[dict]):
         chunk,
         from_prefix='super_nav_details',
         to_prefix='super_nav_details'
+    )
+
+
+def all_uids(db: StandardDatabase) -> set[str]:
+    return set(
+        db.aql.execute(
+            '''
+            FOR doc IN super_nav_details
+                RETURN doc.uid
+            '''
+        )
     )
