@@ -301,7 +301,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
   }
 
   _isPatimokkha(uid) {
-    return uid.endsWith('-pm');
+    return uid.endsWith('-pm') || uid.endsWith('-pm-2');
   }
 
   _computeMenuApiUrl(uid) {
