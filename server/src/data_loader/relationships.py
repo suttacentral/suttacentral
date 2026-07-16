@@ -25,6 +25,7 @@ class Encoding:
 
     def __init__(self, encoding: str):
         self._encoding = encoding
+        self._matching_uids = self._matcher.get_matching_uids(self._encoding)
 
     def __str__(self) -> str:
         return self._encoding
@@ -36,7 +37,7 @@ class Encoding:
         return hash(self._encoding)
 
     def matching_uids(self) -> list[str]:
-        return self._matcher.get_matching_uids(self._encoding)
+        return self._matching_uids
 
     def is_resembling(self) -> bool:
         return self._encoding.startswith('~')

@@ -120,7 +120,8 @@ class TestEncoding:
         assert Encoding(encoding).is_external() == is_external
 
     @pytest.mark.parametrize('encoding,number', [('abc123', 123), ('abc', 0)])
-    def test_number(self, encoding, number):
+    def test_number(self, with_uids, encoding, number):
+        Encoding.load_uids({'abc123', 'abc'})
         assert Encoding(encoding).number() == number
 
     @pytest.mark.parametrize('encoding,stripped', [('abc123', 'abc123'), ('~abc123', 'abc123')])
@@ -344,20 +345,22 @@ class TestParallelsEdges:
         entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
         assert [edge.as_dict()['remark'] for edge in ParallelsEdges(entry, Unmatched())] == ['Remarkable', 'Remarkable']
 
-    @pytest.mark.parametrize('entry_data,numbers', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321']), [123, 321]),
-        (Entry(EntryType.PARALLELS, ['abc', 'xyz321']), [0, 321]),
+    @pytest.mark.parametrize('encodings,numbers', [
+        (['abc123', 'xyz321'], [123, 321]),
+        (['abc', 'xyz321'], [0, 321]),
     ])
-    def test_adds_numbers(self, with_uids, entry_data, numbers):
+    def test_adds_numbers(self, encodings, numbers):
         Encoding.load_uids({'abc123', 'xyz321', 'abc'})
-        edges = ParallelsEdges(entry_data, Unmatched())
+        entry = Entry(EntryType.PARALLELS, encodings)
+        edges = ParallelsEdges(entry, Unmatched())
         assert [edge.as_dict()['number'] for edge in edges] == numbers
 
-    @pytest.mark.parametrize('entry,_to', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'no_such_uid']), ['orphan']),
-        (Entry(EntryType.PARALLELS, ['no_such_uid', 'abc123']), ['orphan']),
+    @pytest.mark.parametrize('encodings,_to', [
+        (['abc123', 'no_such_uid'], ['orphan']),
+        (['no_such_uid', 'abc123'], ['orphan']),
     ])
-    def test_adds_orphan(self, with_uids, entry, _to):
+    def test_adds_orphan(self, with_uids, encodings, _to):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = ParallelsEdges(entry, Unmatched())
         assert [edge.as_dict()['_to'] for edge in edges] == _to
 
@@ -367,41 +370,43 @@ class TestParallelsEdges:
         resembling = [(edge['_to'], edge['_from'], edge['resembling']) for edge in edges]
         assert resembling == [('xyz321', 'abc123', False), ('abc123', 'xyz321', False)]
 
-    @pytest.mark.parametrize('entry,to_from_resembling', [
-        (Entry(EntryType.PARALLELS, ['abc123', '~xyz321']), [('xyz321', 'abc123', True)]),
-        (Entry(EntryType.PARALLELS, ['~xyz321', 'abc123']), [('xyz321', 'abc123', True)]),
+    @pytest.mark.parametrize('encodings,to_from_resembling', [
+        (['abc123', '~xyz321'], [('xyz321', 'abc123', True)]),
+        (['~xyz321', 'abc123'], [('xyz321', 'abc123', True)]),
     ])
-    def test_with_resembling_encodings(self, with_uids, entry, to_from_resembling):
+    def test_with_resembling_encodings(self, with_uids, encodings, to_from_resembling):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert [(edge['_to'], edge['_from'], edge['resembling']) for edge in edges] == to_from_resembling
 
-    @pytest.mark.parametrize('entry,from_uids', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321', 'pqr777']),
-         ['abc123', 'abc123', 'xyz321', 'xyz321', 'pqr777', 'pqr777']),
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321', '~pqr777']), ['abc123', 'abc123', 'xyz321', 'xyz321']),
-        (Entry(EntryType.PARALLELS, ['abc123', '~xyz321', '~pqr777']), ['abc123', 'abc123']),
-        (Entry(EntryType.PARALLELS, ['~abc123', '~xyz321', '~pqr777']), []),
+    @pytest.mark.parametrize('encodings,from_uids', [
+        (['abc123', 'xyz321', 'pqr777'], ['abc123', 'abc123', 'xyz321', 'xyz321', 'pqr777', 'pqr777']),
+        (['abc123', 'xyz321', '~pqr777'], ['abc123', 'abc123', 'xyz321', 'xyz321']),
+        (['abc123', '~xyz321', '~pqr777'], ['abc123', 'abc123']),
+        (['~abc123', '~xyz321', '~pqr777'], []),
     ])
-    def test_encoding_combinations_give_from_uids(self, with_uids, entry, from_uids):
+    def test_encoding_combinations_give_from_uids(self, with_uids, encodings, from_uids):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert sorted([edge['_from'] for edge in edges]) == sorted(from_uids)
 
-    @pytest.mark.parametrize('entry,to_uids', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321', 'pqr777']),
-         ['xyz321', 'pqr777', 'abc123', 'pqr777', 'abc123', 'xyz321']),
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321', '~pqr777']), ['xyz321', 'pqr777', 'abc123', 'pqr777']),
-        (Entry(EntryType.PARALLELS, ['abc123', '~xyz321', '~pqr777']), ['xyz321', 'pqr777']),
-        (Entry(EntryType.PARALLELS, ['~abc123', '~xyz321', '~pqr777']), []),
+    @pytest.mark.parametrize('encodings,to_uids', [
+        (['abc123', 'xyz321', 'pqr777'], ['xyz321', 'pqr777', 'abc123', 'pqr777', 'abc123', 'xyz321']),
+        (['abc123', 'xyz321', '~pqr777'], ['xyz321', 'pqr777', 'abc123', 'pqr777']),
+        (['abc123', '~xyz321', '~pqr777'], ['xyz321', 'pqr777']),
+        (['~abc123', '~xyz321', '~pqr777'], []),
     ])
-    def test_encoding_combinations_give_to_uids(self, with_uids, entry, to_uids):
+    def test_encoding_combinations_give_to_uids(self, with_uids, encodings, to_uids):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert sorted([edge['_to'] for edge in edges]) == sorted(to_uids)
 
-    @pytest.mark.parametrize('entry,to_encoding,from_encoding', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321#654']), 'xyz321#654', 'abc123'),
-        (Entry(EntryType.PARALLELS, ['xyz321#654', 'abc123']), 'abc123', 'xyz321#654'),
+    @pytest.mark.parametrize('encodings,to_encoding,from_encoding', [
+        (['abc123', 'xyz321#654'], 'xyz321#654', 'abc123'),
+        (['xyz321#654', 'abc123'], 'abc123', 'xyz321#654'),
     ])
-    def test_sectional_uids(self, with_uids, entry, to_encoding, from_encoding):
+    def test_sectional_uids(self, with_uids, encodings, to_encoding, from_encoding):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         to_from = [(edge['to'], edge['from']) for edge in edges]
         assert to_from == [(to_encoding, from_encoding), (from_encoding, to_encoding)]
@@ -431,38 +436,42 @@ class TestParallelsEdges:
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert [edge['_to'] for edge in edges] == to_uids
 
-    @pytest.mark.parametrize('entry,from_encodings', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321']), ['abc123', 'xyz321']),
-        (Entry(EntryType.PARALLELS, ['abc123', '~xyz321']), ['abc123']),
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321#1.2.3']), ['abc123', 'xyz321#1.2.3']),
+    @pytest.mark.parametrize('encodings,from_encodings', [
+        (['abc123', 'xyz321'], ['abc123', 'xyz321']),
+        (['abc123', '~xyz321'], ['abc123']),
+        (['abc123', 'xyz321#1.2.3'], ['abc123', 'xyz321#1.2.3']),
     ])
-    def test_sets_from_encoding(self, with_uids, entry, from_encodings):
+    def test_sets_from_encoding(self, with_uids, encodings, from_encodings):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert [edge['from'] for edge in edges] == from_encodings
 
-    @pytest.mark.parametrize('entry,to_encodings', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321']), ['xyz321', 'abc123']),
-        (Entry(EntryType.PARALLELS, ['abc123', '~xyz321']), ['xyz321']),
-        (Entry(EntryType.PARALLELS, ['abc123', 'xyz321#1.2.3']), ['xyz321#1.2.3', 'abc123']),
+    @pytest.mark.parametrize('encodings,to_encodings', [
+        (['abc123', 'xyz321'], ['xyz321', 'abc123']),
+        (['abc123', '~xyz321'], ['xyz321']),
+        (['abc123', 'xyz321#1.2.3'], ['xyz321#1.2.3', 'abc123']),
     ])
-    def test_sets_to_encoding(self, with_uids, entry, to_encodings):
+    def test_sets_to_encoding(self, with_uids, encodings, to_encodings):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert [edge['to'] for edge in edges] == to_encodings
 
-    @pytest.mark.parametrize('entry', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'no_such_uid'])),
-        (Entry(EntryType.PARALLELS, ['no_such_uid', 'abc123'])),
+    @pytest.mark.parametrize('encodings', [
+        (['abc123', 'no_such_uid']),
+        (['no_such_uid', 'abc123']),
     ])
-    def test_stores_dropped_encodings(self, with_uids, entry):
+    def test_stores_dropped_encodings(self, with_uids, encodings):
+        entry = Entry(EntryType.PARALLELS, encodings)
         unmatched = Unmatched()
         _ = list(ParallelsEdges(entry, unmatched))
         assert unmatched.dropped == {Encoding('no_such_uid')}
 
-    @pytest.mark.parametrize('entry', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'no_such_uid'])),
-        (Entry(EntryType.PARALLELS, ['no_such_uid', 'abc123'])),
+    @pytest.mark.parametrize('encodings', [
+        (['abc123', 'no_such_uid']),
+        (['no_such_uid', 'abc123']),
     ])
-    def test_stores_orphan_encodings(self, with_uids, entry):
+    def test_stores_orphan_encodings(self, with_uids, encodings):
+        entry = Entry(EntryType.PARALLELS, encodings)
         unmatched = Unmatched()
         _ = list(ParallelsEdges(entry, unmatched))
         assert unmatched.orphans == {Encoding('no_such_uid')}
@@ -502,11 +511,12 @@ class TestParallelsEdges:
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
 
-    @pytest.mark.parametrize('entry, from_to', [
-        (Entry(EntryType.PARALLELS, ['abc123', 'no_such_uid']), [('abc123', 'no_such_uid')]),
-        (Entry(EntryType.PARALLELS, ['no_such_uid', 'abc123']), [('abc123', 'no_such_uid')]),
+    @pytest.mark.parametrize('encodings, from_to', [
+        (['abc123', 'no_such_uid'], [('abc123', 'no_such_uid')]),
+        (['no_such_uid', 'abc123'], [('abc123', 'no_such_uid')]),
     ])
-    def test_drops_unmatched_from_encodings(self, with_uids, entry, from_to):
+    def test_drops_unmatched_from_encodings(self, with_uids, encodings, from_to):
+        entry = Entry(EntryType.PARALLELS, encodings)
         edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
         assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
 
@@ -547,58 +557,63 @@ class TestOtherEdges:
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['remark'] for edge in edges] == ['Remarkable', 'Remarkable']
 
-    @pytest.mark.parametrize('entry,numbers', [
-        (Entry(EntryType.MENTIONS, ['abc123', 'xyz321']), [123, 321]),
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321']), [123, 321]),
-        (Entry(EntryType.MENTIONS, ['abc', 'xyz321']), [0, 321]),
-        (Entry(EntryType.RETELLS, ['abc', 'xyz321']), [0, 321]),
+    @pytest.mark.parametrize('entry_type,encodings,numbers', [
+        (EntryType.MENTIONS, ['abc123', 'xyz321'], [123, 321]),
+        (EntryType.RETELLS, ['abc123', 'xyz321'], [123, 321]),
+        (EntryType.MENTIONS, ['abc', 'xyz321'], [0, 321]),
+        (EntryType.RETELLS, ['abc', 'xyz321'], [0, 321]),
     ])
-    def test_adds_numbers(self, with_uids, entry, numbers):
+    def test_adds_numbers(self, with_uids, entry_type, encodings, numbers):
         Encoding.load_uids({'abc123', 'xyz321', 'abc'})
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['number'] for edge in edges] == numbers
 
-    @pytest.mark.parametrize('entry', [
-        (Entry(EntryType.RETELLS, ['abc123', 'no_such_uid'])),
-        (Entry(EntryType.MENTIONS, ['no_such_uid', 'abc123'])),
-        (Entry(EntryType.RETELLS, ['abc123', 'no_such_uid'])),
-        (Entry(EntryType.MENTIONS, ['no_such_uid', 'abc123'])),
+    @pytest.mark.parametrize('entry_type,encodings', [
+        (EntryType.RETELLS, ['abc123', 'no_such_uid']),
+        (EntryType.MENTIONS, ['no_such_uid', 'abc123']),
+        (EntryType.RETELLS, ['abc123', 'no_such_uid']),
+        (EntryType.MENTIONS, ['no_such_uid', 'abc123']),
     ])
-    def test_does_not_add_orphans(self, with_uids, entry):
+    def test_does_not_add_orphans(self, with_uids, entry_type, encodings):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['_to'] for edge in edges] == []
 
-    @pytest.mark.parametrize('entry,to_from_resembling', [
-        (Entry(EntryType.RETELLS, ['abc123', '~xyz321']), [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
-        (Entry(EntryType.MENTIONS, ['abc123', '~xyz321']), [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
-        (Entry(EntryType.RETELLS, ['~abc123', 'xyz321']), [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
-        (Entry(EntryType.MENTIONS, ['~abc123', 'xyz321']), [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
+    @pytest.mark.parametrize('entry_type,encodings,to_from_resembling', [
+        (EntryType.RETELLS, ['abc123', '~xyz321'], [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
+        (EntryType.MENTIONS, ['abc123', '~xyz321'], [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
+        (EntryType.RETELLS, ['~abc123', 'xyz321'], [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
+        (EntryType.MENTIONS, ['~abc123', 'xyz321'], [('xyz321', 'abc123', True), ('abc123', 'xyz321', True)]),
     ])
-    def test_adds_resembling(self, with_uids, entry, to_from_resembling):
+    def test_adds_resembling(self, with_uids, entry_type, encodings, to_from_resembling):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [(edge['_to'], edge['_from'], edge['resembling']) for edge in edges] == to_from_resembling
 
-    @pytest.mark.parametrize('entry,from_uids', [
-        (Entry(EntryType.MENTIONS, ['abc123', 'xyz321', 'pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321', 'pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.MENTIONS, ['abc123', 'xyz321', '~pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321', '~pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.MENTIONS, ['abc123', '~xyz321', '~pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.RETELLS, ['abc123', '~xyz321', '~pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.MENTIONS, ['~abc123', '~xyz321', '~pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
-        (Entry(EntryType.RETELLS, ['~abc123', '~xyz321', '~pqr777']), ['abc123', 'xyz321', 'abc123', 'pqr777']),
+    @pytest.mark.parametrize('entry_type,encodings,from_uids', [
+        (EntryType.MENTIONS, ['abc123', 'xyz321', 'pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.RETELLS, ['abc123', 'xyz321', 'pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.MENTIONS, ['abc123', 'xyz321', '~pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.RETELLS, ['abc123', 'xyz321', '~pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.MENTIONS, ['abc123', '~xyz321', '~pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.RETELLS, ['abc123', '~xyz321', '~pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.MENTIONS, ['~abc123', '~xyz321', '~pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
+        (EntryType.RETELLS, ['~abc123', '~xyz321', '~pqr777'], ['abc123', 'xyz321', 'abc123', 'pqr777']),
     ])
-    def test_encoding_combinations_gives_from_uids(self, with_uids, entry, from_uids):
+    def test_encoding_combinations_gives_from_uids(self, with_uids, entry_type, encodings, from_uids):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['_from'] for edge in edges] == from_uids
 
-    @pytest.mark.parametrize('entry,to_encoding,from_encoding', [
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321#654']), 'xyz321#654', 'abc123'),
-        (Entry(EntryType.MENTIONS, ['abc123', 'xyz321#654']), 'xyz321#654', 'abc123'),
-        (Entry(EntryType.RETELLS, ['xyz321#654', 'abc123']), 'abc123', 'xyz321#654'),
-        (Entry(EntryType.MENTIONS, ['xyz321#654', 'abc123']), 'abc123', 'xyz321#654'),
+    @pytest.mark.parametrize('entry_type,encodings,to_encoding,from_encoding', [
+        (EntryType.RETELLS, ['abc123', 'xyz321#654'], 'xyz321#654', 'abc123'),
+        (EntryType.MENTIONS, ['abc123', 'xyz321#654'], 'xyz321#654', 'abc123'),
+        (EntryType.RETELLS, ['xyz321#654', 'abc123'], 'abc123', 'xyz321#654'),
+        (EntryType.MENTIONS, ['xyz321#654', 'abc123'], 'abc123', 'xyz321#654'),
     ])
-    def test_sectional_uids(self, with_uids, entry, to_encoding, from_encoding):
+    def test_sectional_uids(self, with_uids, entry_type, encodings, to_encoding, from_encoding):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         to_from = [(edge['to'], edge['from']) for edge in edges]
         assert to_from == [(to_encoding, from_encoding), (from_encoding, to_encoding)]
@@ -614,45 +629,49 @@ class TestOtherEdges:
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [(edge['to'], edge['from']) for edge in edges] == to_from
 
-    @pytest.mark.parametrize('entry,from_uids', [
-        (Entry(EntryType.RETELLS, ['mn1-2', 'dn1']), ['mn1', 'dn1', 'mn2', 'dn1']),
-        (Entry(EntryType.MENTIONS, ['mn1-2', 'dn1']), ['mn1', 'dn1', 'mn2', 'dn1']),
-        (Entry(EntryType.RETELLS, ['mn1', 'dn1-2']), ['mn1', 'dn1', 'mn1', 'dn2']),
-        (Entry(EntryType.MENTIONS, ['mn1', 'dn1-2']), ['mn1', 'dn1', 'mn1', 'dn2']),
-        (Entry(EntryType.RETELLS, ['mn1-2', 'dn1-2']), ['mn1', 'dn1', 'mn1', 'dn2', 'mn2', 'dn1', 'mn2', 'dn2']),
-        (Entry(EntryType.MENTIONS, ['mn1-2', 'dn1-2']), ['mn1', 'dn1', 'mn1', 'dn2', 'mn2', 'dn1', 'mn2', 'dn2']),
+    @pytest.mark.parametrize('entry_type,encodings,from_uids', [
+        (EntryType.RETELLS, ['mn1-2', 'dn1'], ['mn1', 'dn1', 'mn2', 'dn1']),
+        (EntryType.MENTIONS, ['mn1-2', 'dn1'], ['mn1', 'dn1', 'mn2', 'dn1']),
+        (EntryType.RETELLS, ['mn1', 'dn1-2'], ['mn1', 'dn1', 'mn1', 'dn2']),
+        (EntryType.MENTIONS, ['mn1', 'dn1-2'], ['mn1', 'dn1', 'mn1', 'dn2']),
+        (EntryType.RETELLS, ['mn1-2', 'dn1-2'], ['mn1', 'dn1', 'mn1', 'dn2', 'mn2', 'dn1', 'mn2', 'dn2']),
+        (EntryType.MENTIONS, ['mn1-2', 'dn1-2'], ['mn1', 'dn1', 'mn1', 'dn2', 'mn2', 'dn1', 'mn2', 'dn2']),
     ])
-    def test_expands_uid_range_in_from_uids(self, with_uids, entry, from_uids):
+    def test_expands_uid_range_in_from_uids(self, with_uids, entry_type, encodings, from_uids):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['_from'] for edge in edges] == from_uids
 
-    @pytest.mark.parametrize('entry,to_uids', [
-        (Entry(EntryType.RETELLS, ['mn1-2', 'dn1']), ['dn1', 'mn1', 'dn1', 'mn2']),
-        (Entry(EntryType.MENTIONS, ['mn1-2', 'dn1']), ['dn1', 'mn1', 'dn1', 'mn2']),
-        (Entry(EntryType.RETELLS, ['mn1', 'dn1-2']), ['dn1', 'mn1', 'dn2', 'mn1']),
-        (Entry(EntryType.MENTIONS, ['mn1', 'dn1-2']), ['dn1', 'mn1', 'dn2', 'mn1']),
-        (Entry(EntryType.RETELLS, ['mn1-2', 'dn1-2']), ['dn1', 'mn1', 'dn2', 'mn1', 'dn1', 'mn2', 'dn2', 'mn2']),
-        (Entry(EntryType.MENTIONS, ['mn1-2', 'dn1-2']), ['dn1', 'mn1', 'dn2', 'mn1', 'dn1', 'mn2', 'dn2', 'mn2']),
+    @pytest.mark.parametrize('entry_type,encodings,to_uids', [
+        (EntryType.RETELLS, ['mn1-2', 'dn1'], ['dn1', 'mn1', 'dn1', 'mn2']),
+        (EntryType.MENTIONS, ['mn1-2', 'dn1'], ['dn1', 'mn1', 'dn1', 'mn2']),
+        (EntryType.RETELLS, ['mn1', 'dn1-2'], ['dn1', 'mn1', 'dn2', 'mn1']),
+        (EntryType.MENTIONS, ['mn1', 'dn1-2'], ['dn1', 'mn1', 'dn2', 'mn1']),
+        (EntryType.RETELLS, ['mn1-2', 'dn1-2'], ['dn1', 'mn1', 'dn2', 'mn1', 'dn1', 'mn2', 'dn2', 'mn2']),
+        (EntryType.MENTIONS, ['mn1-2', 'dn1-2'], ['dn1', 'mn1', 'dn2', 'mn1', 'dn1', 'mn2', 'dn2', 'mn2']),
     ])
-    def test_expands_uid_range_in_to_uids(self, with_uids, entry, to_uids):
+    def test_expands_uid_range_in_to_uids(self, with_uids, entry_type, encodings, to_uids):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['_to'] for edge in edges] == to_uids
 
-    @pytest.mark.parametrize('entry,from_encodings', [
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321']), ['abc123', 'xyz321']),
-        (Entry(EntryType.RETELLS, ['abc123', '~xyz321']), ['abc123', 'xyz321']),
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321#1.2.3']), ['abc123', 'xyz321#1.2.3']),
+    @pytest.mark.parametrize('entry_type,encodings,from_encodings', [
+        (EntryType.RETELLS, ['abc123', 'xyz321'], ['abc123', 'xyz321']),
+        (EntryType.RETELLS, ['abc123', '~xyz321'], ['abc123', 'xyz321']),
+        (EntryType.RETELLS, ['abc123', 'xyz321#1.2.3'], ['abc123', 'xyz321#1.2.3']),
     ])
-    def test_sets_from_encoding(self, with_uids, entry, from_encodings):
+    def test_sets_from_encoding(self, with_uids, entry_type, encodings, from_encodings):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['from'] for edge in edges] == from_encodings
 
-    @pytest.mark.parametrize('entry,to_encodings', [
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321']), ['xyz321', 'abc123']),
-        (Entry(EntryType.RETELLS, ['abc123', '~xyz321']), ['xyz321', 'abc123']),
-        (Entry(EntryType.RETELLS, ['abc123', 'xyz321#1.2.3']), ['xyz321#1.2.3', 'abc123']),
+    @pytest.mark.parametrize('entry_type,encodings,to_encodings', [
+        (EntryType.RETELLS, ['abc123', 'xyz321'], ['xyz321', 'abc123']),
+        (EntryType.RETELLS, ['abc123', '~xyz321'], ['xyz321', 'abc123']),
+        (EntryType.RETELLS, ['abc123', 'xyz321#1.2.3'], ['xyz321#1.2.3', 'abc123']),
     ])
-    def test_sets_to_encoding(self, with_uids, entry, to_encodings):
+    def test_sets_to_encoding(self, with_uids, entry_type, encodings, to_encodings):
+        entry = Entry(entry_type, encodings)
         edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
         assert [edge['to'] for edge in edges] == to_encodings
 
