@@ -34,6 +34,7 @@ export const SCPageSearchStyles = css`
     max-width: 1440px;
     margin: 0 auto;
     padding-bottom: 64px;
+    width: 90vw;
   }
 
   .all-search-results {
@@ -44,16 +45,15 @@ export const SCPageSearchStyles = css`
 
   .search-result-head,
   .primary-search-results {
-    display: flex;
-    flex-direction: column;
+    display: block;
     max-width: 720px;
     min-width: 40%;
-    flex-grow: 2;
   }
 
   .additional-search-results {
     max-width: 40%;
     min-width: 40%;
+    display: block;
   }
 
   @media (max-width: 780px) {
@@ -92,9 +92,9 @@ export const SCPageSearchStyles = css`
   }
 
   .search-result-item {
-    display: flex;
-    flex-direction: column;
-
+    display: block;
+    max-width: 100%;
+    width:100%;
     border-bottom: var(--sc-border);
   }
 
@@ -134,29 +134,29 @@ export const SCPageSearchStyles = css`
 
   .primary {
     display: flex;
-    flex-direction: row;
+    flex-flow: nowrap;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    height: 32px;
+    min-height: 32px;
   }
+
+  .sutta-info{
+    width:calc(100% - 70px);
+    flex-direction:column;
+    display:flex;
+  }
+
 
   .search-result-title {
     font-family: var(--sc-serif-font);
     font-weight: 400;
     font-size: var(--sc-font-size-xl);
-
     overflow: hidden;
-
-    margin: 0;
-
+    margin: 0px;
     white-space: nowrap;
     text-overflow: ellipsis;
-
     color: var(--sc-primary-color);
-
-    display: flex;
-    align-items: center;
+    display: block; 
   }
 
   .all-dictionaries {
@@ -181,23 +181,19 @@ export const SCPageSearchStyles = css`
 
   .sutta-title {
     display: flex;
-    flex-direction: row;
+    flex-flow: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
   }
 
   .badges {
-    display: flex;  
+    display: flex;
     margin-left: 0.3em;
     margin-bottom: 0.5em;
+    flex-wrap: wrap;
   }
 
   @media (max-width: 600px) {
-    .sutta-info {
-      display: flex;
-      flex-direction: column;
-    }
-
     .badges {
       display: flex;
       flex-direction: row;
@@ -534,6 +530,7 @@ export const SCPageSearchStyles = css`
     display: flex;
     align-items: center;
     flex-direction: row;
+    width: 40px;
   }
 
   sc-badge {
@@ -617,6 +614,8 @@ export const SCPageSearchStyles = css`
   .item-head {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
+    max-width:100%;
   }
 `;
 
