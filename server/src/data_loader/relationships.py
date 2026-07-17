@@ -25,7 +25,8 @@ class Encoding:
 
     def __init__(self, encoding: str):
         self._encoding = encoding
-        self._matching_uids = self._matcher.get_matching_uids(self._encoding)
+        self._matching_uids = self._load_matching_uids()
+        self._number = self._extract_number()
 
     def __str__(self) -> str:
         return self._encoding
@@ -53,18 +54,24 @@ class Encoding:
         return False
 
     def number(self) -> int:
-        m = regex.search('[0-9]+$', self._encoding)
-        if m:
-            from_nr = int(m[0])
-        else:
-            from_nr = 0
-        return from_nr
+        return self._number
 
     def strip_resembling(self) -> str:
         return self._encoding.lstrip('~')
 
     def first_part(self) -> str:
         return self._encoding.lstrip('~').split('-')[0]
+
+    def _load_matching_uids(self):
+        return self._matcher.get_matching_uids(self._encoding)
+
+    def _extract_number(self) -> int:
+        m = regex.search('[0-9]+$', self._encoding)
+        if m:
+            from_nr = int(m[0])
+        else:
+            from_nr = 0
+        return from_nr
 
 
 class EdgeType(StrEnum):
