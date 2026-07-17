@@ -331,24 +331,27 @@ def load_relationships(change_tracker: FileChangeTracker, relationship_dir: Path
     Edge.load_remarks(notes_data)
 
     unmatched = Unmatched()
-    entries = all_entries(relationship_data)
+    raw = raw_entries(relationship_data)
+    entries = all_entries(raw)
     import_entries(db, entries, unmatched)
     unmatched.log()
 
 
-def import_entries(db: StandardDatabase, entries: list[Entry], unmatched: Unmatched) -> None:
+def import_entries(db: StandardDatabase, entries: Iterator[Entry], unmatched: Unmatched) -> None:
     db['relationship'].truncate()
-    edges = entries_to_edges(tqdm(entries), unmatched)
+    edges = entries_to_edges(entries, unmatched)
     for chunk in edge_chunks(edges):
         write_chunk(db, chunk)
 
 
-def all_entries(relationship_data: list[dict]) -> list[Entry]:
-    return [
-        Entry(entry_type, encodings)
-        for entry_data in relationship_data
-        for entry_type, encodings in entry_data.items()
-    ]
+def raw_entries(relationship_data: list[dict]) -> Iterator[tuple[str, list[str]]]:
+    for entry in tqdm(relationship_data):
+        for entry_type, encodings in entry.items():
+            yield entry_type, encodings
+
+
+def all_entries(entries: Iterable[tuple[str, list[str]]]) -> Iterator[Entry]:
+    return (Entry(entry[0], entry[1]) for entry in entries)
 
 
 def entries_to_edges(entries: Iterable[Entry], unmatched: Unmatched) -> Iterator[Edge]:
