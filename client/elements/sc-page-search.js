@@ -1244,13 +1244,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
   #createMetaData() {
     const description = this.localize('search:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
-    const pageTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
-      'search:resultsFor'
-    )} ${this.searchQuery}`;
+    const resultsFor = this.localize('search:resultsFor');
 
-    const toolbarTitle = `${this.#calculateResultCount(this.resultCount)} ${this.localize(
-      'search:resultsFor'
-    )} <strong class="highlightTitle">${this.searchQuery}</strong>`;
+    const countResultsFor = `${this.#calculateResultCount(this.resultCount)} ${resultsFor}`;
+    const pageTitle = `${countResultsFor} ${this.searchQuery}`;
+    const toolbarTitle = `${countResultsFor} <strong class="highlightTitle">${this.searchQuery}</strong>`;
 
     document.dispatchEvent(
       new CustomEvent('metadata', {
