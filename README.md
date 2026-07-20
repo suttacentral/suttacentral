@@ -55,6 +55,7 @@ Then run the commands for updating, probably including the `make delete-database
 2. Cd into the repo `cd suttacentral`.
 3. run `make prepare-host` in order to make some small adjustment on the host machine.
 4. run `make run-preview-env` - Build images, load data, index-arangosearch and more. This will run the project for the first time.
+5. Open <http://localhost>
 
 ### 1.1 Running the project
 
