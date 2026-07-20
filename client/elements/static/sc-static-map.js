@@ -123,14 +123,14 @@ export class SCStaticMap extends SCStaticPage {
 
   _featuresList() {
     return this.layerNames.map(layerName => {
-      const listItems = this._sortObjectsByStringKey(
-        this.features.filter(feature => feature.properties.layer === layerName),
-        feature => feature.properties.name
-      ).map(this._featureItem);
+      const filtered = this.features.filter(feature => feature.properties.layer === layerName);
+      const sorted = layerName.includes("journey") // the journeys are already in order
+        ? filtered
+        : this._sortObjectsByStringKey(filtered, feature => feature.properties.name);
       return html`<div class="features-section">
         <h3>${this._getLocalizedTextByLayerName(layerName)}</h3>
         <ul>
-          ${listItems}
+          ${sorted.map(this._featureItem)}
         </ul>
       </div>`;
     });
