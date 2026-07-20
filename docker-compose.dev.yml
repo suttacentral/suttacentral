@@ -32,7 +32,6 @@ services:
           path: ./server/uv.lock
 
 
-
   sc-nginx:
     volumes:
       - ./client/:/opt/sc/static
@@ -50,15 +49,15 @@ services:
 
   sc-frontend:
     command: npm run dev
-    volumes:
-      - ./client/elements:/opt/sc/frontend/elements
-      - ./client/utils:/opt/sc/frontend/utils
-      - ./client/img:/opt/sc/frontend/img
-      - ./client/localization:/opt/sc/frontend/localization
-      - ./client/index.html:/opt/sc/frontend/index.html
-      - ./client/redux-store.js:/opt/sc/frontend/redux-store.js
-      - ./client/webpack.config.js:/opt/sc/frontend/webpack.config.js
-      - ./client/localization/elements:/opt/sc/frontend/localization/elements
     ports:
       - '3000:3000'
-
+    develop:
+      watch:
+        # Sync frontend files with the container
+        - action: sync
+          initial_sync: true
+          path: ./client/
+          target: /opt/sc/frontend/
+        # Rebuild the image if dependencies or scripts change by checking package.json
+        - action: rebuild
+          path: ./client/package.json
