@@ -147,6 +147,7 @@ run-preview-env-no-search:
 
 run-production-env:
 	@make generate-env-variables
+	@make create-network
 	@make run-prod-no-logs
 	@bash wait_for_flask.sh
 	@make load-data

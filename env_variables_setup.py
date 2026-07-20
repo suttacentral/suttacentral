@@ -13,14 +13,14 @@ RANDOM_WORDS_NUMBER = 3
 
 def intro():
     print('''
-Welcome in SuttaCentral environment setup script!
+Welcome to the SuttaCentral environment setup script!
 You are going to be prompted for a bunch of information.
-If you want to set the value to the random one enter 'R'.
-You will be prompted back with the generated value. eg.
+If you want to set the value to a random one enter 'R'.
+You will be prompted back with the generated value, e.g.
 < R
 > Xu@+$;*ed3||,zfuP7kw%e0!c<`e^PLC
-By default
-If you want to leave current value just leave the answer blank.
+
+If you want to leave the current value as-is, just leave the answer blank.
 
     ''')
 
