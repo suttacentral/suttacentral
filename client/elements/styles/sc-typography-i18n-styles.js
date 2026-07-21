@@ -136,13 +136,10 @@ export const typographyI18nStyles = css`
     font-family: var(--sc-traditional-chinese-font);
   }
 
-  /* don't let Pali/sanskrit words go too long, probably won't work but oh well */
-
+  /* don't let Pali/sanskrit words go too long */
   [lang='pli'],
   [lang='san'] {
-    word-wrap: break-word;
-
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   [lang='ko'] * {
