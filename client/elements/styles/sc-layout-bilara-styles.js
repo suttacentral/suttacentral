@@ -88,6 +88,10 @@ export const plainStyles = html`
       hyphens: none;
       margin-left: 2em;
     }
+    /* remove the margin when the text is empty (e.g. omitted repetition), so that there isn't a block of empty space when only viewing the translation */
+    .verse-line .translation:has(> .text:empty) {
+      margin-left: 0;
+    }
 
     j {
       display: block;
