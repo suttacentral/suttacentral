@@ -6,6 +6,10 @@ export const SCPublicationStyles = css`
     margin: 2em auto 4em;
   }
 
+  .bibliography-list {
+    overflow-wrap: anywhere; /* word-wrap long URLs */
+  }
+
   hgroup {
     text-align: center;
   }
