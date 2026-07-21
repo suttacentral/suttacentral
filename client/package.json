@@ -33,7 +33,6 @@
     "@micro-sentry/browser": "7.1.1",
     "@orama/orama": "3.1.7",
     "@stripe/stripe-js": "^4.9.0",
-    "@webcomponents/webcomponentsjs": "^2.8.0",
     "algoliasearch": "4.24.0",
     "d3-queue": "^3.0.7",
     "element-internals-polyfill": "3.0.2",
@@ -46,7 +45,6 @@
     "pwa-helpers": "^0.9.1",
     "redux": "^4.2.1",
     "viewerjs": "^1.11.7",
-    "web-animations-js": "^2.3.2",
     "workbox-sw": "7.3.0"
   },
   "devDependencies": {
@@ -58,7 +56,6 @@
     "@esm-bundle/chai": "4.3.4",
     "@open-wc/testing": "4.0.0",
     "@rollup/plugin-babel": "^6.0.3",
-    "@web/dev-server-legacy": "2.1.0",
     "@web/test-runner": "^0.18.1",
     "babel-loader": "9.1.2",
     "clean-webpack-plugin": "4.0.0",
