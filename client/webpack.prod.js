@@ -26,8 +26,6 @@ module.exports = merge(require('./webpack.common'), {
           force: true,
         },
         'elements/styles/*.json',
-        'node_modules/web-animations-js/*.js',
-        'node_modules/@webcomponents/**/*.js',
         'node_modules/viewerjs/dist/*.css',
         'node_modules/workbox-sw/build/*.js',
       ],
