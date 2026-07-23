@@ -1,6 +1,7 @@
+import { expect } from '@open-wc/testing';
+import sinon from 'sinon';
+
 import { SCTextBilara } from '../../elements/text/sc-text-bilara.js';
-import { expect } from '@esm-bundle/chai';
-import sinon from '../../node_modules/sinon/pkg/sinon-esm.js';
 
 describe('SCTextBilara', () => {
   let instance;

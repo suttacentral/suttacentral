@@ -1,10 +1,8 @@
-import { SCPageSearch } from '../elements/sc-page-search.js';
+import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
 
-import {html, LitElement} from "lit";
-import {elementUpdated, fixture} from '@open-wc/testing';
-import { expect } from '@esm-bundle/chai';
-import {store} from "../redux-store";
-import {SCSearchController} from "../elements/sc-search-controller";
+import { store } from '../redux-store';
+import { SCPageSearch } from '../elements/sc-page-search.js';
+import { SCSearchController } from '../elements/sc-search-controller';
 
 const GENERAL_SEARCH_RESPONSE = {
   "hits": [

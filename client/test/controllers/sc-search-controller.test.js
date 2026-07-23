@@ -1,6 +1,6 @@
-import {RequestChecker, RequestData, SCSearchController} from "../../elements/sc-search-controller";
+import { assert } from '@open-wc/testing';
 
-import {assert} from '@esm-bundle/chai';
+import { RequestChecker, RequestData, SCSearchController } from '../../elements/sc-search-controller';
 
 function makeResponses() {
   let responses = [];
