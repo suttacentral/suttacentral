@@ -21,7 +21,7 @@ dependencies = [
     "lxml[cssselect]>=4.9.1,<5",
     "python-arango>=7.5.3,<8",
     "regex==2022.10.31",
-    "requests>=2.31.0,<3",
+    "requests>=2.33.0,<3",
     "sortedcontainers>=2.4.0,<3",
     "stripe>=6.4.0,<7",
     "tqdm>=4.64.1,<5",
