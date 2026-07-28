@@ -698,7 +698,7 @@ requires-dist = [
     { name = "stripe", specifier = ">=6.4.0,<7" },
     { name = "tqdm", specifier = ">=4.64.1,<5" },
     { name = "unidecode", specifier = ">=1.3.7,<2" },
-    { name = "uwsgi", specifier = ">=2.0.21,<3" },
+    { name = "uwsgi", specifier = ">=2.0.22,<3" },
     { name = "zhconv", specifier = ">=1.4.3,<2" },
 ]
 
@@ -809,9 +809,9 @@ wheels = [
 
 [[package]]
 name = "uwsgi"
-version = "2.0.21"
+version = "2.0.22"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b3/8e/b4fb9f793745afd6afcc0d2443d5626132e5d3540de98f28a8b8f5c753f9/uwsgi-2.0.21.tar.gz", hash = "sha256:35a30d83791329429bc04fe44183ce4ab512fcf6968070a7bfba42fc5a0552a9", size = 808494, upload-time = "2022-10-24T16:07:02.91Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a7/4e/c4d5559b3504bb65175a759392b03cac04b8771e9a9b14811adf1151f02f/uwsgi-2.0.22.tar.gz", hash = "sha256:4cc4727258671ac5fa17ab422155e9aaef8a2008ebb86e4404b66deaae965db2", size = 809747, upload-time = "2023-07-27T15:40:10.137Z" }
 
 [[package]]
 name = "werkzeug"

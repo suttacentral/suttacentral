@@ -26,7 +26,7 @@ dependencies = [
     "stripe>=6.4.0,<7",
     "tqdm>=4.64.1,<5",
     "unidecode>=1.3.7,<2",
-    "uwsgi>=2.0.21,<3",
+    "uwsgi>=2.0.22,<3",
     "zhconv>=1.4.3,<2",
 ]
 
