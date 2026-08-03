@@ -9,6 +9,13 @@ services:
       - ./client/:/opt/sc/frontend
     ports:
       - '5001:5000'
+    # configure log rotation
+    logging:
+      driver: json-file # the default
+      options:
+        max-file: 10
+        max-size: 500m
+        compress: "true"
 
   sc-nginx:
     restart: always
@@ -17,6 +24,13 @@ services:
     command: bash entry-point.prod.sh
     environment:
       - NODE_ENV='production'
+    # configure log rotation
+    logging:
+      driver: json-file # the default
+      options:
+        max-file: 10
+        max-size: 1g
+        compress: "true"
 
   sc-arangodb:
     restart: always
@@ -24,6 +38,13 @@ services:
       - server/env/.prod.env
     ports:
       - '8529:8529'
+    # configure log rotation
+    logging:
+      driver: json-file # the default
+      options:
+        max-file: 10
+        max-size: 100m
+        compress: "true"
 
   sc-swagger:
     restart: always
@@ -31,6 +52,13 @@ services:
       - '8080:8080'
     environment:
       - "API_URL=https://suttacentral.net/api/spec"
+    # configure log rotation
+    logging:
+      driver: json-file # the default
+      options:
+        max-file: 10
+        max-size: 10m
+        compress: "true"
 
   sc-frontend:
     command: npm run build
