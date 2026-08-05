@@ -236,6 +236,40 @@ export class SCStaticHomePage extends SCStaticPage {
     `;
   }
 
+  #scXCardTemplate() {
+    return html`
+      <article class="card primary-accent">
+        <a
+          href="https://suttacentral.express"
+          target="_blank"
+          class="block-link"
+          rel="noopener"
+        >
+          <header>
+            <span>
+              <img src="/img/home-page/scx-logo.png" alt="SuttaCentral Express" width="60px" />
+            </span>
+            <h3>
+              <span>SuttaCentral Express</span>
+              <span class="sc-related-item-subtitle">
+                ${unsafeHTML(this.localize('home:49.0'))}
+              </span>
+            </h3>
+          </header>
+
+          <div class="related-projects-content">
+            <p>${unsafeHTML(this.localize('home:49.1'))}</p>
+            <ul>
+              <li>${unsafeHTML(this.localize('home:49.2'))}</li>
+              <li>${unsafeHTML(this.localize('home:49.3'))}</li>
+            </ul>
+          </div>
+        </a>
+        <md-ripple></md-ripple>
+      </article>
+    `;
+  }
+
   #readingFaithfullyCardTemplate() {
     return html`
       <article class="card secondary-accent">
@@ -429,8 +463,9 @@ export class SCStaticHomePage extends SCStaticPage {
         <section class="sc-related">
           <div class="related-projects-heading">${this.#relatedProjectsHeaderTemplate()}</div>
           <div class="sc-related-items-wrapper">
-            ${this.#scVoiceCardTemplate()} ${this.#readingFaithfullyCardTemplate()}
-            ${this.#scForumCardTemplate()} ${this.#bilaraCardTemplate()}
+            ${this.#scXCardTemplate()} ${this.#scVoiceCardTemplate()}
+            ${this.#readingFaithfullyCardTemplate()} ${this.#scForumCardTemplate()}
+            ${this.#bilaraCardTemplate()}
           </div>
         </section>
 
