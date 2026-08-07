@@ -168,7 +168,8 @@ class InitialMigration(Migration):
 2. `uv run python -m sc_flask.manage list_routes` - Lists all available routes/URLs.
 
 ### 1.10 Style guidelines
-* Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for Python code.
+
+* `make lint-server`
 
 * Try to keep line width under 120 characters.
 

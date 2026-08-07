@@ -829,5 +829,5 @@ def run(no_pull: bool = False) -> StagePrinter:
 
 def hyphenate_pali_and_san():
     db = arangodb.get_db()
-    print(f'\nHyphenate Pali and Sanskrit texts:')
+    print('\nHyphenate Pali and Sanskrit texts:')
     hyphenation.hyphenate_texts(db)

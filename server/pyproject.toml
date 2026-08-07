@@ -36,6 +36,7 @@ dev = [
     "pytest>=7.2.0,<8",
     "pytest-flask>=1.2.0,<2",
     "pytest-sugar>=0.9.6,<0.10",
+    "ruff>=0.15.13,<0.16.0",
 ]
 
 [build-system]
@@ -49,7 +50,15 @@ ignore_unused = [
     "fawltydeps", # used as CLI in `Makefile`
     "pytest-flask", # used within `@pytest.fixture`, such as in `conftest.py`
     "pytest-sugar", # modifies pytest output automatically
+    "ruff", # used as CLI in `Makefile`
     "uwsgi", # used as CLI in `Makefile`, `entrypoint.sh`
+]
+
+[tool.ruff.lint]
+# add to the default lint rules
+extend-select = [
+    "A", # no shadowing built-ins
+    "T100", # no debugger statements
 ]
 
 [tool.pytest.ini_options]
