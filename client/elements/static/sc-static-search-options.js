@@ -103,17 +103,6 @@ export class SCStaticSearchOptions extends SCStaticPage {
     `,
   ];
 
-  get actions() {
-    return {
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-    };
-  }
-
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/search';

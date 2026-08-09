@@ -103,17 +103,6 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
     `,
   ];
 
-  get actions() {
-    return {
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-    };
-  }
-
   constructor() {
     super();
     this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
