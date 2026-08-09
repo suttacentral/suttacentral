@@ -4,8 +4,8 @@ import '@material/web/menu/menu-item';
 import '@material/web/iconbutton/icon-button';
 
 import { API_ROOT } from '../../constants';
-import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { reduxActions } from '../addons/sc-redux-actions';
 import { languageBaseMenuCss } from './sc-menu-language-base-css';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -19,24 +19,6 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
     noRoot: { type: Boolean }, // If true, no root languages will be displayed.
     disabled: { type: Boolean },
   };
-
-  get actions() {
-    return {
-      changeLanguage(language, fullName) {
-        store.dispatch({
-          type: 'CHANGE_SITE_LANGUAGE',
-          language,
-          fullName,
-        });
-      },
-      changeLanguageMenuVisibility(visibility) {
-        store.dispatch({
-          type: 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE',
-          languageMenuVisibility: visibility,
-        });
-      },
-    };
-  }
 
   get apiUrl() {
     return `${API_ROOT}/languages?all=true`;
@@ -55,7 +37,7 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
   }
 
   _showMoreMenu() {
-    this.actions.changeLanguageMenuVisibility(false);
+    reduxActions.changeLanguageMenuVisibility(false);
   }
 
   languageTemplate(language) {
@@ -92,7 +74,7 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
           })
         );
       } else {
-        this.actions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
+        reduxActions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
       }
     } catch (e) {
       console.error(e);

@@ -93,7 +93,7 @@ export class SCTextBilara extends SCTextCommon {
     };
 
     this._onClickHandler = () => {
-      this.actions.changeDisplaySettingMenuState(false);
+      reduxActions.changeDisplaySettingMenuState(false);
     };
 
     // Return the corresponding style sheet according to different combinations of text viewing options.
@@ -449,7 +449,7 @@ export class SCTextBilara extends SCTextCommon {
         authorUid: this.translatedSutta?.author_uid,
       });
 
-      this.actions.showToc([]);
+      reduxActions.showToc([]);
 
       this.scActionItems.range_uid = this.range_uid;
     } else {
@@ -893,7 +893,7 @@ export class SCTextBilara extends SCTextCommon {
   _prepareNavigation() {
     const sutta = this.bilaraTranslatedSutta || this.bilaraRootSutta;
     if (!sutta) {
-      this.actions.showToc([]);
+      reduxActions.showToc([]);
       return;
     }
     const dummyElement = document.createElement('template');
@@ -906,7 +906,7 @@ export class SCTextBilara extends SCTextCommon {
     });
     arrayTOC = arrayTOC.filter(Boolean);
 
-    this.actions.showToc(arrayTOC);
+    reduxActions.showToc(arrayTOC);
   }
 
   _stripLeadingOrdering(name) {
@@ -931,21 +931,6 @@ export class SCTextBilara extends SCTextCommon {
         store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
           view: viewNumber,
-        });
-      },
-      showToc(tableOfContents) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_TOC_BUTTON_STATE',
-          payload: {
-            tableOfContents,
-            disableToCListStyle: false,
-          },
-        });
-      },
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
         });
       },
     };

@@ -8,6 +8,7 @@ import '../addons/sc-error-icon';
 
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { reduxActions } from '../addons/sc-redux-actions';
 import { API_ROOT } from '../../constants';
 import { isFallenLeaf } from '../../utils/sc-structure';
 
@@ -54,7 +55,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     this.showedLanguagePrompt = store.getState().showedLanguagePrompt;
     this.siteLanguage = store.getState().siteLanguage;
     this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(false);
+    reduxActions.changeLinearProgressActiveState(false);
     this.langIsoCode = store.getState().currentRoute.params.langIsoCode;
     this.authorUid = store.getState().currentRoute.params.authorUid;
     this.suttaId = store.getState().currentRoute.params?.suttaId;
@@ -169,28 +170,10 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
 
   get actions() {
     return {
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
       setShowedLanguagePrompt() {
         store.dispatch({
           type: 'SET_SHOWED_LANGUAGE_PROMPT',
           showedLanguagePrompt: true,
-        });
-      },
-      setNavigation(navArray) {
-        store.dispatch({
-          type: 'SET_NAVIGATION',
-          navigationArray: navArray,
-        });
-      },
-      changeLinearProgressActiveState(active) {
-        store.dispatch({
-          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
-          linearProgressActive: active,
         });
       },
     };
@@ -235,7 +218,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       index: 99,
     });
 
-    this.actions.setNavigation(this.navArray);
+    reduxActions.setNavigation(this.navArray);
   }
 
   updated(changedProps) {
@@ -482,14 +465,14 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
 
   async _fetchSuttaText() {
     this.isLoading = true;
-    this.actions.changeLinearProgressActiveState(true);
+    reduxActions.changeLinearProgressActiveState(true);
     try {
       this.responseData = await (await fetch(this._getSuttaTextUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
     this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(false);
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   async _fetchBilaraText() {
@@ -497,7 +480,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       return;
     }
     this.isLoading = true;
-    this.actions.changeLinearProgressActiveState(true);
+    reduxActions.changeLinearProgressActiveState(true);
     try {
       const bilaraData = await (await fetch(this._getBilaraTextUrl())).json();
       this.bilaraRootSutta = bilaraData.root_text;
@@ -512,7 +495,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       this.lastError = error;
     }
     this.isLoading = false;
-    this.actions.changeLinearProgressActiveState(false);
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   _getBilaraText() {
@@ -550,13 +533,13 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   async _fetchExpansion() {
-    this.actions.changeLinearProgressActiveState(true);
+    reduxActions.changeLinearProgressActiveState(true);
     try {
       this.expansionReturns = await (await fetch(this._getExpansionUrl())).json();
     } catch (error) {
       this.lastError = error;
     }
-    this.actions.changeLinearProgressActiveState(false);
+    reduxActions.changeLinearProgressActiveState(false);
   }
 
   _paramChanged() {
@@ -628,7 +611,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
     }
-    this.actions.changeToolbarTitle(`${title}${author ? `—${author}` : ''}`);
+    reduxActions.changeToolbarTitle(`${title}${author ? `—${author}` : ''}`);
   }
 
   _transformId(rootId, expansionReturns) {

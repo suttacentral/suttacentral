@@ -124,21 +124,6 @@ export class SCTextLegacy extends SCTextCommon {
           metaText,
         });
       },
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-      showToc(tableOfContents) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_TOC_BUTTON_STATE',
-          payload: {
-            tableOfContents,
-            disableToCListStyle: true,
-          },
-        });
-      },
     };
   }
 
@@ -146,7 +131,7 @@ export class SCTextLegacy extends SCTextCommon {
     super.connectedCallback();
     window.addEventListener('hashchange', this._hashChangeHandler);
     this.addEventListener('click', () => {
-      this.actions.changeDisplaySettingMenuState(false);
+      reduxActions.changeDisplaySettingMenuState(false);
     });
     this.inputElement = this.querySelector('#simple_text_content');
     this._extractSuttaText();
@@ -255,7 +240,7 @@ export class SCTextLegacy extends SCTextCommon {
   _prepareNavigation() {
     const sutta = this.sutta?.text;
     if (!sutta) {
-      this.actions.showToc([]);
+      reduxActions.showToc([]);
       return;
     }
     const dummyElement = document.createElement('template');
@@ -265,7 +250,7 @@ export class SCTextLegacy extends SCTextCommon {
       return { link: id, name: elem.innerText };
     });
     arrayTOC = arrayTOC.filter(Boolean);
-    this.actions.showToc(arrayTOC);
+    reduxActions.showToc(arrayTOC);
   }
 
   _setAttributes() {

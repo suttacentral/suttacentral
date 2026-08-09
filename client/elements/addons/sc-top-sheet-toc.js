@@ -1,8 +1,9 @@
 import { html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
+import { reduxActions } from './sc-redux-actions';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
-import { store } from '../../redux-store';
 
 export class SCTopSheetToC extends SCTopSheetCommon {
   static styles = [
@@ -34,23 +35,6 @@ figcaption
     items: { type: Object },
     disableToCListStyle: { type: Boolean },
   };
-
-  get actions() {
-    return {
-      changeDisplaySettingMenuState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SETTING_MENU_STATE',
-          displaySettingMenu: display,
-        });
-      },
-      changeDisplaySuttaToCState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_SUTTA_TOC_STATE',
-          displaySuttaToC: displayState,
-        });
-      },
-    };
-  }
 
   constructor() {
     super();
@@ -94,8 +78,8 @@ figcaption
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
     scActionItems?.hideTopSheets();
 
-    this.actions.changeDisplaySettingMenuState(false);
-    this.actions.changeDisplaySuttaToCState(false);
+    reduxActions.changeDisplaySettingMenuState(false);
+    reduxActions.changeDisplaySuttaToCState(false);
   }
 }
 
