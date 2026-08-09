@@ -279,17 +279,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     );
   }
 
-  async getGitHubDirectory(repoUrl, path = '', branch = 'main') {
-    try {
-      const response = await fetch(`/api/github-directory?repo_url=${encodeURIComponent(repoUrl)}&path=${encodeURIComponent(path)}&branch=${branch}`);
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('Error fetching GitHub directory:', error);
-      return null;
-    }
-  }
-
   createRenderRoot() {
     return this;
   }
