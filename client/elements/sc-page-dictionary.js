@@ -7,6 +7,7 @@ import { SCUtilityStyles } from './styles/sc-utility-styles';
 import { LitLocalized } from './addons/sc-localization-mixin';
 import { dictionarySimpleItemToHtml } from './sc-dictionary-common';
 import { store } from '../redux-store';
+import { dispatchCustomEvent } from '../utils/customEvent.js';
 
 import(
   /* webpackMode: "lazy" */
@@ -447,17 +448,11 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
     const dictionaryResultsText = this.localize('dictionary:dictionaryResultsText');
     const defineFor = this.localize('dictionary:definitionsFor');
 
-    document.dispatchEvent(
-      new CustomEvent('metadata', {
-        detail: {
-          pageTitle: `${defineFor}: ${this.dictionaryWord}`,
-          title: `${dictionaryResultsText} ${this.dictionaryWord}`,
-          description,
-          bubbles: true,
-          composed: true,
-        },
-      })
-    );
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle: `${defineFor}: ${this.dictionaryWord}`,
+      title: `${dictionaryResultsText} ${this.dictionaryWord}`,
+      description,
+    });
   }
 
   _containsChineseCharacters(str) {

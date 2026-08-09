@@ -8,6 +8,7 @@ import { scriptIdentifiers, paliScriptsStyles } from './sc-aksharamukha-converte
 import { store } from '../../redux-store';
 import { LitLocalized } from './sc-localization-mixin';
 import { API_ROOT } from '../../constants';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 import { reduxActions } from './sc-redux-actions';
 
@@ -837,16 +838,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _showToast(inputMessage) {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-toast', {
-        detail: {
-          toastType: 'info',
-          message: inputMessage,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    dispatchCustomEvent(this, 'show-sc-toast', {
+      toastType: 'info',
+      message: inputMessage,
+    });
   }
 
   get actions() {

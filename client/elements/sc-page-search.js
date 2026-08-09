@@ -1250,17 +1250,11 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     const pageTitle = `${countResultsFor} ${this.searchQuery}`;
     const toolbarTitle = `${countResultsFor} <strong class="highlightTitle">${this.searchQuery}</strong>`;
 
-    document.dispatchEvent(
-      new CustomEvent('metadata', {
-        detail: {
-          pageTitle,
-          title: `${searchResultsText} ${this.searchQuery}`,
-          description,
-          bubbles: true,
-          composed: true,
-        },
-      })
-    );
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle,
+      title: `${searchResultsText} ${this.searchQuery}`,
+      description,
+    });
     reduxActions.changeToolbarTitle(toolbarTitle);
     this.#updateNav();
   }

@@ -66,13 +66,10 @@ export class SCMenuLanguageBase extends LitLocalized(LitElement) {
       const chosenLanguage = this.languageListResponse[this.selectedLanguageNum];
       // If it's not a main language change menu (but a clone), dispatch an event
       if (this.cloneName) {
-        dispatchEvent(
-          new CustomEvent(`${this.cloneName}-language-changed`, {
-            detail: { isoCode: chosenLanguage.iso_code, name: chosenLanguage.name },
-            composed: true,
-            bubbles: true,
-          })
-        );
+        dispatchCustomEvent(document, `${this.cloneName}-language-changed`, {
+          isoCode: chosenLanguage.iso_code,
+          name: chosenLanguage.name,
+        });
       } else {
         reduxActions.changeLanguage(chosenLanguage.iso_code, chosenLanguage.name);
       }

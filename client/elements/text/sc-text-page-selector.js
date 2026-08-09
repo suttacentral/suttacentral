@@ -595,18 +595,12 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       pageTitle = `${title}${author ? `—${author}` : ''}`;
     }
 
-    document.dispatchEvent(
-      new CustomEvent('metadata', {
-        detail: {
-          pageTitle,
-          title: `${title}${author ? `—${author}` : ''}`,
-          description,
-          openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
-          bubbles: true,
-          composed: true,
-        },
-      })
-    );
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle,
+      title: `${title}${author ? `—${author}` : ''}`,
+      description,
+      openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
+    });
 
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
@@ -647,16 +641,10 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
   }
 
   _showLanguagePromptToast() {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-toast', {
-        detail: {
-          toastType: 'info',
-          message: this.localize('text:languagePromptMessage'),
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    dispatchCustomEvent(this, 'show-sc-toast', {
+      toastType: 'info',
+      message: this.localize('text:languagePromptMessage'),
+    });
   }
 
   #redirectWhenSuttaIsFallenLeaf() {

@@ -5,6 +5,7 @@ import '@material/web/checkbox/checkbox';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 import { reduxActions } from '../addons/sc-redux-actions';
 
 import { getBrowserLanguages, shouldAutoCheckLanguage } from '../addons/sc-search-utils';
@@ -222,17 +223,11 @@ export class SCStaticSearchOptions extends SCStaticPage {
   #updateMetaData() {
     const pageTitle = `${this.localize('search:searchOptions')}`;
 
-    document.dispatchEvent(
-      new CustomEvent('metadata', {
-        detail: {
-          pageTitle,
-          title: pageTitle,
-          description: pageTitle,
-          bubbles: true,
-          composed: true,
-        },
-      })
-    );
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle,
+      title: pageTitle,
+      description: pageTitle,
+    });
     reduxActions.changeToolbarTitle(pageTitle);
   }
 
