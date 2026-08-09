@@ -13,6 +13,7 @@ import '../addons/sc-bottom-sheet.js';
 import { store } from '../../redux-store';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
+import { dispatchCustomEvent } from '../../utils/customEvent.js';
 import { getURLParam, isChinese } from '../addons/sc-functions-miscellaneous';
 import { reduxActions } from '../addons/sc-redux-actions';
 import * as OpenCC from 'opencc-js';
@@ -407,13 +408,11 @@ export class SCTextLegacy extends SCTextCommon {
       item.classList.add('image-book-link');
       item.classList.add('textual-info-paragraph');
       item.addEventListener('click', () => {
-        this.dispatchEvent(
-          new CustomEvent('show-image', {
-            detail: { vol, division: divisionId, pageNumber },
-            bubbles: true,
-            composed: true,
-          })
-        );
+        dispatchCustomEvent(this, 'show-image', {
+          vol,
+          division: divisionId,
+          pageNumber
+        });
       });
     }, 500);
   }

@@ -242,17 +242,11 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       }
 
       const pageTitle = `${title || original_title || acronym}—${this.localize('interface:parallelsTitle')}`;
-      document.dispatchEvent(
-        new CustomEvent('metadata', {
-          detail: {
-            pageTitle,
-            title: pageTitle,
-            description,
-            bubbles: true,
-            composed: true,
-          },
-        })
-      );
+      dispatchCustomEvent(document, 'metadata', {
+        pageTitle,
+        title: pageTitle,
+        description,
+      });
     }
   }
 

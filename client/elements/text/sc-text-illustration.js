@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
+import { dispatchCustomEvent } from '../../utils/customEvent';
+
 export class SCTextIllustration extends LitElement {
   static properties = {
     filename: { type: String },
@@ -296,23 +298,19 @@ export class SCTextIllustration extends LitElement {
     this._imageLoaded = true;
     this.isLoading = false;
     this.hasError = false;
-    this.dispatchEvent(new CustomEvent('illustration-loaded', {
-      detail: { illustrationId: this.segmentedId },
-      bubbles: true
-    }));
+    dispatchCustomEvent(this, 'illustration-loaded', {
+      illustrationId: this.segmentedId,
+    });
   }
 
   _onImageError() {
     this.hasError = true;
     this.isLoading = false;
     this.errorMessage = 'Failed to load image';
-    this.dispatchEvent(new CustomEvent('illustration-error', {
-      detail: {
-        illustrationId: this.segmentedId,
-        error: 'Image load failed'
-      },
-      bubbles: true
-    }));
+    dispatchCustomEvent(this, 'illustration-error', {
+      illustrationId: this.segmentedId,
+      error: 'Image load failed',
+    });
   }
 }
 

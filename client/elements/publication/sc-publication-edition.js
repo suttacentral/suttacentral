@@ -9,6 +9,7 @@ import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 import { setNavigation } from '../navigation/sc-navigation-common';
 import {
   coverImage,
@@ -268,15 +269,11 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
   _createMetaData() {
     const description = `${this.editionDetail[0].root_name} — ${this.editionInfo.publication?.creator_name}`;
-    document.dispatchEvent(
-      new CustomEvent('metadata', {
-        detail: {
-          pageTitle: description,
-          title: description,
-          description,
-        },
-      })
-    );
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle: description,
+      title: description,
+      description,
+    });
   }
 
   async getGitHubDirectory(repoUrl, path = '', branch = 'main') {

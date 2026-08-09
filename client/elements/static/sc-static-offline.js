@@ -476,16 +476,10 @@ export class SCStaticOffline extends LitLocalized(LitElement) {
   }
 
   _showToast(type, inputMessage) {
-    this.dispatchEvent(
-      new CustomEvent('show-sc-toast', {
-        detail: {
-          toastType: type,
-          message: inputMessage,
-        },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    dispatchCustomEvent(this, 'show-sc-toast', {
+      toastType: type,
+      message: inputMessage,
+    });
   }
 
   static styles = [
