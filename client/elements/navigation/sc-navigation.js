@@ -273,7 +273,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
-    this.actions.changeToolbarTitle(this._getTitle());
+    reduxActions.changeToolbarTitle(this._getTitle());
   }
 
   _getTitle() {
@@ -309,17 +309,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
       return '';
     }
     return `${API_ROOT}/menu/${uid}?language=${this.siteLanguage || 'en'}`;
-  }
-
-  get actions() {
-    return {
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
-    };
   }
 
   stateChanged(state) {

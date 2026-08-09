@@ -515,7 +515,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
   _changeTextView(newTextView) {
     this.selectedTextView = newTextView;
-    this.actions.chooseSegmentedSuttaTextView(newTextView);
+    reduxActions.chooseSegmentedSuttaTextView(newTextView);
     const newType = this.textViewArray.find(item => item.textView === newTextView).textViewLabel;
     this._showToast(
       this.localizeEx(
@@ -678,7 +678,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     const scTopsheetViews = document.querySelector('sc-site-layout').querySelector('#setting_menu');
     const selectedScript = scriptIdentifiers[e.currentTarget.selectedIndex].script;
     const selectedLanguage = scriptIdentifiers[e.currentTarget.selectedIndex].language;
-    scTopsheetViews.actions.choosePaliTextScript(selectedScript);
+    reduxActions.choosePaliTextScript(selectedScript);
     const scriptChangeMessage = scTopsheetViews.localizeEx(
       'viewoption:scriptChanged',
       'paliScript',
@@ -797,7 +797,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _onShowHighlightingChanged(e) {
-    this.actions.setShowHighlighting(e.target.checked);
+    reduxActions.setShowHighlighting(e.target.checked);
     const msg = e.target.checked ? 'showHighlightingEnabled' : 'showHighlightingDisabled';
     this._showToast(this.localize(`viewoption:${msg}`));
   }
@@ -814,7 +814,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
   changeNoteDisplayType(selectedNoteDisplayType) {
     this.selectedNoteDisplayType = selectedNoteDisplayType;
-    this.actions.setNoteDisplayType(this.selectedNoteDisplayType);
+    reduxActions.setNoteDisplayType(this.selectedNoteDisplayType);
     this._showToast(this.localize('viewoption:noteDisplayTypeToast' +
       this.selectedNoteDisplayType.charAt(0).toUpperCase() + this.selectedNoteDisplayType.slice(1)
     ));
@@ -863,18 +863,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
           descriptions: data,
         });
       },
-      chooseSegmentedSuttaTextView(view) {
-        store.dispatch({
-          type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
-          view,
-        });
-      },
-      choosePaliTextScript(script) {
-        store.dispatch({
-          type: 'CHOOSE_PALI_TEXT_SCRIPT',
-          script,
-        });
-      },
       activatePaliLookup(activated, targetLanguage, targetDictRepr) {
         store.dispatch({
           type: 'ACTIVATE_PALI_LOOKUP',
@@ -895,18 +883,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SET_REFERENCE_DISPLAY_TYPE',
           referenceDisplayType: displayType,
-        });
-      },
-      setNoteDisplayType(displayType) {
-        store.dispatch({
-          type: 'SET_NOTE_DISPLAY_TYPE',
-          noteDisplayType: displayType,
-        });
-      },
-      setShowHighlighting(showHighlighting) {
-        store.dispatch({
-          type: 'SET_SHOW_HIGHLIGHTING',
-          showHighlighting,
         });
       },
       setRootTextFirst(rootTextFirst) {

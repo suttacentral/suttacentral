@@ -28,35 +28,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     expansionData: { type: Array },
   };
 
-  get actions() {
-    return {
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
-      changeLinearProgressActiveState(active) {
-        store.dispatch({
-          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
-          linearProgressActive: active,
-        });
-      },
-      changeDisplayParallelTableViewState(displayState) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_PARALLEL_TABLE_VIEW_STATE',
-          displayParallelTableView: displayState,
-        });
-      },
-      toggleSuttaplexDisplay(suttaplexdisplay) {
-        store.dispatch({
-          type: 'SUTTPLEX_LIST_DISPLAY',
-          suttaplexdisplay,
-        });
-      },
-    };
-  }
-
   get apiUrl() {
     return `${API_ROOT}/suttaplex/${this.categoryId}?language=${this.language}`;
   }
@@ -186,7 +157,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   async _fetchCategory() {
     this.suttaplexLoading = true;
-    this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
+    reduxActions.changeLinearProgressActiveState(this.suttaplexLoading);
     this.networkError = null;
 
     try {
@@ -212,7 +183,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     }
 
     this.suttaplexLoading = false;
-    this.actions.changeLinearProgressActiveState(this.suttaplexLoading);
+    reduxActions.changeLinearProgressActiveState(this.suttaplexLoading);
   }
 
   _updateMetaData() {
@@ -226,10 +197,10 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
       if (!isSuttaInRangeSutta) {
         RefreshNavNew(categoryId);
-        this.actions.changeToolbarTitle(original_title);
+        reduxActions.changeToolbarTitle(original_title);
       } else {
         RefreshNavNew(rangeCategoryId);
-        this.actions.changeToolbarTitle(title);
+        reduxActions.changeToolbarTitle(title);
 
         setTimeout(() => {
           const currentNav = store.getState().navigationArray;
@@ -396,18 +367,18 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
       if (view === 'normal') {
         this.displayParallelTableView = false;
         this.suttaplexListDisplay = false;
-        this.actions.changeDisplayParallelTableViewState(false);
-        this.actions.toggleSuttaplexDisplay(false);
+        reduxActions.changeDisplayParallelTableViewState(false);
+        reduxActions.toggleSuttaplexDisplay(false);
       }
       if (view === 'dense') {
         this.displayParallelTableView = false;
         this.suttaplexListDisplay = true;
-        this.actions.changeDisplayParallelTableViewState(false);
-        this.actions.toggleSuttaplexDisplay(true);
+        reduxActions.changeDisplayParallelTableViewState(false);
+        reduxActions.toggleSuttaplexDisplay(true);
       }
       if (view === 'table') {
         this.displayParallelTableView = true;
-        this.actions.changeDisplayParallelTableViewState(true);
+        reduxActions.changeDisplayParallelTableViewState(true);
       }
     }
   }

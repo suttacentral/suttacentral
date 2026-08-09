@@ -203,12 +203,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
           alwaysShowUniversalToolbar: state,
         });
       },
-      changeLanguageMenuVisibility(visibility) {
-        store.dispatch({
-          type: 'CHANGE_LANGUAGE_MENU_VISIBILITY_STATE',
-          languageMenuVisibility: visibility,
-        });
-      },
     };
   }
 
@@ -283,7 +277,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
   }
 
   _showLanguageMenu() {
-    this.actions.changeLanguageMenuVisibility(true);
+    reduxActions.changeLanguageMenuVisibility(true);
   }
 
   _displayCurrentSiteLanguage() {

@@ -339,22 +339,10 @@ export class SCPageSelector extends LitLocalized(LitElement) {
           payload: { name, params, path },
         });
       },
-      setNavigation(navArray) {
-        store.dispatch({
-          type: 'SET_NAVIGATION',
-          navigationArray: navArray,
-        });
-      },
       setStaticPagesToolbarDisplayState(toolbarDisplayState) {
         store.dispatch({
           type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
           staticPagesToolbarDisplayState: toolbarDisplayState,
-        });
-      },
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
         });
       },
       changeDisplayToolButtonState(display) {
@@ -717,7 +705,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         }
     }
 
-    this.actions.changeToolbarTitle(title);
+    reduxActions.changeToolbarTitle(title);
 }
 
   _updateNav() {
@@ -738,7 +726,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
           url: currentPath,
           type: 'staticPage',
         });
-        this.actions.setNavigation(navArray);
+        reduxActions.setNavigation(navArray);
       }
     }
   }

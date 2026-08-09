@@ -3,8 +3,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { API_ROOT } from '../../../constants';
 import { getParagraphRange, transformId } from '../../../utils/suttaplex';
 import { LitLocalized } from '../../addons/sc-localization-mixin';
+import { reduxActions } from '../../addons/sc-redux-actions';
 import { icon } from '../../../img/sc-icon';
-import { store } from '../../../redux-store';
 
 import './sc-parallel-item';
 import { parallelsListCss } from './sc-suttaplex-css';
@@ -115,17 +115,6 @@ export class SCParallels extends LitLocalized(LitElement) {
     }
   }
 
-  get actions() {
-    return {
-      changeLinearProgressActiveState(active) {
-        store.dispatch({
-          type: 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE',
-          linearProgressActive: active,
-        });
-      },
-    };
-  }
-
   static styles = [parallelsListCss];
 
   render() {
@@ -200,11 +189,11 @@ export class SCParallels extends LitLocalized(LitElement) {
 
   async _loadData() {
     this.loadingResults = true;
-    this.actions.changeLinearProgressActiveState(this.loadingResults);
+    reduxActions.changeLinearProgressActiveState(this.loadingResults);
     this.responseData = await (await fetch(this._getAPIEndpoint(this.itemUid))).json();
     await this._didRespond();
     this.loadingResults = false;
-    this.actions.changeLinearProgressActiveState(this.loadingResults);
+    reduxActions.changeLinearProgressActiveState(this.loadingResults);
   }
 
   _didRespond() {

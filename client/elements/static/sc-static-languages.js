@@ -4,6 +4,7 @@ import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { SCUtilityStyles } from '../styles/sc-utility-styles';
+import { reduxActions } from '../addons/sc-redux-actions';
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
 import '../addons/sc-pie-chart';
@@ -56,18 +57,7 @@ export class SCStaticLanguages extends SCStaticPage {
       type: 'LanguageDetailPage',
     };
     setNavigation(navArray);
-    this.actions.changeToolbarTitle(this.localize('languages:languagesOnSuttaCentral'));
-  }
-
-  get actions() {
-    return {
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
-    };
+    reduxActions.changeToolbarTitle(this.localize('languages:languagesOnSuttaCentral'));
   }
 
   findLanguage(code) {

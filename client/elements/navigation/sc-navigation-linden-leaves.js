@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { store } from '../../redux-store';
 import { LitLocalized } from '../addons/sc-localization-mixin';
+import { reduxActions } from '../addons/sc-redux-actions';
 import '../menus/sc-action-items-universal';
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
@@ -204,23 +205,6 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
   }
 
-  get actions() {
-    return {
-      setNavigation(navArray) {
-        store.dispatch({
-          type: 'SET_NAVIGATION',
-          navigationArray: navArray,
-        });
-      },
-      changeToolbarTitle(title) {
-        store.dispatch({
-          type: 'CHANGE_TOOLBAR_TITLE',
-          title,
-        });
-      },
-    };
-  }
-
   stateChanged(state) {
     super.stateChanged(state);
     this.requestUpdate();
@@ -299,14 +283,14 @@ export class SCNavigationLindenLeaves extends LitLocalized(LitElement) {
     this._hideTopSheetsAndMenu();
     if (nav.type === 'home') {
       this.navArray.length = 1;
-      this.actions.setNavigation(this.navArray);
+      reduxActions.setNavigation(this.navArray);
       dispatchCustomEvent(this, 'sc-navigate', { pathname: nav.url });
     }
 
     const routePath = store.getState().currentRoute.path;
-    this.actions.changeToolbarTitle(nav.title);
+    reduxActions.changeToolbarTitle(nav.title);
     this.navArray.length = nav.index + 1 || 1;
-    this.actions.setNavigation(this.navArray);
+    reduxActions.setNavigation(this.navArray);
     this.requestUpdate();
 
     if (this._getPathParamNumber(routePath, 1) !== 'pitaka') {
