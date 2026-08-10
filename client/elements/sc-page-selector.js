@@ -339,12 +339,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
           payload: { name, params, path },
         });
       },
-      setStaticPagesToolbarDisplayState(toolbarDisplayState) {
-        store.dispatch({
-          type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
-          staticPagesToolbarDisplayState: toolbarDisplayState,
-        });
-      },
       changeDisplayToolButtonState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_TOOL_BUTTON_STATE',
@@ -670,7 +664,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       'publicationEditionIntroduction',
     ].includes(this.currentRoute.name);
 
-    this.actions.setStaticPagesToolbarDisplayState({
+    reduxActions.setStaticPagesToolbarDisplayState({
       displayFirstToolbar: isToolbarSelected,
       displaySecondToolbar: this.shouldShowSecondToolbar,
       displayTipitakaToolbar: this.shouldShowTipitakaToolbar,
