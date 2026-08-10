@@ -851,18 +851,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
 
   get actions() {
     return {
-      toggleTextualInfo(enabled) {
-        store.dispatch({
-          type: 'TOGGLE_TEXTUAL_INFORMATION_ENABLED',
-          enabled,
-        });
-      },
-      downloadParagraphs(data) {
-        store.dispatch({
-          type: 'DOWNLOAD_PARAGRAPH_DESCRIPTIONS',
-          descriptions: data,
-        });
-      },
       activatePaliLookup(activated, targetLanguage, targetDictRepr) {
         store.dispatch({
           type: 'ACTIVATE_PALI_LOOKUP',
@@ -877,12 +865,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
           chineseLookupTargetLanguage: targetLanguage,
           chineseLookupActivated: activated,
           chineseLookupTargetDictRepr: targetDictRepr,
-        });
-      },
-      setReferenceDisplayType(displayType) {
-        store.dispatch({
-          type: 'SET_REFERENCE_DISPLAY_TYPE',
-          referenceDisplayType: displayType,
         });
       },
       setRootTextFirst(rootTextFirst) {

@@ -913,17 +913,6 @@ export class SCTextBilara extends SCTextCommon {
     return name.replace(/^\d+\./, '').trim();
   }
 
-  get actions() {
-    return {
-      chooseSegmentedSuttaTextView(viewNumber) {
-        store.dispatch({
-          type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',
-          view: viewNumber,
-        });
-      },
-    };
-  }
-
   _addRootText() {
     if (!this.bilaraRootSutta || this._articleElement().length === 0) {
       return;
