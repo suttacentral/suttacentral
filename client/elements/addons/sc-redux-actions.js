@@ -8,7 +8,7 @@ export class reduxActions {
     });
   }
 
-  static setReferenceDisplayType(displayedReferences) {
+  static setDisplayedReferences(displayedReferences) {
     store.dispatch({
       type: 'SET_REFERENCE_DISPLAY_TYPE_ARRAY',
       displayedReferences,

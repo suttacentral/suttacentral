@@ -438,7 +438,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
           defaultDisplayedReference.checked = true;
         }
 
-        this.actions.setDisplayedReferences(
+        reduxActions.setDisplayedReferences(
           this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set)
         );
       })
@@ -726,7 +726,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this.references.find(reference => reference.edition_set === 'none').checked = true;
     this.requestUpdate();
     this._showToast(this.localize('viewoption:allRefsDisabled'));
-    this.actions.setDisplayedReferences(['none']);
+    reduxActions.setDisplayedReferences(['none']);
   }
 
   enableAllReferences() {
@@ -734,7 +734,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     this.references.find(reference => reference.edition_set === 'none').checked = false;
     this.requestUpdate();
     this._showToast(this.localize('viewoption:allRefsEnabled'));
-    this.actions.setDisplayedReferences(this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set));
+    reduxActions.setDisplayedReferences(this.references.filter(({ checked }) => checked).map(({ edition_set }) => edition_set));
   }
 
   _onReferenceDisplayTypeChanged({ target: { checked, value: selectedReferenceDisplayType } }) {
@@ -773,7 +773,7 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         this._showToast(this.localize('viewoption:ptsRefsDisabled'));
       }
     }
-    this.actions.setDisplayedReferences(references);
+    reduxActions.setDisplayedReferences(references);
   }
 
   get showHighlightingTemplate() {
@@ -871,12 +871,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
         store.dispatch({
           type: 'SET_ROOT_TEXT_FIRST',
           rootTextFirst,
-        });
-      },
-      setDisplayedReferences(displayedReferences) {
-        store.dispatch({
-          type: 'SET_REFERENCE_DISPLAY_TYPE_ARRAY',
-          displayedReferences,
         });
       },
     };

@@ -692,7 +692,7 @@ export class SCTextLegacy extends SCTextCommon {
           // eslint-disable-next-line promise/always-return
           if (paramReference.length > 0) {
             this.chosenReferenceDisplayType = paramReference;
-            reduxActions.setReferenceDisplayType(paramReference);
+            reduxActions.setDisplayedReferences(paramReference);
           }
         })
         .catch(e => console.error(e));
