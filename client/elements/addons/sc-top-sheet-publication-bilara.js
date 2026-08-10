@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { API_ROOT } from '../../constants';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
+import { reduxActions } from './sc-redux-actions';
 import SCTopSheetCommon from './sc-top-sheet-common';
 import { store } from '../../redux-store';
 
@@ -147,20 +148,9 @@ export class SCTopSheetPublicationBilara extends SCTopSheetCommon {
     }
   }
 
-  get actions() {
-    return {
-      changeSuttaPublicationInfo(publicationInfo) {
-        store.dispatch({
-          type: 'CHANGE_SUTTA_PUBLICATION_INFO',
-          suttaPublicationInfo: publicationInfo,
-        });
-      },
-    };
-  }
-
   fetchPublications() {
     if (!this.textUID || !this.lang || !this.authorUID) {
-      this.actions.changeSuttaPublicationInfo(null);
+      reduxActions.changeSuttaPublicationInfo(null);
       return;
     }
     fetch(`${API_ROOT}/publication_info/${this.textUID}/${this.lang}/${this.authorUID}`)

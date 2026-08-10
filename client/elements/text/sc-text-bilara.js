@@ -293,9 +293,9 @@ export class SCTextBilara extends SCTextCommon {
         this._updateTextViewStylesBasedOnState();
       }, 0);
 
-      this.actions.changeSuttaMetaText('');
+      reduxActions.changeSuttaMetaText('');
       if (!this.isRangeSutta) {
-        this.actions.changeSuttaPublicationInfo({
+        reduxActions.changeSuttaPublicationInfo({
           uid: this.suttaId,
           lang: this.translatedSutta?.lang || 'en',
           authorUid: this.translatedSutta?.author_uid,
@@ -443,7 +443,7 @@ export class SCTextBilara extends SCTextCommon {
         }
       }, 100);
 
-      this.actions.changeSuttaPublicationInfo({
+      reduxActions.changeSuttaPublicationInfo({
         uid: this.range_uid,
         lang: this.translatedSutta?.lang || 'en',
         authorUid: this.translatedSutta?.author_uid,
@@ -915,18 +915,6 @@ export class SCTextBilara extends SCTextCommon {
 
   get actions() {
     return {
-      changeSuttaMetaText(metaText) {
-        store.dispatch({
-          type: 'CHANGE_SUTTA_META_TEXT',
-          metaText,
-        });
-      },
-      changeSuttaPublicationInfo(publicationInfo) {
-        store.dispatch({
-          type: 'CHANGE_SUTTA_PUBLICATION_INFO',
-          suttaPublicationInfo: publicationInfo,
-        });
-      },
       chooseSegmentedSuttaTextView(viewNumber) {
         store.dispatch({
           type: 'CHOOSE_SEGMENTED_SUTTA_TEXT_VIEW',

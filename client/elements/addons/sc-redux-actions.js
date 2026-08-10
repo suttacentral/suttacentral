@@ -235,4 +235,25 @@ export class reduxActions {
       showIllustrations,
     });
   }
+
+  static changeSuttaMetaText(metaText) {
+    store.dispatch({
+      type: 'CHANGE_SUTTA_META_TEXT',
+      metaText,
+    });
+  }
+
+  static changeSuttaPublicationInfo(publicationInfo) {
+    store.dispatch({
+      type: 'CHANGE_SUTTA_PUBLICATION_INFO',
+      suttaPublicationInfo: publicationInfo,
+    });
+  }
+
+  static setStaticPagesToolbarDisplayState(toolbarDisplayState) {
+    store.dispatch({
+      type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
+      staticPagesToolbarDisplayState: toolbarDisplayState,
+    });
+  }
 }

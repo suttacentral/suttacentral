@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { store } from '../../redux-store';
+import { reduxActions } from '../addons/sc-redux-actions';
 import { SCMenuStaticPagesNavStyles } from '../styles/sc-menu-static-pages-nav-styles';
 import { API_ROOT } from '../../constants';
 
@@ -34,7 +35,7 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   }
 
   _initStaticPagesToolbarDisplayState() {
-    this.actions.setStaticPagesToolbarDisplayState({
+    reduxActions.setStaticPagesToolbarDisplayState({
       displayFirstToolbar: true,
       displaySecondToolbar: false,
       displayTipitakaToolbar: false,
@@ -43,17 +44,6 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
       displayGuidesToolbar: false,
       displayPublicationToolbar: false,
     });
-  }
-
-  get actions() {
-    return {
-      setStaticPagesToolbarDisplayState(toolbarDisplayState) {
-        store.dispatch({
-          type: 'CHANGE_STATIC_PAGES_TOOLBAR_DISPLAY_STATE',
-          staticPagesToolbarDisplayState: toolbarDisplayState,
-        });
-      },
-    };
   }
 
   stateChanged(state) {

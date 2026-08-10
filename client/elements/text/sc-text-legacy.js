@@ -116,17 +116,6 @@ export class SCTextLegacy extends SCTextCommon {
     `;
   }
 
-  get actions() {
-    return {
-      changeSuttaMetaText(metaText) {
-        store.dispatch({
-          type: 'CHANGE_SUTTA_META_TEXT',
-          metaText,
-        });
-      },
-    };
-  }
-
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('hashchange', this._hashChangeHandler);
@@ -226,7 +215,7 @@ export class SCTextLegacy extends SCTextCommon {
     this._setAttributes();
     this.spansForWordsGenerated = false;
     this.spansForGraphsGenerated = false;
-    this.actions.changeSuttaMetaText(this._computeMeta());
+    reduxActions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
     this._referenceDisplayTypeChanged();
