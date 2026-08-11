@@ -1,5 +1,2 @@
 build
 *.json
-# Only english localization files are permitted to be checked into the repository.
-!*_en.json
-
