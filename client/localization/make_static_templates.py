@@ -4,11 +4,12 @@ import re
 import json
 import logging
 from textwrap import TextWrapper
-from common import static_elements_dir, localization_data_dir, templates_dir, get_locale_data_file
+
+from common import static_elements_dir, templates_dir, get_locale_data_file
 
 template_regex = re.compile(r"^(.*?)(\$\{(?:unsafeHTML\()?this.localize\('(.+?:(?:\d+))'\)\)?\})", re.MULTILINE)
 
-wrapper = TextWrapper(break_long_words=False, break_on_hyphens=False, drop_whitespace=True, width=100) 
+wrapper = TextWrapper(break_long_words=False, break_on_hyphens=False, drop_whitespace=True, width=100)
 
 def main():
     for file in static_elements_dir.glob('*.js'):
@@ -19,7 +20,7 @@ def main():
 
         with locale_file.open('r', encoding='utf8') as f:
             locale_data = json.load(f)
-        
+
         with file.open('r', encoding='utf8') as f:
             string = f.read()
 
@@ -36,7 +37,7 @@ def main():
             if len(segment) <= 80 or depth > 40:
                 result = f'{prefix}${{t`{segment}`}}'
             else:
-                
+
                 wrapper.initial_indent = ' ' * depth
                 wrapper.subsequent_indent = ' ' * depth
                 parts = wrapper.wrap(segment)
@@ -45,7 +46,7 @@ def main():
                 result = f'{prefix}${{t`{segment}`}}'
 
             return result
-        
+
         new_string = template_regex.sub(sub_fn, string)
 
         with (templates_dir / file.name).open('w', encoding='utf8') as f:
@@ -53,6 +54,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-        
-
-
