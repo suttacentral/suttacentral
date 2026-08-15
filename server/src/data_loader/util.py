@@ -43,7 +43,7 @@ def humansortkey(string, _split=regex.compile(r'(\d+(?:[.-]\d+)*)').split):
     ]
 
 
-def json_load(path: Path) -> dict:
+def json_load(path: Path) -> dict | list[dict]:
     try:
         with open(path, 'r', encoding='utf8') as f:
             return json.load(f)
