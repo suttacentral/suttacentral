@@ -95,7 +95,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
       </div>
       ${this.displayStepper}
       <sc-text-image id="sc_text_image"></sc-text-image>
-      ${this._createMetaData(this.responseData, this.expansionReturns)}
+      ${this.#updateMetaData(this.responseData, this.expansionReturns)}
     `;
   }
 
@@ -567,7 +567,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     return this.lastError;
   }
 
-  _createMetaData(responseData, expansionReturns) {
+  #updateMetaData(responseData, expansionReturns) {
     if (!responseData?.translation) {
       return;
     }

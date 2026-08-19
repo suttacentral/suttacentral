@@ -176,7 +176,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         part => (this.suttaplexData = [...this.suttaplexData, ...part]),
         15,
         100
-      ).then(() => this._updateMetaData());
+      ).then(() => this.#updateMetaData());
       this.initTableView();
     } catch (e) {
       this.networkError = e;
@@ -186,7 +186,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     reduxActions.changeLinearProgressActiveState(this.suttaplexLoading);
   }
 
-  _updateMetaData() {
+  #updateMetaData() {
     const { suttaplexData, isSuttaInRangeSutta, categoryId, rangeCategoryId } = this;
     if (this.suttaplexData?.length) {
       const { title, original_title, blurb, acronym } = suttaplexData[0];
