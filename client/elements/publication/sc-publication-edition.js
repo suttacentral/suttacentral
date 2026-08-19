@@ -55,17 +55,8 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
   updated(changedProps) {
     super.updated(changedProps);
-
-    this.volumesMenu = this.querySelector('#volumes-menu');
-    if (this.volumesMenu) {
-      this.volumesMenu.anchor = this.querySelector('#volumes-menu-button');
-    }
-
     if (changedProps.has('editionId') && this.editionId) {
       this.#initializeEditionData();
-    }
-    if (changedProps.has('volumesInfoForDownloadMenu')) {
-      this.requestUpdate();
     }
     this.#updateNav();
   }
