@@ -1850,6 +1850,8 @@ class GitHubDirectoryListing(Resource):
                 return {'error': 'Invalid GitHub repository URL'}, 422
 
             owner, repo = repo_info
+            if owner != 'suttacentral' or repo != 'editions':
+                return {'error': 'Disallowed GitHub repository URL'}, 403
 
             api_url = f"https://api.github.com/repos/{owner}/{repo}/contents"
             if path:
