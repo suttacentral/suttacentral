@@ -95,7 +95,6 @@ const initialState = {
   currentEditionHomeInfo: {
     title: '',
     url: '',
-    root_title: '',
   },
   instantSearch: {
     lastUpdatedDate: '2023-09-22T00:00:00.000Z',
