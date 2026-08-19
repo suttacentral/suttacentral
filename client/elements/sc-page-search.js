@@ -1034,7 +1034,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     super.updated(changedProps);
     if (changedProps.has('lastSearchResults')) {
       this.requestUpdate();
-      this.#createMetaData();
+      this.#updateMetaData();
     }
     const searchInput = this.shadowRoot.querySelector('#search_input');
     if (searchInput?.value === '') {
@@ -1241,7 +1241,7 @@ export class SCPageSearch extends LitLocalized(LitElement) {
     return `${API_ROOT}/expansion`;
   }
 
-  #createMetaData() {
+  #updateMetaData() {
     const description = this.localize('search:metaDescriptionText');
     const searchResultsText = this.localize('search:searchResultsText');
     const resultsFor = this.localize('search:resultsFor');

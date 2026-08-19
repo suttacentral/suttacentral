@@ -362,7 +362,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    this._createMetaData();
+    this.#updateMetaData();
 
     this._changeRoute(this.router.location);
     this._stopListening = this.router.listen(({ location }) => {
@@ -449,7 +449,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   updated() {
     if (this.currentRoute.name?.toUpperCase() !== 'SUTTA') {
-      this._createMetaData();
+      this.#updateMetaData();
     }
     this._updateNav();
     this._setVisibleToolbar();
@@ -593,7 +593,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     });
   }
 
-  _createMetaData() {
+  #updateMetaData() {
     const description = this.localize('interface:metaDescriptionText');
 
     let pageName = this.tryLocalize(

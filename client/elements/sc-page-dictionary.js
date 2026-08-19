@@ -258,7 +258,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
           </div>
         </main>
       </div>
-      ${this._createMetaData()}
+      ${this.#updateMetaData()}
     `;
   }
 
@@ -334,7 +334,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
       await this._fetchAdjacent();
       await this._fetchSimilar();
     }
-    
+
     this._fetchDictionary();
   }
 
@@ -439,7 +439,7 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
     }
   }
 
-  _createMetaData() {
+  #updateMetaData() {
     if (!this.localize) {
       return;
     }

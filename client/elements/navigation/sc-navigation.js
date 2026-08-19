@@ -89,7 +89,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
       return;
     }
     this._setToolbarTitle();
-    this._createMetaData();
+    this.#updateMetaData();
     RefreshNavNew(this.currentUid);
   }
 
@@ -238,7 +238,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
-          this._createMetaData();
+          this.#updateMetaData();
           if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData[0]?.uid)) {
             dispatchCustomEvent(this, 'sc-navigate', {
               pathname: `/${params.childId}`,
@@ -284,7 +284,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
     );
   }
 
-  _createMetaData() {
+  #updateMetaData() {
     if (!this.currentMenuData || this.currentMenuData.length === 0) {
       return;
     }
