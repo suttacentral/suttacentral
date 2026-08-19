@@ -9,7 +9,7 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
   static properties = {
     staticPagesToolbarDisplayState: { type: Object },
     changedRoute: { type: Object },
-    editionHome: { type: Object },
+    editionHomeInfo: { type: Object },
     editionMatters: { type: Array },
   };
 
