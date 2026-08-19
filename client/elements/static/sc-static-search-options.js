@@ -219,7 +219,7 @@ export class SCStaticSearchOptions extends SCStaticPage {
     `;
   }
 
-  #createMetaData() {
+  #updateMetaData() {
     const pageTitle = `${this.localize('search:searchOptions')}`;
 
     document.dispatchEvent(
@@ -237,7 +237,7 @@ export class SCStaticSearchOptions extends SCStaticPage {
   }
 
   firstUpdated() {
-    this.#createMetaData();
+    this.#updateMetaData();
   }
 }
 
