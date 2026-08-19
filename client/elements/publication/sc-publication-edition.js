@@ -118,7 +118,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
 
   #fetchAllEditions() {
     setTimeout(() => {
-      this.allEditions = allEditions;
       this.editionId = allEditions.find(
         x => x.uid === this.editionUid && x.edition_id?.includes('web')
       )?.edition_id;
@@ -158,7 +157,6 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
         reduxActions.changeCurrentEditionHomeInfo({
           title: this.editionDetail[0]?.translated_name?.replace('Collection', ''),
           url: `/edition/${this.editionUid}/${this.currentRoute.params.langIsoCode}/${this.currentRoute.params.authorUid}`,
-          root_title: this.editionDetail[0].root_name,
         });
       }
     } catch (error) {

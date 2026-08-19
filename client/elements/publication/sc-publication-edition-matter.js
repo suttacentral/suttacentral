@@ -66,7 +66,6 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         reduxActions.changeCurrentEditionHomeInfo({
           title: this.editionDetail[0]?.translated_name?.replace('Collection', ''),
           url: `/edition/${this.editionUid}/${this.currentRoute.params.langIsoCode}/${this.currentRoute.params.authorUid}`,
-          root_title: this.editionDetail[0].root_name,
         });
       }
     } catch (error) {
