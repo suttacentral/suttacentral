@@ -3,6 +3,7 @@ import { css, html, LitElement, render } from 'lit';
 import { LitLocalized } from '../addons/sc-localization-mixin';
 import { API_ROOT } from '../../constants';
 import copyToClipboard from '../../utils/copy';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 import { formatVolPages } from '../../utils/suttaplex';
 import { icon } from '../../img/sc-icon';
 
@@ -115,13 +116,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   }
 
   #notifyCopy(message, success) {
-    this.dispatchEvent(
-      new CustomEvent('par-menu-copied', {
-        detail: { message, success },
-        bubbles: true,
-        composed: true,
-      })
-    );
+    dispatchCustomEvent(this, 'par-menu-copied', { message, success });
   }
 
   // copy the parallels-table in html-string

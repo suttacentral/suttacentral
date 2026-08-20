@@ -289,15 +289,11 @@ export class SCNavigation extends LitLocalized(LitElement) {
       return;
     }
     const description = this.localize('interface:metaDescriptionText');
-    document.dispatchEvent(
-      new CustomEvent('metadata', {
-        detail: {
-          pageTitle: `${this._getTitle()}—${this.localize('interface:navigationTitle')}`,
-          title: `${this._getTitle()}—${this.localize('interface:navigationTitle')}`,
-          description,
-        },
-      })
-    );
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle: `${this._getTitle()}—${this.localize('interface:navigationTitle')}`,
+      title: `${this._getTitle()}—${this.localize('interface:navigationTitle')}`,
+      description,
+    });
   }
 
   _isPatimokkha(uid) {
