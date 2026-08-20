@@ -85,6 +85,11 @@ lint: lint-server
 
 .PHONY: lint-server
 lint-server: lint-server-deps
+	@docker exec -t sc-flask uv run ruff check
+
+.PHONY: lint-server-fix
+lint-server-fix:
+	@docker exec -t sc-flask uv run ruff check --fix
 
 # check for a synced lockfile and no unused or undeclared deps
 .PHONY: lint-server-deps

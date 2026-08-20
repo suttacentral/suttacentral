@@ -1,4 +1,3 @@
-import requests
 
 download_links_of_collections = [
   'https://github.com/suttacentral/editions/raw/main/en/sujato/dn/epub/Long-Discourses-sujato-2024-05-13.epub',

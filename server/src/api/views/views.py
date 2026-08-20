@@ -115,7 +115,7 @@ class Languages(Resource):
         if include_all:
             response = languages
         else:
-            response = [l for l in languages if not l['is_root']]
+            response = [lang for lang in languages if not lang['is_root']]
 
         return response, 200
 
@@ -1912,7 +1912,7 @@ class GitHubDirectoryListing(Resource):
 
             path_parts = parsed.path.strip('/').split('/')
             return (path_parts[0], path_parts[1]) if len(path_parts) >= 2 else None
-        except:
+        except: # noqa E722 -- we don't care about the error here
             return None
 
     def _get_directory_contents(self, owner, repo, path, branch, file_extensions):

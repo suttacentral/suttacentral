@@ -8,4 +8,4 @@ class SecondMigration(Migration):
 
     def create_collections(self):
         db = get_db()
-        bilara_author_edition = db.create_collection('bilara_author_edition', edge=False)
+        db.create_collection('bilara_author_edition', edge=False)

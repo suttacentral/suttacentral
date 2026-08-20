@@ -31,7 +31,7 @@ decompose_test_data = [
 
 all_uids = list(
     itertools.chain(
-        (f'dn', 'an', 'sa', 'sa-2'),
+        ('dn', 'an', 'sa', 'sa-2'),
         (f'dn{i}' for i in range(1, 35)),
         (f'an{i}' for i in range(1, 12)),
         (f'an1.{i * 10 + 1}-{i * 10 + 10}' for i in range(0, 10)),

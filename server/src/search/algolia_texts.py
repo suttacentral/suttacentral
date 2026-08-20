@@ -1,23 +1,21 @@
-import os
 import logging
 import json
 import time
 import lxml.html
 import regex
-import sys
 from tqdm import tqdm
 
 from algoliasearch.search_client import SearchClient
-
-# algolia_client = SearchClient.create('B3DSEV09M1', '')
-algolia_client = SearchClient.create('6P1QMGK4ZX', '')
-algolia_index = algolia_client.init_index('sc_text_contents')
 
 from common.arangodb import get_db
 from common.queries import (
     TEXTS_BY_LANG_FOR_SEARCH,
     BILARA_TEXT_BY_LANG_FOR_SEARCH,
 )
+
+# algolia_client = SearchClient.create('B3DSEV09M1', '')
+algolia_client = SearchClient.create('6P1QMGK4ZX', '')
+algolia_index = algolia_client.init_index('sc_text_contents')
 
 EBS_NAMES = '''
 FOR d IN ebs_names

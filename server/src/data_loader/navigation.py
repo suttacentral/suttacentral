@@ -114,7 +114,7 @@ def _parse_tree_recursive(element: Dict[str, list]) -> List[Dict[str, str]]:
     edges = []
     for name, content in reversed(element.items()):
         for item in reversed(content):
-            if type(item) == dict:
+            if type(item) is dict:
                 edges.extend(
                     [{'_from': name, '_to': subgroup_name} for subgroup_name in item.keys()]
                 )
