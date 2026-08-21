@@ -53,8 +53,6 @@ export class SCMenuStaticPagesNav extends LitLocalized(LitElement) {
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
-      this._fetchMatter();
-      this.requestUpdate();
     }
     if (this.editionHomeInfo !== state.currentEditionHomeInfo) {
       this.editionHomeInfo = state.currentEditionHomeInfo;
