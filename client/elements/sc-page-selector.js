@@ -676,8 +676,8 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _changeToolbarTitle() {
-    // the `PublicationEditionMatter` component changes its own title
-    if (this.currentRoute.name === 'publicationEditionMatter') {
+    // these components change their own titles
+    if (['navigation', 'suttaplex', 'sutta', 'publicationEditionMatter'].includes(this.currentRoute.name)) {
       return;
     }
 
@@ -685,9 +685,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         'search': this.localize('interface:searchResults'),
         'define': this.localize('interface:dictionaryResults'),
         'home': 'SuttaCentral',
-        'navigation': '',
-        'suttaplex': '',
-        'sutta': '',
         'palitipitaka': 'Pāḷi Tipiṭaka',
         'searchFilter': 'Search Filter',
         'pirivena-project': 'SuttaCentral Translations For Pirivenas',
