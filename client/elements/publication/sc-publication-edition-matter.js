@@ -8,6 +8,7 @@ import { SCPublicationStyles } from '../styles/sc-publication-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyStaticStyles } from '../styles/sc-typography-static-styles';
 import { store } from '../../redux-store';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 import { allEditions } from './sc-publication-common';
 
 export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
@@ -130,6 +131,15 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     }
   }
 
+  #updateMetaData() {
+    const description = `${this.editionDetail?.[0].root_name} — ${this.editionInfo?.publication?.creator_name} - ${this.matter}`;
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle: description,
+      title: description,
+      description,
+    });
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -146,6 +156,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         ${SCPublicationStyles}
       </style>
       <main>${unsafeHTML(matterContent)}</main>
+      ${this.#updateMetaData()}
     `;
   }
 }
