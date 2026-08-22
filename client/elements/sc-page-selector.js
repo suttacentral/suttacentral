@@ -692,11 +692,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     let title = titleMap[this.currentRoute.name];
     if (title === undefined) {
         const key = `interface:${this.currentRoute.name}Title`;
-        if (this.__resources[key]) {
-            title = this.localize(key);
-        } else {
-            title = '';
-        }
+        title = this.tryLocalize(key, '');
     }
 
     reduxActions.changeToolbarTitle(title);
