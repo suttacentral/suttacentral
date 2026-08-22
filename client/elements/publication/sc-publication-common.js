@@ -1,6 +1,4 @@
 import { API_ROOT } from '../../constants';
-import { reduxActions } from '../addons/sc-redux-actions';
-import { store } from '../../redux-store';
 
 export const coverImage = new Map([
   ['dn', 'dn-book.jpg'],
