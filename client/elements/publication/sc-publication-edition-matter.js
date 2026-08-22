@@ -13,7 +13,7 @@ import { allEditions } from './sc-publication-common';
 export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   static properties = {
     matter: { type: String },
-    matterContent: { type: Object },
+    editionFiles: { type: Object },
   };
 
   static styles = [
@@ -78,19 +78,15 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     await this.#fetchMatter();
     await this.#fetchEditionDetails();
     await this.#fetchEditionInfo();
-    this.requestUpdate();
   }
 
   stateChanged(state) {
     super.stateChanged(state);
-    if (this.changedRoute !== state.currentRoute) {
-      this.changedRoute = state.currentRoute;
-      this.matter = store.getState().currentRoute.params.matter;
-      if (!this.matter) {
-        return;
-      }
-      this.#fetchMatter();
+    const matter = state.currentRoute.params.matter;
+    if (!matter || matter === this.matter) {
+      return;
     }
+    this.matter = matter;
   }
 
   #updateNav() {
@@ -118,14 +114,20 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
       this.editionFiles = await (
         await fetch(`${API_ROOT}/publication/edition/${this.editionId}/files`)
       ).json();
-      for (const key in this.editionFiles) {
-        if (Object.hasOwn(this.editionFiles, key) && key.includes(this.matter.toLowerCase())) {
-          this.matterContent = this.editionFiles[key];
-        }
-      }
-      this.requestUpdate();
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  #renderMatter() {
+    if (!this.matter || !this.editionFiles) {
+      return;
+    }
+
+    for (const key in this.editionFiles) {
+      if (Object.hasOwn(this.editionFiles, key) && key.includes(this.matter.toLowerCase())) {
+        return this.editionFiles[key];
+      }
     }
   }
 
@@ -134,7 +136,8 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   }
 
   render() {
-    if (!this.matterContent) {
+    const matterContent = this.#renderMatter();
+    if (!matterContent) {
       return html``;
     }
     return html`
@@ -143,7 +146,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         ${typographyStaticStyles}
         ${SCPublicationStyles}
       </style>
-      <main>${unsafeHTML(this.matterContent)}</main>
+      <main>${unsafeHTML(matterContent)}</main>
     `;
   }
 }
