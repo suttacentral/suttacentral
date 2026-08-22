@@ -676,6 +676,11 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _changeToolbarTitle() {
+    // the `PublicationEditionMatter` component changes its own title
+    if (this.currentRoute.name === 'publicationEditionMatter') {
+      return;
+    }
+
     const titleMap = {
         'search': this.localize('interface:searchResults'),
         'define': this.localize('interface:dictionaryResults'),
@@ -683,7 +688,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
         'navigation': '',
         'suttaplex': '',
         'sutta': '',
-        'publicationEditionMatter': '',
         'palitipitaka': 'Pāḷi Tipiṭaka',
         'searchFilter': 'Search Filter',
         'pirivena-project': 'SuttaCentral Translations For Pirivenas',
