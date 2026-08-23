@@ -256,12 +256,12 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
     return this.publicationDownloadUrls[type];
   }
 
-  _createMetaData() {
-    const description = `${this.editionDetail[0].root_name} — ${this.editionInfo.publication?.creator_name}`;
+  #updateMetaData() {
+    const title = `${this.editionDetail[0].root_name} — ${this.editionInfo.publication?.creator_name}`;
     dispatchCustomEvent(document, 'metadata', {
-      pageTitle: description,
-      title: description,
-      description,
+      pageTitle: title,
+      title,
+      description: this.editionDetail[0].blurb,
     });
   }
 
@@ -518,7 +518,7 @@ export class SCPublicationEdition extends LitLocalized(LitElement) {
           <section>${this.#publicationDetailTemplate()}</section>
         </article>
       </main>
-      ${this._createMetaData()}
+      ${this.#updateMetaData()}
     `;
   }
 }
