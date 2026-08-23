@@ -132,10 +132,12 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   }
 
   #updateMetaData() {
-    const description = `${this.editionDetail?.[0].root_name} — ${this.editionInfo?.publication?.creator_name} - ${this.matter}`;
+    const title = `${this.editionDetail?.[0].root_name} — ${this.editionInfo?.publication?.creator_name} - ${this.matter}`;
+    const doc = new DOMParser().parseFromString(this.matterContent, 'text/html');
+    const description = doc.querySelector('h1').textContent;
     dispatchCustomEvent(document, 'metadata', {
-      pageTitle: description,
-      title: description,
+      pageTitle: title,
+      title,
       description,
     });
   }
