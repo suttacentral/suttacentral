@@ -1081,7 +1081,7 @@ export class SCTextBilara extends SCTextCommon {
     }
     Object.entries(this.suttaVariant).forEach(([key, value]) => {
       const rootSpan = this.querySelector(`#${CSS.escape(key)} .root`);
-      if (rootSpan) {
+      if (rootSpan && value) {
         rootSpan.appendChild(this._addVariantSpan(value));
       }
     });
