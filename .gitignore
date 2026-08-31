@@ -22,7 +22,4 @@ generatedPoFiles/
 .prod.env
 environment_prod.yml
 .history
-client/.eslintrc.json
-client/.eslintrc.js
-client/.prettierrc
 client/files/fonts/woff2_compress
