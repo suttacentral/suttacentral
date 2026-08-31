@@ -52,5 +52,9 @@ ignore_unused = [
     "uwsgi", # used as CLI in `Makefile`, `entrypoint.sh`
 ]
 
+ignore_undeclared = [
+    "fakes" # is declared outside a package in data_loader tests
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
