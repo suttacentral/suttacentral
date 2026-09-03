@@ -37,7 +37,7 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
     editionsExpansionData: { type: Object },
     localizedStringsPath: { type: String },
     showHighlighting: { type: Boolean },
-    chosenReferenceDisplayType: { type: Array },
+    displayedReferences: { type: Array },
     navItems: { type: Array },
   };
 
@@ -55,7 +55,7 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
     this.showHighlighting = textOptionsState.showHighlighting;
-    this.chosenReferenceDisplayType = textOptionsState.displayedReferences;
+    this.displayedReferences = textOptionsState.displayedReferences;
     this.textualInfoClassTitles = {
       gloss: 'Definition of term.',
       add: 'Text added by the editor or translator for clarification',
@@ -154,8 +154,8 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
       this._showHighlightingChanged();
       this._updateURLSearchParams();
     }
-    if (changedProps.has('chosenReferenceDisplayType')) {
-      this._referenceDisplayTypeChanged();
+    if (changedProps.has('displayedReferences')) {
+      this._displayedReferencesChanged();
       this._updateURLSearchParams();
     }
   }
@@ -180,8 +180,8 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
     }
   }
 
-  _referenceDisplayTypeChanged() {
-    if (this.chosenReferenceDisplayType.includes('main')) {
+  _displayedReferencesChanged() {
+    if (this.displayedReferences.includes('main')) {
       this._articleElement().forEach(article => {
         article.classList.add('legacy-reference');
       });
@@ -204,8 +204,8 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
     if (this.showHighlighting !== textOptionsState.showHighlighting) {
       this.showHighlighting = textOptionsState.showHighlighting;
     }
-    if (this.chosenReferenceDisplayType !== textOptionsState.displayedReferences) {
-      this.chosenReferenceDisplayType = textOptionsState.displayedReferences;
+    if (this.displayedReferences !== textOptionsState.displayedReferences) {
+      this.displayedReferences = textOptionsState.displayedReferences;
     }
   }
 
@@ -216,7 +216,7 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
     reduxActions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
-    this._referenceDisplayTypeChanged();
+    this._displayedReferencesChanged();
     this._chineseLookupStateChanged();
     this.navItems = this._prepareNavigation();
     setTimeout(() => {
@@ -684,7 +684,7 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
           }
           // eslint-disable-next-line promise/always-return
           if (paramReference.length > 0) {
-            this.chosenReferenceDisplayType = paramReference;
+            this.displayedReferences = paramReference;
             reduxActions.setDisplayedReferences(paramReference);
           }
         })
