@@ -1,13 +1,11 @@
 from typing import Generator
 
 import pytest
-from arango import ArangoClient, DocumentInsertError, Response
+from arango import ArangoClient, DocumentInsertError
 from arango.collection import StandardCollection
 from arango.database import Database, StandardDatabase
-from arango.request import Request
 
 from common import arangodb
-from common.arangodb import explain_error
 from common.utils import app_context
 
 
