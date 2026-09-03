@@ -38,7 +38,7 @@ export class SCTextLegacy extends SCTextCommon {
     localizedStringsPath: { type: String },
     inputElement: { type: Object },
     showHighlighting: { type: Boolean },
-    chosenReferenceDisplayType: { type: String },
+    chosenReferenceDisplayType: { type: Array },
     navItems: { type: Array },
   };
 
@@ -56,7 +56,7 @@ export class SCTextLegacy extends SCTextCommon {
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
     this.showHighlighting = textOptionsState.showHighlighting;
-    this.chosenReferenceDisplayType = textOptionsState.referenceDisplayType;
+    this.chosenReferenceDisplayType = textOptionsState.displayedReferences;
     this.textualInfoClassTitles = {
       gloss: 'Definition of term.',
       add: 'Text added by the editor or translator for clarification',
@@ -664,13 +664,10 @@ export class SCTextLegacy extends SCTextCommon {
   _setTextViewState() {
     const highlight = getURLParam('highlight');
     const reference = getURLParam('reference');
-    const { textOptions } = store.getState();
 
     if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
       this.showHighlighting = highlight === 'true';
       reduxActions.setShowHighlighting(highlight === 'true');
-    } else {
-      this.showHighlighting = textOptions.showHighlighting;
     }
 
     if (reference) {
@@ -695,8 +692,6 @@ export class SCTextLegacy extends SCTextCommon {
           }
         })
         .catch(e => console.error(e));
-    } else {
-      this.chosenReferenceDisplayType = textOptions.displayedReferences;
     }
   }
 }
