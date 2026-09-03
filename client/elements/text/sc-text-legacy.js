@@ -38,7 +38,7 @@ export class SCTextLegacy extends SCTextCommon {
     localizedStringsPath: { type: String },
     inputElement: { type: Object },
     showHighlighting: { type: Boolean },
-    chosenReferenceDisplayType: { type: String },
+    displayedReferences: { type: Array },
     navItems: { type: Array },
   };
 
@@ -56,7 +56,7 @@ export class SCTextLegacy extends SCTextCommon {
     this.spansForGraphsGenerated = false;
     this.isChineseLookupEnabled = textOptionsState.chineseLookupActivated;
     this.showHighlighting = textOptionsState.showHighlighting;
-    this.chosenReferenceDisplayType = textOptionsState.referenceDisplayType;
+    this.displayedReferences = textOptionsState.displayedReferences;
     this.textualInfoClassTitles = {
       gloss: 'Definition of term.',
       add: 'Text added by the editor or translator for clarification',
@@ -157,8 +157,8 @@ export class SCTextLegacy extends SCTextCommon {
       this._showHighlightingChanged();
       this._updateURLSearchParams();
     }
-    if (changedProps.has('chosenReferenceDisplayType')) {
-      this._referenceDisplayTypeChanged();
+    if (changedProps.has('displayedReferences')) {
+      this._displayedReferencesChanged();
       this._updateURLSearchParams();
     }
   }
@@ -183,8 +183,8 @@ export class SCTextLegacy extends SCTextCommon {
     }
   }
 
-  _referenceDisplayTypeChanged() {
-    if (this.chosenReferenceDisplayType.includes('main')) {
+  _displayedReferencesChanged() {
+    if (this.displayedReferences.includes('main')) {
       this._articleElement().forEach(article => {
         article.classList.add('legacy-reference');
       });
@@ -207,8 +207,8 @@ export class SCTextLegacy extends SCTextCommon {
     if (this.showHighlighting !== textOptionsState.showHighlighting) {
       this.showHighlighting = textOptionsState.showHighlighting;
     }
-    if (this.chosenReferenceDisplayType !== textOptionsState.displayedReferences) {
-      this.chosenReferenceDisplayType = textOptionsState.displayedReferences;
+    if (this.displayedReferences !== textOptionsState.displayedReferences) {
+      this.displayedReferences = textOptionsState.displayedReferences;
     }
   }
 
@@ -219,7 +219,7 @@ export class SCTextLegacy extends SCTextCommon {
     reduxActions.changeSuttaMetaText(this._computeMeta());
     this._loadingChanged();
     this._showHighlightingChanged();
-    this._referenceDisplayTypeChanged();
+    this._displayedReferencesChanged();
     this._chineseLookupStateChanged();
     this.navItems = this._prepareNavigation();
     setTimeout(() => {
@@ -664,13 +664,10 @@ export class SCTextLegacy extends SCTextCommon {
   _setTextViewState() {
     const highlight = getURLParam('highlight');
     const reference = getURLParam('reference');
-    const { textOptions } = store.getState();
 
     if (highlight && ['true', 'false'].includes(highlight.toLowerCase())) {
       this.showHighlighting = highlight === 'true';
       reduxActions.setShowHighlighting(highlight === 'true');
-    } else {
-      this.showHighlighting = textOptions.showHighlighting;
     }
 
     if (reference) {
@@ -690,13 +687,11 @@ export class SCTextLegacy extends SCTextCommon {
           }
           // eslint-disable-next-line promise/always-return
           if (paramReference.length > 0) {
-            this.chosenReferenceDisplayType = paramReference;
+            this.displayedReferences = paramReference;
             reduxActions.setDisplayedReferences(paramReference);
           }
         })
         .catch(e => console.error(e));
-    } else {
-      this.chosenReferenceDisplayType = textOptions.displayedReferences;
     }
   }
 }
