@@ -884,9 +884,9 @@ export class SCTextBilara extends SCTextCommon {
     }
   }
 
-  buildReferences(referenceDisplayTypeArray) {
-    return Array.isArray(referenceDisplayTypeArray)
-      ? referenceDisplayTypeArray.reduce((acc, edition_set) => acc + edition_set, '')
+  buildReferences(displayedReferences) {
+    return Array.isArray(displayedReferences)
+      ? displayedReferences.reduce((acc, edition_set) => acc + edition_set, '')
       : '';
   }
 
