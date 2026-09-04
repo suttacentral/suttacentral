@@ -199,15 +199,13 @@ class InitialMigration(Migration):
 
 - Use [ES6 fat arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
 
-- Use [ES6 classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes) (`class MyElement extends Polymer.Element`) instead of the old `Polymer({...})` syntax when declaring an element inside your \<script> tags.
-
 - Use `const`/`let` instead of `var` when declaring a variable.
 
 - Use `===` and `!==` instead of `==` and `!=` when comparing values to avoid [type coercion](http://webreflection.blogspot.com/2010/10/javascript-coercion-demystified.html).
 
 - Comments explaining a function's purpose should be written on the line directly above the function declaration.
 
-- Internal HTML imports should come after external ones (from bower_components) and be separated by a newline.
+- Internal imports should come after external ones (from `node_modules`) and be separated by a newline.
 
 - When commenting Components at the top-level (above `<dom-module>`), keep HTML comment tags (`\<!--` & `-->`) on their own separate lines.
 
