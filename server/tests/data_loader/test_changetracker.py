@@ -1,5 +1,4 @@
 import pytest
-from arango.database import Database
 
 import common.utils
 from common import arangodb
