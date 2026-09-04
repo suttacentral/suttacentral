@@ -33,7 +33,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     paliLookupLanguage: { type: String },
     chineseLookupArray: { type: Array },
     chineseLookupLanguage: { type: String },
-    paliScripts: { type: Array },
     paliScript: { type: String },
     textualInfoToggleEnabled: { type: Boolean },
     textualInfoResponse: { type: Object },
