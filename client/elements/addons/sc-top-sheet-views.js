@@ -296,7 +296,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     }
     if (this.paliScript !== state.textOptions.script) {
       this.paliScript = state.textOptions.script;
-      this.#setPaliScriptSelected();
     }
     const currentReferences = this.buildReferences(this.displayedReferences);
     const incomingReferences = this.buildReferences(state.textOptions.displayedReferences);
@@ -660,10 +659,10 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
               <p>${this.localize('viewoption:changePaliScriptDescription')}</p>
             </details>
             <div class="form-controls">
-              <select id="selPaliScripts">
+              <select id="selPaliScripts" @change=${this._onPaliScriptChanged}>
                 ${scriptIdentifiers.map(
                   script => html`
-                    <option value=${script.script}>
+                    <option value=${script.script} ?selected=${script.script === this.paliScript}>
                       ${script.language}
                     </option>
                   `
@@ -872,10 +871,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this.shadowRoot
-      .querySelector('#selPaliScripts')
-      .addEventListener('change', this._onPaliScriptChanged);
-    this.#setPaliScriptSelected();
     this._keydownHandlers = {
       'm': this._handleMKeydown.bind(this),
       'M': this._handleMKeydown.bind(this),
@@ -889,19 +884,6 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
       'V': this._handleVKeydown.bind(this),
     };
     document.addEventListener('keydown', this._handleKeydown.bind(this));
-  }
-
-  #setPaliScriptSelected() {
-    const paliScriptSelect = this.shadowRoot.querySelector('#selPaliScripts');
-    if (!paliScriptSelect) {
-      return;
-    }
-    for (const option of paliScriptSelect.options) {
-      if (option.value === this.paliScript) {
-        option.selected = true;
-        break;
-      }
-    }
   }
 
   _onRootOrderChanged(e) {
