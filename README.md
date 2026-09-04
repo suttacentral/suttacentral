@@ -5,14 +5,13 @@ SuttaCentral is a Python Flask server which serves a Progressive Web App (`clien
 The API pulls its data in real time from an ArangoDB instance populated periodically with data from the `sc-data` repository.
 
 # Deploying for production
+
 1. `$ git clone git@github.com:suttacentral/suttacentral.git`
 2. `$ cd suttacentral`
-3. `$ git checkout production`
-4. `$ make prepare-host`
-5. `$ make run-production-env` -> Supply needed env variables, 
+3. `$ make prepare-host`
+4. `$ make run-production-env` -> Supply needed env variables,
 if you chose random you will be prompted back with generated values.
 Remember them! You will use some of them to access admin services.
-6. Done
 
 ## Or updating in individual steps
 
@@ -115,7 +114,7 @@ You can access its web interface on <http://127.0.0.1:8529>.
 In the code that is running in the docker containers you can access the database on the address `sc-arangodb` on the same port.
 
 In the development mode:
-    
+
 **Login**: `root`
 
 **password**: `test`
@@ -138,7 +137,7 @@ In order to create database migration in out app you have to follow those simple
 6. Set tasks = `['first_task', 'second_task', ...]` in class attributes.
 7. You are good to go just remember to never change the 'migration_id'.
 otherwise your migrations might fail.
- 
+
 For example:
 ```python
 from common.arangodb import get_db
