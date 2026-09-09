@@ -676,16 +676,15 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
   }
 
   _onPaliScriptChanged(e) {
-    const scTopsheetViews = document.querySelector('sc-site-layout').querySelector('#setting_menu');
     const selectedScript = scriptIdentifiers[e.currentTarget.selectedIndex].script;
     const selectedLanguage = scriptIdentifiers[e.currentTarget.selectedIndex].language;
     reduxActions.choosePaliTextScript(selectedScript);
-    const scriptChangeMessage = scTopsheetViews.localizeEx(
+    const scriptChangeMessage = this.localizeEx(
       'viewoption:scriptChanged',
       'paliScript',
       selectedLanguage
     );
-    scTopsheetViews._showToast(scriptChangeMessage);
+    this._showToast(scriptChangeMessage);
   }
 
   get referenceDisplayTypeTemplate() {
