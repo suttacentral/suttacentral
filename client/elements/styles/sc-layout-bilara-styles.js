@@ -172,6 +172,10 @@ export const plainPlusStyles = html`
       grid-template-columns: 60px 1fr;
       grid-column-gap: var(--sc-size-lg);
     }
+    /* don't display when the text is empty (e.g. omitted repetition), so that there isn't a block of empty space when only viewing the translation */
+    .segment:has(.translation > .text:empty) {
+      display: none;
+    }
 
     .reference {
       grid-column: 1;
