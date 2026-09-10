@@ -1125,7 +1125,7 @@ export class SCTextBilara extends SCTextCommon {
     await this._fetchRootEdition();
     Object.entries(this.suttaReference).forEach(([key, value]) => {
       const refElement = this.querySelector(`#${CSS.escape(key)} .reference`);
-      if (refElement) {
+      if (refElement && value) {
         this._addReferenceAnchor(value, refElement);
       }
     });
