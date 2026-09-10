@@ -239,12 +239,14 @@ export class SCPageSearch extends LitLocalized(LitElement) {
 
   _startSearch() {
     let searchQuery = this.shadowRoot.getElementById('search_input').value;
-    if (searchQuery) {
-      searchQuery = searchQuery.replace(/ /g, '+')
-      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}`});
-      this.searchQuery = searchQuery;
-      this.#startNewSearch();
+    if (!searchQuery) {
+      return;
     }
+
+    searchQuery = searchQuery.replace(/ /g, '+')
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}`});
+    this.searchQuery = searchQuery;
+    this.#startNewSearch();
   }
 
   get loadMoreButtonTemplate() {

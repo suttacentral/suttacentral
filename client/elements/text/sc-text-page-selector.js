@@ -402,26 +402,27 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     }
 
     const dhpPrefixMatch = this.suttaId.match(/^(p?dhp)/);
-    if (dhpPrefixMatch) {
-      const dhpPrefix = dhpPrefixMatch[1];
-      const previousNo = parseInt(this.suttaId.replace(dhpPrefix, ''), 10) - 1;
-      const nextNo = parseInt(this.suttaId.replace(dhpPrefix, ''), 10) + 1;
-      const dhpBeginNo = parseInt(
-        this.responseData.vaggaBegin.replace(dhpPrefix, '').split('-')[0],
-        10
+    if (!dhpPrefixMatch) {
+      return;
+    }
+    const dhpPrefix = dhpPrefixMatch[1];
+    const previousNo = parseInt(this.suttaId.replace(dhpPrefix, ''), 10) - 1;
+    const nextNo = parseInt(this.suttaId.replace(dhpPrefix, ''), 10) + 1;
+    const dhpBeginNo = parseInt(
+      this.responseData.vaggaBegin.replace(dhpPrefix, '').split('-')[0],
+      10
+    );
+    const dhpEndNo = parseInt(this.responseData.vaggaEnd.replace(dhpPrefix, '').split('-')[1], 10);
+    if (previousNo >= dhpBeginNo) {
+      const previousUid = `${dhpPrefix}${previousNo}`;
+      this._setPreviousSuttaInfo(
+        previousUid,
+        this._transformId(previousUid, this.expansionReturns)
       );
-      const dhpEndNo = parseInt(this.responseData.vaggaEnd.replace(dhpPrefix, '').split('-')[1], 10);
-      if (previousNo >= dhpBeginNo) {
-        const previousUid = `${dhpPrefix}${previousNo}`;
-        this._setPreviousSuttaInfo(
-          previousUid,
-          this._transformId(previousUid, this.expansionReturns)
-        );
-      }
-      if (nextNo <= dhpEndNo) {
-        const nextUid = `${dhpPrefix}${nextNo}`;
-        this._setNextSuttaInfo(nextUid, this._transformId(nextUid, this.expansionReturns));
-      }
+    }
+    if (nextNo <= dhpEndNo) {
+      const nextUid = `${dhpPrefix}${nextNo}`;
+      this._setNextSuttaInfo(nextUid, this._transformId(nextUid, this.expansionReturns));
     }
   }
 

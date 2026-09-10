@@ -116,29 +116,28 @@ export const LitLocalized = base =>
     }
 
     async __loadLanguage(lang) {
-      if (SUPPORTED_TRANSLATIONS.includes(lang)) {
-        if (!this.localizedStringsPath) {
-          return;
-        }
-        if (!USE_PRODUCTION_LOCALIZATION && !this.localizedStringsPath.includes('build')) {
-          this.localizedStringsPath = this.localizedStringsPath.replace(
-            '/localization/elements',
-            '/localization/elements/build'
-          );
-        }
-        const path = `${this.localizedStringsPath}_${lang}.json`;
+      if (!SUPPORTED_TRANSLATIONS.includes(lang)) {
+        return Promise.resolve({});
+      }
+      if (!this.localizedStringsPath) {
+        return;
+      }
+      if (!USE_PRODUCTION_LOCALIZATION && !this.localizedStringsPath.includes('build')) {
+        this.localizedStringsPath = this.localizedStringsPath.replace(
+          '/localization/elements',
+          '/localization/elements/build'
+        );
+      }
 
-        if (path in localizationCache) {
-          return localizationCache[path];
-        }
-
-        localizationCache[path] = fetch(path)
-          .then(r => r.json())
-          .catch(() => ({}));
-
+      const path = `${this.localizedStringsPath}_${lang}.json`;
+      if (path in localizationCache) {
         return localizationCache[path];
       }
-      return Promise.resolve({});
+
+      localizationCache[path] = fetch(path)
+        .then(r => r.json())
+        .catch(() => ({}));
+      return localizationCache[path];
     }
 
     loadFallbackLanguage() {

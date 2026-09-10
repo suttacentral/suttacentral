@@ -112,24 +112,28 @@ export default class RoutingService {
       url = new URL(anchor.href);
     }
 
-    if (location.origin === url.origin) {
-      const route = this.match(url.pathname);
-      const isJustHashChange = location.pathname === url.pathname && location.hash !== url.hash;
-      if (route && !isJustHashChange) {
-        e.preventDefault();
-        if (this.location.pathname !== url.pathname) {
-          const lastUrlPath = window.location.pathname.split('/');
-          let newPath = url.pathname + (url.search || "")
-          const urlPath  = url.pathname.split('/');
-          if (url.hash) {
-            newPath += url.hash;
-          } else if (lastUrlPath.length > 3 && urlPath.length > 3 && lastUrlPath[1] === urlPath[1]) {
-            newPath += this.location.hash || "";
-          }
-          this.push(newPath);
-        }
-      }
+    if (location.origin !== url.origin) {
+      return;
     }
+    const route = this.match(url.pathname);
+    const isJustHashChange = location.pathname === url.pathname && location.hash !== url.hash;
+    if (!route || isJustHashChange) {
+      return;
+    }
+    e.preventDefault();
+    if (this.location.pathname === url.pathname) {
+      return;
+    }
+
+    const lastUrlPath = window.location.pathname.split('/');
+    let newPath = url.pathname + (url.search || "")
+    const urlPath  = url.pathname.split('/');
+    if (url.hash) {
+      newPath += url.hash;
+    } else if (lastUrlPath.length > 3 && urlPath.length > 3 && lastUrlPath[1] === urlPath[1]) {
+      newPath += this.location.hash || "";
+    }
+    this.push(newPath);
   }
 
   /**

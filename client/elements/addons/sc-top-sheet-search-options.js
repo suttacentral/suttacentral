@@ -112,12 +112,13 @@ export class SCTopSheetSearchOptions extends SCTopSheetCommon {
   }
 
   async initDisplayedLanguages() {
-    if (!this.displayedLanguages || this.displayedLanguages.length === 0) {
-      await this.#fetchLanguageList();
-      this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
-      this.rootLanguageList = this.displayedLanguages.filter(item => item.is_root);
-      this.translationLanguageList = this.displayedLanguages.filter(item => item.is_root === false);
+    if (this.displayedLanguages?.length > 0) {
+      return;
     }
+    await this.#fetchLanguageList();
+    this.displayedLanguages = store.getState().searchOptions.displayedLanguages;
+    this.rootLanguageList = this.displayedLanguages.filter(item => item.is_root);
+    this.translationLanguageList = this.displayedLanguages.filter(item => item.is_root === false);
   }
 
   stateChanged(state) {

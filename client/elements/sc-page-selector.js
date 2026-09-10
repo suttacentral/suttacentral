@@ -380,61 +380,68 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _loadScActionItems() {
-    if (this.currentRoute.name !== 'home') {
-      const scSiteLayout = document.querySelector('sc-site-layout');
-      const scActionItems = scSiteLayout?.querySelector('#action_items');
-      if (!scActionItems) {
-        import(
-          /* webpackMode: "lazy" */
-          /* webpackPrefetch: true */
-          './menus/sc-action-items'
-        )
-          .then(module => {
-            const contextToolbar = scSiteLayout?.querySelector('#context_toolbar');
-            const newScActionItems = document.createElement('sc-action-items');
-            newScActionItems.id = 'action_items';
-            contextToolbar.appendChild(newScActionItems);
-            this._setActionItemsDisplayState();
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      }
+    if (this.currentRoute.name === 'home') {
+      return;
     }
-  }
+
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    const scActionItems = scSiteLayout?.querySelector('#action_items');
+    if (scActionItems) {
+      return;
+    }
+
+    import(
+      /* webpackMode: "lazy" */
+      /* webpackPrefetch: true */
+      './menus/sc-action-items'
+    ).then(module => {
+      const contextToolbar = scSiteLayout?.querySelector('#context_toolbar');
+      const newScActionItems = document.createElement('sc-action-items');
+      newScActionItems.id = 'action_items';
+      contextToolbar.appendChild(newScActionItems);
+      this._setActionItemsDisplayState();
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
 
   _loadTopSheets() {
-    if (this.currentRoute.name !== 'home') {
-      const topSheets = new Map([
-        ['setting_menu', 'sc-top-sheet-views'],
-        ['sutta_parallels', 'sc-top-sheet-parallels'],
-        ['sutta_toc', 'sc-top-sheet-toc'],
-        ['sutta-info', 'sc-top-sheet-publication-legacy'],
-        ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
-        ['search-options', 'sc-top-sheet-search-options'],
-        ['search-filter', 'sc-top-sheet-search-filter'],
-      ]);
-      let needToLoadTopSheets = false;
-      const scSiteLayout = document.querySelector('sc-site-layout');
-      for (const key of topSheets.keys()) {
-        const topSheet = scSiteLayout?.querySelector(`#${key}`);
-        if (!topSheet) {
-          needToLoadTopSheets = true;
-          break;
-        }
+    if (this.currentRoute.name === 'home') {
+      return;
+    }
+
+    const topSheets = new Map([
+      ['setting_menu', 'sc-top-sheet-views'],
+      ['sutta_parallels', 'sc-top-sheet-parallels'],
+      ['sutta_toc', 'sc-top-sheet-toc'],
+      ['sutta-info', 'sc-top-sheet-publication-legacy'],
+      ['bilara-sutta-info', 'sc-top-sheet-publication-bilara'],
+      ['search-options', 'sc-top-sheet-search-options'],
+      ['search-filter', 'sc-top-sheet-search-filter'],
+    ]);
+    let needToLoadTopSheets = false;
+    const scSiteLayout = document.querySelector('sc-site-layout');
+    for (const key of topSheets.keys()) {
+      const topSheet = scSiteLayout?.querySelector(`#${key}`);
+      if (!topSheet) {
+        needToLoadTopSheets = true;
+        break;
       }
-      if (needToLoadTopSheets) {
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-views');
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-toc');
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-parallels');
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-legacy');
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-bilara');
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-options');
-        import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-filter');
-        for (const [key, value] of topSheets) {
-          this._appendTopSheet(key, value, scSiteLayout);
-        }
-      }
+    }
+    if (!needToLoadTopSheets) {
+      return;
+    }
+
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-views');
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-toc');
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-parallels');
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-legacy');
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-publication-bilara');
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-options');
+    import(/* webpackMode: "lazy" */ './addons/sc-top-sheet-search-filter');
+    for (const [key, value] of topSheets) {
+      this._appendTopSheet(key, value, scSiteLayout);
     }
   }
 
@@ -700,25 +707,27 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 }
 
   _updateNav() {
-    if (staticPages.includes(this.currentRoute.name)) {
-      const navArray = store.getState().navigationArray;
-      const currentPath = this.currentRoute.path;
-      let pageName = this.currentRoute.name;
-      const pageNameMap = {
-        'palitipitaka': this.localize('interface:palitipitaka'),
-        'searchFilter': 'Search Filter',
-        'pirivena-project': 'SuttaCentral Translations For Pirivenas'
-      };
-      pageName = pageNameMap[pageName] || pageName;
-      navArray.length = 1;
-      if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
-        navArray.push({
-          title: pageName,
-          url: currentPath,
-          type: 'staticPage',
-        });
-        reduxActions.setNavigation(navArray);
-      }
+    if (!staticPages.includes(this.currentRoute.name)) {
+      return;
+    }
+
+    const navArray = store.getState().navigationArray;
+    const currentPath = this.currentRoute.path;
+    let pageName = this.currentRoute.name;
+    const pageNameMap = {
+      'palitipitaka': this.localize('interface:palitipitaka'),
+      'searchFilter': 'Search Filter',
+      'pirivena-project': 'SuttaCentral Translations For Pirivenas'
+    };
+    pageName = pageNameMap[pageName] || pageName;
+    navArray.length = 1;
+    if (currentPath !== '/' && (!navArray[1] || navArray[1].type !== 'staticPage')) {
+      navArray.push({
+        title: pageName,
+        url: currentPath,
+        type: 'staticPage',
+      });
+      reduxActions.setNavigation(navArray);
     }
   }
 
