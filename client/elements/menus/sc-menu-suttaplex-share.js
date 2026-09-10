@@ -186,20 +186,20 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   // creates a parallels-table in html-string
   async #computeCopyTable() {
     const suttaplexList = document.querySelector('sc-suttaplex-list');
-    if (suttaplexList) {
-      await suttaplexList.initTableView();
-      const parallelsLite = [...suttaplexList.parallelsLite];
-      for (let i = parallelsLite.length - 1; i >= 0; i--) {
-        if (parallelsLite[i].uid !== this.item.uid) {
-          parallelsLite.splice(i, 1);
-        }
-      }
-      const parallelsTable = suttaplexList.tableViewTemplate(parallelsLite);
-      render(parallelsTable, this.shadowRoot.querySelector('#parallelsTable'));
-      const table = this.shadowRoot.querySelector('#parallelsTable').innerHTML;
-      return table.replace(/<!--[\s\S]*?-->/g, '');
+    if (!suttaplexList) {
+      return '';
     }
-    return '';
+    await suttaplexList.initTableView();
+    const parallelsLite = [...suttaplexList.parallelsLite];
+    for (let i = parallelsLite.length - 1; i >= 0; i--) {
+      if (parallelsLite[i].uid !== this.item.uid) {
+        parallelsLite.splice(i, 1);
+      }
+    }
+    const parallelsTable = suttaplexList.tableViewTemplate(parallelsLite);
+    render(parallelsTable, this.shadowRoot.querySelector('#parallelsTable'));
+    const table = this.shadowRoot.querySelector('#parallelsTable').innerHTML;
+    return table.replace(/<!--[\s\S]*?-->/g, '');
   }
 
   #computeCiteData() {

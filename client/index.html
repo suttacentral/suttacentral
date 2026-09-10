@@ -210,25 +210,27 @@
       }
       document.addEventListener('metadata', function (e) {
         const metaData = e.detail;
-        if (metaData) {
-          const url = 'https://suttacentral.net' + window.location.pathname;
-          document.head.querySelector('[rel=canonical]').href = url;
-          document.head.querySelector('title').innerText = metaData.pageTitle;
-          document.head.querySelector("[property='og:url']").content = url;
-          document.head.querySelector("[property='og:title']").content = metaData.title;
-          document.head.querySelector("[property='og:description']").content = metaData.description;
-          document.head.querySelector("[property='og:type']").content = metaData.openGraphType
-            ? metaData.openGraphType
-            : 'website';
-          document.head.querySelector("[name='title']").content = metaData.title;
-          document.head.querySelector("[name='description']").content = metaData.description;
-          document.head.querySelector("[name='twitter:title']").content = metaData.title;
-          document.head.querySelector(
-            "[name='twitter:description']"
-          ).content = metaData.description.substring(0, 120);
-          document.head.querySelector("[itemprop='name']").content = metaData.title;
-          document.head.querySelector("[itemprop='description']").content = metaData.description;
+        if (!metaData) {
+          return;
         }
+
+        const url = 'https://suttacentral.net' + window.location.pathname;
+        document.head.querySelector('[rel=canonical]').href = url;
+        document.head.querySelector('title').innerText = metaData.pageTitle;
+        document.head.querySelector("[property='og:url']").content = url;
+        document.head.querySelector("[property='og:title']").content = metaData.title;
+        document.head.querySelector("[property='og:description']").content = metaData.description;
+        document.head.querySelector("[property='og:type']").content = metaData.openGraphType
+          ? metaData.openGraphType
+          : 'website';
+        document.head.querySelector("[name='title']").content = metaData.title;
+        document.head.querySelector("[name='description']").content = metaData.description;
+        document.head.querySelector("[name='twitter:title']").content = metaData.title;
+        document.head.querySelector(
+          "[name='twitter:description']"
+        ).content = metaData.description.substring(0, 120);
+        document.head.querySelector("[itemprop='name']").content = metaData.title;
+        document.head.querySelector("[itemprop='description']").content = metaData.description;
       });
 
       document.addEventListener('keyword-metadata', function (e) {

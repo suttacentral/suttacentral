@@ -188,37 +188,39 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   #updateMetaData() {
     const { suttaplexData, isSuttaInRangeSutta, categoryId, rangeCategoryId } = this;
-    if (this.suttaplexData?.length) {
-      const { title, original_title, blurb, acronym } = suttaplexData[0];
-      let description = this.localize('interface:metaDescriptionText');
-      if (blurb) {
-        description = blurb;
-      }
-
-      if (!isSuttaInRangeSutta) {
-        RefreshNavNew(categoryId);
-        reduxActions.changeToolbarTitle(original_title);
-      } else {
-        RefreshNavNew(rangeCategoryId);
-        reduxActions.changeToolbarTitle(title);
-
-        setTimeout(() => {
-          const currentNav = store.getState().navigationArray;
-          const lastNavItem = currentNav[currentNav.length - 1];
-          if (lastNavItem.uid !== 'home') {
-            lastNavItem.title = this.suttaplexData[0].title;
-            setNavigation(currentNav);
-          }
-        }, 100);
-      }
-
-      const pageTitle = `${title || original_title || acronym}—${this.localize('interface:parallelsTitle')}`;
-      dispatchCustomEvent(document, 'metadata', {
-        pageTitle,
-        title: pageTitle,
-        description,
-      });
+    if (!this.suttaplexData?.length) {
+      return;
     }
+
+    const { title, original_title, blurb, acronym } = suttaplexData[0];
+    let description = this.localize('interface:metaDescriptionText');
+    if (blurb) {
+      description = blurb;
+    }
+
+    if (!isSuttaInRangeSutta) {
+      RefreshNavNew(categoryId);
+      reduxActions.changeToolbarTitle(original_title);
+    } else {
+      RefreshNavNew(rangeCategoryId);
+      reduxActions.changeToolbarTitle(title);
+
+      setTimeout(() => {
+        const currentNav = store.getState().navigationArray;
+        const lastNavItem = currentNav[currentNav.length - 1];
+        if (lastNavItem.uid !== 'home') {
+          lastNavItem.title = this.suttaplexData[0].title;
+          setNavigation(currentNav);
+        }
+      }, 100);
+    }
+
+    const pageTitle = `${title || original_title || acronym}—${this.localize('interface:parallelsTitle')}`;
+    dispatchCustomEvent(document, 'metadata', {
+      pageTitle,
+      title: pageTitle,
+      description,
+    });
   }
 
   async initTableView() {

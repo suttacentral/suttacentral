@@ -22,15 +22,17 @@ export class CommentTooltipManager {
   async initializeComments() {
     const commentElements = document.querySelectorAll('.comment, .variant');
     commentElements.forEach(element => {
-      if (this._hasContent(element)) {
-        if (this.isMobile) {
-          this._addMobileEventListeners(element);
-        } else {
-          this._addDesktopEventListeners(element);
-        }
-        element.setAttribute('tabindex', '0');
-        element.style.cursor = 'help';
+      if (!this._hasContent(element)) {
+        return;
       }
+
+      if (this.isMobile) {
+        this._addMobileEventListeners(element);
+      } else {
+        this._addDesktopEventListeners(element);
+      }
+      element.setAttribute('tabindex', '0');
+      element.style.cursor = 'help';
     });
 
     if (this.isMobile) {
@@ -203,17 +205,18 @@ export class CommentTooltipManager {
     this.activeTooltip = tooltip;
 
     this.cleanup = autoUpdate(referenceElement, tooltip, async () => {
-      if (this.activeTooltip) {
-        const { x, y } = await computePosition(referenceElement, tooltip, {
-          placement,
-          middleware: [offset(12), flip(), shift({ padding: 8 })]
-        });
-
-        Object.assign(tooltip.style, {
-          left: `${x}px`,
-          top: `${y}px`,
-        });
+      if (!this.activeTooltip) {
+        return;
       }
+
+      const { x, y } = await computePosition(referenceElement, tooltip, {
+        placement,
+        middleware: [offset(12), flip(), shift({ padding: 8 })]
+      });
+      Object.assign(tooltip.style, {
+        left: `${x}px`,
+        top: `${y}px`,
+      });
     });
   }
 

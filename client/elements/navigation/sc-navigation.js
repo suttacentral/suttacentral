@@ -419,16 +419,18 @@ export class SCNavigation extends LitLocalized(LitElement) {
 
   #fetchCreatorInfo(uid) {
     const editionId = this.#fetchEditionId(uid);
-    if (editionId) {
-      const match = editionId.match(/-(\w+)_/);
-      if (match) {
-        const creator = match[1];
-        const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
-        const creatorFullName = this.#parseCreatorFullName(creatorInfo);
-        const langIso = editionId.split('_')[0]?.split('-')?.reverse()[1];
-        this.creatorOfPublications.set(uid, { creatorUid: creator, creatorFullName, langIso });
-      }
+    if (!editionId) {
+      return;
     }
+    const match = editionId.match(/-(\w+)_/);
+    if (!match) {
+      return;
+    }
+    const creator = match[1];
+    const creatorInfo = creatorBio.find(item => item.creator_uid === creator);
+    const creatorFullName = this.#parseCreatorFullName(creatorInfo);
+    const langIso = editionId.split('_')[0]?.split('-')?.reverse()[1];
+    this.creatorOfPublications.set(uid, { creatorUid: creator, creatorFullName, langIso });
   }
 
   #parseCreatorFullName(creatorInfo) {

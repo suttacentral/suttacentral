@@ -179,19 +179,20 @@ export class SCTextBilara extends SCTextCommon {
     }
 
     const contentElement = this.querySelector('#segmented_text_content');
-    if (contentElement) {
-      this._handleContentMouseOver = (e) => {
-        const translationElement = e.target.closest('.translation');
-        const rootElement = e.target.closest('.root');
-        if (translationElement && this.userSelectStyles !== userSelectStyleForTranslation) {
-          this.userSelectStyles = userSelectStyleForTranslation;
-        } else if (rootElement && this.userSelectStyles !== userSelectStyleForRoot) {
-          this.userSelectStyles = userSelectStyleForRoot;
-        }
-      };
-      contentElement.addEventListener('mousedown', this._handleContentMouseOver);
-      this._selectionEventsActive = true;
+    if (!contentElement) {
+      return;
     }
+    this._handleContentMouseOver = (e) => {
+      const translationElement = e.target.closest('.translation');
+      const rootElement = e.target.closest('.root');
+      if (translationElement && this.userSelectStyles !== userSelectStyleForTranslation) {
+        this.userSelectStyles = userSelectStyleForTranslation;
+      } else if (rootElement && this.userSelectStyles !== userSelectStyleForRoot) {
+        this.userSelectStyles = userSelectStyleForRoot;
+      }
+    };
+    contentElement.addEventListener('mousedown', this._handleContentMouseOver);
+    this._selectionEventsActive = true;
   }
 
   _cleanupSelectionEvents() {
@@ -479,12 +480,13 @@ export class SCTextBilara extends SCTextCommon {
     }
     try {
       const targetElement = this.querySelector(`#${CSS.escape(sectionId)}`);
-      if (targetElement) {
-        targetElement.scrollIntoView();
-        window.scrollTo(0, window.scrollY - margin);
-        this._removeRefFocusedClass();
-        targetElement.classList.add('refFocused');
+      if (!targetElement) {
+        return;
       }
+      targetElement.scrollIntoView();
+      window.scrollTo(0, window.scrollY - margin);
+      this._removeRefFocusedClass();
+      targetElement.classList.add('refFocused');
     } catch (e) {
       console.error(e);
     }
@@ -626,13 +628,13 @@ export class SCTextBilara extends SCTextCommon {
 
   async _loadSCBottomSheet() {
     await import('../addons/sc-bottom-sheet.js');
-
-    if (!this.querySelector('sc-bottom-sheet')) {
-      const bottomSheet = document.createElement('sc-bottom-sheet');
-      bottomSheet.id = 'bottom_sheet';
-      bottomSheet.slot = 'bottom_sheet';
-      this.appendChild(bottomSheet);
+    if (this.querySelector('sc-bottom-sheet')) {
+      return;
     }
+    const bottomSheet = document.createElement('sc-bottom-sheet');
+    bottomSheet.id = 'bottom_sheet';
+    bottomSheet.slot = 'bottom_sheet';
+    this.appendChild(bottomSheet);
   }
 
   _conditionallyPutIntoSpans(lang) {
@@ -1544,13 +1546,14 @@ export class SCTextBilara extends SCTextCommon {
   }
 
   async _fetchRootEdition() {
-    if (this.rootEdition.length === 0) {
-      try {
-        const rootEditionApi = `${API_ROOT}/root_edition`;
-        this.rootEdition = await (await fetch(rootEditionApi)).json();
-      } catch (error) {
-        this.lastError = error;
-      }
+    if (this.rootEdition.length > 0) {
+      return;
+    }
+    try {
+      const rootEditionApi = `${API_ROOT}/root_edition`;
+      this.rootEdition = await (await fetch(rootEditionApi)).json();
+    } catch (error) {
+      this.lastError = error;
     }
   }
 
