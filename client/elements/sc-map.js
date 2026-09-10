@@ -174,24 +174,25 @@ export class SCMap extends LitLocalized(LitElement) {
     const mapContainer = this.shadowRoot.getElementById(this.mapElementID);
 
     mapContainer.addEventListener('wheel', (e) => {
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault();
-        const zoomDelta = e.deltaY > 0 ? -1 : 1;
-        const currentZoom = this.map.getZoom();
-        const newZoom = Math.max(
-          this.map.getMinZoom(),
-          Math.min(this.map.getMaxZoom(), currentZoom + zoomDelta)
-        );
-        const rect = mapContainer.getBoundingClientRect();
-        const point = L.point(
-          e.clientX - rect.left,
-          e.clientY - rect.top
-        );
-        this.map.setZoomAround(
-          this.map.containerPointToLatLng(point),
-          newZoom
-        );
+      if (!e.ctrlKey && !e.metaKey) {
+        return;
       }
+      e.preventDefault();
+      const zoomDelta = e.deltaY > 0 ? -1 : 1;
+      const currentZoom = this.map.getZoom();
+      const newZoom = Math.max(
+        this.map.getMinZoom(),
+        Math.min(this.map.getMaxZoom(), currentZoom + zoomDelta)
+      );
+      const rect = mapContainer.getBoundingClientRect();
+      const point = L.point(
+        e.clientX - rect.left,
+        e.clientY - rect.top
+      );
+      this.map.setZoomAround(
+        this.map.containerPointToLatLng(point),
+        newZoom
+      );
     }, { passive: false });
   }
 

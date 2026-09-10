@@ -416,27 +416,29 @@ export class SCPageDictionary extends LitLocalized(LitElement) {
   }
 
   _getGlossaryItems(glossaryReturns, inputArray, adjacent = false) {
-    if (inputArray) {
-      const glossary = [];
-      let glossaryObject = {};
-      let glossText = '';
-      if (glossaryReturns && glossaryReturns[0] && inputArray[0]) {
-        for (const glossWord in inputArray[0]) {
-          const glossLookup = inputArray[0][glossWord];
-          glossText = `<a class="block-link" href="/define/${glossLookup}">${glossLookup}`;
-          const glossaryLookupItem = glossaryReturns[0][glossLookup];
-          if (glossaryLookupItem) {
-            glossText += `<i> (${glossaryLookupItem})</i></a>`;
-          }
-          glossaryObject = { glossWord: glossLookup, glossText };
-          glossary.push(glossaryObject);
-        }
-        if (adjacent) {
-          this.dictionaryAdjacent = glossary;
-        } else {
-          this.dictionarySimilar = glossary;
-        }
+    if (!inputArray) {
+      return;
+    }
+    const glossary = [];
+    let glossaryObject = {};
+    let glossText = '';
+    if (!glossaryReturns?.[0] || !inputArray[0]) {
+      return;
+    }
+    for (const glossWord in inputArray[0]) {
+      const glossLookup = inputArray[0][glossWord];
+      glossText = `<a class="block-link" href="/define/${glossLookup}">${glossLookup}`;
+      const glossaryLookupItem = glossaryReturns[0][glossLookup];
+      if (glossaryLookupItem) {
+        glossText += `<i> (${glossaryLookupItem})</i></a>`;
       }
+      glossaryObject = { glossWord: glossLookup, glossText };
+      glossary.push(glossaryObject);
+    }
+    if (adjacent) {
+      this.dictionaryAdjacent = glossary;
+    } else {
+      this.dictionarySimilar = glossary;
     }
   }
 

@@ -1200,58 +1200,59 @@ class Paragraphs(Resource):
 class Donations(Resource):
     def post(self):
         body = request.get_json()
-        if body is not None and all(item in list(body.keys()) for item in ['currency', 'amount', 'frequency']):
-            currency = body['currency']
-            amount = body['amount']
-            frequency = body['frequency']
+        if body is None or not all(item in list(body.keys()) for item in ['currency', 'amount', 'frequency']):
+            return {'err_message': 'Provide mandatory properties such as currency, amount, and frequency'}, 400
 
-            stripe.api_key = os.environ.get('STRIPE_SECRET')
+        currency = body['currency']
+        amount = body['amount']
+        frequency = body['frequency']
 
-            incoming_uri = urlparse(request.url)
-            cancel_url = '{uri.scheme}://{uri.netloc}/donate-now'.format(uri=incoming_uri)
-            success_url = '{uri.scheme}://{uri.netloc}/donation-success'.format(uri=incoming_uri)
+        stripe.api_key = os.environ.get('STRIPE_SECRET')
 
-            if frequency == 'oneTime':
-                session = stripe.checkout.Session.create(
-                    success_url=success_url,
-                    cancel_url=cancel_url,
-                    payment_method_types=['card'],
-                    line_items=[{
-                        'price_data': {
-                            'currency': currency,
-                            'unit_amount': amount,
-                            'product_data': {
-                                'name': 'Donation'
-                            },
+        incoming_uri = urlparse(request.url)
+        cancel_url = '{uri.scheme}://{uri.netloc}/donate-now'.format(uri=incoming_uri)
+        success_url = '{uri.scheme}://{uri.netloc}/donation-success'.format(uri=incoming_uri)
+
+        if frequency == 'oneTime':
+            session = stripe.checkout.Session.create(
+                success_url=success_url,
+                cancel_url=cancel_url,
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': currency,
+                        'unit_amount': amount,
+                        'product_data': {
+                            'name': 'Donation'
                         },
-                        'quantity': 1,
-                    }],
-                    mode='payment',
-                )
-            elif frequency == 'monthly':
-                session = stripe.checkout.Session.create(
-                    success_url=success_url,
-                    cancel_url=cancel_url,
-                    payment_method_types=['card'],
-                    line_items=[{
-                        'price_data': {
-                            'currency': currency,
-                            'unit_amount': amount,
-                            'product_data': {
-                                'name': 'Monthly Donation'
-                            },
-                            'recurring': {
-                                'interval': 'month'
-                            }
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+            )
+        elif frequency == 'monthly':
+            session = stripe.checkout.Session.create(
+                success_url=success_url,
+                cancel_url=cancel_url,
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': currency,
+                        'unit_amount': amount,
+                        'product_data': {
+                            'name': 'Monthly Donation'
                         },
-                        'quantity': 1,
-                    }],
-                    mode='subscription',
-                )
-            else:
-                return {'err_message': 'Select either one time or monthly'}, 400
-            return {'id': session.id}, 200
-        return {'err_message': 'Provide mandatory property such as currency, amount and frequency'}, 400
+                        'recurring': {
+                            'interval': 'month'
+                        }
+                    },
+                    'quantity': 1,
+                }],
+                mode='subscription',
+            )
+        else:
+            return {'err_message': 'Select either one time or monthly'}, 400
+        return {'id': session.id}, 200
 
 
 class Images(Resource):

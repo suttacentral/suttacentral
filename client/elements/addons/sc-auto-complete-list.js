@@ -162,12 +162,14 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
   }
 
   #gotoSearch(event, uid, searchQuery) {
-    if (event.type === 'click' || event.key === 'Enter') {
-      this.hide();
-      const searchTerm = uid ? `${uid} ${searchQuery}` : searchQuery;
-      const link = `/search?query=${searchTerm}`;
-      dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
+    if (event.type !== 'click' && event.key !== 'Enter') {
+      return;
     }
+
+    this.hide();
+    const searchTerm = uid ? `${uid} ${searchQuery}` : searchQuery;
+    const link = `/search?query=${searchTerm}`;
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: link });
   }
 
   #generateSearchURL(uid, searchQuery) {
@@ -341,10 +343,12 @@ export class SCAutoCompleteList extends LitLocalized(LitElement) {
 
   #startSearch() {
     const searchQuery = this.shadowRoot.getElementById('search_input')?.value;
-    if (searchQuery) {
-      this.hide();
-      dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
+    if (!searchQuery) {
+      return;
     }
+
+    this.hide();
+    dispatchCustomEvent(this, 'sc-navigate', { pathname: `/search?query=${searchQuery}` });
   }
 
   #isSpecialSearch(query) {
