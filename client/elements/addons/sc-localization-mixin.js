@@ -107,10 +107,11 @@ export const LitLocalized = base =>
 
     async __siteLanguageChanged(lang) {
       this._languageLoaded = false;
-      this.__resources = {
-        ...(await this.__loadLanguage(FALLBACK_LANGUAGE)),
-        ...(await this.__loadLanguage(lang)),
-      };
+      const fallbackResources = await this.__loadLanguage(FALLBACK_LANGUAGE);
+      const resources = await this.__loadLanguage(lang);
+      for (const key in fallbackResources) {
+        this.__resources[key] = resources[key] || fallbackResources[key];
+      }
       this._languageLoaded = true;
     }
 
