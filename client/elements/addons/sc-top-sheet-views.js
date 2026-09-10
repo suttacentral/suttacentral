@@ -760,19 +760,13 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     if (references.length === this.references.length - 1) {
       this._showToast(this.localize('viewoption:allRefsEnabled'));
     }
-    if(selectedReferenceDisplayType === 'main') {
-      if (checked) {
-        this._showToast(this.localize('viewoption:mainRefsEnabled'));
-      } else {
-        this._showToast(this.localize('viewoption:mainRefsDisabled'));
-      }
+    if (selectedReferenceDisplayType === 'main') {
+      const key = 'viewoption:mainRefs' + (checked ? 'Enabled' : 'Disabled');
+      this._showToast(this.localize(key));
     }
     if (selectedReferenceDisplayType === 'pts') {
-      if (checked) {
-        this._showToast(this.localize('viewoption:ptsRefsEnabled'));
-      } else {
-        this._showToast(this.localize('viewoption:ptsRefsDisabled'));
-      }
+      const key = 'viewoption:ptsRefs' + (checked ? 'Enabled' : 'Disabled');
+      this._showToast(this.localize(key));
     }
     reduxActions.setDisplayedReferences(references);
   }
