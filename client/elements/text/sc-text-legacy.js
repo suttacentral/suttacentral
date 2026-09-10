@@ -1,9 +1,8 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
-import { html } from 'lit';
+import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-import { SCTextCommon } from './sc-text-common';
 import { layoutSimpleStyles } from '../styles/sc-layout-simple-styles';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyLegacyStyles } from '../styles/sc-typography-legacy-styles';
@@ -15,10 +14,11 @@ import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { dispatchCustomEvent } from '../../utils/customEvent.js';
 import { getURLParam, isChinese } from '../addons/sc-functions-miscellaneous';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { reduxActions } from '../addons/sc-redux-actions';
 import * as OpenCC from 'opencc-js';
 
-export class SCTextLegacy extends SCTextCommon {
+export class SCTextLegacy extends LitLocalized(LitElement) {
   static properties = {
     // in simple texts, both root texts and translations are returned by the API in the translation object.
     sutta: { type: Object },
@@ -36,7 +36,6 @@ export class SCTextLegacy extends SCTextCommon {
     classTitles: { type: Object },
     editionsExpansionData: { type: Object },
     localizedStringsPath: { type: String },
-    inputElement: { type: Object },
     showHighlighting: { type: Boolean },
     chosenReferenceDisplayType: { type: String },
     navItems: { type: Array },
@@ -85,7 +84,6 @@ export class SCTextLegacy extends SCTextCommon {
       ms84: 'Mūlasarvāstivādavinayavastu, part 1-4, (1984)',
     };
     this.localizedStringsPath = '/localization/elements/interface';
-    this.inputElement = {};
     this._hashChangeHandler = () => {
       setTimeout(() => {
         this._scrollToSection(window.location.hash.substring(1));
@@ -123,7 +121,6 @@ export class SCTextLegacy extends SCTextCommon {
     this.addEventListener('click', () => {
       reduxActions.changeDisplaySettingMenuState(false);
     });
-    this.inputElement = this.querySelector('#simple_text_content');
     this._extractSuttaText();
   }
 

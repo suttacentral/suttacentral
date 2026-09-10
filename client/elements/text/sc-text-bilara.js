@@ -1,11 +1,11 @@
-import { html } from 'lit';
+import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { store } from '../../redux-store';
 import { API_ROOT } from '../../constants';
+import { LitLocalized } from '../addons/sc-localization-mixin';
 import { reduxActions } from '../addons/sc-redux-actions';
 import { getURLParam, isChinese } from '../addons/sc-functions-miscellaneous';
-import { SCTextCommon } from './sc-text-common';
 import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { typographyBilaraStyles } from '../styles/sc-typography-bilara-styles';
 import {
@@ -34,7 +34,7 @@ import { dispatchCustomEvent } from '../../utils/customEvent';
 import * as OpenCC from 'opencc-js';
 
 
-export class SCTextBilara extends SCTextCommon {
+export class SCTextBilara extends LitLocalized(LitElement) {
   static properties = {
     rootSutta: { type: Object },
     bilaraRootSutta: { type: Object },
