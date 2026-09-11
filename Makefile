@@ -55,9 +55,7 @@ reload-uwsgi:
 # Starts containers so that we are ready to run tests in them.
 prepare-tests:
 	@make create-network
-	-@docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
-	@echo "waiting for all services to fully start"
-	@bash wait_for_flask.sh
+	@$(COMPOSETEST) up -d --wait --wait-timeout 120
 	@make prepare-test-load-data
 
 prepare-test-load-data:
