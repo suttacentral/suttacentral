@@ -131,9 +131,9 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
     }
   }
 
-  #updateMetaData() {
+  #updateMetaData(matterContent) {
     const title = `${this.editionDetail?.[0].root_name} — ${this.editionInfo?.publication?.creator_name} - ${this.matter}`;
-    const doc = new DOMParser().parseFromString(this.matterContent, 'text/html');
+    const doc = new DOMParser().parseFromString(matterContent, 'text/html');
     const description = doc.querySelector('h1').textContent;
     dispatchCustomEvent(document, 'metadata', {
       pageTitle: title,
@@ -158,7 +158,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
         ${SCPublicationStyles}
       </style>
       <main>${unsafeHTML(matterContent)}</main>
-      ${this.#updateMetaData()}
+      ${this.#updateMetaData(matterContent)}
     `;
   }
 }
