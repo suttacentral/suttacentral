@@ -152,6 +152,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
       <sc-page-selector id="page_selector"></sc-page-selector>
       <sc-site-footer id="site_footer"></sc-site-footer>
+      <sc-toasts></sc-toasts>
     `;
   }
 
@@ -460,10 +461,15 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     import(/* webpackPrefetch: true */ './menus/sc-action-items');
   }
 
+  #loadToasts() {
+    import('./addons/sc-toasts');
+  }
+
   _routeChanged() {
     if (this.changedRoute.name !== 'home') {
       this.#loadTopSheets();
       this.#loadActionItems();
+      this.#loadToasts();
     }
     this.querySelector('#sutta-info')?.hide?.();
     reduxActions.changeLinearProgressActiveState(false);
