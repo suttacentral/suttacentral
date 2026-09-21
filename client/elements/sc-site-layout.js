@@ -136,6 +136,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
             </div>
             <div id="subTitle" lang=${this.language}>${this.localize('interface:pageSubtitle')}</div>
           </div>
+          <sc-action-items id="action_items" style="display: ${this.changedRoute.name === 'home' ? 'none' : 'flex'}"></sc-action-items>
         </div>
 
         <sc-progress .active=${this.linearProgressActive}></sc-progress>
@@ -446,10 +447,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
   }
 
   #loadTopSheets() {
-    if (this.changedRoute.name === 'home') {
-      return;
-    }
-
     import('./addons/sc-top-sheet-views');
     import('./addons/sc-top-sheet-toc');
     import('./addons/sc-top-sheet-parallels');
@@ -459,8 +456,15 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     import('./addons/sc-top-sheet-search-filter');
   }
 
+  #loadActionItems() {
+    import(/* webpackPrefetch: true */ './menus/sc-action-items');
+  }
+
   _routeChanged() {
-    this.#loadTopSheets();
+    if (this.changedRoute.name !== 'home') {
+      this.#loadTopSheets();
+      this.#loadActionItems();
+    }
     this.querySelector('#sutta-info')?.hide?.();
     reduxActions.changeLinearProgressActiveState(false);
   }

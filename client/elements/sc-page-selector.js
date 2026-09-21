@@ -379,33 +379,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     }
   }
 
-  _loadScActionItems() {
-    if (this.currentRoute.name === 'home') {
-      return;
-    }
-
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const scActionItems = scSiteLayout?.querySelector('#action_items');
-    if (scActionItems) {
-      return;
-    }
-
-    import(
-      /* webpackMode: "lazy" */
-      /* webpackPrefetch: true */
-      './menus/sc-action-items'
-    ).then(module => {
-      const contextToolbar = scSiteLayout?.querySelector('#context_toolbar');
-      const newScActionItems = document.createElement('sc-action-items');
-      newScActionItems.id = 'action_items';
-      contextToolbar.appendChild(newScActionItems);
-      this._setActionItemsDisplayState();
-    })
-    .catch(err => {
-      console.error(err);
-    });
-  }
-
   updated() {
     if (this.currentRoute.name?.toUpperCase() !== 'SUTTA') {
       this.#updateMetaData();
@@ -413,7 +386,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     this._updateNav();
     this._setVisibleToolbar();
     this._changeToolbarTitle();
-    this._loadScActionItems();
   }
 
   disconnectedCallback() {
@@ -705,7 +677,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
     this._setViewModeButtonDisplayState();
     this.#setSearchOptionsButtonDisplayState();
     reduxActions.changeDisplayChineseConverterState(false);
-    this._setActionItemsDisplayState();
     this._setTitleState();
   }
 
@@ -725,13 +696,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       this.parentNode.querySelector('#title').style.height = '';
       this.parentNode.querySelector('#subTitle').style.display = 'none';
       this.parentNode.querySelector('#subTitle').style.opacity = '0';
-    }
-  }
-
-  _setActionItemsDisplayState() {
-    const scActionItems = this.parentNode.querySelector('#action_items');
-    if (scActionItems) {
-      scActionItems.style.display = this.currentRoute.name === 'home' ? 'none' : 'flex';
     }
   }
 
