@@ -335,19 +335,8 @@ export class SCTopSheetViews extends LitLocalized(LitElement) {
     return Array.isArray(refs) ? refs.reduce((acc, editionSet) => acc + editionSet, '') : '';
   }
 
-  _loadScToasts() {
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const scToasts = scSiteLayout?.querySelector('sc-toasts');
-    if (!scToasts) {
-      import('./sc-toasts');
-      const newScToasts = document.createElement('sc-toasts');
-      scSiteLayout.appendChild(newScToasts);
-    }
-  }
-
   connectedCallback() {
     super.connectedCallback();
-    this._loadScToasts();
     this._fetchReferenceDisplayType();
   }
 
