@@ -72,7 +72,7 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     await fontLazyLoader.loadFontsWhenIdle();
     this.fontsLoaded = true;
     this.requestUpdate();
-  }  
+  }
 
   #checkAndChangeSiteLanguage() {
     const { siteLanguage } = store.getState();
@@ -139,6 +139,13 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
         </div>
 
         <sc-progress .active=${this.linearProgressActive}></sc-progress>
+        <sc-top-sheet-views id="setting_menu"></sc-top-sheet-views>
+        <sc-top-sheet-parallels id="sutta_parallels"></sc-top-sheet-parallels>
+        <sc-top-sheet-toc id="sutta_toc"></sc-top-sheet-toc>
+        <sc-top-sheet-publication-legacy id="sutta-info"></sc-top-sheet-publication-legacy>
+        <sc-top-sheet-publication-bilara id="bilara-sutta-info"></sc-top-sheet-publication-bilara>
+        <sc-top-sheet-search-options id="search-options"></sc-top-sheet-search-options>
+        <sc-top-sheet-search-filter id="search-filter"></sc-top-sheet-search-filter>
         <sc-menu-static-pages-nav id="static_pages_nav_menu"></sc-menu-static-pages-nav>
       </div>
 
@@ -438,7 +445,22 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     }
   }
 
+  #loadTopSheets() {
+    if (this.changedRoute.name === 'home') {
+      return;
+    }
+
+    import('./addons/sc-top-sheet-views');
+    import('./addons/sc-top-sheet-toc');
+    import('./addons/sc-top-sheet-parallels');
+    import('./addons/sc-top-sheet-publication-legacy');
+    import('./addons/sc-top-sheet-publication-bilara');
+    import('./addons/sc-top-sheet-search-options');
+    import('./addons/sc-top-sheet-search-filter');
+  }
+
   _routeChanged() {
+    this.#loadTopSheets();
     this.querySelector('#sutta-info')?.hide?.();
     reduxActions.changeLinearProgressActiveState(false);
   }
