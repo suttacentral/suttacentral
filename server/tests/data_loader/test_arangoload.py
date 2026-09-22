@@ -13,6 +13,7 @@ from migrations.runner import run_migrations
 SN11_25_REFERENCE_DOC = {
     'uid': 'sn11.25',
     'file_path': '/tmp/sn11.25_reference.json',
+    'alt_volpage': 'PTS (2nd ed) SN i 514',
 }
 
 SN11_25_REFERENCE_TEXT = {
@@ -22,6 +23,18 @@ SN11_25_REFERENCE_TEXT = {
     ),
     'sn11.25:3.1': 'bj13.428, dr15.334, ms12S1_1701, vri23.278',
     'sn11.25:4.1': 'ms12S1_1705, pts-vp-pli2ed1.516, sya15.353',
+}
+
+MN31_REFERENCE_DOC = {
+    'uid': 'mn31',
+    'file_path': '/tmp/mn31_reference.json',
+    'volpage': 'PTS MN 1.205',
+}
+
+MN31_REFERENCE_TEXT = {
+    'mn31:4.1': 'dr12.343, pts-vp-pli1.206, sya12.387',
+    'mn31:7.11': 'dr12.344, pts-vp-pli1.207',
+    'mn31:22.1': 'pts-vp-pli1.211, sya12.395',
 }
 
 
@@ -116,8 +129,68 @@ def test_update_text_extra_info_formats_pts_references(monkeypatch):
     )
     assert execute.call_args_list[1].kwargs['bind_vars'] == {
         'uid': 'sn11.25',
-        'ref': ' PTS (2nd ed) 1.515, PTS (2nd ed) 1.516',
+        'ref': (
+            'PTS (2nd ed) SN i 514, '
+            'PTS (2nd ed) 1.515, PTS (2nd ed) 1.516'
+        ),
     }
+
+
+def test_update_text_extra_info_preserves_source_volpage(monkeypatch):
+    execute = Mock(side_effect=[[MN31_REFERENCE_DOC], None])
+    fake_db = Mock()
+    fake_db.aql.execute = execute
+
+    monkeypatch.setattr(arangoload.arangodb, 'get_db', lambda: fake_db)
+    monkeypatch.setattr(arangoload, 'json_load', lambda _: MN31_REFERENCE_TEXT)
+    monkeypatch.setattr(arangoload, 'tqdm', lambda items: items)
+
+    arangoload.update_text_extra_info()
+
+    assert len(execute.call_args_list) == 2
+    assert execute.call_args_list[1].args[0] == (
+        arangoload.UPDATE_TEXT_EXTRA_INFO_VOLPAGE
+    )
+    assert execute.call_args_list[1].kwargs['bind_vars'] == {
+        'uid': 'mn31',
+        'ref': 'PTS MN 1.205, PTS 1.206, PTS 1.207, PTS 1.211',
+    }
+
+
+def test_merge_pts_references_deduplicates_matching_volume_and_page():
+    merged = arangoload._merge_pts_references(
+        'PTS SN 1.5',
+        ['PTS 1.5'],
+    )
+
+    assert merged == 'PTS SN 1.5'
+
+
+@pytest.mark.parametrize(('source', 'additional', 'expected'), [
+    ('PTS S i 5', ['PTS S ii 5'], 'PTS S i 5, PTS S ii 5'),
+    (
+        'PTS (2nd ed) SN i 514', ['PTS (2nd ed) 1.514'],
+        'PTS (2nd ed) SN i 514',
+    ),
+    ('PTS SN iv 5', ['PTS 4.5'], 'PTS SN iv 5'),
+    ('PTS SN IX 5', ['PTS 9.5'], 'PTS SN IX 5'),
+    ('PTS SN 1.5', ['PTS 2.5'], 'PTS SN 1.5, PTS 2.5'),
+    (
+        'PTS (1st ed) 1.5', ['PTS (2nd ed) 1.5'],
+        'PTS (1st ed) 1.5, PTS (2nd ed) 1.5',
+    ),
+    ('PTS SN 5', ['PTS 1.5'], 'PTS SN 5, PTS 1.5'),
+    ('Other i 5', ['Other ii 5'], 'Other i 5, Other ii 5'),
+    ('PTS SN iiii 5', ['PTS 4.5'], 'PTS SN iiii 5, PTS 4.5'),
+    ('PTS SN 1.4-5', ['PTS 1.5'], 'PTS SN 1.4-5, PTS 1.5'),
+    ('unknown 5', [' unknown 5 ', 'different 5'], 'unknown 5, different 5'),
+    (None, [' PTS 1.5 ', '', 'PTS 1.5'], 'PTS 1.5'),
+])
+def test_merge_pts_references_handles_reference_formats(source, additional, expected):
+    merged = arangoload._merge_pts_references(source, additional)
+
+    assert merged == expected
+    assert arangoload._merge_pts_references(merged, additional) == expected
 
 
 def test_update_text_extra_info_appends_alt_volpage(
@@ -174,15 +247,10 @@ def test_update_text_extra_info_appends_alt_volpage(
             collection.truncate()
 
 
-def test_alt_volpage_upsert_appends_refs_without_duplicates():
+def test_alt_volpage_upsert_stores_merged_references():
     query = ' '.join(
         arangoload.UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE.split()
     )
 
-    assert 'OLD.alt_volpage' in query
-    assert (
-        "APPEND(SPLIT(OLD.alt_volpage, ','), SPLIT(@ref, ','), true)"
-        in query
-    )
-    assert "CONCAT_SEPARATOR( ',', OLD.alt_volpage" in query
-
+    assert 'alt_volpage: @ref' in query
+    assert 'OLD.alt_volpage' not in query
