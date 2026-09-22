@@ -600,12 +600,14 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 
     LET translations = FLATTEN([bilara_translations, legacy_translations])
 
-    LET volpages = (
-        FOR volpages IN text_extra_info
-            FILTER volpages.uid == v.uid
+    LET text_extra_info_doc = (
+        FOR extra_info IN text_extra_info
+            FILTER extra_info.uid == v.uid
             LIMIT 1
-            RETURN volpages.volpage
+            RETURN extra_info
     )[0]
+
+    LET volpages = text_extra_info_doc.volpage
 
     LET is_segmented_original = (
         FOR translation IN translations
@@ -654,12 +656,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
             RETURN nav_item.name
     )[0]
 
-    LET alt_volpages = (
-        FOR altVolpages IN text_extra_info
-            FILTER altVolpages.uid == v.uid
-            LIMIT 1
-            RETURN altVolpages.alt_volpage
-    )[0]
+    LET alt_volpages = text_extra_info_doc.alt_volpage
 
     LET path_docs = (
         FOR doc IN 1..100 INBOUND DOCUMENT('super_nav_details', @uid) super_nav_details_edges OPTIONS {order: 'dfs'}
@@ -682,6 +679,7 @@ FOR v, e, p IN 0..6 OUTBOUND CONCAT('super_nav_details/', @uid) super_nav_detail
 
     RETURN {
         acronym: v.acronym,
+        alt_acronym: text_extra_info_doc.alt_acronym,
         volpages: volpages,
         alt_volpages: alt_volpages,
         uid: v.uid,
@@ -884,19 +882,16 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
 
     LET translations = FLATTEN([bilara_translations, legacy_translations])
 
-    LET volpages = (
-        FOR volpages IN text_extra_info
-            FILTER volpages.uid == v.uid
+    LET text_extra_info_doc = (
+        FOR extra_info IN text_extra_info
+            FILTER extra_info.uid == v.uid
             LIMIT 1
-            RETURN volpages.volpage
+            RETURN extra_info
     )[0]
 
-    LET alt_volpages = (
-        FOR altVolpages IN text_extra_info
-            FILTER altVolpages.uid == v.uid
-            LIMIT 1
-            RETURN altVolpages.alt_volpage
-    )[0]
+    LET volpages = text_extra_info_doc.volpage
+
+    LET alt_volpages = text_extra_info_doc.alt_volpage
 
     LET translated_titles = (
         FOR translation IN translations
@@ -921,6 +916,7 @@ FOR v, e, p IN OUTBOUND CONCAT('super_nav_details/', @uid) relationship
             volpages: volpages,
             alt_volpages: alt_volpages,
             acronym: v.acronym,
+            alt_acronym: text_extra_info_doc.alt_acronym,
             uid: v.uid ? v.uid : 'orphan',
             root_lang: v.root_lang,
             original_title: original_titles,
@@ -1618,9 +1614,17 @@ FOR v IN available_voices
 BILARA_REFERENCES = '''
 FOR references IN sc_bilara_texts
     FILTER 'reference' IN references.muids
+    LET extra_info = (
+        FOR doc IN text_extra_info
+            FILTER doc.uid == references.uid
+            LIMIT 1
+            RETURN doc
+    )[0]
 RETURN {
     'uid': references.uid,
-    'file_path': references.file_path
+    'file_path': references.file_path,
+    'volpage': extra_info.volpage,
+    'alt_volpage': extra_info.alt_volpage
 }
 '''
 
@@ -1636,12 +1640,7 @@ UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE = '''
 UPSERT { uid: @uid }
 INSERT { uid: @uid, acronym: null, alt_acronym: null, volpage: null, alt_volpage: @ref, alt_name: null, biblio_uid: null }
 UPDATE {
-    alt_volpage: CONCAT_SEPARATOR(
-        ',',
-        OLD.alt_volpage != null && OLD.alt_volpage != ''
-            ? APPEND(SPLIT(OLD.alt_volpage, ','), SPLIT(@ref, ','), true)
-            : SPLIT(@ref, ',')
-    )
+    alt_volpage: @ref
 } IN text_extra_info
 '''
 
