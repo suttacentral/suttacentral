@@ -116,11 +116,7 @@ export class SCParallelItem extends LitLocalized(LitElement) {
       if (altNumber) {
         let book = '';
         altNumber[0] === 'T' ? (book = 'Taishō') : (book = 'PTS');
-        scAcronymTitle += `\n${this.localize(
-          'suttaplex:alternateText',
-          'book',
-          book
-        )} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize('suttaplex:alternateText', { book })} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -139,6 +135,15 @@ export class SCParallelItem extends LitLocalized(LitElement) {
     }
     scAcronym = transformId(this.parallelItem.to, this.expansionData, 0);
     return scAcronym;
+  }
+
+  get alternateAcronym() {
+    const alternateAcronym = this.parallelItem?.alt_acronym;
+    return alternateAcronym && alternateAcronym !== this.acronymOrUid ? alternateAcronym : '';
+  }
+
+  get alternateAcronymTitle() {
+    return this.tryLocalize('suttaplex:alternateID', 'Alternate ID');
   }
 
   get volPage() {
@@ -217,6 +222,13 @@ export class SCParallelItem extends LitLocalized(LitElement) {
                     <div class="nerdy-row-element" title=${this.acronymTitle}>
                       ${this.acronymOrUid}
                     </div>
+                    ${this.alternateAcronym
+                      ? html`
+                          <div class="nerdy-row-element" title=${this.alternateAcronymTitle}>
+                            ${this.alternateAcronym}
+                          </div>
+                        `
+                      : ''}
                   `
                 : ''}
               ${Object.keys(this.rootLangMappings).includes(this.parallelItem?.uid?.substring(0, 3))

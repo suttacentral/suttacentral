@@ -408,7 +408,9 @@ def update_text_extra_info():
                 UPDATE_TEXT_EXTRA_INFO_VOLPAGE,
                 bind_vars={
                     'uid': reference['uid'],
-                    'ref': ','.join(pts_refs_1st)
+                    'ref': _merge_pts_references(
+                        reference.get('volpage'), pts_refs_1st
+                    )
                 }
             )
         if pts_refs_2nd:
@@ -416,7 +418,9 @@ def update_text_extra_info():
                 UPDATE_TEXT_EXTRA_INFO_ALT_VOLPAGE,
                 bind_vars={
                     'uid': reference['uid'],
-                    'ref': ','.join(pts_refs_2nd)
+                    'ref': _merge_pts_references(
+                        reference.get('alt_volpage'), pts_refs_2nd
+                    )
                 }
             )
 
@@ -494,8 +498,65 @@ def upsert_text_acronym(structure_dir):
 
 
 def get_pts_ref(ref):
-    arr = ref.split(',')
-    return [ref for ref in arr if ref.find('pts-vp-pli') != -1]
+    references = (reference.strip() for reference in ref.split(','))
+    return [reference for reference in references if 'pts-vp-pli' in reference]
+
+
+def _pts_reference_key(reference):
+    """Normalize explicit PTS volume/page formats within a single text UID.
+
+    Book labels may be omitted by Bilara. Keep editions distinct, and fall
+    back to the complete reference when a volume/page cannot be parsed safely.
+    """
+    match = re.fullmatch(
+        r'PTS\s+(?:\((?P<edition>1st|2nd) ed\)\s+)?'
+        r'(?:[A-Za-z]+\s+)?'
+        r'(?:(?P<volume>[0-9]+)\.|(?P<roman>[ivxlcdm]+)\s+)'
+        r'(?P<page>[0-9]+)',
+        reference,
+        re.IGNORECASE,
+    )
+    if not match:
+        return reference
+
+    roman = match.group('roman')
+    if roman:
+        roman = roman.upper()
+        if not re.fullmatch(r'M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})', roman):
+            return reference
+        values = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+        volume = 0
+        previous = 0
+        for numeral in reversed(roman):
+            value = values[numeral]
+            volume += -value if value < previous else value
+            previous = value
+    else:
+        volume = int(match.group('volume'))
+
+    edition = match.group('edition')
+    return (edition.lower() if edition else None, volume, int(match.group('page')))
+
+
+def _merge_pts_references(source_reference, additional_references):
+    references = source_reference.split(',') if source_reference else []
+    references.extend(additional_references)
+
+    merged_references = []
+    seen_pages = set()
+    for reference in references:
+        reference = reference.strip()
+        if not reference:
+            continue
+
+        page = _pts_reference_key(reference)
+        if page in seen_pages:
+            continue
+
+        seen_pages.add(page)
+        merged_references.append(reference)
+
+    return ', '.join(merged_references)
 
 
 def _normalize_translated_title(title):

@@ -155,17 +155,22 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
     return transformId(this.item.uid, this.expansionData);
   }
 
+  get alternateAcronym() {
+    const alternateAcronym = this.item?.alt_acronym;
+    return alternateAcronym && alternateAcronym !== this.acronymOrUid ? alternateAcronym : '';
+  }
+
+  get alternateAcronymTitle() {
+    return this.tryLocalize('suttaplex:alternateID', 'Alternate ID');
+  }
+
   get acronymTitle() {
     let scAcronymTitle = this.localize('suttaplex:suttaCentralID');
     if (this.item?.acronym) {
       const altNumber = this.item.acronym.split('//')[1];
       if (altNumber) {
         const book = altNumber[0] === 'T' ? 'Taishō' : 'PTS';
-        scAcronymTitle += `\n${this.localize(
-          'suttaplex:alternateText',
-          'book',
-          book
-        )} ${altNumber}`;
+        scAcronymTitle += `\n${this.localize('suttaplex:alternateText', { book })} ${altNumber}`;
       }
     }
     return scAcronymTitle;
@@ -389,7 +394,14 @@ export class SCSuttaplex extends LitLocalized(LitElement) {
   #nerdyRowAcronymTemplate() {
     return (
       (this.item.translated_title || this.item.original_title) &&
-      html`<span title=${this.acronymTitle} class="nerdy-row-element">${this.acronymOrUid}</span>`
+      html`
+        <span title=${this.acronymTitle} class="nerdy-row-element">${this.acronymOrUid}</span>
+        ${this.alternateAcronym
+          ? html`<span title=${this.alternateAcronymTitle} class="nerdy-row-element">
+              ${this.alternateAcronym}
+            </span>`
+          : ''}
+      `
     );
   }
 
