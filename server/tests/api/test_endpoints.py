@@ -170,6 +170,10 @@ class TestParallels:
         assert isinstance(data, dict)
         assert 'sn1.1' in data
 
+        parallels = [parallel for items in data.values() for parallel in items]
+        assert parallels
+        assert all('alt_acronym' in parallel['to'] for parallel in parallels)
+
 
 class TestParallelsLite:
     @pytest.fixture
@@ -239,6 +243,7 @@ class TestRangeSuttaplexList:
             sutta = data[0]
             required_fields = [
                 'acronym',
+                'alt_acronym',
                 'volpages',
                 'alt_volpages',
                 'uid',
@@ -326,6 +331,7 @@ class TestSuttaplexList:
             sutta = data[0]
             required_fields = [
                 'acronym',
+                'alt_acronym',
                 'volpages',
                 'alt_volpages',
                 'uid',
