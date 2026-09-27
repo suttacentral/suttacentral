@@ -13,6 +13,7 @@ import { typographyCommonStyles } from '../styles/sc-typography-common-styles';
 import { SCUtilityStyles } from '../styles/sc-utility-styles';
 import { API_ROOT } from '../../constants';
 import { store } from '../../redux-store';
+import { dispatchCustomEvent } from '../../utils/customEvent';
 
 export class SCStaticOffline extends LitLocalized(LitElement) {
   static properties = {
