@@ -15,10 +15,13 @@ services:
     expose:
       - '5000'
     depends_on:
-      - sc-arangodb
+      sc-arangodb:
+        condition: service_healthy
 
   sc-arangodb:
-    image: arangodb/arangodb:3.11.3
+    build:
+      context: ./arangodb/
+      dockerfile: Dockerfile-arangodb
     container_name: 'sc-arangodb'
     env_file:
       - server/env/.base.env
@@ -28,6 +31,13 @@ services:
       - '8529'
     volumes:
       - db-data-volume:/var/lib/arangodb3
+    healthcheck:
+      # Run our custom health check script
+      test: [ "CMD", "sh", "/healthcheck.sh" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   sc-nginx:
     build:
