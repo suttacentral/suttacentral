@@ -1,8 +1,7 @@
 import { html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import '@material/web/elevation/elevation';
-import '@material/web/button/outlined-button';
-import '@material/web/iconbutton/outlined-icon-button';
+import '@material/web/ripple/ripple';
 
 import { SCStaticPage } from '../addons/sc-static-page';
 import { API_ROOT } from '../../constants';
@@ -16,28 +15,27 @@ export class SCStaticHomePage extends SCStaticPage {
   static properties = {
     randomEpigraph: { type: String },
     whyWeRead: { type: String },
-    tipitaka: { type: Array },
-    displayDonationBanner: { type: Boolean },
+    tipitaka: { type: Array }
   };
 
   constructor() {
     super();
     this.localizedStringsPath = '/localization/elements/home';
     this.siteLanguage = store.getState().siteLanguage;
-    this.displayDonationBanner = store.getState().displayDonationBanner;
     this.#fetchDataForHomePage();
   }
 
   stateChanged(state) {
     super.stateChanged(state);
-    if (this.displayDonationBanner !== state.displayDonationBanner) {
-      this.displayDonationBanner = state.displayDonationBanner;
+    if (this.siteLanguage !== state.siteLanguage) {
+      this.siteLanguage = state.siteLanguage;
+      this.#fetchDataForHomePage();
     }
   }
 
   async #fetchDataForHomePage() {
     try {
-      const api = `${API_ROOT}/homepage_data?language=${this.siteLanguage || 'en'}&r=${Math.random()}`;
+      const api = `${API_ROOT}/homepage_data?language=${this.siteLanguage || 'en'}`;
       const response = await fetch(api);
       const dataForHomepage = await response.json();
       const getRandomEl = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -95,10 +93,6 @@ export class SCStaticHomePage extends SCStaticPage {
     `;
   }
 
-  #changeDonationBannerDisplayState() {
-    reduxActions.changeDonationBannerDisplayState(false);
-  }
-
   #videoTemplate() {
     return html`
       <section class="video">
@@ -147,10 +141,16 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card">
         <a class="block-link" href="/introduction">
           <figure>
-            <picture>
-              <source srcset="/img/home-page/pali2.avif" type="image/avif" />
-              <img src="/img/home-page/pali1.jpg" alt="Pali manuscript" style="width:100%" />
-            </picture>
+          <picture>
+            <source srcset="/img/home-page/pali2.avif" type="image/avif" />
+            <img
+              src="/img/home-page/pali1.jpg"
+              alt="Pali manuscript"
+              style="width:100%"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
             <figcaption>${unsafeHTML(this.localize('home:7'))}</figcaption>
           </figure>
 
@@ -171,14 +171,16 @@ export class SCStaticHomePage extends SCStaticPage {
       <article class="card">
         <a class="block-link" href="/start">
           <figure>
-            <picture>
-              <source srcset="/img/home-page/koreana2.avif" type="image/avif" />
-              <img
-                src="/img/home-page/koreana.jpg"
-                alt="Chinese Buddhist woodblock"
-                style="width:100%"
-              />
-            </picture>
+          <picture>
+            <source srcset="/img/home-page/koreana2.avif" type="image/avif" />
+            <img
+              src="/img/home-page/koreana.jpg"
+              alt="Chinese Buddhist woodblock"
+              style="width:100%"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
             <figcaption>${unsafeHTML(this.localize('home:11'))}</figcaption>
           </figure>
 
@@ -242,10 +244,12 @@ export class SCStaticHomePage extends SCStaticPage {
         <a href="https://readingfaithfully.org/" class="block-link">
           <header>
             <span>
-              <picture>
-                <source srcset="/img/home-page/ReadingFaithfullyLogo-BW--300.png" type="image/avif" />
-                <img src="/img/home-page/ReadingFaithfullyLogo-BW--300.png" alt="Reading Faithfully" />
-              </picture>
+              <img
+                src="/img/home-page/ReadingFaithfullyLogo-BW--300.png"
+                alt="Reading Faithfully"
+                loading="lazy"
+                decoding="async"
+              />
             </span>
             <h3>
               <span>Reading Faithfully</span>
@@ -303,7 +307,14 @@ export class SCStaticHomePage extends SCStaticPage {
           class="block-link"
         >
           <header>
-            <span class="buddhismnet-image-container"><img src='/img/home-page/bn.png' alt='Buddhism.net' /></span>
+            <span class="buddhismnet-image-container">
+              <img
+                src='/img/home-page/bn.png'
+                alt='Buddhism.net'
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
             <h3>
               <span>Buddhism.net</span>
               <span class="sc-related-item-subtitle">${unsafeHTML(this.localize('home:31'))}</span>
@@ -359,6 +370,8 @@ export class SCStaticHomePage extends SCStaticPage {
                 src="/img/home-page/pali6.jpg"
                 alt="Pali manuscript from Myanmar"
                 style="width:100%"
+                loading="lazy"
+                decoding="async"
               />
             </picture>
             <figcaption>${unsafeHTML(this.localize('home:35'))}</figcaption>
@@ -383,7 +396,13 @@ export class SCStaticHomePage extends SCStaticPage {
           <figure>
             <picture>
               <source srcset="/img/home-page/bhikkhuni3.avif" type="image/avif" />
-              <img src="/img/home-page/bhikkhuni.jpg" alt="Pali manuscript" style="width:100%" />
+              <img
+                src="/img/home-page/bhikkhuni.jpg"
+                alt="Pali manuscript"
+                style="width:100%"
+                loading="lazy"
+                decoding="async"
+              />
             </picture>
             <figcaption>${unsafeHTML(this.localize('home:39'))}</figcaption>
           </figure>
