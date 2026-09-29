@@ -117,7 +117,7 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
 
   #notifyCopy(message, success) {
     dispatchCustomEvent(this, 'par-menu-copied');
-    dispatchCustomEvent(document, 'show-sc-toast', {
+    dispatchCustomEvent(this, 'show-sc-toast', {
       toastType: success ? 'success' : 'error',
       message,
     });
