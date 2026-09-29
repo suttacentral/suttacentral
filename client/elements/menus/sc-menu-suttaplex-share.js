@@ -116,7 +116,11 @@ export class SCMenuSuttaplexShare extends LitLocalized(LitElement) {
   }
 
   #notifyCopy(message, success) {
-    dispatchCustomEvent(this, 'par-menu-copied', { message, success });
+    dispatchCustomEvent(this, 'par-menu-copied');
+    dispatchCustomEvent(document, 'show-sc-toast', {
+      toastType: success ? 'success' : 'error',
+      message,
+    });
   }
 
   // copy the parallels-table in html-string
