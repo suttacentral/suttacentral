@@ -369,11 +369,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       this._changeRoute(location);
     }, document.body);
 
-    this.addEventListener('par-menu-copied', e => {
-      const success = e.detail.success ? 'success' : 'error';
-      this._showToast(success, e.detail.message);
-    });
-
     if (this._shouldRedirect()) {
       this._redirectFromLegacyLink();
     }
@@ -591,13 +586,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       (legacyLinkReg.test(path) || legacyLinkReg2.test(path) || legacyLinkReg3) &&
       !newLinkReg.test(path)
     );
-  }
-
-  _showToast(toastType, text) {
-    dispatchCustomEvent(document, 'show-sc-toast', {
-      toastType,
-      message: text,
-    });
   }
 
   #updateMetaData() {
