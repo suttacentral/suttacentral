@@ -178,10 +178,10 @@
     </div>
 
     <script defer>
-      const isSupportedBrowser = function () {
+      function isSupportedBrowser() {
         return window.CSS && CSS.supports('color', 'var(--primary)');
       };
-      const showUnsupportedBrowserSplashScreen = function (shouldShow) {
+      function showUnsupportedBrowserSplashScreen(shouldShow) {
         const unsupportedBrowserSplashScreen = document.querySelector(
                 '.unsupported-browser-splash-screen'
         );
@@ -191,13 +191,13 @@
           unsupportedBrowserSplashScreen.classList.add('hidden');
         }
       };
-      const appendSiteContent = function () {
+      function appendSiteContent() {
         const mainElement = document.createElement('sc-site-layout');
         const body = document.querySelector('body');
         body.appendChild(mainElement);
         showUnsupportedBrowserSplashScreen(false);
       };
-      const removeSiteContent = function () {
+      function removeSiteContent() {
         const mainElement = document.querySelector('sc-site-layout');
         mainElement.parentNode.removeChild(mainElement);
       };
