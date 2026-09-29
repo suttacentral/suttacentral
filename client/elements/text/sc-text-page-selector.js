@@ -581,16 +581,17 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     const acronym = responseData.suttaplex?.acronym.split(/\/\//)[0]
       || this._transformId(responseData.suttaplex.uid, expansionReturns);
 
-    let pageTitle = `${acronym}: ${title}${author ? `—${author}` : ''}`;
+    const authorTitle = author ? `—${author}` : ''
+    let pageTitle = `${acronym}: ${title}${authorTitle}`;
     if (this.isRangeSutta) {
       this.transformedSuttaId = this._transformId(this.suttaId, this.expansionReturns);
       title = this.transformedSuttaId;
-      pageTitle = `${title}${author ? `—${author}` : ''}`;
+      pageTitle = `${title}${authorTitle}`;
     }
 
     dispatchCustomEvent(document, 'metadata', {
       pageTitle,
-      title: `${title}${author ? `—${author}` : ''}`,
+      title: `${title}${authorTitle}`,
       description,
       openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
     });
@@ -598,7 +599,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
     }
-    reduxActions.changeToolbarTitle(`${title}${author ? `—${author}` : ''}`);
+    reduxActions.changeToolbarTitle(`${title}${authorTitle}`);
   }
 
   _transformId(rootId, expansionReturns) {
