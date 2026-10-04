@@ -37,8 +37,9 @@ class TestArangoDB:
 
 
 @pytest.fixture
+@app_context
 def client() -> ArangoClient:
-    return ArangoClient()
+    return arangodb.get_client()
 
 
 @pytest.fixture
