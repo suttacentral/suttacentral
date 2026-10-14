@@ -248,6 +248,9 @@ class Menu(Resource):
                         type: string
                     node_type:
                         type: string
+                    has_children:
+                        type: boolean
+                        description: For child entries, whether any direct child has node_type branch.
                     blurb:
                         type: string
                     acronym:
