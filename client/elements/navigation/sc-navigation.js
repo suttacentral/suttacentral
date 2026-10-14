@@ -80,7 +80,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
       return;
     }
     this.currentMenuData = await this._fetchMenuData(this.currentUid);
-    this.#markMenuItemsWithChildren();
     if (!this._menuHasChildren() || this._isPatimokkha(this.currentMenuData?.[0]?.uid)) {
       const pathname = ['sutta', 'vinaya', 'abhidhamma'].includes(this.currentUid)
         ? `/pitaka/${this.currentUid}`
@@ -234,7 +233,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
       .then(r => r.json())
       .then(menuData => {
         this.currentMenuData = menuData;
-        this.#markMenuItemsWithChildren();
         this._updateLastSelectedItemRootLangISO(this.currentMenuData[0].root_lang_iso);
         if (params.dispatchState) {
           this._setToolbarTitle();
@@ -304,7 +302,8 @@ export class SCNavigation extends LitLocalized(LitElement) {
     if (!uid) {
       return '';
     }
-    return `${API_ROOT}/menu/${uid}?language=${this.siteLanguage || 'en'}`;
+    // Separate cached responses that predate has_children; this does not select API fields.
+    return `${API_ROOT}/menu/${uid}?language=${this.siteLanguage || 'en'}&cache_version=2`;
   }
 
   stateChanged(state) {
@@ -365,28 +364,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
 
   updated() {
     this.#addBlurbsClickEvent();
-  }
-
-  async #markMenuItemsWithChildren() {
-    if (!this.currentMenuData || this.currentMenuData.length === 0) {
-      return;
-    }
-    for (const child of this.currentMenuData[0].children) {
-      const childrenData = await this._fetchMenuData(child.uid);
-      const hasChildren = childrenData[0]?.children?.some(item => item.node_type === 'branch');
-      if (hasChildren) {
-        const foundChild = this.currentMenuData[0].children.find(x => x.uid === child.uid);
-        if (foundChild) {
-          foundChild.has_children = true;
-        }
-      } else {
-        const foundChild = this.currentMenuData[0]?.children?.find(x => x.uid === child.uid);
-        if (foundChild) {
-          foundChild.has_children = false;
-        }
-        this.requestUpdate();
-      }
-    }
   }
 
   #addBlurbsClickEvent() {

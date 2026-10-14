@@ -97,6 +97,44 @@ class TestMenu:
             assert 'yellow_brick_road_count' in item
             assert 'children' in item
 
+    @pytest.mark.parametrize('language', ['en', 'zh'])
+    @pytest.mark.parametrize(
+        'parent_uid, child_uid, expected',
+        [
+            ('sutta', 'long', True),
+            ('long', 'dn', True),
+            ('dn', 'dn-silakkhandhavagga', False),
+            ('dn-silakkhandhavagga', 'dn1', False),
+        ],
+    )
+    def test_child_branch_flag(self, client, language, parent_uid, child_uid, expected):
+        response = client.get(f'/menu/{parent_uid}?language={language}')
+        assert response.status_code == 200
+        child = next(item for item in response.get_json()[0]['children'] if item['uid'] == child_uid)
+
+        assert child['has_children'] is expected
+        # A branch containing only texts must link to its suttaplex list.
+        if child_uid == 'dn-silakkhandhavagga':
+            assert child['node_type'] == 'branch'
+
+        child_response = client.get(f'/menu/{child_uid}?language={language}')
+        assert child_response.status_code == 200
+        assert child['has_children'] == any(
+            item['node_type'] == 'branch' for item in child_response.get_json()[0]['children']
+        )
+
+    def test_root_menu_child_branch_flags(self, client):
+        response = client.get('/menu?language=en')
+        assert response.status_code == 200
+        menus = response.get_json()
+        for menu in menus:
+            for child in menu['children']:
+                assert isinstance(child['has_children'], bool)
+
+        sutta = next(menu for menu in menus if menu['uid'] == 'sutta')
+        long_discourses = next(child for child in sutta['children'] if child['uid'] == 'long')
+        assert long_discourses['has_children'] is True
+
 
 class TestTipitakaMenu:
     @pytest.fixture

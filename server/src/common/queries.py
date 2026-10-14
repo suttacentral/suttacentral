@@ -287,6 +287,13 @@ FOR navigation_doc IN super_nav_details
 
             LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
 
+            LET branch_children = (
+                FOR child IN 1..1 OUTBOUND descendant super_nav_details_edges
+                    FILTER child.type == 'branch'
+                    LIMIT 1
+                    RETURN true
+            )
+
             RETURN {
                 uid: descendant.uid,
                 root_name: descendant.name,
@@ -294,6 +301,7 @@ FOR navigation_doc IN super_nav_details
                 acronym: descendant.acronym,
                 blurb: blurb,
                 node_type: descendant.type,
+                has_children: LENGTH(branch_children) > 0,
                 root_lang_iso: descendant.root_lang,
                 root_lang_name: lang_name,
                 child_range: child_range,
@@ -359,6 +367,13 @@ LET descendants = (
 
         LET yellow_brick_road = DOCUMENT('yellow_brick_road', CONCAT_SEPARATOR('_', descendant.uid, @language))
 
+        LET branch_children = (
+            FOR child IN 1..1 OUTBOUND descendant super_nav_details_edges
+                FILTER child.type == 'branch'
+                LIMIT 1
+                RETURN true
+        )
+
         RETURN {
             uid: descendant.uid,
             root_name: descendant.name,
@@ -366,6 +381,7 @@ LET descendants = (
             acronym: descendant.acronym,
             blurb: blurb,
             node_type: descendant.type,
+            has_children: LENGTH(branch_children) > 0,
             root_lang_iso: descendant.root_lang,
             root_lang_name: lang_name,
             child_range: child_range,
