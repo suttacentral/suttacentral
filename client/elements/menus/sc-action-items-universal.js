@@ -94,7 +94,7 @@ export class SCActionItemsUniversal extends LitLocalized(LitElement) {
 
   #hideTopSheets() {
     const scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    scActionItems?.hideTopSheets();
+    scActionItems?.hideTopSheets?.();
   }
 
   #showAutoCompleteList() {
