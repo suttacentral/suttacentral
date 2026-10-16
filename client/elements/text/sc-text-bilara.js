@@ -161,7 +161,6 @@ export class SCTextBilara extends LitLocalized(LitElement) {
     this.addEventListener('click', this._onClickHandler);
     this._updateView();
     this._updateURLSearchParams();
-    this.scActionItems?.showSpeakerButton();
     this.isMultiSutta = this.checkIfMultiSutta(this.suttaId);
     this._showChineseConverterButton();
     this.isTraditionalChinese = this.translatedSutta?.lang === 'lzh' || this.rootSutta?.lang === 'lzh';
