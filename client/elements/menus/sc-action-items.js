@@ -24,6 +24,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     displayToolButton: { type: Boolean },
     tableOfContents: { type: Boolean },
     displayViewModeButton: { type: Boolean },
+    displayParallelTableView: { type: Boolean },
     displaySearchOptionsButton: { type: Boolean },
     displayChineseConverterButton: { type: Boolean },
     colorTheme: { type: String },
@@ -545,10 +546,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     reduxActions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
   }
 
-  #setBtnShowParallelTableViewIcon() {
-    this.requestUpdate();
-  }
-
   showParallelsTopSheet() {
     this.#onBtnShowParallelsClick();
   }
@@ -593,7 +590,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.displayParallelTableView !== state.displayParallelTableView) {
       this.displayParallelTableView = state.displayParallelTableView;
-      this.#setBtnShowParallelTableViewIcon();
     }
     if (this.currentRouteName !== state.currentRoute.name) {
       this.currentRouteName = state.currentRoute.name;
