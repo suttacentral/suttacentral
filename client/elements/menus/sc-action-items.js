@@ -1,4 +1,4 @@
-import { LitElement, html, unsafeCSS } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import '@material/web/iconbutton/icon-button';
 
 import { store } from '../../redux-store';
@@ -64,59 +64,115 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.scSiteLayout = document.querySelector('sc-site-layout');
   }
 
+  static styles = css`
+    .white-icon {
+      color: var(--sc-inverted-text-color);
+    }
+
+    #tools_menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      height: 60px;
+    }
+
+    .invisible {
+      display: none;
+    }
+
+    .toolButtons {
+      position: relative;
+      box-sizing: border-box;
+      border-bottom: 4px solid transparent;
+      border-top: 4px solid transparent;
+      padding: 2.3px 0 2.3px 0;
+      height: 60px;
+      width: 48px;
+    }
+
+    #btnSearchFilter:after,
+    #btnSearchOptions:after,
+    #btnViewCompact:after,
+    #btnViewComfy:after,
+    #btnTools:after,
+    #btnInfo:after,
+    #btnShowParallels:after,
+    #btnShowToC:after,
+    #btnShowParallelTableView:after,
+    #btnListenThisSutta::after,
+    #btnChineseConverter:after {
+      font-size: var(--sc-font-size-xxs);
+      font-weight: 600;
+      font-stretch: condensed;
+      position: absolute;
+      bottom: 2px;
+      width: 100%;
+      text-align: center;
+    }
+
+    #btnChineseConverter:after {
+      font-size: 8px;
+    }
+
+    #btnListenThisSutta:after {
+      content: 'Voice';
+    }
+
+    #btnChineseConverter:after {
+      content: '转换';
+    }
+
+    [lang='my'] {
+      #btnViewCompact:after,
+      #btnViewComfy:after,
+      #btnTools:after,
+      #btnInfo:after,
+      #btnShowParallels:after,
+      #btnShowParallelTableView:after,
+      #btnSearchOptions:after,
+      #btnSearchFilter:after {
+        font-size: 6px;
+      }
+      #btnShowToC:after {
+        font-size: 5px;
+      }
+    }
+
+    #btnSearchFilter,
+    #btnSearchOptions,
+    #btnShowParallels,
+    #btnShowParallelTableView,
+    #btnListenThisSutta {
+      display: flex;
+    }
+
+    .active-light {
+      font-weight: 800;
+      border-bottom: 4px solid var(--sc-primary-color-light) !important;
+    }
+
+    .active-dark {
+      font-weight: 800;
+      border-bottom: 4px solid var(--sc-primary-color-dark) !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+      #tools_menu.contextToolbarExpand {
+        width: 100%;
+        justify-content: space-around;
+        align-items: flex-end;
+      }
+    }
+
+    .icon {
+      fill: var(--sc-inverted-text-color);
+    }
+  `;
+
   render() {
     return html`
       <style>
-        .white-icon {
-          color: var(--sc-inverted-text-color);
-        }
-
-        #tools_menu {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 4px;
-          height: 60px;
-        }
-
-        .invisible {
-          display: none;
-        }
-
-        .toolButtons {
-          position: relative;
-          box-sizing: border-box;
-          border-bottom: 4px solid transparent;
-          border-top: 4px solid transparent;
-          padding: 2.3px 0 2.3px 0;
-          height: 60px;
-          width: 48px;
-        }
-
-        #btnSearchFilter:after,
-        #btnSearchOptions:after,
-        #btnViewCompact:after,
-        #btnViewComfy:after,
-        #btnTools:after,
-        #btnInfo:after,
-        #btnShowParallels:after,
-        #btnShowToC:after,
-        #btnShowParallelTableView:after,
-        #btnListenThisSutta::after,
-        #btnChineseConverter:after {
-          font-size: var(--sc-font-size-xxs);
-          font-weight: 600;
-          font-stretch: condensed;
-          position: absolute;
-          bottom: 2px;
-          width: 100%;
-          text-align: center;
-        }
-
-        #btnChineseConverter:after {
-          font-size: 8px;
-        }
-
         #btnViewCompact:after {
           content: '${unsafeCSS(this.localize('interface:viewCompactButtonText'))}';
         }
@@ -151,60 +207,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
         #btnSearchFilter:after {
           content: '${unsafeCSS(this.localize('interface:searchFilterButtonText'))}';
-        }
-
-        #btnListenThisSutta:after {
-          content: 'Voice';
-        }
-
-        #btnChineseConverter:after {
-          content: '转换';
-        }
-
-        [lang='my'] {
-          #btnViewCompact:after,
-          #btnViewComfy:after,
-          #btnTools:after,
-          #btnInfo:after,
-          #btnShowParallels:after,
-          #btnShowParallelTableView:after,
-          #btnSearchOptions:after,
-          #btnSearchFilter:after {
-            font-size: 6px;
-          }
-          #btnShowToC:after {
-            font-size: 5px;
-          }
-        }
-
-        #btnSearchFilter,
-        #btnSearchOptions,
-        #btnShowParallels,
-        #btnShowParallelTableView,
-        #btnListenThisSutta {
-          display: flex;
-        }
-
-        .active-light {
-          font-weight: 800;
-          border-bottom: 4px solid var(--sc-primary-color-light) !important;
-        }
-
-        .active-dark {
-          font-weight: 800;
-          border-bottom: 4px solid var(--sc-primary-color-dark) !important;
-        }
-
-        @media only screen and (max-width: 600px) {
-          #tools_menu.contextToolbarExpand {
-            width: 100%;
-            justify-content: space-around;
-            align-items: flex-end;
-          }
-        }
-
-        .icon {
-          fill: var(--sc-inverted-text-color);
         }
       </style>
 
