@@ -345,12 +345,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
           displayToolButton: display,
         });
       },
-      changeDisplayInfoButtonState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_INFO_BUTTON_STATE',
-          displayInfoButton: display,
-        });
-      },
       changeDisplayViewModeButtonState(display) {
         store.dispatch({
           type: 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE',
@@ -643,7 +637,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
   _recalculateView() {
     this.actions.changeDisplayToolButtonState(this.currentRoute.name === 'sutta');
-    this.actions.changeDisplayInfoButtonState(this.currentRoute.name === 'sutta');
 
     const contextToolbar = this.parentNode.querySelector('#context_toolbar');
     const expandClass = 'contextToolbarExpand';
