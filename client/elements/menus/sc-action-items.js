@@ -23,7 +23,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     displayComfyButton: { type: Boolean },
     displayViewModeButton: { type: Boolean },
     displaySearchOptionsButton: { type: Boolean },
-    displaySpeakerButton: { type: Boolean },
     displayChineseConverterButton: { type: Boolean },
     colorTheme: { type: String },
     suttaMetaText: { type: String },
@@ -55,7 +54,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.displayParallelTableView = state.displayParallelTableView;
     this.displaySearchOptionsButton = state.displaySearchOptionsButton;
     this.displayChineseConverterButton = state.displayChineseConverterButton;
-    this.displaySpeakerButton = false;
     this.displayCompactButton = false;
   }
 
@@ -298,11 +296,12 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
         </md-icon-button>
 
+        ${/* only show Voice button on Bilara sutta pages */ ''}
         <md-icon-button
           class="white-icon toolButtons"
           id="btnListenThisSutta"
           slot="actionItems"
-          style="display: none;"
+          style="display: ${this.displayToolButton && !this.suttaMetaText ? 'inherit' : 'none'}"
           @click=${this.#btnListenThisSuttaClick}
         >
           ${icon.speaker}
@@ -696,14 +695,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         e.classList.add(this.activeClass);
       }
     });
-  }
-
-  showSpeakerButton() {
-    this.shadowRoot.querySelector('#btnListenThisSutta').style.display = 'inherit';
-  }
-
-  hideSpeakerButton() {
-    this.shadowRoot.querySelector('#btnListenThisSutta').style.display = 'none';
   }
 
   #btnListenThisSuttaClick() {
