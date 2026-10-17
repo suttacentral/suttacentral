@@ -64,7 +64,6 @@ const initialState = {
   ],
   displaySettingMenu: false,
   displayToolButton: false,
-  displayInfoButton: false,
   displayViewModeButton: true,
   displaySuttaParallels: false,
   displaySuttaInfo: false,
@@ -219,8 +218,6 @@ const reducer = (state, action) => {
       return { ...state, displaySettingMenu: action.displaySettingMenu };
     case 'CHANGE_DISPLAY_TOOL_BUTTON_STATE':
       return { ...state, displayToolButton: action.displayToolButton };
-    case 'CHANGE_DISPLAY_INFO_BUTTON_STATE':
-      return { ...state, displayInfoButton: action.displayInfoButton };
     case 'CHANGE_DISPLAY_TOC_BUTTON_STATE':
       return {
         ...state,
