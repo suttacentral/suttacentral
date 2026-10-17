@@ -19,6 +19,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   static properties = {
     suttaplexListEnabled: { type: Boolean },
     localizedStringsPath: { type: String },
+    currentRouteName: { type: String },
     displaySettingMenu: { type: Boolean },
     displayToolButton: { type: Boolean },
     tableOfContents: { type: Boolean },
@@ -39,7 +40,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.colorTheme = state.colorTheme;
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.localizedStringsPath = '/localization/elements/interface';
-    this.currentRoute = state.currentRoute;
+    this.currentRouteName = state.currentRoute.name;
     this.siteLanguage = state.siteLanguage;
 
     reduxActions.changeDisplaySettingMenuState(false);
@@ -291,6 +292,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnShowParallelTableView"
           @click=${this.#onBtnShowParallelTableViewClick}
           slot="actionItems"
+          style=${displayStyle(this.#displayBtnShowParallelTableView())}
         >
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
         </md-icon-button>
@@ -320,7 +322,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this.#setBtnShowParallelTableViewDisplayState();
     this.#setToolBarLanguage();
     document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
@@ -386,12 +387,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
     reduxActions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
   }
 
-  #setBtnShowParallelTableViewDisplayState() {
-    const displayStyle = this.currentRoute.name?.toUpperCase() === 'SUTTAPLEX' ? 'inherit' : 'none';
-    const btnShowParallelTableView = this.shadowRoot.querySelector('#btnShowParallelTableView');
-    if (btnShowParallelTableView) {
-      btnShowParallelTableView.style.display = displayStyle;
-    }
+  #displayBtnShowParallelTableView() {
+    return this.currentRouteName === 'suttaplex';
   }
 
   #displayBtnViewCompact() {
@@ -596,9 +593,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
       this.displayParallelTableView = state.displayParallelTableView;
       this.#setBtnShowParallelTableViewIcon();
     }
-    if (this.currentRoute !== state.currentRoute) {
-      this.currentRoute = state.currentRoute;
-      this.#setBtnShowParallelTableViewDisplayState();
+    if (this.currentRouteName !== state.currentRoute.name) {
+      this.currentRouteName = state.currentRoute.name;
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
