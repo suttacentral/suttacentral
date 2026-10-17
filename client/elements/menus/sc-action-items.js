@@ -7,20 +7,21 @@ import { reduxActions } from '../addons/sc-redux-actions';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
+
+function displayStyle(bool) {
+  return 'display: ' + (bool ? 'inherit' : 'none');
+}
+
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
-
 export class SCActionItems extends LitLocalized(LitElement) {
   static properties = {
     suttaplexListEnabled: { type: Boolean },
     localizedStringsPath: { type: String },
     displaySettingMenu: { type: Boolean },
     displayToolButton: { type: Boolean },
-    displayInfoButton: { type: Boolean },
     tableOfContents: { type: Boolean },
-    displayCompactButton: { type: Boolean },
-    displayComfyButton: { type: Boolean },
     displayViewModeButton: { type: Boolean },
     displaySearchOptionsButton: { type: Boolean },
     displayChineseConverterButton: { type: Boolean },
@@ -49,12 +50,10 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.tableOfContents = !!state.tableOfContents.items.length;
     this.displaySettingMenu = state.displaySettingMenu;
     this.displayToolButton = state.displayToolButton;
-    this.displayInfoButton = state.displayInfoButton;
     this.displayViewModeButton = state.displayViewModeButton;
     this.displayParallelTableView = state.displayParallelTableView;
     this.displaySearchOptionsButton = state.displaySearchOptionsButton;
     this.displayChineseConverterButton = state.displayChineseConverterButton;
-    this.displayCompactButton = false;
   }
 
   connectedCallback() {
@@ -208,13 +207,13 @@ export class SCActionItems extends LitLocalized(LitElement) {
         }
       </style>
 
-      <div id="tools_menu">
+      <div id="tools_menu" class="${this.displayToolButton ? 'contextToolbarExpand' : ''}">
         <md-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
           @click=${this.#onBtnShowToCClick}
           slot="actionItems"
-          ?hidden=${this.tableOfContents}
+          style=${displayStyle(this.tableOfContents)}
         >
           ${icon.toc}
         </md-icon-button>
@@ -224,7 +223,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnViewCompact"
           @click=${this.#onBtnViewCompactClick}
           slot="actionItems"
-          ?hidden=${this.displayCompactButton}
+          style=${displayStyle(this.#displayBtnViewCompact())}
         >
           ${icon.view_compact}
         </md-icon-button>
@@ -234,7 +233,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnViewComfy"
           @click=${this.#onBtnViewCompactClick}
           slot="actionItems"
-          ?hidden=${this.displayComfyButton}
+          style=${displayStyle(this.#displayBtnViewComfy())}
         >
           ${icon.view_comfy}
         </md-icon-button>
@@ -244,7 +243,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnInfo"
           @click=${this.#onBtnInfoClick}
           slot="actionItems"
-          ?hidden=${this.displayInfoButton}
+          style=${displayStyle(this.#displayBtnInfo())}
         >
           ${icon.info}
         </md-icon-button>
@@ -254,7 +253,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnTools"
           @click=${this.#onBtnToolsClick}
           slot="actionItems"
-          ?hidden=${this.displayToolButton}
+          style=${displayStyle(this.displayToolButton)}
         >
           ${icon.visibility}
         </md-icon-button>
@@ -264,7 +263,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnSearchOptions"
           @click=${this.btnSearchOptionsClick}
           slot="actionItems"
-          ?hidden=${this.displaySearchOptionsButton}
+          style=${displayStyle(this.displaySearchOptionsButton)}
         >
           ${icon.language}
         </md-icon-button>
@@ -274,7 +273,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnSearchFilter"
           @click=${this.#onBtnSearchFilterClick}
           slot="actionItems"
-          ?hidden=${this.displaySearchOptionsButton}
+          style=${displayStyle(this.displaySearchOptionsButton)}
         >
           ${icon.filter}
         </md-icon-button>
@@ -284,7 +283,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnShowParallels"
           @click=${this.#onBtnShowParallelsClick}
           slot="actionItems"
-          ?hidden=${this.displayToolButton}
+          style=${displayStyle(this.displayToolButton)}
         >
           ${icon.parallels}
         </md-icon-button>
@@ -303,7 +302,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           class="white-icon toolButtons"
           id="btnListenThisSutta"
           slot="actionItems"
-          style="display: ${this.displayToolButton && !this.suttaMetaText ? 'inherit' : 'none'}"
+          style=${displayStyle(this.displayToolButton && !this.suttaMetaText)}
           @click=${this.#btnListenThisSuttaClick}
         >
           ${icon.speaker}
@@ -313,7 +312,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           class="white-icon toolButtons"
           id="btnChineseConverter"
           slot="actionItems"
-          style="display: none;"
+          style=${displayStyle(this.displayChineseConverterButton)}
           @click=${this.#btnChineseConverterClick}
         >
           ${icon.chinese_convert}
@@ -323,13 +322,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this.#displayToolButtonStateChange();
-    this.#displayViewModeButtonStateChange();
-    this.#viewModeChanged();
-    this.#displayToCButtonStateChange();
     this.#setBtnShowParallelTableViewDisplayState();
-    this.#displaySearchOptionsButtonStateChange();
-    this.#displayChineseConverterButtonStateChange();
     this.#setToolBarLanguage();
     document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
@@ -393,13 +386,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   #onBtnViewCompactClick(e) {
     reduxActions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
-    this.#viewModeChanged();
-  }
-
-  #displayViewModeButtonStateChange() {
-    this.#toggleElementVisibility('btnViewCompact', this.displayViewModeButton);
-    this.#toggleElementVisibility('btnViewComfy', this.displayViewModeButton);
-    this.#viewModeChanged();
   }
 
   #setBtnShowParallelTableViewDisplayState() {
@@ -410,16 +396,12 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
   }
 
-  #viewModeChanged() {
-    if (!this.displayViewModeButton) {
-      return;
-    }
-    const isCompactView = store.getState().suttaplexListDisplay;
-    this.displayCompactButton = !isCompactView;
-    this.displayComfyButton = isCompactView;
-    this.#toggleElementVisibility('btnViewComfy', isCompactView);
-    this.#toggleElementVisibility('btnViewCompact', !isCompactView);
-    this.requestUpdate();
+  #displayBtnViewCompact() {
+    return this.displayViewModeButton && !this.suttaplexListEnabled;
+  }
+
+  #displayBtnViewComfy() {
+    return this.displayViewModeButton && this.suttaplexListEnabled;
   }
 
   #onBtnToolsClick(e) {
@@ -626,67 +608,21 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.displaySearchOptionsButton !== state.displaySearchOptionsButton) {
       this.displaySearchOptionsButton = state.displaySearchOptionsButton;
-      this.#displaySearchOptionsButtonStateChange();
     }
     if (this.displayChineseConverterButton !== state.displayChineseConverterButton) {
       this.displayChineseConverterButton = state.displayChineseConverterButton;
-      this.#displayChineseConverterButtonStateChange();
     }
   }
 
   updated(changedProps) {
-    if (changedProps.has('displayToolButton')) {
-      this.#displayToolButtonStateChange();
-    }
-    if (changedProps.has('displayViewModeButton')) {
-      this.#displayViewModeButtonStateChange();
-    }
     if (changedProps.has('colorTheme')) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
       this.#resetToolButtonsActiveClass();
     }
-    if (changedProps.has('suttaplexListEnabled')) {
-      this.#viewModeChanged();
-    }
-    if (changedProps.has('suttaMetaText') || changedProps.has('suttaPublicationInfo')) {
-      this.#suttaMetaTextChanged();
-    }
-    if (changedProps.has('tableOfContents')) {
-      this.#displayToCButtonStateChange();
-    }
   }
 
-  #suttaMetaTextChanged() {
-    this.#toggleElementVisibility('btnInfo', this.suttaMetaText || this.suttaPublicationInfo);
-  }
-
-  #toggleElementVisibility(elementId, isVisible) {
-    const element = this.shadowRoot.querySelector(`#${elementId}`);
-    if (element) {
-      element.style.display = isVisible ? 'inherit' : 'none';
-    }
-  }
-
-  #displayToCButtonStateChange() {
-    this.#toggleElementVisibility('btnShowToC', this.tableOfContents);
-  }
-
-  #displaySearchOptionsButtonStateChange() {
-    this.#toggleElementVisibility('btnSearchOptions', this.displaySearchOptionsButton);
-    this.#toggleElementVisibility('btnSearchFilter', this.displaySearchOptionsButton);
-  }
-
-  #displayToolButtonStateChange() {
-    this.#suttaMetaTextChanged();
-    this.shadowRoot.querySelector('#tools_menu').classList
-      .toggle('contextToolbarExpand', this.displayToolButton);
-    this.#toggleElementVisibility('btnTools', this.displayToolButton);
-    this.#toggleElementVisibility('btnInfo', this.displayToolButton);
-    this.#toggleElementVisibility('btnShowParallels', this.displayToolButton);
-  }
-
-  #displayChineseConverterButtonStateChange() {
-    this.#toggleElementVisibility('btnChineseConverter', this.displayChineseConverterButton);
+  #displayBtnInfo() {
+    return this.displayToolButton && (this.suttaMetaText || this.suttaPublicationInfo);
   }
 
   #resetToolButtonsActiveClass() {
