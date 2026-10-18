@@ -292,12 +292,11 @@ export class SCActionItems extends LitLocalized(LitElement) {
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
         </md-icon-button>
 
-        ${/* only show Voice button on Bilara sutta pages */ ''}
         <md-icon-button
           class="white-icon toolButtons"
           id="btnListenThisSutta"
           slot="actionItems"
-          style=${displayStyle(this.#displayBtnTools() && !this.suttaMetaText)}
+          style=${displayStyle(this.#displayBtnListenThisSutta())}
           @click=${this.#btnListenThisSuttaClick}
         >
           ${icon.speaker}
@@ -382,10 +381,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     reduxActions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
   }
 
-  #displayBtnShowParallelTableView() {
-    return this.currentRouteName === 'suttaplex';
-  }
-
   #displayBtnViewMode() {
     return ['home', 'suttaplex', 'navigation', 'search'].includes(this.currentRouteName);
   }
@@ -402,8 +397,21 @@ export class SCActionItems extends LitLocalized(LitElement) {
     return this.currentRouteName === 'sutta';
   }
 
+  #displayBtnInfo() {
+    return this.#displayBtnTools() && (this.suttaMetaText || this.suttaPublicationInfo);
+  }
+
   #displayBtnSearchOptions() {
     return this.currentRouteName === 'search';
+  }
+
+  #displayBtnShowParallelTableView() {
+    return this.currentRouteName === 'suttaplex';
+  }
+
+  #displayBtnListenThisSutta() {
+    // only show Voice button on Bilara sutta pages
+    return this.#displayBtnTools() && !this.suttaMetaText;
   }
 
   #onBtnToolsClick(e) {
@@ -606,10 +614,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
       this.#resetToolButtonsActiveClass();
     }
-  }
-
-  #displayBtnInfo() {
-    return this.#displayBtnTools() && (this.suttaMetaText || this.suttaPublicationInfo);
   }
 
   #resetToolButtonsActiveClass() {
