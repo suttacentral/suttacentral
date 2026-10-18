@@ -21,11 +21,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
     localizedStringsPath: { type: String },
     currentRouteName: { type: String },
     displaySettingMenu: { type: Boolean },
-    displayToolButton: { type: Boolean },
     tableOfContents: { type: Boolean },
-    displayViewModeButton: { type: Boolean },
     displayParallelTableView: { type: Boolean },
-    displaySearchOptionsButton: { type: Boolean },
     displayChineseConverterButton: { type: Boolean },
     colorTheme: { type: String },
     suttaMetaText: { type: String },
@@ -51,10 +48,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
     this.tableOfContents = !!state.tableOfContents.items.length;
     this.displaySettingMenu = state.displaySettingMenu;
-    this.displayToolButton = state.displayToolButton;
-    this.displayViewModeButton = state.displayViewModeButton;
     this.displayParallelTableView = state.displayParallelTableView;
-    this.displaySearchOptionsButton = state.displaySearchOptionsButton;
     this.displayChineseConverterButton = state.displayChineseConverterButton;
   }
 
@@ -209,7 +203,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
         }
       </style>
 
-      <div id="tools_menu" class="${this.displayToolButton ? 'contextToolbarExpand' : ''}">
+      <div id="tools_menu" class="${this.#displayBtnTools() ? 'contextToolbarExpand' : ''}">
         <md-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
@@ -255,7 +249,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnTools"
           @click=${this.#onBtnToolsClick}
           slot="actionItems"
-          style=${displayStyle(this.displayToolButton)}
+          style=${displayStyle(this.#displayBtnTools())}
         >
           ${icon.visibility}
         </md-icon-button>
@@ -265,7 +259,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnSearchOptions"
           @click=${this.btnSearchOptionsClick}
           slot="actionItems"
-          style=${displayStyle(this.displaySearchOptionsButton)}
+          style=${displayStyle(this.#displayBtnSearchOptions())}
         >
           ${icon.language}
         </md-icon-button>
@@ -275,7 +269,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnSearchFilter"
           @click=${this.#onBtnSearchFilterClick}
           slot="actionItems"
-          style=${displayStyle(this.displaySearchOptionsButton)}
+          style=${displayStyle(this.#displayBtnSearchOptions())}
         >
           ${icon.filter}
         </md-icon-button>
@@ -285,7 +279,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnShowParallels"
           @click=${this.#onBtnShowParallelsClick}
           slot="actionItems"
-          style=${displayStyle(this.displayToolButton)}
+          style=${displayStyle(this.#displayBtnTools())}
         >
           ${icon.parallels}
         </md-icon-button>
@@ -305,7 +299,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           class="white-icon toolButtons"
           id="btnListenThisSutta"
           slot="actionItems"
-          style=${displayStyle(this.displayToolButton && !this.suttaMetaText)}
+          style=${displayStyle(this.#displayBtnTools() && !this.suttaMetaText)}
           @click=${this.#btnListenThisSuttaClick}
         >
           ${icon.speaker}
@@ -331,7 +325,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   _handleKeydown(e) {
     if (ignorableKeydownEvent(e)) return;
-    if (!this.displayToolButton) return; // Not on a text page
+    if (!this.#displayBtnTools()) return; // Not on a text page
     switch (e.key) {
       case 'i':
       case 'I':
@@ -394,12 +388,24 @@ export class SCActionItems extends LitLocalized(LitElement) {
     return this.currentRouteName === 'suttaplex';
   }
 
+  #displayBtnViewMode() {
+    return ['home', 'suttaplex', 'navigation', 'search'].includes(this.currentRouteName);
+  }
+
   #displayBtnViewCompact() {
-    return this.displayViewModeButton && !this.suttaplexListEnabled;
+    return this.#displayBtnViewMode() && !this.suttaplexListEnabled;
   }
 
   #displayBtnViewComfy() {
-    return this.displayViewModeButton && this.suttaplexListEnabled;
+    return this.#displayBtnViewMode() && this.suttaplexListEnabled;
+  }
+
+  #displayBtnTools() {
+    return this.currentRouteName === 'sutta';
+  }
+
+  #displayBtnSearchOptions() {
+    return this.currentRouteName === 'search';
   }
 
   #onBtnToolsClick(e) {
@@ -567,12 +573,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }
-    if (this.displayToolButton !== state.displayToolButton) {
-      this.displayToolButton = state.displayToolButton;
-    }
-    if (this.displayViewModeButton !== state.displayViewModeButton) {
-      this.displayViewModeButton = state.displayViewModeButton;
-    }
     if (this.colorTheme !== state.colorTheme) {
       this.colorTheme = state.colorTheme;
     }
@@ -598,9 +598,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
       this.siteLanguage = state.siteLanguage;
       this.#setToolBarLanguage();
     }
-    if (this.displaySearchOptionsButton !== state.displaySearchOptionsButton) {
-      this.displaySearchOptionsButton = state.displaySearchOptionsButton;
-    }
     if (this.displayChineseConverterButton !== state.displayChineseConverterButton) {
       this.displayChineseConverterButton = state.displayChineseConverterButton;
     }
@@ -614,7 +611,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   #displayBtnInfo() {
-    return this.displayToolButton && (this.suttaMetaText || this.suttaPublicationInfo);
+    return this.#displayBtnTools() && (this.suttaMetaText || this.suttaPublicationInfo);
   }
 
   #resetToolButtonsActiveClass() {
