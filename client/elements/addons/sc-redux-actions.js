@@ -72,13 +72,6 @@ export class reduxActions {
     });
   }
 
-  static changeDisplaySearchOptionsButtonState(displaySearchOptionsButton) {
-    store.dispatch({
-      type: 'CHANGE_DISPLAY_SEARCH_OPTIONS_BUTTON_STATE',
-      displaySearchOptionsButton,
-    });
-  }
-
   static setSearchDisplayLanguage(displayedLanguages) {
     store.dispatch({
       type: 'SET_SEARCH_DISPLAY_LANGUAGES_ARRAY',
