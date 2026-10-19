@@ -15,6 +15,8 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   static properties = {
     matter: { type: String },
     editionFiles: { type: Object },
+    editionDetail: { type: Object },
+    editionInfo: { type: Object },
   };
 
   static styles = [
@@ -75,7 +77,7 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
   }
 
   async #loadNewResult() {
-    await this.#fetchMatter();
+    this.#fetchMatter();
     await this.#fetchEditionDetails();
     await this.#fetchEditionInfo();
   }
