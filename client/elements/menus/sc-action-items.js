@@ -7,23 +7,22 @@ import { reduxActions } from '../addons/sc-redux-actions';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
+
+function displayStyle(bool) {
+  return 'display: ' + (bool ? 'inherit' : 'none');
+}
+
 /*
 Base toolbar that appears on the top right in the header of every page.
 */
-
 export class SCActionItems extends LitLocalized(LitElement) {
   static properties = {
     suttaplexListEnabled: { type: Boolean },
     localizedStringsPath: { type: String },
+    currentRouteName: { type: String },
     displaySettingMenu: { type: Boolean },
-    displayToolButton: { type: Boolean },
-    displayInfoButton: { type: Boolean },
     tableOfContents: { type: Boolean },
-    displayCompactButton: { type: Boolean },
-    displayComfyButton: { type: Boolean },
-    displayViewModeButton: { type: Boolean },
-    displaySearchOptionsButton: { type: Boolean },
-    displaySpeakerButton: { type: Boolean },
+    displayParallelTableView: { type: Boolean },
     displayChineseConverterButton: { type: Boolean },
     colorTheme: { type: String },
     suttaMetaText: { type: String },
@@ -39,7 +38,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
     this.colorTheme = state.colorTheme;
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.localizedStringsPath = '/localization/elements/interface';
-    this.currentRoute = state.currentRoute;
+    this.currentRouteName = state.currentRoute.name;
     this.siteLanguage = state.siteLanguage;
 
     reduxActions.changeDisplaySettingMenuState(false);
@@ -49,14 +48,8 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
     this.tableOfContents = !!state.tableOfContents.items.length;
     this.displaySettingMenu = state.displaySettingMenu;
-    this.displayToolButton = state.displayToolButton;
-    this.displayInfoButton = state.displayInfoButton;
-    this.displayViewModeButton = state.displayViewModeButton;
     this.displayParallelTableView = state.displayParallelTableView;
-    this.displaySearchOptionsButton = state.displaySearchOptionsButton;
     this.displayChineseConverterButton = state.displayChineseConverterButton;
-    this.displaySpeakerButton = false;
-    this.displayCompactButton = false;
   }
 
   connectedCallback() {
@@ -208,13 +201,13 @@ export class SCActionItems extends LitLocalized(LitElement) {
         }
       </style>
 
-      <div id="tools_menu">
+      <div id="tools_menu" class="${this.#displayBtnTools() ? 'contextToolbarExpand' : ''}">
         <md-icon-button
           class="white-icon toolButtons"
           id="btnShowToC"
           @click=${this.#onBtnShowToCClick}
           slot="actionItems"
-          ?hidden=${this.tableOfContents}
+          style=${displayStyle(this.tableOfContents)}
         >
           ${icon.toc}
         </md-icon-button>
@@ -224,7 +217,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnViewCompact"
           @click=${this.#onBtnViewCompactClick}
           slot="actionItems"
-          ?hidden=${this.displayCompactButton}
+          style=${displayStyle(this.#displayBtnViewCompact())}
         >
           ${icon.view_compact}
         </md-icon-button>
@@ -234,7 +227,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnViewComfy"
           @click=${this.#onBtnViewCompactClick}
           slot="actionItems"
-          ?hidden=${this.displayComfyButton}
+          style=${displayStyle(this.#displayBtnViewComfy())}
         >
           ${icon.view_comfy}
         </md-icon-button>
@@ -244,7 +237,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnInfo"
           @click=${this.#onBtnInfoClick}
           slot="actionItems"
-          ?hidden=${this.displayInfoButton}
+          style=${displayStyle(this.#displayBtnInfo())}
         >
           ${icon.info}
         </md-icon-button>
@@ -254,7 +247,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnTools"
           @click=${this.#onBtnToolsClick}
           slot="actionItems"
-          ?hidden=${this.displayToolButton}
+          style=${displayStyle(this.#displayBtnTools())}
         >
           ${icon.visibility}
         </md-icon-button>
@@ -264,7 +257,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnSearchOptions"
           @click=${this.btnSearchOptionsClick}
           slot="actionItems"
-          ?hidden=${this.displaySearchOptionsButton}
+          style=${displayStyle(this.#displayBtnSearchOptions())}
         >
           ${icon.language}
         </md-icon-button>
@@ -274,7 +267,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnSearchFilter"
           @click=${this.#onBtnSearchFilterClick}
           slot="actionItems"
-          ?hidden=${this.displaySearchOptionsButton}
+          style=${displayStyle(this.#displayBtnSearchOptions())}
         >
           ${icon.filter}
         </md-icon-button>
@@ -284,7 +277,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnShowParallels"
           @click=${this.#onBtnShowParallelsClick}
           slot="actionItems"
-          ?hidden=${this.displayToolButton}
+          style=${displayStyle(this.#displayBtnTools())}
         >
           ${icon.parallels}
         </md-icon-button>
@@ -294,6 +287,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           id="btnShowParallelTableView"
           @click=${this.#onBtnShowParallelTableViewClick}
           slot="actionItems"
+          style=${displayStyle(this.#displayBtnShowParallelTableView())}
         >
           ${this.displayParallelTableView ? icon.tableView_twotone : icon.tableView}
         </md-icon-button>
@@ -302,7 +296,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           class="white-icon toolButtons"
           id="btnListenThisSutta"
           slot="actionItems"
-          style="display: none;"
+          style=${displayStyle(this.#displayBtnListenThisSutta())}
           @click=${this.#btnListenThisSuttaClick}
         >
           ${icon.speaker}
@@ -312,7 +306,7 @@ export class SCActionItems extends LitLocalized(LitElement) {
           class="white-icon toolButtons"
           id="btnChineseConverter"
           slot="actionItems"
-          style="display: none;"
+          style=${displayStyle(this.displayChineseConverterButton)}
           @click=${this.#btnChineseConverterClick}
         >
           ${icon.chinese_convert}
@@ -322,20 +316,13 @@ export class SCActionItems extends LitLocalized(LitElement) {
   }
 
   firstUpdated() {
-    this.#displayToolButtonStateChange();
-    this.#displayViewModeButtonStateChange();
-    this.#viewModeChanged();
-    this.#displayToCButtonStateChange();
-    this.#setBtnShowParallelTableViewDisplayState();
-    this.#displaySearchOptionsButtonStateChange();
-    this.#displayChineseConverterButtonStateChange();
     this.#setToolBarLanguage();
     document.addEventListener('keydown', this._handleKeydown.bind(this));
   }
 
   _handleKeydown(e) {
     if (ignorableKeydownEvent(e)) return;
-    if (!this.displayToolButton) return; // Not on a text page
+    if (!this.#displayBtnTools()) return; // Not on a text page
     switch (e.key) {
       case 'i':
       case 'I':
@@ -392,33 +379,39 @@ export class SCActionItems extends LitLocalized(LitElement) {
 
   #onBtnViewCompactClick(e) {
     reduxActions.toggleSuttaplexDisplay(e.currentTarget.id === 'btnViewCompact');
-    this.#viewModeChanged();
   }
 
-  #displayViewModeButtonStateChange() {
-    this.#toggleElementVisibility('btnViewCompact', this.displayViewModeButton);
-    this.#toggleElementVisibility('btnViewComfy', this.displayViewModeButton);
-    this.#viewModeChanged();
+  #displayBtnViewMode() {
+    return ['home', 'suttaplex', 'navigation', 'search'].includes(this.currentRouteName);
   }
 
-  #setBtnShowParallelTableViewDisplayState() {
-    const displayStyle = this.currentRoute.name?.toUpperCase() === 'SUTTAPLEX' ? 'inherit' : 'none';
-    const btnShowParallelTableView = this.shadowRoot.querySelector('#btnShowParallelTableView');
-    if (btnShowParallelTableView) {
-      btnShowParallelTableView.style.display = displayStyle;
-    }
+  #displayBtnViewCompact() {
+    return this.#displayBtnViewMode() && !this.suttaplexListEnabled;
   }
 
-  #viewModeChanged() {
-    if (!this.displayViewModeButton) {
-      return;
-    }
-    const isCompactView = store.getState().suttaplexListDisplay;
-    this.displayCompactButton = !isCompactView;
-    this.displayComfyButton = isCompactView;
-    this.#toggleElementVisibility('btnViewComfy', isCompactView);
-    this.#toggleElementVisibility('btnViewCompact', !isCompactView);
-    this.requestUpdate();
+  #displayBtnViewComfy() {
+    return this.#displayBtnViewMode() && this.suttaplexListEnabled;
+  }
+
+  #displayBtnTools() {
+    return this.currentRouteName === 'sutta';
+  }
+
+  #displayBtnInfo() {
+    return this.#displayBtnTools() && (this.suttaMetaText || this.suttaPublicationInfo);
+  }
+
+  #displayBtnSearchOptions() {
+    return this.currentRouteName === 'search';
+  }
+
+  #displayBtnShowParallelTableView() {
+    return this.currentRouteName === 'suttaplex';
+  }
+
+  #displayBtnListenThisSutta() {
+    // only show Voice button on Bilara sutta pages
+    return this.#displayBtnTools() && !this.suttaMetaText;
   }
 
   #onBtnToolsClick(e) {
@@ -565,10 +558,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     reduxActions.changeDisplayParallelTableViewState(!this.displayParallelTableView);
   }
 
-  #setBtnShowParallelTableViewIcon() {
-    this.requestUpdate();
-  }
-
   showParallelsTopSheet() {
     this.#onBtnShowParallelsClick();
   }
@@ -590,12 +579,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }
-    if (this.displayToolButton !== state.displayToolButton) {
-      this.displayToolButton = state.displayToolButton;
-    }
-    if (this.displayViewModeButton !== state.displayViewModeButton) {
-      this.displayViewModeButton = state.displayViewModeButton;
-    }
     if (this.colorTheme !== state.colorTheme) {
       this.colorTheme = state.colorTheme;
     }
@@ -613,79 +596,24 @@ export class SCActionItems extends LitLocalized(LitElement) {
     }
     if (this.displayParallelTableView !== state.displayParallelTableView) {
       this.displayParallelTableView = state.displayParallelTableView;
-      this.#setBtnShowParallelTableViewIcon();
     }
-    if (this.currentRoute !== state.currentRoute) {
-      this.currentRoute = state.currentRoute;
-      this.#setBtnShowParallelTableViewDisplayState();
+    if (this.currentRouteName !== state.currentRoute.name) {
+      this.currentRouteName = state.currentRoute.name;
     }
     if (this.siteLanguage !== state.siteLanguage) {
       this.siteLanguage = state.siteLanguage;
       this.#setToolBarLanguage();
     }
-    if (this.displaySearchOptionsButton !== state.displaySearchOptionsButton) {
-      this.displaySearchOptionsButton = state.displaySearchOptionsButton;
-      this.#displaySearchOptionsButtonStateChange();
-    }
     if (this.displayChineseConverterButton !== state.displayChineseConverterButton) {
       this.displayChineseConverterButton = state.displayChineseConverterButton;
-      this.#displayChineseConverterButtonStateChange();
     }
   }
 
   updated(changedProps) {
-    if (changedProps.has('displayToolButton')) {
-      this.#displayToolButtonStateChange();
-    }
-    if (changedProps.has('displayViewModeButton')) {
-      this.#displayViewModeButtonStateChange();
-    }
     if (changedProps.has('colorTheme')) {
       this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
       this.#resetToolButtonsActiveClass();
     }
-    if (changedProps.has('suttaplexListEnabled')) {
-      this.#viewModeChanged();
-    }
-    if (changedProps.has('suttaMetaText') || changedProps.has('suttaPublicationInfo')) {
-      this.#suttaMetaTextChanged();
-    }
-    if (changedProps.has('tableOfContents')) {
-      this.#displayToCButtonStateChange();
-    }
-  }
-
-  #suttaMetaTextChanged() {
-    this.#toggleElementVisibility('btnInfo', this.suttaMetaText || this.suttaPublicationInfo);
-  }
-
-  #toggleElementVisibility(elementId, isVisible) {
-    const element = this.shadowRoot.querySelector(`#${elementId}`);
-    if (element) {
-      element.style.display = isVisible ? 'inherit' : 'none';
-    }
-  }
-
-  #displayToCButtonStateChange() {
-    this.#toggleElementVisibility('btnShowToC', this.tableOfContents);
-  }
-
-  #displaySearchOptionsButtonStateChange() {
-    this.#toggleElementVisibility('btnSearchOptions', this.displaySearchOptionsButton);
-    this.#toggleElementVisibility('btnSearchFilter', this.displaySearchOptionsButton);
-  }
-
-  #displayToolButtonStateChange() {
-    this.#suttaMetaTextChanged();
-    this.shadowRoot.querySelector('#tools_menu').classList
-      .toggle('contextToolbarExpand', this.displayToolButton);
-    this.#toggleElementVisibility('btnTools', this.displayToolButton);
-    this.#toggleElementVisibility('btnInfo', this.displayToolButton);
-    this.#toggleElementVisibility('btnShowParallels', this.displayToolButton);
-  }
-
-  #displayChineseConverterButtonStateChange() {
-    this.#toggleElementVisibility('btnChineseConverter', this.displayChineseConverterButton);
   }
 
   #resetToolButtonsActiveClass() {
@@ -696,14 +624,6 @@ export class SCActionItems extends LitLocalized(LitElement) {
         e.classList.add(this.activeClass);
       }
     });
-  }
-
-  showSpeakerButton() {
-    this.shadowRoot.querySelector('#btnListenThisSutta').style.display = 'inherit';
-  }
-
-  hideSpeakerButton() {
-    this.shadowRoot.querySelector('#btnListenThisSutta').style.display = 'none';
   }
 
   #btnListenThisSuttaClick() {
