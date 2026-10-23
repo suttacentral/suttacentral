@@ -126,11 +126,8 @@ export class SCPublicationEditionMatter extends LitLocalized(LitElement) {
       return;
     }
 
-    for (const key in this.editionFiles) {
-      if (Object.hasOwn(this.editionFiles, key) && key.includes(this.matter.toLowerCase())) {
-        return this.editionFiles[key];
-      }
-    }
+    const key = `./matter/${this.matter}.html`
+    return this.editionFiles[key];
   }
 
   #updateMetaData(matterContent) {
