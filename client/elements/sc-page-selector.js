@@ -93,7 +93,6 @@ const staticPages = [
   'terminology',
   'vinaya',
   'palitipitaka',
-  'publicationAn',
   'searchFilter',
   'pirivena-project'
 ];
@@ -459,7 +458,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   get routeDefinition() {
-    if (this.currentRoute && this.currentRoute.name) {
+    if (this.currentRoute?.name) {
       return routes[this.currentRoute.name];
     }
   }
@@ -569,16 +568,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
     this.shouldShowPublicationToolbar = [
       'publicationEdition',
-      'publicationDN',
-      'publicationMN',
-      'publicationSN',
-      'publicationAN',
-      'publicationMinor',
       'publicationEditionMatter',
-      'publicationEditionAcknowledgements',
-      'publicationEditionAbbreviations',
-      'publicationEditionIndex',
-      'publicationEditionIntroduction',
     ].includes(this.currentRoute.name);
 
     reduxActions.setStaticPagesToolbarDisplayState({
