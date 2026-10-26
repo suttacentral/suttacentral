@@ -1,4 +1,5 @@
 import logging
+from collections import Counter
 from collections.abc import Iterator, Iterable
 from dataclasses import dataclass
 from enum import StrEnum
@@ -95,10 +96,23 @@ class EntryType(StrEnum):
         return edge_types[self]
 
 
+class DuplicateEncodingException(Exception):
+    def __init__(self, encoding: Encoding):
+        super().__init__(f"Entry contains duplicated encoding '{encoding}'")
+        self.encoding = encoding
+
+
 class Entry:
     def __init__(self, entry_type: str, encodings: list[str]):
         self._entry_type = EntryType(entry_type)
+        self.check_duplicates(encodings)
         self._encodings = [Encoding(encoding) for encoding in encodings]
+
+    def check_duplicates(self, encodings):
+        counter = Counter(encodings)
+        for encoding, count in counter.items():
+            if count > 1:
+                raise DuplicateEncodingException(encoding)
 
     @property
     def entry_type(self) -> EntryType:
@@ -127,6 +141,11 @@ class Remarks:
         return frozenset(uids)
 
 
+class InvalidEdgeException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 @dataclass
 class EdgeEncodings:
     from_: Encoding
@@ -153,6 +172,8 @@ class Edge:
         Edge._remarks = Remarks(notes_data)
 
     def __init__(self, edge_type: EdgeType, encodings: EdgeEncodings, uids: EdgeUids):
+        if encodings.to == encodings.from_:
+            raise InvalidEdgeException(f"Encodings for edge are the same: '{encodings.to}'")
         self._edge_type = edge_type
         self._encodings = encodings
         self._uids = uids
@@ -190,18 +211,14 @@ class Edge:
         }
 
 
-class Unmatched:
+class RelationshipsLogger:
     def __init__(self):
         self._dropped: set[Encoding] = set()
         self._orphans: set[Encoding] = set()
+        self._duplicates: list[Encoding] = list()
 
-    @property
-    def dropped(self) -> set[Encoding]:
-        return self._dropped
-
-    @property
-    def orphans(self) -> set[Encoding]:
-        return self._orphans
+    def add_duplicate(self, encoding: Encoding):
+        self._duplicates.append(encoding)
 
     def add_dropped(self, encoding: Encoding) -> None:
         self._dropped.add(encoding)
@@ -209,25 +226,28 @@ class Unmatched:
     def add_orphan(self, encoding: Encoding) -> None:
         self._orphans.add(encoding)
 
-    def log(self) -> None:
+    def write(self):
         for encoding in self._dropped:
             logging.error(f'Relationship encoding has no matching uids: {encoding} (dropped)')
 
         for encoding in self._orphans:
             logging.info(f'Relationship to encoding could not be matched: {encoding} (appears as orphan)')
 
+        for duplicate in self._duplicates:
+            logging.error(f"Entry contains duplicated encoding '{duplicate}'")
+
 
 class ParallelsEdges(Iterable):
-    def __init__(self, entry: Entry, unmatched: Unmatched):
+    def __init__(self, entry: Entry, logger: RelationshipsLogger):
         self._edge_type = entry.edge_type
         self._full_encodings = [encoding for encoding in entry.encodings if not encoding.is_resembling()]
         self._resembling_encodings = [encoding for encoding in entry.encodings if encoding.is_resembling()]
-        self._unmatched = unmatched
+        self._logger = logger
 
     def __iter__(self) -> Iterator[Edge]:
         return (
             Edge(self._edge_type, edge_encodings, edge_uids)
-            for edge_encodings in drop_unmatched_from(self._edge_encodings(), self._unmatched)
+            for edge_encodings in drop_unmatched_from(self._edge_encodings(), self._logger)
             for edge_uids in self._uids(edge_encodings)
         )
 
@@ -254,26 +274,26 @@ class ParallelsEdges(Iterable):
         to_uids = encodings.to.matching_uids()
 
         if not to_uids:
-            self._unmatched.add_orphan(encodings.to)
+            self._logger.add_orphan(encodings.to)
             to_uids = ['orphan']
 
         return (EdgeUids(*uids) for uids in product(from_uids, to_uids))
 
 
-def drop_unmatched_from(edge_encodings: Iterable[EdgeEncodings], unmatched: Unmatched) -> Iterator[EdgeEncodings]:
+def drop_unmatched_from(edge_encodings: Iterable[EdgeEncodings], logger: RelationshipsLogger) -> Iterator[EdgeEncodings]:
     for encodings in edge_encodings:
         if encodings.from_.has_matching_uid():
             yield encodings
         else:
-            unmatched.add_dropped(encodings.from_)
+            logger.add_dropped(encodings.from_)
 
 
 class OtherEdges(Iterable):
-    def __init__(self, entry: Entry, unmatched: Unmatched):
+    def __init__(self, entry: Entry, logger: RelationshipsLogger):
         self._edge_type = entry.edge_type
         self._first = entry.encodings[0]
         self._others = entry.encodings[1:]
-        self._drop_encodings(unmatched)
+        self._drop_encodings(logger)
 
     def __iter__(self) -> Iterator[Edge]:
         return (
@@ -305,14 +325,14 @@ class OtherEdges(Iterable):
             if encoding.has_matching_uid()
         )
 
-    def _drop_encodings(self, unmatched: Unmatched) -> None:
+    def _drop_encodings(self, logger: RelationshipsLogger) -> None:
         to_drop = (
             encoding for encoding in self._others
             if not encoding.has_matching_uid()
         )
 
         for encoding in to_drop:
-            unmatched.add_dropped(encoding)
+            logger.add_dropped(encoding)
 
 
 def load_relationships(change_tracker: FileChangeTracker, relationship_dir: Path, additional_info_dir: Path,
@@ -330,40 +350,50 @@ def load_relationships(change_tracker: FileChangeTracker, relationship_dir: Path
     Encoding.load_uids(uids)
     Edge.load_remarks(notes_data)
 
-    unmatched = Unmatched()
+    logger = RelationshipsLogger()
     raw = raw_entries(relationship_data)
-    entries = all_entries(raw)
-    import_entries(db, entries, unmatched)
-    unmatched.log()
+    entries = entries_from_raw(raw, logger)
+    import_entries(db, entries, logger)
+    logger.write()
 
 
-def import_entries(db: StandardDatabase, entries: Iterator[Entry], unmatched: Unmatched) -> None:
+def import_entries(db: StandardDatabase, entries: Iterator[Entry], logger: RelationshipsLogger) -> None:
     db['relationship'].truncate()
-    edges = entries_to_edges(entries, unmatched)
+    edges = entries_to_edges(entries, logger)
     for chunk in edge_chunks(edges):
         write_chunk(db, chunk)
 
 
-def raw_entries(relationship_data: list[dict]) -> Iterator[tuple[str, list[str]]]:
+@dataclass
+class RawEntry:
+    entry_type: str
+    encodings: list[str]
+
+
+def raw_entries(relationship_data: list[dict]) -> Iterator[RawEntry]:
     for entry in tqdm(relationship_data):
         for entry_type, encodings in entry.items():
-            yield entry_type, encodings
+            yield RawEntry(entry_type, encodings)
 
 
-def all_entries(entries: Iterable[tuple[str, list[str]]]) -> Iterator[Entry]:
-    return (Entry(entry[0], entry[1]) for entry in entries)
-
-
-def entries_to_edges(entries: Iterable[Entry], unmatched: Unmatched) -> Iterator[Edge]:
+def entries_from_raw(entries: Iterable[RawEntry], logger: RelationshipsLogger) -> Iterator[Entry]:
     for entry in entries:
-        yield from edges_for_entry(entry, unmatched)
+        try:
+            yield Entry(entry.entry_type, entry.encodings)
+        except DuplicateEncodingException as e:
+            logger.add_duplicate(e.encoding)
 
 
-def edges_for_entry(entry: Entry, unmatched: Unmatched) -> Iterator[Edge]:
+def entries_to_edges(entries: Iterable[Entry], logger: RelationshipsLogger) -> Iterator[Edge]:
+    for entry in entries:
+        yield from edges_for_entry(entry, logger)
+
+
+def edges_for_entry(entry: Entry, logger: RelationshipsLogger) -> Iterator[Edge]:
     if entry.entry_type == EntryType.PARALLELS:
-        yield from ParallelsEdges(entry, unmatched)
+        yield from ParallelsEdges(entry, logger)
     else:
-        yield from OtherEdges(entry, unmatched)
+        yield from OtherEdges(entry, logger)
 
 
 def edge_chunks(edges: Iterable[Edge], chunk_size=10000) -> Iterator[list[dict]]:
