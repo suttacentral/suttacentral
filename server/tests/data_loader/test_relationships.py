@@ -12,7 +12,8 @@ from common.arangodb import get_db
 from common.utils import current_app
 from data_loader.ports import FileChangeTracker
 from data_loader.relationships import load_relationships, Encoding, Edge, Entry, \
-    EntryType, EdgeType, OtherEdges, Remarks, EdgeUids, EdgeEncodings, Unmatched, ParallelsEdges, entries_to_edges
+    EntryType, EdgeType, OtherEdges, Remarks, EdgeUids, EdgeEncodings, RelationshipsLogger, ParallelsEdges, entries_to_edges, \
+    InvalidEdgeException, DuplicateEncodingException, entries_from_raw, RawEntry
 from fakes import FakeFileChangeTracker
 
 
@@ -171,9 +172,14 @@ class TestEntry:
     def test_encodings(self):
         assert Entry('parallels', ['abc123', 'xyz321']).encodings == [Encoding('abc123'), Encoding('xyz321')]
 
+    # TODO Use InvalidEntryException
     def test_invalid_entry_type(self):
         with pytest.raises(ValueError, match='extrudes'):
             _ = Entry('extrudes', ['abc123', 'xyz321'])
+
+    def test_invalid_when_encodings_contain_duplicates(self):
+        with pytest.raises(DuplicateEncodingException, match="Entry contains duplicated encoding 'abc123'"):
+            _ = Entry('parallels', ['abc123', 'abc123'])
 
 
 class TestRemarks:
@@ -299,26 +305,41 @@ class TestEdge:
         encodings = EdgeEncodings(Encoding('abc123'), Encoding('xyz321'))
         assert Edge(edge_type, encodings, uids).as_dict()['remark'] == remark
 
+    @pytest.mark.parametrize('edge_type', [
+        EdgeType.FULL, EdgeType.MENTION, EdgeType.RETELLING,
+    ])
+    def test_duplicate_encodings_are_an_error(self, edge_type):
+        with pytest.raises(InvalidEdgeException, match="Encodings for edge are the same: 'abc123#rrr'"):
+            uids = EdgeUids('abc123', 'abc123')
+            encodings = EdgeEncodings(Encoding('abc123#rrr'), Encoding('abc123#rrr'))
+            _ = Edge(edge_type, encodings, uids)
 
-class TestUnmatched:
-    def test_logs_dropped(self, caplog):
-        unmatched = Unmatched()
-        unmatched.add_dropped(Encoding('abc123'))
-        unmatched.log()
+
+class TestLogger:
+    def test_invalid_entry_exception(self, caplog):
+        logger = RelationshipsLogger()
+        logger.add_duplicate(Encoding('abc123'))
+        logger.write()
+        assert caplog.messages == ["Entry contains duplicated encoding 'abc123'"]
+
+    def test_dropped(self, caplog):
+        logger = RelationshipsLogger()
+        logger.add_dropped(Encoding('abc123'))
+        logger.write()
         assert caplog.messages == ['Relationship encoding has no matching uids: abc123 (dropped)']
 
-    def test_logs_orphans(self, caplog):
+    def test_orphan(self, caplog):
         caplog.set_level(logging.INFO)
-        unmatched = Unmatched()
-        unmatched.add_orphan(Encoding('abc123'))
-        unmatched.log()
+        logger = RelationshipsLogger()
+        logger.add_orphan(Encoding('abc123'))
+        logger.write()
         assert caplog.messages == ['Relationship to encoding could not be matched: abc123 (appears as orphan)']
 
 
 class TestParallelsEdges:
     def test_creates_edges(self, with_uids):
         entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
-        assert [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())] == [
+        assert [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())] == [
             {
                 '_from': 'abc123',
                 '_to': 'xyz321',
@@ -343,7 +364,7 @@ class TestParallelsEdges:
 
     def test_adds_remarks(self, with_remarks, with_uids):
         entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
-        assert [edge.as_dict()['remark'] for edge in ParallelsEdges(entry, Unmatched())] == ['Remarkable', 'Remarkable']
+        assert [edge.as_dict()['remark'] for edge in ParallelsEdges(entry, RelationshipsLogger())] == ['Remarkable', 'Remarkable']
 
     @pytest.mark.parametrize('encodings,numbers', [
         (['abc123', 'xyz321'], [123, 321]),
@@ -352,7 +373,7 @@ class TestParallelsEdges:
     def test_adds_numbers(self, encodings, numbers):
         Encoding.load_uids({'abc123', 'xyz321', 'abc'})
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = ParallelsEdges(entry, Unmatched())
+        edges = ParallelsEdges(entry, RelationshipsLogger())
         assert [edge.as_dict()['number'] for edge in edges] == numbers
 
     @pytest.mark.parametrize('encodings,_to', [
@@ -361,12 +382,12 @@ class TestParallelsEdges:
     ])
     def test_adds_orphan(self, with_uids, encodings, _to):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = ParallelsEdges(entry, Unmatched())
+        edges = ParallelsEdges(entry, RelationshipsLogger())
         assert [edge.as_dict()['_to'] for edge in edges] == _to
 
     def test_no_resembling_encodings(self, with_uids):
         entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         resembling = [(edge['_to'], edge['_from'], edge['resembling']) for edge in edges]
         assert resembling == [('xyz321', 'abc123', False), ('abc123', 'xyz321', False)]
 
@@ -376,7 +397,7 @@ class TestParallelsEdges:
     ])
     def test_with_resembling_encodings(self, with_uids, encodings, to_from_resembling):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert [(edge['_to'], edge['_from'], edge['resembling']) for edge in edges] == to_from_resembling
 
     @pytest.mark.parametrize('encodings,from_uids', [
@@ -387,7 +408,7 @@ class TestParallelsEdges:
     ])
     def test_encoding_combinations_give_from_uids(self, with_uids, encodings, from_uids):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert sorted([edge['_from'] for edge in edges]) == sorted(from_uids)
 
     @pytest.mark.parametrize('encodings,to_uids', [
@@ -398,7 +419,7 @@ class TestParallelsEdges:
     ])
     def test_encoding_combinations_give_to_uids(self, with_uids, encodings, to_uids):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert sorted([edge['_to'] for edge in edges]) == sorted(to_uids)
 
     @pytest.mark.parametrize('encodings,to_encoding,from_encoding', [
@@ -407,13 +428,13 @@ class TestParallelsEdges:
     ])
     def test_sectional_uids(self, with_uids, encodings, to_encoding, from_encoding):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         to_from = [(edge['to'], edge['from']) for edge in edges]
         assert to_from == [(to_encoding, from_encoding), (from_encoding, to_encoding)]
 
     def test_external_uid(self, with_uids):
         entry = Entry(EntryType.PARALLELS, ['abc123', 'has space'])
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert [(edge['to'], edge['from']) for edge in edges] == [('has space', 'abc123')]
 
     @pytest.mark.parametrize('encodings,from_uids', [
@@ -423,7 +444,7 @@ class TestParallelsEdges:
     ])
     def test_expands_uid_range_in_from_uids(self, with_uids, encodings, from_uids):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert [edge['_from'] for edge in edges] == from_uids
 
     @pytest.mark.parametrize('encodings,to_uids', [
@@ -433,7 +454,7 @@ class TestParallelsEdges:
     ])
     def test_expands_uid_range_in_to_uids(self, with_uids, encodings, to_uids):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert [edge['_to'] for edge in edges] == to_uids
 
     @pytest.mark.parametrize('encodings,from_encodings', [
@@ -443,7 +464,7 @@ class TestParallelsEdges:
     ])
     def test_sets_from_encoding(self, with_uids, encodings, from_encodings):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert [edge['from'] for edge in edges] == from_encodings
 
     @pytest.mark.parametrize('encodings,to_encodings', [
@@ -453,28 +474,34 @@ class TestParallelsEdges:
     ])
     def test_sets_to_encoding(self, with_uids, encodings, to_encodings):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert [edge['to'] for edge in edges] == to_encodings
 
     @pytest.mark.parametrize('encodings', [
         (['abc123', 'no_such_uid']),
         (['no_such_uid', 'abc123']),
     ])
-    def test_stores_dropped_encodings(self, with_uids, encodings):
+    def test_logs_dropped_encodings(self, with_uids, encodings, caplog):
         entry = Entry(EntryType.PARALLELS, encodings)
-        unmatched = Unmatched()
-        _ = list(ParallelsEdges(entry, unmatched))
-        assert unmatched.dropped == {Encoding('no_such_uid')}
+        logger = RelationshipsLogger()
+        _ = list(ParallelsEdges(entry, logger))
+        logger.write()
+        assert caplog.messages == ['Relationship encoding has no matching uids: no_such_uid (dropped)']
 
     @pytest.mark.parametrize('encodings', [
         (['abc123', 'no_such_uid']),
         (['no_such_uid', 'abc123']),
     ])
-    def test_stores_orphan_encodings(self, with_uids, encodings):
+    def test_logs_orphan_encodings(self, with_uids, encodings, caplog):
+        caplog.set_level(logging.INFO)
         entry = Entry(EntryType.PARALLELS, encodings)
-        unmatched = Unmatched()
-        _ = list(ParallelsEdges(entry, unmatched))
-        assert unmatched.orphans == {Encoding('no_such_uid')}
+        logger = RelationshipsLogger()
+        _ = list(ParallelsEdges(entry, logger))
+        logger.write()
+        assert caplog.messages == [
+            'Relationship encoding has no matching uids: no_such_uid (dropped)',
+            'Relationship to encoding could not be matched: no_such_uid (appears as orphan)'
+        ]
 
     @pytest.mark.parametrize('encodings,from_to', [
         (
@@ -492,7 +519,7 @@ class TestParallelsEdges:
     ])
     def test_full_to_full_encodings(self, with_uids, encodings, from_to):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
 
     @pytest.mark.parametrize('encodings,from_to', [
@@ -508,7 +535,7 @@ class TestParallelsEdges:
     ])
     def test_full_to_resembling_encodings(self, with_uids, encodings, from_to):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
 
     @pytest.mark.parametrize('encodings, from_to', [
@@ -517,7 +544,7 @@ class TestParallelsEdges:
     ])
     def test_drops_unmatched_from_encodings(self, with_uids, encodings, from_to):
         entry = Entry(EntryType.PARALLELS, encodings)
-        edges = [edge.as_dict() for edge in ParallelsEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in ParallelsEdges(entry, RelationshipsLogger())]
         assert sorted([(edge['from'], edge['to']) for edge in edges]) == sorted(from_to)
 
 
@@ -528,7 +555,7 @@ class TestOtherEdges:
     ])
     def test_creates_edges_for_mentions(self, with_uids, entry_type, edge_type):
         entry = Entry(entry_type, ['abc123', 'xyz321'])
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge for edge in edges] == [
             {
                 '_from': 'abc123',
@@ -554,7 +581,7 @@ class TestOtherEdges:
     @pytest.mark.parametrize('entry_type', [EntryType.MENTIONS, EntryType.RETELLS])
     def test_adds_remarks(self, with_remarks, with_uids, entry_type):
         entry = Entry(entry_type, ['abc123', 'xyz321'])
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['remark'] for edge in edges] == ['Remarkable', 'Remarkable']
 
     @pytest.mark.parametrize('entry_type,encodings,numbers', [
@@ -566,7 +593,7 @@ class TestOtherEdges:
     def test_adds_numbers(self, with_uids, entry_type, encodings, numbers):
         Encoding.load_uids({'abc123', 'xyz321', 'abc'})
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['number'] for edge in edges] == numbers
 
     @pytest.mark.parametrize('entry_type,encodings', [
@@ -577,7 +604,7 @@ class TestOtherEdges:
     ])
     def test_does_not_add_orphans(self, with_uids, entry_type, encodings):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['_to'] for edge in edges] == []
 
     @pytest.mark.parametrize('entry_type,encodings,to_from_resembling', [
@@ -588,7 +615,7 @@ class TestOtherEdges:
     ])
     def test_adds_resembling(self, with_uids, entry_type, encodings, to_from_resembling):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [(edge['_to'], edge['_from'], edge['resembling']) for edge in edges] == to_from_resembling
 
     @pytest.mark.parametrize('entry_type,encodings,from_uids', [
@@ -603,7 +630,7 @@ class TestOtherEdges:
     ])
     def test_encoding_combinations_gives_from_uids(self, with_uids, entry_type, encodings, from_uids):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['_from'] for edge in edges] == from_uids
 
     @pytest.mark.parametrize('entry_type,encodings,to_encoding,from_encoding', [
@@ -614,7 +641,7 @@ class TestOtherEdges:
     ])
     def test_sectional_uids(self, with_uids, entry_type, encodings, to_encoding, from_encoding):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         to_from = [(edge['to'], edge['from']) for edge in edges]
         assert to_from == [(to_encoding, from_encoding), (from_encoding, to_encoding)]
 
@@ -626,7 +653,7 @@ class TestOtherEdges:
         ]
     )
     def test_external_uid(self, with_uids, entry, to_from):
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [(edge['to'], edge['from']) for edge in edges] == to_from
 
     @pytest.mark.parametrize('entry_type,encodings,from_uids', [
@@ -639,7 +666,7 @@ class TestOtherEdges:
     ])
     def test_expands_uid_range_in_from_uids(self, with_uids, entry_type, encodings, from_uids):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['_from'] for edge in edges] == from_uids
 
     @pytest.mark.parametrize('entry_type,encodings,to_uids', [
@@ -652,7 +679,7 @@ class TestOtherEdges:
     ])
     def test_expands_uid_range_in_to_uids(self, with_uids, entry_type, encodings, to_uids):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['_to'] for edge in edges] == to_uids
 
     @pytest.mark.parametrize('entry_type,encodings,from_encodings', [
@@ -662,7 +689,7 @@ class TestOtherEdges:
     ])
     def test_sets_from_encoding(self, with_uids, entry_type, encodings, from_encodings):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['from'] for edge in edges] == from_encodings
 
     @pytest.mark.parametrize('entry_type,encodings,to_encodings', [
@@ -672,17 +699,18 @@ class TestOtherEdges:
     ])
     def test_sets_to_encoding(self, with_uids, entry_type, encodings, to_encodings):
         entry = Entry(entry_type, encodings)
-        edges = [edge.as_dict() for edge in OtherEdges(entry, Unmatched())]
+        edges = [edge.as_dict() for edge in OtherEdges(entry, RelationshipsLogger())]
         assert [edge['to'] for edge in edges] == to_encodings
 
     @pytest.mark.parametrize('entry', [
         (Entry(EntryType.RETELLS, ['abc123', 'no_such_uid'])),
         (Entry(EntryType.MENTIONS, ['abc123', 'no_such_uid'])),
     ])
-    def test_stores_dropped_encodings(self, with_uids, entry):
-        unmatched = Unmatched()
-        _ = list(OtherEdges(entry, unmatched))
-        assert unmatched.dropped == {Encoding('no_such_uid')}
+    def test_stores_dropped_encodings(self, with_uids, entry, caplog):
+        logger = RelationshipsLogger()
+        _ = list(OtherEdges(entry, logger))
+        logger.write()
+        assert caplog.messages == ['Relationship encoding has no matching uids: no_such_uid (dropped)']
 
 
 class TestLoadRelationships:
@@ -816,15 +844,24 @@ class TestLoadRelationships:
         assert from_to == [('pqr777', 'stu888'), ('stu888', 'pqr777')]
 
 
+class TestParseEntries:
+    def test_logs_duplicates(self, caplog):
+        duplicate_entry = RawEntry("mentions", ['abc123', 'abc123'])
+        logger = RelationshipsLogger()
+        _ = list(entries_from_raw([duplicate_entry], logger))
+        logger.write()
+        assert caplog.messages == ["Entry contains duplicated encoding 'abc123'"]
+
+
 class TestEntriesToEdges:
     def test_one_entry(self):
         entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
-        edges = [edge.as_dict() for edge in entries_to_edges([entry], Unmatched())]
+        edges = [edge.as_dict() for edge in entries_to_edges([entry], RelationshipsLogger())]
         from_to = [(edge['from'], edge['to']) for edge in edges]
         assert from_to == [('abc123', 'xyz321'), ('xyz321', 'abc123')]
 
     def test_yields_right_number_of_edges(self):
         two_edge_entry = Entry(EntryType.PARALLELS, ['abc123', 'xyz321'])
         entries = repeat(two_edge_entry, 5)
-        edges = list(entries_to_edges(entries, Unmatched()))
+        edges = list(entries_to_edges(entries, RelationshipsLogger()))
         assert len(edges) == 10
