@@ -3,9 +3,10 @@ from migrations.base import Migration
 
 
 class RemoveImageCollectionMigration(Migration):
-    migration_id = 'remove_image_collection_057'
+    migration_id = 'remove_image_collection_059'
     tasks = ['remove_collection']
 
     def remove_collection(self):
         db = get_db()
-        db.delete_collection('images')
+        if db.has_collection('images'):
+            db.delete_collection('images')
