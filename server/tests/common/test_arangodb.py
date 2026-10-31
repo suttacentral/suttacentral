@@ -1,8 +1,7 @@
 from typing import Generator
 
 import pytest
-from arango import ArangoClient, DocumentInsertError
-from arango.collection import StandardCollection
+from arango import ArangoClient
 from arango.database import Database, StandardDatabase
 
 from common import arangodb
