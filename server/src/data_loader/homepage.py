@@ -10,7 +10,8 @@ def load_epigraphs(db, additional_info_dir: Path):
     epigraphs_collection = db['epigraphs']
 
     with epigraphs.open() as f:
-        epigraphs_collection.import_bulk_logged(json.load(f))
+        # TODO: Check if overwrite should be used
+        epigraphs_collection.import_bulk(json.load(f))
 
 
 def load_why_we_read(db, additional_info_dir: Path):
@@ -22,4 +23,5 @@ def load_why_we_read(db, additional_info_dir: Path):
     why_we_read_collection = db['why_we_read']
 
     with why_we_read.open() as f:
-        why_we_read_collection.import_bulk_logged(json.load(f))
+        # TODO: Check if overwrite should be used
+        why_we_read_collection.import_bulk(json.load(f))
