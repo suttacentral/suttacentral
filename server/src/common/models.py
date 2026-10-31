@@ -59,7 +59,8 @@ class ModelList(list):
         db = get_db()
         collection = db.collection(collection)
 
-        return collection.import_bulk_logged([m.document for m in self])
+        # TODO: Check if overwrite should be used
+        return collection.import_bulk([m.document for m in self])
 
 
 class Language(Model):
