@@ -55,21 +55,3 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
     sys_db.create_database(db_name)
     yield client.db(db_name, username='root', password='test')
     sys_db.delete_database(db_name)
-
-
-@pytest.fixture
-def collection(database) -> StandardCollection:
-    return database.create_collection('roses')
-
-
-@pytest.fixture
-def one_document() -> dict:
-    return {'_key': 'bright-spirit', 'name': 'Bright Spirit', 'colour': 'salmon and gold'}
-
-
-@pytest.fixture
-def two_documents() -> list[dict]:
-    return [
-        {'_key': 'mr-lincoln', 'name': 'Mr Lincoln', 'colour': 'red'},
-        {'_key': 'charles-darwin', 'name': 'Charles Darwin', 'colour': 'yellow'},
-    ]
