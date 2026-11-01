@@ -3,7 +3,7 @@ from migrations.base import Migration
 
 
 class RemoveUnicodePointsMigration(Migration):
-    migration_id = 'remove_unicode_points_059'
+    migration_id = 'remove_unicode_points_060'
     tasks = ['remove_collections']
 
     def remove_collections(self):
