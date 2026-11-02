@@ -1,11 +1,9 @@
+import 'viewerjs/dist/viewer.min.css';
+
 import { LitElement, html, css } from 'lit';
 import Viewer from 'viewerjs';
 
 import { API_ROOT, IMAGES_ROOT } from '../../constants';
-
-const style = document.createElement('template');
-style.innerHTML = '<link href="/node_modules/viewerjs/dist/viewer.min.css" rel="stylesheet">';
-document.head.appendChild(style.content);
 
 export class SCTextImage extends LitElement {
   static properties = {
