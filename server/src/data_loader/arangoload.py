@@ -48,6 +48,7 @@ from . import (
 from .change_tracker import ChangeTracker
 from .generate_sitemap import generate_sitemap
 from .observability import StagePrinter
+from .relationships import load_relationships
 from .util import json_load
 import re
 
@@ -69,7 +70,6 @@ def collect_data(repo_dir: Path, repo_addr: str):
         subprocess.run(['git', 'pull'], cwd=repo_dir)
 
 
-
 def load_child_range(db: Database, structure_dir: Path) -> None:
     """
     Load child range data from structure_dir/child_range.json file
@@ -88,167 +88,12 @@ def load_child_range(db: Database, structure_dir: Path) -> None:
     db['child_range'].import_bulk(data, overwrite=True)
 
 
-def get_uid_matcher(db):
-    all_uids = set(
-        db.aql.execute(
-            '''
-            FOR doc IN super_nav_details
-                RETURN doc.uid
-            '''
-        )
-    )
-
-    return UidMatcher(all_uids)
-
-
-def generate_relationship_edges(
-        change_tracker, relationship_dir, additional_info_dir, db
-):
-    relationship_files = [relationship_dir / Path('parallels.json')]
-
-    # It's hard to say if this check ever worked or whether this conditional
-    # was always false. Now that I've removed the function hash check in
-    # ChangeTracker this might exit here when it did not before.
-    if not change_tracker.is_any_file_new_or_changed(relationship_files):
-        return
-
-    print('Generating Parallels')
-    relationship_data = []
-    for relationship_file in relationship_files:
-        relationship_data.extend(json_load(relationship_file))
-
-    uid_matcher = get_uid_matcher(db)
-
-    remarks_data = json_load(additional_info_dir / 'notes.json')
-
-    remarks = defaultdict(dict)
-
-    for remark in remarks_data:
-        uids = remark['relations']
-        remark_text = remark['remark']
-        remarks[frozenset(uids)] = remark_text
-
-    ll_edges = []
-    for entry in tqdm(relationship_data):
-        entry.pop('remarks', None)
-        for r_type, uids in entry.items():
-            if r_type == 'retells':
-                r_type = 'retelling'
-            elif r_type == 'mentions':
-                r_type = 'mention'
-            elif r_type == 'parallels':
-                r_type = 'full'
-
-            if r_type == 'full':
-                full = [uid for uid in uids if not uid.startswith('~')]
-                partial = [uid for uid in uids if uid.startswith('~')]
-                for from_uid in full:
-                    m = regex.search('[0-9]+$', from_uid)
-                    if m:
-                        from_nr = int(m[0])
-                    else:
-                        from_nr = 0
-                    true_from_uids = uid_matcher.get_matching_uids(from_uid)
-                    if not true_from_uids and ' ' not in from_uid:
-                        logging.error(
-                            f'Relationship from uid could not be matched: {from_uid} (dropped)'
-                        )
-                        continue
-
-                    for to_uids, is_resembling in ((full, False), (partial, True)):
-                        for to_uid in to_uids:
-                            if to_uid == from_uid:
-                                continue
-                            true_to_uids = uid_matcher.get_matching_uids(to_uid)
-                            if not true_to_uids:
-                                logging.info(
-                                    f'Relationship to uid could not be matched: {to_uid} (appears as orphan)'
-                                )
-                                true_to_uids = ['orphan']
-
-                            for true_from_uid in true_from_uids:
-                                for true_to_uid in true_to_uids:
-                                    remark = remarks.get(
-                                        frozenset([true_from_uid, true_to_uid]), None
-                                    )
-                                    ll_edges.append(
-                                        {
-                                            '_from': true_from_uid,
-                                            '_to': true_to_uid,
-                                            'from': from_uid,
-                                            'number': from_nr,
-                                            'to': to_uid.lstrip('~').split('-')[0],
-                                            'type': r_type,
-                                            'resembling': is_resembling,
-                                            'remark': remark,
-                                        }
-                                    )
-            else:
-                first_uid = uids[0]
-                m = regex.search('[0-9]+$', first_uid)
-                if m:
-                    from_nr = int(m[0])
-                else:
-                    from_nr = 0
-                true_first_uids = uid_matcher.get_matching_uids(first_uid)
-                for true_first_uid, to_uid in product(true_first_uids, uids[1:]):
-                    true_from_uids = uid_matcher.get_matching_uids(to_uid)
-                    if not true_from_uids and ' ' not in from_uid:
-                        logging.error(
-                            f'Relationship from uid could not be matched: {from_uid} (dropped)'
-                        )
-                        continue
-                    for true_from_uid in true_from_uids:
-                        remark = remarks.get(
-                            frozenset([true_from_uid, true_first_uid]), None
-                        )
-                        ll_edges.append(
-                            {
-                                '_from': true_first_uid,
-                                '_to': true_from_uid,
-                                'from': first_uid.lstrip('~'),
-                                'to': to_uid,
-                                'number': from_nr,
-                                'type': r_type,
-                                'resembling': any(
-                                    x.startswith('~') for x in [first_uid, from_uid]
-                                ),
-                                'remark': remark,
-                            }
-                        )
-                        m = regex.search('[0-9]+$', to_uid)
-                        if m:
-                            to_nr = int(m[0])
-                        else:
-                            to_nr = 0
-                        ll_edges.append(
-                            {
-                                '_from': true_from_uid,
-                                '_to': true_first_uid,
-                                'from': to_uid,
-                                'to': first_uid.lstrip('~'),
-                                'number': to_nr,
-                                'type': r_type,
-                                'resembling': any(
-                                    x.startswith('~') for x in [first_uid, from_uid]
-                                ),
-                                'remark': remark,
-                            }
-                        )
-
-    # Because there are many edges (nearly 400k at last count) chunk the import
-    db['relationship'].truncate()
-    for chunk in chunks(ll_edges, 10000):
-        # TODO: Check if overwrite should be used
-        db['relationship'].import_bulk(chunk, from_prefix='super_nav_details', to_prefix='super_nav_details')
-
-
 def load_author_edition(change_tracker, additional_info_dir, db):
     author_file = additional_info_dir / 'author_edition.json'
     if change_tracker.is_file_new_or_changed(author_file):
         with author_file.open('r', encoding='utf-8') as authorf:
             authors = json.load(authorf)
-        db['author_edition'].import_bulk(authors, overwrite=True)
+        db['author_edition'].import_bulk_logged(authors, wipe=True)
 
 
 def load_available_voices(change_tracker, additional_info_dir, db):
@@ -256,7 +101,7 @@ def load_available_voices(change_tracker, additional_info_dir, db):
     voices_info = json_load(voices_file)
     docs = [{'uid': key, 'voices': value} for key, value in voices_info.items()]
     db['available_voices'].truncate()
-    db.collection('available_voices').import_bulk(docs, overwrite=True)
+    db.collection('available_voices').import_bulk_logged(docs, wipe=True)
 
 
 def load_map_data(additional_info_dir, db):
@@ -266,7 +111,7 @@ def load_map_data(additional_info_dir, db):
         {'type': map_data['type'], 'features': map_data['features']}
     ]
     db['map_data'].truncate()
-    db.collection('map_data').import_bulk(map_doc, overwrite=True)
+    db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
 
 
 def load_json_file(db, change_tracker, json_file):
@@ -280,7 +125,7 @@ def load_json_file(db, change_tracker, json_file):
         for d in data:
             d['_key'] = d['uid']
         db[collection_name].truncate()
-        db[collection_name].import_bulk(data)
+        db[collection_name].import_bulk_logged(data)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -295,7 +140,7 @@ def process_difficulty(db, additional_info_dir):
         for uid, lvl in tqdm(x.items())
     ]
 
-    db.collection('difficulties').import_bulk(docs, overwrite=True)
+    db.collection('difficulties').import_bulk_logged(docs, wipe=True)
 
 
 def process_alias(db, additional_info_dir):
@@ -303,7 +148,7 @@ def process_alias(db, additional_info_dir):
     alias_file = additional_info_dir / 'alias.json'
     alias_info = json_load(alias_file)
     db['alias'].truncate()
-    db.collection('alias').import_bulk(alias_info, overwrite=True)
+    db.collection('alias').import_bulk_logged(alias_info, wipe=True)
 
 
 def process_illustrations(db, additional_info_dir):
@@ -311,7 +156,7 @@ def process_illustrations(db, additional_info_dir):
     illustrations_file = additional_info_dir / 'illustrations.json'
     illustrations_info = json_load(illustrations_file)
     db['illustrations'].truncate()
-    db.collection('illustrations').import_bulk(illustrations_info, overwrite=True)
+    db.collection('illustrations').import_bulk_logged(illustrations_info, wipe=True)
 
 
 def process_prioritize(db, additional_info_dir):
@@ -319,7 +164,7 @@ def process_prioritize(db, additional_info_dir):
     prioritize_file = additional_info_dir / 'prioritize.json'
     prioritize_info = json_load(prioritize_file)
     db['prioritize'].truncate()
-    db.collection('prioritize').import_bulk(prioritize_info, overwrite=True)
+    db.collection('prioritize').import_bulk_logged(prioritize_info, wipe=True)
 
 
 def process_creator_bio(db, additional_info_dir):
@@ -327,7 +172,7 @@ def process_creator_bio(db, additional_info_dir):
     creator_bio_file = additional_info_dir / 'creator_bio.json'
     creator_bio_info = json_load(creator_bio_file)
     db['creator_bio'].truncate()
-    db.collection('creator_bio').import_bulk(creator_bio_info, overwrite=True)
+    db.collection('creator_bio').import_bulk_logged(creator_bio_info, wipe=True)
 
 
 def make_yellow_brick_road(db: Database):
@@ -347,10 +192,12 @@ def load_pali_reference_edition_file(db: Database, pali_reference_edition_file: 
     db['pali_reference_edition'].truncate()
     db.collection('pali_reference_edition').import_bulk(pali_reference_content)
 
+
 def load_lzh_reference_edition_file(db: Database, lzh_reference_edition_file: Path):
     lzh_reference_content = json_load(lzh_reference_edition_file)
     db['lzh_reference_edition'].truncate()
     db.collection('lzh_reference_edition').import_bulk(lzh_reference_content)
+
 
 def load_root_edition_file(db: Database, root_edition_file: Path):
     root_edition_content = json_load(root_edition_file)
@@ -730,6 +577,9 @@ def run(no_pull: bool = False) -> StagePrinter:
     printer.print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)
 
+    # print_stage("Loading images")
+    # images_files.load_images_links(db)
+
     printer.print_stage("Loading ChangeTracker")
     change_tracker = ChangeTracker(data_dir, db)
 
@@ -809,7 +659,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     sc_bilara_data.load_bilara_author_edition(db, sc_bilara_data_dir)
 
     printer.print_stage("Generating and loading relationships")
-    generate_relationship_edges(
+    load_relationships(
         change_tracker, relationship_dir, additional_info_dir, db
     )
 
@@ -888,6 +738,7 @@ def run(no_pull: bool = False) -> StagePrinter:
     printer.print_stage('All done')
 
     return printer
+
 
 def hyphenate_pali_and_san():
     db = arangodb.get_db()
