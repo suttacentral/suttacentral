@@ -2,7 +2,7 @@ from typing import Generator
 
 import pytest
 from arango import ArangoClient
-from arango.database import Database, StandardDatabase
+from arango.database import StandardDatabase
 
 from common import arangodb
 from common.utils import app_context
