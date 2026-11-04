@@ -1,12 +1,14 @@
-from typing import Generator
+from typing import Generator, Tuple
 
 import pytest
 from arango import ArangoClient
 from arango.database import StandardDatabase
+from flask import Flask
+from flask_restful import Api
 
 from common.arangodb import ArangoDB, get_client, get_db
 from common.utils import app_context
-from sc_flask.app import app
+from sc_flask.app import app_factory
 
 
 @app_context
@@ -44,6 +46,7 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
 
 class TestArangoDB:
     def test_connect(self):
-        with app.app_context() as connect_app:
+        api_app: Tuple[Api, Flask] = app_factory()
+        with api_app[1].app_context() as connect_app:
             db = ArangoDB(app=connect_app)
             db.connect()
