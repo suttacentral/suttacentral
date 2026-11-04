@@ -4,26 +4,27 @@ import pytest
 from arango import ArangoClient
 from arango.database import StandardDatabase
 
-from common import arangodb
+from common.arangodb import ArangoDB, get_client, get_db
 from common.utils import app_context
+from sc_flask.app import app
 
 
 @app_context
 def test_get_client():
-    client = arangodb.get_client()
+    client = get_client()
     assert isinstance(client, ArangoClient)
 
 
 @app_context
 def test_get_db(app):
-    db = arangodb.get_db()
+    db = get_db()
     assert db.name == app.config.get('ARANGO_DB')
 
 
 @pytest.fixture
 @app_context
 def client() -> ArangoClient:
-    return arangodb.get_client()
+    return get_client()
 
 
 @pytest.fixture
@@ -42,6 +43,7 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
 
 
 class TestArangoDB:
-    @pytest.fixture
-    def arango(self, app):
-        return arangodb.ArangoDB(app=app)
+    def test_connect(self):
+        with app.app_context() as connect_app:
+            db = ArangoDB(app=connect_app)
+            db.connect()
