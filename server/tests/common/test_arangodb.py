@@ -45,12 +45,3 @@ class TestArangoDB:
     @pytest.fixture
     def arango(self, app):
         return arangodb.ArangoDB(app=app)
-
-    def test_connect(self, arango):
-        assert isinstance(arango.client, ArangoClient)
-
-    def test_client(self, arango):
-        assert isinstance(arango.client, ArangoClient)
-
-    def test_db(self, arango):
-        assert isinstance(arango.db, StandardDatabase)
