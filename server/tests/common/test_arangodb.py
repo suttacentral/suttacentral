@@ -39,8 +39,13 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
 class TestArangoDB:
     def test_connect(self, flask_app):
         with flask_app.app_context() as app:
-            db = ArangoDB(app=app)
-            db.connect()
+            arangodb = ArangoDB(app=app)
+            arangodb.connect()
+
+    def test_hosts(self, flask_app):
+        with flask_app.app_context() as app:
+            arangodb = ArangoDB(app=app)
+            assert arangodb.client.hosts == ['http://localhost:8529']
 
 
 class TestGetDb:
@@ -51,7 +56,7 @@ class TestGetDb:
 
 
 class TestGetClient:
-    def test_get_client(self, flask_app):
+    def test_hosts(self, flask_app):
         with flask_app.app_context():
             client = get_client()
-            assert isinstance(client, ArangoClient)
+            assert client.hosts == ['http://localhost:8529']
