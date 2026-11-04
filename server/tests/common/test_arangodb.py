@@ -43,13 +43,15 @@ class TestArangoDB:
             db.connect()
 
 
-def test_get_db(flask_app):
-    with flask_app.app_context():
-        db = get_db()
-        assert db.name == flask_app.config.get('ARANGO_DB')
+class TestGetDb:
+    def test_get_db(self, flask_app):
+        with flask_app.app_context():
+            db = get_db()
+            assert db.name == flask_app.config.get('ARANGO_DB')
 
 
-def test_get_client(flask_app):
-    with flask_app.app_context():
-        client = get_client()
-        assert isinstance(client, ArangoClient)
+class TestGetClient:
+    def test_get_client(self, flask_app):
+        with flask_app.app_context():
+            client = get_client()
+            assert isinstance(client, ArangoClient)
