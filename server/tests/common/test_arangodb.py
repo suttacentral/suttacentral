@@ -20,21 +20,6 @@ def test_get_db(app):
     assert db.name == app.config.get('ARANGO_DB')
 
 
-class TestArangoDB:
-    @pytest.fixture
-    def arango(self, app):
-        return arangodb.ArangoDB(app=app)
-
-    def test_connect(self, arango):
-        assert isinstance(arango.client, ArangoClient)
-
-    def test_client(self, arango):
-        assert isinstance(arango.client, ArangoClient)
-
-    def test_db(self, arango):
-        assert isinstance(arango.db, Database)
-
-
 @pytest.fixture
 @app_context
 def client() -> ArangoClient:
@@ -54,3 +39,18 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
     sys_db.create_database(db_name)
     yield client.db(db_name, username='root', password='test')
     sys_db.delete_database(db_name)
+
+
+class TestArangoDB:
+    @pytest.fixture
+    def arango(self, app):
+        return arangodb.ArangoDB(app=app)
+
+    def test_connect(self, arango):
+        assert isinstance(arango.client, ArangoClient)
+
+    def test_client(self, arango):
+        assert isinstance(arango.client, ArangoClient)
+
+    def test_db(self, arango):
+        assert isinstance(arango.db, Database)
