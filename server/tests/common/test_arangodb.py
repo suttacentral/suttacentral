@@ -17,10 +17,10 @@ def flask_app() -> Flask:
     return api_app[1]
 
 
-@app_context
-def test_get_client():
-    client = get_client()
-    assert isinstance(client, ArangoClient)
+def test_get_client(flask_app):
+    with flask_app.app_context():
+        client = get_client()
+        assert isinstance(client, ArangoClient)
 
 
 @app_context
