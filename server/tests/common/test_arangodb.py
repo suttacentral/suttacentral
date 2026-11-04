@@ -7,7 +7,6 @@ from flask import Flask
 from flask_restful import Api
 
 from common.arangodb import ArangoDB, get_client, get_db
-import common.utils
 from sc_flask.app import app_factory
 
 
@@ -23,14 +22,13 @@ def test_get_client(flask_app):
         assert isinstance(client, ArangoClient)
 
 
-@common.utils.app_context
-def test_get_db(app):
-    db = get_db()
-    assert db.name == app.config.get('ARANGO_DB')
+def test_get_db(flask_app):
+    with flask_app.app_context():
+        db = get_db()
+        assert db.name == flask_app.config.get('ARANGO_DB')
 
 
 @pytest.fixture
-@common.utils.app_context
 def client() -> ArangoClient:
     return get_client()
 
