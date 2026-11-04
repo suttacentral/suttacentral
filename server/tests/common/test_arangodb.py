@@ -16,18 +16,6 @@ def flask_app() -> Flask:
     return api_app[1]
 
 
-def test_get_client(flask_app):
-    with flask_app.app_context():
-        client = get_client()
-        assert isinstance(client, ArangoClient)
-
-
-def test_get_db(flask_app):
-    with flask_app.app_context():
-        db = get_db()
-        assert db.name == flask_app.config.get('ARANGO_DB')
-
-
 @pytest.fixture
 def client() -> ArangoClient:
     return get_client()
@@ -53,3 +41,15 @@ class TestArangoDB:
         with flask_app.app_context() as app:
             db = ArangoDB(app=app)
             db.connect()
+
+
+def test_get_db(flask_app):
+    with flask_app.app_context():
+        db = get_db()
+        assert db.name == flask_app.config.get('ARANGO_DB')
+
+
+def test_get_client(flask_app):
+    with flask_app.app_context():
+        client = get_client()
+        assert isinstance(client, ArangoClient)
