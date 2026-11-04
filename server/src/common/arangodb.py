@@ -40,7 +40,6 @@ class ArangoDB:
             else:
                 params['name'] = current_app.config['ARANGO_DB']
             db = g._database = self.client.db(**params)
-            # update_views_hack(db)
         return db
 
     @staticmethod
