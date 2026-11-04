@@ -3,7 +3,7 @@
 from typing import Union
 
 from arango import ArangoClient
-from arango.database import Database
+from arango.database import StandardDatabase
 from flask import current_app, g
 
 
@@ -28,7 +28,7 @@ class ArangoDB:
         return client
 
     @property
-    def db(self) -> Database:
+    def db(self) -> StandardDatabase:
         """
         Puts db object in g object.
         :return: Arango database object.
@@ -46,7 +46,7 @@ class ArangoDB:
         return db
 
     @staticmethod
-    def _get_db_from_g_or_none() -> Union[Database, None]:
+    def _get_db_from_g_or_none() -> Union[StandardDatabase, None]:
         """
         Returns db object if present in g object otherwise returns None
         """
@@ -70,7 +70,7 @@ def get_client() -> ArangoClient:
     return client
 
 
-def get_db() -> Database:
+def get_db() -> StandardDatabase:
     """
     Returns db object for current db session and creates one if not present.
     """
@@ -80,7 +80,7 @@ def get_db() -> Database:
     return db
 
 
-def get_system_db() -> Database:
+def get_system_db() -> StandardDatabase:
     config = current_app.config['ARANGO_CLIENT']
     db = get_client().db(
         **{'username': config['username'], 'password': config['password']}
@@ -88,5 +88,5 @@ def get_system_db() -> Database:
     return db
 
 
-def delete_db(db: Database):
+def delete_db(db: StandardDatabase):
     get_system_db().delete_database(db.name)

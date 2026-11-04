@@ -53,4 +53,4 @@ class TestArangoDB:
         assert isinstance(arango.client, ArangoClient)
 
     def test_db(self, arango):
-        assert isinstance(arango.db, Database)
+        assert isinstance(arango.db, StandardDatabase)
