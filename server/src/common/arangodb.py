@@ -1,5 +1,3 @@
-from typing import Union
-
 from arango import ArangoClient
 from arango.database import StandardDatabase
 from flask import current_app, g
@@ -43,14 +41,14 @@ class ArangoDB:
         return db
 
     @staticmethod
-    def _get_db_from_g_or_none() -> Union[StandardDatabase, None]:
+    def _get_db_from_g_or_none() -> StandardDatabase | None:
         """
         Returns db object if present in g object otherwise returns None
         """
         return getattr(g, '_database', None)
 
     @staticmethod
-    def _get_client_from_g_or_none() -> Union[ArangoClient, None]:
+    def _get_client_from_g_or_none() -> ArangoClient | None:
         """
         Returns db object if present in g object otherwise returns None
         """
