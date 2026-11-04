@@ -11,6 +11,12 @@ from common.utils import app_context
 from sc_flask.app import app_factory
 
 
+@pytest.fixture
+def flask_app() -> Flask:
+    api_app: Tuple[Api, Flask] = app_factory()
+    return api_app[1]
+
+
 @app_context
 def test_get_client():
     client = get_client()
@@ -45,8 +51,7 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
 
 
 class TestArangoDB:
-    def test_connect(self):
-        api_app: Tuple[Api, Flask] = app_factory()
-        with api_app[1].app_context() as connect_app:
-            db = ArangoDB(app=connect_app)
+    def test_connect(self, flask_app):
+        with flask_app.app_context() as app:
+            db = ArangoDB(app=app)
             db.connect()
