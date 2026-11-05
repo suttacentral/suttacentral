@@ -8,19 +8,20 @@ class ArangoDB:
     def db(self) -> StandardDatabase:
         db = get_db_from_g()
         if db is None:
-            db = self.create_db()
+            db = create_db()
             put_db_in_g(db)
         return db
 
-    def create_db(self) -> StandardDatabase:
-        config = current_app.config['ARANGO_CLIENT']
-        params = {'username': config['username'], 'password': config['password']}
-        if isinstance(current_app.config['ARANGO_DB'], dict):
-            params.update(current_app.config['ARANGO_DB'])
-        else:
-            params['name'] = current_app.config['ARANGO_DB']
-        db = arango_client().db(**params)
-        return db
+
+def create_db() -> StandardDatabase:
+    config = current_app.config['ARANGO_CLIENT']
+    params = {'username': config['username'], 'password': config['password']}
+    if isinstance(current_app.config['ARANGO_DB'], dict):
+        params.update(current_app.config['ARANGO_DB'])
+    else:
+        params['name'] = current_app.config['ARANGO_DB']
+    db = arango_client().db(**params)
+    return db
 
 
 def arango_client() -> ArangoClient:
