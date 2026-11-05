@@ -74,7 +74,7 @@ class TestArangoDB:
         with flask_app.app_context():
             assert getattr(g, '_database', None) is None
             db = ArangoDB()
-            _ = db.db
+            _ = db.arango_db
             client_attr = getattr(g, '_database', None)
             assert isinstance(client_attr, StandardDatabase)
 
