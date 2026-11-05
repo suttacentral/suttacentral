@@ -4,7 +4,6 @@ from flask import current_app, g
 
 
 class ArangoDB:
-    @property
     def arango_db(self) -> StandardDatabase:
         db = get_db_from_g()
         if db is None:
@@ -63,7 +62,7 @@ def put_client_in_g(client: ArangoClient) -> None:
 def get_db() -> StandardDatabase:
     db = get_db_from_g()
     if db is None:
-        db = ArangoDB().arango_db
+        db = ArangoDB().arango_db()
     return db
 
 
