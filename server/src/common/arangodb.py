@@ -8,16 +8,11 @@ class ArangoDB:
         self.app = app
 
     def connect(self) -> ArangoClient:
-        """Connect to the ArangoDB"""
         config = current_app.config['ARANGO_CLIENT']
         return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
 
     @property
     def client(self) -> ArangoClient:
-        """
-        Puts client object in g object.
-        :return: ArangoClient object connected to the database.
-        """
         client = get_client_from_g()
         if client is None:
             client = g._database_client = self.connect()
@@ -25,10 +20,6 @@ class ArangoDB:
 
     @property
     def db(self) -> StandardDatabase:
-        """
-        Puts db object in g object.
-        :return: Arango database object.
-        """
         db = get_db_from_g()
         if db is None:
             config = current_app.config['ARANGO_CLIENT']
@@ -50,9 +41,6 @@ def get_client_from_g() -> ArangoClient | None:
 
 
 def get_client() -> ArangoClient:
-    """
-    Returns client object for current db session and creates one if not present.
-    """
     client = get_client_from_g()
     if client is None:
         client = ArangoDB(current_app).client
@@ -60,9 +48,6 @@ def get_client() -> ArangoClient:
 
 
 def get_db() -> StandardDatabase:
-    """
-    Returns db object for current db session and creates one if not present.
-    """
     db = get_db_from_g()
     if db is None:
         db = ArangoDB(current_app).db
