@@ -55,16 +55,6 @@ class TestArangoClient:
             assert isinstance(client_attr, ArangoClient)
 
 
-class TestArangoDB:
-    def test_db_property_adds_db_to_g(self, flask_app):
-        with flask_app.app_context():
-            assert getattr(g, '_database', None) is None
-            db = ArangoDB()
-            _ = db.db
-            client_attr = getattr(g, '_database', None)
-            assert isinstance(client_attr, StandardDatabase)
-
-
 class TestGetClient:
     def test_hosts(self, flask_app):
         with flask_app.app_context():
@@ -77,6 +67,16 @@ class TestGetClient:
             _ = get_client()
             client_attr = getattr(g, '_database_client', None)
             assert isinstance(client_attr, ArangoClient)
+
+
+class TestArangoDB:
+    def test_db_property_adds_db_to_g(self, flask_app):
+        with flask_app.app_context():
+            assert getattr(g, '_database', None) is None
+            db = ArangoDB()
+            _ = db.db
+            client_attr = getattr(g, '_database', None)
+            assert isinstance(client_attr, StandardDatabase)
 
 
 class TestGetDb:
