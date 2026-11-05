@@ -5,14 +5,6 @@ from flask import current_app, g
 
 class ArangoDB:
     @property
-    def client(self) -> ArangoClient:
-        client = get_client_from_g()
-        if client is None:
-            client = connect()
-            put_client_in_g(client)
-        return client
-
-    @property
     def db(self) -> StandardDatabase:
         db = get_db_from_g()
         if db is None:
@@ -27,8 +19,16 @@ class ArangoDB:
             params.update(current_app.config['ARANGO_DB'])
         else:
             params['name'] = current_app.config['ARANGO_DB']
-        db = self.client.db(**params)
+        db = arango_client().db(**params)
         return db
+
+
+def arango_client() -> ArangoClient:
+    client = get_client_from_g()
+    if client is None:
+        client = connect()
+        put_client_in_g(client)
+    return client
 
 
 def connect() -> ArangoClient:
@@ -55,7 +55,7 @@ def put_client_in_g(client: ArangoClient) -> None:
 def get_client() -> ArangoClient:
     client = get_client_from_g()
     if client is None:
-        client = ArangoDB().client
+        client = arango_client()
     return client
 
 
