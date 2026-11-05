@@ -28,8 +28,8 @@ class ArangoDB:
                 params.update(current_app.config['ARANGO_DB'])
             else:
                 params['name'] = current_app.config['ARANGO_DB']
-            db = g._database = self.client.db(**params)
-        return db
+            g._database = self.client.db(**params)
+        return g._database
 
 
 def get_db_from_g() -> StandardDatabase | None:
