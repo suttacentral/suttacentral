@@ -18,7 +18,7 @@ class ArangoDB:
         Puts client object in g object.
         :return: ArangoClient object connected to the database.
         """
-        client = self._get_client_from_g()
+        client = get_client_from_g()
         if client is None:
             client = g._database_client = self.connect()
         return client
@@ -29,7 +29,7 @@ class ArangoDB:
         Puts db object in g object.
         :return: Arango database object.
         """
-        db = self._get_db_from_g()
+        db = get_db_from_g()
         if db is None:
             config = current_app.config['ARANGO_CLIENT']
             params = {'username': config['username'], 'password': config['password']}
@@ -40,26 +40,20 @@ class ArangoDB:
             db = g._database = self.client.db(**params)
         return db
 
-    @staticmethod
-    def _get_db_from_g() -> StandardDatabase | None:
-        """
-        Returns db object if present in g object otherwise returns None
-        """
-        return getattr(g, '_database', None)
 
-    @staticmethod
-    def _get_client_from_g() -> ArangoClient | None:
-        """
-        Returns db object if present in g object otherwise returns None
-        """
-        return getattr(g, '_database_client', None)
+def get_db_from_g() -> StandardDatabase | None:
+    return getattr(g, '_database', None)
+
+
+def get_client_from_g() -> ArangoClient | None:
+    return getattr(g, '_database_client', None)
 
 
 def get_client() -> ArangoClient:
     """
     Returns client object for current db session and creates one if not present.
     """
-    client = ArangoDB._get_client_from_g()
+    client = get_client_from_g()
     if client is None:
         client = ArangoDB(current_app).client
     return client
@@ -69,7 +63,7 @@ def get_db() -> StandardDatabase:
     """
     Returns db object for current db session and creates one if not present.
     """
-    db = ArangoDB._get_db_from_g()
+    db = get_db_from_g()
     if db is None:
         db = ArangoDB(current_app).db
     return db
