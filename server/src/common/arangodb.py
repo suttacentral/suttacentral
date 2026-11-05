@@ -15,7 +15,8 @@ class ArangoDB:
     def client(self) -> ArangoClient:
         client = get_client_from_g()
         if client is None:
-            client = g._database_client = self.connect()
+            client = self.connect()
+            put_client_in_g(client)
         return client
 
     @property
@@ -28,16 +29,25 @@ class ArangoDB:
                 params.update(current_app.config['ARANGO_DB'])
             else:
                 params['name'] = current_app.config['ARANGO_DB']
-            g._database = self.client.db(**params)
-        return g._database
+            db = self.client.db(**params)
+            put_db_in_g(db)
+        return db
 
 
 def get_db_from_g() -> StandardDatabase | None:
     return getattr(g, '_database', None)
 
 
+def put_db_in_g(db: StandardDatabase) -> None:
+    g._database = db
+
+
 def get_client_from_g() -> ArangoClient | None:
     return getattr(g, '_database_client', None)
+
+
+def put_client_in_g(client: ArangoClient) -> None:
+    g._database_client = client
 
 
 def get_client() -> ArangoClient:
