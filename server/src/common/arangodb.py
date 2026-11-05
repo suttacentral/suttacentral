@@ -3,13 +3,12 @@ from arango.database import StandardDatabase
 from flask import current_app, g
 
 
-class ArangoDB:
-    def arango_db(self) -> StandardDatabase:
-        db = get_db_from_g()
-        if db is None:
-            db = create_db()
-            put_db_in_g(db)
-        return db
+def arango_db() -> StandardDatabase:
+    db = get_db_from_g()
+    if db is None:
+        db = create_db()
+        put_db_in_g(db)
+    return db
 
 
 def create_db() -> StandardDatabase:
@@ -62,7 +61,7 @@ def put_client_in_g(client: ArangoClient) -> None:
 def get_db() -> StandardDatabase:
     db = get_db_from_g()
     if db is None:
-        db = ArangoDB().arango_db()
+        db = arango_db()
     return db
 
 
