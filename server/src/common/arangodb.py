@@ -4,9 +4,6 @@ from flask import current_app, g
 
 
 class ArangoDB:
-    def __init__(self, app=None):
-        pass
-
     def connect(self) -> ArangoClient:
         config = current_app.config['ARANGO_CLIENT']
         return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
@@ -57,14 +54,14 @@ def put_client_in_g(client: ArangoClient) -> None:
 def get_client() -> ArangoClient:
     client = get_client_from_g()
     if client is None:
-        client = ArangoDB(current_app).client
+        client = ArangoDB().client
     return client
 
 
 def get_db() -> StandardDatabase:
     db = get_db_from_g()
     if db is None:
-        db = ArangoDB(current_app).db
+        db = ArangoDB().db
     return db
 
 
