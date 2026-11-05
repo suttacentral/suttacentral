@@ -4,15 +4,11 @@ from flask import current_app, g
 
 
 class ArangoDB:
-    def connect(self) -> ArangoClient:
-        config = current_app.config['ARANGO_CLIENT']
-        return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
-
     @property
     def client(self) -> ArangoClient:
         client = get_client_from_g()
         if client is None:
-            client = self.connect()
+            client = connect()
             put_client_in_g(client)
         return client
 
@@ -33,6 +29,11 @@ class ArangoDB:
             params['name'] = current_app.config['ARANGO_DB']
         db = self.client.db(**params)
         return db
+
+
+def connect() -> ArangoClient:
+    config = current_app.config['ARANGO_CLIENT']
+    return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
 
 
 def get_db_from_g() -> StandardDatabase | None:
