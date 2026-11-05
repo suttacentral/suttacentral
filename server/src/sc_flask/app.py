@@ -163,8 +163,6 @@ def register_extensions(app):
 
 
 api, app = app_factory()
-# TODO Check for uses and remove if there are none.
-arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
 
