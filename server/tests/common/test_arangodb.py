@@ -3,7 +3,7 @@ from typing import Generator, Tuple
 import pytest
 from arango import ArangoClient
 from arango.database import StandardDatabase
-from flask import Flask
+from flask import Flask, g
 from flask_restful import Api
 
 from common.arangodb import ArangoDB, get_client, get_db
@@ -47,12 +47,21 @@ class TestArangoDB:
             arangodb = ArangoDB(app=app)
             assert arangodb.client.hosts == ['http://localhost:8529']
 
-
-class TestGetDb:
-    def test_get_db(self, flask_app):
+    def test_client_property_adds_client_to_g(self, flask_app):
         with flask_app.app_context():
-            db = get_db()
-            assert db.name == flask_app.config.get('ARANGO_DB')
+            assert getattr(g, '_database_client', None) is None
+            db = ArangoDB()
+            _ = db.client
+            client_attr = getattr(g, '_database_client', None)
+            assert isinstance(client_attr, ArangoClient)
+
+    def test_db_property_adds_db_to_g(self, flask_app):
+        with flask_app.app_context():
+            assert getattr(g, '_database', None) is None
+            db = ArangoDB()
+            _ = db.db
+            client_attr = getattr(g, '_database', None)
+            assert isinstance(client_attr, StandardDatabase)
 
 
 class TestGetClient:
@@ -60,3 +69,24 @@ class TestGetClient:
         with flask_app.app_context():
             client = get_client()
             assert client.hosts == ['http://localhost:8529']
+
+    def test_adds_client_to_g_when_missing(self, flask_app):
+        with flask_app.app_context():
+            assert getattr(g, '_database_client', None) is None
+            _ = get_client()
+            client_attr = getattr(g, '_database_client', None)
+            assert isinstance(client_attr, ArangoClient)
+
+
+class TestGetDb:
+    def test_get_db(self, flask_app):
+        with flask_app.app_context():
+            db = get_db()
+            assert db.name == 'suttacentral_tests'
+
+    def test_adds_db_to_g_when_missing(self, flask_app):
+        with flask_app.app_context():
+            assert getattr(g, '_database', None) is None
+            _ = get_db()
+            client_attr = getattr(g, '_database', None)
+            assert isinstance(client_attr, StandardDatabase)
