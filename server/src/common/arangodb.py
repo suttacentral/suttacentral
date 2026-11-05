@@ -5,7 +5,7 @@ from flask import current_app, g
 
 class ArangoDB:
     def __init__(self, app=None):
-        self.app = app
+        pass
 
     def connect(self) -> ArangoClient:
         config = current_app.config['ARANGO_CLIENT']
