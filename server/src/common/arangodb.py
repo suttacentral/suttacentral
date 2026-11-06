@@ -10,6 +10,33 @@ def get_db() -> StandardDatabase:
     return db
 
 
+def _arango_db() -> StandardDatabase:
+    db = _get_db_from_g()
+    if db is None:
+        db = _create_db()
+        _put_db_in_g(db)
+    return db
+
+
+def _create_db() -> StandardDatabase:
+    config = current_app.config['ARANGO_CLIENT']
+    params = {'username': config['username'], 'password': config['password']}
+    if isinstance(current_app.config['ARANGO_DB'], dict):
+        params.update(current_app.config['ARANGO_DB'])
+    else:
+        params['name'] = current_app.config['ARANGO_DB']
+    db = _arango_client().db(**params)
+    return db
+
+
+def _get_db_from_g() -> StandardDatabase | None:
+    return getattr(g, '_database', None)
+
+
+def _put_db_in_g(db: StandardDatabase) -> None:
+    g._database = db
+
+
 def get_system_db() -> StandardDatabase:
     config = current_app.config['ARANGO_CLIENT']
     db = get_client().db(
@@ -37,41 +64,14 @@ def _arango_client() -> ArangoClient:
     return client
 
 
+def _connect() -> ArangoClient:
+    config = current_app.config['ARANGO_CLIENT']
+    return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
+
+
 def _put_client_in_g(client: ArangoClient) -> None:
     g._database_client = client
 
 
 def _get_client_from_g() -> ArangoClient | None:
     return getattr(g, '_database_client', None)
-
-
-def _arango_db() -> StandardDatabase:
-    db = _get_db_from_g()
-    if db is None:
-        db = _create_db()
-        _put_db_in_g(db)
-    return db
-
-
-def _create_db() -> StandardDatabase:
-    config = current_app.config['ARANGO_CLIENT']
-    params = {'username': config['username'], 'password': config['password']}
-    if isinstance(current_app.config['ARANGO_DB'], dict):
-        params.update(current_app.config['ARANGO_DB'])
-    else:
-        params['name'] = current_app.config['ARANGO_DB']
-    db = _arango_client().db(**params)
-    return db
-
-
-def _connect() -> ArangoClient:
-    config = current_app.config['ARANGO_CLIENT']
-    return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
-
-
-def _get_db_from_g() -> StandardDatabase | None:
-    return getattr(g, '_database', None)
-
-
-def _put_db_in_g(db: StandardDatabase) -> None:
-    g._database = db
