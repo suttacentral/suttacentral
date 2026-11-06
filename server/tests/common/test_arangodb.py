@@ -6,7 +6,7 @@ from arango.database import StandardDatabase
 from flask import Flask, g
 from flask_restful import Api
 
-from common.arangodb import get_client, get_db, _connect, _arango_client, _arango_db
+from common.arangodb import get_client, get_db, _connect, _arango_client, _arango_db, get_system_db
 from sc_flask.app import app_factory
 
 
@@ -36,12 +36,6 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
     sys_db.delete_database(db_name)
 
 
-class TestConnect:
-    def test_connect(self, flask_app):
-        with flask_app.app_context():
-            _connect()
-
-
 class TestGetClient:
     def test_hosts(self, flask_app):
         with flask_app.app_context():
@@ -68,3 +62,10 @@ class TestGetDb:
             _ = get_db()
             client_attr = getattr(g, '_database', None)
             assert isinstance(client_attr, StandardDatabase)
+
+
+class TestGetSystemDB:
+    def test_gets_system_database(self, flask_app):
+        with flask_app.app_context():
+            db = get_system_db()
+            assert db.name == '_system'
