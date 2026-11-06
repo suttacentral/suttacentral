@@ -13,7 +13,7 @@ def get_db() -> StandardDatabase:
         else:
             params['name'] = current_app.config['ARANGO_DB']
         db = _arango_client().db(**params)
-    g._database = db
+        g._database = db
     return db
 
 
