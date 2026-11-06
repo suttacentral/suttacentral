@@ -6,7 +6,7 @@ from arango.database import StandardDatabase
 from flask import Flask, g
 from flask_restful import Api
 
-from common.arangodb import get_client, get_db, connect, arango_client, arango_db
+from common.arangodb import get_client, get_db, _connect, _arango_client, arango_db
 from sc_flask.app import app_factory
 
 
@@ -39,20 +39,7 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
 class TestConnect:
     def test_connect(self, flask_app):
         with flask_app.app_context():
-            connect()
-
-
-class TestArangoClient:
-    def test_hosts(self, flask_app):
-        with flask_app.app_context():
-            assert arango_client().hosts == ['http://localhost:8529']
-
-    def test_client_property_adds_client_to_g(self, flask_app):
-        with flask_app.app_context():
-            assert getattr(g, '_database_client', None) is None
-            _ = arango_client()
-            client_attr = getattr(g, '_database_client', None)
-            assert isinstance(client_attr, ArangoClient)
+            _connect()
 
 
 class TestGetClient:

@@ -4,7 +4,7 @@ from flask import current_app, g
 
 
 def get_db() -> StandardDatabase:
-    db = get_db_from_g()
+    db = _get_db_from_g()
     if db is None:
         db = arango_db()
     return db
@@ -23,55 +23,56 @@ def delete_db(db: StandardDatabase):
 
 
 def get_client() -> ArangoClient:
-    client = get_client_from_g()
+    client = _get_client_from_g()
     if client is None:
-        client = arango_client()
+        client = _arango_client()
     return client
 
 
 def arango_db() -> StandardDatabase:
-    db = get_db_from_g()
+    db = _get_db_from_g()
     if db is None:
-        db = create_db()
-        put_db_in_g(db)
+        db = _create_db()
+        _put_db_in_g(db)
     return db
 
 
-def create_db() -> StandardDatabase:
+def _create_db() -> StandardDatabase:
     config = current_app.config['ARANGO_CLIENT']
     params = {'username': config['username'], 'password': config['password']}
     if isinstance(current_app.config['ARANGO_DB'], dict):
         params.update(current_app.config['ARANGO_DB'])
     else:
         params['name'] = current_app.config['ARANGO_DB']
-    db = arango_client().db(**params)
+    db = _arango_client().db(**params)
     return db
 
 
-def arango_client() -> ArangoClient:
-    client = get_client_from_g()
+def _arango_client() -> ArangoClient:
+    client = _get_client_from_g()
     if client is None:
-        client = connect()
-        put_client_in_g(client)
+        client = _connect()
+        _put_client_in_g(client)
     return client
 
 
-def connect() -> ArangoClient:
+def _connect() -> ArangoClient:
     config = current_app.config['ARANGO_CLIENT']
     return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
 
 
-def get_db_from_g() -> StandardDatabase | None:
+def _get_db_from_g() -> StandardDatabase | None:
     return getattr(g, '_database', None)
 
 
-def put_db_in_g(db: StandardDatabase) -> None:
+def _put_db_in_g(db: StandardDatabase) -> None:
     g._database = db
 
 
-def get_client_from_g() -> ArangoClient | None:
+def _get_client_from_g() -> ArangoClient | None:
     return getattr(g, '_database_client', None)
 
 
-def put_client_in_g(client: ArangoClient) -> None:
+def _put_client_in_g(client: ArangoClient) -> None:
     g._database_client = client
+
