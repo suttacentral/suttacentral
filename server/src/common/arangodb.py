@@ -29,6 +29,18 @@ def get_client() -> ArangoClient:
     return client
 
 
+def _arango_client() -> ArangoClient:
+    client = _get_client_from_g()
+    if client is None:
+        client = _connect()
+        _put_client_in_g(client)
+    return client
+
+
+def _get_client_from_g() -> ArangoClient | None:
+    return getattr(g, '_database_client', None)
+
+
 def arango_db() -> StandardDatabase:
     db = _get_db_from_g()
     if db is None:
@@ -48,14 +60,6 @@ def _create_db() -> StandardDatabase:
     return db
 
 
-def _arango_client() -> ArangoClient:
-    client = _get_client_from_g()
-    if client is None:
-        client = _connect()
-        _put_client_in_g(client)
-    return client
-
-
 def _connect() -> ArangoClient:
     config = current_app.config['ARANGO_CLIENT']
     return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
@@ -67,10 +71,6 @@ def _get_db_from_g() -> StandardDatabase | None:
 
 def _put_db_in_g(db: StandardDatabase) -> None:
     g._database = db
-
-
-def _get_client_from_g() -> ArangoClient | None:
-    return getattr(g, '_database_client', None)
 
 
 def _put_client_in_g(client: ArangoClient) -> None:
