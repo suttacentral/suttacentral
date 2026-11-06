@@ -64,7 +64,7 @@ class TestGetDb:
             assert isinstance(client_attr, StandardDatabase)
 
 
-class TestGetSystemDB:
+class TestGetSystemDb:
     def test_gets_system_database(self, flask_app):
         with flask_app.app_context():
             db = get_system_db()
