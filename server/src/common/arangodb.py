@@ -37,18 +37,6 @@ def _put_db_in_g(db: StandardDatabase) -> None:
     g._database = db
 
 
-def get_system_db() -> StandardDatabase:
-    config = current_app.config['ARANGO_CLIENT']
-    db = get_client().db(
-        **{'username': config['username'], 'password': config['password']}
-    )
-    return db
-
-
-def delete_db(db: StandardDatabase):
-    get_system_db().delete_database(db.name)
-
-
 def get_client() -> ArangoClient:
     client = _get_client_from_g()
     if client is None:
@@ -75,3 +63,15 @@ def _put_client_in_g(client: ArangoClient) -> None:
 
 def _get_client_from_g() -> ArangoClient | None:
     return getattr(g, '_database_client', None)
+
+
+def get_system_db() -> StandardDatabase:
+    config = current_app.config['ARANGO_CLIENT']
+    db = get_client().db(
+        **{'username': config['username'], 'password': config['password']}
+    )
+    return db
+
+
+def delete_db(db: StandardDatabase):
+    get_system_db().delete_database(db.name)
