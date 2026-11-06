@@ -4,7 +4,7 @@ from flask import current_app, g
 
 
 def get_db() -> StandardDatabase:
-    db = _get_db_from_g()
+    db = getattr(g, '_database', None)
     if db is None:
         config = current_app.config['ARANGO_CLIENT']
         params = {'username': config['username'], 'password': config['password']}
@@ -13,16 +13,8 @@ def get_db() -> StandardDatabase:
         else:
             params['name'] = current_app.config['ARANGO_DB']
         db = _arango_client().db(**params)
-    _put_db_in_g(db)
-    return db
-
-
-def _get_db_from_g() -> StandardDatabase | None:
-    return getattr(g, '_database', None)
-
-
-def _put_db_in_g(db: StandardDatabase) -> None:
     g._database = db
+    return db
 
 
 def get_client() -> ArangoClient:
