@@ -6,7 +6,7 @@ from flask import current_app, g
 def get_db() -> StandardDatabase:
     db = _get_db_from_g()
     if db is None:
-        db = arango_db()
+        db = _arango_db()
     return db
 
 
@@ -37,11 +37,15 @@ def _arango_client() -> ArangoClient:
     return client
 
 
+def _put_client_in_g(client: ArangoClient) -> None:
+    g._database_client = client
+
+
 def _get_client_from_g() -> ArangoClient | None:
     return getattr(g, '_database_client', None)
 
 
-def arango_db() -> StandardDatabase:
+def _arango_db() -> StandardDatabase:
     db = _get_db_from_g()
     if db is None:
         db = _create_db()
@@ -71,8 +75,3 @@ def _get_db_from_g() -> StandardDatabase | None:
 
 def _put_db_in_g(db: StandardDatabase) -> None:
     g._database = db
-
-
-def _put_client_in_g(client: ArangoClient) -> None:
-    g._database_client = client
-

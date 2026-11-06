@@ -6,7 +6,7 @@ from arango.database import StandardDatabase
 from flask import Flask, g
 from flask_restful import Api
 
-from common.arangodb import get_client, get_db, _connect, _arango_client, arango_db
+from common.arangodb import get_client, get_db, _connect, _arango_client, _arango_db
 from sc_flask.app import app_factory
 
 
@@ -60,7 +60,7 @@ class TestArangoDB:
     def test_db_property_adds_db_to_g(self, flask_app):
         with flask_app.app_context():
             assert getattr(g, '_database', None) is None
-            _ = arango_db()
+            _ = _arango_db()
             client_attr = getattr(g, '_database', None)
             assert isinstance(client_attr, StandardDatabase)
 
