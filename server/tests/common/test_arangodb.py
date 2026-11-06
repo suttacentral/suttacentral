@@ -6,7 +6,7 @@ from arango.database import StandardDatabase
 from flask import Flask, g
 from flask_restful import Api
 
-from common.arangodb import get_client, get_db, _connect, _arango_client, _arango_db, get_system_db
+from common.arangodb import get_client, get_db, get_system_db
 from sc_flask.app import app_factory
 
 

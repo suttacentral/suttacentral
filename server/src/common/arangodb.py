@@ -6,15 +6,11 @@ from flask import current_app, g
 def get_db() -> StandardDatabase:
     db = _get_db_from_g()
     if db is None:
-        db = _arango_db()
-    return db
-
-
-def _arango_db() -> StandardDatabase:
-    db = _get_db_from_g()
-    if db is None:
-        db = _create_db()
-        _put_db_in_g(db)
+        db1 = _get_db_from_g()
+        if db1 is None:
+            db1 = _create_db()
+            _put_db_in_g(db1)
+        db = db1
     return db
 
 
