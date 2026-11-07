@@ -3,7 +3,7 @@ from typing import Generator, Tuple
 import pytest
 from arango import ArangoClient
 from arango.database import StandardDatabase
-from flask import Flask, g
+from flask import Flask, g, current_app
 from flask_restful import Api
 
 from common.arangodb import get_client, get_db, get_system_db
@@ -37,10 +37,12 @@ def database(client, sys_db) -> Generator[StandardDatabase, None, None]:
 
 
 class TestGetClient:
-    def test_hosts(self, flask_app):
+    def test_configures_host(self, flask_app):
         with flask_app.app_context():
+            expected_host = current_app.config['ARANGO_CLIENT']['host']
+            expected_port = str(current_app.config['ARANGO_CLIENT']['port'])
             client = get_client()
-            assert client.hosts == ['http://localhost:8529']
+            assert client.hosts == [f'http://{expected_host}:{expected_port}']
 
     def test_adds_client_to_g_when_missing(self, flask_app):
         with flask_app.app_context():
@@ -51,17 +53,35 @@ class TestGetClient:
 
 
 class TestGetDb:
-    def test_get_db(self, flask_app):
+    def test_configures_database_name(self, flask_app):
         with flask_app.app_context():
             db = get_db()
             assert db.name == 'suttacentral_tests'
 
-    def test_adds_db_to_g_when_missing(self, flask_app):
+    def test_stores_database_in_flask_global(self, flask_app):
         with flask_app.app_context():
             assert getattr(g, '_database', None) is None
             _ = get_db()
             client_attr = getattr(g, '_database', None)
             assert isinstance(client_attr, StandardDatabase)
+
+    def test_database_is_writable(self, flask_app):
+        with flask_app.app_context():
+            db = get_db()
+            db.create_collection('example')
+            db.delete_collection('example')
+
+    def test_sets_database_name_when_string(self, flask_app):
+        with flask_app.app_context():
+            current_app.config['ARANGO_DB'] = 'db_from_string'
+            db = get_db()
+            assert db.name == 'db_from_string'
+
+    def test_sets_database_name_when_dict(self, flask_app):
+        with flask_app.app_context():
+            current_app.config['ARANGO_DB'] = {'name': 'db_from_dict'}
+            db = get_db()
+            assert db.name == 'db_from_dict'
 
 
 class TestGetSystemDb:
