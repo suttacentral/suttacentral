@@ -1,0 +1,2 @@
+FROM arangodb/arangodb:3.11.3
+COPY healthcheck.sh /
