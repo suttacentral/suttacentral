@@ -54,6 +54,10 @@ ignore_unused = [
     "uwsgi", # used as CLI in `Makefile`, `entrypoint.sh`
 ]
 
+ignore_undeclared = [
+    "fakes", # valid use in unit tests
+]
+
 [tool.ruff.lint]
 # add to the default lint rules
 extend-select = [
