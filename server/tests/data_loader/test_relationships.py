@@ -117,7 +117,7 @@ class TestEncoding:
         assert Encoding(encoding).is_resembling() == is_resembling
 
     @pytest.mark.parametrize('encoding,is_external', [('abc123', False), ('Has space', True)])
-    def test_not_resembling(self, with_uids, encoding, is_external):
+    def test_is_external(self, with_uids, encoding, is_external):
         assert Encoding(encoding).is_external() == is_external
 
     @pytest.mark.parametrize('encoding,number', [('abc123', 123), ('abc', 0)])
