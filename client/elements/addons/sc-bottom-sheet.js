@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { LitLocalized } from './sc-localization-mixin';
 import { icon } from '../../img/sc-icon';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
 
 export class SCBottomSheet extends LitLocalized(LitElement) {
   static properties = {
@@ -408,6 +409,13 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
     this.lookup = {};
     this.defineURL = '';
     this.chinesePunctuation = '，,!！?？;；:：（()）[]【 】。「」﹁﹂"、‧《》〈〉﹏—『』';
+    this._keydownHandlers = {
+      'h': this._previous.bind(this),
+      'H': this._previous.bind(this),
+      'l': this._next.bind(this),
+      'L': this._next.bind(this),
+    };
+    this._handleKeydown = this._handleKeydown.bind(this);
   }
 
   render() {
@@ -433,12 +441,16 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
                     <ul>
                       <li>
                       ${this.localize('bottomsheet:help5')} =
+                        <kbd>h</kbd>
+                        ${this.tryLocalize('bottomsheet:or', 'or')}
                         <kbd>Alt</kbd>
                         +
                         <kbd>n</kbd>
                       </li>
                       <li>
                       ${this.localize('bottomsheet:help6')} =
+                        <kbd>l</kbd>
+                        ${this.tryLocalize('bottomsheet:or', 'or')}
                         <kbd>Alt</kbd>
                         +
                         <kbd>b</kbd>
@@ -484,6 +496,22 @@ export class SCBottomSheet extends LitLocalized(LitElement) {
   show() {
     this.style.display = 'block';
     this.style.animation = 'bottomSheetShow 200ms 1 ease-in normal forwards';
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener('keydown', this._handleKeydown);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('keydown', this._handleKeydown);
+  }
+
+  _handleKeydown(event) {
+    if (ignorableKeydownEvent(event)) return;
+    if (!(event.key in this._keydownHandlers)) return;
+    this._keydownHandlers[event.key]();
   }
 
   _previous() {
