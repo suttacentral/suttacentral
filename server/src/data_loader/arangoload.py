@@ -1,13 +1,10 @@
 import json
-import logging
 import pathlib
-from collections import defaultdict
-from itertools import product
+import re
+import subprocess
 from pathlib import Path
 from typing import Dict
-import subprocess
 
-import regex
 from arango.database import Database
 from flask import current_app
 from tqdm import tqdm
@@ -29,8 +26,8 @@ from common.queries import (
     INSERT_EBS_NAMES,
     RANGE_UIDS
 )
-from common.uid_matcher import UidMatcher
-from common.utils import chunks
+from data_loader.extra_info import process_extra_info_file
+from data_loader.unsegmented import load_unsegmented_texts
 from . import (
     biblio,
     currencies,
@@ -50,10 +47,6 @@ from .generate_sitemap import generate_sitemap
 from .observability import StagePrinter
 from .relationships import load_relationships
 from .util import json_load
-import re
-
-from data_loader.extra_info import process_extra_info_file
-from data_loader.unsegmented import load_unsegmented_texts
 
 
 def collect_data(repo_dir: Path, repo_addr: str):
