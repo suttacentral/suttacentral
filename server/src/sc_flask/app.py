@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-import os
-from typing import Tuple
 from hashlib import blake2b
+from typing import Tuple
 
 from flasgger import Swagger
 from flask import Blueprint, Flask, make_response, json, request
@@ -60,18 +59,17 @@ from api.views import (
     Alias,
     GitHubDirectoryListing
 )
+from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
 from common.arangodb import ArangoDB
 from common.extensions import cache
 from sc_flask.config import app_config, swagger_config, swagger_template
 from search.view import InstantSearch, FetchPossibleNames, FulltextSearch
-from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
-
 
 
 def app_factory() -> Tuple[Api, Flask]:
     """app factory. Handles app object creation for better readability"""
     app = Flask(__name__)
-    app.config.from_object(app_config[os.getenv('ENVIRONMENT')])
+    app.config.from_object(app_config())
     app.config['JSON_SORT_KEYS'] = False
     app.config['JSON_AS_ASCII'] = False
     api_bp = Blueprint('api', __name__)
