@@ -403,7 +403,7 @@ def edge_chunks(edges: Iterable[Edge], chunk_size=10000) -> Iterator[list[dict]]
 
 
 def write_chunk(db: StandardDatabase, chunk: list[dict]):
-    db['relationship'].import_bulk_logged(
+    db['relationship'].import_bulk(
         chunk,
         from_prefix='super_nav_details',
         to_prefix='super_nav_details'
