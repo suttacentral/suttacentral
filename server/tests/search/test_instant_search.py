@@ -9,7 +9,8 @@ from search.instant_search import (
     search_string,
     normalize_string,
     sanitize_quoted_query,
-    normalize_filter_commands
+    normalize_filter_commands,
+    possible_uids_for_query
 )
 
 from search.validate_filter import validate_filter_commands
@@ -135,6 +136,18 @@ def test_normalize_string():
     assert normalize_string('Rūpā') == 'Rupa'
     assert normalize_string('samma') == 'samma'
     assert normalize_string('sāmma') == 'samma'
+
+
+def test_possible_uids_for_query():
+    assert 'sn11.25' in possible_uids_for_query('sn11.25')
+    assert 'sn11.25' in possible_uids_for_query('SN 11.25')
+    assert 'sn11.25' in possible_uids_for_query('sn  11.25')
+    assert 'mn1' in possible_uids_for_query('MN 1')
+    assert 'thig1.1' in possible_uids_for_query('Thig 1.1')
+    assert 'tha-ap1' in possible_uids_for_query('Tha Ap 1')
+    assert 'an1.1-10' in possible_uids_for_query('AN 1.1–10')
+    assert 'dhp1-20' in possible_uids_for_query('Dhp 1-20')
+    assert 'pli-tv-bu-vb-pj1' in possible_uids_for_query('pli-tv-bu-vb-pj1')
 
 
 def instant_search(query, languages):

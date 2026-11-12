@@ -1686,13 +1686,30 @@ def fuzzy_lookup_dictionary(lang, query, restrict):
             return []
 
 
-def fetch_suttaplex(db, lang, query):
-    query_lower = query.lower()
-    possible_uids = [
+def possible_uids_for_query(query):
+    """
+    List the uids a query could refer to, so that a sutta is found both by its
+    uid ("sn11.25") and by its acronym as shown on the site ("SN 11.25")
+
+    Args:
+        query (str): Search query
+
+    Returns:
+        list: Possible uids, e.g. "SN 11.25" -> "sn11.25", "Tha Ap 1" -> "tha-ap1",
+        "AN 1.1–10" -> "an1.1-10"
+    """
+    query_lower = query.lower().replace('\N{EN DASH}', '-')
+    acronym_as_uid = re.sub(r'(?<=[a-z])\s+(?=[a-z])', '-', query_lower)
+    acronym_as_uid = re.sub(r'(?<=[a-z])\s+(?=\d)', '', acronym_as_uid)
+    return [
         query_lower,
         query_lower.replace(' ', '.'),
-        query_lower.replace('.', '.'),
+        acronym_as_uid,
     ]
+
+
+def fetch_suttaplex(db, lang, query):
+    possible_uids = possible_uids_for_query(query)
     return (
         list(
             db.aql.execute(
