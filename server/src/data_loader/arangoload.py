@@ -86,7 +86,7 @@ def load_author_edition(change_tracker, additional_info_dir, db):
     if change_tracker.is_file_new_or_changed(author_file):
         with author_file.open('r', encoding='utf-8') as authorf:
             authors = json.load(authorf)
-        db['author_edition'].import_bulk_logged(authors, wipe=True)
+        db['author_edition'].import_bulk(authors, overwrite=True)
 
 
 def load_available_voices(change_tracker, additional_info_dir, db):
@@ -94,7 +94,7 @@ def load_available_voices(change_tracker, additional_info_dir, db):
     voices_info = json_load(voices_file)
     docs = [{'uid': key, 'voices': value} for key, value in voices_info.items()]
     db['available_voices'].truncate()
-    db.collection('available_voices').import_bulk_logged(docs, wipe=True)
+    db.collection('available_voices').import_bulk(docs, overwrite=True)
 
 
 def load_map_data(additional_info_dir, db):
@@ -104,7 +104,7 @@ def load_map_data(additional_info_dir, db):
         {'type': map_data['type'], 'features': map_data['features']}
     ]
     db['map_data'].truncate()
-    db.collection('map_data').import_bulk_logged(map_doc, wipe=True)
+    db.collection('map_data').import_bulk(map_doc, overwrite=True)
 
 
 def load_json_file(db, change_tracker, json_file):
@@ -118,7 +118,7 @@ def load_json_file(db, change_tracker, json_file):
         for d in data:
             d['_key'] = d['uid']
         db[collection_name].truncate()
-        db[collection_name].import_bulk_logged(data)
+        db[collection_name].import_bulk(data)
 
 
 def process_difficulty(db, additional_info_dir):
@@ -133,7 +133,7 @@ def process_difficulty(db, additional_info_dir):
         for uid, lvl in tqdm(x.items())
     ]
 
-    db.collection('difficulties').import_bulk_logged(docs, wipe=True)
+    db.collection('difficulties').import_bulk(docs, overwrite=True)
 
 
 def process_alias(db, additional_info_dir):
@@ -141,7 +141,7 @@ def process_alias(db, additional_info_dir):
     alias_file = additional_info_dir / 'alias.json'
     alias_info = json_load(alias_file)
     db['alias'].truncate()
-    db.collection('alias').import_bulk_logged(alias_info, wipe=True)
+    db.collection('alias').import_bulk(alias_info, overwrite=True)
 
 
 def process_illustrations(db, additional_info_dir):
@@ -149,7 +149,7 @@ def process_illustrations(db, additional_info_dir):
     illustrations_file = additional_info_dir / 'illustrations.json'
     illustrations_info = json_load(illustrations_file)
     db['illustrations'].truncate()
-    db.collection('illustrations').import_bulk_logged(illustrations_info, wipe=True)
+    db.collection('illustrations').import_bulk(illustrations_info, overwrite=True)
 
 
 def process_prioritize(db, additional_info_dir):
@@ -157,7 +157,7 @@ def process_prioritize(db, additional_info_dir):
     prioritize_file = additional_info_dir / 'prioritize.json'
     prioritize_info = json_load(prioritize_file)
     db['prioritize'].truncate()
-    db.collection('prioritize').import_bulk_logged(prioritize_info, wipe=True)
+    db.collection('prioritize').import_bulk(prioritize_info, overwrite=True)
 
 
 def process_creator_bio(db, additional_info_dir):
@@ -165,7 +165,7 @@ def process_creator_bio(db, additional_info_dir):
     creator_bio_file = additional_info_dir / 'creator_bio.json'
     creator_bio_info = json_load(creator_bio_file)
     db['creator_bio'].truncate()
-    db.collection('creator_bio').import_bulk_logged(creator_bio_info, wipe=True)
+    db.collection('creator_bio').import_bulk(creator_bio_info, overwrite=True)
 
 
 def make_yellow_brick_road(db: Database):
@@ -569,9 +569,6 @@ def run(no_pull: bool = False) -> StagePrinter:
 
     printer.print_stage("Loading languages")
     languages.load_languages(db, languages_file, localized_elements_dir)
-
-    # print_stage("Loading images")
-    # images_files.load_images_links(db)
 
     printer.print_stage("Loading ChangeTracker")
     change_tracker = ChangeTracker(data_dir, db)
