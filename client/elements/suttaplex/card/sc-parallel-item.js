@@ -3,6 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { icon } from '../../../img/sc-icon';
 import {
   getParagraphRange,
+  getRangeMemberAcronym,
   transformId,
   pickVolPage,
   hasTwoPTSEditions,
@@ -125,7 +126,12 @@ export class SCParallelItem extends LitLocalized(LitElement) {
   get acronymOrUid() {
     let scAcronym = '';
     if (this.parallelItem.acronym) {
-      scAcronym = this.parallelItem.acronym.split('//')[0];
+      scAcronym =
+        getRangeMemberAcronym(
+          this.parallelItem.uid,
+          this.parallelItem.acronym,
+          this.parallelItem.to
+        ) || this.parallelItem.acronym.split('//')[0];
       const rootId = this.parallelItem.to.replace('~', '');
       const idPart = getParagraphRange(rootId)
         .replace('--', '–')

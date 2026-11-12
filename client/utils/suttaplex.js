@@ -60,6 +60,34 @@ export function getParagraphRange(toParallel, isUrl) {
   }
 }
 
+// A parallel can point to one sutta of a range text, e.g. to an2.36 in the text an2.32-41.
+// Returns the uid of that sutta ("an2.36"), or '' when the parallel points to the text itself.
+export function getRangeMemberUid(uid, toParallel) {
+  const range = uid?.match(/^(.*?)(\d+)-(\d+)$/);
+  const memberUid = toParallel?.replace('~', '').split('#')[0];
+  const member = memberUid?.match(/^(.*?)(\d+)$/);
+  if (!range || !member || member[1] !== range[1]) {
+    return '';
+  }
+  const number = Number(member[2]);
+  return number >= Number(range[2]) && number <= Number(range[3]) ? memberUid : '';
+}
+
+// The acronym of that sutta, built from the range's acronym: "AN 2.32–41" -> "AN 2.36".
+export function getRangeMemberAcronym(uid, acronym, toParallel) {
+  const memberUid = getRangeMemberUid(uid, toParallel);
+  if (!memberUid || !acronym) {
+    return '';
+  }
+  const [, first, last] = uid.match(/(\d+)-(\d+)$/);
+  const rangeAcronym = acronym.split('//')[0];
+  const rangeEnd = `${first}–${last}`;
+  if (!rangeAcronym.endsWith(rangeEnd)) {
+    return '';
+  }
+  return `${rangeAcronym.slice(0, -rangeEnd.length)}${memberUid.match(/\d+$/)[0]}`;
+}
+
 const PTS1 = 'pts-vp-pli1ed',
   PTS2 = 'pts-vp-pli2ed';
 

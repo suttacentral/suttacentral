@@ -11,7 +11,12 @@ import { suttaplexListCss, suttaplexListTableViewCss } from './sc-suttaplex-list
 import './sc-suttaplex-section-title';
 import '../addons/sc-error-icon';
 import { RefreshNavNew, setNavigation } from '../navigation/sc-navigation-common';
-import { transformId, getParagraphRange } from '../../utils/suttaplex';
+import {
+  transformId,
+  getParagraphRange,
+  getRangeMemberAcronym,
+  getRangeMemberUid,
+} from '../../utils/suttaplex';
 import '@material/web/button/filled-button';
 import { dispatchCustomEvent } from '../../utils/customEvent';
 import './sc-suttaplex-stepper.js';
@@ -237,9 +242,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
               to: parallel.to.to,
               toTitle: parallel.to.to ? this.#formatParallelToTitle(parallel.to.to) : '',
               uid: parallel.to.uid,
-              acronym: parallel.to.acronym
-                ? parallel.to.acronym
-                : transformId(parallel.to.uid, this.expansionData),
+              acronym: this.#parallelAcronym(parallel.to),
               parallel_root: parallel.to.parallel_root,
             });
           } else {
@@ -255,9 +258,7 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
                   to: parallel.to.to,
                   toTitle: parallel.to.to ? this.#formatParallelToTitle(parallel.to.to) : '',
                   uid: parallel.to.uid,
-                  acronym: parallel.to.acronym
-                    ? parallel.to.acronym
-                    : transformId(parallel.to.uid, this.expansionData),
+                  acronym: this.#parallelAcronym(parallel.to),
                   parallel_root: parallel.to.parallel_root,
                 },
               ],
@@ -266,6 +267,16 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
         }
       }
     }
+  }
+
+  #parallelAcronym(parallelTo) {
+    if (!parallelTo.acronym) {
+      const uid = getRangeMemberUid(parallelTo.uid, parallelTo.to) || parallelTo.uid;
+      return transformId(uid, this.expansionData);
+    }
+    return (
+      getRangeMemberAcronym(parallelTo.uid, parallelTo.acronym, parallelTo.to) || parallelTo.acronym
+    );
   }
 
   #formatParallelFromTitle(parallelFromTitle) {
