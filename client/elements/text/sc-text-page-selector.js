@@ -572,33 +572,26 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!responseData?.translation) {
       return;
     }
-    let description = this.localize('interface:metaDescriptionText');
-    if (responseData.suttaplex.blurb) {
-      description = responseData.suttaplex.blurb;
-    }
-    let title = responseData.suttaplex ? responseData.suttaplex.original_title : '';
-    if (!title) {
-      title = responseData.root_text
-        ? responseData.root_text.title
-        : responseData.translation.title;
-    }
+    const description = responseData.suttaplex?.blurb || this.localize('interface:metaDescriptionText');
+    let title = responseData.suttaplex?.original_title
+      || responseData.root_text?.title
+      || responseData.translation.title;
 
-    const rootTextAuthor = responseData.root_text ? responseData.root_text.author : '';
-    const author = responseData.translation ? responseData.translation.author : rootTextAuthor;
-    const acronym = responseData.suttaplex.acronym
-      ? responseData.suttaplex.acronym.split(/\/\//)[0]
-      : this._transformId(responseData.suttaplex.uid, expansionReturns);
+    const author = responseData.translation?.author ?? responseData.root_text?.author ?? '';
+    const acronym = responseData.suttaplex?.acronym.split(/\/\//)[0]
+      || this._transformId(responseData.suttaplex.uid, expansionReturns);
 
-    let pageTitle = `${acronym}: ${title}${author ? `—${author}` : ''}`;
+    const authorTitle = author ? `—${author}` : ''
+    let pageTitle = `${acronym}: ${title}${authorTitle}`;
     if (this.isRangeSutta) {
       this.transformedSuttaId = this._transformId(this.suttaId, this.expansionReturns);
       title = this.transformedSuttaId;
-      pageTitle = `${title}${author ? `—${author}` : ''}`;
+      pageTitle = `${title}${authorTitle}`;
     }
 
     dispatchCustomEvent(document, 'metadata', {
       pageTitle,
-      title: `${title}${author ? `—${author}` : ''}`,
+      title: `${title}${authorTitle}`,
       description,
       openGraphType: 'article', // To conform to the twitter cards and pinterest specification, "og:type" must be equal to ‘article’
     });
@@ -606,7 +599,7 @@ export class SCTextPageSelector extends LitLocalized(LitElement) {
     if (!title) {
       title = this._transformId(this.suttaId, this.expansionReturns);
     }
-    reduxActions.changeToolbarTitle(`${title}${author ? `—${author}` : ''}`);
+    reduxActions.changeToolbarTitle(`${title}${authorTitle}`);
   }
 
   _transformId(rootId, expansionReturns) {
