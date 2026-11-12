@@ -20,6 +20,7 @@ import { getURLParam } from './addons/sc-functions-miscellaneous';
 import { reduxActions } from './addons/sc-redux-actions';
 import { API_ROOT } from '../constants';
 import { isMobileBrowser } from './addons/sc-functions-miscellaneous';
+import { resolveColorTheme, onDeviceColorSchemeChange } from '../utils/colorTheme';
 import { fontLazyLoader } from '../utils/sc-font-lazy-loader';
 
 import { typographyI18nStyles } from './styles/sc-typography-i18n-styles';
@@ -42,13 +43,16 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     toolbarPosition: { type: Object },
   };
 
+  #stopWatchingDeviceColorScheme;
+
   constructor() {
     super();
     const storeState = store.getState();
     this.inputLanguage = '';
     this.colorsResponse = {};
     this.siteLanguage = storeState.siteLanguage;
-    this.appColorTheme = storeState.colorTheme;
+    this.colorThemeSetting = storeState.colorTheme;
+    this.appColorTheme = resolveColorTheme(this.colorThemeSetting);
     this.localizedStringsPath = '/localization/elements/interface';
     this.changedRoute = storeState.currentRoute;
     this.displaySettingMenu = storeState.displaySettingMenu;
@@ -317,8 +321,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.toolbarTitle !== state.toolbarOptions.title) {
       this.toolbarTitle = state.toolbarOptions.title;
     }
-    if (this.appColorTheme !== state.colorTheme) {
-      this.appColorTheme = state.colorTheme;
+    if (this.colorThemeSetting !== state.colorTheme) {
+      this.colorThemeSetting = state.colorTheme;
+      this.appColorTheme = resolveColorTheme(this.colorThemeSetting);
     }
     if (this.changedRoute !== state.currentRoute) {
       this.changedRoute = state.currentRoute;
@@ -338,6 +343,9 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
+    this.#stopWatchingDeviceColorScheme = onDeviceColorSchemeChange(() => {
+      this.appColorTheme = resolveColorTheme(this.colorThemeSetting);
+    });
     window.addEventListener('load', () => {
       this.pageLoaded = true;
       this._createGlobalStylesheet(SCUtilityStyles);
@@ -345,6 +353,11 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
       // this._createGlobalStylesheet(SCCriticalFontStyles);
       this._calculateScrollbarWidth();
     });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#stopWatchingDeviceColorScheme?.();
   }
 
   _calculateScrollbarWidth() {

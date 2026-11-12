@@ -8,11 +8,11 @@ import { LitLocalized } from '../addons/sc-localization-mixin';
 
 import '@material/web/divider/divider';
 import '@material/web/menu/menu-item';
-import '@material/web/checkbox/checkbox';
 import '@material/web/radio/radio';
 
 import { icon } from '../../img/sc-icon';
 import { dispatchCustomEvent } from '../../utils/customEvent';
+import { DEVICE_COLOR_THEME } from '../../utils/colorTheme';
 
 /*
 Basic more-vert menu on the main toolbar for choice of language and for choosing static pages
@@ -70,11 +70,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       background-color: var(--sc-secondary-background-color);
     }
 
-    md-menu-item md-checkbox {
-      margin-left: 2px;
-      padding: 0;
-    }
-
     .menu-item-wrapper {
       display: flex;
       flex-direction: row;
@@ -89,22 +84,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       color: var(--sc-on-primary-primary-text-color);
 
       align-items: end;
-    }
-
-    md-checkbox {
-      margin-bottom: 18px;
-      --md-checkbox-hover-state-layer-color: var(--sc-primary-color);
-      --md-checkbox-hover-state-layer-opacity: 0;
-      --md-checkbox-pressed-state-layer-color: var(--sc-primary-color);
-      --md-checkbox-pressed-state-layer-opacity: 0;
-      --md-checkbox-selected-pressed-state-layer-color: var(--sc-primary-color);
-      --md-checkbox-selected-pressed-state-layer-opacity: 0;
-      --md-checkbox-selected-hover-state-layer-color: var(--sc-primary-color);
-      --md-checkbox-selected-hover-state-layer-opacity: 0;
-      --md-checkbox-state-layer-size: 0;
-      --md-checkbox-hover-outline-color: var(--sc-primary-accent-color);
-      --md-checkbox-focus-outline-color: var(--sc-primary-accent-color);
-      --md-checkbox-pressed-outline-color: var(--sc-primary-accent-color);
     }
 
     md-radio {
@@ -148,25 +127,12 @@ export class SCMenuMore extends LitLocalized(LitElement) {
       border-radius: 28px;
     }
 
-    .menu-checkbox-item-title {
-      line-height: 1.2;
-
-      margin-bottom: 16px;
-      margin-left: 4px;
-
-      color: var(--sc-on-primary-primary-text-color);
-    }
-
     .menu-radio-item-title {
       line-height: 1.2;
 
       margin-left: 18px;
 
       color: var(--sc-on-primary-primary-text-color);
-    }
-
-    #menu-checkbox-item {
-      height: 48px;
     }
   `;
 
@@ -175,6 +141,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     compactViewChosen: { type: Boolean },
     routeName: { type: String },
     languageIsVisible: { type: Boolean },
+    appTheme: { type: String },
   };
 
   constructor() {
@@ -182,6 +149,7 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
     this.languageListResponse = [];
     this.routeName = store.getState().currentRoute.name;
+    this.appTheme = store.getState().colorTheme;
     this.alwaysShowUniversalToolbar = store.getState().alwaysShowUniversalToolbar;
     this.languageIsVisible = store.getState().languageMenuVisibility;
     this.suttaId = store.getState().currentRoute.params?.suttaId;
@@ -217,7 +185,6 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     }
     if (this.appTheme !== state.colorTheme) {
       this.appTheme = state.colorTheme;
-      this.darkThemeChosen = this.appTheme === 'dark';
     }
     if (this.alwaysShowUniversalToolbar !== state.alwaysShowUniversalToolbar) {
       this.alwaysShowUniversalToolbar = state.alwaysShowUniversalToolbar;
@@ -243,9 +210,28 @@ export class SCMenuMore extends LitLocalized(LitElement) {
     return this.localize(`interface:${title}`);
   }
 
-  #onThemeChanged() {
-    const chk = this.shadowRoot.querySelector('#theme_toggler');
-    this.actions.changeAppTheme(chk.checked ? 'dark' : 'light');
+  #onThemeChanged(e) {
+    if (e.currentTarget.checked) {
+      this.actions.changeAppTheme(e.currentTarget.value);
+    }
+  }
+
+  #renderThemeOption(theme, labelKey) {
+    return html`
+      <md-menu-item .keepOpen=${true}>
+        <label>
+          <md-radio
+            class="more-menu-md-menu-item"
+            left
+            name="colorTheme"
+            value=${theme}
+            ?checked=${this.appTheme === theme}
+            @change=${this.#onThemeChanged}
+          ></md-radio>
+          <span class="menu-radio-item-title">${this.localize(labelKey)}</span>
+        </label>
+      </md-menu-item>
+    `;
   }
 
   _onToolbarDisplayModeChanged(e) {
@@ -308,18 +294,11 @@ export class SCMenuMore extends LitLocalized(LitElement) {
         <div slot="headline">${icon.offline_bolt} ${this.localize('interface:useOffline')}</div>
       </md-menu-item>
 
-      <md-menu-item .keepOpen=${true} id="menu-checkbox-item">
-        <label>
-          <md-checkbox
-            touch-target="wrapper"
-            id="theme_toggler"
-            left
-            ?checked=${this.darkThemeChosen}
-            @change=${this.#onThemeChanged}
-          ></md-checkbox>
-          <span class="menu-checkbox-item-title">${this.localize('interface:darkTheme')}</span>
-        </label>
-      </md-menu-item>
+      <div role="radiogroup">
+        ${this.#renderThemeOption('light', 'interface:lightTheme')}
+        ${this.#renderThemeOption('dark', 'interface:darkTheme')}
+        ${this.#renderThemeOption(DEVICE_COLOR_THEME, 'interface:deviceTheme')}
+      </div>
 
       <md-divider></md-divider>
 

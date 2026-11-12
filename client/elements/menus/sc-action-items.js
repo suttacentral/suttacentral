@@ -7,6 +7,7 @@ import { reduxActions } from '../addons/sc-redux-actions';
 import { icon } from '../../img/sc-icon';
 import { API_ROOT } from '../../constants';
 import { ignorableKeydownEvent } from '../sc-keyboard-shortcuts';
+import { resolveColorTheme, onDeviceColorSchemeChange } from '../../utils/colorTheme';
 
 function displayStyle(bool) {
   return 'display: ' + (bool ? 'inherit' : 'none');
@@ -31,11 +32,14 @@ export class SCActionItems extends LitLocalized(LitElement) {
     siteLanguage: { type: String },
   };
 
+  #stopWatchingDeviceColorScheme;
+
   constructor() {
     super();
     const state = store.getState();
     this.suttaplexListEnabled = state.suttaplexListDisplay;
-    this.colorTheme = state.colorTheme;
+    this.colorThemeSetting = state.colorTheme;
+    this.colorTheme = resolveColorTheme(this.colorThemeSetting);
     this.activeClass = this.colorTheme === 'light' ? 'active-light' : 'active-dark';
     this.localizedStringsPath = '/localization/elements/interface';
     this.currentRouteName = state.currentRoute.name;
@@ -55,6 +59,14 @@ export class SCActionItems extends LitLocalized(LitElement) {
   connectedCallback() {
     super.connectedCallback();
     this.scSiteLayout = document.querySelector('sc-site-layout');
+    this.#stopWatchingDeviceColorScheme = onDeviceColorSchemeChange(() => {
+      this.colorTheme = resolveColorTheme(this.colorThemeSetting);
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#stopWatchingDeviceColorScheme?.();
   }
 
   static styles = css`
@@ -581,8 +593,9 @@ export class SCActionItems extends LitLocalized(LitElement) {
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }
-    if (this.colorTheme !== state.colorTheme) {
-      this.colorTheme = state.colorTheme;
+    if (this.colorThemeSetting !== state.colorTheme) {
+      this.colorThemeSetting = state.colorTheme;
+      this.colorTheme = resolveColorTheme(this.colorThemeSetting);
     }
     if (this.suttaMetaText !== state.suttaMetaText) {
       this.suttaMetaText = state.suttaMetaText;

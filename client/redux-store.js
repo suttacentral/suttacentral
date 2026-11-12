@@ -1,4 +1,5 @@
 import { compose, createStore } from 'redux';
+import { DEVICE_COLOR_THEME } from './utils/colorTheme';
 
 const initialState = {
   currentRoute: {
@@ -38,7 +39,7 @@ const initialState = {
     rootTextFirst: false,
     showIllustrations: true,
   },
-  colorTheme: 'light',
+  colorTheme: DEVICE_COLOR_THEME,
   selectedNavigationMenuItemId: '',
   donationSuccessData: {},
   downloadedUrls: {},
