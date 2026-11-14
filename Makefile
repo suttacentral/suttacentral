@@ -58,10 +58,6 @@ prepare-tests:
 	-@docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 	@echo "waiting for all services to fully start"
 	@bash wait_for_flask.sh
-	@make prepare-test-load-data
-
-prepare-test-load-data:
-	@docker exec -t sc-flask uv run scripts/prepare_data_loader_tests.py
 
 # Run tests
 test:
