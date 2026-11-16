@@ -1,3 +1,5 @@
+import pytest
+
 from search.instant_search import (
     format_volpage,
     standardization_volpage,
@@ -9,13 +11,14 @@ from search.instant_search import (
     search_string,
     normalize_string,
     sanitize_quoted_query,
-    normalize_filter_commands
+    normalize_filter_commands, construct_search_query_aql
 )
 
 from search.validate_filter import validate_filter_commands
 
 from urllib.parse import quote
 from sc_flask.app import app
+
 client = app.test_client()
 
 
@@ -79,21 +82,28 @@ def test_extract_param():
     assert extract_query_conditions('by:sujato dog in:an') == {"collection": "an", "author": "sujato", "or": ["dog"]}
     # assert extract_query_conditions('in:dn by:sujato "root of suffering"') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
     # assert extract_query_conditions('in:dn by:sujato root of suffering') == {"collection": "dn", "author": "sujato", "and": ["root", "of", "suffering"]}
-    assert extract_query_conditions('in:dn by:sujato root of suffering') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
-    assert extract_query_conditions('in:mn by:sujato cat OR dog') == {"collection": "mn", "author": "sujato", "or": ["cat", "dog"]}
+    assert extract_query_conditions('in:dn by:sujato root of suffering') == {"collection": "dn", "author": "sujato",
+                                                                             "or": ["root of suffering"]}
+    assert extract_query_conditions('in:mn by:sujato cat OR dog') == {"collection": "mn", "author": "sujato",
+                                                                      "or": ["cat", "dog"]}
     assert extract_query_conditions('in:sn cat') == {"collection": "sn", "or": ["cat"]}
     assert extract_query_conditions('by:sujato cat') == {"author": "sujato", "or": ["cat"]}
     assert extract_query_conditions('by:sujato cat AND dog') == {"author": "sujato", "and": ["cat", "dog"]}
-    assert extract_query_conditions('in:mn by:sujato cat AND dog') == {"collection": "mn", "author": "sujato", "and": ["cat", "dog"]}
-    assert extract_query_conditions('by:sujato dog AND cat in:mn') == {"collection": "mn", "author": "sujato", "and": ["dog", "cat"]}
-    assert extract_query_conditions('cat AND dog in:mn by:sujato') == {"collection": "mn", "author": "sujato", "and": ["cat", "dog"]}
+    assert extract_query_conditions('in:mn by:sujato cat AND dog') == {"collection": "mn", "author": "sujato",
+                                                                       "and": ["cat", "dog"]}
+    assert extract_query_conditions('by:sujato dog AND cat in:mn') == {"collection": "mn", "author": "sujato",
+                                                                       "and": ["dog", "cat"]}
+    assert extract_query_conditions('cat AND dog in:mn by:sujato') == {"collection": "mn", "author": "sujato",
+                                                                       "and": ["cat", "dog"]}
     assert extract_query_conditions('in:vinaya cat') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('cat in:vinaya') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('in:sutta cat') == {"collection": "sutta", "or": ["cat"]}
     assert extract_query_conditions('in:abhidhamma cat') == {"collection": "abhidhamma", "or": ["cat"]}
     assert extract_query_conditions('NOT cat in:an10') == {"collection": "an10", "not": ["cat"]}
-    assert extract_query_conditions('in:vinaya respect NOT feet') == {"collection": "vinaya", "or": ["respect"], "not": ["feet"]}
-    assert extract_query_conditions('respect NOT feet in:vinaya') == {"collection": "vinaya", "or": ["respect"], "not": ["feet"]}
+    assert extract_query_conditions('in:vinaya respect NOT feet') == {"collection": "vinaya", "or": ["respect"],
+                                                                      "not": ["feet"]}
+    assert extract_query_conditions('respect NOT feet in:vinaya') == {"collection": "vinaya", "or": ["respect"],
+                                                                      "not": ["feet"]}
 
 
 def test_is_chinese():
@@ -140,7 +150,7 @@ def test_normalize_string():
 def instant_search(query, languages):
     encoded_query = quote(query)
     response = client.post(f'/search/instant?query={encoded_query}&language=en&limit=10&offset=0&matchpartial=false',
-                            json={'selectedLanguages': languages})
+                           json={'selectedLanguages': languages})
     assert response.status_code == 200
     json_data = response.get_json()
     assert json_data['total'] != '0'
@@ -347,3 +357,94 @@ def test_validate_filter_commands():
 
     # Testing complex valid queries
     assert validate_filter_commands('in:sn by:sujato lang:en meditation AND mindfulness')['is_valid'] is True
+
+
+class TestConstructSearchQueryAql:
+    @pytest.fixture
+    def result(self) -> tuple[str, str, str]:
+        limit = 1
+        matchpartial = False
+        offset = 0
+        query = 'ghosts'
+        lang = 'en'
+        selected_languages = ['en']
+        return construct_search_query_aql(
+            limit=limit,
+            matchpartial=matchpartial,
+            offset=offset,
+            query=query,
+            query_param={
+                'query': query,
+                'lang': lang,
+                'limit': limit,
+                'offset': offset,
+                'matchpartial': matchpartial,
+                'selected_languages': selected_languages
+            },
+            selected_languages=selected_languages,
+        )
+
+    def test_aql_condition_part(self, result):
+        lines = [line.strip() for line in result[0].splitlines() if len(line)]
+        assert lines == [
+            'SEARCH (PHRASE(d.content, @query, "common_text")',
+            'OR PHRASE(d.name, @query, "common_text")', 'OR d.uid == @query',
+            'OR ANALYZER(LIKE(d.name, "%ghosts%"), "normalize") ) FILTER d.is_segmented != True   AND (d.lang IN [\'en\'] OR d.is_root==null)'
+        ]
+
+    def test_bind_param(self, result):
+        assert result[1] == {'lang': 'en', 'query': 'ghosts'}
+
+    def test_search_aql(self, result):
+        lines = [line.strip() for line in result[2].splitlines() if len(line.strip())]
+        assert lines == [
+            'FOR d IN instant_search',
+            'SEARCH (PHRASE(d.content, @query, "common_text")',
+            'OR PHRASE(d.name, @query, "common_text")',
+            'OR d.uid == @query',
+            'OR ANALYZER(LIKE(d.name, "%ghosts%"), "normalize") ) FILTER d.is_segmented '
+            "!= True   AND (d.lang IN ['en'] OR d.is_root==null)",
+            'SORT',
+            'd.lang == @lang ? -1 : 1,',
+            'd.is_ebt == true ? -1 : d.is_ebt == false ? 1 : 0,',
+            'd.is_bilara == true ? -1 : 1,',
+            'd.is_segmented == false ? -1 : 1,',
+            'REGEX_REPLACE(d.uid, "([a-z-]+).*", "$1"),',
+            '// handling e.g. pli-tv-bu-vb-pj1 or pli-tv-pj1 UID with variable number of '
+            'parts',
+            'REGEX_TEST(d.uid, "^[a-z]+(?:-[a-z-]+)+\\d+$") ?',
+            'TO_NUMBER(REGEX_REPLACE(d.uid, "^[a-z]+(?:-[a-z-]+)+(\\d+)$", "$1")) :',
+            '// Processing the numeric portion of a standard UID',
+            'LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), \'.\')) == 0 ? 0 :',
+            'TO_NUMBER(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), \'.\')[0]),',
+            'LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), \'.\')) <= 1 ? 0 :',
+            'TO_NUMBER(REGEX_REPLACE(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '
+            '\'.\')[1], "([0-9]+).*", "$1")),',
+            'LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), \'.\')) <= 2 ? 0 :',
+            'TO_NUMBER(REGEX_REPLACE(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '
+            '\'.\')[2], "([0-9]+).*", "$1"))',
+            'LIMIT 0, 1',
+            'return {',
+            'acronym: d.acronym,',
+            'uid: d.uid,',
+            'lang: d.lang,',
+            'full_lang: d.full_lang,',
+            'root_lang: d.root_lang,',
+            'name: d.name,',
+            'volpage: d.volpage,',
+            'author: d.author,',
+            'author_uid: d.author_uid,',
+            'author_short: d.author_short,',
+            'is_root: d.is_root,',
+            'heading: d.heading,',
+            'content: d.content,',
+            'segmented_uid: d.segmented_uid,',
+            'segmented_text: d.segmented_text,',
+            'is_segmented: d.is_segmented,',
+            'is_bilara_text: d.is_bilara_text,',
+            'param_lang: @lang,',
+            'root_uid: d.root_uid,',
+            'is_article: d.is_article,',
+            'param_query: @query',
+            '}'
+        ]
