@@ -74,7 +74,7 @@ def load_blurbs(db: Database, sc_bilara_data_dir: Path) -> None:
 
     print(f'{len(valid_blurbs)} blurbs added or updated')
     db['blurbs'].truncate()
-    db['blurbs'].import_bulk_logged(valid_blurbs)
+    db['blurbs'].import_bulk(valid_blurbs)
 
 
 def parse_name_file_content(
@@ -126,7 +126,7 @@ def load_names(db: Database, sc_bilara_data_dir: Path, languages_file: Path) -> 
 
     print(f'{len(valid_names)} names added or updated')
     db['names'].truncate()
-    db['names'].import_bulk_logged(valid_names)
+    db['names'].import_bulk(valid_names)
 
 
 def load_super_names_root_misc_site(db: Database, sc_bilara_data_dir: Path):
@@ -137,7 +137,7 @@ def load_super_names_root_misc_site(db: Database, sc_bilara_data_dir: Path):
         'name': name[1]
     } for name in file_content.items()]
     db['super_name'].truncate()
-    db['super_name'].import_bulk_logged(names)
+    db['super_name'].import_bulk(names)
 
 
 def load_texts(db: Database, sc_bilara_data_dir: Path) -> None:
@@ -180,7 +180,7 @@ def load_bilara_author_edition(db: Database, sc_bilara_data_dir: Path) -> None:
     db['bilara_author_edition'].truncate()
     docs = load_bilara_author(db, sc_bilara_data_dir) + \
         load_bilara_edition(db, sc_bilara_data_dir)
-    db.collection('bilara_author_edition').import_bulk_logged(docs, wipe=True)
+    db.collection('bilara_author_edition').import_bulk(docs, overwrite=True)
 
 
 def load_bilara_author(db: Database, sc_bilara_data_dir: Path) -> List[dict]:

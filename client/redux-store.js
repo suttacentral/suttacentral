@@ -63,13 +63,9 @@ const initialState = {
     },
   ],
   displaySettingMenu: false,
-  displayToolButton: false,
-  displayInfoButton: false,
-  displayViewModeButton: true,
   displaySuttaParallels: false,
   displaySuttaInfo: false,
   displayParallelTableView: false,
-  displaySearchOptionsButton: false,
   displayChineseConverterButton: false,
   tableOfContents: {
     items: [],
@@ -217,10 +213,6 @@ const reducer = (state, action) => {
       return { ...state, navigationArray: action.navigationArray };
     case 'CHANGE_DISPLAY_SETTING_MENU_STATE':
       return { ...state, displaySettingMenu: action.displaySettingMenu };
-    case 'CHANGE_DISPLAY_TOOL_BUTTON_STATE':
-      return { ...state, displayToolButton: action.displayToolButton };
-    case 'CHANGE_DISPLAY_INFO_BUTTON_STATE':
-      return { ...state, displayInfoButton: action.displayInfoButton };
     case 'CHANGE_DISPLAY_TOC_BUTTON_STATE':
       return {
         ...state,
@@ -229,8 +221,6 @@ const reducer = (state, action) => {
           disableToCListStyle: action.payload.disableToCListStyle,
         },
       };
-    case 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE':
-      return { ...state, displayViewModeButton: action.displayViewModeButton };
     case 'CHANGE_DISPLAY_SUTTA_PARALLELS_STATE':
       return { ...state, displaySuttaParallels: action.displaySuttaParallels };
     case 'CHANGE_DISPLAY_SUTTA_TOC_STATE':
@@ -249,8 +239,6 @@ const reducer = (state, action) => {
       return { ...state, languageMenuVisibility: action.languageMenuVisibility };
     case 'CHANGE_LINEAR_PROGRESS_ACTIVE_STATE':
       return { ...state, linearProgressActive: action.linearProgressActive };
-    case 'CHANGE_DISPLAY_SEARCH_OPTIONS_BUTTON_STATE':
-      return { ...state, displaySearchOptionsButton: action.displaySearchOptionsButton };
     case 'CHANGE_DISPLAY_CHINESE_CONVERTER_BUTTON_STATE':
       return { ...state, displayChineseConverterButton: action.displayChineseConverterButton };
     case 'SET_SEARCH_DISPLAY_LANGUAGES_ARRAY':

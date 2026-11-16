@@ -93,7 +93,6 @@ const staticPages = [
   'terminology',
   'vinaya',
   'palitipitaka',
-  'publicationAn',
   'searchFilter',
   'pirivena-project'
 ];
@@ -339,24 +338,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
           payload: { name, params, path },
         });
       },
-      changeDisplayToolButtonState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_TOOL_BUTTON_STATE',
-          displayToolButton: display,
-        });
-      },
-      changeDisplayInfoButtonState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_INFO_BUTTON_STATE',
-          displayInfoButton: display,
-        });
-      },
-      changeDisplayViewModeButtonState(display) {
-        store.dispatch({
-          type: 'CHANGE_DISPLAY_VIEW_MODE_BUTTON_STATE',
-          displayViewModeButton: display,
-        });
-      },
     };
   }
 
@@ -459,7 +440,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   get routeDefinition() {
-    if (this.currentRoute && this.currentRoute.name) {
+    if (this.currentRoute?.name) {
       return routes[this.currentRoute.name];
     }
   }
@@ -569,16 +550,7 @@ export class SCPageSelector extends LitLocalized(LitElement) {
 
     this.shouldShowPublicationToolbar = [
       'publicationEdition',
-      'publicationDN',
-      'publicationMN',
-      'publicationSN',
-      'publicationAN',
-      'publicationMinor',
       'publicationEditionMatter',
-      'publicationEditionAcknowledgements',
-      'publicationEditionAbbreviations',
-      'publicationEditionIndex',
-      'publicationEditionIntroduction',
     ].includes(this.currentRoute.name);
 
     reduxActions.setStaticPagesToolbarDisplayState({
@@ -642,9 +614,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
   }
 
   _recalculateView() {
-    this.actions.changeDisplayToolButtonState(this.currentRoute.name === 'sutta');
-    this.actions.changeDisplayInfoButtonState(this.currentRoute.name === 'sutta');
-
     const contextToolbar = this.parentNode.querySelector('#context_toolbar');
     const expandClass = 'contextToolbarExpand';
     if (this.currentRoute.name === 'sutta') {
@@ -662,8 +631,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       ? 'none'
       : 'block';
 
-    this._setViewModeButtonDisplayState();
-    this.#setSearchOptionsButtonDisplayState();
     reduxActions.changeDisplayChineseConverterState(false);
     this._setTitleState();
   }
@@ -685,16 +652,6 @@ export class SCPageSelector extends LitLocalized(LitElement) {
       this.parentNode.querySelector('#subTitle').style.display = 'none';
       this.parentNode.querySelector('#subTitle').style.opacity = '0';
     }
-  }
-
-  _setViewModeButtonDisplayState() {
-    this.actions.changeDisplayViewModeButtonState(
-      ['home', 'suttaplex', 'navigation', 'search'].includes(this.currentRoute.name)
-    );
-  }
-
-  #setSearchOptionsButtonDisplayState() {
-    reduxActions.changeDisplaySearchOptionsButtonState(['search'].includes(this.currentRoute.name));
   }
 
   firstUpdated() {

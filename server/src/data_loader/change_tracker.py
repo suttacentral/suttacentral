@@ -57,7 +57,7 @@ class ChangeTracker:
                 bind_vars={'to_remove': list(self.deleted)},
             )
 
-        self.db['mtimes'].import_bulk_logged(
+        self.db['mtimes'].import_bulk(
             [
                 {'path': k, 'mtime': v, '_key': k.replace('/', '_')}
                 for k, v in self.changed_or_new.items()

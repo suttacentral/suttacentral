@@ -129,7 +129,8 @@ class HtmlTextWriter:
 
     def flush_documents(self):
         if len(self.queue) > 0:
-            self.db['html_text'].import_bulk_logged(self.queue)
+            # TODO: Check if overwrite should be used or possibly on_duplicate="update"
+            self.db['html_text'].import_bulk(self.queue)
             self.queue.clear()
 
     def __enter__(self):

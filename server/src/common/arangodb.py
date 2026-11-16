@@ -1,60 +1,10 @@
 #!/usr/bin/env python3
 # coding=utf-8
-import logging
-import re
 from typing import Union
 
 from arango import ArangoClient
-from arango.collection import StandardCollection
 from arango.database import Database
-from arango.exceptions import DocumentInsertError
 from flask import current_app, g
-
-
-def explain_error(coll, e, docs, kwargs):
-    # illegal document key, unique constraint violated
-    explained = False
-    if e.error_code in (1221, 1210):
-        existing_keys = set(coll.keys())
-
-        seen = {}
-        for i, doc in enumerate(docs, 0):
-            key = doc['_key']
-            illegal_chars = ''.join(re.findall(r'''[^a-zA-Z0-9_:.@()+,=;$!*'%-]''', key))
-            if illegal_chars:
-                logging.error(f'{coll.name}: document key "{key}" contains illegal characters "{illegal_chars}"')
-                explained = True
-            if e.error_code == 1210:
-                if key in seen:
-                    logging.error(f'{coll.name}: unique constraint violated "{key}"\n\t{doc}\n\t{seen[key][1]}')
-
-                    explained = True
-                elif key in existing_keys and not kwargs.get('overwrite'):
-                    logging.error(f'{coll.name}: document {i}, "{key}" has a duplicate key, already in the collection')
-                    explained = True
-            seen[key] = (i, doc)
-    return explained
-
-
-def import_bulk_logged(self, docs, wipe=False, *args, **kwargs):
-    if 'overwrite' in kwargs:
-        raise ValueError('Overwrite not allowed as it is ambiguous, use "wipe=True" to clear collection')
-    try:
-        _ = self.import_bulk(docs, overwrite=wipe, *args, **kwargs)
-    except DocumentInsertError as e:
-        explained = explain_error(self, e, docs, kwargs)
-        if not explained:
-            logging.error(
-                f'{self.name}: Document Insertion Error, [ERR: {e.error_code}]: {e.error_message}, '
-                f'explanation not available, you may proceed to panic and/or despair')
-        raise
-    except Exception as e:
-        logging.error(f'{self.name}: error inserting documents: {e}: {docs}')
-        raise
-
-
-StandardCollection.import_bulk_logged = import_bulk_logged
-del import_bulk_logged
 
 
 class ArangoDB:

@@ -41,20 +41,8 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
     this.localizedStringsPath = '/localization/elements/interface';
     this.siteLanguage = store.getState().siteLanguage;
     this.displayParallelTableView = store.getState().displayParallelTableView;
-    this.#showTableViewButton();
     this._setViewState();
     reduxActions.showToc([]);
-  }
-
-  #showTableViewButton() {
-    const scSiteLayout = document.querySelector('sc-site-layout');
-    const scActionItems = scSiteLayout?.querySelector('#action_items');
-    const btnShowParallelTableView = scActionItems?.shadowRoot.querySelector(
-      '#btnShowParallelTableView'
-    );
-    if (btnShowParallelTableView) {
-      btnShowParallelTableView.style.display = 'inherit';
-    }
   }
 
   #loadSCSuttaplex() {
@@ -514,8 +502,6 @@ class SCSuttaplexList extends LitLocalized(LitElement) {
 
   firstUpdated() {
     this._correctAndRedirectRootURL();
-    this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    this.scActionItems?.hideSpeakerButton();
   }
 
   _correctAndRedirectRootURL() {

@@ -128,8 +128,6 @@ export class SCTextLegacy extends LitLocalized(LitElement) {
     this._setTextViewState();
     this._updateView();
     this._updateURLSearchParams();
-    this.scActionItems = document.querySelector('sc-site-layout').querySelector('#action_items');
-    this.scActionItems?.hideSpeakerButton();
     this._showChineseConverterButton();
   }
 

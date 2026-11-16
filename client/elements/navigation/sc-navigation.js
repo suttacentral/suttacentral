@@ -18,7 +18,6 @@ import { fontLazyLoader } from '../../utils/sc-font-lazy-loader';
 export class SCNavigation extends LitLocalized(LitElement) {
   static properties = {
     isCompactMode: { type: String, state: true },
-    compactStyles: { type: Object, state: true },
     localizedStringsPath: { type: String, state: true },
     routePath: { type: String, state: true },
     siteLanguage: { type: String, state: true },
@@ -32,7 +31,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
   constructor() {
     super();
     this.isCompactMode = store.getState().suttaplexListDisplay;
-    this.compactStyles = {};
     this.localizedStringsPath = '/localization/elements/interface';
     this.routePath = store.getState().currentRoute.path;
     this.siteLanguage = store.getState().siteLanguage;
@@ -59,7 +57,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    this._viewModeChanged();
   }
 
   firstUpdated() {
@@ -70,8 +67,8 @@ export class SCNavigation extends LitLocalized(LitElement) {
     this._parseURL();
   }
 
-  _viewModeChanged() {
-    this.compactStyles = this.isCompactMode ? navigationCompactModeStyles : null;
+  #compactStyles() {
+    return this.isCompactMode ? navigationCompactModeStyles : null;
   }
 
   async _parseURL() {
@@ -310,7 +307,6 @@ export class SCNavigation extends LitLocalized(LitElement) {
     super.stateChanged(state);
     if (this.isCompactMode !== state.suttaplexListDisplay) {
       this.isCompactMode = state.suttaplexListDisplay;
-      this._viewModeChanged();
     }
     if (this.routePath !== state.currentRoute.path) {
       this.routePath = state.currentRoute.path;
@@ -357,7 +353,7 @@ export class SCNavigation extends LitLocalized(LitElement) {
 
   render() {
     return html`
-      ${navigationNormalModeStyles} ${this.compactStyles}
+      ${navigationNormalModeStyles} ${this.#compactStyles()}
       <main>${this.cardContentTemplate}</main>
     `;
   }

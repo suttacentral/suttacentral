@@ -2,6 +2,7 @@ import { expect } from '@open-wc/testing';
 import sinon from 'sinon';
 
 import { SCTextBilara } from '../../elements/text/sc-text-bilara.js';
+import { reduxActions } from '../../elements/addons/sc-redux-actions.js';
 
 describe('SCTextBilara', () => {
   let instance;
@@ -876,9 +877,7 @@ describe('SCTextBilara', () => {
       instance.bilaraTranslatedSutta = null;
       instance.bilaraRootSutta = null;
       const showTocStub = sinon.stub();
-      sinon.stub(instance, 'actions').get(() => ({
-        showToc: showTocStub,
-      }));
+      sinon.stub(reduxActions, 'showToc').callsFake(showTocStub);
       instance._prepareNavigation();
       expect(showTocStub.calledWith([])).to.be.true;
     });

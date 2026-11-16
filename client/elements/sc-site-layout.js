@@ -314,9 +314,6 @@ export class SCSiteLayout extends LitLocalized(LitElement) {
     if (this.displaySettingMenu !== state.displaySettingMenu) {
       this.displaySettingMenu = state.displaySettingMenu;
     }
-    if (this.displayToolButton !== state.displayToolButton) {
-      this.displayToolButton = state.displayToolButton;
-    }
     if (this.toolbarTitle !== state.toolbarOptions.title) {
       this.toolbarTitle = state.toolbarOptions.title;
     }
