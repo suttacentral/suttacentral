@@ -74,6 +74,49 @@ FOR l IN language RETURN l.iso_code
 '''
 
 
+def construct_search_query_aql(
+    limit,
+    matchpartial,
+    offset,
+    query,
+    query_param,
+    selected_languages
+):
+    '''
+    if ':' not in query_param['query'] and not query_param['query'].startswith(constant.CMD_LIST):
+        if (
+            not query_param['query'].startswith("'")
+            and not query_param['query'].startswith('"')
+            and 'OR' not in query_param['query']
+            and 'AND' not in query_param['query']
+            and 'NOT' not in query_param['query']
+            and ' ' in query_param['query']
+        ):
+            keyword_count = query_param['query'].count(' ')
+            # Limit the AND keyword to prevent high CPU usage
+            if keyword_count < 4:
+                query_param['query'] = query_param['query'].replace(' ', ' AND ')
+                query = query.replace(' ', ' AND ')
+
+        if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
+            query_param['query'] = query_param['query'][1:-1]
+            query = query[1:-1]
+    '''
+
+    search_aql, aql_condition_part = \
+        generate_general_query_aql(
+            query, limit, offset, matchpartial, selected_languages)
+    query_conditions = extract_query_conditions(query)
+    if is_complex_query(query_conditions):
+        bind_param, search_aql, aql_condition_part = \
+            generate_aql_for_complex_query(query_conditions, query_param)
+    else:
+        bind_param, search_aql, aql_condition_part = \
+            generate_aql_based_on_query(search_aql, aql_condition_part, query_param)
+
+    return aql_condition_part, bind_param, search_aql
+
+
 def extract_query_conditions(param):
     param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
@@ -1049,46 +1092,3 @@ def generate_aql_based_on_query(search_aql, aql_condition_part, query_param):
     }
 
     return bind_param, search_aql, aql_condition_part
-
-
-def construct_search_query_aql(
-    limit,
-    matchpartial,
-    offset,
-    query,
-    query_param,
-    selected_languages
-):
-    '''
-    if ':' not in query_param['query'] and not query_param['query'].startswith(constant.CMD_LIST):
-        if (
-            not query_param['query'].startswith("'")
-            and not query_param['query'].startswith('"')
-            and 'OR' not in query_param['query']
-            and 'AND' not in query_param['query']
-            and 'NOT' not in query_param['query']
-            and ' ' in query_param['query']
-        ):
-            keyword_count = query_param['query'].count(' ')
-            # Limit the AND keyword to prevent high CPU usage
-            if keyword_count < 4:
-                query_param['query'] = query_param['query'].replace(' ', ' AND ')
-                query = query.replace(' ', ' AND ')
-
-        if (query_param['query'].startswith("'") or query_param['query'].startswith('"')):
-            query_param['query'] = query_param['query'][1:-1]
-            query = query[1:-1]
-    '''
-
-    search_aql, aql_condition_part = \
-        generate_general_query_aql(
-            query, limit, offset, matchpartial, selected_languages)
-    query_conditions = extract_query_conditions(query)
-    if is_complex_query(query_conditions):
-        bind_param, search_aql, aql_condition_part = \
-            generate_aql_for_complex_query(query_conditions, query_param)
-    else:
-        bind_param, search_aql, aql_condition_part = \
-            generate_aql_based_on_query(search_aql, aql_condition_part, query_param)
-
-    return aql_condition_part, bind_param, search_aql
