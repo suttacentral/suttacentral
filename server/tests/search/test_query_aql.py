@@ -4,14 +4,10 @@ from search.query_aql import construct_search_query_aql
 
 
 class TestConstructSearchQueryAql:
-    @pytest.fixture
-    def result(self) -> tuple[str, str, str]:
-        limit = 1
-        matchpartial = False
-        offset = 0
-        query = 'ghosts'
-        lang = 'en'
-        selected_languages = ['en']
+    def invoke(self, limit=10, matchpartial=False, offset=0, query='ghosts', lang='en', selected_languages=None):
+        if selected_languages is None:
+            selected_languages = ['en']
+
         return construct_search_query_aql(
             limit=limit,
             matchpartial=matchpartial,
@@ -28,7 +24,8 @@ class TestConstructSearchQueryAql:
             selected_languages=selected_languages,
         )
 
-    def test_aql_condition_part(self, result):
+    def test_aql_condition_part(self):
+        result = self.invoke()
         lines = [line.strip() for line in result[0].splitlines() if len(line)]
         assert lines == [
             'SEARCH (PHRASE(d.content, @query, "common_text")',
@@ -36,10 +33,12 @@ class TestConstructSearchQueryAql:
             'OR ANALYZER(LIKE(d.name, "%ghosts%"), "normalize") ) FILTER d.is_segmented != True   AND (d.lang IN [\'en\'] OR d.is_root==null)'
         ]
 
-    def test_bind_param(self, result):
+    def test_bind_param(self):
+        result = self.invoke()
         assert result[1] == {'lang': 'en', 'query': 'ghosts'}
 
-    def test_search_aql(self, result):
+    def test_search_aql(self):
+        result = self.invoke()
         lines = [line.strip() for line in result[2].splitlines() if len(line.strip())]
         assert lines == [
             'FOR d IN instant_search',
@@ -67,7 +66,7 @@ class TestConstructSearchQueryAql:
             'LENGTH(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), \'.\')) <= 2 ? 0 :',
             'TO_NUMBER(REGEX_REPLACE(SPLIT(REGEX_REPLACE(d.uid, "[a-z-]+(.*)", "$1"), '
             '\'.\')[2], "([0-9]+).*", "$1"))',
-            'LIMIT 0, 1',
+            'LIMIT 0, 10',
             'return {',
             'acronym: d.acronym,',
             'uid: d.uid,',
