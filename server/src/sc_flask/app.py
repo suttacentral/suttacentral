@@ -60,12 +60,11 @@ from api.views import (
     Alias,
     GitHubDirectoryListing
 )
-from common.arangodb import ArangoDB
+
 from common.extensions import cache
 from sc_flask.config import app_config, swagger_config, swagger_template
 from search.view import InstantSearch, FetchPossibleNames, FulltextSearch
 from api.views.publication_v2 import Edition, Editions, EditionMainmatter, EditionFiles, EditionBlurbs
-
 
 
 def app_factory() -> Tuple[Api, Flask]:
@@ -163,7 +162,6 @@ def register_extensions(app):
 
 
 api, app = app_factory()
-arango = ArangoDB(app)
 swagger = Swagger(app, config=swagger_config, template=swagger_template)
 CORS(app)
 

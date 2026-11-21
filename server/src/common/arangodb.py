@@ -1,92 +1,53 @@
-#!/usr/bin/env python3
-# coding=utf-8
-from typing import Union
+from dataclasses import dataclass
 
 from arango import ArangoClient
-from arango.database import Database
+from arango.database import StandardDatabase
 from flask import current_app, g
 
 
+@dataclass
 class ArangoDB:
-    def __init__(self, app=None):
-        self.app = app
+    host: str
+    port: int
+    username: str
+    password: str
+    database_name: str
 
-    def connect(self) -> ArangoClient:
-        """Connect to the ArangoDB"""
-        config = current_app.config['ARANGO_CLIENT']
-        return ArangoClient(hosts=f'http://{config["host"]}:{config["port"]}', request_timeout=1000)
-
-    @property
     def client(self) -> ArangoClient:
-        """
-        Puts client object in g object.
-        :return: ArangoClient object connected to the database.
-        """
-        client = self._get_client_from_g_or_none()
-        if client is None:
-            client = g._database_client = self.connect()
-        return client
+        return ArangoClient(hosts=f'http://{self.host}:{self.port}', request_timeout=1000)
 
-    @property
-    def db(self) -> Database:
-        """
-        Puts db object in g object.
-        :return: Arango database object.
-        """
-        db = self._get_db_from_g_or_none()
-        if db is None:
-            config = current_app.config['ARANGO_CLIENT']
-            params = {'username': config['username'], 'password': config['password']}
-            if isinstance(current_app.config['ARANGO_DB'], dict):
-                params.update(current_app.config['ARANGO_DB'])
-            else:
-                params['name'] = current_app.config['ARANGO_DB']
-            db = g._database = self.client.db(**params)
-            # update_views_hack(db)
-        return db
+    def database(self) -> StandardDatabase:
+        return self.client().db(name=self.database_name, password=self.password, username=self.username)
 
-    @staticmethod
-    def _get_db_from_g_or_none() -> Union[Database, None]:
-        """
-        Returns db object if present in g object otherwise returns None
-        """
-        return getattr(g, '_database', None)
+    def system_database(self) -> StandardDatabase:
+        return self.client().db(username=self.username, password=self.password)
 
-    @staticmethod
-    def _get_client_from_g_or_none() -> Union[ArangoClient, None]:
-        """
-        Returns db object if present in g object otherwise returns None
-        """
-        return getattr(g, '_database_client', None)
+
+def from_flask_config() -> ArangoDB:
+    return ArangoDB(
+        host=current_app.config['ARANGO_CLIENT']['host'],
+        port=current_app.config['ARANGO_CLIENT']['port'],
+        username=current_app.config['ARANGO_CLIENT']['username'],
+        password=current_app.config['ARANGO_CLIENT']['password'],
+        database_name=current_app.config['ARANGO_DB']
+    )
 
 
 def get_client() -> ArangoClient:
-    """
-    Returns client object for current db session and creates one if not present.
-    """
-    client = ArangoDB._get_client_from_g_or_none()
-    if client is None:
-        client = ArangoDB(current_app).client
-    return client
+    if 'client' not in g:
+        g.client = from_flask_config().client()
+    return g.client
 
 
-def get_db() -> Database:
-    """
-    Returns db object for current db session and creates one if not present.
-    """
-    db = ArangoDB._get_db_from_g_or_none()
-    if db is None:
-        db = ArangoDB(current_app).db
-    return db
+def get_db() -> StandardDatabase:
+    if 'database' not in g:
+        g.database = from_flask_config().database()
+    return g.database
 
 
-def get_system_db() -> Database:
-    config = current_app.config['ARANGO_CLIENT']
-    db = get_client().db(
-        **{'username': config['username'], 'password': config['password']}
-    )
-    return db
+def get_system_db() -> StandardDatabase:
+    return from_flask_config().system_database()
 
 
-def delete_db(db: Database):
+def delete_db(db: StandardDatabase):
     get_system_db().delete_database(db.name)
