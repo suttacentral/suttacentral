@@ -32,6 +32,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "coverage>=7.17.3",
     "fawltydeps>=0.20.0,<0.21",
     "pytest>=7.2.0,<8",
     "pytest-flask>=1.2.0,<2",
