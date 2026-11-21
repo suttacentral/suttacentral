@@ -3,63 +3,66 @@ from pathlib import Path
 
 
 class Config:
-    """Parent configuration class"""
+    def __init__(self):
+        self.DEBUG = False
+        self.TESTING = False
+        self.CSRF_ENABLED = True
+        self.SECRET = os.getenv('SECRET')
+        self.ENVIRONMENT = os.getenv('ENVIRONMENT')
 
-    DEBUG = False
-    TESTING = False
-    CSRF_ENABLED = True
-    SECRET = os.getenv('SECRET')
-    ENVIRONMENT = os.getenv('ENVIRONMENT')
+        # ARANGO
+        self.ARANGO_BASE_DB = self.ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME')
+        try:
+            self.ARANGO_DB = os.environ['ARANGO_DB_NAME']
+        except KeyError:
+            pass
 
-    # ARANGO
-    ARANGO_BASE_DB = ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME')
-    try:
-        ARANGO_DB = os.environ['ARANGO_DB_NAME']
-    except KeyError:
-        pass
+        self.ARANGO_CLIENT = {
+            'host': os.getenv('ARANGO_HOST'),
+            'port': int(os.getenv('ARANGO_PORT')),
+            'username': os.getenv('ARANGO_USER', None),
+            'password': os.getenv('ARANGO_ROOT_PASSWORD', None),
+        }
 
-    ARANGO_CLIENT = {
-        'host': os.getenv('ARANGO_HOST'),
-        'port': int(os.getenv('ARANGO_PORT')),
-        'username': os.getenv('ARANGO_USER', None),
-        'password': os.getenv('ARANGO_ROOT_PASSWORD', None),
-    }
+        self.BASE_DIR = Path('/opt/sc/sc-flask/')
+        self.STORAGE_DIR = Path('/opt/sc/storage/')
+        self.ASSETS_DIR = Path('/opt/sc/frontend/')
+        self.DATA_REP_DIR = Path('/opt/sc/sc-flask/sc-data')
+        self.DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
 
-    BASE_DIR = Path('/opt/sc/sc-flask/')
-    STORAGE_DIR = Path('/opt/sc/storage/')
-    ASSETS_DIR = Path('/opt/sc/frontend/')
-    DATA_REP_DIR = Path('/opt/sc/sc-flask/sc-data')
-    DATA_REPO = 'https://github.com/suttacentral/sc-data.git'
+        self.DEFAULT_LANGUAGE = 'en'
 
-    DEFAULT_LANGUAGE = 'en'
+        self.SERVER_ADDRESS = os.environ['SERVER_ADDRESS']
 
-    SERVER_ADDRESS = os.environ['SERVER_ADDRESS']
 
 class DevelopmentConfig(Config):
-    """Configuration for Development"""
-
-    DEBUG = True
+    def __init__(self):
+        super().__init__()
+        self.DEBUG = True
 
 
 class TestingConfig(Config):
-    """Configuration for Testing"""
-
-    TESTING = True
-    DEBUG = True
-    ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME') + '_tests'
+    def __init__(self):
+        super().__init__()
+        self.TESTING = True
+        self.DEBUG = True
+        self.ARANGO_DB = os.getenv('ARANGO_BASE_DB_NAME') + '_tests'
 
 
 class ProductionConfig(Config):
-    """Configuration for Production"""
+    def __init__(self):
+        super().__init__()
 
-    pass
 
+def app_config() -> Config:
+    environment = os.getenv('ENVIRONMENT')
+    configs = {
+        'development': DevelopmentConfig(),
+        'testing': TestingConfig(),
+        'production': ProductionConfig(),
+    }
+    return configs[environment]
 
-app_config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-}
 
 # https://github.com/rochacbruno/flasgger
 swagger_config = {
