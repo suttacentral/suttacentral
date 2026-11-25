@@ -117,6 +117,61 @@ def construct_search_query_aql(
     return aql_condition_part, bind_param, search_aql
 
 
+def generate_aql_based_on_query(search_aql, aql_condition_part, query_param):
+    search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_not_operator(
+            search_aql, aql_condition_part, query_param)
+
+    search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_and_operator(
+            search_aql, aql_condition_part, query_param)
+
+    search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_chinese_keywords(
+            search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_by_filter(search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_reference_filter(search_aql, aql_condition_part, query_param)
+
+    search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_multi_chinese_keywords(
+            search_aql, aql_condition_part, query_param)
+
+    search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_or_operator(
+            search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        generate_aql_by_collection(search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        generate_aql_for_list_authors_command(
+            search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        generate_aql_for_list_language_command(
+            search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_title_filter(search_aql, aql_condition_part, query_param)
+
+    query_param, search_aql, aql_condition_part = \
+        prepare_and_generate_aql_for_lang_filter(search_aql, aql_condition_part, query_param)
+
+    bind_param = {
+        'query': query_param['query'],
+        'lang': query_param['lang']
+    }
+
+    return bind_param, search_aql, aql_condition_part
+
+
 def extract_query_conditions(param):
     param = re.sub(r'(\w+): ', r'\1:', param)
     result = {}
@@ -1037,58 +1092,3 @@ def prepare_and_generate_aql_for_title_filter(search_aql, aql_condition_part, qu
         search_aql, aql_condition_part = generate_aql_for_title_filter(query_param)
         query_param['query'] = query_param['query'][len(constant.CMD_TITLE):]
     return query_param, search_aql, aql_condition_part
-
-
-def generate_aql_based_on_query(search_aql, aql_condition_part, query_param):
-    search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_not_operator(
-            search_aql, aql_condition_part, query_param)
-
-    search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_and_operator(
-            search_aql, aql_condition_part, query_param)
-
-    search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_chinese_keywords(
-            search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_by_filter(search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_volpage_filter(search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_reference_filter(search_aql, aql_condition_part, query_param)
-
-    search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_multi_chinese_keywords(
-            search_aql, aql_condition_part, query_param)
-
-    search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_or_operator(
-            search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        generate_aql_by_collection(search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        generate_aql_for_list_authors_command(
-            search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        generate_aql_for_list_language_command(
-            search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_title_filter(search_aql, aql_condition_part, query_param)
-
-    query_param, search_aql, aql_condition_part = \
-        prepare_and_generate_aql_for_lang_filter(search_aql, aql_condition_part, query_param)
-
-    bind_param = {
-        'query': query_param['query'],
-        'lang': query_param['lang']
-    }
-
-    return bind_param, search_aql, aql_condition_part
