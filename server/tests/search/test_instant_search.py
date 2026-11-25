@@ -1,21 +1,17 @@
 from search.instant_search import (
-    format_volpage,
-    standardization_volpage,
-    roman_to_int,
-    extract_query_conditions,
-    is_chinese,
-    extract_lang_param,
-    extract_not_param,
     search_string,
     normalize_string,
     sanitize_quoted_query,
     normalize_filter_commands
 )
+from search.query_aql import extract_query_conditions, format_volpage, standardization_volpage, roman_to_int, \
+    extract_not_param, extract_lang_param
 
 from search.validate_filter import validate_filter_commands
 
 from urllib.parse import quote
 from sc_flask.app import app
+
 client = app.test_client()
 
 
@@ -79,35 +75,28 @@ def test_extract_param():
     assert extract_query_conditions('by:sujato dog in:an') == {"collection": "an", "author": "sujato", "or": ["dog"]}
     # assert extract_query_conditions('in:dn by:sujato "root of suffering"') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
     # assert extract_query_conditions('in:dn by:sujato root of suffering') == {"collection": "dn", "author": "sujato", "and": ["root", "of", "suffering"]}
-    assert extract_query_conditions('in:dn by:sujato root of suffering') == {"collection": "dn", "author": "sujato", "or": ["root of suffering"]}
-    assert extract_query_conditions('in:mn by:sujato cat OR dog') == {"collection": "mn", "author": "sujato", "or": ["cat", "dog"]}
+    assert extract_query_conditions('in:dn by:sujato root of suffering') == {"collection": "dn", "author": "sujato",
+                                                                             "or": ["root of suffering"]}
+    assert extract_query_conditions('in:mn by:sujato cat OR dog') == {"collection": "mn", "author": "sujato",
+                                                                      "or": ["cat", "dog"]}
     assert extract_query_conditions('in:sn cat') == {"collection": "sn", "or": ["cat"]}
     assert extract_query_conditions('by:sujato cat') == {"author": "sujato", "or": ["cat"]}
     assert extract_query_conditions('by:sujato cat AND dog') == {"author": "sujato", "and": ["cat", "dog"]}
-    assert extract_query_conditions('in:mn by:sujato cat AND dog') == {"collection": "mn", "author": "sujato", "and": ["cat", "dog"]}
-    assert extract_query_conditions('by:sujato dog AND cat in:mn') == {"collection": "mn", "author": "sujato", "and": ["dog", "cat"]}
-    assert extract_query_conditions('cat AND dog in:mn by:sujato') == {"collection": "mn", "author": "sujato", "and": ["cat", "dog"]}
+    assert extract_query_conditions('in:mn by:sujato cat AND dog') == {"collection": "mn", "author": "sujato",
+                                                                       "and": ["cat", "dog"]}
+    assert extract_query_conditions('by:sujato dog AND cat in:mn') == {"collection": "mn", "author": "sujato",
+                                                                       "and": ["dog", "cat"]}
+    assert extract_query_conditions('cat AND dog in:mn by:sujato') == {"collection": "mn", "author": "sujato",
+                                                                       "and": ["cat", "dog"]}
     assert extract_query_conditions('in:vinaya cat') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('cat in:vinaya') == {"collection": "vinaya", "or": ["cat"]}
     assert extract_query_conditions('in:sutta cat') == {"collection": "sutta", "or": ["cat"]}
     assert extract_query_conditions('in:abhidhamma cat') == {"collection": "abhidhamma", "or": ["cat"]}
     assert extract_query_conditions('NOT cat in:an10') == {"collection": "an10", "not": ["cat"]}
-    assert extract_query_conditions('in:vinaya respect NOT feet') == {"collection": "vinaya", "or": ["respect"], "not": ["feet"]}
-    assert extract_query_conditions('respect NOT feet in:vinaya') == {"collection": "vinaya", "or": ["respect"], "not": ["feet"]}
-
-
-def test_is_chinese():
-    assert is_chinese('四念处') is True
-    assert is_chinese('四正勤') is True
-    assert is_chinese('四神足') is True
-    assert is_chinese('五根') is True
-    assert is_chinese('五力') is True
-    assert is_chinese('七觉支') is True
-    assert is_chinese('八正道') is True
-    assert is_chinese('Buddha') is False
-    assert is_chinese('Metta') is False
-    assert is_chinese('八正道 AND 四圣谛') is True
-    assert is_chinese('in:sa 如实知见') is False
+    assert extract_query_conditions('in:vinaya respect NOT feet') == {"collection": "vinaya", "or": ["respect"],
+                                                                      "not": ["feet"]}
+    assert extract_query_conditions('respect NOT feet in:vinaya') == {"collection": "vinaya", "or": ["respect"],
+                                                                      "not": ["feet"]}
 
 
 def test_extract_lang_param():
@@ -140,7 +129,7 @@ def test_normalize_string():
 def instant_search(query, languages):
     encoded_query = quote(query)
     response = client.post(f'/search/instant?query={encoded_query}&language=en&limit=10&offset=0&matchpartial=false',
-                            json={'selectedLanguages': languages})
+                           json={'selectedLanguages': languages})
     assert response.status_code == 200
     json_data = response.get_json()
     assert json_data['total'] != '0'
@@ -347,3 +336,5 @@ def test_validate_filter_commands():
 
     # Testing complex valid queries
     assert validate_filter_commands('in:sn by:sujato lang:en meditation AND mindfulness')['is_valid'] is True
+
+
